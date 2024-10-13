@@ -22,10 +22,7 @@ namespace TYPO3\CMS\Adminpanel\Service;
  */
 class EventDispatcher extends \TYPO3\CMS\Core\EventDispatcher\EventDispatcher
 {
-    /**
-     * @var object[]
-     */
-    protected array $dispatchedEvents = [];
+    private array $dispatchedEvents = [];
 
     public function getDispatchedEvents(): array
     {
@@ -34,7 +31,12 @@ class EventDispatcher extends \TYPO3\CMS\Core\EventDispatcher\EventDispatcher
 
     public function dispatch(object $event): object
     {
-        $this->dispatchedEvents[] = $event;
+        $eventClass = get_class($event);
+        if (isset($this->dispatchedEvents[$eventClass])) {
+            $this->dispatchedEvents[$eventClass]++;
+        } else {
+            $this->dispatchedEvents[$eventClass] = 1;
+        }
         return parent::dispatch($event);
     }
 }

@@ -1,3 +1,26 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:format.raw>{events}</f:format.raw>
+
+<div class="typo3-adminPanel-events">
+    <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap typo3-adminPanel-events-header">
+        <div class="typo3-adminPanel-col typo3-adminPanel-col-ellipsis typo3-adminPanel-col-auto">
+            <f:translate key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.events.eventClassName" languageKey="{languageKey}"/>
+        </div>
+        <div class="typo3-adminPanel-col typo3-adminPanel-events-col-count">
+            <f:translate
+                key="LLL:EXT:adminpanel/Resources/Private/Language/locallang_debug.xlf:submodule.events.count"
+                languageKey="{languageKey}"
+                arguments="{0: totalEvents}"
+            />
+        </div>
+    </div>
+    <f:for each="{events}" as="eventCount" key="eventClassName">
+        <div class="typo3-adminPanel-row typo3-adminPanel-row-nowrap">
+            <div class="typo3-adminPanel-col typo3-adminPanel-col-ellipsis typo3-adminPanel-col-auto">
+                {eventClassName}
+            </div>
+            <div class="typo3-adminPanel-col typo3-adminPanel-events-col-count">{eventCount}</div>
+        </div>
+    </f:for>
+</div>
+
 </html>

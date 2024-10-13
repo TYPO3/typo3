@@ -100,7 +100,6 @@
 		"symfony/rate-limiter": "^7.1",
 		"symfony/routing": "^7.1.4",
 		"symfony/uid": "^7.1.4",
-		"symfony/var-dumper": "^7.1.4",
 		"symfony/yaml": "^7.1.4",
 		"typo3/class-alias-loader": "^1.1.4",
 		"typo3/cms-cli": "^3.1.1",

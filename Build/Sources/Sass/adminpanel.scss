@@ -1084,10 +1084,11 @@ body.typo3-adminPanel-noscroll {
 }
 
 //
-// SQL
+// SQL & events
 //
 #{$adminPanel-prefix} {
-    .typo3-adminPanel-sql-col-count {
+    .typo3-adminPanel-sql-col-count,
+    .typo3-adminPanel-events-col-count {
         text-align: right;
         width: 90px;
         flex-shrink: 0;
@@ -1098,7 +1099,8 @@ body.typo3-adminPanel-noscroll {
         flex-shrink: 0;
     }
 
-    .typo3-adminPanel-sql-header {
+    .typo3-adminPanel-sql-header,
+    .typo3-adminPanel-events-header {
         color: $gray-600;
         border-bottom: 1px solid $gray-300;
     }

@@ -91,6 +91,12 @@
 			<trans-unit id="submodule.pageTitle.cacheEnabled.extraInfo">
 				<source>Visit this page uncached, or disable the cache through this admin panel.</source>
 			</trans-unit>
+			<trans-unit id="submodule.events.eventClassName">
+				<source>Event class name</source>
+			</trans-unit>
+			<trans-unit id="submodule.events.count">
+				<source>Dispatch count (%1d)</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
