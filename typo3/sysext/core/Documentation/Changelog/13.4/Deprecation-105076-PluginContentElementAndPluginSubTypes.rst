@@ -11,8 +11,8 @@ See :issue:`105076`
 Description
 ===========
 
-Historically, plugins have been registered using the :php:`list` content
-element and the plugin subtype :php:`list_type` field. This functionality
+Historically, plugins have been registered using the `list` content
+element and the plugin subtype `list_type` field. This functionality
 has been kept for backwards compatibility reasons. However, since the release
 of TYPO3 v12.4, the recommended way to create a plugin is by using a dedicated
 content type (`CType`) for each plugin.
@@ -21,7 +21,7 @@ This old "General Plugin" approach has always been ugly from a UX perspective po
 of view since it hides plugin selection behind "General plugin" content element,
 forcing a second selection step and making such plugins something special.
 
-Therefore, the plugin content element (:php:`list`) and the plugin sub types
+Therefore, the plugin content element (`list`) and the plugin sub types
 field (:php:`list_type`) have been marked as deprecated in TYPO3 v13.4 and will
 be removed in TYPO3 v14.0.
 
@@ -56,27 +56,29 @@ provided or where the fifth parameter is :php:`list_type`
 Affected installations
 ======================
 
-Extensions registering plugins as :php:`list_type` plugin sub type.
+Extensions registering plugins as `list_type` plugin sub type.
 
 
 Migration
 =========
 
-Existing plugins must be migrated to use the :php:`CType` record type.
+Existing plugins must be migrated to use the `CType` record type.
 Extension authors must implement the following changes:
 
-* Register plugins using the :php:`CType` record type
-* Create update wizard which extends :php:`\TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate`
-  and add :php:`list_type` to :php:`CType` mapping for each plugin to migrate.
-  The migration wizard for indexed_search in class :php:`IndexedSearchCTypeMigration`
-  can be used as reference example.
-* Migrate possible FlexForm registration and add dedicated :php:`showitem` TCA
-  configuration
-* Migrate possible PreviewRenderer registration in TCA
-* Adapt possible content element wizard items in Page TSConfig, where
-  :php:`list_type` is used
-* Adapt possible content element restrictions in backend layouts or container
-  elements defined by third-party extensions like ext:content_defender
+*   Register plugins using the `CType` record type
+*   Create update wizard which extends :php:`\TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate`
+    and add `list_type` to `CType` mapping for each plugin to migrate.
+    The migration wizard for indexed_search in class
+    :php-short:`\TYPO3\CMS\Install\Updates\IndexedSearchCTypeMigration`
+    can be used as reference example.
+*   Migrate possible FlexForm registration and add dedicated `showitem` TCA
+    configuration
+*   Migrate possible PreviewRenderer registration in TCA
+*   Adapt possible content element wizard items in Page TSConfig, where
+    `list_type` is used
+*   Adapt possible content element restrictions in backend layouts or container
+    elements defined by third-party extensions like
+    :composer:`ichhabrecht/content-defender`.
 
 Common example
 ^^^^^^^^^^^^^^

@@ -61,7 +61,7 @@ types. Please also consider migrating corresponding :php:`subtypes_addlist`
 and :php:`subtypes_excludelist` definitions accordingly.
 
 Before
-^^^^^^
+------
 
 .. code-block:: php
 
@@ -109,7 +109,7 @@ Before
 
 
 After
-^^^^^
+-----
 
 .. code-block:: php
 
