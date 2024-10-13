@@ -66,7 +66,7 @@ Existing plugins must be migrated to use the :php:`CType` record type.
 Extension authors must implement the following changes:
 
 * Register plugins using the :php:`CType` record type
-* Create update wizard which extends :php:`AbstractListTypeToCTypeUpdate`
+* Create update wizard which extends :php:`\TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate`
   and add :php:`list_type` to :php:`CType` mapping for each plugin to migrate.
   The migration wizard for indexed_search in class :php:`IndexedSearchCTypeMigration`
   can be used as reference example.
