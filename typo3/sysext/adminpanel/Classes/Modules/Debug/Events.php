@@ -26,9 +26,9 @@ use Symfony\Component\VarDumper\Dumper\AbstractDumper;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
+use TYPO3\CMS\Adminpanel\Service\EventDispatcher;
 use TYPO3\CMS\Adminpanel\Utility\HtmlDumper;
 use TYPO3\CMS\Core\Core\RequestId;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
@@ -38,11 +38,12 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
 #[Autoconfigure(public: true)]
 class Events extends AbstractSubModule implements DataProviderInterface
 {
-    /**
-     * @todo: See comment in MainController why DI in adminpanel modules that
-     *        implement DataProviderInterface is a *bad* idea.
-     */
-    public function __construct(private readonly RequestId $requestId) {}
+    public function __construct(
+        private readonly RequestId $requestId,
+        private readonly ViewFactoryInterface $viewFactory,
+        // We need admin panel EventDispatcher explicitly, not EventDispatcherInterface
+        private readonly EventDispatcher $eventDispatcher,
+    ) {}
 
     public function getIdentifier(): string
     {
@@ -58,14 +59,12 @@ class Events extends AbstractSubModule implements DataProviderInterface
 
     public function getDataToStore(ServerRequestInterface $request): ModuleData
     {
-        /** @var \TYPO3\CMS\Adminpanel\Service\EventDispatcher $eventDispatcher */
-        $eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $cloner = new VarCloner();
         $cloner->setMinDepth(2);
         $cloner->setMaxItems(10);
         return new ModuleData(
             [
-                'events' => $cloner->cloneVar($eventDispatcher->getDispatchedEvents()),
+                'events' => $cloner->cloneVar($this->eventDispatcher->getDispatchedEvents()),
             ]
         );
     }
@@ -77,8 +76,7 @@ class Events extends AbstractSubModule implements DataProviderInterface
             partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
             layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
         );
-        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
-        $view = $viewFactory->create($viewFactoryData);
+        $view = $this->viewFactory->create($viewFactoryData);
         $values = $data->getArrayCopy();
         $events = $values['events'] ?? null;
 

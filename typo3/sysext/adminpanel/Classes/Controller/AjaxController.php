@@ -30,24 +30,21 @@ use TYPO3\CMS\Core\Http\JsonResponse;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class AjaxController
+readonly class AjaxController
 {
-    protected array $adminPanelModuleConfiguration;
-
     public function __construct(
-        private readonly ConfigurationService $configurationService,
-        private readonly ModuleLoader $moduleLoader,
-    ) {
-        $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
-    }
+        private ConfigurationService $configurationService,
+        private ModuleLoader $moduleLoader,
+    ) {}
 
     /**
      * Save adminPanel data
      */
     public function saveDataAction(ServerRequestInterface $request): JsonResponse
     {
+        $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
         $this->configurationService->saveConfiguration(
-            $this->moduleLoader->validateSortAndInitializeModules($this->adminPanelModuleConfiguration),
+            $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration),
             $request
         );
         return new JsonResponse(['success' => true]);

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Modules\Debug;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\Log\DoctrineSqlLoggingMiddleware;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
@@ -32,8 +33,13 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class QueryInformation extends AbstractSubModule implements DataProviderInterface
 {
+    public function __construct(
+        private readonly ViewFactoryInterface $viewFactory,
+    ) {}
+
     /**
      * Identifier for this Sub-module,
      * for example "preview" or "cache"
@@ -83,8 +89,7 @@ class QueryInformation extends AbstractSubModule implements DataProviderInterfac
             partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
             layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
         );
-        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
-        $view = $viewFactory->create($viewFactoryData);
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assignMultiple($data->getArrayCopy());
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
         return $view->render('Modules/Debug/QueryInformation');

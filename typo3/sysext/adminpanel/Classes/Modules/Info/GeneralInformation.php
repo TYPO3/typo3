@@ -38,13 +38,10 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
 #[Autoconfigure(public: true)]
 class GeneralInformation extends AbstractSubModule implements DataProviderInterface
 {
-    /**
-     * @todo: See comment in MainController why DI in adminpanel modules that
-     *        implement DataProviderInterface is a *bad* idea.
-     */
     public function __construct(
         private readonly TimeTracker $timeTracker,
         private readonly Context $context,
+        private readonly ViewFactoryInterface $viewFactory,
     ) {}
 
     public function getDataToStore(ServerRequestInterface $request): ModuleData
@@ -85,8 +82,7 @@ class GeneralInformation extends AbstractSubModule implements DataProviderInterf
             partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
             layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
         );
-        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
-        $view = $viewFactory->create($viewFactoryData);
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assignMultiple($data->getArrayCopy());
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
         return $view->render('Modules/Info/General');

@@ -41,12 +41,9 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
 {
     protected int $logLevel;
 
-    /**
-     * @todo: See comment in MainController why DI in adminpanel modules that
-     *        implement DataProviderInterface is a *bad* idea.
-     */
     public function __construct(
         private readonly ConfigurationService $configurationService,
+        private readonly ViewFactoryInterface $viewFactory,
     ) {
         $this->logLevel = LogLevel::normalizeLevel(\Psr\Log\LogLevel::INFO);
     }
@@ -102,8 +99,7 @@ class Log extends AbstractSubModule implements DataProviderInterface, ModuleSett
             partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
             layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
         );
-        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
-        $view = $viewFactory->create($viewFactoryData);
+        $view = $this->viewFactory->create($viewFactoryData);
         $maxLevel = LogLevel::normalizeLevel(\Psr\Log\LogLevel::DEBUG);
         $levels = [];
         for ($i = 1; $i <= $maxLevel; $i++) {

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Adminpanel\Modules\Info;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Adminpanel\ModuleApi\AbstractSubModule;
 use TYPO3\CMS\Adminpanel\ModuleApi\DataProviderInterface;
 use TYPO3\CMS\Adminpanel\ModuleApi\ModuleData;
@@ -30,8 +31,13 @@ use TYPO3\CMS\Core\View\ViewFactoryInterface;
  *
  * @internal
  */
+#[Autoconfigure(public: true)]
 class PhpInformation extends AbstractSubModule implements DataProviderInterface
 {
+    public function __construct(
+        private readonly ViewFactoryInterface $viewFactory,
+    ) {}
+
     public function getIdentifier(): string
     {
         return 'info_php';
@@ -67,8 +73,7 @@ class PhpInformation extends AbstractSubModule implements DataProviderInterface
             partialRootPaths: ['EXT:adminpanel/Resources/Private/Partials'],
             layoutRootPaths: ['EXT:adminpanel/Resources/Private/Layouts'],
         );
-        $viewFactory = GeneralUtility::makeInstance(ViewFactoryInterface::class);
-        $view = $viewFactory->create($viewFactoryData);
+        $view = $this->viewFactory->create($viewFactoryData);
         $view->assignMultiple($data->getArrayCopy());
         $view->assign('languageKey', $this->getBackendUser()->user['lang'] ?? null);
         return $view->render('Modules/Info/PhpInfo');

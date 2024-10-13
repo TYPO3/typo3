@@ -32,7 +32,6 @@ use TYPO3\CMS\Adminpanel\Utility\ResourceUtility;
 use TYPO3\CMS\Adminpanel\Utility\StateUtility;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
@@ -52,25 +51,21 @@ class MainController
 {
     /** @var array<string, ModuleInterface> */
     protected array $modules = [];
-    protected array $adminPanelModuleConfiguration;
 
     public function __construct(
         private readonly ModuleLoader $moduleLoader,
         private readonly UriBuilder $uriBuilder,
         private readonly RequestId $requestId,
         private readonly ViewFactoryInterface $viewFactory,
-    ) {
-        $this->adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
-    }
+    ) {}
 
     /**
      * Initializes settings for the admin panel.
      */
     public function initialize(ServerRequestInterface $request): ServerRequestInterface
     {
-        $this->modules = $this->moduleLoader->validateSortAndInitializeModules(
-            $this->adminPanelModuleConfiguration
-        );
+        $adminPanelModuleConfiguration = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['adminpanel']['modules'] ?? [];
+        $this->modules = $this->moduleLoader->validateSortAndInitializeModules($adminPanelModuleConfiguration);
         if (StateUtility::isActivatedForUser()) {
             $request = $this->initializeModules($request, $this->modules);
         }
@@ -122,9 +117,11 @@ class MainController
             'languageKey' => $this->getBackendUser()->user['lang'] ?? null,
         ]);
         if (StateUtility::isOpen()) {
-            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
-            $requestId = $request->getAttribute('adminPanelRequestId');
-            $data = $cache->get($requestId);
+            $data = $this->storeDataPerModule(
+                $request,
+                $this->modules,
+                GeneralUtility::makeInstance(ModuleDataStorageCollection::class)
+            );
             $moduleResources = ResourceUtility::getAdditionalResourcesForModules($this->modules, ['nonce' => $this->requestId->nonce]);
             $settingsModules = array_filter($this->modules, static function (ModuleInterface $module): bool {
                 return $module instanceof PageSettingsProviderInterface;
@@ -155,8 +152,8 @@ class MainController
                 'parentModules' => $parentModules,
                 'saveUrl' => $this->generateBackendUrl('ajax_adminPanel_saveForm'),
                 'moduleResources' => $moduleResources,
-                'requestId' => $requestId,
-                'data' => $data ?? [],
+                'requestId' => $request->getAttribute('adminPanelRequestId'),
+                'data' => $data,
                 'backendUrl' => $backendUrl,
             ]);
         }
@@ -165,37 +162,6 @@ class MainController
             $GLOBALS['TYPO3_REQUEST'] = $backupRequest;
         }
         return $result;
-    }
-
-    /**
-     * Stores data for admin panel in cache - Called in PSR-15 Middleware
-     *
-     * @see \TYPO3\CMS\Adminpanel\Middleware\AdminPanelDataPersister
-     */
-    public function storeData(ServerRequestInterface $request): void
-    {
-        if (StateUtility::isOpen()) {
-            $data = $this->storeDataPerModule(
-                $request,
-                $this->modules,
-                GeneralUtility::makeInstance(ModuleDataStorageCollection::class)
-            );
-            $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('adminpanel_requestcache');
-            // @todo: Huge mess! $data is an SplObjectStorage with the module object plus its ModuleData
-            //        (getDataToStore($request)) as "info" via attach($module, $moduleData), for each module
-            //        that implements DataProviderInterface. This is put to DB backend data cache here,
-            //        which means it is serialize()'d. This means the entire module objects are serialized.
-            //        DI properties are serialized along the way. See issue #104724. Not only of the modules
-            //        itself, but of the module data as well. The module data at least has some API to deal
-            //        with such cases, though. The module object itself does not.
-            //        This for instance triggers issues if either the module class, or some of the ModuleData
-            //        objects decide to add DI, which can lead to *huge* entries, or fails when they
-            //        contain some closure (closures can't be serialized). Plus, it is a hard to see side
-            //        effect, when some patch adds DI to some class, and adminpanel references instances of
-            //        it in module data (by accident since that be a bigger object tree ...).
-            $cache->set($request->getAttribute('adminPanelRequestId'), $data);
-            $cache->collectGarbage();
-        }
     }
 
     /**

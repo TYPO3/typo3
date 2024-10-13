@@ -45,7 +45,6 @@ readonly class AdminPanelRenderer implements MiddlewareInterface
             && !StateUtility::isHiddenForUser()
         ) {
             $mainController = GeneralUtility::makeInstance(MainController::class);
-            $mainController->storeData($request);
             $body = $response->getBody();
             $body->rewind();
             $contents = $response->getBody()->getContents();
