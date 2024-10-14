@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers\Link;
 
-use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
@@ -26,10 +25,12 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  * use the permalink identifier to generate a permalink to the documentation which is
  * a redirect to the actual URI.
  *
- * The identifier must be given as a string. Be aware that very specific shortlinks into
+ * The identifier must be given as a string. Be aware that very specific short links into
  * the documentation may change over time.
- * The link will always lead to the 'main' version of the documentation, unless the identifier
- * uses a 'foo-bar@12.4' notation, in which case a specific version is targetted.
+ *
+ * The link will always lead to the documentation of the corresponding TYPO3 version. This
+ * means in a v12 installation, using `foo-bar` as identifier will link to 'foo-bar@12.4',
+ * while in v13 the link will be 'foo-bar@13.4'.
  *
  * Example
  * =======
@@ -40,7 +41,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
  *
  * Output::
  *
- *    <a href="https://docs.typo3.org/permalink/foo-bar" target="_blank" rel="noreferrer">
+ *    <a href="https://docs.typo3.org/permalink/foo-bar@13.4" target="_blank" rel="noreferrer">
  *        See documentation
  *    </a>
  *
@@ -60,7 +61,6 @@ final class DocumentationViewHelper extends AbstractTagBasedViewHelper
 
     /**
      * @throws \InvalidArgumentException
-     * @throws RouteNotFoundException
      */
     public function render(): string
     {
