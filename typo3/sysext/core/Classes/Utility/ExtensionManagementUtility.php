@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Utility;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
+use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 
@@ -889,7 +890,9 @@ class ExtensionManagementUtility
         $selectItem = is_array($itemArray) ? SelectItem::fromTcaItemArray($itemArray) : $itemArray;
 
         $type ??= 'list_type';
-        if ($type === 'list_type') {
+        // The instanceof FailsafePackageManager check is required to avoid deprecation being triggered in
+        // ext:install, where EXTCONF if not initialized.
+        if ($type === 'list_type' && !self::$packageManager instanceof FailsafePackageManager) {
             trigger_error('Plugin subtype "list_type" has been deprecated and will be removed in TYPO3 v14.0. Register the plugin "' . $selectItem->getValue() . '" as "CType" instead. Affected extension: ' . $extensionKey, E_USER_DEPRECATED);
         }
 
