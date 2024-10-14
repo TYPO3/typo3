@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8262c363caa48b330330a9c60908e7ec",
+    "content-hash": "8f9dc090ec87e350e528d58d81661357",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9533,16 +9533,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "dev-main",
+            "version": "9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "0c5ee0bc307765f2d77f4847eb24b31ab592bf1c"
+                "reference": "efec0e281a62c153f2d6d3b447abc80ea577ef97"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/0c5ee0bc307765f2d77f4847eb24b31ab592bf1c",
-                "reference": "0c5ee0bc307765f2d77f4847eb24b31ab592bf1c",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/efec0e281a62c153f2d6d3b447abc80ea577ef97",
+                "reference": "efec0e281a62c153f2d6d3b447abc80ea577ef97",
                 "shasum": ""
             },
             "require": {
@@ -9566,7 +9566,6 @@
                 "phpstan/phpstan-phpunit": "^1.4.0",
                 "typo3/cms-workspaces": "13.*.*@dev"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -9601,16 +9600,14 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/main"
+                "source": "https://github.com/TYPO3/testing-framework/tree/9.0.0"
             },
-            "time": "2024-10-12T17:26:19+00:00"
+            "time": "2024-10-14T13:41:20+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "typo3/testing-framework": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
