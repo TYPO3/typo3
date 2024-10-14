@@ -84,6 +84,24 @@ The value of the field is displayed in a readonly field in the settings editor.
         default: 5
         readonly: true
 
+Enumeration of strings
+----------------------
+
+Site settings can provide possible options via the `enum` specifier, that will
+be selectable in the editor GUI:
+
+..  code-block:: yaml
+    :caption: EXT:my_extension/Configuration/Sets/MySet/settings.definitions.yaml
+
+    settings:
+      my.enumSetting:
+        label: 'My setting with options'
+        type: string
+        enum:
+          valueA: 'Label of value A'
+          valueB: 'Label of value B'
+
+
 Impact
 ======
 

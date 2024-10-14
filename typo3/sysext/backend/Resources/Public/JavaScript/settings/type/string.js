@@ -10,7 +10,19 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,r,o){var n,l=arguments.length,i=l<3?t:null===o?o=Object.getOwnPropertyDescriptor(t,r):o;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,t,r,o);else for(var p=e.length-1;p>=0;p--)(n=e[p])&&(i=(l<3?n(i):l>3?n(t,r,i):n(t,r))||i);return l>3&&i&&Object.defineProperty(t,r,i),i};import{html}from"lit";import{customElement,property}from"lit/decorators.js";import{BaseElement}from"@typo3/backend/settings/type/base.js";export const componentName="typo3-backend-settings-type-string";let StringTypeElement=class extends BaseElement{render(){return html`
+var __decorate=function(e,t,r,n){var o,l=arguments.length,i=l<3?t:null===n?n=Object.getOwnPropertyDescriptor(t,r):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,t,r,n);else for(var a=e.length-1;a>=0;a--)(o=e[a])&&(i=(l<3?o(i):l>3?o(t,r,i):o(t,r))||i);return l>3&&i&&Object.defineProperty(t,r,i),i};import{html}from"lit";import{customElement,property}from"lit/decorators.js";import{BaseElement}from"@typo3/backend/settings/type/base.js";export const componentName="typo3-backend-settings-type-string";let StringTypeElement=class extends BaseElement{renderEnum(){return html`
+      <select
+        id=${this.formid}
+        class="form-select"
+        ?readonly=${this.readonly}
+        .value=${this.value}
+        @change=${e=>this.value=e.target.value}
+      >
+        ${Object.entries(this.enum).map((([e,t])=>html`
+          <option ?selected=${this.value===e} value=${e}>${t}</option>
+        `))}
+      </select>
+    `}render(){return"object"==typeof this.enum?this.renderEnum():html`
       <input
         type="text"
         id=${this.formid}

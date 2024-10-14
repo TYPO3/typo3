@@ -32,7 +32,8 @@ interface SettingDefinition {
   label: string,
   description: string|null,
   readonly: boolean,
-  enum: ValueType[],
+  // @todo php json_encode encodes ['0' => 'foo'] as ['foo'] instead of {'0' => 'foo'}
+  enum: Record<string, string>|Array<string>,
   categories: string[],
   tags: string[],
 }
@@ -104,12 +105,17 @@ export class EditableSettingElement extends LitElement {
       });
     }
 
+    // Force conversion to an object, as PHP json_encode encodes ['0' => 'foo'] as
+    // ['foo'] instead of {'0' => 'foo'}
+    const enumEntries = Object.entries(definition.enum || {});
+
     const attributes = {
       key: definition.key,
       formid: `setting-${definition.key}`,
       name: `settings[${definition.key}]`,
       value: Array.isArray(value) ? JSON.stringify(value) : String(value),
       readonly: definition.readonly,
+      enum: enumEntries.length > 0 ? JSON.stringify(Object.fromEntries(enumEntries)) : false,
       default: Array.isArray(definition.default) ? JSON.stringify(definition.default) : String(definition.default),
     };
     for (const [key, value] of Object.entries(attributes)) {

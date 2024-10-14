@@ -34,6 +34,7 @@ export abstract class BaseElement<T = string> extends LitElement {
   @property({ type: String }) key: string;
   @property({ type: String }) formid: string;
   @property({ type: Boolean }) readonly: boolean = false;
+  @property({ type: Object }) enum: Record<string, string>;
 
   static readonly formAssociated = true;
 
