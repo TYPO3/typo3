@@ -180,7 +180,7 @@ readonly class RecordFieldTransformer
         }
         if ($fieldInformation->isType(TableColumnType::LINK)) {
             return new RecordPropertyClosure(
-                fn(): TypolinkParameter => TypolinkParameter::createFromTypolinkParts($this->typoLinkCodecService->decode($fieldValue))
+                fn(): ?TypolinkParameter => $fieldValue === null && $fieldInformation->isNullable() ? null : TypolinkParameter::createFromTypolinkParts($this->typoLinkCodecService->decode((string)$fieldValue))
             );
         }
         return $fieldValue;

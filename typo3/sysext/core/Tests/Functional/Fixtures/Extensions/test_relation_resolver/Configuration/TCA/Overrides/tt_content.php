@@ -246,6 +246,21 @@ $overrides = [
             'exclude' => true,
             'label' => 'json',
         ],
+        'typo3tests_contentelementb_link' => [
+            'config' => [
+                'type' => 'link',
+            ],
+            'exclude' => true,
+            'label' => 'link',
+        ],
+        'typo3tests_contentelementb_link_nullable' => [
+            'config' => [
+                'type' => 'link',
+                'nullable' => true,
+            ],
+            'exclude' => true,
+            'label' => 'link',
+        ],
         'typo3tests_contentelementb_datetime' => [
             'config' => [
                 'type' => 'datetime',
@@ -264,7 +279,7 @@ $overrides = [
     ],
     'types' => [
         'typo3tests_contentelementb' => [
-            'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,--palette--;;general,image,media,assets,typo3tests_contentelementb_collection,typo3tests_contentelementb_collection_recursive,typo3tests_contentelementb_categories_mm,typo3tests_contentelementb_categories_11,typo3tests_contentelementb_categories_1m,typo3tests_contentelementb_pages_relation,typo3tests_contentelementb_circular_relation,typo3tests_contentelementb_record_relation_recursive,typo3tests_contentelementb_pages_content_relation,typo3tests_contentelementb_pages_relations,typo3tests_contentelementb_pages_mm,typo3tests_contentelementb_folder,typo3tests_contentelementb_folder_recursive,--palette--;;typo3tests_contentelementb_palette,typo3tests_contentelementb_flexfield,typo3tests_contentelementb_json,typo3tests_contentelementb_datetime,typo3tests_contentelementb_datetime_nullable,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,--palette--;;language,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,--palette--;;hidden,--palette--;;access,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,rowDescription',
+            'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,--palette--;;general,image,media,assets,typo3tests_contentelementb_collection,typo3tests_contentelementb_collection_recursive,typo3tests_contentelementb_categories_mm,typo3tests_contentelementb_categories_11,typo3tests_contentelementb_categories_1m,typo3tests_contentelementb_pages_relation,typo3tests_contentelementb_circular_relation,typo3tests_contentelementb_record_relation_recursive,typo3tests_contentelementb_pages_content_relation,typo3tests_contentelementb_pages_relations,typo3tests_contentelementb_pages_mm,typo3tests_contentelementb_folder,typo3tests_contentelementb_folder_recursive,--palette--;;typo3tests_contentelementb_palette,typo3tests_contentelementb_flexfield,typo3tests_contentelementb_json,typo3tests_contentelementb_link,typo3tests_contentelementb_link_nullable,typo3tests_contentelementb_datetime,typo3tests_contentelementb_datetime_nullable,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,--palette--;;language,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,--palette--;;hidden,--palette--;;access,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,rowDescription',
             'columnsOverrides' => [
                 'image' => [
                     'config' => [

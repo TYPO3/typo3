@@ -917,6 +917,78 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function canConvertLink(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_link_nullable' => '42',
+            'typo3tests_contentelementb_link' => '42',
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_link');
+        $subject = $this->get(RecordFieldTransformer::class);
+        /** @var RecordPropertyClosure $result */
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertSame('42', $result->instantiate()->toArray()['url']);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame('42', $resolvedRecord->get('typo3tests_contentelementb_link')->toArray()['url']);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_link_nullable');
+        /** @var RecordPropertyClosure $result */
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertSame('42', $result->instantiate()->toArray()['url']);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame('42', $resolvedRecord->get('typo3tests_contentelementb_link_nullable')->toArray()['url']);
+    }
+
+    #[Test]
+    public function handlesNullFieldValueForLink(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_link_nullable' => null,
+            'typo3tests_contentelementb_link' => null,
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_link');
+        $subject = $this->get(RecordFieldTransformer::class);
+        /** @var RecordPropertyClosure $result */
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertSame('', $result->instantiate()->toArray()['url']);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame('', $resolvedRecord->get('typo3tests_contentelementb_link')->toArray()['url']);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_link_nullable');
+        /** @var RecordPropertyClosure $result */
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertNull($result->instantiate());
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertNull($resolvedRecord->get('typo3tests_contentelementb_link_nullable'));
+    }
+
+    #[Test]
     public function canResolveSelectSingle(): void
     {
         $dummyRecord = $this->createTestRecordObject([
