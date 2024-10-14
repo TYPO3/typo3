@@ -33,16 +33,14 @@
                                     <f:translate key="LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.error" />
                                 </div>
                                 <div class="widget-actions">
-                                    <f:if condition="{currentDashboard.widgetOptions.{widgetHash}.refreshAvailable}">
-                                        <typo3-dashboard-widget-refresh>
-                                            <button type="button" class="widget-action widget-action-refresh btn btn-link">
-                                                <core:icon identifier="actions-refresh" alternativeMarkupIdentifier="inline"/>
-                                            </button>
-                                        </typo3-dashboard-widget-refresh>
-                                    </f:if>
                                     <div class="widget-action widget-action-move js-dashboard-move-widget">
                                         <core:icon identifier="actions-move" alternativeMarkupIdentifier="inline"/>
                                     </div>
+                                    <f:if condition="{currentDashboard.widgetOptions.{widgetHash}.refreshAvailable}">
+                                        <typo3-dashboard-widget-refresh class="widget-action">
+                                            <core:icon identifier="actions-refresh" alternativeMarkupIdentifier="inline"/>
+                                        </typo3-dashboard-widget-refresh>
+                                    </f:if>
                                     <f:be.link
                                         class="widget-action widget-action-remove js-dashboard-remove-widget"
                                         route="dashboard" parameters="{action: 'removeWidget', widgetHash: widgetHash}"

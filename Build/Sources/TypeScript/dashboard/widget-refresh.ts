@@ -24,11 +24,20 @@ export class WidgetRefresh extends LitElement {
   public connectedCallback(): void {
     super.connectedCallback();
 
+    if (!this.hasAttribute('role')) {
+      this.setAttribute('role', 'button');
+    }
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0');
+    }
+
     this.addEventListener('click', this.onRefresh);
+    this.addEventListener('keydown', this.onKeyDown);
   }
 
   public disconnectedCallback(): void {
     this.removeEventListener('click', this.onRefresh);
+    this.removeEventListener('keydown', this.onKeyDown);
 
     super.disconnectedCallback();
   }
@@ -37,12 +46,18 @@ export class WidgetRefresh extends LitElement {
     return html`<slot></slot>`;
   }
 
+  private onKeyDown(e: KeyboardEvent): void {
+    if (e.key === 'Enter' || e.key === ' ') {
+      this.onRefresh(e);
+    }
+  }
+
   private onRefresh(e: Event): void {
     e.preventDefault();
     this.closest(Selectors.dashboardItem).dispatchEvent(
       new Event('widgetRefresh', { bubbles: true })
     );
-    this.querySelector('button').blur();
+    this.blur();
   }
 }
 
