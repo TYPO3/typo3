@@ -82,7 +82,7 @@ class FormEngineUtility
         if (is_array($TSconfig)) {
             $TSconfig = GeneralUtility::removeDotsFromTS($TSconfig);
             $type = $fieldConfig['type'] ?? '';
-            if (isset($TSconfig['config']) && is_array($TSconfig['config']) && is_array(static::$allowOverrideMatrix[$type])) {
+            if (isset($TSconfig['config']) && is_array($TSconfig['config']) && is_array(static::$allowOverrideMatrix[$type] ?? null)) {
                 // Check if the keys in TSconfig['config'] are allowed to override TCA field config:
                 foreach ($TSconfig['config'] as $key => $_) {
                     if (!in_array($key, static::$allowOverrideMatrix[$type], true)) {
