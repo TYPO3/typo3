@@ -28,8 +28,6 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  */
 final class FineDiffViewHelper extends AbstractViewHelper
 {
-    protected $escapeOutput = false;
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -40,6 +38,6 @@ final class FineDiffViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $diffUtility = GeneralUtility::makeInstance(DiffUtility::class);
-        return $diffUtility->diff(strip_tags($this->arguments['from']), strip_tags($this->arguments['to']));
+        return $diffUtility->diff($this->arguments['from'], $this->arguments['to']);
     }
 }
