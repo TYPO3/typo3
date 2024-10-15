@@ -18,7 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Page;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\Page\Event\BeforeJavaScriptsRenderingEvent;
 use TYPO3\CMS\Core\Page\Event\BeforeStylesheetsRenderingEvent;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
@@ -111,13 +114,41 @@ readonly class AssetRenderer
         return implode(LF, $results);
     }
 
+    /**
+     * This is now a copy of PageRenderer->getStreamlinedFileName()
+     */
     private function getAbsoluteWebPath(string $file): string
     {
         if (PathUtility::hasProtocolAndScheme($file)) {
             return $file;
         }
-        $file = GeneralUtility::getFileAbsFileName($file);
+        if (PathUtility::isExtensionPath($file)) {
+            $file = Environment::getPublicPath() . '/' . PathUtility::getPublicResourceWebPath($file, false);
+            // as the path is now absolute, make it "relative" to the current script to stay compatible
+            $file = PathUtility::getRelativePathTo($file) ?? '';
+            $file = rtrim($file, '/');
+        } else {
+            $file = GeneralUtility::getFileAbsFileName($file);
+        }
         $file = GeneralUtility::createVersionNumberedFilename($file);
-        return PathUtility::getAbsoluteWebPath($file);
+        // Frontend does not need to prefix the path, because absRefPrefix etc. will make use of it.
+        if (!$this->isFrontend()) {
+            $file = PathUtility::getAbsoluteWebPath($file);
+        }
+        return $file;
+    }
+
+    /**
+     * @internal
+     */
+    protected function isFrontend(): bool
+    {
+        if (
+            ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface &&
+            ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
+        ) {
+            return true;
+        }
+        return false;
     }
 }
