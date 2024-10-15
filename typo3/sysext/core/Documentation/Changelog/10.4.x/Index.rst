@@ -1,46 +1,46 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
+==============
 10.4.x Changes
 ==============
 
 **Table of contents**
 
-.. contents::
-   :local:
-   :depth: 1
+..  contents::
+    :local:
+    :depth: 1
 
 
 Breaking Changes
-^^^^^^^^^^^^^^^^
+================
 
-None since TYPO3 v10.0 release.
+None since TYPO3 v10.4.0 LTS release.
 
-.. attention::
+..  attention::
 
-   After TYPO3 v10.0, only new functionality with a solid migration path can be added on top,
-   with aiming for as little as possible breaking changes after the initial v10.0 release on the way to LTS.
+    Breaking changes are not planned after the TYPO3 v10.4.0 LTS release.
 
 Features
-^^^^^^^^
+========
 
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-   :glob:
+..  toctree::
+    :maxdepth: 1
+    :titlesonly:
+    :glob:
 
-   Feature-*
+    Feature-*
 
 Deprecation
-^^^^^^^^^^^
+===========
 
 None
 
 Important
-^^^^^^^^^
+=========
 
-.. toctree::
-   :maxdepth: 1
-   :titlesonly:
-   :glob:
+..  toctree::
+    :maxdepth: 1
+    :titlesonly:
+    :glob:
 
-   Important-*
+    Important-*
