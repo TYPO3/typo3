@@ -190,7 +190,7 @@ class RecordListController
             $pageTranslationsHtml = $this->renderPageTranslations($dbList, $siteLanguages);
         }
         $searchBoxHtml = '';
-        if ($this->allowSearch && $this->moduleData->get('searchBox') && ($tableListHtml || !empty($this->searchTerm))) {
+        if ($this->allowSearch && $this->moduleData->get('searchBox')) {
             $searchBoxHtml = $this->renderSearchBox($request, $dbList, $this->searchTerm, $search_levels);
         }
         $clipboardHtml = '';
