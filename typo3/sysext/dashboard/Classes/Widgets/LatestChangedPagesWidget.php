@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -163,7 +164,7 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
         return $latestPages;
     }
 
-    private function getPageOfContentElement(int $uid): int
+    private function getPageOfContentElement(int $uid): ?int
     {
         $queryBuilder = $this->getQueryBuilderForContentElements();
         $contentRecord = $queryBuilder
@@ -174,8 +175,13 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
             ->executeQuery()
             ->fetchAssociative();
 
+        if (!$contentRecord) {
+            // Content element has been deleted
+            return null;
+        }
+
         $queryBuilder = $this->getQueryBuilderForPages();
-        if ($contentRecord !== false && (int)$contentRecord['sys_language_uid'] > 0) {
+        if ((int)$contentRecord['sys_language_uid'] > 0) {
             return $queryBuilder
                 ->select('uid')
                 ->from('pages')
@@ -222,6 +228,7 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
     {
         $queryBuilder = $this->connectionPool->getConnectionForTable('tt_content')->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder;
     }
 
@@ -229,6 +236,7 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
     {
         $queryBuilder = $this->connectionPool->getConnectionForTable('pages')->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder;
     }
 
