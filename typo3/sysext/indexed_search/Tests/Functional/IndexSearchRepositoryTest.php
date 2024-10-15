@@ -19,9 +19,12 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\IndexedSearch\Domain\Repository\IndexSearchRepository;
+use TYPO3\CMS\IndexedSearch\Event\BeforeFinalSearchQueryIsExecutedEvent;
 use TYPO3\CMS\IndexedSearch\Indexer;
 use TYPO3\CMS\IndexedSearch\Type\MediaType;
 use TYPO3\CMS\IndexedSearch\Type\SearchType;
@@ -167,6 +170,35 @@ final class IndexSearchRepositoryTest extends FunctionalTestCase
         $searchRepository->initialize([], $searchRepositoryDefaultOptions, [], -1);
         self::assertSame($expected, $getMediaType->getValue($searchRepository));
         self::assertSame($expectedSql, preg_replace('@["\'`]@imsU', '', $mediaTypeWhere->invoke($searchRepository)));
+    }
+
+    #[Test]
+    public function beforeFinalSearchQueryIsExecutedEventIsDispatched(): void
+    {
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'before-final-search-query-is-executed-listener',
+            static function (BeforeFinalSearchQueryIsExecutedEvent $event) use (&$beforeFinalSearchQueryIsExecutedListener) {
+                $beforeFinalSearchQueryIsExecutedListener = $event;
+                $beforeFinalSearchQueryIsExecutedListener->queryBuilder->andWhere(
+                    $beforeFinalSearchQueryIsExecutedListener->queryBuilder->expr()->in(
+                        'ISEC.page_id',
+                        [1, 2, 3]
+                    )
+                );
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(BeforeFinalSearchQueryIsExecutedEvent::class, 'before-final-search-query-is-executed-listener');
+
+        $searchRepository = $this->getSearchRepository();
+        $searchRepository->doSearch([['sword' => 'lorem']], -1);
+        self::assertInstanceOf(BeforeFinalSearchQueryIsExecutedEvent::class, $beforeFinalSearchQueryIsExecutedListener);
+        self::assertSame([['sword' => 'lorem']], $beforeFinalSearchQueryIsExecutedListener->searchWords);
+        self::assertSame(-1, $beforeFinalSearchQueryIsExecutedListener->freeIndexUid);
+        self::assertStringContainsString('ISEC.page_id IN (1, 2, 3)', preg_replace('/["\'`]/', '', $beforeFinalSearchQueryIsExecutedListener->queryBuilder->getSQL()));
     }
 
     private function getSearchRepository(SearchType $searchType = SearchType::PART_OF_WORD): IndexSearchRepository
