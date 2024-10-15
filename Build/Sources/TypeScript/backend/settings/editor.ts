@@ -289,7 +289,7 @@ export class SettingsEditorElement extends LitElement {
         __hidden: !(
           this.matchesSearchTerm(setting.definition.key) ||
           this.matchesSearchTerm(setting.definition.label) ||
-          this.matchesSearchTerm(setting.definition.description) ||
+          this.matchesSearchTerm(setting.definition.description ?? '') ||
           this.valueMatchesSearchTerm(setting.value) ||
           setting.definition.tags.filter(tag => this.matchesSearchTerm(tag)).length > 0
         )
