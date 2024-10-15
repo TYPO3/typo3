@@ -4,13 +4,13 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'TcaSelectItems Test',
     'description' => 'TcaSelectItems Test',
     'category' => 'example',
-    'version' => '12.4.22',
+    'version' => '12.4.23',
     'state' => 'beta',
     'author' => 'Nikita Hovratov',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.22',
+            'typo3' => '12.4.23',
         ],
         'conflicts' => [],
         'suggests' => [],
