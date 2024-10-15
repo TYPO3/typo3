@@ -22,7 +22,7 @@
 		"ext-intl": "*",
 		"ext-libxml": "*",
 		"psr/event-dispatcher": "^1.0",
-		"typo3/cms-core": "13.4.*@dev"
+		"typo3/cms-core": "13.4.0"
 	},
 	"suggest": {
 		"typo3/cms-install": "To generate url to install tool in environment toolbar"
