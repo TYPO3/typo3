@@ -172,7 +172,11 @@ readonly class ManagementController
             return new HtmlResponse('', 404);
         }
 
-        $payload = PayloadDecoder::decode($this->getSubmittedPayload($request));
+        try {
+            $payload = PayloadDecoder::decode($this->getSubmittedPayload($request));
+        } catch (\InvalidArgumentException) {
+            $payload = null;
+        }
         $view = $this->backendViewFactory->create($request);
         $view->assignMultiple([
             'result' => $this->createRecordDryRun->run($reaction, $createRecordReaction, $payload),

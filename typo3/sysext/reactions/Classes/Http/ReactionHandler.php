@@ -71,7 +71,16 @@ readonly class ReactionHandler
 
     protected function getPayload(ServerRequestInterface $request): array
     {
-        return PayloadDecoder::decode((string)$request->getBody()) ?? [];
+        try {
+            $payload = (string)$request->getBody();
+            return PayloadDecoder::decode($payload) ?? [];
+        } catch (\InvalidArgumentException $e) {
+            $this->logger->debug('Could not decode reaction payload: {message}', [
+                'payload' => $payload,
+                'message' => $e->getMessage(),
+            ]);
+            return [];
+        }
     }
 
     protected function buildReactionResponse(ResponseInterface $response): ResponseInterface

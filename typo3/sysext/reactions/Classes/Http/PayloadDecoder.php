@@ -26,14 +26,16 @@ namespace TYPO3\CMS\Reactions\Http;
 final class PayloadDecoder
 {
     /**
-     * Null for a body that is no JSON, or JSON of a scalar.
+     * Null for JSON of a scalar.
+     *
+     * @throws \InvalidArgumentException for a body that is no JSON
      */
     public static function decode(string $body): ?array
     {
         try {
             $payload = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
-        } catch (\JsonException) {
-            return null;
+        } catch (\JsonException $e) {
+            throw new \InvalidArgumentException('Payload is no valid JSON: ' . $e->getMessage(), 1791367973, $e);
         }
         return is_array($payload) ? $payload : null;
     }
