@@ -77,7 +77,10 @@ readonly class ReactionHandler
             $payload = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
             return is_array($payload) ? $payload : [];
         } catch (\JsonException $e) {
-            // do nothing
+            $this->logger->debug('Could not decode reaction payload: {message}', [
+                'payload' => $body,
+                'message' => $e->getMessage(),
+            ]);
             return [];
         }
     }
