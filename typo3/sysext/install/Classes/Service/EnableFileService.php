@@ -165,7 +165,7 @@ class EnableFileService
      */
     public static function getStaticLocationForInstallToolEnableFileDirectory(): string
     {
-        return Environment::isComposerMode() ? 'var/transient/' : 'config/';
+        return Environment::isComposerMode() ? 'var/transient/' : 'typo3conf/';
     }
 
     public static function getBestLocationForInstallToolEnableFile(): string
