@@ -82,11 +82,10 @@ class Recycler {
     }).delegateTo(document, Identifiers.searchForm);
 
     // changing the search field
-    new RegularEvent('keyup', (event: KeyboardEvent) => {
-      const input = event.target as HTMLInputElement;
+    new RegularEvent('input', (event: Event, target: HTMLInputElement) => {
       const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
 
-      if (input.value !== '') {
+      if (target.value !== '') {
         searchSubmitButton.disabled = false;
       } else {
         searchSubmitButton.disabled = true;
