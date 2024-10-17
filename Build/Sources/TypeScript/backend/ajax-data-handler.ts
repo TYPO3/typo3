@@ -147,12 +147,16 @@ class AjaxDataHandler {
     const iconElement = element.querySelector(Identifiers.icon);
     this._showSpinnerIcon(iconElement);
 
+    const isVisible = element.dataset.datahandlerStatus === 'visible';
     // Get Settings from element
     const settings = {
       table: element.dataset.datahandlerTable,
       uid: element.dataset.datahandlerUid,
       field: element.dataset.datahandlerField,
-      visible: (element.dataset.datahandlerStatus === 'visible')
+      visible: isVisible,
+      overlayIcon: isVisible
+        ? element.dataset.datahandlerRecordHiddenOverlayIcon ?? 'overlay-hidden'
+        : element.dataset.datahandlerRecordVisibleOverlayIcon ?? null
     };
 
     const params = {
@@ -189,15 +193,11 @@ class AjaxDataHandler {
 
         // Set overlay for the record icon
         const recordIcon = rowElement.querySelector('.col-icon ' + Identifiers.icon);
-        if (settings.visible) {
-          recordIcon.querySelector('.icon-overlay').remove();
-        } else {
-
-          Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, 'overlay-hidden').then((icon: string): void => {
-            const iconFragment = document.createRange().createContextualFragment(icon);
-            recordIcon.append(iconFragment.querySelector('.icon-overlay'));
-          });
-        }
+        recordIcon.querySelector('.icon-overlay')?.remove();
+        Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, settings.overlayIcon).then((icon: string): void => {
+          const iconFragment = document.createRange().createContextualFragment(icon);
+          recordIcon.append(iconFragment.querySelector('.icon-overlay'));
+        });
 
         // Animate row
         const animationEvent = new RegularEvent('animationend', (): void => {
