@@ -42,7 +42,7 @@ export class BoolTypeElement extends BaseElement<boolean> {
           value="1"
           ?disabled=${this.readonly}
           .checked=${this.value}
-          @change=${(e: InputEvent) => this.value = (e.target as HTMLInputElement).checked ? true : false}
+          @change=${(e: InputEvent) => this.value = (e.target as HTMLInputElement).checked}
         />
       </div>
     `;

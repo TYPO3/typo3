@@ -97,6 +97,7 @@ export default [...compat.extends(
     "no-multi-spaces": "error",
     "no-var": "error",
     "no-case-declarations": "off",
+    "no-unneeded-ternary": "error",
 
     "no-restricted-properties": ["error", {
       object: "window",
