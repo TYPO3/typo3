@@ -21,12 +21,12 @@
 		"source": "https://github.com/typo3/typo3"
 	},
 	"require": {
-		"typo3/cms-core": "13.4.*@dev",
-		"typo3/cms-felogin": "13.4.*@dev",
-		"typo3/cms-fluid-styled-content": "13.4.*@dev",
-		"typo3/cms-form": "13.4.*@dev",
-		"typo3/cms-indexed-search": "13.4.*@dev",
-		"typo3/cms-seo": "13.4.*@dev"
+		"typo3/cms-core": "14.0.*@dev",
+		"typo3/cms-felogin": "14.0.*@dev",
+		"typo3/cms-fluid-styled-content": "14.0.*@dev",
+		"typo3/cms-form": "14.0.*@dev",
+		"typo3/cms-indexed-search": "14.0.*@dev",
+		"typo3/cms-seo": "14.0.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
@@ -44,7 +44,7 @@
 			"extension-key": "styleguide"
 		},
 		"branch-alias": {
-			"dev-main": "13.4.x-dev"
+			"dev-main": "14.0.x-dev"
 		}
 	}
 }

@@ -19,18 +19,18 @@
 		"sort-packages": true
 	},
 	"require": {
-		"typo3/cms-core": "13.4.*@dev",
-		"typo3/cms-frontend": "13.4.*@dev",
-		"typo3/cms-backend": "13.4.*@dev",
-		"typo3/cms-fluid": "13.4.*@dev",
-		"typo3/cms-extbase": "13.4.*@dev"
+		"typo3/cms-core": "14.0.*@dev",
+		"typo3/cms-frontend": "14.0.*@dev",
+		"typo3/cms-backend": "14.0.*@dev",
+		"typo3/cms-fluid": "14.0.*@dev",
+		"typo3/cms-extbase": "14.0.*@dev"
 	},
 	"conflict": {
 		"typo3/cms": "*"
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "13.4.x-dev"
+			"dev-main": "14.0.x-dev"
 		},
 		"typo3/cms": {
 			"extension-key": "dashboard",

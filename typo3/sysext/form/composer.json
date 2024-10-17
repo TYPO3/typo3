@@ -21,8 +21,8 @@
 	"require": {
 		"psr/http-message": "^1.1 || ^2.0",
 		"symfony/expression-language": "^7.1.4",
-		"typo3/cms-core": "13.4.*@dev",
-		"typo3/cms-frontend": "13.4.*@dev"
+		"typo3/cms-core": "14.0.*@dev",
+		"typo3/cms-frontend": "14.0.*@dev"
 	},
 	"suggest": {
 		"typo3/cms-filelist": "Listing of files in the directory",
@@ -34,7 +34,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-main": "13.4.x-dev"
+			"dev-main": "14.0.x-dev"
 		},
 		"typo3/cms": {
 			"Package": {

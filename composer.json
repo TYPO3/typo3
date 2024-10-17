@@ -126,7 +126,7 @@
 		"phpunit/phpunit": "^11.3.1",
 		"sokil/php-isocodes-db-i18n": "^4.0.22",
 		"symfony/translation": "^7.1.3",
-		"typo3/testing-framework": "^9.0.0",
+		"typo3/testing-framework": "dev-main",
 		"webmozart/assert": "^1.11.0"
 	},
 	"suggest": {
@@ -154,7 +154,7 @@
 			"always-add-alias-loader": true
 		},
 		"branch-alias": {
-			"dev-main": "13.4.x-dev"
+			"dev-main": "14.0.x-dev"
 		},
 		"composer-exit-on-patch-failure": "true",
 		"patches-file": "Build/patches/patches.json"
