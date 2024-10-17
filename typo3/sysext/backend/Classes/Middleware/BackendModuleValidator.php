@@ -213,26 +213,6 @@ class BackendModuleValidator implements MiddlewareInterface
         if (!$this->moduleProvider->accessGranted($module->getIdentifier(), $backendUserAuthentication)) {
             throw new ModuleAccessDeniedException('You don\'t have access to this module.', 1642450334);
         }
-
-        // @todo: This misuses 'id' as a broken convention for pages-uid. The filelist module for instance
-        //        uses 'id' as "storage-uid:path", which is only mitigated here by testing the argument
-        //        with MU:canBeInterpretedAsInteger().
-        //        Also see a similar misuse in extbase BackendConfigurationManager, which does this as well
-        //        to guess a pages-uid for TypoScript retrieval.
-        $id = $request->getQueryParams()['id'] ?? $request->getParsedBody()['id'] ?? 0;
-        if (MathUtility::canBeInterpretedAsInteger($id) && $id > 0) {
-            $id = (int)$id;
-            $permClause = $backendUserAuthentication->getPagePermsClause(Permission::PAGE_SHOW);
-            // Check page access
-            if (!is_array(BackendUtility::readPageAccess($id, $permClause))) {
-                // Check if page has been deleted
-                $deleteField = $GLOBALS['TCA']['pages']['ctrl']['delete'];
-                $pageInfo = BackendUtility::getRecord('pages', $id, $deleteField, $permClause ? ' AND ' . $permClause : '', false);
-                if (!($pageInfo[$deleteField] ?? false)) {
-                    throw new \RuntimeException('You don\'t have access to this page', 1289917924);
-                }
-            }
-        }
     }
 
     protected function enqueueRedirectMessage(ModuleInterface $requestedModule, ModuleInterface $redirectedModule): void
