@@ -74,21 +74,49 @@ editor.config
 
 .. option:: editor.config.contentsCss
 
-   defines the CSS file of the editor and the styles that can be applied.
+   defines the location of one or multiple CSS file(s) of the editor, containing the style
+   definitions that will be applied to the backend editor RTE element.
 
-   Example::
+   Example with single file::
 
       editor.config.contentsCss:
         - "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
    This is the default, as defined in :t3src:`rte_ckeditor/Configuration/RTE/Editor/Base.yaml`.
 
+   Example with multiple files::
+
+      editor.config.contentsCss:
+        - "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
+        - "EXT:my_sitepackage/Resources/Public/Css/contents.css?v=2"
+
+   Since the CKEditor element is rendered within the page content of the TYPO3 backend
+   (and not in an iframe or web-component), all CSS declarations in that file
+   must refer to an actual element hierarchy ending like
+   :css:`#data_tt_content__2687__bodytext_ckeditor5 .ck-content`. To achieve this,
+   TYPO3 automatically parses the contents of the CSS file with a process called
+   "auto-prefixing" (via JavaScript, client-side) and converts all references to
+   that "virtual" root hierarchy.
+
+   A CSS declaration like :css:`:root { background-color: green }` gets turned into
+   :css:`#data_tt_content__2687__bodytext_ckeditor5 .ck-content { background-color: green; }`.
+
+   You can use a :css:`:root { ... }` declaration, for example to reset
+   relative/absolute sizes to ensure the CKEditor area being compatible to your
+   usual frontend CSS. Also using `body {...}` is viable.
+
    .. note::
-      When adding custom styling and fonts, all CSS declarations need to be
-      prefixed with `.ck-content`. This scoping is applied by TYPO3
-      automatically to all custom CSS styles. Referenced CSS stylesheets need to
+      Referenced CSS stylesheets need to
       be downloadable via :js:`fetch()` in order for the JavaScript-based
       prefixing to work.
+
+   .. note::
+      Also note that the generated CSS file is cached by your browser. If you change
+      the contents of your CSS file, be sure to either reload the browser cache,
+      or use a directive like
+      :yaml:`editor.config.contentsCss: "EXT:my_sitepackage/Resources/Public/Css/contents.css?v=2"`
+      where you change the `?v=` URI string after any file modification to enforce
+      requesting an updated version of the file.
 
 .. option:: editor.config.heading
 
