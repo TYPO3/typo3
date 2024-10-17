@@ -152,6 +152,7 @@ class ServiceProvider extends AbstractServiceProvider
         $defaultCaches = [
             $container->get('cache.core'),
             $container->get('cache.assets'),
+            $container->get('cache.runtime'),
             $container->get('cache.di'),
         ];
 
