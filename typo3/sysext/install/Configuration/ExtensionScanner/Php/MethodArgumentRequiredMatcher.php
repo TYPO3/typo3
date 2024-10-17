@@ -66,11 +66,4 @@ return [
             'Breaking-97862-HooksRelatedToGeneratingPageContentRemoved.rst',
         ],
     ],
-    'TYPO3\CMS\Core\Utility\GeneralUtility::sanitizeLocalUrl' => [
-        'numberOfMandatoryArguments' => 1,
-        'maximumNumberOfArguments' => 1,
-        'restFiles' => [
-            'Breaking-101311-MakeParameterForGeneralUtilitySanitizeLocalUrlRequired.rst',
-        ],
-    ],
 ];
