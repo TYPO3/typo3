@@ -12,6 +12,14 @@ The internal notes are a useful feature for adding context and notes to
 pages. It provides a way for users to document important information
 related to specific pages.
 
+See it in action
+================
+
+This TYPO3 Feature Demo video from October 2024 shows the system notes usage in
+action.
+
+..  youtube:: asXXrZWkqf4
+
 Usage
 =====
 
