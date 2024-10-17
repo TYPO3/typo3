@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
 
 /**
@@ -59,6 +60,7 @@ class IconController extends AbstractController
         }
 
         $iconState = IconState::tryFrom($iconState);
+        $size = IconSize::tryFrom($size);
         $icon = $this->iconFactory->getIcon($identifier, $size, $overlayIdentifier, $iconState);
 
         return new HtmlResponse($icon->render($alternativeMarkupIdentifier));
