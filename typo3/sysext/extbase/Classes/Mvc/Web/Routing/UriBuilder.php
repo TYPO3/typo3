@@ -454,11 +454,6 @@ class UriBuilder
                 parse_str($argumentToBeExcluded, $argumentArrayToBeExcluded);
                 $arguments = ArrayUtility::arrayDiffKeyRecursive($arguments, $argumentArrayToBeExcluded);
             }
-        } else {
-            $id = $this->request->getParsedBody()['id'] ?? $this->request->getQueryParams()['id'] ?? null;
-            if ($id !== null) {
-                $arguments['id'] = $id;
-            }
         }
         if (($route = $this->request->getAttribute('route')) instanceof Route) {
             /** @var Route $route */
