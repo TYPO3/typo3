@@ -3,7 +3,7 @@
         xsi:schemaLocation="https://www.phpdoc.org/guides ../vendor/phpdocumentor/guides-cli/resources/schema/guides.xsd"
         links-are-relative="true">
     <extension class="\T3Docs\Typo3DocsTheme\DependencyInjection\Typo3DocsThemeExtension"
-               typo3-core-preferred="main"
+               typo3-core-preferred="13"
                interlink-shortcode="typo3/cms-styleguid"
     />
     <project title="Styleguide"

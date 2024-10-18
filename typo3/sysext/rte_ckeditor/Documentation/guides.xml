@@ -7,15 +7,15 @@
                project-contact="https://typo3.slack.com/archives/C025BQLFA"
                project-repository="https://github.com/typo3/typo3"
                project-issues="https://forge.typo3.org/projects/typo3cms-core/issues"
-               edit-on-github-branch="main"
+               edit-on-github-branch="13.4"
                edit-on-github="typo3/typo3"
                edit-on-github-directory="typo3/sysext/rte_ckeditor/Documentation/"
-               typo3-core-preferred="main"
+               typo3-core-preferred="13"
                interlink-shortcode="typo3/cms-rte-ckeditor"
     />
     <project title="RTE by CKEditor"
-             release="main (development)"
-             version="main (development)"
+             release="13.4"
+             version="13.4"
              copyright="since 2016 by the TYPO3 contributors"
     />
 </guides>
