@@ -16,7 +16,7 @@
 				<source>Composer mode</source>
 			</trans-unit>
 			<trans-unit id="composerStrictMode.message" resname="composerMode.message">
-				<source>The system is set to composer mode. Please notice that it is this list is for informational purpose only. To modify which extensions are part of the system, use Composer. To set extensions up, use the TYPO3 cli (extension:setup)</source>
+				<source>The system is set to composer mode. Please notice that this list is for informational purpose only. To modify which extensions are part of the system, use Composer. To set extensions up, use the TYPO3 cli (extension:setup)</source>
 			</trans-unit>
 			<trans-unit id="installedExtensions" resname="installedExtensions">
 				<source>Installed Extensions</source>
