@@ -5,7 +5,7 @@ functional mariadb 10.4 php 8.3 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
@@ -18,7 +18,7 @@ functional postgres 10 php 8.4 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   parallel: 10
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.4
@@ -31,7 +31,7 @@ functional sqlite php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   parallel: 3
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2

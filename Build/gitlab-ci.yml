@@ -26,7 +26,7 @@ cache:
   # The default key is: "Cache everything created by a 'composer install' for main branch.
   # This means jobs using this default key should not create additional stuff in .cache
   # directory, for instance by calling a 'npm ci' or 'composer min' or similar.
-  key: main-composer
+  key: 13.4-composer
   paths:
     - .cache
 

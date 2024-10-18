@@ -6,7 +6,7 @@ unit javascript:
   only:
     - schedules
   cache:
-    key: main-js
+    key: 13.4-js
     paths:
       - .cache
   script:

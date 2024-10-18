@@ -5,7 +5,7 @@ cgl pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s cglGit -n -p 8.2
@@ -18,7 +18,7 @@ integration various php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   script:
     - Build/Scripts/runTests.sh -s composerValidate -p 8.2
     - Build/Scripts/runTests.sh -s composerTestDistribution -p 8.2
@@ -43,7 +43,7 @@ lint php pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   script:
     - Build/Scripts/runTests.sh -s lintPhp -p 8.2
     - Build/Scripts/runTests.sh -s lintPhp -p 8.4
@@ -55,9 +55,9 @@ grunt scss ts html pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   cache:
-    key: main-js
+    key: 13.4-js
     paths:
       - .cache
   script:
@@ -73,7 +73,7 @@ phpstan php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s phpstan -p 8.2
