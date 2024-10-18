@@ -97,7 +97,7 @@ Example of the frontend output:
 
     <main>
         <f:for each="{myContent.main.records}" as="record">
-            <h4>{record.header}</h4>
+            <f:cObject typoscriptObjectPath="{record.fullType}" table="{record.mainType}" data="{record.rawRecord}"/>
         </f:for>
     </main>
 
