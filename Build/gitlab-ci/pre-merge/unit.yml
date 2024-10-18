@@ -5,9 +5,9 @@ unit javascript pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   cache:
-    key: main-js
+    key: 13.4-js
     paths:
       - .cache
   script:
@@ -20,7 +20,7 @@ unit php 8.2 random pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unitRandom -p 8.2
@@ -32,7 +32,7 @@ unit php 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.2
     - Build/Scripts/runTests.sh -s unit -p 8.2
@@ -43,7 +43,7 @@ unit php 8.4 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.4
     - Build/Scripts/runTests.sh -s unit -p 8.4
