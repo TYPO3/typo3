@@ -1035,6 +1035,10 @@ class ReferenceIndex
         if (isset($this->tableRelationFieldCache[$tableName])) {
             return $this->tableRelationFieldCache[$tableName];
         }
+        if (!$this->tcaSchemaFactory->has($tableName)) {
+            $this->tableRelationFieldCache[$tableName] = [];
+            return [];
+        }
         $tableTcaFields = $this->tcaSchemaFactory->get($tableName)->getFields();
         $relationFields = [];
         foreach ($tableTcaFields as $field) {
