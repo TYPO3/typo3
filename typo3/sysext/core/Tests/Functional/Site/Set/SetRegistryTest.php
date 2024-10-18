@@ -48,6 +48,8 @@ final class SetRegistryTest extends FunctionalTestCase
             // set-1 depends on set-2 and set-3
             'typo3tests/set-2',
             'typo3tests/set-3',
+            // set-5 is an optional dependency of set-1 and needs to be loaded automatically
+            'typo3tests/set-5',
             'typo3tests/set-1',
         ];
         $setDefinitions = $setRegistry->getSets('typo3tests/set-1');
@@ -57,7 +59,7 @@ final class SetRegistryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function optionalSetDependenciesAreResolvedWithOrdering(): void
+    public function optionalSetDependenciesAreResolvedWithOrderingWhenOptionalIsRequestedAsRequiredDependency(): void
     {
         $setRegistry = $this->get(SetRegistry::class);
 
@@ -67,7 +69,7 @@ final class SetRegistryTest extends FunctionalTestCase
             // set-1 depends on set-2 and set-3
             'typo3tests/set-2',
             'typo3tests/set-3',
-            // set-5 is an optional dependency of set-1
+            // set-5 is an optional dependency of set-1 and needs to be ordered before
             'typo3tests/set-5',
             'typo3tests/set-1',
         ];
@@ -78,9 +80,35 @@ final class SetRegistryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function unavailableOptionalSetDependenciesAreIgnored(): void
+    {
+        $setRegistry = $this->get(SetRegistry::class);
+        $setDefinitions = $setRegistry->getSets('typo3tests/set-1');
+        $setDefinitionsNames = array_map(static fn(SetDefinition $d): string => $d->name, $setDefinitions);
+
+        self::assertNotContains('typo3tests/set-unavailable', $setDefinitionsNames);
+    }
+
+    #[Test]
+    public function unavailableOptionalSetDependenciesAreSkippedEvenIfExplicitlyRequested(): void
+    {
+        $setRegistry = $this->get(SetRegistry::class);
+        $setDefinitions = $setRegistry->getSets('typo3tests/set-1', 'typo3tests/set-unavailable');
+        $setDefinitionsNames = array_map(static fn(SetDefinition $d): string => $d->name, $setDefinitions);
+
+        self::assertNotContains('typo3tests/set-unavailable', $setDefinitionsNames);
+        self::assertContains('typo3tests/set-1', $setDefinitionsNames);
+    }
+
+    #[Test]
     public function invalidSetsAreSkipped(): void
     {
         $setRegistry = $this->get(SetRegistry::class);
         self::assertFalse($setRegistry->hasSet('typo3tests/invalid-dependency'));
+
+        $setDefinitions = $setRegistry->getSets('typo3tests/invalid-dependency');
+        $setDefinitionsNames = array_map(static fn(SetDefinition $d): string => $d->name, $setDefinitions);
+
+        self::assertEmpty($setDefinitionsNames);
     }
 }
