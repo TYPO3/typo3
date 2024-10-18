@@ -152,7 +152,7 @@ class SetRegistry
             $tmp[$set->name] = [
                 'set' => $set,
                 'after' => $set->dependencies,
-                'after-resilient' => $set->optionalDependencies,
+                'after-resilient' => array_filter($set->optionalDependencies, static fn($dependency) => isset($sets[$dependency])),
             ];
         }
 
@@ -181,7 +181,15 @@ class SetRegistry
                 return true;
             }
 
+            if (in_array($dependency, $set->optionalDependencies, true)) {
+                return true;
+            }
+
             if ($this->hasDependency($set->dependencies, $dependency)) {
+                return true;
+            }
+
+            if ($this->hasDependency($set->optionalDependencies, $dependency)) {
                 return true;
             }
         }

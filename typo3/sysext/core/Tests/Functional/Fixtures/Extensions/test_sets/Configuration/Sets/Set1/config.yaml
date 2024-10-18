@@ -7,3 +7,4 @@ dependencies:
 
 optionalDependencies:
   - typo3tests/set-5
+  - typo3tests/set-unavailable
