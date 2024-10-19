@@ -25,7 +25,7 @@ class DeferredAction extends AbstractAction {
     el.classList.add('disabled');
 
     Icons.getIcon('spinner-circle', Icons.sizes.small).then((spinner: string): void => {
-      el.innerHTML = spinner;
+      el.textContent = spinner;
     });
     return await this.executeCallback(el);
   }
