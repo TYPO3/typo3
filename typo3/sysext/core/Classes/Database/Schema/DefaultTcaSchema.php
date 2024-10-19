@@ -768,7 +768,7 @@ class DefaultTcaSchema
                         break;
 
                     case 'input':
-                        $length = $fieldConfig['config']['max'] ?? 255;
+                        $length = (int)($fieldConfig['config']['max'] ?? 255);
                         $nullable = $fieldConfig['config']['nullable'] ?? false;
                         if ($length > 255) {
                             $tables[$tableName]->addColumn(
