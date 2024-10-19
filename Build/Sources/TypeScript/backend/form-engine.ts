@@ -470,7 +470,7 @@ export default (function() {
     }).on('change', '.t3-form-field-eval-null-checkbox input[type="checkbox"]', (e: JQueryEventObject) => {
       // Null checkboxes without placeholder click event handler
       $(e.currentTarget).closest('.t3js-formengine-field-item').toggleClass('disabled');
-    }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', (e: JQueryEventObject) => {
+    }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', (e: JQueryEventObject & { currentTarget: HTMLInputElement }) => {
       FormEngine.toggleCheckboxField($(e.currentTarget));
       FormEngine.Validation.markFieldAsChanged(e.currentTarget);
     }).on('change', () => {
