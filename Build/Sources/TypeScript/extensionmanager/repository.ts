@@ -110,7 +110,7 @@ class Repository {
         // https://review.typo3.org/c/Packages/TYPO3.CMS/+/63438
         const data: ExtensionInstallResult = await response.raw().json();
         const errorMessageElement = document.createElement('div');
-        errorMessageElement.innerHTML = data.errorMessage;
+        errorMessageElement.textContent = data.errorMessage;
 
         if (data.errorCount > 0) {
           const modal = Modal.confirm(data.errorTitle, errorMessageElement, Severity.error, [
