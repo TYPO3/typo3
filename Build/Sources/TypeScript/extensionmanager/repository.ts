@@ -70,7 +70,7 @@ class Repository {
   private readonly getDependencies = async(response: AjaxResponse): Promise<void> => {
     const data = await response.resolve();
     const messageElement = document.createElement('div');
-    messageElement.innerHTML = data.message;
+    messageElement.textContent = data.message;
 
     NProgress.done();
     if (data.hasDependencies) {
