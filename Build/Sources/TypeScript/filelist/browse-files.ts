@@ -85,7 +85,7 @@ class BrowseFiles {
       .then((response: AjaxResponse) => response.resolve())
       .then((response) => {
         const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
-        contentContainer.innerHTML = response;
+        contentContainer.textContent = response;
       });
   }
 
