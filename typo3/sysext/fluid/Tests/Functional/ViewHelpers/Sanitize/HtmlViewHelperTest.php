@@ -60,7 +60,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
 
     #[DataProvider('isSanitizedDataProvider')]
     #[Test]
-    public function isSanitizedUsingNodeInstruction(string $payload, string $expectation): void
+    public function isSanitizedUsingNodeInstruction(string|int $payload, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource(sprintf('<f:sanitize.html>%s</f:sanitize.html>', $payload));
@@ -69,7 +69,7 @@ final class HtmlViewHelperTest extends FunctionalTestCase
 
     #[DataProvider('isSanitizedDataProvider')]
     #[Test]
-    public function isSanitizedUsingInlineInstruction(string $payload, string $expectation): void
+    public function isSanitizedUsingInlineInstruction(string|int $payload, string $expectation): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
         $context->getTemplatePaths()->setTemplateSource('{payload -> f:sanitize.html()}');

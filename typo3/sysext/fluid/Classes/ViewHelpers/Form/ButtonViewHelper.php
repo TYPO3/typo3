@@ -66,7 +66,7 @@ final class ButtonViewHelper extends AbstractFormFieldViewHelper
         $this->tag->addAttribute('type', $type);
         $this->tag->addAttribute('name', $name);
         $this->tag->addAttribute('value', $this->getValueAttribute());
-        $this->tag->setContent($this->renderChildren());
+        $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
 
         return $this->tag->render();

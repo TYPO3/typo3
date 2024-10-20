@@ -90,6 +90,10 @@ final class CurrencyViewHelperTest extends FunctionalTestCase
                 '<f:format.currency useDash="true">54321.45</f:format.currency>',
                 '54.321,45',
             ],
+            'without integer tag content' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:format.currency useDash="true">{k}</f:format.currency></f:for>',
+                '4.711,—',
+            ],
         ];
     }
 

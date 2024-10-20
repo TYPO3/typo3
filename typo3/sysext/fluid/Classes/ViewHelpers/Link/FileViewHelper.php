@@ -113,7 +113,8 @@ final class FileViewHelper extends AbstractTagBasedViewHelper
         }
 
         $this->tag->addAttribute('href', $publicUrl);
-        $this->tag->setContent($this->renderChildren() ?? htmlspecialchars($file->getName()));
+        $childContent = $this->renderChildren();
+        $this->tag->setContent($childContent ? (string)$childContent : htmlspecialchars($file->getName()));
         $this->tag->forceClosingTag(true);
 
         return $this->tag->render();

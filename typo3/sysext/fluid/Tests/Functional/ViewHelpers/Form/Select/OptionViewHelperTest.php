@@ -99,13 +99,13 @@ final class OptionViewHelperTest extends FunctionalTestCase
     {
         $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
         $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
-        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value="{selected}"><f:form.select.option value="{value}">Option Label</f:form.select.option></f:form.select>');
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="" value="{selected}"><f:form.select.option value="{value}">{value}</f:form.select.option></f:form.select>');
         $view = new TemplateView($context);
         $view->assignMultiple([
             'value' => $value,
             'selected' => $selected,
         ]);
-        $expected = '<select name=""><option selected="selected" value="' . $value . '">Option Label</option></select>';
+        $expected = '<select name=""><option selected="selected" value="' . $value . '">' . $value . '</option></select>';
         self::assertSame($expected, $view->render());
     }
 

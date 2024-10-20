@@ -66,7 +66,7 @@ final class ButtonViewHelper extends AbstractTagBasedViewHelper
             $this->tag->addAttributes($button->getElementAttributes());
         }
 
-        $this->tag->setContent($this->renderChildren());
+        $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
 
         return $this->tag->render();

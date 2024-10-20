@@ -74,6 +74,17 @@ final class PageViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function renderInBackendCoreContextAllowsIntegerBasedTagContent(): void
+    {
+        $request = new ServerRequest();
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:link.page>{k}</f:link.page></f:for>');
+        $result = (new TemplateView($context))->render();
+        self::assertSame('4711', $result);
+    }
+
+    #[Test]
     public function renderInBackendCoreContextCreatesLinkWithRouteFromQueryString(): void
     {
         $request = new ServerRequest();
@@ -148,6 +159,21 @@ final class PageViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function renderInBackendExtbaseContextAllowsIntegerBasedTagContent(): void
+    {
+        $request = new ServerRequest('http://localhost/typo3/');
+        $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $request = $request->withAttribute('route', new Route('module/web/layout', ['_identifier' => 'web_layout']));
+        $request = $request->withQueryParams(['id' => 42]);
+        $request = $request->withAttribute('extbase', new ExtbaseRequestParameters());
+        $request = new Request($request);
+        $context = $this->get(RenderingContextFactory::class)->create([], $request);
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:link.page>{k}</f:link.page></f:for>');
+        $result = (new TemplateView($context))->render();
+        self::assertSame('<a href="/typo3/module/web/layout?token=dummyToken&amp;id=42">4711</a>', $result);
+    }
+
+    #[Test]
     public function renderInBackendExtbaseContextCreatesAbsoluteLinkWithId(): void
     {
         $request = new ServerRequest('http://localhost/typo3/', null, 'php://input', [], ['HTTP_HOST' => 'localhost', 'SCRIPT_NAME' => 'typo3/index.php']);
@@ -215,6 +241,16 @@ final class PageViewHelperTest extends FunctionalTestCase
             'link skips configured intTarget if no target viewhelper attribute is provided' => [
                 '<f:link.page pageUid="3">link me</f:link.page>',
                 '<a href="/dummy-1-2/dummy-1-2-3">link me</a>',
+                [
+                    'config' => [
+                        'intTarget' => '_self',
+                    ],
+                ],
+            ],
+            // see: https://forge.typo3.org/issues/105367
+            'link allows integer based tag content' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:link.page pageUid="3">{k}</f:link.page></f:for>',
+                '<a href="/dummy-1-2/dummy-1-2-3">4711</a>',
                 [
                     'config' => [
                         'intTarget' => '_self',

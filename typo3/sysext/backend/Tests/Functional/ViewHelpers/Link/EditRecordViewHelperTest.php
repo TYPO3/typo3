@@ -104,6 +104,21 @@ final class EditRecordViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function renderReturnsValidWithIntegerAsTagChildren(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'43\'}" as="i" iteration="iterator" key="k"><be:link.editRecord uid="{i}" table="c_table" fields="canonical_url,title">{k}</be:link.editRecord></f:for>');
+        $result = urldecode((new TemplateView($context))->render());
+
+        self::assertStringContainsString('/typo3/record/edit', $result);
+        self::assertStringContainsString('edit[c_table][43]=edit', $result);
+        self::assertStringContainsString('columnsOnly[c_table][0]=canonical_url', $result);
+        self::assertStringContainsString('columnsOnly[c_table][1]=title', $result);
+        self::assertStringContainsString('>4711<', $result);
+    }
+
+    #[Test]
     public function renderThrowsExceptionForInvalidUidArgument(): void
     {
         $this->expectException(\InvalidArgumentException::class);

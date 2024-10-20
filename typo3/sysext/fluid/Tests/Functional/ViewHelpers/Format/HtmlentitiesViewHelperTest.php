@@ -43,6 +43,14 @@ final class HtmlentitiesViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function renderUsesIntegerBasedChildnodesAsSourceIfSpecified(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:format.htmlentities>{k}</f:format.htmlentities></f:for>');
+        self::assertEquals('4711', (new TemplateView($context))->render());
+    }
+
+    #[Test]
     public function renderDoesNotModifyValueIfItDoesNotContainSpecialCharacters(): void
     {
         $source = 'This is a sample text without special characters.';

@@ -142,7 +142,7 @@ final class NewRecordViewHelper extends AbstractTagBasedViewHelper
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $uri = (string)$uriBuilder->buildUriFromRoute('record_edit', $params);
         $this->tag->addAttribute('href', $uri);
-        $this->tag->setContent($this->renderChildren());
+        $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
         return $this->tag->render();
     }

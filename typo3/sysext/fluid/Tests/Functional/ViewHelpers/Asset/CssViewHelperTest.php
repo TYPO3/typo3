@@ -70,6 +70,18 @@ final class CssViewHelperTest extends FunctionalTestCase
         self::assertSame(['disabled' => 'disabled'], $collectedStyleSheets['test']['attributes']);
     }
 
+    #[Test]
+    public function integerAsTagChildrenRendersContent(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:asset.css identifier="{i}">{k}</f:asset.css></f:for>');
+
+        (new TemplateView($context))->render();
+
+        $collectedInlineStyleSheets = $this->get(AssetCollector::class)->getInlineStyleSheets();
+        self::assertSame('4711', $collectedInlineStyleSheets['4712']['source']);
+    }
+
     public static function childNodeRenderingIsCorrectDataProvider(): array
     {
         return [

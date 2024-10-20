@@ -42,6 +42,10 @@ final class ExternalViewHelperTest extends FunctionalTestCase
                 '<f:link.external uri="www.some-domain.tld" defaultScheme="">some content</f:link.external>',
                 '<a href="www.some-domain.tld">some content</a>',
             ],
+            'renderCanUseIntegerAsTagContent' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:link.external uri="www.some-domain.tld" defaultScheme="">{k}</f:link.external></f:for>',
+                '<a href="www.some-domain.tld">4711</a>',
+            ],
         ];
     }
 

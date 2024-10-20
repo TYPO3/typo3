@@ -125,6 +125,10 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
                 '<f:link.typolink parameter="t3://url?url=https://example.org?param=1%26other=dude - - \"a \\\"link\\\" title with \\\\\ \" &x=y">This is a testlink</f:link.typolink>',
                 '<a href="https://example.org?param=1&amp;other=dude" title="a &quot;link&quot; title with \">This is a testlink</a>',
             ],
+            'integer based tag content' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:link.typolink parameter="">{k}</f:link.typolink></f:for>',
+                '4711',
+            ],
         ];
     }
 

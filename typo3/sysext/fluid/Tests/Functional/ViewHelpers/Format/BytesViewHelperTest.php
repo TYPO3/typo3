@@ -76,6 +76,10 @@ final class BytesViewHelperTest extends FunctionalTestCase
                 '<f:format.bytes units="B,KB,MB,GB,TB,PB,EB,ZB,YB">12345</f:format.bytes>',
                 '12 KB',
             ],
+            [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:format.bytes units="B">{k}</f:format.bytes></f:for>',
+                '4,711 B',
+            ],
         ];
     }
 

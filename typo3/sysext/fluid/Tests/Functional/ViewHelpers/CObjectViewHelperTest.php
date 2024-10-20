@@ -90,6 +90,28 @@ EOT
     }
 
     #[Test]
+    public function viewHelperAcceptsIntegerBasedTagContentAsData(): void
+    {
+        (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [
+            'pid' => 1,
+            'root' => 1,
+            'clear' => 1,
+            'config' => <<<EOT
+page = PAGE
+page.10 = FLUIDTEMPLATE
+page.10 {
+    template = TEXT
+    template.value = <f:for each="{4711:'4712'}" as="i" iteration="iterator" key="k"><f:cObject typoscriptObjectPath="lib.test">{k}</f:cObject></f:for>
+}
+lib.test = TEXT
+lib.test.current = 1
+EOT
+        ]);
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(1));
+        self::assertStringContainsString('4711', (string)$response->getBody());
+    }
+
+    #[Test]
     public function renderThrowsExceptionIfTypoScriptObjectPathDoesNotExist(): void
     {
         (new ConnectionPool())->getConnectionForTable('sys_template')->insert('sys_template', [

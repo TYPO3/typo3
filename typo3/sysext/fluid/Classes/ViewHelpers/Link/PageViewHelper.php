@@ -117,7 +117,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             $uri = $this->renderBackendLinkWithCoreContext($request);
             if ($uri !== '') {
                 $this->tag->addAttribute('href', $uri);
-                $this->tag->setContent($this->renderChildren());
+                $this->tag->setContent((string)$this->renderChildren());
                 $this->tag->forceClosingTag(true);
                 $result = $this->tag->render();
             } else {
@@ -186,7 +186,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
             unset($linkResultAttributes['target']);
 
             $this->tag->addAttributes($linkResultAttributes);
-            $this->tag->setContent($this->renderChildren());
+            $this->tag->setContent((string)$this->renderChildren());
             $this->tag->forceClosingTag(true);
             $result = $this->tag->render();
         } catch (UnableToLinkException) {
@@ -273,7 +273,7 @@ final class PageViewHelper extends AbstractTagBasedViewHelper
         $uri = $uriBuilder->build();
         if ($uri !== '') {
             $this->tag->addAttribute('href', $uri);
-            $this->tag->setContent($this->renderChildren());
+            $this->tag->setContent((string)$this->renderChildren());
             $this->tag->forceClosingTag(true);
             $result = $this->tag->render();
         } else {

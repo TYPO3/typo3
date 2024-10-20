@@ -15,14 +15,14 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Form;
+namespace TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\Be;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Fluid\Fluid\View\TemplateView;
 
-final class ButtonViewHelperTest extends FunctionalTestCase
+final class InfoboxViewHelperTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
@@ -30,23 +30,15 @@ final class ButtonViewHelperTest extends FunctionalTestCase
     public function renderCorrectlySetsTagNameAndDefaultAttributes(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form.button type="submit">Button Content</f:form.button>');
-        self::assertSame('<button type="submit" name="" value="">Button Content</button>', (new TemplateView($context))->render());
-    }
-
-    #[Test]
-    public function closingTagIsEnforcedOnEmptyContent(): void
-    {
-        $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:form.button type="reset"></f:form.button>');
-        self::assertSame('<button type="reset" name="" value=""></button>', (new TemplateView($context))->render());
+        $context->getTemplatePaths()->setTemplateSource('<f:be.infobox title="Message">Content</f:be.infobox>');
+        self::assertStringContainsString('<div class="callout-title">Message</div><div class="callout-body">Content</div>', (new TemplateView($context))->render());
     }
 
     #[Test]
     public function integerAsButtonRenderChildrenRendersTagContent(): void
     {
         $context = $this->get(RenderingContextFactory::class)->create();
-        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:form.button type="{i}">{k}</f:form.button></f:for>');
-        self::assertSame('<button type="4712" name="" value="">4711</button>', (new TemplateView($context))->render());
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:be.infobox title="{i}">{k}</f:be.infobox></f:for>');
+        self::assertStringContainsString('<div class="callout-title">4712</div><div class="callout-body">4711</div>', (new TemplateView($context))->render());
     }
 }
