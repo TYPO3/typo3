@@ -97,6 +97,11 @@ final class EmailViewHelperTest extends FunctionalTestCase
                 ['config.spamProtectEmailAddresses = 1'],
                 '<a href="#" data-mailto-token="nbjmup+&quot;&gt;&lt;tdsjqu&gt;bmfsu(&#039;fnbjm&#039;)&lt;0tdsjqu&gt;" data-mailto-vector="1">&quot;&gt;&lt;script&gt;alert(&#039;email&#039;)&lt;/script&gt;</a>',
             ],
+            'Email with integer specification' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:link.email email="example@example.com">{k}</f:link.email></f:for>',
+                ['config.spamProtectEmailAddresses = 0'],
+                '<a href="mailto:example@example.com">4711</a>',
+            ],
         ];
     }
 

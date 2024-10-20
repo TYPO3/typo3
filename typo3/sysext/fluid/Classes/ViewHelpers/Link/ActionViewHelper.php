@@ -190,7 +190,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
             unset($linkResultAttributes['target']);
 
             $this->tag->addAttributes($linkResultAttributes);
-            $this->tag->setContent($this->renderChildren());
+            $this->tag->setContent((string)$this->renderChildren());
             $this->tag->forceClosingTag(true);
             return $this->tag->render();
         } catch (UnableToLinkException) {
@@ -241,7 +241,7 @@ final class ActionViewHelper extends AbstractTagBasedViewHelper
             return $this->renderChildren();
         }
         $this->tag->addAttribute('href', $uri);
-        $this->tag->setContent($this->renderChildren());
+        $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
         return $this->tag->render();
     }

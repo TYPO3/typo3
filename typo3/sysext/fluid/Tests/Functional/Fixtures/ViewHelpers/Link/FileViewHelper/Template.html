@@ -13,3 +13,5 @@
 <f:link.file file="{file}" download="true" filename="alt-name.jpg" title="uid-{file.uid}">Download file - alt-name.jpg</f:link.file>
 
 <f:link.file file="{file}" download="true" filename="alt-name" title="uid-{file.uid}">Download file - extension is appended</f:link.file>
+
+<f:for each="{4711:'4712'}" as="i" iteration="iterator" key="k"><f:link.file file="{file}" title="uid-{file.uid}">{k}</f:link.file></f:for>

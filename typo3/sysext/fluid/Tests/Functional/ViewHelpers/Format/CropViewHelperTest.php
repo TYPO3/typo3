@@ -50,6 +50,10 @@ final class CropViewHelperTest extends FunctionalTestCase
                 '<f:format.crop maxCharacters="7" respectHtml="false" append="..."><p>Crop</p> this content</f:format.crop>',
                 '<p>Crop...',
             ],
+            'crop integer tag content' => [
+                '<f:for each="{471147124713:\'4712\'}" as="i" iteration="iterator" key="k"><f:format.crop maxCharacters="4" append="custom suffix">{k}</f:format.crop></f:for>',
+                '4711custom suffix',
+            ],
         ];
     }
 

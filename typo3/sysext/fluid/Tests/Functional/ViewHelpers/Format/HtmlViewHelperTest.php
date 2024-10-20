@@ -70,6 +70,10 @@ final class HtmlViewHelperTest extends FunctionalTestCase
                 '<f:format.html parseFuncTSPath="lib.news" data="{uid: 1, pid: 12, title: \'Great news\'}" currentValueKey="title">{$project} news:</f:format.html>',
                 'TYPO3 news: Great news',
             ],
+            'format.html: integer as tag content' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:format.html parseFuncTSPath="lib.foo">{k}</f:format.html></f:for>',
+                '4711',
+            ],
             // table attribute is hard to test. It was only used as parent for CONTENT and RECORD cObj.
             // Further the table will be used in FILES cObj as fallback, if a table was not given in references array.
         ];

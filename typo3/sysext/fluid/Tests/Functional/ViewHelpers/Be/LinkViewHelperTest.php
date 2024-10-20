@@ -71,4 +71,24 @@ final class LinkViewHelperTest extends FunctionalTestCase
         );
         self::assertEquals('<a href="theUri">foo</a>', (new TemplateView($context))->render());
     }
+
+    #[Test]
+    public function renderRendersTagWithIntegerTagContent(): void
+    {
+        // Mock Uribuilder in this functional test so we don't have to work with existing routes
+        $formProtectionFactoryMock = $this->createMock(FormProtectionFactory::class);
+        $backendEntryPointResolver = new BackendEntryPointResolver();
+        $requestContextFactory = new RequestContextFactory($backendEntryPointResolver);
+        $router = new Router($requestContextFactory, $backendEntryPointResolver);
+        $uriBuilderMock = $this->getMockBuilder(UriBuilder::class)->setConstructorArgs([$router, $formProtectionFactoryMock, $requestContextFactory])->getMock();
+        $uriBuilderMock->expects(self::once())->method('buildUriFromRoute')
+            ->with('theRouteArgument', ['parameter' => 'to pass'], 'theReferenceTypeArgument')->willReturn('theUri');
+        GeneralUtility::setSingletonInstance(UriBuilder::class, $uriBuilderMock);
+
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource(
+            '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:be.link route="theRouteArgument" parameters="{parameter: \'to pass\'}" referenceType="theReferenceTypeArgument">{k}</f:be.link></f:for>'
+        );
+        self::assertEquals('<a href="theUri">4711</a>', (new TemplateView($context))->render());
+    }
 }

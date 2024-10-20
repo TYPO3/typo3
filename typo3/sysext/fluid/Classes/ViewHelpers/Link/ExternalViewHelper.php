@@ -71,7 +71,7 @@ final class ExternalViewHelper extends AbstractTagBasedViewHelper
             $uri = $defaultScheme . '://' . $uri;
         }
         $this->tag->addAttribute('href', $uri);
-        $this->tag->setContent($this->renderChildren());
+        $this->tag->setContent((string)$this->renderChildren());
         $this->tag->forceClosingTag(true);
 
         return $this->tag->render();

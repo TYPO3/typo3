@@ -78,4 +78,16 @@ final class ScriptViewHelperTest extends FunctionalTestCase
         self::assertSame("alert('test');\n", $collectedInlineJavaScripts['test']['source']);
         self::assertSame([], $collectedInlineJavaScripts['test']['attributes']);
     }
+
+    #[Test]
+    public function integerAsTagChildrenRendersContent(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:asset.script identifier="{i}">{k}</f:asset.script></f:for>');
+
+        (new TemplateView($context))->render();
+
+        $collectedInlineJavaScripts = $this->get(AssetCollector::class)->getInlineJavaScripts();
+        self::assertSame('4711', $collectedInlineJavaScripts['4712']['source']);
+    }
 }

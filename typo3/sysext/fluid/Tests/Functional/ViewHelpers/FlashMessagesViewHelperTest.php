@@ -80,6 +80,19 @@ final class FlashMessagesViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function provideFlashMessagesAsVariableWithIntegerBasedTagContent(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
+        $this->setUpBackendUser(1);
+        $flashMessage = new FlashMessage('test message body', 'test message title', ContextualFeedbackSeverity::OK, true);
+        (new FlashMessageQueue('myQueue'))->addMessage($flashMessage);
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:flashMessages queueIdentifier="myQueue" as="messages">{k}</f:flashMessages></f:for>');
+        // CLI message renderer kicks in with this functional test setup, so no HTML output here.
+        self::assertSame('4711', (new TemplateView($context))->render());
+    }
+
+    #[Test]
     public function flashMessagesVariableIsLocal(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');

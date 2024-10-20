@@ -124,6 +124,13 @@ final class ActionViewHelperTest extends FunctionalTestCase
                 ],
             ],
         ];
+        // see: https://forge.typo3.org/issues/105367
+        yield 'link title can be evaluated even with integer as content' => [
+            '<f:for each="{1:\'step1\', 2:\'step2\', 3:\'summary\'}" as="i" iteration="iterator" key="k">'
+            . '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show" action="{i}">{k}</f:link.action>'
+            . '</f:for>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step1&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=8289b13d46f6ece7cc2003ef108b9546">1</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step2&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=30fda037f04fe77f30a216db68da633c">2</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=summary&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=940a948bf00b30077124fe3835ba79d4">3</a>',
+        ];
     }
 
     #[DataProvider('renderInFrontendWithCoreContextAndAllNecessaryExtbaseArgumentsDataProvider')]
@@ -222,6 +229,14 @@ final class ActionViewHelperTest extends FunctionalTestCase
                 ],
             ],
         ];
+        // see: https://forge.typo3.org/issues/105367
+        yield 'link title can be evaluated even with integer as content' => [
+            '<f:for each="{1:\'step1\', 2:\'step2\', 3:\'summary\'}" as="i" iteration="iterator" key="k">'
+            . '<f:link.action pageUid="3" extensionName="examples" pluginName="haiku" controller="Detail" action="show" action="{i}">{k}</f:link.action>'
+            . '</f:for>',
+            '<a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step1&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=8289b13d46f6ece7cc2003ef108b9546">1</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=step2&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=30fda037f04fe77f30a216db68da633c">2</a><a href="/dummy-1-2/dummy-1-2-3?tx_examples_haiku%5Baction%5D=summary&amp;tx_examples_haiku%5Bcontroller%5D=Detail&amp;cHash=940a948bf00b30077124fe3835ba79d4">3</a>',
+        ];
+
     }
 
     #[DataProvider('renderInFrontendWithExtbaseContextDataProvider')]

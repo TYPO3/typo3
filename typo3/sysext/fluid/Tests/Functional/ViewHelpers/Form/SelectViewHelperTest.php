@@ -648,4 +648,106 @@ EOT;
         self::assertStringContainsString('<select name="myFieldPrefix[user][roleBacked]">', $result);
         self::assertStringContainsString('<option value="3" selected="selected">Guest</option>', $result);
     }
+
+    #[Test]
+    public function selectCreatesExpectedOptionsWithAppendedValuesInTagContent(): void
+    {
+        $options = [
+            [
+                'uid' => 1,
+                'title' => 'Foo',
+            ],
+            [
+                'uid' => -1,
+                'title' => 'Bar',
+            ],
+            [
+                'title' => 'Baz',
+            ],
+            [
+                'uid' => '2',
+            ],
+        ];
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionsAfterContent="0" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}"><option value="4711">4712</option></f:form.select>');
+        $view = new TemplateView($context);
+        $view->assign('options', $options);
+        $expected = <<< EOT
+<select name="myName"><option value="2"></option>
+<option value="-1">Bar</option>
+<option value="">Baz</option>
+<option value="1">Foo</option>
+<option value="4711">4712</option></select>
+EOT;
+        self::assertSame($expected, $view->render());
+    }
+
+    #[Test]
+    public function selectCreatesExpectedOptionsWithPrependedValuesInTagContent(): void
+    {
+        $options = [
+            [
+                'uid' => 1,
+                'title' => 'Foo',
+            ],
+            [
+                'uid' => -1,
+                'title' => 'Bar',
+            ],
+            [
+                'title' => 'Baz',
+            ],
+            [
+                'uid' => '2',
+            ],
+        ];
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select optionsAfterContent="1" name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}"><option value="4711">4712</option></f:form.select>');
+        $view = new TemplateView($context);
+        $view->assign('options', $options);
+        $expected = <<< EOT
+<select name="myName"><option value="4711">4712</option><option value="2"></option>
+<option value="-1">Bar</option>
+<option value="">Baz</option>
+<option value="1">Foo</option>
+</select>
+EOT;
+        self::assertSame($expected, $view->render());
+    }
+
+    #[Test]
+    public function selectCreatesExpectedOptionsWithIntegerValuesInTagContent(): void
+    {
+        $options = [
+            [
+                'uid' => 1,
+                'title' => 'Foo',
+            ],
+            [
+                'uid' => -1,
+                'title' => 'Bar',
+            ],
+            [
+                'title' => 'Baz',
+            ],
+            [
+                'uid' => '2',
+            ],
+        ];
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:form.select name="myName" optionValueField="uid" optionLabelField="title" sortByOptionLabel="true" options="{options}"><option value="{i}">{k}</option></f:form.select></f:for>');
+        $view = new TemplateView($context);
+        $view->assign('options', $options);
+        $expected = <<< EOT
+<select name="myName"><option value="2"></option>
+<option value="-1">Bar</option>
+<option value="">Baz</option>
+<option value="1">Foo</option>
+<option value="4712">4711</option></select>
+EOT;
+        self::assertSame($expected, $view->render());
+    }
 }

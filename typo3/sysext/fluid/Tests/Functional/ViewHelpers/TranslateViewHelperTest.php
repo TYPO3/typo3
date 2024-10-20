@@ -160,6 +160,10 @@ final class TranslateViewHelperTest extends FunctionalTestCase
                 '<f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:localized.to.en" />',
                 'EN label override en',
             ],
+            'fallback to default, integer-based attribute for not existing label' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:translate key="LLL:EXT:test_translate/Resources/Private/Language/locallang.xlf:iDoNotExist">{k}</f:translate></f:for>',
+                '4711',
+            ],
         ];
     }
 
@@ -343,6 +347,10 @@ final class TranslateViewHelperTest extends FunctionalTestCase
             'use direct "de_AT" label when key is localized to de_at without explicit languageKey given' => [
                 '<f:translate key="localized.to.de_at" />',
                 'DE_AT label',
+            ],
+            'id given for not existing label, fallback to child with integer based tag content' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:translate id="foo">{k}</f:translate></f:for>',
+                '4711',
             ],
         ];
     }

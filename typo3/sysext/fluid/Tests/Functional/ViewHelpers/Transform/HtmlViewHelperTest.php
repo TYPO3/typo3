@@ -198,4 +198,12 @@ final class HtmlViewHelperTest extends FunctionalTestCase
         ));
         self::assertSame($expectation, (new TemplateView($context))->render());
     }
+
+    #[Test]
+    public function isTransformedWithIntegerTagContent(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:transform.html>4711</f:transform.html></f:for>');
+        self::assertSame('4711', (new TemplateView($context))->render());
+    }
 }

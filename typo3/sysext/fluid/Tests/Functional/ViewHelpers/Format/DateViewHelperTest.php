@@ -104,6 +104,14 @@ final class DateViewHelperTest extends FunctionalTestCase
         self::assertSame('Saturday, 8. Feb 14', (new TemplateView($context))->render());
     }
 
+    #[Test]
+    public function viewHelperCanUseIntegersAsTagContent(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{1391876733:\'1391876734\'}" as="i" iteration="iterator" key="k"><f:format.date>{k}</f:format.date></f:for>');
+        self::assertSame('2014-02-08', (new TemplateView($context))->render());
+    }
+
     /**
      * No deprecation notice using PHP 8.1+ should be thrown when format is null
      */

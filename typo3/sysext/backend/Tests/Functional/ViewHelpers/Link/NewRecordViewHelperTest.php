@@ -127,6 +127,20 @@ final class NewRecordViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function renderReturnsValidWithIntegerAsTagChildren(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create([], $this->request);
+        $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
+        $context->getTemplatePaths()->setTemplateSource('<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><be:link.newRecord pid="{i}" table="c_table" defaultValues="{c_table: {c_field: \'c_value\', c_field2: \'c_value2\'}}">{k}</be:link.newRecord></f:for>');
+        $result = urldecode((new TemplateView($context))->render());
+
+        self::assertStringContainsString('/typo3/record/edit', $result);
+        self::assertStringContainsString('edit[c_table][4712]=new', $result);
+        self::assertStringContainsString('defVals[c_table][c_field]=c_value&amp;defVals[c_table][c_field2]=c_value2', $result);
+        self::assertStringContainsString('>4711<', $result);
+    }
+
+    #[Test]
     public function renderThrowsExceptionForInvalidUidArgument(): void
     {
         $this->expectException(\InvalidArgumentException::class);

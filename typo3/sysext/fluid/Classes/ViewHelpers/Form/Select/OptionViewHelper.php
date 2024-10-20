@@ -41,7 +41,7 @@ final class OptionViewHelper extends AbstractFormFieldViewHelper
     public function render(): string
     {
         $childContent = $this->renderChildren();
-        $this->tag->setContent($childContent);
+        $this->tag->setContent((string)$childContent);
         $value = $this->arguments['value'] ?? $childContent;
         if ($this->arguments['selected'] ?? $this->isValueSelected((string)$value)) {
             $this->tag->addAttribute('selected', 'selected');

@@ -111,7 +111,7 @@ final class EmailViewHelper extends AbstractTagBasedViewHelper
         }
         $tagContent = $this->renderChildren();
         if ($tagContent !== null) {
-            $linkText = $tagContent;
+            $linkText = (string)$tagContent;
         }
         $this->tag->setContent($linkText);
         $this->tag->addAttribute('href', $linkHref);

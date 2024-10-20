@@ -86,8 +86,8 @@ final class InfoboxViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $title = $this->arguments['title'];
-        $message = $this->renderChildren();
+        $title = (string)$this->arguments['title'];
+        $message = (string)$this->renderChildren();
         $state = $this->arguments['state'];
         $isInRange = MathUtility::isIntegerInRange($state, -2, 2);
         if (!$isInRange) {

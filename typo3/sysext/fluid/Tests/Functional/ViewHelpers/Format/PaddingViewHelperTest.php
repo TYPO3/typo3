@@ -50,6 +50,10 @@ final class PaddingViewHelperTest extends FunctionalTestCase
                 '<f:format.padding padLength="5" padString="0" />',
                 '00000',
             ],
+            'integerTagContentIsPaddedWithBlanksByDefault' => [
+                '<f:for each="{4711:\'4712\'}" as="i" iteration="iterator" key="k"><f:format.padding padLength="10">{k}</f:format.padding></f:for>',
+                '4711      ',
+            ],
         ];
     }
 
