@@ -82,7 +82,7 @@
 				<source>double quote</source>
 			</trans-unit>
 			<trans-unit id="downloadSettings.formatOptions.csv.quote.singlequote" resname="downloadSettings.formatOptions.csv.quote.singlequote">
-				<source>single qoute</source>
+				<source>single quote</source>
 			</trans-unit>
 			<trans-unit id="downloadSettings.formatOptions.csv.quote.space" resname="downloadSettings.formatOptions.csv.quote.space">
 				<source>space</source>
