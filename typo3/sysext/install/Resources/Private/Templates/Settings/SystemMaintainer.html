@@ -27,7 +27,7 @@
                 class="t3js-systemMaintainer-select-pure">
                 <f:for each="{users}" as="user">
                     <option-pure value="{user.uid}" {f:if(condition: user.isSystemMaintainer, then: 'selected')}>
-                        {f:if(condition: user.disale, then: '[DISALED] ')} {user.username}
+                        {f:if(condition: user.disable, then: '[DISABLED] ')} {user.username}
                     </option-pure>
                 </f:for>
             </select-pure>
