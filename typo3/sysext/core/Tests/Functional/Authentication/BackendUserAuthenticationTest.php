@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Authentication;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaRequiredException;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -66,19 +65,6 @@ final class BackendUserAuthenticationTest extends FunctionalTestCase
         self::assertEquals('from user', $result['custom.']['property']);
         self::assertEquals('13', $result['custom.']['groupProperty']);
         self::assertEquals('installation-wide-configuration', $result['custom.']['generic']);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function returnWebmountsFilterOutInaccessiblePages(): void
-    {
-        $subject = $this->setUpBackendUser(2);
-        $result = $subject->returnWebmounts();
-        self::assertNotContains('3', $result, 'Deleted page is not filtered out');
-        self::assertNotContains('4', $result, 'Page user has no permission to read is not filtered out');
-        self::assertNotContains('5', $result, 'Not existing page is not filtered out');
-        self::assertContains('40', $result, 'Accessible db mount page, child of a not accessible page is not shown');
-        self::assertEquals(['1', '40'], $result);
     }
 
     #[Test]

@@ -1639,6 +1639,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-104607-BackendUserAuthenticationReturnWebmounts.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode' => [
