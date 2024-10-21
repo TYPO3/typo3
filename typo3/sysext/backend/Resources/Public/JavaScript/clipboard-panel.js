@@ -28,7 +28,7 @@ var ClipboardPanel_1,CopyMode,__decorate=function(t,e,o,a){var i,n=arguments.len
                   <tbody>
                     ${t.tabs.map((e=>this.renderTab(e,t)))}
                   </tbody>
-                </tabel>
+                </table>
               </div>
             </div>
           `}return html`

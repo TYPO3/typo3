@@ -107,7 +107,7 @@ export class ClipboardPanel extends LitElement {
                   <tbody>
                     ${clipboardData.tabs.map((tab: ClipboardTab): TemplateResult => this.renderTab(tab, clipboardData))}
                   </tbody>
-                </tabel>
+                </table>
               </div>
             </div>
           `;
