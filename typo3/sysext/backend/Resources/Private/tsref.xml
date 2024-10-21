@@ -4101,7 +4101,7 @@ to
             <default><![CDATA[
 ]]></default>
         </property>
-        <property name="removeWrapping" type="boolen">
+        <property name="removeWrapping" type="boolean">
             <description><![CDATA[If set, then all existing wrapping will be removed.
 
 This:
