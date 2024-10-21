@@ -83,6 +83,7 @@ class PageLayoutContext
         $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $this);
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageId);
         $this->siteLanguage = $this->site->getDefaultLanguage();
+        $this->recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
     }
 
     public function cloneForLanguage(SiteLanguage $language): self
@@ -335,9 +336,6 @@ class PageLayoutContext
 
     public function getRecordIdentityMap(): RecordIdentityMap
     {
-        if (!isset($this->recordIdentityMap)) {
-            $this->recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
-        }
         return $this->recordIdentityMap;
     }
 
