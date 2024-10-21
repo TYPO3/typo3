@@ -560,26 +560,31 @@ return [
     'TYPO3\CMS\Core\Imaging\Icon::SIZE_DEFAULT' => [
         'restFiles' => [
             'Deprecation-101475-IconSizeStringConstants.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL' => [
         'restFiles' => [
             'Deprecation-101475-IconSizeStringConstants.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Imaging\Icon::SIZE_MEDIUM' => [
         'restFiles' => [
             'Deprecation-101475-IconSizeStringConstants.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Imaging\Icon::SIZE_LARGE' => [
         'restFiles' => [
             'Deprecation-101475-IconSizeStringConstants.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Imaging\Icon::SIZE_MEGA' => [
         'restFiles' => [
             'Deprecation-101475-IconSizeStringConstants.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_UNKNOWN' => [

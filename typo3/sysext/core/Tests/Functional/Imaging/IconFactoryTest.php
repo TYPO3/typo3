@@ -175,13 +175,6 @@ final class IconFactoryTest extends FunctionalTestCase
         );
     }
 
-    #[Test]
-    public function getIconThrowsExceptionIfInvalidSizeIsGiven(): void
-    {
-        $this->expectException(\ValueError::class);
-        $this->subject->getIcon($this->registeredIconIdentifier, 'foo')->render();
-    }
-
     //
     // Tests for getIconForFileExtension
     //

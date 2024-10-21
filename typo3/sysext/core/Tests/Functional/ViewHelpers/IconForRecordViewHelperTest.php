@@ -39,7 +39,7 @@ final class IconForRecordViewHelperTest extends FunctionalTestCase
         $iconFactoryMock = $this->createMock(IconFactory::class);
         $iconFactoryMock->method('getIconForRecord')->with(self::anything())->willReturn($iconMock);
         $iconFactoryMock->expects(self::atLeastOnce())->method('getIconForRecord')
-            ->with('tt_content', ['uid' => 123], IconSize::LARGE->value);
+            ->with('tt_content', ['uid' => 123], IconSize::LARGE);
         GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
 
         $context = $this->get(RenderingContextFactory::class)->create();

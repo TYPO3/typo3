@@ -41,22 +41,4 @@ enum IconSize: string
             self::MEGA => [64, 64],
         };
     }
-
-    /**
-     * @internal
-     * @deprecated Will be removed with TYPO3 14.0
-     */
-    public function triggerDeprecation(): void
-    {
-        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-        $caller = end($backtrace);
-        $callerLocation = sprintf('file %s, line %d', $caller['file'], $caller['line']);
-
-        trigger_error(sprintf(
-            'The size argument was passed as string in %s, which is deprecated since TYPO3 v13. Consider passing %s::%s instead.',
-            $callerLocation,
-            __CLASS__,
-            $this->name
-        ), E_USER_DEPRECATED);
-    }
 }

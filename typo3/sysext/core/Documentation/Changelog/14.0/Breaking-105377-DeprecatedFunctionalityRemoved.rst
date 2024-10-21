@@ -34,6 +34,7 @@ The following PHP class aliases that have previously been marked as deprecated w
 The following PHP class methods that have previously been marked as deprecated with v13 have been removed:
 
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->returnWebmounts()`
+- :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent->getSize()`
 
 The following PHP static class methods that have previously been marked as deprecated for v13 have been removed:
 
@@ -94,7 +95,11 @@ The following constant has been dropped:
 
 The following class constants have been dropped:
 
-- :php:``
+- :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_DEFAULT`
+- :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_LARGE`
+- :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_MEDIUM`
+- :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_MEGA`
+- :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL`
 
 The following global option handling have been dropped and are ignored:
 

@@ -53,14 +53,14 @@ final class IconForRecordViewHelper extends AbstractViewHelper
     {
         $this->registerArgument('table', 'string', 'the table for the record icon', true);
         $this->registerArgument('row', 'array', 'the record row', true);
-        $this->registerArgument('size', 'string', 'the icon size', false, IconSize::SMALL);
+        $this->registerArgument('size', 'string', 'the icon size', false, IconSize::SMALL->value);
         $this->registerArgument('alternativeMarkupIdentifier', 'string', 'alternative markup identifier');
     }
 
     public function render(): string
     {
         $table = $this->arguments['table'];
-        $size = $this->arguments['size'];
+        $size = IconSize::from($this->arguments['size']);
         $row = $this->arguments['row'];
         $alternativeMarkupIdentifier = $this->arguments['alternativeMarkupIdentifier'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);

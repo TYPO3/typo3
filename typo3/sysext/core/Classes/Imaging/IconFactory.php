@@ -40,12 +40,9 @@ readonly class IconFactory
         private FrontendInterface $runtimeCache,
     ) {}
 
-    /**
-     * @todo: Change $size to allow IconSize only in v14
-     */
     public function getIcon(
         string $identifier,
-        string|IconSize $size = IconSize::MEDIUM,
+        IconSize $size = IconSize::MEDIUM,
         ?string $overlayIdentifier = null,
         \TYPO3\CMS\Core\Type\Icon\IconState|IconState|null $state = null
     ): Icon {
@@ -58,10 +55,6 @@ readonly class IconFactory
             $stateValue = (string)$state;
         } else {
             $stateValue = $state?->value ?? '';
-        }
-        if (is_string($size)) {
-            $size = IconSize::from($size);
-            $size->triggerDeprecation();
         }
         $cacheIdentifier = 'icon-factory-' . hash('xxh3', $identifier . $size->value . $overlayIdentifier . $stateValue);
         $icon = $this->runtimeCache->get($cacheIdentifier);
@@ -93,15 +86,10 @@ readonly class IconFactory
      * This method is used throughout the TYPO3 Backend to show icons for a DB record
      *
      * @param string $table The TCA table name
-     * @param array $row The DB record of the TCA table
      * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIconForRecord(string $table, array $row, string|IconSize|null $size = IconSize::MEDIUM): Icon
+    public function getIconForRecord(string $table, array $row, ?IconSize $size = IconSize::MEDIUM): Icon
     {
-        if (is_string($size)) {
-            $size = IconSize::from($size);
-            $size->triggerDeprecation();
-        }
         $iconIdentifier = $this->mapRecordTypeToIconIdentifier($table, $row);
         $overlayIdentifier = $this->mapRecordTypeToOverlayIdentifier($table, $row);
         return $this->getIcon($iconIdentifier, $size, $overlayIdentifier);
@@ -358,15 +346,9 @@ readonly class IconFactory
 
     /**
      * Get Icon for a file by its extension
-     *
-     * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIconForFileExtension(string $fileExtension, string|IconSize $size = IconSize::MEDIUM, ?string $overlayIdentifier = null): Icon
+    public function getIconForFileExtension(string $fileExtension, IconSize $size = IconSize::MEDIUM, ?string $overlayIdentifier = null): Icon
     {
-        if (is_string($size)) {
-            $size = IconSize::from($size);
-            $size->triggerDeprecation();
-        }
         $iconName = $this->iconRegistry->getIconIdentifierForFileExtension($fileExtension);
         return $this->getIcon($iconName, $size, $overlayIdentifier);
     }
@@ -384,12 +366,10 @@ readonly class IconFactory
      * There is a hook in place to manipulate the icon name and overlays.
      *
      * @param array $options An associative array with additional options.
-     *
-     * @todo: Change $size to allow IconSize only in v14
      */
     public function getIconForResource(
         ResourceInterface $resource,
-        string|IconSize $size = IconSize::MEDIUM,
+        IconSize $size = IconSize::MEDIUM,
         ?string $overlayIdentifier = null,
         array $options = []
     ): Icon {
@@ -467,11 +447,6 @@ readonly class IconFactory
             if ($resource->isMissing()) {
                 $overlayIdentifier = 'overlay-missing';
             }
-        }
-
-        if (is_string($size)) {
-            $size = IconSize::from($size);
-            $size->triggerDeprecation();
         }
 
         $event = $this->eventDispatcher->dispatch(

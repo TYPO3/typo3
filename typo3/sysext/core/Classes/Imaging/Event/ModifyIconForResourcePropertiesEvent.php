@@ -44,15 +44,6 @@ final class ModifyIconForResourcePropertiesEvent
         return $this->size;
     }
 
-    /**
-     * @deprecated will be removed in v13, use getIconSize instead.
-     */
-    public function getSize(): string
-    {
-        $this->size->triggerDeprecation();
-        return $this->size->value;
-    }
-
     public function getOptions(): array
     {
         return $this->options;

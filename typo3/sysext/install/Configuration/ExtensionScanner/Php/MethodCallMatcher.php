@@ -5840,6 +5840,7 @@ return [
         'maximumNumberOfArguments' => 0,
         'restFiles' => [
             'Deprecation-101475-IconSizeStringConstants.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface->getScriptUrl' => [

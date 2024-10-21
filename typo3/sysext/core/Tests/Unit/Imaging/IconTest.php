@@ -152,46 +152,4 @@ final class IconTest extends UnitTestCase
         $subject = $iconFactory->getIcon(self::iconIdentifier, IconSize::SMALL, self::overlayIdentifier, \TYPO3\CMS\Core\Type\Icon\IconState::cast(\TYPO3\CMS\Core\Type\Icon\IconState::STATE_DISABLED));
         self::assertEquals(IconSize::SMALL->value, $subject->getSize());
     }
-
-    public static function setSizeSetsExpectedValuesDataProviderDeprecated(): \Generator
-    {
-        yield 'SIZE_DEFAULT' => [
-            Icon::SIZE_DEFAULT,
-            [16, 16],
-        ];
-        yield 'SIZE_SMALL' => [
-            Icon::SIZE_DEFAULT,
-            [16, 16],
-        ];
-        yield 'SIZE_OVERLAY' => [
-            Icon::SIZE_OVERLAY,
-            [16, 16],
-        ];
-        yield 'SIZE_MEDIUM' => [
-            Icon::SIZE_MEDIUM,
-            [32, 32],
-        ];
-        yield 'SIZE_LARGE' => [
-            Icon::SIZE_LARGE,
-            [48, 48],
-        ];
-        yield 'SIZE_MEGA' => [
-            Icon::SIZE_MEGA,
-            [64, 64],
-        ];
-    }
-
-    #[DataProvider('setSizeSetsExpectedValuesDataProviderDeprecated')]
-    #[Test]
-    #[IgnoreDeprecations]
-    public function setSizeSetsExpectedValuesDeprecated(string $size, array $expectedDimensions): void
-    {
-        $icon = new Icon();
-        $icon->setSize($size);
-
-        [$width, $height] = $expectedDimensions;
-
-        self::assertSame($width, $icon->getDimension()->getWidth());
-        self::assertSame($height, $icon->getDimension()->getHeight());
-    }
 }

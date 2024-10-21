@@ -26,42 +26,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Icon
 {
     /**
-     * @var string the default size
-     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::DEFAULT instead
-     */
-    public const SIZE_DEFAULT = 'default'; // 1em
-
-    /**
-     * @var string the small size
-     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::SMALL instead
-     */
-    public const SIZE_SMALL = 'small'; // 16px
-
-    /**
-     * @var string the default size
-     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::MEDIUM instead
-     */
-    public const SIZE_MEDIUM = 'medium'; // 32px
-
-    /**
-     * @var string the large size
-     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::LARGE instead
-     */
-    public const SIZE_LARGE = 'large'; // 48px
-
-    /**
-     * @var string the mega size
-     * @deprecated Use TYPO3\CMS\Core\Imaging\IconSize::MEGA instead
-     */
-    public const SIZE_MEGA = 'mega'; // 64px
-
-    /**
-     * @internal
-     * @var string the overlay size, which depends on icon size
-     */
-    public const SIZE_OVERLAY = 'overlay';
-
-    /**
      * The identifier which the PHP code that calls the IconFactory hands over
      */
     protected string $identifier;
@@ -191,15 +155,9 @@ class Icon
 
     /**
      * Sets the size and creates the new dimension
-     *
-     * @todo: Change $size to allow IconSize only in v14
      */
-    public function setSize(string|IconSize $size): self
+    public function setSize(IconSize $size): self
     {
-        if (is_string($size)) {
-            $size = IconSize::from($size);
-            $size->triggerDeprecation();
-        }
         $this->size = $size;
         $this->dimension = GeneralUtility::makeInstance(Dimension::class, $size);
         return $this;
