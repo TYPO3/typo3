@@ -48,74 +48,79 @@
 ,4,0,2,1,"/user_upload/image4.jpg","jpg","image/jpeg","image4.jpg"
 ,5,0,2,1,"/user_upload/image5.jpg","jpg","image/jpeg","image5.jpg"
 "pages"
-,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","slug","title"
+,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","slug","title","mount_pid","mount_pid_ol"
 # Page tree
-,1,0,0,0,0,0,0,0,"/","EN Root"
-,1000,1,0,0,0,0,0,0,"/parent1000","EN Parent 1000"
-,1001,1000,0,0,0,0,0,0,"/parent1000/sub1","EN Parent 1000 Sub 1"
-,1002,1000,0,1,1001,0,0,0,"/parent1000/fr-sub1","FR Parent 1000 Sub 1"
-,1003,1000,0,0,0,0,0,0,"/parent1000/sub2","EN Parent 1000 Sub 2"
-,1004,1,0,0,0,1,1000,2,"/parent1000","EN WS1-deleted Parent 1000"
-,1010,1,0,0,0,0,0,0,"/parent1010","EN Parent 1010"
-,1011,1010,0,0,0,2,0,1,"/parent1010/sub1","EN WS2-new Parent 1010 Sub 1"
-,1020,1,0,0,0,0,0,0,"/move-in-ws","EN To Move in WS"
-,1021,1,0,0,0,0,0,0,"/move-target","EN Move target"
-,1022,1021,0,0,0,2,1020,4,"/move-in-ws","EN WS2-moved Move in WS"
+,1,0,0,0,0,0,0,0,"/","EN Root",0,0
+,1000,1,0,0,0,0,0,0,"/parent1000","EN Parent 1000",0,0
+,1001,1000,0,0,0,0,0,0,"/parent1000/sub1","EN Parent 1000 Sub 1",0,0
+,1002,1000,0,1,1001,0,0,0,"/parent1000/fr-sub1","FR Parent 1000 Sub 1",0,0
+,1003,1000,0,0,0,0,0,0,"/parent1000/sub2","EN Parent 1000 Sub 2",0,0
+,1004,1,0,0,0,1,1000,2,"/parent1000","EN WS1-deleted Parent 1000",0,0
+,1010,1,0,0,0,0,0,0,"/parent1010","EN Parent 1010",0,0
+,1011,1010,0,0,0,2,0,1,"/parent1010/sub1","EN WS2-new Parent 1010 Sub 1",0,0
+,1020,1,0,0,0,0,0,0,"/move-in-ws","EN To Move in WS",0,0
+,1021,1,0,0,0,0,0,0,"/move-target","EN Move target",0,0
+,1022,1021,0,0,0,2,1020,4,"/move-in-ws","EN WS2-moved Move in WS",0,0
 # media relations
-,2000,1,0,0,0,0,0,0,"/parent2000","EN Parent 2000"
-,2001,2000,0,0,0,0,0,0,"/parent2000/sub1","EN Parent 2000 Sub 1"
-,2002,2000,0,1,2001,0,0,0,"/parent2000/fr-sub1","FR Parent 2000 Sub 1"
-,2010,1,0,0,0,0,0,0,"/parent2010","EN Parent 2010"
-,2011,2010,0,0,0,2,0,1,"/parent2010/sub1-with-media","EN WS2-new Parent 2010 Sub 1 with media"
-,2020,1,0,0,0,0,0,0,"/parent2020","EN Parent 2020"
-,2021,2020,0,0,0,0,0,0,"/parent2020/sub1-with-media","EN Parent 2020 Sub 1"
-,2022,2020,0,1,2021,2,0,1,"/parent2020/fr-sub1","FR WS2-new Parent 2020 Sub 1 with media"
-,2030,1,0,0,0,0,0,0,"/parent2030","EN Parent 2030"
-,2031,2030,0,0,0,0,0,0,"/parent2030/sub1","EN Parent 2030 Sub 1 with media"
-,2032,2030,0,0,0,2,2031,0,"/parent2030/sub1","EN WS2-changed Parent 2030 Sub 1 with media changed"
-,2040,1,0,0,0,0,0,0,"/parent2040","EN Parent 2040"
-,2041,2040,0,0,0,0,0,0,"/parent2040/sub1","EN Parent 2040 Sub 1"
-,2042,2040,0,1,2041,0,0,0,"/parent2040/fr-sub1","FR Parent 2040 Sub 1 with media"
-,2043,2040,0,1,2041,2,2042,0,"/parent2040/fr-sub1","FR WS2-changed Parent 2040 Sub 1 with media changed"
+,2000,1,0,0,0,0,0,0,"/parent2000","EN Parent 2000",0,0
+,2001,2000,0,0,0,0,0,0,"/parent2000/sub1","EN Parent 2000 Sub 1",0,0
+,2002,2000,0,1,2001,0,0,0,"/parent2000/fr-sub1","FR Parent 2000 Sub 1",0,0
+,2010,1,0,0,0,0,0,0,"/parent2010","EN Parent 2010",0,0
+,2011,2010,0,0,0,2,0,1,"/parent2010/sub1-with-media","EN WS2-new Parent 2010 Sub 1 with media",0,0
+,2020,1,0,0,0,0,0,0,"/parent2020","EN Parent 2020",0,0
+,2021,2020,0,0,0,0,0,0,"/parent2020/sub1-with-media","EN Parent 2020 Sub 1",0,0
+,2022,2020,0,1,2021,2,0,1,"/parent2020/fr-sub1","FR WS2-new Parent 2020 Sub 1 with media",0,0
+,2030,1,0,0,0,0,0,0,"/parent2030","EN Parent 2030",0,0
+,2031,2030,0,0,0,0,0,0,"/parent2030/sub1","EN Parent 2030 Sub 1 with media",0,0
+,2032,2030,0,0,0,2,2031,0,"/parent2030/sub1","EN WS2-changed Parent 2030 Sub 1 with media changed",0,0
+,2040,1,0,0,0,0,0,0,"/parent2040","EN Parent 2040",0,0
+,2041,2040,0,0,0,0,0,0,"/parent2040/sub1","EN Parent 2040 Sub 1",0,0
+,2042,2040,0,1,2041,0,0,0,"/parent2040/fr-sub1","FR Parent 2040 Sub 1 with media",0,0
+,2043,2040,0,1,2041,2,2042,0,"/parent2040/fr-sub1","FR WS2-changed Parent 2040 Sub 1 with media changed",0,0
 # category MM relations
-,3000,1,0,0,0,0,0,0,"/parent3000","EN Parent 3000 contains categories"
-,3001,1,0,1,3000,0,0,0,"/fr-parent3000","FR Parent 3000 contains categories"
-,3010,3000,0,0,0,0,0,0,"/parent3000/sub10","EN Parent 3000 Sub 10"
-,3020,3000,0,0,0,0,0,0,"/parent3000/sub20","EN Parent 3000 Sub 20"
-,3021,3000,0,1,3020,0,0,0,"/parent3000/fr-sub20","FR Parent 3000 Sub 20"
-,3030,3000,0,0,0,2,0,1,"/parent3000/sub30","EN WS2-new Parent 3000 Sub 30"
-,3040,3000,0,0,0,0,0,0,"/parent3000/sub40","EN Parent 3000 Sub 40"
-,3041,3000,0,1,3040,2,0,1,"/parent3000/fr-sub40","FR WS2-new Parent 3000 Sub 40"
-,3050,3000,0,0,0,0,0,0,"/parent3000/sub50","EN Parent 3000 Sub 50"
-,3051,3000,0,0,0,2,3050,0,"/parent3000/sub50","EN WS2-changed Parent 3000 Sub 50"
+,3000,1,0,0,0,0,0,0,"/parent3000","EN Parent 3000 contains categories",0,0
+,3001,1,0,1,3000,0,0,0,"/fr-parent3000","FR Parent 3000 contains categories",0,0
+,3010,3000,0,0,0,0,0,0,"/parent3000/sub10","EN Parent 3000 Sub 10",0,0
+,3020,3000,0,0,0,0,0,0,"/parent3000/sub20","EN Parent 3000 Sub 20",0,0
+,3021,3000,0,1,3020,0,0,0,"/parent3000/fr-sub20","FR Parent 3000 Sub 20",0,0
+,3030,3000,0,0,0,2,0,1,"/parent3000/sub30","EN WS2-new Parent 3000 Sub 30",0,0
+,3040,3000,0,0,0,0,0,0,"/parent3000/sub40","EN Parent 3000 Sub 40",0,0
+,3041,3000,0,1,3040,2,0,1,"/parent3000/fr-sub40","FR WS2-new Parent 3000 Sub 40",0,0
+,3050,3000,0,0,0,0,0,0,"/parent3000/sub50","EN Parent 3000 Sub 50",0,0
+,3051,3000,0,0,0,2,3050,0,"/parent3000/sub50","EN WS2-changed Parent 3000 Sub 50",0,0
 # tx_testrootlineutility_hotel relations
-,4000,1,0,0,0,0,0,0,"/parent4000","EN Parent 4000"
-,4010,4000,0,0,0,0,0,0,"/parent4000/sub10","EN Parent 4000 Sub 10"
-,4020,4000,0,0,0,0,0,0,"/parent4000/sub20","EN Parent 4000 Sub 20"
-,4021,4000,0,1,4020,0,0,0,"/parent4000/sub20","FR Parent 4000 Sub 20"
-,4030,4000,0,0,0,2,0,1,"/parent4000/sub30","EN WS2-new Parent 4000 Sub 30"
-,4040,4000,0,0,0,0,0,0,"/parent4000/sub40","EN Parent 4000 Sub 40"
-,4041,4000,0,1,4040,2,0,1,"/parent4000/sub40","FR WS2-new Parent 4000 Sub 40"
-,4050,4000,0,0,0,0,0,0,"/parent4000/sub50","EN Parent 4000 Sub 50"
-,4051,4000,0,0,0,2,4050,0,"/parent4000/sub50","EN WS2-changed Parent 4000 Sub 50"
-,4060,4000,0,0,0,0,0,0,"/parent4000/sub60","EN Parent 4000 Sub 60"
-,4061,4000,0,1,4060,0,0,0,"/parent4000/fr-sub60","FR Parent 4000 Sub 60"
-,4062,4000,0,1,4060,2,4061,0,"/parent4000/fr-sub60","FR WS2-changed Parent 4000 Sub 60"
+,4000,1,0,0,0,0,0,0,"/parent4000","EN Parent 4000",0,0
+,4010,4000,0,0,0,0,0,0,"/parent4000/sub10","EN Parent 4000 Sub 10",0,0
+,4020,4000,0,0,0,0,0,0,"/parent4000/sub20","EN Parent 4000 Sub 20",0,0
+,4021,4000,0,1,4020,0,0,0,"/parent4000/sub20","FR Parent 4000 Sub 20",0,0
+,4030,4000,0,0,0,2,0,1,"/parent4000/sub30","EN WS2-new Parent 4000 Sub 30",0,0
+,4040,4000,0,0,0,0,0,0,"/parent4000/sub40","EN Parent 4000 Sub 40",0,0
+,4041,4000,0,1,4040,2,0,1,"/parent4000/sub40","FR WS2-new Parent 4000 Sub 40",0,0
+,4050,4000,0,0,0,0,0,0,"/parent4000/sub50","EN Parent 4000 Sub 50",0,0
+,4051,4000,0,0,0,2,4050,0,"/parent4000/sub50","EN WS2-changed Parent 4000 Sub 50",0,0
+,4060,4000,0,0,0,0,0,0,"/parent4000/sub60","EN Parent 4000 Sub 60",0,0
+,4061,4000,0,1,4060,0,0,0,"/parent4000/fr-sub60","FR Parent 4000 Sub 60",0,0
+,4062,4000,0,1,4060,2,4061,0,"/parent4000/fr-sub60","FR WS2-changed Parent 4000 Sub 60",0,0
 # hidden relations tests
-,5000,1,0,0,0,0,0,0,"/parent5000","EN Parent 5000"
-,5010,5000,0,0,0,0,0,0,"/parent5000/sub10","EN Parent 5000 Sub 10"
+,5000,1,0,0,0,0,0,0,"/parent5000","EN Parent 5000",0,0
+,5010,5000,0,0,0,0,0,0,"/parent5000/sub10","EN Parent 5000 Sub 10",0,0
 # starttime endtime relations tests
-,6000,1,0,0,0,0,0,0,"/parent6000","EN Parent 6000"
-,6010,6000,0,0,0,0,0,0,"/parent6000/sub10","EN Parent 6000 Sub 10"
+,6000,1,0,0,0,0,0,0,"/parent6000","EN Parent 6000",0,0
+,6010,6000,0,0,0,0,0,0,"/parent6000/sub10","EN Parent 6000 Sub 10",0,0
 # cycling rootline - indicates corrupted database
-,7000,7020,0,0,0,0,0,0,"/parent7000","EN Parent 7000 cycling parent to EN Parent 7000 Sub 10 Sub 20"
-,7010,7000,0,0,0,0,0,0,"/parent7000/sub10","EN Parent 7000 Sub 10"
-,7020,7010,0,0,0,0,0,0,"/parent7000/sub10/sub20","EN Parent 7000 Sub 10 Sub 20"
+,7000,7020,0,0,0,0,0,0,"/parent7000","EN Parent 7000 cycling parent to EN Parent 7000 Sub 10 Sub 20",0,0
+,7010,7000,0,0,0,0,0,0,"/parent7000/sub10","EN Parent 7000 Sub 10",0,0
+,7020,7010,0,0,0,0,0,0,"/parent7000/sub10/sub20","EN Parent 7000 Sub 10 Sub 20",0,0
 # cycling rootline through workspace overlays - indicates corrupted database
-,8000,1,0,0,0,0,0,0,"/parent8000","EN Parent 8000"
-,8010,7000,0,0,0,0,0,0,"/parent8000/sub10","EN Parent 8000 Sub 10"
-,8020,7010,0,0,0,0,0,0,"/parent8000/sub10/sub20","EN Parent 8000 Sub 10 Sub 20"
-,8100,7010,0,0,0,2,8000,0,"/parent8000/sub10/sub20","EN Parent 8000 Sub 10 Sub 20 Moved in WS2 to cycling position"
+,8000,1,0,0,0,0,0,0,"/parent8000","EN Parent 8000",0,0
+,8010,7000,0,0,0,0,0,0,"/parent8000/sub10","EN Parent 8000 Sub 10",0,0
+,8020,7010,0,0,0,0,0,0,"/parent8000/sub10/sub20","EN Parent 8000 Sub 10 Sub 20",0,0
+,8100,7010,0,0,0,2,8000,0,"/parent8000/sub10/sub20","EN Parent 8000 Sub 10 Sub 20 Moved in WS2 to cycling position",0,0
+# Second PageTree
+,2,0,0,0,0,0,0,0,"/","EN Root 2",0,0
+,9000,2,0,0,0,0,0,0,"/page9000","RP2 Parent 9000",1000,0
+,9010,9000,0,0,0,0,0,0,"/page9010","RP2 Parent 9000 Sub 10",1001,1
+,9020,9000,0,0,0,0,0,0,"/page9020","RP2 Parent 9000 Sub 10",1010,0
 "tx_testrootlineutility_hotel"
 ,"uid","pid","parenttable","parentid","deleted","hidden","starttime","endtime","sorting","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","title"
 ,1000,4010,"pages",4010,0,0,0,0,2,0,0,0,0,0,"EN Hotel 1000"
@@ -535,6 +540,9 @@
 ,"b3ace6f5b7958a645f83a51ea3f4eae2","pages",6010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,1,0,"tx_testrootlineutility_hotel",1701,,0,1712700000,2147483647,0,0,
 ,"cacbde8895da162fb589f59e20aa3779","pages",6010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,2,0,"tx_testrootlineutility_hotel",1702,,0,0,1713564000,0,0,
 ,"f3c1d276bbd7b5948c2e786543ed6c7a","pages",6010,"tx_testrootlineutility_hotels",0,0,2147483647,0,,,,3,0,"tx_testrootlineutility_hotel",1703,,0,1712700000,1713564000,0,0,
+,"aef2486818a5f9e6ba834290a40fa9ba","pages","9000","mount_pid",0,0,2147483647,0,,,,0,0,"pages","1000",,0,0,2147483647,0,0,
+,"8ef50f2c590e77c9dcfd41520f8ed7c5","pages","9010","mount_pid",0,0,2147483647,0,,,,0,0,"pages","1001",,0,0,2147483647,0,0,
+,"111a10b520d3e3d5b3a3b4e2a57bd53c","pages","9020","mount_pid",0,0,2147483647,0,,,,0,0,"pages","1010",,0,0,2147483647,0,0,
 ,"8b2833cac7ba1bdc55ab93e773586393","sys_category",10,"parent",0,0,2147483647,0,,,,0,0,"sys_category",1,,0,0,2147483647,0,0,
 ,"d512890fbd41f10ebb0656b91670f7ad","sys_category",10,"items",0,0,2147483647,0,,,,0,0,"pages",3010,"categories",0,0,2147483647,0,2,
 ,"0d8ae19562d216faaa695827b0cf7674","sys_category",10,"items",0,0,2147483647,0,,,,1,0,"pages",3020,"categories",0,0,2147483647,0,2,

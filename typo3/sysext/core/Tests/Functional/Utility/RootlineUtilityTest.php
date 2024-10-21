@@ -29,7 +29,9 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -58,7 +60,16 @@ final class RootlineUtilityTest extends FunctionalTestCase
                 $this->buildLanguageConfiguration('FR', '/fr/', ['EN']),
             ]
         );
+        $this->writeSiteConfiguration(
+            'second',
+            $this->buildSiteConfiguration(2, 'https://other.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
         self::importCSVDataSet(__DIR__ . '/Fixtures/RootlineUtilityImport.csv');
+        $this->setUpFrontendRootPage(1, [], ['config' => '# rootpage 1']);
+        $this->setUpFrontendRootPage(2, [], ['config' => '# rootpage 2']);
     }
 
     private function filterExpectedValues(array $incomingData, array $fields): array
@@ -1569,5 +1580,68 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(2));
         (new RootlineUtility(8020, '', $context))->get();
+    }
+
+    #[Test]
+    public function mountPageReplaceResolvedExpectedSiteRoot(): void
+    {
+        $testFields = ['uid', 'pid', 'is_siteroot', '_MOUNT_OL', '_MOUNT_PAGE', '_MOUNTED_FROM', '_MP_PARAM'];
+        $expected = [
+            2 => [
+                'uid' => 1001,
+                'pid' => 1000,
+                'is_siteroot' => 0,
+                '_MOUNT_OL' => true,
+                '_MOUNT_PAGE' =>
+                    [
+                        'uid' => 9010,
+                        'pid' => 9000,
+                        'title' => 'RP2 Parent 9000 Sub 10',
+                    ],
+                '_MOUNTED_FROM' => 1001,
+                '_MP_PARAM' => '1001-9010',
+            ],
+            1 => [
+                'uid' => 9000,
+                'pid' => 2,
+                'is_siteroot' => 0,
+            ],
+            0 => [
+                'uid' => 2,
+                'pid' => 0,
+                'is_siteroot' => 1,
+            ],
+        ];
+        $result = (new RootlineUtility(1001, '1001-9010'))->get();
+        self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+        self::assertSame('second', GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
+    }
+
+    #[Test]
+    public function mountPageResolvedExpectedSiteRoot(): void
+    {
+        $testFields = ['uid', 'pid', 'is_siteroot', '_MOUNT_OL', '_MOUNT_PAGE', '_MOUNTED_FROM', '_MP_PARAM'];
+        $expected = [
+            2 => [
+                'uid' => 9020,
+                'pid' => 9000,
+                'is_siteroot' => 0,
+                '_MOUNTED_FROM' => 1010,
+                '_MP_PARAM' => '1010-9020',
+            ],
+            1 => [
+                'uid' => 9000,
+                'pid' => 2,
+                'is_siteroot' => 0,
+            ],
+            0 => [
+                'uid' => 2,
+                'pid' => 0,
+                'is_siteroot' => 1,
+            ],
+        ];
+        $result = (new RootlineUtility(1010, '1010-9020'))->get();
+        self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+        self::assertSame('second', GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
     }
 }

@@ -426,10 +426,13 @@ class RootlineUtility
         $parentPageId = $page['pid'];
         $workspaceId = $this->workspaceUid;
         if ($this->isMountedPage($pageId)) {
+            // If the current page is a mounted (according to the MP parameter) handle the mount-point
             $page = $this->getRecordArray($pageId);
             $mountPoint = $this->getRecordArray($this->parsedMountPointParameters[$pageId]);
             $page = $this->processMountedPage($page, $mountPoint);
-            $parentPageId = $page['pid'];
+            $parentPageId = $mountPoint['pid'];
+            // Anyhow after reaching the mount-point, we have to go up that rootline
+            unset($this->parsedMountPointParameters[$this->pageUid]);
         }
         $rootline = $this->getRootlineFromRuntimeCache($parentPageId);
         if (!is_array($rootline)) {
