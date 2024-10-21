@@ -37,8 +37,9 @@ three options:
 *   :typoscript:`slideMode = collectReverse`- same as "collect" but in the
     opposite order
 
-With this information added, a new DataProcessor :typoscript:"page-content"
-(:php:`PageContentFetchingProcessor`) is introduced for the frontend rendering,
+With this information added, a new DataProcessor :typoscript:`page-content`
+(:php:`\TYPO3\CMS\Frontend\DataProcessing\PageContentFetchingProcessor`)
+is introduced for the frontend rendering,
 which fetches all content for a page and respecting the settings from the
 page layout.
 
