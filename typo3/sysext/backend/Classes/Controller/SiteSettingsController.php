@@ -326,7 +326,7 @@ readonly class SiteSettingsController
             return $title;
         }
 
-        return '(unkown)';
+        return '(unknown)';
     }
 
     protected function getLanguageService(): LanguageService
