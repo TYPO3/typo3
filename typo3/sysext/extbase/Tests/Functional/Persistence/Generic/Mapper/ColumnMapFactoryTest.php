@@ -231,9 +231,6 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
     {
         $columnName = 'folder';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
-        $expectedColumnMap = new ColumnMap($columnName);
-        $expectedColumnMap->setType(TableColumnType::FOLDER);
-        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
         yield 'columns configuration is initialized for type folder' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -242,14 +239,86 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
                 ],
             ],
             'propertyName' => $propertyName,
-            'expectedColumnMap' => $expectedColumnMap,
+            'expectedRelationType' => Relation::HAS_MANY,
+        ];
+        yield 'folder with maxitems > 1' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                    'maxitems' => 5,
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedRelationType' => Relation::HAS_MANY,
+        ];
+        yield 'folder with maxitems = 1' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                    'maxitems' => 1,
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedRelationType' => Relation::HAS_ONE,
+        ];
+        yield 'folder with relationship = oneToOne' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                    'relationship' => 'oneToOne',
+                    'maxitems' => 5,
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedRelationType' => Relation::HAS_ONE,
+        ];
+        yield 'folder with relationship = manyToOne' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                    'relationship' => 'manyToOne',
+                    'maxitems' => 5,
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedRelationType' => Relation::HAS_ONE,
+        ];
+        yield 'folder with relationship = manyToMany and maxitems = 1' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                    'relationship' => 'manyToMany', // invalid for this type
+                    'maxitems' => 1,
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedRelationType' => Relation::HAS_ONE,
+        ];
+        yield 'folder with relationship = manyToMany' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                    'relationship' => 'manyToMany', // invalid for this type
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedRelationType' => Relation::HAS_MANY,
         ];
     }
 
     #[DataProvider('createWithFolderTypeDataProvider')]
     #[Test]
-    public function createWithFolderType(string $columnName, array $columnConfiguration, string $propertyName, ColumnMap $expectedColumnMap): void
+    public function createWithFolderType(string $columnName, array $columnConfiguration, string $propertyName, Relation $expectedRelationType): void
     {
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::FOLDER);
+        $expectedColumnMap->setTypeOfRelation($expectedRelationType);
         self::assertEquals(
             $expectedColumnMap,
             $this->columnMapFactory->create($this->fieldTypeFactory->createFieldType($columnName, $columnConfiguration, 'virtual', new RelationMap()), $propertyName, ColumnMapFactoryEntityFixture::class)

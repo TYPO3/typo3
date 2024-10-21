@@ -78,11 +78,18 @@ readonly class ColumnMapFactory
     protected function setRelations(ColumnMap $columnMap, FieldTypeInterface $field, ?string $type, ?string $elementType): ColumnMap
     {
         $columnConfiguration = $field->getConfiguration();
-        if ($field instanceof FolderFieldType
-            && !in_array((string)($columnConfiguration['relationship'] ?? ''), ['oneToOne', 'manyToOne'], true)
-            && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1)
-        ) {
-            $columnMap->setTypeOfRelation(Relation::HAS_MANY);
+        if ($field instanceof FolderFieldType) {
+            // Folder is a special case which always has a relation to one or many "folders".
+            // In case "maxitems" is set to > 1 and relationship is not explicitly set to "*toOne"
+            // it's HAS_MANY, in all other cases it's HAS_ONE. It can never belong to many.
+            // @todo  we should get rid of the "maxitems" and rely purely on the evaluated relationship type
+            if (!in_array((string)($columnConfiguration['relationship'] ?? ''), ['oneToOne', 'manyToOne'], true)
+                && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1)
+            ) {
+                $columnMap->setTypeOfRelation(Relation::HAS_MANY);
+            } else {
+                $columnMap->setTypeOfRelation(Relation::HAS_ONE);
+            }
             return $columnMap;
         }
 
