@@ -194,7 +194,7 @@ abstract class AbstractRenderable implements RenderableInterface, VariableRender
      *
      * @throws ValidatorPresetNotFoundException
      */
-    protected function createValidator(string $validatorIdentifier, array $options = []): ?ValidatorInterface
+    public function createValidator(string $validatorIdentifier, array $options = []): ?ValidatorInterface
     {
         $validatorsDefinition = $this->getRootForm()->getValidatorsDefinition();
         if (isset($validatorsDefinition[$validatorIdentifier]) && is_array($validatorsDefinition[$validatorIdentifier]) && isset($validatorsDefinition[$validatorIdentifier]['implementationClassName'])) {
