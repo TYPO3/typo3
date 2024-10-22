@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -151,9 +152,12 @@ class DataMapFactory implements SingletonInterface
             }
         }
         $dataMap = GeneralUtility::makeInstance(DataMap::class, $className, $tableName, $recordType, $subclasses);
-        $dataMap = $this->addMetaDataColumnNames($dataMap, $tableName);
-
-        foreach ($this->tcaSchemaFactory->get($tableName)->getFields() as $columnName => $columnDefinition) {
+        if (!$this->tcaSchemaFactory->has($tableName)) {
+            return $dataMap;
+        }
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        $dataMap = $this->addMetaDataColumnNames($dataMap, $schema);
+        foreach ($schema->getFields() as $columnName => $columnDefinition) {
             $propertyName = $fieldNameToPropertyNameMapping[$columnName]
                 ?? GeneralUtility::underscoredToLowerCamelCase($columnName);
             $dataMap->addColumnMap(
@@ -188,12 +192,8 @@ class DataMapFactory implements SingletonInterface
         return $tableName;
     }
 
-    protected function addMetaDataColumnNames(DataMap $dataMap, string $tableName): DataMap
+    protected function addMetaDataColumnNames(DataMap $dataMap, TcaSchema $schema): DataMap
     {
-        if (!$this->tcaSchemaFactory->has($tableName)) {
-            return $dataMap;
-        }
-        $schema = $this->tcaSchemaFactory->get($tableName);
         $dataMap->setPageIdColumnName('pid');
         if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
             $dataMap->setModificationDateColumnName((string)$schema->getCapability(TcaSchemaCapability::UpdatedAt));
