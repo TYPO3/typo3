@@ -13,7 +13,7 @@ Description
 
 The following PHP classes that have previously been marked as deprecated with v13 have been removed:
 
-- :php:``
+- :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus`
 
 The following PHP classes have been declared :php:`final`:
 

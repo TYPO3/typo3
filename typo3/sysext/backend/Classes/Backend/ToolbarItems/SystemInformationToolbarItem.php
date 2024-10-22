@@ -21,7 +21,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
-use TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus as DeprecatedInformationStatus;
 use TYPO3\CMS\Backend\Toolbar\InformationStatus;
 use TYPO3\CMS\Backend\Toolbar\RequestAwareToolbarItemInterface;
 use TYPO3\CMS\Backend\Toolbar\ToolbarItemInterface;
@@ -66,7 +65,7 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
      * This is a callback method for signal receivers.
      *
      * @param string $text The text to be displayed
-     * @param string|InformationStatus $status The status of this system message
+     * @param InformationStatus $status The status of this system message
      * @param int $count Will be added to the total count
      * @param string $module The associated module
      * @param string $params Query string with additional parameters
@@ -75,30 +74,20 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     {
         $this->systemMessageTotalCount += $count;
 
-        if (is_string($status)) {
-            trigger_error(
-                'Using a string of the non-native enumeration ' . DeprecatedInformationStatus::class . ' for $status '
-                . 'in SystemInformationToolbarItem->addSystemMessage() has been deprecated and will stop working in '
-                . 'TYPO3 v14.0. Use the native ' . InformationStatus::class . ' instead.',
-                E_USER_DEPRECATED
-            );
-            $messageSeverity = InformationStatus::tryFrom($status) ?? InformationStatus::OK;
-        } elseif ($status instanceof InformationStatus) {
-            $messageSeverity = $status;
-        } else {
-            $messageSeverity = InformationStatus::OK;
+        if (!$status instanceof InformationStatus) {
+            $status = InformationStatus::OK;
         }
 
         // define the severity for the badge
-        if ($messageSeverity->isGreaterThan($this->highestSeverity)) {
-            $this->highestSeverity = $messageSeverity;
+        if ($status->isGreaterThan($this->highestSeverity)) {
+            $this->highestSeverity = $status;
         }
 
         $this->systemMessages[] = [
             'module' => $module,
             'params' => $params,
             'count' => $count,
-            'status' => $messageSeverity->value,
+            'status' => $status->value,
             'text' => $text,
         ];
     }
@@ -110,19 +99,11 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
      * @param string $title The title of this system information, typically a LLL:EXT:... label string
      * @param string $value The associated value
      * @param string $iconIdentifier The icon identifier
-     * @param string|InformationStatus $status The status of this system information
+     * @param InformationStatus $status The status of this system information
      */
     public function addSystemInformation($title, $value, $iconIdentifier, $status = InformationStatus::NOTICE): void
     {
-        if (is_string($status)) {
-            trigger_error(
-                'Using a string of the non-native enumeration ' . DeprecatedInformationStatus::class . ' for $status '
-                . 'in SystemInformationToolbarItem->addSystemInformation() has been deprecated and will stop working in '
-                . 'TYPO3 v14.0. Use the native ' . InformationStatus::class . ' instead.',
-                E_USER_DEPRECATED
-            );
-            $status = InformationStatus::tryFrom($status) ?? InformationStatus::NOTICE;
-        } elseif (!$status instanceof InformationStatus) {
+        if (!$status instanceof InformationStatus) {
             $status = InformationStatus::OK;
         }
 
@@ -280,8 +261,8 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     {
         $applicationContext = Environment::getContext();
         $this->systemInformation[] = [
-            'title'  => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.applicationcontext',
-            'value'  => (string)$applicationContext,
+            'title' => 'LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.sysinfo.applicationcontext',
+            'value' => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::OK->value : InformationStatus::WARNING->value,
             'iconIdentifier' => 'information-application-context',
         ];

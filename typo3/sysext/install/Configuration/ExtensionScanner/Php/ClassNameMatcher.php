@@ -2413,6 +2413,7 @@ return [
         'restFiles' => [
             'Deprecation-101174-InformationStatusClass.rst',
             'Feature-101174-InformationStatus.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface' => [
