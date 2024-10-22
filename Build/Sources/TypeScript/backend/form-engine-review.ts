@@ -13,7 +13,6 @@
 
 import 'bootstrap';
 import DocumentService from '@typo3/core/document-service';
-import FormEngine from '@typo3/backend/form-engine';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
@@ -25,7 +24,7 @@ import { PostValidationEvent } from '@typo3/backend/form-engine-validation';
  * Enables interaction with record fields that need review
  * @exports @typo3/backend/form-engine-review
  */
-class FormEngineReview {
+export class FormEngineReview {
 
   private readonly toggleButtonClass: string = 't3js-toggle-review-panel';
   private readonly labelSelector: string = '.t3js-formengine-label';
@@ -34,15 +33,37 @@ class FormEngineReview {
   /**
    * The constructor, set the class properties default values
    */
-  constructor() {
+  constructor(
+    private readonly formElement: HTMLFormElement
+  ) {
     this.invalidFields = new Set();
     this.initialize();
   }
 
   /**
+   * Initialize the events
+   */
+  private initialize(): void {
+    this.formElement.addEventListener('t3-formengine-postfieldvalidation', (e: CustomEvent<PostValidationEvent>): void => {
+      const field = e.detail.field;
+      if (e.detail.isValid) {
+        this.invalidFields.delete(field);
+      } else {
+        this.invalidFields.add(field);
+      }
+      this.checkForReviewableField();
+    });
+
+    DocumentService.ready().then((): void => {
+      this.attachButtonToModuleHeader();
+      this.checkForReviewableField();
+    });
+  }
+
+  /**
    * Renders an invisible button to toggle the review panel into the least possible toolbar
    */
-  public attachButtonToModuleHeader(): void {
+  private attachButtonToModuleHeader(): void {
     const leastButtonBar: HTMLElement = document.querySelector('.t3js-module-docheader-bar-buttons').lastElementChild.querySelector('[role="toolbar"]');
 
     const icon = document.createElement('typo3-backend-icon');
@@ -60,28 +81,9 @@ class FormEngineReview {
   }
 
   /**
-   * Initialize the events
-   */
-  public initialize(): void {
-    FormEngine.formElement.addEventListener('t3-formengine-postfieldvalidation', (e: CustomEvent<PostValidationEvent>): void => {
-      const field = e.detail.field;
-      if (e.detail.isValid) {
-        this.invalidFields.delete(field);
-      } else {
-        this.invalidFields.add(field);
-      }
-      this.checkForReviewableField();
-    });
-
-    DocumentService.ready().then((): void => {
-      this.attachButtonToModuleHeader();
-    });
-  }
-
-  /**
    * Checks if fields have failed validation. In such case, the markup is rendered and the toggle button is unlocked.
    */
-  public checkForReviewableField(): void {
+  private checkForReviewableField(): void {
     const toggleButton: HTMLElement = document.querySelector('.' + this.toggleButtonClass);
     if (toggleButton === null) {
       return;
@@ -125,7 +127,7 @@ class FormEngineReview {
   /**
    * Finds the field in the form and focuses it
    */
-  public switchToField(e: Event, inputField: HTMLElement): void {
+  private switchToField(e: Event, inputField: HTMLElement): void {
     e.preventDefault();
 
     // iterate possibly nested tab panels
@@ -141,6 +143,3 @@ class FormEngineReview {
     inputField.focus();
   }
 }
-
-// create an instance and return it
-export default new FormEngineReview();

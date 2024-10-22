@@ -25,6 +25,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import DomHelper from '@typo3/backend/utility/dom-helper';
 import { selector } from '@typo3/core/literals';
 import SubmitInterceptor from '@typo3/backend/form/submit-interceptor';
+import { FormEngineReview } from '@typo3/backend/form-engine-review';
 
 type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
 type CustomEvaluationCallback = (value: string) => string;
@@ -62,6 +63,8 @@ export default class FormEngineValidation {
 
     // Initialize input fields
     FormEngineValidation.initializeInputFields();
+
+    new FormEngineReview(formElement);
 
     // Bind to field changes
     new RegularEvent('change', (e: Event, target: FormEngineFieldElement): void => {
