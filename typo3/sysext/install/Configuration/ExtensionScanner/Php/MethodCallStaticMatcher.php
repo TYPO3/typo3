@@ -1647,6 +1647,7 @@ return [
         'maximumNumberOfArguments' => 10,
         'restFiles' => [
             'Deprecation-104662-BackendUtilityThumbCode.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

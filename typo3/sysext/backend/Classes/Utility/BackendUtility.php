@@ -35,14 +35,9 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
-use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconSize;
-use TYPO3\CMS\Core\Imaging\ImageDimension;
-use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
-use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -1033,126 +1028,6 @@ class BackendUtility
         }
 
         return $fileReferences;
-    }
-
-    /**
-     * Returns a linked image-tag for thumbnail(s)/fileicons/truetype-font-previews from a database row with sys_file_references
-     * All $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] extension are made to thumbnails + ttf file (renders font-example)
-     * Thumbnails are linked to FileInterface->getPublicUrl().
-     *
-     * @param array $row Row is the database row from the table, $table.
-     * @param string $table Table name for $row (present in TCA)
-     * @param string $field Field is pointing to the connecting field of sys_file_references
-     * @param string $backPath Back path prefix for image tag src="" field
-     * @param string $thumbScript UNUSED since FAL
-     * @param string $uploaddir UNUSED since FAL
-     * @param int $abs UNUSED
-     * @param string $tparams Optional: $tparams is additional attributes for the image tags
-     * @param int|string $size Optional: $size is [w]x[h] of the thumbnail. 64 is default.
-     * @param bool $linkInfoPopup Whether to wrap with a link opening the info popup
-     * @return string Thumbnail image tag.
-     * @deprecated Will be removed in TYPO3 v14
-     */
-    public static function thumbCode(
-        $row,
-        $table,
-        $field,
-        $backPath = '',
-        $thumbScript = '',
-        $uploaddir = null,
-        $abs = 0,
-        $tparams = '',
-        $size = '',
-        $linkInfoPopup = true
-    ) {
-        trigger_error('BackendUtility::thumbCode() will be removed in TYPO3 v14.', E_USER_DEPRECATED);
-        $size = (int)(trim((string)$size) ?: 64);
-        $targetDimension = new ImageDimension($size, $size);
-        $thumbData = '';
-        $fileReferences = static::resolveFileReferences($table, $field, $row);
-        // FAL references
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        if ($fileReferences !== null) {
-            foreach ($fileReferences as $fileReferenceObject) {
-                // Do not show previews of hidden references
-                if ($fileReferenceObject->getProperty('hidden')) {
-                    continue;
-                }
-                $fileObject = $fileReferenceObject->getOriginalFile();
-
-                if ($fileObject->isMissing()) {
-                    $thumbData .= ''
-                        . '<div class="preview-thumbnails-element">'
-                            . '<div class="preview-thumbnails-element-image">'
-                                . $iconFactory
-                                    ->getIcon('mimetypes-other-other', IconSize::MEDIUM, 'overlay-missing')
-                                    ->setTitle(static::getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:warning.file_missing') . ' ' . $fileObject->getName())
-                                    ->render()
-                            . '</div>'
-                        . '</div>';
-                    continue;
-                }
-
-                // Preview web image or media elements
-                if ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails']
-                    && ($fileReferenceObject->getOriginalFile()->isImage() || $fileReferenceObject->getOriginalFile()->isMediaFile())
-                ) {
-                    $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
-                    $cropArea = $cropVariantCollection->getCropArea();
-                    $taskType = ProcessedFile::CONTEXT_IMAGEPREVIEW;
-                    $processingConfiguration = [
-                        'width' => $targetDimension->getWidth(),
-                        'height' => $targetDimension->getHeight(),
-                    ];
-                    if (!$cropArea->isEmpty()) {
-                        $taskType = ProcessedFile::CONTEXT_IMAGECROPSCALEMASK;
-                        $processingConfiguration = [
-                            'maxWidth' => $targetDimension->getWidth(),
-                            'maxHeight' => $targetDimension->getHeight(),
-                            'crop' => $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject),
-                        ];
-                    }
-                    $processedImage = $fileObject->process($taskType, $processingConfiguration);
-                    $attributes = [
-                        'src' => $processedImage->getPublicUrl() ?? '',
-                        'width' => $processedImage->getProperty('width'),
-                        'height' => $processedImage->getProperty('height'),
-                        'alt' => $fileReferenceObject->getAlternative() ?: $fileReferenceObject->getName(),
-                        'loading' => 'lazy',
-                    ];
-                    $imgTag = '<img ' . GeneralUtility::implodeAttributes($attributes, true) . $tparams . '/>';
-                } else {
-                    // Icon
-                    $imgTag = $iconFactory
-                        ->getIconForResource($fileObject, IconSize::MEDIUM)
-                        ->setTitle($fileObject->getName())
-                        ->render();
-                }
-                if ($linkInfoPopup) {
-                    // relies on module 'TYPO3/CMS/Backend/ActionDispatcher'
-                    $attributes = GeneralUtility::implodeAttributes([
-                        'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
-                        'data-dispatch-args-list' => '_FILE,' . (int)$fileObject->getUid(),
-                    ], true);
-                    $thumbData .= ''
-                        . '<div class="preview-thumbnails-element">'
-                            . '<a href="#" ' . $attributes . '>'
-                                . '<div class="preview-thumbnails-element-image">'
-                                    . $imgTag
-                                . '</div>'
-                            . '</a>'
-                        . '</div>';
-                } else {
-                    $thumbData .= ''
-                        . '<div class="preview-thumbnails-element">'
-                            . '<div class="preview-thumbnails-element-image">'
-                                . $imgTag
-                            . '</div>'
-                        . '</div>';
-                }
-            }
-        }
-        return $thumbData ? '<div class="preview-thumbnails" style="--preview-thumbnails-size: ' . $size . 'px">' . $thumbData . '</div>' : '';
     }
 
     /**
