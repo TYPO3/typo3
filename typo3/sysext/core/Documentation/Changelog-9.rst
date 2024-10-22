@@ -1,5 +1,3 @@
-:orphan:
-
 .. include:: /Includes.rst.txt
 
 ============
@@ -18,3 +16,13 @@ Every change to the TYPO3 Core which might affect your site is documented here.
    Changelog/9.2/Index
    Changelog/9.1/Index
    Changelog/9.0/Index
+
+
+Also available
+--------------
+
+..  toctree::
+    :maxdepth: 1
+    :titlesonly:
+
+    Changelog-9-combined
