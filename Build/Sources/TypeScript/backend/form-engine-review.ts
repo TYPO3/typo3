@@ -17,6 +17,7 @@ import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
 import { Popover as BootstrapPopover, Tab as BootstrapTab } from 'bootstrap';
+import DomHelper from '@typo3/backend/utility/dom-helper';
 
 /**
  * Module: @typo3/backend/form-engine-review
@@ -100,12 +101,15 @@ export class FormEngineReview {
       erroneousListGroup.classList.add('list-group');
 
       for (const invalidField of invalidFields) {
+        const fieldContainer = invalidField.closest('.t3js-formengine-validation-marker');
         const relatedInputField = invalidField.querySelector('[data-formengine-validation-rules]') as HTMLElement;
         const link = document.createElement('a');
         link.classList.add('list-group-item');
         link.href = '#';
         link.textContent = invalidField.querySelector(this.labelSelector)?.textContent || '';
-        link.addEventListener('click', (e: Event) => this.switchToField(e, relatedInputField));
+        link.addEventListener('click', (e: Event) => {
+          this.switchToField(e, fieldContainer, relatedInputField)
+        });
 
         erroneousListGroup.append(link);
       }
@@ -124,7 +128,7 @@ export class FormEngineReview {
   /**
    * Finds the field in the form and focuses it
    */
-  private switchToField(e: Event, inputField: HTMLElement): void {
+  private switchToField(e: Event, fieldContainer: Element, inputField: HTMLElement): void {
     e.preventDefault();
 
     // iterate possibly nested tab panels
@@ -137,6 +141,13 @@ export class FormEngineReview {
       ref = ref.parentElement;
     }
 
-    inputField.focus();
+    // Check if the field is visible to the user. If this is the case, the field will be focussed, triggering a scroll
+    // to the input field. If checkVisibility() returns false, the input field is not visible, therefore scroll the
+    // field container into the view instead.
+    if (inputField.checkVisibility()) {
+      inputField.focus();
+    } else {
+      DomHelper.scrollIntoViewIfNeeded(fieldContainer);
+    }
   }
 }
