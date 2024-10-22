@@ -2180,6 +2180,16 @@ class BackendUtility
                             true
                         );
                         break;
+                    case 'updateBackendLanguage':
+                        $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
+                            'typo3:backend-language:update',
+                            [
+                                'language' => $val['parameter']['language'],
+                                'direction' => $val['parameter']['direction'] ?? null,
+                            ],
+                            true
+                        );
+                        break;
                     case 'updateSystemInformationMenu':
                         $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
                             'typo3:system-information-menu:update',
