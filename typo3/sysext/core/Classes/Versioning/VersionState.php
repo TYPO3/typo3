@@ -60,32 +60,4 @@ enum VersionState: int
     {
         return $this !== self::NEW_PLACEHOLDER && $this !== self::DEFAULT_STATE;
     }
-
-    /**
-     * Cast value to enumeration type
-     *
-     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.0.
-     */
-    public static function cast(mixed $value): ?self
-    {
-        trigger_error(
-            __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() instead.',
-            E_USER_DEPRECATED,
-        );
-        return $value instanceof self ? $value : self::tryFrom((int)$value);
-    }
-
-    /**
-     * Compare if the value of the current object value equals the given value
-     *
-     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.0.
-     */
-    public function equals(mixed $value): bool
-    {
-        trigger_error(
-            __METHOD__ . ' has been marked as deprecated in TYPO3 v13. Use VersionState::tryFrom() and native comparison logic instead.',
-            E_USER_DEPRECATED,
-        );
-        return $this === ($value instanceof self ? $value : self::tryFrom((int)$value));
-    }
 }
