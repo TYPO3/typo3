@@ -172,7 +172,6 @@ class FormResultCompiler
                     (string)$uriBuilder->buildUriFromRoute('wizard_element_browser'),
                     $this->doSaveFieldName
                 );
-        $this->javaScriptModules[] = JavaScriptModuleInstruction::create('@typo3/backend/form-engine-review.js');
 
         foreach ($this->javaScriptModules as $module) {
             $pageRenderer->getJavaScriptRenderer()->addJavaScriptModuleInstruction($module);
