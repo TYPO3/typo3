@@ -130,6 +130,17 @@ class SetupModuleController
         if ($this->backendTitleFormatChanged || $this->settingsAreResetToDefault) {
             BackendUtility::setUpdateSignal('updateTitleFormat', $this->getBackendUser()->uc['backendTitleFormat'] ?? 'titleFirst');
         }
+        if ($this->languageUpdate) {
+            $this->getLanguageService()->init($this->getBackendUser()->user['lang'] ?? 'default');
+            $locale = $this->getLanguageService()->getLocale();
+            if ($locale !== null) {
+                $parameters = [
+                    'language' => $locale->getLanguageCode(),
+                    'direction' => $locale->isRightToLeftLanguageDirection() ? 'rtl' : null,
+                ];
+                BackendUtility::setUpdateSignal('updateBackendLanguage', $parameters);
+            }
+        }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $this->addFlashMessages($view);
         $this->getButtons($view);
