@@ -102,6 +102,12 @@ The following class constants have been dropped:
 - :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_MEDIUM`
 - :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_MEGA`
 - :php:`\TYPO3\CMS\Core\Imaging\Icon::SIZE_SMALL`
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_APPLICATION`
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_AUDIO`
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_IMAGE`
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_TEXT`
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_UNKNOWN`
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_VIDEO`
 
 The following global option handling have been dropped and are ignored:
 

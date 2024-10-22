@@ -68,47 +68,6 @@ abstract class AbstractFile implements FileInterface
      */
     protected $deleted = false;
 
-    /**
-     * any other file
-     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::UNKNOWN instead
-     */
-    public const FILETYPE_UNKNOWN = 0;
-
-    /**
-     * Any kind of text
-     * @see http://www.iana.org/assignments/media-types/text
-     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::TEXT instead
-     */
-    public const FILETYPE_TEXT = 1;
-
-    /**
-     * Any kind of image
-     * @see http://www.iana.org/assignments/media-types/image
-     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::IMAGE instead
-     */
-    public const FILETYPE_IMAGE = 2;
-
-    /**
-     * Any kind of audio file
-     * @see http://www.iana.org/assignments/media-types/audio
-     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::AUDIO instead
-     */
-    public const FILETYPE_AUDIO = 3;
-
-    /**
-     * Any kind of video
-     * @see http://www.iana.org/assignments/media-types/video
-     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::VIDEO instead
-     */
-    public const FILETYPE_VIDEO = 4;
-
-    /**
-     * Any kind of application
-     * @see http://www.iana.org/assignments/media-types/application
-     * @deprecated will be removed in TYPO3 v14, use TYPO3\CMS\Core\Resource\FileType::APPLICATION instead
-     */
-    public const FILETYPE_APPLICATION = 5;
-
     /******************
      * VARIOUS FILE PROPERTY GETTERS
      ******************/
