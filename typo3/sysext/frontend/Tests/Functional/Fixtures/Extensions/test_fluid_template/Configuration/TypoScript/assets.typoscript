@@ -1,6 +1,8 @@
 page = PAGE
 page.10 = FLUIDTEMPLATE
 page.10 {
-  template = TEXT
-  template.value = <f:section name="HeaderAssets">Foo Header</f:section><f:section name="FooterAssets">Foo Footer</f:section>
+  templateName = AssetsSections
+  templateRootPaths {
+    10 = EXT:test_fluid_template/Resources/Private/Templates
+  }
 }

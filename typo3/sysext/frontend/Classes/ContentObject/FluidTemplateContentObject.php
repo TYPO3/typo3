@@ -135,9 +135,11 @@ class FluidTemplateContentObject extends AbstractContentObject
         $variables = $this->contentDataProcessor->process($this->cObj, $conf, $variables);
         $view->assignMultiple($variables);
 
+        // Rendering the view internally set's the template (paths). This is required for following asset rendering
+        $content = $view->render($templateFilename);
+
         $this->renderFluidTemplateAssetsIntoPageRenderer($view, $variables);
 
-        $content = $view->render($templateFilename);
         if (isset($conf['stdWrap.'])) {
             return $this->cObj->stdWrap($content, $conf['stdWrap.']);
         }
