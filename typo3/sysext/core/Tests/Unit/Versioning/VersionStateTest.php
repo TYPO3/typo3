@@ -67,4 +67,19 @@ final class VersionStateTest extends UnitTestCase
     {
         self::assertSame($expectation, VersionState::MOVE_POINTER->equals($value));
     }
+
+    public static function canIndicatesPlaceholderDataProvider(): \Generator
+    {
+        yield [VersionState::DEFAULT_STATE, false];
+        yield [VersionState::NEW_PLACEHOLDER, false];
+        yield [VersionState::DELETE_PLACEHOLDER, true];
+        yield [VersionState::MOVE_POINTER, true];
+    }
+
+    #[DataProvider('canIndicatesPlaceholderDataProvider')]
+    #[Test]
+    public function canIndicatesPlaceholder(VersionState $state, bool $expectation): void
+    {
+        self::assertSame($expectation, $state->indicatesPlaceholder());
+    }
 }
