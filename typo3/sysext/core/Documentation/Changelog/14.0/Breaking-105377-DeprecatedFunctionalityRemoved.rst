@@ -154,9 +154,9 @@ The following global JavaScript function has been removed:
 
 - :js:``
 
-The following JavaScript module has been removed:
+The following JavaScript modules have been removed:
 
-- :js:`x`
+- :js:`@typo3/t3editor/*`
 
 The following JavaScript method behaviour has changed:
 

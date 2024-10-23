@@ -197,7 +197,6 @@ export default {
             '@typo3/lowlevel/': './typo3/sysext/lowlevel/Resources/Public/JavaScript/',
             '@typo3/opendocs/': './typo3/sysext/opendocs/Resources/Public/JavaScript/',
 
-            '@typo3/t3editor/': './typo3/sysext/backend/code-editor/Resources/Public/JavaScript/',
             'crelt': './typo3/sysext/backend/code-editor/Resources/Public/JavaScript/Contrib/crelt.js',
             'style-mod': './typo3/sysext/backend/code-editor/Resources/Public/JavaScript/Contrib/style-mod.js',
             'w3c-keyname': './typo3/sysext/backend/code-editor/Resources/Public/JavaScript/Contrib/w3c-keyname.js',
