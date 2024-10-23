@@ -1,0 +1,11 @@
+"typo3tests_contentelementb_collection"
+,"uid","pid","fieldA","foreign_table_parent_uid","t3ver_oid","t3ver_wsid","sorting"
+,1,1,"lorem foo bar",260,0,0,1
+,2,1,"lorem foo bar 2",260,0,0,0
+"tt_content"
+,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_collection","CType"
+,260,1,0,0,2,"typo3tests_contentelementb"
+"sys_refindex"
+,"hash","tablename","recuid","field","sorting","workspace","ref_table","ref_uid"
+,"4a0b3d6b5dbe434c6d0c4571a08a9ae4","tt_content",260,"typo3tests_contentelementb_collection",1,0,"typo3tests_contentelementb_collection",1
+,"92c238672948a46154e0d92e554863d8","tt_content",260,"typo3tests_contentelementb_collection",0,0,"typo3tests_contentelementb_collection",2

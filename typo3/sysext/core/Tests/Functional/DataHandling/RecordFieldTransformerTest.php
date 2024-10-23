@@ -129,6 +129,35 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function canResolveFileReferencesWithChangedSorting(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/file_references_sorting.csv');
+        $dummyRecord = $this->createTestRecordObject(['media' => 2]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('media');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+
+        foreach ($result as $fileReference) {
+            self::assertInstanceOf(FileReference::class, $fileReference);
+            self::assertEquals('/kasper-skarhoj1.jpg', $fileReference->getIdentifier());
+        }
+
+        self::assertCount(2, $result);
+        self::assertInstanceOf(LazyFileReferenceCollection::class, $result);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertInstanceOf(LazyFileReferenceCollection::class, $resolvedRecord->get('media'));
+        self::assertInstanceOf(FileReference::class, $resolvedRecord->get('media')[0]);
+        self::assertEquals(2164, $resolvedRecord->get('media')[0]->getUid());
+        self::assertEquals(2163, $resolvedRecord->get('media')[1]->getUid());
+    }
+
+    #[Test]
     public function resolvesSingleFileReferenceWithoutMaxItems(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/file_references.csv');
@@ -267,6 +296,32 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection'));
         self::assertSame('lorem foo bar', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('fieldA'));
         self::assertSame('lorem foo bar 2', $resolvedRecord->get('typo3tests_contentelementb_collection')[1]->get('fieldA'));
+    }
+
+    #[Test]
+    public function canResolveCollectionsWithChangedSorting(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/collections_sorting.csv');
+        $dummyRecord = $this->createTestRecordObject(['typo3tests_contentelementb_collection' => 2]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_collection');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+
+        self::assertCount(2, $result);
+        self::assertInstanceOf(LazyRecordCollection::class, $result);
+        self::assertSame('lorem foo bar 2', $result[0]->get('fieldA'));
+        self::assertSame('lorem foo bar', $result[1]->get('fieldA'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertSame('lorem foo bar 2', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('fieldA'));
+        self::assertSame('lorem foo bar', $resolvedRecord->get('typo3tests_contentelementb_collection')[1]->get('fieldA'));
     }
 
     #[Test]
@@ -1094,7 +1149,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     /**
-     * Special case where a an empty Collection is returned, since the relation is invalid
+     * Special case where an empty Collection is returned, since the relation is invalid
      */
     #[Test]
     public function resolveSelectForeignTableToEmptyCollection(): void
@@ -1178,7 +1233,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function recordIdentitiyMapIsRespected(): void
+    public function recordIdentityMapIsRespected(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/select_foreign.csv');
         $dummyRecord = $this->createTestRecordObject([
