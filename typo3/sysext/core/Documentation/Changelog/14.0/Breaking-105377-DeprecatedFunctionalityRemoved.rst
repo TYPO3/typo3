@@ -48,6 +48,7 @@ The following PHP class methods that have previously been marked as deprecated w
 * :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setTableName()`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->returnWebmounts()`
 - :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent->getSize()`
+- :php:`\TYPO3\CMS\Fluid\View\TemplatePaths->fillDefaultsByPackageName()`
 
 The following PHP static class methods that have previously been marked as deprecated for v13 have been removed:
 

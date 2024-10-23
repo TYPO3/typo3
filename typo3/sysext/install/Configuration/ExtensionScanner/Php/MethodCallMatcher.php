@@ -6361,6 +6361,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-104764-FluidTemplatePaths-fillDefaultsByPackageName.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags' => [
