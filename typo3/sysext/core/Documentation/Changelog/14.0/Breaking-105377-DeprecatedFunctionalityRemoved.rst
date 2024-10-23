@@ -131,7 +131,8 @@ The following global variables have been removed:
 
 The following hooks have been removed:
 
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['X']['Y']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvHeader']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvRow']`
 
 The following single field configuration has been removed from TCA:
 

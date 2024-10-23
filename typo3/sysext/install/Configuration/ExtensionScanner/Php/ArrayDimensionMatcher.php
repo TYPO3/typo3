@@ -1195,12 +1195,14 @@ return [
         'restFiles' => [
             'Deprecation-102337-DeprecateHooksForRecordDownload.rst',
             'Feature-102337-IntroducePSR14EventModifyRecordListDownloadData.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList\'][\'customizeCsvRow\']' => [
         'restFiles' => [
             'Deprecation-102337-DeprecateHooksForRecordDownload.rst',
             'Feature-102337-IntroducePSR14EventModifyRecordListDownloadData.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

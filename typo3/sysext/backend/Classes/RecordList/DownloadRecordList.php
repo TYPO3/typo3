@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\RecordList;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Fetches all records like in the list module but returns them as array in order to allow
@@ -50,21 +49,9 @@ class DownloadRecordList
      */
     public function getHeaderRow(array $columnsToRender): array
     {
-        $columnsToRender = array_combine($columnsToRender, $columnsToRender);
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvHeader'] ?? [];
-        if (!empty($hooks)) {
-            trigger_error(
-                'The hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList\'][\'customizeCsvHeader\'] is deprecated and will be removed in TYPO3 v14. Use PSR-14 event TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadIsExecutedEvent instead.',
-                E_USER_DEPRECATED
-            );
-            $hookParameters = [
-                'fields' => &$columnsToRender,
-            ];
-            foreach ($hooks as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this->recordList);
-            }
-        }
-        return $columnsToRender;
+        // @todo: array_combine() was used in the initial revision already,
+        //        probably to filter out illegal values? Looks odd, but may be due to CSV quirks?
+        return array_combine($columnsToRender, $columnsToRender);
     }
 
     /**
@@ -140,22 +127,6 @@ class DownloadRecordList
                 } elseif ($columnName !== 'pid') {
                     $row[$columnName] = BackendUtility::getProcessedValueExtra($table, $columnName, $row[$columnName], 0, $row['uid'], false, 0, $row);
                 }
-            }
-        }
-        $hooks = $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvRow'] ?? [];
-        if (!empty($hooks)) {
-            trigger_error(
-                'The hook $GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList\'][\'customizeCsvRow\'] is deprecated and will be removed in TYPO3 v14. Use PSR-14 event TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadIsExecutedEvent instead.',
-                E_USER_DEPRECATED
-            );
-
-            $hookParameters = [
-                'databaseRow' => &$row,
-                'tableName' => $table,
-                'pageId' => $pageId,
-            ];
-            foreach ($hooks as $hookFunction) {
-                GeneralUtility::callUserFunction($hookFunction, $hookParameters, $this->recordList);
             }
         }
         return array_intersect_key($row, array_flip($columnsToRender));
