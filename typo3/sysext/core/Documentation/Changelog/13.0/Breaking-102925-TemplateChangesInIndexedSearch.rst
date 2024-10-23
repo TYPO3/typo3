@@ -51,7 +51,7 @@ JavaScript via :html:`<f:asset.script>`:
 ..  code-block:: html
 
     <f:sanitize.html>
-        <f:translate key="displayResults" arguments="{0: result.pagination.startRecordNumber, 1: result.pagination.endRecordNumber, 2: result.pagination.totalAmount}" />
+        <f:translate key="displayResults" arguments="{0: result.pagination.startRecordNumber, 1: result.pagination.endRecordNumber, 2: result.count}" />
     </f:sanitize.html>
 
 `is:pageBrowsing` has been replaced with a new Fluid partial file:
