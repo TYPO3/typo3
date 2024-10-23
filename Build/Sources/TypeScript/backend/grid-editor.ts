@@ -462,19 +462,16 @@ export class GridEditor extends LitElement {
       '  }\n' +
       '}\n';
 
-    this.previewAreaRef.value!.value = content;
+    const previewArea: HTMLTextAreaElement | undefined = this.previewAreaRef.value;
+    // Update previewArea value if instantiated
+    if (previewArea instanceof HTMLTextAreaElement) {
+      previewArea.value = content;
+    }
 
     // Update CodeMirror content if instantiated
-    // TODO: Find a nicer way to update CodeMirror state
-    const codemirror: any = this.codeMirrorRef.value!;
-    if (codemirror && codemirror.editorView) {
-      codemirror.editorView.dispatch({
-        changes: {
-          from: 0,
-          to: codemirror.editorView.viewState.state.doc.length,
-          insert: content
-        }
-      });
+    const codemirror: CodeMirrorElement | undefined = this.codeMirrorRef.value;
+    if (codemirror instanceof CodeMirrorElement) {
+      codemirror.setContent(content);
     }
   }
 
@@ -1057,8 +1054,9 @@ export class GridEditor extends LitElement {
     }
     new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
       entries.forEach(entry => {
-        const codemirror: any = this.codeMirrorRef.value!;
-        if (entry.intersectionRatio > 0 && codemirror) {
+        const codemirror: CodeMirrorElement | undefined = this.codeMirrorRef.value;
+        // Update CodeMirror if instantiated
+        if (entry.intersectionRatio > 0 && codemirror instanceof CodeMirrorElement) {
           codemirror.requestUpdate();
         }
       });
