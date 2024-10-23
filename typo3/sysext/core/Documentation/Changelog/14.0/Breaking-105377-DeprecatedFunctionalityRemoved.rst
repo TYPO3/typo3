@@ -36,6 +36,16 @@ The following PHP class aliases that have previously been marked as deprecated w
 
 The following PHP class methods that have previously been marked as deprecated with v13 have been removed:
 
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getData()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getFieldName()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getPageId()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getPageTsConfig()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getTableName()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setData()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setFieldName()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setPageId()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setPageTsConfig()`
+* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setTableName()`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->returnWebmounts()`
 - :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent->getSize()`
 
@@ -45,6 +55,7 @@ The following PHP static class methods that have previously been marked as depre
 
 The following methods changed signature according to previous deprecations in v13 at the end of the argument list:
 
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->__construct()` - All arguments are now mandatory
 - :php:`\TYPO3\CMS\Core\Imaging\IconFactory->getIcon()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Imaging\IconState|null`)
 
 The following public class properties have been dropped:
