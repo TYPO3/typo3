@@ -177,9 +177,10 @@ The following JavaScript modules have been removed:
 
 - :js:`@typo3/t3editor/*`
 
-The following JavaScript method behaviour has changed:
+The following JavaScript method behaviours have changed:
 
-- :js:`X.y()` always requires an :js:`X` to be passed as first argument
+- :js:`FormEngineValidation.markFieldAsChanged()` always requires :js:`HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement` to be passed as first argument
+- :js:`FormEngineValidation.validateField()` always requires :js:`HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement` to be passed as first argument
 
 The following JavaScript method has been removed:
 

@@ -16,7 +16,6 @@
  * Contains all JS functions related to TYPO3 TCEforms/FormEngineValidation
  * @internal
  */
-import $ from 'jquery';
 import { DateTime } from 'luxon';
 import Md5 from '@typo3/backend/hashing/md5';
 import Modal from '@typo3/backend/modal';
@@ -205,17 +204,7 @@ export default (function() {
   /**
    * Run validation for field
    */
-  FormEngineValidation.validateField = function(field: FormEngineFieldElement|JQuery, value?: string): string {
-    if (field instanceof $) {
-      // @deprecated
-      console.warn('Passing a jQuery element to FormEngineValidation.validateField() is deprecated and will be removed in TYPO3 v14.');
-      console.trace();
-      field = <FormEngineFieldElement>(field as JQuery).get(0);
-    }
-    if (!(field instanceof HTMLElement)) {
-      // Can be removed altogether with jQuery support in TYPO3 v14
-      return value;
-    }
+  FormEngineValidation.validateField = function(field: FormEngineFieldElement, value?: string): string {
     value = value || field.value || '';
 
     if (typeof field.dataset.formengineValidationRules === 'undefined') {
@@ -543,17 +532,7 @@ export default (function() {
   /**
    * Helper function to mark a field as changed.
    */
-  FormEngineValidation.markFieldAsChanged = function(field: FormEngineFieldElement|JQuery): void {
-    if (field instanceof $) {
-      // @deprecated
-      console.warn('Passing a jQuery element to FormEngineValidation.markFieldAsChanged() is deprecated and will be removed in TYPO3 v14.');
-      console.trace();
-      field = <FormEngineFieldElement>(field as JQuery).get(0);
-    }
-    if (!(field instanceof HTMLElement)) {
-      // Can be removed altogether with jQuery support in TYPO3 v14
-      return;
-    }
+  FormEngineValidation.markFieldAsChanged = function(field: FormEngineFieldElement): void {
     field.classList.add('has-change');
     const fieldLabel = field.closest('.t3js-formengine-palette-field')?.querySelector('.t3js-formengine-label');
     if (fieldLabel !== null) {
