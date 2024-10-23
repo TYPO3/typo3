@@ -1,6 +1,0 @@
-"sys_log",,,
-,"uid","details","log_data"
-,1,"Stage for record was changed to -10. Comment was: """"","a:0:{}"
-,2,"New version created of table '%s', uid '%s'. UID of new version is '%s'","a:3:{i:0;s:18:""sys_file_reference"";i:1;i:27421;i:2;i:27422;}"
-,3,"Record '%s' (%s) was deleted from page '%s' (%s)","a:5:{i:0;s:19:""gabrielle-bugat.png"";i:1;s:24:""sys_file_reference:32134"";i:2;s:10:""Management"";i:3;i:373;s:12:""originalUser"";i:41;}"
-,4,"Stage for record was changed to -20. Comment was: """"","a:1:{i:0;s:0:"""";}"

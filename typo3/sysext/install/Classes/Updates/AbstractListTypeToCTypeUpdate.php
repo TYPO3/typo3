@@ -174,9 +174,7 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
     }
 
     /**
-     * Returns true, if no legacy explicit_allowdeny be_groups configuration is found. Note, that we can not rely
-     * BackendGroupsExplicitAllowDenyMigration status here, since the update must also be executed for new
-     * TYPO3 v13+ installations, where BackendGroupsExplicitAllowDenyMigration is not required.
+     * Returns true, if no legacy explicit_allowdeny be_groups configuration is found.
      */
     protected function hasNoLegacyBackendGroupsExplicitAllowDenyConfiguration(): bool
     {

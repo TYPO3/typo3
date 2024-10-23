@@ -1,8 +1,0 @@
-"sys_filemounts",,,,,,,,,
-,"uid",pid,deleted,hidden,title,"sorting",identifier,base,path
-,1,0,0,0,Foobar,0,"",1,/foobar/
-,2,0,0,0,Empty path,0,"",1,""
-,3,0,0,0,Invalid base,0,"",0,"/barbaz/"
-,4,0,0,1,Hidden mount,0,"",2,/hidden/mount/
-,5,0,1,0,Deleted mount,0,"",2,/deleted/mount/
-,6,0,1,0,Identifier already set,0,"1:/bar/baz/",2,/foo/bar/

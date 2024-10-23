@@ -1,8 +1,0 @@
-"sys_file_collection",,,,,,,,,
-,"uid",pid,deleted,hidden,title,"type",folder_identifier,storage,folder
-,1,0,0,0,Foobar,"folder","",1,/foobar/
-,2,0,0,0,Empty path,"folder","",1,""
-,3,0,0,0,Invalid base,"folder","",0,"/barbaz/"
-,4,0,0,1,Hidden mount,"folder","",2,/hidden/mount/
-,5,0,1,0,Deleted mount,"folder","",2,/deleted/mount/
-,6,0,1,0,Identifier already set,"folder","1:/bar/baz/",2,/foo/bar/
