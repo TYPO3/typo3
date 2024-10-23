@@ -2516,6 +2516,7 @@ return [
     'TYPO3\CMS\Extbase\Security\Cryptography\HashService' => [
         'restFiles' => [
             'Deprecation-102763-ExtbaseHashService.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\DataHandling\SlugEnricher' => [

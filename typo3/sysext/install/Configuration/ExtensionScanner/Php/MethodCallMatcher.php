@@ -6298,6 +6298,7 @@ return [
         'restFiles' => [
             'Deprecation-102763-ExtbaseHashService.rst',
             'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Security\Cryptography\HashService->appendHmac' => [
@@ -6306,6 +6307,7 @@ return [
         'restFiles' => [
             'Deprecation-102763-ExtbaseHashService.rst',
             'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Security\Cryptography\HashService->validateHmac' => [
@@ -6314,6 +6316,7 @@ return [
         'restFiles' => [
             'Deprecation-102763-ExtbaseHashService.rst',
             'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extbase\Security\Cryptography\HashService->validateAndStripHmac' => [
@@ -6322,6 +6325,7 @@ return [
         'restFiles' => [
             'Deprecation-102763-ExtbaseHashService.rst',
             'Breaking-102763-ExtbaseHashServiceUsageReplacedWithCoreHashService.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\DiffUtility->makeDiffDisplay' => [
