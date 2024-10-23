@@ -94,10 +94,17 @@ readonly class RelationResolver
     {
         $sortedAndGroupedIds = $this->getGroupedRelationIds($record, $fieldInformation, $context);
         $sortedFileReferenceIds = array_map(static fn(array $item) => (int)$item['id'], $sortedAndGroupedIds);
-        $rows = $this->greedyDatabaseBackend->getRows('sys_file_reference', $sortedFileReferenceIds, $context);
+        $unorderedRows = $this->greedyDatabaseBackend->getRows('sys_file_reference', $sortedFileReferenceIds, $context);
+        $unorderedRowsByUid = [];
+        foreach ($unorderedRows as $row) {
+            $unorderedRowsByUid[(int)$row['uid']] = $row;
+        }
         $fileReferenceObjects = [];
-        foreach ($rows as $row) {
-            $fileReferenceObjects[] = $this->resourceFactory->createFileReferenceObject($row);
+        foreach ($sortedAndGroupedIds as $item) {
+            if (isset($unorderedRowsByUid[(int)$item['id']])) {
+                $fileReferenceRow = $unorderedRowsByUid[(int)$item['id']];
+                $fileReferenceObjects[] = $this->resourceFactory->createFileReferenceObject($fileReferenceRow);
+            }
         }
         return $fileReferenceObjects;
     }
