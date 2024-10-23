@@ -245,11 +245,13 @@ class DateTimePicker {
       default:
     }
 
-    if (inputElement.dataset.dateMindate !== 'undefined') {
-      options.minDate = inputElement.dataset.dateMindate;
+    if (inputElement.dataset.dateMinDate !== undefined) {
+      options.minDate = options.parseDate(inputElement.dataset.dateMinDate, ISO8601_UTC);
+      options.minDate.setSeconds(0);
     }
-    if (inputElement.dataset.dateMaxdate !== 'undefined') {
-      options.maxDate = inputElement.dataset.dateMaxdate;
+    if (inputElement.dataset.dateMaxDate !== undefined) {
+      options.maxDate = options.parseDate(inputElement.dataset.dateMaxDate, ISO8601_UTC);
+      options.maxDate.setSeconds(59);
     }
 
     return options;

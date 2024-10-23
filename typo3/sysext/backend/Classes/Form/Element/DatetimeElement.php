@@ -170,10 +170,16 @@ class DatetimeElement extends AbstractFormElement
                 $itemValue = gmdate('c', $adjustedValue);
             }
             if (isset($config['range']['lower'])) {
-                $attributes['data-date-min-date'] = (string)((int)$config['range']['lower'] * 1000);
+                $lower = (int)$config['range']['lower'];
+                // Same fake-UTC-0 normalization as above
+                $fakeUTC0 = gmdate('c', $lower + (int)(date('Z', $lower)));
+                $attributes['data-date-min-date'] = $fakeUTC0;
             }
             if (isset($config['range']['upper'])) {
-                $attributes['data-date-max-date'] = (string)((int)$config['range']['upper'] * 1000);
+                $upper = (int)$config['range']['upper'];
+                // Same fake-UTC-0 normalization as above
+                $fakeUTC0 = gmdate('c', $upper + (int)(date('Z', $upper)));
+                $attributes['data-date-max-date'] = $fakeUTC0;
             }
         }
         if (($format === 'time' || $format === 'timesec') && MathUtility::canBeInterpretedAsInteger($itemValue)) {
