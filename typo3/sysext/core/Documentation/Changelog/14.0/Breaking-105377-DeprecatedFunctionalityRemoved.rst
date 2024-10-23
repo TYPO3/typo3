@@ -23,7 +23,8 @@ The following PHP classes have been declared :php:`final`:
 
 The following PHP interfaces that have previously been marked as deprecated with v13 have been removed:
 
-- :php:``
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryInitHookInterface`
+- :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface`
 
 The following PHP interfaces changed:
 

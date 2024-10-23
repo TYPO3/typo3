@@ -1091,6 +1091,7 @@ return [
             'Breaking-102806-HooksInPageRepositoryRemoved.rst',
             'Deprecation-102806-InterfacesForPageRepositoryHooks.rst',
             'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\TYPO3\CMS\Core\Domain\PageRepository::class][\'init\']' => [
@@ -1098,6 +1099,7 @@ return [
             'Breaking-102806-HooksInPageRepositoryRemoved.rst',
             'Deprecation-102806-InterfacesForPageRepositoryHooks.rst',
             'Feature-102806-BeforePageIsRetrievedEventInPageRepository.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'SC_OPTIONS\'][\'tslib/class.tslib_content_content.php\'][\'modifyDBRow\']' => [
