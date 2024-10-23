@@ -75,7 +75,7 @@ readonly class IconFactory
     /**
      * This method is used throughout the TYPO3 Backend to show icons for a DB record
      */
-    public function getIconForRecord(string $table, array $row, ?IconSize $size = IconSize::MEDIUM): Icon
+    public function getIconForRecord(string $table, array $row, IconSize $size = IconSize::MEDIUM): Icon
     {
         $iconIdentifier = $this->mapRecordTypeToIconIdentifier($table, $row);
         $overlayIdentifier = $this->mapRecordTypeToOverlayIdentifier($table, $row);
