@@ -87,7 +87,7 @@ class Recycler {
     new RegularEvent('submit', (event: SubmitEvent) => {
       event.preventDefault();
 
-      const searchTextField = document.querySelector(Identifiers.searchText) as HTMLInputElement;
+      const searchTextField = document.querySelector<HTMLInputElement>(Identifiers.searchText);
       if (searchTextField.value !== '') {
         this.loadDeletedElements();
       }
@@ -95,7 +95,7 @@ class Recycler {
 
     // changing the search field
     new RegularEvent('input', (event: Event, target: HTMLInputElement) => {
-      const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+      const searchSubmitButton = document.querySelector<HTMLButtonElement>(Identifiers.searchSubmitBtn);
 
       if (target.value !== '') {
         searchSubmitButton.disabled = false;
@@ -133,7 +133,7 @@ class Recycler {
 
     new RegularEvent('search', (_event: Event, target: HTMLInputElement) => {
       if (target.value === '') {
-        const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+        const searchSubmitButton = document.querySelector<HTMLButtonElement>(Identifiers.searchSubmitBtn);
         searchSubmitButton.disabled = true;
         this.loadDeletedElements();
       }
@@ -185,7 +185,7 @@ class Recycler {
    */
   private handleCheckboxStateChanged(event: Event): void {
     const checkbox = event.target as HTMLInputElement;
-    const tableRow = checkbox.closest('tr') as HTMLTableRowElement;
+    const tableRow = checkbox.closest('tr');
     const table = tableRow.dataset.table;
     const uid = tableRow.dataset.uid;
     const record = table + ':' + uid;
@@ -200,13 +200,13 @@ class Recycler {
     }
 
     if (this.markedRecordsForMassAction.length > 0) {
-      const massUndo = document.querySelector(Identifiers.massUndo) as HTMLButtonElement;
+      const massUndo = document.querySelector<HTMLButtonElement>(Identifiers.massUndo);
 
       massUndo.querySelector('span.text')
         .textContent = labels.get('button.undoselected', { '0': this.markedRecordsForMassAction.length.toString(10) });
 
       if (!TYPO3.settings.Recycler.deleteDisable) {
-        const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
+        const massDelete = document.querySelector<HTMLButtonElement>(Identifiers.massDelete);
         massDelete.querySelector('span.text')
           .textContent = labels.get('button.deleteselected', { '0': this.markedRecordsForMassAction.length.toString(10) });
       }
@@ -219,13 +219,13 @@ class Recycler {
    * Resets the mass action state
    */
   private resetMassActionButtons(): void {
-    const massUndo = document.querySelector(Identifiers.massUndo) as HTMLButtonElement;
+    const massUndo = document.querySelector<HTMLButtonElement>(Identifiers.massUndo);
 
     this.markedRecordsForMassAction = [];
     massUndo.querySelector('span.text').textContent = labels.get('button.undo');
 
     if (!TYPO3.settings.Recycler.deleteDisable) {
-      const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
+      const massDelete = document.querySelector<HTMLButtonElement>(Identifiers.massDelete);
       massDelete.querySelector('span.text').textContent = labels.get('button.delete');
     }
 
@@ -236,8 +236,8 @@ class Recycler {
    * Loads all tables which contain deleted records.
    */
   private async loadAvailableTables(): Promise<AjaxResponse> {
-    const tableSelector = document.querySelector(Identifiers.tableSelector) as HTMLSelectElement;
-    const depthSelector = document.querySelector(Identifiers.depthSelector) as HTMLSelectElement;
+    const tableSelector = document.querySelector<HTMLSelectElement>(Identifiers.tableSelector);
+    const depthSelector = document.querySelector<HTMLSelectElement>(Identifiers.depthSelector);
     const currentTableSelection = tableSelector.options.length > 0 ? tableSelector.value : TYPO3.settings.Recycler.tableSelection;
 
     this.getProgress().start();
@@ -289,9 +289,9 @@ class Recycler {
     // from re-rendering the table while the user interacts with it.
     this.currentDeletedElementsRequest?.abort();
 
-    const depthSelector = document.querySelector(Identifiers.depthSelector) as HTMLSelectElement;
-    const tableSelector = document.querySelector(Identifiers.tableSelector) as HTMLSelectElement;
-    const searchTextField = document.querySelector(Identifiers.searchText) as HTMLInputElement;
+    const depthSelector = document.querySelector<HTMLSelectElement>(Identifiers.depthSelector);
+    const tableSelector = document.querySelector<HTMLSelectElement>(Identifiers.tableSelector);
+    const searchTextField = document.querySelector<HTMLInputElement>(Identifiers.searchText);
 
     this.getProgress().start();
     this.resetMassActionButtons();
@@ -348,7 +348,7 @@ class Recycler {
     }
 
     const target = currentTarget ? currentTarget : event.target as HTMLElement;
-    const tableRow = target.closest('tr') as HTMLTableRowElement;
+    const tableRow = target.closest('tr');
     const isMassDelete = tableRow === null || tableRow.parentElement.tagName !== 'TBODY'; // deleteRecord() was invoked by the mass delete button
     let records: Array<string>;
     let message: string;
@@ -392,7 +392,7 @@ class Recycler {
 
   private undoRecord(event: Event, currentTarget: HTMLElement): void {
     const target = currentTarget ? currentTarget : event.target as HTMLElement;
-    const tableRow = target.closest('tr') as HTMLTableRowElement;
+    const tableRow = target.closest('tr');
     const isMassUndo = tableRow === null || tableRow.parentElement.tagName !== 'TBODY'; // undoRecord() was invoked by the mass delete button
     let records: Array<string>;
     let messageText: string;
@@ -469,7 +469,7 @@ class Recycler {
               'undo',
               typeof records === 'object' ? records : [records],
               isMassUndo,
-              (message.querySelector('#undo-recursive') as HTMLInputElement)?.checked,
+              (message.querySelector<HTMLInputElement>('#undo-recursive'))?.checked,
             );
           }),
         },

@@ -101,7 +101,7 @@ export default class FormEngineValidation {
 
       const config = JSON.parse(visibleField.dataset.formengineInputParams);
       const fieldName = config.field;
-      const actualValueField = formEngineInstance.formElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
+      const actualValueField = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`);
 
       actualValueField.dataset.config = visibleField.dataset.formengineInputParams;
       FormEngineValidation.initializeInputField(fieldName);
@@ -112,8 +112,8 @@ export default class FormEngineValidation {
    * Initialize field by name
    */
   public static initializeInputField(fieldName: string): void {
-    const field = formEngineInstance.formElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
-    const humanReadableField = formEngineInstance.formElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
+    const field = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`);
+    const humanReadableField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[data-formengine-input-name="${fieldName}"]`);
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -178,8 +178,8 @@ export default class FormEngineValidation {
    * Update input field after change
    */
   public static updateInputField(fieldName: string): void {
-    const field = formEngineInstance.formElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
-    const humanReadableField = formEngineInstance.formElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
+    const field = formEngineInstance.formElement.querySelector<HTMLInputElement>(selector`[name="${fieldName}"]`);
+    const humanReadableField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[data-formengine-input-name="${fieldName}"]`);
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -260,7 +260,7 @@ export default class FormEngineValidation {
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              relatedField = formEngineInstance.formElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
+              relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname}"]`);
               if (relatedField !== null) {
                 selected = Utility.trimExplode(',', relatedField.value).length;
               } else {
@@ -316,7 +316,7 @@ export default class FormEngineValidation {
         case 'select':
         case 'category':
           if (rule.minItems || rule.maxItems) {
-            relatedField = formEngineInstance.formElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
+            relatedField = formEngineInstance.formElement.querySelector<FormEngineFieldElement>(selector`[name="${field.dataset.relatedfieldname}"]`);
             if (relatedField !== null) {
               selected = Utility.trimExplode(',', relatedField.value).length;
             } else if (field instanceof HTMLSelectElement) {

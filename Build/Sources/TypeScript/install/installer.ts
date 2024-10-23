@@ -107,7 +107,7 @@ class Installer {
   }
 
   private setProgress(done: number): void {
-    const progressBar = document.querySelector(Identifiers.progressBar) as ProgressBarElement;
+    const progressBar = document.querySelector<ProgressBarElement>(Identifiers.progressBar);
     if (progressBar === null) {
       return;
     }
@@ -272,7 +272,7 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseConnectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseConnect',
-      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseConnectExecuteToken,
+      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseConnectExecuteToken,
     };
     for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
@@ -324,7 +324,7 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
     const postData: { [id: string]: string } = {
       'install[action]': 'executeDatabaseSelect',
-      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseSelectExecuteToken,
+      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseSelectExecuteToken,
     };
     for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
@@ -349,7 +349,7 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseSelectOutput);
     const postData: Record<string, string> = {
       'install[action]': 'checkDatabaseRequirements',
-      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseCheckRequirementsExecuteToken,
+      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseCheckRequirementsExecuteToken,
     };
     for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
@@ -402,7 +402,7 @@ class Installer {
     const outputContainer = document.querySelector(Identifiers.databaseDataOutput);
     const postData: Record<string, string> = {
       'install[action]': 'executeDatabaseData',
-      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDatabaseDataExecuteToken,
+      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDatabaseDataExecuteToken,
     };
     for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();
@@ -442,7 +442,7 @@ class Installer {
   private executeDefaultConfiguration(): void {
     const postData: Record<string, string> = {
       'install[action]': 'executeDefaultConfiguration',
-      'install[token]': (document.querySelector(Identifiers.moduleContent) as HTMLElement).dataset.installerDefaultConfigurationExecuteToken,
+      'install[token]': (document.querySelector<HTMLElement>(Identifiers.moduleContent)).dataset.installerDefaultConfigurationExecuteToken,
     };
     for (const [name, value] of new FormData(document.querySelector(Identifiers.body + ' form'))) {
       postData[name] = value.toString();

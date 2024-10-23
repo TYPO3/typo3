@@ -23,11 +23,11 @@ class MailLinkHandler {
   constructor() {
     new RegularEvent('submit', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
-      const inputField = targetEl.querySelector('[name="lemail"]') as HTMLInputElement;
+      const inputField = targetEl.querySelector<HTMLInputElement>('[name="lemail"]');
       const value = inputField.value;
       const params = new URLSearchParams();
       for (const elementName of ['subject', 'cc', 'bcc', 'body']) {
-        const element = targetEl.querySelector('[data-mailto-part="' + elementName + '"]') as HTMLInputElement|null;
+        const element = targetEl.querySelector<HTMLInputElement>('[data-mailto-part="' + elementName + '"]');
         if (element?.value.length) {
           params.set(elementName, encodeURIComponent(element.value));
         }

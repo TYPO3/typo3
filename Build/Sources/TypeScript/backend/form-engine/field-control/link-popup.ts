@@ -25,7 +25,7 @@ class LinkPopup {
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
-      this.controlElement = <HTMLElement>document.querySelector(controlElementId);
+      this.controlElement = document.querySelector<HTMLElement>(controlElementId);
       if (this.controlElement === null) {
         return;
       }

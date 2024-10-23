@@ -123,7 +123,7 @@ class FileListActions {
 
   private getActionDetail(event: Event, target: HTMLElement): FileListActionDetail {
     const action = target.dataset.filelistAction;
-    const element = target.closest(FileListActionSelector.elementSelector) as HTMLElement;
+    const element = target.closest<HTMLElement>(FileListActionSelector.elementSelector);
     const resource = FileListActionUtility.getResourceForElement(element);
     const detail: FileListActionDetail = {
       event: event,

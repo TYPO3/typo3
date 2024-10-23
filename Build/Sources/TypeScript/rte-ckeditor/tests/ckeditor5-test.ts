@@ -29,7 +29,7 @@ describe('@typo3/rte-ckeditor/ckeditor5-test', () => {
   });
 
   const findEditor = (): ClassicEditor | null => {
-    const editable = container.querySelector('.ck-editor__editable') as HTMLElement & { ckeditorInstance?: ClassicEditor } | null;
+    const editable = container.querySelector<HTMLElement & { ckeditorInstance?: ClassicEditor }>('.ck-editor__editable');
     return editable?.ckeditorInstance ?? null;
   };
 

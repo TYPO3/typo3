@@ -595,7 +595,7 @@ export function createAndAddAbstractViewFormElementToolbar(
     formElement = getCurrentlySelectedFormElement();
   }
 
-  const stageItem = selectedFormElementDomElement.querySelector('typo3-form-form-element-stage-item') as FormElementStageItem;
+  const stageItem = selectedFormElementDomElement.querySelector<FormElementStageItem>('typo3-form-form-element-stage-item');
   if (stageItem) {
     return;
   }
@@ -605,7 +605,7 @@ export function createAndAddAbstractViewFormElementToolbar(
     return;
   }
 
-  let toolbar = selectedFormElementDomElement.querySelector('typo3-form-form-element-stage-item-toolbar') as unknown as FormElementStageItemToolbar | null;
+  let toolbar = selectedFormElementDomElement.querySelector<FormElementStageItemToolbar>('typo3-form-form-element-stage-item-toolbar');
   if (!toolbar) {
     const toolbarEl = document.createElement('typo3-form-form-element-stage-item-toolbar');
     selectedFormElementDomElement.prepend(toolbarEl);

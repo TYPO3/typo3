@@ -40,7 +40,7 @@ DocumentService.ready().then(() => {
 
   new RegularEvent('typo3:styleguide:update-icons', (e: CustomEvent): void => {
     const typedQuery = e.detail.searchValue;
-    const iconContainerElements = Array.from(filterContainer.querySelectorAll('[data-icon-identifier]') as NodeListOf<HTMLElement>);
+    const iconContainerElements = Array.from(filterContainer.querySelectorAll<HTMLElement>('[data-icon-identifier]'));
     if (typedQuery === '') {
       iconContainerElements.map((iconContainer) => iconContainer.hidden = false);
     } else {

@@ -646,7 +646,7 @@ export class NewRecordWizard extends LitElement {
     }
 
     if (selectedCategory) {
-      const categoryButton = this.shadowRoot.querySelector(`button[data-identifier="${selectedCategory.identifier}"]`) as HTMLButtonElement;
+      const categoryButton = this.shadowRoot.querySelector<HTMLButtonElement>(`button[data-identifier="${selectedCategory.identifier}"]`);
       categoryButton.focus();
       this.handleNavigationClick(selectedCategory);
     }

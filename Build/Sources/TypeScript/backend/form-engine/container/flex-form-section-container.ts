@@ -43,7 +43,7 @@ class FlexFormSectionContainer {
   constructor(elementId: string) {
     DocumentService.ready().then((document: Document): void => {
       this.container = <HTMLElement>document.getElementById(elementId);
-      this.sectionContainer = this.container.querySelector(this.container.dataset.section) as HTMLElement;
+      this.sectionContainer = this.container.querySelector<HTMLElement>(this.container.dataset.section);
       this.allowRestructure = this.sectionContainer.dataset.t3FlexAllowRestructure === '1';
 
       this.registerEvents();
@@ -85,7 +85,7 @@ class FlexFormSectionContainer {
   }
 
   private getToggleAllButton(): HTMLButtonElement {
-    return this.container.querySelector(Selectors.toggleAllSelector) as HTMLButtonElement;
+    return this.container.querySelector<HTMLButtonElement>(Selectors.toggleAllSelector);
   }
 
   private registerSortable(): void {

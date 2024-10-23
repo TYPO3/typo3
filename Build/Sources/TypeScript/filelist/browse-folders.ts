@@ -74,7 +74,7 @@ class BrowseFolders {
     const selectedItems: ResourceInterface[] = [];
     items.forEach((checkbox) => {
       if (checkbox.checked) {
-        const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
+        const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector);
         const resource = FileListActionUtility.getResourceForElement(element);
         if (resource.type === 'folder' && resource.identifier) {
           selectedItems.unshift(resource);

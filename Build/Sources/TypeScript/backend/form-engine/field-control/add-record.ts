@@ -22,7 +22,7 @@ class AddRecord {
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
-      this.controlElement = <HTMLElement>document.querySelector(controlElementId);
+      this.controlElement = document.querySelector<HTMLElement>(controlElementId);
       this.controlElement.addEventListener('click', this.registerClickHandler);
     });
   }

@@ -29,7 +29,7 @@ export class ScaffoldContentArea {
   public static readonly selector = 'typo3-backend-content-navigation[identifier="backend"]';
 
   public static getContentNavigation(): ContentNavigation | null {
-    return document.querySelector(this.selector) as ContentNavigation | null;
+    return document.querySelector<ContentNavigation>(this.selector);
   }
 
   public static getNavigationContainer(): HTMLElement | null {

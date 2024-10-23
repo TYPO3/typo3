@@ -103,7 +103,7 @@ class LocalConfiguration extends AbstractInteractableModule {
     new RegularEvent('click', (event: Event, target: HTMLInputElement): void => {
       event.preventDefault();
 
-      const container = target.closest('.t3js-configuration-list') as HTMLElement|null;
+      const container = target.closest<HTMLElement>('.t3js-configuration-list');
       if (container === null) {
         return;
       }
@@ -142,12 +142,12 @@ class LocalConfiguration extends AbstractInteractableModule {
         }
       }
 
-      const rowTemplate = (container.querySelector('#' + container.dataset.namespace) as HTMLTemplateElement).content.cloneNode(true) as DocumentFragment;
+      const rowTemplate = (container.querySelector<HTMLTemplateElement>('#' + container.dataset.namespace)).content.cloneNode(true) as DocumentFragment;
       container.querySelector('.configuration-map-item-collection').append(rowTemplate);
 
       const lastRow = querySelectorLast(Identifiers.configurationItem);
       // Focus first input field in inserted item
-      (lastRow.querySelector('input[type="text"]') as HTMLInputElement|null)?.focus();
+      (lastRow.querySelector<HTMLInputElement>('input[type="text"]'))?.focus();
     }).delegateTo(currentModal, Identifiers.createRowTrigger);
   }
 

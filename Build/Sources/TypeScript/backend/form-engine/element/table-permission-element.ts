@@ -41,8 +41,8 @@ class TablePermissionElement extends HTMLElement {
 
   public async connectedCallback(): Promise<void> {
     await DocumentService.ready();
-    this.selectStateField = <HTMLInputElement>this.querySelector(selector`input[name=${this.getAttribute('selectStateFieldName') || '' as string}]`);
-    this.modifyStateField = <HTMLInputElement>this.querySelector(selector`input[name=${this.getAttribute('modifyStateFieldName') || '' as string}]`);
+    this.selectStateField = this.querySelector<HTMLInputElement>(selector`input[name=${this.getAttribute('selectStateFieldName') || '' as string}]`);
+    this.modifyStateField = this.querySelector<HTMLInputElement>(selector`input[name=${this.getAttribute('modifyStateFieldName') || '' as string}]`);
 
     if (this.selectStateField === null || this.modifyStateField === null) {
       return;
@@ -58,10 +58,10 @@ class TablePermissionElement extends HTMLElement {
     new RegularEvent('multiRecordSelection:checkbox:state:changed', (e: CustomEvent): void => {
       const name = (e.target as HTMLInputElement).name;
       if (this.querySelectorAll(selector`input[name="${name}"]:checked`).length === 0) {
-        const item: HTMLInputElement = this.querySelector(selector`input[name="${name}"]`) as HTMLInputElement;
+        const item = this.querySelector<HTMLInputElement>(selector`input[name="${name}"]`);
         item.value = Permissions.none;
         this.handleSingleItemChange(item);
-        (this.querySelector(selector`input[name="${name}"][value="${Permissions.none}"]`) as HTMLInputElement).checked = true;
+        (this.querySelector<HTMLInputElement>(selector`input[name="${name}"][value="${Permissions.none}"]`)).checked = true;
       }
     }).delegateTo(this.querySelector('table') , MultiRecordSelectionSelectors.checkboxSelector);
   }

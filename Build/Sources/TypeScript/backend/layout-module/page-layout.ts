@@ -37,7 +37,7 @@ new RegularEvent('click', async (event: Event, delegateTarget?: Element): Promis
   }
   target.disabled = true;
 
-  const contentElement = target.closest('.t3js-page-ce') as HTMLElement | null;
+  const contentElement = target.closest<HTMLElement>('.t3js-page-ce');
   if (contentElement === null) {
     target.disabled = false;
     return;
@@ -66,7 +66,7 @@ new RegularEvent('click', async (event: Event, delegateTarget?: Element): Promis
     // If the element was just hidden and the "show hidden" toggle is inactive,
     // hide the element from view so it disappears from the layout.
     if (!data.isVisible) {
-      const toggleHidden = document.querySelector('typo3-backend-page-layout-toggle-hidden') as PageLayoutToggleHidden | null;
+      const toggleHidden = document.querySelector<PageLayoutToggleHidden>('typo3-backend-page-layout-toggle-hidden');
       if (toggleHidden && !toggleHidden.active) {
         contentElement.style.display = 'none';
       }

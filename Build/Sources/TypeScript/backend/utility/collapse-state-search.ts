@@ -112,7 +112,7 @@ class CollapseStateSearch {
         return;
       }
 
-      const collapsibleIdentifier = (match.parentElement.querySelector('[data-bs-toggle="collapse"]') as HTMLElement|null)?.dataset.bsTarget;
+      const collapsibleIdentifier = (match.parentElement.querySelector<HTMLElement>('[data-bs-toggle="collapse"]'))?.dataset.bsTarget;
       if (collapsibleIdentifier !== undefined) {
         matchingCollapsibleIds.add(collapsibleIdentifier.substring(1));
       }

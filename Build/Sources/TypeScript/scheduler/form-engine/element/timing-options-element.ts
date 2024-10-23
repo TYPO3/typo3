@@ -42,7 +42,7 @@ class TimingOptions extends HTMLElement {
   }
 
   private toggleRunningType(): void {
-    const selectedElement = <HTMLInputElement>this.querySelector(selector`input[name='${this.fieldPrefix}[runningType]']:checked`);
+    const selectedElement = this.querySelector<HTMLInputElement>(selector`input[name='${this.fieldPrefix}[runningType]']:checked`);
     const runningType = <string>selectedElement.value;
 
     this.querySelectorAll<HTMLElement>('.t3js-timing-options-end, .t3js-timing-options-parallel, .t3js-timing-options-frequency').forEach((el) => {

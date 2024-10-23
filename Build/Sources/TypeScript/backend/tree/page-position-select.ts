@@ -126,7 +126,7 @@ export class PagePositionSelect extends LitElement {
   protected renderTree(): TemplateResult {
     const initialized = async () => {
       // set up toolbar now with updated properties
-      const toolbar = this.querySelector('typo3-backend-tree-toolbar') as TreeToolbar;
+      const toolbar = this.querySelector<TreeToolbar>('typo3-backend-tree-toolbar');
       toolbar.tree = this.tree;
       await this.tree.ensureActiveNodeLoaded(this.activePageId);
       const activeNode = await this.applyActiveInsertPosition();

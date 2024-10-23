@@ -23,7 +23,7 @@ class TelephoneLinkHandler {
   constructor() {
     new RegularEvent('submit', (evt: MouseEvent, targetEl: HTMLElement): void => {
       evt.preventDefault();
-      const inputField = targetEl.querySelector('[name="ltelephone"]') as HTMLInputElement;
+      const inputField = targetEl.querySelector<HTMLInputElement>('[name="ltelephone"]');
       let value = inputField.value;
       if (value === 'tel:') {
         return;

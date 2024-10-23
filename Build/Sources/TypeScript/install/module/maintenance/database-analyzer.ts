@@ -143,7 +143,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
             }
             if (Array.isArray(data.suggestions)) {
               data.suggestions.forEach((element): void => {
-                const aBlock = (modalContent.querySelector(Identifiers.suggestionBlock) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+                const aBlock = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.suggestionBlock)).content.cloneNode(true) as HTMLElement;
                 const key = element.key;
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLegend).innerText = element.label;
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockCheckbox).setAttribute('id', 't3-install-' + key + '-checkbox');
@@ -152,7 +152,7 @@ class DatabaseAnalyzer extends AbstractInteractableModule {
                 }
                 aBlock.querySelector<HTMLElement>(Identifiers.suggestionBlockLabel).setAttribute('for', 't3-install-' + key + '-checkbox');
                 element.children.forEach((line): void => {
-                  const aLine = (modalContent.querySelector(Identifiers.suggestionLineTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+                  const aLine = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.suggestionLineTemplate)).content.cloneNode(true) as HTMLElement;
                   const hash = line.hash;
                   const checkbox = aLine.querySelector<HTMLInputElement>(Identifiers.suggestionLineCheckbox);
                   checkbox.setAttribute('id', 't3-install-db-' + hash);

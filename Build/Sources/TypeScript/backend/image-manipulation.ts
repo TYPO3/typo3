@@ -322,7 +322,7 @@ class ImageManipulation {
       evt.preventDefault();
       evt.stopImmediatePropagation();
 
-      const setAspectRatioLabel = target.closest('label[data-method="setAspectRatio"]') as HTMLElement;
+      const setAspectRatioLabel = target.closest<HTMLElement>('label[data-method="setAspectRatio"]');
       const ratioId: string = setAspectRatioLabel.dataset.bsOption;
 
       setAspectRatioLabel.querySelector('input').checked = true;
@@ -421,7 +421,7 @@ class ImageManipulation {
 
       const isEnabledInSession = (BrowserSession.get('sync-active-' + imageUid) ?? 'false') === 'true';
       if (isEnabledInSession) {
-        const checkbox = this.currentModal.querySelector('#sync-crop-variants') as HTMLInputElement | null;
+        const checkbox = this.currentModal.querySelector<HTMLInputElement>('#sync-crop-variants');
         if (checkbox) {
           window.setTimeout(() => {
             checkbox.click();

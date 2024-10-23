@@ -107,7 +107,7 @@ export function flushModuleCache(): void {
 
 function getParsedInformation(): ParsedInformation|null {
   if (parsedInformation === null) {
-    const modulesInformation: string = String((document.querySelector('[data-modulemenu]') as HTMLElement)?.dataset.modulesInformation || '');
+    const modulesInformation = String((document.querySelector<HTMLElement>('[data-modulemenu]'))?.dataset.modulesInformation || '');
     if (modulesInformation !== '') {
       try {
         parsedInformation = JSON.parse(modulesInformation);

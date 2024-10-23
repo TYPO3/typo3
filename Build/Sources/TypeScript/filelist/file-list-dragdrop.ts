@@ -40,11 +40,11 @@ class FileListDragDrop {
       let icon = '';
       let label = '';
 
-      const checkedItems = document.querySelectorAll(MultiRecordSelectionSelectors.checkboxSelector + ':checked') as NodeListOf<HTMLInputElement>;
+      const checkedItems = document.querySelectorAll<HTMLInputElement>(MultiRecordSelectionSelectors.checkboxSelector + ':checked');
       if (checkedItems.length) {
         checkedItems.forEach((checkbox) => {
           if (checkbox.checked) {
-            const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
+            const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector);
             element.dataset.filelistDragdropTransferItem = 'true';
             const resource = FileListActionUtility.getResourceForElement(element);
             selectedItems.push(resource);
@@ -53,7 +53,7 @@ class FileListDragDrop {
           }
         });
       } else {
-        const element = target.closest(FileListActionSelector.elementSelector) as HTMLElement;
+        const element = target.closest<HTMLElement>(FileListActionSelector.elementSelector);
         element.dataset.filelistDragdropTransferItem = 'true';
         const resource = FileListActionUtility.getResourceForElement(element);
         selectedItems.push(resource);
@@ -132,7 +132,7 @@ class FileListDragDrop {
   }
 
   private isDropAllowedOnResoruce(resource: ResourceInterface): boolean {
-    const element = document.querySelector(FileListActionSelector.elementSelector + '[data-filelist-identifier="' + resource.identifier + '"]') as HTMLElement;
+    const element = document.querySelector<HTMLElement>(FileListActionSelector.elementSelector + '[data-filelist-identifier="' + resource.identifier + '"]');
     return !('filelistDragdropTransferItem' in element.dataset) && resource.type === 'folder';
   }
 }

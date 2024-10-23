@@ -36,7 +36,7 @@
     private readonly trigger: HTMLElement;
 
     constructor() {
-      this.adminPanel = document.querySelector(AdminPanelSelectors.adminPanelRole) as HTMLFormElement;
+      this.adminPanel = document.querySelector<HTMLFormElement>(AdminPanelSelectors.adminPanelRole);
       this.modules = this.querySelectorAll(AdminPanelSelectors.moduleTriggerRole).map(
         (moduleTrigger) => {
           const moduleParent = moduleTrigger.closest(AdminPanelSelectors.moduleParentClass);
@@ -60,7 +60,7 @@
           new AdminPanelContentSetting(contentSettingElement, contentSettingTrigger);
         },
       );
-      this.trigger = document.querySelector(AdminPanelSelectors.triggerRole) as HTMLElement;
+      this.trigger = document.querySelector<HTMLElement>(AdminPanelSelectors.triggerRole);
 
       this.initializeEvents();
       this.addBackdropListener();

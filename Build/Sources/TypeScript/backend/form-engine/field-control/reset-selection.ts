@@ -21,7 +21,7 @@ class ResetSelection {
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
-      this.controlElement = <HTMLElement>document.querySelector(controlElementId);
+      this.controlElement = document.querySelector<HTMLElement>(controlElementId);
       if (this.controlElement !== null) {
         this.controlElement.addEventListener('click', this.registerClickHandler);
       }
@@ -36,7 +36,7 @@ class ResetSelection {
 
     const itemName: string = this.controlElement.dataset.itemName;
     const selectedIndices: Array<number> = JSON.parse(this.controlElement.dataset.selectedIndices);
-    const field = (<HTMLSelectElement>document.forms.namedItem('editform').querySelector('[name="' + itemName + '[]"]'));
+    const field = (document.forms.namedItem('editform').querySelector<HTMLSelectElement>('[name="' + itemName + '[]"]'));
 
     field.selectedIndex = -1;
     for (const i of selectedIndices) {

@@ -80,7 +80,7 @@ class ClearTypo3tempFiles extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element): void => {
                 if (element.numberOfFiles > 0) {
-                  const aStat = (modalContent.querySelector(Identifiers.statTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+                  const aStat = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.statTemplate)).content.cloneNode(true) as HTMLElement;
                   aStat.querySelector<HTMLElement>(Identifiers.statNumberOfFiles).innerText = String(element.numberOfFiles);
                   aStat.querySelector<HTMLElement>(Identifiers.statDirectory).innerText = element.directory;
                   aStat.querySelector<HTMLElement>(Identifiers.deleteTrigger).setAttribute('data-folder', element.directory);

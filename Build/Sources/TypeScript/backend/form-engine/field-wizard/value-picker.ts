@@ -35,7 +35,7 @@ export class ValuePicker extends HTMLElement {
   }
 
   public connectedCallback(): void {
-    this.linkedField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement|HTMLTextAreaElement|null;
+    this.linkedField = document.querySelector<HTMLInputElement|HTMLTextAreaElement>(this.getAttribute('linked-field'));
     this.linkedField?.addEventListener('change', this.linkedFieldOnChange);
     this.initializeValuePicker(this.shadowRoot.querySelector('slot'));
   }

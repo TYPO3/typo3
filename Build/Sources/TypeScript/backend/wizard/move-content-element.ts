@@ -28,15 +28,15 @@ export class MoveContentElement {
 
   private async initialize(): Promise<void> {
     await DocumentService.ready();
-    this.registerEvents(document.querySelector('.element-browser-body') as HTMLElement);
+    this.registerEvents(document.querySelector<HTMLElement>('.element-browser-body'));
   }
 
   private registerEvents(container: HTMLElement): void {
     new RegularEvent('change', async (e: Event): Promise<void> => {
-      const recordTitle = (document.querySelector('#elementRecordTitle') as HTMLInputElement).value;
+      const recordTitle = (document.querySelector<HTMLInputElement>('#elementRecordTitle')).value;
       const url = new URL(window.location.href);
       const uid = url.searchParams.get('uid');
-      const headline = document.querySelector('h2') as HTMLHeadingElement;
+      const headline = document.querySelector('h2');
       if (headline) {
         const parameters = [recordTitle, Number(uid)] as const;
         headline.innerText = (e.target as HTMLInputElement).checked
@@ -54,10 +54,10 @@ export class MoveContentElement {
     }).delegateTo(container, '#makeCopy');
 
     new RegularEvent('click', async (e: Event, actionElement: HTMLElement): Promise<void> => {
-      const modeCheckbox = (document.querySelector('#makeCopy') as HTMLInputElement);
-      const recordTitle = (document.querySelector('#elementRecordTitle') as HTMLInputElement).value;
-      const targetPageTitle = (document.querySelector('#pageRecordTitle') as HTMLInputElement).value;
-      const pageUid = (document.querySelector('#pageUid') as HTMLInputElement).value;
+      const modeCheckbox = (document.querySelector<HTMLInputElement>('#makeCopy'));
+      const recordTitle = (document.querySelector<HTMLInputElement>('#elementRecordTitle')).value;
+      const targetPageTitle = (document.querySelector<HTMLInputElement>('#pageRecordTitle')).value;
+      const pageUid = (document.querySelector<HTMLInputElement>('#pageUid')).value;
       const url = new URL(window.location.href);
       const uid = url.searchParams.get('uid');
       const returnUrl = new URL(url.searchParams.get('returnUrl'), window.origin);

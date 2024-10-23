@@ -40,7 +40,7 @@ export class ValueSlider extends HTMLElement {
     }
 
     await DocumentService.ready();
-    this.valueSlider = this.querySelector('input') as HTMLInputElement;
+    this.valueSlider = this.querySelector('input');
     if (this.valueSlider !== null) {
       new ThrottleEvent('input', this.handleRangeChange, 25).bindTo(this.valueSlider);
     }
@@ -58,7 +58,7 @@ export class ValueSlider extends HTMLElement {
    * @param {HTMLInputElement} element
    */
   private updateValue(element: HTMLInputElement): void {
-    const foreignField = document.querySelector(this.getAttribute('linked-field')) as HTMLInputElement;
+    const foreignField = document.querySelector<HTMLInputElement>(this.getAttribute('linked-field'));
     foreignField.value = element.value;
     foreignField.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   }

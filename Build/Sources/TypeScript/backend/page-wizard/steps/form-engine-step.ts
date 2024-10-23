@@ -44,7 +44,7 @@ export class FormEngineStep implements WizardStepInterface, WizardStepAfterRende
   }
 
   public getValue(): Record<string, any> | null {
-    const form = this.context.wizard.querySelector('form[name="editform"]') as HTMLFormElement;
+    const form = this.context.wizard.querySelector<HTMLFormElement>('form[name="editform"]');
     if (!form) {
       return null;
     }
@@ -107,7 +107,7 @@ export class FormEngineStep implements WizardStepInterface, WizardStepAfterRende
           this.context.wizard.goToNextStep();
         });
 
-        const firstErrorElement = form.querySelector('.has-error') as HTMLInputElement;
+        const firstErrorElement = form.querySelector<HTMLInputElement>('.has-error');
         if (firstErrorElement) {
           firstErrorElement.focus();
         }

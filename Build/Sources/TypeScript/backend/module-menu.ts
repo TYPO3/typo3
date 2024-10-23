@@ -306,7 +306,7 @@ class ModuleMenu {
         break;
       case KeyTypesEnum.HOME:
         if (event.ctrlKey && menuItem.level > 1) {
-          item = document.querySelector(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item) as HTMLElement;
+          item = document.querySelector<HTMLElement>(ModuleMenuSelector.menu + ' ' + ModuleMenuSelector.item);
           break;
         }
         item = ModuleMenu.getFirstItem(menuItem.element);

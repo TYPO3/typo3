@@ -28,15 +28,15 @@ export class MovePage {
 
   private async initialize(): Promise<void> {
     await DocumentService.ready();
-    this.registerEvents(document.querySelector('.element-browser-body') as HTMLElement);
+    this.registerEvents(document.querySelector<HTMLElement>('.element-browser-body'));
   }
 
   private registerEvents(container: HTMLElement): void {
-    const recordTitle = (document.querySelector('#elementRecordTitle') as HTMLInputElement).value;
+    const recordTitle = (document.querySelector<HTMLInputElement>('#elementRecordTitle')).value;
     const url = new URL(window.location.href);
 
     new RegularEvent('click', async (e: Event, actionElement: HTMLElement): Promise<void> => {
-      const isCopyAction = (document.querySelector('#makeCopy') as HTMLInputElement).checked;
+      const isCopyAction = (document.querySelector<HTMLInputElement>('#makeCopy')).checked;
       const action = isCopyAction ? 'copy' : 'move';
       const parameters = {
         cmd: {

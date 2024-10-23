@@ -74,7 +74,7 @@ class QueryGenerator {
     }).delegateTo(this.form, '.t3js-addfield');
 
     new RegularEvent('change', (event: Event, element: HTMLSelectElement) => {
-      const titleField = <HTMLInputElement>this.form.querySelector('input[name="storeControl[title]"]');
+      const titleField = this.form.querySelector<HTMLInputElement>('input[name="storeControl[title]"]');
       if (element.value !== '0') {
         titleField.value = element.options[element.selectedIndex].textContent;
       } else {
@@ -82,14 +82,14 @@ class QueryGenerator {
       }
     }).delegateTo(this.form, 'select.t3js-addfield');
 
-    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-clearable')).forEach(
+    (document.querySelectorAll<HTMLInputElement>('form[name="queryform"] .t3js-clearable')).forEach(
       (clearableField) => clearableField.clearable({
         onClear: (): void => {
           this.doSubmit();
         },
       }),
     );
-    (<NodeListOf<HTMLInputElement>>document.querySelectorAll('form[name="queryform"] .t3js-datetimepicker')).forEach(
+    (document.querySelectorAll<HTMLInputElement>('form[name="queryform"] .t3js-datetimepicker')).forEach(
       (dateTimePickerElement) => DateTimePicker.initialize(dateTimePickerElement)
     );
   }
@@ -117,7 +117,7 @@ class QueryGenerator {
    * @param {String} value the value to add
    */
   private addValueToField(field: string, value: string): void {
-    const target = <HTMLInputElement>this.form.querySelector('[name="' + field + '"]');
+    const target = this.form.querySelector<HTMLInputElement>('[name="' + field + '"]');
     value = target.value + ',' + value;
     target.value = value
       .split(',')

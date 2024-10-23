@@ -145,7 +145,7 @@ class DateTimePicker {
    */
   private getScrollEvent(): ThrottleEvent {
     return new ThrottleEvent('scroll', (): void => {
-      const activeFlatpickrElement = document.querySelector('.flatpickr-input.active') as FlatpickrInputElement;
+      const activeFlatpickrElement = document.querySelector<FlatpickrInputElement>('.flatpickr-input.active');
       if (activeFlatpickrElement === null) {
         return;
       }

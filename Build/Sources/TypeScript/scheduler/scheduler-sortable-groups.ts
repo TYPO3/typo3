@@ -27,7 +27,7 @@ class SchedulerSortableGroups {
   }
 
   public initialize(): void {
-    const element = document.querySelector(this.container) as HTMLElement;
+    const element = document.querySelector<HTMLElement>(this.container);
     if(element) {
       new Sortable(element, {
         handle: this.dragHandle,
@@ -49,7 +49,7 @@ class SchedulerSortableGroups {
           AjaxDataHandler.process('cmd[' + table + '][' + uid + '][move][action]=paste&cmd[' + table + '][' + uid + '][move][target]=' + letMoveTarget + '&cmd[' + table + '][' + uid + '][move][update][colPos]=0&cmd[' + table + '][' + uid + '][move][update][sys_language_uid]=0', eventData);
         },
       });
-      (document.querySelectorAll(this.dragHandle) as NodeListOf<HTMLButtonElement>).forEach(handle => {
+      (document.querySelectorAll<HTMLButtonElement>(this.dragHandle)).forEach(handle => {
         handle.disabled = false;
       });
     }

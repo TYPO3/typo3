@@ -96,7 +96,7 @@ export class ContextualRecordEditTriggerElement extends PseudoButtonLitElement {
         return;
       }
       e.preventDefault();
-      const iframe = modal.querySelector('iframe') as HTMLIFrameElement | null;
+      const iframe = modal.querySelector('iframe');
       iframe?.contentWindow?.postMessage(
         { actionName: 'typo3:editform:requestclose' },
         window.location.origin

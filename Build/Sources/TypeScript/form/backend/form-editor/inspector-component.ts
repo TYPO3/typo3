@@ -1667,7 +1667,7 @@ export function renderPropertyGridEditor(
     ? true
     : editorConfiguration.useLabelAsFallbackValue;
 
-  const propertyGridEditor = editorHtml.querySelector('typo3-form-property-grid-editor') as any;
+  const propertyGridEditor = editorHtml.querySelector<any>('typo3-form-property-grid-editor');
   propertyGridEditor.enableAddRow = editorConfiguration.enableAddRow;
   propertyGridEditor.enableSelection = enableSelection;
   propertyGridEditor.enableMultiSelection = multiSelection;
@@ -1959,7 +1959,7 @@ export function renderTextareaEditor(
 
   const propertyData = getCurrentlySelectedFormElement().get(propertyPath);
 
-  const textarea = editorHtml.querySelector('textarea') as HTMLTextAreaElement;
+  const textarea = editorHtml.querySelector('textarea');
 
   if (!textarea) {
     throw new Error('Textarea element not found in editor HTML');

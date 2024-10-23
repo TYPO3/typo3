@@ -285,22 +285,22 @@ export class GridEditor extends LitElement {
       modal.hideModal();
     } else if (button.name === 'ok') {
       this.setName(
-        (modal.querySelector('.t3js-grideditor-field-name') as HTMLInputElement).value,
+        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-name')).value,
         modal.userData.col,
         modal.userData.row,
       );
       this.setColumn(
-        parseInt((modal.querySelector('.t3js-grideditor-field-colpos') as HTMLInputElement).value, 10),
+        parseInt((modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-colpos')).value, 10),
         modal.userData.col,
         modal.userData.row,
       );
       this.setIdentifier(
-        (modal.querySelector('.t3js-grideditor-field-identifier') as HTMLInputElement).value,
+        (modal.querySelector<HTMLInputElement>('.t3js-grideditor-field-identifier')).value,
         modal.userData.col,
         modal.userData.row,
       );
       this.setSlideMode(
-        (modal.querySelector('.t3js-grideditor-field-slide-mode') as HTMLSelectElement).value,
+        (modal.querySelector<HTMLSelectElement>('.t3js-grideditor-field-slide-mode')).value,
         modal.userData.col,
         modal.userData.row,
       );

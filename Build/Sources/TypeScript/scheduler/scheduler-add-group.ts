@@ -33,7 +33,7 @@ class SchedulerAddGroups {
   }
 
   public initialize(): void {
-    const element = document.querySelector(this.selector) as HTMLElement;
+    const element = document.querySelector<HTMLElement>(this.selector);
     if(element) {
       element.addEventListener('click', (button: MouseEvent) => {
         button.preventDefault();
