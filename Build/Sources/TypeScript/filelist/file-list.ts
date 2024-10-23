@@ -265,7 +265,7 @@ export default class Filelist {
       return;
     }
     const list: Array<string> = [];
-    (eventDetails.checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox) => {
+    eventDetails.checkboxes.forEach((checkbox) => {
       const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset[configuration.idField]) {
         list.push(checkboxContainer.dataset[configuration.idField]);

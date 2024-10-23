@@ -104,7 +104,7 @@ class WorkspaceStateService {
    */
   public async getCurrentWorkspace(): Promise<Workspace> {
     await this.initialize();
-    return this.currentWorkspace!;
+    return this.currentWorkspace;
   }
 
   /**

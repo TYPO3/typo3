@@ -779,7 +779,7 @@ export class GridEditor extends LitElement {
 
     (Object.keys(SlideModes) as Array<keyof typeof SlideModes>).map((key) => {
       const text = key !== 'none' ? key : '';
-      const value = SlideModes[key as keyof typeof SlideModes];
+      const value = SlideModes[key];
       const option = document.createElement('option');
       option.value = value;
       option.text = text;

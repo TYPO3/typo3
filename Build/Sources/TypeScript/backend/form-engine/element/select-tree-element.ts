@@ -12,7 +12,7 @@
 */
 
 import { type SelectTree } from './select-tree';
-import { type SelectTreeToolbar } from './select-tree-toolbar';
+import './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
 import DocumentService from '@typo3/core/document-service';
 import FormEngine, { type OnFieldChangeItem } from '@typo3/backend/form-engine';
@@ -34,8 +34,8 @@ export class SelectTreeElement {
 
   private initialize(treeWrapperId: string, treeRecordFieldId: string, onFieldChangeItems?: OnFieldChangeItem[]): void {
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
-    const treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
-    this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
+    const treeWrapper = document.getElementById(treeWrapperId);
+    this.tree = document.createElement('typo3-backend-form-selecttree');
     this.tree.addEventListener('typo3:tree:nodes-prepared', this.loadDataAfter);
     this.tree.addEventListener('typo3:tree:node-selected', this.selectNode);
 
@@ -55,7 +55,7 @@ export class SelectTreeElement {
     };
     this.tree.addEventListener('tree:initialized', () => {
       if (this.recordField.dataset.treeShowToolbar) {
-        const toolbarElement = document.createElement('typo3-backend-form-selecttree-toolbar') as SelectTreeToolbar;
+        const toolbarElement = document.createElement('typo3-backend-form-selecttree-toolbar');
         toolbarElement.tree = this.tree;
         this.tree.prepend(toolbarElement);
       }

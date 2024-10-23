@@ -375,7 +375,7 @@ export class Tree extends LitElement {
       this.editingNode = node;
       this.requestUpdate();
       this.updateComplete.then(() => {
-        const inputField = this.getElementFromNode(this.editingNode)?.querySelector('.node-edit') as HTMLInputElement;
+        const inputField = this.getElementFromNode(this.editingNode)?.querySelector<HTMLInputElement>('.node-edit');
         if (inputField) {
           inputField.focus();
           inputField.select();

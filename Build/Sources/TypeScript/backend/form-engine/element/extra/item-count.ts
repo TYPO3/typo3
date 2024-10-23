@@ -152,7 +152,7 @@ export class ItemCount extends LitElement {
     const fieldContainer = this.closest('.form-group')
       ?? this.field?.closest('.form-group')
       ?? this.field?.closest('fieldset');
-    const labelElement = fieldContainer?.querySelector('.t3js-formengine-label') as HTMLElement | null;
+    const labelElement = fieldContainer?.querySelector('.t3js-formengine-label');
     if (!labelElement) {
       return '';
     }

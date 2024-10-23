@@ -104,7 +104,7 @@ export class FinisherStep implements WizardStepInterface {
         // Load and render the finisher with the result data
         return this.renderFinisher(result.finisher);
       }
-    }) as TemplateResult;
+    });
   }
 
   /**

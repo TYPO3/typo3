@@ -150,7 +150,7 @@ class Notification {
       });
     }
 
-    const box = <NotificationMessage>document.createElement('typo3-notification-message');
+    const box = document.createElement('typo3-notification-message');
     box.setAttribute('notification-id', 'notification-' + Math.random().toString(36).substring(2, 6));
     box.setAttribute('notification-title', title);
     if (message) {

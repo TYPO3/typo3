@@ -174,7 +174,7 @@ export class CKEditor5Element extends LitElement {
           this.target[0].dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
         });
         if (editor.plugins.has('SourceEditing')) {
-          const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
+          const sourceEditingPlugin: SourceEditing = editor.plugins.get('SourceEditing');
           sourceEditingPlugin.on('change:isSourceEditingMode', (eventInfo: EventInfo, eventName: string, isEnabled: boolean): void => {
             for (const [ rootName ] of editor.editing.view.domRoots) {
               // Behold, CKEditor doesn't exposes events for the edit textarea that replaces the editor UI
@@ -342,7 +342,7 @@ export class CKEditor5Element extends LitElement {
    */
   private handleWordCountPlugin(editor: Editor, wordCount: WordCountConfig|undefined): void {
     if (editor.plugins.has('WordCount') && (wordCount?.displayWords || wordCount?.displayCharacters)) {
-      const wordCountPlugin = editor.plugins.get('WordCount') as WordCount;
+      const wordCountPlugin: WordCount = editor.plugins.get('WordCount');
       this.appendChild(wordCountPlugin.wordCountContainer);
     }
   }

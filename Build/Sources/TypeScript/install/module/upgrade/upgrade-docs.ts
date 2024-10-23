@@ -120,7 +120,7 @@ class UpgradeDocs extends AbstractInteractableModule {
 
   private initializeFullTextSearch(): void {
     this.fulltextSearchField = this.findInModal(Identifiers.fulltextSearch) as HTMLInputElement;
-    const searchInput = <HTMLInputElement>this.fulltextSearchField;
+    const searchInput = this.fulltextSearchField;
 
     new RegularEvent('search', (): void => {
       if (searchInput.value === '') {

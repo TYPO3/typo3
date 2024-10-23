@@ -97,7 +97,7 @@ test.describe('Media Clipboard', () => {
       // Wait for the iframe to reload with multi-selection mode content.
       // Check the iframe DOM directly to avoid stale frameLocator references.
       await page.waitForFunction(() => {
-        const iframe = document.querySelector('#typo3-contentIframe') as HTMLIFrameElement;
+        const iframe = document.querySelector<HTMLIFrameElement>('#typo3-contentIframe');
         if (!iframe?.contentDocument) {
           return false;
         }

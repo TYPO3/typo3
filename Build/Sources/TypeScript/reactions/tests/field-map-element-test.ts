@@ -40,7 +40,7 @@ describe('@typo3/reactions/field-map-element', () => {
    * bitmask sits in a hidden input beside it.
    */
   const createCheckboxRow = (mode: FieldMapMode, value: string = ''): FieldMapRowElement => {
-    const row = <FieldMapRowElement>document.createElement('typo3-reactions-field-map-row');
+    const row = document.createElement('typo3-reactions-field-map-row');
     row.setAttribute('mode', mode);
     row.setAttribute('payload-default', '${hidden}');
     row.innerHTML = `
@@ -63,7 +63,7 @@ describe('@typo3/reactions/field-map-element', () => {
   };
 
   const createSelectRow = (mode: FieldMapMode, value: string = ''): FieldMapRowElement => {
-    const row = <FieldMapRowElement>document.createElement('typo3-reactions-field-map-row');
+    const row = document.createElement('typo3-reactions-field-map-row');
     row.setAttribute('mode', mode);
     row.setAttribute('payload-default', '${doktype}');
     row.innerHTML = `

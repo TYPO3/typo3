@@ -164,7 +164,7 @@ class MultiRecordSelection {
       const checked: NodeListOf<HTMLInputElement> = MultiRecordSelection.getCheckboxes(CheckboxState.checked, identifier);
       for (let i = 0; i < checked.length; i++) {
         // Evaluate each checked element if it contains the specified idField
-        if ((checked[i].closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.dataset[configuration.idField]) {
+        if (checked[i].closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector)?.dataset[configuration.idField]) {
           // If a checked element contains the idField, remove the "disabled"
           // state and end the search since the action can be performed.
           action.disabled = false;

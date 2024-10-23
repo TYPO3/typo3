@@ -14,7 +14,7 @@
 import DocumentService from '@typo3/core/document-service';
 import { selector } from '@typo3/core/literals';
 import { type SelectTree } from './select-tree';
-import { type SelectTreeToolbar } from './select-tree-toolbar';
+import './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
@@ -50,7 +50,7 @@ class CategoryElement extends HTMLElement {
       return;
     }
 
-    this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
+    this.tree = document.createElement('typo3-backend-form-selecttree');
     this.tree.setup = {
       id: this.treeWrapper.id,
       dataUrl: this.generateDataUrl(),
@@ -71,7 +71,7 @@ class CategoryElement extends HTMLElement {
     this.tree.addEventListener('typo3:tree:node-selected', this.selectNode);
     this.tree.addEventListener('tree:initialized', () => {
       if (this.recordField.dataset.treeShowToolbar) {
-        const toolbarElement = document.createElement('typo3-backend-form-selecttree-toolbar') as SelectTreeToolbar;
+        const toolbarElement = document.createElement('typo3-backend-form-selecttree-toolbar');
         toolbarElement.tree = this.tree;
         this.tree.prepend(toolbarElement);
       }

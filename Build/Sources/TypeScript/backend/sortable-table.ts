@@ -51,7 +51,7 @@ class TablesortWithButtons extends Tablesort {
       event.preventDefault();
       event.stopImmediatePropagation();
       const direction = (event.currentTarget as HTMLButtonElement).dataset.sortDirection;
-      const target = (event.currentTarget as HTMLButtonElement).closest('th, td') as HTMLTableCellElement;
+      const target = (event.currentTarget as HTMLButtonElement).closest<HTMLTableCellElement>('th, td');
 
       // Tablesort produces different results on sorting in the same direction twice
       // when the sorting is not 100% clear and multiple cells have the same value.
@@ -74,7 +74,7 @@ class TablesortWithButtons extends Tablesort {
 
     // Assume first row is the header and attach a click handler to each.
     for (let i = 0; i < firstRow.cells.length; i++) {
-      const cell = firstRow.cells[i] as HTMLTableCellElement;
+      const cell = firstRow.cells[i];
       cell.setAttribute('role', 'columnheader');
       if (cell.getAttribute('data-sort-method') !== 'none') {
 

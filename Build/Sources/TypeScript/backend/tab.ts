@@ -233,7 +233,7 @@ class TabScroller {
   constructor(navTabs: HTMLElement) {
     const wrapper = document.createElement('typo3-backend-tab-scroller');
     if (!(navTabs.parentNode instanceof TabScrollerElement)) {
-      navTabs.parentNode!.insertBefore(wrapper, navTabs);
+      navTabs.parentNode.insertBefore(wrapper, navTabs);
       wrapper.appendChild(navTabs);
     }
   }

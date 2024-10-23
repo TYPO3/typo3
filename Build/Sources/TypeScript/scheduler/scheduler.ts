@@ -79,7 +79,7 @@ class Scheduler {
       return;
     }
     const taskIds: Array<string> = [];
-    ((event.detail as ActionEventDetails).checkboxes as NodeListOf<HTMLInputElement>).forEach((checkbox) => {
+    (event.detail as ActionEventDetails).checkboxes.forEach((checkbox) => {
       const checkboxContainer: HTMLElement = checkbox.closest(MultiRecordSelectionSelectors.elementSelector);
       if (checkboxContainer !== null && checkboxContainer.dataset.taskId) {
         taskIds.push(checkboxContainer.dataset.taskId);

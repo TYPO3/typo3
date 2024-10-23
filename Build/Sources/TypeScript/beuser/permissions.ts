@@ -107,7 +107,7 @@ class Permissions {
       action: 'change_owner',
       page: page,
       ownerUid: element.dataset.owner,
-      newOwnerUid: (container.getElementsByTagName('select')[0] as HTMLSelectElement).value,
+      newOwnerUid: container.getElementsByTagName('select')[0].value,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
       container.outerHTML = await response.resolve();
@@ -189,7 +189,7 @@ class Permissions {
       action: 'change_group',
       page: page,
       groupUid: element.dataset.groupId,
-      newGroupUid: (container.getElementsByTagName('select')[0] as HTMLSelectElement).value,
+      newGroupUid: container.getElementsByTagName('select')[0].value,
     }).then(async (response: AjaxResponse): Promise<void> => {
       // Replace content
       container.outerHTML = await response.resolve();

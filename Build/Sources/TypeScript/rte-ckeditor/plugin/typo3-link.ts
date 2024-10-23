@@ -592,12 +592,12 @@ export class Typo3LinkUI extends Core.Plugin {
           });
         }
       };
-      updateEnabled(linkCommand.value as string | undefined);
+      updateEnabled(linkCommand.value);
       this.listenTo(linkCommand, 'change:value', (evt, name, href) => {
         updateEnabled(href);
       });
       this.listenTo(button, 'execute', () => {
-        openResolvedLink(linkCommand.value as string);
+        openResolvedLink(linkCommand.value);
       });
       return button;
     });

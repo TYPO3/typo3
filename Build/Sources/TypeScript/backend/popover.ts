@@ -155,7 +155,7 @@ class Popover {
    * If the element contains an attributes that qualifies as a title, store it as data attribute "bs-title"
    */
   private applyTitleIfAvailable(element: HTMLElement): void {
-    const title = (element.title as string) || element.dataset.title || '';
+    const title = element.title || element.dataset.title || '';
     if (title) {
       element.dataset.bsTitle = title;
     }

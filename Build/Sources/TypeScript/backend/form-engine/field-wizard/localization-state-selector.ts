@@ -50,8 +50,8 @@ class LocalizationStateSelector {
         input.disabled = false;
       } else {
         if (lastState === States.CUSTOM) {
-          (target.closest('.t3js-l10n-state-container')
-            .querySelector('.t3js-l10n-state-custom') as HTMLElement)
+          target.closest('.t3js-l10n-state-container')
+            .querySelector<HTMLElement>('.t3js-l10n-state-custom')
             .dataset.originalLanguageValue = input.value;
         }
         input.disabled = true;

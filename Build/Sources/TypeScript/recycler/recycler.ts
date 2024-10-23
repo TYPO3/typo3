@@ -143,7 +143,7 @@ class Recycler {
     new RegularEvent('click', (event: Event) => {
       event.preventDefault();
 
-      const paginator = (event.target as HTMLElement).closest('button') as HTMLButtonElement;
+      const paginator = (event.target as HTMLElement).closest('button');
 
       if (!paginator) {
         return;

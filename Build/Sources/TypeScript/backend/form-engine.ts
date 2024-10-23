@@ -38,7 +38,7 @@ import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
 import RegularEvent from '@typo3/core/event/regular-event';
 import backendAltDocLabels from '~labels/backend.alt_doc';
 import coreCoreLabels from '~labels/core.core';
-import { parseItemCountLimits, type ItemCount } from '@typo3/backend/form-engine/element/extra/item-count';
+import { parseItemCountLimits } from '@typo3/backend/form-engine/element/extra/item-count';
 import type { ElementBrowserMessage, ElementBrowserElementAddedMessage } from '@typo3/backend/element-browser';
 import { topWindow } from '@typo3/core/utility/top-window';
 
@@ -453,13 +453,13 @@ export default (function() {
       return;
     }
 
-    const container = (fieldEl.closest('.t3js-formengine-field-item') ?? fieldEl.closest('fieldset')) as HTMLElement | null;
+    const container = (fieldEl.closest('.t3js-formengine-field-item') ?? fieldEl.closest('fieldset'));
     if (container === null) {
       return;
     }
 
     fieldEl.dataset.itemcountBadgeInitialized = '1';
-    const badge = document.createElement('typo3-backend-formengine-item-count') as ItemCount;
+    const badge = document.createElement('typo3-backend-formengine-item-count');
     badge.field = fieldEl;
     container.appendChild(badge);
   };
@@ -841,7 +841,7 @@ export default (function() {
    */
   FormEngine.initializeLocalizationStateSelector = function(): void {
     document.querySelectorAll<HTMLElement>('.t3js-l10n-state-container').forEach((el) => {
-      const input = el.closest('.t3js-formengine-field-item')?.querySelector('[data-formengine-input-name]') as HTMLInputElement|null;
+      const input = el.closest('.t3js-formengine-field-item')?.querySelector<HTMLInputElement>('[data-formengine-input-name]');
       if (input === undefined || input === null) {
         return;
       }
@@ -1411,7 +1411,7 @@ export default (function() {
   FormEngine.deleteAction = function(event: Event, callback: DeleteActionCallback): void {
     callback = callback || FormEngine.deleteActionCallback;
 
-    const anchorElement = (event.target as HTMLElement).closest('.t3js-editform-delete-record') as HTMLAnchorElement;
+    const anchorElement = (event.target as HTMLElement).closest('.t3js-editform-delete-record');
 
     FormEngine.showDeleteModal(anchorElement, callback);
   };
