@@ -74,9 +74,6 @@ readonly class IconFactory
 
     /**
      * This method is used throughout the TYPO3 Backend to show icons for a DB record
-     *
-     * @param string $table The TCA table name
-     * @todo: Change $size to allow IconSize only in v14
      */
     public function getIconForRecord(string $table, array $row, ?IconSize $size = IconSize::MEDIUM): Icon
     {
