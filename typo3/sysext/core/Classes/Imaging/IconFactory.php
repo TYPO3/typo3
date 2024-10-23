@@ -44,19 +44,9 @@ readonly class IconFactory
         string $identifier,
         IconSize $size = IconSize::MEDIUM,
         ?string $overlayIdentifier = null,
-        \TYPO3\CMS\Core\Type\Icon\IconState|IconState|null $state = null
+        ?IconState $state = null
     ): Icon {
-        if ($state instanceof \TYPO3\CMS\Core\Type\Icon\IconState) {
-            trigger_error(
-                'Using the non-native enumeration TYPO3\CMS\Core\Type\Icon\IconState in IconFactory->getIcon()'
-                . ' will not work in TYPO3 v14.0 anymore. Use native TYPO3\CMS\Core\Imaging\IconState instead.',
-                E_USER_DEPRECATED
-            );
-            $stateValue = (string)$state;
-        } else {
-            $stateValue = $state?->value ?? '';
-        }
-        $cacheIdentifier = 'icon-factory-' . hash('xxh3', $identifier . $size->value . $overlayIdentifier . $stateValue);
+        $cacheIdentifier = 'icon-factory-' . hash('xxh3', $identifier . $size->value . $overlayIdentifier . ($state?->value ?? ''));
         $icon = $this->runtimeCache->get($cacheIdentifier);
         if ($icon instanceof Icon) {
             return $icon;
@@ -68,7 +58,7 @@ readonly class IconFactory
         }
 
         $iconConfiguration = $this->iconRegistry->getIconConfigurationByIdentifier($identifier);
-        $iconConfiguration['state'] = $stateValue;
+        $iconConfiguration['state'] = $state;
         $icon = $this->createIcon($identifier, $size, $overlayIdentifier, $iconConfiguration);
 
         /** @var IconProviderInterface $iconProvider */
@@ -471,8 +461,7 @@ readonly class IconFactory
         $icon = GeneralUtility::makeInstance(Icon::class);
         $icon->setIdentifier($identifier);
         $icon->setSize($size);
-        $iconState = IconState::tryFrom($iconConfiguration['state']) ?? IconState::STATE_DEFAULT;
-        $icon->setState($iconState);
+        $icon->setState($iconConfiguration['state'] ?? IconState::STATE_DEFAULT);
         if (!empty($overlayIdentifier)) {
             $icon->setOverlayIcon($this->getIcon($overlayIdentifier, IconSize::OVERLAY));
         }

@@ -15,6 +15,7 @@ The following PHP classes that have previously been marked as deprecated with v1
 
 - :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus`
 - :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService`
+- :php:`\TYPO3\CMS\Core\Type\Icon\IconState`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -43,7 +44,7 @@ The following PHP static class methods that have previously been marked as depre
 
 The following methods changed signature according to previous deprecations in v13 at the end of the argument list:
 
-- :php:`` (argument X is now required)
+- :php:`\TYPO3\CMS\Core\Imaging\IconFactory->getIcon()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Imaging\IconState|null`)
 
 The following public class properties have been dropped:
 

@@ -2355,6 +2355,7 @@ return [
         'restFiles' => [
             'Deprecation-101133-IconStateClass.rst',
             'Breaking-101133-IconStateChangedType.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Type\Enumeration' => [
