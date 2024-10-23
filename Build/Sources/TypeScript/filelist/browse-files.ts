@@ -94,7 +94,7 @@ class BrowseFiles {
     const contentsUrl = document.location.href + '&contentOnly=1&expandFolder=' + identifier;
     const response = await new AjaxRequest(contentsUrl).get();
     const html = await response.resolve();
-    const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
+    const contentContainer = document.querySelector<HTMLElement>('.element-browser-main-content .element-browser-body');
     contentContainer.innerHTML = html;
     const tree = document.querySelector('typo3-backend-component-filestorage-browser-tree');
     if (tree) {
@@ -119,7 +119,7 @@ class BrowseFiles {
     const selectedItems: ResourceInterface[] = [];
     items.forEach((checkbox) => {
       if (checkbox.checked) {
-        const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
+        const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector);
         const resource = FileListActionUtility.getResourceForElement(element);
         if (resource.type === 'file' && resource.uid) {
           selectedItems.unshift(resource);

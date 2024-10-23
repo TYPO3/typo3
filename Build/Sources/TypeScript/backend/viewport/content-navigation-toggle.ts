@@ -122,7 +122,7 @@ export class ContentNavigationToggle extends PseudoButtonLitElement {
   }
 
   private findContentNavigation(): ContentNavigation | null {
-    const directNav = this.closest('typo3-backend-content-navigation') as ContentNavigation | null;
+    const directNav = this.closest<ContentNavigation>('typo3-backend-content-navigation');
     if (directNav) {
       return directNav;
     }
@@ -130,7 +130,7 @@ export class ContentNavigationToggle extends PseudoButtonLitElement {
     try {
       const iframe = window.frameElement;
       if (iframe) {
-        return iframe.closest('typo3-backend-content-navigation') as ContentNavigation | null;
+        return iframe.closest<ContentNavigation>('typo3-backend-content-navigation');
       }
     } catch {
       // Cross-origin iframe access denied

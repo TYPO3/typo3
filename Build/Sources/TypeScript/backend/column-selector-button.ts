@@ -168,7 +168,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
   }
 
   private processSelection(currentModal: HTMLElement): void {
-    const form: HTMLFormElement = currentModal.querySelector('form') as HTMLFormElement;
+    const form = currentModal.querySelector('form');
     if (form === null) {
       this.abortSelection();
       return;
@@ -192,7 +192,7 @@ export class ColumnSelectorButton extends PseudoButtonLitElement {
   }
 
   private handleModalContentLoaded(currentModal: HTMLElement): void {
-    const form: HTMLFormElement = currentModal.querySelector('form') as HTMLFormElement;
+    const form = currentModal.querySelector('form');
     if (form === null) {
       // Early return if modal content does not include a form
       return;

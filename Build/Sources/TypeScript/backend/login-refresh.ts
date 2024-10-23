@@ -344,8 +344,8 @@ class LoginRefresh {
     if (!tokenData.headerName || !tokenData.requestToken) {
       return;
     }
-    const passwordField = form.querySelector('input[name=p_field]') as HTMLInputElement;
-    const useridentField = form.querySelector('input[name=userident]') as HTMLInputElement;
+    const passwordField = form.querySelector<HTMLInputElement>('input[name=p_field]');
+    const useridentField = form.querySelector<HTMLInputElement>('input[name=userident]');
     const passwordFieldValue = passwordField.value;
 
     if (passwordFieldValue === '' && useridentField.value === '') {

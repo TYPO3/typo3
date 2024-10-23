@@ -61,7 +61,7 @@ class SystemInformationMenu {
   }
 
   private static getData(): SystemInformationData {
-    const element: null|HTMLElement = document.querySelector(SystemInformationSelector.data) as HTMLElement;
+    const element = document.querySelector<HTMLElement>(SystemInformationSelector.data);
     const data: null|DOMStringMap = element?.dataset;
     return {
       count: data?.systeminformationDataCount ? parseInt(data.systeminformationDataCount, 10) : 0,
@@ -81,7 +81,7 @@ class SystemInformationMenu {
 
   private static updateBadge(): void {
     const data = SystemInformationMenu.getData();
-    const element = document.querySelector(SystemInformationSelector.badge) as HTMLElement;
+    const element = document.querySelector<HTMLElement>(SystemInformationSelector.badge);
 
     // ensure all default classes are available and previous
     // (at this time in processing unknown) class is removed

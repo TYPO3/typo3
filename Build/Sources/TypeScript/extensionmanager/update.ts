@@ -33,7 +33,7 @@ class ExtensionManagerUpdate {
    * Register "update from ter" action
    */
   public initializeEvents(): void {
-    const terUpdateActionForm = document.querySelector(ExtensionManagerUpdateIdentifier.terUpdateAction) as HTMLFormElement|null;
+    const terUpdateActionForm = document.querySelector<HTMLFormElement>(ExtensionManagerUpdateIdentifier.terUpdateAction);
     if (terUpdateActionForm !== null) {
       new RegularEvent('submit', (e: SubmitEvent) => {
         e.preventDefault();

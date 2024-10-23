@@ -62,12 +62,12 @@ class ViewPage {
 
       this.defaultLabel = presetCustomLabel?.textContent.trim() ?? '';
       this.iframe = document.getElementById('tx_this_iframe') as HTMLIFrameElement;
-      this.inputCustomWidth = document.querySelector(Selectors.inputWidthSelector) as HTMLInputElement;
-      this.inputCustomHeight = document.querySelector(Selectors.inputHeightSelector) as HTMLInputElement;
-      this.customPresetItem = document.querySelector(Selectors.customSelector) as HTMLElement;
-      this.customPresetItemWidth = document.querySelector(Selectors.customWidthSelector) as HTMLElement;
-      this.customPresetItemHeight = document.querySelector(Selectors.customHeightSelector) as HTMLElement;
-      this.currentLabelElement = document.querySelector(Selectors.currentLabelSelector) as HTMLElement;
+      this.inputCustomWidth = document.querySelector<HTMLInputElement>(Selectors.inputWidthSelector);
+      this.inputCustomHeight = document.querySelector<HTMLInputElement>(Selectors.inputHeightSelector);
+      this.customPresetItem = document.querySelector<HTMLElement>(Selectors.customSelector);
+      this.customPresetItemWidth = document.querySelector<HTMLElement>(Selectors.customWidthSelector);
+      this.customPresetItemHeight = document.querySelector<HTMLElement>(Selectors.customHeightSelector);
+      this.currentLabelElement = document.querySelector<HTMLElement>(Selectors.currentLabelSelector);
       this.resizableContainer = document.querySelector(Selectors.resizableContainerIdentifier);
 
       this.initialize();
@@ -241,7 +241,7 @@ class ViewPage {
     const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector));
     const padding = parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-top')) + parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-bottom'));
     const documentHeight: number = document.body.getBoundingClientRect().height;
-    const topbarHeight = (document.querySelector(Selectors.topbarContainerSelector) as HTMLElement).getBoundingClientRect().height;
+    const topbarHeight = (document.querySelector<HTMLElement>(Selectors.topbarContainerSelector)).getBoundingClientRect().height;
 
     this.resizableContainer.hidden = false;
     return documentHeight - docheaderNavigationHeight - docheaderButtonsHeight - padding - topbarHeight - 8;

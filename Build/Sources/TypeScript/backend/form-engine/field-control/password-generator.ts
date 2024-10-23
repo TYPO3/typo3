@@ -31,10 +31,10 @@ class PasswordGenerator {
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
       this.controlElement = <HTMLAnchorElement>document.getElementById(controlElementId);
-      this.humanReadableField = <HTMLInputElement>document.querySelector(
+      this.humanReadableField = document.querySelector<HTMLInputElement>(
         'input[data-formengine-input-name="' + this.controlElement.dataset.itemName + '"]',
       );
-      this.hiddenField = <HTMLInputElement>document.querySelector(
+      this.hiddenField = document.querySelector<HTMLInputElement>(
         'input[name="' + this.controlElement.dataset.itemName + '"]',
       );
       this.passwordPolicy = this.controlElement.dataset.passwordPolicy || null;
@@ -46,10 +46,10 @@ class PasswordGenerator {
         // Also remove clearable possibility
         if (this.humanReadableField.isClearable || this.humanReadableField.classList.contains('t3js-clearable')) {
           this.humanReadableField.classList.remove('t3js-clearable');
-          const clearableContainer = <HTMLDivElement>this.humanReadableField.closest('div.form-control-clearable-wrapper');
+          const clearableContainer = this.humanReadableField.closest<HTMLDivElement>('div.form-control-clearable-wrapper');
           if (clearableContainer) {
             clearableContainer.classList.remove('form-control-clearable');
-            const closeButton = <HTMLButtonElement>clearableContainer.querySelector('button.close');
+            const closeButton = clearableContainer.querySelector<HTMLButtonElement>('button.close');
             if (closeButton) {
               clearableContainer.removeChild(closeButton);
             }

@@ -271,7 +271,7 @@ class ExtensionManager {
             document.body.appendChild(progressBar);
             progressBar.start();
             new AjaxRequest(data.url).post({
-              version: (modal.querySelector('input[name="version"]:checked') as HTMLInputElement)?.value,
+              version: (modal.querySelector<HTMLInputElement>('input[name="version"]:checked'))?.value,
             }).finally((): void => {
               location.reload();
             });

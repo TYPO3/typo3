@@ -29,7 +29,7 @@ class BackendLog {
 
   constructor() {
     DocumentService.ready().then((): void => {
-      this.clearableElements = document.querySelectorAll('.t3js-clearable') as NodeListOf<HTMLInputElement>;
+      this.clearableElements = document.querySelectorAll<HTMLInputElement>('.t3js-clearable');
       this.dateTimePickerElements = document.querySelectorAll('.t3js-datetimepicker');
       this.elementBrowserElements = document.querySelectorAll('.t3js-element-browser');
       this.initializeClearableElements();
@@ -83,7 +83,7 @@ class BackendLog {
         return;
       }
 
-      const field = <HTMLInputElement>document.querySelector('input[name="' + e.data.fieldName + '"]');
+      const field = document.querySelector<HTMLInputElement>('input[name="' + e.data.fieldName + '"]');
       if (field) {
         field.value = e.data.value.split('_').pop();
       }

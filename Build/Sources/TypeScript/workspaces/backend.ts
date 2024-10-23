@@ -101,9 +101,9 @@ class Backend extends Workspaces {
       this.registerEvents();
 
       // Set the depth from the main element
-      this.settings.depth = (document.querySelector(Identifiers.depthSelector) as HTMLInputElement)?.value;
-      this.settings.language = (document.querySelector(Identifiers.languageSelector) as HTMLInputElement)?.value;
-      this.settings.stage = (document.querySelector(Identifiers.stagesSelector) as HTMLInputElement)?.value;
+      this.settings.depth = (document.querySelector<HTMLInputElement>(Identifiers.depthSelector))?.value;
+      this.settings.language = (document.querySelector<HTMLInputElement>(Identifiers.languageSelector))?.value;
+      this.settings.stage = (document.querySelector<HTMLInputElement>(Identifiers.stagesSelector))?.value;
 
       // Fetch workspace info (listing) if workspace is accessible
       if (document.querySelector(Identifiers.container) !== null) {
@@ -169,7 +169,7 @@ class Backend extends Workspaces {
 
   private registerEvents(): void {
     new RegularEvent('click', (event: Event, target) => {
-      const row = target.closest('tr') as HTMLTableRowElement;
+      const row = target.closest('tr');
 
       this.checkIntegrity(
         {
@@ -205,7 +205,7 @@ class Backend extends Workspaces {
     new RegularEvent('click', this.openPreview.bind(this)).delegateTo(document, Identifiers.previewAction);
 
     new RegularEvent('click', (event: Event, target: HTMLElement) => {
-      const row = target.closest('tr') as HTMLTableRowElement;
+      const row = target.closest('tr');
       const newUrl = TYPO3.settings.FormEngine.moduleUrl
         + '&returnUrl=' + encodeURIComponent(document.location.href)
         + '&module=' + encodeURIComponent(topWindow.TYPO3.ModuleMenu.App.getCurrentModule())
@@ -215,7 +215,7 @@ class Backend extends Workspaces {
     }).delegateTo(document, Identifiers.openAction);
 
     new RegularEvent('click', (event: Event, target: HTMLElement) => {
-      const row = target.closest('tr') as HTMLTableRowElement;
+      const row = target.closest('tr');
       const recordUid = row.dataset.table === 'pages' ? row.dataset.t3ver_oid : row.dataset.pid;
       window.location.href = TYPO3.settings.WebLayout.moduleUrl
         + '&id=' + recordUid;
@@ -262,7 +262,7 @@ class Backend extends Workspaces {
     }).delegateTo(document, Identifiers.searchForm);
 
     new RegularEvent('input', (event: Event, target: HTMLInputElement) => {
-      const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+      const searchSubmitButton = document.querySelector<HTMLButtonElement>(Identifiers.searchSubmitBtn);
 
       if (target.value !== '') {
         searchSubmitButton.disabled = false;
@@ -282,7 +282,7 @@ class Backend extends Workspaces {
 
     new RegularEvent('search', (_event: Event, target: HTMLInputElement) => {
       if (target.value === '') {
-        const searchSubmitButton = document.querySelector(Identifiers.searchSubmitBtn) as HTMLButtonElement;
+        const searchSubmitButton = document.querySelector<HTMLButtonElement>(Identifiers.searchSubmitBtn);
         searchSubmitButton.disabled = true;
         this.settings.filterTxt = '';
         this.getWorkspaceInfos();
@@ -311,7 +311,7 @@ class Backend extends Workspaces {
         this.generateRemotePayloadBody('getWorkspaceInfos', this.settings),
       ).then(async (response: AjaxResponse): Promise<void> => {
         const actionResponse = await response.resolve();
-        target.previousElementSibling.innerHTML = (target.querySelector('option:checked') as HTMLElement).dataset.icon;
+        target.previousElementSibling.innerHTML = (target.querySelector<HTMLElement>('option:checked')).dataset.icon;
         this.renderWorkspaceInfos(actionResponse[0].result);
       });
     }).delegateTo(document, Identifiers.languageSelector);
@@ -367,7 +367,7 @@ class Backend extends Workspaces {
 
   private readonly handleCheckboxStateChanged = (event: Event): void => {
     const checkbox = event.target as HTMLInputElement;
-    const tableRow = checkbox.closest('tr') as HTMLTableRowElement;
+    const tableRow = checkbox.closest('tr');
     const checked = checkbox.checked;
     const table = tableRow.dataset.table;
     const uid = tableRow.dataset.uid;
@@ -392,7 +392,7 @@ class Backend extends Workspaces {
       Backend.changeCollectionParentState(tableRow.dataset.collection, checked);
     }
 
-    const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
+    const chooseMassAction = document.querySelector<HTMLSelectElement>(Identifiers.chooseMassAction);
     if (chooseMassAction !== null) {
       chooseMassAction.disabled = this.markedRecordsForMassAction.length > 0;
     }
@@ -469,18 +469,18 @@ class Backend extends Workspaces {
   private renderWorkspaceInfosFailure(): void {
     this.resetMassActionState(false);
     this.buildPagination(0);
-    (document.querySelector(Identifiers.contentsContainer) as HTMLElement).style.display = 'none';
-    (document.querySelector(Identifiers.noContentsContainer) as HTMLElement).style.display = 'none';
-    (document.querySelector(Identifiers.errorContainer) as HTMLElement).style.display = 'block';
+    (document.querySelector<HTMLElement>(Identifiers.contentsContainer)).style.display = 'none';
+    (document.querySelector<HTMLElement>(Identifiers.noContentsContainer)).style.display = 'none';
+    (document.querySelector<HTMLElement>(Identifiers.errorContainer)).style.display = 'block';
   }
 
   /**
    * Renders fetched workspace information
    */
   private renderWorkspaceInfos(result: any): void {
-    const contentsContainer = document.querySelector(Identifiers.contentsContainer) as HTMLElement;
-    const noContentsContainer = document.querySelector(Identifiers.noContentsContainer) as HTMLElement;
-    (document.querySelector(Identifiers.errorContainer) as HTMLElement).style.display = 'none';
+    const contentsContainer = document.querySelector<HTMLElement>(Identifiers.contentsContainer);
+    const noContentsContainer = document.querySelector<HTMLElement>(Identifiers.noContentsContainer);
+    (document.querySelector<HTMLElement>(Identifiers.errorContainer)).style.display = 'none';
 
     this.resetMassActionState(result.data.length);
     this.buildPagination(result.total);
@@ -503,7 +503,7 @@ class Backend extends Workspaces {
    * Renders the pagination
    */
   private buildPagination(totalItems: number): void {
-    const paginationContainer = document.querySelector(Identifiers.pagination) as HTMLElement;
+    const paginationContainer = document.querySelector<HTMLElement>(Identifiers.pagination);
 
     if (totalItems === 0) {
       paginationContainer.replaceChildren();
@@ -519,7 +519,7 @@ class Backend extends Workspaces {
       return;
     }
 
-    let pagination = paginationContainer.querySelector('typo3-backend-pagination') as PaginationElement | null;
+    let pagination = paginationContainer.querySelector<PaginationElement>('typo3-backend-pagination');
     if (pagination === null) {
       pagination = document.createElement('typo3-backend-pagination');
       paginationContainer.append(pagination);
@@ -534,7 +534,7 @@ class Backend extends Workspaces {
   private viewChanges(event: Event, target: HTMLElement): void {
     event.preventDefault();
 
-    const tableRow = target.closest('tr') as HTMLTableRowElement;
+    const tableRow = target.closest('tr');
     this.sendRemoteRequest(
       this.generateRemotePayloadBody('getRowDetails', {
         stage: parseInt(tableRow.dataset.stage, 10),
@@ -590,7 +590,7 @@ class Backend extends Workspaces {
       Modal.advanced({
         type: Modal.types.default,
         title: labels.get('window.recordInformation', {
-          '0': (tableRow.querySelector('.t3js-title-workspace') as HTMLElement).innerText.trim()
+          '0': (tableRow.querySelector<HTMLElement>('.t3js-title-workspace')).innerText.trim()
         }),
         content: content,
         severity: SeverityEnum.info,
@@ -604,7 +604,7 @@ class Backend extends Workspaces {
    * Opens a record in a preview window
    */
   private openPreview(event: Event, target: HTMLElement): void {
-    const tableRow = target.closest('tr') as HTMLTableRowElement;
+    const tableRow = target.closest('tr');
 
     this.sendRemoteRequest(
       this.generateRemotePayloadBody('viewSingleRecord', [
@@ -620,7 +620,7 @@ class Backend extends Workspaces {
    * Shows a confirmation modal and deletes the selected record from workspace.
    */
   private confirmDeleteRecordFromWorkspace(e: Event, target: HTMLElement): void {
-    const tableRow = target.closest('tr') as HTMLTableRowElement;
+    const tableRow = target.closest('tr');
 
     const modal = Modal.confirm(
       labels.get('window.discard.title'),
@@ -775,7 +775,7 @@ class Backend extends Workspaces {
       ]
     });
     modal.addEventListener('typo3-modal-hidden', (): void => {
-      const chooseSelectionAction = document.querySelector(Identifiers.chooseSelectionAction) as HTMLSelectElement;
+      const chooseSelectionAction = document.querySelector<HTMLSelectElement>(Identifiers.chooseSelectionAction);
       if (chooseSelectionAction !== null) {
         chooseSelectionAction.value = '';
       }
@@ -877,7 +877,7 @@ class Backend extends Workspaces {
       ]
     });
     modal.addEventListener('typo3-modal-hidden', (): void => {
-      const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
+      const chooseMassAction = document.querySelector<HTMLSelectElement>(Identifiers.chooseMassAction);
       if (chooseMassAction !== null) {
         chooseMassAction.value = '';
       }
@@ -927,7 +927,7 @@ class Backend extends Workspaces {
         }
       });
       modal.addEventListener('typo3-modal-hide', (): void => {
-        const chooseStageAction = document.querySelector(Identifiers.chooseStageAction) as HTMLSelectElement;
+        const chooseStageAction = document.querySelector<HTMLSelectElement>(Identifiers.chooseStageAction);
         if (chooseStageAction !== null) {
           chooseStageAction.value = '';
         }
@@ -999,12 +999,12 @@ class Backend extends Workspaces {
   private resetMassActionState(hasRecords: boolean): void {
     this.markedRecordsForMassAction = [];
     if (hasRecords) {
-      const workspaceActions = document.querySelector(Identifiers.workspaceActions) as HTMLElement;
+      const workspaceActions = document.querySelector<HTMLElement>(Identifiers.workspaceActions);
       if (workspaceActions !== null) {
         workspaceActions.classList.remove('hidden');
       }
 
-      const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
+      const chooseMassAction = document.querySelector<HTMLSelectElement>(Identifiers.chooseMassAction);
       if (chooseMassAction !== null) {
         chooseMassAction.disabled = false;
       }

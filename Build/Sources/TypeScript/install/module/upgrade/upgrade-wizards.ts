@@ -233,7 +233,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             if (data.needsUpdate === true) {
               UpgradeWizards.removeLoadingMessage(outputContainer);
               modalContent.querySelector(Identifiers.outputWizardsContainer)
-                .appendChild((modalContent.querySelector(Identifiers.wizardsBlockingCharsetTemplate) as HTMLTemplateElement).content.cloneNode(true));
+                .appendChild((modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingCharsetTemplate)).content.cloneNode(true));
             } else {
               this.blockingUpgradesDatabaseAdds();
             }
@@ -285,7 +285,7 @@ class UpgradeWizards extends AbstractInteractableModule {
           const data: UpgradeWizardsBlockingDatabaseAddsResponse = await response.resolve();
           if (data.success === true) {
             if (data.needsUpdate === true) {
-              const adds = (modalContent.querySelector(Identifiers.wizardsBlockingAddsTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+              const adds = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsBlockingAddsTemplate)).content.cloneNode(true) as HTMLElement;
               if (typeof (data.adds.tables) === 'object') {
                 data.adds.tables.forEach((element): void => {
                   const title = 'Table: ' + this.securityUtility.encodeHtml(element.table);
@@ -384,7 +384,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsListResponse = await response.resolve();
           UpgradeWizards.removeLoadingMessage(outputContainer);
-          const list = (modalContent.querySelector(Identifiers.wizardsListTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+          const list = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsListTemplate)).content.cloneNode(true) as HTMLElement;
           if (data.success === true) {
             let numberOfWizardsTodo = 0;
             let numberOfWizards = 0;
@@ -392,7 +392,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               numberOfWizards = data.wizards.length;
               data.wizards.forEach((element): void => {
                 if (element.shouldRenderWizard === true) {
-                  const aRow = (modalContent.querySelector(Identifiers.wizardsListRowTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+                  const aRow = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsListRowTemplate)).content.cloneNode(true) as HTMLElement;
                   numberOfWizardsTodo = numberOfWizardsTodo + 1;
                   aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowTitle).innerText = element.title;
                   aRow.querySelector<HTMLElement>(Identifiers.wizardsListRowExplanation).innerText = element.explanation;
@@ -449,7 +449,7 @@ class UpgradeWizards extends AbstractInteractableModule {
         async (response: AjaxResponse): Promise<void> => {
           const data: UpgradeWizardsInputResponse = await response.resolve();
           outputContainer.innerHTML = '';
-          const input = (modalContent.querySelector(Identifiers.wizardsInputTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+          const input = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsInputTemplate)).content.cloneNode(true) as HTMLElement;
           if (data.success === true) {
             if (Array.isArray(data.status)) {
               data.status.forEach((element): void => {
@@ -536,13 +536,13 @@ class UpgradeWizards extends AbstractInteractableModule {
                 outputContainer.append(InfoBox.create(element.severity, element.title, element.message));
               });
             }
-            const body = (modalContent.querySelector(Identifiers.wizardsDoneBodyTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+            const body = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneBodyTemplate)).content.cloneNode(true) as HTMLElement;
             const wizardsDoneContainer = body.querySelector(Identifiers.wizardsDoneRows);
             let hasBodyContent: boolean = false;
             if (Array.isArray(data.wizardsDone) && data.wizardsDone.length > 0) {
               data.wizardsDone.forEach((element): void => {
                 hasBodyContent = true;
-                const aRow = (modalContent.querySelector(Identifiers.wizardsDoneRowTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+                const aRow = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate)).content.cloneNode(true) as HTMLElement;
                 aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
                 aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);
@@ -551,7 +551,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             if (Array.isArray(data.rowUpdatersDone) && data.rowUpdatersDone.length > 0) {
               data.rowUpdatersDone.forEach((element): void => {
                 hasBodyContent = true;
-                const aRow = (modalContent.querySelector(Identifiers.wizardsDoneRowTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+                const aRow = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.wizardsDoneRowTemplate)).content.cloneNode(true) as HTMLElement;
                 aRow.querySelector(Identifiers.wizardsDoneRowMarkUndone).setAttribute('data-identifier', element.identifier);
                 aRow.querySelector<HTMLElement>(Identifiers.wizardsDoneRowTitle).innerText = element.title;
                 wizardsDoneContainer.appendChild(aRow);

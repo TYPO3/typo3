@@ -128,7 +128,7 @@ export class Tab {
   }
 
   public static show(button: HTMLElement): void {
-    const tabList = button.closest('[role="tablist"]') as HTMLElement | null;
+    const tabList = button.closest<HTMLElement>('[role="tablist"]');
     if (!tabList) {
       return;
     }
@@ -144,7 +144,7 @@ export class Tab {
       return;
     }
 
-    const tabContent = targetPane.closest('.tab-content') as HTMLElement | null;
+    const tabContent = targetPane.closest<HTMLElement>('.tab-content');
     const previousButton = tabList.querySelector<HTMLElement>(':scope .nav-link.active') ?? null;
 
     // Dispatch typo3:tab:show (before switch, cancelable)

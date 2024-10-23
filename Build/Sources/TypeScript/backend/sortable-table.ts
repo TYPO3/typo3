@@ -179,7 +179,7 @@ export default class SortableTable {
         menuIcon.identifier = 'empty-empty';
       });
 
-      const sortingCell = table.tHead.querySelector('th[aria-sort]') as HTMLTableCellElement;
+      const sortingCell = table.tHead.querySelector<HTMLTableCellElement>('th[aria-sort]');
       const sortingButton = sortingCell.querySelector('.dropdown-toggle[data-sorting-toggle]');
       const sortingIconWrap = sortingButton.querySelector(':scope > div');
       sortingIconWrap.classList.add('text-primary');

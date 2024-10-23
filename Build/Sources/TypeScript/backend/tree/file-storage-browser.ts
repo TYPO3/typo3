@@ -99,7 +99,7 @@ export class FileStorageBrowser extends LitElement {
 
     const initialized = () => {
       // set up toolbar now with updated properties
-      const toolbar = this.querySelector('typo3-backend-tree-toolbar') as TreeToolbar;
+      const toolbar = this.querySelector<TreeToolbar>('typo3-backend-tree-toolbar');
       toolbar.tree = this.tree;
       // Expand to the active folder if one is set
       if (this.activeFolder) {
@@ -177,7 +177,7 @@ export class FileStorageBrowser extends LitElement {
     (new AjaxRequest(contentsUrl)).get()
       .then((response: AjaxResponse) => response.resolve())
       .then((response) => {
-        const contentContainer = document.querySelector('.element-browser-main-content .element-browser-body') as HTMLElement;
+        const contentContainer = document.querySelector<HTMLElement>('.element-browser-main-content .element-browser-body');
         contentContainer.innerHTML = response;
       });
   };

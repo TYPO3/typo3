@@ -61,7 +61,7 @@ export class ResultItem extends PseudoButtonLitElement {
   private onBlur(e: FocusEvent): void {
     let closeResultContainer = true;
     const relatedElement = e.relatedTarget as HTMLElement|null;
-    const resultContainer = this.closest('typo3-backend-formengine-suggest-result-container') as HTMLElement;
+    const resultContainer = this.closest<HTMLElement>('typo3-backend-formengine-suggest-result-container');
 
     if (relatedElement?.tagName.toLowerCase() === 'typo3-backend-formengine-suggest-result-item') {
       closeResultContainer = false;

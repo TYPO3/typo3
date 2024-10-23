@@ -43,8 +43,8 @@ class CategoryElement extends HTMLElement {
     }
 
     await DocumentService.ready();
-    this.recordField = <HTMLInputElement>this.querySelector(selector`#${this.getAttribute('recordFieldId') || '' as string}`);
-    this.treeWrapper = <HTMLElement>this.querySelector(selector`#${this.getAttribute('treeWrapperId') || '' as string}`);
+    this.recordField = this.querySelector<HTMLInputElement>(selector`#${this.getAttribute('recordFieldId') || '' as string}`);
+    this.treeWrapper = this.querySelector<HTMLElement>(selector`#${this.getAttribute('treeWrapperId') || '' as string}`);
 
     if (!this.recordField || !this.treeWrapper) {
       return;

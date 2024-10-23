@@ -72,7 +72,7 @@ class MultiRecordSelection {
   }
 
   private static getIdentifier(element: HTMLElement): string {
-    return (element.closest('[data-multi-record-selection-identifier]') as HTMLElement)?.dataset.multiRecordSelectionIdentifier || '';
+    return (element.closest<HTMLElement>('[data-multi-record-selection-identifier]'))?.dataset.multiRecordSelectionIdentifier || '';
   }
 
   private static changeCheckboxState(checkbox: HTMLInputElement, check: boolean): void {
@@ -102,7 +102,7 @@ class MultiRecordSelection {
     let actionsToggled: boolean = false;
     const identifiers: Array<string> = [];
     checked.forEach((checkbox) => {
-      (checkbox.closest(MultiRecordSelectionSelectors.elementSelector) as HTMLElement)?.classList.add(MultiRecordSelection.activeClass);
+      (checkbox.closest<HTMLElement>(MultiRecordSelectionSelectors.elementSelector))?.classList.add(MultiRecordSelection.activeClass);
       const identifier: string = MultiRecordSelection.getIdentifier(checkbox);
       if (identifier !== '' && !identifiers.includes(identifier)) {
         identifiers.push(identifier);

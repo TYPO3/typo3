@@ -42,9 +42,9 @@ class RenameFile {
     e.preventDefault();
 
     const form: HTMLFormElement = (e.currentTarget as HTMLInputElement).form;
-    const fileNameField = form.querySelector('input[name="data[rename][0][target]"]') as HTMLInputElement;
-    const destinationField = form.querySelector('input[name="data[rename][0][destination]"]') as HTMLInputElement;
-    const conflictModeField = form.querySelector('input[name="data[rename][0][conflictMode]"]') as HTMLInputElement;
+    const fileNameField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][target]"]');
+    const destinationField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][destination]"]');
+    const conflictModeField = form.querySelector<HTMLInputElement>('input[name="data[rename][0][conflictMode]"]');
 
     const data: Record<string, string> = {
       fileName: fileNameField.value

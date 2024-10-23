@@ -21,7 +21,7 @@ class UploadForm {
   public initializeEvents(): void {
     // Show upload form
     new RegularEvent('click', (event: Event, target: HTMLAnchorElement): void => {
-      const uploadForm = document.querySelector('.extension-upload-form') as HTMLElement;
+      const uploadForm = document.querySelector<HTMLElement>('.extension-upload-form');
 
       event.preventDefault();
       if (uploadForm.classList.contains(this.expandedUploadFormClass)) {

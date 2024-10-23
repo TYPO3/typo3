@@ -47,7 +47,7 @@ export function typoscript() {
 
 const tsCodeCompletionInitializer = (async (): Promise<TsCodeCompletion> => {
   await DocumentService.ready();
-  const effectivePid = parseInt((document.querySelector('input[name="effectivePid"]') as HTMLInputElement)?.value, 10);
+  const effectivePid = parseInt((document.querySelector<HTMLInputElement>('input[name="effectivePid"]'))?.value, 10);
   return new TsCodeCompletion(effectivePid);
 })();
 

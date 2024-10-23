@@ -31,10 +31,10 @@ class ShortUrlGenerator {
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
       this.controlElement = <HTMLAnchorElement>document.getElementById(controlElementId);
-      this.humanReadableField = <HTMLInputElement>document.querySelector(
+      this.humanReadableField = document.querySelector<HTMLInputElement>(
         'input[data-formengine-input-name="' + this.controlElement.dataset.itemName.replace('[short_url]', '[source_path]') + '"]',
       );
-      this.sourceHostField = <HTMLInputElement>document.querySelector(
+      this.sourceHostField = document.querySelector<HTMLInputElement>(
         'input[data-formengine-input-name="' + this.controlElement.dataset.itemName.replace('[short_url]', '[source_host]') + '"]',
       );
       this.controlElement.addEventListener('click', this.generateShortUrl.bind(this));

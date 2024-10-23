@@ -68,14 +68,14 @@ class Preview extends Workspaces {
    * Fetches and stores often required elements
    */
   private getElements(): void {
-    this.elements.liveView = document.querySelector(Identifiers.liveView) as HTMLElement;
-    this.elements.stageSliderContainer = document.querySelector(Identifiers.stageSliderContainer) as HTMLElement;
-    this.elements.stageSlider = document.querySelector(Identifiers.stageSlider) as HTMLElement;
-    this.elements.workspaceView = document.querySelector(Identifiers.workspaceView) as HTMLElement;
-    this.elements.stageButtonsContainer = document.querySelector(Identifiers.stageButtonsContainer) as HTMLElement;
-    this.elements.previewModeContainer = document.querySelector(Identifiers.previewModeContainer) as HTMLElement;
-    this.elements.activePreviewMode = document.querySelector(Identifiers.activePreviewMode) as HTMLElement;
-    this.elements.workspacePreview = document.querySelector(Identifiers.workspacePreview) as HTMLElement;
+    this.elements.liveView = document.querySelector<HTMLElement>(Identifiers.liveView);
+    this.elements.stageSliderContainer = document.querySelector<HTMLElement>(Identifiers.stageSliderContainer);
+    this.elements.stageSlider = document.querySelector<HTMLElement>(Identifiers.stageSlider);
+    this.elements.workspaceView = document.querySelector<HTMLElement>(Identifiers.workspaceView);
+    this.elements.stageButtonsContainer = document.querySelector<HTMLElement>(Identifiers.stageButtonsContainer);
+    this.elements.previewModeContainer = document.querySelector<HTMLElement>(Identifiers.previewModeContainer);
+    this.elements.activePreviewMode = document.querySelector<HTMLElement>(Identifiers.activePreviewMode);
+    this.elements.workspacePreview = document.querySelector<HTMLElement>(Identifiers.workspacePreview);
   }
 
   /**

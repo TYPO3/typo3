@@ -63,7 +63,7 @@ class Paste {
   }
 
   private static determineColumn(element: HTMLElement): number {
-    const columnContainer = element.closest('[data-colpos]') as HTMLElement|null;
+    const columnContainer = element.closest<HTMLElement>('[data-colpos]');
     return parseInt(columnContainer?.dataset?.colpos ?? '0', 10);
   }
 
@@ -142,7 +142,7 @@ class Paste {
    */
   private execute(element: HTMLElement): void {
     const colPos = Paste.determineColumn(element);
-    const closestElement = element.closest(this.elementIdentifier) as HTMLElement;
+    const closestElement = element.closest<HTMLElement>(this.elementIdentifier);
     const targetFound = closestElement.dataset.uid;
     let targetPid;
     if (typeof targetFound === 'undefined') {
@@ -150,7 +150,7 @@ class Paste {
     } else {
       targetPid = 0 - parseInt(targetFound, 10);
     }
-    const language = parseInt((element.closest('[data-language-uid]') as HTMLElement).dataset.languageUid, 10);
+    const language = parseInt((element.closest<HTMLElement>('[data-language-uid]')).dataset.languageUid, 10);
     const parameters = {
       CB: {
         paste: 'tt_content|' + targetPid,

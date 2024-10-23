@@ -73,7 +73,7 @@ class Permissions {
       const data = await response.resolve();
       const parentElement = element.parentElement;
       parentElement.innerHTML = data;
-      const targetElement = parentElement.querySelector('button[data-bits="' + bits + '"]') as HTMLButtonElement;
+      const targetElement = parentElement.querySelector<HTMLButtonElement>('button[data-bits="' + bits + '"]');
       targetElement.focus();
     });
   }
@@ -91,7 +91,7 @@ class Permissions {
       const data = await response.resolve();
       const parentElement = element.parentElement;
       element.outerHTML = data;
-      const targetElement = parentElement.querySelector('button[data-page="' + page + '"]') as HTMLButtonElement;
+      const targetElement = parentElement.querySelector<HTMLButtonElement>('button[data-page="' + page + '"]');
       targetElement.focus();
     });
   }

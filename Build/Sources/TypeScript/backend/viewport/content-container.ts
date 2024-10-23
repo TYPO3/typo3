@@ -21,7 +21,7 @@ import { topWindow } from '@typo3/core/utility/top-window';
 
 class ContentContainer extends AbstractContainer {
   public get(): Window {
-    return (document.querySelector(ScaffoldIdentifierEnum.contentModuleIframe) as HTMLIFrameElement).contentWindow;
+    return (document.querySelector<HTMLIFrameElement>(ScaffoldIdentifierEnum.contentModuleIframe)).contentWindow;
   }
 
   public beforeSetUrl(interactionRequest: InteractionRequest): Promise<void> {

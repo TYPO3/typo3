@@ -36,7 +36,7 @@ export class TreeToolbar extends LitElement {
 
   protected override firstUpdated(): void
   {
-    const inputEl = this.querySelector(this.settings.searchInput) as HTMLInputElement;
+    const inputEl = this.querySelector<HTMLInputElement>(this.settings.searchInput);
     if (inputEl) {
       new DebounceEvent('input', (evt: InputEvent) => {
         const el = evt.target as HTMLInputElement;

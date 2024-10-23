@@ -121,7 +121,7 @@ export class CspReports extends LitElement {
     if (changedProperties.has('selectedReport') && this.selectedReport !== null) {
       // Focus the details panel when a report is selected
       this.updateComplete.then(() => {
-        const detailsPanel = this.querySelector('#report-details') as HTMLElement;
+        const detailsPanel = this.querySelector<HTMLElement>('#report-details');
         detailsPanel?.focus();
       });
     }
@@ -385,7 +385,7 @@ export class CspReports extends LitElement {
 
   private focusFirstReportRow(): void {
     this.updateComplete.then(() => {
-      const firstRow = this.querySelector('tbody tr[tabindex="0"]') as HTMLElement;
+      const firstRow = this.querySelector<HTMLElement>('tbody tr[tabindex="0"]');
       firstRow?.focus();
     });
   }

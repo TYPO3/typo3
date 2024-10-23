@@ -54,7 +54,7 @@ class NavigationContainer extends AbstractContainer {
       return;
     }
     if (this.activeComponentId !== '') {
-      const activeComponentElement = navigationContainer.querySelector('#navigationComponent-' + this.activeComponentId.replace(/[/@]/g, '_')) as HTMLElement;
+      const activeComponentElement = navigationContainer.querySelector<HTMLElement>('#navigationComponent-' + this.activeComponentId.replace(/[/@]/g, '_'));
       if (activeComponentElement) {
         activeComponentElement.style.display = 'none';
       }
@@ -105,7 +105,7 @@ class NavigationContainer extends AbstractContainer {
     }
     navigationContainer.querySelectorAll<HTMLElement>('[data-component]').forEach((el) => el.style.display = 'none');
     contentNavigation.showNavigation();
-    const selectedElement = navigationContainer.querySelector('[data-component="' + component + '"]') as HTMLElement;
+    const selectedElement = navigationContainer.querySelector<HTMLElement>('[data-component="' + component + '"]');
     if (selectedElement) {
       // Re-set to the display setting from CSS
       selectedElement.style.display = null;

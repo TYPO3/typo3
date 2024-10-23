@@ -623,7 +623,7 @@ export default class DragUploader {
     new RegularEvent('change', (event: Event, target: HTMLSelectElement) => {
       if (target.value !== '') {
         // mass action was selected, apply action to every file
-        for (const select of modal.querySelectorAll('.t3js-actions') as NodeListOf<HTMLSelectElement>) {
+        for (const select of modal.querySelectorAll<HTMLSelectElement>('.t3js-actions')) {
           const index = parseInt(select.dataset.override, 10);
           select.value = target.value;
           select.disabled = true;
@@ -897,7 +897,7 @@ class FileQueueItem {
 
       // Enable checkbox, if available
       if (this.selector) {
-        const checkbox: HTMLInputElement = <HTMLInputElement>this.selector.querySelector('input');
+        const checkbox = this.selector.querySelector('input');
         if (checkbox) {
           checkbox.removeAttribute('disabled');
           checkbox.setAttribute('name', 'CBC[_FILE|' + Md5.hash(combinedIdentifier) + ']');
@@ -947,7 +947,7 @@ class FileQueueItem {
    */
   public showFileInfo(fileInfo: UploadedFile): void {
     this.removeProgress();
-    if ((document.querySelector('#filelist-searchterm') as HTMLInputElement)?.value) {
+    if ((document.querySelector<HTMLInputElement>('#filelist-searchterm'))?.value) {
       // When search is active, the PATH column is always present so we add it
       const pathColumn = document.createElement('td');
       pathColumn.textContent = fileInfo.path;

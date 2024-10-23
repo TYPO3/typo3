@@ -22,8 +22,8 @@ class EditPopup {
 
   constructor(controlElementId: string) {
     DocumentService.ready().then((): void => {
-      this.controlElement = <HTMLAnchorElement>document.querySelector(controlElementId);
-      this.assignedFormField = <HTMLSelectElement>document.querySelector(
+      this.controlElement = document.querySelector<HTMLAnchorElement>(controlElementId);
+      this.assignedFormField = document.querySelector<HTMLSelectElement>(
         'select[data-formengine-input-name="' + this.controlElement.dataset.element + '"]',
       );
 

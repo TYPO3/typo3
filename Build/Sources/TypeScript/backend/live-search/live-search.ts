@@ -110,8 +110,8 @@ class LiveSearch {
       ajaxCallback: (): void => {
         const liveSearchContainer = modal.querySelector('typo3-backend-live-search');
         const searchForm = liveSearchContainer.querySelector('form');
-        const searchField = searchForm.querySelector('input[type="search"]') as HTMLInputElement;
-        const offsetField = searchForm.querySelector('input[name="offset"]') as HTMLInputElement;
+        const searchField = searchForm.querySelector<HTMLInputElement>('input[type="search"]');
+        const offsetField = searchForm.querySelector<HTMLInputElement>('input[name="offset"]');
 
         new RegularEvent('livesearch:demand-changed', (): void => {
           offsetField.value = '0';
@@ -135,7 +135,7 @@ class LiveSearch {
               BrowserSession.set('livesearch-offset', offset);
             }
           });
-          const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
+          const optionCounterElement = searchForm.querySelector<HTMLElement>('[data-active-options-counter]');
           const count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
           optionCounterElement.querySelector('output').textContent = count.toString(10);
           optionCounterElement.classList.toggle('hidden', count === 0);
@@ -153,7 +153,7 @@ class LiveSearch {
         }).bindTo(searchResultContainer);
 
         new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent<InvokeOptionEventData>): void => {
-          const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
+          const optionCounterElement = searchForm.querySelector<HTMLElement>('[data-active-options-counter]');
           let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
           count = e.detail.active ? count + 1 : count - 1;
 
@@ -190,7 +190,7 @@ class LiveSearch {
      */
     ['modal-loaded', 'typo3-modal-shown'].forEach((eventToListenOn) => {
       modal.addEventListener(eventToListenOn, () => {
-        const searchField = modal.querySelector('input[type="search"]') as HTMLInputElement|null;
+        const searchField = modal.querySelector<HTMLInputElement>('input[type="search"]');
         if (searchField !== null) {
           searchField.focus();
           searchField.select();
@@ -217,7 +217,7 @@ class LiveSearch {
     if (query === '') {
       this.updateSearchResults();
     } else {
-      const searchResultContainer = document.querySelector(resultContainerComponentName) as ResultContainer;
+      const searchResultContainer = document.querySelector<ResultContainer>(resultContainerComponentName);
       const paginationElement: ResultPagination = document.querySelector('typo3-backend-live-search-result-pagination');
       searchResultContainer.loading = true;
       paginationElement.loading = true;

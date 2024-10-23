@@ -105,7 +105,7 @@ export class FormEngineReview {
           console.error(invalidField);
           throw new Error('Could not find an element containing the `t3js-formengine-validation-marker` class for the previously logged input field.');
         }
-        const relatedInputField = fieldContainer.querySelector('[data-formengine-validation-rules]') as HTMLElement;
+        const relatedInputField = fieldContainer.querySelector<HTMLElement>('[data-formengine-validation-rules]');
         if (relatedInputField === null) {
           console.error(fieldContainer);
           throw new Error('Could not find an element containing the `data-formengine-validation-rules` attribute for the previously logged container.');

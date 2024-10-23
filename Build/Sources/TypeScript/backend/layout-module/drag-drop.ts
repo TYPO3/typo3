@@ -119,7 +119,7 @@ class DragDrop {
   }
 
   protected onDragStart(event: DragEvent, target: HTMLElement): void {
-    const content = target.closest(Identifiers.content) as HTMLElement;
+    const content = target.closest<HTMLElement>(Identifiers.content);
 
     this.draggedContentType = content.dataset.ctype ?? '';
 
@@ -137,7 +137,7 @@ class DragDrop {
     event.dataTransfer.effectAllowed = 'copyMove';
     DragDropUtility.updateEventAndTooltipToReflectCopyMoveIntention(event);
 
-    (content.querySelector(Identifiers.dropZone) as HTMLElement).hidden = true;
+    (content.querySelector<HTMLElement>(Identifiers.dropZone)).hidden = true;
   }
 
   protected onDragEnd(): void {
@@ -172,12 +172,12 @@ class DragDrop {
     if (typeof (contentElementDragDropData.uid) === 'number' && contentElementDragDropData.uid > 0) {
       const parameters: Parameters = {};
       // add the information about a possible column position change
-      const targetFound = (dropContainer.closest(Identifiers.content) as HTMLElement).dataset.uid;
+      const targetFound = (dropContainer.closest<HTMLElement>(Identifiers.content)).dataset.uid;
       // the item was moved to the top of the colPos, so the page ID is used here
       let targetPid: number;
       if (targetFound === undefined) {
         // the actual page is needed. Read it from the container into which the element was dropped.
-        targetPid = parseInt((dropContainer.closest('[data-page]') as HTMLElement).dataset.page, 10);
+        targetPid = parseInt((dropContainer.closest<HTMLElement>('[data-page]')).dataset.page, 10);
       } else {
         // the negative value of the content element after where it should be moved
         targetPid = 0 - parseInt(targetFound, 10);
@@ -188,7 +188,7 @@ class DragDrop {
       // Keep in sync with LanguageMarker::ALL_LANGUAGES on the PHP side.
       if (language !== -1) {
         // new elements language must be the same as the column the element is dropped in if element is not -1
-        language = parseInt((dropContainer.closest('[data-language-uid]') as HTMLElement).dataset.languageUid, 10);
+        language = parseInt((dropContainer.closest<HTMLElement>('[data-language-uid]')).dataset.languageUid, 10);
       }
 
       let colPos: number | boolean = 0;
@@ -227,7 +227,7 @@ class DragDrop {
           action: isCopyAction ? 'copy' : 'move',
         });
 
-        const languageDescriber = document.querySelector(`.t3-page-column-lang-name[data-language-uid="${language}"]`) as HTMLElement;
+        const languageDescriber = document.querySelector<HTMLElement>(`.t3-page-column-lang-name[data-language-uid="${language}"]`);
         if (languageDescriber === null) {
           return;
         }
@@ -236,7 +236,7 @@ class DragDrop {
         const newLanguageTitle = languageDescriber.dataset.languageTitle;
 
         Icons.getIcon(newFlagIdentifier, Icons.sizes.small).then((markup: string): void => {
-          const flagIcon = draggedElement.querySelector('.t3js-flag') as HTMLElement;
+          const flagIcon = draggedElement.querySelector<HTMLElement>('.t3js-flag');
           flagIcon.title = newLanguageTitle;
           flagIcon.innerHTML = markup;
         });
@@ -269,7 +269,7 @@ class DragDrop {
     const table: string = Object.keys(parameters.cmd).shift();
     const uid: number = parseInt(Object.keys(parameters.cmd[table]).shift(), 10);
     const eventData = { component: 'dragdrop', action: isCopyAction ? 'copy' : 'move', table, uid };
-    const gridContainer = document.querySelector('.t3-grid-container') as HTMLDivElement|null;
+    const gridContainer = document.querySelector<HTMLDivElement>('.t3-grid-container');
 
     return DataHandler.process(parameters, eventData).then((result: ResponseInterface): void => {
       if (result.hasErrors) {
@@ -288,7 +288,7 @@ class DragDrop {
    * @return int|null the colPos
    */
   protected getColumnPositionForElement(element: HTMLElement): number | boolean {
-    const columnContainer = element.closest('[data-colpos]') as HTMLElement;
+    const columnContainer = element.closest<HTMLElement>('[data-colpos]');
     if (columnContainer !== null && columnContainer.dataset.colpos !== undefined) {
       return parseInt(columnContainer.dataset.colpos, 10);
     }
@@ -298,10 +298,10 @@ class DragDrop {
   protected getDragTooltipMetadataFromContentElement(contentElement: HTMLElement): DragTooltipMetadata {
     let description, iconIdentifier;
     const thumbnails: DragDropThumbnail[] = [];
-    const contentElementTitle = contentElement.querySelector('.t3-page-ce-header-title') as HTMLElement;
+    const contentElementTitle = contentElement.querySelector<HTMLElement>('.t3-page-ce-header-title');
     const title = contentElementTitle.innerText;
 
-    const contentElementPreview = contentElement.querySelector('.element-preview') as HTMLElement;
+    const contentElementPreview = contentElement.querySelector<HTMLElement>('.element-preview');
     if (contentElementPreview) {
       description = contentElementPreview.innerText;
 
@@ -310,7 +310,7 @@ class DragDrop {
       }
     }
 
-    const contentElementIcon = contentElement.querySelector('.t3js-icon') as HTMLElement;
+    const contentElementIcon = contentElement.querySelector<HTMLElement>('.t3js-icon');
     if (contentElementIcon) {
       iconIdentifier = contentElementIcon.dataset.identifier;
     }
@@ -336,7 +336,7 @@ class DragDrop {
   }
 
   protected getCurrentPageId(): number {
-    return parseInt((document.querySelector('[data-page]') as HTMLElement).dataset.page, 10);
+    return parseInt((document.querySelector<HTMLElement>('[data-page]')).dataset.page, 10);
   }
 
   protected broadcast(eventName: string, payload?: unknown) {
@@ -349,7 +349,7 @@ class DragDrop {
         return;
       }
       element.hidden = false;
-      const addContentButton = element.parentElement.querySelector(Identifiers.addContent) as HTMLElement;
+      const addContentButton = element.parentElement.querySelector<HTMLElement>(Identifiers.addContent);
       if (addContentButton !== null) {
         addContentButton.hidden = true;
         element.classList.add(Classes.validDropZoneClass);
@@ -360,7 +360,7 @@ class DragDrop {
   protected hideDropZones(): void {
     document.querySelectorAll<HTMLElement>(Identifiers.dropZone).forEach((element): void => {
       element.hidden = true;
-      const addContentButton = element.parentElement.querySelector(Identifiers.addContent) as HTMLElement;
+      const addContentButton = element.parentElement.querySelector<HTMLElement>(Identifiers.addContent);
       if (addContentButton !== null) {
         addContentButton.hidden = false;
       }

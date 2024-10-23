@@ -905,7 +905,7 @@ class Modal {
               if (triggerElement.dataset.targetForm) {
                 // Submit a possible form in case the trigger has the data-target-form
                 // attribute set to a valid form identifier in the ownerDocument.
-                (triggerElement.ownerDocument.querySelector('form#' + triggerElement.dataset.targetForm) as HTMLFormElement)?.submit();
+                (triggerElement.ownerDocument.querySelector<HTMLFormElement>('form#' + triggerElement.dataset.targetForm))?.submit();
               }
             },
           },

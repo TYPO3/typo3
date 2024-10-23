@@ -82,11 +82,11 @@ class Recordlist {
   }
 
   private static submitClipboardFormWithCommand(cmd: string, target: HTMLButtonElement) {
-    const clipboardForm = <HTMLFormElement>target.closest('form');
+    const clipboardForm = target.closest('form');
     if (!clipboardForm) {
       return;
     }
-    const commandField = <HTMLInputElement>clipboardForm.querySelector('input[name="cmd"]');
+    const commandField = clipboardForm.querySelector<HTMLInputElement>('input[name="cmd"]');
     if (!commandField) {
       return;
     }
@@ -106,7 +106,7 @@ class Recordlist {
     e.preventDefault();
 
     const table = targetEl.dataset.table;
-    const target = document.querySelector(targetEl.dataset.bsTarget) as HTMLElement;
+    const target = document.querySelector<HTMLElement>(targetEl.dataset.bsTarget);
     const isExpanded = target.dataset.state === 'expanded';
     const collapseIcon = targetEl.querySelector('.t3js-icon');
     const toggleIcon = isExpanded ? this.identifier.icons.expand : this.identifier.icons.collapse;
@@ -178,7 +178,7 @@ class Recordlist {
       if (selection.length) {
         // If there are selected records, only those are added to the list
         selection.forEach((entity): void => {
-          entityIdentifiers.push((entity.closest(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`) as HTMLElement).dataset.uid);
+          entityIdentifiers.push((entity.closest<HTMLElement>(this.identifier.entity + selector`[data-uid][data-table="${tableName}"]`)).dataset.uid);
         });
       } else {
         // Get all records for the current table and add their uid to the list
@@ -224,7 +224,7 @@ class Recordlist {
       buttonIconElement.replaceWith(document.createRange().createContextualFragment(icon));
     });
 
-    const rowElement = target.closest('tr[data-uid]') as HTMLTableRowElement;
+    const rowElement = target.closest<HTMLTableRowElement>('tr[data-uid]');
     const table = rowElement.dataset.table;
     const uid = parseInt(rowElement.dataset.uid, 10);
     const isVisible = target.dataset.datahandlerStatus === 'visible';
@@ -294,7 +294,7 @@ class Recordlist {
         }
         trigger.value = value.toString(10);
         if (e.key === 'Enter' && value !== Number(trigger.dataset.currentpage)) {
-          const form = trigger.closest('form[name^="list-table-form-"]') as HTMLFormElement;
+          const form = trigger.closest<HTMLFormElement>('form[name^="list-table-form-"]');
           const submitUrl = new URL(form.action, window.origin);
           submitUrl.searchParams.set('pointer', value.toString());
           window.location.href = submitUrl.toString();

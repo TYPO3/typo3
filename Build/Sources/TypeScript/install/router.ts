@@ -36,7 +36,7 @@ class Router {
   private context: string;
 
   public setContent(content: string|Element|DocumentFragment): void {
-    const container = this.rootContainer.querySelector(this.contentSelector) as HTMLElement;
+    const container = this.rootContainer.querySelector<HTMLElement>(this.contentSelector);
     if (typeof content === 'string') {
       content = document.createRange().createContextualFragment(content);
     }
@@ -349,8 +349,8 @@ class Router {
       .post({
         install: {
           action: 'login',
-          token: (document.querySelector('[data-login-token]') as HTMLFormElement).dataset.loginToken,
-          password: (document.querySelector('.t3-install-form-input-text') as HTMLInputElement).value,
+          token: (document.querySelector<HTMLFormElement>('[data-login-token]')).dataset.loginToken,
+          password: (document.querySelector<HTMLInputElement>('.t3-install-form-input-text')).value,
         },
       })
       .then(

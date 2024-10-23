@@ -80,7 +80,7 @@ class ClearTables extends AbstractInteractableModule {
             if (Array.isArray(data.stats) && data.stats.length > 0) {
               data.stats.forEach((element): void => {
                 if (element.rowCount > 0) {
-                  const aStat = (modalContent.querySelector(Identifiers.statTemplate) as HTMLTemplateElement).content.cloneNode(true) as HTMLElement;
+                  const aStat = (modalContent.querySelector<HTMLTemplateElement>(Identifiers.statTemplate)).content.cloneNode(true) as HTMLElement;
                   aStat.querySelector<HTMLElement>(Identifiers.statDescription).innerText = element.description;
                   aStat.querySelector<HTMLElement>(Identifiers.statName).innerText = element.name;
                   aStat.querySelector<HTMLElement>(Identifiers.statRows).innerText = String(element.rowCount);

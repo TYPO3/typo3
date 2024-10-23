@@ -91,7 +91,7 @@ export default class Filelist {
     new RegularEvent(FileListActionEvent.primary, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      const resourceElement: HTMLElement = detail.trigger.closest('[data-default-language-access]') as HTMLElement;
+      const resourceElement = detail.trigger.closest<HTMLElement>('[data-default-language-access]');
       if (resource.type === 'file' && resourceElement !== null) {
         const formEngineUrl = new URL(topWindow.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
         if (resource.metaUid > 0) {
@@ -168,11 +168,11 @@ export default class Filelist {
     }).bindTo(document);
 
     // Respond to browser related clearable event
-    const activeSearch: boolean = (document.querySelector([Selectors.fileListFormSelector, Selectors.searchFieldSelector].join(' ')) as HTMLInputElement)?.value !== '';
+    const activeSearch = (document.querySelector<HTMLInputElement>([Selectors.fileListFormSelector, Selectors.searchFieldSelector].join(' ')))?.value !== '';
     new RegularEvent('search', (event: Event): void => {
       const searchField: HTMLInputElement = event.target as HTMLInputElement;
       if (searchField.value === '' && activeSearch) {
-        (searchField.closest(Selectors.fileListFormSelector) as HTMLFormElement)?.submit();
+        (searchField.closest<HTMLFormElement>(Selectors.fileListFormSelector))?.submit();
       }
     }).delegateTo(document, Selectors.searchFieldSelector);
   }
@@ -296,7 +296,7 @@ export default class Filelist {
     const filesAndFolders: ResourceInterface[] = [];
     eventDetails.checkboxes.forEach((checkbox) => {
       if (checkbox.checked) {
-        const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
+        const element = checkbox.closest<HTMLInputElement>(FileListActionSelector.elementSelector);
         const resource = FileListActionUtility.getResourceForElement(element);
         filesAndFolders.unshift(resource);
       }

@@ -63,7 +63,7 @@ export class PageLayoutToggleHidden extends PseudoButtonLitElement {
     this.setAttribute('disabled', '');
 
     const show = !this.active;
-    const hiddenElements = document.querySelectorAll('.t3js-hidden-record') as NodeListOf<HTMLElement>;
+    const hiddenElements = document.querySelectorAll<HTMLElement>('.t3js-hidden-record');
 
     for (const hiddenElement of hiddenElements) {
       hiddenElement.style.display = 'flow-root';

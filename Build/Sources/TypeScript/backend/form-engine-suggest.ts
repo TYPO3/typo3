@@ -51,7 +51,7 @@ class FormEngineSuggest {
         insertData = e.detail.element.table + '_' + e.detail.element.uid;
       }
       FormEngine.setSelectOptionFromExternalSource(this.element.dataset.field, insertData, e.detail.element.label, e.detail.element.label);
-      FormEngine.markFieldAsChanged(document.querySelector(selector`input[name="${this.element.dataset.field}"]`) as HTMLInputElement);
+      FormEngine.markFieldAsChanged(document.querySelector<HTMLInputElement>(selector`input[name="${this.element.dataset.field}"]`));
       this.resultContainer.hidden = true;
     }).bindTo(this.resultContainer);
 
@@ -116,7 +116,7 @@ class FormEngineSuggest {
       }
 
       // Select first available result item
-      const firstSearchResultItem = this.resultContainer.querySelector('typo3-backend-formengine-suggest-result-item') as HTMLElement|null;
+      const firstSearchResultItem = this.resultContainer.querySelector<HTMLElement>('typo3-backend-formengine-suggest-result-item');
       firstSearchResultItem?.focus();
 
       return;

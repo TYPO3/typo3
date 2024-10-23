@@ -698,7 +698,7 @@ class PageTreeToolbar extends TreeToolbar {
       }
 
       // Refresh the tree if there's an active search
-      const searchInput = this.querySelector('.search-input') as HTMLInputElement;
+      const searchInput = this.querySelector<HTMLInputElement>('.search-input');
       if (searchInput && searchInput.value.trim() !== '') {
         this.refreshTree();
       }
@@ -720,7 +720,7 @@ class PageTreeToolbar extends TreeToolbar {
       }
 
       // Refresh the tree if there's an active search
-      const searchInput = this.querySelector('.search-input') as HTMLInputElement;
+      const searchInput = this.querySelector<HTMLInputElement>('.search-input');
       if (searchInput && searchInput.value.trim() !== '') {
         this.refreshTree();
       }

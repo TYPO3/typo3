@@ -104,7 +104,7 @@ class FlexFormContainerContainer {
       ]);
       modal.addEventListener('button.clicked', (modalEvent: Event): void => {
         if ((modalEvent.target as HTMLButtonElement).name === 'yes') {
-          const actionField = this.container.querySelector(Selectors.actionFieldSelector) as HTMLInputElement;
+          const actionField = this.container.querySelector<HTMLInputElement>(Selectors.actionFieldSelector);
           actionField.value = 'DELETE';
 
           this.container.appendChild(actionField);
