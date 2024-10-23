@@ -51,7 +51,7 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
         ]);
 
         foreach ($orderedTitleProviders as $provider => $configuration) {
-            if (class_exists($configuration['provider']) && is_subclass_of($configuration['provider'], PageTitleProviderInterface::class)) {
+            if (is_subclass_of($configuration['provider'] ?? null, PageTitleProviderInterface::class)) {
                 /** @var PageTitleProviderInterface $titleProviderObject */
                 $titleProviderObject = GeneralUtility::makeInstance($configuration['provider']);
                 if (($pageTitle = $titleProviderObject->getTitle())
