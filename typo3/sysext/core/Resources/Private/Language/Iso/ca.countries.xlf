@@ -276,7 +276,7 @@
       </trans-unit>
       <trans-unit id="CI.official_name" resname="CI.official_name" approved="yes">
         <source>Republic of Côte d'Ivoire</source>
-        <target>República de Costa d'Ivori</target>
+        <target>República de la Costa d'Ivori</target>
       </trans-unit>
       <trans-unit id="CK.name" resname="CK.name" approved="yes">
         <source>Cook Islands</source>
@@ -1532,7 +1532,7 @@
       </trans-unit>
       <trans-unit id="TT.official_name" resname="TT.official_name" approved="yes">
         <source>Republic of Trinidad and Tobago</source>
-        <target>República de Trinitat i Tobago</target>
+        <target>República de Trinidad i Tobago</target>
       </trans-unit>
       <trans-unit id="TV.name" resname="TV.name" approved="yes">
         <source>Tuvalu</source>
