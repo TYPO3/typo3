@@ -293,7 +293,7 @@ export class ComboboxElement extends LitElement {
   }
 
   private positionDropdown(): void {
-    const listbox = this.shadowRoot?.querySelector('.listbox') as HTMLElement;
+    const listbox = this.shadowRoot?.querySelector<HTMLElement>('.listbox');
     if (!listbox) {
       return;
     }
@@ -466,7 +466,7 @@ export class ComboboxElement extends LitElement {
 
 
   private getInput(): HTMLInputElement | null {
-    const slot = this.shadowRoot?.querySelector('slot:not([name])') as HTMLSlotElement;
+    const slot = this.shadowRoot?.querySelector<HTMLSlotElement>('slot:not([name])');
     if (!slot) {
       return null;
     }

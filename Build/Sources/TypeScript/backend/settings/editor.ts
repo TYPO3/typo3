@@ -296,9 +296,9 @@ export class SettingsEditorElement extends LitElement {
     formData.forEach((value, key) => {
       const match = key.match(/^settings\[(.+?)\]$/);
       if (match) {
-        normalizedData.settings[match[1]] = typeof value === 'string' ? value : (value as File).name;
+        normalizedData.settings[match[1]] = typeof value === 'string' ? value : value.name;
       } else {
-        normalizedData[key] = typeof value === 'string' ? value : (value as File).name;
+        normalizedData[key] = typeof value === 'string' ? value : value.name;
       }
     });
     this.dispatchEvent(new SettingsEditorSubmitEvent(e, normalizedData));

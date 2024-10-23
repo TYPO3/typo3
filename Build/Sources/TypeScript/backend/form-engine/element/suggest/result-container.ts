@@ -66,7 +66,7 @@ export class ResultContainer extends LitElement {
     e.preventDefault();
 
     if (e.key === 'Escape') {
-      (this.closest('.t3-form-suggest-container').querySelector('input[type="search"]') as HTMLInputElement).focus();
+      this.closest('.t3-form-suggest-container').querySelector<HTMLInputElement>('input[type="search"]').focus();
       this.hidden = true;
 
       return;

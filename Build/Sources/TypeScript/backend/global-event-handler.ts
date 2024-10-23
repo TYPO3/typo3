@@ -137,7 +137,7 @@ class GlobalEventHandler {
     Object.entries(formValues).forEach(([name, value]) => {
       let item = form.querySelector('[name=' + CSS.escape(name) + ']');
       if (item instanceof HTMLElement) {
-        this.assignHTMLFormChildElementValue(item as HTMLElement, value.toString());
+        this.assignHTMLFormChildElementValue(item, value.toString());
       } else {
         item = document.createElement('input');
         item.setAttribute('type', 'hidden');

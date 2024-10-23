@@ -55,6 +55,7 @@ export default [...compat.extends(
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-this-alias": "error",
     "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "@typescript-eslint/member-ordering": "error",
     "@typescript-eslint/prefer-readonly": "error",
     "@typescript-eslint/prefer-string-starts-ends-with": "error",

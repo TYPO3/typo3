@@ -112,7 +112,7 @@ class FolderStructure extends AbstractInteractableModule {
     this.setModalButtonsState(false);
 
     const modalContent = this.getModalBody();
-    const outputContainer = this.findInModal(Identifiers.outputContainer) as HTMLElement;
+    const outputContainer = this.findInModal(Identifiers.outputContainer);
     outputContainer.style.display = 'block';
     this.renderProgressBar(outputContainer);
     (new AjaxRequest(Router.getUrl('folderStructureFix')))

@@ -116,7 +116,7 @@ class LocalConfiguration extends AbstractInteractableModule {
       // Iterate all rows to find empty inputs per row
       const rows = container.querySelectorAll(Identifiers.configurationItem);
       for (const row of rows) {
-        const inputs = row.querySelectorAll('input[type="text"]') as NodeListOf<HTMLInputElement>;
+        const inputs = row.querySelectorAll<HTMLInputElement>('input[type="text"]');
         let arrayKey;
         let arrayValue;
         if (container.dataset.type === 'map') {
@@ -220,14 +220,14 @@ class LocalConfiguration extends AbstractInteractableModule {
           // indexed by their main key ("GFX/someKey") so they can later be easily piped into it as JavaScript array.
 
           // The "value[]" portion is always required (for map+list), but "key[]" can be optional (only needed for map)
-          if (element.dataset.path!.includes('/key[]') && element.value !== '') {
-            const itemArrayPath = element.dataset.path!.replace('/key[]', '');
+          if (element.dataset.path.includes('/key[]') && element.value !== '') {
+            const itemArrayPath = element.dataset.path.replace('/key[]', '');
             if (collectedArrayKeys[itemArrayPath] === undefined) {
               collectedArrayKeys[itemArrayPath] = [];
             }
             collectedArrayKeys[itemArrayPath].push(element.value);
-          } else if (element.dataset.path!.includes('/value[]') && element.value !== '') {
-            const itemArrayPath = element.dataset.path!.replace('/value[]', '');
+          } else if (element.dataset.path.includes('/value[]') && element.value !== '') {
+            const itemArrayPath = element.dataset.path.replace('/value[]', '');
             if (collectedArrayValues[itemArrayPath] === undefined) {
               collectedArrayValues[itemArrayPath] = [];
             }

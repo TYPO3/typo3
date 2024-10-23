@@ -323,7 +323,7 @@ class Backend extends Workspaces {
     new RegularEvent('click', (event: Event) => {
       event.preventDefault();
 
-      const paginator = (event.target as HTMLElement).closest('button') as HTMLButtonElement;
+      const paginator = (event.target as HTMLElement).closest('button');
 
       let reload = false;
 

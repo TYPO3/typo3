@@ -1120,7 +1120,7 @@ export class BookmarkManagerContentElement extends LitElement {
 
   private async handleDropBookmark(draggedBookmark: Bookmark, target: Bookmark | BookmarkGroup | BookmarkGroupId, dropPosition?: 'before' | 'after'): Promise<void> {
     if (typeof target === 'object' && 'route' in target) {
-      const targetBookmark = target as Bookmark;
+      const targetBookmark = target;
       if (draggedBookmark.id === targetBookmark.id) {
         return;
       }
@@ -1210,7 +1210,7 @@ export class BookmarkManagerButtonElement extends PseudoButtonLitElement {
   protected override buttonActivated(): void {
     // Create element in top frame to avoid adoptedStyleSheets cross-document issues
     const targetDocument = topDocument;
-    const managerElement = targetDocument.createElement('typo3-backend-bookmark-manager-content') as BookmarkManagerContentElement;
+    const managerElement = targetDocument.createElement('typo3-backend-bookmark-manager-content');
     if (this.editId !== undefined) {
       managerElement.editId = this.editId;
     }

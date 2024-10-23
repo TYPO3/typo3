@@ -303,7 +303,7 @@ export class PagePositionSelect extends LitElement {
         url: null,
         forceShowIcon: false,
       });
-      currentNode = nodes.find(n => n.identifier === currentNode!.parentIdentifier);
+      currentNode = nodes.find(n => n.identifier === currentNode.parentIdentifier);
     }
 
     // If inserting "after", remove the first page from the breadcrumb

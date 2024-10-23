@@ -45,13 +45,13 @@ test.describe.serial('Workspace Module', () => {
 
       // Click edit button
       await editablePageTitle.evaluate((el: Element) => {
-        (el.shadowRoot?.querySelector('[data-action="edit"]') as HTMLElement)?.click();
+        el.shadowRoot?.querySelector<HTMLElement>('[data-action="edit"]')?.click();
       });
 
       // Wait for input and fill new title
       await page.waitForTimeout(300);
       await editablePageTitle.evaluate((el: Element, title: string) => {
-        const input = el.shadowRoot?.querySelector('input') as HTMLInputElement;
+        const input = el.shadowRoot?.querySelector('input');
         if (input) {
           input.value = title;
         }
@@ -59,7 +59,7 @@ test.describe.serial('Workspace Module', () => {
 
       // Click save button
       await editablePageTitle.evaluate((el: Element) => {
-        (el.shadowRoot?.querySelector('[data-action="save"]') as HTMLElement)?.click();
+        el.shadowRoot?.querySelector<HTMLElement>('[data-action="save"]')?.click();
       });
 
       await page.waitForLoadState('networkidle');

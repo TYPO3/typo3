@@ -140,7 +140,7 @@ export default class DragUploader {
       this.dropZoneInsertBefore = false;
       dropZoneEscapedTarget.after(this.dropzone);
     }
-    this.fileInput = <HTMLInputElement>document.createElement('input');
+    this.fileInput = document.createElement('input');
     this.fileInput.setAttribute('type', 'file');
     this.fileInput.setAttribute('multiple', 'multiple');
     this.fileInput.setAttribute('name', 'files[]');
@@ -812,7 +812,7 @@ class FileQueueItem {
     });
     this.updateMessage(errorText);
     try {
-      const jsonResponse = JSON.parse(response.responseText) as any;
+      const jsonResponse = JSON.parse(response.responseText);
       const messages = jsonResponse.messages as FlashMessage[];
       if (messages && messages.length) {
         for (const flashMessage of messages) {

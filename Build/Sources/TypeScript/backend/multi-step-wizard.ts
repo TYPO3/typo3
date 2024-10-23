@@ -543,12 +543,12 @@ try {
 
   // fetch from parent
   if (parent && parent.window.TYPO3 && parent.window.TYPO3.MultiStepWizard) {
-    multistepWizardObject = <MultiStepWizard>parent.window.TYPO3.MultiStepWizard;
+    multistepWizardObject = parent.window.TYPO3.MultiStepWizard;
   }
 
   // fetch object from outer frame
   if (top && top.TYPO3 && top.TYPO3.MultiStepWizard) {
-    multistepWizardObject = <MultiStepWizard>top.TYPO3.MultiStepWizard;
+    multistepWizardObject = top.TYPO3.MultiStepWizard;
   }
 } catch {
   // This only happens if the opener, parent or top is some other url (eg a local file)

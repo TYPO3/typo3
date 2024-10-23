@@ -1045,7 +1045,7 @@ export function renderCollectionElementHeaderEditor(
     }
 
     // Move delete button – search within editorHtml's parent (collectionContainerElementWrapper)
-    const collectionContainerEl = editorHtml.closest(getHelper().getDomElementClassName('collectionElement', true)) as HTMLElement | null;
+    const collectionContainerEl = editorHtml.closest(getHelper().getDomElementClassName('collectionElement', true));
     const removeButtonElement = collectionContainerEl?.querySelector('.formeditor-inspector-element-remove-button');
     if (removeButtonElement) {
       const removeButton = removeButtonElement.querySelector('button');
@@ -2301,7 +2301,7 @@ export function bootstrap(
   customConfiguration?: Configuration
 ): typeof import('./inspector-component') {
   formEditorApp = _formEditorApp;
-  configuration = merge({}, defaultConfiguration, customConfiguration ?? {}) as Configuration;
+  configuration = merge({}, defaultConfiguration, customConfiguration ?? {});
   Helper.bootstrap(formEditorApp);
   return this;
 }

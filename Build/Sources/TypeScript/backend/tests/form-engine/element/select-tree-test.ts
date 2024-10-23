@@ -36,7 +36,7 @@ describe('@typo3/backend/form-engine/element/select-tree', () => {
   };
 
   beforeEach((): void => {
-    tree = <SelectTree>document.createElement('typo3-backend-form-selecttree');
+    tree = document.createElement('typo3-backend-form-selecttree');
     tree.nodes = [
       createNode('root', 'Root', []),
       createNode('vanilla', 'Vanille', ['root']),

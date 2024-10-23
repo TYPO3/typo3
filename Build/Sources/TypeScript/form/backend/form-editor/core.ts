@@ -1684,7 +1684,7 @@ export class Factory {
 
     const concreteConfiguration: FormElementModelData = {
       ...<FormElementDefinition>predefinedDefaults,
-      ...<FormElementDefinition>configuration,
+      ...configuration,
       ...{
         renderables: (rawChildFormElements) ? true : null,
         __parentRenderable: null,

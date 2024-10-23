@@ -286,7 +286,7 @@ function loadAdditionalModules(_additionalViewModelModules: AdditionalViewModelM
       additionalViewModelModules.push(_additionalViewModelModules[key]);
     }
   } else {
-    additionalViewModelModules = _additionalViewModelModules as AdditionalViewModelModules;
+    additionalViewModelModules = _additionalViewModelModules;
   }
 
   if (!Array.isArray(additionalViewModelModules)) {

@@ -697,7 +697,7 @@ class InlineControlContainer extends HTMLElement {
       return;
     }
 
-    let records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+    let records = Utility.trimExplode(',', formField.value);
     if (afterUid) {
       const newRecords = [];
       for (let i = 0; i < records.length; i++) {
@@ -713,7 +713,7 @@ class InlineControlContainer extends HTMLElement {
       records.push(newUid);
     }
 
-    (<HTMLInputElement>formField).value = records.join(',');
+    formField.value = records.join(',');
     FormEngine.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('change'));
 
@@ -739,12 +739,12 @@ class InlineControlContainer extends HTMLElement {
       return [];
     }
 
-    const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+    const records = Utility.trimExplode(',', formField.value);
     const indexOfRemoveUid = records.indexOf(objectUid);
     if (indexOfRemoveUid > -1) {
       records.splice(indexOfRemoveUid, 1);
 
-      (<HTMLInputElement>formField).value = records.join(',');
+      formField.value = records.join(',');
       FormEngine.markFieldAsChanged(formField);
       document.dispatchEvent(new Event('change'));
 
@@ -798,7 +798,7 @@ class InlineControlContainer extends HTMLElement {
     const records = Array.from(recordListContainer.querySelectorAll<HTMLElement>(selector`[data-object-parent-group="${this.objectGroup}"][data-placeholder-record="0"]`))
       .map((child) => child.dataset.objectUid);
 
-    (<HTMLInputElement>formField).value = records.join(',');
+    formField.value = records.join(',');
     FormEngine.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('change'));
 
@@ -875,7 +875,7 @@ class InlineControlContainer extends HTMLElement {
     const formField = this.getFormFieldForElements();
 
     if (formField !== null) {
-      const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+      const records = Utility.trimExplode(',', formField.value);
       for (const recordUid of records) {
         if (recordUid === excludeUid) {
           continue;
@@ -904,7 +904,7 @@ class InlineControlContainer extends HTMLElement {
     if (records.length === 0) {
       const formField = this.getFormFieldForElements();
       if (formField !== null) {
-        records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+        records = Utility.trimExplode(',', formField.value);
       }
     }
 
@@ -957,7 +957,7 @@ class InlineControlContainer extends HTMLElement {
       return true;
     }
 
-    const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+    const records = Utility.trimExplode(',', formField.value);
     if (this.max > 0 && records.length >= this.max) {
       return false;
     }
@@ -1076,7 +1076,7 @@ class InlineControlContainer extends HTMLElement {
         }
         // remove the newly used item from each select-field of the child records
         if (formField !== null && InlineControlContainer.selectOptionValueExists(selectorElement, selectedValue)) {
-          const records = Utility.trimExplode(',', (<HTMLInputElement>formField).value);
+          const records = Utility.trimExplode(',', formField.value);
           for (const record of records) {
             uniqueValueField = this.querySelector<HTMLSelectElement>(
               '[name="data[' + unique.table + '][' + record + '][' + unique.field + ']"]',

@@ -123,7 +123,7 @@ class CollapseStateSearch {
       }
     });
 
-    const allNodes = Array.from(treeContainer.querySelectorAll('.collapse')) as HTMLElement[];
+    const allNodes = Array.from(treeContainer.querySelectorAll('.collapse'));
     for (const node of allNodes) {
       const isExpanded: boolean = node.classList.contains('show');
       const id: string = node.id;

@@ -182,7 +182,7 @@ test('FAL metadata flow: enabling null checkbox focuses the corresponding field'
     await checkbox.check();
 
     const focused = await modalContent.evaluate((_, fieldName) => {
-      const referenceUid = (document.querySelector('[data-object-uid]') as HTMLElement | null)?.dataset?.objectUid;
+      const referenceUid = document.querySelector<HTMLElement>('[data-object-uid]')?.dataset?.objectUid;
       if (!referenceUid) {
         return false;
       }

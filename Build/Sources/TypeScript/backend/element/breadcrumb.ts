@@ -177,8 +177,8 @@ export class Breadcrumb extends LitElement
   {
     if (this.dropdownButtonWidth === null) {
       const toggleTemplate = html`<div class="breadcrumb-item dropdown">${this.renderDropdownToggle()}</div>`;
-      render(toggleTemplate, this.measurementContainer!);
-      const toggleElement = this.measurementContainer!.querySelector('div');
+      render(toggleTemplate, this.measurementContainer);
+      const toggleElement = this.measurementContainer.querySelector('div');
       this.dropdownButtonWidth = toggleElement?.offsetWidth ?? 0;
       render(nothing, this.measurementContainer);
     }
@@ -187,8 +187,8 @@ export class Breadcrumb extends LitElement
   private measureEllipsis(): void
   {
     if (this.ellipsisWidth === null) {
-      render(this.renderEllipsis(), this.measurementContainer!);
-      const ellipsisElement = this.measurementContainer!.querySelector('div');
+      render(this.renderEllipsis(), this.measurementContainer);
+      const ellipsisElement = this.measurementContainer.querySelector('div');
       this.ellipsisWidth = ellipsisElement?.offsetWidth ?? 0;
       render(nothing, this.measurementContainer);
     }
@@ -211,8 +211,8 @@ export class Breadcrumb extends LitElement
           ${this.renderBreadcrumbElement(node)}
         </div>
       `;
-      render(template, this.measurementContainer!);
-      const element = this.measurementContainer!.querySelector('div');
+      render(template, this.measurementContainer);
+      const element = this.measurementContainer.querySelector('div');
       const width = element?.offsetWidth ?? 0;
       render(nothing, this.measurementContainer);
 

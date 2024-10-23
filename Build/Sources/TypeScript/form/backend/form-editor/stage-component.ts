@@ -22,7 +22,6 @@ import type { FormElementStageItem, Validator, SelectOption } from '@typo3/form/
 import '@typo3/form/backend/form-editor/component/form-element-stage-item';
 import type { FormElementStageItemToolbar } from '@typo3/form/backend/form-editor/component/form-element-stage-item-toolbar';
 import '@typo3/form/backend/form-editor/component/form-element-stage-item-toolbar';
-import type { PageStageItem } from '@typo3/form/backend/form-editor/component/page-stage-item';
 import '@typo3/form/backend/form-editor/component/page-stage-item';
 import labels from '~labels/form.form_editor_javascript';
 
@@ -315,23 +314,23 @@ function addSortableEvents(): void {
       ghostClass: 'formeditor-sortable-ghost',
       onStart: function (e) {
         stageDomElement.classList.add('formeditor-is-dragging');
-        getPublisherSubscriber().publish('view/stage/abstract/dnd/start', [e.item as HTMLElement, e.item as HTMLElement]);
+        getPublisherSubscriber().publish('view/stage/abstract/dnd/start', [e.item, e.item]);
       },
       onChange: function (e) {
         let enclosingCompositeFormElement;
-        const parentFormElementIdentifierPath = getAbstractViewParentFormElementIdentifierPathWithinDomElement(e.item as HTMLElement);
+        const parentFormElementIdentifierPath = getAbstractViewParentFormElementIdentifierPathWithinDomElement(e.item);
 
         if (parentFormElementIdentifierPath) {
           enclosingCompositeFormElement = getFormEditorApp()
             .findEnclosingCompositeFormElementWhichIsNotOnTopLevel(parentFormElementIdentifierPath);
         }
         getPublisherSubscriber().publish('view/stage/abstract/dnd/change', [
-          e.item as HTMLElement,
+          e.item,
           parentFormElementIdentifierPath, enclosingCompositeFormElement
         ]);
       },
       onEnd: function (e) {
-        const item = e.item as HTMLElement;
+        const item = e.item;
         const movedFormElementIdentifierPath = getAbstractViewFormElementIdentifierPathWithinDomElement(item);
         const previousFormElementIdentifierPath = getAbstractViewSiblingFormElementIdentifierPathWithinDomElement(item, 'prev');
         const nextFormElementIdentifierPath = getAbstractViewSiblingFormElementIdentifierPathWithinDomElement(item, 'next');
@@ -491,7 +490,7 @@ export function getAbstractViewFormElementDomElement(formElement?: FormElement |
     if (getUtility().isUndefinedOrNull(formElement)) {
       formElementIdentifierPath = getCurrentlySelectedFormElement().get('__identifierPath');
     } else {
-      formElementIdentifierPath = (formElement as FormElement).get('__identifierPath');
+      formElementIdentifierPath = formElement.get('__identifierPath');
     }
   }
   return stageDomElement
@@ -735,7 +734,7 @@ export function renderPreviewStageArea(html: string): void {
 export function renderTopLevelStageItem(formElement: FormElement, template: HTMLElement): void {
   assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1768924251);
 
-  const stageItem = document.createElement('typo3-form-page-stage-item') as PageStageItem;
+  const stageItem = document.createElement('typo3-form-page-stage-item');
 
   stageItem.pageTitle = formElement.get('label') || '';
 
@@ -748,7 +747,7 @@ export function renderTopLevelStageItem(formElement: FormElement, template: HTML
 export function renderFormElementStageItem(formElement: FormElement, template: HTMLElement): void {
   assert(typeof formElement === 'object' && formElement !== null && !Array.isArray(formElement), 'Invalid parameter "formElement"', 1768924252);
 
-  const stageItem = document.createElement('typo3-form-form-element-stage-item') as FormElementStageItem;
+  const stageItem = document.createElement('typo3-form-form-element-stage-item');
 
   stageItem.elementType = getFormElementDefinition(formElement, 'label');
   stageItem.elementIdentifier = formElement.get('identifier');
@@ -1171,7 +1170,7 @@ export function bootstrap(
   formEditorApp = _formEditorApp;
   assert(typeof appendToDomElement === 'object' && appendToDomElement !== null && !Array.isArray(appendToDomElement), 'Invalid parameter "appendToDomElement"', 1478992119);
   stageDomElement = appendToDomElement;
-  configuration = merge({}, defaultConfiguration, customConfiguration ?? {}) as Configuration;
+  configuration = merge({}, defaultConfiguration, customConfiguration ?? {});
   Helper.bootstrap(formEditorApp);
   return this;
 }

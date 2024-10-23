@@ -379,7 +379,7 @@ export class ContentNavigation extends LitElement {
   }
 
   private updateNavigationElement(width: number): void {
-    const panelElement = this.shadowRoot?.querySelector('[data-panel="navigation"]') as HTMLElement;
+    const panelElement = this.shadowRoot?.querySelector<HTMLElement>('[data-panel="navigation"]');
     if (panelElement) {
       panelElement.style.width = `${width}px`;
     }
@@ -392,7 +392,7 @@ export class ContentNavigation extends LitElement {
     event.stopPropagation();
     event.preventDefault();
 
-    const panelElement = this.shadowRoot?.querySelector('[data-panel="navigation"]') as HTMLElement;
+    const panelElement = this.shadowRoot?.querySelector<HTMLElement>('[data-panel="navigation"]');
     if (panelElement) {
       const rect = panelElement.getBoundingClientRect();
       this.resizeReferencePosition = this.isRtl() ? rect.right : rect.left;
@@ -425,7 +425,7 @@ export class ContentNavigation extends LitElement {
       return;
     }
 
-    const panelElement = this.shadowRoot?.querySelector('[data-panel="navigation"]') as HTMLElement;
+    const panelElement = this.shadowRoot?.querySelector<HTMLElement>('[data-panel="navigation"]');
     if (!panelElement) {
       return;
     }

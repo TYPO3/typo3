@@ -228,12 +228,12 @@ test.describe('Install Tool', () => {
       const modal = await installTool.openModal('Manage System Maintainers…');
 
       await modal.locator('select-pure').evaluate((el: Element) => {
-        (el.shadowRoot?.querySelector('.label') as HTMLElement | null)?.click();
+        el.shadowRoot?.querySelector<HTMLElement>('.label')?.click();
       });
 
       await expect(modal.locator('option-pure').first()).toBeVisible();
       await modal.locator('option-pure').first().evaluate((el: Element) => {
-        (el.shadowRoot?.querySelector('.option') as HTMLElement | null)?.click();
+        el.shadowRoot?.querySelector<HTMLElement>('.option')?.click();
       });
 
       await modal.getByRole('button', { name: 'Save system maintainer list' }).click();
@@ -243,7 +243,7 @@ test.describe('Install Tool', () => {
       const modal2 = await installTool.openModal('Manage System Maintainers…');
       await expect(modal2.locator('option-pure[selected]').first()).toBeAttached();
       await modal2.locator('select-pure').evaluate((el: Element) => {
-        (el.shadowRoot?.querySelector('.multi-selected .cross') as HTMLElement | null)?.click();
+        el.shadowRoot?.querySelector<HTMLElement>('.multi-selected .cross')?.click();
       });
       await modal2.getByRole('button', { name: 'Save system maintainer list' }).click();
       await installTool.expectFlashMessage('Cleared system maintainer list');
@@ -350,16 +350,16 @@ test.describe('Install Tool', () => {
 
       await page.locator(`${versionPanel} button[data-bs-toggle="collapse"]`).click();
       await page.locator(`${versionPanel} .t3js-upgradeDocs-markRead`).click();
-      await expect(page.locator('#version-2')).not.toContainText(textCurrentFirstPanelHeading!);
+      await expect(page.locator('#version-2')).not.toContainText(textCurrentFirstPanelHeading);
 
       await modal.locator('.t3js-modal-body').evaluate((el) => {
         el.scrollTop = 100000;
       });
       await modal.locator('#heading-read').click();
       await expect(modal.locator('#collapseRead')).toBeVisible();
-      await expect(modal.locator('#collapseRead')).toContainText(textCurrentFirstPanelHeading!);
+      await expect(modal.locator('#collapseRead')).toContainText(textCurrentFirstPanelHeading);
       await page.locator('#collapseRead .t3js-changelog-list > div:first-child .t3js-upgradeDocs-unmarkRead').click();
-      await expect(page.locator('#version-2')).toContainText(textCurrentFirstPanelHeading!);
+      await expect(page.locator('#version-2')).toContainText(textCurrentFirstPanelHeading);
     });
 
     test('check TCA works', async ({ installTool }) => {

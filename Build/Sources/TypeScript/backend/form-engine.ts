@@ -789,7 +789,7 @@ export default (function() {
    */
   FormEngine.initializeLocalizationStateSelector = function(): void {
     document.querySelectorAll<HTMLElement>('.t3js-l10n-state-container').forEach((el) => {
-      const input = el.closest('.t3js-formengine-field-item')?.querySelector('[data-formengine-input-name]') as HTMLInputElement|null;
+      const input = el.closest('.t3js-formengine-field-item')?.querySelector<HTMLInputElement>('[data-formengine-input-name]');
       if (input === undefined || input === null) {
         return;
       }
