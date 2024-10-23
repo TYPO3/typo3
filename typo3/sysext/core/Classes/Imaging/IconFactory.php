@@ -96,7 +96,7 @@ readonly class IconFactory
      * @param array $row The DB record of the TCA table
      * @todo: Change $size to allow IconSize only in v14
      */
-    public function getIconForRecord(string $table, array $row, string|IconSize|null $size = IconSize::MEDIUM): Icon
+    public function getIconForRecord(string $table, array $row, string|IconSize $size = IconSize::MEDIUM): Icon
     {
         if (is_string($size)) {
             $size = IconSize::from($size);
