@@ -777,18 +777,6 @@ class Indexer
             $indexingDataDto = $this->external_parsers[$fileExtension]->readFileContent($fileExtension, $absoluteFileName, $sectionPointer);
         }
 
-        if (is_array($indexingDataDto)) {
-            trigger_error(
-                sprintf(
-                    'The method %s returns an array, which is deprecated and will stop working in TYPO3 v14.0. Return an instance of %s instead.',
-                    get_class($this->external_parsers[$fileExtension]) . '::readFileContent()',
-                    IndexingDataAsString::class
-                ),
-                E_USER_DEPRECATED
-            );
-            $indexingDataDto = IndexingDataAsString::fromArray($indexingDataDto);
-        }
-
         if ($indexingDataDto instanceof IndexingDataAsString) {
             return $indexingDataDto;
         }

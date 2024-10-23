@@ -147,7 +147,7 @@ The following event has been removed:
 
 The following fallbacks have been removed:
 
-- Usage of the X
+- Accepting arrays returned by :php:`readFileContent()` in Indexed Search external parsers
 
 The following upgrade wizards have been removed:
 
