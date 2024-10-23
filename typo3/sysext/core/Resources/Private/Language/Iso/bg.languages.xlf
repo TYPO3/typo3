@@ -218,6 +218,10 @@
         <source>Bengali</source>
         <target>Бенгалски</target>
       </trans-unit>
+      <trans-unit id="bnt" resname="bnt" approved="yes">
+        <source>Bantu (Other)</source>
+        <target>Банту (други)</target>
+      </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
         <target>Тибетски</target>

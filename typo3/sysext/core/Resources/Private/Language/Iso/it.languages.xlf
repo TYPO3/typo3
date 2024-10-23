@@ -8,11 +8,11 @@
       </trans-unit>
       <trans-unit id="ab" resname="ab" approved="yes">
         <source>Abkhazian</source>
-        <target>Abkhazian</target>
+        <target>Abcaso</target>
       </trans-unit>
       <trans-unit id="ace" resname="ace" approved="yes">
         <source>Achinese</source>
-        <target>Achinese</target>
+        <target>Aceh</target>
       </trans-unit>
       <trans-unit id="ach" resname="ach" approved="yes">
         <source>Acoli</source>
@@ -28,7 +28,7 @@
       </trans-unit>
       <trans-unit id="ae" resname="ae" approved="yes">
         <source>Avestan</source>
-        <target>Avestan</target>
+        <target>Avestico</target>
       </trans-unit>
       <trans-unit id="af" resname="af" approved="yes">
         <source>Afrikaans</source>
@@ -52,19 +52,19 @@
       </trans-unit>
       <trans-unit id="akk" resname="akk" approved="yes">
         <source>Akkadian</source>
-        <target>Accadiano</target>
+        <target>Accadico</target>
       </trans-unit>
       <trans-unit id="ale" resname="ale" approved="yes">
         <source>Aleut</source>
-        <target>Aleut</target>
+        <target>Aleutino</target>
       </trans-unit>
       <trans-unit id="alg" resname="alg" approved="yes">
         <source>Algonquian languages</source>
-        <target>Lingue Algonquian</target>
+        <target>Lingue algonchine</target>
       </trans-unit>
       <trans-unit id="alt" resname="alt" approved="yes">
         <source>Southern Altai</source>
-        <target>Altai del Sud</target>
+        <target>Altai meridionale</target>
       </trans-unit>
       <trans-unit id="am" resname="am" approved="yes">
         <source>Amharic</source>
@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="apa" resname="apa" approved="yes">
         <source>Apache languages</source>
-        <target>Lingue Apache</target>
+        <target>Lingue apache</target>
       </trans-unit>
       <trans-unit id="ar" resname="ar" approved="yes">
         <source>Arabic</source>
@@ -96,7 +96,7 @@
       </trans-unit>
       <trans-unit id="arn" resname="arn" approved="yes">
         <source>Mapudungun; Mapuche</source>
-        <target>Mapudungun; Mapuche</target>
+        <target>Araucaniano, Mapuche</target>
       </trans-unit>
       <trans-unit id="arp" resname="arp" approved="yes">
         <source>Arapaho</source>
@@ -120,11 +120,11 @@
       </trans-unit>
       <trans-unit id="ath" resname="ath" approved="yes">
         <source>Athapascan languages</source>
-        <target>Lingue Athapascan</target>
+        <target>Lingue athabaska</target>
       </trans-unit>
       <trans-unit id="aus" resname="aus" approved="yes">
         <source>Australian languages</source>
-        <target>Lingue australi</target>
+        <target>Lingue australiane aborigene 	</target>
       </trans-unit>
       <trans-unit id="av" resname="av" approved="yes">
         <source>Avaric</source>
@@ -148,15 +148,15 @@
       </trans-unit>
       <trans-unit id="bad" resname="bad" approved="yes">
         <source>Banda languages</source>
-        <target>Lingue Banda</target>
+        <target>Lingue banda</target>
       </trans-unit>
       <trans-unit id="bai" resname="bai" approved="yes">
         <source>Bamileke languages</source>
-        <target>Lingue Bamileke</target>
+        <target>Lingue bamileke</target>
       </trans-unit>
       <trans-unit id="bal" resname="bal" approved="yes">
         <source>Baluchi</source>
-        <target>Beluci</target>
+        <target>Baluchi</target>
       </trans-unit>
       <trans-unit id="ban" resname="ban" approved="yes">
         <source>Balinese</source>
@@ -224,7 +224,7 @@
       </trans-unit>
       <trans-unit id="bnt" resname="bnt" approved="yes">
         <source>Bantu (Other)</source>
-        <target>Bantu (altra)</target>
+        <target>Lingue bantu (altre)</target>
       </trans-unit>
       <trans-unit id="bo" resname="bo" approved="yes">
         <source>Tibetan</source>
@@ -244,7 +244,7 @@
       </trans-unit>
       <trans-unit id="btk" resname="btk" approved="yes">
         <source>Batak languages</source>
-        <target>Lingue Batak</target>
+        <target>Lingue batak</target>
       </trans-unit>
       <trans-unit id="bua" resname="bua" approved="yes">
         <source>Buriat</source>
@@ -268,11 +268,11 @@
       </trans-unit>
       <trans-unit id="cai" resname="cai" approved="yes">
         <source>Central American Indian languages</source>
-        <target>Lingue indiane dell’America Centrale</target>
+        <target>Lingue indiane centro-americane</target>
       </trans-unit>
       <trans-unit id="car" resname="car" approved="yes">
         <source>Galibi Carib</source>
-        <target>Galibi Carib</target>
+        <target>Lingue caribe</target>
       </trans-unit>
       <trans-unit id="cau" resname="cau" approved="yes">
         <source>Caucasian languages</source>
@@ -300,7 +300,7 @@
       </trans-unit>
       <trans-unit id="chg" resname="chg" approved="yes">
         <source>Chagatai</source>
-        <target>Ciagataica</target>
+        <target>Chagatai</target>
       </trans-unit>
       <trans-unit id="chk" resname="chk" approved="yes">
         <source>Chuukese</source>
@@ -376,7 +376,7 @@
       </trans-unit>
       <trans-unit id="csb" resname="csb" approved="yes">
         <source>Kashubian</source>
-        <target>Kashubian</target>
+        <target>Casciubo</target>
       </trans-unit>
       <trans-unit id="cu" resname="cu" approved="yes">
         <source>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</source>
@@ -420,7 +420,7 @@
       </trans-unit>
       <trans-unit id="den" resname="den" approved="yes">
         <source>Slave (Athapascan)</source>
-        <target>Slave (Athapascano)</target>
+        <target>Slavey; Lingua degli schiavi</target>
       </trans-unit>
       <trans-unit id="dgr" resname="dgr" approved="yes">
         <source>Dogrib</source>
@@ -960,7 +960,7 @@
       </trans-unit>
       <trans-unit id="kw" resname="kw" approved="yes">
         <source>Cornish</source>
-        <target>Cornish</target>
+        <target>Cornico</target>
       </trans-unit>
       <trans-unit id="ky" resname="ky" approved="yes">
         <source>Kirghiz; Kyrgyz</source>
@@ -1932,7 +1932,7 @@
       </trans-unit>
       <trans-unit id="znd" resname="znd" approved="yes">
         <source>Zande languages</source>
-        <target>Lingue Zande</target>
+        <target>Lingue zande</target>
       </trans-unit>
       <trans-unit id="zu" resname="zu" approved="yes">
         <source>Zulu</source>

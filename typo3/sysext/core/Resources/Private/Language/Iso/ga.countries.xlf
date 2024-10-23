@@ -336,7 +336,7 @@
       </trans-unit>
       <trans-unit id="CV.official_name" resname="CV.official_name" approved="yes">
         <source>Republic of Cabo Verde</source>
-        <target>Republic of Cabo Verde</target>
+        <target>Poblacht na Cabo Verde</target>
       </trans-unit>
       <trans-unit id="CW.name" resname="CW.name" approved="yes">
         <source>Curaçao</source>
@@ -357,6 +357,10 @@
       <trans-unit id="CY.official_name" resname="CY.official_name" approved="yes">
         <source>Republic of Cyprus</source>
         <target>Poblacht na Cipire</target>
+      </trans-unit>
+      <trans-unit id="CZ.name" resname="CZ.name" approved="yes">
+        <source>Czechia</source>
+        <target>Seicis</target>
       </trans-unit>
       <trans-unit id="CZ.official_name" resname="CZ.official_name" approved="yes">
         <source>Czech Republic</source>
@@ -552,7 +556,7 @@
       </trans-unit>
       <trans-unit id="GM.official_name" resname="GM.official_name" approved="yes">
         <source>Republic of the Gambia</source>
-        <target>Republic of the Gambia</target>
+        <target>Poblacht na Gambia</target>
       </trans-unit>
       <trans-unit id="GN.name" resname="GN.name" approved="yes">
         <source>Guinea</source>
@@ -956,11 +960,11 @@
       </trans-unit>
       <trans-unit id="MK.name" resname="MK.name" approved="yes">
         <source>North Macedonia</source>
-        <target>North Macedonia</target>
+        <target>An Mhacadóin Thuaidh</target>
       </trans-unit>
       <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
         <source>Republic of North Macedonia</source>
-        <target>Republic of North Macedonia</target>
+        <target>Poblacht na Macadóine Thuaidh</target>
       </trans-unit>
       <trans-unit id="ML.name" resname="ML.name" approved="yes">
         <source>Mali</source>
@@ -1184,7 +1188,7 @@
       </trans-unit>
       <trans-unit id="PG.official_name" resname="PG.official_name" approved="yes">
         <source>Independent State of Papua New Guinea</source>
-        <target>Independent State of Papua New Guinea</target>
+        <target>Stát Neamhspleách Nua-Ghuine Phapua</target>
       </trans-unit>
       <trans-unit id="PH.name" resname="PH.name" approved="yes">
         <source>Philippines</source>
@@ -1388,7 +1392,7 @@
       </trans-unit>
       <trans-unit id="SO.official_name" resname="SO.official_name" approved="yes">
         <source>Federal Republic of Somalia</source>
-        <target>Federal Republic of Somalia</target>
+        <target>Poblacht Chónaidhme na Somáile</target>
       </trans-unit>
       <trans-unit id="SR.name" resname="SR.name" approved="yes">
         <source>Suriname</source>
@@ -1434,9 +1438,13 @@
         <source>Syrian Arab Republic</source>
         <target>Poblacht Arabach na Siria</target>
       </trans-unit>
+      <trans-unit id="SZ.name" resname="SZ.name" approved="yes">
+        <source>Eswatini</source>
+        <target>Eswatini</target>
+      </trans-unit>
       <trans-unit id="SZ.official_name" resname="SZ.official_name" approved="yes">
         <source>Kingdom of Eswatini</source>
-        <target>Kingdom of Eswatini</target>
+        <target>Ríocht Eswatini</target>
       </trans-unit>
       <trans-unit id="TC.name" resname="TC.name" approved="yes">
         <source>Turks and Caicos Islands</source>
@@ -1510,9 +1518,13 @@
         <source>Kingdom of Tonga</source>
         <target>Ríocht Tonga</target>
       </trans-unit>
+      <trans-unit id="TR.name" resname="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>Tuircis</target>
+      </trans-unit>
       <trans-unit id="TR.official_name" resname="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>Poblacht na Tuirce</target>
       </trans-unit>
       <trans-unit id="TT.name" resname="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>
