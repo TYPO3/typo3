@@ -510,16 +510,11 @@
     border-radius: 0;
 }
 
-.flatpickr-day.flatpickr-disabled,
-.flatpickr-day.flatpickr-disabled:hover,
 .flatpickr-day.prevMonthDay,
 .flatpickr-day.nextMonthDay,
 .flatpickr-day.notAllowed,
 .flatpickr-day.notAllowed.prevMonthDay,
 .flatpickr-day.notAllowed.nextMonthDay {
-    --flatpickr-day-color: var(--typo3-component-disabled-color);
-    --flatpickr-day-bg: var(--typo3-component-disabled-bg);
-    --flatpickr-day-border-color: var(--typo3-component-disabled-border-color);
     cursor: default;
 }
 
