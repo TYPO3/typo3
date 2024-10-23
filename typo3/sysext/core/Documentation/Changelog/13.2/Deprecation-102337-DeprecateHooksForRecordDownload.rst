@@ -3,7 +3,7 @@
 .. _deprecation-102337-1715591179:
 
 ==========================================================
-Deprecation: #103785 - Deprecate hooks for record download
+Deprecation: #102337 - Deprecate hooks for record download
 ==========================================================
 
 See :issue:`102337`
