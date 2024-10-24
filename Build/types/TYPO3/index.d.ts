@@ -24,7 +24,6 @@ declare namespace TYPO3 {
   export let Severity: import('@typo3/backend/severity').default;
   export let ShortcutMenu: typeof import('@typo3/backend/toolbar/shortcut-menu').default;
   export let WindowManager: typeof import('@typo3/backend/window-manager').default;
-  export let Wizard: typeof import('@typo3/backend/wizard').default;
   export let WorkspacesMenu: typeof import('@typo3/workspaces/toolbar/workspaces-menu').default;
   export const lang: {
     [key: string]: string
