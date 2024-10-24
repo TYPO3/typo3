@@ -378,10 +378,10 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getIconRegistry(ContainerInterface $container): Imaging\IconRegistry
     {
         if ($container->get('boot.state')->complete === false) {
-            trigger_error(
-                'Instantiating \TYPO3\CMS\Core\Imaging\IconRegistry in ext_localconf.php should be replaced by'
+            throw new \RuntimeException(
+                'Instantiating \TYPO3\CMS\Core\Imaging\IconRegistry in ext_localconf.php must be replaced by'
                 . ' either Configuration/Icons.php or by listening to \TYPO3\CMS\Core\Core\Event\BootCompletedEvent',
-                E_USER_DEPRECATED
+                1729784545
             );
         }
         return self::new($container, Imaging\IconRegistry::class, [$container->get('cache.assets'), $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->withPrefix('BackendIcons')->toString()]);

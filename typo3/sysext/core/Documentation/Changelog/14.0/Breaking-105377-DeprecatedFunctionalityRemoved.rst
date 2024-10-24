@@ -205,6 +205,7 @@ The following event has been removed:
 The following fallbacks have been removed:
 
 - Accepting arrays returned by :php:`readFileContent()` in Indexed Search external parsers
+- Allowing instantiation of :php:`\TYPO3\CMS\Core\Imaging\IconRegistry` in ext_localconf.php
 
 The following upgrade wizards have been removed:
 
