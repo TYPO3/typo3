@@ -215,31 +215,6 @@ class JsonView implements ViewInterface
     }
 
     /**
-     * @deprecated Will be removed in TYPO3 v14.0.
-     */
-    public function renderSection($sectionName, array $variables = [], $ignoreUnknown = false)
-    {
-        trigger_error(
-            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14.',
-            E_USER_DEPRECATED
-        );
-        // No-op: renderSection does not make sense for this view
-        return '';
-    }
-
-    /**
-     * @deprecated Will be removed in TYPO3 v14.0.
-     */
-    public function renderPartial($partialName, $sectionName, array $variables, $ignoreUnknown = false)
-    {
-        trigger_error(
-            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14.',
-            E_USER_DEPRECATED
-        );
-        return '';
-    }
-
-    /**
      * Transforms the value view variable to a serializable
      * array representation using a YAML view configuration and JSON encodes
      * the result.

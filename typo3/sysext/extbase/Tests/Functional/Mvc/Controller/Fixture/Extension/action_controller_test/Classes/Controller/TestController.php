@@ -19,6 +19,7 @@ namespace TYPO3Tests\ActionControllerTest\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
+use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Mvc\Controller\Arguments;
@@ -31,7 +32,7 @@ use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
  */
 class TestController extends ActionController
 {
-    public $view;
+    public ViewInterface $view;
     public Arguments $arguments;
     public string $actionMethodName;
     public RequestInterface $request;

@@ -39,19 +39,38 @@ The following PHP class aliases that have previously been marked as deprecated w
 
 The following PHP class methods that have previously been marked as deprecated with v13 have been removed:
 
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getData()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getFieldName()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getPageId()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getPageTsConfig()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getTableName()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setData()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setFieldName()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setPageId()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setPageTsConfig()`
-* :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setTableName()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getData()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getFieldName()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getPageId()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getPageTsConfig()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getTableName()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setData()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setFieldName()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setPageId()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setPageTsConfig()`
+- :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setTableName()`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->returnWebmounts()`
 - :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent->getSize()`
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState->equals()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->renderSection()`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->renderPartial()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getLayoutRootPaths()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getPartialRootPaths()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getTemplatePaths()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getTemplateRootPaths()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getViewHelperResolver()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->hasTemplate()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->initializeRenderingContext()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setCache()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setFormat()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setLayoutPathAndFilename()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setLayoutRootPaths()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setPartialRootPaths()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setRequest()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setTemplate()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setTemplatePathAndFilename()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setTemplateRootPaths()`
+- :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setTemplateSource()`
 - :php:`\TYPO3\CMS\Fluid\View\TemplatePaths->fillDefaultsByPackageName()`
 
 The following PHP static class methods that have previously been marked as deprecated for v13 have been removed:
@@ -116,7 +135,7 @@ The following class properties have been marked as internal:
 
 The following class property has changed/enforced type:
 
-- :php:`` (is now string)
+- :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->view` (is now :php:`\TYPO3\CMS\Core\View\ViewInterface`)
 
 The following eID entry point has been removed:
 

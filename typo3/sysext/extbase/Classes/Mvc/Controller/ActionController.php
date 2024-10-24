@@ -60,8 +60,6 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
-use TYPO3Fluid\Fluid\View\AbstractTemplateView;
-use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
 
 /**
  * A multi action controller. This is by far the most common base class for Controllers.
@@ -84,10 +82,8 @@ abstract class ActionController implements ControllerInterface
 
     /**
      * The current view, as resolved by resolveView()
-     * @todo Use "protected ViewInterface $view;" in v14.
-     * @var FluidStandaloneViewInterface|ViewInterface $view
      */
-    protected $view;
+    protected ViewInterface $view;
 
     /**
      * The default view class to use. Keep this 'null' for default fluid
@@ -409,8 +405,7 @@ abstract class ActionController implements ControllerInterface
      */
     protected function renderAssetsForRequest(RequestInterface $request): void
     {
-        if (!($this->view instanceof AbstractTemplateView) && !($this->view instanceof FluidViewAdapter)) {
-            // @todo: Simplify to if (!($this->view instanceof FluidViewAdapter)) in v14.
+        if (!($this->view instanceof FluidViewAdapter)) {
             return;
         }
         $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
@@ -489,7 +484,6 @@ abstract class ActionController implements ControllerInterface
      * Prepares a view for the current action.
      *
      * @internal
-     * @todo Set "protected function resolveView(): ViewInterface" in v14.
      * @todo We may want to decide in extbase to go away from the automatic view preparation via
      *       processRequest() and this method for actions. We could very well postulate actions
      *       should take care of creating "their" view on their own using a ViewFactoryInterface
@@ -503,7 +497,7 @@ abstract class ActionController implements ControllerInterface
      *       GenericViewResolver and ViewResolverInterface are gone, which renders property
      *       defaultViewObjectName even more useless.
      */
-    protected function resolveView(): FluidStandaloneViewInterface|ViewInterface
+    protected function resolveView(): ViewInterface
     {
         if ($this->defaultViewObjectName !== null && is_a($this->defaultViewObjectName, JsonView::class, true)) {
             // @todo: JsonView is a very extbase specific thing. It comes with setVariablesToRender() and

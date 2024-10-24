@@ -35,8 +35,8 @@ use TYPO3\CMS\Extbase\Mvc\View\JsonView;
 use TYPO3\CMS\Extbase\Tests\Functional\Mvc\Controller\Fixture\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
+use TYPO3\CMS\Fluid\View\FluidViewAdapter;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
-use TYPO3Fluid\Fluid\View\TemplateView as FluidTemplateView;
 use TYPO3Tests\ActionControllerTest\Controller\TestController;
 use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
 
@@ -239,7 +239,7 @@ final class ActionControllerTest extends FunctionalTestCase
             (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
-        $viewMock = $this->createMock(FluidTemplateView::class);
+        $viewMock = $this->createMock(FluidViewAdapter::class);
         $viewMock->expects(self::exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('custom-header-data', '');
         $expectedHeader = 'custom-header-data';
 
@@ -264,7 +264,7 @@ final class ActionControllerTest extends FunctionalTestCase
             (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
         );
 
-        $viewMock = $this->createMock(FluidTemplateView::class);
+        $viewMock = $this->createMock(FluidViewAdapter::class);
         $viewMock->expects(self::exactly(2))->method('renderSection')->willReturnOnConsecutiveCalls('', 'custom-footer-data');
         $expectedFooter = 'custom-footer-data';
 

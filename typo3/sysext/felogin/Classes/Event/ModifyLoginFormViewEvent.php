@@ -19,7 +19,6 @@ namespace TYPO3\CMS\FrontendLogin\Event;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
-use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
 
 /**
  * Allows to inject custom variables into the login form.
@@ -27,15 +26,11 @@ use TYPO3Fluid\Fluid\View\ViewInterface as FluidStandaloneViewInterface;
 final readonly class ModifyLoginFormViewEvent
 {
     public function __construct(
-        // @todo: only core ViewInterface in v14.
-        private FluidStandaloneViewInterface|ViewInterface $view,
+        private ViewInterface $view,
         private ServerRequestInterface $request
     ) {}
 
-    /**
-     * @todo: only core ViewInterface in v14.
-     */
-    public function getView(): FluidStandaloneViewInterface|ViewInterface
+    public function getView(): ViewInterface
     {
         return $this->view;
     }
