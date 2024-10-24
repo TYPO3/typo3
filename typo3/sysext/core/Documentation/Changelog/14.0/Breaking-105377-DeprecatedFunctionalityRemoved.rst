@@ -218,7 +218,7 @@ The following JavaScript method behaviours have changed:
 
 The following JavaScript method has been removed:
 
-- :js:`X()` of :js:`@typo3/x/y`
+- :js:`updateQueryStringParameter()` of :js:`@typo3/backend/utility.js`
 
 The following CKEditor plugin has been removed:
 

@@ -68,27 +68,6 @@ class Utility {
     return !isNaN(parseFloat(value.toString())) && isFinite(value);
   }
 
-  /**
-   * Updates a parameter inside of given url
-   *
-   * @param {string} url
-   * @param {string} key
-   * @param {string} value
-   * @returns {string}
-   * @deprecated will be removed in TYPO3 v14
-   */
-  public static updateQueryStringParameter(url: string, key: string, value: string): string {
-    console.warn('Utility.updateQueryStringParameter() has been marked as deprecated and will be removed in TYPO3 v14.');
-
-    const re = new RegExp('([?&])' + key + '=.*?(&|$)', 'i');
-    const separator = url.includes('?') ? '&' : '?';
-
-    if (url.match(re)) {
-      return url.replace(re, '$1' + key + '=' + value + '$2');
-    }
-    return url + separator + key + '=' + value;
-  }
-
   public static convertFormToObject(form: HTMLFormElement): { [key: string]: any } {
     const obj: { [key: string]: any } = {};
     form.querySelectorAll('input, select, textarea').forEach((element: HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement): void => {
