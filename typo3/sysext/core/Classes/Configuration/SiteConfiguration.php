@@ -284,7 +284,7 @@ class SiteConfiguration implements SingletonInterface
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->contentSecurityFileName;
         if (file_exists($fileName)) {
             $loader = GeneralUtility::makeInstance(YamlFileLoader::class);
-            return $loader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+            return $loader->load(GeneralUtility::fixWindowsFilePath($fileName));
         }
         return [];
     }
