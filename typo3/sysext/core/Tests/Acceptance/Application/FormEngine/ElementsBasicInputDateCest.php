@@ -105,7 +105,15 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'expectedValue' => '',
                 'expectedInternalValue' => '0',
                 'expectedValueAfterSave' => '0', // Due to casting in FormEngine (string)int:0 => "0"
-                'comment' => 'inputdatetime_11 eval=datetime range.lower=1627208536 Check range validation is ignored',
+                'comment' => 'inputdatetime_11 eval=datetime range.lower=1627208536 Check range validation is ignored on empty value',
+            ],
+            [
+                'label' => 'inputdatetime_31',
+                'inputValue' => '05:23 2022-03-31',
+                'expectedValue' => '05:23 2022-03-31',
+                'expectedInternalValue' => '2022-03-31T05:23:00Z',
+                'expectedValueAfterSave' => '2022-03-31T05:23:00+00:00',
+                'comment' => 'inputdatetime_31 eval=datetime range.lower=1627208536 Check range validation',
             ],
         ];
     }

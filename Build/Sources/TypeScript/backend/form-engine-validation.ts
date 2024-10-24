@@ -263,15 +263,35 @@ export default (function() {
               }
             }
             if (rule.lower !== undefined) {
-              const minValue = rule.lower * 1;
-              if (!isNaN(minValue) && parseInt(value, 10) < minValue) {
-                markParent = true;
+              if (field.dataset.inputType === 'datetimepicker') {
+                // HEADS up: value and range.lower are both fake UTC-0 ISO8601 strings (they are not UTC-0, but actually server localtime!)
+                // But it's fine to compare them in UTC for this comparison and not map to localtime as in date-time-picker parseDate.
+                const dt = DateTime.fromISO(value, { zone: 'utc' });
+                const lower = DateTime.fromISO(rule.lower, { zone: 'utc' });
+                if (!dt.isValid || dt < lower.minus(lower.second * 1000)) {
+                  markParent = true;
+                }
+              } else {
+                const minValue = rule.lower * 1;
+                if (!isNaN(minValue) && parseInt(value, 10) < minValue) {
+                  markParent = true;
+                }
               }
             }
             if (rule.upper !== undefined) {
-              const maxValue = rule.upper * 1;
-              if (!isNaN(maxValue) && parseInt(value, 10) > maxValue) {
-                markParent = true;
+              if (field.dataset.inputType === 'datetimepicker') {
+                // HEADS up: value and range.upper are both fake UTC-0 ISO8601 strings (they are not UTC-0, but actually server localtime!)
+                // But it's fine to compare them in UTC-0 for this comparison and not map to localtime as in date-time-picker parseDate.
+                const dt = DateTime.fromISO(value, { zone: 'utc' });
+                const upper = DateTime.fromISO(rule.upper, { zone: 'utc' });
+                if (!dt.isValid || dt > upper.plus((59 - upper.second) * 1000)) {
+                  markParent = true;
+                }
+              } else {
+                const maxValue = rule.upper * 1;
+                if (!isNaN(maxValue) && parseInt(value, 10) > maxValue) {
+                  markParent = true;
+                }
               }
             }
           }
