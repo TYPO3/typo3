@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Property;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Tests\Unit\Type\Fixture\Enumeration\CompleteEnumeration;
-use TYPO3\CMS\Core\Type\TypeInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\Property\Exception\DuplicateTypeConverterException;
 use TYPO3\CMS\Extbase\Property\Exception\InvalidTargetException;
@@ -27,9 +25,7 @@ use TYPO3\CMS\Extbase\Property\Exception\TypeConverterException;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\BooleanConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverter\CoreTypeConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverter\FileReferenceConverter;
-use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
 use TYPO3\CMS\Extbase\Property\TypeConverterRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -131,42 +127,6 @@ final class TypeConverterRegistryTest extends UnitTestCase
 
         $converter = $this->subject->findTypeConverter('integer', $extendedFileReferenceClassName);
         self::assertInstanceOf(FileReferenceConverter::class, $converter);
-    }
-
-    #[Test]
-    public function findConverterFindsTypeConverterForClassInterfaceOfTargetType(): void
-    {
-        $this->subject->add(new CoreTypeConverter(), 10, ['integer'], TypeInterface::class);
-
-        $converter = $this->subject->findTypeConverter('integer', CompleteEnumeration::class);
-        self::assertInstanceOf(CoreTypeConverter::class, $converter);
-    }
-
-    #[Test]
-    public function findConverterFindsLeastSpecificTypeConverterForClassOrInterfaceWithoutSpecificTypeConverterSet(): void
-    {
-        /*
-         * This test needs a short explanation. When searching a type converter for a specific class, the registry
-         * looks for a converter that is specifically made for the target class.
-         *
-         * Example: FileReference as target type and FileReferenceConverter as registered converter.
-         *
-         * If such a converter is not registered, the registry tries to find a converter by looking at the interfaces
-         * the target class implements.
-         *
-         * Example: CompleteEnumeration as target type and CoreTypeConverter as registered converter.
-         *
-         * If such a converter is not registered, the registry does one last attempt to find a suitable converter by
-         * checking the source type.
-         *
-         * Example: CompleteEnumeration as target, no suitable converter for that specific target type registered but 1 or n
-         *          converters registered that convert the desired source type into the unspecific target type "object".
-         */
-
-        $this->subject->add(new ObjectConverter(), 10, ['array'], 'object');
-
-        $converter = $this->subject->findTypeConverter('array', CompleteEnumeration::class);
-        self::assertInstanceOf(ObjectConverter::class, $converter);
     }
 
     #[Test]

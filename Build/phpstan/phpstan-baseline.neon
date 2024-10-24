@@ -591,16 +591,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Tree/TableConfiguration/TreeDataProviderFactory.php
 
 		-
-			message: "#^Access to undefined constant static\\(TYPO3\\\\CMS\\\\Core\\\\Type\\\\Enumeration\\)\\:\\:__default\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
-
-		-
-			message: "#^Unsafe usage of new static\\(\\)\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Type/Enumeration.php
-
-		-
 			message: "#^Negated boolean expression is always false\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Utility/ArrayUtility.php

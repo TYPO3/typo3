@@ -15,6 +15,7 @@ The following PHP classes that have previously been marked as deprecated with v1
 
 - :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus`
 - :php:`\TYPO3\CMS\Core\Resource\DuplicationBehavior`
+- :php:`\TYPO3\CMS\Core\Type\Enumeration`
 - :php:`\TYPO3\CMS\Core\Type\Icon\IconState`
 - :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService`
 

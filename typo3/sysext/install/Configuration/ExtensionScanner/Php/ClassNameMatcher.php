@@ -2362,6 +2362,7 @@ return [
     'TYPO3\CMS\Core\Type\Enumeration' => [
         'restFiles' => [
             'Deprecation-101163-Enumeration.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\AbstractRepository' => [
