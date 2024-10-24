@@ -23,6 +23,7 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
@@ -244,8 +245,10 @@ class ConnectionMigrator
             );
         }
 
+        $schemaManager = $this->connection->createSchemaManager();
+
         // Build the schema definitions
-        $fromSchema = $this->buildExistingSchemaDefinitions();
+        $fromSchema = $this->buildExistingSchemaDefinitions($schemaManager);
         $toSchema = $this->buildExpectedSchemaDefinitions($this->connectionName);
 
         // Add current table options to the fromSchema
@@ -261,7 +264,7 @@ class ConnectionMigrator
         }
 
         // Build SchemaDiff and handle renames of tables and columns
-        $comparator = GeneralUtility::makeInstance(Comparator::class, $this->connection->getDatabasePlatform());
+        $comparator = GeneralUtility::makeInstance(Comparator::class, $schemaManager->createComparator());
         $schemaDiff = $comparator->compareSchemas($fromSchema, $toSchema);
         if (! $schemaDiff instanceof Typo3SchemaDiff) {
             $schemaDiff = Typo3SchemaDiff::ensure($schemaDiff);
@@ -286,10 +289,10 @@ class ConnectionMigrator
         return $schemaDiff;
     }
 
-    protected function buildExistingSchemaDefinitions(): Schema
+    protected function buildExistingSchemaDefinitions(AbstractSchemaManager $schemaManager): Schema
     {
         $platform = $this->connection->getDatabasePlatform();
-        $schema = $this->connection->createSchemaManager()->introspectSchema();
+        $schema = $schemaManager->introspectSchema();
         // Only MySQL has variable length versions of TEXT/BLOB.
         // Move the platform into the foreach loop as soon as more normalization needs to be applied, taking it
         // now as early avoiding the loop.

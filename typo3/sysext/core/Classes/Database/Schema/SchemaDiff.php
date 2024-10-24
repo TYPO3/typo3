@@ -124,26 +124,19 @@ class SchemaDiff extends DoctrineSchemaDiff
             && count($this->droppedSequences) === 0;
     }
 
-    public static function ensure(SchemaDiff|DoctrineSchemaDiff $schemaDiff): self
+    public static function ensure(SchemaDiff|DoctrineSchemaDiff $schemaDiff, array $additionalArguments = []): self
     {
-        return new self(
-            // createdSchemas
-            $schemaDiff->getCreatedSchemas(),
-            // droppedSchemas
-            $schemaDiff->getDroppedSchemas(),
-            // createdTables
-            self::ensureCollection(...$schemaDiff->getCreatedTables()),
-            // alteredTables
-            self::ensureCollection(...$schemaDiff->getAlteredTables()),
-            // droppedTables
-            self::ensureCollection(...$schemaDiff->getDroppedTables()),
-            // createdSequences
-            $schemaDiff->getCreatedSequences(),
-            // alteredSequences
-            $schemaDiff->getAlteredSequences(),
-            // droppedSequences
-            $schemaDiff->getDroppedSequences(),
-        );
+        return new self(...[
+            'createdSchemas' => $schemaDiff->getCreatedSchemas(),
+            'droppedSchemas' => $schemaDiff->getDroppedSchemas(),
+            'createdTables' => self::ensureCollection(...$schemaDiff->getCreatedTables()),
+            'alteredTables' => self::ensureCollection(...$schemaDiff->getAlteredTables()),
+            'droppedTables' => self::ensureCollection(...$schemaDiff->getDroppedTables()),
+            'createdSequences' => $schemaDiff->getCreatedSequences(),
+            'alteredSequences' => $schemaDiff->getAlteredSequences(),
+            'droppedSequences' => $schemaDiff->getDroppedSequences(),
+            ...$additionalArguments,
+        ]);
     }
 
     /**

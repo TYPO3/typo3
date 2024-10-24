@@ -57,16 +57,16 @@ class TableDiff extends DoctrineTableDiff
      */
     public function __construct(
         public Table $oldTable,
-        public array $addedColumns,
-        public array $changedColumns,
-        public array $droppedColumns,
-        public array $addedIndexes,
-        public array $modifiedIndexes,
-        public array $droppedIndexes,
-        public array $renamedIndexes,
-        public array $addedForeignKeys,
-        public array $modifiedForeignKeys,
-        public array $droppedForeignKeys,
+        public array $addedColumns = [],
+        public array $changedColumns = [],
+        public array $droppedColumns = [],
+        public array $addedIndexes = [],
+        public array $modifiedIndexes = [],
+        public array $droppedIndexes = [],
+        public array $renamedIndexes = [],
+        public array $addedForeignKeys = [],
+        public array $modifiedForeignKeys = [],
+        public array $droppedForeignKeys = [],
         public array $tableOptions = [],
     ) {
         // NOTE: parent::__construct() not called by intention.
