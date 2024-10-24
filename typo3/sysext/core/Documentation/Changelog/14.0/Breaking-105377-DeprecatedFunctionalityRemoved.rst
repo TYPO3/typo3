@@ -62,6 +62,7 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->setTableName()`
 - :php:`\TYPO3\CMS\Core\Authentication\BackendUserAuthentication->returnWebmounts()`
 - :php:`\TYPO3\CMS\Core\Imaging\Event\ModifyIconForResourcePropertiesEvent->getSize()`
+- :php:`\TYPO3\CMS\Core\Utility\DiffUtility->makeDiffDisplay()`
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState->equals()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->renderSection()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->renderPartial()`
@@ -122,6 +123,7 @@ The following public class properties have been dropped:
 
 - :php:`\TYPO3\CMS\Core\DataHandling->checkStoredRecords`
 - :php:`\TYPO3\CMS\Core\DataHandling->checkStoredRecords_loose`
+- :php:`\TYPO3\CMS\Core\Utility\DiffUtility->stripTags`
 
 The following class method visibility has been changed to protected:
 

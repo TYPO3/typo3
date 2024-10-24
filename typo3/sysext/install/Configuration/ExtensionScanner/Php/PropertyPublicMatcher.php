@@ -1161,6 +1161,7 @@ return [
     'TYPO3\CMS\Core\Utility\DiffUtility->stripTags' => [
         'restFiles' => [
             'Deprecation-104325-DiffUtility-makeDiffDisplay.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];
