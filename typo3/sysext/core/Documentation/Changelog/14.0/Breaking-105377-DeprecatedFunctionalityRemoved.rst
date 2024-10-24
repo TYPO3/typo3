@@ -210,6 +210,7 @@ The following global JavaScript function has been removed:
 
 The following JavaScript modules have been removed:
 
+- :js:`@typo3/backend/document-save-actions.js`
 - :js:`@typo3/backend/wizard.js`
 - :js:`@typo3/t3editor/*`
 
