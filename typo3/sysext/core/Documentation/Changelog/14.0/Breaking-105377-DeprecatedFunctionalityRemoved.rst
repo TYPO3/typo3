@@ -18,7 +18,11 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Core\Resource\DuplicationBehavior`
 - :php:`\TYPO3\CMS\Core\Type\Enumeration`
 - :php:`\TYPO3\CMS\Core\Type\Icon\IconState`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver`
 - :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService`
+- :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView`
+- :php:`\TYPO3\CMS\Fluid\View\StandaloneView`
+- :php:`\TYPO3\CMS\Fluid\View\TemplateView`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -28,10 +32,12 @@ The following PHP interfaces that have previously been marked as deprecated with
 
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryInitHookInterface`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface`
 
 The following PHP interfaces changed:
 
-- :php:`` method :php:`` added
+- :php:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface->modifyView()` added
+- :php:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface->render()` removed
 
 The following PHP class aliases that have previously been marked as deprecated with v13 have been removed:
 
@@ -40,6 +46,10 @@ The following PHP class aliases that have previously been marked as deprecated w
 
 The following PHP class methods that have previously been marked as deprecated with v13 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Controller\LoginController->getCurrentRequest()`
+- :php:`\TYPO3\CMS\Backend\Controller\LoginController->getLoginProviderIdentifier()`
+- :php:`\TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent->getController()`
+- :php:`\TYPO3\CMS\Backend\LoginProvider\Event\ModifyPageLayoutOnLoginProviderSelectionEvent->getPageRenderer()`
 - :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getData()`
 - :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getFieldName()`
 - :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->getPageId()`

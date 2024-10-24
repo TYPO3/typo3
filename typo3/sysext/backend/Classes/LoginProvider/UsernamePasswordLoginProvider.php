@@ -20,10 +20,7 @@ namespace TYPO3\CMS\Backend\LoginProvider;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Authentication\PasswordReset;
-use TYPO3\CMS\Backend\Controller\LoginController;
-use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\View\ViewInterface;
-use TYPO3\CMS\Fluid\View\StandaloneView;
 
 /**
  * The default username + password based backend login form.
@@ -36,14 +33,6 @@ final readonly class UsernamePasswordLoginProvider implements LoginProviderInter
     public function __construct(
         private PasswordReset $passwordReset,
     ) {}
-
-    /**
-     * @deprecated Remove in v14 when method is removed from LoginProviderInterface
-     */
-    public function render(StandaloneView $view, PageRenderer $pageRenderer, LoginController $loginController): void
-    {
-        throw new \RuntimeException('Legacy interface implementation. Should not be called', 1724768908);
-    }
 
     public function modifyView(ServerRequestInterface $request, ViewInterface $view): string
     {

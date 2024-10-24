@@ -31,9 +31,6 @@ services:
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
     arguments: ['extbase']
 
-  TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver: ~
-  TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface: '@TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver'
-
   TYPO3\CMS\Extbase\Persistence\ClassesConfiguration:
     factory: ['@TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory', 'createClassesConfiguration']
 

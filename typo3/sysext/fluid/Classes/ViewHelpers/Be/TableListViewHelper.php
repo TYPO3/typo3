@@ -121,9 +121,8 @@ final class TableListViewHelper extends AbstractBackendViewHelper
 
         $backendUser = $this->getBackendUser();
         if (!$this->renderingContext->hasAttribute(ServerRequestInterface::class)) {
-            // All views in backend have at least ServerRequestInterface, no matter if created by
-            // old StandaloneView via BackendViewFactory. Should be fine to assume having a request
-            // here, the early return is just sanitation.
+            // All views in backend have at least ServerRequestInterface. Should be fine
+            // to assume having a request here, the early return is just sanitation.
             return '';
         }
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);

@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Extbase\Mvc\Controller;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -45,9 +44,7 @@ use TYPO3\CMS\Extbase\Mvc\Exception\NoSuchActionException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
-use TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver;
 use TYPO3\CMS\Extbase\Mvc\View\JsonView;
-use TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Property\Exception\TargetNotFoundException;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
@@ -58,7 +55,6 @@ use TYPO3\CMS\Extbase\Service\FileHandlingService;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\CMS\Fluid\View\FluidViewAdapter;
-use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 
 /**
@@ -74,11 +70,6 @@ abstract class ActionController implements ControllerInterface
      * @internal
      */
     protected ReflectionService $reflectionService;
-
-    /**
-     * @internal
-     */
-    private ViewResolverInterface $viewResolver;
 
     /**
      * The current view, as resolved by resolveView()
@@ -171,14 +162,6 @@ abstract class ActionController implements ControllerInterface
     public function injectValidatorResolver(ValidatorResolver $validatorResolver): void
     {
         $this->validatorResolver = $validatorResolver;
-    }
-
-    /**
-     * @internal
-     */
-    public function injectViewResolver(ViewResolverInterface $viewResolver): void
-    {
-        $this->viewResolver = $viewResolver;
     }
 
     final public function injectViewFactory(ViewFactoryInterface $viewFactory): void
@@ -493,9 +476,8 @@ abstract class ActionController implements ControllerInterface
      *       a burden than helpful since controllers then need to have an initializeFooAction()
      *       just to set this property when different actions want different views. Also, it does
      *       not allow actions to have no view prepared at all, for instance when they just want to
-     *       create a json response by json_encode()'ing stuff. We should look at this in v14, when
-     *       GenericViewResolver and ViewResolverInterface are gone, which renders property
-     *       defaultViewObjectName even more useless.
+     *       create a json response by json_encode()'ing stuff. We should look at this in v14, which
+     *       renders property defaultViewObjectName even more useless.
      */
     protected function resolveView(): ViewInterface
     {
@@ -542,31 +524,12 @@ abstract class ActionController implements ControllerInterface
             $view->assign('settings', $this->settings);
             return $view;
         }
-        // @deprecated Drop everything below in v14 and remove GenericViewResolver and ViewResolverInterface
-        trigger_error(
-            'The only allowed values for $this->defaultViewObjectName are null or extbase JsonView::class. Please'
-            . ' create an own view in your action if that is not sufficient, or inject a different ViewFactoryInterface',
-            E_USER_DEPRECATED
+        throw new \RuntimeException(
+            'The only allowed values for $this->defaultViewObjectName are null or extbase JsonView::class.'
+            . ' Please create an own view in your action if that is not sufficient, or inject a different'
+            . ' ViewFactoryInterface',
+            1729780151
         );
-        if ($this->viewResolver instanceof GenericViewResolver) {
-            $this->viewResolver->setDefaultViewClass($this->defaultViewObjectName);
-        }
-        $view = $this->viewResolver->resolve($this->request->getControllerObjectName(), $this->request->getControllerActionName(), $this->request->getFormat());
-        if ($view instanceof FluidViewAdapter || method_exists($view, 'getRenderingContext')) {
-            // This specific magic is tailored to Fluid. Ignore if we're not dealing with a fluid view here.
-            $renderingContext = $view->getRenderingContext();
-            $renderingContext->setAttribute(ServerRequestInterface::class, $this->request);
-            $renderingContext->setControllerName($this->request->getControllerName());
-            $renderingContext->setControllerAction($this->request->getControllerActionName());
-            /** @var TemplatePaths $templatePaths */
-            $templatePaths = $renderingContext->getTemplatePaths();
-            $templatePaths->setTemplateRootPaths($templateRootPaths);
-            $templatePaths->setPartialRootPaths($partialRootPaths);
-            $templatePaths->setLayoutRootPaths($layoutRootPaths);
-            $templatePaths->setFormat($this->request->getFormat());
-        }
-        $view->assign('settings', $this->settings);
-        return $view;
     }
 
     /**

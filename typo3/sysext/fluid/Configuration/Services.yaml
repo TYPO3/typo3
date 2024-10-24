@@ -11,19 +11,6 @@ services:
     # (e.g. because factories are to be used instead)
     exclude: '../Classes/{Core/Rendering/RenderingContext.php}'
 
-  # TemplateView and StandaloneView have $context = null, symfony auto-injects in that case,
-  # extbase did not, force passing `null`
-  TYPO3\CMS\Fluid\View\StandaloneView:
-    public: true
-    shared: false
-    arguments:
-      $context: null
-  TYPO3\CMS\Fluid\View\TemplateView:
-    public: true
-    shared: false
-    arguments:
-      $context: null
-
   cache.fluid_template:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']
