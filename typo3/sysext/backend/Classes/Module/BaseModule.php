@@ -255,11 +255,6 @@ abstract class BaseModule
         } elseif (isset($configuration['navigationComponentId'])) {
             $obj->navigationComponent = (string)$configuration['navigationComponentId'];
         }
-        // @deprecated, will be removed in TYPO3 v14.0
-        if ($obj->navigationComponent === '@typo3/backend/page-tree/page-tree-element') {
-            trigger_error('The navigationComponent "@typo3/backend/page-tree/page-tree-element" referenced in the configuration for backend module "' . $obj->identifier . '" is deprecated and will be removed in TYPO3 v14.0. Use "@typo3/backend/tree/page-tree-element" instead.', E_USER_DEPRECATED);
-            $obj->navigationComponent = '@typo3/backend/tree/page-tree-element';
-        }
         if (is_array($configuration['routeOptions'] ?? null)) {
             $obj->routeOptions = $configuration['routeOptions'];
         }

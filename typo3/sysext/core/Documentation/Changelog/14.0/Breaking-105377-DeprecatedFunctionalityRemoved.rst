@@ -242,6 +242,10 @@ The following JavaScript method has been removed:
 
 - :js:`updateQueryStringParameter()` of :js:`@typo3/backend/utility.js`
 
+The following smooth migration for JavaScript modules have been removed:
+
+- :js:`@typo3/backend/page-tree/page-tree-element` to :js:`@typo3/backend/tree/page-tree-element`
+
 The following CKEditor plugin has been removed:
 
 - :js:``
