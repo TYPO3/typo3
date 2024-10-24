@@ -120,7 +120,8 @@ The following methods changed signature according to previous deprecations in v1
 
 The following public class properties have been dropped:
 
-- :php:``
+- :php:`\TYPO3\CMS\Core\DataHandling->checkStoredRecords`
+- :php:`\TYPO3\CMS\Core\DataHandling->checkStoredRecords_loose`
 
 The following class method visibility has been changed to protected:
 

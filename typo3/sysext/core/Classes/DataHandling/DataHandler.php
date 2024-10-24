@@ -123,11 +123,6 @@ class DataHandler
      */
     public bool $reverseOrder = false;
 
-    /** @deprecated Unused. Will be removed with TYPO3 v14. */
-    public $checkStoredRecords = true;
-    /** @deprecated Unused. Will be removed with TYPO3 v14. */
-    public $checkStoredRecords_loose = true;
-
     /**
      * If set, then the 'hideAtCopy' flag for tables will be ignored.
      */
