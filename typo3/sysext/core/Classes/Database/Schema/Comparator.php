@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema;
 
-use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Schema\Comparator as DoctrineComparator;
 use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Schema\Table;
+use Doctrine\DBAL\Schema\TableDiff as DoctrineTableDiff;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 
 /**
@@ -27,37 +27,69 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
  *
  * @internal not part of public core API.
  */
-class Comparator extends \Doctrine\DBAL\Schema\Comparator
+final readonly class Comparator
 {
-    protected AbstractPlatform $databasePlatform;
-
-    public function __construct(protected AbstractPlatform $platform)
-    {
-        $this->databasePlatform = $platform;
-        parent::__construct($platform);
-    }
+    public function __construct(
+        private DoctrineComparator $comparator
+    ) {}
 
     public function compareSchemas(Schema $oldSchema, Schema $newSchema): SchemaDiff
     {
-        return SchemaDiff::ensure(parent::compareSchemas($oldSchema, $newSchema));
+        $schemaDiff = $this->comparator->compareSchemas($oldSchema, $newSchema);
+
+        $alteredTables = $this->mapAlteredTablesToTypo3TableDiff($schemaDiff->getAlteredTables());
+        $alteredTables = SchemaDiff::ensureCollection(...$alteredTables);
+        $alteredTables = $this->compareTableOptions($oldSchema, $newSchema, $alteredTables);
+
+        return SchemaDiff::ensure(
+            $schemaDiff,
+            [
+                'alteredTables' => $alteredTables,
+            ]
+        );
     }
 
     /**
-     * Returns the difference between the tables $fromTable and $toTable.
-     *
-     * If there are no differences this method returns the boolean false.
+     * @param array<DoctrineTableDiff> $alteredTables
+     * @return array<TableDiff>
      */
-    public function compareTables(Table $oldTable, Table $newTable): TableDiff
+    private function mapAlteredTablesToTypo3TableDiff(array $alteredTables): array
     {
-        $newTableOptions = array_merge($oldTable->getOptions(), $newTable->getOptions());
-        $optionDiff = ArrayUtility::arrayDiffAssocRecursive($newTableOptions, $oldTable->getOptions());
-        $tableDifferences = parent::compareTables($oldTable, $newTable);
-        // Rebuild TableDiff with enhanced TYPO3 TableDiff class
-        $tableDifferences = TableDiff::ensure($tableDifferences);
-        // Set the table options to be parsed in the AlterTable event. Only add changed table options.
-        if (count($optionDiff) > 0) {
-            $tableDifferences->setTableOptions($optionDiff);
+        return array_map(
+            static fn(DoctrineTableDiff $tableDiff): TableDiff => TableDiff::ensure($tableDiff),
+            $alteredTables
+        );
+    }
+
+    /**
+     * Provide change information about table options like the ENGINE (#77786)
+     * which are not implemented by doctrine/dbal itself
+     *
+     * @param array<string, TableDiff> $alteredTables
+     * @return array<string, TableDiff>
+     */
+    private function compareTableOptions(Schema $oldSchema, Schema $newSchema, array $alteredTables): array
+    {
+        foreach ($newSchema->getTables() as $newTable) {
+            $newTableName = $newTable->getShortestName($newSchema->getName());
+            if (!$oldSchema->hasTable($newTableName)) {
+                // new table, no ALTER TABLE needed
+                continue;
+            }
+
+            $oldTable = $oldSchema->getTable($newTableName);
+            $newTableOptions = array_merge($oldTable->getOptions(), $newTable->getOptions());
+            $optionDiff = ArrayUtility::arrayDiffAssocRecursive($newTableOptions, $oldTable->getOptions());
+            if ($optionDiff === []) {
+                continue;
+            }
+
+            $key = $newTable->getName();
+            $tableDiff = $alteredTables[$key] ?? new TableDiff($newTable);
+            $tableDiff->setTableOptions($optionDiff);
+            $alteredTables[$key] = $tableDiff;
         }
-        return $tableDifferences;
+
+        return $alteredTables;
     }
 }
