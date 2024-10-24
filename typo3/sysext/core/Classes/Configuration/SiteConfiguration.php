@@ -275,7 +275,7 @@ class SiteConfiguration
     {
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . self::CONTENT_SECURITY_FILE_NAME;
         if (file_exists($fileName)) {
-            return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName), YamlFileLoader::PROCESS_IMPORTS);
+            return $this->yamlFileLoader->load(GeneralUtility::fixWindowsFilePath($fileName));
         }
         return [];
     }
