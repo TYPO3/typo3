@@ -127,11 +127,10 @@ class InaccessibleFolder extends Folder
      *
      * @param string $localFilePath
      * @param string $fileName
-     * @param string|DuplicationBehavior $conflictMode
+     * @param DuplicationBehavior $conflictMode
      * @throws Exception\InsufficientFolderReadPermissionsException
-     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
-    public function addFile($localFilePath, $fileName = null, $conflictMode = DuplicationBehavior::CANCEL): never
+    public function addFile($localFilePath, $fileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): never
     {
         $this->throwInaccessibleException();
     }
@@ -140,11 +139,10 @@ class InaccessibleFolder extends Folder
      * Adds an uploaded file into the Storage.
      *
      * @param array $uploadedFileData contains information about the uploaded file given by $_FILES['file1']
-     * @param string|DuplicationBehavior $conflictMode
+     * @param DuplicationBehavior $conflictMode
      * @throws Exception\InsufficientFolderReadPermissionsException
-     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
-    public function addUploadedFile(array $uploadedFileData, $conflictMode = DuplicationBehavior::CANCEL): never
+    public function addUploadedFile(array $uploadedFileData, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): never
     {
         $this->throwInaccessibleException();
     }
@@ -198,11 +196,10 @@ class InaccessibleFolder extends Folder
      *
      * @param Folder $targetFolder Target folder to copy to.
      * @param string $targetFolderName an optional destination fileName
-     * @param string|DuplicationBehavior $conflictMode
+     * @param DuplicationBehavior $conflictMode
      * @throws Exception\InsufficientFolderReadPermissionsException
-     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
      */
-    public function copyTo(Folder $targetFolder, $targetFolderName = null, $conflictMode = DuplicationBehavior::RENAME): never
+    public function copyTo(Folder $targetFolder, $targetFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): never
     {
         $this->throwInaccessibleException();
     }

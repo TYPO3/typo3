@@ -2392,6 +2392,7 @@ return [
     'TYPO3\CMS\Core\Resource\DuplicationBehavior' => [
         'restFiles' => [
             'Deprecation-101151-DuplicationBehaviorClass.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Resource\Processing\AbstractGraphicalTask' => [

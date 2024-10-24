@@ -118,10 +118,9 @@ interface FileInterface extends ResourceInterface
      * Renames this file.
      *
      * @param non-empty-string $newName The new file name
-     * @param string|DuplicationBehavior $conflictMode
-     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
+     * @param DuplicationBehavior $conflictMode
      */
-    public function rename(string $newName, $conflictMode = DuplicationBehavior::RENAME): FileInterface;
+    public function rename(string $newName, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface;
 
     /*****************
      * SPECIAL METHODS

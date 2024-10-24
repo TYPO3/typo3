@@ -421,10 +421,9 @@ class FileReference implements FileInterface
      * Renames the fileName in this particular usage.
      *
      * @param non-empty-string $newName The new file name
-     * @param string|DuplicationBehavior $conflictMode
-     * @todo change $conflictMode parameter type to DuplicationBehavior in TYPO3 v14.0
+     * @param DuplicationBehavior $conflictMode
      */
-    public function rename(string $newName, $conflictMode = DuplicationBehavior::RENAME): FileInterface
+    public function rename(string $newName, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
     {
         // @todo Implement this function. This should only rename the
         // FileReference (sys_file_reference) record, not the file itself.

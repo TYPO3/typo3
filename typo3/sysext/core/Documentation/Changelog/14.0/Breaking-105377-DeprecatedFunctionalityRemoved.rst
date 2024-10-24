@@ -14,8 +14,9 @@ Description
 The following PHP classes that have previously been marked as deprecated with v13 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus`
-- :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService`
+- :php:`\TYPO3\CMS\Core\Resource\DuplicationBehavior`
 - :php:`\TYPO3\CMS\Core\Type\Icon\IconState`
+- :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -60,6 +61,26 @@ The following methods changed signature according to previous deprecations in v1
 
 - :php:`\TYPO3\CMS\Backend\View\BackendLayout\DataProviderContext->__construct()` - All arguments are now mandatory
 - :php:`\TYPO3\CMS\Core\Imaging\IconFactory->getIcon()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Imaging\IconState|null`)
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile->copyTo()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile->moveTo()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\AbstractFile->rename()` (argument 2 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\FileInterface->rename()` (argument 2 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\FileReference->rename()` (argument 2 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\Folder->addFile()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\Folder->addUploadedFile()` (argument 2 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\Folder->copyTo()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\Folder->moveTo()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\InaccessibleFolder->addFile()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\InaccessibleFolder->addUploadedFile()` (argument 2 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\InaccessibleFolder->copyTo()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\InaccessibleFolder->moveTo()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->addFile()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->addUploadedFile()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->copyFile()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->copyFolder()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->moveFile()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->moveFolder()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->renameFile()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
 
 The following public class properties have been dropped:
 
