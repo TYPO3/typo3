@@ -137,7 +137,7 @@ readonly class GreedyDatabaseBackend
     protected function createRuntimeCacheIdentifier(string $tableName, array $uids, Context $context): string
     {
         sort($uids);
-        $cacheIdentifier = 'greedy_database_backend_' . $tableName . '-' . md5(implode('_', $uids)) . '-';
+        $cacheIdentifier = $tableName . '-' . md5(implode('_', $uids)) . '-';
         $cacheIdentifier .= $context->getAspect('workspace')->getId() . '-';
         /** @var LanguageAspect $languageAspect */
         $languageAspect = $context->getAspect('language');
@@ -158,6 +158,6 @@ readonly class GreedyDatabaseBackend
         $groupIds = $userAspect->getGroupIds();
         $cacheIdentifier .= '-' . implode('_', $groupIds);
 
-        return $cacheIdentifier;
+        return 'greedy_database_backend_' . hash('xxh3', $cacheIdentifier);
     }
 }
