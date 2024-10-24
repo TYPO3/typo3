@@ -465,25 +465,6 @@ class GeneralUtility
     }
 
     /**
-     * Returns a proper HMAC on a given input string and secret TYPO3 encryption key.
-     *
-     * @param string $input Input string to create HMAC from
-     * @param string $additionalSecret additionalSecret to prevent hmac being used in a different context
-     * @return string resulting (hexadecimal) HMAC currently with a length of 40 (HMAC-SHA-1)
-     * @deprecated since TYPO3 13.1, will be removed in TYPO3 V14
-     */
-    public static function hmac($input, $additionalSecret = '')
-    {
-        trigger_error(
-            'GeneralUtility::hmac() is deprecated and will be removed in TYPO3 v14. Use TYPO3\CMS\Core\Crypto\HashService instead.',
-            E_USER_DEPRECATED
-        );
-        $hashAlgorithm = 'sha1';
-        $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . $additionalSecret;
-        return hash_hmac($hashAlgorithm, $input, $secret);
-    }
-
-    /**
      * Splits a reference to a file in 5 parts
      *
      * @param string $fileNameWithPath File name with path to be analyzed (must exist if open_basedir is set)

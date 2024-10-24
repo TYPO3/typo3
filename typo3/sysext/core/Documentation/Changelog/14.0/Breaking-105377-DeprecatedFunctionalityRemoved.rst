@@ -78,6 +78,7 @@ The following PHP static class methods that have previously been marked as depre
 
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode()`
+- :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hmac()`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger()`
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState::cast()`
 
