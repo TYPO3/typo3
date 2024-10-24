@@ -50,19 +50,6 @@ class MathUtility
     }
 
     /**
-     * Returns $theInt if it is greater than zero, otherwise returns zero.
-     * @deprecated will be removed in TYPO3 v14.0, use max() instead.
-     */
-    public static function convertToPositiveInteger(mixed $theInt): int
-    {
-        trigger_error(
-            __METHOD__ . ' is deprecated and will be removed in TYPO3 v14. Use max() instead.',
-            E_USER_DEPRECATED
-        );
-        return self::forceIntegerInRange($theInt, 0, PHP_INT_MAX);
-    }
-
-    /**
      * Tests if the input can be interpreted as integer.
      *
      * Note: Integer casting from objects or arrays is considered undefined and thus will return false.
