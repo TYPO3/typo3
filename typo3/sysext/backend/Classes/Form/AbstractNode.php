@@ -148,11 +148,21 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
             $newValidationRule = [
                 'type' => 'range',
             ];
+
+            $isDateTime = ($config['type'] ?? '') === 'datetime';
             if (!empty($config['range']['lower'])) {
-                $newValidationRule['lower'] = $config['range']['lower'];
+                $lower = (int)$config['range']['lower'];
+                if ($isDateTime) {
+                    $lower = gmdate('c', $lower + (int)(date('Z', $lower)));
+                }
+                $newValidationRule['lower'] = $lower;
             }
             if (!empty($config['range']['upper'])) {
-                $newValidationRule['upper'] = $config['range']['upper'];
+                $upper = (int)$config['range']['upper'];
+                if ($isDateTime) {
+                    $upper = gmdate('c', $upper + (int)(date('Z', $upper)));
+                }
+                $newValidationRule['upper'] = $upper;
             }
             $validationRules[] = $newValidationRule;
         }
