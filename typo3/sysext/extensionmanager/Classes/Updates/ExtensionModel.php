@@ -21,9 +21,8 @@ namespace TYPO3\CMS\Extensionmanager\Updates;
  * Model for extensions installed by upgrade wizards
  *
  * @internal
- * @todo: Declare 'final readonly' in v14 when ext:install class alias is gone.
  */
-class ExtensionModel
+final readonly class ExtensionModel
 {
     public function __construct(
         protected string $key,

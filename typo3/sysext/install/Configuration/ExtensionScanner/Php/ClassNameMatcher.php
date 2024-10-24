@@ -2487,11 +2487,13 @@ return [
     'TYPO3\CMS\Install\Updates\AbstractDownloadExtensionUpdate' => [
         'restFiles' => [
             'Deprecation-102943-AbstractDownloadExtensionUpdateMovedToExtextensionmanager.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Install\Updates\ExtensionModel' => [
         'restFiles' => [
             'Deprecation-102943-AbstractDownloadExtensionUpdateMovedToExtextensionmanager.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extensionmanager\Event\AfterExtensionDatabaseContentHasBeenImportedEvent' => [

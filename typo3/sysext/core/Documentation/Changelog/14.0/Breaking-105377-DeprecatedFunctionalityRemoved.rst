@@ -20,7 +20,7 @@ The following PHP classes that have previously been marked as deprecated with v1
 
 The following PHP classes have been declared :php:`final`:
 
-- :php:``
+- :php:`\TYPO3\CMS\Extensionmanager\Updates\ExtensionModel`
 
 The following PHP interfaces that have previously been marked as deprecated with v13 have been removed:
 
@@ -33,7 +33,8 @@ The following PHP interfaces changed:
 
 The following PHP class aliases that have previously been marked as deprecated with v13 have been removed:
 
-- :php:``
+- :php:`\TYPO3\CMS\Install\Updates\AbstractDownloadExtensionUpdate`
+- :php:`\TYPO3\CMS\Install\Updates\ExtensionModel`
 
 The following PHP class methods that have previously been marked as deprecated with v13 have been removed:
 
