@@ -76,6 +76,7 @@ The following PHP class methods that have previously been marked as deprecated w
 
 The following PHP static class methods that have previously been marked as deprecated for v13 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::getTcaFieldConfiguration()`
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode()`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger()`
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState::cast()`

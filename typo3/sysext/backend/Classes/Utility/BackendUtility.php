@@ -2856,24 +2856,6 @@ class BackendUtility
     }
 
     /**
-     * Gets the TCA configuration of a field.
-     *
-     * @param string $table Name of the table
-     * @param string $field Name of the field
-     * @return array
-     * @deprecated will be removed in TYPO3 v14, use TcaSchema instead.
-     */
-    public static function getTcaFieldConfiguration($table, $field)
-    {
-        trigger_error('BackendUtility::getTcaFieldConfiguration() will be removed in TYPO3 v14. Use TcaSchema instead.', E_USER_DEPRECATED);
-        $configuration = [];
-        if (isset($GLOBALS['TCA'][$table]['columns'][$field]['config'])) {
-            $configuration = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-        }
-        return $configuration;
-    }
-
-    /**
      * Whether to ignore restrictions on a web-mount of a table.
      * The regular behaviour is that records to be accessed need to be
      * in a valid user's web-mount.
