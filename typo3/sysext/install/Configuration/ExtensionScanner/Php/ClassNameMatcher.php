@@ -2530,6 +2530,7 @@ return [
     'TYPO3\CMS\Core\DataHandling\SlugEnricher' => [
         'restFiles' => [
             'Deprecation-103244-ClassSlugEnricher.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Fluid\View\StandaloneView' => [

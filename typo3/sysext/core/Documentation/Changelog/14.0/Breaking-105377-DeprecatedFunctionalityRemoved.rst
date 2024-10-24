@@ -14,6 +14,7 @@ Description
 The following PHP classes that have previously been marked as deprecated with v13 have been removed:
 
 - :php:`\TYPO3\CMS\Backend\Toolbar\Enumeration\InformationStatus`
+- :php:`\TYPO3\CMS\Core\DataHandling\SlugEnricher`
 - :php:`\TYPO3\CMS\Core\Resource\DuplicationBehavior`
 - :php:`\TYPO3\CMS\Core\Type\Enumeration`
 - :php:`\TYPO3\CMS\Core\Type\Icon\IconState`
