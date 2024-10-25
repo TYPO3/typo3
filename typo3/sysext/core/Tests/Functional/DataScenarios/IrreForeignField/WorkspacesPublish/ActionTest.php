@@ -110,6 +110,42 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function copyParentContentToDifferentLanguageWAllChildren(): void
+    {
+        // Write SiteConfiguration without fallback
+        // @todo: It is unfortunate this is needed here to make the test result work.
+        //        This is not done for Modify & WorkspacesDiscard & WorkspacesModify and
+        //        it would be more easy to get rid of this site configuration here.
+        $this->writeSiteConfiguration(
+            'test',
+            $this->buildSiteConfiguration(1, '/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+                // If an element is simply copied to another language (and not localized),
+                // it will not show with fallbackType set to 'fallback'
+                $this->buildLanguageConfiguration('DA', '/da/', []),
+            ]
+        );
+        // Create translated page first
+        $translatedPageResult = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $this->actionService->publishRecord(self::TABLE_Page, $translatedPageResult[self::TABLE_Page][self::VALUE_PageId]);
+        // Use DH "copy"
+        parent::copyParentContentToDifferentLanguageWAllChildren();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDiffLanguageWAllChildren.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)
+            ->withLanguageId(self::VALUE_LanguageId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Default', 'Extbase:list()');
+
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
+    }
+
+    #[Test]
     public function localizeParentContentWithAllChildren(): void
     {
         // Create and publish translated page first

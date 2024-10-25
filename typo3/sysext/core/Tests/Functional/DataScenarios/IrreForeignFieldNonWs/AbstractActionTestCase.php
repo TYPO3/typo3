@@ -144,8 +144,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * See DataSet/copyParentContentToLanguageWAllChildren.csv
-     *
      * @todo: Note there is a subtle difference between "copyToLanguage" command here,
      *        and "supposedly the same" using "copy" below. It should be decided if
      *        having two different results is what we really want in this case, or
@@ -158,12 +156,10 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
-     * See DataSet/copyParentContentToDiffLanguageWAllChildren.csv
-     *
      * @todo: Note there is a subtle difference between "copy" command here, and
-     *         "supposedly the same" using "copyToLanguage" above. It should be decided
-     *         if having two different results is what we really want in this case, or
-     *         if this should be streamlined.
+     *        "supposedly the same" using "copyToLanguage" above. It should be decided
+     *        if having two different results is what we really want in this case, or
+     *        if this should be streamlined.
      */
     public function copyParentContentToDifferentLanguageWAllChildren(): void
     {

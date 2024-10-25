@@ -120,6 +120,16 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function copyParentContentToDifferentLanguageWAllChildren(): void
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Use DH "copy"
+        parent::copyParentContentToDifferentLanguageWAllChildren();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDiffLanguageWAllChildren.csv');
+    }
+
+    #[Test]
     public function localizeParentContentWithAllChildren(): void
     {
         // Create translated page first
