@@ -2431,6 +2431,7 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface' => [
         'restFiles' => [
             'Breaking-102624-RemovedHookForManipulatingImageSourceCollection.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-102624-UnusedInterfaceForGetImageSourceCollectionHook.rst',
             'Feature-102624-PSR-14EventForModifyingImageSourceCollection.rst',
         ],
