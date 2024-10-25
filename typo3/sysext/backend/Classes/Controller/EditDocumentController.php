@@ -422,18 +422,6 @@ class EditDocumentController
         $this->returnEditConf = (bool)($parsedBody['returnEditConf'] ?? $queryParams['returnEditConf'] ?? false);
 
         $columnsOnly = $parsedBody['columnsOnly'] ?? $queryParams['columnsOnly'] ?? null;
-        if (is_string($columnsOnly) && $columnsOnly !== '') {
-            // @deprecated remove fallback in v14
-            // Store given columns for the first table - only for b/w compatibility
-            trigger_error(
-                'Providing columnsOnly with no table context is deprecated and will be removed in v14. Define columnsOnly[table][]=field instead.',
-                E_USER_DEPRECATED
-            );
-            $tables = array_keys($this->editconf);
-            foreach ($tables as $table) {
-                $this->columnsOnly[$table] = GeneralUtility::trimExplode(',', $columnsOnly, true);
-            }
-        }
         if (is_array($columnsOnly) && $columnsOnly !== []) {
             foreach ($columnsOnly as $table => $fields) {
                 $this->columnsOnly[$table] = is_array($fields) ? $fields : GeneralUtility::trimExplode(',', $fields, true);
