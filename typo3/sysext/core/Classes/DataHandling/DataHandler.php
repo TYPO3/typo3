@@ -3441,13 +3441,17 @@ class DataHandler
                         }
                     }
                     // Only execute default commands if a hook hasn't been processed the command already
+                    $pasteDatamap = [];
                     if (!$commandIsProcessed) {
                         $procId = $id;
-                        $backupUseTransOrigPointerField = $this->useTransOrigPointerField;
                         // Branch, based on command
                         switch ($command) {
                             case 'move':
                                 $this->moveRecord($table, (int)$id, $value);
+                                if (is_array($pasteUpdate) && $procId > 0) {
+                                    // Update after copy/move operation
+                                    $pasteDatamap[$table][$procId] = $pasteUpdate;
+                                }
                                 break;
                             case 'copy':
                                 $target = $value['target'] ?? $value;
@@ -3458,14 +3462,45 @@ class DataHandler
                                     $this->copyRecord($table, (int)$id, $target, true, [], '', 0, $ignoreLocalization);
                                 }
                                 $procId = $this->copyMappingArray[$table][$id] ?? null;
+                                if (is_array($pasteUpdate) && $procId > 0) {
+                                    // Update after copy/move operation
+                                    $pasteDatamap[$table][$procId] = $pasteUpdate;
+                                    // Update language field of relations after copy operation (record was copied to a different language)
+                                    // When 'copy' is called to copy/paste some record that has inline children to *some other language*,
+                                    // the copied children must have the same "sys_language_uid" (TCA ctrl languageField) value as their
+                                    // copied parent. The loop goes through the copied elements to set their "sys_language_uid"
+                                    // @todo: localize() in 'copyToLanguage' does this already, mainly by calling copyRecord() with a negative uid/pid,
+                                    //        and by not calling copyRecord() with 0 for $language (7th argument), but with the target
+                                    //        language id. Trying to implement this here however leads to different "sorting" values, but
+                                    //        in general, this loop should not be needed and streamlined with details from 'copyToLanguage'.
+                                    // @todo: Make this work for move operation as well? May need additional test coverage.
+                                    foreach ($this->copyMappingArray as $procTable => $copyProcIds) {
+                                        foreach ($copyProcIds as $copyProcId) {
+                                            if ($copyProcId !== $procId) {
+                                                $schema = $this->tcaSchemaFactory->get($procTable);
+                                                if ($schema->isLanguageAware()) {
+                                                    $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+                                                    if (isset($pasteUpdate[$languageField])) {
+                                                        $pasteDatamap[$procTable][$copyProcId][$languageField] = $pasteUpdate[$languageField];
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                                 break;
                             case 'localize':
+                                // @todo: Hand this state change around as method argument to localize() instead.
+                                $backupUseTransOrigPointerField = $this->useTransOrigPointerField;
                                 $this->useTransOrigPointerField = true;
                                 $this->localize($table, (int)$id, $value);
+                                $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
                                 break;
                             case 'copyToLanguage':
+                                $backupUseTransOrigPointerField = $this->useTransOrigPointerField;
                                 $this->useTransOrigPointerField = false;
                                 $this->localize($table, (int)$id, $value);
+                                $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
                                 break;
                             case 'inlineLocalizeSynchronize':
                                 $this->inlineLocalizeSynchronize($table, (int)$id, $value);
@@ -3476,10 +3511,6 @@ class DataHandler
                             case 'undelete':
                                 $this->undeleteRecord((string)$table, (int)$id);
                                 break;
-                        }
-                        $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
-                        if (is_array($pasteUpdate) && $procId > 0) {
-                            $pasteDatamap[$table][$procId] = $pasteUpdate;
                         }
                     }
                     foreach ($hookObjectsArr as $hookObj) {

@@ -69,7 +69,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: Leads to issues with sys_refindex which does not adapt sorting field for live changes.
+     * @todo: Not run, [Test] attribute missing.
+     *        Leads to issues with sys_refindex which does not adapt sorting field for live changes.
      */
     public function copyParentContent(): void
     {
@@ -78,12 +79,28 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: Leads to issues with sys_refindex which does not adapt sorting field for live changes.
+     * @todo: Not run, [Test] attribute missing.
+     *        Leads to issues with sys_refindex which does not adapt sorting field for live changes.
      */
     public function copyParentContentToDifferentPage(): void
     {
         parent::copyParentContentToDifferentPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDifferentPage.csv');
+    }
+
+    /**
+     * @todo: Not run, [Test] attribute missing.
+     *        Child hotel is not actually copied but reassigned to copied parent
+     *        this leads to unclean Reference index, so the test always fails with message:
+     *        Reference index not clean. Record tt_content:298 had 0 added indexes and 1 deleted indexes
+     */
+    public function copyParentContentToDifferentLanguageWAllChildren(): void
+    {
+        // Create translated page first
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Use DH "copy"
+        parent::copyParentContentToDifferentLanguageWAllChildren();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDiffLanguageWAllChildren.csv');
     }
 
     #[Test]
@@ -104,7 +121,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: "Trying to access array offset on value of type bool" - workspaces/Classes/Hook/DataHandlerHook.php:366
+     * @todo: Not run, [Test] attribute missing.
+     *        "Trying to access array offset on value of type bool" - workspaces/Classes/Hook/DataHandlerHook.php:366
+     *        plus sys_refindex issues.
      */
     public function moveParentContentToDifferentPage(): void
     {
@@ -113,7 +132,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: "Trying to access array offset on value of type bool" - workspaces/Classes/Hook/DataHandlerHook.php:366
+     * @todo: Not run, [Test] attribute missing.
+     *        "Trying to access array offset on value of type bool" - workspaces/Classes/Hook/DataHandlerHook.php:366
+     *        plus sys_refindex issues.
      */
     public function moveParentContentToDifferentPageTwice(): void
     {
@@ -122,7 +143,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: "Trying to access array offset on value of type bool" - workspaces/Classes/Hook/DataHandlerHook.php:366
+     * @todo: Not run, [Test] attribute missing.
+     *        "Trying to access array offset on value of type bool" - workspaces/Classes/Hook/DataHandlerHook.php:366
+     *        plus sys_refindex issues.
      */
     public function moveParentContentToDifferentPageAndChangeSorting(): void
     {
@@ -145,7 +168,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: Leads to issues with sys_refindex which does not adapt sorting field for live changes.
+     * @todo: Not run, [Test] attribute missing.
+     *        Leads to issues with sys_refindex which does not adapt sorting field for live changes.
      */
     public function copyPage(): void
     {
@@ -155,7 +179,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: Leads to issues with sys_refindex which does not adapt sorting field for live changes.
+     * @todo: Not run, [Test] attribute missing.
+     *        Leads to issues with sys_refindex which does not adapt sorting field for live changes.
      */
     public function copyPageWithHotelBeforeParentContent(): void
     {
@@ -173,7 +198,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: Weird - this may / should localize the live record? What happens here?
+     * @todo: Not run, [Test] attribute missing.
+     *        Weird - this may / should localize the live record? What happens here?
      */
     public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
@@ -210,7 +236,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: Leads to issues with sys_refindex which does not adapt sorting field for live changes.
+     * @todo: Not run, [Test] attribute missing.
+     *        Leads to issues with sys_refindex which does not adapt sorting field for live changes.
      */
     public function modifyParentAndChangeHotelChildrenSorting(): void
     {
@@ -243,7 +270,9 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: This reveals another core bug "Undefined array key "t3ver_state"" in ElementEntityProcessor.php
+     * @todo: Not run, [Test] attribute missing.
+     *        This reveals another core bug "Undefined array key "t3ver_state"" in ElementEntityProcessor.php
+     *        plus sys_refindex issues.
      */
     public function modifyAndDiscardAndModifyParentWithHotelChild(): void
     {
@@ -252,7 +281,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     /**
-     * @todo: Weird - this may / should localize the live record? What happens here?
+     * @todo: Not run, [Test] attribute missing.
+     *        Weird - this may / should localize the live record? What happens here?
      */
     public function inlineLocalizeSynchronizeLocalizeMissing(): void
     {

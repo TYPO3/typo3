@@ -72,7 +72,7 @@ final class ActionTest extends AbstractActionTestCase
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        // Use copy
+        // Use DH "copy"
         parent::copyParentContentToDifferentLanguageWAllChildren();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToDiffLanguageWAllChildren.csv');
     }
@@ -82,7 +82,7 @@ final class ActionTest extends AbstractActionTestCase
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        // Use copyToLanguage
+        // Use DH "copyToLanguage"
         parent::copyParentContentToLanguageWithAllChildren();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyParentContentToLanguageWAllChildren.csv');
     }

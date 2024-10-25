@@ -77,13 +77,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    /**
-     * Parent content records
-     */
-
-    /**
-     * Create a new parent content element
-     */
     public function createParentContent(): void
     {
         $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
@@ -109,6 +102,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function copyParentContentToDifferentPage(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageIdTarget);
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function copyParentContentToDifferentLanguageWAllChildren(): void
+    {
+        $newTableIds = $this->actionService->copyRecord(
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::VALUE_PageId,
+            [
+                'sys_language_uid' => self::VALUE_LanguageId,
+            ]
+        );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 

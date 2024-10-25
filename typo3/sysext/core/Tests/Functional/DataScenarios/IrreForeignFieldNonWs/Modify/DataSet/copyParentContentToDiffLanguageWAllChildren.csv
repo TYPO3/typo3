@@ -16,14 +16,14 @@
 ,3,89,1,0,0,0,0,"Hotel #1",297,"tt_content","1nff.hotels",2
 ,4,89,2,0,0,0,0,"Hotel #2",297,"tt_content","1nff.hotels",1
 ,5,89,1,0,0,0,0,"Hotel #1",298,"tt_content","1nff.hotels",1
-,6,89,1,0,0,0,5,"Hotel #1",299,"tt_content","1nff.hotels",1
+,6,89,1,0,1,0,5,"Hotel #1",299,"tt_content","1nff.hotels",1
 "tx_testirreforeignfieldnonws_offer",,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","title","parentid","parenttable","parentidentifier","prices"
 ,5,89,1,0,0,0,0,"Offer #1.1",3,"tx_testirreforeignfieldnonws_hotel",,3
 ,6,89,2,0,0,0,0,"Offer #1.2",3,"tx_testirreforeignfieldnonws_hotel",,2
 ,7,89,1,0,0,0,0,"Offer #2.1",4,"tx_testirreforeignfieldnonws_hotel",,1
 ,8,89,1,0,0,0,0,"Offer #1.1",5,"tx_testirreforeignfieldnonws_hotel",,1
-,9,89,1,0,0,0,8,"Offer #1.1",6,"tx_testirreforeignfieldnonws_hotel",,1
+,9,89,1,0,1,0,8,"Offer #1.1",6,"tx_testirreforeignfieldnonws_hotel",,1
 "tx_testirreforeignfieldnonws_price",,,,,,,,,,,,,,,,
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3_origuid","title","parentid","parenttable","parentidentifier",
 ,7,89,1,0,0,0,0,"Price #1.1.1",5,"tx_testirreforeignfieldnonws_offer",,
@@ -33,7 +33,7 @@
 ,11,89,2,0,0,0,0,"Price #1.2.2",6,"tx_testirreforeignfieldnonws_offer",,
 ,12,89,1,0,0,0,0,"Price #2.1.1",7,"tx_testirreforeignfieldnonws_offer",,
 ,13,89,1,0,0,0,0,"Price #1.1.1",8,"tx_testirreforeignfieldnonws_offer",,
-,14,89,1,0,0,0,13,"Price #1.1.1",9,"tx_testirreforeignfieldnonws_offer",,
+,14,89,1,0,1,0,13,"Price #1.1.1",9,"tx_testirreforeignfieldnonws_offer",,
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 ,"0b4175422d33f9dc3fe02626f109a5c5","pages",89,"tx_testirreforeignfieldnonws_hotels",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfieldnonws_hotel",2,,0,0,2147483647,0,0,
