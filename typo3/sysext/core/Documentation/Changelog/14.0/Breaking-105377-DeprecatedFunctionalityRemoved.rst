@@ -38,6 +38,7 @@ The following PHP interfaces changed:
 
 - :php:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface->modifyView()` added
 - :php:`\TYPO3\CMS\Backend\LoginProvider\LoginProviderInterface->render()` removed
+- :php:`\TYPO3\CMS\Core\PageTitle\PageTitleProviderInterface->setRequest()` added
 
 The following PHP class aliases that have previously been marked as deprecated with v13 have been removed:
 

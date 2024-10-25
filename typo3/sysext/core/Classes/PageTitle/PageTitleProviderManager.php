@@ -57,9 +57,7 @@ class PageTitleProviderManager implements SingletonInterface, LoggerAwareInterfa
             if (class_exists($configuration['provider']) && is_subclass_of($configuration['provider'], PageTitleProviderInterface::class)) {
                 /** @var PageTitleProviderInterface $titleProviderObject */
                 $titleProviderObject = $this->container->get($configuration['provider']);
-                if (method_exists($titleProviderObject, 'setRequest')) {
-                    $titleProviderObject->setRequest($request);
-                }
+                $titleProviderObject->setRequest($request);
                 if (($pageTitle = $titleProviderObject->getTitle())
                     || ($pageTitle = $this->pageTitleCache[$configuration['provider']] ?? '') !== ''
                 ) {
