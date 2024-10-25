@@ -71,6 +71,8 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState->equals()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->renderSection()`
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\JsonView->renderPartial()`
+- :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->setRequest()`
+- :php:`\TYPO3\CMS\Fluid\Core\Rendering\RenderingContext->getRequest()`
 - :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getLayoutRootPaths()`
 - :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getPartialRootPaths()`
 - :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->getTemplatePaths()`

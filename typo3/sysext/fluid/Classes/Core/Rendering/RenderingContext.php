@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\Core\Rendering;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
@@ -114,41 +113,5 @@ class RenderingContext extends \TYPO3Fluid\Fluid\Core\Rendering\RenderingContext
     public function getControllerAction(): string
     {
         return $this->controllerAction;
-    }
-
-    /**
-     * It is currently allowed to setRequest(null) to unset a
-     * request object created by factories. Some tests use this
-     * to make sure no extbase request is set. This may change.
-     *
-     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.
-     *             Use RenderingContextFactory->create($pathArray, $request) instead.
-     */
-    public function setRequest(?ServerRequestInterface $request = null): void
-    {
-        trigger_error(
-            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14. Use RenderingContextFactory->create($pathArray, $request) instead',
-            E_USER_DEPRECATED
-        );
-        if ($request) {
-            $this->setAttribute(ServerRequestInterface::class, $request);
-        }
-    }
-
-    /**
-     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14.
-     *             Use $renderingContext->hasAttribute(ServerRequestInterface::class) and
-     *             $renderingContext->getAttribute(ServerRequestInterface::class) instead.
-     */
-    public function getRequest(): ?ServerRequestInterface
-    {
-        trigger_error(
-            __CLASS__ . '->' . __METHOD__ . ' is deprecated and will be removed in TYPO3 v14. Use $renderingContext->getAttribute(ServerRequestInterface::class) instead',
-            E_USER_DEPRECATED
-        );
-        if (!$this->hasAttribute(ServerRequestInterface::class)) {
-            return null;
-        }
-        return $this->getAttribute(ServerRequestInterface::class);
     }
 }
