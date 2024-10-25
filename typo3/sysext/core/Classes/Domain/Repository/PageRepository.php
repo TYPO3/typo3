@@ -134,8 +134,8 @@ class PageRepository implements LoggerAwareInterface
     {
         $workspaceId = (int)$this->context->getPropertyFromAspect('workspace', 'id');
         // As PageRepository may be used multiple times during the frontend request, and may
-        // actually be used before the usergroups have been resolved, self::getMultipleGroupsWhereClause()
-        // and the Event in ->enableFields() need to be reconsidered when the usergroup state changes.
+        // actually be used before the usergroups have been resolved, self::getDefaultConstraints()
+        // and the Event ModifyDefaultConstraintsForDatabaseQueryEvent need to be reconsidered when the usergroup state changes.
         // When something changes in the context, a second runtime cache entry is built.
         // However, the PageRepository is generally in use for generating e.g. hundreds of links, so they would all use
         // the same cache identifier.
@@ -1439,41 +1439,6 @@ class PageRepository implements LoggerAwareInterface
      * Standard clauses
      *
      ********************************/
-
-    /**
-     * Returns a WHERE clause which will filter out records with start/end
-     * times or hidden/fe_groups fields set to values that should de-select them
-     * according to the current time, preview settings or user login. Definitely a
-     * frontend function.
-     *
-     * Is using the $GLOBALS['TCA'] arrays "ctrl" part where the key "enablefields"
-     * determines for each table which of these features applies to that table.
-     *
-     * @param string $table Table name found in the $GLOBALS['TCA'] array
-     * @param int $show_hidden If $show_hidden is set (0/1), any hidden-fields in records are ignored. NOTICE: If you call this function, consider what to do with the show_hidden parameter. Maybe it should be set? See ContentObjectRenderer->enableFields where it's implemented correctly.
-     * @param array $ignore_array Array you can pass where keys can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
-     * @throws \InvalidArgumentException
-     * @return string The clause starting like " AND ...=... AND ...=...
-     * @deprecated will be removed in TYPO3 v14.0. Use getDefaultConstraints() instead.
-     */
-    public function enableFields(string $table, int $show_hidden = -1, array $ignore_array = []): string
-    {
-        trigger_error('PageRepository->enableFields() will be removed in TYPO3 v14.0. Use ->getDefaultConstraints() instead.', E_USER_DEPRECATED);
-        if ($show_hidden === -1) {
-            // If show_hidden was not set from outside, use the current context
-            $ignore_array['disabled'] = (bool)$this->context->getPropertyFromAspect('visibility', $table === 'pages' ? 'includeHiddenPages' : 'includeHiddenContent', false);
-        } else {
-            $ignore_array['disabled'] = (bool)$show_hidden;
-        }
-        $constraints = $this->getDefaultConstraints($table, $ignore_array);
-        if ($constraints === []) {
-            return '';
-        }
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable($table)
-            ->expr();
-        return ' AND ' . $expressionBuilder->and(...$constraints);
-    }
 
     /**
      * Returns a DB query constraints (part of the WHERE clause) which will

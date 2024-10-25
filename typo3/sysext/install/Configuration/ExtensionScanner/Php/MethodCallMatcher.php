@@ -6283,6 +6283,7 @@ return [
         'maximumNumberOfArguments' => 3,
         'restFiles' => [
             'Deprecation-102793-PageRepositoryEnableFields.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Extensionmanager\Utility\InstallUtility->processExtensionSetup' => [
