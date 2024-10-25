@@ -2456,6 +2456,7 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface' => [
         'restFiles' => [
             'Breaking-102755-ImprovedGetImageResourceFunctionality.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-102755-UnusedInterfaceForGetImageResourceHook.rst',
             'Feature-102755-PSR-14EventForModifyingGetImageResourceResult.rst',
         ],
