@@ -166,6 +166,7 @@ return [
         'maximumNumberOfArguments' => 5,
         'restFiles' => [
             'Deprecation-102821-ExtensionManagementUtilityaddPItoST43.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::appendToTypoConfVars' => [
