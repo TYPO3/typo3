@@ -2424,6 +2424,7 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface' => [
         'restFiles' => [
             'Breaking-102614-RemovedHookForManipulatingGetDataResult.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-102614-UnusedInterfaceForGetDataHook.rst',
             'Feature-102614-PSR-14EventForModifyingGetDataResult.rst',
         ],
