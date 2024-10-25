@@ -43,15 +43,6 @@ class CacheService implements SingletonInterface
         $this->cacheTagStack = new \SplStack();
     }
 
-    /**
-     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14. Use CacheService->getCacheTagStack() instead.
-     * Push cache tags directly instead of page IDs.
-     */
-    public function getPageIdStack(): \SplStack
-    {
-        return $this->cacheTagStack;
-    }
-
     public function getCacheTagStack(): \SplStack
     {
         return $this->cacheTagStack;
