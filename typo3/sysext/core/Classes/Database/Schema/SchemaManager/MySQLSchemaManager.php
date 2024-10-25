@@ -52,7 +52,6 @@ use Doctrine\DBAL\Types\Type;
 class MySQLSchemaManager extends DoctrineMySQLSchemaManager
 {
     use CustomDoctrineTypesColumnDefinitionTrait;
-    use CustomPortableTableIndexesListTrait;
     use ColumnTypeCommentMethodsTrait;
 
     /** @see https://mariadb.com/kb/en/library/string-literals/#escape-sequences */
@@ -172,16 +171,37 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
             $tableName,
         );
 
-        // Enrich tablesIndexesList with custom index handlings.
-        return $this->customGetPortableTableIndexesList(
-            // tableIndexesList
-            $tableIndexesList,
-            // tableIndexes
-            $tableIndexes,
-            // tableName
-            $tableName,
-            // connection
-            $this->connection,
+        // Concatenate index prefix length to column name
+        // @todo Adapt TYPO3 schema comparison to use Index::getOption('lengths')
+        //       instead of assuming that the length is concatenated to the column name.
+        return array_map(
+            static function (Index $index): Index {
+                if (!$index->hasOption('lengths')) {
+                    return $index;
+                }
+
+                $options = $index->getOptions();
+                $lengths = $options['lengths'];
+                unset($options['lengths']);
+
+                $columns = $index->getColumns();
+                foreach ($columns as $id => $column) {
+                    if (!isset($lengths[$id])) {
+                        continue;
+                    }
+                    $columns[$id] = $column . '(' . $lengths[$id] . ')';
+                }
+
+                return new Index(
+                    $index->getName(),
+                    $columns,
+                    $index->isUnique(),
+                    $index->isPrimary(),
+                    $index->getFlags(),
+                    $options
+                );
+            },
+            $tableIndexesList
         );
     }
 
