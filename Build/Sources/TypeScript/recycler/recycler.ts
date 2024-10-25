@@ -107,10 +107,8 @@ class Recycler {
     });
 
     // changing the search field
-    this.elements.$searchTextField.on('keyup', (e: JQueryEventObject): void => {
-      const $me = $(e.currentTarget);
-
-      if ($me.val() !== '') {
+    this.elements.$searchTextField.on('input', (e: JQueryEventObject): void => {
+      if ((e.currentTarget as HTMLInputElement).value !== '') {
         this.elements.$searchSubmitBtn.removeClass('disabled');
       } else {
         this.elements.$searchSubmitBtn.addClass('disabled');
