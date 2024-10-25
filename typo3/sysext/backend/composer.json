@@ -52,11 +52,6 @@
 				"partOfMinimalUsableSystem": true
 			},
 			"extension-key": "backend"
-		},
-		"typo3/class-alias-loader": {
-			"class-alias-maps": [
-				"Migrations/Code/ClassAliasMap.php"
-			]
 		}
 	},
 	"autoload": {
