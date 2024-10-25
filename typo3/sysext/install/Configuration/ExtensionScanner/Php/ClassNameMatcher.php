@@ -2480,6 +2480,7 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface' => [
         'restFiles' => [
             'Breaking-102745-RemovedContentObjectStdWrapHook.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-102745-UnusedInterfaceForStdWrapHook.rst',
             'Feature-102745-PSR-14EventsForModifyingContentObjectStdWrapFunctionality.rst',
         ],

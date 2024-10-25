@@ -35,6 +35,7 @@ The following PHP interfaces that have previously been marked as deprecated with
 - :php:`\TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface`
+- :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectStdWrapHookInterface`
 
 The following PHP interfaces changed:
 
