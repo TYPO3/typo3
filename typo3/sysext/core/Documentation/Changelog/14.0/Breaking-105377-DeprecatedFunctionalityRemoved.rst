@@ -41,6 +41,11 @@ The following PHP interfaces changed:
 
 The following PHP class aliases that have previously been marked as deprecated with v13 have been removed:
 
+- :php:`\TYPO3\CMS\Backend\Attribute\AsController`
+- :php:`\TYPO3\CMS\Backend\FrontendBackendUserAuthentication`
+- :php:`\TYPO3\CMS\Core\Database\Schema\Types\EnumType`
+- :php:`\TYPO3\CMS\Core\View\FluidViewAdapter`
+- :php:`\TYPO3\CMS\Core\View\FluidViewFactory`
 - :php:`\TYPO3\CMS\Install\Updates\AbstractDownloadExtensionUpdate`
 - :php:`\TYPO3\CMS\Install\Updates\ExtensionModel`
 

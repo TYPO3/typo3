@@ -404,6 +404,7 @@ return [
     'TYPO3\CMS\Core\FrontendEditing\FrontendEditingController' => [
         'restFiles' => [
             'Deprecation-86110-FrontendEditingController.rst',
+            'Breaking-87193-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\ExtDirect\ExtDirectDebug' => [
@@ -2438,6 +2439,7 @@ return [
         'restFiles' => [
             'Deprecation-102631-DeprecatedControllerAttributeForAutoConfiguringBackendControllers.rst',
             'Feature-102631-IntroduceAsControllerAttributeToAutoconfigureBackendControllers.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Context\ContextAwareInterface' => [

@@ -8,7 +8,6 @@ use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Attribute\Controller;
 use TYPO3\CMS\Backend\ContextMenu\ItemProviders\ProviderInterface;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\Form\NodeInterface;
@@ -40,14 +39,6 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
         AsController::class,
         static function (ChildDefinition $definition, AsController $attribute): void {
             $definition->addTag(AsController::TAG_NAME);
-        }
-    );
-
-    // @deprecated Remove in v14 together with the corresponding class alias map
-    $containerBuilder->registerAttributeForAutoconfiguration(
-        Controller::class,
-        static function (ChildDefinition $definition, Controller $attribute): void {
-            $definition->addTag(Controller::TAG_NAME);
         }
     );
 };
