@@ -91,6 +91,8 @@ The following PHP class methods that have previously been marked as deprecated w
 - :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setTemplateRootPaths()`
 - :php:`\TYPO3\CMS\Fluid\View\FluidViewAdapter->setTemplateSource()`
 - :php:`\TYPO3\CMS\Fluid\View\TemplatePaths->fillDefaultsByPackageName()`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->addCacheTags()`
+- :php:`\TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController->getPageCacheTags()`
 - :php:`\TYPO3\CMS\Frontend\Page\PageRepository->enableFields()`
 
 The following PHP static class methods that have previously been marked as deprecated for v13 have been removed:

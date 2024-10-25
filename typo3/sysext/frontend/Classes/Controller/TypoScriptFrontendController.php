@@ -406,37 +406,6 @@ class TypoScriptFrontendController implements LoggerAwareInterface
     }
 
     /**
-     * Adds tags to this page's cache entry, you can then f.e. remove cache
-     * entries by tag
-     *
-     * @param array $tags An array of tag
-     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14. Use $request->getAttribute('frontend.cache.collector')->addCacheTags(new CacheTag($tag, $lifetime)) instead.
-     */
-    public function addCacheTags(array $tags)
-    {
-        trigger_error(
-            'TypoScriptFrontendController->addCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'frontend.cache.collector\')->addCacheTags(new CacheTag($tag, $lifetime)) instead.',
-            E_USER_DEPRECATED,
-        );
-        $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
-        $cacheDataCollector->addCacheTags(...array_map(fn(string $tag) => new CacheTag($tag), $tags));
-    }
-
-    /**
-     * @return array
-     * @deprecated since TYPO3 v13, will be removed in TYPO3 v14. Use $request->getAttribute('frontend.cache.collector')->getCacheTags() instead.
-     */
-    public function getPageCacheTags(): array
-    {
-        trigger_error(
-            'TypoScriptFrontendController->getPageCacheTags has been marked as deprecated in TYPO3 v13. Use $request->getAttribute(\'frontend.cache.collector\')->getCacheTags() instead.',
-            E_USER_DEPRECATED,
-        );
-        $cacheDataCollector = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.cache.collector');
-        return array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $cacheDataCollector->getCacheTags());
-    }
-
-    /**
      * Sets up TypoScript "config." options and set properties in $TSFE.
      *
      * @internal
