@@ -53,7 +53,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
 {
     protected ?string $expandFolder = null;
     protected int $currentPage = 1;
-    protected string $moduleStorageIdentifier = 'file_list';
+    protected string $moduleStorageIdentifier = 'media_management';
 
     protected ?FileList $filelist = null;
     protected ?ViewMode $viewMode = null;
