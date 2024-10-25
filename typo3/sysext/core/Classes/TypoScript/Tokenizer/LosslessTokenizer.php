@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierFunctionLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierReferenceLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierUnsetLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportLine;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportOldLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\InvalidLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\ConstantAwareTokenStream;
@@ -109,8 +108,11 @@ final class LosslessTokenizer implements TokenizerInterface
             } elseif (str_starts_with($this->currentLineString, '@import')) {
                 $this->parseImportLine();
             } elseif (str_starts_with($this->currentLineString, '<INCLUDE_TYPOSCRIPT:')) {
-                // @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-                $this->parseImportOld();
+                // @todo: Could be relocated elsewhere. This is just to make sure this
+                //        old language construct is detected as InvalidLine.
+                $this->tokenStream->append(new Token(TokenType::T_VALUE, $this->currentLineString, $this->currentLineNumber, $this->currentColumnInLine));
+                ($this->currentLinebreakCallback)();
+                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
             } else {
                 $this->parseIdentifier();
             }
@@ -412,67 +414,6 @@ final class LosslessTokenizer implements TokenizerInterface
         }
     }
 
-    /**
-     * Parse everything behind <INCLUDE_TYPOSCRIPT: at least until end of line or
-     * more if there is a multiline comment at end.
-     *
-     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-     */
-    private function parseImportOld(): void
-    {
-        $this->tokenStream->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD, '<INCLUDE_TYPOSCRIPT:', $this->currentLineNumber, $this->currentColumnInLine));
-        $this->currentColumnInLine += 20;
-        $this->currentLineString = substr($this->currentLineString, 20);
-        $importBody = '';
-        $importBodyStartPosition = $this->currentColumnInLine;
-        $importBodyCharCount = 0;
-        $importBodyChars = mb_str_split($this->currentLineString, 1, 'UTF-8');
-        $isWithinDoubleTick = false;
-        $previousCharWasQuote = false;
-        while (true) {
-            $nextChar = $importBodyChars[$importBodyCharCount] ?? null;
-            if ($nextChar === null) {
-                // end of chars
-                if ($importBodyCharCount) {
-                    $importBodyToken = (new Token(TokenType::T_VALUE, $importBody, $this->currentLineNumber, $importBodyStartPosition));
-                    $this->tokenStream->append($importBodyToken);
-                    ($this->currentLinebreakCallback)();
-                    $this->lineStream->append((new ImportOldLine())->setTokenStream($this->tokenStream)->setValueToken($importBodyToken));
-                    return;
-                }
-                ($this->currentLinebreakCallback)();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
-                return;
-            }
-            if ($nextChar === '"' && !$previousCharWasQuote) {
-                $isWithinDoubleTick = !$isWithinDoubleTick;
-            }
-            $previousCharWasQuote = $nextChar === '\\';
-            if ($nextChar === '>' && !$isWithinDoubleTick) {
-                if ($importBodyCharCount) {
-                    $importBodyToken = new Token(TokenType::T_VALUE, $importBody, $this->currentLineNumber, $importBodyStartPosition);
-                    $this->tokenStream->append($importBodyToken);
-                    $this->tokenStream->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD_STOP, '>', $this->currentLineNumber, $this->currentColumnInLine + $importBodyCharCount));
-                    $this->currentLineString = mb_substr($this->currentLineString, $importBodyCharCount + 1);
-                    $this->currentColumnInLine = $this->currentColumnInLine + $importBodyCharCount + 1;
-                    $this->parseTabsAndWhitespaces();
-                    $this->makeComment();
-                    $this->lineStream->append((new ImportOldLine())->setTokenStream($this->tokenStream)->setValueToken($importBodyToken));
-                    return;
-                }
-                $this->tokenStream->append(new Token(TokenType::T_IMPORT_KEYWORD_OLD_STOP, '>', $this->currentLineNumber, $this->currentColumnInLine + $importBodyCharCount));
-                $this->currentLineString = mb_substr($this->currentLineString, $importBodyCharCount + 1);
-                $this->currentColumnInLine = $this->currentColumnInLine + $importBodyCharCount + 1;
-                $this->parseTabsAndWhitespaces();
-                $this->makeComment();
-                $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
-                return;
-            }
-            $importBody .= $nextChar;
-            $importBodyCharCount++;
-        }
-    }
-
     private function parseIdentifier(): void
     {
         $splitLine = mb_str_split($this->currentLineString, 1, 'UTF-8');
@@ -653,6 +594,7 @@ final class LosslessTokenizer implements TokenizerInterface
         $this->parseIdentifierAtEndOfLine();
         $referenceStream = $this->identifierStream;
         if ($referenceStream->isEmpty()) {
+            // @todo: ($this->currentLinebreakCallback)(); is missing here?!
             $this->lineStream->append((new InvalidLine())->setTokenStream($this->tokenStream));
             return;
         }

@@ -490,7 +490,6 @@ export class TypoScriptStreamParserFactory {
         'import': kw('import'),
         'inBranch': B,
         'inc': kw('inc'),
-        'INCLUDE_TYPOSCRIPT': kw('INCLUDE_TYPOSCRIPT'),
         'includeCSS': kw('includeCSS'),
         'includeLibrary': kw('includeLibrary'),
         'includeNotInMenu': kw('includeNotInMenu'),

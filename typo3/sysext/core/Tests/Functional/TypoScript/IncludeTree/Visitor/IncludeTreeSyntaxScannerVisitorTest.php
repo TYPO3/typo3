@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript\IncludeTree\Visitor;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\FileInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
@@ -138,12 +137,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         self::assertEquals($expectedErrors, $this->removeLineFromErrors($subject->getErrors()));
     }
 
-    /**
-     * @deprecated INCLUDE_TYPOSCRIPT: Remove these from Fixtures/IncludeTreeSyntaxScannerVisitor/includes.typoscript
-     *             remove IgnoreDeprecations attribute from this test, adapt $$expectedLineNumbers
-     */
     #[Test]
-    #[IgnoreDeprecations]
     public function visitFindsEmptyImports()
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/IncludeTreeSyntaxScannerVisitor/RootTemplate.csv');
@@ -161,7 +155,7 @@ final class IncludeTreeSyntaxScannerVisitorTest extends FunctionalTestCase
         $visitor = new IncludeTreeSyntaxScannerVisitor();
         $traverser->traverse($includeTree, [$visitor]);
         $erroneousLineNumbers = array_column($visitor->getErrors(), 'lineNumber');
-        $expectedLineNumbers = [0, 2, 4, 6, 9, 12, 13, 15];
+        $expectedLineNumbers = [0, 2, 4, 7, 9, 11];
         self::assertSame($expectedLineNumbers, $erroneousLineNumbers);
     }
 }

@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierFunctionLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierReferenceLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\IdentifierUnsetLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportLine;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportOldLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\ConstantAwareTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierToken;
@@ -109,8 +108,7 @@ final class LossyTokenizer implements TokenizerInterface
             } elseif (str_starts_with($this->currentLineString, '@import')) {
                 $this->parseImportLine();
             } elseif (str_starts_with($this->currentLineString, '<INCLUDE_TYPOSCRIPT:')) {
-                // @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-                $this->parseImportOld();
+                // @todo: Do nothing. This creates an InvalidLine in LossyTokenizer.
             } else {
                 $this->parseIdentifier();
             }
@@ -256,52 +254,6 @@ final class LossyTokenizer implements TokenizerInterface
                 if ($importBodyCharCount) {
                     $importBodyToken = new Token(TokenType::T_VALUE, $importBody);
                     $this->lineStream->append((new ImportLine())->setValueToken($importBodyToken));
-                    break;
-                }
-                break;
-            }
-            $importBody .= $nextChar;
-            $importBodyCharCount++;
-        }
-        $this->currentLineString = trim(mb_substr($this->currentLineString, $importBodyCharCount + 2));
-        if (str_starts_with($this->currentLineString, '/*')) {
-            $this->ignoreUntilEndOfMultilineComment();
-        }
-    }
-
-    /**
-     * Parse everything behind <INCLUDE_TYPOSCRIPT: at least until end of line or
-     * more if there is a multiline comment at end.
-     *
-     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-     */
-    private function parseImportOld(): void
-    {
-        $this->currentLineString = substr($this->currentLineString, 20);
-        $importBody = '';
-        $importBodyCharCount = 0;
-        $importBodyChars = mb_str_split($this->currentLineString, 1, 'UTF-8');
-        $isWithinDoubleTick = false;
-        $previousCharWasQuote = false;
-        while (true) {
-            $nextChar = $importBodyChars[$importBodyCharCount] ?? null;
-            if ($nextChar === null) {
-                // end of chars
-                if ($importBodyCharCount) {
-                    $importBodyToken = (new Token(TokenType::T_VALUE, $importBody));
-                    $this->lineStream->append((new ImportOldLine())->setValueToken($importBodyToken));
-                    return;
-                }
-                return;
-            }
-            if ($nextChar === '"' && !$previousCharWasQuote) {
-                $isWithinDoubleTick = !$isWithinDoubleTick;
-            }
-            $previousCharWasQuote = $nextChar === '\\';
-            if ($nextChar === '>' && !$isWithinDoubleTick) {
-                if ($importBodyCharCount) {
-                    $importBodyToken = new Token(TokenType::T_VALUE, $importBody);
-                    $this->lineStream->append((new ImportOldLine())->setValueToken($importBodyToken));
                     break;
                 }
                 break;

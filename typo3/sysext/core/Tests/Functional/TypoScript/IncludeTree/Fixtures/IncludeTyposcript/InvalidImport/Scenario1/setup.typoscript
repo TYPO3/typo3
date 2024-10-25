@@ -1,1 +1,0 @@
-<INCLUDE_TYPOSCRIPT: source="FILE:EXT:core/Tests/Functional/TypoScript/IncludeTree/Fixtures/IncludeTyposcript/InvalidImport/Scenario1/../Scenario1/invalidPathTraversalTarget.typoscript">

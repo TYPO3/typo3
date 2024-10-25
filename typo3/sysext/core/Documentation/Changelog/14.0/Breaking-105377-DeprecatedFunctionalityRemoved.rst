@@ -184,7 +184,7 @@ The following ViewHelpers have been changed or removed:
 
 The following TypoScript options have been dropped or adapted:
 
-- :typoscript:``
+- :typoscript:`<INCLUDE_TYPOSCRIPT: ...>` language construct
 
 The following constant has been dropped:
 

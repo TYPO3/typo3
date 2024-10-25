@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeTyposcriptInclude;
 
 /**
  * Create a TypoScript source back from an IncludeTree. Inline source from
@@ -79,8 +78,7 @@ final class IncludeTreeSourceAggregatorVisitor implements IncludeTreeVisitorInte
                 $this->source .= "\n#\n# Condition from '" . $include->getName() . '\' Line ' . $include->getConditionToken()->getLine() . "\n#\n";
                 $this->source .= $lineStream;
             }
-            // @deprecated: Remove IncludeTyposcriptInclude together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-            if ($include instanceof IncludeTyposcriptInclude || $include instanceof AtImportInclude) {
+            if ($include instanceof AtImportInclude) {
                 $this->source .= "\n#\n# Include from definition '" . trim((string)($include->getOriginalLine()->getTokenStream())) . "'\n#\n";
             }
         }

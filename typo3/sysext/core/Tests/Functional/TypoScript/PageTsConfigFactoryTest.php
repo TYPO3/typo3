@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -110,25 +109,6 @@ final class PageTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(PageTsConfigFactory::class);
         $pageTsConfig = $subject->create($rootLine, new NullSite());
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
-    }
-
-    /**
-     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-     */
-    #[Test]
-    #[IgnoreDeprecations]
-    public function pageTsConfigLoadsSingleFileWithOldImportSyntax(): void
-    {
-        $rootLine = [
-            [
-                'uid' => 1,
-                'TSconfig' => '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_pagetsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">',
-            ],
-        ];
-        /** @var PageTsConfigFactory $subject */
-        $subject = $this->get(PageTsConfigFactory::class);
-        $pageTsConfig = $subject->create($rootLine, new NullSite());
-        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $pageTsConfig->getPageTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 
     #[Test]

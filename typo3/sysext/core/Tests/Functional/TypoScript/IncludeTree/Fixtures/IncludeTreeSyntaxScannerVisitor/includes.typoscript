@@ -3,14 +3,10 @@ this.is.invalid <
 @import './invalidImport.typoscript'
 @import './Imports/validImportB*.typoscript'
 @import './invalidFullDirImport/'
-<INCLUDE_TYPOSCRIPT: source="FILE:./Imports/validIncludeTypoScriptA.typoscript">
-<INCLUDE_TYPOSCRIPT: source="FILE:./invalidIncludeTypoScript.typoscript">
 [frontend.user.isLoggedIn]
   @import './Imports/validImportC.typoscript'
   @import './invalidImport.typoscript'
   @import './Imports/validImportD*.typoscript'
-  <INCLUDE_TYPOSCRIPT: source="FILE:./Imports/validIncludeTypoScriptB.typoscript">
-  <INCLUDE_TYPOSCRIPT: source="FILE:./invalidIncludeTypoScript.typoscript">
   this.is.invalid <
 [global]
 this.is.invalid <

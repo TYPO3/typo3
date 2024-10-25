@@ -75,9 +75,6 @@
 			<trans-unit id="tree.child.type.ConditionElse" resname="tree.child.type.ConditionElse">
 				<source>Condition (else)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.ConditionIncludeTyposcript" resname="tree.child.type.ConditionIncludeTyposcript">
-				<source>Included via "INCLUDE_TYPOSCRIPT" (deprecated, with condition)</source>
-			</trans-unit>
 			<trans-unit id="tree.child.type.ConditionStop" resname="tree.child.type.ConditionStop">
 				<source>Condition (end)</source>
 			</trans-unit>
@@ -101,9 +98,6 @@
 			</trans-unit>
 			<trans-unit id="tree.child.type.IncludeStaticFileFile" resname="tree.child.type.IncludeStaticFileFile">
 				<source>TypoScript set (included via file)</source>
-			</trans-unit>
-			<trans-unit id="tree.child.type.IncludeTyposcript" resname="tree.child.type.IncludeTyposcript">
-				<source>Included via "INCLUDE_TYPOSCRIPT" (deprecated)</source>
 			</trans-unit>
 			<trans-unit id="tree.child.type.Root" resname="tree.child.type.Root">
 				<source>Root</source>

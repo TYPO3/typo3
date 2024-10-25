@@ -141,12 +141,6 @@
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionStop" resname="module.pagetsconfig_includes.tree.child.type.ConditionStop">
 				<source>Condition (end)</source>
 			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.ConditionIncludeTyposcript">
-				<source>Included via "INCLUDE_TYPOSCRIPT" (deprecated, with condition)</source>
-			</trans-unit>
-			<trans-unit id="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript" resname="module.pagetsconfig_includes.tree.child.type.IncludeTyposcript">
-				<source>Included via "INCLUDE_TYPOSCRIPT" (deprecated)</source>
-			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" resname="module.pagetsconfig_includes.tree.child.type.TsConfig">
 				<source>TSconfig</source>
 			</trans-unit>

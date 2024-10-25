@@ -21,21 +21,17 @@ use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\AtImportInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionElseInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionInclude;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionIncludeTyposcriptInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\ConditionStopInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\DefaultTypoScriptMagicKeyInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeInterface;
-use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\IncludeTyposcriptInclude;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\IncludeNode\SegmentInclude;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ConditionElseLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ConditionLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ConditionStopLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportLine;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\ImportOldLine;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineInterface;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Line\LineStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
-use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\TokenType;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\TokenizerInterface;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -244,32 +240,6 @@ final class TreeFromLineStreamBuilder
                 continue;
             }
 
-            if ($line instanceof ImportOldLine) {
-                // @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-                $deprecationPath = $node->getPath();
-                $deprecationName = $node->getName();
-                $deprecationString = '<INCLUDE_TYPOSCRIPT:' . $line->getValueToken() . '>';
-                trigger_error(
-                    'TypoScript syntax "<INCLUDE_TYPOSCRIPT:" has been deprecated with TYPO3 v13 and will be removed with TYPO3 v14. Switch to "@import" instead.'
-                    . ' Found string: "' . $deprecationString . '"'
-                    . ' Potential path: "' . $deprecationPath . '"'
-                    . ' Internal name: "' . $deprecationName . '"',
-                    E_USER_DEPRECATED
-                );
-                $node->setSplit();
-                $includeTypoScriptValueToken = $line->getValueToken();
-                if (!$lineStream->isEmpty()) {
-                    $childNode->setLineStream($lineStream);
-                    $node->addChild($childNode);
-                    $lineStream = new LineStream();
-                }
-                $childNode = new SegmentInclude();
-                $childNode->setName($node->getName());
-                $childNode->setPath($node->getPath());
-                $this->processIncludeTyposcript($node, $includeTypoScriptValueToken, $line);
-                continue;
-            }
-
             $lineStream->append($line);
         }
 
@@ -401,180 +371,6 @@ final class TreeFromLineStreamBuilder
         $newNode->setPath($path);
         $newNode->setLineStream($this->tokenizer->tokenize($content));
         $newNode->setOriginalLine($atImportLine);
-        $this->buildTreeInternal($newNode);
-        $parentNode->addChild($newNode);
-    }
-
-    /**
-     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-     */
-    private function processIncludeTyposcript(IncludeInterface $node, Token $includeTyposcriptValueToken, LineInterface $importKeywordOldLine): void
-    {
-        $fullString = $includeTyposcriptValueToken->getValue();
-        $potentialSourceArray = preg_split('#.*(source="[^"]*").*|>#', $fullString, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $source = '';
-        foreach ($potentialSourceArray as $candidate) {
-            $candidate = trim($candidate);
-            if (str_starts_with($candidate, 'source="')) {
-                $source = rtrim(substr($candidate, 8), '"');
-                $source = str_replace([' ', "\t"], '', $source);
-                break;
-            }
-        }
-        if (empty($source)) {
-            // No 'source="..."'
-            return;
-        }
-        $potentialConditionArray = preg_split('#.*(condition="(?:\\\\\\\\|\\\\"|[^\"])*").*|>#', $fullString, 2, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $condition = '';
-        foreach ($potentialConditionArray as $candidate) {
-            $candidate = trim($candidate);
-            if (str_starts_with($candidate, 'condition="')) {
-                $candidate = trim(substr($candidate, 10), '"');
-                if (str_starts_with($candidate, '[') && str_ends_with($candidate, ']')) {
-                    // Cut off '[' and ']' if condition body is surrounded by them.
-                    $candidate = mb_substr($candidate, 1, -1);
-                }
-                $condition = stripslashes($candidate);
-                break;
-            }
-        }
-        $potentialExtensionsArray = preg_split('#.*(extensions*="[^"]*").*|>#', $fullString, 2, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-        $extensions = [];
-        foreach ($potentialExtensionsArray as $candidate) {
-            $candidate = trim($candidate);
-            if (str_starts_with($candidate, 'extensions="')) {
-                $extensions = GeneralUtility::trimExplode(',', rtrim(substr($candidate, 12), '"'), true);
-                break;
-            }
-        }
-
-        if (str_starts_with($source, 'FILE:./')) {
-            // Single relative file include
-            $fileName = dirname($node->getPath()) . '/' . substr($source, 7);
-            $absoluteFileName = rtrim(GeneralUtility::getFileAbsFileName($fileName), '/');
-            if ($absoluteFileName === '') {
-                return;
-            }
-            if ($this->fileNameValidator->isValid($absoluteFileName) && is_file($absoluteFileName)) {
-                $nodeToAddTo = $this->processConditionalIncludeTyposcript($node, $condition, $fileName);
-                $this->addSingleIncludeTyposcriptFile($nodeToAddTo, $absoluteFileName, $fileName, $importKeywordOldLine);
-            }
-        } elseif (str_starts_with($source, 'FILE:')) {
-            // Single file include, either prefixed with EXT:, or relative to public dir
-            // Throw away FILE:, then resolve EXT: or public dir relative
-            $fileName = substr($source, 5);
-            $absoluteFileName = rtrim(GeneralUtility::getFileAbsFileName($fileName), '/');
-            if ($absoluteFileName === '') {
-                return;
-            }
-            if ($this->fileNameValidator->isValid($absoluteFileName) && is_file($absoluteFileName)) {
-                $nodeToAddTo = $this->processConditionalIncludeTyposcript($node, $condition, $fileName);
-                $this->addSingleIncludeTyposcriptFile($nodeToAddTo, $absoluteFileName, $fileName, $importKeywordOldLine);
-                $this->addStaticMagicFromGlobals($nodeToAddTo, $fileName);
-            }
-        } elseif (str_starts_with($source, 'DIR:')) {
-            // Single file include, either prefixed with EXT:, or relative to public dir
-            // Throw away FILE:, then resolve EXT: or public dir relative
-            $dirName = substr($source, 4);
-            $absoluteDirName = rtrim(GeneralUtility::getFileAbsFileName($dirName), '/');
-            if ($absoluteDirName === '' || !is_dir($absoluteDirName)) {
-                return;
-            }
-            $nodeToAddTo = $this->processConditionalIncludeTyposcript($node, $condition, $dirName);
-            $this->importIncludeTyposcriptDirectoryRecursive($nodeToAddTo, $importKeywordOldLine, $dirName, $absoluteDirName, $extensions);
-        }
-    }
-
-    /**
-     * When 'INCLUDE_TYPOSCRIPT' has a 'condition="..."' attribute, we create an additional
-     * ConditionIncludeTyposcriptInclude node the included file is added as child to.
-     * The method either returns current parent node if there is no condition, or the new
-     * conditional sub node, if there is one.
-     *
-     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-     */
-    private function processConditionalIncludeTyposcript(IncludeInterface $parentNode, ?string $condition, string $fileName): IncludeInterface
-    {
-        $nodeToAddTo = $parentNode;
-        if ($condition) {
-            $conditionNode = new ConditionIncludeTyposcriptInclude();
-            $conditionNode->setName($fileName);
-            $conditionNode->setConditionToken(new Token(TokenType::T_VALUE, $condition, 0, 0));
-            $conditionNode->setSplit();
-            $nodeToAddTo->addChild($conditionNode);
-            $nodeToAddTo = $conditionNode;
-        }
-        return $nodeToAddTo;
-    }
-
-    /**
-     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-     */
-    private function importIncludeTyposcriptDirectoryRecursive(
-        IncludeInterface $nodeToAddTo,
-        LineInterface $importKeywordOldLine,
-        string $dirName,
-        string $absoluteDirName,
-        array $extensions
-    ): void {
-        $filesAndDirs = scandir($absoluteDirName);
-        $subDirs = [];
-        foreach ($filesAndDirs as $potentialInclude) {
-            // Handle files in this dir and remember possible sub-dirs
-            if ($potentialInclude === '.' || $potentialInclude === '..') {
-                continue;
-            }
-            if (is_dir($absoluteDirName . '/' . $potentialInclude)) {
-                $subDirs[] = $potentialInclude;
-                continue;
-            }
-            if (!$this->fileNameValidator->isValid($absoluteDirName . '/' . $potentialInclude)) {
-                continue;
-            }
-            if (!empty($extensions)) {
-                // Check if file is allowed by allowed 'extensions' setting if given
-                $fileIsAllowed = false;
-                foreach ($extensions as $extension) {
-                    if (str_ends_with($potentialInclude, $extension)) {
-                        $fileIsAllowed = true;
-                        break;
-                    }
-                }
-                if (!$fileIsAllowed) {
-                    continue;
-                }
-            }
-            $identifier = rtrim($dirName, '/') . '/' . $potentialInclude;
-            $absoluteFileName = $absoluteDirName . '/' . $potentialInclude;
-            $this->addSingleIncludeTyposcriptFile($nodeToAddTo, $absoluteFileName, $identifier, $importKeywordOldLine);
-        }
-        foreach ($subDirs as $subDir) {
-            $this->importIncludeTyposcriptDirectoryRecursive(
-                $nodeToAddTo,
-                $importKeywordOldLine,
-                $dirName . '/' . $subDir,
-                $absoluteDirName . '/' . $subDir,
-                $extensions
-            );
-        }
-    }
-
-    /**
-     * Get content of a single INCLUDE_TYPOSCRIPT file and add to current node as child.
-     *
-     * Warning: Recursively calls buildTree() to process includes of included content.
-     *
-     * @deprecated: Remove together with related code in v14, search for keyword INCLUDE_TYPOSCRIPT
-     */
-    private function addSingleIncludeTyposcriptFile(IncludeInterface $parentNode, string $absoluteFileName, string $path, LineInterface $importKeywordOldLine): void
-    {
-        $content = file_get_contents($absoluteFileName);
-        $newNode = new IncludeTyposcriptInclude();
-        $newNode->setName($path);
-        $newNode->setPath($path);
-        $newNode->setLineStream($this->tokenizer->tokenize($content));
-        $newNode->setOriginalLine($importKeywordOldLine);
         $this->buildTreeInternal($newNode);
         $parentNode->addChild($newNode);
     }
