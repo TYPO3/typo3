@@ -2410,6 +2410,7 @@ return [
     'TYPO3\CMS\Frontend\ContentObject\ContentObjectPostInitHookInterface' => [
         'restFiles' => [
             'Breaking-102581-RemovedHookForManipulatingContentObjectRenderer.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
             'Deprecation-102581-UnusedInterfaceForContentObjectRendererHook.rst',
             'Feature-102581-PSR-14EventForModifyingContentObjectRenderer.rst',
         ],
