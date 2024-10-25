@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -20,9 +22,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class to represent a backend layout.
- *
- * # @deprecated: put the following line in TYPO3 v14.0, see #104099 and #103365
- * # declare(strict_types=1);
  */
 class BackendLayout
 {
