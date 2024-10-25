@@ -168,7 +168,7 @@ options.severity
       prototypes.<prototypeIdentifier>.finishersDefinition.FlashMessage.options.severity
 
 :aspect:`Data type`
-      int
+      Enum<\TYPO3\CMS\Core\Type\ContextualFeedbackSeverity>|int
 
 :aspect:`Needed by`
       Frontend
@@ -185,6 +185,8 @@ options.severity
 :aspect:`Description`
       The flash message severity code.
       See :t3src:`core/Classes/Type/ContextualFeedbackSeverity.php` cases for the codes.
+
+      Important: in YAML-based form definitions, the PHP enums cannot be used.
 
 
 .. _prototypes.prototypeIdentifier.finishersdefinition.flashmessage.options.translation.translationfiles:
