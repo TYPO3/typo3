@@ -202,6 +202,10 @@ class SilentConfigurationUpgradeService
         'FE/addRootLineFields',
         // #104104
         'EXTENSIONS/indexed_search/debugMode',
+        // #101807
+        'BE/defaultUserTSconfig',
+        // #101799
+        'BE/defaultPageTSconfig',
     ];
 
     public function __construct(private readonly ConfigurationManager $configurationManager) {}

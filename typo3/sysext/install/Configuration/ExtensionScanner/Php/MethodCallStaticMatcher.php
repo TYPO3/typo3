@@ -1585,6 +1585,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-101799-ExtensionManagementUtilityaddPageTSConfig.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig' => [
@@ -1592,6 +1593,7 @@ return [
         'maximumNumberOfArguments' => 1,
         'restFiles' => [
             'Deprecation-101807-ExtensionManagementUtilityaddUserTSConfig.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     'TYPO3\CMS\Core\Imaging\GraphicalFunctions::gifCompress' => [

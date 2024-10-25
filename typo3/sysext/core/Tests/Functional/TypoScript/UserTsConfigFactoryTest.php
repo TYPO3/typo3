@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\TypoScript;
 
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -89,37 +88,5 @@ final class UserTsConfigFactoryTest extends FunctionalTestCase
         $subject = $this->get(UserTsConfigFactory::class);
         $userTsConfig = $subject->create($backendUser);
         self::assertSame('loadedFromTsconfigIncludesWithTyposcriptSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTyposcriptSuffix']);
-    }
-
-    /**
-     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] handling.
-     *             Remove Fixtures/userTsConfigTestFixtureDeprecated.csv as well.
-     */
-    #[Test]
-    public function userTsConfigLoadsDefaultFromGlobals(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = 'loadedFromGlobals = loadedFromGlobals';
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixtureDeprecated.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $subject = $this->get(UserTsConfigFactory::class);
-        $userTsConfig = $subject->create($backendUser);
-        self::assertSame('loadedFromGlobals', $userTsConfig->getUserTsConfigArray()['loadedFromGlobals']);
-    }
-
-    /**
-     * @deprecated Remove together with $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] handling and INCLUDE_TYPOSCRIPT
-     *             Remove Fixtures/userTsConfigTestFixtureDeprecated.csv as well.
-     */
-    #[Test]
-    #[IgnoreDeprecations]
-    public function userTsConfigLoadsSingleFileWithOldImportSyntaxFromGlobals(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] = '<INCLUDE_TYPOSCRIPT: source="FILE:EXT:test_typoscript_usertsconfigfactory/Configuration/TsConfig/tsconfig-includes.tsconfig">';
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/userTsConfigTestFixtureDeprecated.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        /** @var UserTsConfigFactory $subject */
-        $subject = $this->get(UserTsConfigFactory::class);
-        $userTsConfig = $subject->create($backendUser);
-        self::assertSame('loadedFromTsconfigIncludesWithTsconfigSuffix', $userTsConfig->getUserTsConfigArray()['loadedFromTsconfigIncludesWithTsconfigSuffix']);
     }
 }

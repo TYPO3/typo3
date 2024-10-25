@@ -606,34 +606,6 @@ class ExtensionManagementUtility
         return implode(', ', $cleanInsertionListParts);
     }
 
-    /**
-     * Adds $content to the default page TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultPageTSconfig']
-     *
-     * @deprecated since TYPO3 v13.0, will be removed in TYPO3 v14.0.
-     */
-    public static function addPageTSConfig(string $content): void
-    {
-        trigger_error(
-            'ExtensionManagementUtility::addPageTSConfig() has been deprecated in TYPO3 v13.0 and will be removed in v14.0. Use Configuration/page.tsconfig files in extensions instead.',
-            E_USER_DEPRECATED
-        );
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig'] .= chr(10) . $content;
-    }
-
-    /**
-     * Adds $content to the default user TSconfig as set in $GLOBALS['TYPO3_CONF_VARS'][BE]['defaultUserTSconfig']
-     *
-     * @deprecated since TYPO3 v13.0, will be removed in TYPO3 v14.0.
-     */
-    public static function addUserTSConfig(string $content): void
-    {
-        trigger_error(
-            'ExtensionManagementUtility::addUserTSConfig() has been deprecated in TYPO3 v13.0 and will be removed in v14.0. Use Configuration/user.tsconfig files in extensions instead.',
-            E_USER_DEPRECATED
-        );
-        $GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig'] .= chr(10) . $content;
-    }
-
     /**************************************
      *
      *	 Adding SERVICES features

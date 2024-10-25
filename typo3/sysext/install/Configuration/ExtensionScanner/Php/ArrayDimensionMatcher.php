@@ -1039,11 +1039,13 @@ return [
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'defaultPageTSconfig\']' => [
         'restFiles' => [
             'Deprecation-101799-ExtensionManagementUtilityaddPageTSConfig.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'defaultUserTSconfig\']' => [
         'restFiles' => [
             'Deprecation-101807-ExtensionManagementUtilityaddUserTSConfig.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
     '$GLOBALS[\'TCA\'][\'someTable\'][\'types\'][\'bitmask_excludelist_bits\']' => [

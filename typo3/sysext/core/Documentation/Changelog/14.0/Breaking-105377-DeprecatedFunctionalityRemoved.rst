@@ -101,6 +101,8 @@ The following PHP static class methods that have previously been marked as depre
 - :php:`\TYPO3\CMS\Backend\Utility\BackendUtility::thumbCode()`
 - :php:`\TYPO3\CMS\Core\Utility\GeneralUtility::hmac()`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43()`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPageTSConfig()`
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addUserTSConfig()`
 - :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::getExtensionIcon()`
 - :php:`\TYPO3\CMS\Core\Utility\MathUtility::convertToPositiveInteger()`
 - :php:`\TYPO3\CMS\Core\Versioning\VersionState::cast()`
@@ -197,7 +199,8 @@ The following class constants have been dropped:
 
 The following global option handling have been dropped and are ignored:
 
-- :php:`$GLOBALS['TYPO3_CONF_VARS']['X']['Y']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']`
 
 The following global variables have been removed:
 
