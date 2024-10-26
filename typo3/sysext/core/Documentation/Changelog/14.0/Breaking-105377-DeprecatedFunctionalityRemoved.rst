@@ -236,6 +236,9 @@ The following fallbacks have been removed:
 - Allowing instantiation of :php:`\TYPO3\CMS\Core\Imaging\IconRegistry` in ext_localconf.php
 - Accepting a comma-separated list of fields as value for the `columnsOnly` parameter
 - Support for extbase repository magic :php:`findByX()`, :php:`findOneByX()` and :php:`countByX()` methods
+- Fluid view helpers that extend :php:`\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper`
+  should no longer register :html:`class` attribute and should rely on attribute auto registration
+  for the error class to be added correctly.
 
 The following upgrade wizards have been removed:
 
