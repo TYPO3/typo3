@@ -299,6 +299,11 @@ The following dependency injection service alias has been removed:
 
 - :yaml:`@x.y`
 
+The following localization XLIFF files have been removed:
+
+- :file:`EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf`
+- :file:`EXT:frontend/Resources/Private/Language/Database.xlf`
+
 Impact
 ======
 
