@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ClassNamingUtility;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
-use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedMethodException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\SelectorInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 
@@ -232,58 +231,6 @@ class Repository implements RepositoryInterface, SingletonInterface
             $query->setQuerySettings(clone $this->defaultQuerySettings);
         }
         return $query;
-    }
-
-    /**
-     * Dispatches magic methods (findBy[Property]())
-     *
-     * @param non-empty-string $methodName The name of the magic method
-     * @param array<int, mixed> $arguments The arguments of the magic method
-     * @throws UnsupportedMethodException
-     * @return mixed
-     * @deprecated since v12, will be removed in v14, use {@see self::findBy()}, {@see self::findOneBy()} and {@see self::count()} instead
-     */
-    public function __call($methodName, $arguments)
-    {
-        if (str_starts_with($methodName, 'findBy') && strlen($methodName) > 7) {
-            trigger_error(
-                'Usage of magic method ' . static::class . '->findBy[Property]() is deprecated and will be removed in TYPO3 v14.0, use method findBy() instead.',
-                E_USER_DEPRECATED
-            );
-            $propertyName = lcfirst(substr($methodName, 6));
-            $query = $this->createQuery();
-            $this->addStorageCacheTags($query);
-            $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute();
-            return $result;
-        }
-        if (str_starts_with($methodName, 'findOneBy') && strlen($methodName) > 10) {
-            trigger_error(
-                'Usage of magic method ' . static::class . '->findOneBy[Property]() is deprecated and will be removed in TYPO3 v14.0, use method findOneBy() instead.',
-                E_USER_DEPRECATED
-            );
-            $propertyName = lcfirst(substr($methodName, 9));
-            $query = $this->createQuery();
-            $this->addStorageCacheTags($query);
-
-            $result = $query->matching($query->equals($propertyName, $arguments[0]))->setLimit(1)->execute();
-            if ($result instanceof QueryResultInterface) {
-                return $result->getFirst();
-            }
-            if (is_array($result)) {
-                return $result[0] ?? null;
-            }
-        } elseif (str_starts_with($methodName, 'countBy') && strlen($methodName) > 8) {
-            trigger_error(
-                'Usage of magic method ' . static::class . '->countBy[Property]() is deprecated and will be removed in TYPO3 v14.0, use method count() instead.',
-                E_USER_DEPRECATED
-            );
-            $propertyName = lcfirst(substr($methodName, 7));
-            $query = $this->createQuery();
-            $this->addStorageCacheTags($query);
-            $result = $query->matching($query->equals($propertyName, $arguments[0]))->execute()->count();
-            return $result;
-        }
-        throw new UnsupportedMethodException('The method "' . $methodName . '" is not supported by the repository.', 1233180480);
     }
 
     /**
