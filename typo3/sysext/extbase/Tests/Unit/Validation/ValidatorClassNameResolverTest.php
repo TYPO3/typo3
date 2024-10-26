@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Validation;
 
-use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Tests\Unit\Validation\Fixtures\Validation\Validator\CustomValidator;
 use TYPO3\CMS\Extbase\Tests\Unit\Validation\Fixtures\Validation\Validator\CustomValidatorThatDoesNotImplementValidatorInterfaceValidator;
@@ -26,7 +24,6 @@ use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\FloatValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\IntegerValidator;
-use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NumberValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 use TYPO3\CMS\Extbase\Validation\ValidatorClassNameResolver;
@@ -110,39 +107,6 @@ final class ValidatorClassNameResolverTest extends UnitTestCase
     }
 
     #[Test]
-    #[IgnoreDeprecations]
-    public function resolveResolvesExtensionShorthandIdentifiers(): void
-    {
-        self::assertSame(IntegerValidator::class, ValidatorClassNameResolver::resolve('TYPO3.CMS.Extbase:Integer'));
-    }
-
-    public static function namespacedShorthandValidatorNamesDataProvider(): array
-    {
-        return [
-            'TYPO3.CMS.Extbase:NotEmpty' => [
-                'TYPO3.CMS.Extbase:NotEmpty',
-                NotEmptyValidator::class,
-            ],
-            'TYPO3.CMS.Extbase.Tests.Unit.Validation.Fixtures:Custom' => [
-                'TYPO3.CMS.Extbase.Tests.Unit.Validation.Fixtures:Custom',
-                CustomValidator::class,
-            ],
-        ];
-    }
-
-    #[DataProvider('namespacedShorthandValidatorNamesDataProvider')]
-    #[Test]
-    #[IgnoreDeprecations]
-    public function resolveWithShortHandNotationReturnsValidatorNameIfClassExists(string $validatorName, string $expectedClassName): void
-    {
-        self::assertSame(
-            $expectedClassName,
-            ValidatorClassNameResolver::resolve($validatorName)
-        );
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
     public function resolveWithShortHandNotationThrowsExceptionIfClassDoesNotExist(): void
     {
         $this->expectException(NoSuchValidatorException::class);

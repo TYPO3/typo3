@@ -41,54 +41,23 @@ final class ValidatorClassNameResolver
     {
         // Trim leading slash if $validatorName is FQCN like \TYPO3\CMS\Extbase\Validation\Validator\FloatValidator
         $validatorIdentifier = ltrim($validatorIdentifier, '\\');
-
         $validatorClassName = $validatorIdentifier;
-        if (strpbrk($validatorIdentifier, ':') !== false) {
-            trigger_error(
-                'Namespaced shorthand validator usage "' . $validatorIdentifier . '" is deprecated and will be removed in TYPO3 v14.0. Use validator classname instead.',
-                E_USER_DEPRECATED
-            );
-
-            // Found shorthand validator, either extbase or foreign extension
-            // NotEmpty or Acme.MyPck.Ext:MyValidator
-            [$vendorNamespace, $validatorBaseName] = explode(':', $validatorIdentifier);
-
-            // todo: at this point ($validatorIdentifier !== $vendorNamespace) is always true as $validatorIdentifier
-            // todo: contains a colon ":" and $vendorNamespace doesn't.
-            if ($validatorIdentifier !== $vendorNamespace && $validatorBaseName !== '') {
-                // Shorthand custom
-                if (str_contains($vendorNamespace, '.')) {
-                    $extensionNameParts = explode('.', $vendorNamespace);
-                    $vendorNamespace = array_pop($extensionNameParts);
-                    $vendorName = implode('\\', $extensionNameParts);
-                    $validatorClassName = $vendorName . '\\' . $vendorNamespace . '\\Validation\\Validator\\' . $validatorBaseName;
-                }
-            } else {
-                // todo: the only way to reach this path is to use a validator identifier like "Integer:"
-                // todo: as we are using $validatorIdentifier here, this path always fails.
-                // Shorthand built in
-                $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . self::getValidatorType($validatorIdentifier);
-            }
-        } elseif (strpbrk($validatorIdentifier, '\\') === false) {
+        if (strpbrk($validatorIdentifier, '\\') === false) {
             // Shorthand built in
             $validatorClassName = 'TYPO3\\CMS\\Extbase\\Validation\\Validator\\' . self::getValidatorType($validatorIdentifier);
         }
-
         if (!str_ends_with($validatorClassName, 'Validator')) {
             $validatorClassName .= 'Validator';
         }
-
         if (!class_exists($validatorClassName)) {
             throw new NoSuchValidatorException('Validator class ' . $validatorClassName . ' does not exist', 1365799920);
         }
-
         if (!is_subclass_of($validatorClassName, ValidatorInterface::class)) {
             throw new NoSuchValidatorException(
                 'Validator class ' . $validatorClassName . ' must implement ' . ValidatorInterface::class,
                 1365776838
             );
         }
-
         return $validatorClassName;
     }
 
@@ -100,22 +69,12 @@ final class ValidatorClassNameResolver
      */
     private static function getValidatorType(string $type): string
     {
-        switch ($type) {
-            case 'int':
-                $type = 'Integer';
-                break;
-            case 'bool':
-                $type = 'Boolean';
-                break;
-            case 'double':
-                $type = 'Float';
-                break;
-            case 'numeric':
-                $type = 'Number';
-                break;
-            default:
-                $type = ucfirst($type);
-        }
-        return $type;
+        return match ($type) {
+            'int' => 'Integer',
+            'bool' => 'Boolean',
+            'double' => 'Float',
+            'numeric' => 'Number',
+            default => ucfirst($type),
+        };
     }
 }
