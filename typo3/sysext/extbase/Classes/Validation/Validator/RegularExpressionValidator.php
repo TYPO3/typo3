@@ -31,7 +31,6 @@ final class RegularExpressionValidator extends AbstractValidator
      */
     protected $supportedOptions = [
         'regularExpression' => ['', 'The regular expression to use for validation, used as given', 'string', true],
-        'errorMessage' => ['', 'Error Message to show when validation fails', 'string', false],
         'message' => [null, 'Translation key or message when regular expression results in a no match', 'string'],
     ];
 
@@ -45,34 +44,12 @@ final class RegularExpressionValidator extends AbstractValidator
         $result = preg_match($this->options['regularExpression'], $value);
         if ($result === 0) {
             $this->addError(
-                $this->getErrorMessage(),
+                $this->translateErrorMessage($this->message),
                 1221565130
             );
         }
         if ($result === false) {
             throw new InvalidValidationOptionsException('regularExpression "' . $this->options['regularExpression'] . '" in RegularExpressionValidator contained an error.', 1298273089);
         }
-    }
-
-    protected function getErrorMessage(): string
-    {
-        $errorMessage = (string)($this->options['errorMessage'] ?? '');
-        if ($errorMessage !== '') {
-            trigger_error(
-                'Validator option "errorMessage" is deprecated and will be removed in TYPO3 v14.0, use "message" option instead.',
-                E_USER_DEPRECATED
-            );
-        }
-
-        // if custom message is no locallang reference
-        if ($errorMessage !== '' && !str_starts_with($errorMessage, 'LLL')) {
-            return $errorMessage;
-        }
-        if ($errorMessage === '') {
-            // fallback to default message
-            $errorMessage = $this->message;
-        }
-
-        return $this->translateErrorMessage($errorMessage);
     }
 }

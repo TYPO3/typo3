@@ -226,6 +226,10 @@ The following event has been removed:
 
 - :php:``
 
+The following extbase validator options have been removed:
+
+- :php:`errorMessage` in :php:`TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator`
+
 The following fallbacks have been removed:
 
 - Accepting arrays returned by :php:`readFileContent()` in Indexed Search external parsers
