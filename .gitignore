@@ -58,7 +58,6 @@ nbproject
 /bin/*
 /vendor/*
 /index.php
-/typo3/index.php
 /typo3/install.php
 #
 # Ignore common TYPO3 CMS files/directories

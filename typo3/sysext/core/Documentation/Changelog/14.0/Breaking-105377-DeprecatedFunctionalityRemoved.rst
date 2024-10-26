@@ -239,6 +239,8 @@ The following fallbacks have been removed:
 - Fluid view helpers that extend :php:`\TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper`
   should no longer register :html:`class` attribute and should rely on attribute auto registration
   for the error class to be added correctly.
+- The legacy backend entry point :file:`typo3/index.php` has been removed along with handling of :file:`composer.json`
+  setting `extra.typo3/cms.install-deprecated-typo3-index-php`
 
 The following upgrade wizards have been removed:
 

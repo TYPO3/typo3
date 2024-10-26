@@ -41,11 +41,6 @@ class Application extends AbstractApplication
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $request = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
-
-        if (isset($_SERVER['TYPO3_DEPRECATED_ENTRYPOINT'])) {
-            trigger_error('/typo3/index.php entrypoint is deprecated and will be removed in TYPO3 v14. Adapt your webserver config to route all requests via /index.php', E_USER_DEPRECATED);
-        }
-
         // Set up the initial context
         $this->initializeContext();
         return parent::handle($request);
