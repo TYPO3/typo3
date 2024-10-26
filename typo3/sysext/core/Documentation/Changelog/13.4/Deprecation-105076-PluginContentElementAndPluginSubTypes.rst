@@ -43,6 +43,11 @@ configure the plugin for frontend rendering), where no fifth parameter is
 provided or where the fifth parameter is :php:`list_type`
 (:php:`ExtensionUtility::PLUGIN_TYPE_PLUGIN`), which is still the default.
 
+The extension scanner will report any usage of :php:`configurePlugin()`,
+where less than the required five arguments are provided. Actually, the
+only valid value for the fifth parameter :php:`$pluginType` is :php:`CType`,
+for which the :php:`ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT` constant
+can be used.
 
 .. note::
 

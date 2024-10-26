@@ -16,4 +16,11 @@ return [
             'Breaking-101311-MakeParameterForGeneralUtilitySanitizeLocalUrlRequired.rst',
         ],
     ],
+    'TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin' => [
+        'numberOfMandatoryArguments' => 5,
+        'maximumNumberOfArguments' => 5,
+        'restFiles' => [
+            'Deprecation-105076-PluginContentElementAndPluginSubTypes.rst',
+        ],
+    ],
 ];
