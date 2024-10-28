@@ -43,15 +43,13 @@
 </template>
 
 <template id="t3js-upgradeWizards-blocking-adds-template">
-    <p>
+    <p class="mt-4">
         There are tables or fields in the database which need to be created.
         <br />
         You have to run this update wizard before you can run any other update
         wizard to make sure all needed tables and fields are present.
     </p>
-    <div>
-        <div class="t3js-upgradeWizards-blocking-adds-rows"></div>
-    </div>
+    <p class="t3js-upgradeWizards-blocking-adds-rows"></p>
     <button class="btn btn-default t3js-upgradeWizards-blocking-adds-execute" type="button">
         Create missing tables and fields
     </button>
