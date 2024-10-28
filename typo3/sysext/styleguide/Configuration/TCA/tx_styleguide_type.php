@@ -33,6 +33,7 @@ return [
                     ['label' => 'type 0', 'value' => '0'],
                     ['label' => 'Type with changed fields', 'value' => 'withChangedFields'],
                     ['label' => 'Type with columnsOverrides', 'value' => 'withColumnsOverrides'],
+                    ['label' => 'Type with no fields', 'value' => 'withoutFieldsToRender'],
                 ],
             ],
         ],
@@ -81,6 +82,9 @@ return [
                     ],
                 ],
             ],
+        ],
+        'withoutFieldsToRender' => [
+            'showitem' => '',
         ],
     ],
 
