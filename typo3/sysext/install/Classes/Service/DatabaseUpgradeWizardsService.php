@@ -17,7 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Service;
 
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -109,8 +110,8 @@ class DatabaseUpgradeWizardsService
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
-        $isDefaultConnectionMysql = ($connection->getDatabasePlatform() instanceof MySQLPlatform);
-
+        $platform = $connection->getDatabasePlatform();
+        $isDefaultConnectionMysql = $platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform;
         if (!$isDefaultConnectionMysql) {
             // Not tested on non mysql
             $charsetOk = true;
