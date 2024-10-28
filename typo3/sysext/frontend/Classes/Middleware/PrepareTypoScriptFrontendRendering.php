@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScriptFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
+use TYPO3\CMS\Frontend\Cache\MetaDataState;
 use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Event\AfterTypoScriptDeterminedEvent;
 use TYPO3\CMS\Frontend\Event\BeforePageCacheIdentifierIsHashedEvent;
@@ -134,6 +135,11 @@ final readonly class PrepareTypoScriptFrontendRendering implements MiddlewareInt
             $lifetime = $pageCacheRow['expires'] - $GLOBALS['EXEC_TIME'];
             $cacheTags = array_map(fn(string $cacheTag) => new CacheTag($cacheTag, $lifetime), $pageCacheRow['cacheTags'] ?? []);
             $cacheDataCollector->addCacheTags(...$cacheTags);
+
+            // Restore meta-data state
+            if (is_array($pageCacheRow['metaDataState'] ?? null)) {
+                GeneralUtility::makeInstance(MetaDataState::class)->updateState($pageCacheRow['metaDataState']);
+            }
         }
 
         try {
