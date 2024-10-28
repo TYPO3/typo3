@@ -232,7 +232,7 @@ class UpgradeWizards extends AbstractInteractableModule {
             if (data.needsUpdate === true) {
               UpgradeWizards.removeLoadingMessage(outputContainer);
               modalContent.querySelector(Identifiers.outputWizardsContainer)
-                .appendChild((modalContent.querySelector(Identifiers.wizardsBlockingCharsetTemplate)) as HTMLTemplateElement).content.cloneNode(true);
+                .appendChild((modalContent.querySelector(Identifiers.wizardsBlockingCharsetTemplate) as HTMLTemplateElement).content.cloneNode(true));
             } else {
               this.blockingUpgradesDatabaseAdds();
             }
