@@ -17,7 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Authentication;
 
-use Doctrine\DBAL\Platforms\MySQLPlatform;
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -296,7 +297,9 @@ readonly class PasswordReset
         $queryBuilder
             ->select('uid', 'username', 'realName', 'email', 'password_reset_token', 'password')
             ->from('be_users');
-        if ($queryBuilder->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
+
+        $platform = $queryBuilder->getConnection()->getDatabasePlatform();
+        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->comparison('SHA1(CONCAT(' . $queryBuilder->quoteIdentifier('email') . ', ' . $queryBuilder->quoteIdentifier('uid') . '))', $queryBuilder->expr()::EQ, $queryBuilder->createNamedParameter($identity))
             );
