@@ -68,7 +68,7 @@ value which can be manipulated with Fluid or styled etc.
 
 .. code-block:: html
 
-   <formvh:renderFormValue renderable="{page.rootForm.elements.message}" as="formValue">
+   <formvh:renderFormValue renderable="{form.formDefinition.elements.message}" as="formValue">
        {formValue.processedValue}
    </formvh:renderFormValue>
 
