@@ -313,6 +313,11 @@ class FileReference implements FileInterface
         return (int)$this->originalFile->getType();
     }
 
+    public function isType(FileType $fileType): bool
+    {
+        return FileType::tryFrom($this->getType()) === $fileType;
+    }
+
     /**
      * Check if file is marked as missing by indexer
      *
