@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\Container;
 
+use TYPO3\CMS\Backend\Form\Exception\NoFieldsToRenderException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,6 +43,10 @@ class FullRecordContainer extends AbstractContainer
         $itemList = $this->data['processedTca']['types'][$recordTypeValue]['showitem'];
 
         $fieldsArray = GeneralUtility::trimExplode(',', $itemList, true);
+
+        if ($fieldsArray === []) {
+            throw new NoFieldsToRenderException('No fields defined for record type "' . $recordTypeValue . '" of table "' . $this->data['tableName'] . '"', 1730106227);
+        }
 
         // Streamline the fields array
         // First, make sure there is always a --div-- definition for the first element

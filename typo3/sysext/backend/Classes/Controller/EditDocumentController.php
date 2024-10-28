@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordException;
 use TYPO3\CMS\Backend\Form\Exception\DatabaseRecordWorkspaceDeletePlaceholderException;
+use TYPO3\CMS\Backend\Form\Exception\NoFieldsToRenderException;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
@@ -1220,6 +1221,12 @@ class EditDocumentController
                         }
 
                         $editForm .= $html;
+                    } catch (NoFieldsToRenderException $e) {
+                        $this->errorC++;
+                        $editForm .= $this->getInfobox(
+                            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noFieldsEditForm.message'),
+                            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:noFieldsEditForm'),
+                        );
                     } catch (AccessDeniedException $e) {
                         $this->errorC++;
                         // Try to fetch error message from "recordInternals" be user object
