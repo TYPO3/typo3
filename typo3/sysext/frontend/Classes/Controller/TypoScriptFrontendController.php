@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendBackendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
+use TYPO3\CMS\Frontend\Cache\MetaDataState;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
@@ -321,7 +322,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         string $content,
         array $INTincScript,
         array $INTincScript_ext,
-        array $pageTitleCache
+        array $pageTitleCache,
+        array $metaDataState = [],
     ): void {
         $pageInformation = $request->getAttribute('frontend.page.information');
         $pageId = $pageInformation->getId();
@@ -348,6 +350,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'INTincScript_ext' => $INTincScript_ext,
             'pageTitleCache' => $pageTitleCache,
             'tstamp' => $GLOBALS['EXEC_TIME'],
+            'metaDataState' => $metaDataState,
         ];
 
         $cacheDataCollector->enqueueCacheEntry(
@@ -480,6 +483,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
 
         // Processing if caching is enabled
         if ($event->isCachingEnabled()) {
+            // Fetch meta-data state
+            $metaDataState = GeneralUtility::makeInstance(MetaDataState::class)->getState();
             // Write the page to cache, but do not cache localRootLine since that is always determined
             // and coming from PageInformation->getLocalRootLine().
             $this->setPageCacheContent(
@@ -487,7 +492,8 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 $this->content,
                 $this->config['INTincScript'] ?? [],
                 $this->config['INTincScript_ext'] ?? [],
-                $this->config['pageTitleCache'] ?? []
+                $this->config['pageTitleCache'] ?? [],
+                $metaDataState,
             );
         }
         $this->setSysLastChanged($request);
