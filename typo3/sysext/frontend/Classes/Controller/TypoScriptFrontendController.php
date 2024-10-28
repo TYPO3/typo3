@@ -80,6 +80,7 @@ use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\Aspect\PreviewAspect;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
+use TYPO3\CMS\Frontend\Cache\MetaDataState;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\Event\AfterCacheableContentIsGeneratedEvent;
 use TYPO3\CMS\Frontend\Event\AfterCachedPageIsPersistedEvent;
@@ -1595,6 +1596,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
         $this->cacheExpires = $cachedData['expires'];
         // Restore the current tags as they can be retrieved by getPageCacheTags()
         $this->pageCacheTags = $cachedData['cacheTags'] ?? [];
+        // Restore meta-data state
+        if (is_array($cachedData['metaDataState'] ?? null)) {
+            GeneralUtility::makeInstance(MetaDataState::class)->updateState($cachedData['metaDataState']);
+        }
 
         if (isset($this->config['config']['debug'])) {
             $debugCacheTime = (bool)$this->config['config']['debug'];
@@ -1897,7 +1902,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
      * @param int $expirationTstamp Expiration timestamp
      * @see populatePageDataFromCache()
      */
-    protected function setPageCacheContent(string $content, array $data, int $expirationTstamp): array
+    protected function setPageCacheContent(string $content, array $data, int $expirationTstamp, array $metaDataState = []): array
     {
         $cacheData = [
             'page_id' => $this->id,
@@ -1906,6 +1911,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             'cache_data' => $data,
             'expires' => $expirationTstamp,
             'tstamp' => $GLOBALS['EXEC_TIME'],
+            'metaDataState' => $metaDataState,
         ];
         $this->cacheExpires = $expirationTstamp;
         $this->pageCacheTags[] = 'pageId_' . $this->id;
@@ -2109,8 +2115,10 @@ class TypoScriptFrontendController implements LoggerAwareInterface
             // Seconds until a cached page is too old
             $cacheTimeout = $this->get_cache_timeout();
             $timeOutTime = $GLOBALS['EXEC_TIME'] + $cacheTimeout;
+            // Fetch meta-data state
+            $metaDataState = GeneralUtility::makeInstance(MetaDataState::class)->getState();
             // Write the page to cache
-            $cachedInformation = $this->setPageCacheContent($this->content, $this->config, $timeOutTime);
+            $cachedInformation = $this->setPageCacheContent($this->content, $this->config, $timeOutTime, $metaDataState);
 
             // Event for cache post processing (eg. writing static files)
             $event = new AfterCachedPageIsPersistedEvent($request, $this, $this->newHash, $cachedInformation, $cacheTimeout);
