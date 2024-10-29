@@ -187,7 +187,7 @@ export default (function() {
       const newValue = FormEngineValidation.processByEvals(config, humanReadableField.value);
       const formattedValue = FormEngineValidation.formatByEvals(config, newValue);
 
-      // Only update fields if value actually changed
+      // Only update value field if value actually changed
       if (field.value !== newValue) {
         if (field.disabled && field.dataset.enableOnModification) {
           field.disabled = false;
@@ -196,6 +196,10 @@ export default (function() {
         // After updating the value of the main field, dispatch a "change" event to inform e.g. the "RequestUpdate"
         // component, which always listens to the main field instead of the "human readable field", about it.
         field.dispatchEvent(new Event('change'));
+      }
+
+      // Synchronize the "human-readable field" as the data normalization may have cleared invalid characters
+      if (humanReadableField.value !== formattedValue) {
         humanReadableField.value = formattedValue;
       }
     }
@@ -441,7 +445,7 @@ export default (function() {
         break;
       case 'integer':
         if (value !== '') {
-          returnValue = FormEngineValidation.parseInt(value);
+          returnValue = FormEngineValidation.parseInt(value).toString();
         }
         break;
       case 'decimal':
