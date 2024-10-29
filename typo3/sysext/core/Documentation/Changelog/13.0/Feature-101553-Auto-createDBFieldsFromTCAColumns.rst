@@ -102,4 +102,91 @@ for a change in the :sql:`datetime` column definition calculation.
 Also see :ref:`Important: About database error "row size too large" <important-104153-1718790066>`
 for limits imposed by MySQL / MariaDB on table length.
 
+Migration of :sql:`NULL` to :sql:`NOT NULL` definitions, data truncation
+------------------------------------------------------------------------
+
+As mentioned, the automatic database schema migration is based on TCA configuration,
+and will also take the :php:`nullable` TCA definition of a field into consideration.
+
+This can lead to scenarios in which a field (from both the TYPO3 Core or
+third party extension table definitions) will be converted in both type and
+attributes, and where data conversion might lead to error message like:
+
+..  code-block:: sql
+    :caption: MySQL/MariaDB error message
+
+    Error: Data truncated for column 'image' at row 1
+
+This can happen if previously a field was defined via :sql:`ext_tables.sql`,
+and then the definition was removed so that the TCA automatism could take
+over, but the definition mismatches the TCA definition (which might have changed as well).
+
+This can best be showcased with the following example:
+
+..  code-block:: text
+    :caption: Previous EXT:frontend/ext_tables.sql definition from TYPO3 v12
+    :emphasize-lines: 3
+
+    CREATE TABLE fe_users (
+      # ...
+     image tinytext,
+     # ...
+    )
+
+..  note::
+
+    Note the absence of a :sql:`NOT NULL` and :sql:`DEFAULT` definition for
+    the column :sql:`image`, which previously allowed :sql:`NULL` values to be stored inside a field.
+
+With the TCA definition for the column :sql:`fe_users.image` set to
+`type=file`, the TYPO3 schema migration will decide to set this field to:
+
+..  code-block:: sql
+    :caption: New automatically deduced SQL definition since TYPO3 v13
+
+    CREATE TABLE fe_users (
+      # ...
+      image INT UNSIGNED DEFAULT 0 NOT NULL,
+      # ...
+    )
+
+Then, this executed SQL statement:
+
+..  code-block:: sql
+    :caption: SQL statement as executed by the Database Compare tool on MySQL/MariaDB
+
+    ALTER TABLE `fe_users` CHANGE `image` `image` INT UNSIGNED DEFAULT 0 NOT NULL
+
+would lead to the error mentioned above, because any row that currently contains a
+:sql:`NULL` value would no longer be allowed. The solution for this is to fix these
+records before the schema migration is executed, by setting all currently existing
+:sql:`NULL` values to the new schema's :sql:`DEFAULT` value (here: `0`).
+
+This solution is provided by the TYPO3 Core via the migration wizard
+`Migrate NULL field values to DEFAULT values`.
+
+The wizard looks for all existing records of a table where a schema conversion of
+:sql:`NULL` to :sql:`NOT NULL` would take place, iterates all rows of the table, and applies
+the default like this:
+
+..  code-block:: sql
+    :caption: SQL command to fix database records NULL/NOT NULL state as executed by the upgrade wizard
+
+    UPDATE `fe_users` SET `image` = '0' WHERE `image` IS NULL;
+
+..  hint::
+
+    Bottom line: When a definition in an extension's :file:`ext_table.sql` is removed,
+    so that the DB fields are auto-created from TCA definitions, make sure that:
+
+    *  the TCA definition for `nullable` is properly set and
+    *  existing record values must fit into the new definition.
+
+    Otherwise, executing the migration wizard or custom data migration might be needed
+    to prevent data truncation.
+
+    This may not only affect :sql:`NOT NULL/NULL` definitions, but also scenarios where
+    data types are changed from, for example, :sql:`TEXT` to smaller :sql:`VARCHAR` columns.
+    It is fine to keep :file:`ext_tables.sql` definitions in place to adjust to special needs.
+
 .. index:: TCA, ext:core, NotScanned
