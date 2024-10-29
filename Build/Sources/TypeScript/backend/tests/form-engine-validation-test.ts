@@ -188,6 +188,13 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'value': '123abc123',
       'config': {},
       'result': 'abc'
+    },
+    {
+      'description': 'works for command integer with numeric value',
+      'command': 'integer',
+      'value': '1234',
+      'config': {},
+      'result': '1234'
     }
   ];
 
