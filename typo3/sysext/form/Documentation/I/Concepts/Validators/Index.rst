@@ -126,7 +126,7 @@ File size validator (:yaml:`FileSize`)
 The :ref:`"File size validator"<prototypes.prototypeIdentifier.validatorsdefinition.filesize>`
 validates a file resource regarding its file size. The validator has 2 options:
 
--   Minimum [:yaml:`options.maximum`]: The minimum filesize to accept. Use the
+-   Minimum [:yaml:`options.minimum`]: The minimum filesize to accept. Use the
     format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
 -   Maximum [:yaml:`options.maximum`]: The maximum filesize to accept. Use the
     format `<size>B|K|M|G`. For example: `10M` means 10 Megabytes.
@@ -184,7 +184,7 @@ checks if the given value is a number in the specified range. The validator has
 2 options:
 
 - Minimum [:yaml:`options.minimum`]: The minimum value to accept.
-- Maximum [:yaml:`options.minimum`]: The maximum value to accept.
+- Maximum [:yaml:`options.maximum`]: The maximum value to accept.
 
 
 .. _concepts-validators-regular_expressions:
