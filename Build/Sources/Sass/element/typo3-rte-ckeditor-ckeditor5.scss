@@ -1,4 +1,8 @@
 typo3-rte-ckeditor-ckeditor5 {
+    > textarea[slot="textarea"] {
+        display: none !important;
+    }
+
     /* Hide inactive styles, see https://forge.typo3.org/issues/99673 */
     .ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled {
         display: none;
