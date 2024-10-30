@@ -128,7 +128,7 @@ final class CObjectViewHelper extends AbstractViewHelper
         }
         $currentValue = null;
         if (is_object($data)) {
-            $data = $data instanceof RecordInterface ? $data->toArray() : ObjectAccess::getGettableProperties($data);
+            $data = $data instanceof RecordInterface ? ($data->getRawRecord()?->toArray() ?? $data->toArray()) : ObjectAccess::getGettableProperties($data);
         } elseif (is_string($data) || is_numeric($data)) {
             $currentValue = (string)$data;
             $data = [$data];

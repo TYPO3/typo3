@@ -97,14 +97,13 @@ Example of the frontend output:
 
     <main>
         <f:for each="{myContent.main.records}" as="record">
-            <f:cObject typoscriptObjectPath="{record.mainType}" table="{record.mainType}" data="{record.rawRecord}"/>
+            <f:cObject typoscriptObjectPath="{record.mainType}" table="{record.mainType}" data="{record}"/>
         </f:for>
     </main>
 
 The :html:`f:cObject` ViewHelper above uses the rendering definition of the
 tt_content table :html:`{record.mainType}` to render the Content Element from
-the list. The attribute :html:`data` expects the raw database record, so it is
-important to provide :html:`{record.rawRecord}` instead of the resolved record
-object.
+the list. The attribute :html:`data` expects the raw database record, which is
+retrieved from :html:`{record}`.
 
 .. index:: Backend, Frontend, ext:frontend
