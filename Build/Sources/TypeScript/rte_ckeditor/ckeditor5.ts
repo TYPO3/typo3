@@ -1,5 +1,5 @@
 import { html, LitElement, TemplateResult } from 'lit';
-import { customElement, property, query } from 'lit/decorators';
+import { customElement, property, queryAssignedElements } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';
 import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
@@ -28,13 +28,6 @@ type CKEditor5Config = Omit<EditorConfig, 'toolbar'> & {
 
 type Typo3Plugin = PluginConstructor<Editor> & {overrides?: PluginConstructor<Editor>[]};
 type PluginModule = Record<string, Typo3Plugin>;
-
-interface FormEngineConfig {
-  id?: string;
-  name?: string;
-  value?: string;
-  validationRules?: string;
-}
 
 const defaultPlugins: PluginModuleDescriptor[] = [
   { module: '@ckeditor/ckeditor5-block-quote', exports: ['BlockQuote'] },
@@ -65,16 +58,14 @@ const defaultPlugins: PluginModuleDescriptor[] = [
  * @example
  * <typo3-rte-ckeditor-ckeditor5
  *    options="[JSON]"
- *    form-engine="[JSON]"
- *    style-src?="/uri/for/custom.css">
- * </typo3-rte-ckeditor-ckeditor5>
+ * ></typo3-rte-ckeditor-ckeditor5>
  */
 @customElement('typo3-rte-ckeditor-ckeditor5')
 export class CKEditor5Element extends LitElement {
-  @property({ type: Object }) options?: CKEditor5Config = {};
-  @property({ type: Object, attribute: 'form-engine' }) formEngine?: FormEngineConfig = {};
 
-  @query('textarea') target: HTMLElement;
+  @property({ type: Object }) options?: CKEditor5Config = {};
+
+  @queryAssignedElements({ slot: 'textarea' }) target: HTMLElement[];
 
   private readonly styleSheets: Map<CSSStyleSheet, true> = new Map();
 
@@ -89,9 +80,17 @@ export class CKEditor5Element extends LitElement {
     this.styleSheets.clear();
   }
 
-  protected async firstUpdated(): Promise<void> {
-    if (!(this.target instanceof HTMLElement)) {
-      throw new Error('No rich-text content target found.');
+  protected firstUpdated(): void {
+    if (this.target[0] instanceof HTMLTextAreaElement) {
+      this.initCKEditor();
+    } else {
+      this.renderRoot.querySelector('slot[name="textarea"]').addEventListener('slotchange', () => this.initCKEditor(), { once: true });
+    }
+  }
+
+  protected async initCKEditor(): Promise<void> {
+    if (!(this.target[0] instanceof HTMLTextAreaElement)) {
+      throw new Error('No rich-text <textarea> content target found.');
     }
 
     const {
@@ -148,7 +147,7 @@ export class CKEditor5Element extends LitElement {
     }
 
     ClassicEditor
-      .create(this.target, config)
+      .create(this.target[0], config)
       .then((editor: ClassicEditor) => {
         this.applyEditableElementStyles(editor, width, height);
         this.handleWordCountPlugin(editor, wordCount);
@@ -159,7 +158,7 @@ export class CKEditor5Element extends LitElement {
             if (!sourceEditingPlugin.isSourceEditingMode) {
               editor.updateSourceElement()
             }
-            this.target.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+            this.target[0].dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
           });
         }
 
@@ -169,20 +168,10 @@ export class CKEditor5Element extends LitElement {
       });
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
-    // const renderRoot = this.attachShadow({mode: 'open'});
-    return this;
-  }
-
   protected render(): TemplateResult {
     return html`
-      <textarea
-        id="${this.formEngine.id}"
-        name="${this.formEngine.name}"
-        class="form-control"
-        rows="18"
-        data-formengine-validation-rules="${this.formEngine.validationRules}"
-        >${this.formEngine.value}</textarea>
+      <slot name="textarea"></slot>
+      <slot></slot>
     `;
   }
 
@@ -310,7 +299,7 @@ export class CKEditor5Element extends LitElement {
   private handleWordCountPlugin(editor: Editor, wordCount: WordCountConfig|undefined): void {
     if (editor.plugins.has('WordCount') && (wordCount?.displayWords || wordCount?.displayCharacters)) {
       const wordCountPlugin = editor.plugins.get('WordCount') as WordCount;
-      this.renderRoot.appendChild(wordCountPlugin.wordCountContainer);
+      this.appendChild(wordCountPlugin.wordCountContainer);
     }
   }
 

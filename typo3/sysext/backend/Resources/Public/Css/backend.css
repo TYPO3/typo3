@@ -3937,6 +3937,7 @@ typo3-backend-table-wizard{display:inline-block}
 #alert-container typo3-notification-message{margin-top:5px}
 typo3-notification-message{display:block}
 typo3-notification-message .alert{box-shadow:var(--typo3-component-box-shadow);margin:0}
+typo3-rte-ckeditor-ckeditor5>textarea[slot=textarea]{display:none!important}
 typo3-rte-ckeditor-ckeditor5 .ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled{display:none}
 .collapse-horizontal{height:auto;width:0;vertical-align:middle;overflow:hidden}
 .collapse-horizontal.show{display:inline-block;width:auto}

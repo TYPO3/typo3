@@ -131,12 +131,15 @@ class RichTextElement extends AbstractFormElement
         $ckeditorAttributes = GeneralUtility::implodeAttributes([
             'id' => $fieldId . 'ckeditor5',
             'options' => GeneralUtility::jsonEncodeForHtmlAttribute($ckeditorConfiguration, false),
-            'form-engine' => GeneralUtility::jsonEncodeForHtmlAttribute([
-                'id' => $fieldId,
-                'name' => $itemFormElementName,
-                'value' => $value,
-                'validationRules' => $this->getValidationDataAsJsonString($config),
-            ], false),
+        ], true);
+
+        $textareaAttributes = GeneralUtility::implodeAttributes([
+            'slot' => 'textarea',
+            'id' => $fieldId,
+            'name' => $itemFormElementName,
+            'rows' => '18',
+            'class' => 'form-control',
+            'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
         ], true);
 
         $html = [];
@@ -146,6 +149,9 @@ class RichTextElement extends AbstractFormElement
         $html[] =       '<div class="form-wizards-wrap">';
         $html[] =           '<div class="form-wizards-element">';
         $html[] =               '<typo3-rte-ckeditor-ckeditor5 ' . $ckeditorAttributes . '>';
+        $html[] =                 '<textarea ' . $textareaAttributes . '>';
+        $html[] =                   htmlspecialchars($value);
+        $html[] =                 '</textarea>';
         $html[] =               '</typo3-rte-ckeditor-ckeditor5>';
         $html[] =           '</div>';
         if (!empty($fieldControlHtml)) {
