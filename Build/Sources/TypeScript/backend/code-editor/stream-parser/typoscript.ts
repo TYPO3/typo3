@@ -1066,7 +1066,7 @@ export class TypoScriptStreamParserFactory {
         if (inValue) {
           return ret('string', 'string', word);
         }
-        return ret('variable', 'other', word);
+        return ret('variable', undefined, word);
       }
 
       return undefined;
