@@ -127,7 +127,7 @@ class UserInformationService
         asort($userLanguages);
         foreach ($userLanguages as $languageId) {
             $languageId = (int)$languageId;
-            $record = $siteLanguages[$languageId];
+            $record = $siteLanguages[$languageId] ?? null;
             if ($record) {
                 $data['languages'][$languageId] = $record;
             }
@@ -242,7 +242,11 @@ class UserInformationService
             if (count($split) !== 3) {
                 continue;
             }
-            $data['pageContentTypes'][] = BackendUtility::getLabelFromItemlist(...$split);
+            $data['pageContentTypes'][] = [
+                'label' => BackendUtility::getLabelFromItemlist(...$split),
+                'shortType' => $split[2],
+                'longType' => $item,
+            ];
         }
 
         return $data;

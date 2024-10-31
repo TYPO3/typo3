@@ -347,7 +347,17 @@
             <table class="table table-hover">
                 <f:for each="{pageContentTypes}" as="item">
                     <tr>
-                        <td class="col-title">{f:translate(key:item)}</td>
+                        <td class="col-title">
+                            <f:if condition="{item.label}">
+                                <f:then>
+                                    {f:translate(key: item.label)}
+                                </f:then>
+                                <f:else>
+                                    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation')}
+                                    <code>[{item.longType}]</code>
+                                </f:else>
+                            </f:if>
+                        </td>
                     </tr>
                 </f:for>
             </table>
