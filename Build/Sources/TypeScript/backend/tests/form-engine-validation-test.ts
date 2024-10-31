@@ -3,6 +3,7 @@ import { expect } from '@open-wc/testing';
 
 interface FormEngineConfig {
   [x: string]: any;
+  field: string;
 }
 
 interface FormatValueData {
@@ -165,35 +166,35 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'description': 'works for command alpha with numeric value',
       'command': 'alpha',
       'value': '1234',
-      'config': {},
+      'config': { 'field': 'foo' },
       'result': ''
     },
     {
       'description': 'works for command alpha with string value',
       'command': 'alpha',
       'value': 'abc',
-      'config': {},
+      'config': { 'field': 'foo' },
       'result': 'abc'
     },
     {
       'description': 'works for command alpha with alphanum input',
       'command': 'alpha',
       'value': 'abc123',
-      'config': {},
+      'config': { 'field': 'foo' },
       'result': 'abc'
     },
     {
       'description': 'works for command alpha with alphanum input',
       'command': 'alpha',
       'value': '123abc123',
-      'config': {},
+      'config': { 'field': 'foo' },
       'result': 'abc'
     },
     {
       'description': 'works for command integer with numeric value',
       'command': 'integer',
       'value': '1234',
-      'config': {},
+      'config': { 'field': 'foo' },
       'result': '1234'
     }
   ];

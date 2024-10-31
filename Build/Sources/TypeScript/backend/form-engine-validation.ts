@@ -31,36 +31,28 @@ type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectEle
 type CustomEvaluationCallback = (value: string) => string;
 type FormEngineInputParams = { field: string, evalList?: string, is_in?: string };
 
-export default (function() {
+let formEngineFormElement: HTMLFormElement;
+let validationSuspended = false;
 
-  /**
-   * The main FormEngineValidation object
-   *
-   * @type {{rulesSelector: string, inputSelector: string, markerSelector: string, groupFieldHiddenElement: string, relatedFieldSelector: string, errorClass: string, lastYear: number, lastDate: number, lastTime: number, passwordDummy: string}}
-   * @exports @typo3/backend/form-engine-validation
-   */
-  const FormEngineValidation: any = {
-    rulesSelector: '[data-formengine-validation-rules]',
-    inputSelector: '[data-formengine-input-params]',
-    markerSelector: '.t3js-formengine-validation-marker',
-    groupFieldHiddenElement: '.t3js-formengine-field-group input[type=hidden]',
-    relatedFieldSelector: '[data-relatedfieldname]',
-    errorClass: 'has-error',
-    lastYear: 0,
-    lastDate: 0,
-    lastTime: 0,
-    passwordDummy: '********'
-  };
+const customEvaluations: Map<string, CustomEvaluationCallback> = new Map();
 
-  let formEngineFormElement: HTMLFormElement;
-  let validationSuspended = false;
+/**
+ * The main FormEngineValidation object
+ *
+ * @exports @typo3/backend/form-engine-validation
+ */
+export default class FormEngineValidation {
 
-  const customEvaluations: Map<string, CustomEvaluationCallback> = new Map();
+  public static rulesSelector: string = '[data-formengine-validation-rules]';
+  public static inputSelector: string = '[data-formengine-input-params]';
+  public static markerSelector: string = '.t3js-formengine-validation-marker';
+  public static errorClass: string = 'has-error';
+  public static passwordDummy: string = '********';
 
   /**
    * Initialize validation for the first time
    */
-  FormEngineValidation.initialize = function(formElement: HTMLFormElement): void {
+  public static initialize(formElement: HTMLFormElement): void {
     formEngineFormElement = formElement;
     formEngineFormElement.querySelectorAll('.' + FormEngineValidation.errorClass).forEach((e: HTMLElement) => e.classList.remove(FormEngineValidation.errorClass));
 
@@ -76,12 +68,12 @@ export default (function() {
     FormEngineValidation.registerSubmitCallback();
 
     FormEngineValidation.validate();
-  };
+  }
 
   /**
    * Initialize all input fields
    */
-  FormEngineValidation.initializeInputFields = function(): void {
+  public static initializeInputFields(): void {
     formEngineFormElement.querySelectorAll(FormEngineValidation.inputSelector).forEach((visibleField: FormEngineFieldElement): void => {
       const config = JSON.parse(visibleField.dataset.formengineInputParams);
       const fieldName = config.field;
@@ -93,12 +85,12 @@ export default (function() {
         FormEngineValidation.initializeInputField(fieldName);
       }
     });
-  };
+  }
 
   /**
    * Initialize field by name
    */
-  FormEngineValidation.initializeInputField = function(fieldName: string): void {
+  public static initializeInputField(fieldName: string): void {
     const field = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
     const humanReadableField = formEngineFormElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
 
@@ -116,15 +108,15 @@ export default (function() {
 
     // add the attribute so that acceptance tests can know when the field initialization has completed
     humanReadableField.dataset.formengineInputInitialized = 'true';
-  };
+  }
 
-  FormEngineValidation.registerCustomEvaluation = function(name: string, handler: CustomEvaluationCallback): void {
+  public static registerCustomEvaluation(name: string, handler: CustomEvaluationCallback): void {
     if (!customEvaluations.has(name)) {
       customEvaluations.set(name, handler);
     }
-  };
+  }
 
-  FormEngineValidation.formatByEvals = function(config: FormEngineInputParams, value: string): string {
+  public static formatByEvals(config: FormEngineInputParams, value: string): string {
     if (config.evalList !== undefined) {
       const evalList = Utility.trimExplode(',', config.evalList);
       for (const evalInstruction of evalList) {
@@ -132,12 +124,12 @@ export default (function() {
       }
     }
     return value;
-  };
+  }
 
   /**
    * Format field value
    */
-  FormEngineValidation.formatValue = function(type: string, value: string|number): string {
+  public static formatValue(type: string, value: string|number): string {
     let theString = '';
     switch (type) {
       case 'date':
@@ -169,12 +161,12 @@ export default (function() {
         theString = value.toString();
     }
     return theString;
-  };
+  }
 
   /**
    * Update input field after change
    */
-  FormEngineValidation.updateInputField = function(fieldName: string): void {
+  public static updateInputField(fieldName: string): void {
     const field = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
     const humanReadableField = formEngineFormElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
 
@@ -199,12 +191,12 @@ export default (function() {
         humanReadableField.value = formattedValue;
       }
     }
-  };
+  }
 
   /**
    * Run validation for field
    */
-  FormEngineValidation.validateField = function(field: FormEngineFieldElement|JQuery, value?: string): string {
+  public static validateField(field: FormEngineFieldElement|JQuery, value?: string): string {
     if (field instanceof $) {
       // @deprecated
       console.warn('Passing a jQuery element to FormEngineValidation.validateField() is deprecated and will be removed in TYPO3 v14.');
@@ -389,9 +381,9 @@ export default (function() {
     formEngineFormElement.dispatchEvent(new CustomEvent('t3-formengine-postfieldvalidation', { cancelable: false, bubbles: true }));
 
     return returnValue;
-  };
+  }
 
-  FormEngineValidation.processByEvals = function(config: FormEngineInputParams, value: string): string {
+  public static processByEvals(config: FormEngineInputParams, value: string): string {
     if (config.evalList !== undefined) {
       const evalList = Utility.trimExplode(',', config.evalList);
       for (const evalInstruction of evalList) {
@@ -399,12 +391,12 @@ export default (function() {
       }
     }
     return value;
-  };
+  }
 
   /**
    * Process a value by given command and config
    */
-  FormEngineValidation.processValue = function(command: string, value: string, config: FormEngineInputParams): string {
+  public static processValue(command: string, value: string, config: FormEngineInputParams): string {
     let newString = '';
     let theValue = '';
     let a = 0;
@@ -516,12 +508,12 @@ export default (function() {
         }
     }
     return returnValue;
-  };
+  }
 
   /**
    * Validate the complete form
    */
-  FormEngineValidation.validate = function(section?: Element): void {
+  public static validate(section?: Element): void {
     if (typeof section === 'undefined' || section instanceof Document) {
       formEngineFormElement.querySelectorAll(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item').forEach((tabMenuItem: HTMLElement): void => {
         tabMenuItem.classList.remove(FormEngineValidation.errorClass, 'has-validation-error')
@@ -557,12 +549,12 @@ export default (function() {
         }
       }
     }
-  };
+  }
 
   /**
    * Helper function to mark a field as changed.
    */
-  FormEngineValidation.markFieldAsChanged = function(field: FormEngineFieldElement|JQuery): void {
+  public static markFieldAsChanged(field: FormEngineFieldElement|JQuery): void {
     if (field instanceof $) {
       // @deprecated
       console.warn('Passing a jQuery element to FormEngineValidation.markFieldAsChanged() is deprecated and will be removed in TYPO3 v14.');
@@ -578,12 +570,12 @@ export default (function() {
     if (fieldLabel !== null) {
       fieldLabel.classList.add('has-change');
     }
-  };
+  }
 
   /**
    * Parse value to integer
    */
-  FormEngineValidation.parseInt = function(value: number|string|boolean): number {
+  public static parseInt(value: number|string|boolean): number {
     const theVal = '' + value;
 
     if (!value) {
@@ -595,12 +587,12 @@ export default (function() {
       return 0;
     }
     return returnValue;
-  };
+  }
 
   /**
    * Parse value to double
    */
-  FormEngineValidation.parseDouble = function(value: number|string|boolean, precision: number = 2): string {
+  public static parseDouble(value: number|string|boolean, precision: number = 2): string {
     let theVal = '' + value;
     theVal = theVal.replace(/[^0-9,.-]/g, '');
     const negative = theVal.startsWith('-');
@@ -618,18 +610,18 @@ export default (function() {
     theVal = theNumberVal.toFixed(precision);
 
     return theVal;
-  };
+  }
 
-  FormEngineValidation.pol = function(foreign: string, value: string): object {
+  public static pol(foreign: string, value: string): object {
     // @todo deprecate
     // eslint-disable-next-line no-eval
     return eval(((foreign == '-') ? '-' : '') + value);
-  };
+  }
 
   /**
    * Find tab by field and mark it as has-validation-error
    */
-  FormEngineValidation.markParentTab = function(element: FormEngineFieldElement, isValid: boolean): void {
+  public static markParentTab(element: FormEngineFieldElement, isValid: boolean): void {
     const panes = DomHelper.parents(element, '.tab-pane');
     panes.forEach((pane: HTMLElement): void => {
       if (isValid) {
@@ -643,23 +635,23 @@ export default (function() {
         .closest('.t3js-tabmenu-item')
         .classList.toggle('has-validation-error', !isValid);
     });
-  };
+  }
 
   /**
    * @internal
    */
-  FormEngineValidation.suspend = function () {
+  public static suspend() {
     validationSuspended = true;
   }
 
   /**
    * @internal
    */
-  FormEngineValidation.resume = function () {
+  public static resume() {
     validationSuspended = false;
   }
 
-  FormEngineValidation.registerSubmitCallback = function () {
+  public static registerSubmitCallback() {
     const submitInterceptor = new SubmitInterceptor(formEngineFormElement);
     submitInterceptor.addPreSubmitCallback((): boolean => {
       if (validationSuspended || document.querySelector('.' + FormEngineValidation.errorClass) === null) {
@@ -683,7 +675,5 @@ export default (function() {
 
       return false;
     });
-  };
-
-  return FormEngineValidation;
-})();
+  }
+}
