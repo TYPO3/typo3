@@ -144,6 +144,9 @@
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" resname="module.pagetsconfig_includes.tree.child.type.TsConfig">
 				<source>TSconfig</source>
 			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Site" resname="module.pagetsconfig_includes.tree.child.type.Site">
+				<source>Site</source>
+			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.btn.sourceCode" resname="module.pagetsconfig_includes.tree.child.btn.sourceCode">
 				<source>Show code</source>
 			</trans-unit>
