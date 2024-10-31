@@ -461,8 +461,19 @@
 <f:section name="pageContentTypes">
     <f:if condition="{pageContentTypes}">
         <ul class="panel-list">
-            <f:for each="{pageContentTypes}" as="item" key="type">
-                <li>{f:translate(key:item)}<f:if condition="{showUid}"> <code>[{type}]</code></f:if></li>
+            <f:for each="{pageContentTypes}" as="item">
+                <li>
+                    <f:if condition="{item.label}">
+                        <f:then>
+                            {f:translate(key: item.label)}
+                            <f:if condition="{showUid}"><code title="{item.longType}">[{item.shortType}]</code></f:if>
+                        </f:then>
+                        <f:else>
+                            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation')}
+                            <f:if condition="{showUid}"><code>[{item.longType}]</code></f:if>
+                        </f:else>
+                    </f:if>
+                </li>
             </f:for>
         </ul>
     </f:if>
