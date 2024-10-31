@@ -242,7 +242,7 @@ class CacheLifetimeCalculator
                 ->fetchAssociative();
 
             if ($row) {
-                foreach ($timeFields as $timeField => $_) {
+                foreach ($timeFields as $timeField) {
                     // if a MIN value is found, take it into account for the
                     // cache lifetime we have to filter out start/endtimes < $currentTimestamp,
                     // as the SQL query also returns rows with starttime < $currentTimestamp
