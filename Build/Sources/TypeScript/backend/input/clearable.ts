@@ -86,7 +86,7 @@ class Clearable {
       const clearButton = Clearable.createCloseButton(clearButtonTitle);
 
       const toggleClearButtonVisibility = (): void => {
-        clearButton.style.visibility = this.value.length === 0 ? 'hidden' : 'visible';
+        clearButton.style.visibility = this.value.length || this.validity.badInput ? 'visible' : 'hidden';
       };
 
       clearButton.addEventListener('click', (e: Event): void => {
