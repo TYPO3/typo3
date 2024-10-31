@@ -15,6 +15,10 @@
 				<source>English label for key5</source>
 				<target></target>
 			</trans-unit>
+			<trans-unit id="key6" resname="key6" approved="yes">
+				<source>English label for key6</source>
+				<target>Dansk label for key6</target>
+			</trans-unit>
 			<trans-unit id="keyWithPlaceholderAndNoArguments" resname="keyWithPlaceholder" approved="yes">
 				<source>%d/%m/%Y</source>
 				<target>%d-%m-%Y</target>

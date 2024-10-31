@@ -18,6 +18,9 @@
 			<trans-unit id="key4" resname="key4">
 				<source>English label for key4</source>
 			</trans-unit>
+			<trans-unit id="key6" resname="key6">
+				<source>English label for key6</source>
+			</trans-unit>
 			<trans-unit id="keyWithPlaceholder" resname="keyWithPlaceholder">
 				<source>English label with number %d</source>
 			</trans-unit>
