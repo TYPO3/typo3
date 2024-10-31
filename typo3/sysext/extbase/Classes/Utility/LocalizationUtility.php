@@ -75,7 +75,7 @@ class LocalizationUtility
             $overrideLabels = static::loadTypoScriptLabels($extensionName);
             $languageKey = $locale->getName();
             // @todo: probably cannot handle "de-DE" and "de" fallbacks
-            if ($value === null && isset($overrideLabels[$languageKey])) {
+            if ($value === null && isset($overrideLabels[$languageKey][$key])) {
                 $value = '';
             }
         }

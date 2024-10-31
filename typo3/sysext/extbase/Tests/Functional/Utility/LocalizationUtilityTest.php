@@ -193,8 +193,81 @@ final class LocalizationUtilityTest extends FunctionalTestCase
         GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
 
         $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
-
         self::assertSame('', $result);
+
+        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da');
+        self::assertNull($result);
+    }
+
+    #[Test]
+    public function clearAndOverrideLabelsWithTypoScriptButPreserveRemainingUnmodifiedLabels(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
+            ->expects(self::atLeastOnce())
+            ->method('getConfiguration')
+            ->with($configurationType, 'label_test', null)
+            ->willReturn([
+                '_LOCAL_LANG' => [
+                    'da' => [
+                        'key1' => '',
+                        'key4' => 'override',
+                        // 'key6' not set, expected to remain as defined in locallang.xlf of fixture
+                    ],
+                ],
+            ]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
+
+        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
+        self::assertSame('', $result);
+
+        $result = LocalizationUtility::translate('key4', 'label_test', languageKey: 'da');
+        self::assertSame('override', $result);
+
+        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'da');
+        self::assertSame('Dansk label for key6', $result);
+
+        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da');
+        self::assertNull($result);
+    }
+
+    #[Test]
+    public function overrideWithoutClearingLabelsWithTypoScriptButPreserveRemainingUnmodifiedLabels(): void
+    {
+        $GLOBALS['TYPO3_REQUEST'] = new ServerRequest();
+        $GLOBALS['TYPO3_REQUEST'] = $GLOBALS['TYPO3_REQUEST']
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+        $configurationType = ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK;
+        $configurationManagerInterfaceMock = $this->createMock(ConfigurationManagerInterface::class);
+        $configurationManagerInterfaceMock
+            ->expects(self::atLeastOnce())
+            ->method('getConfiguration')
+            ->with($configurationType, 'label_test', null)
+            ->willReturn([
+                '_LOCAL_LANG' => [
+                    'da' => [
+                        'key4' => 'override',
+                        // 'key6' not set, expected to remain as defined in locallang.xlf of fixture
+                    ],
+                ],
+            ]);
+        GeneralUtility::setSingletonInstance(ConfigurationManagerInterface::class, $configurationManagerInterfaceMock);
+
+        $result = LocalizationUtility::translate('key1', 'label_test', languageKey: 'da');
+        self::assertSame('Dansk label for key1', $result);
+
+        $result = LocalizationUtility::translate('key4', 'label_test', languageKey: 'da');
+        self::assertSame('override', $result);
+
+        $result = LocalizationUtility::translate('key6', 'label_test', languageKey: 'da');
+        self::assertSame('Dansk label for key6', $result);
+
+        $result = LocalizationUtility::translate('missingkey', 'label_test', languageKey: 'da');
+        self::assertNull($result);
     }
 
     #[Test]
