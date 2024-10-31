@@ -162,6 +162,9 @@
 			<trans-unit id="module.pagetsconfig_includes.tree.child.type.TsConfig" resname="module.pagetsconfig_includes.tree.child.type.TsConfig">
 				<source>TSconfig</source>
 			</trans-unit>
+			<trans-unit id="module.pagetsconfig_includes.tree.child.type.Site" resname="module.pagetsconfig_includes.tree.child.type.Site">
+				<source>Site</source>
+			</trans-unit>
 			<trans-unit id="module.pagetsconfig_includes.tree.child.conditionVerdict.matched" resname="module.pagetsconfig_includes.tree.child.conditionVerdict.matched">
 				<source>Matched</source>
 			</trans-unit>
