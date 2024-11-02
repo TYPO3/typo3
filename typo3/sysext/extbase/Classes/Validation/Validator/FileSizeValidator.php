@@ -31,6 +31,8 @@ final class FileSizeValidator extends AbstractValidator
     protected string $lessMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validation.filesize.less';
     protected string $exceedMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validation.filesize.exceed';
 
+    protected array $translationOptions = ['lessMessage', 'exceedMessage'];
+
     /**
      * @var array
      */

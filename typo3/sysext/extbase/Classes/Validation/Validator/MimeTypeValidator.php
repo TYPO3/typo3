@@ -33,6 +33,8 @@ final class MimeTypeValidator extends AbstractValidator
     protected string $notAllowedMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validation.mimetype.notallowed';
     protected string $invalidExtensionMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validation.mimetype.invalidextension';
 
+    protected array $translationOptions = ['notAllowedMessage', 'invalidExtensionMessage'];
+
     /**
      * @var array
      */
