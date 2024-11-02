@@ -35,6 +35,15 @@ final class ImageDimensionsValidator extends AbstractValidator
     protected string $maxWidthMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validation.imagedimensions.maxwidth.notvalid';
     protected string $maxHeightMessage = 'LLL:EXT:extbase/Resources/Private/Language/locallang.xlf:validation.imagedimensions.maxheight.notvalid';
 
+    protected array $translationOptions = [
+        'widthMessage',
+        'heightMessage',
+        'minWidthMessage',
+        'minHeightMessage',
+        'maxWidthMessage',
+        'maxHeightMessage',
+    ];
+
     /**
      * @var array
      */
