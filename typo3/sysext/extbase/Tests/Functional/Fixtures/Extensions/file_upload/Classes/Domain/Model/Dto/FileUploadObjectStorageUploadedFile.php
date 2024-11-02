@@ -29,7 +29,7 @@ class FileUploadObjectStorageUploadedFile extends AbstractEntity
             'required' => true,
             'maxFiles' => 99,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
-            'allowedMimeTypes' => ['image/jpeg'],
+            'mimeType' => ['allowedMimeTypes' => ['image/jpeg']],
         ],
     ])]
     /**

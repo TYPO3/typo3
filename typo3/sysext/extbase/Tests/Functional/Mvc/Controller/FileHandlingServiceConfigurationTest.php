@@ -753,7 +753,158 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
         self::assertEquals(1711367029, $validationResult->forProperty('files')->getFirstError()->getCode());
     }
 
-    // @todo Add tests for validators (e.g. MimeType, FileSize, Image dimensions) are executed
+    /**
+     * This test ensures, that validation of a FileReference property with a required file and the allowed mime
+     * type "image/jpeg" does fail, when the uploaded file has a mime type, which is not allowed.
+     */
+    #[Test]
+    public function validateFileOperationsHasErrorIfGivenMimeTypeIsNotAllowed(): void
+    {
+        $testFilename = $this->createTestFile('testfile.txt', 'test content');
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+
+        $argumentValue = new FileReferencePropertySingle();
+        $argumentValue->setFile(new FileReference());
+
+        $fileHandlingServiceConfiguration = new FileHandlingServiceConfiguration();
+        $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
+        $argument->setValue($argumentValue);
+        $argument->setUploadedFiles(['file' => $uploadedFile]);
+
+        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validator = $validationResolver->createValidator(ConjunctionValidator::class);
+        $argument->setValidator($validator);
+
+        $fileUploadConfiguration = new FileUploadConfiguration('file');
+        $fileUploadConfiguration->initializeWithConfiguration([
+            'validation' => [
+                'required' => true,
+                'mimeType' => [
+                    'allowedMimeTypes' => ['image/jpeg'],
+                ],
+            ],
+            'uploadFolder' => '1:/user_upload/folder_for_file/',
+        ]);
+        $fileHandlingServiceConfiguration->addFileUploadConfiguration($fileUploadConfiguration);
+
+        $validationResult = $fileHandlingServiceConfiguration->validateFileOperations($argument);
+        self::assertTrue($validationResult->hasErrors());
+        self::assertEquals(1708538973, $validationResult->forProperty('file')->getFirstError()->getCode());
+    }
+
+    /**
+     * This test ensures, that validation of a FileReference property with a required file and the allowed mime
+     * type "image/jpeg" ("allowedMimeTypes" shorthand notation) does fail, when the uploaded file has a mime type,
+     * which is not allowed.
+     */
+    #[Test]
+    public function validateFileOperationsHasErrorIfGivenMimeTypeIsNotAllowedViaShortHandConfiguration(): void
+    {
+        $testFilename = $this->createTestFile('testfile.txt', 'test content');
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+
+        $argumentValue = new FileReferencePropertySingle();
+        $argumentValue->setFile(new FileReference());
+
+        $fileHandlingServiceConfiguration = new FileHandlingServiceConfiguration();
+        $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
+        $argument->setValue($argumentValue);
+        $argument->setUploadedFiles(['file' => $uploadedFile]);
+
+        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validator = $validationResolver->createValidator(ConjunctionValidator::class);
+        $argument->setValidator($validator);
+
+        $fileUploadConfiguration = new FileUploadConfiguration('file');
+        $fileUploadConfiguration->initializeWithConfiguration([
+            'validation' => [
+                'required' => true,
+                'allowedMimeTypes' => ['image/jpeg'],
+            ],
+            'uploadFolder' => '1:/user_upload/folder_for_file/',
+        ]);
+        $fileHandlingServiceConfiguration->addFileUploadConfiguration($fileUploadConfiguration);
+
+        $validationResult = $fileHandlingServiceConfiguration->validateFileOperations($argument);
+        self::assertTrue($validationResult->hasErrors());
+        self::assertEquals(1708538973, $validationResult->forProperty('file')->getFirstError()->getCode());
+    }
+
+    /**
+     * This test ensures, that validation of a FileReference property with a required file and the allowed mime
+     * type "text/plain" ("allowedMimeTypes" shorthand notation) succeeds
+     */
+    #[Test]
+    public function validateFileOperationsSuceedsIfGivenMimeTypeIsAllowed(): void
+    {
+        $testFilename = $this->createTestFile('testfile.txt', 'test content');
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+
+        $argumentValue = new FileReferencePropertySingle();
+        $argumentValue->setFile(new FileReference());
+
+        $fileHandlingServiceConfiguration = new FileHandlingServiceConfiguration();
+        $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
+        $argument->setValue($argumentValue);
+        $argument->setUploadedFiles(['file' => $uploadedFile]);
+
+        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validator = $validationResolver->createValidator(ConjunctionValidator::class);
+        $argument->setValidator($validator);
+
+        $fileUploadConfiguration = new FileUploadConfiguration('file');
+        $fileUploadConfiguration->initializeWithConfiguration([
+            'validation' => [
+                'required' => true,
+                'mimeType' => [
+                    'allowedMimeTypes' => ['text/plain'],
+                ],
+            ],
+            'uploadFolder' => '1:/user_upload/folder_for_file/',
+        ]);
+        $fileHandlingServiceConfiguration->addFileUploadConfiguration($fileUploadConfiguration);
+
+        $validationResult = $fileHandlingServiceConfiguration->validateFileOperations($argument);
+        self::assertFalse($validationResult->hasErrors());
+    }
+
+    /**
+     * This test ensures, that validation of a FileReference property with a required file and the allowed mime
+     * type "text/plain" ("allowedMimeTypes" shorthand notation) succeeds
+     */
+    #[Test]
+    public function validateFileOperationsSuceedsIfGivenMimeTypeIsAllowedViaShortHandConfiguration(): void
+    {
+        $testFilename = $this->createTestFile('testfile.txt', 'test content');
+        $uploadedFile = new UploadedFile($testFilename, 100, UPLOAD_ERR_OK, 'testfile.txt');
+
+        $argumentValue = new FileReferencePropertySingle();
+        $argumentValue->setFile(new FileReference());
+
+        $fileHandlingServiceConfiguration = new FileHandlingServiceConfiguration();
+        $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
+        $argument->setValue($argumentValue);
+        $argument->setUploadedFiles(['file' => $uploadedFile]);
+
+        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validator = $validationResolver->createValidator(ConjunctionValidator::class);
+        $argument->setValidator($validator);
+
+        $fileUploadConfiguration = new FileUploadConfiguration('file');
+        $fileUploadConfiguration->initializeWithConfiguration([
+            'validation' => [
+                'required' => true,
+                'allowedMimeTypes' => ['text/plain'],
+            ],
+            'uploadFolder' => '1:/user_upload/folder_for_file/',
+        ]);
+        $fileHandlingServiceConfiguration->addFileUploadConfiguration($fileUploadConfiguration);
+
+        $validationResult = $fileHandlingServiceConfiguration->validateFileOperations($argument);
+        self::assertFalse($validationResult->hasErrors());
+    }
+
+    // @todo Add tests for validators (e.g. MimeType, FileSize, Image dimensions) and supported validator options
     // @todo Add test for custom registered validator
 
     /**

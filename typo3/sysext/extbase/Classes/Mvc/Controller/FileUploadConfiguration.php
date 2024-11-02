@@ -231,11 +231,20 @@ class FileUploadConfiguration
             $this->maxFiles = (int)($validationConfiguration['maxFiles']);
         }
 
+        // Migrate allowedMimeTypes to mimeType configuration, if mimeType configuration is not defined
         if (($validationConfiguration['allowedMimeTypes'] ?? false) &&
-            is_array($validationConfiguration['allowedMimeTypes'])
+            is_array($validationConfiguration['allowedMimeTypes']) &&
+            !isset($validationConfiguration['mimeType'])
+        ) {
+            $validationConfiguration['mimeType'] = ['allowedMimeTypes' => $validationConfiguration['allowedMimeTypes']];
+            unset($validationConfiguration['allowedMimeTypes']);
+        }
+
+        if (($validationConfiguration['mimeType'] ?? false) &&
+            is_array($validationConfiguration['mimeType'])
         ) {
             $mimeTypeValidator = GeneralUtility::makeInstance(MimeTypeValidator::class);
-            $mimeTypeValidator->setOptions(['allowedMimeTypes' => $validationConfiguration['allowedMimeTypes']]);
+            $mimeTypeValidator->setOptions($validationConfiguration['mimeType']);
             $this->addValidator($mimeTypeValidator);
         }
 

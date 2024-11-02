@@ -29,7 +29,7 @@ class FileUploadMultipleProperties extends AbstractEntity
             'required' => true,
             'maxFiles' => 1,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
-            'allowedMimeTypes' => ['image/jpeg', 'image/png'],
+            'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
         ],
         'uploadFolder' => '1:/user_upload/folder_for_file/',
     ])]
@@ -39,7 +39,7 @@ class FileUploadMultipleProperties extends AbstractEntity
         'validation' => [
             'required' => true,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
-            'allowedMimeTypes' => ['image/jpeg'],
+            'mimeType' => ['allowedMimeTypes' => ['image/jpeg']],
         ],
         'uploadFolder' => '1:/user_upload/folder_for_files/',
     ])]

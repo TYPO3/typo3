@@ -29,7 +29,7 @@ class FileReferencePropertyMultiple extends AbstractEntity
             'required' => true,
             'maxFiles' => 2,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
-            'allowedMimeTypes' => ['image/jpeg', 'image/png'],
+            'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
         ],
         'uploadFolder' => '1:/user_upload/folder_for_files/',
     ])]
