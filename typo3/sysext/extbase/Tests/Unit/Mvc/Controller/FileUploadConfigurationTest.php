@@ -205,6 +205,20 @@ final class FileUploadConfigurationTest extends UnitTestCase
     }
 
     #[Test]
+    public function initializeWithConfigurationAddsMimeTypeValidatorIfConfigured(): void
+    {
+        $fileUploadConfiguration = new FileUploadConfiguration('myProperty');
+        $fileUploadConfiguration->initializeWithConfiguration([
+            'validation' => [
+                'required' => true,
+                'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
+            ],
+        ]);
+        self::assertInstanceOf(FileNameValidator::class, $fileUploadConfiguration->getValidators()[0]);
+        self::assertInstanceOf(MimeTypeValidator::class, $fileUploadConfiguration->getValidators()[1]);
+    }
+
+    #[Test]
     public function initializeWithConfigurationAddsFileSizeValidatorIfConfigured(): void
     {
         $fileUploadConfiguration = new FileUploadConfiguration('myProperty');

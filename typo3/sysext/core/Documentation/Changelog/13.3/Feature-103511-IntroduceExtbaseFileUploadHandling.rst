@@ -70,7 +70,7 @@ Example:
             'required' => true,
             'maxFiles' => 1,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
-            'allowedMimeTypes' => ['image/jpeg', 'image/png'],
+            'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
         ],
         'uploadFolder' => '1:/user_upload/files/',
     ])]
@@ -87,7 +87,7 @@ can achieve with a manual configuration as shown below.
 The currently available configuration array keys are:
 
 *   `validation` (:php:`array` with keys `required`, `maxFiles`, `minFiles`,
-    `fileSize`, `allowedMimeTypes`, `imageDimensions`, see
+    `fileSize`, `allowedMimeTypes`, `mimeType`, `imageDimensions`, see
     :ref:`83749-validationkeys`)
 *   `uploadFolder` (:php:`string`, destination folder)
 *   `duplicationBehavior` (:php:`object`, behaviour when file exists)
@@ -294,9 +294,10 @@ section of the :php-short:`\TYPO3\CMS\Extbase\Annotation\FileUpload` attribute:
 *   :php:`required`
 *   :php:`minFiles`
 *   :php:`maxFiles`
-*   :php:`fileSize`
-*   :php:`allowedMimeTypes`
-*   :php:`imageDimensions`
+*   :php:`fileSize`  (for :php:`TYPO3\CMS\Extbase\Validation\Validator\FilesizeValidator`)
+*   :php:`imageDimensions` (for :php:`TYPO3\CMS\Extbase\Validation\Validator\ImageDimensionsValidator`)
+*   :php:`mimeType` (for :php:`TYPO3\CMS\Extbase\Validation\Validator\MimeTypeValidator`)
+*   :php:`allowedMimeTypes` (shorthand notation for configuration option :php:`allowedMimeTypes` of the :php:`MimeTypeValidator`)
 
 Example:
 
@@ -307,14 +308,14 @@ Example:
             'required' => true,
             'maxFiles' => 1,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
-            'allowedMimeTypes' => ['image/jpeg'],
+            'mimeType' => ['allowedMimeTypes' => ['image/jpeg']],
             'imageDimensions' => ['maxWidth' => 4096, 'maxHeight' => 4096]
         ],
         'uploadFolder' => '1:/user_upload/extbase_single_file/',
     ])]
 
 Extbase will internally use the Extbase file upload validators for
-:php:`fileSize`, :php:`allowedMimeTypes` and :php:`imageDimensions` validation.
+:php:`fileSize`, :php:`mimeType` and :php:`imageDimensions` validation.
 
 Custom validators can be created according to project requirements and must
 extend the Extbase :php-short:`\TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator`.
@@ -323,6 +324,31 @@ always a PSR-7 :php-short:`\TYPO3\CMS\Core\Http\UploadedFile` object.
 Custom validators can however not
 be used in the :php-short:`\TYPO3\CMS\Extbase\Annotation\FileUpload` attribute
 and must be configured manually.
+
+Shorthand notation for `allowedMimeTypes`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Using the :php:`mimeType` configuration array, all options of the `MimeTypeValidator`
+can be set as sub-keys (since TYPO3 13.4.1):
+
+..  code-block:: php
+
+    #[FileUpload([
+        'validation' => [
+            'required' => true,
+            'mimeType' => [
+                'allowedMimeTypes' => ['image/jpeg'],
+                'ignoreFileExtensionCheck' => false,
+                'notAllowedMessage' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:validation.mimetype.notAllowedMessage',
+                'invalidExtensionMessage' => 'LLL:EXT:my_extension/Resources/Private/Language/locallang.xlf:validation.mimetype.invalidExtensionMessage',
+            ],
+        ],
+        'uploadFolder' => '1:/user_upload/files/',
+    ])]
+
+The shorthand notation via :php:`'allowedMimeTypes'` continues to
+exist, in case only the mime type validation is needed. However, it is recommended
+to utilize the full :php:`'mimeType'` configuration array.
 
 
 Deletion of uploaded files and file references

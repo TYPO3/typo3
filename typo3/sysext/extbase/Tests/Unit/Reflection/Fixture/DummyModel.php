@@ -43,7 +43,7 @@ class DummyModel extends AbstractEntity
     protected $propertyWithValidateAttributes;
 
     /**
-     * @Extbase\FileUpload(validation={"required": true, "maxFiles": 1, "fileSize": {"minimum": "0K", "maximum": "2M"}, "allowedMimeTypes": {0: "image/png"}}, uploadFolder="1:/user_upload/")
+     * @Extbase\FileUpload(validation={"required": true, "maxFiles": 1, "fileSize": {"minimum": "0K", "maximum": "2M"}, "mimeType": {"allowedMimeTypes": {0: "image/png"}}, "allowedMimeTypes": {0: "image/png"}}, uploadFolder="1:/user_upload/")
      */
     protected $propertyWithFileUploadAnnotation;
 
@@ -52,6 +52,7 @@ class DummyModel extends AbstractEntity
             'required' => true,
             'maxFiles' => 1,
             'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
+            'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
             'allowedMimeTypes' => ['image/png'],
         ],
         'uploadFolder' => '1:/user_upload/',
@@ -64,6 +65,7 @@ class DummyModel extends AbstractEntity
                 'required' => true,
                 'maxFiles' => 1,
                 'fileSize' => ['minimum' => '0K', 'maximum' => '2M'],
+                'mimeType' => ['allowedMimeTypes' => ['image/jpeg', 'image/png']],
                 'allowedMimeTypes' => ['image/png'],
             ],
             'uploadFolder' => '1:/user_upload/',

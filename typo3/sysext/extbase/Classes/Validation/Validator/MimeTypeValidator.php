@@ -40,7 +40,7 @@ final class MimeTypeValidator extends AbstractValidator
      */
     protected $supportedOptions = [
         'allowedMimeTypes' => [null, 'Allowed mime types (using */* IANA media types)', 'array', true],
-        'ignoreFileExtensionCheck' => [false, 'If set to "true", it is checked, the file extension check is disabled', 'boolean'],
+        'ignoreFileExtensionCheck' => [false, 'If set to "true", the file extension check is disabled. Be aware of security considerations when setting this to "true".', 'boolean'],
         'notAllowedMessage' => [null, 'Translation key or message for not allowed MIME type', 'string'],
         'invalidExtensionMessage' => [null, 'Translation key or message for invalid file extension', 'string'],
     ];
