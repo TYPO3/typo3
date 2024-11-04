@@ -41,6 +41,10 @@ that arose around :php:`AbstractRepository`.
 extend from this class anymore, as they only include the methods required for
 their purpose, and are now completely strictly typed.
 
+Additionally, :php:`FileRepository` has been cleaned up by removing
+:php:`findFileReferenceByUid()` as it is only a wrapper to
+:php:`ResourceFactory::getFileReferenceObject()`
+
 
 Impact
 ======
@@ -50,6 +54,8 @@ implementing PHP repositories :php:`FileRepository` and
 :php:`ProcessedFileRepository` have only necessary methods available.
 
 PHP extensions that derive from the :php:`AbstractRepository` will stop working.
+
+Code that used :php:`FileRepository::findFileReferenceByUid()` will break.
 
 
 Affected installations
@@ -73,5 +79,24 @@ themselves and remove the dependency from :php:`AbstractRepository`.
 It is highly recommended to not use any of these classes, but rather stick
 to high-level API of FAL, such as :php:`ResourceFactory`, :php:`File`
 or :php:`ResourceStorage`.
+
+Replace former calls to :php:`FileRepository::findFileReferenceByUid()` like:
+
+..  code-block:: php
+
+    $fileRepository = GeneralUtility::makeInstance(FileRepository::class);
+    $reference = $fileRepository->findFileReferenceByUid($referenceUid);
+
+by using the :php:`ResourceFactory` with new code like:
+
+..  code-block:: php
+
+    $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+    $reference = $resourceFactory->getFileReferenceObject($referenceUid);
+
+..  note::
+
+    Ideally use dependency injection instead of :php:`GeneralUtility::makeInstance()` to
+    retrieve the instance for :php:`ResourceFactory`.
 
 .. index:: FAL, PHP-API, PartiallyScanned, ext:core
