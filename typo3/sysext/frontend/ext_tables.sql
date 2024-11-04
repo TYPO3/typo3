@@ -9,7 +9,7 @@ CREATE TABLE fe_sessions (
 
 	PRIMARY KEY (ses_id),
 	KEY ses_tstamp (ses_tstamp)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE fe_users (
 	# These fields have no TCA column

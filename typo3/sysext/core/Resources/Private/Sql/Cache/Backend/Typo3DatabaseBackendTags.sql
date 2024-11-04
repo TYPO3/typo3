@@ -5,4 +5,4 @@ CREATE TABLE ###TAGS_TABLE### (
 	PRIMARY KEY (id),
 	KEY cache_id (identifier(191)),
 	KEY cache_tag (tag(191))
-) ENGINE=InnoDB;
+);

@@ -178,7 +178,7 @@ CREATE TABLE sys_history (
 	PRIMARY KEY (uid),
 	KEY recordident_1 (tablename(100),recuid),
 	KEY recordident_2 (tablename(100),tstamp)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE sys_lockedrecords (
@@ -271,7 +271,7 @@ CREATE TABLE sys_log (
 	KEY errorcount (tstamp, error),
 	KEY index_channel (channel),
 	KEY index_level (level)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE sys_category (
 	# @todo: type=group fields, but rely on integer.
@@ -295,7 +295,7 @@ CREATE TABLE `sys_messenger_messages` (
 	KEY queue_name (queue_name),
 	KEY available_at (available_at),
 	KEY delivered_at (delivered_at)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE sys_http_report (
@@ -317,7 +317,7 @@ CREATE TABLE sys_http_report (
 	KEY request_time (request_time),
 	KEY summary_created (summary,created),
 	KEY all_conditions (type,status,scope,summary,request_time)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE sys_csp_resolution (
@@ -330,4 +330,4 @@ CREATE TABLE sys_csp_resolution (
 
 	PRIMARY KEY (summary),
 	KEY created (created),
-) ENGINE=InnoDB;
+);

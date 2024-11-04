@@ -236,9 +236,6 @@ class ConnectionPool
             unset($params['defaultTableOptions']);
             return $params;
         }
-        // Note that `engine` added as allowed, as it could have been configured already and used within the
-        // database analyzer. Not documented yet as feature or used by TYPO3 to define it a engine as system
-        // default. Allowing for now to avoid breaking behaviour change when already configured.
         // ENGINE is a TYPO3 custom option not handled by doctrine/dbal by a custom implementation,
         // see `MySQLCompatibleAlterTablePlatformAwareTrait`
         $allowedDefaultTableOptions = ['charset', 'collation', 'engine'];

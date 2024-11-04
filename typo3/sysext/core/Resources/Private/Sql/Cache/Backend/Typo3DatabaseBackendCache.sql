@@ -5,4 +5,4 @@ CREATE TABLE ###CACHE_TABLE### (
 	content longblob,
 	PRIMARY KEY (id),
 	KEY cache_id (identifier(180),expires)
-) ENGINE=InnoDB;
+);

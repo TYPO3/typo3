@@ -26,14 +26,14 @@ CREATE TABLE index_phash (
   PRIMARY KEY (phash),
   KEY phash_grouping (phash_grouping),
   KEY freeIndexUid (freeIndexUid)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE index_fulltext (
   phash varchar(32) NOT NULL,
   fulltextdata mediumtext,
   PRIMARY KEY (phash)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE index_rel (
@@ -45,7 +45,7 @@ CREATE TABLE index_rel (
   flags tinyint(3) unsigned DEFAULT '0' NOT NULL,
   PRIMARY KEY (phash,wid),
   KEY wid (wid,phash)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE index_words (
@@ -54,7 +54,7 @@ CREATE TABLE index_words (
   is_stopword tinyint(3) DEFAULT '0' NOT NULL,
   PRIMARY KEY (wid),
   KEY baseword (baseword)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE index_section (
@@ -70,7 +70,7 @@ CREATE TABLE index_section (
   KEY page_id (page_id),
   KEY rl0 (rl0,rl1,phash),
   KEY rl0_2 (rl0,phash)
-) ENGINE=InnoDB;
+);
 
 # Define table and fields since it has no TCA
 CREATE TABLE index_grlist (
@@ -82,7 +82,7 @@ CREATE TABLE index_grlist (
   PRIMARY KEY (uniqid),
   KEY joinkey (phash,hash_gr_list),
   KEY phash_grouping (phash_x,hash_gr_list)
-) ENGINE=InnoDB;
+);
 
 CREATE TABLE index_config (
   # @todo: Change TCA type from input to something better
@@ -101,4 +101,4 @@ CREATE TABLE index_stat_word (
   pageid int(11) DEFAULT '0' NOT NULL,
   PRIMARY KEY (uid),
   KEY tstamp (tstamp,word)
-) ENGINE=InnoDB;
+);

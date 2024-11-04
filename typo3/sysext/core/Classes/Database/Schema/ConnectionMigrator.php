@@ -1602,6 +1602,7 @@ class ConnectionMigrator
         array_walk($tables, function (Table &$table) use ($connection, $databasePlatform, $schemaConfig): void {
             $table->setSchemaConfig($schemaConfig);
             $this->normalizeTableIdentifiers($databasePlatform, $table);
+            $this->applyDefaultOptionsToTable($databasePlatform, $schemaConfig, $table);
             $this->applyDefaultPlatformOptionsToColumns($databasePlatform, $schemaConfig, $table);
             $this->normalizeDecimalTypeColumnDefaultValue($databasePlatform, $table);
             $this->normalizeTableForMariaDBOrMySQL($databasePlatform, $table);
@@ -1633,6 +1634,21 @@ class ConnectionMigrator
             // options
             $table->getOptions(),
         );
+    }
+
+    protected function applyDefaultOptionsToTable(AbstractPlatform $platform, SchemaConfig $schemaConfig, Table $table): void
+    {
+        $defaultTableOptions = $schemaConfig->getDefaultTableOptions();
+        $defaultTableEngine = $defaultTableOptions['engine'] ?? 'InnoDB';
+
+        if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
+            if (!$table->hasOption('engine')) {
+                $table->addOption('engine', $defaultTableEngine);
+            }
+            if (!$table->hasOption('row_format')) {
+                $table->addOption('row_format', 'Dynamic');
+            }
+        }
     }
 
     protected function applyDefaultPlatformOptionsToColumns(AbstractPlatform $platform, SchemaConfig $schemaConfig, Table $table): void

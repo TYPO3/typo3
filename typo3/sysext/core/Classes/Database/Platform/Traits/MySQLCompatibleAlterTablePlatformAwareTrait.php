@@ -47,11 +47,32 @@ trait MySQLCompatibleAlterTablePlatformAwareTrait
         if (count($tableDiff->getTableOptions()) === 0) {
             return $result;
         }
+        $options = '';
+
+        if ($tableDiff->hasTableOption('engine')) {
+            $options .= ' ENGINE = ' . $tableDiff->getTableOption('engine');
+        }
+
+        if ($tableDiff->hasTableOption('row_format')) {
+            $options .= ' ROW_FORMAT = ' . $tableDiff->getTableOption('row_format');
+        } elseif ($tableDiff->hasTableOption('engine') && $tableDiff->getOldTable()->hasOption('row_format')) {
+            // Ensure ROW_FORMAT is always explicitly applied if ENGINE is changed,
+            // as "old" CREATE TABLE ROW_FORMAT options are cached and are re-applied if ENGINE is changed
+            // (which would result in a "Wrong create options" error if MyISAM/FIXED is tried to be changed to InnoDB(+implicit FIXED)
+            //
+            // See  https://bugs.mysql.com/bug.php?id=26214#c104034 into account:
+            // > Row_format column in SHOW TABLE STATUS shows the actual row format of the table.
+            // > Create_options in SHOW TABLE STATUS and SHOW CREATE TABLE show the options (including row format) that you specified at CREATE TABLE time.
+            // >
+            // > The original options are preserved because you may do ALTER TABLE ... ENGINE= and change the storage engine of the table, and a new storage
+            // > engine may support the row format that you specified back then during CREATE TABLE.
+            $options .= ' ROW_FORMAT = ' . $tableDiff->getOldTable()->getOption('row_format');
+        }
 
         // Add an ALTER TABLE statement to change the table engine to the list of statements.
-        if ($tableDiff->hasTableOption('engine')) {
+        if ($options !== '') {
             $quotedTableName = $tableDiff->getOldTable()->getQuotedName($platform);
-            $result[] = 'ALTER TABLE ' . $quotedTableName . ' ENGINE = ' . $tableDiff->getTableOption('engine');
+            $result[] = 'ALTER TABLE ' . $quotedTableName . $options;
         }
 
         return $result;
