@@ -69,6 +69,13 @@ trait MySQLCompatibleAlterTablePlatformAwareTrait
             $options .= ' ROW_FORMAT = ' . $tableDiff->getOldTable()->getOption('row_format');
         }
 
+        if ($tableDiff->hasTableOption('charset')) {
+            $options .= ' DEFAULT CHARACTER SET = ' . $tableDiff->getTableOption('charset');
+        }
+        if ($tableDiff->hasTableOption('collation')) {
+            $options .= ' COLLATE = ' . $tableDiff->getTableOption('collation');
+        }
+
         // Add an ALTER TABLE statement to change the table engine to the list of statements.
         if ($options !== '') {
             $quotedTableName = $tableDiff->getOldTable()->getQuotedName($platform);

@@ -1639,9 +1639,17 @@ class ConnectionMigrator
     protected function applyDefaultOptionsToTable(AbstractPlatform $platform, SchemaConfig $schemaConfig, Table $table): void
     {
         $defaultTableOptions = $schemaConfig->getDefaultTableOptions();
+        $defaultColumnCollation = $defaultTableOptions['collation'] ?? $defaultTableOptions['collate'] ?? null;
+        $defaultColumCharset = $defaultTableOptions['charset'] ?? null;
         $defaultTableEngine = $defaultTableOptions['engine'] ?? 'InnoDB';
 
         if ($platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform) {
+            if (!$table->hasOption('charset') && $defaultColumCharset !== null) {
+                $table->addOption('charset', $defaultColumCharset);
+            }
+            if (!$table->hasOption('collation') && $defaultColumnCollation !== null) {
+                $table->addOption('collation', $defaultColumnCollation);
+            }
             if (!$table->hasOption('engine')) {
                 $table->addOption('engine', $defaultTableEngine);
             }

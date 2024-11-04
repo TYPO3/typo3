@@ -310,6 +310,38 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertEquals('MyISAM', $this->getTableDetails()->getOption('engine'));
     }
 
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function changeTableCharsetToDefaultIfConfigured(bool $emptyDefaultTableOptions): void
+    {
+        $subject = $this->createSchemaMigrator();
+
+        $this->prepareTestTable($subject);
+
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('a_test_table');
+        $connection->executeStatement('ALTER TABLE a_test_table DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci');
+
+        self::assertTrue($this->getTableDetails()->hasOption('charset'));
+        self::assertEquals('utf8', $this->getTableDetails()->getOption('charset'));
+
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTable.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertTrue($this->getTableDetails()->hasOption('charset'));
+        if ($emptyDefaultTableOptions) {
+            // Stay as-is if not default table options are configured
+            self::assertEquals('utf8', $this->getTableDetails()->getOption('charset'));
+        } else {
+            // Switch to utf8mb4 if default table options are configured
+            self::assertEquals('utf8mb4', $this->getTableDetails()->getOption('charset'));
+        }
+    }
+
     #[TestWith(['emptyDefaultTableOptions' => false])]
     #[TestWith(['emptyDefaultTableOptions' => true])]
     #[Test]
