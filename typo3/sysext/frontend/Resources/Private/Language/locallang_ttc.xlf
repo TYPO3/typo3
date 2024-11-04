@@ -210,12 +210,6 @@
 			<trans-unit id="recursive.I.5" resname="recursive.I.5">
 				<source>Infinite</source>
 			</trans-unit>
-			<trans-unit id="list_type" resname="list_type">
-				<source>Plugin</source>
-			</trans-unit>
-			<trans-unit id="list_type_formlabel" resname="list_type_formlabel">
-				<source>Selected Plugin</source>
-			</trans-unit>
 			<trans-unit id="media" resname="media">
 				<source>Files</source>
 			</trans-unit>

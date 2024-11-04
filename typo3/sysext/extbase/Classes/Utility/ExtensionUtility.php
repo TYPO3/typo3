@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class ExtensionUtility
 {
-    public const PLUGIN_TYPE_PLUGIN = 'list_type';
     public const PLUGIN_TYPE_CONTENT_ELEMENT = 'CType';
 
     /**
@@ -42,38 +41,27 @@ class ExtensionUtility
      * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
      * @param array $controllerActions is an array of allowed combinations of controller and action stored in an array (controller name as key and a comma separated list of action names as value, the first controller and its first action is chosen as default)
      * @param array $nonCacheableControllerActions is an optional array of controller name and  action names which should not be cached (array as defined in $controllerActions)
-     * @param string $pluginType either \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN (default) or \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+     * @param string|null $pluginType must be omitted or set to \TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT - actually unused in the method, for b/w compatibility only
      * @throws \InvalidArgumentException
      */
-    public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = [], ?string $pluginType = null)
+    public static function configurePlugin($extensionName, $pluginName, array $controllerActions, array $nonCacheableControllerActions = [], ?string $pluginType = null): void
     {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
 
-        $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
-
-        $pluginType ??= self::PLUGIN_TYPE_PLUGIN;
-        if ($pluginType === 'list_type') {
-            trigger_error('Plugin subtype "list_type" has been deprecated and will be removed in TYPO3 v14.0. Register the plugin "' . $pluginName . '" as "CType" instead. Affected extension: ' . $extensionName, E_USER_DEPRECATED);
+        $pluginType ??= self::PLUGIN_TYPE_CONTENT_ELEMENT;
+        if ($pluginType !== self::PLUGIN_TYPE_CONTENT_ELEMENT) {
+            throw new \InvalidArgumentException('Fifth parameter $pluginType has to be omitted or set to "CType"', 1730801526);
         }
 
+        $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $pluginSignature = strtolower($extensionName . '_' . $pluginName);
 
         $controllerActions = self::actionCommaListToArray($controllerActions);
         $nonCacheableControllerActions = self::actionCommaListToArray($nonCacheableControllerActions);
         self::registerControllerActions($extensionName, $pluginName, $controllerActions, $nonCacheableControllerActions);
 
-        switch ($pluginType) {
-            case self::PLUGIN_TYPE_PLUGIN:
-                $pluginContent = trim('
-tt_content.list.20.' . $pluginSignature . ' = EXTBASEPLUGIN
-tt_content.list.20.' . $pluginSignature . ' {
-	extensionName = ' . $extensionName . '
-	pluginName = ' . $pluginName . '
-}');
-                break;
-            case self::PLUGIN_TYPE_CONTENT_ELEMENT:
-                $pluginContent = trim('
+        $pluginConfiguration = trim('
 tt_content.' . $pluginSignature . ' =< lib.contentElement
 tt_content.' . $pluginSignature . ' {
     templateName = Generic
@@ -83,14 +71,10 @@ tt_content.' . $pluginSignature . ' {
         pluginName = ' . $pluginName . '
     }
 }');
-                break;
-            default:
-                throw new \InvalidArgumentException('The pluginType "' . $pluginType . '" is not supported', 1289858856);
-        }
-        $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] = $pluginType;
+
         ExtensionManagementUtility::addTypoScript($extensionName, 'setup', '
 # Setting ' . $extensionName . ' plugin TypoScript
-' . $pluginContent, 'defaultContentRendering');
+' . $pluginConfiguration, 'defaultContentRendering');
     }
 
     /**
@@ -139,26 +123,16 @@ tt_content.' . $pluginSignature . ' {
         $extensionName = str_replace(' ', '', ucwords(str_replace('_', ' ', $extensionName)));
         $pluginSignature = strtolower($extensionName) . '_' . strtolower($pluginName);
 
-        // At this point $extensionName is normalized, no matter which format the method was fed with.
-        // Calculate the original extensionKey from this again.
-        $extensionKey = GeneralUtility::camelCaseToLowerCaseUnderscored($extensionName);
-
-        // pluginType is usually defined by configurePlugin() in the global array. Use this or fall back to default "list_type".
-        $pluginType = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions'][$extensionName]['plugins'][$pluginName]['pluginType'] ?? 'list_type';
-
-        $selectItem = new SelectItem(
-            'select',
-            // set pluginName as default pluginTitle
-            $pluginTitle ?: $pluginName,
-            $pluginSignature,
-            $pluginIcon,
-            $group,
-            $pluginDescription,
-        );
         ExtensionManagementUtility::addPlugin(
-            $selectItem,
-            $pluginType,
-            $extensionKey
+            new SelectItem(
+                'select',
+                // set pluginName as default pluginTitle
+                $pluginTitle ?: $pluginName,
+                $pluginSignature,
+                $pluginIcon,
+                $group,
+                $pluginDescription,
+            )
         );
         return $pluginSignature;
     }

@@ -9,8 +9,6 @@ call_user_func(static function () {
             'testfluidtemplate_flexformdataprocessor',
             'EXT:test_fluid_template/Resources/Public/Icons/Extension.svg',
         ],
-        'CType',
-        'test_fluid_template'
     );
 
     $GLOBALS['TCA']['tt_content']['types']['testfluidtemplate_flexformdataprocessor'] = [

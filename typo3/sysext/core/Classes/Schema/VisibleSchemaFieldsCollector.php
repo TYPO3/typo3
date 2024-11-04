@@ -45,15 +45,7 @@ readonly class VisibleSchemaFieldsCollector
         $record = $this->recordFactory->createRawRecord($schemaName, $row);
 
         if ($schema->hasSubSchema($record->getRecordType() ?? '')) {
-            $subSchema = $schema->getSubSchema($record->getRecordType());
-            // @todo Support of "subtypes" will most likely be deprecated in upcoming versions
-            if ($subSchema->getSubTypeDivisorField() !== null
-                && $record->has($subSchema->getSubTypeDivisorField()->getName())
-                && isset($subSchema->getSubSchemata()[$record->get($subSchema->getSubTypeDivisorField()->getName())])
-            ) {
-                $subSchema = $subSchema->getSubSchema($record->get($subSchema->getSubTypeDivisorField()->getName()));
-            }
-            $fields = $subSchema->getFields();
+            $fields = $schema->getSubSchema($record->getRecordType())->getFields();
         }
 
         // FieldCollection is immutable - to remove fields we transform it to an array

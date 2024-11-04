@@ -34,16 +34,10 @@ final class RawRecordTest extends UnitTestCase
             null,
         ];
         yield 'record type' => [
-            'tt_content.list',
-            'tt_content.list',
+            'tt_content.text',
+            'tt_content.text',
             'tt_content',
-            'list',
-        ];
-        yield 'sub type is ignored' => [
-            'tt_content.list.tx_blog_pi1',
-            'tt_content.list.tx_blog_pi1',
-            'tt_content',
-            'list',
+            'text',
         ];
         yield 'invalid config' => [
             'tt_content....',

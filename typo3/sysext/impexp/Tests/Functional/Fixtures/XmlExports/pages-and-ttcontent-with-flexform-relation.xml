@@ -100,7 +100,6 @@
                 <field index="CType">text</field>
                 <field index="header">Test content</field>
                 <field index="header_link"></field>
-                <field index="list_type"></field>
                 <field index="pi_flexform">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;&lt;T3FlexForms&gt;&lt;data&gt;&lt;sheet index=&quot;sDEF&quot;&gt;&lt;language index=&quot;lDEF&quot;&gt;&lt;field index=&quot;flexFormRelation&quot;&gt;&lt;value index=&quot;vDEF&quot;&gt;1&lt;/value&gt;&lt;/field&gt;&lt;/language&gt;&lt;/sheet&gt;&lt;/data&gt;&lt;/T3FlexForms&gt;</field>
             </fieldlist>
             <related index="rels" type="array">

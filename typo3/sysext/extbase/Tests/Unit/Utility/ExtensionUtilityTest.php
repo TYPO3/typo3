@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\ExtensionUtilityAccessibleProxy;
 use TYPO3\CMS\Extbase\Tests\Unit\Utility\Fixtures\MyExtension\Controller\FirstController;
@@ -37,8 +36,6 @@ final class ExtensionUtilityTest extends UnitTestCase
             'MyExtension',
             'Pi1',
             [FirstController::class => ['index']],
-            [],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.myextension_pi1 =< lib.contentElement', $staticTypoScript);
@@ -58,8 +55,6 @@ final class ExtensionUtilityTest extends UnitTestCase
             'MyExtension',
             'Pi1',
             [FirstController::class => ['index']],
-            [],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.myextension_pi1 =< lib.contentElement', $staticTypoScript);
@@ -73,8 +68,6 @@ final class ExtensionUtilityTest extends UnitTestCase
             'MyExtension',
             'Pi1',
             [FirstController::class => ['index']],
-            [],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.myextension_pi1 =< lib.contentElement', $staticTypoScript);
@@ -91,7 +84,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                     'actions' => ['index'],
                 ],
             ],
-            'pluginType' => ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -105,8 +97,6 @@ final class ExtensionUtilityTest extends UnitTestCase
             '',
             'SomePlugin',
             ['FirstController' => ['index']],
-            [],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
     }
 
@@ -119,8 +109,6 @@ final class ExtensionUtilityTest extends UnitTestCase
             'MyExtension',
             '',
             ['FirstController' => ['index']],
-            [],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
     }
 
@@ -133,7 +121,6 @@ final class ExtensionUtilityTest extends UnitTestCase
             'Pi1',
             [FirstController::class => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update']],
             [FirstController::class => ['index', 'show']],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.myextension_pi1 =< lib.contentElement', $staticTypoScript);
@@ -151,7 +138,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                     'nonCacheableActions' => ['index', 'show'],
                 ],
             ],
-            'pluginType' => ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -165,7 +151,6 @@ final class ExtensionUtilityTest extends UnitTestCase
             'Pi1',
             [FirstController::class => ['index', 'show', 'new', 'create', 'delete', 'edit', 'update']],
             [FirstController::class => ['new', 'show']],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $staticTypoScript = $GLOBALS['TYPO3_CONF_VARS']['FE']['defaultTypoScript_setup.']['defaultContentRendering'];
         self::assertStringContainsString('tt_content.myextension_pi1 =< lib.contentElement', $staticTypoScript);
@@ -183,7 +168,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                     'nonCacheableActions' => ['new', 'show'],
                 ],
             ],
-            'pluginType' => ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -204,7 +188,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                 FirstController::class => ['new', 'create', 'edit', 'update'],
                 ThirdController::class => ['create'],
             ],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $expectedResult = [
             'controllers' => [
@@ -226,7 +209,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                     'nonCacheableActions' => ['create'],
                 ],
             ],
-            'pluginType' => ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -247,7 +229,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                 FirstController::class => ['new', 'create', 'edit', 'update'],
                 ThirdController::class => ['create'],
             ],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $expectedResult = [
             'controllers' => [
@@ -269,7 +250,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                     'nonCacheableActions' => ['create'],
                 ],
             ],
-            'pluginType' => ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -291,7 +271,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                 SecondController::class => ['delete'],
                 ThirdController::class => ['create'],
             ],
-            ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
         );
         $expectedResult = [
             'controllers' => [
@@ -314,7 +293,6 @@ final class ExtensionUtilityTest extends UnitTestCase
                     'nonCacheableActions' => ['create'],
                 ],
             ],
-            'pluginType' => ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT,
         ];
         self::assertEquals($expectedResult, $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['extbase']['extensions']['MyExtension']['plugins']['Pi1']);
     }
@@ -324,29 +302,27 @@ final class ExtensionUtilityTest extends UnitTestCase
      * verify plugin icon path resolving works.
      */
     #[Test]
-    #[IgnoreDeprecations]
     public function registerPluginSetsNoIconIfUsingUnderscoredExtensionNameAndIconPathNotGiven(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
             'indexed_search',
             'Pi2',
             'Testing'
         );
         self::assertNull(
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
+            $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][0]['icon']
         );
         self::assertSame(
             'indexedsearch_pi2',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['value']
+            $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][0]['value']
         );
     }
 
     #[Test]
-    #[IgnoreDeprecations]
     public function registerPluginMethodReturnsPluginSignature(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
         $result = ExtensionUtility::registerPlugin(
             'indexed_search',
             'Pi2',
@@ -360,21 +336,20 @@ final class ExtensionUtilityTest extends UnitTestCase
      * verify plugin icon path resolving works.
      */
     #[Test]
-    #[IgnoreDeprecations]
     public function registerPluginSetsNoIconIfUsingUpperCameCasedExtensionNameAndIconPathNotGiven(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
             'IndexedSearch',
             'Pi2',
             'Testing'
         );
         self::assertNull(
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
+            $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][0]['icon']
         );
         self::assertSame(
             'indexedsearch_pi2',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['value']
+            $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][0]['value']
         );
     }
 
@@ -383,10 +358,9 @@ final class ExtensionUtilityTest extends UnitTestCase
      * verify plugin icon path resolving works.
      */
     #[Test]
-    #[IgnoreDeprecations]
     public function registerPluginTriggersAddPluginWhichSetsPluginIconPathIfIconPathIsGiven(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
             'IndexedSearch',
             'Pi2',
@@ -395,7 +369,7 @@ final class ExtensionUtilityTest extends UnitTestCase
         );
         self::assertEquals(
             'EXT:indexed_search/foo.gif',
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
+            $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][0]['icon']
         );
     }
 

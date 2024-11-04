@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Utility;
 
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception as PackageException;
-use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 
@@ -833,42 +832,26 @@ class ExtensionManagementUtility
     }
 
     /**
-     * Adds an entry to the list of plugins in content elements of type "Insert plugin"
-     * Takes the $itemArray (label, value[,icon]) and adds to the items-array of $GLOBALS['TCA'][tt_content] elements with CType "listtype" (or another field if $type points to another fieldname)
-     * If the value (array pos. 1) is already found in that items-array, the entry is substituted, otherwise the input array is added to the bottom.
-     * Use this function to add a frontend plugin to this list of plugin-types - or more generally use this function to add an entry to any selectorbox/radio-button set in the FormEngine
+     * This is a helper method to add a new "frontend plugin". It therefore takes the $itemArray (label, value[,icon]) and
+     * adds to the items-array of $GLOBALS['TCA']['tt_content']['columns']['CType'|. So basically, this method adds
+     * a new "select item" to the tt_content record type column ("CType").
+     *
+     * Additionally, this registers a given icon for the new record type and adds the plugin to the "plugin" group,
+     * in case no group is manually specified in the items array. If the value (array pos. 1) is already found in
+     * that items-array, the entry is substituted, otherwise the input array is added to the bottom.
+     *
+     * Finally a basic "showitem" configuration is added for the plugin. However, this should be adjusted by either
+     * manually defining $GLOBALS['TCA']['tt_content']['types']['my_plugin'|['showitem'] or by calling further
+     * helper methods, such as {@see ExtensionManagementUtility::addToAllTCAtypes()}.
      *
      * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
      *
      * @param array|SelectItem $itemArray Numerical or assoc array: [0 or 'label'] => Plugin label, [1 or 'value'] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2 or 'icon'] => Icon identifier or path to plugin icon, [3 or 'group'] => an optional "group" ID, falls back to "plugins"
-     * @param string|null $extensionKey The extension key
-     * @throws \RuntimeException
      */
-    public static function addPlugin(array|SelectItem $itemArray, ?string $type = null, ?string $extensionKey = null): void
+    public static function addPlugin(array|SelectItem $itemArray): void
     {
-        // $extensionKey is required, but presumably for BC reasons it still lives after $type in the
-        // parameter list, and $type is nominally optional.
-        if (!isset($extensionKey)) {
-            throw new \InvalidArgumentException(
-                'No extension key could be determined when calling addPlugin()!'
-                . LF
-                . 'This method is meant to be called from Configuration/TCA/Overrides files. '
-                . 'The extension key needs to be specified as third parameter. '
-                . 'Calling it from any other place e.g. ext_localconf.php does not work and is not supported.',
-                1404068038
-            );
-        }
-
         $selectItem = is_array($itemArray) ? SelectItem::fromTcaItemArray($itemArray) : $itemArray;
-
-        $type ??= 'list_type';
-        // The instanceof FailsafePackageManager check is required to avoid deprecation being triggered in
-        // ext:install, where EXTCONF if not initialized.
-        if ($type === 'list_type' && !self::$packageManager instanceof FailsafePackageManager) {
-            trigger_error('Plugin subtype "list_type" has been deprecated and will be removed in TYPO3 v14.0. Register the plugin "' . $selectItem->getValue() . '" as "CType" instead. Affected extension: ' . $extensionKey, E_USER_DEPRECATED);
-        }
-
-        if ($type === 'CType' && $selectItem->getIcon() && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()])) {
+        if ($selectItem->getIcon() && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()])) {
             // Set the type icon as well
             $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()] = $selectItem->getIcon();
         }
@@ -876,28 +859,16 @@ class ExtensionManagementUtility
             $selectItem = $selectItem->withGroup('plugins');
         }
         // Override possible existing entries.
-        foreach ($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'] ?? [] as $index => $item) {
+        foreach ($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] ?? [] as $index => $item) {
             if ((string)($item['value'] ?? '') === (string)$selectItem->getValue()) {
-                $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][$index] = $selectItem->toArray();
+                $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][$index] = $selectItem->toArray();
                 return;
             }
         }
-        $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['items'][] = $selectItem->toArray();
-
-        // Populate plugin subtype groups with CType group if missing.
-        $groupIdentifier = $selectItem->getGroup();
-        if ($type === 'list_type'
-            && !isset($GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$groupIdentifier])
-            && is_string($GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$groupIdentifier] ?? false)
-        ) {
-            $GLOBALS['TCA']['tt_content']['columns'][$type]['config']['itemGroups'][$groupIdentifier] =
-                $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups'][$groupIdentifier];
-        }
+        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'][] = $selectItem->toArray();
 
         // Ensure to have at least some basic information available when editing the new type in FormEngine
-        if (
-            $type === 'CType'
-            && !isset($GLOBALS['TCA']['tt_content']['types'][$selectItem->getValue()])
+        if (!isset($GLOBALS['TCA']['tt_content']['types'][$selectItem->getValue()])
             && isset($GLOBALS['TCA']['tt_content']['types']['header'])
         ) {
             $GLOBALS['TCA']['tt_content']['types'][$selectItem->getValue()] = $GLOBALS['TCA']['tt_content']['types']['header'];
@@ -913,6 +884,7 @@ class ExtensionManagementUtility
      * @param string $value Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
      * @param string $CTypeToMatch Value of tt_content.CType (Content Type) to match. The default is "list" which corresponds to the "Insert Plugin" content element.  Use the asterisk * to match all CType values.
      * @see addPlugin()
+     * @todo This has to be deprecated / changed / dropped as matching "list_type" with CType (default:list) does no longer make any sense
      */
     public static function addPiFlexFormValue(string $piKeyToMatch, string $value, string $CTypeToMatch = 'list'): void
     {

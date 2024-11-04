@@ -83,7 +83,7 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
             'type,foo',
             ['type' => 'invalid'],
             [],
-            ['type', 'foo', 'bar', 'baz', 'sys_language_uid', 'l10n_parent', 'subtype'],
+            ['type', 'foo', 'bar', 'baz', 'sys_language_uid', 'l10n_parent'],
         ];
         yield 'record type given' => [
             'type,foo',
@@ -91,23 +91,11 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
             [],
             ['type', 'foo'],
         ];
-        yield 'subtype given' => [
-            'type,foo,subtype',
-            ['subtype' => 'aSubTypeValue'],
-            [],
-            ['type', 'foo', 'subtype', 'baz'],
-        ];
         yield 'exclude fields' => [
             'type,foo',
             [],
             ['foo'],
             ['type'],
-        ];
-        yield 'exclude subtype field' => [
-            'type,foo,subtype',
-            ['subtype' => 'aSubTypeValue'],
-            ['subtype'],
-            ['type', 'foo', 'baz'],
         ];
         yield 'translation with l10n_mode=exclude' => [
             'type,foo',
@@ -144,15 +132,10 @@ final class VisibleSchemaFieldsCollectorTest extends FunctionalTestCase
                         'exclude' => ['exclude' => true, 'config' => ['type' => 'input']],
                         'sys_language_uid' => ['config' => ['type' => 'language']],
                         'l10n_parent' => ['config' => ['type' => 'input']],
-                        'subtype' => ['config' => ['type' => 'select', 'items' => [['label' => 'aSubType', 'value' => 'aSubTypeValue']]]],
                     ],
                     'types' => [
                         'aType' => [
                             'showitem' => $showitem,
-                            'subtype_value_field' => 'subtype',
-                            'subtypes_addlist' => [
-                                'aSubTypeValue' => 'baz',
-                            ],
                         ],
                     ],
                 ],

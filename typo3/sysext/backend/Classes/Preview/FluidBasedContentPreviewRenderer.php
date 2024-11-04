@@ -31,8 +31,7 @@ use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 
 /**
- * Check if a Fluid-based preview template was defined for a given
- * CType and render it via Fluid. Also works for list_type / plugins.
+ * Check if a Fluid-based preview template was defined for a given CType and render it via Fluid.
  *
  * Example in page TSconfig:
  * mod.web_layout.tt_content.preview.textmedia = EXT:site_mysite/Resources/Private/Templates/Preview/Textmedia.html
@@ -64,20 +63,7 @@ final readonly class FluidBasedContentPreviewRenderer
 
     private function renderContentElementPreviewFromFluidTemplate(array $row, string $table, string $recordType, PageLayoutContext $context): ?string
     {
-        $tsConfig = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['web_layout.'][$table . '.']['preview.'] ?? [];
-        $fluidTemplateFile = '';
-
-        if (
-            $table === 'tt_content'
-            && $recordType === 'list'
-            && !empty($row['list_type'])
-            && !empty($tsConfig['list.'][$row['list_type']])
-        ) {
-            $fluidTemplateFile = $tsConfig['list.'][$row['list_type']];
-        } elseif (!empty($tsConfig[$recordType])) {
-            $fluidTemplateFile = $tsConfig[$recordType];
-        }
-
+        $fluidTemplateFile = BackendUtility::getPagesTSconfig($row['pid'])['mod.']['web_layout.'][$table . '.']['preview.'][$recordType] ?? '';
         if ($fluidTemplateFile === '') {
             return null;
         }

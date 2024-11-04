@@ -27,7 +27,7 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
 {
     protected bool $initializeDatabase = false;
 
-    public static function loadAvailableWizardsFromContentElementsReturnsExpectedArrayDataProvider(): iterable
+    public static function loadAvailableWizardsReturnsExpectedArrayDataProvider(): iterable
     {
         yield 'Content Element in default group' => [
             'item' => [
@@ -118,19 +118,18 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
         ];
     }
 
-    #[DataProvider('loadAvailableWizardsFromContentElementsReturnsExpectedArrayDataProvider')]
+    #[DataProvider('loadAvailableWizardsReturnsExpectedArrayDataProvider')]
     #[Test]
-    public function loadAvailableWizardsFromContentElementsReturnsExpectedArray(array $item, array $creationOptions, array $expected): void
+    public function loadAvailableWizardsReturnsExpectedArray(array $item, array $creationOptions, array $expected): void
     {
         $group = $item['group'] ?? '';
         $type = $item['value'];
         $newContentElementWizardController = $this->get(NewContentElementController::class);
         $loadAvailableWizardsFromContentElements = new \ReflectionMethod(
             NewContentElementController::class,
-            'loadAvailableWizardsFromContentElements'
+            'loadAvailableWizards'
         );
 
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionManagementUtility::addTcaSelectItem(
             'tt_content',
             'CType',
@@ -140,52 +139,6 @@ final class NewContentElementWizardControllerTest extends FunctionalTestCase
         $GLOBALS['TCA']['tt_content']['types'][$type]['creationOptions'] = $creationOptions;
 
         $result = $loadAvailableWizardsFromContentElements->invoke($newContentElementWizardController);
-        $actual = $result[$group . '.']['elements.'][$type . '.'] ?? [];
-        self::assertSame($expected, $actual);
-    }
-
-    public static function loadAvailableWizardsFromPluginSubTypeReturnsExpectedArrayDataProvider(): iterable
-    {
-        yield 'Plugin sub-type with icon' => [
-            'item' => [
-                'label' => 'Plugin A',
-                'value' => 'plugin_a',
-                'group' => 'plugins',
-                'icon' => 'content-plugin',
-            ],
-            'expected' => [
-                'iconIdentifier' => 'content-plugin',
-                'title' => 'Plugin A',
-                'description' => '',
-                'defaultValues' => [
-                    'CType' => 'list',
-                    'list_type' => 'plugin_a',
-                ],
-            ],
-        ];
-    }
-
-    #[DataProvider('loadAvailableWizardsFromPluginSubTypeReturnsExpectedArrayDataProvider')]
-    #[Test]
-    public function loadAvailableWizardsFromPluginSubTypeReturnsExpectedArray(array $item, array $expected): void
-    {
-        $group = $item['group'] ?? '';
-        $type = $item['value'];
-        $newContentElementWizardController = $this->get(NewContentElementController::class);
-        $loadAvailableWizardsFromPluginSubTypes = new \ReflectionMethod(
-            NewContentElementController::class,
-            'loadAvailableWizardsFromPluginSubTypes'
-        );
-
-        // items array is undefined in TCA, add empty array.
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
-        ExtensionManagementUtility::addTcaSelectItem(
-            'tt_content',
-            'list_type',
-            $item
-        );
-
-        $result = $loadAvailableWizardsFromPluginSubTypes->invoke($newContentElementWizardController);
         $actual = $result[$group . '.']['elements.'][$type . '.'] ?? [];
         self::assertSame($expected, $actual);
     }

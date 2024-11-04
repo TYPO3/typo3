@@ -60,14 +60,28 @@ final class TcaMigrationTest extends UnitTestCase
             'aTable' => [
                 'types' => [
                     'aType' => [
-                        'subtype_value_field' => 'subtype_value_file',
+                        'subtype_value_field' => 'subtype_value_field',
                     ],
                 ],
             ],
-            'tt_content' => [
+            'bTable' => [
                 'types' => [
-                    'list' => [
-                        'subtype_value_field' => 'list_type',
+                    'bType' => [
+                        'subtypes_addlist' => 'subtype_add_field',
+                    ],
+                ],
+            ],
+            'cTable' => [
+                'types' => [
+                    'cType' => [
+                        'subtypes_excludelist' => 'subtype_exclude_field',
+                    ],
+                ],
+            ],
+            'dTable' => [
+                'types' => [
+                    'aType' => [
+                        'defaultValues' => ['foo'],
                     ],
                 ],
             ],
@@ -75,8 +89,10 @@ final class TcaMigrationTest extends UnitTestCase
         $subject = new TcaMigration();
         $subject->migrate($input);
         $messages = $subject->getMessages();
-        self::assertCount(1, $messages);
-        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' defines the field \'subtype_value_file\' as \'subtype_value_field\'', $messages[0]);
+        self::assertCount(3, $messages);
+        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[0]);
+        self::assertStringContainsString('The TCA record type \'bType\' of table \'bTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[1]);
+        self::assertStringContainsString('The TCA record type \'cType\' of table \'cTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[2]);
     }
 
     #[Test]

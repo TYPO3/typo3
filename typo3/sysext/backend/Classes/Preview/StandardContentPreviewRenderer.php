@@ -140,19 +140,6 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                     $out .= $shortcutContent ? '<ul class="list-group">' . $shortcutContent . '</ul>' : '';
                 }
                 break;
-            case 'list':
-                if (!empty($record['list_type'])) {
-                    $label = BackendUtility::getLabelFromItemListMerged((int)$record['pid'], $table, 'list_type', $record['list_type'], $record);
-                    if (!empty($label)) {
-                        $out .= $this->linkEditContent('<strong>' . htmlspecialchars($languageService->sL($label)) . '</strong>', $record);
-                    } else {
-                        $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingLabel'), $record['list_type']);
-                        $out .= '<div class="alert alert-danger">' . htmlspecialchars($message) . '</div>';
-                    }
-                } else {
-                    $out .= '<div class="alert alert-warning">' . htmlspecialchars($languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:noPluginSelected')) . '</div>';
-                }
-                break;
             case 'menu_abstract':
             case 'menu_categorized_content':
             case 'menu_categorized_pages':

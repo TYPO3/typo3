@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Core\Environment;
@@ -1317,41 +1316,8 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
             ],
         ];
         $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
-        ExtensionManagementUtility::addPlugin(['label', $extKey], 'CType', $extKey);
+        ExtensionManagementUtility::addPlugin(['label', $extKey]);
         self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items']);
-    }
-
-    #[Test]
-    #[IgnoreDeprecations]
-    public function addPluginSetsCorrectItemGroupsEntry(): void
-    {
-        $extKey = 'indexed_search';
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['itemGroups']['my-second-group'] = 'My second group label from list_type';
-        $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['itemGroups']['my-third-group'] = 'My third group label from list_type';
-        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']['null-group'] = null;
-        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']['my-group'] = 'My group label from CType';
-        $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['itemGroups']['my-third-group'] = 'My third group label from CType';
-
-        // Won't be added since not defined in list_type or CType
-        ExtensionManagementUtility::addPlugin(['label', $extKey . '_1', '', 'non-existing-group'], 'list_type', $extKey);
-        // Won't be added since invalid value in CType definition
-        ExtensionManagementUtility::addPlugin(['label', $extKey . '_2', '', 'null-group'], 'list_type', $extKey);
-        ExtensionManagementUtility::addPlugin(['label', $extKey . '_3', '', 'my-group'], 'list_type', $extKey);
-        ExtensionManagementUtility::addPlugin(['label', $extKey . '_4', '', 'my-second-group'], 'list_type', $extKey);
-        ExtensionManagementUtility::addPlugin(['label', $extKey . '_5', '', 'my-third-group'], 'list_type', $extKey);
-
-        self::assertSame(
-            [
-                // Group exists in list_type>itemGroups
-                'my-second-group' => 'My second group label from list_type',
-                // Group exists in both - no overwriting
-                'my-third-group' => 'My third group label from list_type',
-                // Group exists in CType>itemGroups
-                'my-group' => 'My group label from CType',
-            ],
-            $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['itemGroups']
-        );
     }
 
     #[Test]
@@ -1370,7 +1336,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = [];
         $GLOBALS['TCA']['tt_content']['types']['header'] = ['showitem' => 'header,header_link'];
         $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
-        ExtensionManagementUtility::addPlugin(['label', $extKey, 'content-form-login'], 'CType', $extKey);
+        ExtensionManagementUtility::addPlugin(['label', $extKey, 'content-form-login']);
         self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items']);
         self::assertEquals([$extKey => 'content-form-login'], $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']);
         self::assertEquals($GLOBALS['TCA']['tt_content']['types']['header'], $GLOBALS['TCA']['tt_content']['types']['felogin']);
@@ -1392,7 +1358,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'] = [];
         $GLOBALS['TCA']['tt_content']['types']['header'] = ['showitem' => 'header,header_link'];
         $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items'] = [];
-        ExtensionManagementUtility::addPlugin(new SelectItem('select', 'label', $extKey, 'content-form-login'), 'CType', $extKey);
+        ExtensionManagementUtility::addPlugin(new SelectItem('select', 'label', $extKey, 'content-form-login'));
         self::assertEquals($expectedTCA, $GLOBALS['TCA']['tt_content']['columns']['CType']['config']['items']);
         self::assertEquals([$extKey => 'content-form-login'], $GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes']);
         self::assertEquals($GLOBALS['TCA']['tt_content']['types']['header'], $GLOBALS['TCA']['tt_content']['types']['felogin']);

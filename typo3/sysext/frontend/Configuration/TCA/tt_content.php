@@ -33,7 +33,6 @@ return [
         'typeicon_classes' => [
             'header' => 'mimetypes-x-content-header',
             'text' => 'mimetypes-x-content-text',
-            'list' => 'mimetypes-x-content-plugin',
             'default' => 'mimetypes-x-content-text',
         ],
         'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform',
@@ -63,13 +62,6 @@ return [
                         'value' => 'text',
                         'icon' => 'content-text',
                         'group' => 'default',
-                    ],
-                    [
-                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.list',
-                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.list.description',
-                        'value' => 'list',
-                        'icon' => 'content-plugin',
-                        'group' => 'plugins',
                     ],
                 ],
                 'itemGroups' => [
@@ -584,24 +576,6 @@ return [
                 'default' => 0,
             ],
         ],
-        // @deprecated since 13.4, will be removed in TYPO3 v14
-        'list_type' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:list_type',
-            'onChange' => 'reload',
-            'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'itemGroups' => [
-                    'default' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.default_value',
-                ],
-                'sortItems' => [
-                    'label' => 'asc',
-                ],
-                'default' => '',
-                'authMode' => 'explicitAllow',
-                'dbFieldLength' => 255,
-            ],
-        ],
         // @todo While "media" is used only by CType:uploads, we keep it here as it's a common field for reuse in custom CTypes
         'media' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:media',
@@ -644,7 +618,8 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pi_flexform',
             'config' => [
                 'type' => 'flex',
-                'ds_pointerField' => 'list_type,CType',
+                // @todo this is a hack and will be handled separately together with EMU::addPiFlexFormValue
+                'ds_pointerField' => 'CType,CType',
                 'ds' => [
                     'default' => '
                         <T3DataStructure>
@@ -663,9 +638,6 @@ return [
                           </ROOT>
                         </T3DataStructure>
                     ',
-                ],
-                'search' => [
-                    'andWhere' => '{#CType}=\'list\'',
                 ],
             ],
         ],
@@ -726,26 +698,7 @@ return [
                 ],
             ],
         ],
-        // @todo list has to be kept, due to general plugin management
-        // @deprecated since 13.4, will be removed in TYPO3 v14
-        'list' => [
-            'showitem' => '
-                    --palette--;;headers,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin,
-                    list_type;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:list_type_formlabel,
-                    pages;LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pages.ALT.list_formlabel,
-                    recursive,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:appearance,
-                    --palette--;;frames,
-                    --palette--;;appearanceLinks,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
-                    categories,
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:extended,
-            ',
-            'subtype_value_field' => 'list_type',
-        ],
     ],
-
     'palettes' => [
         'general' => [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:palette.general',

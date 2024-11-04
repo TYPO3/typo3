@@ -1,4 +1,4 @@
 tt_content,,,,,
-,uid,pid,CType,list_type,sys_language_uid
-,4711,321,list,extensionname_someplugin,0
-,4712,322,list,extensionname_someplugin,0
+,uid,pid,CType,sys_language_uid
+,4711,321,extensionname_someplugin,0
+,4712,322,extensionname_someplugin,0

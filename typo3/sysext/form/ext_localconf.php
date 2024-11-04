@@ -49,6 +49,5 @@ call_user_func(static function () {
         'Formframework',
         [FormFrontendController::class => ['render', 'perform']],
         [FormFrontendController::class => ['perform']],
-        ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
     );
 });

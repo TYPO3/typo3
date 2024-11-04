@@ -626,6 +626,7 @@ return [
     'TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN' => [
         'restFiles' => [
             'Deprecation-105076-PluginContentElementAndPluginSubTypes.rst',
+            'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
 ];

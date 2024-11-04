@@ -318,9 +318,6 @@
 			<trans-unit id="goToListModuleMessage" resname="goToListModuleMessage">
 				<source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
 			</trans-unit>
-			<trans-unit id="noPluginSelected" resname="noPluginSelected">
-				<source>No plugin selected</source>
-			</trans-unit>
 			<trans-unit id="staleTranslationWarning" resname="staleTranslationWarning">
 				<source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
 			</trans-unit>

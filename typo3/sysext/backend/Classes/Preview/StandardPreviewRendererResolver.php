@@ -45,22 +45,9 @@ class StandardPreviewRendererResolver
         if ($tcaTypeField) {
             $tcaTypeOfRow = $row[$tcaTypeField];
             $typeConfiguration = $tca['types'][$tcaTypeOfRow] ?? [];
-
-            // @deprecated Remove in v14, when "sub types" are removed altogether
-            $subTypeValueField = $typeConfiguration['subtype_value_field'] ?? null;
-            if (!empty($typeConfiguration['previewRenderer'])) {
-                if (!empty($subTypeValueField) && is_array($typeConfiguration['previewRenderer'])) {
-                    // An array of subtype_value_field indexed preview renderers was defined, look up the right
-                    // class to use for the sub-type defined in this $row.
-                    $previewRendererClassName = $typeConfiguration['previewRenderer'][$row[$subTypeValueField] ?? ''] ?? null;
-                }
-
-                // If no class was found in the subtype_value_field
-                if (!$previewRendererClassName && !is_array($typeConfiguration['previewRenderer'])) {
-                    // A type-specific preview renderer was configured for the TCA type (and one was not detected
-                    // based on the higher-priority lookups above).
-                    $previewRendererClassName = $typeConfiguration['previewRenderer'];
-                }
+            if (is_string($typeConfiguration['previewRenderer'] ?? false) && $typeConfiguration['previewRenderer'] !== '') {
+                // A type-specific preview renderer was configured for the TCA type
+                $previewRendererClassName = $typeConfiguration['previewRenderer'];
             }
         }
 

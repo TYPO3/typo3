@@ -1,9 +1,0 @@
-# General Plugin:
-# This is the default rendering definition for plugins.
-#
-# CType: list
-
-tt_content.list =< lib.contentElement
-tt_content.list {
-    templateName = List
-}

@@ -19,6 +19,6 @@ tx_parentchildtranslation_domain_model_squeeze,,,,,,,
 ,1,1,-1,0,Squeeze 1,1,1
 ,2,1,-1,0,Squeeze 2,2,5
 tt_content,,,,,,,
-,uid,pid,sys_language_uid,l18n_parent,header,CType,list_type
-,1,1,0,0,Parent Child Translation,list,parentchildtranslation_parentchildtranslation
-,2,1,1,1,Eltern Kind Übersetzung,list,parentchildtranslation_parentchildtranslation
+,uid,pid,sys_language_uid,l18n_parent,header,CType
+,1,1,0,0,Parent Child Translation,text
+,2,1,1,1,Eltern Kind Übersetzung,text

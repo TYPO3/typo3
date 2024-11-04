@@ -72,11 +72,10 @@ class TcaFlexProcess implements FormDataProviderInterface
      * If the data structure identifier is not type=tca based and if dataStructureKey is not as expected, fallback is "default"
      *
      * Example pi_flexform with ext:news in tt_content:
-     * * TCA config of pi_flexform ds_pointerfield is set to "list_type,CType"
-     * * list_type in databaseRow is "news_pi1"
-     * * CType in databaseRow is "list"
+     * * TCA config of pi_flexform ds_pointerfield is set to "CType"
+     * * CType in databaseRow is "news_pi1"
      * * The resulting dataStructureIdentifier calculated by FlexFormTools is then:
-     *   {"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"news_pi1,list"}
+     *   {"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"news_pi1"}
      * * The resulting simpleDataStructureIdentifier is "news_pi1"
      * * The pageTsConfig base path used for flex field overrides is "TCEFORM.tt_content.pi_flexform.news_pi1", a full
      *   example path disabling a field: "TCEFORM.tt_content.pi_flexform.news_pi1.sDEF.settings\.orderBy.disabled = 1"
@@ -104,9 +103,9 @@ class TcaFlexProcess implements FormDataProviderInterface
         $simpleDataStructureIdentifier = 'default';
         if (isset($identifierArray['type']) && $identifierArray['type'] === 'tca' && isset($identifierArray['dataStructureKey'])) {
             $explodedKey = explode(',', $identifierArray['dataStructureKey']);
-            if (!empty($explodedKey[1]) && $explodedKey[1] !== 'list' && $explodedKey[1] !== '*') {
+            if (!empty($explodedKey[1])) {
                 $simpleDataStructureIdentifier = $explodedKey[1];
-            } elseif (!empty($explodedKey[0]) && $explodedKey[0] !== 'list' && $explodedKey[0] !== '*') {
+            } elseif (!empty($explodedKey[0])) {
                 $simpleDataStructureIdentifier = $explodedKey[0];
             }
         }

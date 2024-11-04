@@ -77,13 +77,6 @@ readonly class RecordFactory
         $subSchema = null;
         if ($schema->hasSubSchema($rawRecord->getRecordType() ?? '')) {
             $subSchema = $schema->getSubSchema($rawRecord->getRecordType());
-            // @todo Support of "subtypes" will most likely be deprecated in upcoming versions
-            if ($subSchema->getSubTypeDivisorField() !== null
-                && $rawRecord->has($subSchema->getSubTypeDivisorField()->getName())
-                && isset($subSchema->getSubSchemata()[$rawRecord->get($subSchema->getSubTypeDivisorField()->getName())])
-            ) {
-                $subSchema = $subSchema->getSubSchema($rawRecord->get($subSchema->getSubTypeDivisorField()->getName()));
-            }
         }
 
         // Only use the fields that are defined in the schema
@@ -116,13 +109,6 @@ readonly class RecordFactory
         $subSchema = null;
         if ($schema->hasSubSchema($rawRecord->getRecordType() ?? '')) {
             $subSchema = $schema->getSubSchema($rawRecord->getRecordType());
-            // @todo Support of "subtypes" will most likely be deprecated in upcoming versions
-            if ($subSchema->getSubTypeDivisorField() !== null
-                && $rawRecord->has($subSchema->getSubTypeDivisorField()->getName())
-                && isset($subSchema->getSubSchemata()[$rawRecord->get($subSchema->getSubTypeDivisorField()->getName())])
-            ) {
-                $subSchema = $subSchema->getSubSchema($rawRecord->get($subSchema->getSubTypeDivisorField()->getName()));
-            }
         }
 
         // Only use the fields that are defined in the schema

@@ -371,6 +371,7 @@ readonly class TcaItemsProcessorFunctions
                 // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
                 $identFields = GeneralUtility::trimExplode(',', $flexFormKey);
                 $extIdent = $identFields[0] ?? '';
+                // @todo resolve this special handling together with EMU::addPiFlexFormValue
                 if (!empty($identFields[1]) && $identFields[1] !== 'list' && $identFields[1] !== '*') {
                     $extIdent = $identFields[1];
                 }

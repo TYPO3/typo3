@@ -226,9 +226,7 @@ class NewContentElementController
      */
     protected function getWizards(): array
     {
-        $wizards = $this->loadAvailableWizardsFromContentElements();
-        $pluginWizards = $this->loadAvailableWizardsFromPluginSubTypes();
-        $wizards = array_replace_recursive($wizards, $pluginWizards);
+        $wizards = $this->loadAvailableWizards();
         $newContentElementWizardTsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['wizards.']['newContentElement.'] ?? [];
         $wizardsFromPageTSConfig = $this->migrateCommonGroupToDefault($newContentElementWizardTsConfig['wizardItems.'] ?? []);
         $wizardsFromPageTSConfig = $this->migratePositionalCommonGroupToDefault($wizardsFromPageTSConfig);
@@ -270,25 +268,9 @@ class NewContentElementController
         return $this->removeInvalidWizardItems($wizardItems);
     }
 
-    protected function loadAvailableWizardsFromContentElements(): array
+    protected function loadAvailableWizards(): array
     {
-        return (($typeField = (string)($GLOBALS['TCA']['tt_content']['ctrl']['type'] ?? '')) !== '')
-            ? $this->loadAvailableWizards($typeField)
-            : [];
-    }
-
-    /**
-     * @deprecated Remove in v14, when "sub types" are removed altogether
-     */
-    protected function loadAvailableWizardsFromPluginSubTypes(): array
-    {
-        return (($pluginSubtypeValueField = (string)($GLOBALS['TCA']['tt_content']['types']['list']['subtype_value_field'] ?? '')) !== '')
-            ? $this->loadAvailableWizards($pluginSubtypeValueField, true)
-            : [];
-    }
-
-    protected function loadAvailableWizards(string $typeField, bool $isPluginSubType = false): array
-    {
+        $typeField = (string)($GLOBALS['TCA']['tt_content']['ctrl']['type'] ?? '');
         $fieldConfig = $GLOBALS['TCA']['tt_content']['columns'][$typeField] ?? [];
         $items = $fieldConfig['config']['items'] ?? [];
         $groupedWizardItems = [];
@@ -310,17 +292,10 @@ class NewContentElementController
                 'iconIdentifier' => $selectItem->getIcon(),
                 'title' => $selectItem->getLabel(),
                 'description' => $itemDescription['description'] ?? ($itemDescription ?? ''),
-            ];
-            if ($isPluginSubType) {
-                $wizardEntry['defaultValues'] = [
-                    'CType' => 'list',
-                    'list_type' => $recordType,
-                ];
-            } else {
-                $wizardEntry['defaultValues'] = [
+                'defaultValues' => [
                     'CType' => $recordType,
-                ];
-            }
+                ],
+            ];
             $wizardEntry = array_replace_recursive($wizardEntry, $GLOBALS['TCA']['tt_content']['types'][$recordType]['creationOptions'] ?? []);
             $groupedWizardItems[$groupIdentifier . '.']['elements.'][$recordType . '.'] = $wizardEntry;
         }

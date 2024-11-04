@@ -49,7 +49,7 @@ class TcaMigration
     public function migrate(array $tca): array
     {
         $this->validateTcaType($tca);
-        $this->deprecateSubTypes($tca);
+        $this->removeSubTypesConfiguration($tca);
 
         $tca = $this->migrateColumnsConfig($tca);
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
@@ -121,30 +121,6 @@ class TcaMigration
                         1482394401
                     );
                 }
-            }
-        }
-    }
-
-    /**
-     * Adds deprecation log entries for sub types usages
-     */
-    protected function deprecateSubTypes(array $tca): void
-    {
-        foreach ($tca as $table => $tableDefinition) {
-            if (!is_array($tableDefinition['types'] ?? false)) {
-                continue;
-            }
-            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
-                if (!isset($typeConfig['subtype_value_field'])
-                    // Do not add deprecation entry for tt_content.list_type as this is deprecated separately
-                    || ($table === 'tt_content' && $typeConfig['subtype_value_field'] === 'list_type')
-                ) {
-                    continue;
-                }
-                $this->messages[] = 'The TCA record type \'' . $typeName . '\' of table \'' . $table . '\' defines the '
-                    . 'field \'' . $typeConfig['subtype_value_field'] . '\' as \'subtype_value_field\', which is '
-                    . 'deprecated since TYPO3 v13 and will stop working in TYPO3 v14. Please adjust your TCA '
-                    . 'accordingly by migrating those sub types to dedicated record types.';
             }
         }
     }
@@ -1522,5 +1498,38 @@ class TcaMigration
             }
         }
         return $tca;
+    }
+
+    /**
+     * Removes the following sub types configuration options:
+     *
+     * - subtype_value_field
+     * - subtypes_addlist
+     * - subtypes_excludelist
+     */
+    protected function removeSubTypesConfiguration(array $tca): void
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!is_array($tableDefinition['types'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['types'] ?? [] as $typeName => $typeConfig) {
+                if (!isset($typeConfig['subtype_value_field'])
+                    && !isset($typeConfig['subtypes_addlist'])
+                    && !isset($typeConfig['subtypes_excludelist'])
+                ) {
+                    continue;
+                }
+                unset(
+                    $tca[$table]['types'][$typeName]['subtype_value_field'],
+                    $tca[$table]['types'][$typeName]['subtypes_addlist'],
+                    $tca[$table]['types'][$typeName]['subtypes_excludelist'],
+                );
+                $this->messages[] = 'The TCA record type \'' . $typeName . '\' of table \'' . $table . '\' makes '
+                    . 'use of the removed "sub types" functionality. The options \'subtype_value_field\', '
+                    . '\'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your '
+                    . 'TCA accordingly by migrating those sub types to dedicated record types.';
+            }
+        }
     }
 }

@@ -39,11 +39,6 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
                 'type' => 'CType',
                 'previewRenderer' => StandardContentPreviewRenderer::class,
             ],
-            'types' => [
-                'list' => [
-                    'subtype_value_field' => 'list_type',
-                ],
-            ],
         ];
     }
 
@@ -74,10 +69,9 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
 
         $table = 'tt_content';
         $row = [
-            'CType' => 'list',
-            'list_type' => 'custom',
+            'CType' => 'my_plugin_pi1',
         ];
-        $GLOBALS['TCA'][$table]['types']['list']['previewRenderer']['custom'] = get_class($customPreviewRenderer);
+        $GLOBALS['TCA'][$table]['types']['my_plugin_pi1']['previewRenderer'] = get_class($customPreviewRenderer);
 
         self::assertEquals(
             get_class($customPreviewRenderer),
@@ -86,37 +80,18 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
     }
 
     #[Test]
-    public function resolveStandardContentPreviewRendererWithCustomPreviewRendererDefined(): void
+    public function doesNotResolveCustomContentPreviewRendererAsArray(): void
     {
         $customPreviewRenderer = $this->getMockBuilder(PreviewRendererInterface::class)->getMock();
 
         $table = 'tt_content';
         $row = [
-            'CType' => 'list',
-            'list_type' => 'default',
+            'CType' => 'my_plugin_pi1',
         ];
-        $GLOBALS['TCA'][$table]['types']['list']['previewRenderer']['custom'] = get_class($customPreviewRenderer);
+        $GLOBALS['TCA'][$table]['types']['my_plugin_pi1']['previewRenderer']['custom'] = get_class($customPreviewRenderer);
 
         self::assertEquals(
             StandardContentPreviewRenderer::class,
-            get_class($this->subject->resolveRendererFor($table, $row, 0))
-        );
-    }
-
-    #[Test]
-    public function resolveStandardContentPreviewRendererWithGeneralPreviewRendererDefinedForAllSubTypes(): void
-    {
-        $customPreviewRenderer = $this->getMockBuilder(PreviewRendererInterface::class)->getMock();
-
-        $table = 'tt_content';
-        $row = [
-            'CType' => 'list',
-            'list_type' => 'default',
-        ];
-        $GLOBALS['TCA'][$table]['types']['list']['previewRenderer'] = get_class($customPreviewRenderer);
-
-        self::assertEquals(
-            get_class($customPreviewRenderer),
             get_class($this->subject->resolveRendererFor($table, $row, 0))
         );
     }

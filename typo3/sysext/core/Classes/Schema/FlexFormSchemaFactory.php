@@ -39,8 +39,8 @@ final readonly class FlexFormSchemaFactory
     ) {}
 
     /**
-     * Currently this mixes Schema and Record Information, and could be handled in a cleaner way, especially
-     * with the list_type resolving. This method signature will most likely change.
+     * Currently this mixes Schema and Record Information, and could be handled in a cleaner way.
+     * This method signature will most likely change.
      */
     public function getSchemaForRecord(RawRecord $record, FlexFormFieldType $field, RelationMap $relationMap): ?FlexFormSchema
     {

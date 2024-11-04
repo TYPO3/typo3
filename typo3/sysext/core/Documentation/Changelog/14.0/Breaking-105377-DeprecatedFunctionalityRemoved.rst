@@ -138,6 +138,7 @@ The following methods changed signature according to previous deprecations in v1
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->moveFile()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->moveFolder()` (argument 4 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
 - :php:`\TYPO3\CMS\Core\Resource\ResourceStorage->renameFile()` (argument 3 is now of type :php:`\TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior`)
+- :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTcaSelectItemGroup()` (argument 2 :php:`$type` and 3 :php:`$extensionKey` have been dropped)
 
 The following public class properties have been dropped:
 
@@ -203,6 +204,7 @@ The following class constants have been dropped:
 - :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_TEXT`
 - :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_UNKNOWN`
 - :php:`\TYPO3\CMS\Core\Resource\AbstractFile::FILETYPE_VIDEO`
+- :php:`\TYPO3\CMS\Extbase\Utility\ExtensionUtility::PLUGIN_TYPE_PLUGIN`
 
 The following global option handling have been dropped and are ignored:
 
@@ -263,7 +265,7 @@ The following feature has been removed:
 
 The following database table fields have been removed:
 
-- :sql:`table.x`
+- :sql:`tt_content.list_type`
 
 The following backend route identifier has been removed:
 
@@ -308,6 +310,14 @@ The following localization XLIFF files have been removed:
 
 - :file:`EXT:backend/Resources/Private/Language/locallang_db_new_content_el.xlf`
 - :file:`EXT:frontend/Resources/Private/Language/Database.xlf`
+
+The following template files have been removed:
+
+- :file:`EXT:fluid_styled_content/Resources/Private/Templates/List.html`
+
+The following content element definitions have been removed:
+
+- :typoscript:`tt_content.list`
 
 Impact
 ======

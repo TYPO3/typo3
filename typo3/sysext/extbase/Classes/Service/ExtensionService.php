@@ -175,12 +175,8 @@ class ExtensionService implements SingletonInterface
                     ->from('tt_content')
                     ->where(
                         $queryBuilder->expr()->eq(
-                            'list_type',
-                            $queryBuilder->createNamedParameter($pluginSignature)
-                        ),
-                        $queryBuilder->expr()->eq(
                             'CType',
-                            $queryBuilder->createNamedParameter('list')
+                            $queryBuilder->createNamedParameter($pluginSignature)
                         ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',
