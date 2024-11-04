@@ -47,9 +47,13 @@ Ensure storage engine is 'InnoDB'
 
 TYPO3 typically utilizes the :sql:`InnoDB` storage engine for tables in
 MySQL / MariaDB databases. However, instances upgraded from older TYPO3 Core
-versions might still employ different storage engines for some tables. While the
-TYPO3 Core plans to automatically detect and transition these to :sql:`InnoDB`
-in the future, maintainers should manually verify the engine currently in use:
+versions might still employ different storage engines for some tables.
+
+TYPO3 Core provides an automatic migration within
+:guilabel:`Admin Tools > Maintenance > Analyze Database Structure` and will
+suggest to migrate all tables to :sql:`InnoDB`.
+
+You can manually verify the engine currently in use:
 
 ..  code-block:: sql
 
@@ -58,7 +62,9 @@ in the future, maintainers should manually verify the engine currently in use:
     WHERE `TABLE_SCHEMA`='my_database'
     AND `TABLE_NAME`='tt_content';
 
-Tables *not* using :sql:`InnoDB` should be converted to :sql:`InnoDB`:
+Tables *not* using :sql:`InnoDB` should be converted via
+:guilabel:`Admin Tools > Maintenance > Analyze Database Structure` or manually
+via SQL:
 
 ..  code-block:: sql
 
@@ -72,10 +78,13 @@ The :sql:`InnoDB` row format dictates how data is physically stored. The
 :sql:`Dynamic` row format provides better support for tables with many
 variable-length columns and has been the default format for some time. However,
 instances upgraded from older TYPO3 Core versions and older MySQL / MariaDB
-engines might still use the previous default format :sql:`Compact`. While the
-TYPO3 Core intends to automatically detect and transition such tables to the
-:sql:`Dynamic` row format in the future, maintainers should manually verify the
-format currently in use:
+engines might still use the previous default format :sql:`Compact`.
+
+TYPO3 Core provides an automatic migration within
+:guilabel:`Admin Tools > Maintenance > Analyze Database Structure` and will
+suggest to migrate all tables to :sql:`ROW_FORMAT=DYNAMIC`.
+
+You can manually verify the row format currently in use:
 
 ..  code-block:: sql
 
@@ -84,7 +93,9 @@ format currently in use:
     WHERE `TABLE_SCHEMA`='my_database'
     AND `TABLE_NAME`='tt_content';
 
-Tables *not* using 'Dynamic' should be converted:
+Tables *not* using :sql:`Dynamic` should be converted via
+:guilabel:`Admin Tools > Maintenance > Analyze Database Structure` or manually
+via SQL:
 
 ..  code-block:: sql
 
@@ -150,9 +161,11 @@ current value:
 Row size too large
 ------------------
 
-This document now assumes MySQL / MariaDB, the table in question uses the :sql:`InnoDB`
-storage engine with :sql:`Dynamic` row format, a system maintainer is aware of
-specific column charsets, and :sql:`innodb_page_size` default :sql:`16384` is kept.
+This document now assumes that MySQL / MariaDB is used, the table in question
+uses the :sql:`InnoDB` storage engine with :sql:`Dynamic` row format (please
+check :guilabel:`Admin Tools > Maintenance > Analyze Database Structure` which
+provides automatic migrations), :sql:`innodb_page_size` default :sql:`16384` is
+set, and that a system maintainer is aware of specific column charsets.
 
 
 Error "Row size too large 65535"

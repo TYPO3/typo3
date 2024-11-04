@@ -4,4 +4,4 @@ CREATE TABLE a_test_table (
 	text1   MEDIUMTEXT,
 
 	PRIMARY KEY (uid),
-) ENGINE = InnoDB;
+);

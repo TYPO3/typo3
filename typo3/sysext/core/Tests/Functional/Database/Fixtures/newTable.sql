@@ -8,4 +8,4 @@ CREATE TABLE a_test_table (
 
 	PRIMARY KEY (uid),
 	KEY parent (pid)
-) ENGINE = InnoDB;
+);

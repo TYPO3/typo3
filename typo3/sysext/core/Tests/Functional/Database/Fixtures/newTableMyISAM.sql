@@ -4,8 +4,8 @@ CREATE TABLE a_test_table (
 	tstamp  INT(11) UNSIGNED DEFAULT '0'    NOT NULL,
 	hidden  TINYINT(3) UNSIGNED DEFAULT '0' NOT NULL,
 	deleted TINYINT(3) UNSIGNED DEFAULT '0' NOT NULL,
-	title VARCHAR(50) DEFAULT ''            NOT NULL,
+	title   VARCHAR(50) DEFAULT ''          NOT NULL,
 
 	PRIMARY KEY (uid),
-	KEY parent (pid, deleted)
-);
+	KEY parent (pid)
+) ENGINE = MyISAM;

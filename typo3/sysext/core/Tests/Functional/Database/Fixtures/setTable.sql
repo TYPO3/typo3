@@ -4,4 +4,4 @@ CREATE TABLE a_test_table (
 	test1   set('a', 'b', 'c', 'd') DEFAULT 'a' NOT NULL,
 
 	PRIMARY KEY (uid),
-) ENGINE = InnoDB;
+);

@@ -258,6 +258,58 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertCount(6, $this->getTableDetails()->getColumns());
     }
 
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableDefaultsToEngineInnoDB(bool $emptyDefaultTableOptions): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTable.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertTrue($this->getTableDetails()->hasOption('engine'));
+        self::assertEquals('InnoDB', $this->getTableDetails()->getOption('engine'));
+    }
+
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableWithExplicitEngineInnoDB(bool $emptyDefaultTableOptions): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableInnoDB.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertTrue($this->getTableDetails()->hasOption('engine'));
+        self::assertEquals('InnoDB', $this->getTableDetails()->getOption('engine'));
+    }
+
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableWithExplicitEngineMyISAM(bool $emptyDefaultTableOptions): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableMyISAM.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertCount(6, $this->getTableDetails()->getColumns());
+        self::assertTrue($this->getTableDetails()->hasOption('engine'));
+        self::assertEquals('MyISAM', $this->getTableDetails()->getOption('engine'));
+    }
+
     #[TestWith(['emptyDefaultTableOptions' => false])]
     #[TestWith(['emptyDefaultTableOptions' => true])]
     #[Test]
@@ -305,6 +357,79 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $this->verifyMigrationResult($result);
         self::assertEquals(100, $this->getTableDetails()->getColumn('title')->getLength());
         self::assertEquals('Title', $this->getTableDetails()->getColumn('title')->getDefault());
+    }
+
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function changeTableWithPossiblyMySQLCachedRowFormatCreateTableOption(bool $emptyDefaultTableOptions): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newLargeTable.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertCount(8, $this->getTableDetails()->getColumns());
+
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('a_test_table');
+        $connection->insert(
+            'a_test_table',
+            [
+                'pid' => 0,
+                'title' => 'Lorem ipsum dolor sit amet, consetetur sadipscing.',
+                'content' => str_repeat('Lorem ipsum dolor sit amet.', 100),
+            ]
+        );
+
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newLargeTableWithMyISAMFixed.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertCount(8, $this->getTableDetails()->getColumns());
+        self::assertTrue($this->getTableDetails()->hasOption('engine'));
+        self::assertEquals('MyISAM', $this->getTableDetails()->getOption('engine'));
+
+        $queryBuilder = $connection->createQueryBuilder();
+        $rowFormat = $queryBuilder
+            ->select(
+                'tables.ROW_FORMAT AS row_format',
+            )
+            ->from('information_schema.TABLES', 'tables')
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'TABLE_TYPE',
+                    $queryBuilder->createNamedParameter('BASE TABLE')
+                ),
+                $queryBuilder->expr()->eq(
+                    'TABLE_SCHEMA',
+                    $queryBuilder->createNamedParameter($connection->getDatabase())
+                ),
+                $queryBuilder->expr()->eq(
+                    'TABLE_NAME',
+                    $queryBuilder->createNamedParameter('a_test_table')
+                )
+            )
+            ->executeQuery()
+            ->fetchOne();
+
+        // Reports Dynamic although changed to FIXED (because of existing data and structure)
+        self::assertEquals('Dynamic', $rowFormat);
+
+        // …but MySQL cached "create_options" to fixed (and will apply these in upcoming InnoDB change)
+        self::assertTrue($this->getTableDetails()->hasOption('create_options'));
+        self::assertEquals(['row_format' => 'FIXED'], $this->getTableDetails()->getOption('create_options'));
+
+        // Change back to InnoDB
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newLargeTable.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        self::assertEquals('InnoDB', $this->getTableDetails()->getOption('engine'));
     }
 
     #[TestWith(['emptyDefaultTableOptions' => false])]
@@ -562,7 +687,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/alterTableEngine.sql'));
         $updateSuggestions = $subject->getUpdateSuggestions($statements);
         $index = array_keys($updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'])[0];
-        self::assertStringEndsWith(
+        self::assertStringContainsString(
             'ENGINE = MyISAM',
             $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'][$index]
         );
