@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:test_validators/Resources/Private/Language/locallang.xlf" date="2024-11-04T13:23:00Z" product-name="test_validators">
+		<header/>
+		<body>
+			<trans-unit id="validator.translateerrormessagewithextensionname.message" resname="validator.translateerrormessagewithextensionname.message">
+				<source>Expected translated error message for extensionName scenario.</source>
+			</trans-unit>
+			<trans-unit id="validator.translateerrormessagewithoutextensionname.message" resname="validator.translateerrormessagewithoutextensionname.message">
+				<source>Expected translated error message.</source>
+			</trans-unit>
+			<trans-unit id="validator.translateerrormessagewithoutextensionname.custom_message" resname="validator.translateerrormessagewithoutextensionname.custom_message">
+				<source>Expected custom translated error message.</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

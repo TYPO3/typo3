@@ -146,14 +146,14 @@ abstract class AbstractValidator implements ValidatorInterface
 
     /**
      * Translates an error message using LocalizationUtility::translate() method. If the translate key does not
-     * start with 'LLL:', the original translate key is returned.
+     * start with 'LLL:' and if no extension name is provided, the original translate key is returned.
      */
     protected function translateErrorMessage(
         string $translateKey,
         string $extensionName = '',
         array $arguments = []
     ): string {
-        if (!str_starts_with($translateKey, 'LLL:')) {
+        if ($extensionName === '' && !str_starts_with($translateKey, 'LLL:')) {
             return $translateKey;
         }
 
