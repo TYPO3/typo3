@@ -6372,4 +6372,11 @@ return [
             'Deprecation-102422-TypoScriptFrontendController-addCacheTags.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Resource\FileRepository->findFileReferenceByUid' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-101948-FileBasedAbstractRepositoryClassRemoved.rst',
+        ],
+    ],
 ];
