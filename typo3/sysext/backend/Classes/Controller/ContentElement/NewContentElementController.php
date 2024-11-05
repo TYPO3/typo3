@@ -463,7 +463,7 @@ class NewContentElementController
             // If defaultValues are defined, check access by traversing all fields with default values:
             $backendUser = $this->getBackendUser();
             foreach ($cfg['defaultValues'] as $fieldName => $value) {
-                if (!is_array($GLOBALS['TCA']['tt_content']['columns'][$fieldName])) {
+                if (!is_array($GLOBALS['TCA']['tt_content']['columns'][$fieldName] ?? false)) {
                     continue;
                 }
                 // Get information about if the field value is OK:

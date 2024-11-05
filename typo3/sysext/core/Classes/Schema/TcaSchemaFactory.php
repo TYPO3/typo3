@@ -187,7 +187,7 @@ class TcaSchemaFactory
             $schemaConfiguration['palettes'] = $schemaDefinition['palettes'];
         }
 
-        // Resolve all subtypes and collect their fields while keeping the system fields
+        // Resolve all sub schemas and collect their fields while keeping the system fields
         $subSchemata = [];
         if (isset($schemaDefinition['ctrl']['type'])) {
             foreach ($schemaDefinition['types'] ?? [] as $subSchemaName => $subSchemaDefinition) {
@@ -212,7 +212,7 @@ class TcaSchemaFactory
                     $subSchemaFields[$fieldName] = $field;
                 }
 
-                // @deprecated Remove"sub type" handling in v14
+                // @deprecated Remove "sub type" handling in v14
                 $subTypeSchemata = [];
                 if (isset($subSchemaDefinition['subtype_value_field'])
                     && ($subTypeDivisorField = $subSchemaFields[$subSchemaDefinition['subtype_value_field']] ?? null) !== null
