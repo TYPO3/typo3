@@ -74,14 +74,6 @@ class TreeController
     protected array $hiddenRecords = [];
 
     /**
-     * An array of background colors for a branch in the tree, set via userTS.
-     *
-     * @var array
-     * @deprecated will be removed in TYPO3 v14.0, please use labels instead
-     */
-    protected $backgroundColors = [];
-
-    /**
      * An array of labels for a branch in the tree, set via userTS.
      */
     protected array $labels = [];
@@ -132,7 +124,6 @@ class TreeController
             (string)($userTsConfig['options.']['hideRecords.']['pages'] ?? ''),
             true
         );
-        $this->backgroundColors = $userTsConfig['options.']['pageTree.']['backgroundColor.'] ?? [];
         $this->labels = $userTsConfig['options.']['pageTree.']['label.'] ?? [];
         $this->addIdAsPrefix = (bool)($userTsConfig['options.']['pageTree.']['showPageIdWithTitle'] ?? false);
         $this->addDomainName = (bool)($userTsConfig['options.']['pageTree.']['showDomainNameWithTitle'] ?? false);
@@ -353,13 +344,6 @@ class TreeController
         }
 
         $labels = [];
-        if (!empty($this->backgroundColors[$pageId])) {
-            $labels[] = new Label(
-                label: $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.color') . ': ' . $this->backgroundColors[$pageId],
-                color: $this->backgroundColors[$pageId] ?? '#ff0000',
-                priority: -1,
-            );
-        }
         if (!empty($this->labels[$pageId . '.']) && isset($this->labels[$pageId . '.']['label']) && trim($this->labels[$pageId . '.']['label']) !== '') {
             $labels[] = new Label(
                 label: (string)($this->labels[$pageId . '.']['label']),

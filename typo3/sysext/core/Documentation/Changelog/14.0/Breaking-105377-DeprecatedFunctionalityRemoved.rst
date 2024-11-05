@@ -187,6 +187,10 @@ The following TypoScript options have been dropped or adapted:
 
 - :typoscript:`<INCLUDE_TYPOSCRIPT: ...>` language construct
 
+The following user TSconfig options have been removed:
+
+- :typoscript:`options.pageTree.backgroundColor`
+
 The following constant has been dropped:
 
 - :php:``
