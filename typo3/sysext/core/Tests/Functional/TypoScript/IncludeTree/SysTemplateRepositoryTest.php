@@ -24,6 +24,16 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class SysTemplateRepositoryTest extends FunctionalTestCase
 {
     #[Test]
+    public function emptyRootline(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
+        $rootline = [];
+        $sysTemplateRepository = $this->get(SysTemplateRepository::class);
+        $result = $sysTemplateRepository->getSysTemplateRowsByRootline($rootline);
+        self::assertSame([], $result);
+    }
+
+    #[Test]
     public function singleRootTemplate(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/SysTemplate/singleRootTemplate.csv');
