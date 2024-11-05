@@ -460,22 +460,29 @@
 
 <f:section name="pageContentTypes">
     <f:if condition="{pageContentTypes}">
-        <ul class="panel-list">
-            <f:for each="{pageContentTypes}" as="item">
-                <li>
-                    <f:if condition="{item.label}">
-                        <f:then>
-                            {f:translate(key: item.label)}
-                            <f:if condition="{showUid}"><code title="{item.longType}">[{item.shortType}]</code></f:if>
-                        </f:then>
-                        <f:else>
-                            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation')}
-                            <f:if condition="{showUid}"><code>[{item.longType}]</code></f:if>
-                        </f:else>
-                    </f:if>
-                </li>
-            </f:for>
-        </ul>
+        <div class="table-fit">
+            <table class="table">
+                <f:for each="{pageContentTypes}" as="item">
+                    <tr>
+                        <td class="col-icon">
+                            <core:icon identifier="{f:if(condition: item.icon, then: item.icon, else: 'empty-empty')}" />
+                        </td>
+                        <td class="col-title">
+                            <f:if condition="{item.label}">
+                                <f:then>
+                                    {f:translate(key: item.label)}
+                                    <f:if condition="{showUid}"><code title="{item.longType}">[{item.shortType}]</code></f:if>
+                                </f:then>
+                                <f:else>
+                                    {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:notAvailableAbbreviation')}
+                                    <f:if condition="{showUid}"><code>[{item.longType}]</code></f:if>
+                                </f:else>
+                            </f:if>
+                        </td>
+                    </tr>
+                </f:for>
+            </table>
+        </div>
     </f:if>
 </f:section>
 
