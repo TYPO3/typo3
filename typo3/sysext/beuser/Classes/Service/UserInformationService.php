@@ -20,7 +20,9 @@ namespace TYPO3\CMS\Beuser\Service;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -238,9 +240,13 @@ class UserInformationService
             if (count($split) !== 3) {
                 continue;
             }
+            [$table, $recordType, $recordTypeValue] = $split;
+            $label = BackendUtility::getLabelFromItemlist(...$split);
             $data['pageContentTypes'][] = [
-                'label' => BackendUtility::getLabelFromItemlist(...$split),
-                'shortType' => $split[2],
+                // If label is empty => the record type value does not exist so we use "empty-empty" as icon instead of falling back to the default record type icon
+                'icon' => $label ? $this->iconFactory->getIconForRecord($table, [$recordType => $recordTypeValue], IconSize::SMALL)->getIdentifier() : 'install-check-extables',
+                'label' => $label,
+                'shortType' => $recordTypeValue,
                 'longType' => $item,
             ];
         }
