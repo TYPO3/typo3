@@ -61,6 +61,10 @@ final readonly class SysTemplateRepository
      */
     public function getSysTemplateRowsByRootline(array $rootline, ?ServerRequestInterface $request = null): array
     {
+        if ($rootline === []) {
+            return [];
+        }
+
         // Site-root node first!
         $rootLinePageIds = array_reverse(array_column($rootline, 'uid'));
         $sysTemplateRows = [];
