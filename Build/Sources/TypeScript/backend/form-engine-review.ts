@@ -19,6 +19,7 @@ import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
 import { Popover as BootstrapPopover } from 'bootstrap';
+import DomHelper from '@typo3/backend/utility/dom-helper';
 
 /**
  * Module: @typo3/backend/form-engine-review
@@ -107,13 +108,16 @@ class FormEngineReview {
 
       $invalidFields.each((index: number, element: Element): void => {
         const $field: any = $(element);
+        const $fieldContainer = $field.closest('.t3js-formengine-validation-marker');
         const $input: JQuery = $field.find('[data-formengine-validation-rules]');
 
         const link = document.createElement('a');
         link.classList.add('list-group-item');
         link.href = '#';
         link.textContent = $field.find(this.labelSelector).text() || $field.find(this.legendSelector).text();
-        link.addEventListener('click', (e: Event) => this.switchToField(e, $input));
+        link.addEventListener('click', (e: Event) => {
+          this.switchToField(e, $fieldContainer, $input)
+        });
 
         $list.append(link);
       });
@@ -134,15 +138,25 @@ class FormEngineReview {
    *
    * @param {Event} e
    */
-  public switchToField = (e: Event, $referenceField: JQuery): void => {
+  public switchToField = (e: Event, $fieldContainer: JQuery, $referenceField: JQuery): void => {
     e.preventDefault();
+
+    const fieldContainer = $fieldContainer.get(0);
+    const inputField = $referenceField.get(0);
 
     // iterate possibly nested tab panels
     $referenceField.parents('[id][role="tabpanel"]').each(function(this: Element): void {
-      $(selector`[aria-controls="${$(this).attr('id')}]`).tab('show');
+      $(selector`[aria-controls="${$(this).attr('id')}"]`).tab('show');
     });
 
-    $referenceField.focus();
+    // Check if the field is visible to the user. If this is the case, the field will be focussed, triggering a scroll
+    // to the input field. If checkVisibility() returns false, the input field is not visible, therefore scroll the
+    // field container into the view instead.
+    if (inputField.checkVisibility()) {
+      inputField.focus();
+    } else {
+      DomHelper.scrollIntoViewIfNeeded(fieldContainer);
+    }
   };
 }
 

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export default class DomHelper{static parents(e,t){const l=[];let s;for(;null!==(s=e.parentElement.closest(t));)e=s,l.push(s);return l}}
+export default class DomHelper{static parents(e,t){const n=[];let o;for(;null!==(o=e.parentElement.closest(t));)e=o,n.push(o);return n}static scrollIntoViewIfNeeded(e){if("scrollIntoViewIfNeeded"in e&&"function"==typeof e.scrollIntoViewIfNeeded)e.scrollIntoViewIfNeeded(!0);else{const t=e.getBoundingClientRect();t.top>=0&&t.left>=0&&t.bottom<=(window.innerHeight||document.documentElement.clientHeight)&&t.right<=(window.innerWidth||document.documentElement.clientWidth)||e.scrollIntoView()}}}

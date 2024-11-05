@@ -30,4 +30,25 @@ export default class DomHelper {
 
     return parents;
   }
+
+  /**
+   * This is a wrapper for scrollIntoViewIfNeeded() that falls back to scrollIntoView() if the former
+   * is not available.
+   *
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoViewIfNeeded
+   */
+  public static scrollIntoViewIfNeeded(target: Element): void {
+    if ('scrollIntoViewIfNeeded' in target && typeof target.scrollIntoViewIfNeeded === 'function') {
+      target.scrollIntoViewIfNeeded(true);
+    } else {
+      const rect = target.getBoundingClientRect();
+      const isInViewport = rect.top >= 0
+        && rect.left >= 0
+        && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+        && rect.right <= (window.innerWidth || document.documentElement.clientWidth);
+      if (!isInViewport) {
+        target.scrollIntoView();
+      }
+    }
+  }
 }
