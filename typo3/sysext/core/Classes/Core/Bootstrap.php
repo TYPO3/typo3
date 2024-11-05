@@ -237,7 +237,8 @@ class Bootstrap
             return true;
         }
 
-        // @deprecated All code below is deprecated and can be removed with TYPO3 v14.0 and replaced with `return false;`
+        // @deprecated All code below is deprecated and can be removed with TYPO3 v15.0 (or later as
+        //              it does not hurt to keep this migration for now) and replaced with `return false;`
 
         // All other cases will probably need some migration work
         $migrated = false;
