@@ -390,15 +390,8 @@ class TcaRecordTitle implements FormDataProviderInterface
                 if ($value === $dateTimeFormats['datetime']['empty']) {
                     $value = 0;
                 } else {
-                    // FormDataProvider\DatabaseRowDateTimeFields misinterprets the native LOCALTIME datetime
-                    // value as UTC and creates an invalid ISO8601 datetime string in the current server timezone
-                    // based on the incorrectly assumed UTC base value, which means the time value has an effective
-                    // timezone offset that matches the current server timezone.
-                    // Remove the timezone offset to normalize back to LOCALTIME.
-                    // @todo: This ugly workaround will be removed with refactoring of DatabaseRowDateTimeFields
-                    //        to use unqualified ISO8601 localtime in #105549.
                     $datetime = new \DateTimeImmutable($value);
-                    $value = $datetime->getTimestamp() - $datetime->getOffset();
+                    $value = $datetime->getTimestamp();
                 }
             } else {
                 $value = (int)$value;

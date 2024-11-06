@@ -147,11 +147,11 @@ export default class FormEngineValidation {
         if (value === '') {
           return '';
         }
-        const isoDt = DateTime.fromISO(String(value), { zone: 'utc' });
+        const isoDt = DateTime.fromISO(String(value));
         if (!isoDt.isValid) {
           throw new Error('Invalid ISO8601 DateTime string: ' + value);
         }
-        return isoDt.toISO({ suppressMilliseconds: true });
+        return isoDt.toISO({ suppressMilliseconds: true, includeOffset: false });
       case 'password':
         return (value) ? FormEngineValidation.passwordDummy : '';
       default:
@@ -457,12 +457,12 @@ export default class FormEngineValidation {
       case 'time':
       case 'timesec':
         if (value !== '') {
-          const dt = DateTime.fromISO(value, { zone: 'utc' }).set({
+          const dt = DateTime.fromISO(value).set({
             year: 1970,
             month: 1,
             day: 1
           });
-          returnValue = dt.toISO({ suppressMilliseconds: true });
+          returnValue = dt.toISO({ suppressMilliseconds: true, includeOffset: false });
         }
         break;
       case 'year':

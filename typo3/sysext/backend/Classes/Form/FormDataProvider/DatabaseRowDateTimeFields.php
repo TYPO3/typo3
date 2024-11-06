@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Domain\DateTimeFormat;
 
 /**
  * Migrate date and datetime db field values to timestamp
@@ -43,7 +44,7 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
                 continue;
             }
             // ensure the column's value is set
-            $result['databaseRow'][$column] = $result['databaseRow'][$column] ?? null;
+            $result['databaseRow'][$column] ??= null;
 
             // Nullable fields do not need treatment
             $isNullable = $columnConfig['config']['nullable'] ?? true;
@@ -77,10 +78,9 @@ class DatabaseRowDateTimeFields implements FormDataProviderInterface
                 continue;
             }
 
-            // Create an ISO-8601 date from current field data; the database always contains UTC
-            // The field value is something like "2016-01-01" or "2016-01-01 10:11:12", so appending "UTC"
-            // makes date() treat it as a UTC date (which is what we store in the database).
-            $result['databaseRow'][$column] = date('c', (int)strtotime($result['databaseRow'][$column] . ' UTC'));
+            // Create an unqualified ISO-8601 date from current field data; the database always contains server localtime
+            // The field value is something like "2016-01-01" or "2016-01-01 10:11:12.
+            $result['databaseRow'][$column] = (new \DateTime($result['databaseRow'][$column]))->format(DateTimeFormat::ISO8601_LOCALTIME);
         }
         return $result;
     }

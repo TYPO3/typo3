@@ -154,8 +154,24 @@ final class DataHandlerTest extends UnitTestCase
             'timestamp is passed through, as it is UTC' => [
                 1457103519, 'Europe/Berlin', 1457103519,
             ],
-            'ISO date is interpreted as local date and is output as correct timestamp' => [
-                '2017-06-07T00:10:00Z', 'Europe/Berlin', 1496787000,
+            'unqualified ISO local is interpreted as local date and is output as correct timestamp' => [
+                // 1496787000 = 1496794200 - 2 * 3600
+                '2017-06-07T00:10:00', 'Europe/Berlin', 1496787000,
+            ],
+            'qualified ISO date with 0 (Z) offset is respected and is output as correct timestamp' => [
+                '2017-06-07T00:10:00Z', 'Europe/Berlin', 1496794200,
+            ],
+            'qualified ISO date with 0 offset is respected and is output as correct timestamp' => [
+                '2017-06-07T00:10:00+00:00', 'Europe/Berlin', 1496794200,
+            ],
+            'qualified ISO date with 2 hour offset is respected and is output as correct timestamp' => [
+                '2017-06-07T02:10:00+02:00', 'Europe/Berlin', 1496794200,
+            ],
+            'qualified ISO date with 4 hour offset is respected and is output as correct timestamp' => [
+                '2017-06-07T04:10:00+04:00', 'Europe/Berlin', 1496794200,
+            ],
+            'qualified ISO date with -2 hour offset is respected and is output as correct timestamp' => [
+                '2017-06-06T22:10:00-02:00', 'Europe/Berlin', 1496794200,
             ],
         ];
     }
@@ -410,42 +426,65 @@ final class DataHandlerTest extends UnitTestCase
     public static function datetimeValuesDataProvider(): array
     {
         return [
-            'undershot date adjusted' => [
-                '2018-02-28T00:00:00Z',
+            'undershot date adjusted in UTC' => [
+                '2018-02-28T00:00:00',
                 1519862400,
+                'UTC',
             ],
-            'exact lower date accepted' => [
-                '2018-03-01T00:00:00Z',
+            'exact lower date accepted in UTC' => [
+                '2018-03-01T00:00:00',
                 1519862400,
+                'UTC',
             ],
-            'exact upper date accepted' => [
-                '2018-03-31T23:59:59Z',
+            'exact upper date accepted in UTC' => [
+                '2018-03-31T23:59:59',
                 1522540799,
+                'UTC',
             ],
-            'exceeded date adjusted' => [
-                '2018-04-01T00:00:00Z',
+            'exceeded date adjusted in UTC' => [
+                '2018-04-01T00:00:00',
                 1522540799,
+                'UTC',
+            ],
+            'undershot date adjusted in Europe/Berlin' => [
+                '2018-02-28T00:00:00',
+                1519858800,
+                'Europe/Berlin',
+            ],
+            'exact lower date accepted in Europe/Berlin' => [
+                '2018-03-01T00:00:00',
+                1519858800,
+                'Europe/Berlin',
+            ],
+            'exact upper date accepted in Europe/Berlin' => [
+                '2018-03-31T23:59:59',
+                1522533599,
+                'Europe/Berlin',
+            ],
+            'exceeded date adjusted in Europe/Berlin' => [
+                '2018-04-01T00:00:00',
+                1522533599,
+                'Europe/Berlin',
             ],
         ];
     }
 
     #[DataProvider('datetimeValuesDataProvider')]
     #[Test]
-    public function valueCheckRecognizesDatetimeValuesAsIntegerValuesCorrectly(string $value, int $expected): void
+    public function valueCheckRecognizesDatetimeValuesAsIntegerValuesCorrectly(string $value, int $expected, string $timezone): void
     {
         $tcaFieldConf = [
             'type' => 'datetime',
             'range' => [
-                // unix timestamp: 1519862400
-                'lower' => gmmktime(0, 0, 0, 3, 1, 2018),
-                // unix timestamp: 1522540799
-                'upper' => gmmktime(23, 59, 59, 3, 31, 2018),
+                // unix timestamp: 1519862400 if timezone is UTC, 1519858800 if timezone is Europe/Berlin
+                'lower' => \DateTime::createFromFormat('Y-m-d\\TH:i:s', '2018-03-01T00:00:00', new \DateTimeZone($timezone))->getTimestamp(),
+                // unix timestamp: 1522540799 if timezone is UTC, 1522533599 if timezone is Europe/Berlin
+                'upper' => \DateTime::createFromFormat('Y-m-d\\TH:i:s', '2018-03-31T23:59:59', new \DateTimeZone($timezone))->getTimestamp(),
             ],
         ];
 
-        // @todo Switch to UTC since otherwise DataHandler removes timezone offset
         $previousTimezone = date_default_timezone_get();
-        date_default_timezone_set('UTC');
+        date_default_timezone_set($timezone);
 
         $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
 
@@ -462,15 +501,15 @@ final class DataHandlerTest extends UnitTestCase
                 0,
                 null,
             ],
-            'Zero returns zero' => [
+            'Zero (unix timestamp) is clamped as it is interpreted as unix-startdate and needs to fulfill range requirement' => [
                 0,
-                0,
-                0,
+                1627077600,
+                '2021-07-23 22:00:00',
             ],
-            'Zero as a string returns zero' => [
+            'Zero (unix timestamp) as string is clamped as it is interpreted as unix-startdate and needs to fulfill range requirement' => [
                 '0',
-                0,
-                0,
+                1627077600,
+                '2021-07-23 22:00:00',
             ],
         ];
     }
@@ -479,8 +518,8 @@ final class DataHandlerTest extends UnitTestCase
     #[Test]
     public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty(
         string|int $inputValue,
-        int $expected,
-        ?int $expectedNullable,
+        int $expectedForTimestampField,
+        ?string $expectedForNativeField,
     ): void {
         $tcaFieldConf = [
             'type' => 'datetime',
@@ -491,31 +530,35 @@ final class DataHandlerTest extends UnitTestCase
         ];
 
         $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConf);
-        self::assertSame($expected, $returnValue['value']);
+        self::assertSame($expectedForTimestampField, $returnValue['value']);
 
-        $tcaFieldConf['nullable'] = true;
-        $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConf);
-        self::assertSame($expectedNullable, $returnValue['value']);
+        $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, [...$tcaFieldConf, 'dbType' => 'datetime']);
+        self::assertSame($expectedForNativeField, $returnValue['value']);
     }
 
-    public static function datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider(): array
+    public static function datetimeValueCheckIsIndependentFromTimezoneDataProvider(): array
     {
         return [
             // Values of this kind are passed in from the DateTime control
-            'time from DateTime' => [
-                '1970-01-01T18:54:00Z',
+            'time from ISO8601 LOCALTIME' => [
+                '1970-01-01T18:54:00',
                 'time',
                 '18:54:00',
             ],
-            'date from DateTime' => [
-                '2020-11-25T00:00:00Z',
+            'date from ISO8601 LOCALTIME' => [
+                '2020-11-25T00:00:00',
                 'date',
                 '2020-11-25',
             ],
-            'datetime from DateTime' => [
-                '2020-11-25T18:54:00Z',
+            'datetime from ISO8601 LOCALTIME' => [
+                '2020-11-25T18:54:00',
                 'datetime',
                 '2020-11-25 18:54:00',
+            ],
+            'timestamp from ISO8601 LOCALTIME' => [
+                '1970-01-01T18:54:00',
+                '',
+                64440,
             ],
             // Values of this kind are passed in when a data record is copied
             'time from copying a record' => [
@@ -533,12 +576,71 @@ final class DataHandlerTest extends UnitTestCase
                 'datetime',
                 '2020-11-25 18:54:00',
             ],
+            'timestamp from copying a record' => [
+                '2020-11-25 18:54:00',
+                '',
+                1606326840,
+            ],
+            // Values of this kind are passed in when DataHandler is used as peristence layer/API
+            'time from ISO8601 UTC-0' => [
+                '1970-01-01T18:54:00Z',
+                'time',
+                // Apply time from DateTimeString as-is (no conversion to LOCALTIME!)
+                '18:54:00',
+            ],
+            'date from ISO8601 UTC-0' => [
+                '2020-11-25T00:00:00Z',
+                'date',
+                '2020-11-25',
+            ],
+            'datetime from ISO8601 UTC-0' => [
+                // DateTimeString is persisted as server LOCALTIME
+                '2020-11-25T18:54:00Z',
+                'datetime',
+                // DateTimeString is persisted as server LOCALTIME
+                '2020-11-25 19:54:00',
+            ],
+            'timestamp from ISO8601 UTC-0' => [
+                '2020-11-25T18:54:00Z',
+                '',
+                // timestamp is persisted in UTC
+                1606330440,
+            ],
+
+            'time from ISO8601 UTC+2' => [
+                // DateTimeString is taken as-is (offsets are not shifted!)
+                // @todo this is discussable
+                '1970-01-01T18:54:00+02:00',
+                'time',
+                '18:54:00',
+            ],
+            'date from ISO8601 UTC+2' => [
+                '2020-11-25T00:00:00+02:00',
+                'date',
+                // HEADS UP! Input is UTC+2 that means converted to the server timezone
+                // (Europe/Berlin is CET in November which is +01:00)
+                // that'd be 2020-11-24T23:00:00+01:00,
+                // but we still expect the "intended date" to be honored by DataHandler
+                '2020-11-25',
+            ],
+            'datetime from ISO8601 UTC+2' => [
+                '2020-11-25T18:54:00+02:00',
+                'datetime',
+                // November has +01:00 offset (CET) in Europe/Berlin,
+                // that means the input (+02:00) is off by one hour to the server local time
+                '2020-11-25 17:54:00',
+            ],
+            'timestamp from ISO8601 UTC+2' => [
+                '2020-11-25T18:54:00+02:00',
+                '',
+                1606323240,
+            ],
         ];
     }
 
-    #[DataProvider('datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider')]
+    #[DataProvider('datetimeValueCheckIsIndependentFromTimezoneDataProvider')]
     #[Test]
-    public function datetimeValueCheckDbtypeIsIndependentFromTimezone(string $value, string $dbtype, string $expectedOutput): void
+    public function datetimeValueCheckIsIndependentFromTimezone(string $value, string $dbtype, string|int $expectedOutput): void
     {
         $tcaFieldConf = [
             'type' => 'datetime',
@@ -560,7 +662,7 @@ final class DataHandlerTest extends UnitTestCase
     {
         return [
             'Datetime at unix epoch' => [
-                '1970-01-01T00:00:00Z',
+                '1970-01-01T00:00:00',
                 'datetime',
                 '1970-01-01 00:00:00',
                 '1970-01-01 00:00:00',
@@ -580,7 +682,7 @@ final class DataHandlerTest extends UnitTestCase
             'Default time' => [
                 '00:00:00',
                 'time',
-                null,
+                '00:00:00',
                 '00:00:00',
             ],
             'Null time' => [
@@ -643,6 +745,126 @@ final class DataHandlerTest extends UnitTestCase
 
         $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
         self::assertEquals($expectedNotNullableOutput, $returnValue['value']);
+    }
+
+    public static function inputValueCheckDatetimeFormatTimeAsTimestampDataProvider(): array
+    {
+        return [
+            'Null on nullable timesec' => [
+                null,
+                'timesec',
+                true,
+                null,
+            ],
+            'Null on not nullable timesec' => [
+                null,
+                'timesec',
+                false,
+                0,
+            ],
+
+            'Null on nullable time' => [
+                null,
+                'time',
+                true,
+                null,
+            ],
+            'Null on not nullable time' => [
+                null,
+                'time',
+                false,
+                0,
+            ],
+
+            'timesec as time string' => [
+                '14:38:05',
+                'timesec',
+                false,
+                52685,
+            ],
+            'timesec as ISO8601 LOCALTIME' => [
+                '1970-01-01T14:38:05',
+                'timesec',
+                false,
+                52685,
+            ],
+            'timesec with offset' => [
+                '1970-01-01T14:38:05+04:00',
+                'timesec',
+                false,
+                52685,
+            ],
+            'timesec with offset and invalid date' => [
+                '2024-11-07T14:38:05+04:00',
+                'timesec',
+                false,
+                52685,
+            ],
+
+            'time as time string' => [
+                '14:38:00',
+                'time',
+                false,
+                52680,
+            ],
+            'time as time string with seconds to be ignored' => [
+                '14:38:05',
+                'time',
+                false,
+                52680,
+            ],
+            'time as ISO8601 LOCALTIME' => [
+                '1970-01-01T14:38:00',
+                'time',
+                false,
+                52680,
+            ],
+            'time as ISO8601 LOCALTIME with seconds to be ignored' => [
+                '1970-01-01T14:38:05',
+                'time',
+                false,
+                52680,
+            ],
+            'time with offset' => [
+                '1970-01-01T14:38:00+04:00',
+                'time',
+                false,
+                52680,
+            ],
+            'time with offset and seconds to be ignored' => [
+                '1970-01-01T14:38:05+04:00',
+                'time',
+                false,
+                52680,
+            ],
+            'time with offset and invalid date' => [
+                '2024-11-07T14:38:05+04:00',
+                'time',
+                false,
+                52680,
+            ],
+        ];
+    }
+
+    #[DataProvider('inputValueCheckDatetimeFormatTimeAsTimestampDataProvider')]
+    #[Test]
+    public function inputValueCheckDatetimeFormatTimeAsTimestamp(?string $value, string $format, bool $nullable, ?int $expectedOutput): void
+    {
+        $tcaFieldConf = [
+            'input' => [],
+            'format' => $format,
+            'nullable' => $nullable,
+        ];
+
+        $oldTimezone = date_default_timezone_get();
+        date_default_timezone_set('Europe/Berlin');
+
+        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+
+        // set before the assertion is performed, so it is restored even for failing tests
+        date_default_timezone_set($oldTimezone);
+
+        self::assertEquals($expectedOutput, $returnValue['value']);
     }
 
     #[Test]

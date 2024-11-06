@@ -63,17 +63,17 @@ final class DatetimeElementTest extends UnitTestCase
         return [
             // German standard time (without DST) is one hour ahead of UTC
             'date in 2016 in German timezone' => [
-                1457103519, 'Europe/Berlin', '2016-03-04T15:58:39+00:00',
+                1457103519, 'Europe/Berlin', '2016-03-04T15:58:39',
             ],
             'date in 1969 in German timezone' => [
-                -7200, 'Europe/Berlin', '1969-12-31T23:00:00+00:00',
+                -7200, 'Europe/Berlin', '1969-12-31T23:00:00',
             ],
             // Los Angeles is 8 hours behind UTC
             'date in 2016 in Los Angeles timezone' => [
-                1457103519, 'America/Los_Angeles', '2016-03-04T06:58:39+00:00',
+                1457103519, 'America/Los_Angeles', '2016-03-04T06:58:39',
             ],
             'date in UTC' => [
-                1457103519, 'UTC', '2016-03-04T14:58:39+00:00',
+                1457103519, 'UTC', '2016-03-04T14:58:39',
             ],
         ];
     }
@@ -138,19 +138,19 @@ final class DatetimeElementTest extends UnitTestCase
         //       offsetting on 'datetime', but NOT on 'time' or 'timesec').
         return [
             'zero-start date in UTC, midnight' => [
-                3519, 'UTC', '1970-01-01T00:58:39+00:00',
+                3519, 'UTC', '1970-01-01T00:58:39',
             ],
             'zero-start date in UTC, midday' => [
-                53919, 'UTC', '1970-01-01T14:58:39+00:00',
+                53919, 'UTC', '1970-01-01T14:58:39',
             ],
             'zero-start date in UTC, origin' => [
-                0, 'UTC', '1970-01-01T00:00:00+00:00',
+                0, 'UTC', '1970-01-01T00:00:00',
             ],
             'zero-start date in UTC, origin + 1 sec' => [
-                1, 'UTC', '1970-01-01T00:00:01+00:00',
+                1, 'UTC', '1970-01-01T00:00:01',
             ],
             'zero-start date in UTC, origin + 1 min' => [
-                60, 'UTC', '1970-01-01T00:01:00+00:00',
+                60, 'UTC', '1970-01-01T00:01:00',
             ],
         ];
     }
@@ -216,20 +216,20 @@ final class DatetimeElementTest extends UnitTestCase
         // For notation description, see renderAppliesCorrectTimestampConversionOnHourAndMinuteDataNullableProvider
         return [
             'zero-start date in UTC, midnight' => [
-                3519, 'UTC', '1970-01-01T00:58:39+00:00',
+                3519, 'UTC', '1970-01-01T00:58:39',
             ],
             'zero-start date in UTC, midday' => [
-                53919, 'UTC', '1970-01-01T14:58:39+00:00',
+                53919, 'UTC', '1970-01-01T14:58:39',
             ],
             'zero-start date in UTC, origin' => [
                 // This is the important difference between NotNullable and Nullable!
                 0, 'UTC', '',
             ],
             'zero-start date in UTC, origin + 1 sec' => [
-                1, 'UTC', '1970-01-01T00:00:01+00:00',
+                1, 'UTC', '1970-01-01T00:00:01',
             ],
             'zero-start date in UTC, origin + 1 min' => [
-                60, 'UTC', '1970-01-01T00:01:00+00:00',
+                60, 'UTC', '1970-01-01T00:01:00',
             ],
         ];
     }

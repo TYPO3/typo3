@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Form;
 
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use TYPO3\CMS\Core\Domain\DateTimeFormat;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -153,14 +154,14 @@ abstract class AbstractNode implements NodeInterface, LoggerAwareInterface
             if (!empty($config['range']['lower'])) {
                 $lower = (int)$config['range']['lower'];
                 if ($isDateTime) {
-                    $lower = gmdate('c', $lower + (int)(date('Z', $lower)));
+                    $lower = date(DateTimeFormat::ISO8601_LOCALTIME, $lower);
                 }
                 $newValidationRule['lower'] = $lower;
             }
             if (!empty($config['range']['upper'])) {
                 $upper = (int)$config['range']['upper'];
                 if ($isDateTime) {
-                    $upper = gmdate('c', $upper + (int)(date('Z', $upper)));
+                    $upper = date(DateTimeFormat::ISO8601_LOCALTIME, $upper);
                 }
                 $newValidationRule['upper'] = $upper;
             }

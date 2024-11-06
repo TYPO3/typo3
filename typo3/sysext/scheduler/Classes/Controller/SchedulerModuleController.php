@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Domain\DateTimeFormat;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -764,7 +765,6 @@ final class SchedulerModuleController
         try {
             // Convert from ISO 8601 dates
             $value = (new \DateTime($input))->getTimestamp();
-            $value -= (int)date('Z', $value);
         } catch (\Exception $e) {
             throw new InvalidDateException($e->getMessage(), 1641717510);
         }
@@ -776,10 +776,7 @@ final class SchedulerModuleController
         if ($timestamp === 0) {
             return '';
         }
-        // Apply Fake UTC-0 as in FormEngine DatetimeElement.php
-        $adjustedValue = $timestamp + (int)date('Z', (int)$timestamp);
-        // output date as an ISO-8601 date
-        return gmdate('Y-m-d\TH:i:s\Z', $adjustedValue);
+        return date(DateTimeFormat::ISO8601_LOCALTIME, $timestamp);
     }
 
     /**

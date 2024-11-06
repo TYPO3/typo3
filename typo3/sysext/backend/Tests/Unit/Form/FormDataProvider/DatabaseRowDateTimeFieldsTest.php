@@ -222,7 +222,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = '2015-07-27T00:00:00+00:00';
+        $expected['databaseRow']['aField'] = '2015-07-27T00:00:00';
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }
@@ -249,7 +249,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = '2015-07-27T15:25:32+00:00';
+        $expected['databaseRow']['aField'] = '2015-07-27T15:25:32';
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }
@@ -276,7 +276,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = date('Y-m-d') . 'T15:25:32+00:00';
+        $expected['databaseRow']['aField'] = date('Y-m-d') . 'T15:25:32';
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
     }
@@ -303,7 +303,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = date('Y-m-d') . 'T00:00:00+00:00';
+        $expected['databaseRow']['aField'] = date('Y-m-d') . 'T00:00:00';
 
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);
@@ -332,7 +332,7 @@ final class DatabaseRowDateTimeFieldsTest extends UnitTestCase
             ],
         ];
         $expected = $input;
-        $expected['databaseRow']['aField'] = date('Y-m-d') . 'T00:00:00+00:00';
+        $expected['databaseRow']['aField'] = date('Y-m-d') . 'T00:00:00';
 
         self::assertEquals($expected, (new DatabaseRowDateTimeFields())->addData($input));
         date_default_timezone_set($oldTimezone);

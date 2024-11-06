@@ -162,15 +162,5 @@ return [
                 'dbType' => 'time',
             ],
         ],
-
-        'comment' => [
-            'exclude' => false,
-            'label' => 'comment',
-            'config' => [
-                'type' => 'input',
-                'size' => 60,
-                'max' => 255,
-            ],
-        ],
     ],
 ];

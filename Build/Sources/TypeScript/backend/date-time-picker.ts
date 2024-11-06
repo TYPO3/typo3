@@ -18,7 +18,7 @@ import ThrottleEvent from '@typo3/core/event/throttle-event';
 import type { PostValidationEvent } from '@typo3/backend/form-engine-validation';
 import '@typo3/backend/input/clearable';
 
-const ISO8601_UTC = 'ISO8601_UTC';
+const ISO8601_LOCALTIME = 'ISO8601_LOCALTIME';
 
 interface FlatpickrInputElement extends HTMLInputElement {
   _flatpickr: flatpickr.Instance;
@@ -150,31 +150,25 @@ class DateTimePicker {
       // We configure a dummy dateFormat token and use luxon parsing/formatting
       // internally, as flatpickr cannot be configured to ignore timezones
       // (in order to behave similar to <input type=datetime-local>)
-      dateFormat: ISO8601_UTC,
+      dateFormat: ISO8601_LOCALTIME,
       defaultHour: now.getHours(),
       defaultMinute: now.getMinutes(),
       enableSeconds: false,
       enableTime: false,
       formatDate: (date: Date, format: string) => {
         const dt = DateTime.fromJSDate(date);
-        if (format === ISO8601_UTC) {
-          // JS dates are always encoded in localtime (flatpickr can only operate in localtime) and are now "intepreted" as UTC:
-          // We discard the intermediate local-time offset; that means the hours and minutes from localtime are rendered as-is
-          return dt.toUTC().plus(dt.offset * 60 * 1000).toISO({ suppressMilliseconds: true });
+        if (format === ISO8601_LOCALTIME) {
+          return dt.toISO({ suppressMilliseconds: true, includeOffset: false });
         }
         return dt.toFormat(format);
       },
       parseDate: (currentDateString: string, format: string): Date => {
-        if (format === ISO8601_UTC) {
-          const isoDt = DateTime.fromISO(currentDateString, { zone: 'utc' });
-          if (!isoDt.isValid) {
+        if (format === ISO8601_LOCALTIME) {
+          const localDate = DateTime.fromISO(currentDateString);
+          if (!localDate.isValid) {
             throw new Error('Invalid ISO8601 date: ' + currentDateString);
           }
-          const localDate = isoDt.toLocal();
-          // This is the reverse operation of the formatting in `formatDate`:
-          // We substract the localtime offset to generate a local-time JS Date instance,
-          // that will contain the same local-time hour/time values as the UTC input.
-          return localDate.minus(localDate.offset * 60 * 1000).toJSDate();
+          return localDate.toJSDate();
         }
         return DateTime.fromFormat(currentDateString, format).toJSDate();
       },
@@ -255,11 +249,11 @@ class DateTimePicker {
     }
 
     if (inputElement.dataset.dateMinDate !== undefined) {
-      options.minDate = options.parseDate(inputElement.dataset.dateMinDate, ISO8601_UTC);
+      options.minDate = options.parseDate(inputElement.dataset.dateMinDate, ISO8601_LOCALTIME);
       options.minDate.setSeconds(0);
     }
     if (inputElement.dataset.dateMaxDate !== undefined) {
-      options.maxDate = options.parseDate(inputElement.dataset.dateMaxDate, ISO8601_UTC);
+      options.maxDate = options.parseDate(inputElement.dataset.dateMaxDate, ISO8601_LOCALTIME);
       options.maxDate.setSeconds(59);
     }
 

@@ -188,22 +188,18 @@ class QueryHelper
      */
     public static function getDateTimeFormats(): array
     {
-        // @todo: 'reset' is unused these days, remove in v14
         return [
             'date' => [
                 'empty' => '0000-00-00',
                 'format' => 'Y-m-d',
-                'reset' => null,
             ],
             'datetime' => [
                 'empty' => '0000-00-00 00:00:00',
                 'format' => 'Y-m-d H:i:s',
-                'reset' => null,
             ],
             'time' => [
                 'empty' => '00:00:00',
                 'format' => 'H:i:s',
-                'reset' => '00:00:00',
             ],
         ];
     }

@@ -68,14 +68,14 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     {
       'description': 'works for type date with iso date',
       'type': 'date',
-      'value': '2016-12-02T11:16:06Z',
-      'result': '2016-12-02T11:16:06Z'
+      'value': '2016-12-02T11:16:06',
+      'result': '2016-12-02T11:16:06'
     },
     {
       'description': 'works for type date with iso date with milliseconds',
       'type': 'date',
-      'value': '2016-12-02T11:16:06.000Z',
-      'result': '2016-12-02T11:16:06Z'
+      'value': '2016-12-02T11:16:06.000',
+      'result': '2016-12-02T11:16:06'
     },
     {
       'description': 'works for type date with empty value',
@@ -86,14 +86,14 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     {
       'description': 'works for type datetime with iso date',
       'type': 'datetime',
-      'value': '2016-12-02T11:16:06Z',
-      'result': '2016-12-02T11:16:06Z'
+      'value': '2016-12-02T11:16:06',
+      'result': '2016-12-02T11:16:06'
     },
     {
       'description': 'works for type datetime with iso date with milliseconds',
       'type': 'datetime',
-      'value': '2016-12-02T11:16:06.000Z',
-      'result': '2016-12-02T11:16:06Z'
+      'value': '2016-12-02T11:16:06.000',
+      'result': '2016-12-02T11:16:06'
     },
     {
       'description': 'works for type datetime with empty value',
@@ -104,8 +104,8 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     {
       'description': 'works for type time with iso date',
       'type': 'time',
-      'value': '2016-12-02T11:16:06Z',
-      'result': '2016-12-02T11:16:06Z'
+      'value': '2016-12-02T11:16:06',
+      'result': '2016-12-02T11:16:06'
     },
     {
       'description': 'works for type time with empty value',
@@ -116,8 +116,8 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
     {
       'description': 'works for type timesec with iso date',
       'type': 'timesec',
-      'value': '2016-12-02T11:16:06Z',
-      'result': '2016-12-02T11:16:06Z'
+      'value': '2016-12-02T11:16:06',
+      'result': '2016-12-02T11:16:06'
     },
     {
       'description': 'works for type timesec with empty value',

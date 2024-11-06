@@ -58,7 +58,7 @@ final class DatetimeTest extends FunctionalTestCase
     public static function getDatetimeSets(): array
     {
         return [
-            'Default FormEngine server-client format: Fake UTC-0 (localtime!) on UTC Server' => [
+            'UTC0 on UTC Server' => [
                 'resultSet' => 'Result',
                 'timezone' => 'UTC',
                 'datetime' => '2014-10-22T23:58:00Z',
@@ -66,8 +66,8 @@ final class DatetimeTest extends FunctionalTestCase
                 'timesec' => '1970-01-01T23:58:20Z',
                 'time' => '1970-01-01T23:58:00Z',
             ],
-            'Default FormEngine server-client format:fake UTC-0 (localtime!) on Europe/Berlin Server' => [
-                'resultSet' => 'ResultBerlinFakeUTC0',
+            'UTC0 on Europe/Berlin Server' => [
+                'resultSet' => 'ResultUTC0Berlin',
                 'timezone' => 'Europe/Berlin',
                 'datetime' => '2014-10-22T23:58:00Z',
                 'date' => '2014-10-22T00:00:00Z',
@@ -75,8 +75,7 @@ final class DatetimeTest extends FunctionalTestCase
                 'time' => '1970-01-01T23:58:00Z',
             ],
 
-            // HEADS UP: Localtime offsets are currently not supported official by DataHandler, this test shows *why* (it's broken)
-            'ISO8601 localtime (currently unused!) on UTC Server' => [
+            'ISO8601 localtime (Formengine server-client format) on UTC Server' => [
                 'resultSet' => 'Result',
                 'timezone' => 'UTC',
                 'datetime' => '2014-10-22T23:58:00',
@@ -84,16 +83,12 @@ final class DatetimeTest extends FunctionalTestCase
                 'timesec' => '1970-01-01T23:58:20',
                 'time' => '1970-01-01T23:58:00',
             ],
-            'ISO8601 localtime (currently unused!) on Europe/Berlin Server' => [
+            'ISO8601 localtime (Formengine server-client format) on Europe/Berlin Server' => [
                 'resultSet' => 'ResultBerlinLocaltime',
                 'timezone' => 'Europe/Berlin',
-                // @todo should be 1414015080, but is 1414007880 as localtime offset is currently cropped because it is differentiated from fake UTC0
                 'datetime' => '2014-10-22T23:58:00',
-                // @todo should be 1413928800, but is 1413921600
                 'date' => '2014-10-22T00:00:00',
-                // @todo should be 86300 for int fields, but is 82700, see `23*3600 + 58*60 + 20`
                 'timesec' => '1970-01-01T23:58:20',
-                // @todo should be 86280 for int fields, but is 82680, see `23*3600 + 58*60`
                 'time' => '1970-01-01T23:58:00',
             ],
 
@@ -136,25 +131,14 @@ final class DatetimeTest extends FunctionalTestCase
                 'date' => '2014-10-22T00:00:00+02:00',
                 'timesec' => '1970-01-01T23:58:20+02:00',
                 'time' => '1970-01-01T23:58:00+02:00',
-                'comment' => '@todo: Fix offsets to *not* be cropped',
             ],
-            // HEADS UP: Timezone offsets are currently not supported official by DataHandler, this test shows *why* (it's broken)
-            'timezone offsets are cropped on Europe/Berlin' => [
+            'timezone offsets on Europe/Berlin' => [
                 'resultSet' => 'ResultOffsetBerlin',
                 'timezone' => 'Europe/Berlin',
-                // @todo: should be 1414015080 for int fields, but is 1414007880, see `date --date=2014-10-22T23:58:00+02:00 +%s`
-                // @todo: should be "2014-10-22 23:58:00" for native fields, but is "2014-10-22 21:58:00"
                 'datetime' => '2014-10-22T23:58:00+02:00',
-                // @todo: should be 1413928800 for int fields, but is 1413921600, see `date --date=2014-10-22T00:00:00+02:00 +%s`
-                // @todo: should be "2014-10-21" for native fields, but is "2014-10-21"
                 'date' => '2014-10-22T00:00:00+02:00',
-                // @todo should be 86300 for int fields, but is 79100, see `23*3600 + 58*60 + 20`
-                // @todo should be "23:58:20", but is "21:58:20"
                 'timesec' => '1970-01-01T23:58:20+02:00',
-                // @todo should be 86280 for int fields, but is 79080, see `23*3600 + 58*60`
-                // @todo should be "23:58:00", but is "21:58:00"
                 'time' => '1970-01-01T23:58:00+02:00',
-                'comment' => '@todo: Fix offsets to *not* be cropped',
             ],
         ];
     }
@@ -168,7 +152,6 @@ final class DatetimeTest extends FunctionalTestCase
         ?string $date,
         ?string $timesec,
         ?string $time,
-        string $comment = ''
     ): void {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Datetime/Base.csv');
 
@@ -201,7 +184,6 @@ final class DatetimeTest extends FunctionalTestCase
                     'NEW-1' => [
                         'pid' => 2,
                         ...$fields,
-                        'comment' => $comment,
                     ],
                 ],
             ],
@@ -209,6 +191,130 @@ final class DatetimeTest extends FunctionalTestCase
         );
         $dataHandler->process_datamap();
         date_default_timezone_set($oldTimezone);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/Datetime/' . $resultSet . '.csv');
+    }
+
+    public static function getDatetimeObjectSets(): array
+    {
+        return [
+            'UTC0 on UTC Server' => [
+                'resultSet' => 'Result',
+                'timezone' => 'UTC',
+                'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00Z'),
+                'date' => new \DateTimeImmutable('2014-10-22T00:00:00Z'),
+                'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20Z'),
+                'time' => new \DateTimeImmutable('1970-01-01T23:58:00Z'),
+            ],
+            'UTC0 on Europe/Berlin Server' => [
+                'resultSet' => 'ResultUTC0Berlin',
+                'timezone' => 'Europe/Berlin',
+                'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00Z'),
+                'date' => new \DateTimeImmutable('2014-10-22T00:00:00Z'),
+                'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20Z'),
+                'time' => new \DateTimeImmutable('1970-01-01T23:58:00Z'),
+            ],
+
+            'ISO8601 localtime (Formengine server-client format) on UTC Server' => [
+                'resultSet' => 'Result',
+                'timezone' => 'UTC',
+                'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00'),
+                'date' => new \DateTimeImmutable('2014-10-22T00:00:00'),
+                'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20'),
+                'time' => new \DateTimeImmutable('1970-01-01T23:58:00'),
+            ],
+            'ISO8601 localtime (Formengine server-client format) on Europe/Berlin Server' => [
+                'resultSet' => 'ResultBerlinLocaltime',
+                'timezone' => 'Europe/Berlin',
+                'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00', new \DateTimeZone('Europe/Berlin')),
+                'date' => new \DateTimeImmutable('2014-10-22T00:00:00', new \DateTimeZone('Europe/Berlin')),
+                'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20', new \DateTimeZone('Europe/Berlin')),
+                'time' => new \DateTimeImmutable('1970-01-01T23:58:00', new \DateTimeZone('Europe/Berlin')),
+            ],
+
+            'null to null on UTC' => [
+                'resultSet' => 'ResultNull',
+                'timezone' => 'UTC',
+                'datetime' => null,
+                'date' => null,
+                'timesec' => null,
+                'time' => null,
+            ],
+            'null to null on Europe/Berlin' => [
+                'resultSet' => 'ResultNull',
+                'timezone' => 'Europe/Berlin',
+                'datetime' => null,
+                'date' => null,
+                'timesec' => null,
+                'time' => null,
+            ],
+            'timezone offsets on UTC' => [
+                'resultSet' => 'ResultOffsetUTC',
+                'timezone' => 'UTC',
+                'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00+02:00'),
+                'date' => new \DateTimeImmutable('2014-10-22T00:00:00+02:00'),
+                'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20+02:00'),
+                'time' => new \DateTimeImmutable('1970-01-01T23:58:00+02:00'),
+            ],
+            'timezone offsets on Europe/Berlin' => [
+                'resultSet' => 'ResultOffsetBerlin',
+                'timezone' => 'Europe/Berlin',
+                'datetime' => new \DateTimeImmutable('2014-10-22T23:58:00+02:00'),
+                'date' => new \DateTimeImmutable('2014-10-22T00:00:00+02:00'),
+                'timesec' => new \DateTimeImmutable('1970-01-01T23:58:20+02:00'),
+                'time' => new \DateTimeImmutable('1970-01-01T23:58:00+02:00'),
+            ],
+        ];
+    }
+
+    #[DataProvider('getDatetimeObjectSets')]
+    #[Test]
+    public function createDatetimeObjectRecords(
+        string $resultSet,
+        string $timezone,
+        ?\DateTimeInterface $datetime,
+        ?\DateTimeInterface $date,
+        ?\DateTimeInterface $timesec,
+        ?\DateTimeInterface $time,
+    ): void {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/Datetime/Base.csv');
+
+        $fields = [
+            'datetime_int' => $datetime,
+            'datetime_int_nullable' => $datetime,
+            'datetime_native' => $datetime,
+
+            'date_int' => $date,
+            'date_int_nullable' => $date,
+            'date_native' => $date,
+
+            'timesec_int' => $timesec,
+            'timesec_int_nullable' => $timesec,
+            'timesec_native' => $timesec,
+
+            'time_int' => $time,
+            'time_int_nullable' => $time,
+            'time_native' => $time,
+        ];
+
+        $oldTimezone = date_default_timezone_get();
+        date_default_timezone_set($timezone);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->enableLogging = false;
+        $dataHandler->start(
+            [
+                'tx_testdatahandler_datetime' => [
+                    'NEW-1' => [
+                        'pid' => 2,
+                        ...$fields,
+                    ],
+                ],
+            ],
+            [],
+        );
+        $dataHandler->process_datamap();
+        date_default_timezone_set($oldTimezone);
+
         $this->assertCSVDataSet(__DIR__ . '/DataSet/Datetime/' . $resultSet . '.csv');
     }
 }

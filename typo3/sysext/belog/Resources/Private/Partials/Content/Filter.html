@@ -5,6 +5,8 @@
     data-namespace-typo3-fluid="true">
 
 <f:form object="{constraint}" action="list" name="constraint">
+    <f:variable name="dateFormat" value="{f:constant(name: '\TYPO3\CMS\Core\Domain\DateTimeFormat::ISO8601_LOCALTIME')}" />
+
     <div class="form-row">
 
         <div class="form-group">
@@ -116,7 +118,7 @@
             <div class="input-group">
                 <f:form.textfield
                     property="manualDateStart"
-                    value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format:'c', date: '{constraint.manualDateStart}')}\")}"
+                    value="{f:if(condition: constraint.manualDateStart, then: \"{f:format.date(format: dateFormat, date: '{constraint.manualDateStart}')}\")}"
                     id="manualDateStart"
                     additionalAttributes="{'autocomplete': 'off'}"
                     class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
@@ -133,7 +135,7 @@
             <div class="input-group">
                 <f:form.textfield
                     property="manualDateStop"
-                    value="{f:format.date(format:'c', date: '{constraint.manualDateStop}')}"
+                    value="{f:format.date(format: dateFormat, date: '{constraint.manualDateStop}')}"
                     additionalAttributes="{'autocomplete': 'off'}"
                     id="manualDateStop"
                     class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
