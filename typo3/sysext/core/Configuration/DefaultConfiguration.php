@@ -835,7 +835,12 @@ return [
                     ],
                 ],
                 'flexFormSegment' => [
-                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class => [],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDateTimeFields::class,
+                        ],
+                    ],
                     \TYPO3\CMS\Backend\Form\FormDataProvider\SiteResolving::class => [
                         'depends' => [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRowDefaultValues::class,

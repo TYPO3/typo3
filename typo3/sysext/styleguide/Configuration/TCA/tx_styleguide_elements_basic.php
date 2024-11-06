@@ -1701,10 +1701,10 @@ backend_layout {
                                                 </config>
                                             </inputDateTime_3>
                                             <inputDateTime_4>
-                                                <label>inputDateTime_4 dbType=datetime format=date</label>
+                                                <label>inputDateTime_4 dbType=datetime format=datetime</label>
                                                 <config>
                                                     <type>datetime</type>
-                                                    <format>date</format>
+                                                    <format>datetime</format>
                                                     <dbType>datetime</dbType>
                                                 </config>
                                             </inputDateTime_4>
