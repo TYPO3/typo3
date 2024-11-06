@@ -133,7 +133,6 @@ export default class FormEngineValidation {
    * Format field value
    */
   public static formatValue(type: string, value: string|number): string {
-    let theString = '';
     switch (type) {
       case 'date':
       case 'datetime':
@@ -143,27 +142,16 @@ export default class FormEngineValidation {
         if (value === '' || value === '0') {
           return '';
         }
-
         const isoDt = DateTime.fromISO(String(value), { zone: 'utc' });
-        if (isoDt.isValid) {
-          return isoDt.toISO({ suppressMilliseconds: true });
+        if (!isoDt.isValid) {
+          throw new Error('Invalid ISO8601 DateTime string: ' + value);
         }
-
-        const parsedInt = typeof value === 'number' ? value : parseInt(value, 10);
-        if (isNaN(parsedInt)) {
-          theString = '';
-        } else {
-          const dt = DateTime.fromSeconds(parsedInt, { zone: 'utc' });
-          theString = dt.toISO({ suppressMilliseconds: true });
-        }
-        break;
+        return isoDt.toISO({ suppressMilliseconds: true });
       case 'password':
-        theString = (value) ? FormEngineValidation.passwordDummy : '';
-        break;
+        return (value) ? FormEngineValidation.passwordDummy : '';
       default:
-        theString = value.toString();
+        return value.toString();
     }
-    return theString;
   }
 
   /**
