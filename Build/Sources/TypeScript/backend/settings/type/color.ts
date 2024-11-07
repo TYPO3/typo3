@@ -14,46 +14,46 @@
 import { html, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { BaseElement } from './base';
-import Alwan from 'alwan';
+import '@typo3/backend/color-picker';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 export const componentName = 'typo3-backend-settings-type-color';
 
 @customElement(componentName)
-export class ColorTypeElement extends BaseElement<string> {
+export class ColorTypeElement extends BaseElement {
 
   @property({ type: String }) value: string;
 
-  private alwan: Alwan|null = null;
-
   protected firstUpdated(): void {
-    this.alwan = new Alwan(this.querySelector('input'), {
-      position: 'bottom-start',
-      format: 'hex',
-      opacity: false,
-      preset: false,
-      color: this.value,
-    });
-    this.alwan.on('color', (e): void => {
-      this.value = e.hex;
-    });
+    const inputElement = this.getInputElement();
+    if (inputElement) {
+      new RegularEvent('blur', (e: Event): void => {
+        this.updateValue((e.target as HTMLInputElement).value);
+      }).bindTo(inputElement);
+    }
   }
 
   protected updateValue(value: string) {
     this.value = value;
-    this.alwan?.setColor(value);
   }
 
   protected render(): TemplateResult {
     return html`
-      <input
-        type="text"
-        id=${this.formid}
-        class="form-control"
-        ?readonly=${this.readonly}
-        .value=${this.value}
-        @change=${(e: InputEvent) => this.updateValue((e.target as HTMLInputElement).value)}
-      />
+      <typo3-backend-color-picker>
+        <input
+          type="text"
+          id=${this.formid}
+          class="form-control"
+          ?readonly=${this.readonly}
+          .value=${this.value}
+          @change=${(e: InputEvent) => this.updateValue((e.target as HTMLInputElement).value)}
+        />
+      </typo3-backend-color-picker>
     `;
+  }
+
+  protected getInputElement(): HTMLInputElement {
+    return this.querySelector<HTMLInputElement>('input');
   }
 }
 

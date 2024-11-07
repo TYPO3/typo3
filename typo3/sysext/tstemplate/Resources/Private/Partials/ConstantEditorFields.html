@@ -67,14 +67,16 @@
                                     />
                                 </f:case>
                                 <f:case value="color">
-                                    <input
-                                        class="form-control t3js-color-input"
-                                        type="text"
-                                        id="{constantItem.idName}"
-                                        rel="{constantItem.idName}"
-                                        name="data[{constantItem.name}]"
-                                        value="{constantItem.value}"
-                                    />
+                                    <typo3-backend-color-picker>
+                                        <input
+                                            class="form-control"
+                                            type="text"
+                                            id="{constantItem.idName}"
+                                            rel="{constantItem.idName}"
+                                            name="data[{constantItem.name}]"
+                                            value="{constantItem.value}"
+                                        />
+                                    </typo3-backend-color-picker>
                                 </f:case>
                                 <f:case value="wrap">
                                     <input
@@ -170,7 +172,16 @@
                                     <core:icon identifier="actions-open" />
                                 </span>
                             </button>
-                            <input class="form-control" type="number" placeholder="{constantItem.default_value}" disabled readonly>
+                            <f:if condition="{constantItem.type} == 'color'">
+                                <f:then>
+                                    <typo3-backend-color-picker color="{constantItem.default_value}">
+                                        <input class="form-control" type="number" placeholder="{constantItem.default_value}" disabled readonly>
+                                    </typo3-backend-color-picker>
+                                </f:then>
+                                <f:else>
+                                    <input class="form-control" type="number" placeholder="{constantItem.default_value}" disabled readonly>
+                                </f:else>
+                            </f:if>
                         </div>
                     </div>
                 </fieldset>

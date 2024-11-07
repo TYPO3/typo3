@@ -13,10 +13,10 @@
 
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
+import '@typo3/backend/color-picker';
 
 enum Selectors {
   editIconSelector = '.t3js-toggle',
-  colorInputSelector = '.t3js-color-input'
 }
 
 /**
@@ -27,15 +27,9 @@ enum Selectors {
 class ConstantEditor {
   constructor() {
     DocumentService.ready().then((document: Document): void => {
-      const colorInputElements: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.colorInputSelector);
-      if (colorInputElements.length) {
-        import('@typo3/backend/color-picker').then(({ default: ColorPicker }): void => {
-          colorInputElements.forEach((element: HTMLInputElement): void => {
-            ColorPicker.initialize(element);
-          });
-        });
+      if (document.querySelectorAll('typo3-backend-color-picker').length) {
+        import('@typo3/backend/color-picker');
       }
-
       this.registerEvents();
     });
   }

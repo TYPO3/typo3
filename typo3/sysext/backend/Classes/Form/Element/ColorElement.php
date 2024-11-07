@@ -95,7 +95,9 @@ class ColorElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-item-element">';
             $html[] =           '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
-            $html[] =               '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
+            $html[] =               '<typo3-backend-color-picker>';
+            $html[] =                   '<input class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" value="' . htmlspecialchars((string)$itemValue) . '" type="text" disabled>';
+            $html[] =               '</typo3-backend-color-picker>';
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -118,7 +120,6 @@ class ColorElement extends AbstractFormElement
             'id' => $fieldId,
             'class' => implode(' ', [
                 'form-control',
-                't3js-color-picker',
             ]),
             'maxlength' => $opacityEnabled ? 9 : 7, // #RRGGBBAA (/#[0-9a-fA-F]{3,6}([0-9]{2})?/)
             'data-formengine-validation-rules' => $this->getValidationDataAsJsonString($config),
@@ -159,12 +160,36 @@ class ColorElement extends AbstractFormElement
         $fieldControlHtml = $fieldControlResult['html'];
         $resultArray = $this->mergeChildReturnIntoExistingResult($resultArray, $fieldControlResult, false);
 
+        $configuredPalette =
+            $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
+            ?? $tsConfig['TCEFORM.'][$table . '.']['colorPalette']
+            ?? $tsConfig['TCEFORM.']['colorPalette']
+            ?? null;
+        if ($configuredPalette === null) {
+            // No palette defined in TCEFORM, fall back to all colors
+            $colorDefinitions = array_map(static function (array $colorDefinition): string {
+                return $colorDefinition['value'] ?? '';
+            }, array_values($tsConfig['colorPalettes.']['colors.'] ?? []));
+        } else {
+            $colorsInPalette = GeneralUtility::trimExplode(',', $tsConfig['colorPalettes.']['palettes.'][$configuredPalette] ?? '', true);
+            $colorDefinitions = array_map(static function (string $colorIdentifier) use ($tsConfig): string {
+                return $tsConfig['colorPalettes.']['colors.'][$colorIdentifier . '.']['value'] ?? '';
+            }, $colorsInPalette);
+        }
+        $colorPickerAttribute = [
+            'swatches' => implode(';', array_unique(array_filter($colorDefinitions))),
+            'opacity' => $opacityEnabled,
+            'color' => htmlspecialchars((string)$itemValue),
+        ];
+
         $mainFieldHtml = [];
         $mainFieldHtml[] = '<div class="form-control-wrap" style="max-width: ' . $width . 'px">';
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-item-element">';
-        $mainFieldHtml[] =          '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
-        $mainFieldHtml[] =          '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
+        $mainFieldHtml[] =          '<typo3-backend-color-picker ' . GeneralUtility::implodeAttributes($colorPickerAttribute, true) . '>';
+        $mainFieldHtml[] =              '<input type="text" ' . GeneralUtility::implodeAttributes($attributes, true) . ' />';
+        $mainFieldHtml[] =              '<input type="hidden" name="' . $itemName . '" value="' . htmlspecialchars((string)$itemValue) . '" />';
+        $mainFieldHtml[] =          '</typo3-backend-color-picker>';
         $mainFieldHtml[] =      '</div>';
         $mainFieldHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
         $mainFieldHtml[] =          '<div class="btn-group">';
@@ -237,26 +262,8 @@ class ColorElement extends AbstractFormElement
             $fullElement = implode(LF, $fullElement);
         }
 
-        $configuredPalette =
-            $tsConfig['TCEFORM.'][$table . '.'][$fieldName . '.']['colorPalette']
-            ?? $tsConfig['TCEFORM.'][$table . '.']['colorPalette']
-            ?? $tsConfig['TCEFORM.']['colorPalette']
-            ?? null;
-        if ($configuredPalette === null) {
-            // No palette defined in TCEFORM, fall back to all colors
-            $colorDefinitions = array_map(static function (array $colorDefinition): string {
-                return $colorDefinition['value'] ?? '';
-            }, array_values($tsConfig['colorPalettes.']['colors.'] ?? []));
-        } else {
-            $colorsInPalette = GeneralUtility::trimExplode(',', $tsConfig['colorPalettes.']['palettes.'][$configuredPalette] ?? '', true);
-            $colorDefinitions = array_map(static function (string $colorIdentifier) use ($tsConfig): string {
-                return $tsConfig['colorPalettes.']['colors.'][$colorIdentifier . '.']['value'] ?? '';
-            }, $colorsInPalette);
-        }
         $attributes = [
             'recordFieldId' => $fieldId,
-            'colorPalette' => implode(';', array_unique(array_filter($colorDefinitions))),
-            'opacity' => $opacityEnabled,
         ];
 
         $resultArray['html'] = $renderedLabel . '

@@ -14,6 +14,7 @@
 import RegularEvent from '@typo3/core/event/regular-event';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import { selector } from '@typo3/core/literals';
+import '@typo3/backend/color-picker';
 
 /**
  * Module: @typo3/backend/form-engine/element/color-element
@@ -43,15 +44,6 @@ class ColorElement extends HTMLElement {
     }
 
     this.registerEventHandler();
-
-    const swatches = this.hasAttribute('colorPalette') ? this.getAttribute('colorPalette').split(';') : [];
-    const opacity = this.hasAttribute('opacity');
-    import('@typo3/backend/color-picker').then(({ default: ColorPicker }): void => {
-      ColorPicker.initialize(this.element, {
-        swatches: swatches,
-        opacity: opacity
-      });
-    });
   }
 
   private registerEventHandler(): void {
@@ -59,17 +51,23 @@ class ColorElement extends HTMLElement {
 
     new RegularEvent('blur', (e: Event): void => {
       hiddenElement.value = (e.target as HTMLInputElement).value;
+      this.handleEvent(e);
     }).bindTo(this.element);
 
-    new RegularEvent('formengine.cp.change', (e: CustomEvent): void => {
-      FormEngineValidation.validateField(e.target as HTMLInputElement);
-      FormEngineValidation.markFieldAsChanged(e.target as HTMLInputElement);
-
-      document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
-        btn.classList.remove('disabled');
-        btn.disabled = false;
-      });
+    new RegularEvent('formengine.cp.change', (e: Event): void => {
+      this.handleEvent(e);
     }).bindTo(this.element);
+  }
+
+
+  private handleEvent(e: Event): void {
+    FormEngineValidation.validateField(e.target as HTMLInputElement);
+    FormEngineValidation.markFieldAsChanged(e.target as HTMLInputElement);
+
+    document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
+      btn.classList.remove('disabled');
+      btn.disabled = false;
+    });
   }
 }
 
