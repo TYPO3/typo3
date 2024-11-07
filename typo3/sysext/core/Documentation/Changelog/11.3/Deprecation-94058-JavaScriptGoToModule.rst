@@ -35,13 +35,29 @@ Migration
 Use the following HTML code to replace the inline :js:`goToModule()`
 call to for example link to the page module:
 
-.. code-block:: html
+..  code-block:: html
 
-   <a href="#"
-      data-dispatch-action="TYPO3.ModuleMenu.showModule"
-      data-dispatch-args-list="web_layout"
-   >
-      Go to page module
-   </a>
+    <a href="#"
+       data-dispatch-action="TYPO3.ModuleMenu.showModule"
+       data-dispatch-args-list="web_layout"
+    >
+       Go to page module
+    </a>
+
+Inside actual JavaScript code, you can replace calls to :js:`goToModule()`
+(or :js:`top.goToModule()`) like this:
+
+..  code-block:: js
+    :caption: Example for TYPO3 v12+
+
+    // Utilize imports rather than straight usage of TYPO3.ModuleMenu.App.showModule()
+    import ModuleMenu from '@typo3/backend/module-menu.js';
+
+    ModuleMenu.App.showModule('web_layout')
+
+..  code-block:: js
+    :caption: Example for TYPO3 v11
+
+    TYPO3.ModuleMenu.App.showModule('web_layout')
 
 .. index:: JavaScript, FullyScanned, ext:backend
