@@ -104,14 +104,16 @@
                                                             />
                                                         </f:case>
                                                         <f:case value="color">
-                                                            <input
-                                                                class="form-control t3js-color-input"
-                                                                type="text"
-                                                                id="em-{extensionKey}-{configurationItem.name}"
-                                                                name="{configurationItem.name}"
-                                                                value="{configurationItem.value}"
-                                                                {f:if(condition: '!{isWritable}', then: 'disabled')}
-                                                            />
+                                                            <typo3-backend-color-picker>
+                                                                <input
+                                                                    class="form-control"
+                                                                    type="text"
+                                                                    id="em-{extensionKey}-{configurationItem.name}"
+                                                                    name="{configurationItem.name}"
+                                                                    value="{configurationItem.value}"
+                                                                    {f:if(condition: '!{isWritable}', then: 'disabled')}
+                                                                />
+                                                            </typo3-backend-color-picker>
                                                         </f:case>
                                                         <f:case value="wrap">
                                                             <input

@@ -11,53 +11,105 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import { customElement, property, query } from 'lit/decorators';
+import { css, html, LitElement, TemplateResult } from 'lit';
 import Alwan from 'alwan';
 import RegularEvent from '@typo3/core/event/regular-event';
 
-interface ColorPickerSettings {
-  swatches?: string[],
-  opacity?: boolean
-}
-
-/**
- * Module: @typo3/backend/color-picker
- * contains all logic for the color picker used in FormEngine
- * @exports @typo3/backend/color-picker
- */
-class ColorPicker {
-
-  /**
-   * Initialize the color picker for the given element
-   */
-  public initialize(element: HTMLInputElement, options: ColorPickerSettings = {}): void {
-    if (element.classList.contains('t3js-colorpicker-initialized')) {
-      return;
+@customElement('typo3-backend-color-picker')
+export class Typo3BackendColorPicker extends LitElement {
+  static styles = css`
+    .color-picker-preview {
+      display: block;
+      position: absolute;
+      width: 1.25rem;
+      height: 1.25rem;
+      top: 50%;
+      inset-inline-start: var(--typo3-input-padding-x);
+      z-index: 10;
+      transform: translate(0, -50%);
+      background: var(--alwan-pattern);
+      border-radius: 3px !important;
+      pointer-events: none;
     }
 
-    const alwan = new Alwan(element, {
-      position: 'bottom-start',
-      format: 'hex',
-      opacity: options.opacity,
-      preset: false,
-      color: element.value,
-      swatches: options.swatches,
-    });
-    element.classList.add('t3js-colorpicker-initialized');
+    .color-picker-preview-color {
+      position: absolute;
+      inset: 0;
+      border-radius: 2px;
+      background-color: var(--color, transparent);
+    }
+    `;
 
-    // On element change, set the formatted value from alwan
-    alwan.on('color', (e): void => {
-      element.value = e.hex;
-      element.dispatchEvent(new Event('blur'));
-    });
+  @property({ type: String }) color: string = '';
+  @property({ type: Boolean }) opacity: boolean = false;
+  @property({ type: String }) swatches: string = '';
 
-    // input: react on user input
-    // change: react on indirect changes, e.g. a value picker
-    ['input', 'change'].forEach((eventName: string): void => {
-      new RegularEvent(eventName, (e: Event): void => {
-        alwan.setColor((e.target as HTMLInputElement).value);
-      }).bindTo(element);
-    });
+  // Use a reference to the input slot element
+  @query('slot') slotEl!: HTMLSlotElement;
+
+  protected firstUpdated(): void {
+    const inputElement = this.getInputElement();
+    if (inputElement) {
+      if (!inputElement.value && this.color) {
+        inputElement.value = this.color;
+      } else {
+        this.color = inputElement.value;
+      }
+
+      if (inputElement.disabled || inputElement.readOnly) {
+        return;
+      }
+
+      const alwan = new Alwan(inputElement, {
+        position: 'bottom-start',
+        format: 'hex',
+        opacity: this.opacity,
+        swatches: this.swatches ? this.swatches.split(';') : [],
+        preset: false,
+        color: this.color,
+      });
+
+      alwan.on('color', (e): void => {
+        this.color = e.hex;
+        inputElement.value = this.color;
+        inputElement.dispatchEvent(new Event('blur'));
+      });
+
+      // input: react on user input
+      // change: react on indirect changes, e.g. a value picker
+      ['input', 'change'].forEach((eventName: string): void => {
+        new RegularEvent(eventName, (e: Event): void => {
+          const input = (e.target as HTMLInputElement);
+          this.color = input.value;
+          alwan.setColor(this.color);
+        }).bindTo(inputElement);
+      });
+    }
+  }
+
+  protected render(): TemplateResult {
+    return html`
+      <slot></slot>
+      <span style="--color: ${this.color}" class="color-picker-preview"><span class="color-picker-preview-color"></span></span>
+    `;
+  }
+
+  private getInputElement(): HTMLInputElement | null {
+    const assignedNodes = this.slotEl.assignedNodes();
+    for (const node of assignedNodes) {
+      if (node instanceof HTMLInputElement) {
+        return node;
+      }
+    }
+    console.warn('No input element found in the slot.');
+    return null;
   }
 }
 
-export default new ColorPicker();
+// Register the custom element
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-color-picker': Typo3BackendColorPicker;
+  }
+}

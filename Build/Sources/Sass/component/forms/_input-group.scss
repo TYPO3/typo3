@@ -11,7 +11,8 @@
 
     > .form-control-clearable-wrapper,
     > .form-control,
-    > .form-select {
+    > .form-select,
+    > typo3-backend-color-picker {
         position: relative; // For focus state's z-index
         flex: 1 1 auto;
         width: 1%;
@@ -122,7 +123,8 @@
         $validation-messages: $validation-messages + ":not(." + unquote($state) + "-tooltip)" + ":not(." + unquote($state) + "-feedback)";
     }
 
-    > :not(:first-child):not(.dropdown-menu)#{$validation-messages} {
+    > :not(:first-child):not(.dropdown-menu)#{$validation-messages},
+    > typo3-backend-color-picker:not(:first-child):not(.dropdown-menu)#{$validation-messages} > .form-control {
         margin-inline-start: calc(var(--typo3-input-border-width) * -1);
         border-start-start-radius: 0;
         border-end-start-radius: 0;

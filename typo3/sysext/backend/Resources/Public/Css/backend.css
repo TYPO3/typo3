@@ -2615,7 +2615,7 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .form-control-clearable-wrapper:focus{box-shadow:none;border-color:inherit}
 .form-control-clearable-wrapper:focus-within{z-index:3}
 .input-group{position:relative;display:flex;flex-wrap:wrap;align-items:stretch;width:100%;border-radius:var(--typo3-input-border-radius)}
-.input-group>.form-control,.input-group>.form-control-clearable-wrapper,.input-group>.form-select{position:relative;flex:1 1 auto;width:1%;min-width:0}
+.input-group>.form-control,.input-group>.form-control-clearable-wrapper,.input-group>.form-select,.input-group>typo3-backend-color-picker{position:relative;flex:1 1 auto;width:1%;min-width:0}
 .input-group>.form-control:focus,.input-group>.form-select:focus{z-index:5}
 .input-group>.input-group-text>.form-check-type-toggle{margin-bottom:0}
 .input-group .btn{position:relative;z-index:2}
@@ -2628,7 +2628,7 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .input-group.has-validation>.dropdown-toggle:nth-last-child(n+4),.input-group.has-validation>:nth-last-child(n+3):not(.dropdown-toggle):not(.dropdown-menu){border-start-end-radius:0;border-end-end-radius:0}
 .input-group>*+.form-control-clearable-wrapper>.form-control,.input-group>*+.form-control-clearable-wrapper>.form-select{border-start-start-radius:0;border-end-start-radius:0}
 .input-group>.form-control-clearable-wrapper:not(:last-child)>.form-control,.input-group>.form-control-clearable-wrapper:not(:last-child)>.form-select{border-start-end-radius:0;border-end-end-radius:0}
-.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback){margin-inline-start:calc(var(--typo3-input-border-width) * -1);border-start-start-radius:0;border-end-start-radius:0}
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback),.input-group>typo3-backend-color-picker:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback)>.form-control{margin-inline-start:calc(var(--typo3-input-border-width) * -1);border-start-start-radius:0;border-end-start-radius:0}
 .input-group>label.visually-hidden:first-child+.form-control,.input-group>label.visually-hidden:first-child+.form-select{border-start-start-radius:inherit!important;border-end-start-radius:inherit!important}
 .form{margin-bottom:var(--typo3-spacing)}
 .form-inline{display:inline}
@@ -3746,6 +3746,8 @@ typo3-notification-message .alert{--typo3-alert-margin-bottom:0}
 typo3-rte-ckeditor-ckeditor5>textarea[slot=textarea]{display:none!important}
 typo3-rte-ckeditor-ckeditor5 .ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled{display:none}
 typo3-scheduler-editable-group-name{--input-border-color:var(--typo3-state-default-border-color);--input-hover-border-color:var(--typo3-state-default-hover-border-color);--input-focus-border-color:var(--typo3-state-default-focus-border-color);--button-hover-color:var(--typo3-state-default-focus-color);--button-hover-bg:var(--typo3-state-default-hover-bg);--button-hover-border-color:var(--typo3-state-default-focus-border-color);--button-focus-color:var(--typo3-state-default-focus-color);--button-focus-bg:var(--typo3-state-default-focus-bg);--button-focus-border-color:var(--typo3-state-default-focus-border-color)}
+typo3-backend-color-picker{position:relative}
+typo3-backend-color-picker .form-control{padding-inline-start:2.5rem}
 .collapse-horizontal{height:auto;width:0;vertical-align:middle;overflow:hidden}
 .collapse-horizontal.show{display:inline-block;width:auto}
 .collapse-horizontal.collapsing{display:inline-block;transition-property:width,visibility;width:0}
