@@ -114,7 +114,7 @@
 		"friendsoftypo3/phpstan-typo3": "^0.9.0",
 		"php-webdriver/webdriver": "^1.14.0",
 		"phpstan/phpdoc-parser": "^1.29.0",
-		"phpstan/phpstan": "^1.12.6",
+		"phpstan/phpstan": "^1.12.9",
 		"phpstan/phpstan-phpunit": "^1.4.0",
 		"phpunit/phpunit": "^10.5.27",
 		"sokil/php-isocodes-db-i18n": "^4.0.23",
