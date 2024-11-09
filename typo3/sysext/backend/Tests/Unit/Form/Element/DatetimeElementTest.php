@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\Element\DatetimeElement;
 use TYPO3\CMS\Backend\Form\NodeExpansion\FieldInformation;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -83,6 +84,10 @@ final class DatetimeElementTest extends UnitTestCase
     public function renderAppliesCorrectTimestampConversion(int $input, string $serverTimezone, string $expectedOutput): void
     {
         date_default_timezone_set($serverTimezone);
+        $config = [
+            'type' => 'datetime',
+            'dbType' => 'datetime',
+        ];
         $data = [
             'tableName' => 'table_foo',
             'fieldName' => 'field_bar',
@@ -94,13 +99,10 @@ final class DatetimeElementTest extends UnitTestCase
                 'fieldName' => 'field_bar',
                 'fieldConf' => [
                     'label' => 'foo',
-                    'config' => [
-                        'type' => 'datetime',
-                        'dbType' => 'datetime',
-                    ],
+                    'config' => $config,
                 ],
                 'itemFormElName' => 'myItemFormElName',
-                'itemFormElValue' => $input,
+                'itemFormElValue' => DateTimeFactory::createFomDatabaseValueAndTCAConfig($input, $config),
             ],
         ];
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -160,6 +162,12 @@ final class DatetimeElementTest extends UnitTestCase
     public function renderAppliesCorrectTimestampConversionOnHourAndMinuteNullable(int $input, string $serverTimezone, string $expectedOutput): void
     {
         date_default_timezone_set($serverTimezone);
+        $config = [
+            'type' => 'datetime',
+            'dbType' => 'datetime',
+            'format' => 'timesec',
+            'nullable' => true,
+        ];
         $data = [
             'tableName' => 'table_foo',
             'fieldName' => 'field_bar',
@@ -171,15 +179,10 @@ final class DatetimeElementTest extends UnitTestCase
                 'fieldName' => 'field_bar',
                 'fieldConf' => [
                     'label' => 'foo',
-                    'config' => [
-                        'type' => 'datetime',
-                        'dbType' => 'datetime',
-                        'format' => 'time',
-                        'nullable' => true,
-                    ],
+                    'config' => $config,
                 ],
                 'itemFormElName' => 'myItemFormElName',
-                'itemFormElValue' => $input,
+                'itemFormElValue' => DateTimeFactory::createFomDatabaseValueAndTCAConfig($input, $config),
             ],
         ];
         $iconFactoryMock = $this->createMock(IconFactory::class);
@@ -239,6 +242,11 @@ final class DatetimeElementTest extends UnitTestCase
     public function renderAppliesCorrectTimestampConversionOnHourAndMinuteNotNullable(string|int $input, string $serverTimezone, string $expectedOutput): void
     {
         date_default_timezone_set($serverTimezone);
+        $config = [
+            'type' => 'datetime',
+            'format' => 'timesec',
+            'nullable' => false,
+        ];
         $data = [
             'tableName' => 'table_foo',
             'fieldName' => 'field_bar',
@@ -250,15 +258,10 @@ final class DatetimeElementTest extends UnitTestCase
                 'fieldName' => 'field_bar',
                 'fieldConf' => [
                     'label' => 'foo',
-                    'config' => [
-                        'type' => 'datetime',
-                        'dbType' => 'datetime',
-                        'format' => 'time',
-                        'nullable' => false,
-                    ],
+                    'config' => $config,
                 ],
                 'itemFormElName' => 'myItemFormElName',
-                'itemFormElValue' => $input,
+                'itemFormElValue' => DateTimeFactory::createFomDatabaseValueAndTCAConfig($input, $config),
             ],
         ];
         $iconFactoryMock = $this->createMock(IconFactory::class);

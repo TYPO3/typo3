@@ -55,11 +55,11 @@ final readonly class DateTimeFactory
         $format = $fieldConfig['format'] ?? null;
         $persistenceType = in_array($fieldConfig['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $fieldConfig['dbType'] : null;
         // A native time field must not be formatted as date
-        if (($format === 'datetime' || $format === 'date') && $persistenceType === 'time') {
+        if (($format === 'datetime' || $format === 'datetimesec' || $format === 'date') && $persistenceType === 'time') {
             return 'timesec';
         }
         // A native date field must not be formatted as time
-        if (($format === 'time' || $format === 'timesec') && $persistenceType === 'date') {
+        if (($format === 'time' || $format === 'timesec' || $format === 'datetime' || $format === 'datetimesec') && $persistenceType === 'date') {
             return 'date';
         }
         if (in_array($format, ['datetime', 'date', 'time', 'timesec', 'datetimesec'], true)) {

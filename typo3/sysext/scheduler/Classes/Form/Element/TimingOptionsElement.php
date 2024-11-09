@@ -24,7 +24,6 @@ use TYPO3\CMS\Backend\Form\Element\InputTextElement;
 use TYPO3\CMS\Backend\Form\Element\RadioElement;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
-use TYPO3\CMS\Core\Domain\DateTimeFormat;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
@@ -108,7 +107,7 @@ class TimingOptionsElement extends AbstractFormElement
         $start->data['containerFieldName'] = 'start';
         $start->data['parameterArray']['fieldConf']['label'] = htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduledFrom'));
         $start->data['parameterArray']['itemFormElName'] .= '[start]';
-        $start->data['parameterArray']['itemFormElValue'] = DateTimeFactory::createFromTimestamp($executionDetails->getStart() ?: $this->context->getPropertyFromAspect('date', 'timestamp'))->format(DateTimeFormat::ISO8601_LOCALTIME);
+        $start->data['parameterArray']['itemFormElValue'] = DateTimeFactory::createFromTimestamp($executionDetails->getStart() ?: $this->context->getPropertyFromAspect('date', 'timestamp'));
         $start->data['parameterArray']['fieldConf'] = array_replace_recursive($start->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['start'] ?? []);
         $subFieldResult = $start->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);
@@ -119,7 +118,7 @@ class TimingOptionsElement extends AbstractFormElement
         $end->data['containerFieldName'] = 'end';
         $end->data['parameterArray']['fieldConf']['label'] = htmlspecialchars($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduledUntil'));
         $end->data['parameterArray']['itemFormElName'] .= '[end]';
-        $end->data['parameterArray']['itemFormElValue'] = $executionDetails->getEnd() ? DateTimeFactory::createFromTimestamp($executionDetails->getEnd())->format(DateTimeFormat::ISO8601_LOCALTIME) : null;
+        $end->data['parameterArray']['itemFormElValue'] = $executionDetails->getEnd() ? DateTimeFactory::createFromTimestamp($executionDetails->getEnd()) : null;
         $end->data['parameterArray']['fieldConf'] = array_replace_recursive($end->data['parameterArray']['fieldConf'], $parameterArray['fieldConf']['config']['overrideFieldTca']['end'] ?? []);
         $subFieldResult = $end->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);

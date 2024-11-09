@@ -36,7 +36,7 @@ final class RenderCreationInformation extends AbstractFormElement
             return [];
         }
         $userId = (int)($databaseRow['createdby'] ?? 0);
-        $timestamp = (int)($databaseRow['createdon'] ?? 0);
+        $timestamp = (int)($databaseRow['createdon'] ?? null)?->getTimestamp();
         $backendUser = BackendUtility::getRecord('be_users', (int)($databaseRow['createdby'] ?? 0));
         $avatarHtml = '';
         if (!empty($backendUser)) {

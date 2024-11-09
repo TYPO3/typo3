@@ -258,14 +258,25 @@ readonly class IconFactory
             if (isset($enableColumns['disabled']) && !empty($row[$enableColumns['disabled']])) {
                 $status['hidden'] = true;
             }
-            // If a "starttime" is set and higher than current time:
-            if (!empty($enableColumns['starttime']) && $GLOBALS['EXEC_TIME'] < (int)($row[$enableColumns['starttime']] ?? 0)) {
-                $status['starttime'] = true;
+            if (isset($enableColumns['starttime'])) {
+                $starttime = $row[$enableColumns['starttime']] ?? null;
+                if ($starttime !== null) {
+                    if ($starttime instanceof \DateTimeInterface) {
+                        $starttime = $starttime->getTimestamp();
+                    }
+                    // If a "starttime" is set and higher than current time
+                    if ($starttime > $GLOBALS['EXEC_TIME']) {
+                        $status['starttime'] = true;
+                    }
+                }
             }
-            // If an "endtime" is set
-            if (!empty($enableColumns['endtime'])) {
-                if ((int)($row[$enableColumns['endtime']] ?? 0) > 0) {
-                    if ((int)$row[$enableColumns['endtime']] < $GLOBALS['EXEC_TIME']) {
+            if (isset($enableColumns['endtime'])) {
+                $endtime = $row[$enableColumns['endtime']] ?? null;
+                if ($endtime !== null && $endtime !== 0) {
+                    if ($endtime instanceof \DateTimeInterface) {
+                        $endtime = $endtime->getTimestamp();
+                    }
+                    if ($endtime < $GLOBALS['EXEC_TIME']) {
                         // End-timing applies at this point.
                         $status['endtime'] = true;
                     } else {

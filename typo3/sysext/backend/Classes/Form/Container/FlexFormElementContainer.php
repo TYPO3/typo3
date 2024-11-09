@@ -103,10 +103,10 @@ class FlexFormElementContainer extends AbstractContainer
                         $fakeParameterArray['fieldChangeFunc']['TBE_EDITOR_fieldChanged'] = $onFieldChange->withElementName($fakeParameterArray['itemFormElName']);
                     }
                 }
-                if (isset($flexFormRowData[$flexFormFieldName]['vDEF'])) {
+                if (array_key_exists('vDEF', $flexFormRowData[$flexFormFieldName] ?? [])) {
                     $fakeParameterArray['itemFormElValue'] = $flexFormRowData[$flexFormFieldName]['vDEF'];
                 } else {
-                    $fakeParameterArray['itemFormElValue'] = $fakeParameterArray['fieldConf']['config']['default'];
+                    $fakeParameterArray['itemFormElValue'] = $fakeParameterArray['fieldConf']['config']['default'] ?? '';
                 }
 
                 $options = $this->data;

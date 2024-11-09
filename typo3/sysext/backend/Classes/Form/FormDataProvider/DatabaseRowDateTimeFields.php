@@ -16,39 +16,25 @@
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
-use TYPO3\CMS\Core\Domain\DateTimeFormat;
 
 /**
- * Migrate date and datetime db field values to timestamp
+ * Migrate type=datetime field values to \DateTimeImmutable
  */
 class DatabaseRowDateTimeFields implements FormDataProviderInterface
 {
-    /**
-     * Migrate native type=datetime dbType=datetime|date|time field values to ISO8601 dates
-     *
-     * @return array
-     */
-    public function addData(array $result)
+    public function addData(array $result): array
     {
-        $dateTimeTypes = QueryHelper::getDateTimeTypes();
-
         foreach ($result['processedTca']['columns'] as $column => $columnConfig) {
-            $dbType = $columnConfig['config']['dbType'] ?? '';
-            if (($columnConfig['config']['type'] ?? '') !== 'datetime'
-                || !in_array($dbType, $dateTimeTypes, true)
-            ) {
-                // it's a UNIX timestamp! We do not modify this here, as it will only be treated as a datetime because
-                // of eval being set to "date" or "datetime". This is handled in InputTextElement then.
+            $type = $columnConfig['config']['type'] ?? '';
+            if ($type !== 'datetime') {
                 continue;
             }
             try {
-                // Create an unqualified ISO-8601 date from current field data or null
                 $result['databaseRow'][$column] = DateTimeFactory::createFomDatabaseValueAndTCAConfig(
                     $result['databaseRow'][$column] ?? null,
                     $columnConfig['config'] ?? [],
-                )?->format(DateTimeFormat::ISO8601_LOCALTIME);
+                );
             } catch (\InvalidArgumentException) {
                 $result['databaseRow'][$column] = null;
             }

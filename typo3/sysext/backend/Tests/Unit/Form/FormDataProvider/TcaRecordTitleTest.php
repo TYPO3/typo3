@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -253,14 +254,6 @@ final class TcaRecordTitleTest extends UnitTestCase
                 '',
                 '',
             ],
-            'plain text input' => [
-                [
-                    'type' => 'datetime',
-                ],
-                'aValue',
-                'aValue',
-                'aValue',
-            ],
             'date' => [
                 [
                     'type' => 'datetime',
@@ -394,25 +387,6 @@ final class TcaRecordTitleTest extends UnitTestCase
         string $expectedUTCTitle,
         string $expectedBerlinTitle,
     ): void {
-        $input = [
-            'tableName' => 'aTable',
-            'isInlineChild' => false,
-            'databaseRow' => [
-                'uid' => '1',
-                'aField' => $fieldValue,
-            ],
-            'processedTca' => [
-                'ctrl' => [
-                    'label' => 'aField',
-                ],
-                'columns' => [
-                    'aField' => [
-                        'config' => $fieldConfig,
-                    ],
-                ],
-            ],
-        ];
-
         $timezones = [
             'UTC' => $expectedUTCTitle,
             'Europe/Berlin' => $expectedBerlinTitle,
@@ -420,6 +394,25 @@ final class TcaRecordTitleTest extends UnitTestCase
         foreach ($timezones as $timezone => $expectedTitle) {
             $bak = date_default_timezone_get();
             date_default_timezone_set($timezone);
+
+            $input = [
+                'tableName' => 'aTable',
+                'isInlineChild' => false,
+                'databaseRow' => [
+                    'uid' => '1',
+                    'aField' => DateTimeFactory::createFomDatabaseValueAndTCAConfig($fieldValue, $fieldConfig),
+                ],
+                'processedTca' => [
+                    'ctrl' => [
+                        'label' => 'aField',
+                    ],
+                    'columns' => [
+                        'aField' => [
+                            'config' => $fieldConfig,
+                        ],
+                    ],
+                ],
+            ];
 
             $languageService = $this->createMock(LanguageService::class);
             $GLOBALS['LANG'] = $languageService;

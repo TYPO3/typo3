@@ -1487,7 +1487,10 @@ class BackendUtility
                     $altLabel = '';
                     // Format string value - leave array value (e.g. for select fields) as is
                     if (!is_array($row[$fieldName] ?? false)) {
-                        $altLabel = trim(strip_tags((string)($row[$fieldName] ?? '')));
+                        $altLabel = $row[$fieldName] ?? '';
+                        if (!$altLabel instanceof \DateTimeInterface) {
+                            $altLabel = trim(strip_tags((string)($altLabel)));
+                        }
                     }
                     if ($altLabel !== '') {
                         $altLabel = self::getProcessedValue($table, $fieldName, $altLabel, 0, false, false, $row['uid'] ?? 0, true, 0, $row) ?? '';
@@ -1723,7 +1726,11 @@ class BackendUtility
                 break;
             case 'datetime':
                 try {
-                    $datetime = DateTimeFactory::createFomDatabaseValueAndTCAConfig($value, $theColConf);
+                    if ($value instanceof \DateTimeInterface) {
+                        $datetime = $value;
+                    } else {
+                        $datetime = DateTimeFactory::createFomDatabaseValueAndTCAConfig($value, $theColConf);
+                    }
                     $format = DateTimeFactory::getFormatFromTCAConfig($theColConf);
                 } catch (\InvalidArgumentException) {
                     $datetime = false;
