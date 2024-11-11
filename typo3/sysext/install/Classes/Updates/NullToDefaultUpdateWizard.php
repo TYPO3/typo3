@@ -29,6 +29,7 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
  * Update current "NULL" fields to their desired DEFAULT value
  * if new database schema (TCA) defines a "NOT NULL" assertion (nullable=false).
  *
+ * @since 13.4
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('nullToDefaultUpdateWizard')]
