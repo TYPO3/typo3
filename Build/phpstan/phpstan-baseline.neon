@@ -211,11 +211,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Cache/Backend/AbstractBackend.php
 
 		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Cache/Backend/FileBackend.php
-
-		-
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\BackendInterface\\:\\:require\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
@@ -224,11 +219,6 @@ parameters:
 			message: "#^Call to an undefined method TYPO3\\\\CMS\\\\Core\\\\Cache\\\\Backend\\\\BackendInterface\\:\\:requireOnce\\(\\)\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Charset/CharsetConverter.php
 
 		-
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
@@ -1519,11 +1509,6 @@ parameters:
 			message: "#^Parameter \\#2 \\$conf of method TYPO3\\\\CMS\\\\Frontend\\\\ContentObject\\\\ContentObjectRenderer\\:\\:prefixComment\\(\\) expects array, null given\\.$#"
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
-
-		-
-			message: "#^Unreachable statement \\- code above always terminates\\.$#"
-			count: 1
-			path: ../../typo3/sysext/indexed_search/Classes/Lexer.php
 
 		-
 			message: "#^Result of \\|\\| is always true\\.$#"
