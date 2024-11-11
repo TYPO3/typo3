@@ -78,6 +78,23 @@ readonly class ColumnMapFactory
     protected function setRelations(ColumnMap $columnMap, FieldTypeInterface $field, ?string $type, ?string $elementType): ColumnMap
     {
         $columnConfiguration = $field->getConfiguration();
+
+        if (($field instanceof RelationalFieldTypeInterface) && $field->getRelationshipType() === RelationshipType::ManyToMany) {
+            return $this->setManyToManyRelation($columnMap, $field);
+        }
+
+        if ($elementType !== null) {
+            // The field might not be a RelationFieldType, e.g. for TCA type "passthrough" or type "select"
+            // without items. However, the model defines a relation and therefore overrules the TCA schema lookup.
+            // IMPORTANT: This also overrules any "maxitems" or "renderType" configuration!
+            return $this->setOneToManyRelation($columnMap, $field);
+        }
+
+        if ($type !== null && strpbrk($type, '_\\') !== false) {
+            // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
+            return $this->setOneToOneRelation($columnMap, $field);
+        }
+
         if ($field instanceof FolderFieldType) {
             // Folder is a special case which always has a relation to one or many "folders".
             // In case "maxitems" is set to > 1 and relationship is not explicitly set to "*toOne"
@@ -93,27 +110,10 @@ readonly class ColumnMapFactory
             return $columnMap;
         }
 
-        if ($field instanceof RelationalFieldTypeInterface === false) {
-            return $columnMap;
-        }
-
-        if ($field->getRelationshipType() === RelationshipType::ManyToMany) {
-            return $this->setManyToManyRelation($columnMap, $field);
-        }
-
-        if ($elementType !== null) {
-            return $this->setOneToManyRelation($columnMap, $field);
-        }
-
-        if ($type !== null && strpbrk($type, '_\\') !== false) {
-            // @todo: check the strpbrk function call. Seems to be a check for Tx_Foo_Bar style class names
-            return $this->setOneToOneRelation($columnMap, $field);
-        }
-
-        $columnConfiguration = $field->getConfiguration();
         // @todo we should get rid of the "maxitems" and "renderType" cases here and rely purely on
         //       the evaluated relationship type -> to be consistent with all non extbase components.
-        if ($field->getRelationshipType()->hasMany()
+        if ($field instanceof RelationalFieldTypeInterface
+            && $field->getRelationshipType()->hasMany()
             && (
                 !$field->isType(TableColumnType::GROUP, TableColumnType::SELECT)
                 || ($field->isType(TableColumnType::GROUP) && (!isset($columnConfiguration['maxitems']) || $columnConfiguration['maxitems'] > 1))
@@ -134,6 +134,7 @@ readonly class ColumnMapFactory
     {
         $columnConfiguration = $field->getConfiguration();
         $columnMap->setTypeOfRelation(Relation::HAS_ONE);
+        // @todo "allowed" (type=group) is missing here -> can only be evaluated if single value
         // check if foreign_table is set, which usually won't be the case for type "group" fields
         if (!empty($columnConfiguration['foreign_table'])) {
             $columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -158,6 +159,7 @@ readonly class ColumnMapFactory
     {
         $columnConfiguration = $field->getConfiguration();
         $columnMap->setTypeOfRelation(Relation::HAS_MANY);
+        // @todo "allowed" (type=group) is missing here -> can only be evaluated if single value
         // check if foreign_table is set, which usually won't be the case for type "group" fields
         if (!empty($columnConfiguration['foreign_table'])) {
             $columnMap->setChildTableName($columnConfiguration['foreign_table']);
@@ -180,6 +182,7 @@ readonly class ColumnMapFactory
     {
         $columnConfiguration = $field->getConfiguration();
         $columnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
+        // @todo "allowed" (type=group) is missing here -> can only be evaluated if single value
         // check if foreign_table is set, which usually won't be the case for type "group" fields
         if ($columnConfiguration['foreign_table'] ?? false) {
             $columnMap->setChildTableName($columnConfiguration['foreign_table']);
