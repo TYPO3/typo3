@@ -45,7 +45,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
 
     public static function createWithGroupTypeDataProvider(): \Generator
     {
-        $columnName = 'group';
+        $columnName = 'has_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
@@ -61,10 +61,11 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'expectedColumnMap' => $expectedColumnMap,
         ];
 
-        $columnName = 'group_with_maxitems_1';
+        $columnName = 'has_one';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_ONE);
         yield 'columns configuration is initialized with maxitems = 1 evaluation for type group' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -77,7 +78,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'expectedColumnMap' => $expectedColumnMap,
         ];
 
-        $columnName = 'group_with_maxitems_10';
+        $columnName = 'has_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::GROUP);
@@ -88,6 +89,95 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
                 'config' => [
                     'type' => 'group',
                     'maxitems' => '10',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::GROUP);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        $expectedColumnMap->setChildTableName('tx_myextension_bar');
+        yield 'columns configuration is initialized with maxitems = 1 but model overrules for type group' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'group',
+                    'maxitems' => '1',
+                    'allowed' => 'tx_myextension_bar',
+                    // @todo This is a hack: 'foreign_table' does only exist in extbase context for this TCA type
+                    'foreign_table' => 'tx_myextension_bar',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_one';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::GROUP);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_ONE);
+        $expectedColumnMap->setChildTableName('tx_myextension_bar');
+        yield 'columns configuration is initialized with maxitems = 1 evaluation and foreign_table for type group' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'group',
+                    'maxitems' => '1',
+                    'allowed' => 'tx_myextension_bar',
+                    // @todo This is a hack: 'foreign_table' does only exist in extbase context for this TCA type
+                    'foreign_table' => 'tx_myextension_bar',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::GROUP);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        $expectedColumnMap->setChildTableName('tx_myextension_bar');
+        yield 'columns configuration is initialized with maxitems > 1 evaluation and foreign_table for type group' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'group',
+                    'maxitems' => '10',
+                    'allowed' => 'tx_myextension_bar',
+                    // @todo This is a hack: 'foreign_table' does only exist in extbase context for this TCA type
+                    'foreign_table' => 'tx_myextension_bar',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_many_and_belongs_to_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::GROUP);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
+        $expectedColumnMap->setChildTableName('tx_myextension_bar');
+        $expectedColumnMap->setRelationTableName('tx_myextension_mm');
+        $expectedColumnMap->setChildSortByFieldName('sorting');
+        $expectedColumnMap->setParentKeyFieldName('uid_local');
+        $expectedColumnMap->setChildKeyFieldName('uid_foreign');
+        yield 'columns configuration is initialized with maxitems > 1 evaluation and foreign_table + MM for type group' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'group',
+                    'maxitems' => '10',
+                    'allowed' => 'tx_myextension_bar',
+                    // @todo This is a hack: 'foreign_table' does only exist in extbase context for this TCA type
+                    'foreign_table' => 'tx_myextension_bar',
+                    'MM' => 'tx_myextension_mm',
                 ],
             ],
             'propertyName' => $propertyName,
@@ -176,6 +266,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         $expectedColumnMap = new ColumnMap($columnName);
         $expectedColumnMap->setType(TableColumnType::SELECT);
+        $expectedColumnMap->setTypeOfRelation(Relation::NONE);
         yield 'setRelations detects select renderType selectSingle as non-relational' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -187,6 +278,82 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
                         ['Two', 2],
                         ['Three', 3],
                     ],
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_one';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::SELECT);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_ONE);
+        yield 'setRelations detects select renderType selectSingle but model overrides static list  with hasOne' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'items' => [
+                        ['One', 1],
+                        ['Two', 2],
+                        ['Three', 3],
+                    ],
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::SELECT);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        yield 'setRelations detects select renderType selectSingle but model overrides static list with hasMany' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'items' => [
+                        ['One', 1],
+                        ['Two', 2],
+                        ['Three', 3],
+                    ],
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_one';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::SELECT);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_ONE);
+        yield 'setRelations detects select as toOne relation based on type configuration' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'select',
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedColumnMap' => $expectedColumnMap,
+        ];
+
+        $columnName = 'has_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        $expectedColumnMap = new ColumnMap($columnName);
+        $expectedColumnMap->setType(TableColumnType::SELECT);
+        $expectedColumnMap->setTypeOfRelation(Relation::HAS_MANY);
+        yield 'setRelations detects select as toMany relation based on type configuration' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'select',
                 ],
             ],
             'propertyName' => $propertyName,
@@ -229,7 +396,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
 
     public static function createWithFolderTypeDataProvider(): \Generator
     {
-        $columnName = 'folder';
+        $columnName = 'has_many';
         $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         yield 'columns configuration is initialized for type folder' => [
             'columnName' => $columnName,
@@ -241,6 +408,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'propertyName' => $propertyName,
             'expectedRelationType' => Relation::HAS_MANY,
         ];
+        $columnName = 'has_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         yield 'folder with maxitems > 1' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -252,6 +421,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'propertyName' => $propertyName,
             'expectedRelationType' => Relation::HAS_MANY,
         ];
+        $columnName = 'has_one';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         yield 'folder with maxitems = 1' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -263,6 +434,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'propertyName' => $propertyName,
             'expectedRelationType' => Relation::HAS_ONE,
         ];
+        $columnName = 'has_one';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         yield 'folder with relationship = oneToOne' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -275,6 +448,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'propertyName' => $propertyName,
             'expectedRelationType' => Relation::HAS_ONE,
         ];
+        $columnName = 'has_one';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         yield 'folder with relationship = manyToOne' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -287,6 +462,8 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'propertyName' => $propertyName,
             'expectedRelationType' => Relation::HAS_ONE,
         ];
+        $columnName = 'has_one';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         yield 'folder with relationship = manyToMany and maxitems = 1' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -299,6 +476,21 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             'propertyName' => $propertyName,
             'expectedRelationType' => Relation::HAS_ONE,
         ];
+        $columnName = 'has_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
+        yield 'folder with maxitems = 1 is overruled by model configuration' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'folder',
+                    'maxitems' => 1,
+                ],
+            ],
+            'propertyName' => $propertyName,
+            'expectedRelationType' => Relation::HAS_MANY,
+        ];
+        $columnName = 'has_many';
+        $propertyName = GeneralUtility::underscoredToLowerCamelCase($columnName);
         yield 'folder with relationship = manyToMany' => [
             'columnName' => $columnName,
             'columnConfiguration' => [
@@ -361,6 +553,33 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
         );
     }
 
+    public static function createWithPassthroughTypeDataProvider(): \Generator
+    {
+        $columnName = 'has_one';
+        yield 'setRelations detects to one relation based on the model type annotation' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'passthrough',
+                ],
+            ],
+            'propertyName' => GeneralUtility::underscoredToLowerCamelCase($columnName),
+            'expectedRelation' => Relation::HAS_ONE,
+        ];
+
+        $columnName = 'has_many';
+        yield 'setRelations detects to many relation based on the model type annotation' => [
+            'columnName' => $columnName,
+            'columnConfiguration' => [
+                'config' => [
+                    'type' => 'passthrough',
+                ],
+            ],
+            'propertyName' => GeneralUtility::underscoredToLowerCamelCase($columnName),
+            'expectedRelation' => Relation::HAS_MANY,
+        ];
+    }
+
     #[Test]
     public function settingOneToOneRelationSetsRelationTableMatchFields(): void
     {
@@ -383,6 +602,10 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
                 'fieldname' => 'foo_model',
             ],
             $columnMap->getRelationTableMatchFields()
+        );
+        self::assertSame(
+            Relation::HAS_ONE,
+            $columnMap->getTypeOfRelation()
         );
     }
 
