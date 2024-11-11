@@ -290,9 +290,6 @@ abstract class AbstractItemProvider
      */
     protected function addItemsFromForeignTable(array $result, $fieldName, array $items, bool $includeFullRows = false)
     {
-        $databaseError = null;
-        $queryResult = null;
-        // Guard
         if (empty($result['processedTca']['columns'][$fieldName]['config']['foreign_table'])
             || !is_string($result['processedTca']['columns'][$fieldName]['config']['foreign_table'])
         ) {
@@ -315,13 +312,8 @@ abstract class AbstractItemProvider
         try {
             $queryResult = $queryBuilder->executeQuery();
         } catch (DBALException $e) {
-            $databaseError = $e->getPrevious()->getMessage();
-        }
-
-        // Early return on error with flash message
-        if (!empty($databaseError)) {
-            $msg = $databaseError . '. ';
-            $msg .= $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
+            // Early return on error with flash message
+            $msg = $e->getMessage() . '. ' . $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch');
             $msgTitle = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.database_schema_mismatch_title');
             $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $msg, $msgTitle, ContextualFeedbackSeverity::ERROR, true);
             $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
@@ -364,7 +356,7 @@ abstract class AbstractItemProvider
                 $icon = '';
                 if ($isFileReference) {
                     $references = $this->fileRepository->findByRelation($foreignTable, $iconFieldName, $foreignRow['uid']);
-                    if (is_array($references) && !empty($references)) {
+                    if (!empty($references)) {
                         $icon = reset($references);
                         $icon = $icon->getPublicUrl();
                     }

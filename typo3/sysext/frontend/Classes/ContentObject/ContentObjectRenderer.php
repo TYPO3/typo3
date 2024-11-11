@@ -4922,7 +4922,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         $conf['begin'] = str_ireplace('total', $count, (string)$conf['begin']);
                     }
                 } catch (DBALException $e) {
-                    $this->getTimeTracker()->setTSlogMessage($e->getPrevious()->getMessage());
+                    $this->getTimeTracker()->setTSlogMessage($e->getMessage());
                     return '';
                 }
             }

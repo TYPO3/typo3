@@ -3899,8 +3899,7 @@ class DataHandler
                             }
                         }
                     } catch (DBALException $e) {
-                        $databaseErrorMessage = $e->getPrevious()->getMessage();
-                        $this->log($table, $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'An SQL error occurred: {reason}', -1, ['reason' => $databaseErrorMessage]);
+                        $this->log($table, $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'An SQL error occurred: {reason}', -1, ['reason' => $e->getMessage()]);
                     }
                 }
             }
@@ -5397,7 +5396,7 @@ class DataHandler
                 $this->connectionPool->getConnectionForTable($table)
                     ->update($table, $updateFields, ['uid' => $uid]);
             } catch (DBALException $e) {
-                $databaseErrorMessage = $e->getPrevious()->getMessage();
+                $databaseErrorMessage = $e->getMessage();
             }
         } else {
             // Delete the hard way...:
@@ -5406,7 +5405,7 @@ class DataHandler
                 $this->deletedRecords[$table][] = $uid;
                 $this->deleteL10nOverlayRecords($table, $uid);
             } catch (DBALException $e) {
-                $databaseErrorMessage = $e->getPrevious()->getMessage();
+                $databaseErrorMessage = $e->getMessage();
             }
         }
         if ($this->enableLogging) {
@@ -7679,42 +7678,35 @@ class DataHandler
             if (!empty($fieldArray)) {
                 $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
                 $connection = $this->connectionPool->getConnectionForTable($table);
-                $updateErrorMessage = '';
                 try {
-                    // Execute the UPDATE query:
                     $connection->update($table, $fieldArray, ['uid' => (int)$id]);
                 } catch (DBALException $e) {
-                    $updateErrorMessage = $e->getPrevious()->getMessage();
+                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', 12, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $id]);
+                    return;
                 }
-                // If succeeds, do...:
-                if ($updateErrorMessage === '') {
-                    // Update reference index:
-                    $this->updateRefIndex($table, $id);
-                    // Set History data
-                    $historyEntryId = 0;
-                    if (isset($this->historyRecords[$table . ':' . $id])) {
-                        $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $id, $this->historyRecords[$table . ':' . $id], $this->correlationId);
+                $this->updateRefIndex($table, $id);
+                // Set History data
+                $historyEntryId = 0;
+                if (isset($this->historyRecords[$table . ':' . $id])) {
+                    $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $id, $this->historyRecords[$table . ':' . $id], $this->correlationId);
+                }
+                if ($this->enableLogging) {
+                    $newRow = $fieldArray;
+                    $newRow['uid'] = $id;
+                    // Set log entry:
+                    $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
+                    $isOfflineVersion = (bool)($newRow['t3ver_oid'] ?? 0);
+                    if ($isOfflineVersion) {
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated (Offline version)', 10, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
+                    } else {
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated', 10, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
                     }
-                    if ($this->enableLogging) {
-                        $newRow = $fieldArray;
-                        $newRow['uid'] = $id;
-                        // Set log entry:
-                        $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                        $isOfflineVersion = (bool)($newRow['t3ver_oid'] ?? 0);
-                        if ($isOfflineVersion) {
-                            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated (Offline version)', 10, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
-                        } else {
-                            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated', 10, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
-                        }
-                    }
-                    // Clear cache for relevant pages:
-                    $this->registerRecordIdForPageCacheClearing($table, $id);
-                    // Unset the pageCache for the id if table was page.
-                    if ($table === 'pages') {
-                        unset($this->pageCache[$id]);
-                    }
-                } else {
-                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', 12, ['reason' => $updateErrorMessage, 'table' => $table, 'uid' => $id]);
+                }
+                // Clear cache for relevant pages:
+                $this->registerRecordIdForPageCacheClearing($table, $id);
+                // Unset the pageCache for the id if table was page.
+                if ($table === 'pages') {
+                    unset($this->pageCache[$id]);
                 }
             }
         }

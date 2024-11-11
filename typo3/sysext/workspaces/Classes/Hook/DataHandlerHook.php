@@ -706,7 +706,7 @@ class DataHandlerHook
                 ['uid' => (int)$id]
             );
         } catch (DBALException $e) {
-            $sqlErrors[] = $e->getPrevious()->getMessage();
+            $sqlErrors[] = $e->getMessage();
         }
 
         if (empty($sqlErrors)) {
@@ -717,7 +717,7 @@ class DataHandlerHook
                     ['uid' => (int)$swapWith]
                 );
             } catch (DBALException $e) {
-                $sqlErrors[] = $e->getPrevious()->getMessage();
+                $sqlErrors[] = $e->getMessage();
             }
         }
 
@@ -970,7 +970,7 @@ class DataHandlerHook
                 ]
             );
         } catch (DBALException $e) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'During Publishing: SQL errors happened: {reason}', -1, ['reason' => $e->getPrevious()->getMessage()]);
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'During Publishing: SQL errors happened: {reason}', -1, ['reason' => $e->getMessage()]);
         }
 
         if ($dataHandler->enableLogging) {

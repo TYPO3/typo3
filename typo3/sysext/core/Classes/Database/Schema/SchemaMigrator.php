@@ -123,7 +123,7 @@ class SchemaMigrator
                 try {
                     $connection->executeStatement($statement);
                 } catch (DBALException $e) {
-                    $result[$hash] = $e->getPrevious()->getMessage();
+                    $result[$hash] = $e->getMessage();
                 }
             }
         }
@@ -192,7 +192,7 @@ class SchemaMigrator
                     $connection->executeStatement($statement);
                     $result[$statement] = '';
                 } catch (DBALException $e) {
-                    $result[$statement] = $e->getPrevious()->getMessage();
+                    $result[$statement] = $e->getMessage();
                 }
             }
         }
