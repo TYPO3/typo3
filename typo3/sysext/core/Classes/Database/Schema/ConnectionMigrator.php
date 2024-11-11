@@ -179,7 +179,7 @@ class ConnectionMigrator
                 $this->connection->executeStatement($statement);
                 $result[$statement] = '';
             } catch (DBALException $e) {
-                $result[$statement] = $e->getPrevious()->getMessage();
+                $result[$statement] = $e->getMessage();
             }
         }
 

@@ -54,7 +54,7 @@ class OptimizeDatabaseTableTask extends AbstractTask
                 } catch (DBALException $e) {
                     throw new \RuntimeException(
                         TableGarbageCollectionTask::class . ' failed for: ' . $tableName . ': ' .
-                        $e->getPrevious()->getMessage(),
+                        $e->getMessage(),
                         1441390263
                     );
                 }

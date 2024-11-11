@@ -3947,7 +3947,7 @@ class DataHandler implements LoggerAwareInterface
                             }
                         }
                     } catch (DBALException $e) {
-                        $databaseErrorMessage = $e->getPrevious()->getMessage();
+                        $databaseErrorMessage = $e->getMessage();
                         $this->log($table, $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'An SQL error occurred: {reason}', -1, ['reason' => $databaseErrorMessage]);
                     }
                 }
@@ -5396,7 +5396,7 @@ class DataHandler implements LoggerAwareInterface
                     ->getConnectionForTable($table)
                     ->update($table, $updateFields, ['uid' => (int)$uid]);
             } catch (DBALException $e) {
-                $databaseErrorMessage = $e->getPrevious()->getMessage();
+                $databaseErrorMessage = $e->getMessage();
             }
         } else {
             // Delete the hard way...:
@@ -5405,7 +5405,7 @@ class DataHandler implements LoggerAwareInterface
                 $this->deletedRecords[$table][] = (int)$uid;
                 $this->deleteL10nOverlayRecords($table, $uid);
             } catch (DBALException $e) {
-                $databaseErrorMessage = $e->getPrevious()->getMessage();
+                $databaseErrorMessage = $e->getMessage();
             }
         }
         if ($this->enableLogging) {
@@ -7733,7 +7733,7 @@ class DataHandler implements LoggerAwareInterface
                     // Execute the UPDATE query:
                     $connection->update($table, $fieldArray, ['uid' => (int)$id]);
                 } catch (DBALException $e) {
-                    $updateErrorMessage = $e->getPrevious()->getMessage();
+                    $updateErrorMessage = $e->getMessage();
                 }
                 // If succeeds, do...:
                 if ($updateErrorMessage === '') {
