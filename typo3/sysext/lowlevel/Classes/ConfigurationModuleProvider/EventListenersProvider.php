@@ -25,6 +25,12 @@ class EventListenersProvider extends AbstractProvider
 
     public function getConfiguration(): array
     {
-        return $this->listenerProvider->getAllListenerDefinitions();
+        $listenerDefinitions = $this->listenerProvider->getAllListenerDefinitions();
+        array_walk($listenerDefinitions, static function (array &$listenerDefinition): void {
+            array_walk($listenerDefinition, static function (array &$listener): void {
+                $listener['method'] ??= '__invoke';
+            });
+        });
+        return $listenerDefinitions;
     }
 }
