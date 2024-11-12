@@ -253,6 +253,7 @@ return [
         ],
         'creation_type' => [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type',
+            'description' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type.description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -267,6 +268,7 @@ return [
                     ],
                 ],
                 'default' => 1,
+                'readOnly' => true,
             ],
         ],
         'description' => [
