@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -757,11 +759,50 @@ class WorkspaceService implements SingletonInterface
     {
         $permittedElements = [];
         foreach ($recs as $rec) {
-            if ($this->isPageAccessibleForCurrentUser($table, $rec) && $this->isLanguageAccessibleForCurrentUser($table, $rec)) {
+            if ($this->isPageAccessibleForCurrentUser($table, $rec)
+                && $this->isLanguageAccessibleForCurrentUser($table, $rec)
+                && $this->isFileAccessibleForCurrentUser($table, $rec)
+            ) {
                 $permittedElements[] = $rec;
             }
         }
         return $permittedElements;
+    }
+
+    /**
+     * Check if the current backend user has access to the file record.
+     */
+    protected function isFileAccessibleForCurrentUser(string $table, array $record): bool
+    {
+        if ($table !== 'sys_file_reference' && $table !== 'sys_file_metadata' && $table !== 'sys_file') {
+            return true;
+        }
+
+        $dbRecord = BackendUtility::getRecord($table, $record['uid']);
+
+        $fileId = 0;
+
+        if ($table === 'sys_file_reference') {
+            $fileId = (int)$dbRecord['uid_local'];
+        } elseif ($table === 'sys_file_metadata') {
+            $fileId = (int)$dbRecord['file'];
+        } elseif ($table === 'sys_file') {
+            $fileId = (int)$dbRecord['uid'];
+        }
+
+        if ($fileId === 0) {
+            return true;
+        }
+
+        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+
+        try {
+            $fileObject = $resourceFactory->getFileObject($fileId);
+        } catch (FileDoesNotExistException $e) {
+            return false;
+        }
+
+        return $fileObject->getStorage()->checkFileActionPermission('write', $fileObject);
     }
 
     /**
