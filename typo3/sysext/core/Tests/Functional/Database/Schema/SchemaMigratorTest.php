@@ -325,7 +325,8 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $connection->executeStatement('ALTER TABLE a_test_table DEFAULT CHARACTER SET = utf8 COLLATE = utf8_unicode_ci');
 
         self::assertTrue($this->getTableDetails()->hasOption('charset'));
-        self::assertEquals('utf8', $this->getTableDetails()->getOption('charset'));
+        $utf8PlatformCharset = $this->getTableDetails()->getOption('charset');
+        self::assertContains($utf8PlatformCharset, ['utf8', 'utf8mb3']);
 
         $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTable.sql'));
         $updateSuggestions = $subject->getUpdateSuggestions($statements);
@@ -335,7 +336,7 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($this->getTableDetails()->hasOption('charset'));
         if ($emptyDefaultTableOptions) {
             // Stay as-is if not default table options are configured
-            self::assertEquals('utf8', $this->getTableDetails()->getOption('charset'));
+            self::assertEquals($utf8PlatformCharset, $this->getTableDetails()->getOption('charset'));
         } else {
             // Switch to utf8mb4 if default table options are configured
             self::assertEquals('utf8mb4', $this->getTableDetails()->getOption('charset'));
