@@ -5,7 +5,10 @@
     <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/settings/editor.js'}"/>
 
     <h1>
-        Site Settings for "{siteTitle}"
+        <f:translate
+            key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.headline"
+            arguments="{0: siteTitle}"
+        />
         <br>
         <small class="text-muted">{site.identifier} <code>[pid: {rootPageId}]</code></small>
     </h1>
