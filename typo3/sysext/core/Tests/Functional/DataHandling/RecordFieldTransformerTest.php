@@ -1379,7 +1379,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     public function canResolveFlexFormWithSheetsOtherThanDefault(): void
     {
         $dummyRecord = $this->createTestRecordObject([
-            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+            'typo3tests_contentelementb_flexfield_sheets' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3FlexForms>
     <data>
         <sheet index="sheet1">
@@ -1394,10 +1394,16 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         </sheet>
         <sheet index="sheet2">
             <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Second Header in Flex</value>
+                </field>
                 <field index="link">
                     <value index="vDEF">t3://page?uid=13</value>
                 </field>
-                <field index="number">
+                <field index="datetime">
+                    <value index="vDEF">1366480800</value>
+                </field>
+                <field index="some.number">
                     <value index="vDEF">12</value>
                 </field>
             </language>
@@ -1406,7 +1412,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
 </T3FlexForms>',
         ]);
 
-        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield_sheets');
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
@@ -1416,18 +1422,20 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         )->instantiate();
 
         self::assertIsArray($result);
-        self::assertSame('Header in Flex', $result['header']);
+        self::assertSame('Second Header in Flex', $result['header']);
         self::assertSame('Text in Flex', $result['textarea']);
         self::assertSame('t3://page?uid=13', $result['link']->instantiate()->url);
-        self::assertSame('12', $result['number']);
+        self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
+        self::assertSame('12', $result['some']['number']);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield_sheets');
         self::assertIsArray($resolvedRelation);
-        self::assertSame('Header in Flex', $resolvedRelation['header']);
+        self::assertSame('Second Header in Flex', $resolvedRelation['header']);
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
         self::assertSame('t3://page?uid=13', $resolvedRelation['link']->instantiate()->url);
-        self::assertSame('12', $resolvedRelation['number']);
+        self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
+        self::assertSame('12', $resolvedRelation['some']['number']);
     }
 
     protected function setWorkspaceId(int $workspaceId): void
@@ -1480,6 +1488,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             'typo3tests_contentelementb_select_multiple' => '',
             'typo3tests_contentelementb_select_foreign_multiple' => '',
             'typo3tests_contentelementb_flexfield' => '',
+            'typo3tests_contentelementb_flexfield_sheets' => '',
             'typo3tests_contentelementb_json' => '',
             'typo3tests_contentelementb_datetime' => 0,
             'typo3tests_contentelementb_datetime_nullable' => null,
