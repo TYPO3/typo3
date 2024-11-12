@@ -41,15 +41,16 @@ final readonly class FlexFormSchema implements SchemaInterface
         return $this->structIdentifier;
     }
 
-    public function getField(string $fieldName, string $sheetName = 'sDEF'): ?FieldTypeInterface
+    public function getField(string $fieldName, ?string $sheetName = null): ?FieldTypeInterface
     {
-        if (!isset($this->sheets[$sheetName])) {
-            return null;
+        if ($sheetName !== null) {
+            if (!isset($this->sheets[$sheetName])) {
+                return null;
+            }
+            return $this->sheets[$sheetName]->hasField($sheetName . '/' . $fieldName) ? $this->sheets[$sheetName]->getField($fieldName) : null;
         }
-        if ($this->sheets[$sheetName]->hasField($sheetName . '/' . $fieldName)) {
-            return $this->sheets[$sheetName]->getField($sheetName . '/' . $fieldName);
-        }
-        // Look for any kind of field that has the same name, regardless of the sheet name
+
+        // Look the field in the sheets
         foreach ($this->sheets as $sheetName => $sheet) {
             if ($sheet->hasField($sheetName . '/' . $fieldName)) {
                 return $sheet->getField($sheetName . '/' . $fieldName);
