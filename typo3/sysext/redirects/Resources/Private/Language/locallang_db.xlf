@@ -96,6 +96,9 @@
 			<trans-unit id="sys_redirect.creation_type" resname="sys_redirect.creation_type">
 				<source>Creation Type</source>
 			</trans-unit>
+			<trans-unit id="sys_redirect.creation_type.description" resname="sys_redirect.creation_type.description">
+				<source>Defines how the redirect was created.</source>
+			</trans-unit>
 			<trans-unit id="sys_redirect.creation_type.1" resname="sys_redirect.creation_type.1">
 				<source>manually created</source>
 			</trans-unit>

@@ -33,7 +33,7 @@ return [
     'types' => [
         '1' => [
             'showitem' => '
-                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general, --palette--;;source, --palette--;;targetdetails, protected, creation_type, integrity_status,
+                --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general, --palette--;;source, --palette--;;targetdetails, protected, --palette--;;internals,
                 --div--;LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:tabs.redirectCount, disable_hitcount, hitcount, lasthiton, createdon,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access, --palette--;;visibility,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes, description',
@@ -48,6 +48,9 @@ return [
         ],
         'targetdetails' => [
             'showitem' => 'target, target_statuscode, --linebreak--, force_https, keep_query_parameters',
+        ],
+        'internals' => [
+            'showitem' => 'creation_type, integrity_status',
         ],
     ],
     'columns' => [
@@ -222,6 +225,7 @@ return [
         ],
         'creation_type' => [
             'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type',
+            'description' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:sys_redirect.creation_type.description',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -236,6 +240,7 @@ return [
                     ],
                 ],
                 'default' => 1,
+                'readOnly' => true,
             ],
         ],
         'integrity_status' => [
@@ -256,6 +261,7 @@ return [
                         'value' => RedirectConflict::SELF_REFERENCE,
                     ],
                 ],
+                'readOnly' => true,
             ],
         ],
     ],
