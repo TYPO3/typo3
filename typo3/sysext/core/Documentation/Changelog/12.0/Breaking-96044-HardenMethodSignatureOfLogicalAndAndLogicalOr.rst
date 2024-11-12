@@ -65,4 +65,15 @@ easy and quickly done. Simply don't use an array:
         $query->equals('propertyName3', 'value3'),
     ));
 
+Alternatively you can use the spread operator :php:`...` to expand your array to arguments:
+
+..  code-block:: php
+
+    $query = $this->createQuery();
+    $arrayOfConditions = [];
+    $arrayOfConditions[] = $query->equals('propertyName1', 'value1');
+    $arrayOfConditions[] = $query->equals('propertyName2', 'value2');
+    $arrayOfConditions[] = $query->equals('propertyName3', 'value3');
+    $query->matching($query->logicalAnd(...array_values($arrayOfConditions)));
+
 .. index:: PHP-API, FullyScanned, ext:extbase
