@@ -59,17 +59,17 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         }
 
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $oldMd5Hash = $registry->get(self::$registryNamespace, PathUtility::stripPathSitePrefix($staticSqlDataFile));
+        $oldFileHash = $registry->get(self::$registryNamespace, PathUtility::stripPathSitePrefix($staticSqlDataFile));
 
-        $md5HashIsEqual = true;
+        $fileHashIsEqual = true;
         // We used to only store "1" in the database when data was imported
         // No need to compare file content here and just show the reload icon
-        if (!empty($oldMd5Hash) && $oldMd5Hash !== 1) {
-            $currentMd5Hash = md5_file($staticSqlDataFile);
-            $md5HashIsEqual = $oldMd5Hash === $currentMd5Hash;
+        if (!empty($oldFileHash) && $oldFileHash !== 1) {
+            $currentFileHash = hash_file('xxh3', $staticSqlDataFile);
+            $fileHashIsEqual = $oldFileHash === $currentFileHash;
         }
 
-        if ($md5HashIsEqual) {
+        if ($fileHashIsEqual) {
             $iconIdentifier = 'actions-database-reload';
             $languageKey = 'extensionList.databaseReload';
         } else {
