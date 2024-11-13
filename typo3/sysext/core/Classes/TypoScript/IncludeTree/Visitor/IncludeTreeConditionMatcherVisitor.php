@@ -166,9 +166,19 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
         $conditionExpression = $include->getConditionToken()->getValue();
         try {
             $verdict = (bool)$this->resolver->evaluate($conditionExpression);
-        } catch (SyntaxError) {
-            $this->logger->error('Expression could not be parsed.', ['expression' => $conditionExpression]);
+        } catch (SyntaxError $e) {
+            $this->logger->error('TypoScript condition [{expression}] could not be parsed: {error}', [
+                'expression' => $conditionExpression,
+                'error' => $e->getMessage(),
+                'exception' => $e,
+            ]);
             $verdict = false;
+        } catch (\RuntimeException $e) {
+            throw new \RuntimeException(
+                sprintf('TypoScript condition [%s] could not be evaluated: %s', $conditionExpression, $e->getMessage()),
+                1731486757,
+                $e
+            );
         }
         if ($include->isConditionNegated()) {
             // Honor ConditionElseInclude "[ELSE]" which negates the verdict of the main condition.
