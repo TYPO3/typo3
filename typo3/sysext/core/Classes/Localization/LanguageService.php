@@ -171,7 +171,42 @@ class LanguageService
      *
      * This looks up the given .xlf file path in the 'core' extension for label labels.depth_0
      *
+     * Only the plain string contents of a language key, like "Record title: %s" are returned.
+     * Placeholder interpolation must be performed separately, for example via `sprintf()`, like
+     * `LocalizationUtility::translate()` does internally (which should only be used in Extbase
+     * context)
+     *
+     * Example:
+     * Label is defined in `EXT:my_ext/Resources/Private/Language/locallang.xlf` as:
+     *
+     * ```
+     * <trans-unit id="downloaded_times">
+     *     <source>downloaded %d times from %s locations</source>
+     * </trans-unit>
+     * ```
+     *
+     * The following code example assumes `$this->request` to hold the current request object.
+     * There are several ways to create the LanguageService using the Factory, depending on the
+     * context. Please adjust this example to your use case:
+     *
+     * ```
+     * $language = $this->request->getAttribute('language');
+     * $languageService =
+     *   GeneralUtility::makeInstance(LanguageServiceFactory::class)
+     *   ->createFromSiteLanguage($language);
+     * $label = sprintf(
+     *      $languageService->sL(
+     *          'LLL:EXT:my_ext/Resources/Private/Language/locallang.xlf:downloaded_times'
+     *      ),
+     *      27,
+     *      'several'
+     * );
+     * ```
+     *
+     * This will result in `$label` to contain `'downloaded 27 times from several locations'`.
+     *
      * @param string $input Label key/reference
+     * @see LocalizationUtility::translate()
      */
     public function sL($input): string
     {
