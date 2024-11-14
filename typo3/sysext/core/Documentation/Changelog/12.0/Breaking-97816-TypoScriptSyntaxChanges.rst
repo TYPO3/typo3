@@ -313,5 +313,14 @@ a whitespace between :typoscript:`=` and :typoscript:`<`:
 
     lib.nav.wrap = <ul id="nav">|</ul>
 
+Frontend TypoScript `temp.` top level object
+--------------------------------------------
+
+The Frontend TypoScript related top level object :typoscript:`temp` had special
+functionality until v12: Any TypoScript defined within was "temporary" at parse time
+and unset afterwards. It was not cached and could not be used as reference
+(:typoscript:`=<` operator). This special meaning has been removed, the key
+:typoscript:`temp` now works just like any other top level key.
+
 
 .. index:: Backend, Frontend, TSConfig, TypoScript, NotScanned, ext:core
