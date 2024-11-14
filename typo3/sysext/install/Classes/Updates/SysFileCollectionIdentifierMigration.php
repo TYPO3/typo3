@@ -103,7 +103,10 @@ class SysFileCollectionIdentifierMigration implements UpgradeWizardInterface
             ->where(
                 $queryBuilder->expr()->gt('storage', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 $queryBuilder->expr()->neq('folder', $queryBuilder->createNamedParameter('')),
-                $queryBuilder->expr()->eq('folder_identifier', $queryBuilder->createNamedParameter('')),
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq('folder_identifier', $queryBuilder->createNamedParameter('')),
+                    $queryBuilder->expr()->isNull('folder_identifier'),
+                ),
                 $queryBuilder->expr()->eq('type', $queryBuilder->createNamedParameter('folder'))
             );
 
