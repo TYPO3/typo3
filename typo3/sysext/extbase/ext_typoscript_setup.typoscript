@@ -1,9 +1,0 @@
-config.tx_extbase {
-	mvc {
-		throwPageNotFoundExceptionIfActionCantBeResolved = 0
-	}
-	persistence {
-		enableAutomaticCacheClearing = 1
-		updateReferenceIndex = 0
-	}
-}
