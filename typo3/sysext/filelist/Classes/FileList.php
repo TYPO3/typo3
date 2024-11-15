@@ -632,7 +632,7 @@ class FileList
         $attributes = [];
         $attributes['title'] = $resourceView->getName();
         $attributes['type'] = 'button';
-        $attributes['class'] = 'btn btn-link p-0';
+        $attributes['class'] = 'btn btn-link';
         $attributes['data-filelist-action'] = 'primary';
 
         $output = '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $resourceName . '</button>';

@@ -791,7 +791,7 @@ class FileQueueItem {
       if (data.upload[0].icon) {
         this.iconCol
           .innerHTML = (
-            '<button type="button" class="btn btn-link p-0" data-contextmenu-trigger="click" data-contextmenu-uid="'
+            '<button type="button" class="btn btn-link" data-contextmenu-trigger="click" data-contextmenu-uid="'
             + combinedIdentifier + '" data-contextmenu-table="sys_file" aria-label="'
             + (TYPO3.lang['labels.contextMenu.open'] || 'Open context menu') + '">'
             + data.upload[0].icon + '</span></button>'

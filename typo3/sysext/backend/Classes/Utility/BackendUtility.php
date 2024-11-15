@@ -2036,7 +2036,7 @@ class BackendUtility
     public static function wrapClickMenuOnIcon($content, $table, $uid = 0, $context = '', array $row = []): string
     {
         $attributes = self::getContextMenuAttributes((string)$table, $uid, (string)$context, 'click', $row);
-        return '<button type="button" class="btn btn-link p-0" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $content . '</button>';
+        return '<button type="button" class="btn btn-link" ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $content . '</button>';
     }
 
     /**
