@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _feature-103439-1712321631:
+..  _feature-103439-1712321631:
 
 =========================================================
 Feature: #103439 - TypoScript provider for sites and sets
@@ -63,6 +63,47 @@ be loaded multiple times, if a shared dependency is required by multiple sets.
 
 Note that :typoscript:`@import` statements are still fine to be used for local
 includes, but should be avoided for cross-set/extensions dependencies.
+
+
+..  _global_typoscript_in_site_sets:
+Global TypoScript
+-----------------
+
+Site sets introduce reliable dependencies in order to replace the need for
+globally provided TypoScript. It is therefore generally discouraged to use
+global TypoScript in an environment using TypoScript provided by site sets.
+TypoScript should only be provided globally if absolutely needed.
+
+It has therefore been decided that :file:`ext_typoscript_setup.typoscript` and
+:file:`ext_typoscript_constants.typoscript` are not autoloaded in site set
+provided TypoScript.
+
+These files can still be used to provide global TypoScript for traditional
+:sql:`sys_template` setups. Existing setups do not need to be adapted and
+extensions can still ship globally defined TypoScript via
+:file:`ext_typoscript_setup.typoscript` for these cases, but should provide
+explicitly dependable sets for newer site set setups.
+
+If global TypoScript is still needed and is unavoidable, it can be provided
+for site sets and :sql:`sys_template` setups in :file:`ext_localconf.php` via:
+
+..  code-block:: php
+
+    \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
+        'module.tx_foo.settings.example = 1'
+    );
+
+
+There are some cases where globally defined TypoScript configurations are needed
+because backend modules rely on their availability. One such case is the form
+framework backend module which uses
+:typoscript:`module.tx_form.settings.yamlConfigurations` as a registry for
+extension-provided form configuration. Global form configuration can be loaded
+via :php-short:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility` as described
+in
+:ref:`YAML registration for the backend via addTypoScriptSetup() <typo3/cms-form:concepts-configuration-yamlregistration-backend-addtyposcriptsetup>`
+Please make sure to only load backend-related form TypoScript globally and to
+provide TypoScript related to frontend rendering via site sets.
 
 
 Impact
