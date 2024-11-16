@@ -82,6 +82,12 @@ final class LinkAnalyzerTest extends FunctionalTestCase
                     [1, 2],
                     __DIR__ . '/Fixtures/expected_output_content_with_broken_links_several_pages.csv',
                 ],
+            'Test with typolink to page/ce in header_link (regression test for https://forge.typo3.org/issues/104387)'
+                => [
+                    __DIR__ . '/Fixtures/input_link_with_page_ce.csv',
+                    [10],
+                    __DIR__ . '/Fixtures/expected_link_with_page_ce.csv',
+                ],
         ];
     }
 
@@ -93,6 +99,7 @@ final class LinkAnalyzerTest extends FunctionalTestCase
             'searchFields' => [
                 'pages' => ['media', 'url', 'canonical_link'],
                 'tt_content' => ['bodytext', 'header_link', 'records'],
+                'sys_file_reference' => ['link'],
             ],
             'linktypes' => 'db,file,external',
             'checkhidden' => '0',

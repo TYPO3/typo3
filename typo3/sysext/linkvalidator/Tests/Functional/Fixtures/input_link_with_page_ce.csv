@@ -1,0 +1,18 @@
+"pages",,,,,
+,"uid","pid","hidden","title"
+,1,0,1,"Hidden page"
+,2,0,0,"Not hidden page"
+,10,0,0,"Page with links"
+"tt_content",,,,,,
+,"uid","pid","header_link","CType","hidden","header"
+,20,1,"","header",1,"Hidden CE on hidden page"
+,21,1,"","header",0,"Not hidden CE on hidden page"
+,22,2,"","header",0,"Not hidden CE on not hidden page"
+,23,2,"","header",1,"Hidden CE on not hidden page"
+,30,10,"t3://page?uid=1#20","header",0,"Broken link to hidden CE on hidden page"
+,31,10,"t3://page?uid=2#22","header",0,"Not broken link to CE on page"
+,32,10,"t3://page?uid=1#21","header",0,"Broken link to not hidden CE on hidden page"
+,33,10,"t3://page?uid=2#23","header",0,"Broken link to hidden CE on not hidden page"
+"sys_file_reference",,,,,,
+,"uid","pid","link","title"
+,40,10,"t3://page?uid=1#20","Broken link to hidden CE on hidden page"
