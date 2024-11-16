@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserResult;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -359,9 +360,20 @@ class LinkAnalyzer
             $fieldInformation = $visibleFields[$field];
             $valueField = $record[$field];
 
+            if ((string)$valueField === '') {
+                continue;
+            }
+
+            // Fields of TCA type 'link' contain the typolink directly (e.g. tt_content.header_link)
+            // and are not resolved through a soft reference parser.
+            if ($fieldInformation->isType(TableColumnType::LINK)) {
+                $this->analyzeTypolink((string)$valueField, $results, $record, $field, $table);
+                continue;
+            }
+
             // Check if a TCA configured field has soft references defined (see TYPO3 Core API document)
             $softReferenceKeys = $fieldInformation->getSoftReferenceKeys();
-            if ($softReferenceKeys === false || (string)$valueField === '') {
+            if ($softReferenceKeys === false) {
                 continue;
             }
             // Traverse soft references
@@ -429,6 +441,77 @@ class LinkAnalyzer
             $results[$type][$table . ':' . $field . ':' . $idRecord . ':' . $reference['tokenID']]['uid'] = $idRecord;
             if ($tokenValue !== '') {
                 $foundTokenValues[$tokenValue] = true;
+            }
+        }
+    }
+
+    /**
+     * Find all supported broken links for one link, contained directly in $content
+     * (e.g. TCA type "link" fields such as tt_content.header_link).
+     *
+     * Reuses the "typolink" soft reference parser to resolve the link (page, file,
+     * external URL, ...), instead of re-implementing that resolution here. That parser
+     * returns a page reference and a content element reference as two separate matches
+     * for a link to a content element (e.g. t3://page?uid=1#20), which are merged into
+     * a single "pageAndAnchor" entry here, the same way analyzeTypoLinks() merges them
+     * for typolink_tag matches.
+     *
+     * @param array $results Array of broken links
+     * @param array $record The current record
+     * @param string $field The current field
+     * @param string $table The current table
+     */
+    protected function analyzeTypolink(string $content, array &$results, array $record, string $field, string $table): void
+    {
+        $idRecord = $record['uid'];
+        foreach ($this->softReferenceParserFactory->getParsersBySoftRefParserList('typolink', ['subst']) as $softReferenceParser) {
+            $parserResult = $softReferenceParser->parse($table, $field, $idRecord, $content);
+            if (!$parserResult->hasMatched()) {
+                continue;
+            }
+
+            $currentR = [];
+            $wasPage = false;
+            $pageAndAnchor = '';
+            foreach ($parserResult->getMatchedElements() as $element) {
+                $r = $element['subst'] ?? [];
+                if (empty($r)) {
+                    continue;
+                }
+                // Merge a page reference and an immediately following content element
+                // reference into one combined "pageAndAnchor" value (see method docblock).
+                if (str_contains($r['recordRef'] ?? '', 'pages')) {
+                    $currentR = $r;
+                    $pageAndAnchor = $r['tokenValue'];
+                    $wasPage = true;
+                } elseif ($wasPage && str_contains($r['recordRef'] ?? '', 'tt_content')) {
+                    $pageAndAnchor .= '#c' . $r['tokenValue'];
+                    $wasPage = false;
+                } else {
+                    $currentR = $r;
+                }
+            }
+            if (empty($currentR)) {
+                continue;
+            }
+
+            $type = '';
+            foreach ($this->linktypeRegistry->getLinktypes() as $keyArr => $linkType) {
+                $type = $linkType->fetchType($currentR, $type, $keyArr);
+                // Store the type that was found
+                // This prevents overriding by internal validator
+                if (!empty($type)) {
+                    $currentR['type'] = $type;
+                }
+            }
+            $key = $table . ':' . $field . ':' . $idRecord . ':' . $currentR['tokenID'];
+            $results[$type][$key]['substr'] = $currentR;
+            $results[$type][$key]['row'] = $record;
+            $results[$type][$key]['table'] = $table;
+            $results[$type][$key]['field'] = $field;
+            $results[$type][$key]['uid'] = $idRecord;
+            if (str_contains($pageAndAnchor, '#c')) {
+                $results[$type][$key]['pageAndAnchor'] = $pageAndAnchor;
             }
         }
     }

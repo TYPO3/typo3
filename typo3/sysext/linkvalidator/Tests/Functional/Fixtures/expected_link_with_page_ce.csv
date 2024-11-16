@@ -1,0 +1,6 @@
+"tx_linkvalidator_link",,,,,,,,
+,"record_uid","record_pid","field","table_name","link_title","url","link_type","headline"
+,30,10,"header_link","tt_content","","1#c20","db","Broken link to hidden CE on hidden page"
+,32,10,"header_link","tt_content","","1#c21","db","Broken link to not hidden CE on hidden page"
+,33,10,"header_link","tt_content","","2#c23","db","Broken link to hidden CE on not hidden page"
+,40,10,"link","sys_file_reference","","1#c20","db","N/A"
