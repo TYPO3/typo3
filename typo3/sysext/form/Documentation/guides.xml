@@ -11,6 +11,7 @@
                edit-on-github="typo3/typo3"
                edit-on-github-directory="typo3/sysext/form/Documentation/"
                typo3-core-preferred="main"
+               interlink-shortcode="typo3/cms-form"
     />
     <project title="Form"
              release="main (development)"
