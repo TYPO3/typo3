@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
 /**
@@ -181,7 +182,17 @@ Call it like this: typo3/sysext/core/bin/typo3 scheduler:run --task=13 -f')
                 try {
                     $this->executeOrStopTask($task);
                 } catch (\Exception $e) {
-                    $this->io->getErrorStyle()->error($e->getMessage());
+                    $messages = [
+                        $e->getMessage() . PHP_EOL,
+                        'Exception in scheduler task #' . $task->getTaskUid() . ' (' . $task->getTaskTitle() . ')',
+                    ];
+                    if ($task instanceof ExecuteSchedulableCommandTask) {
+                        $messages[] = 'Command: ' . $task->getCommandIdentifier();
+                    } else {
+                        $messages[] = 'Class: ' . $task->getTaskClassName();
+                    }
+                    $messages[] = 'File: ' . $e->getFile() . ':' . $e->getLine();
+                    $this->io->getErrorStyle()->error($messages);
                     $hasError = true;
                     // We ignore any exception that may have been thrown during execution,
                     // as this is a background process.
