@@ -761,6 +761,24 @@ return [
                 ],
             ],
         ],
+        'select_tree_7' => [
+            'label' => 'select_tree_7 pages, minitems=1, maxitems=1, minimal interface',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectTree',
+                'foreign_table' => 'pages',
+                'size' => 20,
+                'minitems' => 1,
+                'maxitems' => 1,
+                'treeConfig' => [
+                    'parentField' => 'pid',
+                    'appearance' => [
+                        'showHeader' => false,
+                        'expandAll' => false,
+                    ],
+                ],
+            ],
+        ],
 
         'category_11' => [
             'label' => 'category_11',
@@ -980,7 +998,7 @@ return [
                     select_multiplesidebyside_7, select_multiplesidebyside_8, select_multiplesidebyside_9,
                     select_multiplesidebyside_10,
                 --div--;renderType=selectTree,
-                    select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6,
+                    select_tree_1, select_tree_2, select_tree_3, select_tree_4, select_tree_5, select_tree_6, select_tree_7,
                 --div--;type=category,
                     category_11, category_1n, category_mm,
                 --div--;in flex,

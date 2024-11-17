@@ -67,6 +67,11 @@ export class SelectTree extends Tree
     const checked = node.checked;
     this.handleExclusiveNodeSelection(node);
 
+    if (!checked && this.settings.validation.maxItems == 1 && this.getSelectedNodes().length > 0) {
+      //  we unselect now, if only one checked node allowed AND a node is already checked,
+      this.getSelectedNodes()[0].checked = false;
+    }
+
     if (this.settings.validation && this.settings.validation.maxItems) {
       if (!checked && this.getSelectedNodes().length >= this.settings.validation.maxItems) {
         return;
