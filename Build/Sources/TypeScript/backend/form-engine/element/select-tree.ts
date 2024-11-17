@@ -78,21 +78,37 @@ export class SelectTree extends Tree
   }
 
   public filter(searchTerm?: string|null): void {
+    const results: TreeNodeInterface[] = [];
     this.searchTerm = searchTerm;
     if (this.nodes.length) {
       this.nodes[0].__expanded = false;
     }
+    const firstNode = this.nodes[0];
     const regex = new RegExp(searchTerm, 'i');
 
     this.nodes.forEach((node: any) => {
-      if (regex.test(node.name)) {
-        this.showParents(node);
-        node.__expanded = true
-        node.__hidden = false;
-      } else {
-        node.__expanded = false
-        node.__hidden = true;
+      // skip the root node in searches
+      if (node === firstNode) {
+        return;
       }
+
+      node.__expanded = false;
+      node.__hidden = true;
+
+      if (regex.test(node.name)) {
+        results.push(node);
+      }
+    });
+
+    results.forEach((node) => {
+      node.__hidden = false;
+      this.showParents(node);
+    });
+
+    // filter for children of results and show them
+    const children = this.nodes.filter(node => results.some(result => node.__parents.includes(result.identifier)));
+    children.forEach((child) => {
+      child.__hidden = false;
     });
   }
 
