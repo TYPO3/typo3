@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _setup:
+
 =====
 Setup
 =====
@@ -10,7 +12,7 @@ the settings and commands outlined in this page. Depending on your site and how
 editing is handled, changes in the configuration and regular maintenance may be
 required.
 
-.. _site-configuration:
+..  _site-configuration:
 
 Site configuration
 ==================
@@ -61,6 +63,8 @@ redirects. This can be adjusted via TCA
     The `settings` in the site configuration are generally explained in
     "TYPO3 Explained" > :ref:`t3coreapi:sitehandling-settings`.
 
+..  _console-commands:
+
 Console commands
 ================
 
@@ -72,7 +76,7 @@ Please see the general information about this in "TYPO3 Explained" >
 We explain executing the commands from the command line here, it is recommended
 to automate regular execution, e.g. via cron.
 
-.. _redirects-cleanup:
+..  _redirects-cleanup:
 
 redirects:cleanup
 -----------------
@@ -144,7 +148,7 @@ and have a status code of 302 or 303.
             --age 90 --hitCount 100 --path "/foo/bar%" --statusCode 302 --statusCode 303
 
 
-.. _redirects-checkintegrity:
+..  _redirects-checkintegrity:
 
 redirects:checkintegrity
 ------------------------
@@ -203,7 +207,7 @@ this:
 You can now search for the affected redirects in the redirects module, e.g.
 by filtering with *Source Path* `/test-1`.
 
-.. _editor-permission:
+..  _editor-permission:
 
 Configure editor permission
 ===========================
@@ -247,7 +251,7 @@ group in the :guilabel:`Access Lists` tab > :guilabel:`Allowed excludefields` >
 
     Allowed excludefields
 
-.. _hit-counter:
+..  _hit-counter:
 
 Hit counter
 ===========
@@ -275,6 +279,9 @@ hit counter, a delete policy for unnecessary redirects can be defined.
 
 Visit the :ref:`redirects:cleanup <redirects-cleanup>` with the option
 `-c` for more information.
+
+
+..  _system-reports:
 
 System reports
 ==============
