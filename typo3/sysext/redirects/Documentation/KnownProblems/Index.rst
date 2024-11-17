@@ -1,10 +1,12 @@
 .. include:: /Includes.rst.txt
 
+..  _known-problems:
+
 ==============
 Known problems
 ==============
 
-.. _usagePitfallsConstants:
+..  _usagePitfallsConstants:
 
 Problem with constants in LinkHandler TSConfig
 ==============================================
@@ -12,6 +14,8 @@ Problem with constants in LinkHandler TSConfig
 It is important, that the `storagePid` is hard coded in the LinkHandler Page
 TSConfig, because using constants, e.g. from the site configuration, won't work
 here. :ref:`More details <t3coreapi:linkhandler-pagetsconfig>`
+
+..  _known-problems-other:
 
 Other known problems
 ====================

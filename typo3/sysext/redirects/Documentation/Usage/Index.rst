@@ -1,9 +1,12 @@
 .. include:: /Includes.rst.txt
 
+..  _usage:
+
 =====
 Usage
 =====
 
+..  _usage-redirects-module:
 
 Redirects module
 ================
@@ -15,6 +18,8 @@ Access the redirects module in the TYPO3 backend under :guilabel:`Site Managemen
     :class: with-shadow
 
     Open Redirects module
+
+..  _usage-redirects-module-list:
 
 List
 ----
@@ -54,6 +59,8 @@ It is also possible to **filter**, e.g. by the *Source Path*, *Status Code*,
 (see Information on :ref:`Hit counter <hit-counter>` which must be explicitly
 enabled via Feature Toggle).
 
+..  _usage-redirects-module-edit-form:
+
 Edit form
 ---------
 
@@ -81,6 +88,7 @@ and *Target* are enabled, the rest are exclude fields and must be enabled in the
 backend group permissions, see
 :ref:`backend user configuration <editor-permission>`.
 
+..  _usage-redirects-module-edit-form-general-tab:
 
 General tab
 ~~~~~~~~~~~
@@ -192,6 +200,7 @@ General tab
     This field hints about a broken redirect, for example, if the page references
     to itself.
 
+..  _usage-redirects-module-edit-form-statistic-tab:
 
 Statistics tab
 ~~~~~~~~~~~~~~
@@ -232,6 +241,8 @@ the hit counter for a specific redirect and also see read-only statistics.
 
     When was this redirect created?
 
+..  _usage-redirects-module-edit-form-access-tab:
+
 Access tab
 ~~~~~~~~~~
 
@@ -255,6 +266,8 @@ Access tab
     If this is not empty, "now" (current time) must be before Stop time for the
     redirect to have effect.
 
+..  _usage-redirects-module-edit-form-notes-tab:
+
 Notes
 ~~~~~
 
@@ -266,10 +279,13 @@ Notes
     displayed in the "Record information" info box above the edit form.
 
 
-.. _regex-examples:
+..  _regex-examples:
 
 Regex examples
 --------------
+
+..  _regex-examples-regex:
+
 
 Example 1: Source path with regular expression and capturing group
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -290,6 +306,7 @@ with the following result:
 | :samp:`https://example.org/path/something` | :samp:`https://example.org/newpath/something` |
 +--------------------------------------------+-----------------------------------------------+
 
+..  _regex-examples-regex-relative:
 
 Example 2: Source path with regular expression, capturing group and relative target
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -318,6 +335,8 @@ Using a relative target is necessary if a redirect must work on multiple domains
     TYPO3 will not syntax check the redirect. Make sure you enter working
     redirects enclosed in delimiters. Use tools like https://regex101.com/,
     if necessary.
+
+..  _automatic-redirect-creation:
 
 Automatic redirects creation
 ============================
