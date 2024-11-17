@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _introduction:
+
 ============
 Introduction
 ============
@@ -29,6 +31,8 @@ For more technical information on how redirects work, visit
 For more information about the types of redirects, see
 :ref:`HTTP status codes <http-status-codes>`
 
+..  _introduction-what:
+
 What does it do?
 ================
 
@@ -48,6 +52,8 @@ Features:
     EXT:redirects does not handle redirects created via page types "*Link to External
     URL*" (`pages.doktype=3`), "*Shortcut*" (`pages.doktype=4`) or redirects created
     within the web server (e.g. :file:`.htaccess` or web server configuration).
+
+..  _conventions:
 
 Conventions
 ===========

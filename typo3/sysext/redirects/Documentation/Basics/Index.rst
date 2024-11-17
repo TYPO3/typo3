@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
-.. _glossary:
-.. _basics:
+..  _glossary:
+..  _basics:
 
 ======
 Basics
@@ -12,6 +12,8 @@ specific to EXT:redirects.
 
 .. todo: add term for t3:// URI (e.g. typo3 URI, linkhandler URI, etc.) after term is clarified
 .. see https://forge.typo3.org/issues/95820
+
+..  _basics-url:
 
 Components of a URL
 ===================
@@ -30,7 +32,7 @@ of the URL:
 -   query parameters
 -   fragment
 
-.. _http-status-codes:
+..  _http-status-codes:
 
 HTTP status codes
 =================
@@ -87,7 +89,7 @@ that the URL has changed permanently and that they should update their index
 accordingly. Thus, from SEO point of view, permanent redirects are often a good
 choice. If domains are changed or sites restructured, 301 are often used.
 
-.. _redirect-chain:
+..  _redirect-chain:
 
 Redirect chain
 ==============
@@ -101,7 +103,7 @@ Examples for redirect chains:
 -   `/a => /b => /c` (it would be more efficient if `/a` redirected to `/c`
     directly and `/b` redirected to `/c`)
 
-.. _redirect-loop:
+..  _redirect-loop:
 
 Redirect loop
 =============
@@ -115,6 +117,8 @@ Examples for redirect loops:
 -   `/a => /a` (source and target for a redirect resolve to the same URL)
 -   `/a => /b => /a`
 
+..  _slug:
+
 Slug
 ====
 
@@ -126,6 +130,3 @@ enhancers and decorators.
 
 Example: A slug `/path` is used, the final URL may be
 `https://example.org/en/path.html`.
-
-
-

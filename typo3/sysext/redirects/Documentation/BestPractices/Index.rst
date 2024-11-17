@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _best-practices:
+..  _best-practices:
 
 ==============
 Best practices
@@ -26,7 +26,7 @@ Here are some general tips for managing redirects:
     become inefficient. A "redirect chain" are several redirects which must be
     followed until the destination is reached. Ideally, these should be merged.
 
-.. _best-practices-editors:
+..  _best-practices-editors:
 
 Editors
 =======
@@ -45,7 +45,7 @@ possibility to only grant advanced editor groups access to parts of the content
     so that pages with changing slugs are still accessible but a better
     strategy is to only change slugs when absolutely necessary.
 
-.. _best-practices-performance:
+..  _best-practices-performance:
 
 Performance
 ===========
@@ -72,6 +72,8 @@ The following rules of thumb should be followed:
 
     It is recommended to monitor performance and - if necessary - export
     redirects to your webserver configuration or load balancer.
+
+..  _best-practices-troubleshooting-tools:
 
 Troubleshooting tools
 =====================
