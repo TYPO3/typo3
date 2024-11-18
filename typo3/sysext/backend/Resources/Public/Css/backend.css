@@ -3836,9 +3836,8 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex{border-top:0}
 .form-irre-object--deleted,.t3-flex-section--deleted{opacity:0!important}
 .t3-form-field-container-inline-hidden,.t3-form-field-container-inline-placeHolder{opacity:.3}
 .t3-form-field-disable{display:none}
-.formengine-field-item.disabled{position:relative}
-.formengine-field-item.disabled .t3-form-field-disable{z-index:100;background:#fafafa;display:block;position:absolute;width:100%;height:100%;opacity:.5}
-.t3-form-field-eval-null-checkbox{z-index:150;position:relative}
+.formengine-field-item.disabled .t3-form-field-disable{z-index:10;background:var(--typo3-form-section-bg);display:block;position:absolute;top:0;left:0;width:100%;height:100%;opacity:.5}
+.formengine-field-item.disabled .form-description,.formengine-field-item.disabled .t3-form-field-eval-null-checkbox{z-index:20;position:relative}
 .treeline-icon{position:relative;display:inline-block;margin-top:-.75rem;margin-bottom:-.75rem;margin-inline-end:2px;padding:0;height:54px;width:16px;flex-shrink:0;white-space:nowrap;overflow:hidden;vertical-align:middle}
 .treeline-icon:after,.treeline-icon:before{position:absolute;content:"";inset-inline-start:50%}
 .treeline-icon:before{top:0;height:100%;width:2px;margin-inline-start:-1px;border-inline-start:1px solid var(--treelist-border-color)}
