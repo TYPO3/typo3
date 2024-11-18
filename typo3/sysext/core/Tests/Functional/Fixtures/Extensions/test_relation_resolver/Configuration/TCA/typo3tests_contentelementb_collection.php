@@ -55,10 +55,48 @@ return [
                 'type' => 'input',
             ],
         ],
+        'flexA' => [
+            'label' => 'flexA',
+            'exclude' => true,
+            'config' => [
+                'type' => 'flex',
+                'ds' => [
+                    'default' => '<T3FlexForms>
+    <sheets type="array">
+        <sheet type="array">
+            <ROOT type="array">
+                <type>array</type>
+                <el type="array">
+                    <field index="link" type="array">
+                        <label>header</label>
+                        <config type="array">
+                            <type>link</type>
+                        </config>
+                    </field>
+                    <field index="datetime" type="array">
+                        <label>datetime</label>
+                        <config type="array">
+                            <type>datetime</type>
+                        </config>
+                    </field>
+                    <field index="some.number" type="array">
+                        <label>number</label>
+                        <config type="array">
+                            <type>number</type>
+                        </config>
+                    </field>
+                </el>
+            </ROOT>
+        </sheet>
+    </sheets>
+</T3FlexForms>',
+                ],
+            ],
+        ],
     ],
     'types' => [
         1 => [
-            'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,fieldA,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,--palette--;;language,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,--palette--;;hidden,--palette--;;access',
+            'showitem' => '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,fieldA,flexA,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,--palette--;;language,--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,--palette--;;hidden,--palette--;;access',
         ],
     ],
 ];

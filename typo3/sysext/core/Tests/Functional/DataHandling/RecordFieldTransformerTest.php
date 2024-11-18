@@ -1351,11 +1351,27 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
                 </field>
             </language>
         </sheet>
+        <sheet index="sheet2">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Second Header in Flex</value>
+                </field>
+                <field index="link">
+                    <value index="vDEF">t3://page?uid=13</value>
+                </field>
+                <field index="datetime">
+                    <value index="vDEF">1366480800</value>
+                </field>
+                <field index="some.number">
+                    <value index="vDEF">12</value>
+                </field>
+            </language>
+        </sheet>
     </data>
 </T3FlexForms>',
         ]);
-        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
 
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
@@ -1365,21 +1381,109 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         )->instantiate();
 
         self::assertIsArray($result);
-        self::assertSame('Header in Flex', $result['header']);
+        self::assertSame('Second Header in Flex', $result['header']);
         self::assertSame('Text in Flex', $result['textarea']);
+        self::assertSame('t3://page?uid=13', $result['link']->instantiate()->url);
+        self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
+        self::assertSame('12', $result['some']['number']);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
         $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
         self::assertIsArray($resolvedRelation);
-        self::assertSame('Header in Flex', $resolvedRelation['header']);
+        self::assertSame('Second Header in Flex', $resolvedRelation['header']);
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
+        self::assertSame('t3://page?uid=13', $resolvedRelation['link']->instantiate()->url);
+        self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
+        self::assertSame('12', $resolvedRelation['some']['number']);
     }
 
     #[Test]
-    public function canResolveFlexFormWithSheetsOtherThanDefault(): void
+    public function canResolveFlexFormWithFallbackToDefault(): void
     {
         $dummyRecord = $this->createTestRecordObject([
-            'typo3tests_contentelementb_flexfield_sheets' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+            'CType' => 'invalid',
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="xmlTitle">
+                    <value index="vDEF">Default</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertIsArray($result);
+        self::assertSame('Default', $result['xmlTitle']);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertIsArray($resolvedRelation);
+        self::assertSame('Default', $resolvedRelation['xmlTitle']);
+    }
+
+    #[Test]
+    public function canResolveFlexFormWithMissingDefault(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'CType' => 'invalid',
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="link">
+                    <value index="vDEF">t3://page?uid=13</value>
+                </field>
+                <field index="datetime">
+                    <value index="vDEF">1366480800</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        unset($GLOBALS['TCA']['tt_content']['columns']['typo3tests_contentelementb_flexfield']['config']['ds']['default']);
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
+        $schemaFactory->rebuild($GLOBALS['TCA']);
+        $fieldInformation = $schemaFactory->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertIsArray($result);
+        self::assertSame('t3://page?uid=13', $result['link']);
+        self::assertSame('1366480800', $result['datetime']);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertIsArray($resolvedRelation);
+        self::assertSame('t3://page?uid=13', $resolvedRelation['link']);
+        self::assertSame('1366480800', $resolvedRelation['datetime']);
+    }
+
+    #[Test]
+    public function canResolveFlexFormDefaultSheetWithoutDsPointerFieldAndRecordTypeInline(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield_ds' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3FlexForms>
     <data>
         <sheet index="sheet1">
@@ -1411,8 +1515,8 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     </data>
 </T3FlexForms>',
         ]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield_ds');
 
-        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield_sheets');
         $subject = $this->get(RecordFieldTransformer::class);
         $result = $subject->transformField(
             $fieldInformation,
@@ -1429,13 +1533,74 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('12', $result['some']['number']);
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield_sheets');
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield_ds');
         self::assertIsArray($resolvedRelation);
         self::assertSame('Second Header in Flex', $resolvedRelation['header']);
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
         self::assertSame('t3://page?uid=13', $resolvedRelation['link']->instantiate()->url);
         self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
         self::assertSame('12', $resolvedRelation['some']['number']);
+    }
+
+    #[Test]
+    public function canResolveFlexFormInCollections(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/collections.csv');
+        $dummyRecord = $this->createTestRecordObject(['typo3tests_contentelementb_collection' => 2]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_collection');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+
+        self::assertCount(2, $result);
+        self::assertInstanceOf(LazyRecordCollection::class, $result);
+        self::assertSame('t3://page?uid=13', $result[0]->get('flexA')['link']->instantiate()->url);
+        self::assertSame('2013-04-20', $result[0]->get('flexA')['datetime']->format('Y-m-d'));
+        self::assertSame('12', $result[0]->get('flexA')['some']['number']);
+        self::assertEmpty($result[1]->get('flexA'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection'));
+        self::assertSame('t3://page?uid=13', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')['link']->instantiate()->url);
+        self::assertSame('2013-04-20', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')['datetime']->format('Y-m-d'));
+        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection')[0]->get('flexA')['some']['number']);
+        self::assertEmpty($resolvedRecord->get('typo3tests_contentelementb_collection')[1]->get('flexA'));
+    }
+
+    #[Test]
+    public function canResolveFlexFormInCollectionsRecursively(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/DataSet/collections_recursive.csv');
+        $dummyRecord = $this->createTestRecordObject(['typo3tests_contentelementb_collection_recursive' => 2]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_collection_recursive');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+
+        self::assertCount(2, $result);
+        self::assertInstanceOf(LazyRecordCollection::class, $result);
+        self::assertSame('t3://page?uid=13', $result[0]->get('collection_inner')[0]->get('flexB')['link']->instantiate()->url);
+        self::assertSame('2013-04-20', $result[0]->get('collection_inner')[0]->get('flexB')['datetime']->format('Y-m-d'));
+        self::assertSame('12', $result[0]->get('collection_inner')[0]->get('flexB')['some']['number']);
+        self::assertEmpty($result[0]->get('collection_inner')[1]->get('flexB'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertInstanceOf(LazyRecordCollection::class, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive'));
+        self::assertCount(2, $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner'));
+        self::assertSame('t3://page?uid=13', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')['link']->instantiate()->url);
+        self::assertSame('2013-04-20', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')['datetime']->format('Y-m-d'));
+        self::assertSame('12', $resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[0]->get('flexB')['some']['number']);
+        self::assertEmpty($resolvedRecord->get('typo3tests_contentelementb_collection_recursive')[0]->get('collection_inner')[1]->get('flexB'));
     }
 
     protected function setWorkspaceId(int $workspaceId): void
@@ -1488,7 +1653,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
             'typo3tests_contentelementb_select_multiple' => '',
             'typo3tests_contentelementb_select_foreign_multiple' => '',
             'typo3tests_contentelementb_flexfield' => '',
-            'typo3tests_contentelementb_flexfield_sheets' => '',
+            'typo3tests_contentelementb_flexfield_ds' => '',
             'typo3tests_contentelementb_json' => '',
             'typo3tests_contentelementb_datetime' => 0,
             'typo3tests_contentelementb_datetime_nullable' => null,
