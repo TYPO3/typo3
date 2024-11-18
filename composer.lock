@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "309d740101dac2dce6637481c38cbe1c",
+    "content-hash": "b8443bb9de5c3b197adb42a5194ec112",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -4946,16 +4946,16 @@
         },
         {
             "name": "typo3fluid/fluid",
-            "version": "4.0.1",
+            "version": "4.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/Fluid.git",
-                "reference": "d2504c4ea151984c891c3007a0ea73d38689c51a"
+                "reference": "5ecd828cfeb52c6d4583f48bb5c477346b62903c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/d2504c4ea151984c891c3007a0ea73d38689c51a",
-                "reference": "d2504c4ea151984c891c3007a0ea73d38689c51a",
+                "url": "https://api.github.com/repos/TYPO3/Fluid/zipball/5ecd828cfeb52c6d4583f48bb5c477346b62903c",
+                "reference": "5ecd828cfeb52c6d4583f48bb5c477346b62903c",
                 "shasum": ""
             },
             "require": {
@@ -4996,7 +4996,7 @@
                 "issues": "https://github.com/TYPO3/Fluid/issues",
                 "source": "https://github.com/TYPO3/Fluid"
             },
-            "time": "2024-10-03T09:50:37+00:00"
+            "time": "2024-11-18T21:56:49+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -9607,7 +9607,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -9624,7 +9624,7 @@
         "ext-xml": "*",
         "composer-runtime-api": "^2.1"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.2.0"
     },
