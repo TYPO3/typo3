@@ -3,8 +3,13 @@
         <f:then>
             <div class="t3-page-column-header-icons">
                 <f:if condition="{allowEditContent} && {column.editUrl}">
-                    <a class="btn btn-link" href="{column.editUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editColumn')}">
+                    <a
+                        class="btn btn-link"
+                        href="{column.editUrl}"
+                        title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editColumn')}"
+                    >
                         <core:icon identifier="actions-document-open" />
+                        <span class="visually-hidden">{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editColumn')}</span>
                     </a>
                 </f:if>
             </div>
