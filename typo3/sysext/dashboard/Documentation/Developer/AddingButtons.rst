@@ -1,7 +1,6 @@
 .. include:: /Includes.rst.txt
 
-
-.. _adding-buttons:
+..  _adding-buttons:
 
 =======================
 Adding button to Widget
@@ -10,6 +9,8 @@ Adding button to Widget
 .. php:namespace:: TYPO3\CMS\Dashboard\Widgets
 
 In order to add a button to a widget, a new dependency to an :php:`ButtonProviderInterface` can be added.
+
+..  _adding-buttons-template:
 
 Template
 --------
@@ -23,6 +24,8 @@ The output itself is done inside of the Fluid template, for example :file:`Resou
          {f:translate(id: button.title, default: button.title)}
       </a>
    </f:if>
+
+..  _adding-buttons-configuration:
 
 Configuration
 -------------
@@ -69,6 +72,9 @@ See also: :php:`\TYPO3\CMS\Dashboard\Widgets\Provider\ButtonProvider`.
 
     The target of the link, e.g. ``_blank``.
     ``LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.t3news.moreItems``.
+
+
+..  _adding-buttons-implementation:
 
 Implementation
 --------------

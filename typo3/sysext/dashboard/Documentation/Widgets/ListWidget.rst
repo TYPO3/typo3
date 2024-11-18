@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _list-widget:
+..  _list-widget:
 
 ===========
 List Widget
@@ -11,6 +11,8 @@ List Widget
 
 Widgets using this class will show a simple list of items provided by a data
 provider.
+
+..  _list-widget-example:
 
 Example
 -------
@@ -35,10 +37,14 @@ Example
             height: 'large'
             width: 'large'
 
+..  _list-widget-options:
+
 Options
 -------
 
 .. include:: Options/RefreshAvailable.rst.txt
+
+..  _list-widget-dependencies:
 
 Dependencies
 ------------

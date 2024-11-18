@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _doughnut-chart-widget:
+..  _doughnut-chart-widget:
 
 =====================
 Doughnut Chart Widget
@@ -13,6 +13,8 @@ Widgets using this class will show a doughnut chart with the provided data.
 
 This kind of widgets are useful if you want to show the relational proportions
 between data.
+
+..  _doughnut-chart-widget-example:
 
 Example
 -------
@@ -36,10 +38,14 @@ Example
             iconIdentifier: 'content-widget-chart-pie'
             height: 'medium'
 
+..  _doughnut-chart-widget-options:
+
 Options
 -------
 
 .. include:: Options/RefreshAvailable.rst.txt
+
+..  _doughnut-chart-widget-dependencies:
 
 Dependencies
 ------------

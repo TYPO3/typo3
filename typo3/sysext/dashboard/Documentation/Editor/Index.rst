@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _for-editors:
+..  _for-editors:
 
 ===========
 For Editors
@@ -11,7 +11,7 @@ Target group: **Editors**
 Welcome to our small dashboard introduction.
 We will explain the basic usage of the TYPO3 dashboard.
 
-.. _opening-dashboard:
+..  _opening-dashboard:
 
 Opening Dashboard
 =================
@@ -35,7 +35,7 @@ The dashboard can be opened at any time by clicking the entry
 
     Ask your administrator about this.
 
-.. _adding-dashboard:
+..  _adding-dashboard:
 
 Adding Dashboard
 ================
@@ -61,7 +61,7 @@ presets might be available.
 
    Wizard to add a new dashboard.
 
-.. _editing-dashboard:
+..  _editing-dashboard:
 
 Editing Dashboard
 =================
@@ -76,7 +76,7 @@ settings of the currently active dashboard.
    Icons on the right side of the tab bar allow adjusting settings or deletion of
    the currently selected dashboard.
 
-.. _adding-widgets:
+..  _adding-widgets:
 
 Adding Widgets
 ==============
@@ -103,7 +103,7 @@ Widgets are grouped in tabs and can be added by clicking on them.
 
    Wizard to select a new widget that will be added to the active dashboard.
 
-.. _moving-widgets:
+..  _moving-widgets:
 
 Moving Widgets
 ==============
@@ -119,7 +119,7 @@ Then move to the target position.
 
    Widget in hover mode with additional icons in upper right corner.
 
-.. _deleting-widgets:
+..  _deleting-widgets:
 
 Deleting Widgets
 ================

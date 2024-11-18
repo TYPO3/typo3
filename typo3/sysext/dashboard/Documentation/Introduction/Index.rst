@@ -1,13 +1,11 @@
+:navigation-title: Introduction
 .. include:: /Includes.rst.txt
 
-.. _introduction:
+..  _introduction:
 
-============
-Introduction
-============
-
-What does it do?
-================
+==============================
+Introduction: What does it do?
+==============================
 
 This extension provides a new TYPO3 backend module "Dashboard".
 Users can create multiple dashboards visible in this module, and switch between those

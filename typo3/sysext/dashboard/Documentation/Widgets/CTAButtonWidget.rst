@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _cta-button-widget:
+..  _cta-button-widget:
 
 =================
 CTA Button Widget
@@ -15,6 +15,8 @@ defining a button provider.
 
 You can use this kind of widget to link to for example a manual or to an important
 website that is used a lot by the users.
+
+..  _cta-button-widget-example:
 
 Example
 -------
@@ -38,6 +40,8 @@ Example
            iconIdentifier: 'content-widget-text'
            height: 'small'
 
+..  _cta-button-widget-options:
+
 Options
 -------
 
@@ -51,6 +55,8 @@ Options
     Adds an optional text to the widget to give some more background information
     about what a user can expect when clicking the button.
     You can either enter a normal string or a translation string.
+
+..  _cta-button-widget-dependencies:
 
 Dependencies
 ------------

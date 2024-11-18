@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _adjust-template-of-widget:
+..  _adjust-template-of-widget:
 
 ==========================
 Adjust template of widgets
