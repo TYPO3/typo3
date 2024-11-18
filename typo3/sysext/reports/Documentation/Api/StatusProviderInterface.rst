@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _StatusProviderInterfaceAPI:
+..  _StatusProviderInterfaceAPI:
 
 =======================
 StatusProviderInterface
@@ -28,8 +28,5 @@ If you need to provide extended information implement
         {
             // ...
         }
-
-API
-===
 
 .. include:: /CodeSnippets/Generated/StatusProviderInterface.rst.txt

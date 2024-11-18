@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _custom-reports:
+..  _custom-reports:
 
 ============================
 Custom reports registration
@@ -17,7 +17,7 @@ environment check and the status of the installed extensions.
     configuration, based on the implemented interface. See section
     :ref:`migration` for more information.
 
-.. _register-custom-report:
+..  _register-custom-report:
 
 Register a custom report
 ========================
@@ -35,7 +35,7 @@ Alternatively, one can manually tag a custom report with the
 .. include:: /CodeSnippets/Manual/RegisterReport.rst.txt
 
 
-.. _register-custom-status:
+..  _register-custom-status:
 
 Register a custom status
 ========================
@@ -50,6 +50,9 @@ Alternatively, one can manually tag a custom report with the
 :yaml:`reports.status` tag:
 
 .. include:: /CodeSnippets/Manual/RegisterStatus.rst.txt
+
+
+..  _custom-reports-more:
 
 More about custom reports
 =========================
