@@ -48,7 +48,11 @@ readonly class FluidViewAdapter implements CoreViewInterface, FluidStandaloneVie
 
     public function render(string $templateFileName = ''): string
     {
-        return $this->view->render($templateFileName);
+        $renderedView = $this->view->render($templateFileName);
+        if ($renderedView !== null && !is_scalar($renderedView) && !$renderedView instanceof \Stringable) {
+            throw new \RuntimeException('The rendered Fluid view can not be turned into string', 1731959329);
+        }
+        return (string)$renderedView;
     }
 
     public function getRenderingContext(): RenderingContextInterface
