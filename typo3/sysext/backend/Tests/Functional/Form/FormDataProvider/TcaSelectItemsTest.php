@@ -2892,6 +2892,46 @@ final class TcaSelectItemsTest extends FunctionalTestCase
         self::assertEquals($expected, $selectItems->addData($input));
     }
 
+    #[Test]
+    public function processSelectFieldValueReturnsEmptyArrayForNull(): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'select_nullable' => null,
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'select_nullable' => [
+                        'label' => 'Select nullable',
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                [
+                                    'label' => 'Item 1',
+                                    'value' => 'item1',
+                                    'icon' => null,
+                                    'group' => null,
+                                    'description' => null,
+                                ],
+                            ],
+                            'maxitems' => 9999,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['databaseRow']['select_nullable'] = [];
+
+        $selectItems = (new TcaSelectItems($this->get(SelectItemProcessor::class)));
+        $selectItems->injectIconFactory($this->get(IconFactory::class));
+        $selectItems->injectConnectionPool($this->get(ConnectionPool::class));
+        self::assertEquals($expected, $selectItems->addData($input));
+    }
+
     public static function processSelectFieldSetsCorrectValuesForMmRelationsDataProvider(): array
     {
         return [

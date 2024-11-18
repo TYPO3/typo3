@@ -975,6 +975,9 @@ abstract class AbstractItemProvider
         $currentDatabaseValues = array_key_exists($fieldName, $row)
             ? $row[$fieldName]
             : '';
+        if ($currentDatabaseValues === null) {
+            return [];
+        }
         if (!is_array($currentDatabaseValues)) {
             $currentDatabaseValues = GeneralUtility::trimExplode(',', $currentDatabaseValues, true);
         }
