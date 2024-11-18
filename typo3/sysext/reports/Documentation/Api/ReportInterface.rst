@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _ReportInterfaceAPI:
+..  _ReportInterfaceAPI:
 
 ===============
 ReportInterface
@@ -13,8 +13,5 @@ in the module :guilabel:`Reports` if :yaml:`autoconfigure` is enabled in
 
 If information from the current request is required for the report use
 :php:interface:`TYPO3\\CMS\\Reports\\RequestAwareReportInterface`.
-
-API
-===
 
 .. include:: /CodeSnippets/Generated/ReportInterface.rst.txt
