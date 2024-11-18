@@ -9,6 +9,7 @@ Create database record
 A basic reaction shipped with the system extension can be used to create records
 triggered and enriched by data from the caller.
 
+..  _navigate-backend-module:
 
 Navigate to the backend module
 ==============================
@@ -23,6 +24,7 @@ new reaction:
 
     Backend module "Reactions" with no reactions available
 
+..  _create-reaction:
 
 Create a new reaction
 =====================
@@ -101,6 +103,7 @@ We now save and close the form - our newly created reaction is now visible:
 
     Backend module with reaction
 
+..  _call-reaction:
 
 Call the reaction manually
 ==========================
