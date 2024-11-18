@@ -1,9 +1,26 @@
 "typo3tests_contentelementb_collection"
-,"uid","pid","fieldA","foreign_table_parent_uid","t3ver_oid","t3ver_wsid"
-,1,1,"lorem foo bar",260,0,0
-,2,1,"lorem foo bar 2",260,0,0
-,3,1,"lorem foo bar WS",260,1,1
-,4,1,"lorem foo bar 2 WS",260,2,1
+,"uid","pid","fieldA","foreign_table_parent_uid","t3ver_oid","t3ver_wsid","flexA"
+,1,1,"lorem foo bar",260,0,0,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+    <data>
+        <sheet index=""sheet"">
+            <language index=""lDEF"">
+                <field index=""link"">
+                    <value index=""vDEF"">t3://page?uid=13</value>
+                </field>
+                <field index=""datetime"">
+                    <value index=""vDEF"">1366480800</value>
+                </field>
+                <field index=""some.number"">
+                    <value index=""vDEF"">12</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>"
+,2,1,"lorem foo bar 2",260,0,0,""
+,3,1,"lorem foo bar WS",260,1,1,""
+,4,1,"lorem foo bar 2 WS",260,2,1,""
 "tt_content"
 ,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_collection","CType"
 ,260,1,0,0,2,"typo3tests_contentelementb"

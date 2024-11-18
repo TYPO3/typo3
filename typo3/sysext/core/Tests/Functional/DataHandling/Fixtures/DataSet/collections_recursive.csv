@@ -3,9 +3,26 @@
 ,1,1,"lorem foo bar A",2,260
 ,2,1,"lorem foo bar A2",0,260
 "collection_inner"
-,"uid","pid","fieldB","foreign_table_parent_uid"
-,1,1,"lorem foo bar B",1
-,2,1,"lorem foo bar B2",1
+,"uid","pid","fieldB","foreign_table_parent_uid","flexB"
+,1,1,"lorem foo bar B",1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
+<T3FlexForms>
+    <data>
+        <sheet index=""sheet"">
+            <language index=""lDEF"">
+                <field index=""link"">
+                    <value index=""vDEF"">t3://page?uid=13</value>
+                </field>
+                <field index=""datetime"">
+                    <value index=""vDEF"">1366480800</value>
+                </field>
+                <field index=""some.number"">
+                    <value index=""vDEF"">12</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>"
+,2,1,"lorem foo bar B2",1,""
 "tt_content"
 ,"uid","pid","t3ver_oid","t3ver_wsid","typo3tests_contentelementb_collection_recursive","CType"
 ,1,1,0,0,2,"typo3tests_contentelementb"

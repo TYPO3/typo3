@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Schema;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
@@ -44,108 +45,75 @@ final readonly class FlexFormSchemaFactory
      */
     public function getSchemaForRecord(RawRecord $record, FlexFormFieldType $field, RelationMap $relationMap): ?FlexFormSchema
     {
-        $allSchemata = $this->createSchemataForFlexField(
-            $field->getConfiguration(),
-            $record->getMainType(),
-            $field->getName(),
-            $relationMap
-        );
-
-        $structIdentifierParts = [
-            $record->getMainType(),
-            $field->getName(),
-        ];
-        $alternativeIdentifierParts = $structIdentifierParts;
-        if ($record->getRecordType()) {
-            $structIdentifierParts[] = $record->getRecordType();
-            $alternativeIdentifierParts[] = '*,' . $record->getRecordType();
+        try {
+            $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
+                ['config' => $field->getConfiguration()],
+                $record->getMainType(),
+                $field->getName(),
+                $record->toArray()
+            );
+        } catch (InvalidSinglePointerFieldException) {
+            return null;
         }
 
-        $structIdentifier = implode('/', $structIdentifierParts);
-        $alternativeIdentifier = implode('/', $alternativeIdentifierParts);
+        $resolvedDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
 
-        foreach ($allSchemata as $schema) {
-            if ($schema->getName() === $structIdentifier || $schema->getName() === $alternativeIdentifier) {
-                return $schema;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return FlexFormSchema[]
-     */
-    protected function createSchemataForFlexField(array $tcaConfig, string $tableName, string $fieldName, RelationMap $relationMap): array
-    {
-        // Create schema for each possibility we have
-        $flexSchemas = [];
-        foreach ($tcaConfig['ds'] as $dataStructureKey => $dataStructure) {
-            $dataStructureIdentifier = [
-                'type' => 'tca',
-                'tableName' => $tableName,
-                'fieldName' => $fieldName,
-                'dataStructureKey' => $dataStructureKey,
-            ];
-            $flexStructureAsArray = $this->flexFormTools->parseDataStructureByIdentifier(json_encode($dataStructureIdentifier));
-            // Create all fields, then the sheets with the fields in it, then the actual FlexFormSchema
-            $sheets = [];
-            foreach ($flexStructureAsArray['sheets'] as $sheetIdentifier => $sheetData) {
-                $fields = [];
-                $sections = [];
-                foreach ($sheetData['ROOT']['el'] as $flexFieldName => $flexFieldConfig) {
-                    $fieldIdentifier = $sheetIdentifier . '/' . $flexFieldName;
-                    if (($flexFieldConfig['type'] ?? '') === 'array' && ($flexFieldConfig['section'] ?? false)) {
-                        // We are inside a section, now loop over the section containers
-                        $sectionContainers = [];
-                        foreach ($flexFieldConfig['el'] ?? [] as $sectionContainerIdentifier => $sectionContainerDetails) {
-                            // Sections can only have section containers
-                            if (($sectionContainerDetails['type'] ?? '') !== 'array') {
-                                continue;
-                            }
-                            $sectionFieldIdentifier = $fieldIdentifier . '/' . $sectionContainerIdentifier;
-                            $fieldsInSectionContainer = [];
-                            $sectionContainerTitle = $sectionContainerDetails['title'] ?? '';
-                            // Collect all elements within this section container
-                            foreach ($sectionContainerDetails['el'] as $fieldNameInSectionContainer => $sectionContainerConfig) {
-                                $fieldsInSectionContainer[$fieldNameInSectionContainer] = $this->fieldTypeFactory->createFieldType(
-                                    $fieldNameInSectionContainer,
-                                    $sectionContainerConfig ?? [],
-                                    $tableName,
-                                    $relationMap,
-                                    null,
-                                    $fieldName
-                                );
-                            }
-                            $sectionContainers[$sectionFieldIdentifier] = new FlexSectionContainer(
-                                $sectionFieldIdentifier,
-                                $sectionContainerTitle,
-                                '',
-                                new FieldCollection($fieldsInSectionContainer)
+        $sheets = [];
+        foreach ($resolvedDataStructure['sheets'] ?? [] as $sheetIdentifier => $sheetData) {
+            $fields = [];
+            $sections = [];
+            foreach ($sheetData['ROOT']['el'] ?? [] as $flexFieldName => $flexFieldConfig) {
+                $fieldIdentifier = $sheetIdentifier . '/' . $flexFieldName;
+                if (($flexFieldConfig['type'] ?? '') === 'array' && ($flexFieldConfig['section'] ?? false)) {
+                    // We are inside a section, now loop over the section containers
+                    $sectionContainers = [];
+                    foreach ($flexFieldConfig['el'] ?? [] as $sectionContainerIdentifier => $sectionContainerDetails) {
+                        // Sections can only have section containers
+                        if (($sectionContainerDetails['type'] ?? '') !== 'array') {
+                            continue;
+                        }
+                        $sectionFieldIdentifier = $fieldIdentifier . '/' . $sectionContainerIdentifier;
+                        $fieldsInSectionContainer = [];
+                        $sectionContainerTitle = $sectionContainerDetails['title'] ?? '';
+                        // Collect all elements within this section container
+                        foreach ($sectionContainerDetails['el'] ?? [] as $fieldNameInSectionContainer => $sectionContainerConfig) {
+                            $fieldsInSectionContainer[$fieldNameInSectionContainer] = $this->fieldTypeFactory->createFieldType(
+                                $fieldNameInSectionContainer,
+                                $sectionContainerConfig ?? [],
+                                $record->getMainType(),
+                                $relationMap,
+                                null,
+                                $field->getName()
                             );
                         }
-                        $sections[$fieldIdentifier] = $sectionContainers;
-                    } else {
-                        $fields[$fieldIdentifier] = $this->fieldTypeFactory->createFieldType(
-                            $fieldIdentifier,
-                            $flexFieldConfig ?? [],
-                            $tableName,
-                            $relationMap,
-                            null,
-                            $fieldName
+                        $sectionContainers[$sectionFieldIdentifier] = new FlexSectionContainer(
+                            $sectionFieldIdentifier,
+                            $sectionContainerTitle,
+                            '',
+                            new FieldCollection($fieldsInSectionContainer)
                         );
                     }
+                    $sections[$fieldIdentifier] = $sectionContainers;
+                } else {
+                    $fields[$fieldIdentifier] = $this->fieldTypeFactory->createFieldType(
+                        $fieldIdentifier,
+                        $flexFieldConfig ?? [],
+                        $record->getMainType(),
+                        $relationMap,
+                        null,
+                        $field->getName()
+                    );
                 }
-                $fields = new FieldCollection($fields);
-                $sheets[$sheetIdentifier] = new FlexSheet(
-                    $sheetIdentifier,
-                    $sheetData['ROOT']['sheetTitle'] ?? '',
-                    $sheetData['ROOT']['sheetDescription'] ?? '',
-                    $fields,
-                    $sections
-                );
             }
-            $flexSchemas[] = new FlexFormSchema($tableName . '/' . $fieldName . '/' . $dataStructureKey, $sheets);
+            $fields = new FieldCollection($fields);
+            $sheets[$sheetIdentifier] = new FlexSheet(
+                $sheetIdentifier,
+                $sheetData['ROOT']['sheetTitle'] ?? '',
+                $sheetData['ROOT']['sheetDescription'] ?? '',
+                $fields,
+                $sections
+            );
         }
-        return $flexSchemas;
+        return new FlexFormSchema($dataStructureIdentifier, $sheets);
     }
 }
