@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _dashboard-presets:
+..  _dashboard-presets:
 
 =================
 Dashboard Presets
@@ -9,7 +9,7 @@ Dashboard Presets
 It is possible to configure presets of dashboards.
 The extension already ships a ``default`` as well as an ``empty`` dashboard preset.
 
-.. _create-preset:
+..  _create-preset:
 
 Create preset
 -------------
@@ -77,7 +77,7 @@ Each preset consists of the following options:
     This can be disabled, to add presets via :ref:`configure-preset-for-user`, without
     showing up in the wizard.
 
-.. _configure-preset-for-user:
+..  _configure-preset-for-user:
 
 Configure preset for user
 -------------------------
@@ -108,5 +108,5 @@ If nothing is configured, ``default`` will be used as identifier.
    :ref:`t3tsconfig:userthetsconfigfield` section of TSconfig manual
    explains how to set or register TSconfig for user.
 
-   :ref:`t3coreapi:typoscript-syntax-syntax-value-modification` explains the usage of
+   :ref:`t3tsref:typoscript-syntax-syntax-value-modification` explains the usage of
    :typoscript:`:=` TypoScript operator.

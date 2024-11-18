@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _widgets:
+..  _widgets:
 
 =======
 Widgets

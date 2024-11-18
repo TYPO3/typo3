@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _create-widget-group:
+..  _create-widget-group:
 
 ===================
 Create widget group

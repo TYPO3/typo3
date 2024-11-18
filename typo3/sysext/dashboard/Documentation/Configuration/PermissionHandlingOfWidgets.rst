@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _permission-handling-of-widgets:
+..  _permission-handling-of-widgets:
 
 ======================
 Permissions of widgets

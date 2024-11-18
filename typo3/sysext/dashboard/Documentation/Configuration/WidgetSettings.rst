@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _adjust-settings-of-widget:
+..  _adjust-settings-of-widget:
 
 =====================================
 Adjust settings of registered widgets
@@ -19,6 +19,8 @@ the extension has to define a dependency to EXT:dashboard.
 
 Afterwards the widget can be registered again, with different options. See
 :ref:`register-new-widget` to get an in depth example of how to register a widget.
+
+..  _adjust-settings-of-widget-why:
 
 Why not adjust specific settings?
 ---------------------------------

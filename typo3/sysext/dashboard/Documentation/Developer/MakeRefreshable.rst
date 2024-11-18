@@ -1,7 +1,5 @@
 .. include:: /Includes.rst.txt
-
-
-.. _make-refreshable:
+..  _make-refreshable:
 
 ==================
 The refresh option
@@ -42,6 +40,8 @@ registration. Below is an example of a RSS widget with the refresh option enable
    to the corresponding classes. Otherwise the refresh option won't have any
    effect.
 
+..  _refresh-button:
+
 Enable the refresh button
 -------------------------
 
@@ -54,6 +54,8 @@ All TYPO3 Core widgets implement this behaviour and allow integrators to
 configure the option:
 
 .. include:: /Widgets/Options/RefreshAvailable.rst.txt
+
+..  _refresh-javascript:
 
 JavaScript API
 --------------
