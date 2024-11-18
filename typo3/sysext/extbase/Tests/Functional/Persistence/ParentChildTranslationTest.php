@@ -87,4 +87,34 @@ final class ParentChildTranslationTest extends FunctionalTestCase
             $children
         );
     }
+    #[Test]
+    public function multilevelFallbackOfChildrenRespects(): void
+    {
+        $query = $this->get(MainRepository::class)->createQuery();
+        $querySettings = $query->getQuerySettings();
+        $querySettings->setStoragePageIds([1]);
+        $querySettings->setRespectSysLanguage(true);
+        $querySettings->setLanguageAspect(new LanguageAspect(5, 5, LanguageAspect::OVERLAYS_MIXED, [1]));
+
+        $results = $query->execute();
+
+        self::assertCount(2, $results);
+
+        $children = [];
+        foreach ($results as $main) {
+            $children[] = $main->getChild()->getTitle();
+            $children[] = $main->getSqueeze()->toArray()[0]->getChild()->getTitle();
+        }
+
+        self::assertSame(
+            [
+                'Enfant 1 FR',
+                'Enfant 1 FR',
+                // This needs to be a DE child due to the fallback
+                'Kind 2 DE',
+                'Enfant 3 FR',
+            ],
+            $children
+        );
+    }
 }

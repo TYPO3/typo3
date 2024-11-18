@@ -425,7 +425,8 @@ class DataMapper
         $languageAspect = new LanguageAspect(
             $languageUid,
             $languageUid,
-            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_MIXED : $languageAspect->getOverlayType()
+            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_MIXED : $languageAspect->getOverlayType(),
+            $languageAspect->getFallbackChain()
         );
         $query->getQuerySettings()->setLanguageAspect($languageAspect);
 
