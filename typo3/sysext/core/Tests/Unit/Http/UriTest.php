@@ -105,6 +105,21 @@ final class UriTest extends UnitTestCase
             (string)$new
         );
     }
+
+    #[Test]
+    public function noSchemeWithDomainAlikeIsInterpretedAsPath(): void
+    {
+        $subject = new Uri('www.example.com');
+        self::assertEquals('/www.example.com', (string)$subject);
+    }
+
+    #[Test]
+    public function noSchemeWithDomainAlikeAndTrailingSlashIsInterpretedAsPath(): void
+    {
+        $subject = new Uri('www.example.com/');
+        self::assertEquals('/www.example.com/', (string)$subject);
+    }
+
     public static function validPortsDataProvider(): array
     {
         return [
@@ -472,5 +487,13 @@ final class UriTest extends UnitTestCase
         $expected = '/p%5Eth?key%5E=%60bar%23b@z';
         $uri = (new Uri())->withFragment($expected);
         self::assertEquals($expected, $uri->getFragment());
+    }
+
+    #[Test]
+    public function canParseInternationalizedDomainName(): void
+    {
+        $uri = new Uri('https://ουτοπία.δπθ.gr/');
+        // @todo normalize to ascii?
+        self::assertEquals('https://ουτοπία.δπθ.gr/', (string)$uri);
     }
 }
