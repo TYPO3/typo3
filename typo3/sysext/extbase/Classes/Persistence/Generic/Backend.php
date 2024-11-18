@@ -151,7 +151,8 @@ class Backend implements BackendInterface
         $languageAspect = new LanguageAspect(
             $languageAspect->getId(),
             $languageAspect->getContentId(),
-            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_ON_WITH_FLOATING : $languageAspect->getOverlayType()
+            $languageAspect->getOverlayType() === LanguageAspect::OVERLAYS_OFF ? LanguageAspect::OVERLAYS_ON_WITH_FLOATING : $languageAspect->getOverlayType(),
+            $languageAspect->getFallbackChain()
         );
         $query->getQuerySettings()->setLanguageAspect($languageAspect);
         return $query->matching($query->equals('uid', $identifier))->execute()->getFirst();
