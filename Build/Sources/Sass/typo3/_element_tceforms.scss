@@ -84,22 +84,23 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 }
 
 .formengine-field-item.disabled {
-    position: relative;
-
     .t3-form-field-disable {
-        z-index: 100;
-        background: #fafafa;
+        z-index: 10;
+        background: var(--typo3-form-section-bg);
         display: block;
         position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 100%;
         opacity: .5;
     }
-}
 
-// z-index must be higher as .t3-form-field-disable z-index
-// this is required for the eval=null field checkbox
-.t3-form-field-eval-null-checkbox {
-    z-index: 150;
-    position: relative;
+    // z-index must be higher as .t3-form-field-disable z-index
+    // this is required for the eval=null field checkbox
+    .form-description,
+    .t3-form-field-eval-null-checkbox {
+        z-index: 20;
+        position: relative;
+    }
 }
