@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _migration:
+..  _migration:
 
 =========
 Migration
@@ -20,8 +20,10 @@ If TYPO3 v12+ is the only supported version, the configuration
 version 11 you can leave the configurations in the file. They are not
 evaluated anymore in version 12.
 
+..  _migration-report:
+
 Report
-=========
+======
 
 If :yaml:`autoconfigure` is not enabled in your :file:`Configuration/Services.(yaml|php)`,
 add the tag :yaml:`reports.report` manually to your `reports` service.
@@ -85,8 +87,10 @@ Additionally, make sure to implement all methods of
 
 Refer to the :ref:`Icon API <t3coreapi:icon>` on how to register the icon.
 
+..  _migration-status:
+
 Status
-=========
+======
 
 If :yaml:`autoconfigure` is not enabled in your :file:`Configuration/Services.(yaml|php)`,
 add the tag :yaml:`reports.status` manually to your `status` service.

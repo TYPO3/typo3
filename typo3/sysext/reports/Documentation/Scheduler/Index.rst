@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _scheduler-task:
+..  _scheduler-task:
 
 ==============
 Scheduler task
@@ -23,6 +23,8 @@ extension.
    :class: with-shadow
 
    Create a :guilabel:`System Status Update` task in :guilabel:`System > Scheduler`
+
+..  _scheduler-task-mail:
 
 System status notification mail
 ===============================

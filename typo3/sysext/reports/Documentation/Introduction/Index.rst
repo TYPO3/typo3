@@ -1,10 +1,12 @@
 .. include:: /Includes.rst.txt
 
-.. _introduction:
+..  _introduction:
 
 ============
 Introduction
 ============
+
+..  _what-does-it-do:
 
 What does it do?
 ================
@@ -20,13 +22,15 @@ The TYPO3 system extension EXT:reports displays the extendable backend module
 The Reports module groups several system reports and gives you a quick
 overview about important system statuses and site parameters.
 
+..  _check-security:
+
 Section "Security"
 ==================
 
 .. figure:: /Images/Security.png
    :class: with-shadow
 
-   Regularily check the section :guilabel:`Security`
+   Regularly check the section :guilabel:`Security`
 
 From a security perspective, the section :guilabel:`Security` should be checked
 regularly: it provides information about the administrator user
