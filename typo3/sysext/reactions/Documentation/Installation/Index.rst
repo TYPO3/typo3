@@ -1,5 +1,7 @@
 ..  include:: /Includes.rst.txt
 
+..  _installation:
+
 ============
 Installation
 ============
@@ -8,6 +10,8 @@ This extension is part of the TYPO3 Core, but not installed by default.
 
 ..  contents:: Table of contents
     :local:
+
+..  _installation-composer:
 
 Installation with Composer
 ==========================
@@ -35,6 +39,8 @@ The given version depends on the version of the TYPO3 Core you are using.
 
 Installation without Composer
 =============================
+
+..  _installation-no-composer:
 
 In an installation without Composer, the extension is already shipped but might
 not be activated yet. Activate it as follows:

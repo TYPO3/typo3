@@ -22,6 +22,8 @@ every product ID stored in the registry entry into TYPO3.
 
 You can find the implemented reaction type in the :t3ext:`examples` extension.
 
+..  _create-reaction-type:
+
 Create the reaction type
 ========================
 
@@ -34,6 +36,8 @@ To create a custom reaction type, we add a class which implements the
 
 You can use :ref:`constructor injection <t3coreapi:Constructor-injection>` to
 inject necessary dependencies.
+
+..  _add-reaction-type:
 
 Add reaction type to select list in backend module
 ==================================================
