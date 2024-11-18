@@ -97,7 +97,8 @@
     inset-inline-end: calc(var(--pagemodule-grid-inner-spacing) * -1);
     bottom: 0;
 
-    &:hover {
+    &:hover,
+    &:focus-within {
         opacity: 1;
     }
 }
@@ -151,7 +152,8 @@
         box-shadow: none;
         transition: opacity .3s ease-in-out;
 
-        &:hover {
+        &:hover,
+        &:focus-within {
             opacity: 1;
         }
     }
