@@ -25,6 +25,7 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Mime\Address;
+use TYPO3\CMS\Backend\Authentication\Event\PasswordHasBeenResetEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -372,6 +373,8 @@ readonly class PasswordReset
                 ],
                 ['uid' => $userId]
             );
+
+        $this->eventDispatcher->dispatch(new PasswordHasBeenResetEvent($userId));
 
         $this->invalidateUserSessions($userId);
 
