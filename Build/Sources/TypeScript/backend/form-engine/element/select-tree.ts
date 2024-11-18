@@ -108,7 +108,7 @@ export class SelectTree extends Tree
     if (node.__parents.length === 0) {
       return;
     }
-    const parent = this.nodes[node.__parents[0]];
+    const parent = this.nodes.find((searchNode) => searchNode.identifier === node.__parents.at(-1));
     parent.__hidden = false;
     parent.__expanded = true;
     this.showParents(parent);
