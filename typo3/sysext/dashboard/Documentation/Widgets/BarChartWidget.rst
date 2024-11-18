@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _bar-chart-widget:
+..  _bar-chart-widget:
 
 ================
 Bar Chart Widget
@@ -14,6 +14,8 @@ This kind of widgets are useful if you want to show some statistics of for examp
 historical data.
 
 .. php:class:: TYPO3\CMS\Dashboard\Widgets\BarChartWidget
+
+..  _bar-chart-widget-example:
 
 Example
 -------
@@ -39,10 +41,14 @@ Example
             height: 'medium'
             width: 'medium'
 
+..  _bar-chart-widget-options:
+
 Options
 -------
 
 .. include:: Options/RefreshAvailable.rst.txt
+
+..  _bar-chart-widget-dependencies:
 
 Dependencies
 ------------

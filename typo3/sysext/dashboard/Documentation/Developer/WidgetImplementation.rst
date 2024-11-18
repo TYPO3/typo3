@@ -1,7 +1,6 @@
 .. include:: /Includes.rst.txt
 
-
-.. _implement-new-widget:
+..  _implement-new-widget:
 
 ====================
 Implement new widget
@@ -24,6 +23,8 @@ while registration adds necessary options for a concrete instance of a widget.
 For example a TYPO3.org RSS Widget would consist of an :php:`RssWidget` PHP class.
 This class would provide the implementation to fetch rss news and display them.
 The concrete registration will provide the URL to RSS feed.
+
+..  _widget-php-class:
 
 PHP class
 ---------
@@ -86,7 +87,7 @@ The difference between :php:`$options` and :php:`$configuration` in above exampl
 :php:`$configuration` is an instance of :php:`WidgetConfigurationInterface`
 holding all internal configuration, like icon identifier.
 
-.. _implement-new-widget-fluid:
+..  _implement-new-widget-fluid:
 
 Using Fluid
 -----------
@@ -96,7 +97,7 @@ Therefore each widget can define :php:`BackendViewFactory` as requirement for DI
 constructor, like done in RSS example.
 
 
-.. _implement-new-widget-custom-js:
+..  _implement-new-widget-custom-js:
 
 Providing custom JS
 -------------------
@@ -165,6 +166,8 @@ JavaScript
 
 All ways can be combined.
 
+..  _migrate-from-requirejs:
+
 Migration from RequireJsModuleInterface
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -209,7 +212,7 @@ Deprecated example widget above would look like the following when using
         }
     }
 
-
+..  _custom-css:
 
 Providing custom CSS
 --------------------

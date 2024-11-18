@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _start:
+
 ===============
 TYPO3 Dashboard
 ===============

@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _number-widget:
+..  _number-widget:
 
 =======================
 Number With Icon Widget
@@ -13,6 +13,8 @@ Widgets using this class will show a widget with a number, some additional
 text and an icon.
 
 This kind of widgets are useful if you want to show some simple stats.
+
+..  _number-widget-example:
 
 Example
 -------
@@ -37,6 +39,8 @@ Example
             title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.title'
             description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widgets.failedLogins.description'
             iconIdentifier: 'content-widget-number'
+
+..  _number-widget-options:
 
 Options
 -------
@@ -65,6 +69,8 @@ Options
 
     The icon-identifier of the icon that should be shown in the widget.
     You should register your icon with the :ref:`t3coreapi:icon`.
+
+..  _number-widget-dependencies:
 
 Dependencies
 ------------

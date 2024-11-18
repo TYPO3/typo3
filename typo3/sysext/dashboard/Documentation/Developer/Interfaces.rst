@@ -1,7 +1,6 @@
 .. include:: /Includes.rst.txt
 
-
-.. _interfaces:
+..  _interfaces:
 
 ==========
 Interfaces

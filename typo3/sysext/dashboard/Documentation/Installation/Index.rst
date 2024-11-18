@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _installation:
+..  _installation:
 
 ============
 Installation
@@ -12,6 +12,8 @@ This extension is part of the TYPO3 Core, but not installed by default.
 
 ..  contents:: Table of contents
     :local:
+
+..  _installation-composer:
 
 Installation with Composer
 ==========================
@@ -36,6 +38,8 @@ the extension:
     composer require typo3/cms-dashboard
 
 The given version depends on the version of the TYPO3 Core you are using.
+
+..  _installation-no-composer:
 
 Installation without Composer
 =============================

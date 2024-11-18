@@ -8,7 +8,7 @@ Each of the widgets can be registered with different configurations as documente
 
 The below example will use the RSS Widget as a concrete example.
 
-.. _register-new-widget:
+..  _register-new-widget:
 
 ===================
 Register new Widget
@@ -20,6 +20,8 @@ Both files can exist and will be merged.
 
 :file:`Services.yaml` is recommended and easier to write,
 while :file:`Services.php` provide way more flexibility.
+
+..  _register-new-widget-naming:
 
 Naming widgets
 --------------
@@ -34,7 +36,9 @@ Widgets receive a name in form of ``dashboard.widget.vendor.ext_key.widgetName``
 
 This prevents naming conflicts if multiple 3rd Party extensions are installed.
 
-Services.yaml File
+..  _register-new-widget-services:
+
+Services.yaml file
 ------------------
 
 In order to turn the PHP class :php:`\TYPO3\CMS\Dashboard\Widgets\RssWidget` into an actual widget,
@@ -71,6 +75,8 @@ the following service registration can be used:
 
 The beginning of the file is not related to the widget itself, but dependency injection in general,
 see: :ref:`t3coreapi:configure-dependency-injection-in-extensions`.
+
+..  _register-new-widget-service-configuration:
 
 Service configuration
 """""""""""""""""""""
@@ -110,7 +116,7 @@ The following keys are defined for the service:
 
     See :ref:`register-new-widget-tags-section`.
 
-.. _register-new-widget-tags-section:
+..  _register-new-widget-tags-section:
 
 Tags Section
 """"""""""""
@@ -199,6 +205,8 @@ The following options are optional and have default values which will be used if
     Will be added to the surrounding rendered markup.
     Usually used when working with Graphs.
 
+..  _register-new-widget-splitting:
+
 Splitting up Services.yaml
 --------------------------
 
@@ -252,6 +260,8 @@ An example to split up all Widget related configuration would look like:
             height: 'large'
             width: 'medium'
 
+
+..  _register-new-widget-services-php:
 
 Services.php File
 -----------------

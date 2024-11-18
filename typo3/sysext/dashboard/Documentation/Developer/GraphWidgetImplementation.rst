@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _graph-widget-implementation:
+..  _graph-widget-implementation:
 
 ======================
 Implement graph widget
