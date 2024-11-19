@@ -96,7 +96,7 @@ class LogEntryRepository
         }
         // Level
         if ($level = $constraint->getLevel()) {
-            $queryConstraints[] = $query->expr()->in('level', $query->createNamedParameter(Typo3LogLevel::atLeast($level), Connection::PARAM_INT_ARRAY));
+            $queryConstraints[] = $query->expr()->in('level', $query->createNamedParameter(Typo3LogLevel::atLeast($level), Connection::PARAM_STR_ARRAY));
         }
         // Start / endtime handling: The timestamp calculation was already done
         // in the controller, since we need those calculated values in the view as well.
