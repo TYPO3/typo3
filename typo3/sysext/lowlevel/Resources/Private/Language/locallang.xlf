@@ -265,7 +265,7 @@
 				<source>Use formatted strings, labels and dates instead of original values for results</source>
 			</trans-unit>
 			<trans-unit id="dontUseOrigValues" resname="dontUseOrigValues">
-				<source>Don't use original values in brackets as prefix for labelled results</source>
+				<source>Don't use original values in brackets as prefix for labeled results</source>
 			</trans-unit>
 			<trans-unit id="sortOptions" resname="sortOptions">
 				<source>Sort selectbox-options for relations by label and not by value</source>

@@ -27,7 +27,7 @@
 				<source>Display Password Recovery Link</source>
 			</trans-unit>
 			<trans-unit id="settings.description.felogin.showForgotPassword" resname="settings.description.felogin.showForgotPassword">
-				<source>If set, the section in the template to display the link to the forgot password dialogue is visible.</source>
+				<source>If set, the section in the template to display the link to the forgot password dialog is visible.</source>
 			</trans-unit>
 			<trans-unit id="settings.felogin.showPermaLogin" resname="settings.felogin.showPermaLogin">
 				<source>Display Remember Login Option</source>

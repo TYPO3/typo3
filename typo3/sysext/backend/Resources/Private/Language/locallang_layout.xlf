@@ -46,7 +46,7 @@
 				<source>Conflict with dropped node</source>
 			</trans-unit>
 			<trans-unit id="mess.drop.conflict" resname="mess.drop.conflict">
-				<source>The node %s is a parent of %s and therefore cannot be moved. Operation cancelled.</source>
+				<source>The node %s is a parent of %s and therefore cannot be moved. Operation canceled.</source>
 			</trans-unit>
 			<trans-unit id="deleteItem" resname="deleteItem">
 				<source>Delete</source>
