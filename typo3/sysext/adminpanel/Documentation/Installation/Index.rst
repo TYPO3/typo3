@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _installation:
+..  _installation:
 
 ============
 Installation
@@ -10,6 +10,8 @@ This extension is part of the TYPO3 Core, but not installed by default.
 
 ..  contents:: Table of contents
     :local:
+
+..  _installation-composer:
 
 Installation with Composer
 ==========================
@@ -35,6 +37,8 @@ the extension:
 
 The given version depends on the version of the TYPO3 Core you are using.
 
+..  _installation-no-composer:
+
 Installation without Composer
 =============================
 
@@ -50,6 +54,8 @@ not be activated yet. Activate it as follows:
     :alt: Extension manager showing Admin Panel extension
 
     Extension manager showing Admin Panel extension
+
+..  _installation-next-steps:
 
 Next steps
 ==========
