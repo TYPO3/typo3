@@ -95,6 +95,13 @@ abstract class AbstractPreset implements PresetInterface
             } catch (MissingArrayPathException $e) {
                 $currentValue = null;
             }
+            if ($currentValue === null && $configurationValue === '__UNSET') {
+                // Preset can define configuration values to be removed using `__UNSET` value handled by
+                // `ArrayUtility::mergeRecursiveWithOverrule()`, retrieving `$currentValue = null`. This
+                // case needs to be skipped to avoid taking the unset value of the other preset to flag
+                // the current preset as inactive. Continue with next value.
+                continue;
+            }
             if ($currentValue !== $configurationValue) {
                 $isActive = false;
                 break;
