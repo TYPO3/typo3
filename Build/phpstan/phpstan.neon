@@ -1,7 +1,6 @@
 includes:
   - phpstan-baseline.neon
   - ../../vendor/bnf/phpstan-psr-container/extension.neon
-  - ../../vendor/friendsoftypo3/phpstan-typo3/extension.neon
   - ../../vendor/phpstan/phpstan-phpunit/extension.neon
 
 services:

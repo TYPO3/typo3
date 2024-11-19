@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90af078ceb82005513a3d8d66b7827e2",
+    "content-hash": "03cc2e428af0df17cac371fab481bf05",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -6528,49 +6528,6 @@
             "time": "2024-05-15T22:01:07+00:00"
         },
         {
-            "name": "friendsoftypo3/phpstan-typo3",
-            "version": "0.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/FriendsOfTYPO3/phpstan-typo3.git",
-                "reference": "4d3f45b170983097ca355e9f81d073f34cb130aa"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfTYPO3/phpstan-typo3/zipball/4d3f45b170983097ca355e9f81d073f34cb130aa",
-                "reference": "4d3f45b170983097ca355e9f81d073f34cb130aa",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.2 || ^8.0 || ^8.1",
-                "phpstan/phpstan": "^0.12.99 || ^1.2.0"
-            },
-            "require-dev": {
-                "ergebnis/composer-normalize": "^2.3",
-                "jangregor/phpstan-prophecy": "^0.6.2",
-                "phpunit/phpunit": "^8.5",
-                "symplify/easy-coding-standard": "^7.2",
-                "typo3/cms-core": "^10.4 || 11.*.*@dev",
-                "typo3/cms-extbase": "^10.4 || 11.*.*@dev"
-            },
-            "type": "phpstan-extension",
-            "autoload": {
-                "psr-4": {
-                    "FriendsOfTYPO3\\PHPStan\\TYPO3\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "description": "TYPO3 rules for PHPStan",
-            "support": {
-                "issues": "https://github.com/FriendsOfTYPO3/phpstan-typo3/issues",
-                "source": "https://github.com/FriendsOfTYPO3/phpstan-typo3/tree/0.9.0"
-            },
-            "time": "2022-01-17T07:24:51+00:00"
-        },
-        {
             "name": "justinrainbow/json-schema",
             "version": "5.2.12",
             "source": {
@@ -9714,7 +9671,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {},
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -9731,7 +9688,7 @@
         "ext-xml": "*",
         "composer-runtime-api": "^2.1"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.1.1"
     },

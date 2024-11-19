@@ -126,11 +126,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Routing/PreviewUriBuilder.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Router\\:\\:getRoutes\\(\\) should return iterable\\<TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Route\\> but returns ArrayIterator\\<string, Symfony\\\\Component\\\\Routing\\\\Route\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Routing/Router.php
@@ -439,11 +434,6 @@ parameters:
 			message: "#^Property TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\State\\:\\:\\$states \\(array\\) on left side of \\?\\? is not nullable\\.$#"
 			count: 1
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/State.php
-
-		-
-			message: "#^Method TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\:\\:forName\\(\\) should return static\\(TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Model\\\\RecordStateFactory\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/Model/RecordStateFactory.php
 
 		-
 			message: "#^Strict comparison using \\=\\=\\= between int\\|string and null will always evaluate to false\\.$#"
