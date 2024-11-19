@@ -35,47 +35,28 @@ pages and records.
 
 ----
 
-.. container:: row m-0 p-0
+..  card-grid::
+    :columns: 1
+    :columns-md: 2
+    :gap: 4
+    :class: pb-4
+    :card-height: 100
 
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
+    ..  card:: :ref:`Introduction <introduction>`
 
-      .. container:: card px-0 h-100
+        Gives an introduction on what this extension can be used for. Aims
+        at new system administrators and developers.
 
-         .. rst-class:: card-header h3
+    ..  card:: :ref:`Command line <command-line>`
 
-            .. rubric:: :ref:`Introduction <introduction>`
+        Explains the commands provided by the lowlevel extension and
+        how to use them.
 
-         .. container:: card-body
+    ..  card:: :ref:`Backend modules <backend-modules>`
 
-            Gives an introduction on what this extension can be used for. Aims
-            at new system administrators and developers.
-
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
-
-      .. container:: card px-0 h-100
-
-         .. rst-class:: card-header h3
-
-            .. rubric:: :ref:`Command line <command-line>`
-
-         .. container:: card-body
-
-            Explains the commands provided by the lowlevel extension and
-            how to use them.
-
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
-
-      .. container:: card px-0 h-100
-
-         .. rst-class:: card-header h3
-
-            .. rubric:: :ref:`Backend modules <backend-modules>`
-
-         .. container:: card-body
-
-            Explains the two backend modules
-            :ref:`System > Configuration <module-configuration>` and
-            :ref:`System > DB Check <module-db-check>` provided by this extension.
+        Explains the two backend modules
+        :ref:`System > Configuration <module-configuration>` and
+        :ref:`System > DB Check <module-db-check>` provided by this extension.
 
 **Table of Contents:**
 

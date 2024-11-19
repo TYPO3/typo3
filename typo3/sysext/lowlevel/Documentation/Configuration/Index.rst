@@ -6,19 +6,16 @@
 Configuration
 =============
 
-.. container:: row m-0 p-0
+..  card-grid::
+    :columns: 1
+    :columns-md: 2
+    :gap: 4
+    :class: pb-4
+    :card-height: 100
 
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
+    ..  card:: :ref:`TSconfig <configuration-tsconfig>`
 
-      .. container:: card px-0 h-100
-
-         .. rst-class:: card-header h3
-
-            .. rubric:: :ref:`TSconfig <configuration-tsconfig>`
-
-         .. container:: card-body
-
-            Configures display and function of the backend modules.
+        Configures display and function of the backend modules.
 
 .. toctree::
     :hidden:

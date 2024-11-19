@@ -36,73 +36,35 @@ This extension shows status reports and installed services in the
 
 ----
 
+..  card-grid::
+    :columns: 1
+    :columns-md: 2
+    :gap: 4
+    :class: pb-4
+    :card-height: 100
 
-.. container:: row m-0 p-0
+    ..  card:: :ref:`Introduction <introduction>`
 
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
+        Written for new users, this chapter introduces the module
+        :guilabel:`Reports` and what it does.
 
-      .. container:: card px-0 h-100
+    ..  card:: :ref:`Installation <installation>`
 
-         .. rst-class:: card-header h3
+        Explains how to install the extension if it is not installed yet.
 
-            .. rubric:: :ref:`Introduction <introduction>`
+    ..  card:: :ref:`API Reference <api>`
 
-         .. container:: card-body
+        Explains the underlying API and its interfaces.
 
-            Written for new users, this chapter introduces the module
-            :guilabel:`Reports` and what it does.
+    ..  card:: :ref:`Custom reports <custom-reports>`
 
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
+        Introduction into developing your own custom reports or status
+        messages.
 
-      .. container:: card px-0 h-100
+    ..  card:: :ref:`Scheduler task <scheduler-task>`
 
-         .. rst-class:: card-header h3
-
-            .. rubric:: :ref:`Installation <installation>`
-
-         .. container:: card-body
-
-            Explains how to install the extension if it is not installed yet.
-
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
-
-      .. container:: card px-0 h-100
-
-         .. rst-class:: card-header h3
-
-            .. rubric:: :ref:`API Reference <api>`
-
-         .. container:: card-body
-
-            Explains the underlying API and its interfaces.
-
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
-
-      .. container:: card px-0 h-100
-
-         .. rst-class:: card-header h3
-
-            .. rubric:: :ref:`Custom reports <custom-reports>`
-
-         .. container:: card-body
-
-            Introduction into developing your own custom reports or status
-            messages.
-
-
-   .. container:: col-md-6 pl-0 pr-3 py-3 m-0
-
-      .. container:: card px-0 h-100
-
-         .. rst-class:: card-header h3
-
-            .. rubric:: :ref:`Scheduler task <scheduler-task>`
-
-         .. container:: card-body
-
-            Use the system extension scheduler to configure automatic
-            status reports sent via email.
-
+        Use the system extension scheduler to configure automatic
+        status reports sent via email.
 
 .. Table of Contents
 
