@@ -6,35 +6,23 @@
 Reactions
 =========
 
-..  container:: row m-0 p-0
+..  card-grid::
+    :columns: 1
+    :columns-md: 2
+    :gap: 4
+    :class: pb-4
+    :card-height: 100
 
-    ..  container:: col-md-6 pl-0 pr-3 py-3 m-0
+    ..  card:: :ref:`Create database record <create-database-record>`
 
-        ..  container:: card px-0 h-100
+        A basic reaction shipped with the system extension can be used
+        to create records triggered and enriched by data from the
+        caller.
 
-            ..  rst-class:: card-header h3
+    ..  card:: :ref:`Custom reaction type <custom-reaction-type>`
 
-                ..  rubric:: :ref:`Create database record <create-database-record>`
-
-            ..  container:: card-body
-
-                A basic reaction shipped with the system extension can be used
-                to create records triggered and enriched by data from the
-                caller.
-
-    ..  container:: col-md-6 pl-0 pr-3 py-3 m-0
-
-        ..  container:: card px-0 h-100
-
-            ..  rst-class:: card-header h3
-
-                ..  rubric:: :ref:`Custom reaction type <custom-reaction-type>`
-
-            ..  container:: card-body
-
-                A custom reaction type may be useful, if the "Create database
-                record" type is not sufficient.
-
+        A custom reaction type may be useful, if the "Create database
+        record" type is not sufficient.
 
 ..  toctree::
     :hidden:
