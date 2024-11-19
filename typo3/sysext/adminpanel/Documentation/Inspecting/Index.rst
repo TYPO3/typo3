@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _inspecting:
+..  _inspecting:
 
 =================
 Inspecting a page

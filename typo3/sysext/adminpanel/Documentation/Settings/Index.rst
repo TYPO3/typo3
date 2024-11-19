@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _settings:
+..  _settings:
 
 ========
 Settings
@@ -17,7 +17,7 @@ also lets you work with the cache.
    The Settings screen of the Admin Panel
 
 
-.. _show-hidden-content:
+..  _show-hidden-content:
 
 Show hidden content
 -------------------
@@ -32,7 +32,7 @@ The :guilabel:`Show fluid debug output` reloads the page with an overlay
 indicating the Fluid sections and partials in use.
 
 
-.. _simulate-users-and-times:
+..  _simulate-users-and-times:
 
 Simulate users and times
 ------------------------
@@ -45,8 +45,7 @@ Use the :guilabel:`Simulate user group` control to impersonate a particular
 user group when viewing the page. This is useful for editors who want to
 verify the display of restricted or permissions-based content.
 
-
-.. _work-with-the-cache:
+..  _work-with-the-cache:
 
 Work with the cache
 -------------------
