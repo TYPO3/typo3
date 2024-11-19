@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _info:
+..  _info:
 
 ========================
 Information about a page
@@ -15,6 +15,7 @@ about the page. There are four tabs in the Info section.
 
    The **General** tab of the Info section of the Admin Panel
 
+..  _info-general:
 
 General
 -------
@@ -43,6 +44,7 @@ UserIntObjects
 Total Parsetime
    The total parsetime TYPO3 needed to render the page.
 
+..  _info-php:
 
 PHP
 ---
@@ -50,6 +52,8 @@ PHP
 Information about the PHP installation on the server. This helps developers to
 quickly analyze available PHP Extensions, global constants or version
 constraints.
+
+..  _info-request:
 
 REQUEST
 -------
@@ -60,6 +64,8 @@ content of the $_COOKIE variable and the $_SERVER variable.
 This information helps developers to analyze the server environment further
 and find ini file paths or the IP address with which a user accesses the site.
 
+
+..  _info-user-int:
 
 USER_INT
 --------

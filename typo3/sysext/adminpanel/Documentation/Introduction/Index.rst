@@ -1,12 +1,12 @@
 .. include:: /Includes.rst.txt
 
-.. _introduction:
+..  _introduction:
 
 ============
 Introduction
 ============
 
-.. _what-it-does:
+..  _what-it-does:
 
 What does it do?
 ================
@@ -45,6 +45,8 @@ the page.
 
 There is a switcher at the bottom right of the admin panel bar to turn it on
 and off for the page.
+
+..  _introduction-video:
 
 See it in action
 ----------------

@@ -1,6 +1,6 @@
 .. include:: /Includes.rst.txt
 
-.. _debug:
+..  _debug:
 
 ================
 Debugging a page
@@ -16,6 +16,8 @@ about the page.
    The **Events** tab of the Debug section of the Admin Panel
 
 There are four tabs in the **Debug** section.
+
+..  _debug-events:
 
 Events
 ------
@@ -33,6 +35,8 @@ about the event's parameters.
 
    An expanded event showing extra detail
 
+..  _debug-log:
+
 Log
 ---
 
@@ -48,6 +52,7 @@ settings.
 
    The settings for the Log entries
 
+..  _debug-page-title:
 
 Page title
 ----------
@@ -56,6 +61,8 @@ TYPO3 has a concept of “Page Title Providers”. The section “Page title”
 displays all registered providers that were checked for the current
 page. This helps to debug where the currently used page title is coming from.
 
+
+..  _debug-query-information:
 
 Query Information
 -----------------
