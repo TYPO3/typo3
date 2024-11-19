@@ -101,7 +101,7 @@ Have a nice day.</source>
 				<source>TYPO3 Version</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.sysinfo.webserver" resname="toolbarItems.sysinfo.webserver">
-				<source>Webserver</source>
+				<source>Web Server</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.toolbarOpenClose" resname="toolbarItems.toolbarOpenClose">
 				<source>Open/Close toolbar</source>

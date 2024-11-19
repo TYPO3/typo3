@@ -10,7 +10,7 @@
 				<source>Get a status report about your site's operation and any detected problems.</source>
 			</trans-unit>
 			<trans-unit id="status_report_explanation" resname="status_report_explanation">
-				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailinglists and project issue trackers.</source>
+				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailing lists and project issue trackers.</source>
 			</trans-unit>
 			<trans-unit id="status_ok" resname="status_ok">
 				<source>OK</source>

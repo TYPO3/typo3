@@ -28,7 +28,7 @@
 				<source>Appearance</source>
 			</trans-unit>
 			<trans-unit id="behaviour" resname="behaviour">
-				<source>Behaviour</source>
+				<source>Behavior</source>
 			</trans-unit>
 			<trans-unit id="images" resname="images">
 				<source>Images</source>

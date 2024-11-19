@@ -448,7 +448,7 @@
 				<source>Appearance</source>
 			</trans-unit>
 			<trans-unit id="tabs.behaviour" resname="tabs.behaviour">
-				<source>Behaviour</source>
+				<source>Behavior</source>
 			</trans-unit>
 			<trans-unit id="tabs.images" resname="tabs.images">
 				<source>Images</source>

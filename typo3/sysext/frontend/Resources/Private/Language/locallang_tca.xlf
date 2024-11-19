@@ -247,7 +247,7 @@
 				<source>Appearance</source>
 			</trans-unit>
 			<trans-unit id="pages.tabs.behaviour" resname="pages.tabs.behaviour">
-				<source>Behaviour</source>
+				<source>Behavior</source>
 			</trans-unit>
 			<trans-unit id="pages.no_search" resname="pages.no_search">
 				<source>Include in Search</source>

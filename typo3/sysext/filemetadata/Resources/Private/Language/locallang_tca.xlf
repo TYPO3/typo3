@@ -117,7 +117,7 @@
 				<source>YUV</source>
 			</trans-unit>
 			<trans-unit id="sys_file_metadata.color_space.grey" resname="sys_file_metadata.color_space.grey">
-				<source>Grey</source>
+				<source>Gray</source>
 			</trans-unit>
 			<trans-unit id="sys_file_metadata.color_space.indx" resname="sys_file_metadata.color_space.indx">
 				<source>Indexed</source>
