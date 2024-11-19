@@ -139,7 +139,7 @@ final class SettingsCest extends AbstractCest
         $modalDialog->canSeeDialog();
 
         // Check if value was saved as expected
-        $fileCacheValue = $I->grabValueFrom('#t3-install-tool-configuration-cache-file');
+        $fileCacheValue = $I->grabValueFrom('input[type="radio"][name="install[values][Cache][enable]"]:checked');
         $I->assertEquals('File', $fileCacheValue);
 
         // Reset cache to custom configuration
