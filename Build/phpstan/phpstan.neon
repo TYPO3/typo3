@@ -38,9 +38,6 @@ parameters:
     - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyController.php
     # contains broken syntax for testing-purpose, which cannot be disabled directly
     - ../../typo3/sysext/extbase/Tests/Unit/Reflection/Fixture/DummyControllerWithIgnoreValidationDoctrineAnnotation.php
-    # excluded temporarily due to non-ignorable error reporting based on a PHPStan bug
-    # https://github.com/phpstan/phpstan/issues/11665
-    - ../../typo3/sysext/adminpanel/Classes/ModuleApi/ModuleDataStorageCollection.php
 
   featureToggles:
     nodeConnectingVisitorCompatibility: false
