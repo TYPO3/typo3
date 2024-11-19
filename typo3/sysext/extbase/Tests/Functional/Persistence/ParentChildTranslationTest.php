@@ -46,7 +46,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         $children = [];
         foreach ($results as $main) {
             $children[] = $main->getChild()->getTitle();
-            $children[] = $main->getSqueeze()[0]->getChild()->getTitle();
+            $children[] = $main->getSqueeze()->toArray()[0]->getChild()->getTitle();
         }
 
         self::assertSame(
@@ -82,7 +82,7 @@ final class ParentChildTranslationTest extends FunctionalTestCase
         $children = [];
         foreach ($results as $main) {
             $children[] = $main->getChild()->getTitle();
-            $children[] = $main->getSqueeze()[0]->getChild()->getTitle();
+            $children[] = $main->getSqueeze()->toArray()[0]->getChild()->getTitle();
         }
 
         self::assertSame(

@@ -72,6 +72,12 @@ class Context implements SingletonInterface
      * Returns an aspect, if it is set
      *
      * @throws AspectNotFoundException
+     * @return ($name is 'date' ? DateTimeAspect
+     *         : ($name is 'visibility' ? VisibilityAspect
+     *         : ($name is 'backend.user' ? UserAspect
+     *         : ($name is 'frontend.user' ? UserAspect
+     *         : ($name is 'workspace' ? WorkspaceAspect
+     *         : ($name is 'language' ? LanguageAspect : AspectInterface))))))
      */
     public function getAspect(string $name): AspectInterface
     {
