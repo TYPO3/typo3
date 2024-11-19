@@ -111,11 +111,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-
-			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\:\\:create\\(\\) should return static\\(TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\PreviewUriBuilder\\) but returns object\\.$#"
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Routing/PreviewUriBuilder.php
-
-		-
 			message: "#^Method TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Router\\:\\:getRoutes\\(\\) should return iterable\\<TYPO3\\\\CMS\\\\Backend\\\\Routing\\\\Route\\> but returns ArrayIterator\\<string, Symfony\\\\Component\\\\Routing\\\\Route\\>\\.$#"
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Routing/Router.php
