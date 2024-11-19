@@ -496,4 +496,71 @@ final class UriTest extends UnitTestCase
         // @todo normalize to ascii?
         self::assertEquals('https://ουτοπία.δπθ.gr/', (string)$uri);
     }
+
+    #[Test]
+    public function canParseAllPropertiesWithIPv6(): void
+    {
+        $uri = new Uri('https://user:pass@[fe80::200:5aee:feaa:20a2]:3001/foo?bar=baz#quz');
+        self::assertSame('https', $uri->getScheme());
+        self::assertSame('user:pass', $uri->getUserInfo());
+        self::assertSame('[fe80::200:5aee:feaa:20a2]', $uri->getHost());
+        self::assertSame(3001, $uri->getPort());
+        self::assertSame('user:pass@[fe80::200:5aee:feaa:20a2]:3001', $uri->getAuthority());
+        self::assertSame('/foo', $uri->getPath());
+        self::assertSame('bar=baz', $uri->getQuery());
+        self::assertSame('quz', $uri->getFragment());
+    }
+
+    #[Test]
+    public function canStringifyIPv6(): void
+    {
+        $input = 'https://user:pass@[fe80::200:5aee:feaa:20a2]:3001/foo?bar=baz#quz';
+        $uri = new Uri($input);
+        self::assertSame($input, (string)$uri);
+    }
+
+    #[Test]
+    public function canParseAllPropertiesWithShorthandIPv6(): void
+    {
+        $uri = new Uri('https://user:pass@[::1]:3001/foo?bar=baz#quz');
+        self::assertSame('https', $uri->getScheme());
+        self::assertSame('user:pass', $uri->getUserInfo());
+        self::assertSame('[::1]', $uri->getHost());
+        self::assertSame(3001, $uri->getPort());
+        self::assertSame('user:pass@[::1]:3001', $uri->getAuthority());
+        self::assertSame('/foo', $uri->getPath());
+        self::assertSame('bar=baz', $uri->getQuery());
+        self::assertSame('quz', $uri->getFragment());
+    }
+
+    #[Test]
+    public function canStringifyWithShorthandIPv6(): void
+    {
+        $input = 'https://user:pass@[::1]:3001/foo?bar=baz#quz';
+        $uri = new Uri($input);
+        self::assertSame($input, (string)$uri);
+    }
+
+    #[Test]
+    public function canParseAllPropertiesWithMalformedBracketlessIPv6(): void
+    {
+        $uri = new Uri('https://user:pass@fe80::200:5aee:feaa:20a2:3001/foo?bar=baz#quz');
+        self::assertSame('https', $uri->getScheme());
+        self::assertSame('user:pass', $uri->getUserInfo());
+        self::assertSame('[fe80::200:5aee:feaa:20a2]', $uri->getHost());
+        self::assertSame(3001, $uri->getPort());
+        self::assertSame('user:pass@[fe80::200:5aee:feaa:20a2]:3001', $uri->getAuthority());
+        self::assertSame('/foo', $uri->getPath());
+        self::assertSame('bar=baz', $uri->getQuery());
+        self::assertSame('quz', $uri->getFragment());
+    }
+
+    #[Test]
+    public function canStringifyMalformedBracketlessIPv6toValidIPv6(): void
+    {
+        $input = 'https://user:pass@fe80::200:5aee:feaa:20a2:3001/foo?bar=baz#quz';
+        $expected = 'https://user:pass@[fe80::200:5aee:feaa:20a2]:3001/foo?bar=baz#quz';
+        $uri = new Uri($input);
+        self::assertSame($expected, (string)$uri);
+    }
 }

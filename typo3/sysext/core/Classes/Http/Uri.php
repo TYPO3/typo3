@@ -149,6 +149,9 @@ class Uri implements UriInterface
         }
         if (isset($uriParts['host'])) {
             $this->host = $uriParts['host'];
+            if (filter_var($this->host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+                $this->host = '[' . $this->host . ']';
+            }
         }
         if (isset($uriParts['port'])) {
             $this->port = (int)$uriParts['port'];
@@ -415,6 +418,9 @@ class Uri implements UriInterface
      */
     public function withHost(string $host): UriInterface
     {
+        if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false) {
+            $host = '[' . $host . ']';
+        }
         $clonedObject = clone $this;
         $clonedObject->host = $host;
         return $clonedObject;
