@@ -43,6 +43,9 @@ is introduced for the frontend rendering,
 which fetches all content for a page and respecting the settings from the
 page layout.
 
+The new data processor allows to manipulate the fetched page content via
+the PSR-14 :ref:`AfterContentHasBeenFetchedEvent <feature-105638-1732034075>`.
+
 
 Impact
 ======

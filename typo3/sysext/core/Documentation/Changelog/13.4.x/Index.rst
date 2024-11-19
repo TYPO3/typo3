@@ -24,11 +24,12 @@ None since TYPO3 v13.4.0 LTS release.
 Features
 ========
 
-None since TYPO3 v13.4.0 LTS release.
+..  toctree::
+    :maxdepth: 1
+    :titlesonly:
+    :glob:
 
-..  attention::
-
-    New features are not planned after the TYPO3 v13.4.0 LTS release.
+    Feature-*
 
 Deprecation
 ===========
