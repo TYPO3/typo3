@@ -18,6 +18,9 @@
                 <field index=""some.number"">
                     <value index=""vDEF"">12</value>
                 </field>
+                <field index=""some.link"">
+                    <value index=""vDEF"">t3://page?uid=14</value>
+                </field>
             </language>
         </sheet>
     </data>

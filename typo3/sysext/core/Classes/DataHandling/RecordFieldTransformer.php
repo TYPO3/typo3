@@ -21,6 +21,7 @@ use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Collection\LazyRecordCollection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\FlexFormFieldValues;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\RecordFactory;
@@ -163,7 +164,7 @@ readonly class RecordFieldTransformer
         }
         if ($fieldInformation->isType(TableColumnType::FLEX)) {
             /** @var FlexFormFieldType $fieldInformation */
-            return new RecordPropertyClosure(fn(): array => $this->processFlexForm($rawRecord, $fieldInformation, (string)$fieldValue, $context, $recordIdentityMap));
+            return new RecordPropertyClosure(fn(): FlexFormFieldValues => $this->processFlexForm($rawRecord, $fieldInformation, (string)$fieldValue, $context, $recordIdentityMap));
         }
         if ($fieldInformation->isType(TableColumnType::JSON)) {
             return new RecordPropertyClosure(
@@ -213,7 +214,7 @@ readonly class RecordFieldTransformer
         mixed $fieldValue,
         Context $context,
         RecordIdentityMap $recordIdentityMap,
-    ): array {
+    ): FlexFormFieldValues {
         $plainValues = $this->flexFormService->convertFlexFormContentToArray((string)$fieldValue);
         $usedSchema = $this->flexFormSchemaFactory->getSchemaForRecord(
             $record,
@@ -242,8 +243,8 @@ readonly class RecordFieldTransformer
                 $transformedValue = $this->transformField($fieldInformationOfFlexField, $fakeRawRecordWithFlexField, $context, $recordIdentityMap);
                 $resolvedValues[$fieldName] = $transformedValue;
             }
-            return ArrayUtility::unflatten($resolvedValues);
+            return new FlexFormFieldValues(ArrayUtility::unflatten($resolvedValues));
         }
-        return $plainValues;
+        return new FlexFormFieldValues($plainValues);
     }
 }

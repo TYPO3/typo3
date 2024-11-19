@@ -85,6 +85,12 @@ return [
                             <type>number</type>
                         </config>
                     </field>
+                    <field index="some.link" type="array">
+                        <label>link 2</label>
+                        <config type="array">
+                            <type>link</type>
+                        </config>
+                    </field>
                 </el>
             </ROOT>
         </sheet>
