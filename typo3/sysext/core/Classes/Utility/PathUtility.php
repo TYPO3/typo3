@@ -266,7 +266,7 @@ class PathUtility
      *
      * @see http://www.php.net/manual/en/function.pathinfo.php
      *
-     * @return string|string[]
+     * @return ($options is PATHINFO_ALL ? array{dirname?: string, basename?: string, extension?: string, filename?: string} : string)
      */
     public static function pathinfo(string $path, int $options = PATHINFO_ALL): string|array
     {

@@ -743,7 +743,6 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
     protected function isFileWithinAccessibleExtensionFolders(string $fileName, array $formSettings): bool
     {
         $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
-        $pathInfo = is_string($pathInfo) ? $pathInfo : '';
         $dirName = rtrim($pathInfo, '/') . '/';
         return array_key_exists($dirName, $this->getAccessibleExtensionFolders($formSettings));
     }
@@ -751,7 +750,6 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
     protected function isFileWithinAccessibleFormStorageFolders(array $formSettings, string $fileName): bool
     {
         $pathInfo = PathUtility::pathinfo($fileName, PATHINFO_DIRNAME);
-        $pathInfo = is_string($pathInfo) ? $pathInfo : '';
         $dirName = rtrim($pathInfo, '/') . '/';
         foreach (array_keys($this->getAccessibleFormStorageFolders($formSettings)) as $allowedPath) {
             if (str_starts_with($dirName, $allowedPath)) {
