@@ -193,18 +193,16 @@ export default class FormEngineValidation {
   /**
    * Run validation for field
    */
-  public static validateField(field: FormEngineFieldElement, value?: string): string {
-    value = value || field.value || '';
-
-    if (typeof field.dataset.formengineValidationRules === 'undefined') {
-      return value;
+  public static validateField(field: FormEngineFieldElement): void {
+    if (field.dataset.formengineValidationRules === undefined) {
+      return;
     }
+
+    let value = field.value || '';
 
     const rules: any = JSON.parse(field.dataset.formengineValidationRules);
     let markParent = false;
     let selected = 0;
-    // keep the original value, validateField should not alter it
-    const returnValue: string = value;
     let relatedField: FormEngineFieldElement;
     let minItems: number;
     let maxItems: number;
@@ -364,8 +362,6 @@ export default class FormEngineValidation {
 
     FormEngineValidation.markParentTab(field, isValid);
     formEngineFormElement.dispatchEvent(new CustomEvent<PostValidationEvent>('t3-formengine-postfieldvalidation', { detail: { field: field, isValid: isValid }, cancelable: false, bubbles: true }));
-
-    return returnValue;
   }
 
   public static processByEvals(config: FormEngineInputParams, value: string): string {
@@ -503,36 +499,6 @@ export default class FormEngineValidation {
       formEngineFormElement.querySelectorAll(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item').forEach((tabMenuItem: HTMLElement): void => {
         tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass)
       });
-    }
-
-    const sectionElement = section || document;
-    for (const field of sectionElement.querySelectorAll<FormEngineFieldElement>(FormEngineValidation.rulesSelector)) {
-      if (field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted, .t3js-file-reference-deleted') === null) {
-        let modified = false;
-        const currentValue = field.value;
-        const newValue = FormEngineValidation.validateField(field, currentValue);
-        if (Array.isArray(newValue) && Array.isArray(currentValue)) {
-          // handling for multi-selects
-          if (newValue.length !== currentValue.length) {
-            modified = true;
-          } else {
-            for (let i = 0; i < newValue.length; i++) {
-              if (newValue[i] !== currentValue[i]) {
-                modified = true;
-                break;
-              }
-            }
-          }
-        } else if (newValue.length && currentValue !== newValue) {
-          modified = true;
-        }
-        if (modified) {
-          if (field.disabled && field.dataset.enableOnModification) {
-            field.disabled = false;
-          }
-          field.value = newValue;
-        }
-      }
     }
   }
 
