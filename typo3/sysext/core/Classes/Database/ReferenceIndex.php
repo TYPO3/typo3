@@ -406,7 +406,9 @@ class ReferenceIndex implements LoggerAwareInterface
                         switch ((string)$el['subst']['type']) {
                             case 'db':
                                 [$referencedTable, $referencedUid] = explode(':', $el['subst']['recordRef']);
-                                $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $referencedTable, (int)$referencedUid, '', -1, $spKey, $subKey);
+                                if (BackendUtility::getRecord($referencedTable, $referencedUid)) {
+                                    $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, $referencedTable, (int)$referencedUid, '', -1, $spKey, $subKey);
+                                }
                                 break;
                             case 'string':
                                 $this->relations[] = $this->createEntryDataUsingRecord($tableName, $record, $fieldName, $flexPointer, '_STRING', 0, $el['subst']['tokenValue'], -1, $spKey, $subKey);
