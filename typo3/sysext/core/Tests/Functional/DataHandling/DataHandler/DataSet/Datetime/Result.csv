@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","title","slug"
+,1,0,"root","/"
+,2,1,"Page One","/page-one"
+,3,1,"Page Two","/page-two"
+"tx_testdatahandler_datetime"
+,"datetime_int","datetime_int_nullable","datetime_native","date_int","date_int_nullable","date_native","timesec_int","timesec_int_nullable","timesec_native","time_int","time_int_nullable","time_native"
+,1414022280,1414022280,"2014-10-22 23:58:00",1413936000,1413936000,"2014-10-22",86300,86300,"23:58:20",86280,86280,"23:58:00"
