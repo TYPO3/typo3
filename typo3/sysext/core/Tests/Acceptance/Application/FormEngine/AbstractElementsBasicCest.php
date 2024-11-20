@@ -81,6 +81,45 @@ abstract class AbstractElementsBasicCest
         $I->seeInField($hiddenField, $testData['expectedValueAfterSave']);
     }
 
+    protected function runInputFieldValidationTest(ApplicationTester $I, Example $testData): void
+    {
+        if (!empty($testData['comment'])) {
+            $I->comment($testData['comment']);
+        }
+
+        $fieldLabel = $testData['label'];
+        $initializedInputFieldXpath = '(//label/code[contains(text(),"[' . $fieldLabel . ']")]/..)'
+            . '[1]/parent::*//*/input[@data-formengine-input-name][@data-formengine-input-initialized]';
+
+        // Wait until JS initialized everything
+        $I->waitForElement($initializedInputFieldXpath, 10);
+
+        $formSection = $this->getFormSectionByFieldLabel($I, $fieldLabel);
+        $inputField = $this->getInputField($formSection);
+        $hiddenField = $this->getHiddenField($formSection, $inputField);
+
+        foreach ($testData['testSequence'] as $currentStep) {
+            $I->comment('Insert new value');
+            $I->fillField($inputField, $currentStep['inputValue']);
+            // Change focus to trigger validation
+            $inputField->sendKeys(WebDriverKeys::TAB);
+            // Press ESC so that any opened popup (potentially from the field below) is closed
+            $inputField->sendKeys(WebDriverKeys::ESCAPE);
+            $I->waitForElementNotVisible('#t3js-ui-block');
+
+            $I->comment('Test value of visible, hidden field and error-state');
+            $I->seeInField($inputField, $currentStep['expectedValue']);
+            $I->seeInField($hiddenField, $currentStep['expectedInternalValue']);
+
+            $inputClasses = explode(' ', $inputField->getAttribute('class'));
+            if ($currentStep['expectError'] === true) {
+                $I->assertContains('has-error', $inputClasses, 'Form field should be marked as invalid.');
+            } else {
+                $I->assertNotContains('has-error', $inputClasses, 'Form field should not be marked as invalid');
+            }
+        }
+    }
+
     /**
      * Return the visible input field of element in question.
      */
