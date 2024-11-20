@@ -55,7 +55,7 @@ User TSconfig settings
 
 The options below can be set in the user TSconfig of a backend user or
 backend user group. See also
-:ref:`Using and setting user TSconfig <t3tsconfig:setting-user-tsconfig>`.
+:ref:`Using and setting user TSconfig <t3tsref:setting-user-tsconfig>`.
 
 
 ..  confval-menu::

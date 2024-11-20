@@ -105,7 +105,7 @@ If nothing is configured, ``default`` will be used as identifier.
 
 .. seealso::
 
-   :ref:`t3tsconfig:userthetsconfigfield` section of TSconfig manual
+   :ref:`t3tsref:userthetsconfigfield` section of TSconfig manual
    explains how to set or register TSconfig for user.
 
    :ref:`t3tsref:typoscript-syntax-syntax-value-modification` explains the usage of

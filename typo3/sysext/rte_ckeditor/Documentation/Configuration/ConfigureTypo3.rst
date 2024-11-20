@@ -24,7 +24,7 @@ We recommend you to put all configurations for the preset in the
 override these settings through the page TSconfig.
 
 You can find a list of configuration properties in the :ref:`Page TSconfig
-reference, chapter RTE <t3tsconfig:pageTsRte>`.
+reference, chapter RTE <t3tsref:pageTsRte>`.
 
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
@@ -53,7 +53,7 @@ How to change values
 --------------------
 
 See the :ref:`Page TSconfig reference,
-chapter Setting Page TSconfig <t3tsconfig:setting-page-tsconfig>`. This chapter
+chapter Setting Page TSconfig <t3tsref:setting-page-tsconfig>`. This chapter
 also expains how to verify the settings.
 
 .. _config-typo3-global-configuration:

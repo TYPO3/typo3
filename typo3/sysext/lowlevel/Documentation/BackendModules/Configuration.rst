@@ -39,7 +39,7 @@ The Configuration module displays various configuration settings:
 - :ref:`User settings configuration <t3coreapi:user-settings>` (:php:`$GLOBALS['TYPO3_USER_SETTINGS']`)
 - :ref:`Table permissions by page type <t3coreapi:page-types-intro>`
 - :ref:`User settings <t3coreapi:be-user-configuration>` (:php:`$GLOBALS['BE_USER']->uc`)
-- :ref:`User TSconfig <t3tsconfig:usertsconfig>` (:php:`$GLOBALS['BE_USER']->getTSConfig()`)
+- :ref:`User TSconfig <t3tsref:usertsconfig>` (:php:`$GLOBALS['BE_USER']->getTSConfig()`)
 - :ref:`Backend Routes <t3coreapi:backend-routing>`
 - :ref:`Backend Modules <t3coreapi:backend-modules>`
 - :ref:`HTTP Middlewares (PSR-15) <t3coreapi:request-handling>`
