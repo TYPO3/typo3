@@ -1,0 +1,8 @@
+"pages"
+,"uid","pid","title","slug"
+,1,0,"root","/"
+,2,1,"Page One","/page-one"
+,3,1,"Page Two","/page-two"
+"tx_testdatahandler_datetime"
+,"datetime_int","datetime_int_nullable","datetime_native","date_int","date_int_nullable","date_native","timesec_int","timesec_int_nullable","timesec_native","time_int","time_int_nullable","time_native","comment"
+,1414007880,1414007880,"2014-10-22 21:58:00",1413921600,1413921600,"2014-10-21",79100,79100,"21:58:20",79080,79080,"21:58:00","@todo: Fix offsets to *not* be cropped"
