@@ -224,4 +224,28 @@ final class BackendUtilityTest extends FunctionalTestCase
         $expectation = str_replace(array_keys($replaces), array_values($replaces), $expectation);
         self::assertSame($expectation, $statement);
     }
+
+    #[Test]
+    public function getRecordWithLargeUidDoesNotFail(): void
+    {
+        self::assertNull(BackendUtility::getRecord('tt_content', 9234567890111));
+    }
+
+    #[Test]
+    public function getRecordWithNegativeUidDoesNotFail(): void
+    {
+        self::assertNull(BackendUtility::getRecord('tt_content', -42));
+    }
+
+    #[Test]
+    public function getRecordWithNonExistentUidReturnsNull(): void
+    {
+        self::assertNull(BackendUtility::getRecord('tt_content', 99));
+    }
+
+    #[Test]
+    public function getRecordWithExistingUidDoesNotReturnNull(): void
+    {
+        self::assertNotNull(BackendUtility::getRecord('tt_content', 1));
+    }
 }
