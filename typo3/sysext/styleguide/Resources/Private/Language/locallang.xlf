@@ -615,7 +615,7 @@
 				<source>Progress trackers</source>
 			</trans-unit>
 			<trans-unit id="component.progressTrackers.introtext" resname="component.progressTrackers.introtext">
-				<source><![CDATA[Progress trackers are a segmented variant of progress bars, diving the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
+				<source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
 			</trans-unit>
 			<trans-unit id="component.progressTrackers.section.default.headline" resname="component.progressTrackers.section.default.headline">
 				<source>Default</source>
