@@ -191,7 +191,7 @@ The loading order for configuration is:
 #. ``default``
 
 
-For more examples, see :ref:`t3tsconfig:pageTsRte` in "TSconfig Reference".
+For more examples, see :ref:`t3tsref:pageTsRte` in "TSconfig Reference".
 
 
 .. _config-rte-transformations:

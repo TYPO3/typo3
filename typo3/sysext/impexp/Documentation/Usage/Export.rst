@@ -8,7 +8,7 @@ Export
 
 The export functionality is only available for admin users and Backend
 users for which the Page TSconfig option
-:ref:`options.impexp.enableExportForNonAdminUser <t3tsconfig:useroptions-impexp-enableExportForNonAdminUser>`
+:ref:`options.impexp.enableExportForNonAdminUser <t3tsref:useroptions-impexp-enableExportForNonAdminUser>`
 has been enabled.
 
 .. attention::

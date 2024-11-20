@@ -420,4 +420,4 @@ We recommend you to put all configurations for the preset in the
 override these settings through the page TSconfig.
 
 You can find a list of configuration properties in the :ref:`Page TSconfig
-reference, chapter RTE <t3tsconfig:pageTsRte>`.
+reference, chapter RTE <t3tsref:pageTsRte>`.
