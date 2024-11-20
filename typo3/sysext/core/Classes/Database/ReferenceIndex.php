@@ -647,6 +647,20 @@ class ReferenceIndex
                                 //        and let it return the reference record along the way - "db" type softrefs
                                 //        fetch those already.
                                 $refTcaTableSchema = $this->tcaSchemaFactory->get($refTable);
+                            } else {
+                                // Sanitize the target record: If it does not exist, we should not create a softref
+                                // entry to it. Also ref_uid is the uid of the target record. If a softref parser
+                                // goes rogue and misinterprets for instance a huge number ("telephone") as uid,
+                                // creating this as softref would try to insert a "bigger than 2^31 int" for ref_uid,
+                                // leading to an out of bound insert.
+                                // @todo: This late validation of softref stuff should probably be relocated to the
+                                //        parsers directly. Refactor this together with the above comment.
+                                // @todo: It is fishy that DataHandler does not sanitize fields with attached softref
+                                //        parsers, either. Example: tt_content header_link with manual editor edit
+                                //        "+49 123456789" which looks like a phone number, but the internal phone
+                                //        syntax is "tel:49123456789". DH still happily writes the invalid thing into DB.
+                                //        This should be rethought.
+                                continue;
                             }
                         } else {
                             $refString = mb_substr($element['subst']['tokenValue'], 0, 1024);
