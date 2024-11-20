@@ -37,7 +37,7 @@ with ctype="text":
 
    RTE.config.tt_content.bodytext.types.text.preset = minimal
 
-For more examples, see :ref:`t3tsconfig:pageTsRte` in "TSconfig Reference".
+For more examples, see :ref:`t3tsref:pageTsRte` in "TSconfig Reference".
 
 
 How do I create my own preset?

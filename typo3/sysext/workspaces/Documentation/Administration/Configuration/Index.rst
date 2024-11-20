@@ -91,7 +91,7 @@ Description
 
   .. note::
 
-     When used in conjunction with the :ref:`backend's preview mechanism <t3tsconfig:pagetcemain-preview>`,
+     When used in conjunction with the :ref:`backend's preview mechanism <t3tsref:pagetcemain-preview>`,
      this setting takes precedence over the :code:`previewPageId` defined in
      :code:`TCEMAIN.preview`.
 

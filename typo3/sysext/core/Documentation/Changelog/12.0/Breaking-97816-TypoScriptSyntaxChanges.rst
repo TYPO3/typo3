@@ -41,7 +41,7 @@ Streamlined constants usage
 It has never been fully documented in which context "constants" :typoscript:`{$foo}`
 shall be used and which exact capabilities they have. The main TypoScript constants
 documentation within the :ref:`TypoScript Reference <t3tsref:typoscript-syntax-constants>` was partially
-outdated, and the :ref:`TSconfig documentation <t3tsconfig:Syntax>` claimed TSconfig
+outdated, and the :ref:`TSconfig documentation <t3tsref:Syntax>` claimed TSconfig
 is not constants aware at all, which isn't fully the case anymore. Let's sort out
 some details:
 

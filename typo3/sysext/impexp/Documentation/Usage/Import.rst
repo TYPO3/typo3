@@ -8,7 +8,7 @@ Import
 
 The import functionality is only available for admin users and Backend
 users for which the Page TSconfig option
-:ref:`options.impexp.enableImportForNonAdminUser <t3tsconfig:useroptions-impexp-enableImportForNonAdminUser>`
+:ref:`options.impexp.enableImportForNonAdminUser <t3tsref:useroptions-impexp-enableImportForNonAdminUser>`
 has been enabled.
 
 .. note::
