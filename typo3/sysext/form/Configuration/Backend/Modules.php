@@ -19,7 +19,7 @@ return [
                 'index', 'show', 'create', 'duplicate', 'references', 'delete',
             ],
             FormEditorController::class => [
-                'index', 'saveForm', 'renderFormPage', 'renderRenderableOptions',
+                'index', 'saveForm', 'renderFormPage',
             ],
         ],
     ],
