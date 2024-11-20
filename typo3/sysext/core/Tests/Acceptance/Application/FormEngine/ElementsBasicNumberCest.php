@@ -155,4 +155,49 @@ final class ElementsBasicNumberCest extends AbstractElementsBasicCest
     {
         $this->runInputFieldTest($I, $testData);
     }
+
+    /**
+     * Data provider to run form validation
+     */
+    private function simpleNumberFieldsValidationDataProvider(): array
+    {
+        return [
+            [
+                'comment' => 'Check number field on browser-native validation-error bad-input',
+                'label' => 'number_2',
+                'testSequence' => [
+                    [
+                        // Prepare this special test-case:
+                        // Set the input to empty string, thereby the `change`-event does not trigger on the next step.
+                        'inputValue' => '',
+                        'expectedValue' => '',
+                        'expectedInternalValue' => '',
+                        'expectError' => false,
+                    ],
+                    [
+                        // `1-2` triggers browser-native validation-error "bad input" for number-fields in Chrome.
+                        // Especially in Firefox "bad input" is also triggered for "more usual" user input like `123px`.
+                        'inputValue' => '1-2',
+                        'expectedValue' => '', // Actually Chrome still displays `1-2` to the user and marks this field as `invalid` here.
+                        'expectedInternalValue' => '',
+                        // @todo: This should show a FormEngine validation-error
+                        'expectError' => false,
+                    ],
+                    [
+                        // When user enters empty string, the displayed error must go away again.
+                        'inputValue' => '',
+                        'expectedValue' => '',
+                        'expectedInternalValue' => '',
+                        'expectError' => false,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('simpleNumberFieldsValidationDataProvider')]
+    public function simpleNumberFieldsValidation(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldValidationTest($I, $testData);
+    }
 }

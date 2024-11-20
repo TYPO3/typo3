@@ -74,6 +74,51 @@ final class ElementsBasicEmailCest extends AbstractElementsBasicCest
         $this->runInputFieldTest($I, $testData);
     }
 
+    /**
+     * Data provider to run form validation
+     */
+    private function emailFieldsValidationDataProvider(): array
+    {
+        return [
+            [
+                'label' => 'email_1',
+                'testSequence' => [
+                    [
+                        'inputValue' => '',
+                        'expectedValue' => '',
+                        'expectedInternalValue' => '',
+                        'expectError' => false,
+                    ],
+                    [
+                        'inputValue' => ' ',
+                        'expectedValue' => '',
+                        'expectedInternalValue' => '',
+                        'expectError' => false,
+                    ],
+                    [
+                        'inputValue' => ' spaces-around@example.com  ',
+                        'expectedValue' => 'spaces-around@example.com',
+                        'expectedInternalValue' => 'spaces-around@example.com',
+                        'expectError' => false,
+                    ],
+                    [
+                        'inputValue' => 'invalid-email-syntax',
+                        'expectedValue' => 'invalid-email-syntax',
+                        'expectedInternalValue' => 'invalid-email-syntax',
+                        // @todo: This should show a FormEngine validation-error
+                        'expectError' => false,
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('emailFieldsValidationDataProvider')]
+    public function emailFieldsValidation(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldValidationTest($I, $testData);
+    }
+
     public function canSelectValueFromValuePicker(ApplicationTester $I): void
     {
         $formSection = $this->getFormSectionByFieldLabel($I, 'email_5');
