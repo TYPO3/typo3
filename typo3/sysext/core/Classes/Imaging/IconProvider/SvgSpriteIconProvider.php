@@ -22,9 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
- * SvgSpriteIconProvider provides sprite icons icons and are rendered via <svg> tag into Shadow DOM
- *
- * @internal
+ * SvgSpriteIconProvider provides sprite icons and are rendered via <svg> tag
  */
 class SvgSpriteIconProvider extends AbstractSvgIconProvider
 {
@@ -34,7 +32,7 @@ class SvgSpriteIconProvider extends AbstractSvgIconProvider
     protected function generateMarkup(Icon $icon, array $options): string
     {
         if (empty($options['sprite'])) {
-            throw new \InvalidArgumentException('[' . $icon->getIdentifier() . '] The option "source" is required and must not be empty', 1603439142);
+            throw new \InvalidArgumentException('[' . $icon->getIdentifier() . '] The option "sprite" is required and must not be empty', 1603439142);
         }
 
         $source = $options['sprite'];
