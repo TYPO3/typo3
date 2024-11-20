@@ -99,33 +99,33 @@ class BackendUtility
      */
     public static function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = true): ?array
     {
-        // Ensure we have a valid uid (not 0 and not NEWxxxx) and a valid TCA
-        if ((int)$uid && !empty($GLOBALS['TCA'][$table])) {
-            $queryBuilder = static::getQueryBuilderForTable($table);
-
-            // do not use enabled fields here
-            $queryBuilder->getRestrictions()->removeAll();
-
-            // should the delete clause be used
-            if ($useDeleteClause) {
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-            }
-
-            // set table and where clause
-            $queryBuilder
-                ->select(...GeneralUtility::trimExplode(',', $fields, true))
-                ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((int)$uid, Connection::PARAM_INT)));
-
-            // add custom where clause
-            if ($where) {
-                $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
-            }
-
-            $row = $queryBuilder->executeQuery()->fetchAssociative();
-            if ($row) {
-                return $row;
-            }
+        if (empty($GLOBALS['TCA'][$table])
+            || !MathUtility::canBeInterpretedAsInteger($uid)
+            || (int)$uid > 2147483647
+            || (int)$uid < 1
+        ) {
+            // Return null early in case there is no TCA, the input is no integer, or an integer is
+            // larger than (2^31) - 1. This needs to be increased when we switch to bigint uids.
+            // Do not throw an exception because normal operation needs to
+            // continue as DataHandler and friends expect 'null' records for these cases.
+            return null;
+        }
+        $uid = (int)$uid;
+        $queryBuilder = static::getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        if ($useDeleteClause) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
+        $queryBuilder
+            ->select(...GeneralUtility::trimExplode(',', $fields, true))
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
+        if ($where) {
+            // Add custom where clause
+            $queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($where));
+        }
+        if ($row = $queryBuilder->executeQuery()->fetchAssociative()) {
+            return $row;
         }
         return null;
     }
