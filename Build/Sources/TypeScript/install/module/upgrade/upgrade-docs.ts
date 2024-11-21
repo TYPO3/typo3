@@ -255,8 +255,8 @@ class UpgradeDocs extends AbstractInteractableModule {
    * Moves all documents that are either read or not affected
    */
   private moveNotRelevantDocuments(container: Element): void {
-    this.findInModal('.panel-body-read').append(container.querySelector('[data-item-state="read"]'));
-    this.findInModal('.panel-body-not-affected').append(container.querySelector('[data-item-state="notAffected"]'));
+    this.findInModal('.panel-body-read').append(container.querySelector('[data-item-state="read"]') ?? '');
+    this.findInModal('.panel-body-not-affected').append(container.querySelector('[data-item-state="notAffected"]') ?? '');
   }
 
   private markRead(element: Element): void {
