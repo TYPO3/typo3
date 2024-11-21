@@ -51,7 +51,9 @@ export default class FormEngineValidation {
   public static rulesSelector: string = '[data-formengine-validation-rules]';
   public static inputSelector: string = '[data-formengine-input-params]';
   public static markerSelector: string = '.t3js-formengine-validation-marker';
+  public static labelSelector: string = '.t3js-formengine-label';
   public static errorClass: string = 'has-error';
+  public static validationErrorClass: string = 'has-validation-error';
   public static passwordDummy: string = '********';
 
   /**
@@ -220,7 +222,8 @@ export default class FormEngineValidation {
         case 'required':
           if (value === '') {
             markParent = true;
-            field.closest(FormEngineValidation.markerSelector).classList.add(FormEngineValidation.errorClass);
+            field.classList.add(FormEngineValidation.errorClass);
+            field.closest(FormEngineValidation.markerSelector)?.querySelector(FormEngineValidation.labelSelector)?.classList.add(FormEngineValidation.errorClass);
           }
           break;
         case 'range':
@@ -356,11 +359,8 @@ export default class FormEngineValidation {
     }
 
     const isValid = !markParent;
-    const validationMarker = field.closest(FormEngineValidation.markerSelector);
-    if (validationMarker !== null) {
-      // Validation marker may be unavailable (e.g. due to maximized ckeditor)
-      validationMarker.classList.toggle(FormEngineValidation.errorClass, !isValid);
-    }
+    field.classList.toggle(FormEngineValidation.errorClass, !isValid);
+    field.closest(FormEngineValidation.markerSelector)?.querySelector(FormEngineValidation.labelSelector)?.classList.toggle(FormEngineValidation.errorClass, !isValid);
 
     FormEngineValidation.markParentTab(field, isValid);
     formEngineFormElement.dispatchEvent(new CustomEvent<PostValidationEvent>('t3-formengine-postfieldvalidation', { detail: { field: field, isValid: isValid }, cancelable: false, bubbles: true }));
@@ -501,7 +501,7 @@ export default class FormEngineValidation {
   public static validate(section?: Element): void {
     if (typeof section === 'undefined' || section instanceof Document) {
       formEngineFormElement.querySelectorAll(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item').forEach((tabMenuItem: HTMLElement): void => {
-        tabMenuItem.classList.remove(FormEngineValidation.errorClass, 'has-validation-error')
+        tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass)
       });
     }
 
@@ -608,7 +608,7 @@ export default class FormEngineValidation {
       formEngineFormElement
         .querySelector('[data-bs-target="#' + id + '"]')
         .closest('.t3js-tabmenu-item')
-        .classList.toggle('has-validation-error', !isValid);
+        .classList.toggle(FormEngineValidation.validationErrorClass, !isValid);
     });
   }
 
