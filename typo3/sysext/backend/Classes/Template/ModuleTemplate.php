@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ResponsableViewInterface;
 use TYPO3\CMS\Core\View\ViewInterface;
+use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 
 /**
  * A class taking care of the "outer" HTML of a module, especially
@@ -127,6 +128,21 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
 
     protected function prepareRender(string $templateFileName): void
     {
+        if ($templateFileName === '') {
+            $extbaseRequestMessage = '';
+            /** @var ExtbaseRequestParameters|null $extbaseRequestParameters */
+            $extbaseRequestParameters = $this->request->getAttribute('extbase');
+            if ($extbaseRequestParameters) {
+                // This extbase specific code is a helper for a more detailed exception
+                // message, and a tribute to extbase backend extensions being upgraded.
+                // Introduced with v13, it could potentially vanish at some point again.
+                $templateFileName = $extbaseRequestParameters->getControllerName() . '/' .
+                    ucfirst($extbaseRequestParameters->getControllerActionName());
+                $extbaseRequestMessage = ' Expected template filename is "' . $templateFileName . '".';
+            }
+            throw new \InvalidArgumentException('A template filename must be provided.' . $extbaseRequestMessage, 1732184506);
+        }
+
         $this->assignMultiple([
             'docHeader' => $this->docHeaderComponent->docHeaderContent(),
             'moduleId' => $this->moduleId,
