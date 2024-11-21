@@ -65,21 +65,13 @@ class RecordHistory
     protected $pageAccessCache = [];
 
     /**
-     * Either "table:uid" or "table:uid:field" to know which data should be rolled back
-     * @var string
-     */
-    protected $rollbackFields = '';
-
-    /**
      * Constructor to define which element to work on - can be overridden with "setLastHistoryEntryNumber"
      *
      * @param string $element in the form of "tablename:uid"
-     * @param string $rollbackFields
      */
-    public function __construct($element = '', $rollbackFields = '')
+    public function __construct($element = '')
     {
         $this->element = $this->sanitizeElementValue((string)$element);
-        $this->rollbackFields = $this->sanitizeRollbackFieldsValue((string)$rollbackFields);
     }
 
     /**
@@ -517,17 +509,6 @@ class RecordHistory
     protected function sanitizeElementValue(string $value): string
     {
         if ($value !== '' && !preg_match('#^[a-z\d_.]+:[\d]+$#i', $value)) {
-            return '';
-        }
-        return $value;
-    }
-
-    /**
-     * Evaluates if the rollback field is correct
-     */
-    protected function sanitizeRollbackFieldsValue(string $value): string
-    {
-        if ($value !== '' && !preg_match('#^[a-z\d_.]+(:[\d]+(:[a-z\d_.]+)?)?$#i', $value)) {
             return '';
         }
         return $value;

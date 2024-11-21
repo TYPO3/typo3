@@ -24,18 +24,6 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RecordHistoryTest extends FunctionalTestCase
 {
-    private RecordHistory $subject;
-
-    /**
-     * Sets up this test case.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_history.csv');
-        $this->subject = new RecordHistory();
-    }
-
     public static function findEventsForCorrelationWorksAsExpectedDataProvider(): array
     {
         return [
@@ -48,6 +36,8 @@ final class RecordHistoryTest extends FunctionalTestCase
     #[Test]
     public function findEventsForCorrelationWorksAsExpected(string $correlationId, int $amountOfEntries): void
     {
-        self::assertCount($amountOfEntries, $this->subject->findEventsForCorrelation($correlationId));
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_history.csv');
+        $subject = new RecordHistory();
+        self::assertCount($amountOfEntries, $subject->findEventsForCorrelation($correlationId));
     }
 }

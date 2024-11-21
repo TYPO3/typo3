@@ -103,7 +103,7 @@ class ElementHistoryController
         $this->showDiff = (bool)$moduleSettings['showDiff'];
 
         // Start history object
-        $this->historyObject = GeneralUtility::makeInstance(RecordHistory::class, $element, $rollbackFields);
+        $this->historyObject = GeneralUtility::makeInstance(RecordHistory::class, $element);
         $this->historyObject->setShowSubElements((bool)$moduleSettings['showSubElements']);
         $this->historyObject->setLastHistoryEntryNumber($lastHistoryEntry);
         if ($moduleSettings['maxSteps']) {
