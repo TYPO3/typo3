@@ -96,4 +96,18 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         self::expectExceptionMessage(sprintf('Cannot use reserved name "%s" as variable name in PAGEVIEW.', $variableName));
         $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
     }
+
+    #[Test]
+    public function pathsCanBeSpecifiedWithoutTrailingSlash(): void
+    {
+        $this->setUpFrontendRootPage(
+            self::ROOT_PAGE_ID,
+            [
+                'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering/Configuration/TypoScript/withoutTrailingSlash.typoscript',
+            ]
+        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
+        self::assertStringContainsString('You are on page Fluid Root Page', (string)$response->getBody());
+        self::assertStringContainsString('This is content from the test partial.', (string)$response->getBody());
+    }
 }

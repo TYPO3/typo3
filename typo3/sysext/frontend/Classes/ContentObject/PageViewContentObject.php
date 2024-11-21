@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Frontend\ContentObject;
 
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
 use TYPO3\CMS\Core\View\ViewFactoryInterface;
 use TYPO3\CMS\Frontend\ContentObject\Exception\ContentRenderingException;
@@ -83,14 +84,15 @@ final class PageViewContentObject extends AbstractContentObject
                 1724601907
             );
         }
+        $paths = array_map(PathUtility::sanitizeTrailingSeparator(...), $conf['paths.']);
         $viewFactoryData = new ViewFactoryData(
             // @todo: Do discuss: Rename 'paths.' to 'templateRootPaths.' again?
-            templateRootPaths: $conf['paths.'],
+            templateRootPaths: $paths,
             // @todo: We should *still* allow setting both partialRootPaths and layoutRootPaths, and only fall back to
             //        [templateRootPaths]/Partials and [templateRootPaths]/Layouts if not set. And the fallback should be
             //        advertised as best practice.
-            partialRootPaths: array_map(static fn(string $path): string => $path . 'Partials/', $conf['paths.']),
-            layoutRootPaths: array_map(static fn(string $path): string => $path . 'Layouts/', $conf['paths.']),
+            partialRootPaths: array_map(static fn(string $path): string => $path . 'Partials/', $paths),
+            layoutRootPaths: array_map(static fn(string $path): string => $path . 'Layouts/', $paths),
             request: $this->request,
         );
         $view = $this->viewFactory->create($viewFactoryData);
