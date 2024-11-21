@@ -765,13 +765,16 @@ class ReferenceIndex implements LoggerAwareInterface
      */
     protected function setReferenceValue_dbRels($refRec, $itemArray, $newValue, &$dataArray, $flexPointer = '')
     {
-        if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
+        $sorting = $refRec['sorting'] ?? null;
+        if ((int)($itemArray[$sorting]['id'] ?? 0) === (int)$refRec['ref_uid']
+            && (string)($itemArray[$sorting]['table'] ?? '') === (string)$refRec['ref_table']
+        ) {
             // Setting or removing value:
             // Remove value:
             if ($newValue === null) {
-                unset($itemArray[$refRec['sorting']]);
+                unset($itemArray[$sorting]);
             } else {
-                [$itemArray[$refRec['sorting']]['table'], $itemArray[$refRec['sorting']]['id']] = explode(':', $newValue);
+                [$itemArray[$sorting]['table'], $itemArray[$sorting]['id']] = explode(':', $newValue);
             }
             // Traverse and compile new list of records:
             $saveValue = [];
@@ -789,7 +792,9 @@ class ReferenceIndex implements LoggerAwareInterface
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
             }
         } else {
-            return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['table'] . ':' . $itemArray[$refRec['sorting']]['id'] . '") in sorting index "' . $refRec['sorting'] . '"';
+            return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid']
+                . '" did not match that of the record ("' . ($itemArray[$sorting]['table'] ?? '') . ':' . ($itemArray[$sorting]['id'] ?? '') . '")'
+                . ' in sorting index "' . $sorting . '"';
         }
 
         return false;
