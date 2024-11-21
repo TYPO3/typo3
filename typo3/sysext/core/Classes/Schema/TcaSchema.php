@@ -140,7 +140,17 @@ readonly class TcaSchema implements SchemaInterface
     }
 
     /**
-     * @return ($capability is TcaSchemaCapability::Language ? Capability\LanguageAwareSchemaCapability : ($capability is TcaSchemaCapability::RestrictionRootLevel ? Capability\RootLevelCapability : ($capability is TcaSchemaCapability::EditLock ? Capability\FieldCapability : ($capability is TcaSchemaCapability::InternalDescription ? Capability\FieldCapability : ($capability is TcaSchemaCapability::RestrictionDisabledField ? Capability\FieldCapability : ($capability is TcaSchemaCapability::RestrictionStartTime ? Capability\FieldCapability : ($capability is TcaSchemaCapability::RestrictionEndTime ? Capability\FieldCapability : ($capability is TcaSchemaCapability::RestrictionUserGroup ? Capability\FieldCapability : ($capability is TcaSchemaCapability::PrependLabelTextAtCopy ? Capability\ScalarCapability : ($capability is TcaSchemaCapability::Label ? Capability\LabelCapability : Capability\SystemInternalFieldCapability)))))))))))
+     * @return ($capability is TcaSchemaCapability::Language ? Capability\LanguageAwareSchemaCapability
+     *          : ($capability is TcaSchemaCapability::RestrictionRootLevel ? Capability\RootLevelCapability
+     *          : ($capability is TcaSchemaCapability::EditLock ? Capability\FieldCapability
+     *          : ($capability is TcaSchemaCapability::InternalDescription ? Capability\FieldCapability
+     *          : ($capability is TcaSchemaCapability::RestrictionDisabledField ? Capability\FieldCapability
+     *          : ($capability is TcaSchemaCapability::RestrictionStartTime ? Capability\FieldCapability
+     *          : ($capability is TcaSchemaCapability::RestrictionEndTime ? Capability\FieldCapability
+     *          : ($capability is TcaSchemaCapability::RestrictionUserGroup ? Capability\FieldCapability
+     *          : ($capability is TcaSchemaCapability::PrependLabelTextAtCopy ? Capability\ScalarCapability
+     *          : ($capability is TcaSchemaCapability::Label ? Capability\LabelCapability
+     *          : Capability\SystemInternalFieldCapability))))))))))
      */
     public function getCapability(TcaSchemaCapability $capability): Capability\SchemaCapabilityInterface
     {

@@ -31,30 +31,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Clipboard/Clipboard.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getDiffSourceField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getFieldName\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationOriginPointerField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:hasDiffSourceField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Controller/ContentElement/ElementInformationController.php
-
-		-
 			message: '#^Call to function is_object\(\) with object will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -571,60 +547,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Utility/BackendUtility.php
 
 		-
-			message: '#^Cannot cast TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface to string\.$#'
-			identifier: cast.string
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/ContentFetcher.php
-
-		-
-			message: '#^Cannot cast TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface to string\.$#'
-			identifier: cast.string
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/DefaultDataProvider.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getLanguageField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/Grid/GridColumnItem.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationOriginPointerField\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/Grid/GridColumnItem.php
-
-		-
-			message: '#^Cannot cast TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface to string\.$#'
-			identifier: cast.string
-			count: 5
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/Grid/GridColumnItem.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getLanguageField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/BackendLayout/Grid/LanguageColumn.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getLanguageField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/PageLayoutContext.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationOriginPointerField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/View/PageLayoutContext.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getConfiguration\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/backend/Classes/View/ValueFormatter/FlexFormValueFormatter.php
-
-		-
 			message: '#^Path in require\(\) "\.\./index\.php" is not a file or it does not exist\.$#'
 			identifier: require.fileNotFound
 			count: 1
@@ -901,42 +823,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Crypto/PasswordHashing/BlowfishPasswordHash.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getField\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getFieldName\(\)\.$#'
-			identifier: method.notFound
-			count: 32
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getLanguageField\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getPrimaryField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationOriginPointerField\(\)\.$#'
-			identifier: method.notFound
-			count: 5
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getValue\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 13
@@ -1145,12 +1031,6 @@ parameters:
 			identifier: nullCoalesce.variable
 			count: 2
 			path: ../../typo3/sysext/core/Classes/Database/Query/QueryBuilder.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getFieldName\(\)\.$#'
-			identifier: method.notFound
-			count: 16
-			path: ../../typo3/sysext/core/Classes/Database/ReferenceIndex.php
 
 		-
 			message: '#^Call to function is_array\(\) with array\<int\<0, max\>, mixed\> will always evaluate to true\.$#'
@@ -1853,18 +1733,6 @@ parameters:
 			identifier: return.unusedType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Schema/Field/NumberFieldType.php
-
-		-
-			message: '#^PHPDoc tag @return has invalid value \(\(\$capability is TcaSchemaCapability\:\:Language \? Capability\\LanguageAwareSchemaCapability \: \(\$capability is TcaSchemaCapability\:\:RestrictionRootLevel \? Capability\\RootLevelCapability \: \(\$capability is TcaSchemaCapability\:\:EditLock \? Capability\\FieldCapability \: \(\$capability is TcaSchemaCapability\:\:InternalDescription \? Capability\\FieldCapability \: \(\$capability is TcaSchemaCapability\:\:RestrictionDisabledField \? Capability\\FieldCapability \: \(\$capability is TcaSchemaCapability\:\:RestrictionStartTime \? Capability\\FieldCapability \: \(\$capability is TcaSchemaCapability\:\:RestrictionEndTime \? Capability\\FieldCapability \: \(\$capability is TcaSchemaCapability\:\:RestrictionUserGroup \? Capability\\FieldCapability \: \(\$capability is TcaSchemaCapability\:\:PrependLabelTextAtCopy \? Capability\\ScalarCapability \: \(\$capability is TcaSchemaCapability\:\:Label \? Capability\\LabelCapability \: Capability\\SystemInternalFieldCapability\)\)\)\)\)\)\)\)\)\)\)\)\: Unexpected token "\)", expected TOKEN_HORIZONTAL_WS at offset 942 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Schema/TcaSchema.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationOriginPointerField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Schema/VisibleSchemaFieldsCollector.php
 
 		-
 			message: '#^Method TYPO3\\CMS\\Core\\Security\\ContentSecurityPolicy\\HashValue\:\:compile\(\) never returns null so it can be removed from the return type\.$#'
@@ -3065,42 +2933,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/LazyLoadingProxy.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:canExistOnPages\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapFactory.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getDiffSourceField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapFactory.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getLanguageField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapFactory.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationOriginPointerField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapFactory.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:hasDiffSourceField\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapFactory.php
-
-		-
-			message: '#^Cannot cast TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface to string\.$#'
-			identifier: cast.string
-			count: 8
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapFactory.php
 
 		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\JoinConditionInterface\:\:getProperty1Name\(\)\.$#'
@@ -5023,18 +4855,6 @@ parameters:
 			path: ../../typo3/sysext/install/Tests/Unit/SystemEnvironment/DatabaseCheck/Platform/MySqlTest.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getFieldName\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getLanguageField\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/linkvalidator/Classes/LinkAnalyzer.php
-
-		-
 			message: '#^Dead catch \- Exception is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
 			count: 1
@@ -5291,24 +5111,6 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntityProcessor.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getFieldName\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationOriginPointerField\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Schema\\Capability\\SchemaCapabilityInterface\:\:getTranslationSourceField\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Hook/DataHandlerHook.php
 
 		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
