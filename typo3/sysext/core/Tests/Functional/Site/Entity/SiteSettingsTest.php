@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Site\Entity;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Site\Set\SetError;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteSettingsFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -52,5 +54,33 @@ final class SiteSettingsTest extends FunctionalTestCase
         // Not available because there is no settings key named `foo.bar`
         self::assertFalse($settings->has('foo.bar'));
         self::assertNull($settings->get('foo.bar'));
+    }
+
+    #[Test]
+    public function excpetionIsThrownForInvalidSettingsDefault(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings([], ['typo3tests/site-settings-set-with-invalid-settings-default']);
+
+        self::assertTrue($settings->isEmpty());
+        self::assertFalse($settings->has('foo.bar.baz'));
+
+        $invalidSets = $this->get(SetRegistry::class)->getInvalidSets();
+        self::assertSame(SetError::invalidSettingsDefinitions, $invalidSets['typo3tests/site-settings-set-with-invalid-settings-default']['error']);
+        self::assertStringContainsString('Invalid default value', $invalidSets['typo3tests/site-settings-set-with-invalid-settings-default']['context']);
+    }
+
+    #[Test]
+    public function excpetionIsThrownForInvalidSettingsType(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings([], ['typo3tests/site-settings-set-with-invalid-settings-type']);
+
+        self::assertTrue($settings->isEmpty());
+        self::assertFalse($settings->has('foo.bar.baz'));
+
+        $invalidSets = $this->get(SetRegistry::class)->getInvalidSets();
+        self::assertSame(SetError::invalidSettingsDefinitions, $invalidSets['typo3tests/site-settings-set-with-invalid-settings-type']['error']);
+        self::assertStringContainsString('Invalid settings type', $invalidSets['typo3tests/site-settings-set-with-invalid-settings-type']['context']);
     }
 }

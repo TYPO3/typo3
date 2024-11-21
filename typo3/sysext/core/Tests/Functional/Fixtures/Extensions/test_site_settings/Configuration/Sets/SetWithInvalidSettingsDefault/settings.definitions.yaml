@@ -1,0 +1,5 @@
+settings:
+  foo.bar.baz:
+    type: int
+    default:
+    label: FooBar

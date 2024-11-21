@@ -22,6 +22,7 @@ use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Settings\CategoryDefinition;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
+use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 
 /**
  * @internal
@@ -29,6 +30,10 @@ use TYPO3\CMS\Core\Settings\SettingDefinition;
 #[Autoconfigure(public: true)]
 class YamlSetDefinitionProvider
 {
+    public function __construct(
+        protected readonly SettingsTypeRegistry $settingsTypeRegistry
+    ) {}
+
     /** @var array<string, SetDefinition> */
     protected array $sets = [];
 
@@ -123,8 +128,16 @@ class YamlSetDefinitionProvider
                 }
                 try {
                     $definition = new SettingDefinition(...[...['key' => $setting], ...$options]);
+                    if ($this->settingsTypeRegistry->has($definition->type)) {
+                        $type = $this->settingsTypeRegistry->get($definition->type);
+                        if (!$type->validate($definition->default, $definition)) {
+                            throw new InvalidSettingsDefinitionsException('Invalid default value for settings definition: ' . json_encode($options), 1732181102, null, $set['name'] ?? '');
+                        }
+                    } else {
+                        throw new InvalidSettingsDefinitionsException('Invalid settings type \'' . $definition->type . '\' for settings definition: ' . json_encode($options), 1732181103, null, $set['name'] ?? '');
+                    }
                 } catch (\Error $e) {
-                    throw new \Exception('Invalid setting definition: ' . json_encode($options), 1702623312, $e);
+                    throw new InvalidSettingsDefinitionsException('Invalid setting definition: ' . json_encode($options), 1702623312, $e, $set['name'] ?? '');
                 }
                 $settingsDefinitions[] = $definition;
             }
