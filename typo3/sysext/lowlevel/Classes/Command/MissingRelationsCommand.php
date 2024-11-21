@@ -505,10 +505,13 @@ If you want to get more detailed information, use the --verbose option.')
      */
     protected function setReferenceValue_dbRels(array $refRec, array $itemArray, array &$dataArray, string $flexPointer = ''): string|bool
     {
-        if ((int)$itemArray[$refRec['sorting']]['id'] === (int)$refRec['ref_uid'] && (string)$itemArray[$refRec['sorting']]['table'] === (string)$refRec['ref_table']) {
+        $sorting = $refRec['sorting'] ?? null;
+        if ((int)($itemArray[$sorting]['id'] ?? 0) === (int)$refRec['ref_uid']
+            && (string)($itemArray[$sorting]['table'] ?? '') === (string)$refRec['ref_table']
+        ) {
             // Setting or removing value:
             // Remove value:
-            unset($itemArray[$refRec['sorting']]);
+            unset($itemArray[$sorting]);
             // Traverse and compile new list of records:
             $saveValue = [];
             foreach ($itemArray as $pair) {
@@ -525,7 +528,9 @@ If you want to get more detailed information, use the --verbose option.')
                 $dataArray[$refRec['tablename']][$refRec['recuid']][$refRec['field']] = implode(',', $saveValue);
             }
         } else {
-            return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid'] . '" did not match that of the record ("' . $itemArray[$refRec['sorting']]['table'] . ':' . $itemArray[$refRec['sorting']]['id'] . '") in sorting index "' . $refRec['sorting'] . '"';
+            return 'ERROR: table:id pair "' . $refRec['ref_table'] . ':' . $refRec['ref_uid']
+                . '" did not match that of the record ("' . ($itemArray[$sorting]['table'] ?? '') . ':' . ($itemArray[$sorting]['id'] ?? '') . '")'
+                . ' in sorting index "' . $sorting . '"';
         }
         return false;
     }
