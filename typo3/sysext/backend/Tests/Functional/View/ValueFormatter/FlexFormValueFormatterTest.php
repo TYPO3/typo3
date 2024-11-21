@@ -36,20 +36,25 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
     #[Test]
     public function flexFormDataWillBeDisplayedHumanReadable(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config'] = $this->getFieldTcaConfig();
+        $fieldTcaConfig = [
+            'ds' => [
+                'default' => 'FILE:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/FlexFormDataStructure.xml',
+            ],
+        ];
+        $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config'] = $fieldTcaConfig;
         $expectedOutput = trim(file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/ValuePreview.txt'));
         $flexFormData = file_get_contents(__DIR__ . '/Fixtures/FlexFormValueFormatter/FlexFormValue.xml');
 
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content');
         $connection->insert('tt_content', ['pi_flexform' => $flexFormData]);
 
-        $flexFormValueFormatter = new FlexFormValueFormatter();
+        $flexFormValueFormatter = $this->get(FlexFormValueFormatter::class);
         $actualOutput = $flexFormValueFormatter->format(
             'tt_content',
             'pi_flexform',
             $flexFormData,
             (int)$connection->lastInsertId(),
-            $this->getFieldTcaConfig(),
+            $fieldTcaConfig,
         );
 
         self::assertSame($expectedOutput, $actualOutput);
@@ -58,7 +63,7 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
     #[Test]
     public function nullResultsInEmptyString(): void
     {
-        $flexFormValueFormatter = new FlexFormValueFormatter();
+        $flexFormValueFormatter = $this->get(FlexFormValueFormatter::class);
         $actualOutput = $flexFormValueFormatter->format(
             'aTableName',
             'aFieldName',
@@ -73,7 +78,7 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
     #[Test]
     public function emptyStringResultsInEmptyString(): void
     {
-        $flexFormValueFormatter = new FlexFormValueFormatter();
+        $flexFormValueFormatter = $this->get(FlexFormValueFormatter::class);
         $actualOutput = $flexFormValueFormatter->format(
             'aTableName',
             'aFieldName',
@@ -83,14 +88,5 @@ final class FlexFormValueFormatterTest extends FunctionalTestCase
         );
 
         self::assertSame('', $actualOutput);
-    }
-
-    private function getFieldTcaConfig(): array
-    {
-        return [
-            'ds' => [
-                'default' => 'FILE:EXT:backend/Tests/Functional/View/ValueFormatter/Fixtures/FlexFormValueFormatter/FlexFormDataStructure.xml',
-            ],
-        ];
     }
 }

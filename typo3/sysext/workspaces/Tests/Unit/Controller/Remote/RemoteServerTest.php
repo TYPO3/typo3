@@ -119,7 +119,7 @@ final class RemoteServerTest extends UnitTestCase
             new StagesService(),
             new WorkspaceService(),
             new NoopEventDispatcher(),
-            new FlexFormValueFormatter(),
+            $this->createMock(FlexFormValueFormatter::class),
             new DiffUtility(),
             $this->createMock(IconFactory::class),
             $this->createMock(Avatar::class),
