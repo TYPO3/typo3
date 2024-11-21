@@ -197,7 +197,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             return $setCollector;
         }
 
-        $setProvider = new YamlSetDefinitionProvider();
+        $setProvider = $container->get(YamlSetDefinitionProvider::class);
         foreach ($finder as $fileInfo) {
             try {
                 $setCollector->add($setProvider->get($fileInfo));
