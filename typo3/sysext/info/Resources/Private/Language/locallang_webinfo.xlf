@@ -3,82 +3,82 @@
 	<file source-language="en" datatype="plaintext" original="EXT:info/Resources/Private/Language/locallang_webinfo.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="page_title" resname="page_title">
+			<trans-unit id="page_title">
 				<source>Pagetree overview</source>
 			</trans-unit>
-			<trans-unit id="pages_0" resname="pages_0">
+			<trans-unit id="pages_0">
 				<source>Basic settings</source>
 			</trans-unit>
-			<trans-unit id="pages_2" resname="pages_2">
+			<trans-unit id="pages_2">
 				<source>Cache and Age</source>
 			</trans-unit>
-			<trans-unit id="pages_1" resname="pages_1">
+			<trans-unit id="pages_1">
 				<source>Record overview</source>
 			</trans-unit>
-			<trans-unit id="pages_layouts" resname="pages_layouts">
+			<trans-unit id="pages_layouts">
 				<source>Layouts</source>
 			</trans-unit>
-			<trans-unit id="actual_backend_layout" resname="actual_backend_layout">
+			<trans-unit id="actual_backend_layout">
 				<source>Actual backend layout</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_viewPage" resname="lang_renderl10n_viewPage">
+			<trans-unit id="lang_renderl10n_viewPage">
 				<source>View page</source>
 			</trans-unit>
-			<trans-unit id="lang_title" resname="lang_title">
+			<trans-unit id="lang_title">
 				<source>Localization overview</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editDefaultLanguagePage" resname="lang_renderl10n_editDefaultLanguagePage">
+			<trans-unit id="lang_renderl10n_editDefaultLanguagePage">
 				<source>Edit default language page properties</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLangOverlays" resname="lang_renderl10n_editLangOverlays">
+			<trans-unit id="lang_renderl10n_editLangOverlays">
 				<source>Edit all language overlay records</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageProperties" resname="lang_renderl10n_editPageProperties">
+			<trans-unit id="lang_renderl10n_editPageProperties">
 				<source>Edit all page properties</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPage" resname="lang_renderl10n_editPage">
+			<trans-unit id="lang_renderl10n_editPage">
 				<source>Edit page</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageLang" resname="lang_renderl10n_editPageLang">
+			<trans-unit id="lang_renderl10n_editPageLang">
 				<source>Edit page translation</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_badThingThereAre" resname="lang_renderl10n_badThingThereAre">
+			<trans-unit id="lang_renderl10n_badThingThereAre">
 				<source>ERROR: there are two or more page overlay records for this language! Only one is allowed!</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLanguageOverlayRecord" resname="lang_renderl10n_editLanguageOverlayRecord">
+			<trans-unit id="lang_renderl10n_editLanguageOverlayRecord">
 				<source>Edit language overlay record</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_page" resname="lang_renderl10n_page">
+			<trans-unit id="lang_renderl10n_page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_default" resname="lang_renderl10n_default">
+			<trans-unit id="lang_renderl10n_default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="lang_getlangsta_createNewTranslationHeaders" resname="lang_getlangsta_createNewTranslationHeaders">
+			<trans-unit id="lang_getlangsta_createNewTranslationHeaders">
 				<source>Create new translation headers</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_CEcount" resname="lang_renderl10n_CEcount">
+			<trans-unit id="lang_renderl10n_CEcount">
 				<source>Content Element Count</source>
 			</trans-unit>
-			<trans-unit id="moduleFunctions.depth" resname="moduleFunctions.depth">
+			<trans-unit id="moduleFunctions.depth">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="moduleFunctions.type" resname="moduleFunctions.type">
+			<trans-unit id="moduleFunctions.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="moduleFunctions.lang" resname="moduleFunctions.lang">
+			<trans-unit id="moduleFunctions.lang">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="error.noAccess.title" resname="error.noAccess.title">
+			<trans-unit id="error.noAccess.title">
 				<source>No access</source>
 			</trans-unit>
-			<trans-unit id="error.noAccess.message" resname="error.noAccess.message">
+			<trans-unit id="error.noAccess.message">
 				<source>You don't have access to this module.</source>
 			</trans-unit>
-			<trans-unit id="info.noContent.message" resname="info.noContent.message">
+			<trans-unit id="info.noContent.message">
 				<source>There are no page information available.</source>
 			</trans-unit>
-			<trans-unit id="info.noPageSelected.message" resname="info.noPageSelected.message">
+			<trans-unit id="info.noPageSelected.message">
 				<source>Please select a page in the page tree.</source>
 			</trans-unit>
 		</body>

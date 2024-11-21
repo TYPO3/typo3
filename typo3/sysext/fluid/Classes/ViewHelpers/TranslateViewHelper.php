@@ -83,7 +83,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
  * ``%s`` conversions, using `PHP sprintf() notation <https://www.php.net/sprintf>`__ in the
  * language file::
  *
- *    <trans-unit id="someKey" resname="someKey">
+ *    <trans-unit id="someKey">
  *        <source>Some text about a %s and a %s.</source>
  *    </trans-unit>
  *

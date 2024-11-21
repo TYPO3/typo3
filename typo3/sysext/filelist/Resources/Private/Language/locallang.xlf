@@ -3,124 +3,124 @@
 	<file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang.xlf" date="2015-08-21T11:45:35Z" product-name="filelist">
 		<header/>
 		<body>
-			<trans-unit id="search" resname="search">
+			<trans-unit id="search">
 				<source>Search "%s" in %s</source>
 			</trans-unit>
-			<trans-unit id="search.reset" resname="search.reset">
+			<trans-unit id="search.reset">
 				<source>Reset search</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.no_results" resname="flashmessage.no_results">
+			<trans-unit id="flashmessage.no_results">
 				<source>No results found</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.no_results.message" resname="flashmessage.no_results.message">
+			<trans-unit id="flashmessage.no_results.message">
 				<source>This folder does not contain any files for "%s"</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.no_items" resname="flashmessage.no_items">
+			<trans-unit id="flashmessage.no_items">
 				<source>This folder is empty</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.no_items.message" resname="flashmessage.no_items.message">
+			<trans-unit id="flashmessage.no_items.message">
 				<source>Drag files here to upload them</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.pagetitle" resname="file_upload.php.pagetitle">
+			<trans-unit id="file_upload.php.pagetitle">
 				<source>Upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.submit" resname="file_upload.php.submit">
+			<trans-unit id="file_upload.php.submit">
 				<source>Upload files</source>
 			</trans-unit>
-			<trans-unit id="file_upload.php.files" resname="file_upload.php.files">
+			<trans-unit id="file_upload.php.files">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="file_rename.exists.title" resname="file_rename.exists.title">
+			<trans-unit id="file_rename.exists.title">
 				<source>File exists already</source>
 			</trans-unit>
-			<trans-unit id="file_rename.exists.description" resname="file_rename.exists.description">
+			<trans-unit id="file_rename.exists.description">
 				<source>You want to rename the file "{0}" to "{1}", but the file "{1}" already exists. How do you want to proceed?</source>
 			</trans-unit>
-			<trans-unit id="file_rename.actions.cancel" resname="file_rename.actions.cancel">
+			<trans-unit id="file_rename.actions.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="file_rename.actions.rename" resname="file_rename.actions.rename">
+			<trans-unit id="file_rename.actions.rename">
 				<source>Rename with unique name</source>
 			</trans-unit>
-			<trans-unit id="file_rename.actions.override" resname="file_rename.actions.override">
+			<trans-unit id="file_rename.actions.override">
 				<source>Overwrite</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.pagetitle" resname="file_rename.php.pagetitle">
+			<trans-unit id="file_rename.php.pagetitle">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.submit" resname="file_rename.php.submit">
+			<trans-unit id="file_rename.php.submit">
 				<source>Rename</source>
 				<note from="developer">This label is not used since TYPO3 v9.</note>
 			</trans-unit>
-			<trans-unit id="file_rename.php.label.target.file" resname="file_rename.php.label.target.file">
+			<trans-unit id="file_rename.php.label.target.file">
 				<source>New file name</source>
 			</trans-unit>
-			<trans-unit id="file_rename.php.label.target.folder" resname="file_rename.php.label.target.folder">
+			<trans-unit id="file_rename.php.label.target.folder">
 				<source>New folder name</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.pagetitle" resname="file_replace.php.pagetitle">
+			<trans-unit id="file_replace.php.pagetitle">
 				<source>Replace</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.selectfile" resname="file_replace.php.selectfile">
+			<trans-unit id="file_replace.php.selectfile">
 				<source>Select new file</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.keepfiletitle" resname="file_replace.php.keepfiletitle">
+			<trans-unit id="file_replace.php.keepfiletitle">
 				<source>Keep the current filename?</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.browse" resname="file_replace.php.browse">
+			<trans-unit id="file_replace.php.browse">
 				<source>Browse</source>
 			</trans-unit>
-			<trans-unit id="file_replace.php.submit" resname="file_replace.php.submit">
+			<trans-unit id="file_replace.php.submit">
 				<source>Replace</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.pagetitle" resname="file_edit.php.pagetitle">
+			<trans-unit id="file_edit.php.pagetitle">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.submit" resname="file_edit.php.submit">
+			<trans-unit id="file_edit.php.submit">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.saveAndClose" resname="file_edit.php.saveAndClose">
+			<trans-unit id="file_edit.php.saveAndClose">
 				<source>Save and Close</source>
 			</trans-unit>
-			<trans-unit id="file_edit.php.coundNot" resname="file_edit.php.coundNot">
+			<trans-unit id="file_edit.php.coundNot">
 				<source>This filetype cannot be edited.&lt;br /&gt;The file must have an extension like:&lt;br /&gt;&lt;br
 					/&gt; &lt;b&gt;%s&lt;/b&gt;
 				</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.pagetitle" resname="file_newfolder.php.pagetitle">
+			<trans-unit id="file_newfolder.php.pagetitle">
 				<source>New file or folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfolder" resname="file_newfolder.php.label_newfolder">
+			<trans-unit id="file_newfolder.php.label_newfolder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.submit" resname="file_newfolder.php.submit">
+			<trans-unit id="file_newfolder.php.submit">
 				<source>Create folders</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.folders" resname="file_newfolder.php.folders">
+			<trans-unit id="file_newfolder.php.folders">
 				<source>folders</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile_submit" resname="file_newfolder.php.newfile_submit">
+			<trans-unit id="file_newfolder.php.newfile_submit">
 				<source>Create file</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.newfile" resname="file_newfolder.php.newfile">
+			<trans-unit id="file_newfolder.php.newfile">
 				<source>Create new textfile</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.label_newfile" resname="file_newfolder.php.label_newfile">
+			<trans-unit id="file_newfolder.php.label_newfile">
 				<source>File name</source>
 			</trans-unit>
-			<trans-unit id="file_newfolder.php.number_of_folders" resname="file_newfolder.php.number_of_folders">
+			<trans-unit id="file_newfolder.php.number_of_folders">
 				<source>Number of folders</source>
 			</trans-unit>
-			<trans-unit id="download" resname="download">
+			<trans-unit id="download">
 				<source>Download</source>
 			</trans-unit>
-			<trans-unit id="actions.create_folder" resname="actions.create_folder">
+			<trans-unit id="actions.create_folder">
 				<source>Create Folder</source>
 			</trans-unit>
-			<trans-unit id="actions.create_file" resname="actions.create_file">
+			<trans-unit id="actions.create_file">
 				<source>Create File</source>
 			</trans-unit>
-			<trans-unit id="translations" resname="translations">
+			<trans-unit id="translations">
 				<source>Translations</source>
 			</trans-unit>
 		</body>

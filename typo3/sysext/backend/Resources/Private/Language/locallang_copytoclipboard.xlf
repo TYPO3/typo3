@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf" date="2021-06-01T12:43:12Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="copyToClipboard.title" resname="copyToClipboard.title">
+			<trans-unit id="copyToClipboard.title">
 				<source>Copy %s to clipboard</source>
 			</trans-unit>
-			<trans-unit id="copyToClipboard.success" resname="copyToClipboard.success">
+			<trans-unit id="copyToClipboard.success">
 				<source>Copied to clipboard</source>
 			</trans-unit>
-			<trans-unit id="copyToClipboard.error" resname="copyToClipboard.error">
+			<trans-unit id="copyToClipboard.error">
 				<source>Could not be copied to clipboard</source>
 			</trans-unit>
 		</body>

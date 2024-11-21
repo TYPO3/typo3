@@ -3,100 +3,100 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/about.xlf" date="2011-10-17T20:22:34Z" product-name="typo3-cms-backend">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>About TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>Displays the basic facts about the TYPO3 application, version and licensing terms.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab">
 				<source>About TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>About TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="typo3_logo" resname="typo3_logo">
+			<trans-unit id="typo3_logo">
 				<source>TYPO3 CMS logo</source>
 			</trans-unit>
-			<trans-unit id="information" resname="information">
+			<trans-unit id="information">
 				<source>TYPO3 Information</source>
 			</trans-unit>
-			<trans-unit id="welcome" resname="welcome">
+			<trans-unit id="welcome">
 				<source>TYPO3 CMS - Professional Web Content Management System</source>
 			</trans-unit>
-			<trans-unit id="minor" resname="minor">
+			<trans-unit id="minor">
 				<source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using %s %s</source>
 			</trans-unit>
-			<trans-unit id="cms_description" resname="cms_description">
+			<trans-unit id="cms_description">
 				<source>TYPO3 CMS is an enterprise-class, Open Source Content Management System, used internationally to build and manage websites of all types, from small sites for non-profits to multilingual enterprise solutions for large corporations.&lt;br /&gt;&lt;br /&gt;For further information visit &lt;a href="https://typo3.org/typo3-cms/" target="_blank" rel="noreferrer"&gt;typo3.org&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;TYPO3 CMS is &lt;b&gt;freely available&lt;/b&gt; under the &lt;a href="https://typo3.org/project/licenses/" target="_blank"&gt;TYPO3-license (GNU/GPL)&lt;/a&gt;.&lt;br /&gt;&lt;br /&gt;You are using version %s - Copyright %s %s</source>
 			</trans-unit>
-			<trans-unit id="community_credits" resname="community_credits">
+			<trans-unit id="community_credits">
 				<source>Community Credits</source>
 			</trans-unit>
-			<trans-unit id="information_detail" resname="information_detail">
+			<trans-unit id="information_detail">
 				<source>Visit &lt;a href="https://typo3.org/community/" target="_blank" rel="noreferrer"&gt;typo3.org/community/&lt;/a&gt; if you want to know why TYPO3 rocks.</source>
 			</trans-unit>
-			<trans-unit id="coredevs" resname="coredevs">
+			<trans-unit id="coredevs">
 				<source>Core Team</source>
 			</trans-unit>
-			<trans-unit id="coredevs_detail" resname="coredevs_detail">
+			<trans-unit id="coredevs_detail">
 				<source>Visit &lt;a href="https://typo3.org/teams-committees/core-development/" target="_blank" rel="noreferrer"&gt;typo3.org/teams-committees/core-development/&lt;/a&gt; for the complete member list.&lt;br /&gt;&lt;br /&gt;The Git Repository and the ChangeLog can be found &lt;a href="https://forge.typo3.org/projects/typo3cms-core/" target="_blank"&gt;here&lt;/a&gt;.</source>
 			</trans-unit>
-			<trans-unit id="extension_authors" resname="extension_authors">
+			<trans-unit id="extension_authors">
 				<source>Extension Authors</source>
 			</trans-unit>
-			<trans-unit id="extension_list_info" resname="extension_list_info">
+			<trans-unit id="extension_list_info">
 				<source>This is a list of the people who contributed to the extensions you're using in your installation.</source>
 			</trans-unit>
-			<trans-unit id="extension" resname="extension">
+			<trans-unit id="extension">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="extension_author" resname="extension_author">
+			<trans-unit id="extension_author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="donation.sectionHeadline" resname="donation.sectionHeadline">
+			<trans-unit id="donation.sectionHeadline">
 				<source>TYPO3 Donation and community</source>
 			</trans-unit>
-			<trans-unit id="donation_header" resname="donation_header">
+			<trans-unit id="donation_header">
 				<source>TYPO3 Donation</source>
 			</trans-unit>
-			<trans-unit id="donation_message" resname="donation_message">
+			<trans-unit id="donation_message">
 				<source>It would be great if you could donate. TYPO3 CMS is Open Source and relies heavily on donations from its users and supporters.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Thank you&lt;/b&gt; for making this great Content Management System even better with your support!</source>
 			</trans-unit>
-			<trans-unit id="donation_button" resname="donation_button">
+			<trans-unit id="donation_button">
 				<source>Donate now</source>
 			</trans-unit>
-			<trans-unit id="external_libraries" resname="external_libraries">
+			<trans-unit id="external_libraries">
 				<source>External Libraries</source>
 			</trans-unit>
-			<trans-unit id="external_thanks" resname="external_thanks">
+			<trans-unit id="external_thanks">
 				<source>TYPO3 CMS core uses and thanks these external Open Source projects:</source>
 			</trans-unit>
-			<trans-unit id="external_libraries.table.column.name" resname="external_libraries.table.column.name">
+			<trans-unit id="external_libraries.table.column.name">
 				<source>Project name</source>
 			</trans-unit>
-			<trans-unit id="external_libraries.table.column.website" resname="external_libraries.table.column.website">
+			<trans-unit id="external_libraries.table.column.website">
 				<source>Website</source>
 			</trans-unit>
-			<trans-unit id="introtext" resname="introtext">
+			<trans-unit id="introtext">
 				<source>Web Content Management System</source>
 			</trans-unit>
-			<trans-unit id="modules.headline" resname="modules.headline">
+			<trans-unit id="modules.headline">
 				<source>Modules</source>
 			</trans-unit>
-			<trans-unit id="modules.introtext" resname="modules.introtext">
+			<trans-unit id="modules.introtext">
 				<source>This is a brief description of the available modules.</source>
 			</trans-unit>
-			<trans-unit id="endText" resname="endText">
+			<trans-unit id="endText">
 				<source>Features may vary depending on your website and permissions</source>
 			</trans-unit>
-			<trans-unit id="userInfo" resname="userInfo">
+			<trans-unit id="userInfo">
 				<source>You're logged in as user</source>
 			</trans-unit>
-			<trans-unit id="link.openModule" resname="link.openModule">
+			<trans-unit id="link.openModule">
 				<source>Open module</source>
 			</trans-unit>
-			<trans-unit id="link.openModuleWithTitle" resname="link.openModuleWithTitle">
+			<trans-unit id="link.openModuleWithTitle">
 				<source>Open %1s module</source>
 			</trans-unit>
 		</body>

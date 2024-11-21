@@ -3,115 +3,115 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_analyzer.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="submodule.title" resname="submodule.title">
+			<trans-unit id="submodule.title">
 				<source>Included TypoScript</source>
 			</trans-unit>
-			<trans-unit id="submodule.titleWithRecord" resname="submodule.titleWithRecord">
+			<trans-unit id="submodule.titleWithRecord">
 				<source>Included TypoScript for record "%s"</source>
 			</trans-unit>
-			<trans-unit id="submodule.description" resname="submodule.description">
+			<trans-unit id="submodule.description">
 				<source>Overview of the included TypoScript and include order for the current page.</source>
 			</trans-unit>
-			<trans-unit id="infobox.message.noTypoScriptFound" resname="infobox.message.noTypoScriptFound">
+			<trans-unit id="infobox.message.noTypoScriptFound">
 				<source>No TypoScript found.</source>
 			</trans-unit>
-			<trans-unit id="options.selectedRecord" resname="options.selectedRecord">
+			<trans-unit id="options.selectedRecord">
 				<source>Selected record</source>
 			</trans-unit>
-			<trans-unit id="sectionHeadline.constants" resname="sectionHeadline.constants">
+			<trans-unit id="sectionHeadline.constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="sectionHeadline.setup" resname="sectionHeadline.setup">
+			<trans-unit id="sectionHeadline.setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="panel.header.syntaxErrors" resname="panel.header.syntaxErrors">
+			<trans-unit id="panel.header.syntaxErrors">
 				<source>Syntax scanner warnings</source>
 			</trans-unit>
-			<trans-unit id="panel.header.configuration" resname="panel.header.configuration">
+			<trans-unit id="panel.header.configuration">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="panel.info.syntaxErrorCount.single" resname="panel.info.syntaxErrorCount.single">
+			<trans-unit id="panel.info.syntaxErrorCount.single">
 				<source>%s syntax warning</source>
 			</trans-unit>
-			<trans-unit id="panel.info.syntaxErrorCount.multiple" resname="panel.info.syntaxErrorCount.multiple">
+			<trans-unit id="panel.info.syntaxErrorCount.multiple">
 				<source>%s syntax warnings</source>
 			</trans-unit>
-			<trans-unit id="syntaxError.sourceCode" resname="syntaxError.sourceCode">
+			<trans-unit id="syntaxError.sourceCode">
 				<source>Show affected code snippet</source>
 			</trans-unit>
-			<trans-unit id="syntaxError.type.line.invalid" resname="syntaxError.type.line.invalid">
+			<trans-unit id="syntaxError.type.line.invalid">
 				<source>Invalid line in "%1$s", line number "%2$s"</source>
 			</trans-unit>
-			<trans-unit id="syntaxError.type.brace.excess" resname="syntaxError.type.brace.excess">
+			<trans-unit id="syntaxError.type.brace.excess">
 				<source>Brace in excess in "%1$s", line number "%2$s"</source>
 			</trans-unit>
-			<trans-unit id="syntaxError.type.brace.missing" resname="syntaxError.type.brace.missing">
+			<trans-unit id="syntaxError.type.brace.missing">
 				<source>Brace missing in "%1$s", line number "%2$s"</source>
 			</trans-unit>
-			<trans-unit id="syntaxError.type.import.empty" resname="syntaxError.type.import.empty">
+			<trans-unit id="syntaxError.type.import.empty">
 				<source>Import does not find a file in "%1$s", line number "%2$s"</source>
 			</trans-unit>
-			<trans-unit id="tree.child.btn.sourceCode" resname="tree.child.btn.sourceCode">
+			<trans-unit id="tree.child.btn.sourceCode">
 				<source>Show code</source>
 			</trans-unit>
-			<trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes" resname="tree.child.btn.sourceCodeWithResolvedIncludes">
+			<trans-unit id="tree.child.btn.sourceCodeWithResolvedIncludes">
 				<source>Show code including possible includes/imports</source>
 			</trans-unit>
-			<trans-unit id="tree.child.setting.clear" resname="tree.child.setting.clear">
+			<trans-unit id="tree.child.setting.clear">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="tree.child.setting.root" resname="tree.child.setting.root">
+			<trans-unit id="tree.child.setting.root">
 				<source>Root</source>
 			</trans-unit>
-			<trans-unit id="tree.child.sysTemplateRecord" resname="tree.child.sysTemplateRecord">
+			<trans-unit id="tree.child.sysTemplateRecord">
 				<source>TypoScript record (page UID %s)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.AtImport" resname="tree.child.type.AtImport">
+			<trans-unit id="tree.child.type.AtImport">
 				<source>Included via "@import"</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.Condition" resname="tree.child.type.Condition">
+			<trans-unit id="tree.child.type.Condition">
 				<source>Condition (then)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.ConditionElse" resname="tree.child.type.ConditionElse">
+			<trans-unit id="tree.child.type.ConditionElse">
 				<source>Condition (else)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.ConditionStop" resname="tree.child.type.ConditionStop">
+			<trans-unit id="tree.child.type.ConditionStop">
 				<source>Condition (end)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.DefaultTypoScript" resname="tree.child.type.DefaultTypoScript">
+			<trans-unit id="tree.child.type.DefaultTypoScript">
 				<source>Included via "$GLOBALS"</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey" resname="tree.child.type.DefaultTypoScriptMagicKey">
+			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey">
 				<source>Included via "$GLOBALS"</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel" resname="tree.child.type.DefaultTypoScriptMagicKey_formlabel">
+			<trans-unit id="tree.child.type.DefaultTypoScriptMagicKey_formlabel">
 				<source>Default content rendering</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.ExtensionStatic" resname="tree.child.type.ExtensionStatic">
+			<trans-unit id="tree.child.type.ExtensionStatic">
 				<source>TypoScript set (loaded automatically)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.File" resname="tree.child.type.File">
+			<trans-unit id="tree.child.type.File">
 				<source>Part of a TypoScript set</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.IncludeStaticFileDatabase" resname="tree.child.type.IncludeStaticFileDatabase">
+			<trans-unit id="tree.child.type.IncludeStaticFileDatabase">
 				<source>TypoScript set</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.IncludeStaticFileFile" resname="tree.child.type.IncludeStaticFileFile">
+			<trans-unit id="tree.child.type.IncludeStaticFileFile">
 				<source>TypoScript set (included via file)</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.Root" resname="tree.child.type.Root">
+			<trans-unit id="tree.child.type.Root">
 				<source>Root</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.Segment" resname="tree.child.type.Segment">
+			<trans-unit id="tree.child.type.Segment">
 				<source>Code segment</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.Site" resname="tree.child.type.Site">
+			<trans-unit id="tree.child.type.Site">
 				<source>Site</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.SiteTemplate" resname="tree.child.type.SiteTemplate">
+			<trans-unit id="tree.child.type.SiteTemplate">
 				<source>Site configuration</source>
 			</trans-unit>
-			<trans-unit id="tree.child.type.SysTemplate" resname="tree.child.type.SysTemplate">
+			<trans-unit id="tree.child.type.SysTemplate">
 				<source>TypoScript record</source>
 			</trans-unit>
 		</body>

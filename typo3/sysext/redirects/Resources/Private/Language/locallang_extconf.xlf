@@ -3,10 +3,10 @@
 	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_extconf.xlf" date="2023-06-19T06:49:15Z" product-name="redirects">
 		<header/>
 		<body>
-			<trans-unit id="showCheckintegrityInfoInReports.enable" resname="showCheckintegrityInfoInReports.enable">
+			<trans-unit id="showCheckintegrityInfoInReports.enable">
 				<source>Show information in reports if checkintegrity was not run.</source>
 			</trans-unit>
-			<trans-unit id="showCheckintegrityInfoInReports.seconds" resname="showCheckintegrityInfoInReports.seconds">
+			<trans-unit id="showCheckintegrityInfoInReports.seconds">
 				<source>Number of seconds to consider last checkintegrity report.</source>
 			</trans-unit>
 		</body>

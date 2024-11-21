@@ -3,22 +3,22 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_column_selector.xlf" date="2021-08-25T02:11:02Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="showColumns" resname="showColumns">
+			<trans-unit id="showColumns">
 				<source>Show columns</source>
 			</trans-unit>
-			<trans-unit id="showColumnsSelection" resname="showColumnsSelection">
+			<trans-unit id="showColumnsSelection">
 				<source>Show columns for %s</source>
 			</trans-unit>
-			<trans-unit id="updateColumnView" resname="updateColumnView">
+			<trans-unit id="updateColumnView">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="updateColumnView.nothingUpdated" resname="updateColumnView.nothingUpdated">
+			<trans-unit id="updateColumnView.nothingUpdated">
 				<source>No columns were updated</source>
 			</trans-unit>
-			<trans-unit id="updateColumnView.error" resname="updateColumnView.error">
+			<trans-unit id="updateColumnView.error">
 				<source>Could not update columns</source>
 			</trans-unit>
-			<trans-unit id="columnsFilter" resname="columnsFilter">
+			<trans-unit id="columnsFilter">
 				<source>Filter by:</source>
 			</trans-unit>
 		</body>

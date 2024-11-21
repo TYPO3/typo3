@@ -2,1465 +2,1465 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/countries.xlf" product-name="typo3/cms-core">
     <body>
-      <trans-unit id="aa" resname="aa">
+      <trans-unit id="aa">
         <source>Afar</source>
       </trans-unit>
-      <trans-unit id="ab" resname="ab">
+      <trans-unit id="ab">
         <source>Abkhazian</source>
       </trans-unit>
-      <trans-unit id="ace" resname="ace">
+      <trans-unit id="ace">
         <source>Achinese</source>
       </trans-unit>
-      <trans-unit id="ach" resname="ach">
+      <trans-unit id="ach">
         <source>Acoli</source>
       </trans-unit>
-      <trans-unit id="ada" resname="ada">
+      <trans-unit id="ada">
         <source>Adangme</source>
       </trans-unit>
-      <trans-unit id="ady" resname="ady">
+      <trans-unit id="ady">
         <source>Adyghe; Adygei</source>
       </trans-unit>
-      <trans-unit id="ae" resname="ae">
+      <trans-unit id="ae">
         <source>Avestan</source>
       </trans-unit>
-      <trans-unit id="af" resname="af">
+      <trans-unit id="af">
         <source>Afrikaans</source>
       </trans-unit>
-      <trans-unit id="afa" resname="afa">
+      <trans-unit id="afa">
         <source>Afro-Asiatic languages</source>
       </trans-unit>
-      <trans-unit id="afh" resname="afh">
+      <trans-unit id="afh">
         <source>Afrihili</source>
       </trans-unit>
-      <trans-unit id="ain" resname="ain">
+      <trans-unit id="ain">
         <source>Ainu</source>
       </trans-unit>
-      <trans-unit id="ak" resname="ak">
+      <trans-unit id="ak">
         <source>Akan</source>
       </trans-unit>
-      <trans-unit id="akk" resname="akk">
+      <trans-unit id="akk">
         <source>Akkadian</source>
       </trans-unit>
-      <trans-unit id="ale" resname="ale">
+      <trans-unit id="ale">
         <source>Aleut</source>
       </trans-unit>
-      <trans-unit id="alg" resname="alg">
+      <trans-unit id="alg">
         <source>Algonquian languages</source>
       </trans-unit>
-      <trans-unit id="alt" resname="alt">
+      <trans-unit id="alt">
         <source>Southern Altai</source>
       </trans-unit>
-      <trans-unit id="am" resname="am">
+      <trans-unit id="am">
         <source>Amharic</source>
       </trans-unit>
-      <trans-unit id="an" resname="an">
+      <trans-unit id="an">
         <source>Aragonese</source>
       </trans-unit>
-      <trans-unit id="ang" resname="ang">
+      <trans-unit id="ang">
         <source>English, Old (ca. 450-1100)</source>
       </trans-unit>
-      <trans-unit id="anp" resname="anp">
+      <trans-unit id="anp">
         <source>Angika</source>
       </trans-unit>
-      <trans-unit id="apa" resname="apa">
+      <trans-unit id="apa">
         <source>Apache languages</source>
       </trans-unit>
-      <trans-unit id="ar" resname="ar">
+      <trans-unit id="ar">
         <source>Arabic</source>
       </trans-unit>
-      <trans-unit id="arc" resname="arc">
+      <trans-unit id="arc">
         <source>Official Aramaic (700-300 BCE); Imperial Aramaic (700-300 BCE)</source>
       </trans-unit>
-      <trans-unit id="arn" resname="arn">
+      <trans-unit id="arn">
         <source>Mapudungun; Mapuche</source>
       </trans-unit>
-      <trans-unit id="arp" resname="arp">
+      <trans-unit id="arp">
         <source>Arapaho</source>
       </trans-unit>
-      <trans-unit id="art" resname="art">
+      <trans-unit id="art">
         <source>Artificial languages</source>
       </trans-unit>
-      <trans-unit id="arw" resname="arw">
+      <trans-unit id="arw">
         <source>Arawak</source>
       </trans-unit>
-      <trans-unit id="as" resname="as">
+      <trans-unit id="as">
         <source>Assamese</source>
       </trans-unit>
-      <trans-unit id="ast" resname="ast">
+      <trans-unit id="ast">
         <source>Asturian; Bable; Leonese; Asturleonese</source>
       </trans-unit>
-      <trans-unit id="ath" resname="ath">
+      <trans-unit id="ath">
         <source>Athapascan languages</source>
       </trans-unit>
-      <trans-unit id="aus" resname="aus">
+      <trans-unit id="aus">
         <source>Australian languages</source>
       </trans-unit>
-      <trans-unit id="av" resname="av">
+      <trans-unit id="av">
         <source>Avaric</source>
       </trans-unit>
-      <trans-unit id="awa" resname="awa">
+      <trans-unit id="awa">
         <source>Awadhi</source>
       </trans-unit>
-      <trans-unit id="ay" resname="ay">
+      <trans-unit id="ay">
         <source>Aymara</source>
       </trans-unit>
-      <trans-unit id="az" resname="az">
+      <trans-unit id="az">
         <source>Azerbaijani</source>
       </trans-unit>
-      <trans-unit id="ba" resname="ba">
+      <trans-unit id="ba">
         <source>Bashkir</source>
       </trans-unit>
-      <trans-unit id="bad" resname="bad">
+      <trans-unit id="bad">
         <source>Banda languages</source>
       </trans-unit>
-      <trans-unit id="bai" resname="bai">
+      <trans-unit id="bai">
         <source>Bamileke languages</source>
       </trans-unit>
-      <trans-unit id="bal" resname="bal">
+      <trans-unit id="bal">
         <source>Baluchi</source>
       </trans-unit>
-      <trans-unit id="ban" resname="ban">
+      <trans-unit id="ban">
         <source>Balinese</source>
       </trans-unit>
-      <trans-unit id="bas" resname="bas">
+      <trans-unit id="bas">
         <source>Basa</source>
       </trans-unit>
-      <trans-unit id="bat" resname="bat">
+      <trans-unit id="bat">
         <source>Baltic languages</source>
       </trans-unit>
-      <trans-unit id="be" resname="be">
+      <trans-unit id="be">
         <source>Belarusian</source>
       </trans-unit>
-      <trans-unit id="bej" resname="bej">
+      <trans-unit id="bej">
         <source>Beja; Bedawiyet</source>
       </trans-unit>
-      <trans-unit id="bem" resname="bem">
+      <trans-unit id="bem">
         <source>Bemba</source>
       </trans-unit>
-      <trans-unit id="ber" resname="ber">
+      <trans-unit id="ber">
         <source>Berber languages</source>
       </trans-unit>
-      <trans-unit id="bg" resname="bg">
+      <trans-unit id="bg">
         <source>Bulgarian</source>
       </trans-unit>
-      <trans-unit id="bh" resname="bh">
+      <trans-unit id="bh">
         <source>Bihari languages</source>
       </trans-unit>
-      <trans-unit id="bho" resname="bho">
+      <trans-unit id="bho">
         <source>Bhojpuri</source>
       </trans-unit>
-      <trans-unit id="bi" resname="bi">
+      <trans-unit id="bi">
         <source>Bislama</source>
       </trans-unit>
-      <trans-unit id="bik" resname="bik">
+      <trans-unit id="bik">
         <source>Bikol</source>
       </trans-unit>
-      <trans-unit id="bin" resname="bin">
+      <trans-unit id="bin">
         <source>Bini; Edo</source>
       </trans-unit>
-      <trans-unit id="bla" resname="bla">
+      <trans-unit id="bla">
         <source>Siksika</source>
       </trans-unit>
-      <trans-unit id="bm" resname="bm">
+      <trans-unit id="bm">
         <source>Bambara</source>
       </trans-unit>
-      <trans-unit id="bn" resname="bn">
+      <trans-unit id="bn">
         <source>Bengali</source>
       </trans-unit>
-      <trans-unit id="bnt" resname="bnt">
+      <trans-unit id="bnt">
         <source>Bantu (Other)</source>
       </trans-unit>
-      <trans-unit id="bo" resname="bo">
+      <trans-unit id="bo">
         <source>Tibetan</source>
       </trans-unit>
-      <trans-unit id="br" resname="br">
+      <trans-unit id="br">
         <source>Breton</source>
       </trans-unit>
-      <trans-unit id="bra" resname="bra">
+      <trans-unit id="bra">
         <source>Braj</source>
       </trans-unit>
-      <trans-unit id="bs" resname="bs">
+      <trans-unit id="bs">
         <source>Bosnian</source>
       </trans-unit>
-      <trans-unit id="btk" resname="btk">
+      <trans-unit id="btk">
         <source>Batak languages</source>
       </trans-unit>
-      <trans-unit id="bua" resname="bua">
+      <trans-unit id="bua">
         <source>Buriat</source>
       </trans-unit>
-      <trans-unit id="bug" resname="bug">
+      <trans-unit id="bug">
         <source>Buginese</source>
       </trans-unit>
-      <trans-unit id="byn" resname="byn">
+      <trans-unit id="byn">
         <source>Blin; Bilin</source>
       </trans-unit>
-      <trans-unit id="ca" resname="ca">
+      <trans-unit id="ca">
         <source>Catalan; Valencian</source>
       </trans-unit>
-      <trans-unit id="cad" resname="cad">
+      <trans-unit id="cad">
         <source>Caddo</source>
       </trans-unit>
-      <trans-unit id="cai" resname="cai">
+      <trans-unit id="cai">
         <source>Central American Indian languages</source>
       </trans-unit>
-      <trans-unit id="car" resname="car">
+      <trans-unit id="car">
         <source>Galibi Carib</source>
       </trans-unit>
-      <trans-unit id="cau" resname="cau">
+      <trans-unit id="cau">
         <source>Caucasian languages</source>
       </trans-unit>
-      <trans-unit id="ce" resname="ce">
+      <trans-unit id="ce">
         <source>Chechen</source>
       </trans-unit>
-      <trans-unit id="ceb" resname="ceb">
+      <trans-unit id="ceb">
         <source>Cebuano</source>
       </trans-unit>
-      <trans-unit id="cel" resname="cel">
+      <trans-unit id="cel">
         <source>Celtic languages</source>
       </trans-unit>
-      <trans-unit id="ch" resname="ch">
+      <trans-unit id="ch">
         <source>Chamorro</source>
       </trans-unit>
-      <trans-unit id="chb" resname="chb">
+      <trans-unit id="chb">
         <source>Chibcha</source>
       </trans-unit>
-      <trans-unit id="chg" resname="chg">
+      <trans-unit id="chg">
         <source>Chagatai</source>
       </trans-unit>
-      <trans-unit id="chk" resname="chk">
+      <trans-unit id="chk">
         <source>Chuukese</source>
       </trans-unit>
-      <trans-unit id="chm" resname="chm">
+      <trans-unit id="chm">
         <source>Mari</source>
       </trans-unit>
-      <trans-unit id="chn" resname="chn">
+      <trans-unit id="chn">
         <source>Chinook jargon</source>
       </trans-unit>
-      <trans-unit id="cho" resname="cho">
+      <trans-unit id="cho">
         <source>Choctaw</source>
       </trans-unit>
-      <trans-unit id="chp" resname="chp">
+      <trans-unit id="chp">
         <source>Chipewyan; Dene Suline</source>
       </trans-unit>
-      <trans-unit id="chr" resname="chr">
+      <trans-unit id="chr">
         <source>Cherokee</source>
       </trans-unit>
-      <trans-unit id="chy" resname="chy">
+      <trans-unit id="chy">
         <source>Cheyenne</source>
       </trans-unit>
-      <trans-unit id="cmc" resname="cmc">
+      <trans-unit id="cmc">
         <source>Chamic languages</source>
       </trans-unit>
-      <trans-unit id="cnr" resname="cnr">
+      <trans-unit id="cnr">
         <source>Montenegrin</source>
       </trans-unit>
-      <trans-unit id="co" resname="co">
+      <trans-unit id="co">
         <source>Corsican</source>
       </trans-unit>
-      <trans-unit id="cop" resname="cop">
+      <trans-unit id="cop">
         <source>Coptic</source>
       </trans-unit>
-      <trans-unit id="cpe" resname="cpe">
+      <trans-unit id="cpe">
         <source>Creoles and pidgins, English based</source>
       </trans-unit>
-      <trans-unit id="cpf" resname="cpf">
+      <trans-unit id="cpf">
         <source>Creoles and pidgins, French-based</source>
       </trans-unit>
-      <trans-unit id="cpp" resname="cpp">
+      <trans-unit id="cpp">
         <source>Creoles and pidgins, Portuguese-based</source>
       </trans-unit>
-      <trans-unit id="cr" resname="cr">
+      <trans-unit id="cr">
         <source>Cree</source>
       </trans-unit>
-      <trans-unit id="crh" resname="crh">
+      <trans-unit id="crh">
         <source>Crimean Tatar; Crimean Turkish</source>
       </trans-unit>
-      <trans-unit id="crp" resname="crp">
+      <trans-unit id="crp">
         <source>Creoles and pidgins</source>
       </trans-unit>
-      <trans-unit id="cs" resname="cs">
+      <trans-unit id="cs">
         <source>Czech</source>
       </trans-unit>
-      <trans-unit id="csb" resname="csb">
+      <trans-unit id="csb">
         <source>Kashubian</source>
       </trans-unit>
-      <trans-unit id="cu" resname="cu">
+      <trans-unit id="cu">
         <source>Church Slavic; Old Slavonic; Church Slavonic; Old Bulgarian; Old Church Slavonic</source>
       </trans-unit>
-      <trans-unit id="cus" resname="cus">
+      <trans-unit id="cus">
         <source>Cushitic languages</source>
       </trans-unit>
-      <trans-unit id="cv" resname="cv">
+      <trans-unit id="cv">
         <source>Chuvash</source>
       </trans-unit>
-      <trans-unit id="cy" resname="cy">
+      <trans-unit id="cy">
         <source>Welsh</source>
       </trans-unit>
-      <trans-unit id="da" resname="da">
+      <trans-unit id="da">
         <source>Danish</source>
       </trans-unit>
-      <trans-unit id="dak" resname="dak">
+      <trans-unit id="dak">
         <source>Dakota</source>
       </trans-unit>
-      <trans-unit id="dar" resname="dar">
+      <trans-unit id="dar">
         <source>Dargwa</source>
       </trans-unit>
-      <trans-unit id="day" resname="day">
+      <trans-unit id="day">
         <source>Land Dayak languages</source>
       </trans-unit>
-      <trans-unit id="de" resname="de">
+      <trans-unit id="de">
         <source>German</source>
       </trans-unit>
-      <trans-unit id="del" resname="del">
+      <trans-unit id="del">
         <source>Delaware</source>
       </trans-unit>
-      <trans-unit id="den" resname="den">
+      <trans-unit id="den">
         <source>Slave (Athapascan)</source>
       </trans-unit>
-      <trans-unit id="dgr" resname="dgr">
+      <trans-unit id="dgr">
         <source>Dogrib</source>
       </trans-unit>
-      <trans-unit id="din" resname="din">
+      <trans-unit id="din">
         <source>Dinka</source>
       </trans-unit>
-      <trans-unit id="doi" resname="doi">
+      <trans-unit id="doi">
         <source>Dogri</source>
       </trans-unit>
-      <trans-unit id="dra" resname="dra">
+      <trans-unit id="dra">
         <source>Dravidian languages</source>
       </trans-unit>
-      <trans-unit id="dsb" resname="dsb">
+      <trans-unit id="dsb">
         <source>Lower Sorbian</source>
       </trans-unit>
-      <trans-unit id="dua" resname="dua">
+      <trans-unit id="dua">
         <source>Duala</source>
       </trans-unit>
-      <trans-unit id="dum" resname="dum">
+      <trans-unit id="dum">
         <source>Dutch, Middle (ca. 1050-1350)</source>
       </trans-unit>
-      <trans-unit id="dv" resname="dv">
+      <trans-unit id="dv">
         <source>Divehi; Dhivehi; Maldivian</source>
       </trans-unit>
-      <trans-unit id="dyu" resname="dyu">
+      <trans-unit id="dyu">
         <source>Dyula</source>
       </trans-unit>
-      <trans-unit id="dz" resname="dz">
+      <trans-unit id="dz">
         <source>Dzongkha</source>
       </trans-unit>
-      <trans-unit id="ee" resname="ee">
+      <trans-unit id="ee">
         <source>Ewe</source>
       </trans-unit>
-      <trans-unit id="efi" resname="efi">
+      <trans-unit id="efi">
         <source>Efik</source>
       </trans-unit>
-      <trans-unit id="egy" resname="egy">
+      <trans-unit id="egy">
         <source>Egyptian (Ancient)</source>
       </trans-unit>
-      <trans-unit id="eka" resname="eka">
+      <trans-unit id="eka">
         <source>Ekajuk</source>
       </trans-unit>
-      <trans-unit id="el" resname="el">
+      <trans-unit id="el">
         <source>Greek, Modern (1453-)</source>
       </trans-unit>
-      <trans-unit id="elx" resname="elx">
+      <trans-unit id="elx">
         <source>Elamite</source>
       </trans-unit>
-      <trans-unit id="en" resname="en">
+      <trans-unit id="en">
         <source>English</source>
       </trans-unit>
-      <trans-unit id="enm" resname="enm">
+      <trans-unit id="enm">
         <source>English, Middle (1100-1500)</source>
       </trans-unit>
-      <trans-unit id="eo" resname="eo">
+      <trans-unit id="eo">
         <source>Esperanto</source>
       </trans-unit>
-      <trans-unit id="es" resname="es">
+      <trans-unit id="es">
         <source>Spanish; Castilian</source>
       </trans-unit>
-      <trans-unit id="et" resname="et">
+      <trans-unit id="et">
         <source>Estonian</source>
       </trans-unit>
-      <trans-unit id="eu" resname="eu">
+      <trans-unit id="eu">
         <source>Basque</source>
       </trans-unit>
-      <trans-unit id="ewo" resname="ewo">
+      <trans-unit id="ewo">
         <source>Ewondo</source>
       </trans-unit>
-      <trans-unit id="fa" resname="fa">
+      <trans-unit id="fa">
         <source>Persian</source>
       </trans-unit>
-      <trans-unit id="fan" resname="fan">
+      <trans-unit id="fan">
         <source>Fang</source>
       </trans-unit>
-      <trans-unit id="fat" resname="fat">
+      <trans-unit id="fat">
         <source>Fanti</source>
       </trans-unit>
-      <trans-unit id="ff" resname="ff">
+      <trans-unit id="ff">
         <source>Fulah</source>
       </trans-unit>
-      <trans-unit id="fi" resname="fi">
+      <trans-unit id="fi">
         <source>Finnish</source>
       </trans-unit>
-      <trans-unit id="fil" resname="fil">
+      <trans-unit id="fil">
         <source>Filipino; Pilipino</source>
       </trans-unit>
-      <trans-unit id="fiu" resname="fiu">
+      <trans-unit id="fiu">
         <source>Finno-Ugrian languages</source>
       </trans-unit>
-      <trans-unit id="fj" resname="fj">
+      <trans-unit id="fj">
         <source>Fijian</source>
       </trans-unit>
-      <trans-unit id="fo" resname="fo">
+      <trans-unit id="fo">
         <source>Faroese</source>
       </trans-unit>
-      <trans-unit id="fon" resname="fon">
+      <trans-unit id="fon">
         <source>Fon</source>
       </trans-unit>
-      <trans-unit id="fr" resname="fr">
+      <trans-unit id="fr">
         <source>French</source>
       </trans-unit>
-      <trans-unit id="frm" resname="frm">
+      <trans-unit id="frm">
         <source>French, Middle (ca. 1400-1600)</source>
       </trans-unit>
-      <trans-unit id="fro" resname="fro">
+      <trans-unit id="fro">
         <source>French, Old (842-ca. 1400)</source>
       </trans-unit>
-      <trans-unit id="frr" resname="frr">
+      <trans-unit id="frr">
         <source>Northern Frisian</source>
       </trans-unit>
-      <trans-unit id="frs" resname="frs">
+      <trans-unit id="frs">
         <source>Eastern Frisian</source>
       </trans-unit>
-      <trans-unit id="fur" resname="fur">
+      <trans-unit id="fur">
         <source>Friulian</source>
       </trans-unit>
-      <trans-unit id="fy" resname="fy">
+      <trans-unit id="fy">
         <source>Western Frisian</source>
       </trans-unit>
-      <trans-unit id="ga" resname="ga">
+      <trans-unit id="ga">
         <source>Irish</source>
       </trans-unit>
-      <trans-unit id="gaa" resname="gaa">
+      <trans-unit id="gaa">
         <source>Ga</source>
       </trans-unit>
-      <trans-unit id="gay" resname="gay">
+      <trans-unit id="gay">
         <source>Gayo</source>
       </trans-unit>
-      <trans-unit id="gba" resname="gba">
+      <trans-unit id="gba">
         <source>Gbaya</source>
       </trans-unit>
-      <trans-unit id="gd" resname="gd">
+      <trans-unit id="gd">
         <source>Gaelic; Scottish Gaelic</source>
       </trans-unit>
-      <trans-unit id="gem" resname="gem">
+      <trans-unit id="gem">
         <source>Germanic languages</source>
       </trans-unit>
-      <trans-unit id="gez" resname="gez">
+      <trans-unit id="gez">
         <source>Geez</source>
       </trans-unit>
-      <trans-unit id="gil" resname="gil">
+      <trans-unit id="gil">
         <source>Gilbertese</source>
       </trans-unit>
-      <trans-unit id="gl" resname="gl">
+      <trans-unit id="gl">
         <source>Galician</source>
       </trans-unit>
-      <trans-unit id="gmh" resname="gmh">
+      <trans-unit id="gmh">
         <source>German, Middle High (ca. 1050-1500)</source>
       </trans-unit>
-      <trans-unit id="gn" resname="gn">
+      <trans-unit id="gn">
         <source>Guarani</source>
       </trans-unit>
-      <trans-unit id="goh" resname="goh">
+      <trans-unit id="goh">
         <source>German, Old High (ca. 750-1050)</source>
       </trans-unit>
-      <trans-unit id="gon" resname="gon">
+      <trans-unit id="gon">
         <source>Gondi</source>
       </trans-unit>
-      <trans-unit id="gor" resname="gor">
+      <trans-unit id="gor">
         <source>Gorontalo</source>
       </trans-unit>
-      <trans-unit id="got" resname="got">
+      <trans-unit id="got">
         <source>Gothic</source>
       </trans-unit>
-      <trans-unit id="grb" resname="grb">
+      <trans-unit id="grb">
         <source>Grebo</source>
       </trans-unit>
-      <trans-unit id="grc" resname="grc">
+      <trans-unit id="grc">
         <source>Greek, Ancient (to 1453)</source>
       </trans-unit>
-      <trans-unit id="gsw" resname="gsw">
+      <trans-unit id="gsw">
         <source>Swiss German; Alemannic; Alsatian</source>
       </trans-unit>
-      <trans-unit id="gu" resname="gu">
+      <trans-unit id="gu">
         <source>Gujarati</source>
       </trans-unit>
-      <trans-unit id="gv" resname="gv">
+      <trans-unit id="gv">
         <source>Manx</source>
       </trans-unit>
-      <trans-unit id="gwi" resname="gwi">
+      <trans-unit id="gwi">
         <source>Gwich'in</source>
       </trans-unit>
-      <trans-unit id="ha" resname="ha">
+      <trans-unit id="ha">
         <source>Hausa</source>
       </trans-unit>
-      <trans-unit id="hai" resname="hai">
+      <trans-unit id="hai">
         <source>Haida</source>
       </trans-unit>
-      <trans-unit id="haw" resname="haw">
+      <trans-unit id="haw">
         <source>Hawaiian</source>
       </trans-unit>
-      <trans-unit id="he" resname="he">
+      <trans-unit id="he">
         <source>Hebrew</source>
       </trans-unit>
-      <trans-unit id="hi" resname="hi">
+      <trans-unit id="hi">
         <source>Hindi</source>
       </trans-unit>
-      <trans-unit id="hil" resname="hil">
+      <trans-unit id="hil">
         <source>Hiligaynon</source>
       </trans-unit>
-      <trans-unit id="him" resname="him">
+      <trans-unit id="him">
         <source>Himachali languages; Western Pahari languages</source>
       </trans-unit>
-      <trans-unit id="hit" resname="hit">
+      <trans-unit id="hit">
         <source>Hittite</source>
       </trans-unit>
-      <trans-unit id="hmn" resname="hmn">
+      <trans-unit id="hmn">
         <source>Hmong; Mong</source>
       </trans-unit>
-      <trans-unit id="ho" resname="ho">
+      <trans-unit id="ho">
         <source>Hiri Motu</source>
       </trans-unit>
-      <trans-unit id="hr" resname="hr">
+      <trans-unit id="hr">
         <source>Croatian</source>
       </trans-unit>
-      <trans-unit id="hsb" resname="hsb">
+      <trans-unit id="hsb">
         <source>Upper Sorbian</source>
       </trans-unit>
-      <trans-unit id="ht" resname="ht">
+      <trans-unit id="ht">
         <source>Haitian; Haitian Creole</source>
       </trans-unit>
-      <trans-unit id="hu" resname="hu">
+      <trans-unit id="hu">
         <source>Hungarian</source>
       </trans-unit>
-      <trans-unit id="hup" resname="hup">
+      <trans-unit id="hup">
         <source>Hupa</source>
       </trans-unit>
-      <trans-unit id="hy" resname="hy">
+      <trans-unit id="hy">
         <source>Armenian</source>
       </trans-unit>
-      <trans-unit id="hz" resname="hz">
+      <trans-unit id="hz">
         <source>Herero</source>
       </trans-unit>
-      <trans-unit id="ia" resname="ia">
+      <trans-unit id="ia">
         <source>Interlingua (International Auxiliary Language Association)</source>
       </trans-unit>
-      <trans-unit id="iba" resname="iba">
+      <trans-unit id="iba">
         <source>Iban</source>
       </trans-unit>
-      <trans-unit id="id" resname="id">
+      <trans-unit id="id">
         <source>Indonesian</source>
       </trans-unit>
-      <trans-unit id="ie" resname="ie">
+      <trans-unit id="ie">
         <source>Interlingue; Occidental</source>
       </trans-unit>
-      <trans-unit id="ig" resname="ig">
+      <trans-unit id="ig">
         <source>Igbo</source>
       </trans-unit>
-      <trans-unit id="ii" resname="ii">
+      <trans-unit id="ii">
         <source>Sichuan Yi; Nuosu</source>
       </trans-unit>
-      <trans-unit id="ijo" resname="ijo">
+      <trans-unit id="ijo">
         <source>Ijo languages</source>
       </trans-unit>
-      <trans-unit id="ik" resname="ik">
+      <trans-unit id="ik">
         <source>Inupiaq</source>
       </trans-unit>
-      <trans-unit id="ilo" resname="ilo">
+      <trans-unit id="ilo">
         <source>Iloko</source>
       </trans-unit>
-      <trans-unit id="inc" resname="inc">
+      <trans-unit id="inc">
         <source>Indic languages</source>
       </trans-unit>
-      <trans-unit id="ine" resname="ine">
+      <trans-unit id="ine">
         <source>Indo-European languages</source>
       </trans-unit>
-      <trans-unit id="inh" resname="inh">
+      <trans-unit id="inh">
         <source>Ingush</source>
       </trans-unit>
-      <trans-unit id="io" resname="io">
+      <trans-unit id="io">
         <source>Ido</source>
       </trans-unit>
-      <trans-unit id="ira" resname="ira">
+      <trans-unit id="ira">
         <source>Iranian languages</source>
       </trans-unit>
-      <trans-unit id="iro" resname="iro">
+      <trans-unit id="iro">
         <source>Iroquoian languages</source>
       </trans-unit>
-      <trans-unit id="is" resname="is">
+      <trans-unit id="is">
         <source>Icelandic</source>
       </trans-unit>
-      <trans-unit id="it" resname="it">
+      <trans-unit id="it">
         <source>Italian</source>
       </trans-unit>
-      <trans-unit id="iu" resname="iu">
+      <trans-unit id="iu">
         <source>Inuktitut</source>
       </trans-unit>
-      <trans-unit id="ja" resname="ja">
+      <trans-unit id="ja">
         <source>Japanese</source>
       </trans-unit>
-      <trans-unit id="jbo" resname="jbo">
+      <trans-unit id="jbo">
         <source>Lojban</source>
       </trans-unit>
-      <trans-unit id="jpr" resname="jpr">
+      <trans-unit id="jpr">
         <source>Judeo-Persian</source>
       </trans-unit>
-      <trans-unit id="jrb" resname="jrb">
+      <trans-unit id="jrb">
         <source>Judeo-Arabic</source>
       </trans-unit>
-      <trans-unit id="jv" resname="jv">
+      <trans-unit id="jv">
         <source>Javanese</source>
       </trans-unit>
-      <trans-unit id="ka" resname="ka">
+      <trans-unit id="ka">
         <source>Georgian</source>
       </trans-unit>
-      <trans-unit id="kaa" resname="kaa">
+      <trans-unit id="kaa">
         <source>Kara-Kalpak</source>
       </trans-unit>
-      <trans-unit id="kab" resname="kab">
+      <trans-unit id="kab">
         <source>Kabyle</source>
       </trans-unit>
-      <trans-unit id="kac" resname="kac">
+      <trans-unit id="kac">
         <source>Kachin; Jingpho</source>
       </trans-unit>
-      <trans-unit id="kam" resname="kam">
+      <trans-unit id="kam">
         <source>Kamba</source>
       </trans-unit>
-      <trans-unit id="kar" resname="kar">
+      <trans-unit id="kar">
         <source>Karen languages</source>
       </trans-unit>
-      <trans-unit id="kaw" resname="kaw">
+      <trans-unit id="kaw">
         <source>Kawi</source>
       </trans-unit>
-      <trans-unit id="kbd" resname="kbd">
+      <trans-unit id="kbd">
         <source>Kabardian</source>
       </trans-unit>
-      <trans-unit id="kg" resname="kg">
+      <trans-unit id="kg">
         <source>Kongo</source>
       </trans-unit>
-      <trans-unit id="kha" resname="kha">
+      <trans-unit id="kha">
         <source>Khasi</source>
       </trans-unit>
-      <trans-unit id="khi" resname="khi">
+      <trans-unit id="khi">
         <source>Khoisan languages</source>
       </trans-unit>
-      <trans-unit id="kho" resname="kho">
+      <trans-unit id="kho">
         <source>Khotanese; Sakan</source>
       </trans-unit>
-      <trans-unit id="ki" resname="ki">
+      <trans-unit id="ki">
         <source>Kikuyu; Gikuyu</source>
       </trans-unit>
-      <trans-unit id="kj" resname="kj">
+      <trans-unit id="kj">
         <source>Kuanyama; Kwanyama</source>
       </trans-unit>
-      <trans-unit id="kk" resname="kk">
+      <trans-unit id="kk">
         <source>Kazakh</source>
       </trans-unit>
-      <trans-unit id="kl" resname="kl">
+      <trans-unit id="kl">
         <source>Kalaallisut; Greenlandic</source>
       </trans-unit>
-      <trans-unit id="km" resname="km">
+      <trans-unit id="km">
         <source>Central Khmer</source>
       </trans-unit>
-      <trans-unit id="kmb" resname="kmb">
+      <trans-unit id="kmb">
         <source>Kimbundu</source>
       </trans-unit>
-      <trans-unit id="kn" resname="kn">
+      <trans-unit id="kn">
         <source>Kannada</source>
       </trans-unit>
-      <trans-unit id="ko" resname="ko">
+      <trans-unit id="ko">
         <source>Korean</source>
       </trans-unit>
-      <trans-unit id="kok" resname="kok">
+      <trans-unit id="kok">
         <source>Konkani</source>
       </trans-unit>
-      <trans-unit id="kos" resname="kos">
+      <trans-unit id="kos">
         <source>Kosraean</source>
       </trans-unit>
-      <trans-unit id="kpe" resname="kpe">
+      <trans-unit id="kpe">
         <source>Kpelle</source>
       </trans-unit>
-      <trans-unit id="kr" resname="kr">
+      <trans-unit id="kr">
         <source>Kanuri</source>
       </trans-unit>
-      <trans-unit id="krc" resname="krc">
+      <trans-unit id="krc">
         <source>Karachay-Balkar</source>
       </trans-unit>
-      <trans-unit id="krl" resname="krl">
+      <trans-unit id="krl">
         <source>Karelian</source>
       </trans-unit>
-      <trans-unit id="kro" resname="kro">
+      <trans-unit id="kro">
         <source>Kru languages</source>
       </trans-unit>
-      <trans-unit id="kru" resname="kru">
+      <trans-unit id="kru">
         <source>Kurukh</source>
       </trans-unit>
-      <trans-unit id="ks" resname="ks">
+      <trans-unit id="ks">
         <source>Kashmiri</source>
       </trans-unit>
-      <trans-unit id="ku" resname="ku">
+      <trans-unit id="ku">
         <source>Kurdish</source>
       </trans-unit>
-      <trans-unit id="kum" resname="kum">
+      <trans-unit id="kum">
         <source>Kumyk</source>
       </trans-unit>
-      <trans-unit id="kut" resname="kut">
+      <trans-unit id="kut">
         <source>Kutenai</source>
       </trans-unit>
-      <trans-unit id="kv" resname="kv">
+      <trans-unit id="kv">
         <source>Komi</source>
       </trans-unit>
-      <trans-unit id="kw" resname="kw">
+      <trans-unit id="kw">
         <source>Cornish</source>
       </trans-unit>
-      <trans-unit id="ky" resname="ky">
+      <trans-unit id="ky">
         <source>Kirghiz; Kyrgyz</source>
       </trans-unit>
-      <trans-unit id="la" resname="la">
+      <trans-unit id="la">
         <source>Latin</source>
       </trans-unit>
-      <trans-unit id="lad" resname="lad">
+      <trans-unit id="lad">
         <source>Ladino</source>
       </trans-unit>
-      <trans-unit id="lah" resname="lah">
+      <trans-unit id="lah">
         <source>Lahnda</source>
       </trans-unit>
-      <trans-unit id="lam" resname="lam">
+      <trans-unit id="lam">
         <source>Lamba</source>
       </trans-unit>
-      <trans-unit id="lb" resname="lb">
+      <trans-unit id="lb">
         <source>Luxembourgish; Letzeburgesch</source>
       </trans-unit>
-      <trans-unit id="lez" resname="lez">
+      <trans-unit id="lez">
         <source>Lezghian</source>
       </trans-unit>
-      <trans-unit id="lg" resname="lg">
+      <trans-unit id="lg">
         <source>Ganda</source>
       </trans-unit>
-      <trans-unit id="li" resname="li">
+      <trans-unit id="li">
         <source>Limburgan; Limburger; Limburgish</source>
       </trans-unit>
-      <trans-unit id="ln" resname="ln">
+      <trans-unit id="ln">
         <source>Lingala</source>
       </trans-unit>
-      <trans-unit id="lo" resname="lo">
+      <trans-unit id="lo">
         <source>Lao</source>
       </trans-unit>
-      <trans-unit id="lol" resname="lol">
+      <trans-unit id="lol">
         <source>Mongo</source>
       </trans-unit>
-      <trans-unit id="loz" resname="loz">
+      <trans-unit id="loz">
         <source>Lozi</source>
       </trans-unit>
-      <trans-unit id="lt" resname="lt">
+      <trans-unit id="lt">
         <source>Lithuanian</source>
       </trans-unit>
-      <trans-unit id="lu" resname="lu">
+      <trans-unit id="lu">
         <source>Luba-Katanga</source>
       </trans-unit>
-      <trans-unit id="lua" resname="lua">
+      <trans-unit id="lua">
         <source>Luba-Lulua</source>
       </trans-unit>
-      <trans-unit id="lui" resname="lui">
+      <trans-unit id="lui">
         <source>Luiseno</source>
       </trans-unit>
-      <trans-unit id="lun" resname="lun">
+      <trans-unit id="lun">
         <source>Lunda</source>
       </trans-unit>
-      <trans-unit id="luo" resname="luo">
+      <trans-unit id="luo">
         <source>Luo (Kenya and Tanzania)</source>
       </trans-unit>
-      <trans-unit id="lus" resname="lus">
+      <trans-unit id="lus">
         <source>Lushai</source>
       </trans-unit>
-      <trans-unit id="lv" resname="lv">
+      <trans-unit id="lv">
         <source>Latvian</source>
       </trans-unit>
-      <trans-unit id="mad" resname="mad">
+      <trans-unit id="mad">
         <source>Madurese</source>
       </trans-unit>
-      <trans-unit id="mag" resname="mag">
+      <trans-unit id="mag">
         <source>Magahi</source>
       </trans-unit>
-      <trans-unit id="mai" resname="mai">
+      <trans-unit id="mai">
         <source>Maithili</source>
       </trans-unit>
-      <trans-unit id="mak" resname="mak">
+      <trans-unit id="mak">
         <source>Makasar</source>
       </trans-unit>
-      <trans-unit id="man" resname="man">
+      <trans-unit id="man">
         <source>Mandingo</source>
       </trans-unit>
-      <trans-unit id="map" resname="map">
+      <trans-unit id="map">
         <source>Austronesian languages</source>
       </trans-unit>
-      <trans-unit id="mas" resname="mas">
+      <trans-unit id="mas">
         <source>Masai</source>
       </trans-unit>
-      <trans-unit id="mdf" resname="mdf">
+      <trans-unit id="mdf">
         <source>Moksha</source>
       </trans-unit>
-      <trans-unit id="mdr" resname="mdr">
+      <trans-unit id="mdr">
         <source>Mandar</source>
       </trans-unit>
-      <trans-unit id="men" resname="men">
+      <trans-unit id="men">
         <source>Mende</source>
       </trans-unit>
-      <trans-unit id="mg" resname="mg">
+      <trans-unit id="mg">
         <source>Malagasy</source>
       </trans-unit>
-      <trans-unit id="mga" resname="mga">
+      <trans-unit id="mga">
         <source>Irish, Middle (900-1200)</source>
       </trans-unit>
-      <trans-unit id="mh" resname="mh">
+      <trans-unit id="mh">
         <source>Marshallese</source>
       </trans-unit>
-      <trans-unit id="mi" resname="mi">
+      <trans-unit id="mi">
         <source>Maori</source>
       </trans-unit>
-      <trans-unit id="mic" resname="mic">
+      <trans-unit id="mic">
         <source>Mi'kmaq; Micmac</source>
       </trans-unit>
-      <trans-unit id="min" resname="min">
+      <trans-unit id="min">
         <source>Minangkabau</source>
       </trans-unit>
-      <trans-unit id="mis" resname="mis">
+      <trans-unit id="mis">
         <source>Uncoded languages</source>
       </trans-unit>
-      <trans-unit id="mk" resname="mk">
+      <trans-unit id="mk">
         <source>Macedonian</source>
       </trans-unit>
-      <trans-unit id="mkh" resname="mkh">
+      <trans-unit id="mkh">
         <source>Mon-Khmer languages</source>
       </trans-unit>
-      <trans-unit id="ml" resname="ml">
+      <trans-unit id="ml">
         <source>Malayalam</source>
       </trans-unit>
-      <trans-unit id="mn" resname="mn">
+      <trans-unit id="mn">
         <source>Mongolian</source>
       </trans-unit>
-      <trans-unit id="mnc" resname="mnc">
+      <trans-unit id="mnc">
         <source>Manchu</source>
       </trans-unit>
-      <trans-unit id="mni" resname="mni">
+      <trans-unit id="mni">
         <source>Manipuri</source>
       </trans-unit>
-      <trans-unit id="mno" resname="mno">
+      <trans-unit id="mno">
         <source>Manobo languages</source>
       </trans-unit>
-      <trans-unit id="moh" resname="moh">
+      <trans-unit id="moh">
         <source>Mohawk</source>
       </trans-unit>
-      <trans-unit id="mos" resname="mos">
+      <trans-unit id="mos">
         <source>Mossi</source>
       </trans-unit>
-      <trans-unit id="mr" resname="mr">
+      <trans-unit id="mr">
         <source>Marathi</source>
       </trans-unit>
-      <trans-unit id="ms" resname="ms">
+      <trans-unit id="ms">
         <source>Malay</source>
       </trans-unit>
-      <trans-unit id="mt" resname="mt">
+      <trans-unit id="mt">
         <source>Maltese</source>
       </trans-unit>
-      <trans-unit id="mul" resname="mul">
+      <trans-unit id="mul">
         <source>Multiple languages</source>
       </trans-unit>
-      <trans-unit id="mun" resname="mun">
+      <trans-unit id="mun">
         <source>Munda languages</source>
       </trans-unit>
-      <trans-unit id="mus" resname="mus">
+      <trans-unit id="mus">
         <source>Creek</source>
       </trans-unit>
-      <trans-unit id="mwl" resname="mwl">
+      <trans-unit id="mwl">
         <source>Mirandese</source>
       </trans-unit>
-      <trans-unit id="mwr" resname="mwr">
+      <trans-unit id="mwr">
         <source>Marwari</source>
       </trans-unit>
-      <trans-unit id="my" resname="my">
+      <trans-unit id="my">
         <source>Burmese</source>
       </trans-unit>
-      <trans-unit id="myn" resname="myn">
+      <trans-unit id="myn">
         <source>Mayan languages</source>
       </trans-unit>
-      <trans-unit id="myv" resname="myv">
+      <trans-unit id="myv">
         <source>Erzya</source>
       </trans-unit>
-      <trans-unit id="na" resname="na">
+      <trans-unit id="na">
         <source>Nauru</source>
       </trans-unit>
-      <trans-unit id="nah" resname="nah">
+      <trans-unit id="nah">
         <source>Nahuatl languages</source>
       </trans-unit>
-      <trans-unit id="nai" resname="nai">
+      <trans-unit id="nai">
         <source>North American Indian languages</source>
       </trans-unit>
-      <trans-unit id="nap" resname="nap">
+      <trans-unit id="nap">
         <source>Neapolitan</source>
       </trans-unit>
-      <trans-unit id="nb" resname="nb">
+      <trans-unit id="nb">
         <source>Bokmål, Norwegian; Norwegian Bokmål</source>
       </trans-unit>
-      <trans-unit id="nd" resname="nd">
+      <trans-unit id="nd">
         <source>Ndebele, North; North Ndebele</source>
       </trans-unit>
-      <trans-unit id="nds" resname="nds">
+      <trans-unit id="nds">
         <source>Low German; Low Saxon; German, Low; Saxon, Low</source>
       </trans-unit>
-      <trans-unit id="ne" resname="ne">
+      <trans-unit id="ne">
         <source>Nepali</source>
       </trans-unit>
-      <trans-unit id="new" resname="new">
+      <trans-unit id="new">
         <source>Nepal Bhasa; Newari</source>
       </trans-unit>
-      <trans-unit id="ng" resname="ng">
+      <trans-unit id="ng">
         <source>Ndonga</source>
       </trans-unit>
-      <trans-unit id="nia" resname="nia">
+      <trans-unit id="nia">
         <source>Nias</source>
       </trans-unit>
-      <trans-unit id="nic" resname="nic">
+      <trans-unit id="nic">
         <source>Niger-Kordofanian languages</source>
       </trans-unit>
-      <trans-unit id="niu" resname="niu">
+      <trans-unit id="niu">
         <source>Niuean</source>
       </trans-unit>
-      <trans-unit id="nl" resname="nl">
+      <trans-unit id="nl">
         <source>Dutch; Flemish</source>
       </trans-unit>
-      <trans-unit id="nn" resname="nn">
+      <trans-unit id="nn">
         <source>Norwegian Nynorsk; Nynorsk, Norwegian</source>
       </trans-unit>
-      <trans-unit id="no" resname="no">
+      <trans-unit id="no">
         <source>Norwegian</source>
       </trans-unit>
-      <trans-unit id="nog" resname="nog">
+      <trans-unit id="nog">
         <source>Nogai</source>
       </trans-unit>
-      <trans-unit id="non" resname="non">
+      <trans-unit id="non">
         <source>Norse, Old</source>
       </trans-unit>
-      <trans-unit id="nqo" resname="nqo">
+      <trans-unit id="nqo">
         <source>N'Ko</source>
       </trans-unit>
-      <trans-unit id="nr" resname="nr">
+      <trans-unit id="nr">
         <source>Ndebele, South; South Ndebele</source>
       </trans-unit>
-      <trans-unit id="nso" resname="nso">
+      <trans-unit id="nso">
         <source>Pedi; Sepedi; Northern Sotho</source>
       </trans-unit>
-      <trans-unit id="nub" resname="nub">
+      <trans-unit id="nub">
         <source>Nubian languages</source>
       </trans-unit>
-      <trans-unit id="nv" resname="nv">
+      <trans-unit id="nv">
         <source>Navajo; Navaho</source>
       </trans-unit>
-      <trans-unit id="nwc" resname="nwc">
+      <trans-unit id="nwc">
         <source>Classical Newari; Old Newari; Classical Nepal Bhasa</source>
       </trans-unit>
-      <trans-unit id="ny" resname="ny">
+      <trans-unit id="ny">
         <source>Chichewa; Chewa; Nyanja</source>
       </trans-unit>
-      <trans-unit id="nym" resname="nym">
+      <trans-unit id="nym">
         <source>Nyamwezi</source>
       </trans-unit>
-      <trans-unit id="nyn" resname="nyn">
+      <trans-unit id="nyn">
         <source>Nyankole</source>
       </trans-unit>
-      <trans-unit id="nyo" resname="nyo">
+      <trans-unit id="nyo">
         <source>Nyoro</source>
       </trans-unit>
-      <trans-unit id="nzi" resname="nzi">
+      <trans-unit id="nzi">
         <source>Nzima</source>
       </trans-unit>
-      <trans-unit id="oc" resname="oc">
+      <trans-unit id="oc">
         <source>Occitan (post 1500); Provençal</source>
       </trans-unit>
-      <trans-unit id="oj" resname="oj">
+      <trans-unit id="oj">
         <source>Ojibwa</source>
       </trans-unit>
-      <trans-unit id="om" resname="om">
+      <trans-unit id="om">
         <source>Oromo</source>
       </trans-unit>
-      <trans-unit id="or" resname="or">
+      <trans-unit id="or">
         <source>Oriya</source>
       </trans-unit>
-      <trans-unit id="os" resname="os">
+      <trans-unit id="os">
         <source>Ossetian; Ossetic</source>
       </trans-unit>
-      <trans-unit id="osa" resname="osa">
+      <trans-unit id="osa">
         <source>Osage</source>
       </trans-unit>
-      <trans-unit id="ota" resname="ota">
+      <trans-unit id="ota">
         <source>Turkish, Ottoman (1500-1928)</source>
       </trans-unit>
-      <trans-unit id="oto" resname="oto">
+      <trans-unit id="oto">
         <source>Otomian languages</source>
       </trans-unit>
-      <trans-unit id="pa" resname="pa">
+      <trans-unit id="pa">
         <source>Panjabi; Punjabi</source>
       </trans-unit>
-      <trans-unit id="paa" resname="paa">
+      <trans-unit id="paa">
         <source>Papuan languages</source>
       </trans-unit>
-      <trans-unit id="pag" resname="pag">
+      <trans-unit id="pag">
         <source>Pangasinan</source>
       </trans-unit>
-      <trans-unit id="pal" resname="pal">
+      <trans-unit id="pal">
         <source>Pahlavi</source>
       </trans-unit>
-      <trans-unit id="pam" resname="pam">
+      <trans-unit id="pam">
         <source>Pampanga; Kapampangan</source>
       </trans-unit>
-      <trans-unit id="pap" resname="pap">
+      <trans-unit id="pap">
         <source>Papiamento</source>
       </trans-unit>
-      <trans-unit id="pau" resname="pau">
+      <trans-unit id="pau">
         <source>Palauan</source>
       </trans-unit>
-      <trans-unit id="peo" resname="peo">
+      <trans-unit id="peo">
         <source>Persian, Old (ca. 600-400 B.C.)</source>
       </trans-unit>
-      <trans-unit id="phi" resname="phi">
+      <trans-unit id="phi">
         <source>Philippine languages</source>
       </trans-unit>
-      <trans-unit id="phn" resname="phn">
+      <trans-unit id="phn">
         <source>Phoenician</source>
       </trans-unit>
-      <trans-unit id="pi" resname="pi">
+      <trans-unit id="pi">
         <source>Pali</source>
       </trans-unit>
-      <trans-unit id="pl" resname="pl">
+      <trans-unit id="pl">
         <source>Polish</source>
       </trans-unit>
-      <trans-unit id="pon" resname="pon">
+      <trans-unit id="pon">
         <source>Pohnpeian</source>
       </trans-unit>
-      <trans-unit id="pra" resname="pra">
+      <trans-unit id="pra">
         <source>Prakrit languages</source>
       </trans-unit>
-      <trans-unit id="pro" resname="pro">
+      <trans-unit id="pro">
         <source>Provençal, Old (to 1500)</source>
       </trans-unit>
-      <trans-unit id="ps" resname="ps">
+      <trans-unit id="ps">
         <source>Pushto; Pashto</source>
       </trans-unit>
-      <trans-unit id="pt" resname="pt">
+      <trans-unit id="pt">
         <source>Portuguese</source>
       </trans-unit>
-      <trans-unit id="qaa-qtz" resname="qaa-qtz">
+      <trans-unit id="qaa-qtz">
         <source>Reserved for local use</source>
       </trans-unit>
-      <trans-unit id="qu" resname="qu">
+      <trans-unit id="qu">
         <source>Quechua</source>
       </trans-unit>
-      <trans-unit id="raj" resname="raj">
+      <trans-unit id="raj">
         <source>Rajasthani</source>
       </trans-unit>
-      <trans-unit id="rap" resname="rap">
+      <trans-unit id="rap">
         <source>Rapanui</source>
       </trans-unit>
-      <trans-unit id="rar" resname="rar">
+      <trans-unit id="rar">
         <source>Rarotongan; Cook Islands Maori</source>
       </trans-unit>
-      <trans-unit id="rm" resname="rm">
+      <trans-unit id="rm">
         <source>Romansh</source>
       </trans-unit>
-      <trans-unit id="rn" resname="rn">
+      <trans-unit id="rn">
         <source>Rundi</source>
       </trans-unit>
-      <trans-unit id="ro" resname="ro">
+      <trans-unit id="ro">
         <source>Romanian; Moldavian; Moldovan</source>
       </trans-unit>
-      <trans-unit id="roa" resname="roa">
+      <trans-unit id="roa">
         <source>Romance languages</source>
       </trans-unit>
-      <trans-unit id="rom" resname="rom">
+      <trans-unit id="rom">
         <source>Romany</source>
       </trans-unit>
-      <trans-unit id="ru" resname="ru">
+      <trans-unit id="ru">
         <source>Russian</source>
       </trans-unit>
-      <trans-unit id="rup" resname="rup">
+      <trans-unit id="rup">
         <source>Aromanian; Arumanian; Macedo-Romanian</source>
       </trans-unit>
-      <trans-unit id="rw" resname="rw">
+      <trans-unit id="rw">
         <source>Kinyarwanda</source>
       </trans-unit>
-      <trans-unit id="sa" resname="sa">
+      <trans-unit id="sa">
         <source>Sanskrit</source>
       </trans-unit>
-      <trans-unit id="sad" resname="sad">
+      <trans-unit id="sad">
         <source>Sandawe</source>
       </trans-unit>
-      <trans-unit id="sah" resname="sah">
+      <trans-unit id="sah">
         <source>Yakut</source>
       </trans-unit>
-      <trans-unit id="sai" resname="sai">
+      <trans-unit id="sai">
         <source>South American Indian (Other)</source>
       </trans-unit>
-      <trans-unit id="sal" resname="sal">
+      <trans-unit id="sal">
         <source>Salishan languages</source>
       </trans-unit>
-      <trans-unit id="sam" resname="sam">
+      <trans-unit id="sam">
         <source>Samaritan Aramaic</source>
       </trans-unit>
-      <trans-unit id="sas" resname="sas">
+      <trans-unit id="sas">
         <source>Sasak</source>
       </trans-unit>
-      <trans-unit id="sat" resname="sat">
+      <trans-unit id="sat">
         <source>Santali</source>
       </trans-unit>
-      <trans-unit id="sc" resname="sc">
+      <trans-unit id="sc">
         <source>Sardinian</source>
       </trans-unit>
-      <trans-unit id="scn" resname="scn">
+      <trans-unit id="scn">
         <source>Sicilian</source>
       </trans-unit>
-      <trans-unit id="sco" resname="sco">
+      <trans-unit id="sco">
         <source>Scots</source>
       </trans-unit>
-      <trans-unit id="sd" resname="sd">
+      <trans-unit id="sd">
         <source>Sindhi</source>
       </trans-unit>
-      <trans-unit id="se" resname="se">
+      <trans-unit id="se">
         <source>Northern Sami</source>
       </trans-unit>
-      <trans-unit id="sel" resname="sel">
+      <trans-unit id="sel">
         <source>Selkup</source>
       </trans-unit>
-      <trans-unit id="sem" resname="sem">
+      <trans-unit id="sem">
         <source>Semitic languages</source>
       </trans-unit>
-      <trans-unit id="sg" resname="sg">
+      <trans-unit id="sg">
         <source>Sango</source>
       </trans-unit>
-      <trans-unit id="sga" resname="sga">
+      <trans-unit id="sga">
         <source>Irish, Old (to 900)</source>
       </trans-unit>
-      <trans-unit id="sgn" resname="sgn">
+      <trans-unit id="sgn">
         <source>Sign Languages</source>
       </trans-unit>
-      <trans-unit id="shn" resname="shn">
+      <trans-unit id="shn">
         <source>Shan</source>
       </trans-unit>
-      <trans-unit id="si" resname="si">
+      <trans-unit id="si">
         <source>Sinhala; Sinhalese</source>
       </trans-unit>
-      <trans-unit id="sid" resname="sid">
+      <trans-unit id="sid">
         <source>Sidamo</source>
       </trans-unit>
-      <trans-unit id="sio" resname="sio">
+      <trans-unit id="sio">
         <source>Siouan languages</source>
       </trans-unit>
-      <trans-unit id="sit" resname="sit">
+      <trans-unit id="sit">
         <source>Sino-Tibetan languages</source>
       </trans-unit>
-      <trans-unit id="sk" resname="sk">
+      <trans-unit id="sk">
         <source>Slovak</source>
       </trans-unit>
-      <trans-unit id="sl" resname="sl">
+      <trans-unit id="sl">
         <source>Slovenian</source>
       </trans-unit>
-      <trans-unit id="sla" resname="sla">
+      <trans-unit id="sla">
         <source>Slavic languages</source>
       </trans-unit>
-      <trans-unit id="sm" resname="sm">
+      <trans-unit id="sm">
         <source>Samoan</source>
       </trans-unit>
-      <trans-unit id="sma" resname="sma">
+      <trans-unit id="sma">
         <source>Southern Sami</source>
       </trans-unit>
-      <trans-unit id="smi" resname="smi">
+      <trans-unit id="smi">
         <source>Sami languages</source>
       </trans-unit>
-      <trans-unit id="smj" resname="smj">
+      <trans-unit id="smj">
         <source>Lule Sami</source>
       </trans-unit>
-      <trans-unit id="smn" resname="smn">
+      <trans-unit id="smn">
         <source>Inari Sami</source>
       </trans-unit>
-      <trans-unit id="sms" resname="sms">
+      <trans-unit id="sms">
         <source>Skolt Sami</source>
       </trans-unit>
-      <trans-unit id="sn" resname="sn">
+      <trans-unit id="sn">
         <source>Shona</source>
       </trans-unit>
-      <trans-unit id="snk" resname="snk">
+      <trans-unit id="snk">
         <source>Soninke</source>
       </trans-unit>
-      <trans-unit id="so" resname="so">
+      <trans-unit id="so">
         <source>Somali</source>
       </trans-unit>
-      <trans-unit id="sog" resname="sog">
+      <trans-unit id="sog">
         <source>Sogdian</source>
       </trans-unit>
-      <trans-unit id="son" resname="son">
+      <trans-unit id="son">
         <source>Songhai languages</source>
       </trans-unit>
-      <trans-unit id="sq" resname="sq">
+      <trans-unit id="sq">
         <source>Albanian</source>
       </trans-unit>
-      <trans-unit id="sr" resname="sr">
+      <trans-unit id="sr">
         <source>Serbian</source>
       </trans-unit>
-      <trans-unit id="srn" resname="srn">
+      <trans-unit id="srn">
         <source>Sranan Tongo</source>
       </trans-unit>
-      <trans-unit id="srr" resname="srr">
+      <trans-unit id="srr">
         <source>Serer</source>
       </trans-unit>
-      <trans-unit id="ss" resname="ss">
+      <trans-unit id="ss">
         <source>Swati</source>
       </trans-unit>
-      <trans-unit id="ssa" resname="ssa">
+      <trans-unit id="ssa">
         <source>Nilo-Saharan languages</source>
       </trans-unit>
-      <trans-unit id="st" resname="st">
+      <trans-unit id="st">
         <source>Sotho, Southern</source>
       </trans-unit>
-      <trans-unit id="su" resname="su">
+      <trans-unit id="su">
         <source>Sundanese</source>
       </trans-unit>
-      <trans-unit id="suk" resname="suk">
+      <trans-unit id="suk">
         <source>Sukuma</source>
       </trans-unit>
-      <trans-unit id="sus" resname="sus">
+      <trans-unit id="sus">
         <source>Susu</source>
       </trans-unit>
-      <trans-unit id="sux" resname="sux">
+      <trans-unit id="sux">
         <source>Sumerian</source>
       </trans-unit>
-      <trans-unit id="sv" resname="sv">
+      <trans-unit id="sv">
         <source>Swedish</source>
       </trans-unit>
-      <trans-unit id="sw" resname="sw">
+      <trans-unit id="sw">
         <source>Swahili</source>
       </trans-unit>
-      <trans-unit id="syc" resname="syc">
+      <trans-unit id="syc">
         <source>Classical Syriac</source>
       </trans-unit>
-      <trans-unit id="syr" resname="syr">
+      <trans-unit id="syr">
         <source>Syriac</source>
       </trans-unit>
-      <trans-unit id="ta" resname="ta">
+      <trans-unit id="ta">
         <source>Tamil</source>
       </trans-unit>
-      <trans-unit id="tai" resname="tai">
+      <trans-unit id="tai">
         <source>Tai languages</source>
       </trans-unit>
-      <trans-unit id="te" resname="te">
+      <trans-unit id="te">
         <source>Telugu</source>
       </trans-unit>
-      <trans-unit id="tem" resname="tem">
+      <trans-unit id="tem">
         <source>Timne</source>
       </trans-unit>
-      <trans-unit id="ter" resname="ter">
+      <trans-unit id="ter">
         <source>Tereno</source>
       </trans-unit>
-      <trans-unit id="tet" resname="tet">
+      <trans-unit id="tet">
         <source>Tetum</source>
       </trans-unit>
-      <trans-unit id="tg" resname="tg">
+      <trans-unit id="tg">
         <source>Tajik</source>
       </trans-unit>
-      <trans-unit id="th" resname="th">
+      <trans-unit id="th">
         <source>Thai</source>
       </trans-unit>
-      <trans-unit id="ti" resname="ti">
+      <trans-unit id="ti">
         <source>Tigrinya</source>
       </trans-unit>
-      <trans-unit id="tig" resname="tig">
+      <trans-unit id="tig">
         <source>Tigre</source>
       </trans-unit>
-      <trans-unit id="tiv" resname="tiv">
+      <trans-unit id="tiv">
         <source>Tiv</source>
       </trans-unit>
-      <trans-unit id="tk" resname="tk">
+      <trans-unit id="tk">
         <source>Turkmen</source>
       </trans-unit>
-      <trans-unit id="tkl" resname="tkl">
+      <trans-unit id="tkl">
         <source>Tokelau</source>
       </trans-unit>
-      <trans-unit id="tl" resname="tl">
+      <trans-unit id="tl">
         <source>Tagalog</source>
       </trans-unit>
-      <trans-unit id="tlh" resname="tlh">
+      <trans-unit id="tlh">
         <source>Klingon; tlhIngan-Hol</source>
       </trans-unit>
-      <trans-unit id="tli" resname="tli">
+      <trans-unit id="tli">
         <source>Tlingit</source>
       </trans-unit>
-      <trans-unit id="tmh" resname="tmh">
+      <trans-unit id="tmh">
         <source>Tamashek</source>
       </trans-unit>
-      <trans-unit id="tn" resname="tn">
+      <trans-unit id="tn">
         <source>Tswana</source>
       </trans-unit>
-      <trans-unit id="to" resname="to">
+      <trans-unit id="to">
         <source>Tonga (Tonga Islands)</source>
       </trans-unit>
-      <trans-unit id="tog" resname="tog">
+      <trans-unit id="tog">
         <source>Tonga (Nyasa)</source>
       </trans-unit>
-      <trans-unit id="tpi" resname="tpi">
+      <trans-unit id="tpi">
         <source>Tok Pisin</source>
       </trans-unit>
-      <trans-unit id="tr" resname="tr">
+      <trans-unit id="tr">
         <source>Turkish</source>
       </trans-unit>
-      <trans-unit id="ts" resname="ts">
+      <trans-unit id="ts">
         <source>Tsonga</source>
       </trans-unit>
-      <trans-unit id="tsi" resname="tsi">
+      <trans-unit id="tsi">
         <source>Tsimshian</source>
       </trans-unit>
-      <trans-unit id="tt" resname="tt">
+      <trans-unit id="tt">
         <source>Tatar</source>
       </trans-unit>
-      <trans-unit id="tum" resname="tum">
+      <trans-unit id="tum">
         <source>Tumbuka</source>
       </trans-unit>
-      <trans-unit id="tup" resname="tup">
+      <trans-unit id="tup">
         <source>Tupi languages</source>
       </trans-unit>
-      <trans-unit id="tut" resname="tut">
+      <trans-unit id="tut">
         <source>Altaic languages</source>
       </trans-unit>
-      <trans-unit id="tvl" resname="tvl">
+      <trans-unit id="tvl">
         <source>Tuvalu</source>
       </trans-unit>
-      <trans-unit id="tw" resname="tw">
+      <trans-unit id="tw">
         <source>Twi</source>
       </trans-unit>
-      <trans-unit id="ty" resname="ty">
+      <trans-unit id="ty">
         <source>Tahitian</source>
       </trans-unit>
-      <trans-unit id="tyv" resname="tyv">
+      <trans-unit id="tyv">
         <source>Tuvinian</source>
       </trans-unit>
-      <trans-unit id="udm" resname="udm">
+      <trans-unit id="udm">
         <source>Udmurt</source>
       </trans-unit>
-      <trans-unit id="ug" resname="ug">
+      <trans-unit id="ug">
         <source>Uighur; Uyghur</source>
       </trans-unit>
-      <trans-unit id="uga" resname="uga">
+      <trans-unit id="uga">
         <source>Ugaritic</source>
       </trans-unit>
-      <trans-unit id="uk" resname="uk">
+      <trans-unit id="uk">
         <source>Ukrainian</source>
       </trans-unit>
-      <trans-unit id="umb" resname="umb">
+      <trans-unit id="umb">
         <source>Umbundu</source>
       </trans-unit>
-      <trans-unit id="und" resname="und">
+      <trans-unit id="und">
         <source>Undetermined</source>
       </trans-unit>
-      <trans-unit id="ur" resname="ur">
+      <trans-unit id="ur">
         <source>Urdu</source>
       </trans-unit>
-      <trans-unit id="uz" resname="uz">
+      <trans-unit id="uz">
         <source>Uzbek</source>
       </trans-unit>
-      <trans-unit id="vai" resname="vai">
+      <trans-unit id="vai">
         <source>Vai</source>
       </trans-unit>
-      <trans-unit id="ve" resname="ve">
+      <trans-unit id="ve">
         <source>Venda</source>
       </trans-unit>
-      <trans-unit id="vi" resname="vi">
+      <trans-unit id="vi">
         <source>Vietnamese</source>
       </trans-unit>
-      <trans-unit id="vo" resname="vo">
+      <trans-unit id="vo">
         <source>Volapük</source>
       </trans-unit>
-      <trans-unit id="vot" resname="vot">
+      <trans-unit id="vot">
         <source>Votic</source>
       </trans-unit>
-      <trans-unit id="wa" resname="wa">
+      <trans-unit id="wa">
         <source>Walloon</source>
       </trans-unit>
-      <trans-unit id="wak" resname="wak">
+      <trans-unit id="wak">
         <source>Wakashan languages</source>
       </trans-unit>
-      <trans-unit id="wal" resname="wal">
+      <trans-unit id="wal">
         <source>Walamo</source>
       </trans-unit>
-      <trans-unit id="war" resname="war">
+      <trans-unit id="war">
         <source>Waray</source>
       </trans-unit>
-      <trans-unit id="was" resname="was">
+      <trans-unit id="was">
         <source>Washo</source>
       </trans-unit>
-      <trans-unit id="wen" resname="wen">
+      <trans-unit id="wen">
         <source>Sorbian languages</source>
       </trans-unit>
-      <trans-unit id="wo" resname="wo">
+      <trans-unit id="wo">
         <source>Wolof</source>
       </trans-unit>
-      <trans-unit id="xal" resname="xal">
+      <trans-unit id="xal">
         <source>Kalmyk; Oirat</source>
       </trans-unit>
-      <trans-unit id="xh" resname="xh">
+      <trans-unit id="xh">
         <source>Xhosa</source>
       </trans-unit>
-      <trans-unit id="yao" resname="yao">
+      <trans-unit id="yao">
         <source>Yao</source>
       </trans-unit>
-      <trans-unit id="yap" resname="yap">
+      <trans-unit id="yap">
         <source>Yapese</source>
       </trans-unit>
-      <trans-unit id="yi" resname="yi">
+      <trans-unit id="yi">
         <source>Yiddish</source>
       </trans-unit>
-      <trans-unit id="yo" resname="yo">
+      <trans-unit id="yo">
         <source>Yoruba</source>
       </trans-unit>
-      <trans-unit id="ypk" resname="ypk">
+      <trans-unit id="ypk">
         <source>Yupik languages</source>
       </trans-unit>
-      <trans-unit id="za" resname="za">
+      <trans-unit id="za">
         <source>Zhuang; Chuang</source>
       </trans-unit>
-      <trans-unit id="zap" resname="zap">
+      <trans-unit id="zap">
         <source>Zapotec</source>
       </trans-unit>
-      <trans-unit id="zbl" resname="zbl">
+      <trans-unit id="zbl">
         <source>Blissymbols; Blissymbolics; Bliss</source>
       </trans-unit>
-      <trans-unit id="zen" resname="zen">
+      <trans-unit id="zen">
         <source>Zenaga</source>
       </trans-unit>
-      <trans-unit id="zgh" resname="zgh">
+      <trans-unit id="zgh">
         <source>Standard Moroccan Tamazight</source>
       </trans-unit>
-      <trans-unit id="zh" resname="zh">
+      <trans-unit id="zh">
         <source>Chinese</source>
       </trans-unit>
-      <trans-unit id="znd" resname="znd">
+      <trans-unit id="znd">
         <source>Zande languages</source>
       </trans-unit>
-      <trans-unit id="zu" resname="zu">
+      <trans-unit id="zu">
         <source>Zulu</source>
       </trans-unit>
-      <trans-unit id="zun" resname="zun">
+      <trans-unit id="zun">
         <source>Zuni</source>
       </trans-unit>
-      <trans-unit id="zxx" resname="zxx">
+      <trans-unit id="zxx">
         <source>No linguistic content; Not applicable</source>
       </trans-unit>
-      <trans-unit id="zza" resname="zza">
+      <trans-unit id="zza">
         <source>Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki</source>
       </trans-unit>
     </body>

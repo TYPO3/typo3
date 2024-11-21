@@ -3,587 +3,587 @@
 	<file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler">
 		<header/>
 		<body>
-			<trans-unit id="button.cancel" resname="button.cancel">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.group.modalOk" resname="button.group.modalOk">
+			<trans-unit id="button.group.modalOk">
 				<source>Create group</source>
 			</trans-unit>
-			<trans-unit id="function.scheduler" resname="function.scheduler">
+			<trans-unit id="function.scheduler">
 				<source>Scheduled tasks</source>
 			</trans-unit>
-			<trans-unit id="function.check" resname="function.check">
+			<trans-unit id="function.check">
 				<source>Scheduler setup check</source>
 			</trans-unit>
-			<trans-unit id="function.info" resname="function.info">
+			<trans-unit id="function.info">
 				<source>Available scheduler commands &amp; tasks</source>
 			</trans-unit>
-			<trans-unit id="function.edit" resname="function.edit">
+			<trans-unit id="function.edit">
 				<source>Edit scheduled task "%s"</source>
 			</trans-unit>
-			<trans-unit id="function.add" resname="function.add">
+			<trans-unit id="function.add">
 				<source>New task</source>
 			</trans-unit>
-			<trans-unit id="function.group.add" resname="function.group.add">
+			<trans-unit id="function.group.add">
 				<source>New group</source>
 			</trans-unit>
-			<trans-unit id="function.group.label" resname="function.group.label">
+			<trans-unit id="function.group.label">
 				<source>Group name</source>
 			</trans-unit>
-			<trans-unit id="hdg.cliScript" resname="hdg.cliScript">
+			<trans-unit id="hdg.cliScript">
 				<source>CLI script</source>
 			</trans-unit>
-			<trans-unit id="hdg.composerMode" resname="hdg.composerMode">
+			<trans-unit id="hdg.composerMode">
 				<source>System is running in Composer Mode</source>
 			</trans-unit>
-			<trans-unit id="msg.composerMode" resname="msg.composerMode">
+			<trans-unit id="msg.composerMode">
 				<source>
 					The system is running in composer mode, the path to the `typo3` executable could not be reliably determined.
 					By default, the command to run in composer mode is `vendor/bin/typo3 scheduler:run`.
 				</source>
 			</trans-unit>
-			<trans-unit id="hdg.lastRun" resname="hdg.lastRun">
+			<trans-unit id="hdg.lastRun">
 				<source>Last run</source>
 			</trans-unit>
-			<trans-unit id="availableCommands.headline" resname="availableCommands.headline">
+			<trans-unit id="availableCommands.headline">
 				<source>Available commands</source>
 			</trans-unit>
-			<trans-unit id="availableCommands.description" resname="availableCommands.description">
+			<trans-unit id="availableCommands.description">
 				<source>List of all available commands in this TYPO3 installation.</source>
 			</trans-unit>
-			<trans-unit id="availableCommands.noCommandsDefined" resname="availableCommands.noCommandsDefined">
+			<trans-unit id="availableCommands.noCommandsDefined">
 				<source>There are currently no commands available at all.</source>
 			</trans-unit>
-			<trans-unit id="availableTasks.headline" resname="availableTasks.headline">
+			<trans-unit id="availableTasks.headline">
 				<source>Available tasks</source>
 			</trans-unit>
-			<trans-unit id="availableTasks.description" resname="availableTasks.description">
+			<trans-unit id="availableTasks.description">
 				<source>List of all available tasks in this TYPO3 installation.</source>
 			</trans-unit>
-			<trans-unit id="label.automatically" resname="label.automatically">
+			<trans-unit id="label.automatically">
 				<source>automatically</source>
 			</trans-unit>
-			<trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends" resname="label.cachingFrameworkGarbageCollection.selectBackends">
+			<trans-unit id="label.cachingFrameworkGarbageCollection.selectBackends">
 				<source>Backend types</source>
 			</trans-unit>
-			<trans-unit id="label.recyclerGarbageCollection.numberOfDays" resname="label.recyclerGarbageCollection.numberOfDays">
+			<trans-unit id="label.recyclerGarbageCollection.numberOfDays">
 				<source>Number of days until removing files</source>
 			</trans-unit>
-			<trans-unit id="label.checkAll" resname="label.checkAll">
+			<trans-unit id="label.checkAll">
 				<source>Check/uncheck all</source>
 			</trans-unit>
-			<trans-unit id="label.class" resname="label.class">
+			<trans-unit id="label.class">
 				<source>Task</source>
 			</trans-unit>
-			<trans-unit id="label.cron" resname="label.cron">
+			<trans-unit id="label.cron">
 				<source>Cron</source>
 			</trans-unit>
-			<trans-unit id="label.defType" resname="label.defType">
+			<trans-unit id="label.defType">
 				<source>Definition type</source>
 			</trans-unit>
-			<trans-unit id="label.defType.interval" resname="label.defType.interval">
+			<trans-unit id="label.defType.interval">
 				<source>Interval</source>
 			</trans-unit>
-			<trans-unit id="label.defType.cron" resname="label.defType.cron">
+			<trans-unit id="label.defType.cron">
 				<source>Cron command</source>
 			</trans-unit>
-			<trans-unit id="label.description" resname="label.description">
+			<trans-unit id="label.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="label.email" resname="label.email">
+			<trans-unit id="label.email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="label.end" resname="label.end">
+			<trans-unit id="label.end">
 				<source>End (HH:MM DD-MM-YYYY)</source>
 			</trans-unit>
-			<trans-unit id="label.executeSelected" resname="label.executeSelected">
+			<trans-unit id="label.executeSelected">
 				<source>Execute</source>
 			</trans-unit>
-			<trans-unit id="label.cronjobSelected" resname="label.cronjobSelected">
+			<trans-unit id="label.cronjobSelected">
 				<source>Execute on next cron job</source>
 			</trans-unit>
-			<trans-unit id="label.extension" resname="label.extension">
+			<trans-unit id="label.extension">
 				<source>Extension</source>
 			</trans-unit>
-			<trans-unit id="label.frequency" resname="label.frequency">
+			<trans-unit id="label.frequency">
 				<source>Frequency</source>
 			</trans-unit>
-			<trans-unit id="label.frequency.long" resname="label.frequency.long">
+			<trans-unit id="label.frequency.long">
 				<source>Frequency (seconds or cron command)</source>
 			</trans-unit>
-			<trans-unit id="label.id" resname="label.id">
+			<trans-unit id="label.id">
 				<source>ID</source>
 			</trans-unit>
-			<trans-unit id="label.lastExecution" resname="label.lastExecution">
+			<trans-unit id="label.lastExecution">
 				<source>Last Execution</source>
 			</trans-unit>
-			<trans-unit id="label.manual" resname="label.manual">
+			<trans-unit id="label.manual">
 				<source>Manual</source>
 			</trans-unit>
-			<trans-unit id="label.manually" resname="label.manually">
+			<trans-unit id="label.manually">
 				<source>manually</source>
 			</trans-unit>
-			<trans-unit id="label.name" resname="label.name">
+			<trans-unit id="label.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="label.nextExecution" resname="label.nextExecution">
+			<trans-unit id="label.nextExecution">
 				<source>Next Execution</source>
 			</trans-unit>
-			<trans-unit id="label.parallel" resname="label.parallel">
+			<trans-unit id="label.parallel">
 				<source>Parallel Execution</source>
 			</trans-unit>
-			<trans-unit id="label.parallel.long" resname="label.parallel.long">
+			<trans-unit id="label.parallel.long">
 				<source>Allow Parallel Execution</source>
 			</trans-unit>
-			<trans-unit id="label.serverTime" resname="label.serverTime">
+			<trans-unit id="label.serverTime">
 				<source>Server time</source>
 			</trans-unit>
-			<trans-unit id="label.sleepTime" resname="label.sleepTime">
+			<trans-unit id="label.sleepTime">
 				<source>Sleep time</source>
 			</trans-unit>
-			<trans-unit id="label.start" resname="label.start">
+			<trans-unit id="label.start">
 				<source>Start (HH:MM DD-MM-YYYY)</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageIndexing.storage" resname="label.fileStorageIndexing.storage">
+			<trans-unit id="label.fileStorageIndexing.storage">
 				<source>Storage to index</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageExtraction.fileCount" resname="label.fileStorageExtraction.fileCount">
+			<trans-unit id="label.fileStorageExtraction.fileCount">
 				<source>Number of files per run</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageExtraction.registeredExtractors" resname="label.fileStorageExtraction.registeredExtractors">
+			<trans-unit id="label.fileStorageExtraction.registeredExtractors">
 				<source>Registered extractors</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor" resname="label.fileStorageExtraction.registeredExtractors.extractor">
+			<trans-unit id="label.fileStorageExtraction.registeredExtractors.extractor">
 				<source>%1$s with priority %2$d</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors" resname="label.fileStorageExtraction.registeredExtractors.with_extractors">
+			<trans-unit id="label.fileStorageExtraction.registeredExtractors.with_extractors">
 				<source>Following extractors have been registered and will be used when running this task</source>
 			</trans-unit>
-			<trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors" resname="label.fileStorageExtraction.registeredExtractors.without_extractors">
+			<trans-unit id="label.fileStorageExtraction.registeredExtractors.without_extractors">
 				<source>There currently is no extractor registered. This task will have no effect!</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.allTables" resname="label.tableGarbageCollection.allTables">
+			<trans-unit id="label.tableGarbageCollection.allTables">
 				<source>Clean all available tables</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.table" resname="label.tableGarbageCollection.table">
+			<trans-unit id="label.tableGarbageCollection.table">
 				<source>Table to clean up</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.additionalInformationTable" resname="label.tableGarbageCollection.additionalInformationTable">
+			<trans-unit id="label.tableGarbageCollection.additionalInformationTable">
 				<source>Table: %s</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.additionalInformationAllTables" resname="label.tableGarbageCollection.additionalInformationAllTables">
+			<trans-unit id="label.tableGarbageCollection.additionalInformationAllTables">
 				<source>All tables</source>
 			</trans-unit>
-			<trans-unit id="label.tableGarbageCollection.numberOfDays" resname="label.tableGarbageCollection.numberOfDays">
+			<trans-unit id="label.tableGarbageCollection.numberOfDays">
 				<source>Delete entries older than given number of days</source>
 			</trans-unit>
-			<trans-unit id="label.optimizeDatabaseTables.selectTables" resname="label.optimizeDatabaseTables.selectTables">
+			<trans-unit id="label.optimizeDatabaseTables.selectTables">
 				<source>Database tables</source>
 			</trans-unit>
-			<trans-unit id="label.status" resname="label.status">
+			<trans-unit id="label.status">
 				<source>Status</source>
 			</trans-unit>
-			<trans-unit id="label.type" resname="label.type">
+			<trans-unit id="label.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="label.type.recurring" resname="label.type.recurring">
+			<trans-unit id="label.type.recurring">
 				<source>Recurring</source>
 			</trans-unit>
-			<trans-unit id="label.type.single" resname="label.type.single">
+			<trans-unit id="label.type.single">
 				<source>Single</source>
 			</trans-unit>
-			<trans-unit id="label.group" resname="label.group">
+			<trans-unit id="label.group">
 				<source>Task group</source>
 			</trans-unit>
-			<trans-unit id="label.group.taskCount" resname="label.group.taskCount">
+			<trans-unit id="label.group.taskCount">
 			    <source>Amount of tasks in this scheduler task group</source>
 			</trans-unit>
-			<trans-unit id="label.group.taskUnusedCount" resname="label.group.taskUnusedCount">
+			<trans-unit id="label.group.taskUnusedCount">
 			    <source>Amount of unused task groups</source>
 			</trans-unit>
-			<trans-unit id="label.noGroup" resname="label.noGroup">
+			<trans-unit id="label.noGroup">
 				<source>Not assigned to any task group</source>
 			</trans-unit>
-			<trans-unit id="label.noGroup.taskCount" resname="label.noGroup.taskCount">
+			<trans-unit id="label.noGroup.taskCount">
 				<source>Amount of tasks that are not assigned to any scheduler task group</source>
 			</trans-unit>
-			<trans-unit id="label.group.isDisabled" resname="label.group.isDisabled">
+			<trans-unit id="label.group.isDisabled">
 				<source>disabled</source>
 			</trans-unit>
-			<trans-unit id="label.group.unused" resname="label.noGroup">
+			<trans-unit id="label.group.unused">
 				<source>Unused task groups</source>
 			</trans-unit>
-			<trans-unit id="label.group.tableColumn" resname="label.noGroup">
+			<trans-unit id="label.group.tableColumn">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="label.group.enable" resname="label.noGroup">
+			<trans-unit id="label.group.enable">
 				<source>Enable group</source>
 			</trans-unit>
-			<trans-unit id="label.group.disable" resname="label.noGroup">
+			<trans-unit id="label.group.disable">
 				<source>Disable group</source>
 			</trans-unit>
-			<trans-unit id="label.group.edit" resname="label.noGroup">
+			<trans-unit id="label.group.edit">
 				<source>Edit group</source>
 			</trans-unit>
-			<trans-unit id="label.errorClass" resname="label.errorClass">
+			<trans-unit id="label.errorClass">
 				<source>Broken tasks</source>
 			</trans-unit>
-			<trans-unit id="label.errorClass.taskCount" resname="label.errorClass.taskCount">
+			<trans-unit id="label.errorClass.taskCount">
 				<source>Amount of broken tasks</source>
 			</trans-unit>
-			<trans-unit id="label.schedulableCommandName" resname="label.schedulableCommandName">
+			<trans-unit id="label.schedulableCommandName">
 				<source>Schedulable Command. Save and reopen to define command arguments</source>
 			</trans-unit>
-			<trans-unit id="label.saveAndCreateNewTask" resname="label.saveAndCreateNewTask">
+			<trans-unit id="label.saveAndCreateNewTask">
 				<source>Save and create new task</source>
 			</trans-unit>
-			<trans-unit id="label.addOptionToCommand" resname="label.addOptionToCommand">
+			<trans-unit id="label.addOptionToCommand">
 				<source>Add option</source>
 			</trans-unit>
-			<trans-unit id="msg.addSuccess" resname="msg.addSuccess">
+			<trans-unit id="msg.addSuccess">
 				<source>The task was added successfully.</source>
 			</trans-unit>
-			<trans-unit id="msg.cliScript" resname="msg.cliScript">
+			<trans-unit id="msg.cliScript">
 				<source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
 			</trans-unit>
-			<trans-unit id="msg.cliScriptExecutable" resname="msg.cliScriptExecutable">
+			<trans-unit id="msg.cliScriptExecutable">
 				<source>The web server user is allowed execute this script.</source>
 			</trans-unit>
-			<trans-unit id="msg.cliScriptNotExecutable" resname="msg.cliScriptNotExecutable">
+			<trans-unit id="msg.cliScriptNotExecutable">
 				<source>The web server user is not allowed to execute this script.</source>
 			</trans-unit>
-			<trans-unit id="msg.delete" resname="msg.delete">
+			<trans-unit id="msg.delete">
 				<source>Are you sure you want to delete this task?</source>
 			</trans-unit>
-			<trans-unit id="msg.deleteError" resname="msg.deleteError">
+			<trans-unit id="msg.deleteError">
 				<source>The task could not be deleted.</source>
 			</trans-unit>
-			<trans-unit id="msg.deleteSuccess" resname="msg.deleteSuccess">
+			<trans-unit id="msg.deleteSuccess">
 				<source>The task was successfully deleted.</source>
 			</trans-unit>
-			<trans-unit id="msg.endDateSmallerThanStartDate" resname="msg.endDateSmallerThanStartDate">
+			<trans-unit id="msg.endDateSmallerThanStartDate">
 				<source>The end date is before the start date.</source>
 			</trans-unit>
-			<trans-unit id="msg.executed" resname="msg.executed">
+			<trans-unit id="msg.executed">
 				<source>Task "%s" with uid "%s" has been executed.</source>
 			</trans-unit>
-			<trans-unit id="msg.frequencyError" resname="msg.frequencyError">
+			<trans-unit id="msg.frequencyError">
 				<source>Invalid frequency. Please enter either a number of seconds or a valid cron command. The cron parser said: %1$s [code: %2$d].</source>
 			</trans-unit>
-			<trans-unit id="msg.incompleteLastRun" resname="msg.incompleteLastRun">
+			<trans-unit id="msg.incompleteLastRun">
 				<source>The information about the last execution of the Scheduler is incomplete.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidFrequency" resname="msg.invalidFrequency">
+			<trans-unit id="msg.invalidFrequency">
 				<source>Invalid frequency. Please enter either a number of seconds or a valid cron command.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidSleepTime" resname="msg.invalidSleepTime">
+			<trans-unit id="msg.invalidSleepTime">
 				<source>Please enter a sleep time greater or equal to 0 (zero).</source>
 			</trans-unit>
-			<trans-unit id="msg.lastRun" resname="msg.lastRun">
+			<trans-unit id="msg.lastRun">
 				<source>The Scheduler was last started (%1$s) on %2$s at %3$s and ended on %4$s at %5$s.</source>
 			</trans-unit>
-			<trans-unit id="msg.canNotDeleteRunningTask" resname="msg.canNotDeleteRunningTask">
+			<trans-unit id="msg.canNotDeleteRunningTask">
 				<source>A running task may not be deleted.</source>
 			</trans-unit>
-			<trans-unit id="msg.maynotEditRunningTask" resname="msg.maynotEditRunningTask">
+			<trans-unit id="msg.maynotEditRunningTask">
 				<source>A running task may not be edited.</source>
 			</trans-unit>
-			<trans-unit id="msg.maynotStopNonRunningTask" resname="msg.maynotStopNonRunningTask">
+			<trans-unit id="msg.maynotStopNonRunningTask">
 				<source>The task is not running. There are no executions to unmark.</source>
 			</trans-unit>
-			<trans-unit id="msg.noEmail" resname="msg.noEmail">
+			<trans-unit id="msg.noEmail">
 				<source>Please enter an email address.</source>
 			</trans-unit>
-			<trans-unit id="msg.noFrequency" resname="msg.noFrequency">
+			<trans-unit id="msg.noFrequency">
 				<source>No frequency was defined, either as an interval or as a cron command.</source>
 			</trans-unit>
-			<trans-unit id="msg.noLastRun" resname="msg.noLastRun">
+			<trans-unit id="msg.noLastRun">
 				<source>The Scheduler has never yet run or the information about the last run has been lost.</source>
 			</trans-unit>
-			<trans-unit id="msg.noTasksDefined" resname="msg.noTasksDefined">
+			<trans-unit id="msg.noTasksDefined">
 				<source>There are currently no task classes available at all. To be able to create new tasks, you must either enable the samples provided by the Scheduler or install some other extension that relies on the Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="msg.noTaskClassFound" resname="msg.noTaskClassFound">
+			<trans-unit id="msg.noTaskClassFound">
 				<source>The selected task class could not be found. You should probably contact the task's developers.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskType" resname="msg.invalidTaskType">
+			<trans-unit id="msg.invalidTaskType">
 				<source>The selected task type must be either "single execution" or "recurring execution".</source>
 			</trans-unit>
-			<trans-unit id="msg.noTasks" resname="msg.noTasks">
+			<trans-unit id="msg.noTasks">
 				<source>No tasks defined yet.</source>
 			</trans-unit>
-			<trans-unit id="msg.notExecuted" resname="msg.notExecuted">
+			<trans-unit id="msg.notExecuted">
 				<source>Task "%s" with uid "%s" has not been executed.</source>
 			</trans-unit>
-			<trans-unit id="msg.executionFailed" resname="msg.executionFailed">
+			<trans-unit id="msg.executionFailed">
 				<source>Execution of task "%1$s" failed with the following message: %2$s</source>
 			</trans-unit>
-			<trans-unit id="msg.schedulingFailed" resname="msg.schedulingFailed">
+			<trans-unit id="msg.schedulingFailed">
 				<source>Scheduling of task "%1$s" failed with the following message: %2$s</source>
 			</trans-unit>
-			<trans-unit id="msg.toggleDisableFailed" resname="msg.toggleDisableFailed">
+			<trans-unit id="msg.toggleDisableFailed">
 				<source>Toggling disabled state of task "%1$s" failed with the following message: %2$s</source>
 			</trans-unit>
-			<trans-unit id="msg.stopTaskFailed" resname="msg.stopTaskFailed">
+			<trans-unit id="msg.stopTaskFailed">
 				<source>Stopping task "%1$s" failed with the following message: %2$s</source>
 			</trans-unit>
-			<trans-unit id="msg.executionFailureDefault" resname="msg.executionFailureDefault">
+			<trans-unit id="msg.executionFailureDefault">
 				<source>The execution failed, but the error message could not be retrieved (it was probably too large). Sorry.</source>
 			</trans-unit>
-			<trans-unit id="msg.executionFailureReport" resname="msg.executionFailureReport">
+			<trans-unit id="msg.executionFailureReport">
 				<source>Execution failed: %1$d, %2$s</source>
 			</trans-unit>
-			<trans-unit id="msg.noStartDate" resname="msg.noStartDate">
+			<trans-unit id="msg.noStartDate">
 				<source>Please define a start date.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidStartDate" resname="msg.invalidStartDate">
+			<trans-unit id="msg.invalidStartDate">
 				<source>Start date is invalid.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidEndDate" resname="msg.invalidEndDate">
+			<trans-unit id="msg.invalidEndDate">
 				<source>End date is invalid.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidNumberOfDays" resname="msg.invalidNumberOfDays">
+			<trans-unit id="msg.invalidNumberOfDays">
 				<source>Number of days is invalid.</source>
 			</trans-unit>
-			<trans-unit id="msg.selectionOfNonExistingCacheBackends" resname="msg.selectionOfNonExistingCacheBackends">
+			<trans-unit id="msg.selectionOfNonExistingCacheBackends">
 				<source>Some of the selected cache backends do not exist. Please select valid backends only.</source>
 			</trans-unit>
-			<trans-unit id="msg.noCacheBackendSelected" resname="msg.noCacheBackendSelected">
+			<trans-unit id="msg.noCacheBackendSelected">
 				<source>Please select at least one cache backend.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskClass" resname="msg.invalidTaskClass">
+			<trans-unit id="msg.invalidTaskClass">
 				<source><![CDATA[<strong>The following tasks are broken.</strong> If your task doesn't have a registered class, you should consider reinstalling the extension that provided them or simply deleting the task. In case the error is "Cannot unserialize [class]", the announced class must be removed from your task class, as it is not allowed to be used due to security reasons. Please check also if any of the listed tasks have to be recreated manually (which can be necessary after an extension update due to breaking changes or missing migration scripts).]]></source>
 			</trans-unit>
-			<trans-unit id="msg.errorMessage" resname="msg.errorMessage">
+			<trans-unit id="msg.errorMessage">
 				<source>Error message</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskClassEdit" resname="msg.invalidTaskClassEdit">
+			<trans-unit id="msg.invalidTaskClassEdit">
 				<source>The current class (%s) could not be found. Change it below or consider deleting this task altogether.</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskClass.infobox.title" resname="msg.invalidTaskClass.infobox.title">
+			<trans-unit id="msg.invalidTaskClass.infobox.title">
 				<source>%s registered scheduler tasks can not be executed</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskClass.infobox.message" resname="msg.invalidTaskClass.infobox.message">
+			<trans-unit id="msg.invalidTaskClass.infobox.message">
 				<source><![CDATA[<a href="#scheduler-task-group-missing">Please check the erroneous tasks!</a>]]></source>
 			</trans-unit>
-			<trans-unit id="msg.schedulerSetupCheck" resname="msg.schedulerSetupCheck">
+			<trans-unit id="msg.schedulerSetupCheck">
 				<source>This screen checks if the requisites for running the Scheduler as a cron job are fulfilled. It also displays information about the last run of the Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="msg.serverTime" resname="msg.serverTime">
+			<trans-unit id="msg.serverTime">
 				<source>Current server time is %s.</source>
 			</trans-unit>
-			<trans-unit id="msg.serverTimeHelp" resname="msg.serverTimeHelp">
+			<trans-unit id="msg.serverTimeHelp">
 				<source>All dates and times in the Scheduler are measured according to the server's time, as the Scheduler is run purely on the server-side.</source>
 			</trans-unit>
-			<trans-unit id="msg.stop" resname="msg.stop">
+			<trans-unit id="msg.stop">
 				<source>Are you sure you want to mark this task as not running? Note that this will not stop the actual script (if unsure please refer to the manual).</source>
 			</trans-unit>
-			<trans-unit id="msg.stopError" resname="msg.stopError">
+			<trans-unit id="msg.stopError">
 				<source>The task could not be marked as non-running.</source>
 			</trans-unit>
-			<trans-unit id="msg.stopSuccess" resname="msg.stopSuccess">
+			<trans-unit id="msg.stopSuccess">
 				<source>The task was successfully marked as non-running.</source>
 			</trans-unit>
-			<trans-unit id="msg.taskNotFound" resname="msg.taskNotFound">
+			<trans-unit id="msg.taskNotFound">
 				<source>The requested task (UID: %d) was not found.</source>
 			</trans-unit>
-			<trans-unit id="msg.updateSuccess" resname="msg.updateSuccess">
+			<trans-unit id="msg.updateSuccess">
 				<source>The task was updated successfully.</source>
 			</trans-unit>
-			<trans-unit id="msg.updateError" resname="msg.updateError">
+			<trans-unit id="msg.updateError">
 				<source>The task could not be updated.</source>
 			</trans-unit>
-			<trans-unit id="msg.selectionOfNonExistingDatabaseTables" resname="msg.selectionOfNonExistingDatabaseTables">
+			<trans-unit id="msg.selectionOfNonExistingDatabaseTables">
 				<source>Some of the selected database tables do not exist. Please select only valid tables.</source>
 			</trans-unit>
-			<trans-unit id="msg.noDatabaseTablesSelected" resname="msg.noDatabaseTablesSelected">
+			<trans-unit id="msg.noDatabaseTablesSelected">
 				<source>Please select at least one database table.</source>
 			</trans-unit>
-			<trans-unit id="msg.unregisteredCommand" resname="msg.unregisteredCommand">
+			<trans-unit id="msg.unregisteredCommand">
 				<source>Command with identifier "%s" has not been registered.</source>
 			</trans-unit>
-			<trans-unit id="msg.errorParsingArguments" resname="msg.errorParsingArguments">
+			<trans-unit id="msg.errorParsingArguments">
 				<source>Error parsing current set of arguments: "%s".</source>
 			</trans-unit>
-			<trans-unit id="msg.errorParsingOptions" resname="msg.errorParsingOptions">
+			<trans-unit id="msg.errorParsingOptions">
 				<source>Error parsing current set of options: "%s".</source>
 			</trans-unit>
-			<trans-unit id="msg.mandatoryArgumentMissing" resname="msg.mandatoryArgumentMissing">
+			<trans-unit id="msg.mandatoryArgumentMissing">
 				<source>Argument "%s" is mandatory.</source>
 			</trans-unit>
-			<trans-unit id="msg.taskEnabled" resname="msg.taskEnabled">
+			<trans-unit id="msg.taskEnabled">
 				<source>Task "%s" with uid "%s" has been enabled.</source>
 			</trans-unit>
-			<trans-unit id="msg.taskDisabled" resname="msg.taskDisabled">
+			<trans-unit id="msg.taskDisabled">
 				<source>Task "%s" with uid "%s" has been disabled.</source>
 			</trans-unit>
-			<trans-unit id="msg.taskEnabledAndQueuedForExecution" resname="msg.taskEnabledAndQueuedForExecution">
+			<trans-unit id="msg.taskEnabledAndQueuedForExecution">
 				<source>Task "%s" with uid "%s" has been enabled and queued for execution at next scheduler CLI run.</source>
 			</trans-unit>
-			<trans-unit id="msg.taskQueuedForExecution" resname="msg.taskQueuedForExecution">
+			<trans-unit id="msg.taskQueuedForExecution">
 				<source>Task "%s" with uid "%s" has been queued for execution at next scheduler CLI run.</source>
 			</trans-unit>
-			<trans-unit id="msg.group.deleted" resname="msg.group.deleted">
+			<trans-unit id="msg.group.deleted">
 				<source>Successfully deleted scheduler group.</source>
 			</trans-unit>
-			<trans-unit id="msg.group.delete.failed" resname="msg.group.delete.failed">
+			<trans-unit id="msg.group.delete.failed">
 				<source>Failed to delete scheduler group.</source>
 			</trans-unit>
 
-			<trans-unit id="none" resname="none">
+			<trans-unit id="none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="status" resname="status">
+			<trans-unit id="status">
 				<source>Status</source>
 			</trans-unit>
-			<trans-unit id="status.progress" resname="status.progress">
+			<trans-unit id="status.progress">
 				<source>Progress</source>
 			</trans-unit>
-			<trans-unit id="status.disabled" resname="status.disabled">
+			<trans-unit id="status.disabled">
 				<source>disabled</source>
 			</trans-unit>
-			<trans-unit id="status.disabledByGroup" resname="status.disabledByGroup">
+			<trans-unit id="status.disabledByGroup">
 				<source>disabled by group</source>
 			</trans-unit>
-			<trans-unit id="status.failure" resname="status.failure">
+			<trans-unit id="status.failure">
 				<source>failure</source>
 			</trans-unit>
-			<trans-unit id="status.late" resname="status.late">
+			<trans-unit id="status.late">
 				<source>late</source>
 			</trans-unit>
-			<trans-unit id="status.running" resname="status.running">
+			<trans-unit id="status.running">
 				<source>running</source>
 			</trans-unit>
-			<trans-unit id="status.scheduled" resname="status.scheduled">
+			<trans-unit id="status.scheduled">
 				<source>scheduled</source>
 			</trans-unit>
-			<trans-unit id="task" resname="task">
+			<trans-unit id="task">
 				<source>Task</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>TYPO3 Scheduler administration module</source>
 			</trans-unit>
-			<trans-unit id="action.run_task" resname="action.run_task">
+			<trans-unit id="action.run_task">
 				<source>Run task</source>
 			</trans-unit>
-			<trans-unit id="action.run_task_cron" resname="action.run_task_cron">
+			<trans-unit id="action.run_task_cron">
 				<source>Run task on next cron job</source>
 			</trans-unit>
-			<trans-unit id="cachingFrameworkGarbageCollection.name" resname="cachingFrameworkGarbageCollection.name">
+			<trans-unit id="cachingFrameworkGarbageCollection.name">
 				<source>Caching framework garbage collection</source>
 			</trans-unit>
-			<trans-unit id="cachingFrameworkGarbageCollection.description" resname="cachingFrameworkGarbageCollection.description">
+			<trans-unit id="cachingFrameworkGarbageCollection.description">
 				<source>This task calls the garbage collection of configured caching framework caches which use one of the selected backends. This will free some space in cache backends which do not have an internal garbage collection. In case of the default database backend it is advisable to run this task once a day when the database is mostly idle.</source>
 			</trans-unit>
-			<trans-unit id="fileIndexing.name" resname="fileIndexing.name">
+			<trans-unit id="fileIndexing.name">
 				<source>[OBSOLETE] File Abstraction Layer: Indexing job</source>
 			</trans-unit>
-			<trans-unit id="fileIndexing.description" resname="fileIndexing.description">
+			<trans-unit id="fileIndexing.description">
 				<source>Runs indexing tasks based on an indexing configuration and a storage/folder information.</source>
 			</trans-unit>
-			<trans-unit id="fileStorageIndexing.name" resname="fileStorageIndexing.name">
+			<trans-unit id="fileStorageIndexing.name">
 				<source>File Abstraction Layer: Update storage index</source>
 			</trans-unit>
-			<trans-unit id="fileStorageIndexing.description" resname="fileStorageIndexing.description">
+			<trans-unit id="fileStorageIndexing.description">
 				<source>Updates the Index/Cache Data of a Storage; only needed if changes to the storage are possible outside the backend (FTP, RemoteStorages).</source>
 			</trans-unit>
-			<trans-unit id="fileStorageExtraction.name" resname="fileStorageExtraction.name">
+			<trans-unit id="fileStorageExtraction.name">
 				<source>File Abstraction Layer: Extract metadata in storage</source>
 			</trans-unit>
-			<trans-unit id="fileStorageExtraction.description" resname="fileStorageExtraction.description">
+			<trans-unit id="fileStorageExtraction.description">
 				<source>Extracts metadata for all files in storage which have been changed since last run.</source>
 			</trans-unit>
-			<trans-unit id="tableGarbageCollection.name" resname="tableGarbageCollection.name">
+			<trans-unit id="tableGarbageCollection.name">
 				<source>Table garbage collection</source>
 			</trans-unit>
-			<trans-unit id="tableGarbageCollection.description" resname="tableGarbageCollection.description">
+			<trans-unit id="tableGarbageCollection.description">
 				<source>Task to delete old entries from specific tables like sys_log. Use $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables'] to configure tables. Refer to the manual for more details.</source>
 			</trans-unit>
-			<trans-unit id="recyclerGarbageCollection.name" resname="recyclerGarbageCollection.name">
+			<trans-unit id="recyclerGarbageCollection.name">
 				<source>Fileadmin garbage collection</source>
 			</trans-unit>
-			<trans-unit id="recyclerGarbageCollection.description" resname="recyclerGarbageCollection.description">
+			<trans-unit id="recyclerGarbageCollection.description">
 				<source>This task empties all "_recycler_" folders below fileadmin. This helps free some space in the file system.</source>
 			</trans-unit>
-			<trans-unit id="executeSchedulableCommandTask.name" resname="executeSchedulableCommandTask.name">
+			<trans-unit id="executeSchedulableCommandTask.name">
 				<source>Execute console commands</source>
 			</trans-unit>
-			<trans-unit id="executeSchedulableCommandTask.description" resname="executeSchedulableCommandTask.description">
+			<trans-unit id="executeSchedulableCommandTask.description">
 				<source>Allows regular console commands to be configured and executed through the scheduler framework.</source>
 			</trans-unit>
-			<trans-unit id="optimizeDatabaseTable.name" resname="optimizeDatabaseTable.name">
+			<trans-unit id="optimizeDatabaseTable.name">
 				<source>Optimize MySQL database tables</source>
 			</trans-unit>
-			<trans-unit id="optimizeDatabaseTable.description" resname="optimizeDatabaseTable.description">
+			<trans-unit id="optimizeDatabaseTable.description">
 				<source>This task executes "OPTIMIZE TABLE" statements on the selected database tables. This helps to reduce storage space and improve I/O efficiency. Warning! Tables will be locked during the optimization process.</source>
 			</trans-unit>
-			<trans-unit id="ipAnonymization.name" resname="ipAnonymization.name">
+			<trans-unit id="ipAnonymization.name">
 				<source>Anonymize IP addresses in database tables</source>
 			</trans-unit>
-			<trans-unit id="ipAnonymization.description" resname="ipAnonymization.description">
+			<trans-unit id="ipAnonymization.description">
 				<source>This task anonymizes the IP addresses to enforce the privacy of the persisted data.</source>
 			</trans-unit>
-			<trans-unit id="label.ipAnonymization.table" resname="label.ipAnonymization.table">
+			<trans-unit id="label.ipAnonymization.table">
 				<source>Table to anonymize</source>
 			</trans-unit>
-			<trans-unit id="label.ipAnonymization.additionalInformationTable" resname="label.ipAnonymization.additionalInformationTable">
+			<trans-unit id="label.ipAnonymization.additionalInformationTable">
 				<source>Table: %s after %s days</source>
 			</trans-unit>
-			<trans-unit id="label.ipAnonymization.additionalInformationAllTables" resname="label.ipAnonymization.additionalInformationAllTables">
+			<trans-unit id="label.ipAnonymization.additionalInformationAllTables">
 				<source>All tables</source>
 			</trans-unit>
-			<trans-unit id="label.ipAnonymization.numberOfDays" resname="label.ipAnonymization.numberOfDays">
+			<trans-unit id="label.ipAnonymization.numberOfDays">
 				<source>Handle entries older than given number of days</source>
 			</trans-unit>
-			<trans-unit id="label.ipAnonymization.mask" resname="label.ipAnonymization.mask">
+			<trans-unit id="label.ipAnonymization.mask">
 				<source>Mask level</source>
 			</trans-unit>
-			<trans-unit id="label.ipAnonymization.mask.1" resname="label.ipAnonymization.mask.1">
+			<trans-unit id="label.ipAnonymization.mask.1">
 				<source>Last byte for IPv4 / Interface ID for IPv6</source>
 			</trans-unit>
-			<trans-unit id="label.ipAnonymization.mask.2" resname="label.ipAnonymization.mask.2">
+			<trans-unit id="label.ipAnonymization.mask.2">
 				<source>Last 2 bytes for IPv4 / Interface &amp; SLA ID for IPv6</source>
 			</trans-unit>
-			<trans-unit id="command.example1" resname="command.example1">
+			<trans-unit id="command.example1">
 				<source>Every day-of-week from Monday through Friday at 09:00 and 15:00</source>
 			</trans-unit>
-			<trans-unit id="command.example2" resname="command.example2">
+			<trans-unit id="command.example2">
 				<source>Every 2 hours</source>
 			</trans-unit>
-			<trans-unit id="command.example3" resname="command.example3">
+			<trans-unit id="command.example3">
 				<source>Every 20 minutes</source>
 			</trans-unit>
-			<trans-unit id="command.example4" resname="command.example4">
+			<trans-unit id="command.example4">
 				<source>Every Tuesday at 07:00</source>
 			</trans-unit>
-			<trans-unit id="systemmessage.noLastRun" resname="systemmessage.noLastRun">
+			<trans-unit id="systemmessage.noLastRun">
 				<source><![CDATA[It seems the Scheduler has never yet run. Please check your <a href="%1$s">configuration</a>.]]></source>
 			</trans-unit>
-			<trans-unit id="systeminformation.lastRunLabel" resname="systeminformation.lastRunLabel">
+			<trans-unit id="systeminformation.lastRunLabel">
 				<source>Last Scheduler run</source>
 			</trans-unit>
-			<trans-unit id="systeminformation.lastRunValue" resname="systeminformation.lastRunValue">
+			<trans-unit id="systeminformation.lastRunValue">
 				<source>%1$s at %2$s, Duration %3$s, (started %4$s)</source>
 			</trans-unit>
-			<trans-unit id="msg.group.notification.error.title" resname="group.notification.error.title">
+			<trans-unit id="msg.group.notification.error.title">
 				<source>Error</source>
 			</trans-unit>
-			<trans-unit id="msg.group.notification.error.message" resname="group.notification.error.message">
+			<trans-unit id="msg.group.notification.error.message">
 				<source>Could not create group</source>
 			</trans-unit>
-			<trans-unit id="scheduler.form.palettes.general" resname="scheduler.form.palettes.general">
+			<trans-unit id="scheduler.form.palettes.general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="scheduler.form.palettes.settings" resname="scheduler.form.palettes.settings">
+			<trans-unit id="scheduler.form.palettes.settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="scheduler.form.palettes.timing" resname="scheduler.form.palettes.timing">
+			<trans-unit id="scheduler.form.palettes.timing">
 				<source>Timing</source>
 			</trans-unit>
-			<trans-unit id="editableGroupName.input.field.label" resname="editableGroupName.input.field.label">
+			<trans-unit id="editableGroupName.input.field.label">
 				<source>Enter a group name</source>
 			</trans-unit>
-			<trans-unit id="editableGroupName.button.edit.label" resname="editableGroupName.button.edit.label">
+			<trans-unit id="editableGroupName.button.edit.label">
 				<source>Edit group name</source>
 			</trans-unit>
 		</body>

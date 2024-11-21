@@ -3,10 +3,10 @@
 	<file source-language="en" datatype="plaintext" original="EXT:test_localization/Resources/Private/Language/locallang_override.xlf" date="2011-12-21T11:57:33Z" product-name="tests">
 		<header/>
 		<body>
-			<trans-unit id="label1" resname="label1">
+			<trans-unit id="label1">
 				<source>This is my 1st label</source>
 			</trans-unit>
-			<trans-unit id="label2" resname="label2">
+			<trans-unit id="label2">
 				<source>This is my 2nd label</source>
 			</trans-unit>
 		</body>

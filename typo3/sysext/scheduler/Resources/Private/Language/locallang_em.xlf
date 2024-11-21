@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_em.xlf" date="2011-10-17T20:22:32Z" product-name="scheduler">
 		<header/>
 		<body>
-			<trans-unit id="scheduler.config.maxLifetime" resname="scheduler.config.maxLifetime">
+			<trans-unit id="scheduler.config.maxLifetime">
 				<source>Maximum lifetime: Enter the maximum lifetime (in minutes) of a scheduler task. If a task is still running after that time, it will be dropped from the execution list (but not stopped).</source>
 			</trans-unit>
 		</body>

@@ -3,125 +3,125 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_toolbar.xlf" date="2024-06-17T15:00:00Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="toolbarItems.bookmarkAlreadyExistsMessage" resname="toolbarItems.bookmarkAlreadyExistsMessage">
+			<trans-unit id="toolbarItems.bookmarkAlreadyExistsMessage">
 				<source>The document is already in your bookmarks.</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarkAlreadyExistsTitle" resname="toolbarItems.bookmarkAlreadyExistsTitle">
+			<trans-unit id="toolbarItems.bookmarkAlreadyExistsTitle">
 				<source>Bookmark already exists</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarkFailedMessage" resname="toolbarItems.bookmarkFailedMessage">
+			<trans-unit id="toolbarItems.bookmarkFailedMessage">
 				<source>The bookmark couldn't get created</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarkFailedTitle" resname="toolbarItems.bookmarkFailedTitle">
+			<trans-unit id="toolbarItems.bookmarkFailedTitle">
 				<source>Bookmark creation failed</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarkSavedMessage" resname="toolbarItems.bookmarkSavedMessage">
+			<trans-unit id="toolbarItems.bookmarkSavedMessage">
 				<source>The bookmark was saved.</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarkSavedTitle" resname="toolbarItems.bookmarkSavedTitle">
+			<trans-unit id="toolbarItems.bookmarkSavedTitle">
 				<source>Bookmark saved</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarks" resname="toolbarItems.bookmarks">
+			<trans-unit id="toolbarItems.bookmarks">
 				<source>Bookmarks</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarks.description" resname="toolbarItems.bookmarks.description">
+			<trans-unit id="toolbarItems.bookmarks.description">
 				<source>This is the bookmarks menu. You do not have any bookmarks added yet. You can add one by clicking the bookmark icon %s, which you can find on all pages in the backend.</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarks.field.group" resname="toolbarItems.bookmarks.field.group">
+			<trans-unit id="toolbarItems.bookmarks.field.group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarks.field.title" resname="toolbarItems.bookmarks.field.title">
+			<trans-unit id="toolbarItems.bookmarks.field.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarks.notGrouped" resname="toolbarItems.bookmarks.notGrouped">
+			<trans-unit id="toolbarItems.bookmarks.notGrouped">
 				<source>Not grouped</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksDelete" resname="toolbarItems.bookmarksDelete">
+			<trans-unit id="toolbarItems.bookmarksDelete">
 				<source>Delete bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.bookmarksEdit" resname="toolbarItems.bookmarksEdit">
+			<trans-unit id="toolbarItems.bookmarksEdit">
 				<source>Edit bookmark</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.confirmBookmarksDelete" resname="toolbarItems.confirmBookmarksDelete">
+			<trans-unit id="toolbarItems.confirmBookmarksDelete">
 				<source>Do you really want to remove this bookmark?</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.clearCache" resname="toolbarItems.clearCache">
+			<trans-unit id="toolbarItems.clearCache">
 				<source>Clear cache</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.help" resname="toolbarItems.help">
+			<trans-unit id="toolbarItems.help">
 				<source>Help</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.minMaxModuleMenu" resname="toolbarItems.minMaxModuleMenu">
+			<trans-unit id="toolbarItems.minMaxModuleMenu">
 				<source>Minimize/maximize module menu</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.search" resname="toolbarItems.search">
+			<trans-unit id="toolbarItems.search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.searchbarOpenClose" resname="toolbarItems.searchbarOpenClose">
+			<trans-unit id="toolbarItems.searchbarOpenClose">
 				<source>Open/Close searchbar</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo" resname="toolbarItems.sysinfo">
+			<trans-unit id="toolbarItems.sysinfo">
 				<source>System Information</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.intro.text" resname="toolbarItems.sysinfo.intro.text">
+			<trans-unit id="toolbarItems.sysinfo.intro.text">
 				<source>This is a short system overview. For advanced information please head to: </source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.intro.link" resname="toolbarItems.sysinfo.intro.link">
+			<trans-unit id="toolbarItems.sysinfo.intro.link">
 				<source>Environment Module</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.allgood" resname="toolbarItems.sysinfo.allgood" xml:space="preserve">
+			<trans-unit id="toolbarItems.sysinfo.allgood" xml:space="preserve">
 				<source>Your system is fully operational.
 Have a nice day.</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.applicationcontext" resname="toolbarItems.sysinfo.applicationcontext">
+			<trans-unit id="toolbarItems.sysinfo.applicationcontext">
 				<source>Application Context</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.composerMode" resname="toolbarItems.sysinfo.composerMode">
+			<trans-unit id="toolbarItems.sysinfo.composerMode">
 				<source>Composer mode</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.database" resname="toolbarItems.sysinfo.database">
+			<trans-unit id="toolbarItems.sysinfo.database">
 				<source>Database</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.database.offline" resname="toolbarItems.sysinfo.database.offline">
+			<trans-unit id="toolbarItems.sysinfo.database.offline">
 				<source>Offline</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.debugger" resname="toolbarItems.sysinfo.debugger">
+			<trans-unit id="toolbarItems.sysinfo.debugger">
 				<source>Debugger</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.gitrevision" resname="toolbarItems.sysinfo.gitrevision">
+			<trans-unit id="toolbarItems.sysinfo.gitrevision">
 				<source>GIT Revision</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.operatingsystem" resname="toolbarItems.sysinfo.operatingsystem">
+			<trans-unit id="toolbarItems.sysinfo.operatingsystem">
 				<source>Operating System</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.phpversion" resname="toolbarItems.sysinfo.phpversion">
+			<trans-unit id="toolbarItems.sysinfo.phpversion">
 				<source>PHP Version</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.typo3-version" resname="toolbarItems.sysinfo.typo3-version">
+			<trans-unit id="toolbarItems.sysinfo.typo3-version">
 				<source>TYPO3 Version</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.webserver" resname="toolbarItems.sysinfo.webserver">
+			<trans-unit id="toolbarItems.sysinfo.webserver">
 				<source>Web Server</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.toolbarOpenClose" resname="toolbarItems.toolbarOpenClose">
+			<trans-unit id="toolbarItems.toolbarOpenClose">
 				<source>Open/Close toolbar</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.user.account.switchToUserMode.tooltip" resname="toolbarItems.user.account.switchToUserMode.tooltip">
+			<trans-unit id="toolbarItems.user.account.switchToUserMode.tooltip">
 				<source>Switch to User</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.user.account.switchToUserMode.account.prefix" resname="toolbarItems.user.account.switchToUserMode.account.prefix">
+			<trans-unit id="toolbarItems.user.account.switchToUserMode.account.prefix">
 				<source>SU</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.user.recentlySwitchedUsers" resname="toolbarItems.user.recentlySwitchedUsers">
+			<trans-unit id="toolbarItems.user.recentlySwitchedUsers">
 				<source>Recently switched to</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.user.recentlySwitchedUsers.su.tooltip" resname="toolbarItems.user.recentlySwitchedUsers.su.tooltip">
+			<trans-unit id="toolbarItems.user.recentlySwitchedUsers.su.tooltip">
 				<source>Switch to user %s</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.user.btn.exitSwitchUser" resname="toolbarItems.user.btn.exitSwitchUser">
+			<trans-unit id="toolbarItems.user.btn.exitSwitchUser">
 				<source>Exit switch user mode</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.user.btn.logout" resname="toolbarItems.user.btn.logout">
+			<trans-unit id="toolbarItems.user.btn.logout">
 				<source>Logout</source>
 			</trans-unit>
 		</body>

@@ -3,70 +3,70 @@
     <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_info.xlf" date="2018-03-12T13:52:01Z" product-name="adminpanel">
         <header/>
         <body>
-            <trans-unit id="module.label" resname="module.label">
+            <trans-unit id="module.label">
                 <source>Info</source>
             </trans-unit>
-            <trans-unit id="module.shortinfoLoadAndMemory" resname="module.shortinfoLoadAndMemory">
+            <trans-unit id="module.shortinfoLoadAndMemory">
                 <source>(Load Time: %1$u ms, Memory: %2$s)</source>
             </trans-unit>
-            <trans-unit id="imagesOnPage" resname="imagesOnPage">
+            <trans-unit id="imagesOnPage">
                 <source>Images on this page</source>
             </trans-unit>
-            <trans-unit id="imagesSize" resname="imagesSize">
+            <trans-unit id="imagesSize">
                 <source>Total image file sizes</source>
             </trans-unit>
-            <trans-unit id="DocumentSize" resname="DocumentSize">
+            <trans-unit id="DocumentSize">
                 <source>Document size</source>
             </trans-unit>
-            <trans-unit id="pageUid" resname="pageUid">
+            <trans-unit id="pageUid">
                 <source>Page Uid</source>
             </trans-unit>
-            <trans-unit id="pageType" resname="pageType">
+            <trans-unit id="pageType">
                 <source>Page type</source>
             </trans-unit>
-            <trans-unit id="groupList" resname="groupList">
+            <trans-unit id="groupList">
                 <source>Frontenduser group combination</source>
             </trans-unit>
-            <trans-unit id="noCache" resname="noCache">
+            <trans-unit id="noCache">
                 <source>Page cached</source>
             </trans-unit>
-            <trans-unit id="noCache_yes" resname="noCache_yes">
+            <trans-unit id="noCache_yes">
                 <source>Yes</source>
             </trans-unit>
-            <trans-unit id="noCache_no" resname="noCache_no">
+            <trans-unit id="noCache_no">
                 <source>No</source>
             </trans-unit>
-            <trans-unit id="countUserInt" resname="countUserInt">
+            <trans-unit id="countUserInt">
                 <source>Count of USER_INT objects</source>
             </trans-unit>
-            <trans-unit id="feuserName" resname="feuserName">
+            <trans-unit id="feuserName">
                 <source>Name of logged in FE-User</source>
             </trans-unit>
-            <trans-unit id="feuserId" resname="feuserId">
+            <trans-unit id="feuserId">
                 <source>Id of logged in FE-User</source>
             </trans-unit>
-            <trans-unit id="totalParsetime" resname="totalParsetime">
+            <trans-unit id="totalParsetime">
                 <source>Total parsetime</source>
             </trans-unit>
-            <trans-unit id="noUserInt" resname="noUserInt">
+            <trans-unit id="noUserInt">
                 <source>There are no USER_INT objects on this page.</source>
             </trans-unit>
-            <trans-unit id="key" resname="key">
+            <trans-unit id="key">
                 <source>Key</source>
             </trans-unit>
-            <trans-unit id="value" resname="value">
+            <trans-unit id="value">
                 <source>Value</source>
             </trans-unit>
-            <trans-unit id="sub.general.label" resname="sub.general.label">
+            <trans-unit id="sub.general.label">
                 <source>General</source>
             </trans-unit>
-            <trans-unit id="sub.php.label" resname="sub.php.label">
+            <trans-unit id="sub.php.label">
                 <source>PHP</source>
             </trans-unit>
-            <trans-unit id="sub.request.label" resname="sub.request.label">
+            <trans-unit id="sub.request.label">
                 <source>REQUEST</source>
             </trans-unit>
-            <trans-unit id="sub.userint.label" resname="sub.userint.label">
+            <trans-unit id="sub.userint.label">
                 <source>USER_INT</source>
             </trans-unit>
         </body>

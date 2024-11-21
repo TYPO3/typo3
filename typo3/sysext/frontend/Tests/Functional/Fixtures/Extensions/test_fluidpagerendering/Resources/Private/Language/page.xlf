@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:test_fluidpagerendering/Resources/Private/Language/page.xlf" date="2023-12-21T11:57:33Z" product-name="test_fluidpagerendering">
 		<header/>
 		<body>
-			<trans-unit id="headline" resname="headline">
+			<trans-unit id="headline">
 				<source>You are on page</source>
 			</trans-unit>
 		</body>

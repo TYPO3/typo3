@@ -3,79 +3,79 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_login.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="labels.submitLogout" resname="labels.submitLogout">
+			<trans-unit id="labels.submitLogout">
 				<source>Log Out</source>
 			</trans-unit>
-			<trans-unit id="labels.whatIsOpenId" resname="labels.whatIsOpenId">
+			<trans-unit id="labels.whatIsOpenId">
 				<source>What is OpenId?</source>
 			</trans-unit>
-			<trans-unit id="availableInterfaces" resname="availableInterfaces">
+			<trans-unit id="availableInterfaces">
 				<source>Backend,Front End,Traditional Backend</source>
 			</trans-unit>
-			<trans-unit id="headline" resname="headline">
+			<trans-unit id="headline">
 				<source>Login to the TYPO3 CMS Backend on ###SITENAME###</source>
 			</trans-unit>
-			<trans-unit id="info.about" resname="info.about">
+			<trans-unit id="info.about">
 				<source>This is the backend login of TYPO3. You need username and password to access this administration interface. If you are a visitor of ###SITENAME###, please visit the public website: ###SITELINK###</source>
 			</trans-unit>
-			<trans-unit id="info.reset" resname="info.reset">
+			<trans-unit id="info.reset">
 				<source>Reset this form</source>
 			</trans-unit>
-			<trans-unit id="info.cookies_and_js" resname="info.cookies_and_js">
+			<trans-unit id="info.cookies_and_js">
 				<source>(Note: Cookies and JavaScript must be enabled!)</source>
 			</trans-unit>
-			<trans-unit id="clear" resname="clear">
+			<trans-unit id="clear">
 				<source>Clear this field!</source>
 			</trans-unit>
-			<trans-unit id="warning.incompatibleBrowserHeadline" resname="warning.incompatibleBrowserHeadline">
+			<trans-unit id="warning.incompatibleBrowserHeadline">
 				<source>Unsupported Browser</source>
 			</trans-unit>
-			<trans-unit id="warning.incompatibleBrowser" resname="warning.incompatibleBrowser">
+			<trans-unit id="warning.incompatibleBrowser">
 				<source>You are using an unsupported browser version.</source>
 			</trans-unit>
-			<trans-unit id="warning.incompatibleBrowserInternetExplorer" resname="warning.incompatibleBrowserInternetExplorer">
+			<trans-unit id="warning.incompatibleBrowserInternetExplorer">
 				<source>Please install &lt;a href="http://www.microsoft.com/internetexplorer/" target="_blank" rel="noreferrer" /&gt;a more modern browser version&lt;/a&gt;.</source>
 			</trans-unit>
-			<trans-unit id="newsheadline" resname="newsheadline">
+			<trans-unit id="newsheadline">
 				<source>Important Messages</source>
 			</trans-unit>
-			<trans-unit id="error.login" resname="error.login">
+			<trans-unit id="error.login">
 				<source>Your login attempt did not succeed. Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
 			</trans-unit>
-			<trans-unit id="error.cookies_ignore" resname="error.cookies_ignore">
+			<trans-unit id="error.cookies_ignore">
 				<source>Ignore!</source>
 			</trans-unit>
-			<trans-unit id="error.furtherInformation" resname="error.furtherInformation">
+			<trans-unit id="error.furtherInformation">
 				<source>For more information or further help click here</source>
 			</trans-unit>
-			<trans-unit id="warranty.by" resname="warranty.by">
+			<trans-unit id="warranty.by">
 				<source>Warranty is supplied by %s; %sdetails about licenses.%s</source>
 			</trans-unit>
-			<trans-unit id="no.warranty" resname="no.warranty">
+			<trans-unit id="no.warranty">
 				<source>TYPO3 CMS comes with ABSOLUTELY NO WARRANTY; %sdetails about licenses.%s</source>
 			</trans-unit>
-			<trans-unit id="typo3.cms" resname="typo3.cms">
+			<trans-unit id="typo3.cms">
 				<source>TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="typo3.altText" resname="typo3.altText">
+			<trans-unit id="typo3.altText">
 				<source>TYPO3 CMS logo</source>
 			</trans-unit>
-			<trans-unit id="version.short" resname="version.short">
+			<trans-unit id="version.short">
 				<source>ver.</source>
 			</trans-unit>
-			<trans-unit id="copyright" resname="copyright">
+			<trans-unit id="copyright">
 				<source>Copyright</source>
 			</trans-unit>
-			<trans-unit id="extension.copyright" resname="extension.copyright">
+			<trans-unit id="extension.copyright">
 				<source>Extensions are copyright of their respective owners.</source>
 			</trans-unit>
-			<trans-unit id="details.link" resname="details.link">
+			<trans-unit id="details.link">
 				<source>Go to %s for details.</source>
 			</trans-unit>
-			<trans-unit id="free.software" resname="free.software">
+			<trans-unit id="free.software">
 				<source>This is free software, and you are welcome to redistribute it under certain conditions; %sdetails about licenses.%s</source>
 			</trans-unit>
-			<trans-unit id="keep.notice" resname="keep.notice">
+			<trans-unit id="keep.notice">
 				<source>Obstructing the appearance of this notice is prohibited by law.</source>
 			</trans-unit>
 		</body>

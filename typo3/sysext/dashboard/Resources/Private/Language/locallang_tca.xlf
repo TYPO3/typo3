@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard">
 		<header/>
 		<body>
-			<trans-unit id="be_dashboard" resname="be_dashboard" xml:space="preserve">
+			<trans-unit id="be_dashboard" xml:space="preserve">
 				<source>Dashboard</source>
 			</trans-unit>
-			<trans-unit id="identifier" resname="identifier" xml:space="preserve">
+			<trans-unit id="identifier" xml:space="preserve">
 				<source>Identifier</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title" xml:space="preserve">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Title</source>
 			</trans-unit>
 		</body>

@@ -3,23 +3,23 @@
 	<file source-language="en" target-language="da" datatype="plaintext" original="EXT:label_test/Resources/Private/Language/locallang.xlf" date="2023-01-03T15:50:00Z" product-name="label_test">
 		<header/>
 		<body>
-			<trans-unit id="key1" resname="key1" approved="yes">
+			<trans-unit id="key1" approved="yes">
 				<source>English label for key1</source>
 				<target>Dansk label for key1</target>
 			</trans-unit>
-			<trans-unit id="key4" resname="key4" approved="yes">
+			<trans-unit id="key4" approved="yes">
 				<source>English label for key5</source>
 				<target></target>
 			</trans-unit>
-			<trans-unit id="key5" resname="key5" approved="yes">
+			<trans-unit id="key5" approved="yes">
 				<source>English label for key5</source>
 				<target></target>
 			</trans-unit>
-			<trans-unit id="key6" resname="key6" approved="yes">
+			<trans-unit id="key6" approved="yes">
 				<source>English label for key6</source>
 				<target>Dansk label for key6</target>
 			</trans-unit>
-			<trans-unit id="keyWithPlaceholderAndNoArguments" resname="keyWithPlaceholder" approved="yes">
+			<trans-unit id="keyWithPlaceholderAndNoArguments" approved="yes">
 				<source>%d/%m/%Y</source>
 				<target>%d-%m-%Y</target>
 			</trans-unit>

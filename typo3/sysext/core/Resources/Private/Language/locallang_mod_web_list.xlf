@@ -3,175 +3,175 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>List of database records</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>The Web&gt;List module provides low level access to records appearing on a page.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab">
 				<source>List</source>
 			</trans-unit>
-			<trans-unit id="clip_pasteAfter" resname="clip_pasteAfter">
+			<trans-unit id="clip_pasteAfter">
 				<source>Paste after: Clipboard content is inserted after this record</source>
 			</trans-unit>
-			<trans-unit id="clip_pasteInto" resname="clip_pasteInto">
+			<trans-unit id="clip_pasteInto">
 				<source>Paste into: Clipboard content is inserted on this page</source>
 			</trans-unit>
-			<trans-unit id="clip_paste" resname="clip_paste">
+			<trans-unit id="clip_paste">
 				<source>Paste in clipboard content</source>
 			</trans-unit>
-			<trans-unit id="clip_markRecords" resname="clip_markRecords">
+			<trans-unit id="clip_markRecords">
 				<source>Mark All/Mark none</source>
 			</trans-unit>
-			<trans-unit id="clip_selectMarked" resname="clip_selectMarked">
+			<trans-unit id="clip_selectMarked">
 				<source>Transfer the selection of records to clipboard</source>
 			</trans-unit>
-			<trans-unit id="clip_duplicates" resname="clip_duplicates">
+			<trans-unit id="clip_duplicates">
 				<source>Mark duplicates</source>
 			</trans-unit>
-			<trans-unit id="clip_editMarked" resname="clip_editMarked">
+			<trans-unit id="clip_editMarked">
 				<source>Edit marked</source>
 			</trans-unit>
-			<trans-unit id="clip_deleteMarked" resname="clip_deleteMarked">
+			<trans-unit id="clip_deleteMarked">
 				<source>Delete marked</source>
 			</trans-unit>
-			<trans-unit id="clip_deleteMarkedWarning" resname="clip_deleteMarkedWarning">
+			<trans-unit id="clip_deleteMarkedWarning">
 				<source>Are you sure you want to delete all marked records from the table '%s'?</source>
 			</trans-unit>
-			<trans-unit id="showInfo" resname="showInfo">
+			<trans-unit id="showInfo">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="edit" resname="edit">
+			<trans-unit id="edit">
 				<source>Edit record</source>
 			</trans-unit>
-			<trans-unit id="editPage" resname="editPage">
+			<trans-unit id="editPage">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="new" resname="new">
+			<trans-unit id="new">
 				<source>New record</source>
 			</trans-unit>
-			<trans-unit id="newRecordOfType" resname="newRecordOfType">
+			<trans-unit id="newRecordOfType">
 				<source>New %s</source>
 			</trans-unit>
-			<trans-unit id="newPage" resname="newPage">
+			<trans-unit id="newPage">
 				<source>Create new page after this page</source>
 			</trans-unit>
-			<trans-unit id="newRecord" resname="newRecord">
+			<trans-unit id="newRecord">
 				<source>Create new record after this record</source>
 			</trans-unit>
-			<trans-unit id="newRecordGeneral" resname="newRecordGeneral">
+			<trans-unit id="newRecordGeneral">
 				<source>Create new record</source>
 			</trans-unit>
-			<trans-unit id="moveUp" resname="moveUp">
+			<trans-unit id="moveUp">
 				<source>Move up in list</source>
 			</trans-unit>
-			<trans-unit id="moveDown" resname="moveDown">
+			<trans-unit id="moveDown">
 				<source>Move down in list</source>
 			</trans-unit>
-			<trans-unit id="move_record" resname="move_record">
+			<trans-unit id="move_record">
 				<source>Re-position content element</source>
 			</trans-unit>
-			<trans-unit id="move_page" resname="move_page">
+			<trans-unit id="move_page">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="hide" resname="hide">
+			<trans-unit id="hide">
 				<source>Hide record</source>
 			</trans-unit>
-			<trans-unit id="unHide" resname="unHide">
+			<trans-unit id="unHide">
 				<source>Un-hide record</source>
 			</trans-unit>
-			<trans-unit id="hidePage" resname="hidePage">
+			<trans-unit id="hidePage">
 				<source>Hide page</source>
 			</trans-unit>
-			<trans-unit id="unHidePage" resname="unHidePage">
+			<trans-unit id="unHidePage">
 				<source>Un-hide page</source>
 			</trans-unit>
-			<trans-unit id="prevLevel" resname="prevLevel">
+			<trans-unit id="prevLevel">
 				<source>Move this page to the position after the current parent page (Inwards)</source>
 			</trans-unit>
-			<trans-unit id="nextLevel" resname="nextLevel">
+			<trans-unit id="nextLevel">
 				<source>Move this page to be a subpage of the page above (Outwards)</source>
 			</trans-unit>
-			<trans-unit id="delete" resname="delete">
+			<trans-unit id="delete">
 				<source>Delete record (!)</source>
 			</trans-unit>
-			<trans-unit id="history" resname="history">
+			<trans-unit id="history">
 				<source>History/Undo</source>
 			</trans-unit>
-			<trans-unit id="displayVersions" resname="displayVersions">
+			<trans-unit id="displayVersions">
 				<source>Display versions</source>
 			</trans-unit>
-			<trans-unit id="permissions" resname="permissions">
+			<trans-unit id="permissions">
 				<source>Set permissions for page</source>
 			</trans-unit>
-			<trans-unit id="largeControl" resname="largeControl">
+			<trans-unit id="largeControl">
 				<source>Extended view</source>
 			</trans-unit>
-			<trans-unit id="contractView" resname="contractView">
+			<trans-unit id="contractView">
 				<source>List all tables</source>
 			</trans-unit>
-			<trans-unit id="expandView" resname="expandView">
+			<trans-unit id="expandView">
 				<source>List only this table</source>
 			</trans-unit>
-			<trans-unit id="collapseExpandTable" resname="collapseExpandTable">
+			<trans-unit id="collapseExpandTable">
 				<source>Collapse and expand records of table "%s"</source>
 			</trans-unit>
-			<trans-unit id="showClipBoard" resname="showClipBoard">
+			<trans-unit id="showClipBoard">
 				<source>Show clipboard</source>
 			</trans-unit>
-			<trans-unit id="editShownColumns" resname="editShownColumns">
+			<trans-unit id="editShownColumns">
 				<source>Edit all shown fields of the listed records</source>
 			</trans-unit>
-			<trans-unit id="editThisColumn" resname="editThisColumn">
+			<trans-unit id="editThisColumn">
 				<source>Edit the '%s' field of the listed records</source>
 			</trans-unit>
-			<trans-unit id="deleteWarning" resname="deleteWarning">
+			<trans-unit id="deleteWarning">
 				<source>Are you sure you want to delete the record '%s'?</source>
 			</trans-unit>
-			<trans-unit id="localization" resname="localization">
+			<trans-unit id="localization">
 				<source>Localization view</source>
 			</trans-unit>
-			<trans-unit id="defaultLanguage" resname="defaultLanguage">
+			<trans-unit id="defaultLanguage">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="multipleLanguages" resname="multipleLanguages">
+			<trans-unit id="multipleLanguages">
 				<source>All languages</source>
 			</trans-unit>
-			<trans-unit id="Localize" resname="Localize">
+			<trans-unit id="Localize">
 				<source>Localize to</source>
 			</trans-unit>
-			<trans-unit id="viewRecords" resname="viewRecords">
+			<trans-unit id="viewRecords">
 				<source>Viewing records of</source>
 			</trans-unit>
-			<trans-unit id="pageIndicator" resname="pageIndicator">
+			<trans-unit id="pageIndicator">
 				<source>Page %1$s of %2$d</source>
 			</trans-unit>
-			<trans-unit id="rangeIndicator" resname="rangeIndicator">
+			<trans-unit id="rangeIndicator">
 				<source>Records %1$d - %2$d</source>
 			</trans-unit>
-			<trans-unit id="missingTcaColumnsMessageTitle" resname="missingTcaColumnsMessageTitle">
+			<trans-unit id="missingTcaColumnsMessageTitle">
 				<source>Missing TCA definition</source>
 			</trans-unit>
-			<trans-unit id="missingTcaColumnsMessage" resname="missingTcaColumnsMessage">
+			<trans-unit id="missingTcaColumnsMessage">
 				<source>No fields for table "%s" have been found. $TCA['%s']['columns'] does not contain the necessary definitions.</source>
 			</trans-unit>
-			<trans-unit id="noRecordsOnThisPage" resname="noRecordsOnThisPage">
+			<trans-unit id="noRecordsOnThisPage">
 				<source>There are no records on this page.</source>
 			</trans-unit>
-			<trans-unit id="noRecordsOfTypeOnThisPage" resname="noRecordsOfTypeOnThisPage">
+			<trans-unit id="noRecordsOfTypeOnThisPage">
                 <source>There are no records of type "%s" on this page.</source>
             </trans-unit>
-			<trans-unit id="button.cancel" resname="button.cancel">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.close" resname="button.close">
+			<trans-unit id="button.close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="button.ok" resname="button.ok">
+			<trans-unit id="button.ok">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="button.delete" resname="button.delete">
+			<trans-unit id="button.delete">
 				<source>Delete</source>
 			</trans-unit>
 		</body>

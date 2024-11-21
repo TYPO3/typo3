@@ -3,397 +3,397 @@
 	<file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:33Z" product-name="impexp">
 		<header/>
 		<body>
-			<trans-unit id="import" resname="import">
+			<trans-unit id="import">
 				<source>Import</source>
 			</trans-unit>
-			<trans-unit id="export" resname="export">
+			<trans-unit id="export">
 				<source>Export</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>Import / Export</source>
 			</trans-unit>
-			<trans-unit id="title_import" resname="title_import">
+			<trans-unit id="title_import">
 				<source>Import</source>
 			</trans-unit>
-			<trans-unit id="title_export" resname="title_export">
+			<trans-unit id="title_export">
 				<source>Export</source>
 			</trans-unit>
-			<trans-unit id="tableselec_configuration" resname="tableselec_configuration">
+			<trans-unit id="tableselec_configuration">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="exportdata_savedFile" resname="exportdata_savedFile">
+			<trans-unit id="exportdata_savedFile">
 				<source>SAVED FILE</source>
 			</trans-unit>
-			<trans-unit id="exportdata_savedInSBytes" resname="exportdata_savedInSBytes">
+			<trans-unit id="exportdata_savedInSBytes">
 				<source>Saved in "%s", bytes %s</source>
 			</trans-unit>
-			<trans-unit id="exportdata_problemsSavingFile" resname="exportdata_problemsSavingFile">
+			<trans-unit id="exportdata_problemsSavingFile">
 				<source>Problems saving file</source>
 			</trans-unit>
-			<trans-unit id="exportdata_badPathS" resname="exportdata_badPathS">
+			<trans-unit id="exportdata_badPathS">
 				<source>Bad path: "%s"</source>
 			</trans-unit>
-			<trans-unit id="exportdata_filePreset" resname="exportdata_filePreset">
+			<trans-unit id="exportdata_filePreset">
 				<source>File &amp; Preset</source>
 			</trans-unit>
-			<trans-unit id="exportdata_advancedOptions" resname="exportdata_advancedOptions">
+			<trans-unit id="exportdata_advancedOptions">
 				<source>Advanced Options</source>
 			</trans-unit>
-			<trans-unit id="exportdata_messages" resname="exportdata_messages">
+			<trans-unit id="exportdata_messages">
 				<source>Messages</source>
 			</trans-unit>
-			<trans-unit id="execlistqu_structureToBeExported" resname="execlistqu_structureToBeExported">
+			<trans-unit id="execlistqu_structureToBeExported">
 				<source>Structure to be exported</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_toggle_all_disabled_records" resname="impexpcore_toggle_all_disabled_records">
+			<trans-unit id="impexpcore_toggle_all_disabled_records">
 				<source>Toggle disabled records</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_exportPagetreeConfiguration" resname="makeconfig_exportPagetreeConfiguration">
+			<trans-unit id="makeconfig_exportPagetreeConfiguration">
 				<source>Export pagetree configuration</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_pageId" resname="makeconfig_pageId">
+			<trans-unit id="makeconfig_pageId">
 				<source>Page ID</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_tree" resname="makeconfig_tree">
+			<trans-unit id="makeconfig_tree">
 				<source>Tree</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_noTreeExportedOnly" resname="makeconfig_noTreeExportedOnly">
+			<trans-unit id="makeconfig_noTreeExportedOnly">
 				<source>No tree exported - only tables on the page.</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_tablesOnThisPage" resname="makeconfig_tablesOnThisPage">
+			<trans-unit id="makeconfig_tablesOnThisPage">
 				<source>Tables on this page</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_levels" resname="makeconfig_levels">
+			<trans-unit id="makeconfig_levels">
 				<source>Levels</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_includeTables" resname="makeconfig_includeTables">
+			<trans-unit id="makeconfig_includeTables">
 				<source>Include tables</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_exportSingleRecord" resname="makeconfig_exportSingleRecord">
+			<trans-unit id="makeconfig_exportSingleRecord">
 				<source>Export single record</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_record" resname="makeconfig_record">
+			<trans-unit id="makeconfig_record">
 				<source>Record</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_exportTablesFromPages" resname="makeconfig_exportTablesFromPages">
+			<trans-unit id="makeconfig_exportTablesFromPages">
 				<source>Export tables from pages</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_tablePids" resname="makeconfig_tablePids">
+			<trans-unit id="makeconfig_tablePids">
 				<source>Table/Pids</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_tableListEntry" resname="makeconfig_tableListEntry">
+			<trans-unit id="makeconfig_tableListEntry">
             	<source>Table "%s" from %s</source>
             </trans-unit>
-			<trans-unit id="makeconfig_relationsAndExclusions" resname="makeconfig_relationsAndExclusions">
+			<trans-unit id="makeconfig_relationsAndExclusions">
 				<source>Relations and Exclusions</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_includeRelationsToTables" resname="makeconfig_includeRelationsToTables">
+			<trans-unit id="makeconfig_includeRelationsToTables">
 				<source>Include relations to tables</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_useStaticRelationsFor" resname="makeconfig_useStaticRelationsFor">
+			<trans-unit id="makeconfig_useStaticRelationsFor">
 				<source>Use static relations for tables</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_showStaticRelations" resname="makeconfig_showStaticRelations">
+			<trans-unit id="makeconfig_showStaticRelations">
 				<source>Show static relations</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_excludeElements" resname="makeconfig_excludeElements">
+			<trans-unit id="makeconfig_excludeElements">
 				<source>Exclude elements</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_clearAllManualExclusions" resname="makeconfig_clearAllManualExclusions">
+			<trans-unit id="makeconfig_clearAllManualExclusions">
 				<source>Clear all manual exclusions</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_noManuallyExcludedElementsYet" resname="makeconfig_noManuallyExcludedElementsYet">
+			<trans-unit id="makeconfig_noManuallyExcludedElementsYet">
 				<source>No manually excluded elements yet. Exclude by setting checkboxes below in the element display.</source>
 			</trans-unit>
-			<trans-unit id="makeconfig_excludeDisabledElements" resname="makeconfig_excludeDisabledElements">
+			<trans-unit id="makeconfig_excludeDisabledElements">
 				<source>Exclude disabled elements</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_update" resname="makeadvanc_update">
+			<trans-unit id="makeadvanc_update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_softReferences" resname="makeadvanc_softReferences">
+			<trans-unit id="makeadvanc_softReferences">
 				<source>Soft References</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_excludeHtmlCssFile" resname="makeadvanc_excludeHtmlCssFile">
+			<trans-unit id="makeadvanc_excludeHtmlCssFile">
 				<source>Exclude HTML/CSS file resources</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_files" resname="makeadvanc_files">
+			<trans-unit id="makeadvanc_files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_saveFilesOutsideExportFile" resname="makeadvanc_saveFilesOutsideExportFile">
+			<trans-unit id="makeadvanc_saveFilesOutsideExportFile">
 				<source>Save files in extra folder beside the export file</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit" resname="makeadvanc_saveFilesOutsideExportFile_limit">
+			<trans-unit id="makeadvanc_saveFilesOutsideExportFile_limit">
 				<source>(supported for "Save to filename" only)</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_extensionDependencies" resname="makeadvanc_extensionDependencies">
+			<trans-unit id="makeadvanc_extensionDependencies">
 				<source>Extension dependencies</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_selectExtensionsThatThe" resname="makeadvanc_selectExtensionsThatThe">
+			<trans-unit id="makeadvanc_selectExtensionsThatThe">
 				<source>Select extensions that the exported content depends on</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_update" resname="makesavefo_update">
+			<trans-unit id="makesavefo_update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_presets" resname="makesavefo_presets">
+			<trans-unit id="makesavefo_presets">
 				<source>Presets</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_selectPreset" resname="makesavefo_selectPreset">
+			<trans-unit id="makesavefo_selectPreset">
 				<source>Select preset</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_load" resname="makesavefo_load">
+			<trans-unit id="makesavefo_load">
 				<source>Load</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_save" resname="makesavefo_save">
+			<trans-unit id="makesavefo_save">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="pleaseConfirm" resname="pleaseConfirm">
+			<trans-unit id="pleaseConfirm">
 				<source>Please confirm</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_areYouSure" resname="makesavefo_areYouSure">
+			<trans-unit id="makesavefo_areYouSure">
 				<source>Are you sure?</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_delete" resname="makesavefo_delete">
+			<trans-unit id="makesavefo_delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_merge" resname="makesavefo_merge">
+			<trans-unit id="makesavefo_merge">
 				<source>Merge</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_titleOfNewPreset" resname="makesavefo_titleOfNewPreset">
+			<trans-unit id="makesavefo_titleOfNewPreset">
 				<source>Title of new preset</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_public" resname="makesavefo_public">
+			<trans-unit id="makesavefo_public">
 				<source>Public</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_outputOptions" resname="makesavefo_outputOptions">
+			<trans-unit id="makesavefo_outputOptions">
 				<source>Output options</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_title" resname="makesavefo_title">
+			<trans-unit id="makesavefo_title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_description" resname="makesavefo_description">
+			<trans-unit id="makesavefo_description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_notes" resname="makesavefo_notes">
+			<trans-unit id="makesavefo_notes">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_t3d_compressed" resname="makesavefo_t3d_compressed">
+			<trans-unit id="makesavefo_t3d_compressed">
 				<source>T3D file / compressed</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_t3d" resname="makesavefo_t3d">
+			<trans-unit id="makesavefo_t3d">
 				<source>T3D file</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_xml" resname="makesavefo_xml">
+			<trans-unit id="makesavefo_xml">
 				<source>XML</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_fileFormat" resname="makesavefo_fileFormat">
+			<trans-unit id="makesavefo_fileFormat">
 				<source>File format</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_filenameSavedInS" resname="makesavefo_filenameSavedInS">
+			<trans-unit id="makesavefo_filenameSavedInS">
 				<source>Filename (saved in "%s")</source>
 			</trans-unit>
-			<trans-unit id="makesavefo_downloadExport" resname="makesavefo_downloadExport">
+			<trans-unit id="makesavefo_downloadExport">
 				<source>Download export</source>
 			</trans-unit>
-			<trans-unit id="importdata_saveToFilename" resname="importdata_saveToFilename">
+			<trans-unit id="importdata_saveToFilename">
 				<source>Save to filename</source>
 			</trans-unit>
-			<trans-unit id="importdata_selectFileToImport" resname="importdata_selectFileToImport">
+			<trans-unit id="importdata_selectFileToImport">
 				<source>Select file to import</source>
 			</trans-unit>
-			<trans-unit id="importdata_file" resname="importdata_file">
+			<trans-unit id="importdata_file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="importdata_fromPathS" resname="importdata_fromPathS">
+			<trans-unit id="importdata_fromPathS">
 				<source>From path: %s</source>
 			</trans-unit>
-			<trans-unit id="importdata_noteNoDecompressorAvailable" resname="importdata_noteNoDecompressorAvailable">
+			<trans-unit id="importdata_noteNoDecompressorAvailable">
 				<source>NOTE: No decompressor available for compressed files!</source>
 			</trans-unit>
-			<trans-unit id="importdata_importOptions" resname="importdata_importOptions">
+			<trans-unit id="importdata_importOptions">
 				<source>Import Options</source>
 			</trans-unit>
-			<trans-unit id="importdata_update" resname="importdata_update">
+			<trans-unit id="importdata_update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="importdata_updateRecords" resname="importdata_updateRecords">
+			<trans-unit id="importdata_updateRecords">
 				<source>Update records</source>
 			</trans-unit>
-			<trans-unit id="importdata_thisOptionRequiresThat" resname="importdata_thisOptionRequiresThat">
+			<trans-unit id="importdata_thisOptionRequiresThat">
 				<source>This option requires that the structure you import already exists on this server and only needs to be updated with new content!</source>
 			</trans-unit>
-			<trans-unit id="importdata_ignorePidDifferencesGlobally" resname="importdata_ignorePidDifferencesGlobally">
+			<trans-unit id="importdata_ignorePidDifferencesGlobally">
 				<source>Ignore PID differences globally</source>
 			</trans-unit>
-			<trans-unit id="importdata_ifYouSetThis" resname="importdata_ifYouSetThis">
+			<trans-unit id="importdata_ifYouSetThis">
 				<source>If you set this option, the position of updated elements will not be updated to match the structure of the input file.</source>
 			</trans-unit>
-			<trans-unit id="importdata_force_all_UIDS" resname="importdata_force_all_UIDS">
+			<trans-unit id="importdata_force_all_UIDS">
 				<source>Force ALL UIDs values</source>
 			</trans-unit>
-			<trans-unit id="importdata_force_all_UIDS_descr" resname="importdata_force_all_UIDS_descr">
+			<trans-unit id="importdata_force_all_UIDS_descr">
 				<source>With this option the original UID value of all imported records are forced to be the same. BE VERY CAREFUL WITH THIS! (Admin Only).</source>
 			</trans-unit>
-			<trans-unit id="importdata_options" resname="importdata_options">
+			<trans-unit id="importdata_options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="importdata_doNotShowDifferences" resname="importdata_doNotShowDifferences">
+			<trans-unit id="importdata_doNotShowDifferences">
 				<source>Do not show differences in records</source>
 			</trans-unit>
-			<trans-unit id="importdata_greenValuesAreFrom" resname="importdata_greenValuesAreFrom">
+			<trans-unit id="importdata_greenValuesAreFrom">
 				<source>Green values are from the import file, red values from the current database record and black values are similar in both versions.</source>
 			</trans-unit>
-			<trans-unit id="importdata_action" resname="importdata_action">
+			<trans-unit id="importdata_action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="importdata_preview" resname="importdata_preview">
+			<trans-unit id="importdata_preview">
 				<source>Preview</source>
 			</trans-unit>
-			<trans-unit id="importdata_import" resname="importdata_import">
+			<trans-unit id="importdata_import">
 				<source>Import</source>
 			</trans-unit>
-			<trans-unit id="importdata_newImport" resname="importdata_newImport">
+			<trans-unit id="importdata_newImport">
 				<source>New import</source>
 			</trans-unit>
-			<trans-unit id="importdata_enableLogging" resname="importdata_enableLogging">
+			<trans-unit id="importdata_enableLogging">
 				<source>Enable logging</source>
 			</trans-unit>
-			<trans-unit id="importdata_writeIndividualDbActions" resname="importdata_writeIndividualDbActions">
+			<trans-unit id="importdata_writeIndividualDbActions">
 				<source>Write individual database actions during import to the log</source>
 			</trans-unit>
-			<trans-unit id="importdata_thisIsDisabledBy" resname="importdata_thisIsDisabledBy">
+			<trans-unit id="importdata_thisIsDisabledBy">
 				<source>This is disabled by default since there may be hundred of entries generated.</source>
 			</trans-unit>
-			<trans-unit id="importdata_uploadFileFromLocal" resname="importdata_uploadFileFromLocal">
+			<trans-unit id="importdata_uploadFileFromLocal">
 				<source>Upload file from local computer</source>
 			</trans-unit>
-			<trans-unit id="importdata_browse" resname="importdata_browse">
+			<trans-unit id="importdata_browse">
 				<source>Browse</source>
 			</trans-unit>
-			<trans-unit id="importdata_uploadStatus" resname="importdata_uploadStatus">
+			<trans-unit id="importdata_uploadStatus">
 				<source>Upload status</source>
 			</trans-unit>
-			<trans-unit id="importdata_success" resname="importdata_success">
+			<trans-unit id="importdata_success">
 				<source>Success</source>
 			</trans-unit>
-			<trans-unit id="importdata_failureNoFileUploaded" resname="importdata_failureNoFileUploaded">
+			<trans-unit id="importdata_failureNoFileUploaded">
 				<source>Failure: No file uploaded - was it too big? Check system log.</source>
 			</trans-unit>
-			<trans-unit id="importdata_upload" resname="importdata_upload">
+			<trans-unit id="importdata_upload">
 				<source>Upload</source>
 			</trans-unit>
-			<trans-unit id="importdata_upload_error" resname="importdata_upload_error">
+			<trans-unit id="importdata_upload_error">
 				<source>Upload error</source>
 			</trans-unit>
-			<trans-unit id="importdata_upload_nodata" resname="importdata_upload_nodata">
+			<trans-unit id="importdata_upload_nodata">
 				<source>The import module hasn't received any data. This may occur due to a file upload with a large file. Please check the file size of your uploaded file with the server's post_max_size and upload_max_filesize configuration.</source>
 			</trans-unit>
-			<trans-unit id="importdata_metaData" resname="importdata_metaData">
+			<trans-unit id="importdata_metaData">
 				<source>Meta data</source>
 			</trans-unit>
-			<trans-unit id="importdata_title" resname="importdata_title">
+			<trans-unit id="importdata_title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="importdata_description" resname="importdata_description">
+			<trans-unit id="importdata_description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="importdata_notes" resname="importdata_notes">
+			<trans-unit id="importdata_notes">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="importdata_packager" resname="importdata_packager">
+			<trans-unit id="importdata_packager">
 				<source>Packager</source>
 			</trans-unit>
-			<trans-unit id="importdata_email" resname="importdata_email">
+			<trans-unit id="importdata_email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="importdata_metaData_1387" resname="importdata_metaData_1387">
+			<trans-unit id="importdata_metaData_1387">
 				<source>Meta data</source>
 			</trans-unit>
-			<trans-unit id="importdata_messages" resname="importdata_messages">
+			<trans-unit id="importdata_messages">
 				<source>Messages</source>
 			</trans-unit>
-			<trans-unit id="importdata_structureHasBeenImported" resname="importdata_structureHasBeenImported">
+			<trans-unit id="importdata_structureHasBeenImported">
 				<source>Structure has been imported, here is the result</source>
 			</trans-unit>
-			<trans-unit id="importdata_no_default_upload_folder" resname="importdata_no_default_upload_folder">
+			<trans-unit id="importdata_no_default_upload_folder">
 				<source>No default upload folder</source>
 			</trans-unit>
-			<trans-unit id="filterpage_structureToBeImported" resname="filterpage_structureToBeImported">
+			<trans-unit id="filterpage_structureToBeImported">
 				<source>Structure to be imported</source>
 			</trans-unit>
-			<trans-unit id="ALL_tables" resname="ALL_tables">
+			<trans-unit id="ALL_tables">
 				<source>[ ALL tables ]</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_controls" resname="impexpcore_displaycon_controls">
+			<trans-unit id="impexpcore_displaycon_controls">
 				<source>Controls</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_title" resname="impexpcore_displaycon_title">
+			<trans-unit id="impexpcore_displaycon_title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_message" resname="impexpcore_displaycon_message">
+			<trans-unit id="impexpcore_displaycon_message">
 				<source>Message</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_updateMode" resname="impexpcore_displaycon_updateMode">
+			<trans-unit id="impexpcore_displaycon_updateMode">
 				<source>Update Mode</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_currentPath" resname="impexpcore_displaycon_currentPath">
+			<trans-unit id="impexpcore_displaycon_currentPath">
 				<source>Current Path</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_result" resname="impexpcore_displaycon_result">
+			<trans-unit id="impexpcore_displaycon_result">
 				<source>Result</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_displaycon_insidePagetree" resname="impexpcore_displaycon_insidePagetree">
+			<trans-unit id="impexpcore_displaycon_insidePagetree">
 				<source>Inside pagetree</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_outsidePagetree" resname="impexpcore_singlereco_outsidePagetree">
+			<trans-unit id="impexpcore_singlereco_outsidePagetree">
 				<source>Outside pagetree</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_softReferencesFiles" resname="impexpcore_singlereco_softReferencesFiles">
+			<trans-unit id="impexpcore_singlereco_softReferencesFiles">
 				<source>Soft References Files</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_update" resname="impexpcore_singlereco_update">
+			<trans-unit id="impexpcore_singlereco_update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_insert" resname="impexpcore_singlereco_insert">
+			<trans-unit id="impexpcore_singlereco_insert">
 				<source>Insert</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_importAsNew" resname="impexpcore_singlereco_importAsNew">
+			<trans-unit id="impexpcore_singlereco_importAsNew">
 				<source>Import as new</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_ignorePid" resname="impexpcore_singlereco_ignorePid">
+			<trans-unit id="impexpcore_singlereco_ignorePid">
 				<source>Ignore PID</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_respectPid" resname="impexpcore_singlereco_respectPid">
+			<trans-unit id="impexpcore_singlereco_respectPid">
 				<source>Respect PID</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_forceUidSAdmin" resname="impexpcore_singlereco_forceUidSAdmin">
+			<trans-unit id="impexpcore_singlereco_forceUidSAdmin">
 				<source>Force UID [%s] (Admin)</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_exclude" resname="impexpcore_singlereco_exclude">
+			<trans-unit id="impexpcore_singlereco_exclude">
 				<source>Exclude</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_title" resname="impexpcore_singlereco_title">
+			<trans-unit id="impexpcore_singlereco_title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_descr" resname="impexpcore_singlereco_descr">
+			<trans-unit id="impexpcore_singlereco_descr">
 				<source>Descr</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_filename" resname="impexpcore_singlereco_filename">
+			<trans-unit id="impexpcore_singlereco_filename">
 				<source>Filename</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_singlereco_value" resname="impexpcore_singlereco_value">
+			<trans-unit id="impexpcore_singlereco_value">
 				<source>Value</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_softrefsel_record" resname="impexpcore_softrefsel_record">
+			<trans-unit id="impexpcore_softrefsel_record">
 				<source>Record</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_softrefsel_editable" resname="impexpcore_softrefsel_editable">
+			<trans-unit id="impexpcore_softrefsel_editable">
 				<source>Editable</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_softrefsel_exclude" resname="impexpcore_softrefsel_exclude">
+			<trans-unit id="impexpcore_softrefsel_exclude">
 				<source>Exclude</source>
 			</trans-unit>
-			<trans-unit id="impexpcore_printerror_description" resname="impexpcore_printerror_description">
+			<trans-unit id="impexpcore_printerror_description">
 				<source>Description</source>
 			</trans-unit>
 		</body>

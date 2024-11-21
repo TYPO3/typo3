@@ -3,142 +3,142 @@
 	<file source-language="en" datatype="plaintext" original="EXT:blog_example/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="blog_example">
 		<header/>
 		<body>
-			<trans-unit id="tx_blogexample_domain_model_blog" resname="tx_blogexample_domain_model_blog">
+			<trans-unit id="tx_blogexample_domain_model_blog">
 				<source>Blog</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_blog.title" resname="tx_blogexample_domain_model_blog.title">
+			<trans-unit id="tx_blogexample_domain_model_blog.title">
 				<source>Blog title</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_blog.description" resname="tx_blogexample_domain_model_blog.description">
+			<trans-unit id="tx_blogexample_domain_model_blog.description">
 				<source>Short description</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_blog.logo" resname="tx_blogexample_domain_model_blog.logo">
+			<trans-unit id="tx_blogexample_domain_model_blog.logo">
 				<source>Logo</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_blog.posts" resname="tx_blogexample_domain_model_blog.posts">
+			<trans-unit id="tx_blogexample_domain_model_blog.posts">
 				<source>Posts</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_blog.administrator" resname="tx_blogexample_domain_model_blog.administrator">
+			<trans-unit id="tx_blogexample_domain_model_blog.administrator">
 				<source>Administrator</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post" resname="tx_blogexample_domain_model_post">
+			<trans-unit id="tx_blogexample_domain_model_post">
 				<source>Post</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.blog" resname="tx_blogexample_domain_model_post.blog">
+			<trans-unit id="tx_blogexample_domain_model_post.blog">
 				<source>Related to</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.title" resname="tx_blogexample_domain_model_post.title">
+			<trans-unit id="tx_blogexample_domain_model_post.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.subtitle" resname="tx_blogexample_domain_model_post.subtitle">
+			<trans-unit id="tx_blogexample_domain_model_post.subtitle">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.date" resname="tx_blogexample_domain_model_post.date">
+			<trans-unit id="tx_blogexample_domain_model_post.date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.archive_date" resname="tx_blogexample_domain_model_post.archive_date">
+			<trans-unit id="tx_blogexample_domain_model_post.archive_date">
 				<source>Archive date</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.author" resname="tx_blogexample_domain_model_post.author">
+			<trans-unit id="tx_blogexample_domain_model_post.author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.second_author" resname="tx_blogexample_domain_model_post.second_author">
+			<trans-unit id="tx_blogexample_domain_model_post.second_author">
 				<source>Second author</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.reviewer" resname="tx_blogexample_domain_model_post.reviewer">
+			<trans-unit id="tx_blogexample_domain_model_post.reviewer">
 				<source>Reviewer</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.content" resname="tx_blogexample_domain_model_post.content">
+			<trans-unit id="tx_blogexample_domain_model_post.content">
 				<source>Content</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.votes" resname="tx_blogexample_domain_model_post.votes">
+			<trans-unit id="tx_blogexample_domain_model_post.votes">
 				<source>Votes</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.published" resname="tx_blogexample_domain_model_post.published">
+			<trans-unit id="tx_blogexample_domain_model_post.published">
 				<source>Published</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.tags" resname="tx_blogexample_domain_model_post.tags">
+			<trans-unit id="tx_blogexample_domain_model_post.tags">
 				<source>Tags</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.comments" resname="tx_blogexample_domain_model_post.comments">
+			<trans-unit id="tx_blogexample_domain_model_post.comments">
 				<source>Comments</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.related" resname="tx_blogexample_domain_model_post.related">
+			<trans-unit id="tx_blogexample_domain_model_post.related">
 				<source>Related posts</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.additional_info" resname="tx_blogexample_domain_model_post.additional_info">
+			<trans-unit id="tx_blogexample_domain_model_post.additional_info">
 				<source>Additional info (inline 1:1 foreign_field)</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.additional_name" resname="tx_blogexample_domain_model_post.additional_name">
+			<trans-unit id="tx_blogexample_domain_model_post.additional_name">
 				<source>Additional name (inline 1:1 csv)</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_post.additional_comments" resname="tx_blogexample_domain_model_post.additional_comments">
+			<trans-unit id="tx_blogexample_domain_model_post.additional_comments">
 				<source>Additional comments (inline 1:n csv)</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_person" resname="tx_blogexample_domain_model_person">
+			<trans-unit id="tx_blogexample_domain_model_person">
 				<source>Person</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_person.firstname" resname="tx_blogexample_domain_model_person.firstname">
+			<trans-unit id="tx_blogexample_domain_model_person.firstname">
 				<source>Firstname</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_person.lastname" resname="tx_blogexample_domain_model_person.lastname">
+			<trans-unit id="tx_blogexample_domain_model_person.lastname">
 				<source>Lastname</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_person.email" resname="tx_blogexample_domain_model_person.email">
+			<trans-unit id="tx_blogexample_domain_model_person.email">
 				<source>E-Mail</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_person.avatar" resname="tx_blogexample_domain_model_person.avatar">
+			<trans-unit id="tx_blogexample_domain_model_person.avatar">
 				<source>Avatar</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_person.tags" resname="tx_blogexample_domain_model_person.tags">
+			<trans-unit id="tx_blogexample_domain_model_person.tags">
 				<source>Tags</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_person.tags_special" resname="tx_blogexample_domain_model_person.tags_special">
+			<trans-unit id="tx_blogexample_domain_model_person.tags_special">
 				<source>Special tags</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_comment" resname="tx_blogexample_domain_model_comment">
+			<trans-unit id="tx_blogexample_domain_model_comment">
 				<source>Comment</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_comment.date" resname="tx_blogexample_domain_model_comment.date">
+			<trans-unit id="tx_blogexample_domain_model_comment.date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_comment.author" resname="tx_blogexample_domain_model_comment.author">
+			<trans-unit id="tx_blogexample_domain_model_comment.author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_comment.reviewer" resname="tx_blogexample_domain_model_comment.reviewer">
+			<trans-unit id="tx_blogexample_domain_model_comment.reviewer">
 				<source>Reviewer</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_comment.email" resname="tx_blogexample_domain_model_comment.email">
+			<trans-unit id="tx_blogexample_domain_model_comment.email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_comment.content" resname="tx_blogexample_domain_model_comment.content">
+			<trans-unit id="tx_blogexample_domain_model_comment.content">
 				<source>Content</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_registryentry.name" resname="tx_blogexample_domain_model_registryentry.name">
+			<trans-unit id="tx_blogexample_domain_model_registryentry.name">
 				<source>Registry Entry Key</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_tag" resname="tx_blogexample_domain_model_tag">
+			<trans-unit id="tx_blogexample_domain_model_tag">
 				<source>Tag</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_tag.name" resname="tx_blogexample_domain_model_tag.name">
+			<trans-unit id="tx_blogexample_domain_model_tag.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_tag.items" resname="tx_blogexample_domain_model_tag.items">
+			<trans-unit id="tx_blogexample_domain_model_tag.items">
 				<source>Related items</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_info" resname="tx_blogexample_domain_model_info">
+			<trans-unit id="tx_blogexample_domain_model_info">
 				<source>Additional Info</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_info.name" resname="tx_blogexample_domain_model_info.name">
+			<trans-unit id="tx_blogexample_domain_model_info.name">
 				<source>Additional name</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_info.post" resname="tx_blogexample_domain_model_info.post">
+			<trans-unit id="tx_blogexample_domain_model_info.post">
 				<source>Post - parent</source>
 			</trans-unit>
-			<trans-unit id="tx_blogexample_domain_model_dateexample" resname="tx_blogexample_domain_model_dateexample">
+			<trans-unit id="tx_blogexample_domain_model_dateexample">
 				<source>Date example</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tx_extbase_type.TYPO3Tests\BlogExample\Domain\Model\Administrator" resname="fe_users.tx_extbase_type.TYPO3Tests\BlogExample\Domain\Model\Administrator">
+			<trans-unit id="fe_users.tx_extbase_type.TYPO3Tests\BlogExample\Domain\Model\Administrator">
 				<source>Blog Admin (BlogExample)</source>
 			</trans-unit>
 		</body>

@@ -3,97 +3,97 @@
 	<file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note">
 		<header/>
 		<body>
-			<trans-unit id="internal_note" resname="internal_note">
+			<trans-unit id="internal_note">
 				<source>Internal notes</source>
 			</trans-unit>
-			<trans-unit id="new_internal_note" resname="new_internal_note">
+			<trans-unit id="new_internal_note">
 				<source>Create internal note for this page</source>
 			</trans-unit>
-			<trans-unit id="author" resname="author">
+			<trans-unit id="author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="date" resname="date">
+			<trans-unit id="date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="edit_note" resname="edit_note">
+			<trans-unit id="edit_note">
 				<source>Edit note record</source>
 			</trans-unit>
-			<trans-unit id="personal" resname="personal">
+			<trans-unit id="personal">
 				<source>Personal</source>
 			</trans-unit>
-			<trans-unit id="category.1" resname="category.1">
+			<trans-unit id="category.1">
 				<source>Instructions</source>
 			</trans-unit>
-			<trans-unit id="category.2" resname="category.2">
+			<trans-unit id="category.2">
 				<source>Template</source>
 			</trans-unit>
-			<trans-unit id="category.3" resname="category.3">
+			<trans-unit id="category.3">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="category.4" resname="category.4">
+			<trans-unit id="category.4">
 				<source>To-do</source>
 			</trans-unit>
-			<trans-unit id="yes" resname="yes">
+			<trans-unit id="yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="author_deleted" resname="author_deleted">
+			<trans-unit id="author_deleted">
 				<source>Unknown author</source>
 			</trans-unit>
-			<trans-unit id="widget_group.sys_note_widget.title" resname="widget_group.sys_note_widget.title">
+			<trans-unit id="widget_group.sys_note_widget.title">
 				<source>System Notes</source>
 			</trans-unit>
 			<!-- All -->
-			<trans-unit id="widget.all.title" resname="widget.all.title">
+			<trans-unit id="widget.all.title">
 				<source>All System Notes</source>
 			</trans-unit>
-			<trans-unit id="widget.all.description" resname="widget.all.description">
+			<trans-unit id="widget.all.description">
 				<source>Shows a list of all pages with system notes</source>
 			</trans-unit>
 			<!-- Default -->
-			<trans-unit id="widget.pagesWithInternalNoteDefault.title" resname="widget.pagesWithInternalNoteDefault.title">
+			<trans-unit id="widget.pagesWithInternalNoteDefault.title">
 				<source>Notes in the category "Default"</source>
 			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteDefault.description" resname="widget.pagesWithInternalNoteDefault.description">
+			<trans-unit id="widget.pagesWithInternalNoteDefault.description">
 				<source>Shows a list of all pages with system notes in the category "Default"</source>
 			</trans-unit>
 			<!-- ToDos -->
-			<trans-unit id="widget.pagesWithInternalNoteToDos.title" resname="widget.pagesWithInternalNoteToDos.title">
+			<trans-unit id="widget.pagesWithInternalNoteToDos.title">
 				<source>Notes in the category "ToDo"</source>
 			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteToDos.description" resname="widget.pagesWithInternalNoteToDos.description">
+			<trans-unit id="widget.pagesWithInternalNoteToDos.description">
 				<source>Shows a list of all pages with system notes in the category "ToDo"</source>
 			</trans-unit>
 			<!-- Template -->
-			<trans-unit id="widget.pagesWithInternalNoteTemplate.title" resname="widget.pagesWithInternalNoteTemplate.title">
+			<trans-unit id="widget.pagesWithInternalNoteTemplate.title">
 				<source>Notes in the category "Template"</source>
 			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteTemplate.description" resname="widget.pagesWithInternalNoteTemplate.description">
+			<trans-unit id="widget.pagesWithInternalNoteTemplate.description">
 				<source>Shows a list of all pages with system notes in the category "Template"</source>
 			</trans-unit>
 			<!-- Notes -->
-			<trans-unit id="widget.pagesWithInternalNoteNotes.title" resname="widget.pagesWithInternalNoteNotes.title">
+			<trans-unit id="widget.pagesWithInternalNoteNotes.title">
 				<source>Notes in the category "Notes"</source>
 			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteNotes.description" resname="widget.pagesWithInternalNoteNotes.description">
+			<trans-unit id="widget.pagesWithInternalNoteNotes.description">
 				<source>Shows a list of all pages with system notes in the category "Notes"</source>
 			</trans-unit>
 			<!-- Instructions -->
-			<trans-unit id="widget.pagesWithInternalNoteInstructions.title" resname="widget.pagesWithInternalNoteInstructions.title">
+			<trans-unit id="widget.pagesWithInternalNoteInstructions.title">
 				<source>Notes in the category "Instructions"</source>
 			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteInstructions.description" resname="widget.pagesWithInternalNoteInstructions.description">
+			<trans-unit id="widget.pagesWithInternalNoteInstructions.description">
 				<source>Shows a list of all pages with system notes in the category "Instructions"</source>
 			</trans-unit>
-			<trans-unit id="created" resname="created">
+			<trans-unit id="created">
 				<source>Created</source>
 			</trans-unit>
-			<trans-unit id="subject" resname="subject">
+			<trans-unit id="subject">
 				<source>Subject</source>
 			</trans-unit>
-			<trans-unit id="subjectmessage" resname="subjectmessage">
+			<trans-unit id="subjectmessage">
 				<source>Subject and message</source>
 			</trans-unit>
-			<trans-unit id="goto_page" resname="goto_page">
+			<trans-unit id="goto_page">
 				<source>Go to page</source>
 			</trans-unit>
 		</body>

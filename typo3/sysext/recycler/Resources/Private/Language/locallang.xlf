@@ -3,13 +3,13 @@
 	<file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:35Z" product-name="recycler">
 		<header/>
 		<body>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>Recycler</source>
 			</trans-unit>
-			<trans-unit id="description" resname="description">
+			<trans-unit id="description">
 				<source>The recycler allows you to select any deleted data and undelete it. You can undelete recursive if the parent of the element is deleted too.</source>
 			</trans-unit>
-			<trans-unit id="label_allrecordtypes" resname="label_allrecordtypes">
+			<trans-unit id="label_allrecordtypes">
 				<source>All Record Types</source>
 			</trans-unit>
 			<trans-unit id="filter.search">
@@ -21,124 +21,124 @@
 			<trans-unit id="filter.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="button.cancel" resname="button.cancel">
+			<trans-unit id="button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="button.delete" resname="button.delete">
+			<trans-unit id="button.delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="button.deleteselected" resname="button.deleteselected">
+			<trans-unit id="button.deleteselected">
 				<source>Delete {0} records</source>
 			</trans-unit>
-			<trans-unit id="button.undo" resname="button.undo">
+			<trans-unit id="button.undo">
 				<source>Recover</source>
 			</trans-unit>
-			<trans-unit id="button.expand" resname="button.expand">
+			<trans-unit id="button.expand">
 				<source>Expand record</source>
 			</trans-unit>
-			<trans-unit id="button.dropdown.multiselect" resname="button.dropdown.multiselect">
+			<trans-unit id="button.dropdown.multiselect">
 				<source>Open context menu for multiselect options</source>
 			</trans-unit>
-			<trans-unit id="button.undoselected" resname="button.undoselected">
+			<trans-unit id="button.undoselected">
 				<source>Recover {0} records</source>
 			</trans-unit>
-			<trans-unit id="button.reload" resname="button.reload">
+			<trans-unit id="button.reload">
 				<source>Reload</source>
 			</trans-unit>
-			<trans-unit id="modal.delete.header" resname="modal.delete.header">
+			<trans-unit id="modal.delete.header">
 				<source>Confirm deletion</source>
 			</trans-unit>
-			<trans-unit id="modal.undo.header" resname="modal.undo.header">
+			<trans-unit id="modal.undo.header">
 				<source>Recover records</source>
 			</trans-unit>
-			<trans-unit id="modal.undo.recursive" resname="modal.undo.recursive">
+			<trans-unit id="modal.undo.recursive">
 				<source>Recover content and subpages recursively</source>
 			</trans-unit>
-			<trans-unit id="modal.deletecontent.text" resname="modal.deletecontent.text">
+			<trans-unit id="modal.deletecontent.text">
 				<source>Do you really want to delete the record "{0}" {1} permanently? You cannot revert this action!</source>
 			</trans-unit>
-			<trans-unit id="modal.massdelete.text" resname="modal.massdelete.text">
+			<trans-unit id="modal.massdelete.text">
 				<source>Do you really want to delete all selected records and potential subpages? You cannot revert this action!</source>
 			</trans-unit>
-			<trans-unit id="modal.deletepage.text" resname="modal.deletepage.text">
+			<trans-unit id="modal.deletepage.text">
 				<source>Do you really want to delete the page "{0}" {1} and all of its contents (records and pages) permanently? You cannot revert this action!</source>
 			</trans-unit>
-			<trans-unit id="modal.undocontent.text" resname="modal.undocontent.text">
+			<trans-unit id="modal.undocontent.text">
 				<source>Do you really want to recover the record "{0}" {1}?</source>
 			</trans-unit>
-			<trans-unit id="modal.undopage.text" resname="modal.undopage.text">
+			<trans-unit id="modal.undopage.text">
 				<source>Do you really want to recover the page "{0}" {1}, its contents and optionally all of its subpages?</source>
 			</trans-unit>
-			<trans-unit id="modal.undo.parentpages" resname="modal.undo.parentpages">
+			<trans-unit id="modal.undo.parentpages">
 				<source>All parent pages have been restored to ensure a valid rootline!</source>
 			</trans-unit>
-			<trans-unit id="modal.massundo.text" resname="modal.massundo.text">
+			<trans-unit id="modal.massundo.text">
 				<source>Do you really want to recover all selected records and optionally potential subpages?</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.norecordsselected" resname="flashmessage.delete.norecordsselected">
+			<trans-unit id="flashmessage.delete.norecordsselected">
 				<source>No records set to delete.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.success.singular" resname="flashmessage.delete.success.singular">
+			<trans-unit id="flashmessage.delete.success.singular">
 				<source>One record was deleted.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.success.plural" resname="flashmessage.delete.success.plural">
+			<trans-unit id="flashmessage.delete.success.plural">
 				<source>%d records were deleted.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.failure.singular" resname="flashmessage.delete.failure.singular">
+			<trans-unit id="flashmessage.delete.failure.singular">
 				<source>Could not delete one record.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.delete.failure.plural" resname="flashmessage.delete.failure.plural">
+			<trans-unit id="flashmessage.delete.failure.plural">
 				<source>Could not delete %d records.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.norecordsselected" resname="flashmessage.undo.norecordsselected">
+			<trans-unit id="flashmessage.undo.norecordsselected">
 				<source>No records set to recover.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.success.singular" resname="flashmessage.undo.success.singular">
+			<trans-unit id="flashmessage.undo.success.singular">
 				<source>One record was recovered.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.success.plural" resname="flashmessage.undo.success.plural">
+			<trans-unit id="flashmessage.undo.success.plural">
 				<source>%d records were recovered.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.failure.singular" resname="flashmessage.undo.failure.singular">
+			<trans-unit id="flashmessage.undo.failure.singular">
 				<source>Could not recover one record.</source>
 			</trans-unit>
-			<trans-unit id="flashmessage.undo.failure.plural" resname="flashmessage.undo.failure.plural">
+			<trans-unit id="flashmessage.undo.failure.plural">
 				<source>Could not recover %d records.</source>
 			</trans-unit>
-			<trans-unit id="alert.noDeletedRecords" resname="alert.noDeletedRecords">
+			<trans-unit id="alert.noDeletedRecords">
 				<source>No deleted records have been found.</source>
 			</trans-unit>
-			<trans-unit id="table.caption.recently_deleted_records" resname="table.caption.recently_deleted_records">
+			<trans-unit id="table.caption.recently_deleted_records">
 				<source>Recently deleted records</source>
 			</trans-unit>
-			<trans-unit id="table.header.uid" resname="table.header.uid">
+			<trans-unit id="table.header.uid">
 				<source>UID</source>
 			</trans-unit>
-			<trans-unit id="table.header.pageTitle" resname="table.header.pageTitle">
+			<trans-unit id="table.header.pageTitle">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="table.header.pid" resname="table.header.pid">
+			<trans-unit id="table.header.pid">
 				<source>Page ID</source>
 			</trans-unit>
-			<trans-unit id="table.header.record" resname="table.header.record">
+			<trans-unit id="table.header.record">
 				<source>Record</source>
 			</trans-unit>
-			<trans-unit id="table.header.tstamp" resname="table.header.tstamp">
+			<trans-unit id="table.header.tstamp">
 				<source>Last edit</source>
 			</trans-unit>
-			<trans-unit id="table.header.crdate" resname="table.header.crdate">
+			<trans-unit id="table.header.crdate">
 				<source>Created at</source>
 			</trans-unit>
-			<trans-unit id="table.header.createdBy" resname="table.header.createdBy">
+			<trans-unit id="table.header.createdBy">
 				<source>Created by</source>
 			</trans-unit>
-			<trans-unit id="table.header.deletedBy" resname="table.header.deletedBy">
+			<trans-unit id="table.header.deletedBy">
 				<source>Deleted by</source>
 			</trans-unit>
-			<trans-unit id="table.header.path" resname="table.header.path">
+			<trans-unit id="table.header.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="record.userDeleted" resname="record.userDeleted">
+			<trans-unit id="record.userDeleted">
 				<source>[Deleted user] (id=%s)</source>
 			</trans-unit>
 		</body>

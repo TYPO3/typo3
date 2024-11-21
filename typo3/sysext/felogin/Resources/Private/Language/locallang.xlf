@@ -3,118 +3,118 @@
 	<file source-language="en" datatype="plaintext" original="EXT:felogin/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="felogin">
 		<header/>
 		<body>
-			<trans-unit id="login_user_info" resname="login_user_info">
+			<trans-unit id="login_user_info">
 				<source>You are now logged in as '%s'</source>
 			</trans-unit>
-			<trans-unit id="welcome_header" resname="welcome_header">
+			<trans-unit id="welcome_header">
 				<source>User login</source>
 			</trans-unit>
-			<trans-unit id="welcome_message" resname="welcome_message">
+			<trans-unit id="welcome_message">
 				<source>Enter your username and password here in order to log in on the website</source>
 			</trans-unit>
-			<trans-unit id="logout_header" resname="logout_header">
+			<trans-unit id="logout_header">
 				<source>You have logged out.</source>
 			</trans-unit>
-			<trans-unit id="logout_message" resname="logout_message">
+			<trans-unit id="logout_message">
 				<source>You just logged out from your user session on this website. You can login again or as another user by the form below.</source>
 			</trans-unit>
-			<trans-unit id="error_header" resname="error_header">
+			<trans-unit id="error_header">
 				<source>Login failure</source>
 			</trans-unit>
-			<trans-unit id="error_message" resname="error_message" xml:space="preserve">
+			<trans-unit id="error_message" xml:space="preserve">
 				<source>An error occurred during login. Most likely you didn't enter the username or password correctly.
 Be certain that you enter them precisely as they are, including upper/lower case.
 Another possibility is that cookies might be disabled in your web browser.</source>
 			</trans-unit>
-			<trans-unit id="success_header" resname="success_header">
+			<trans-unit id="success_header">
 				<source>Login successful</source>
 			</trans-unit>
-			<trans-unit id="success_message" resname="success_message">
+			<trans-unit id="success_message">
 				<source>You are now logged in as '###USER###'</source>
 			</trans-unit>
-			<trans-unit id="status_header" resname="status_header">
+			<trans-unit id="status_header">
 				<source>Current status</source>
 			</trans-unit>
-			<trans-unit id="status_message" resname="status_message">
+			<trans-unit id="status_message">
 				<source>This is your current status</source>
 			</trans-unit>
-			<trans-unit id="cookie_warning" resname="cookie_warning">
+			<trans-unit id="cookie_warning">
 				<source>Warning: There is a possibility that cookies are not enabled in your web browser! If your login disappears on your next click that is the case and you should enable cookies (or accept cookies from this website) immediately!</source>
 			</trans-unit>
-			<trans-unit id="username" resname="username">
+			<trans-unit id="username">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="password" resname="password">
+			<trans-unit id="password">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="login" resname="login">
+			<trans-unit id="login">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="permalogin" resname="permalogin">
+			<trans-unit id="permalogin">
 				<source>Stay logged in</source>
 			</trans-unit>
-			<trans-unit id="logout" resname="logout">
+			<trans-unit id="logout">
 				<source>Logout</source>
 			</trans-unit>
-			<trans-unit id="send_password" resname="send_password">
+			<trans-unit id="send_password">
 				<source>Send password</source>
 			</trans-unit>
-			<trans-unit id="reset_password" resname="reset_password">
+			<trans-unit id="reset_password">
 				<source>Reset Password</source>
 			</trans-unit>
-			<trans-unit id="change_password_header" resname="change_password_header">
+			<trans-unit id="change_password_header">
 				<source>Change your password</source>
 			</trans-unit>
-			<trans-unit id="change_password_description" resname="change_password_description">
+			<trans-unit id="change_password_description">
 				<source>Please enter your new password twice.</source>
 			</trans-unit>
-			<trans-unit id="password_requirement" resname="password_requirement">
+			<trans-unit id="password_requirement">
 				<source>Ensure that your new password matches the following requirements:</source>
 			</trans-unit>
-			<trans-unit id="change_password_nolinkprefix_message" resname="change_password_nolinkprefix_message">
+			<trans-unit id="change_password_nolinkprefix_message">
 				<source>Error: there is no prefix for the link. Please set one of the following in your typoscript: plugin.tx_felogin_pi1.feloginBaseURL = http://yourdomain/, config.baseURL = http://yourdomain/, config.absRefPrefix = /</source>
 			</trans-unit>
-			<trans-unit id="change_password_notvalid_message" resname="change_password_notvalid_message">
+			<trans-unit id="change_password_notvalid_message">
 				<source>The link you clicked is not valid. Please repeat the forgot password procedure.</source>
 			</trans-unit>
-			<trans-unit id="change_password_notequal_message" resname="change_password_notequal_message">
+			<trans-unit id="change_password_notequal_message">
 				<source>The passwords are not equal, please enter your new password twice. Password needs a minimum length of %s chars.</source>
 			</trans-unit>
-			<trans-unit id="change_password_tooshort_message" resname="change_password_tooshort_message">
+			<trans-unit id="change_password_tooshort_message">
 				<source>The password length is too short. Please enter your new password twice. Password needs a minimum length of %s chars.</source>
 			</trans-unit>
-			<trans-unit id="change_password_done_message" resname="change_password_done_message">
+			<trans-unit id="change_password_done_message">
 				<source>Your password has been saved. You can now login with your new password.</source>
 			</trans-unit>
-			<trans-unit id="change_password" resname="change_password">
+			<trans-unit id="change_password">
 				<source>Change your password</source>
 			</trans-unit>
-			<trans-unit id="newpassword_label1" resname="newpassword_label1">
+			<trans-unit id="newpassword_label1">
 				<source>Enter new password</source>
 			</trans-unit>
-			<trans-unit id="newpassword_label2" resname="newpassword_label2">
+			<trans-unit id="newpassword_label2">
 				<source>Repeat new password</source>
 			</trans-unit>
-			<trans-unit id="your_email" resname="your_email">
+			<trans-unit id="your_email">
 				<source>Your email</source>
 			</trans-unit>
-			<trans-unit id="forgot_header" resname="forgot_header">
+			<trans-unit id="forgot_header">
 				<source>Forgot your password?</source>
 			</trans-unit>
-			<trans-unit id="forgot_email_password" resname="forgot_email_password" xml:space="preserve">
+			<trans-unit id="forgot_email_password" xml:space="preserve">
 				<source>Your password
 Hi %s
 
 Your username is "%s"
 Your password is "%s"</source>
 			</trans-unit>
-			<trans-unit id="forgot_email_nopassword" resname="forgot_email_nopassword" xml:space="preserve">
+			<trans-unit id="forgot_email_nopassword" xml:space="preserve">
 				<source>Your password
 Hi %s
 
 We couldn't find a username for this email address and so cannot send the password to you. Probably you misspelled the email address (upper/lower case makes a difference) or maybe you even didn't register yet?</source>
 			</trans-unit>
-			<trans-unit id="forgot_validate_reset_password" resname="forgot_validate_reset_password" xml:space="preserve">
+			<trans-unit id="forgot_validate_reset_password" xml:space="preserve">
 				<source>Your new password
 Dear %s,
 
@@ -123,50 +123,50 @@ This email was sent in response to your request to reset your password. Please c
 
 For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.</source>
 			</trans-unit>
-			<trans-unit id="forgot_message" resname="forgot_message">
+			<trans-unit id="forgot_message">
 				<source>Please enter the email address by which you registered your user account. Then press "Send password" and your password will immediately be emailed to you. Make sure to spell your email address correctly.</source>
 			</trans-unit>
-			<trans-unit id="forgot_message_emailSent" resname="forgot_message_emailSent">
+			<trans-unit id="forgot_message_emailSent">
 				<source>Your password has now been sent to the email address %s</source>
 			</trans-unit>
-			<trans-unit id="forgot_reset_message" resname="forgot_reset_message">
+			<trans-unit id="forgot_reset_message">
 				<source>Please enter your username or email address. Instructions for resetting the password will be immediately emailed to you.</source>
 			</trans-unit>
-			<trans-unit id="forgot_reset_message_emailSent" resname="forgot_reset_message_emailSent">
+			<trans-unit id="forgot_reset_message_emailSent">
 				<source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
 			</trans-unit>
-			<trans-unit id="forgot_reset_message_error" resname="forgot_reset_message_error">
+			<trans-unit id="forgot_reset_message_error">
 				<source>Your account or email address does not exist.</source>
 			</trans-unit>
-			<trans-unit id="forgot_header_backToLogin" resname="forgot_header_backToLogin">
+			<trans-unit id="forgot_header_backToLogin">
 				<source>Return to login form</source>
 			</trans-unit>
-			<trans-unit id="enter_your_data" resname="enter_your_data">
+			<trans-unit id="enter_your_data">
 				<source>Username or email address</source>
 			</trans-unit>
-			<trans-unit id="password_recovery_mail_header" resname="password_recovery_mail_header">
+			<trans-unit id="password_recovery_mail_header">
 				<source>Your new password</source>
 			</trans-unit>
-			<trans-unit id="password_recovery_link" resname="password_recovery_link">
+			<trans-unit id="password_recovery_link">
 				<source>Password recovery link</source>
 			</trans-unit>
-			<trans-unit id="password_recovery_link_expired" resname="password_recovery_link_expired">
+			<trans-unit id="password_recovery_link_expired">
 				<source>Your password recovery link is expired.</source>
 			</trans-unit>
-			<trans-unit id="empty_password_and_password_repeat" resname="empty_password_and_password_repeat">
+			<trans-unit id="empty_password_and_password_repeat">
 				<source>New password and new password repeat cannot be empty</source>
 			</trans-unit>
-			<trans-unit id="password_must_match_repeated" resname="password_must_match_repeated">
+			<trans-unit id="password_must_match_repeated">
 				<source>New Password must match repeated password.</source>
 			</trans-unit>
-			<trans-unit id="forgot_validate_reset_password_html" resname="forgot_validate_reset_password_html" xml:space="preserve">
+			<trans-unit id="forgot_validate_reset_password_html" xml:space="preserve">
 				<source>&lt;p&gt;Dear %s,&lt;/p&gt;
 &lt;p&gt;This email was sent in response to your request to reset your password. Please click on the link below.&lt;/p&gt;
 &lt;p&gt;%s&lt;/p&gt;
 &lt;p&gt;For security reasons, this link is only active until %s. If you do not visit the link before then, you will need to repeat the password reset steps.&lt;/p&gt;
 				</source>
 			</trans-unit>
-			<trans-unit id="forgot_validate_reset_password_plaintext" resname="forgot_validate_reset_password" xml:space="preserve">
+			<trans-unit id="forgot_validate_reset_password_plaintext" xml:space="preserve">
 				<source>Dear %s,
 
 This email was sent in response to your request to reset your password. Please click on the link below.

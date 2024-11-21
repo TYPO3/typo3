@@ -3,70 +3,70 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_view_help.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="details" resname="details">
+			<trans-unit id="details">
 				<source>Details</source>
 			</trans-unit>
-			<trans-unit id="syntax" resname="syntax">
+			<trans-unit id="syntax">
 				<source>Syntax</source>
 			</trans-unit>
-			<trans-unit id="seeAlso" resname="seeAlso">
+			<trans-unit id="seeAlso">
 				<source>See also</source>
 			</trans-unit>
-			<trans-unit id="goBack" resname="goBack">
+			<trans-unit id="goBack">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="fullDescription" resname="fullDescription">
+			<trans-unit id="fullDescription">
 				<source>See full description of table</source>
 			</trans-unit>
-			<trans-unit id="fullDescription_module" resname="fullDescription_module">
+			<trans-unit id="fullDescription_module">
 				<source>See full description of module</source>
 			</trans-unit>
-			<trans-unit id="goToToc" resname="goToToc">
+			<trans-unit id="goToToc">
 				<source>&lt;&lt; go to Manual Index</source>
 			</trans-unit>
-			<trans-unit id="to_top" resname="to_top">
+			<trans-unit id="to_top">
 				<source>To top</source>
 			</trans-unit>
-			<trans-unit id="TOC" resname="TOC">
+			<trans-unit id="TOC">
 				<source>Table Of Contents</source>
 			</trans-unit>
-			<trans-unit id="TOC_core" resname="TOC_core">
+			<trans-unit id="TOC_core">
 				<source>TYPO3 Core Features</source>
 			</trans-unit>
-			<trans-unit id="TOC_modules" resname="TOC_modules">
+			<trans-unit id="TOC_modules">
 				<source>Backend Modules</source>
 			</trans-unit>
-			<trans-unit id="TOC_tables" resname="TOC_tables">
+			<trans-unit id="TOC_tables">
 				<source>Database Tables</source>
 			</trans-unit>
-			<trans-unit id="TOC_extensions" resname="TOC_extensions">
+			<trans-unit id="TOC_extensions">
 				<source>Extensions</source>
 			</trans-unit>
-			<trans-unit id="TOC_glossary" resname="TOC_glossary">
+			<trans-unit id="TOC_glossary">
 				<source>Glossary</source>
 			</trans-unit>
-			<trans-unit id="TOC_other" resname="TOC_other">
+			<trans-unit id="TOC_other">
 				<source>Other</source>
 			</trans-unit>
-			<trans-unit id="close" resname="close">
+			<trans-unit id="close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>TYPO3 Inline Help</source>
 			</trans-unit>
-			<trans-unit id="manual_title" resname="manual_title">
+			<trans-unit id="manual_title">
 				<source>TYPO3 Inline User Manual</source>
 			</trans-unit>
-			<trans-unit id="introduction" resname="introduction">
+			<trans-unit id="introduction">
 				<source>Introduction</source>
 			</trans-unit>
-			<trans-unit id="description" resname="description">
+			<trans-unit id="description">
 				<source>The TYPO3 Inline User Manual is composed from the available help in this TYPO3 Installation (Context Sensitive Help). Here you will find a general description of the TYPO3 Core modules, installation specific Backend Modules and Database Tables that are available based on your login credentials.</source>
 			</trans-unit>
-			<trans-unit id="full_manual" resname="full_manual">
+			<trans-unit id="full_manual">
 				<source>Full Manual (in one page)</source>
 			</trans-unit>
-			<trans-unit id="full_manual_chapters" resname="full_manual_chapters">
+			<trans-unit id="full_manual_chapters">
 				<source>Manual Chapters</source>
 			</trans-unit>
 		</body>

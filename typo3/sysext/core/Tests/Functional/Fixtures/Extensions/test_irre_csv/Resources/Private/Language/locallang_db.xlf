@@ -5,43 +5,43 @@
 		  product-name="test_irre_csv">
 		<header/>
 		<body>
-			<trans-unit id="tabs.general" resname="tabs.general">
+			<trans-unit id="tabs.general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+			<trans-unit id="tabs.visibility">
 				<source>Visibility</source>
 			</trans-unit>
-			<trans-unit id="tt_content.tx_testirrecsv_hotels" resname="tt_content.tx_testirrecsv_hotels">
+			<trans-unit id="tt_content.tx_testirrecsv_hotels">
 				<source>Hotels (1ncsv):</source>
 			</trans-unit>
-			<trans-unit id="tx_testirrecsv_hotel" resname="tx_testirrecsv_hotel">
+			<trans-unit id="tx_testirrecsv_hotel">
 				<source>1:n CSV: Hotels</source>
 			</trans-unit>
-			<trans-unit id="tx_testirrecsv_offer" resname="tx_testirrecsv_offer">
+			<trans-unit id="tx_testirrecsv_offer">
 				<source>1:n CSV: Offers</source>
 			</trans-unit>
-			<trans-unit id="tx_testirrecsv_price" resname="tx_testirrecsv_price">
+			<trans-unit id="tx_testirrecsv_price">
 				<source>1:n CSV: Prices</source>
 			</trans-unit>
-			<trans-unit id="pages.div.test_irre_csv" resname="pages.div.test_irre_csv">
+			<trans-unit id="pages.div.test_irre_csv">
 				<source>TEST IRRE CSV</source>
 			</trans-unit>
-			<trans-unit id="tt_content.div.test_irre_csv" resname="pages.div.test_irre_csv">
+			<trans-unit id="tt_content.div.test_irre_csv">
 				<source>TEST IRRE CSV</source>
 			</trans-unit>
-			<trans-unit id="tx_irretutorial_hotel.title" resname="tx_irretutorial_hotel.title">
+			<trans-unit id="tx_irretutorial_hotel.title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="tx_irretutorial_hotel.offers" resname="tx_irretutorial_hotel.offers">
+			<trans-unit id="tx_irretutorial_hotel.offers">
 				<source>Offers:</source>
 			</trans-unit>
-			<trans-unit id="tx_irretutorial_hotel.prices" resname="tx_irretutorial_hotel.prices">
+			<trans-unit id="tx_irretutorial_hotel.prices">
 				<source>Prices:</source>
 			</trans-unit>
-			<trans-unit id="pages.hotels" resname="pages.hotels">
+			<trans-unit id="pages.hotels">
 				<source>Hotels</source>
 			</trans-unit>
-			<trans-unit id="tt_content.hotels" resname="tt_content.hotels">
+			<trans-unit id="tt_content.hotels">
 				<source>Hotels</source>
 			</trans-unit>
 		</body>

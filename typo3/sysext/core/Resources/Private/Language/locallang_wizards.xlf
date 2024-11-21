@@ -3,184 +3,184 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_wizards.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="table_smallFields" resname="table_smallFields">
+			<trans-unit id="table_smallFields">
 				<source>Small fields</source>
 			</trans-unit>
-			<trans-unit id="table_addColumn" resname="table_addColumn">
+			<trans-unit id="table_addColumn">
 				<source>Add column to the right</source>
 			</trans-unit>
-			<trans-unit id="table_removeColumn" resname="table_removeColumn">
+			<trans-unit id="table_removeColumn">
 				<source>Remove column</source>
 			</trans-unit>
-			<trans-unit id="table_addRow" resname="table_addRow">
+			<trans-unit id="table_addRow">
 				<source>Add row below</source>
 			</trans-unit>
-			<trans-unit id="table_removeRow" resname="table_removeRow">
+			<trans-unit id="table_removeRow">
 				<source>Remove row</source>
 			</trans-unit>
-			<trans-unit id="table_left" resname="table_left">
+			<trans-unit id="table_left">
 				<source>Move left</source>
 			</trans-unit>
-			<trans-unit id="table_right" resname="table_right">
+			<trans-unit id="table_right">
 				<source>Move right</source>
 			</trans-unit>
-			<trans-unit id="table_up" resname="table_up">
+			<trans-unit id="table_up">
 				<source>Move up</source>
 			</trans-unit>
-			<trans-unit id="table_down" resname="table_down">
+			<trans-unit id="table_down">
 				<source>Move down</source>
 			</trans-unit>
-			<trans-unit id="table_top" resname="table_top">
+			<trans-unit id="table_top">
 				<source>Move to top</source>
 			</trans-unit>
-			<trans-unit id="table_bottom" resname="table_bottom">
+			<trans-unit id="table_bottom">
 				<source>Move to bottom</source>
 			</trans-unit>
-			<trans-unit id="table_start" resname="table_start">
+			<trans-unit id="table_start">
 				<source>Move to first column</source>
 			</trans-unit>
-			<trans-unit id="table_end" resname="table_end">
+			<trans-unit id="table_end">
 				<source>Move to last column</source>
 			</trans-unit>
-			<trans-unit id="table_setCount" resname="table_setCount">
+			<trans-unit id="table_setCount">
 				<source>Set row and column count</source>
 			</trans-unit>
-			<trans-unit id="table_colCount" resname="table_colCount">
+			<trans-unit id="table_colCount">
 				<source>Column count</source>
 			</trans-unit>
-			<trans-unit id="table_rowCount" resname="table_rowCount">
+			<trans-unit id="table_rowCount">
 				<source>Row count</source>
 			</trans-unit>
-			<trans-unit id="table_setCountHeadline" resname="table_setCountHeadline">
+			<trans-unit id="table_setCountHeadline">
 				<source>Change table size</source>
 			</trans-unit>
-			<trans-unit id="table_buttonUpdate" resname="table_buttonUpdate">
+			<trans-unit id="table_buttonUpdate">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="table_showCode" resname="table_showCode">
+			<trans-unit id="table_showCode">
 				<source>Show table code</source>
 			</trans-unit>
-			<trans-unit id="table_showCodeHeadline" resname="table_showCodeHeadline">
+			<trans-unit id="table_showCodeHeadline">
 				<source>Table code</source>
 			</trans-unit>
-			<trans-unit id="table_showCodeLabel" resname="table_showCodeLabel">
+			<trans-unit id="table_showCodeLabel">
 				<source>Raw value</source>
 			</trans-unit>
-			<trans-unit id="grid_windowTitle" resname="grid_windowTitle">
+			<trans-unit id="grid_windowTitle">
 				<source>Set cell name and column number</source>
 			</trans-unit>
-			<trans-unit id="grid_addColumn" resname="grid_addColumn">
+			<trans-unit id="grid_addColumn">
 				<source>Add column</source>
 			</trans-unit>
-			<trans-unit id="grid_removeColumn" resname="grid_removeColumn">
+			<trans-unit id="grid_removeColumn">
 				<source>Remove column</source>
 			</trans-unit>
-			<trans-unit id="grid_addRow" resname="grid_addRow">
+			<trans-unit id="grid_addRow">
 				<source>Add row</source>
 			</trans-unit>
-			<trans-unit id="grid_removeRow" resname="grid_removeRow">
+			<trans-unit id="grid_removeRow">
 				<source>Remove row</source>
 			</trans-unit>
-			<trans-unit id="grid_editCell" resname="grid_editCell">
+			<trans-unit id="grid_editCell">
 				<source>Edit cell</source>
 			</trans-unit>
-			<trans-unit id="grid_name" resname="grid_name">
+			<trans-unit id="grid_name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="grid_column" resname="grid_column">
+			<trans-unit id="grid_column">
 				<source>Column number</source>
 			</trans-unit>
-			<trans-unit id="grid_identifier" resname="grid_identifier">
+			<trans-unit id="grid_identifier">
 				<source>Identifier</source>
 			</trans-unit>
-			<trans-unit id="grid_slideMode" resname="grid_slideMode">
+			<trans-unit id="grid_slideMode">
 				<source>Slide mode</source>
 			</trans-unit>
-			<trans-unit id="grid_notSet" resname="grid_notSet">
+			<trans-unit id="grid_notSet">
 				<source>not set</source>
 			</trans-unit>
-			<trans-unit id="grid_nameHelp" resname="grid_nameHelp">
+			<trans-unit id="grid_nameHelp">
 				<source>Enter a name for the cell.</source>
 			</trans-unit>
-			<trans-unit id="grid_columnHelp" resname="grid_columnHelp">
+			<trans-unit id="grid_columnHelp">
 				<source>The column position defines in which area the content is rendered in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="grid_identifierHelp" resname="grid_identifierHelp">
+			<trans-unit id="grid_identifierHelp">
 				<source>The identifier is a human-readable unique label, used to access the items in this column.</source>
 			</trans-unit>
-			<trans-unit id="grid_slideModeHelp" resname="grid_slideModeHelp">
+			<trans-unit id="grid_slideModeHelp">
 				<source>The slide mode defines which elements should be fetched for the column in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="imwizard.open-editor" resname="imwizard.open-editor">
+			<trans-unit id="imwizard.open-editor">
 				<source>Open Editor</source>
 			</trans-unit>
-			<trans-unit id="imwizard.supported-types-message" resname="imwizard.supported-types-message">
+			<trans-unit id="imwizard.supported-types-message">
 				<source>Image manipulation is only available for supported types</source>
 			</trans-unit>
-			<trans-unit id="imwizard.no-image-dimensions" resname="imwizard.no-image-dimensions">
+			<trans-unit id="imwizard.no-image-dimensions">
 				<source>No image dimensions could be determined.</source>
 			</trans-unit>
-			<trans-unit id="imwizard.no-image-dimensions-message" resname="imwizard.no-image-dimensions-message">
+			<trans-unit id="imwizard.no-image-dimensions-message">
 				<source>Unable to provide image manipulation, because original dimensions of the image are unknown.</source>
 			</trans-unit>
-			<trans-unit id="imwizard.image-manipulation" resname="imwizard.image-manipulation">
+			<trans-unit id="imwizard.image-manipulation">
 				<source>Image manipulation</source>
 			</trans-unit>
-			<trans-unit id="imwizard.reset" resname="imwizard.reset">
+			<trans-unit id="imwizard.reset">
 				<source>Reset</source>
 			</trans-unit>
-			<trans-unit id="imwizard.accept" resname="imwizard.accept">
+			<trans-unit id="imwizard.accept">
 				<source>Accept</source>
 			</trans-unit>
-			<trans-unit id="imwizard.cancel" resname="imwizard.cancel">
+			<trans-unit id="imwizard.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="imwizard.preview" resname="imwizard.preview">
+			<trans-unit id="imwizard.preview">
 				<source>Preview</source>
 			</trans-unit>
-			<trans-unit id="imwizard.aspect-ratio" resname="imwizard.aspect-ratio">
+			<trans-unit id="imwizard.aspect-ratio">
 				<source>Aspect ratio</source>
 			</trans-unit>
-			<trans-unit id="imwizard.set-aspect-ratio" resname="imwizard.set-aspect-ratio">
+			<trans-unit id="imwizard.set-aspect-ratio">
 				<source>Set Aspect Ratio</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.16_9" resname="imwizard.ratio.16_9" translate="no">
+			<trans-unit id="imwizard.ratio.16_9" translate="no">
 				<source>16:9</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.3_2" resname="imwizard.ratio.3_2" translate="no">
+			<trans-unit id="imwizard.ratio.3_2" translate="no">
 				<source>3:2</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.4_3" resname="imwizard.ratio.4_3" translate="no">
+			<trans-unit id="imwizard.ratio.4_3" translate="no">
 				<source>4:3</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.1_1" resname="imwizard.ratio.1_1" translate="no">
+			<trans-unit id="imwizard.ratio.1_1" translate="no">
 				<source>1:1</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.191_1" resname="imwizard.ratio.191_1" translate="no">
+			<trans-unit id="imwizard.ratio.191_1" translate="no">
 				<source>1.91:1</source>
 			</trans-unit>
-			<trans-unit id="imwizard.ratio.free" resname="imwizard.ratio.free">
+			<trans-unit id="imwizard.ratio.free">
 				<source>Free</source>
 			</trans-unit>
-			<trans-unit id="imwizard.crop_variant.default" resname="imwizard.crop_variant.default">
+			<trans-unit id="imwizard.crop_variant.default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="imwizard.crop_variant.social" resname="imwizard.crop_variant.social">
+			<trans-unit id="imwizard.crop_variant.social">
 				<source>Social media</source>
 			</trans-unit>
-			<trans-unit id="imwizard.selection" resname="imwizard.selection">
+			<trans-unit id="imwizard.selection">
 				<source>Selected Size</source>
 			</trans-unit>
-			<trans-unit id="localizationStateSelector.header" resname="localizationStateSelector.header">
+			<trans-unit id="localizationStateSelector.header">
 			    <source>Translation behavior</source>
 			</trans-unit>
-			<trans-unit id="localizationStateSelector.customValue" resname="localizationStateSelector.customValue">
+			<trans-unit id="localizationStateSelector.customValue">
 			    <source>Custom value</source>
 			</trans-unit>
-			<trans-unit id="localizationStateSelector.defaultLanguageValue" resname="localizationStateSelector.defaultLanguageValue">
+			<trans-unit id="localizationStateSelector.defaultLanguageValue">
 			    <source>Value of default language</source>
 			</trans-unit>
-			<trans-unit id="localizationStateSelector.sourceLanguageValue" resname="localizationStateSelector.sourceLanguageValue">
+			<trans-unit id="localizationStateSelector.sourceLanguageValue">
 			    <source>Value of %1s language</source>
 			</trans-unit>
 		</body>

@@ -3,451 +3,451 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_misc.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="shortcut_edit" resname="shortcut_edit">
+			<trans-unit id="shortcut_edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="shortcut_create" resname="shortcut_create">
+			<trans-unit id="shortcut_create">
 				<source>Create</source>
 			</trans-unit>
-			<trans-unit id="shortcut_editID" resname="shortcut_editID">
+			<trans-unit id="shortcut_editID">
 				<source>Edit/Search</source>
 			</trans-unit>
-			<trans-unit id="shortcut_save" resname="shortcut_save">
+			<trans-unit id="shortcut_save">
 				<source>Update shortcut title</source>
 			</trans-unit>
-			<trans-unit id="shortcut_saveClose" resname="shortcut_saveClose">
+			<trans-unit id="shortcut_saveClose">
 				<source>Update and close editor</source>
 			</trans-unit>
-			<trans-unit id="shortcut_close" resname="shortcut_close">
+			<trans-unit id="shortcut_close">
 				<source>Close shortcut editor</source>
 			</trans-unit>
-			<trans-unit id="shortcut_delete" resname="shortcut_delete">
+			<trans-unit id="shortcut_delete">
 				<source>Remove shortcut</source>
 			</trans-unit>
-			<trans-unit id="shortcut_loadEdit" resname="shortcut_loadEdit">
+			<trans-unit id="shortcut_loadEdit">
 				<source>Loading page</source>
 			</trans-unit>
-			<trans-unit id="shortcut_searchFor" resname="shortcut_searchFor">
+			<trans-unit id="shortcut_searchFor">
 				<source>Search for</source>
 			</trans-unit>
-			<trans-unit id="shortcut_notEditable" resname="shortcut_notEditable">
+			<trans-unit id="shortcut_notEditable">
 				<source>No editable page found!</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group" resname="shortcut_group">
+			<trans-unit id="shortcut_group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_1" resname="shortcut_group_1">
+			<trans-unit id="shortcut_group_1">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_2" resname="shortcut_group_2">
+			<trans-unit id="shortcut_group_2">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_3" resname="shortcut_group_3">
+			<trans-unit id="shortcut_group_3">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_4" resname="shortcut_group_4">
+			<trans-unit id="shortcut_group_4">
 				<source>Tools</source>
 			</trans-unit>
-			<trans-unit id="shortcut_group_5" resname="shortcut_group_5">
+			<trans-unit id="shortcut_group_5">
 				<source>Miscellaneous</source>
 			</trans-unit>
-			<trans-unit id="shortcut_global" resname="shortcut_global">
+			<trans-unit id="shortcut_global">
 				<source>Global</source>
 			</trans-unit>
-			<trans-unit id="shortcut_all" resname="shortcut_all">
+			<trans-unit id="shortcut_all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="shortcut_onlyAdmin" resname="shortcut_onlyAdmin">
+			<trans-unit id="shortcut_onlyAdmin">
 				<source>You cannot edit a shared shortcut!</source>
 			</trans-unit>
-			<trans-unit id="shortcut_selSC" resname="shortcut_selSC">
+			<trans-unit id="shortcut_selSC">
 				<source>Select shortcut</source>
 			</trans-unit>
-			<trans-unit id="shortcut_delAllInCat" resname="shortcut_delAllInCat">
+			<trans-unit id="shortcut_delAllInCat">
 				<source>Delete all shortcuts in this group?</source>
 			</trans-unit>
-			<trans-unit id="shortcut_onlineWS" resname="shortcut_onlineWS">
+			<trans-unit id="shortcut_onlineWS">
 				<source>LIVE workspace</source>
 			</trans-unit>
-			<trans-unit id="shortcut_active" resname="shortcut_active">
+			<trans-unit id="shortcut_active">
 				<source>active</source>
 			</trans-unit>
-			<trans-unit id="shortcut_inactive" resname="shortcut_inactive">
+			<trans-unit id="shortcut_inactive">
 				<source>inactive</source>
 			</trans-unit>
-			<trans-unit id="shortcut_noWSfound" resname="shortcut_noWSfound">
+			<trans-unit id="shortcut_noWSfound">
 				<source>ERROR: No workspaces found!</source>
 			</trans-unit>
-			<trans-unit id="shortcut_FEPreview" resname="shortcut_FEPreview">
+			<trans-unit id="shortcut_FEPreview">
 				<source>Enable Frontend Preview</source>
 			</trans-unit>
-			<trans-unit id="shortcut_workspace" resname="shortcut_workspace">
+			<trans-unit id="shortcut_workspace">
 				<source>Go to Workspace Module</source>
 			</trans-unit>
-			<trans-unit id="bookmark_edit" resname="bookmark_edit">
+			<trans-unit id="bookmark_edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="bookmark_create" resname="bookmark_create">
+			<trans-unit id="bookmark_create">
 				<source>Create</source>
 			</trans-unit>
-			<trans-unit id="bookmark_editID" resname="bookmark_editID">
+			<trans-unit id="bookmark_editID">
 				<source>Edit/Search</source>
 			</trans-unit>
-			<trans-unit id="bookmark_save" resname="bookmark_save">
+			<trans-unit id="bookmark_save">
 				<source>Update bookmark title</source>
 			</trans-unit>
-			<trans-unit id="bookmark_saveClose" resname="bookmark_saveClose">
+			<trans-unit id="bookmark_saveClose">
 				<source>Update and close editor</source>
 			</trans-unit>
-			<trans-unit id="bookmark_close" resname="bookmark_close">
+			<trans-unit id="bookmark_close">
 				<source>Close bookmark editor</source>
 			</trans-unit>
-			<trans-unit id="bookmark_delete" resname="bookmark_delete">
+			<trans-unit id="bookmark_delete">
 				<source>Remove bookmark</source>
 			</trans-unit>
-			<trans-unit id="bookmark_loadEdit" resname="bookmark_loadEdit">
+			<trans-unit id="bookmark_loadEdit">
 				<source>Loading page</source>
 			</trans-unit>
-			<trans-unit id="bookmark_searchFor" resname="bookmark_searchFor">
+			<trans-unit id="bookmark_searchFor">
 				<source>Search for</source>
 			</trans-unit>
-			<trans-unit id="bookmark_notEditable" resname="bookmark_notEditable">
+			<trans-unit id="bookmark_notEditable">
 				<source>No editable page found!</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group" resname="bookmark_group">
+			<trans-unit id="bookmark_group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_1" resname="bookmark_group_1">
+			<trans-unit id="bookmark_group_1">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_2" resname="bookmark_group_2">
+			<trans-unit id="bookmark_group_2">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_3" resname="bookmark_group_3">
+			<trans-unit id="bookmark_group_3">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_4" resname="bookmark_group_4">
+			<trans-unit id="bookmark_group_4">
 				<source>Tools</source>
 			</trans-unit>
-			<trans-unit id="bookmark_group_5" resname="bookmark_group_5">
+			<trans-unit id="bookmark_group_5">
 				<source>Miscellaneous</source>
 			</trans-unit>
-			<trans-unit id="bookmark_global" resname="bookmark_global">
+			<trans-unit id="bookmark_global">
 				<source>Global</source>
 			</trans-unit>
-			<trans-unit id="bookmark_all" resname="bookmark_all">
+			<trans-unit id="bookmark_all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="bookmark_onlyAdmin" resname="bookmark_onlyAdmin">
+			<trans-unit id="bookmark_onlyAdmin">
 				<source>You cannot edit a shared bookmark!</source>
 			</trans-unit>
-			<trans-unit id="bookmark_selSC" resname="bookmark_selSC">
+			<trans-unit id="bookmark_selSC">
 				<source>Select bookmark</source>
 			</trans-unit>
-			<trans-unit id="bookmark_delAllInCat" resname="bookmark_delAllInCat">
+			<trans-unit id="bookmark_delAllInCat">
 				<source>Delete all bookmarks in this group</source>
 			</trans-unit>
-			<trans-unit id="bookmark_onlineWS" resname="bookmark_onlineWS">
+			<trans-unit id="bookmark_onlineWS">
 				<source>LIVE workspace</source>
 			</trans-unit>
-			<trans-unit id="bookmark_active" resname="bookmark_active">
+			<trans-unit id="bookmark_active">
 				<source>active</source>
 			</trans-unit>
-			<trans-unit id="bookmark_inactive" resname="bookmark_inactive">
+			<trans-unit id="bookmark_inactive">
 				<source>inactive</source>
 			</trans-unit>
-			<trans-unit id="bookmark_FEPreview" resname="bookmark_FEPreview">
+			<trans-unit id="bookmark_FEPreview">
 				<source>Enable Frontend Preview</source>
 			</trans-unit>
-			<trans-unit id="bookmark_workspaceComparisonView" resname="bookmark_workspaceComparisonView">
+			<trans-unit id="bookmark_workspaceComparisonView">
 				<source>Enable comparison view</source>
 			</trans-unit>
-			<trans-unit id="overwriteExistingFiles" resname="overwriteExistingFiles">
+			<trans-unit id="overwriteExistingFiles">
 				<source>Overwrite existing files</source>
 			</trans-unit>
-			<trans-unit id="uploadMultipleFilesInfo" resname="uploadMultipleFilesInfo">
+			<trans-unit id="uploadMultipleFilesInfo">
 				<source>Upload multiple files by holding the Shift or CTRL-file pressed while selecting your files (works on modern browsers only).</source>
 			</trans-unit>
-			<trans-unit id="fileMetaDataLocation" resname="fileMetaDataLocation">
+			<trans-unit id="fileMetaDataLocation">
 				<source>Location</source>
 			</trans-unit>
-			<trans-unit id="fileMetaErrorInvalidRecord" resname="fileMetaErrorInvalidRecord">
+			<trans-unit id="fileMetaErrorInvalidRecord">
 				<source>File meta data not found</source>
 			</trans-unit>
-			<trans-unit id="selectPosition" resname="selectPosition">
+			<trans-unit id="selectPosition">
 				<source>Select a position for the new page</source>
 			</trans-unit>
-			<trans-unit id="pageSelectPosition" resname="pageSelectPosition">
+			<trans-unit id="pageSelectPosition">
 				<source>Page (select position)</source>
 			</trans-unit>
-			<trans-unit id="goBack" resname="goBack">
+			<trans-unit id="goBack">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="createNewPage" resname="createNewPage">
+			<trans-unit id="createNewPage">
 				<source>Create a new page</source>
 			</trans-unit>
-			<trans-unit id="insertNewPageHere" resname="insertNewPageHere">
+			<trans-unit id="insertNewPageHere">
 				<source>Insert the new page here</source>
 			</trans-unit>
-			<trans-unit id="insertNewRecordHere" resname="insertNewRecordHere">
+			<trans-unit id="insertNewRecordHere">
 				<source>Insert new record here</source>
 			</trans-unit>
-			<trans-unit id="movePageToHere" resname="movePageToHere">
+			<trans-unit id="movePageToHere">
 				<source>Move page to this position</source>
 			</trans-unit>
-			<trans-unit id="moveElementToHere" resname="moveElementToHere">
+			<trans-unit id="moveElementToHere">
 				<source>Move element to this position</source>
 			</trans-unit>
-			<trans-unit id="moveElement" resname="moveElement">
+			<trans-unit id="moveElement">
 				<source>Move element</source>
 			</trans-unit>
-			<trans-unit id="moveElements" resname="moveElements">
+			<trans-unit id="moveElements">
 				<source>Move elements</source>
 			</trans-unit>
-			<trans-unit id="copyElements" resname="copyElements">
+			<trans-unit id="copyElements">
 				<source>Copy elements</source>
 			</trans-unit>
-			<trans-unit id="copyElementToHere" resname="copyElementToHere">
+			<trans-unit id="copyElementToHere">
 				<source>Copy element to this position</source>
 			</trans-unit>
-			<trans-unit id="selectPositionOfElement" resname="selectPositionOfElement">
+			<trans-unit id="selectPositionOfElement">
 				<source>Select position of the element</source>
 			</trans-unit>
-			<trans-unit id="movingElement" resname="movingElement">
+			<trans-unit id="movingElement">
 				<source>Move element</source>
 			</trans-unit>
-			<trans-unit id="makeCopy" resname="makeCopy">
+			<trans-unit id="makeCopy">
 				<source>Make copy instead of moving element</source>
 			</trans-unit>
-			<trans-unit id="newRecordWizard.filter.placeholder" resname="newRecordWizard.filter.placeholder">
+			<trans-unit id="newRecordWizard.filter.placeholder">
 				<source>Search for any record type</source>
 			</trans-unit>
-			<trans-unit id="newRecordWizard.filter.noResults" resname="newRecordWizard.filter.noResults">
+			<trans-unit id="newRecordWizard.filter.noResults">
 				<source>Unfortunately no record type matches your query, please try a different one.</source>
 			</trans-unit>
-			<trans-unit id="newContentElement" resname="newContentElement">
+			<trans-unit id="newContentElement">
 				<source>New content element</source>
 			</trans-unit>
-			<trans-unit id="newContentElement.filter.label" resname="newContentElement.filter.label">
+			<trans-unit id="newContentElement.filter.label">
 				<source>Filter by:</source>
 			</trans-unit>
-			<trans-unit id="newContentElement.filter.placeholder" resname="newContentElement.filter.placeholder">
+			<trans-unit id="newContentElement.filter.placeholder">
 				<source>Search for any content type</source>
 			</trans-unit>
-			<trans-unit id="newContentElement.filter.noResults" resname="newContentElement.filter.noResults">
+			<trans-unit id="newContentElement.filter.noResults">
 				<source>Unfortunately no content type matches your query, please try a different one.</source>
 			</trans-unit>
-			<trans-unit id="system_records" resname="system_records">
+			<trans-unit id="system_records">
 				<source>System Records</source>
 			</trans-unit>
-			<trans-unit id="recordgroup.content" resname="recordgroup.content">
+			<trans-unit id="recordgroup.content">
 				<source>Content</source>
 			</trans-unit>
-			<trans-unit id="recordgroup.backendaccess" resname="recordgroup.backendaccess">
+			<trans-unit id="recordgroup.backendaccess">
 				<source>Backend Access</source>
 			</trans-unit>
-			<trans-unit id="recordgroup.frontendaccess" resname="recordgroup.frontendaccess">
+			<trans-unit id="recordgroup.frontendaccess">
 				<source>Frontend Access</source>
 			</trans-unit>
-			<trans-unit id="1_selectType" resname="1_selectType">
+			<trans-unit id="1_selectType">
 				<source>First select the type of the new content element</source>
 			</trans-unit>
-			<trans-unit id="2_selectPosition" resname="2_selectPosition">
+			<trans-unit id="2_selectPosition">
 				<source>Now click on the position of the new content element</source>
 			</trans-unit>
-			<trans-unit id="CM_history" resname="CM_history">
+			<trans-unit id="CM_history">
 				<source>History/Undo</source>
 			</trans-unit>
-			<trans-unit id="CM_hideInMenus" resname="CM_hideInMenus">
+			<trans-unit id="CM_hideInMenus">
 				<source>Hide in menu</source>
 			</trans-unit>
-			<trans-unit id="CM_showInMenus" resname="CM_showInMenus">
+			<trans-unit id="CM_showInMenus">
 				<source>Show in menu</source>
 			</trans-unit>
-			<trans-unit id="CM_perms" resname="CM_perms">
+			<trans-unit id="CM_perms">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="CM_moveWizard" resname="CM_moveWizard">
+			<trans-unit id="CM_moveWizard">
 				<source>Move element</source>
 			</trans-unit>
-			<trans-unit id="CM_moveWizard_page" resname="CM_moveWizard_page">
+			<trans-unit id="CM_moveWizard_page">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="CM_newWizard" resname="CM_newWizard">
+			<trans-unit id="CM_newWizard">
 				<source>'Create New' wizard</source>
 			</trans-unit>
-			<trans-unit id="CM_editPageProperties" resname="CM_editPageProperties">
+			<trans-unit id="CM_editPageProperties">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="noEditPage" resname="noEditPage">
+			<trans-unit id="noEditPage">
 				<source>You asked to edit page "%s" but you cannot edit this page. Now loading backend as usual.</source>
 			</trans-unit>
-			<trans-unit id="localize" resname="localize">
+			<trans-unit id="localize">
 				<source>Localize</source>
 			</trans-unit>
-			<trans-unit id="localize.isLocalizable" resname="localize.isLocalizable">
+			<trans-unit id="localize.isLocalizable">
 				<source>Record can be localized</source>
 			</trans-unit>
-			<trans-unit id="localize.wasRemovedInOriginal" resname="localize.wasRemovedInOriginal">
+			<trans-unit id="localize.wasRemovedInOriginal">
 				<source>Record was removed in original language</source>
 			</trans-unit>
-			<trans-unit id="localizeAllRecords" resname="localizeAllRecords">
+			<trans-unit id="localizeAllRecords">
 				<source>Localize all records</source>
 			</trans-unit>
-			<trans-unit id="synchronizeWithOriginalLanguage" resname="synchronizeWithOriginalLanguage">
+			<trans-unit id="synchronizeWithOriginalLanguage">
 				<source>Synchronize with original language</source>
 			</trans-unit>
-			<trans-unit id="pageTree_filter" resname="pageTree_filter">
+			<trans-unit id="pageTree_filter">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_windowTitle" resname="fileUpload_windowTitle">
+			<trans-unit id="fileUpload_windowTitle">
 				<source>File Upload Progress</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_buttonSelectFiles" resname="fileUpload_buttonSelectFiles">
+			<trans-unit id="fileUpload_buttonSelectFiles">
 				<source>Select Files</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_buttonCancelAll" resname="fileUpload_buttonCancelAll">
+			<trans-unit id="fileUpload_buttonCancelAll">
 				<source>Cancel All Uploads</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentMaxFileSize" resname="fileUpload_infoComponentMaxFileSize">
+			<trans-unit id="fileUpload_infoComponentMaxFileSize">
 				<source>You can upload files with a maximum size of {0}.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentFileUploadLimit" resname="fileUpload_infoComponentFileUploadLimit">
+			<trans-unit id="fileUpload_infoComponentFileUploadLimit">
 				<source>You can upload a total of {0}.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentFileTypeLimit" resname="fileUpload_infoComponentFileTypeLimit">
+			<trans-unit id="fileUpload_infoComponentFileTypeLimit">
 				<source>You can upload the following file types {0}.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_infoComponentOverrideFiles" resname="fileUpload_infoComponentOverrideFiles">
+			<trans-unit id="fileUpload_infoComponentOverrideFiles">
 				<source>Overwrite existing files</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_processRunning" resname="fileUpload_processRunning">
+			<trans-unit id="fileUpload_processRunning">
 				<source>Another process is already uploading</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadWait" resname="fileUpload_uploadWait">
+			<trans-unit id="fileUpload_uploadWait">
 				<source>Waiting to start upload of {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadStarting" resname="fileUpload_uploadStarting">
+			<trans-unit id="fileUpload_uploadStarting">
 				<source>Starting upload of {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadProgress" resname="fileUpload_uploadProgress">
+			<trans-unit id="fileUpload_uploadProgress">
 				<source>{0}% of {1} uploaded</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_uploadSuccess" resname="fileUpload_uploadSuccess">
+			<trans-unit id="fileUpload_uploadSuccess">
 				<source>{0} was successfully uploaded!</source>
 			</trans-unit>
-			<trans-unit id="pagetree_networkErrorTitle" resname="pagetree_networkErrorTitle">
+			<trans-unit id="pagetree_networkErrorTitle">
 				<source>Page tree error</source>
 			</trans-unit>
-			<trans-unit id="pagetree_networkErrorDesc" resname="pagetree_networkErrorDesc">
+			<trans-unit id="pagetree_networkErrorDesc">
 				<source>Got unexpected response from the server. Please check logs for details.</source>
 			</trans-unit>
-			<trans-unit id="tree_networkError" resname="tree_networkError">
+			<trans-unit id="tree_networkError">
 				<source>Navigation loading error</source>
 			</trans-unit>
-			<trans-unit id="tree_networkErrorDescription" resname="tree_networkErrorDescription">
+			<trans-unit id="tree_networkErrorDescription">
 				<source>Got unexpected response from the server. Please check logs for details.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueLimitExceeded" resname="fileUpload_errorQueueLimitExceeded">
+			<trans-unit id="fileUpload_errorQueueLimitExceeded">
 				<source>Too many files selected</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueFileSizeLimit" resname="fileUpload_errorQueueFileSizeLimit">
+			<trans-unit id="fileUpload_errorQueueFileSizeLimit">
 				<source>{0} is too big</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueZeroByteFile" resname="fileUpload_errorQueueZeroByteFile">
+			<trans-unit id="fileUpload_errorQueueZeroByteFile">
 				<source>{0} is empty</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorQueueInvalidFiletype" resname="fileUpload_errorQueueInvalidFiletype">
+			<trans-unit id="fileUpload_errorQueueInvalidFiletype">
 				<source>Filetype not allowed for {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadHttp" resname="fileUpload_errorUploadHttp">
+			<trans-unit id="fileUpload_errorUploadHttp">
 				<source>Too many files selected</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadHttpError" resname="fileUpload_errorUploadHttpError">
+			<trans-unit id="fileUpload_errorUploadHttpError">
 				<source>A HTTP error occurred: {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadMissingUrl" resname="fileUpload_errorUploadMissingUrl">
+			<trans-unit id="fileUpload_errorUploadMissingUrl">
 				<source>Internal error: No Upload URL set</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadIO" resname="fileUpload_errorUploadIO">
+			<trans-unit id="fileUpload_errorUploadIO">
 				<source>Internal error: Problems while reading/writing the file</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadSecurityError" resname="fileUpload_errorUploadSecurityError">
+			<trans-unit id="fileUpload_errorUploadSecurityError">
 				<source>Internal error: {0}</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadLimit" resname="fileUpload_errorUploadLimit">
+			<trans-unit id="fileUpload_errorUploadLimit">
 				<source>Upload limit exceeded</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFailed" resname="fileUpload_errorUploadFailed">
+			<trans-unit id="fileUpload_errorUploadFailed">
 				<source>Upload failed</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileIDNotFound" resname="fileUpload_errorUploadFileIDNotFound">
+			<trans-unit id="fileUpload_errorUploadFileIDNotFound">
 				<source>Internal error: File ID not found</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileValidation" resname="fileUpload_errorUploadFileValidation">
+			<trans-unit id="fileUpload_errorUploadFileValidation">
 				<source>Internal error while validating the file</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadFileCancelled" resname="fileUpload_errorUploadFileCancelled">
+			<trans-unit id="fileUpload_errorUploadFileCancelled">
 				<source>Upload of {0} canceled</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_errorUploadStopped" resname="fileUpload_errorUploadStopped">
+			<trans-unit id="fileUpload_errorUploadStopped">
 				<source>Upload of {0} stopped</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allErrorMessageTitle" resname="fileUpload_allErrorMessageTitle">
+			<trans-unit id="fileUpload_allErrorMessageTitle">
 				<source>All uploads failed</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allErrorMessageText" resname="fileUpload_allErrorMessageText">
+			<trans-unit id="fileUpload_allErrorMessageText">
 				<source>All of your uploads failed.&lt;br /&gt;&lt;br /&gt;If this problem persists, please try another browser, contact your administrator or disable this "Flash Uploader" in your User Settings.&lt;br /&gt;&lt;br /&gt;Detailed problem description:&lt;br /&gt;</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allError401" resname="fileUpload_allError401">
+			<trans-unit id="fileUpload_allError401">
 				<source>The server returned the status code 401, which is related to a .htaccess file used for password protection on your server. Unfortunately this can not be handled by your browser's Flash plugin.</source>
 			</trans-unit>
-			<trans-unit id="fileUpload_allError2038" resname="fileUpload_allError2038">
+			<trans-unit id="fileUpload_allError2038">
 				<source>An input/output error occurred (Error #2038). This i.e. happens with servers using a self-signed SSL certificate, which is a limitation of your browser's Flash plugin.</source>
 			</trans-unit>
-			<trans-unit id="synchronizeFolderRelations.afterFolderRenamed" resname="synchronizeRelations.afterFolderRenamed">
+			<trans-unit id="synchronizeFolderRelations.afterFolderRenamed">
 				<source>%d %s records referencing the renamed directory were updated.</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_title" resname="liveSearch_title">
+			<trans-unit id="liveSearch_title">
 				<source>Short result list</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_emptyText" resname="liveSearch_emptyText">
+			<trans-unit id="liveSearch_emptyText">
 				<source>Enter search term</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_loadingText" resname="liveSearch_loadingText">
+			<trans-unit id="liveSearch_loadingText">
 				<source>Searching...</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_listEmptyText" resname="liveSearch_listEmptyText">
+			<trans-unit id="liveSearch_listEmptyText">
 				<source>No results found.</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_helpTitle" resname="liveSearch_helpTitle">
+			<trans-unit id="liveSearch_helpTitle">
 				<source>How to use advanced search tags</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_helpDescription" resname="liveSearch_helpDescription">
+			<trans-unit id="liveSearch_helpDescription">
 				<source>Search in certain tables</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_helpDescriptionPages" resname="liveSearch_helpDescriptionPages">
+			<trans-unit id="liveSearch_helpDescriptionPages">
 				<source>#page:Home will search for all pages with the title "Home"</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_helpDescriptionContent" resname="liveSearch_helpDescriptionContent">
+			<trans-unit id="liveSearch_helpDescriptionContent">
 				<source>#content:Professional will search for all content elements containing the term "Professional"</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_help.shortcutOpen" resname="liveSearch_help.shortcutOpen">
+			<trans-unit id="liveSearch_help.shortcutOpen">
 				<source>You can open the live search by pressing the Ctrl+K or Cmd+K keystroke</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_search" resname="liveSearch_search">
+			<trans-unit id="liveSearch_search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_searchIn" resname="liveSearch_searchIn">
+			<trans-unit id="liveSearch_searchIn">
 				<source>Search records in</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_activeFilters" resname="liveSearch_activeFilters">
+			<trans-unit id="liveSearch_activeFilters">
 				<source>active filters</source>
 			</trans-unit>
-			<trans-unit id="viewport_navigation_show" resname="viewport_navigation_show">
+			<trans-unit id="viewport_navigation_show">
 				<source>Show Navigation</source>
 			</trans-unit>
-			<trans-unit id="viewport_navigation_hide" resname="viewport_navigation_hide">
+			<trans-unit id="viewport_navigation_hide">
 				<source>Hide Navigation</source>
 			</trans-unit>
 		</body>

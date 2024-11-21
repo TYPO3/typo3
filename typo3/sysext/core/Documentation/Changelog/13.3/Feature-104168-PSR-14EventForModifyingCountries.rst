@@ -76,10 +76,10 @@ An example corresponding event listener class:
     <xliff version="1.0">
         <file source-language="en" datatype="plaintext" date="2024-01-08T18:44:59Z" product-name="my_extension">
             <body>
-                <trans-unit id="XX.name" resname="XX.name" approved="yes">
+                <trans-unit id="XX.name" approved="yes">
                     <source>Magic Kingdom</source>
                 </trans-unit>
-                <trans-unit id="XX.official_name" resname="XX.official_name" approved="yes">
+                <trans-unit id="XX.official_name" approved="yes">
                     <source>Kingdom of Magic and Wonders</source>
                 </trans-unit>
             </body>

@@ -3,109 +3,109 @@
 	<file source-language="en" datatype="plaintext" original="EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="clipBoard" resname="clipBoard">
+			<trans-unit id="clipBoard">
 				<source>Show clipboard</source>
 			</trans-unit>
-			<trans-unit id="clip_paste" resname="clip_paste">
+			<trans-unit id="clip_paste">
 				<source>Paste in clipboard content</source>
 			</trans-unit>
-			<trans-unit id="clip_pasteInto" resname="clip_pasteInto">
+			<trans-unit id="clip_pasteInto">
 				<source>Paste into: Clipboard content is inserted into this folder</source>
 			</trans-unit>
-			<trans-unit id="editMarked" resname="editMarked">
+			<trans-unit id="editMarked">
 				<source>Edit Metadata</source>
 			</trans-unit>
-			<trans-unit id="editColumns" resname="editColumns">
+			<trans-unit id="editColumns">
 				<source>Edit specific Metadata</source>
 			</trans-unit>
-			<trans-unit id="deleteMarked" resname="deleteMarked">
+			<trans-unit id="deleteMarked">
 				<source>Delete marked items</source>
 			</trans-unit>
-			<trans-unit id="clip_selectMarked" resname="clip_selectMarked">
+			<trans-unit id="clip_selectMarked">
 				<source>Transfer to clipboard</source>
 			</trans-unit>
-			<trans-unit id="clip_deleteMarked" resname="clip_deleteMarked">
+			<trans-unit id="clip_deleteMarked">
 				<source>Remove from clipboard</source>
 			</trans-unit>
-			<trans-unit id="deleteMarkedWarning" resname="deleteMarkedWarning">
+			<trans-unit id="deleteMarkedWarning">
 				<source>Are you sure you want to delete all marked items from this folder?</source>
 			</trans-unit>
-			<trans-unit id="c_name" resname="c_name">
+			<trans-unit id="c_name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="c_size" resname="c_size">
+			<trans-unit id="c_size">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="c_record_type" resname="c_record_type">
+			<trans-unit id="c_record_type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="c_rw" resname="c_rw">
+			<trans-unit id="c_rw">
 				<source>RW</source>
 			</trans-unit>
-			<trans-unit id="files" resname="files">
+			<trans-unit id="files">
 				<source>files</source>
 			</trans-unit>
-			<trans-unit id="temp" resname="temp">
+			<trans-unit id="temp">
 				<source>Temporary files</source>
 			</trans-unit>
-			<trans-unit id="read" resname="read">
+			<trans-unit id="read">
 				<source>R</source>
 			</trans-unit>
-			<trans-unit id="recycler" resname="recycler">
+			<trans-unit id="recycler">
 				<source>Recycler</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Listing of files in the directory</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>This is the file administration system in TYPO3. It allows you to access the file mounts of your login. Through this module you can upload, copy, move an delete files on the server.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Filelist</source>
 			</trans-unit>
-			<trans-unit id="write" resname="write">
+			<trans-unit id="write">
 				<source>W</source>
 			</trans-unit>
-			<trans-unit id="storageNotBrowsableTitle" resname="storageNotBrowsableTitle">
+			<trans-unit id="storageNotBrowsableTitle">
 				<source>Access denied.</source>
 			</trans-unit>
-			<trans-unit id="storageNotBrowsableMessage" resname="storageNotBrowsableMessage">
+			<trans-unit id="storageNotBrowsableMessage">
 				<source>You are trying to access a folder in a storage that is not browsable.</source>
 			</trans-unit>
-			<trans-unit id="missingFolderPermissionsTitle" resname="missingFolderPermissionsTitle">
+			<trans-unit id="missingFolderPermissionsTitle">
 				<source>Missing folder permissions</source>
 			</trans-unit>
-			<trans-unit id="missingFolderPermissionsMessage" resname="missingFolderPermissionsMessage">
+			<trans-unit id="missingFolderPermissionsMessage">
 				<source>You have no access to the folder "%s".</source>
 			</trans-unit>
-			<trans-unit id="localStorageOfflineTitle" resname="localStorageOfflineTitle">
+			<trans-unit id="localStorageOfflineTitle">
 				<source>Base folder for local storage missing or not allowed</source>
 			</trans-unit>
-			<trans-unit id="localStorageOfflineMessage" resname="localStorageOfflineMessage">
+			<trans-unit id="localStorageOfflineMessage">
 				<source>Verify that the base folder for the storage "%s" exists and is allowed to be accessed.</source>
 			</trans-unit>
-			<trans-unit id="folderNotFoundTitle" resname="folderNotFoundTitle">
+			<trans-unit id="folderNotFoundTitle">
 				<source>Folder not found.</source>
 			</trans-unit>
-			<trans-unit id="folderNotFoundMessage" resname="folderNotFoundMessage">
+			<trans-unit id="folderNotFoundMessage">
 				<source>The folder "%s" cannot be accessed. Trying to use parent folder(s).</source>
 			</trans-unit>
-			<trans-unit id="translateMetadata" resname="translateMetadata">
+			<trans-unit id="translateMetadata">
 				<source>Translate metadata</source>
 			</trans-unit>
-			<trans-unit id="createMetadataForLanguage" resname="createMetadataForLanguage">
+			<trans-unit id="createMetadataForLanguage">
 				<source>Create metadata of this file for %s</source>
 			</trans-unit>
-			<trans-unit id="editMetadataForLanguage" resname="editMetadataForLanguage">
+			<trans-unit id="editMetadataForLanguage">
 				<source>Edit metadata of this file for %s</source>
 			</trans-unit>
-			<trans-unit id="paramError" resname="paramError">
+			<trans-unit id="paramError">
 				<source>Parameter Error</source>
 			</trans-unit>
-			<trans-unit id="targetNoDir" resname="targetNoDir">
+			<trans-unit id="targetNoDir">
 				<source>Target was not a directory!</source>
 			</trans-unit>
-			<trans-unit id="reloadMetadata" resname="reloadMetadata">
+			<trans-unit id="reloadMetadata">
 				<source>Reload Metadata</source>
 			</trans-unit>
 		</body>

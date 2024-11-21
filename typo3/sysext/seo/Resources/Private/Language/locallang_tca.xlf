@@ -4,106 +4,106 @@
 		  product-name="seo">
 		<header/>
 		<body>
-			<trans-unit id="pages.tabs.seo" resname="pages.tabs.seo">
+			<trans-unit id="pages.tabs.seo">
 				<source>SEO</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.seo" resname="pages.palettes.seo">
+			<trans-unit id="pages.palettes.seo">
 				<source>General SEO settings</source>
 			</trans-unit>
-			<trans-unit id="pages.seo_title" resname="pages.seo_title">
+			<trans-unit id="pages.seo_title">
 				<source>Title for search engines</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.robots" resname="pages.palettes.robots">
+			<trans-unit id="pages.palettes.robots">
 				<source>Robot instructions</source>
 			</trans-unit>
-			<trans-unit id="pages.no_index" resname="pages.no_index">
+			<trans-unit id="pages.no_index">
 				<source>No index</source>
 			</trans-unit>
-			<trans-unit id="pages.no_index_formlabel" resname="pages.no_index_formlabel">
+			<trans-unit id="pages.no_index_formlabel">
 				<source>Index this page</source>
 			</trans-unit>
-			<trans-unit id="pages.no_follow" resname="pages.no_follow">
+			<trans-unit id="pages.no_follow">
 				<source>No follow</source>
 			</trans-unit>
-			<trans-unit id="pages.no_follow_formlabel" resname="pages.no_follow_formlabel">
+			<trans-unit id="pages.no_follow_formlabel">
 				<source>Follow this page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.opengraph" resname="pages.palettes.opengraph">
+			<trans-unit id="pages.palettes.opengraph">
 				<source>Open Graph (Facebook)</source>
 			</trans-unit>
-			<trans-unit id="pages.og_title" resname="pages.og_title">
+			<trans-unit id="pages.og_title">
 				<source>Open Graph Title</source>
 			</trans-unit>
-			<trans-unit id="pages.og_description" resname="pages.og_description">
+			<trans-unit id="pages.og_description">
 				<source>Open Graph Description</source>
 			</trans-unit>
-			<trans-unit id="pages.og_image" resname="pages.og_image">
+			<trans-unit id="pages.og_image">
 				<source>Open Graph Image</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.twittercards" resname="pages.palettes.twittercards">
+			<trans-unit id="pages.palettes.twittercards">
 				<source>X / Twitter Cards</source>
 			</trans-unit>
-			<trans-unit id="pages.twitter_title" resname="pages.twitter_title">
+			<trans-unit id="pages.twitter_title">
 				<source>X / Twitter Title</source>
 			</trans-unit>
-			<trans-unit id="pages.twitter_description" resname="pages.twitter_description">
+			<trans-unit id="pages.twitter_description">
 				<source>X / Twitter Description</source>
 			</trans-unit>
-			<trans-unit id="pages.twitter_image" resname="pages.twitter_image">
+			<trans-unit id="pages.twitter_image">
 				<source>X / Twitter Image</source>
 			</trans-unit>
-			<trans-unit id="pages.twitter_card" resname="pages.twitter_card">
+			<trans-unit id="pages.twitter_card">
 				<source>Type of card to show</source>
 			</trans-unit>
-			<trans-unit id="pages.twitter_card.summary" resname="pages.twitter_card.summary">
+			<trans-unit id="pages.twitter_card.summary">
 				<source>Summary Card</source>
 			</trans-unit>
-			<trans-unit id="pages.twitter_card.summary_large_image" resname="pages.twitter_card.summary_large_image">
+			<trans-unit id="pages.twitter_card.summary_large_image">
 				<source>Summary Card with a large image</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.canonical" resname="pages.palettes.canonical">
+			<trans-unit id="pages.palettes.canonical">
 				<source>Canonical</source>
 			</trans-unit>
-			<trans-unit id="pages.canonical_link" resname="pages.canonical_link">
+			<trans-unit id="pages.canonical_link">
 				<source>Canonical link</source>
 			</trans-unit>
-			<trans-unit id="pages.canonical_link.description" resname="pages.canonical_link.description">
+			<trans-unit id="pages.canonical_link.description">
 				<source>A canonical URL is the URL of a page that search engines are advised to choose as the most representative from a set of duplicate pages. Often called deduplication, this process helps search engines show only one version of the otherwise duplicate content in its search results. TYPO3 automatically sets this to the most likely URL of the page if not set explicitly - which is most likely the URL of the page itself. If set here, the page will be removed from the XML sitemap.</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.socialmedia" resname="pages.tabs.socialmedia">
+			<trans-unit id="pages.tabs.socialmedia">
 				<source>Social media</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.sitemap" resname="pages.palettes.sitemap">
+			<trans-unit id="pages.palettes.sitemap">
 				<source>Sitemap</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq" resname="pages.sitemap_changefreq">
+			<trans-unit id="pages.sitemap_changefreq">
 				<source>Change frequency</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.none" resname="pages.sitemap_changefreq.none">
+			<trans-unit id="pages.sitemap_changefreq.none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.always" resname="pages.sitemap_changefreq.always">
+			<trans-unit id="pages.sitemap_changefreq.always">
 				<source>Always</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.hourly" resname="pages.sitemap_changefreq.hourly">
+			<trans-unit id="pages.sitemap_changefreq.hourly">
 				<source>Hourly</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.daily" resname="pages.sitemap_changefreq.daily">
+			<trans-unit id="pages.sitemap_changefreq.daily">
 				<source>Daily</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.weekly" resname="pages.sitemap_changefreq.weekly">
+			<trans-unit id="pages.sitemap_changefreq.weekly">
 				<source>Weekly</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.monthly" resname="pages.sitemap_changefreq.monthly">
+			<trans-unit id="pages.sitemap_changefreq.monthly">
 				<source>Monthly</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.yearly" resname="pages.sitemap_changefreq.yearly">
+			<trans-unit id="pages.sitemap_changefreq.yearly">
 				<source>Yearly</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_changefreq.never" resname="pages.sitemap_changefreq.never">
+			<trans-unit id="pages.sitemap_changefreq.never">
 				<source>Never</source>
 			</trans-unit>
-			<trans-unit id="pages.sitemap_priority" resname="pages.sitemap_priority">
+			<trans-unit id="pages.sitemap_priority">
 				<source>Priority</source>
 			</trans-unit>
 		</body>

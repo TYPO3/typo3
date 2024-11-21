@@ -3,10 +3,10 @@
 	<file source-language="en" datatype="plaintext" original="EXT:seo/Resources/Private/Language/locallang_webinfo.xlf" date="2020-02-18T22:02:42Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="seo" resname="seo">
+			<trans-unit id="seo">
 				<source>SEO</source>
 			</trans-unit>
-			<trans-unit id="social_media" resname="social_media">
+			<trans-unit id="social_media">
 				<source>Social Media</source>
 			</trans-unit>
 		</body>

@@ -3,139 +3,139 @@
 	<file source-language="en" datatype="plaintext" original="EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 	<header/>
 		<body>
-			<trans-unit id="permissions" resname="permissions">
+			<trans-unit id="permissions">
 				<source>Permissions</source>
 			</trans-unit>
-			<trans-unit id="ch_permissions" resname="ch_permissions">
+			<trans-unit id="ch_permissions">
 				<source>Change permissions</source>
 			</trans-unit>
-			<trans-unit id="Legend" resname="Legend">
+			<trans-unit id="Legend">
 				<source>Legend</source>
 			</trans-unit>
-			<trans-unit id="Owner" resname="Owner">
+			<trans-unit id="Owner">
 				<source>Owner</source>
 			</trans-unit>
-			<trans-unit id="Group" resname="Group">
+			<trans-unit id="Group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="Everybody" resname="Everybody">
+			<trans-unit id="Everybody">
 				<source>Everybody</source>
 			</trans-unit>
-			<trans-unit id="EditLock_descr" resname="EditLock_descr">
+			<trans-unit id="EditLock_descr">
 				<source>Disable the »Admin-only« edit lock for this page. Currently this page and all content is locked for editing by all non-Admin users.</source>
 			</trans-unit>
-			<trans-unit id="EditLock_descr2" resname="EditLock_descr2">
+			<trans-unit id="EditLock_descr2">
 				<source>Enable the »Admin-only« edit lock for this page</source>
 			</trans-unit>
-			<trans-unit id="Save" resname="Save">
+			<trans-unit id="Save">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="Abort" resname="Abort">
+			<trans-unit id="Abort">
 				<source>Abort</source>
 			</trans-unit>
-			<trans-unit id="Edit" resname="Edit">
+			<trans-unit id="Edit">
 				<source>EDIT</source>
 			</trans-unit>
-			<trans-unit id="recursive" resname="recursive">
+			<trans-unit id="recursive">
 				<source>Set recursively</source>
 			</trans-unit>
-			<trans-unit id="page_affected" resname="page_affected">
+			<trans-unit id="page_affected">
 				<source>page affected</source>
 			</trans-unit>
-			<trans-unit id="pages_affected" resname="pages_affected">
+			<trans-unit id="pages_affected">
 				<source>pages affected</source>
 			</trans-unit>
-			<trans-unit id="user_overview" resname="user_overview">
+			<trans-unit id="user_overview">
 				<source>User overview</source>
 			</trans-unit>
-			<trans-unit id="Mode" resname="Mode">
+			<trans-unit id="Mode">
 				<source>Mode</source>
 			</trans-unit>
-			<trans-unit id="Depth" resname="Depth">
+			<trans-unit id="Depth">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="level" resname="level">
+			<trans-unit id="level">
 				<source>level</source>
 			</trans-unit>
-			<trans-unit id="levels" resname="levels">
+			<trans-unit id="levels">
 				<source>levels</source>
 			</trans-unit>
-			<trans-unit id="User" resname="User">
+			<trans-unit id="User">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="changeOwner" resname="changeOwner">
+			<trans-unit id="changeOwner">
 				<source>Change owner</source>
 			</trans-unit>
-			<trans-unit id="changeGroup" resname="changeGroup">
+			<trans-unit id="changeGroup">
 				<source>Change group</source>
 			</trans-unit>
-			<trans-unit id="def" resname="def">
+			<trans-unit id="def">
 				<source>Definition: 'content' is records from all tables on a page - except from records from the table 'pages' (Pages).</source>
 			</trans-unit>
-			<trans-unit id="A_Granted" resname="A_Granted">
+			<trans-unit id="A_Granted">
 				<source>Access Granted</source>
 			</trans-unit>
-			<trans-unit id="A_Denied" resname="A_Denied">
+			<trans-unit id="A_Denied">
 				<source>Access Denied</source>
 			</trans-unit>
-			<trans-unit id="1" resname="1">
+			<trans-unit id="1">
 				<source>Show page</source>
 			</trans-unit>
-			<trans-unit id="16" resname="16">
+			<trans-unit id="16">
 				<source>Edit content</source>
 			</trans-unit>
-			<trans-unit id="2" resname="2">
+			<trans-unit id="2">
 				<source>Edit page</source>
 			</trans-unit>
-			<trans-unit id="4" resname="4">
+			<trans-unit id="4">
 				<source>Delete page</source>
 			</trans-unit>
-			<trans-unit id="8" resname="8">
+			<trans-unit id="8">
 				<source>New pages</source>
 			</trans-unit>
-			<trans-unit id="1_t" resname="1_t">
+			<trans-unit id="1_t">
 				<source>Show/Copy page and content.</source>
 			</trans-unit>
-			<trans-unit id="16_t" resname="16_t">
+			<trans-unit id="16_t">
 				<source>Change/Add/Delete/Move content.</source>
 			</trans-unit>
-			<trans-unit id="2_t" resname="2_t">
+			<trans-unit id="2_t">
 				<source>Change page eg. change pagetitle etc.</source>
 			</trans-unit>
-			<trans-unit id="4_t" resname="4_t">
+			<trans-unit id="4_t">
 				<source>Delete/Move page and content.</source>
 			</trans-unit>
-			<trans-unit id="8_t" resname="8_t">
+			<trans-unit id="8_t">
 				<source>Create new pages under this page.</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Page editing permissions</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>Setting of page permissions is vital for controlling backend user access to pages. You can assign a user and a group as owners of a page and set access permissions for each.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Permissions</source>
 			</trans-unit>
-			<trans-unit id="WorkspaceWarning" resname="WorkspaceWarning">
+			<trans-unit id="WorkspaceWarning">
 				<source>Workspace Warning</source>
 			</trans-unit>
-			<trans-unit id="WorkspaceWarningText" resname="WorkspaceWarningText">
+			<trans-unit id="WorkspaceWarningText">
 				<source>Permissions you set in the workspace are effective on the elements only after they are published! If you need to set permissions which are effective right now, you must do so in the Live workspace. (Permissions are always evaluated on the Live workspace record/placeholder of a draft version)</source>
 			</trans-unit>
-			<trans-unit id="notSet" resname="notSet">
+			<trans-unit id="notSet">
 				<source>not set</source>
 			</trans-unit>
-			<trans-unit id="deleted" resname="deleted">
+			<trans-unit id="deleted">
 				<source>deleted</source>
 			</trans-unit>
-			<trans-unit id="noGroups" resname="noGroups">
+			<trans-unit id="noGroups">
 				<source>No user groups exist.</source>
 			</trans-unit>
-			<trans-unit id="selectNone" resname="selectNone">
+			<trans-unit id="selectNone">
 				<source>   - none -   </source>
 			</trans-unit>
-			<trans-unit id="selectUnchanged" resname="selectUnchanged">
+			<trans-unit id="selectUnchanged">
 				<source>   - leave unchanged -   </source>
 			</trans-unit>
 		</body>

@@ -3,31 +3,31 @@
     <file source-language="en" datatype="plaintext" original="EXT:adminpanel/Resources/Private/Language/locallang_tsdebug.xlf" date="2018-03-15T09:39:00Z" product-name="adminpanel">
         <header/>
         <body>
-            <trans-unit id="module.label" resname="module.label">
+            <trans-unit id="module.label">
                 <source>TypoScript</source>
             </trans-unit>
-            <trans-unit id="module.shortinfo" resname="module.shortinfo">
+            <trans-unit id="module.shortinfo">
                 <source>(%s Messages)</source>
             </trans-unit>
-            <trans-unit id="treeDisplay" resname="treeDisplay">
+            <trans-unit id="treeDisplay">
                 <source>Tree display</source>
             </trans-unit>
-            <trans-unit id="displayTimes" resname="displayTimes">
+            <trans-unit id="displayTimes">
                 <source>Display all times</source>
             </trans-unit>
-            <trans-unit id="displayMessages" resname="displayMessages">
+            <trans-unit id="displayMessages">
                 <source>Display messages</source>
             </trans-unit>
-            <trans-unit id="displayContent" resname="displayContent">
+            <trans-unit id="displayContent">
                 <source>Display content</source>
             </trans-unit>
-            <trans-unit id="trackContentRendering" resname="trackContentRendering">
+            <trans-unit id="trackContentRendering">
                 <source>Track content rendering</source>
             </trans-unit>
-            <trans-unit id="forceTemplateParsing" resname="forceTemplateParsing">
+            <trans-unit id="forceTemplateParsing">
                 <source>Force TS Rendering</source>
             </trans-unit>
-            <trans-unit id="sub.waterfall.label" resname="sub.waterfall.label">
+            <trans-unit id="sub.waterfall.label">
                 <source>TS Tree</source>
             </trans-unit>
         </body>

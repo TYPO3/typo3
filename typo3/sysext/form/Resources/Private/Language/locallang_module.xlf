@@ -3,13 +3,13 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_module.xlf" date="2016-06-04T20:22:33Z" product-name="form">
         <header/>
         <body>
-            <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+            <trans-unit id="mlang_labels_tablabel">
                 <source>Build custom forms</source>
             </trans-unit>
-            <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+            <trans-unit id="mlang_labels_tabdescr">
                 <source>This module ships a flexible and user-friendly form editor. It allows you to build and create versatile forms for your frontend. Your forms can easily be added to any page by using the content element "Form". Within this element, finishers can be overridden.</source>
             </trans-unit>
-            <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+            <trans-unit id="mlang_tabs_tab">
                 <source>Forms</source>
             </trans-unit>
         </body>

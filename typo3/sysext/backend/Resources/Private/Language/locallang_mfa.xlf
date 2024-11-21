@@ -3,181 +3,181 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_mfa.xlf" date="2021-01-26T11:58:45Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="overview.title" resname="overview.title">
+			<trans-unit id="overview.title">
 				<source>Multi-factor Authentication Overview</source>
 			</trans-unit>
-			<trans-unit id="overview.badge.active" resname="overview.badge.active">
+			<trans-unit id="overview.badge.active">
 				<source>Active</source>
 			</trans-unit>
-			<trans-unit id="overview.badge.locked" resname="overview.badge.locked">
+			<trans-unit id="overview.badge.locked">
 				<source>Locked</source>
 			</trans-unit>
-			<trans-unit id="overview.defaultProvider" resname="overview.defaultProvider">
+			<trans-unit id="overview.defaultProvider">
 				<source>Default provider</source>
 			</trans-unit>
-			<trans-unit id="overview.unlockLinkTitle" resname="overview.unlockLinkTitle">
+			<trans-unit id="overview.unlockLinkTitle">
 				<source>Unlock %s</source>
 			</trans-unit>
-			<trans-unit id="overview.unlockLinkLabel" resname="overview.unlockLinkLabel">
+			<trans-unit id="overview.unlockLinkLabel">
 				<source>Unlock</source>
 			</trans-unit>
-			<trans-unit id="overview.editLinkTitle" resname="overview.editLinkTitle">
+			<trans-unit id="overview.editLinkTitle">
 				<source>Edit %s</source>
 			</trans-unit>
-			<trans-unit id="overview.editLinkLabel" resname="overview.editLinkLabel">
+			<trans-unit id="overview.editLinkLabel">
 				<source>Edit / Change</source>
 			</trans-unit>
-			<trans-unit id="overview.deactivateLinkTitle" resname="overview.deactivateLinkTitle">
+			<trans-unit id="overview.deactivateLinkTitle">
 				<source>Deactivate %s</source>
 			</trans-unit>
-			<trans-unit id="overview.deactivateLinkLabel" resname="overview.deactivateLinkLabel">
+			<trans-unit id="overview.deactivateLinkLabel">
 				<source>Deactivate</source>
 			</trans-unit>
-			<trans-unit id="overview.setupLinkTitle" resname="overview.setupLinkTitle">
+			<trans-unit id="overview.setupLinkTitle">
 				<source>Setup %s</source>
 			</trans-unit>
-			<trans-unit id="overview.setupLinkLabel" resname="overview.setupLinkLabel">
+			<trans-unit id="overview.setupLinkLabel">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="overview.setupRequired.title" resname="overview.setupRequired.title">
+			<trans-unit id="overview.setupRequired.title">
 				<source>Multi-factor authentication required</source>
 			</trans-unit>
-			<trans-unit id="overview.setupRequired.message" resname="overview.setupRequired.message">
+			<trans-unit id="overview.setupRequired.message">
 				<source>
 					Your installation requires MFA. Therefore please setup one of the following providers to be
 					able to continue to use the backend.
 				</source>
 			</trans-unit>
-			<trans-unit id="overview.noProviders.title" resname="overview.noProviders.title">
+			<trans-unit id="overview.noProviders.title">
 				<source>No multi-factor authentication providers</source>
 			</trans-unit>
-			<trans-unit id="overview.noProviders.message" resname="overview.noProviders.message">
+			<trans-unit id="overview.noProviders.message">
 				<source>There are currently no multi-factor authentication providers available.</source>
 			</trans-unit>
-			<trans-unit id="overview.noProviders.errorMessage" resname="overview.noProviders.errorMessage">
+			<trans-unit id="overview.noProviders.errorMessage">
 				<source>
 					You are required to setup MFA but there are no providers to activate available. You should contact
 					your administrator to solve this.
 				</source>
 			</trans-unit>
-			<trans-unit id="providerNotFound" resname="providerNotFound">
+			<trans-unit id="providerNotFound">
 				<source>Selected MFA provider was not found!</source>
 			</trans-unit>
-			<trans-unit id="providerNotActive" resname="providerNotActive">
+			<trans-unit id="providerNotActive">
 				<source>Selected MFA provider has to be active to perform this action!</source>
 			</trans-unit>
-			<trans-unit id="providerActive" resname="providerActive">
+			<trans-unit id="providerActive">
 				<source>Selected MFA provider has to be inactive to perform this action!</source>
 			</trans-unit>
-			<trans-unit id="providerIsLocked" resname="providerNotFound">
+			<trans-unit id="providerIsLocked">
 				<source>Selected MFA provider has to be unlocked to perform this action!</source>
 			</trans-unit>
-			<trans-unit id="setup.instructions" resname="setup.instructions">
+			<trans-unit id="setup.instructions">
 				<source>Setup instructions</source>
 			</trans-unit>
-			<trans-unit id="setup.instructions.close" resname="setup.instructions.close">
+			<trans-unit id="setup.instructions.close">
 				<source>Close setup instructions</source>
 			</trans-unit>
-			<trans-unit id="setup.title" resname="setup.title">
+			<trans-unit id="setup.title">
 				<source>Set up %s</source>
 			</trans-unit>
-			<trans-unit id="edit.title" resname="edit.title">
+			<trans-unit id="edit.title">
 				<source>Edit %s</source>
 			</trans-unit>
-			<trans-unit id="edit.defaultProvider" resname="edit.defaultProvider">
+			<trans-unit id="edit.defaultProvider">
 				<source>Default provider</source>
 			</trans-unit>
-			<trans-unit id="edit.defaultProvider.description" resname="edit.defaultProvider.description">
+			<trans-unit id="edit.defaultProvider.description">
 				<source>Select this as your default provider for login into the TYPO3 backend.</source>
 			</trans-unit>
-			<trans-unit id="edit.defaultProvider.inputLabel" resname="edit.defaultProvider.inputLabel">
+			<trans-unit id="edit.defaultProvider.inputLabel">
 				<source>Use as default provider</source>
 			</trans-unit>
-			<trans-unit id="edit.deactivateProvider" resname="edit.deactivateProvider">
+			<trans-unit id="edit.deactivateProvider">
 				<source>Deactivate provider</source>
 			</trans-unit>
-			<trans-unit id="edit.deactivateProvider.description" resname="edit.deactivateProvider.description">
+			<trans-unit id="edit.deactivateProvider.description">
 				<source>If you don't want to use this provider anymore, you can deactivate it here.</source>
 			</trans-unit>
-			<trans-unit id="edit.deactivateProvider.linkTitle" resname="edit.deactivateProvider.linkTitle">
+			<trans-unit id="edit.deactivateProvider.linkTitle">
 				<source>Deactivate %s</source>
 			</trans-unit>
-			<trans-unit id="edit.deactivateProvider.linkText" resname="edit.deactivateProvider.linkText">
+			<trans-unit id="edit.deactivateProvider.linkText">
 				<source>Deactivate this provider</source>
 			</trans-unit>
-			<trans-unit id="activate.failure" resname="activate.failure">
+			<trans-unit id="activate.failure">
 				<source>Could not activate MFA provider %s. Please try again.</source>
 			</trans-unit>
-			<trans-unit id="activate.success" resname="activate.success">
+			<trans-unit id="activate.success">
 				<source>Successfully activated MFA provider %s.</source>
 			</trans-unit>
-			<trans-unit id="deactivate.failure" resname="deactivate.failure">
+			<trans-unit id="deactivate.failure">
 				<source>Could not deactivate MFA provider %s. Please try again.</source>
 			</trans-unit>
-			<trans-unit id="deactivate.success" resname="deactivate.success">
+			<trans-unit id="deactivate.success">
 				<source>Successfully deactivated MFA provider %s.</source>
 			</trans-unit>
-			<trans-unit id="unlock.failure" resname="unlock.failure">
+			<trans-unit id="unlock.failure">
 				<source>Could not unlock MFA provider %s. Please try again.</source>
 			</trans-unit>
-			<trans-unit id="unlock.success" resname="unlock.success">
+			<trans-unit id="unlock.success">
 				<source>Successfully unlocked MFA provider %s.</source>
 			</trans-unit>
-			<trans-unit id="save.failure" resname="save.failure">
+			<trans-unit id="save.failure">
 				<source>Could not update MFA provider %s. Please try again.</source>
 			</trans-unit>
-			<trans-unit id="save.success" resname="save.success">
+			<trans-unit id="save.success">
 				<source>Successfully updated MFA provider %s.</source>
 			</trans-unit>
-			<trans-unit id="auth.authError" resname="auth.authError">
+			<trans-unit id="auth.authError">
 				<source>Authentication was not successful.</source>
 			</trans-unit>
-			<trans-unit id="auth.submit" resname="auth.submit">
+			<trans-unit id="auth.submit">
 				<source>Verify</source>
 			</trans-unit>
-			<trans-unit id="auth.cancel" resname="auth.cancel">
+			<trans-unit id="auth.cancel">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="auth.locked" resname="auth.locked">
+			<trans-unit id="auth.locked">
 				<source>This provider is temporarily locked!</source>
 			</trans-unit>
-			<trans-unit id="auth.alternativeProviders" resname="auth.alternativeProviders">
+			<trans-unit id="auth.alternativeProviders">
 				<source>Alternative providers</source>
 			</trans-unit>
-			<trans-unit id="auth.alternativeProviders.use" resname="auth.alternativeProviders.use">
+			<trans-unit id="auth.alternativeProviders.use">
 				<source>Use %s</source>
 			</trans-unit>
-			<trans-unit id="standalone.setupProvider" resname="standalone.setupProvider">
+			<trans-unit id="standalone.setupProvider">
 				<source>Set up %s</source>
 			</trans-unit>
-			<trans-unit id="standalone.selection.title" resname="standalone.selection.title">
+			<trans-unit id="standalone.selection.title">
 				<source>Set up MFA</source>
 			</trans-unit>
-			<trans-unit id="standalone.selection.message" resname="standalone.selection.message">
+			<trans-unit id="standalone.selection.message">
 				<source>
 					%s requires you setting up MFA to secure your account. Please select one of the
 					available providers below.
 				</source>
 			</trans-unit>
-			<trans-unit id="standalone.selection.noAvailableProviders" resname="standalone.selection.noAvailableProviders">
+			<trans-unit id="standalone.selection.noAvailableProviders">
 				<source>
 					You are required to set up MFA. However, there are no MFA providers available for you to use.
 					This might be a misconfiguration. Please get in touch with your administrator to find a solution.
 				</source>
 			</trans-unit>
-			<trans-unit id="standalone.selection.goBack" resname="standalone.selection.goBack">
+			<trans-unit id="standalone.selection.goBack">
 				<source>Go back</source>
 			</trans-unit>
-			<trans-unit id="standalone.setup" resname="standalone.setup">
+			<trans-unit id="standalone.setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="standalone.setup.cancel" resname="setup.standalone.cancel">
+			<trans-unit id="standalone.setup.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="standalone.setup.success.title" resname="activate.success">
+			<trans-unit id="standalone.setup.success.title">
 				<source>MFA setup successful</source>
 			</trans-unit>
-			<trans-unit id="standalone.setup.success.message" resname="activate.success">
+			<trans-unit id="standalone.setup.success.message">
 				<source>
 					You have successfully activated MFA provider %s. This provider was also automatically set as your
 					default provider. You can change this at any time in your user settings.

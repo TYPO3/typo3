@@ -3,106 +3,106 @@
 	<file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:33Z" product-name="indexed_search">
 		<header/>
 		<body>
-			<trans-unit id="index_config" resname="index_config">
+			<trans-unit id="index_config">
 				<source>Indexing Configuration</source>
 			</trans-unit>
-			<trans-unit id="index_config.title" resname="index_config.title">
+			<trans-unit id="index_config.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="index_config.description" resname="index_config.description">
+			<trans-unit id="index_config.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="index_config.type.I.0" resname="index_config.type.I.0" translate="no">
+			<trans-unit id="index_config.type.I.0" translate="no">
 				<source>-</source>
 			</trans-unit>
-			<trans-unit id="index_config.type.I.1" resname="index_config.type.I.1">
+			<trans-unit id="index_config.type.I.1">
 				<source>Database Records</source>
 			</trans-unit>
-			<trans-unit id="index_config.type.I.2" resname="index_config.type.I.2">
+			<trans-unit id="index_config.type.I.2">
 				<source>Filepath on server</source>
 			</trans-unit>
-			<trans-unit id="index_config.type.I.3" resname="index_config.type.I.3">
+			<trans-unit id="index_config.type.I.3">
 				<source>External URL</source>
 			</trans-unit>
-			<trans-unit id="index_config.type.I.4" resname="index_config.type.I.4">
+			<trans-unit id="index_config.type.I.4">
 				<source>Page tree</source>
 			</trans-unit>
-			<trans-unit id="index_config.type.I.5" resname="index_config.type.I.5">
+			<trans-unit id="index_config.type.I.5">
 				<source>Meta configuration</source>
 			</trans-unit>
-			<trans-unit id="index_config.type" resname="index_config.type">
+			<trans-unit id="index_config.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="index_config.depth" resname="index_config.depth">
+			<trans-unit id="index_config.depth">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="index_config.table2index" resname="index_config.table2index">
+			<trans-unit id="index_config.table2index">
 				<source>Table to index</source>
 			</trans-unit>
-			<trans-unit id="index_config.table2index.I.0" resname="index_config.table2index.I.0" translate="no">
+			<trans-unit id="index_config.table2index.I.0" translate="no">
 				<source>-</source>
 			</trans-unit>
-			<trans-unit id="index_config.alternative_source_pid" resname="index_config.alternative_source_pid">
+			<trans-unit id="index_config.alternative_source_pid">
 				<source>Alternative Source Page</source>
 			</trans-unit>
-			<trans-unit id="index_config.get_params" resname="index_config.get_params">
+			<trans-unit id="index_config.get_params">
 				<source>GET parameter string (with ###UID### substitution)</source>
 			</trans-unit>
-			<trans-unit id="index_config.fields" resname="index_config.fields">
+			<trans-unit id="index_config.fields">
 				<source>Fields (first is title)</source>
 			</trans-unit>
-			<trans-unit id="index_config.externalUrl" resname="index_config.externalUrl">
+			<trans-unit id="index_config.externalUrl">
 				<source>External URL (eg. "http://www.domain.org/")</source>
 			</trans-unit>
-			<trans-unit id="index_config.filepath" resname="index_config.filepath">
+			<trans-unit id="index_config.filepath">
 				<source>Filepath</source>
 			</trans-unit>
-			<trans-unit id="index_config.extensions" resname="index_config.extensions">
+			<trans-unit id="index_config.extensions">
 				<source>Limit to extensions (commalist)</source>
 			</trans-unit>
-			<trans-unit id="index_config.url_deny" resname="index_config.url_deny">
+			<trans-unit id="index_config.url_deny">
 				<source>Enter sub-URLs in which not to decend</source>
 			</trans-unit>
-			<trans-unit id="index_config.records_indexonchange" resname="index_config.records_indexonchange">
+			<trans-unit id="index_config.records_indexonchange">
 				<source>Index Records immediately when saved?</source>
 			</trans-unit>
-			<trans-unit id="index_config.timer_next_indexing" resname="index_config.timer_next_indexing">
+			<trans-unit id="index_config.timer_next_indexing">
 				<source>Next indexing is scheduled (if empty, then immediately)</source>
 			</trans-unit>
-			<trans-unit id="index_config.timer_offset" resname="index_config.timer_offset">
+			<trans-unit id="index_config.timer_offset">
 				<source>Timing offset from midnight</source>
 			</trans-unit>
-			<trans-unit id="index_config.timer_frequency" resname="index_config.timer_frequency">
+			<trans-unit id="index_config.timer_frequency">
 				<source>How often would you like a re-index?</source>
 			</trans-unit>
-			<trans-unit id="index_config.timer_frequency.I.0" resname="index_config.timer_frequency.I.0">
+			<trans-unit id="index_config.timer_frequency.I.0">
 				<source>Every hour</source>
 			</trans-unit>
-			<trans-unit id="index_config.timer_frequency.I.1" resname="index_config.timer_frequency.I.1">
+			<trans-unit id="index_config.timer_frequency.I.1">
 				<source>Every day (24 hours)</source>
 			</trans-unit>
-			<trans-unit id="index_config.timer_frequency.I.2" resname="index_config.timer_frequency.I.2">
+			<trans-unit id="index_config.timer_frequency.I.2">
 				<source>Every week</source>
 			</trans-unit>
-			<trans-unit id="index_config.recordsbatch" resname="index_config.recordsbatch">
+			<trans-unit id="index_config.recordsbatch">
 				<source>How many records to index a minute (default is 100)</source>
 			</trans-unit>
-			<trans-unit id="index_config.set_id" resname="index_config.set_id">
+			<trans-unit id="index_config.set_id">
 				<source>Session ID (if &gt; zero, then indexing job is running)</source>
 			</trans-unit>
-			<trans-unit id="index_config.indexcfgs" resname="index_config.indexcfgs">
+			<trans-unit id="index_config.indexcfgs">
 				<source>Indexing configurations</source>
 			</trans-unit>
-			<trans-unit id="index_config.parameterCfgs" resname="index_config.parameterCfgs">
+			<trans-unit id="index_config.parameterCfgs">
 				<source>Parameter combination configuration ([tablename]:&amp;[param]=###UID###)</source>
 			</trans-unit>
-			<trans-unit id="index_config.rootpage" resname="index_config.rootpage">
+			<trans-unit id="index_config.rootpage">
 				<source>Root page</source>
 			</trans-unit>
-			<trans-unit id="plugin_title" resname="plugin_title">
+			<trans-unit id="plugin_title">
 				<source>Indexed Search</source>
 			</trans-unit>
-			<trans-unit id="plugin_description" resname="plugin_description">
+			<trans-unit id="plugin_description">
 				<source>Search based on a database stored index.</source>
 			</trans-unit>
 		</body>

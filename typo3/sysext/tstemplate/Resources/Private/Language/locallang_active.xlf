@@ -3,101 +3,101 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_active.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="submodule.title" resname="submodule.title">
+			<trans-unit id="submodule.title">
 				<source>Active TypoScript</source>
 			</trans-unit>
-			<trans-unit id="submodule.titleWithRecord" resname="submodule.titleWithRecord">
+			<trans-unit id="submodule.titleWithRecord">
 				<source>Active TypoScript for record "%s"</source>
 			</trans-unit>
-			<trans-unit id="submodule.description" resname="submodule.description">
+			<trans-unit id="submodule.description">
 				<source>Overview of the current TypoScript configuration of the system, divided into constants and setup parts. Optionally, the constant values can be displayed directly in the setup. A targeted search for values and TypoScript names is possible. The list of results can also be filtered according to TypoScript conditions.</source>
 			</trans-unit>
-			<trans-unit id="infobox.message.noTypoScriptFound" resname="infobox.message.noTypoScriptFound">
+			<trans-unit id="infobox.message.noTypoScriptFound">
 				<source>No TypoScript found.</source>
 			</trans-unit>
-			<trans-unit id="options.displayComments" resname="options.displayComments">
+			<trans-unit id="options.displayComments">
 				<source>Display comments</source>
 			</trans-unit>
-			<trans-unit id="options.displayConstantSubstitutions" resname="options.displayConstantSubstitutions">
+			<trans-unit id="options.displayConstantSubstitutions">
 				<source>Substitute constants in setup</source>
 			</trans-unit>
-			<trans-unit id="options.selectedRecord" resname="options.selectedRecord">
+			<trans-unit id="options.selectedRecord">
 				<source>Selected record</source>
 			</trans-unit>
-			<trans-unit id="options.sortAlphabetically" resname="options.sortAlphabetically">
+			<trans-unit id="options.sortAlphabetically">
 				<source>Sort keys alphabetically</source>
 			</trans-unit>
-			<trans-unit id="sectionHeadline.constants" resname="sectionHeadline.constants">
+			<trans-unit id="sectionHeadline.constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="sectionHeadline.setup" resname="sectionHeadline.setup">
+			<trans-unit id="sectionHeadline.setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="panel.header.conditions" resname="panel.header.conditions">
+			<trans-unit id="panel.header.conditions">
 				<source>Conditions</source>
 			</trans-unit>
-			<trans-unit id="panel.header.configuration" resname="panel.header.configuration">
+			<trans-unit id="panel.header.configuration">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="panel.header.numberOfSearchMatches" resname="panel.header.numberOfSearchMatches">
+			<trans-unit id="panel.header.numberOfSearchMatches">
 				<source>%s search match(es)</source>
 			</trans-unit>
-			<trans-unit id="panel.info.conditionActiveCount.multiple" resname="panel.info.conditionActiveCount.multiple">
+			<trans-unit id="panel.info.conditionActiveCount.multiple">
 				<source>%s active conditions</source>
 			</trans-unit>
-			<trans-unit id="panel.info.conditionActiveCount.single" resname="panel.info.conditionActiveCount.single">
+			<trans-unit id="panel.info.conditionActiveCount.single">
 				<source>%s active condition</source>
 			</trans-unit>
-			<trans-unit id="panel.info.conditionWithConstant" resname="panel.info.conditionWithConstant">
+			<trans-unit id="panel.info.conditionWithConstant">
 				<source>Constant usage: [%s]</source>
 			</trans-unit>
-			<trans-unit id="tree.valueWithConstant" resname="tree.valueWithConstant">
+			<trans-unit id="tree.valueWithConstant">
 				<source>Constant usage: %s</source>
 			</trans-unit>
 
 			<!-- Edit action -->
-			<trans-unit id="editAction.submodule.title" resname="editAction.submodule.title">
+			<trans-unit id="editAction.submodule.title">
 				<source>Edit single property</source>
 			</trans-unit>
-			<trans-unit id="editAction.submodule.titleWithTemplate" resname="editAction.submodule.titleWithTemplate">
+			<trans-unit id="editAction.submodule.titleWithTemplate">
 				<source>Edit single property in TypoScript record "%s"</source>
 			</trans-unit>
-			<trans-unit id="editAction.infobox.title.noTypoScriptTemplateOnCurrentPage" resname="editAction.infobox.title.noTypoScriptTemplateOnCurrentPage">
+			<trans-unit id="editAction.infobox.title.noTypoScriptTemplateOnCurrentPage">
 				<source>No TypoScript record on the current page</source>
 			</trans-unit>
-			<trans-unit id="editAction.infobox.message.noTypoScriptTemplateOnCurrentPage" resname="editAction.infobox.message.noTypoScriptTemplateOnCurrentPage">
+			<trans-unit id="editAction.infobox.message.noTypoScriptTemplateOnCurrentPage">
 				<source>You cannot edit properties and values if there is no current TypoScript record in which the configuration can be stored. Please create an extension TypoScript record in "Edit TypoScript Record" first.</source>
 			</trans-unit>
-			<trans-unit id="editAction.addProperty.headline" resname="editAction.addProperty.headline">
+			<trans-unit id="editAction.addProperty.headline">
 				<source>Add or override child property</source>
 			</trans-unit>
-			<trans-unit id="editAction.addProperty.btn" resname="editAction.addProperty.btn">
+			<trans-unit id="editAction.addProperty.btn">
 				<source>Add</source>
 			</trans-unit>
-			<trans-unit id="editAction.editProperty.headline" resname="editAction.editProperty.headline">
+			<trans-unit id="editAction.editProperty.headline">
 				<source>Edit current value</source>
 			</trans-unit>
-			<trans-unit id="editAction.editProperty.btn" resname="editAction.editProperty.btn">
+			<trans-unit id="editAction.editProperty.btn">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="editAction.clearObject.headline" resname="editAction.clearObject.headline">
+			<trans-unit id="editAction.clearObject.headline">
 				<source>Clear the object</source>
 			</trans-unit>
-			<trans-unit id="editAction.clearObject.infotextWithProperty" resname="editAction.clearObject.infotextWithProperty">
+			<trans-unit id="editAction.clearObject.infotextWithProperty">
 				<source>The object will be cleared via the statement:</source>
 			</trans-unit>
-			<trans-unit id="editAction.clearObject.btn" resname="editAction.clearObject.btn">
+			<trans-unit id="editAction.clearObject.btn">
 				<source>Clear now</source>
 			</trans-unit>
 
 			<!-- Update action -->
-			<trans-unit id="updateAction.lineAdded" resname="updateAction.lineAdded">
+			<trans-unit id="updateAction.lineAdded">
 				<source>Line added to current TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="updateAction.lineNotAdded" resname="updateAction.lineNotAdded">
+			<trans-unit id="updateAction.lineNotAdded">
 				<source>No line added to current TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="updateAction.noSpaces" resname="updateAction.noSpaces">
+			<trans-unit id="updateAction.noSpaces">
 				<source>You must enter a property with characters "a-z", "A-Z", "0-9", or ".". Dots will be quoted. No spaces or special chars.</source>
 			</trans-unit>
 		</body>

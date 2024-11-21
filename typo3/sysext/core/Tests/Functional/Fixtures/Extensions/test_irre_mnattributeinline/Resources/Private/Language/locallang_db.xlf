@@ -3,111 +3,111 @@
 	<file source-language="en" datatype="plaintext" original="EXT:test_irre_mnattributeinline/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="test_irre_mnattributeinline">
 		<header/>
 		<body>
-			<trans-unit id="tabs.general" resname="tabs.general">
+			<trans-unit id="tabs.general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+			<trans-unit id="tabs.visibility">
 				<source>Visibility</source>
 			</trans-unit>
 
-			<trans-unit id="pages.doktype.div.irre" resname="pages.doktype.div.irre">
+			<trans-unit id="pages.doktype.div.irre">
 				<source>IRRE Tutorial</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.233" resname="pages.doktype.I.233">
+			<trans-unit id="pages.doktype.I.233">
 				<source>IRRE Tutorial Test Page</source>
 			</trans-unit>
 
-			<trans-unit id="tx_testirremnattributeinline_hotel" resname="tx_testirremnattributeinline_hotel">
+			<trans-unit id="tx_testirremnattributeinline_hotel">
 				<source>m:n ASym: Hotels</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline_hotel_offer_rel" resname="tx_testirremnattributeinline_hotel_offer_rel">
+			<trans-unit id="tx_testirremnattributeinline_hotel_offer_rel">
 				<source>m:n ASym: Hotels&lt;-&gt;Offers</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline_offer" resname="tx_testirremnattributeinline_offer">
+			<trans-unit id="tx_testirremnattributeinline_offer">
 				<source>m:n ASym: Offers</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline_price" resname="tx_testirremnattributeinline_price">
+			<trans-unit id="tx_testirremnattributeinline_price">
 				<source>m:n ASym: Prices</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__mnattr_hotel" resname="tx_testirremnattributeinline__mnattr_hotel">
+			<trans-unit id="tx_testirremnattributeinline__mnattr_hotel">
 				<source>m:n Attr: Hotels</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__mnattr_hotel_offer_rel" resname="tx_testirremnattributeinline__mnattr_hotel_offer_rel">
+			<trans-unit id="tx_testirremnattributeinline__mnattr_hotel_offer_rel">
 				<source>m:n Attr: Hotels&lt;-&gt;Offers</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__mnattr_offer" resname="tx_testirremnattributeinline__mnattr_offer">
+			<trans-unit id="tx_testirremnattributeinline__mnattr_offer">
 				<source>m:n Attr: Offers</source>
 			</trans-unit>
 
-			<trans-unit id="tx_testirremnattributeinline__hotel.title" resname="tx_testirremnattributeinline__hotel.title">
+			<trans-unit id="tx_testirremnattributeinline__hotel.title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel.offers" resname="tx_testirremnattributeinline__hotel.offers">
+			<trans-unit id="tx_testirremnattributeinline__hotel.offers">
 				<source>Offers:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel.branches" resname="tx_testirremnattributeinline__hotel.branches">
+			<trans-unit id="tx_testirremnattributeinline__hotel.branches">
 				<source>Branches:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_rel" resname="tx_testirremnattributeinline__hotel_rel">
+			<trans-unit id="tx_testirremnattributeinline__hotel_rel">
 				<source>Hotels&lt;-&gt;Hotels</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_rel.hotelid" resname="tx_testirremnattributeinline__hotel_rel.hotelid">
+			<trans-unit id="tx_testirremnattributeinline__hotel_rel.hotelid">
 				<source>Hotel:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_rel.branchid" resname="tx_testirremnattributeinline__hotel_rel.branchid">
+			<trans-unit id="tx_testirremnattributeinline__hotel_rel.branchid">
 				<source>Branch:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel" resname="tx_testirremnattributeinline__hotel_offer_rel">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel">
 				<source>Hotels&lt;-&gt;Offers</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.hotelid" resname="tx_testirremnattributeinline__hotel_offer_rel.hotelid">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.hotelid">
 				<source>Hotel:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.offerid" resname="tx_testirremnattributeinline__hotel_offer_rel.offerid">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.offerid">
 				<source>Offer:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.prices" resname="tx_testirremnattributeinline__hotel_offer_rel.prices">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.prices">
 				<source>Prices:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality" resname="tx_testirremnattributeinline__hotel_offer_rel.quality">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality">
 				<source>Quality:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.0" resname="tx_testirremnattributeinline__hotel_offer_rel.quality.I.0">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.0">
 				<source>(1 star) *</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.1" resname="tx_testirremnattributeinline__hotel_offer_rel.quality.I.1">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.1">
 				<source>(2 stars) **</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.2" resname="tx_testirremnattributeinline__hotel_offer_rel.quality.I.2">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.2">
 				<source>(3 stars) ***</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.3" resname="tx_testirremnattributeinline__hotel_offer_rel.quality.I.3">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.3">
 				<source>(4 stars) ****</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.4" resname="tx_testirremnattributeinline__hotel_offer_rel.quality.I.4">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.quality.I.4">
 				<source>(5 stars) *****</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.allincl" resname="tx_testirremnattributeinline__hotel_offer_rel.allincl">
+			<trans-unit id="tx_testirremnattributeinline__hotel_offer_rel.allincl">
 				<source>all inclusive:</source>
 			</trans-unit>
 
-			<trans-unit id="tx_testirremnattributeinline__offer.title" resname="tx_testirremnattributeinline__offer.title">
+			<trans-unit id="tx_testirremnattributeinline__offer.title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__offer.hotels" resname="tx_testirremnattributeinline__offer.hotels">
+			<trans-unit id="tx_testirremnattributeinline__offer.hotels">
 				<source>Hotels:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__offer.prices" resname="tx_testirremnattributeinline__offer.prices">
+			<trans-unit id="tx_testirremnattributeinline__offer.prices">
 				<source>Prices:</source>
 			</trans-unit>
 
-			<trans-unit id="tx_testirremnattributeinline__price.title" resname="tx_testirremnattributeinline__price.title">
+			<trans-unit id="tx_testirremnattributeinline__price.title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__price.offers" resname="tx_testirremnattributeinline__price.offers">
+			<trans-unit id="tx_testirremnattributeinline__price.offers">
 				<source>Offers:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnattributeinline__price.price" resname="tx_testirremnattributeinline__price.price">
+			<trans-unit id="tx_testirremnattributeinline__price.price">
 				<source>Price (EUR):</source>
 			</trans-unit>
 		</body>

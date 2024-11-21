@@ -3,38 +3,38 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_ceuid_suffix_02.xlf" date="2017-01-30T03:38:32Z" product-name="tests">
         <header/>
         <body>
-            <trans-unit id="form-runtime-identifier-42.element.form-runtime-identifier-42.renderingOptions.submitButtonLabel" resname="form-runtime-identifier-42.element.form-runtime-identifier-42.renderingOptions.submitButtonLabel" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier-42.element.form-runtime-identifier-42.renderingOptions.submitButtonLabel" xml:space="preserve">
                 <source>form-runtime-identifier-42 submitButtonLabel EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier-42.element.form-element-identifier.properties.label" resname="form-runtime-identifier-42.element.form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier-42.element.form-element-identifier.properties.label" xml:space="preserve">
                 <source>form-runtime-identifier-42 form-element-identifierlabel EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.form-runtime-identifier.renderingOptions.submitButtonLabel" resname="form-runtime-identifier.element.form-runtime-identifier.renderingOptions.submitButtonLabel" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-runtime-identifier.renderingOptions.submitButtonLabel" xml:space="preserve">
                 <source>form-runtime-identifier submitButtonLabel EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label" resname="form-runtime-identifier.element.form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label" xml:space="preserve">
                 <source>form-runtime-identifier form-element-identifierlabel EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier-42.validation.error.form-runtime-identifier-42.123" resname="form-runtime-identifier-42.validation.error.form-runtime-identifier-42.123" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier-42.validation.error.form-runtime-identifier-42.123" xml:space="preserve">
                 <source>form-runtime-identifier-42 error 123 EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier-42.validation.error.form-element-identifier.123" resname="form-runtime-identifier-42.validation.error.form-element-identifier.123" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier-42.validation.error.form-element-identifier.123" xml:space="preserve">
                 <source>form-runtime-identifier-42 form-element-identifier error 123 EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.validation.error.form-runtime-identifier.123" resname="form-runtime-identifier.validation.error.form-runtime-identifier.123" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.validation.error.form-runtime-identifier.123" xml:space="preserve">
                 <source>form-runtime-identifier error 123 EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier.validation.error.form-element-identifier.123" resname="form-runtime-identifier.validation.error.form-element-identifier.123" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.validation.error.form-element-identifier.123" xml:space="preserve">
                 <source>form-runtime-identifier form-element-identifier error 123 EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier-42.finisher.Foo.test" resname="form-runtime-identifier-42.finisher.Foo.test" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier-42.finisher.Foo.test" xml:space="preserve">
                 <source>form-runtime-identifier-42 FooFinisher test EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier.finisher.Foo.test" resname="form-runtime-identifier.finisher.Foo.test" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.finisher.Foo.test" xml:space="preserve">
                 <source>form-runtime-identifier FooFinisher test EN</source>
             </trans-unit>
         </body>

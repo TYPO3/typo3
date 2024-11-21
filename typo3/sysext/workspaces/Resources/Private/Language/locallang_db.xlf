@@ -3,127 +3,127 @@
 	<file source-language="en" datatype="plaintext" original="EXT:workspaces/Resources/Private/Language/locallang_db.xlf" date="2011-10-17T20:22:37Z" product-name="workspaces">
 		<header/>
 		<body>
-			<trans-unit id="sys_workspace" resname="sys_workspace">
+			<trans-unit id="sys_workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.custom_stages" resname="sys_workspace.custom_stages">
+			<trans-unit id="sys_workspace.custom_stages">
 				<source>Custom stages</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace_stage.responsible_persons" resname="sys_workspace_stage.responsible_persons">
+			<trans-unit id="sys_workspace_stage.responsible_persons">
 				<source>Responsible persons</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace_stage.default_mailcomment" resname="sys_workspace_stage.default_mailcomment">
+			<trans-unit id="sys_workspace_stage.default_mailcomment">
 				<source>Default mail comment</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace_stage.parentid" resname="sys_workspace_stage.parentid">
+			<trans-unit id="sys_workspace_stage.parentid">
 				<source>UID of parent record</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace_stage" resname="sys_workspace_stage">
+			<trans-unit id="sys_workspace_stage">
 				<source>Workspace Stage</source>
 			</trans-unit>
-			<trans-unit id="tabs.notification_settings" resname="tabs.notification_settings">
+			<trans-unit id="tabs.notification_settings">
 				<source>Notification settings</source>
 			</trans-unit>
-			<trans-unit id="tabs.general" resname="tabs.general">
+			<trans-unit id="tabs.general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="tabs.internal_stages" resname="tabs.internal_stages">
+			<trans-unit id="tabs.internal_stages">
 				<source>Internal Stages</source>
 			</trans-unit>
-			<trans-unit id="tabs.custom_stages" resname="tabs.custom_stages">
+			<trans-unit id="tabs.custom_stages">
 				<source>Custom Stages</source>
 			</trans-unit>
-			<trans-unit id="tabs.publish_access" resname="tabs.publish_access">
+			<trans-unit id="tabs.publish_access">
 				<source>Publishing / Access</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace_stage.notification_defaults" resname="sys_workspace_stage.notification_defaults">
+			<trans-unit id="sys_workspace_stage.notification_defaults">
 				<source>Default notification recipients</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace_stage.allow_notificaton_settings" resname="sys_workspace_stage.allow_notificaton_settings">
+			<trans-unit id="sys_workspace_stage.allow_notificaton_settings">
 				<source>Allow notification settings during stage change</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.palette.stage.edit" resname="sys_workspace.palette.stage.edit">
+			<trans-unit id="sys_workspace.palette.stage.edit">
 				<source>Stage "editing"</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.palette.stage.publish" resname="sys_workspace.palette.stage.publish">
+			<trans-unit id="sys_workspace.palette.stage.publish">
 				<source>Stage "ready to publish"</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.palette.stage.execute" resname="sys_workspace.palette.stage.execute">
+			<trans-unit id="sys_workspace.palette.stage.execute">
 				<source>Stage "publishing execute"</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.settingsDialog" resname="sys_workspace.settingsDialog">
+			<trans-unit id="sys_workspace.settingsDialog">
 				<source>Notification dialog settings</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.settingsDialog.showDialog" resname="sys_workspace.settingsDialog.showDialog">
+			<trans-unit id="sys_workspace.settingsDialog.showDialog">
 				<source>Show Dialog</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.settingsDialog.changeablePreselection" resname="sys_workspace.settingsDialog.changeablePreselection">
+			<trans-unit id="sys_workspace.settingsDialog.changeablePreselection">
 				<source>Allow to change pre-selection of recipients</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.preselection" resname="sys_workspace.preselection">
+			<trans-unit id="sys_workspace.preselection">
 				<source>Pre-select recipients</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.owners" resname="sys_workspace.preselection.owners">
+			<trans-unit id="sys_workspace.preselection.owners">
 				<source>Owners</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.members" resname="sys_workspace.preselection.members">
+			<trans-unit id="sys_workspace.preselection.members">
 				<source>Members</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.editors" resname="sys_workspace.preselection.editors">
+			<trans-unit id="sys_workspace.preselection.editors">
 				<source>Editors</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.preselection.responsiblePersons" resname="sys_workspace.preselection.responsiblePersons">
+			<trans-unit id="sys_workspace.preselection.responsiblePersons">
 				<source>Responsible Persons</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers">
+			<trans-unit id="sys_workspace.adminusers">
 				<source>Owners</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.members" resname="sys_workspace.members">
+			<trans-unit id="sys_workspace.members">
 				<source>Members</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time">
+			<trans-unit id="sys_workspace.publish_time">
 				<source>Auto-publish changes on (requires scheduler task)</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.unpublish_time" resname="sys_workspace.unpublish_time">
+			<trans-unit id="sys_workspace.unpublish_time">
 				<source>Un-Publish changes on (requires scheduler task)</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.freeze" resname="sys_workspace.freeze">
+			<trans-unit id="sys_workspace.freeze">
 				<source>Freeze Editing</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit">
+			<trans-unit id="sys_workspace.live_edit">
 				<source>Allow "live" editing of records from tables without versioning</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access">
+			<trans-unit id="sys_workspace.publish_access">
 				<source>Publish access</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access.1" resname="sys_workspace.publish_access.1">
+			<trans-unit id="sys_workspace.publish_access.1">
 				<source>Publish only content in publish stage</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access.2" resname="sys_workspace.publish_access.2">
+			<trans-unit id="sys_workspace.publish_access.2">
 				<source>Restrict publishing to workspace owners</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access.3" resname="sys_workspace.publish_access.3">
+			<trans-unit id="sys_workspace.publish_access.3">
 				<source>Hide "Entire workspace" action drop down</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification">
+			<trans-unit id="sys_workspace.stagechg_notification">
 				<source>Notification settings during state change</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.previewlink_lifetime" resname="sys_workspace.previewlink_lifetime">
+			<trans-unit id="sys_workspace.previewlink_lifetime">
 				<source>Lifetime in hours on how long a preview link will be valid</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.stagechg_notification.0" resname="sys_workspace.stagechg_notification.0">
+			<trans-unit id="sys_workspace.stagechg_notification.0">
 				<source>Disable notifications</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.stagechg_notification.1" resname="sys_workspace.stagechg_notification.1">
+			<trans-unit id="sys_workspace.stagechg_notification.1">
 				<source>Notify users of next stage only</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.stagechg_notification.10" resname="sys_workspace.stagechg_notification.10">
+			<trans-unit id="sys_workspace.stagechg_notification.10">
 				<source>Notify all users on any change</source>
 			</trans-unit>
-			<trans-unit id="tabs.users" resname="tabs.users">
+			<trans-unit id="tabs.users">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="tabs.mountpoints" resname="tabs.mountpoints">
+			<trans-unit id="tabs.mountpoints">
 				<source>Mountpoints</source>
 			</trans-unit>
 		</body>

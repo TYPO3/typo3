@@ -3,22 +3,22 @@
 	<file source-language="en" datatype="plaintext" original="EXT:impexp/Resources/Private/Language/locallang_tca.xlf" date="2020-09-19T08:53:36Z" product-name="impexp">
 		<header/>
 		<body>
-			<trans-unit id="tx_impexp_presets" resname="tx_impexp_presets" xml:space="preserve">
+			<trans-unit id="tx_impexp_presets" xml:space="preserve">
 				<source>Export Configuration</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title" xml:space="preserve">
+			<trans-unit id="title" xml:space="preserve">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="public" resname="public" xml:space="preserve">
+			<trans-unit id="public" xml:space="preserve">
 				<source>Public</source>
 			</trans-unit>
-			<trans-unit id="user_uid" resname="user_uid" xml:space="preserve">
+			<trans-unit id="user_uid" xml:space="preserve">
 				<source>Owner</source>
 			</trans-unit>
-			<trans-unit id="item_uid" resname="item_uid" xml:space="preserve">
+			<trans-unit id="item_uid" xml:space="preserve">
 				<source>Page Root</source>
 			</trans-unit>
-			<trans-unit id="preset_data" resname="preset_data" xml:space="preserve">
+			<trans-unit id="preset_data" xml:space="preserve">
 				<source>Configuration</source>
 			</trans-unit>
 		</body>

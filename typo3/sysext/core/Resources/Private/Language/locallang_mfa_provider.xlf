@@ -3,14 +3,14 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_mfa_provider.xlf" date="2021-01-29T00:14:02Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="totp.title" resname="totp.title">
+			<trans-unit id="totp.title">
 				<source>Time-based one-time password</source>
 			</trans-unit>
-			<trans-unit id="totp.description" resname="totp.description">
+			<trans-unit id="totp.description">
 				<source>This provider allows to authenticate with a single-use passcode which is based on the current time.
 					Each code is only valid for 30 seconds. You need an OTP application or device, supporting such tokens.</source>
 			</trans-unit>
-			<trans-unit id="totp.setupInstructions" resname="totp.setupInstructions">
+			<trans-unit id="totp.setupInstructions">
 				<source>The time-based one-time password provider enables you to strengthen your accounts' security by requiring a six-digit code on every login.
 					This provider is based on a shared secret, which will be exchanged between your OTP application (or device) and TYPO3. Each code takes the current time into account and is only valid for 30 seconds.
 
@@ -22,14 +22,14 @@
 
 					Note: In case your application supports otpauth:// urls, you can retrieve the url by clicking on the info button next to the shared secret.</source>
 			</trans-unit>
-			<trans-unit id="recoveryCodes.title" resname="recoveryCodes.title">
+			<trans-unit id="recoveryCodes.title">
 				<source>Recovery codes</source>
 			</trans-unit>
-			<trans-unit id="recoveryCodes.description" resname="recoveryCodes.description">
+			<trans-unit id="recoveryCodes.description">
 				<source>This provider allows to authenticate with a set of single-use passcodes, in case you lost your
 					primary MFA credentials, or just have no access to them temporarily.</source>
 			</trans-unit>
-			<trans-unit id="recoveryCodes.setupInstructions" resname="recoveryCodes.setupInstructions">
+			<trans-unit id="recoveryCodes.setupInstructions">
 				<source>Recovery codes are random eight-digit codes which can be used to authenticate, in case your lost your main authentication credentials. Each code is only valid once.
 					As soon as all recovery codes are exhausted, you're required to generate a new set. Therefore, periodically check the amount of remaining codes in the Edit / Change view of the provider.
 
@@ -40,109 +40,109 @@
 
 					Note: Since the recovery codes are being encrypted and stored securely, this process can take some time.</source>
 			</trans-unit>
-			<trans-unit id="totpInputLabel" resname="totpInputLabel">
+			<trans-unit id="totpInputLabel">
 				<source>Enter the generated six-digit code</source>
 			</trans-unit>
-			<trans-unit id="totpInputHelp" resname="totpInputHelp">
+			<trans-unit id="totpInputHelp">
 				<source>This code should now be displayed on your device or in your application.</source>
 			</trans-unit>
-			<trans-unit id="locked" resname="locked">
+			<trans-unit id="locked">
 				<source>
 					The maximum attempts for this provider are exceeded. Please use another provider or contact your
 					administrator.
 				</source>
 			</trans-unit>
-			<trans-unit id="edit.table.head" resname="edit.table.head">
+			<trans-unit id="edit.table.head">
 				<source>Provider information</source>
 			</trans-unit>
-			<trans-unit id="edit.table.name" resname="edit.table.name">
+			<trans-unit id="edit.table.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="edit.table.nameInputPlaceholder" resname="edit.table.nameInputPlaceholder">
+			<trans-unit id="edit.table.nameInputPlaceholder">
 				<source>Enter a name</source>
 			</trans-unit>
-			<trans-unit id="edit.table.recoveryCodesLeft" resname="edit.table.recoveryCodesLeft">
+			<trans-unit id="edit.table.recoveryCodesLeft">
 				<source>Recovery codes left</source>
 			</trans-unit>
-			<trans-unit id="edit.table.lastUsed" resname="edit.table.lastUsed">
+			<trans-unit id="edit.table.lastUsed">
 				<source>Last used</source>
 			</trans-unit>
-			<trans-unit id="edit.table.lastUsed.default" resname="edit.table.lastUsed.default">
+			<trans-unit id="edit.table.lastUsed.default">
 				<source>Never</source>
 			</trans-unit>
-			<trans-unit id="edit.table.lastUpdated" resname="edit.table.lastUpdated">
+			<trans-unit id="edit.table.lastUpdated">
 				<source>Last updated</source>
 			</trans-unit>
-			<trans-unit id="edit.regenerate" resname="edit.regenerate">
+			<trans-unit id="edit.regenerate">
 				<source>Regenerate recovery codes</source>
 			</trans-unit>
-			<trans-unit id="edit.regenerate.description" resname="edit.regenerate.description">
+			<trans-unit id="edit.regenerate.description">
 				<source>
 					If you lost your recovery codes or just want to get fresh ones, you can
 					regenerate them by selecting the checkbox below. You've currently %d codes left.
 				</source>
 			</trans-unit>
-			<trans-unit id="edit.regenerate.inputLabel" resname="edit.regenerate.inputLabel">
+			<trans-unit id="edit.regenerate.inputLabel">
 				<source>Regenerate recovery codes</source>
 			</trans-unit>
-			<trans-unit id="setup.step.1" resname="setup.step.1">
+			<trans-unit id="setup.step.1">
 				<source>Step 1</source>
 			</trans-unit>
-			<trans-unit id="setup.step.1a" resname="setup.step.1a">
+			<trans-unit id="setup.step.1a">
 				<source>Step 1a</source>
 			</trans-unit>
-			<trans-unit id="setup.step.1b" resname="setup.step.1b">
+			<trans-unit id="setup.step.1b">
 				<source>Step 1b</source>
 			</trans-unit>
-			<trans-unit id="setup.step.2" resname="setup.step.2">
+			<trans-unit id="setup.step.2">
 				<source>Step 2</source>
 			</trans-unit>
-			<trans-unit id="setup.step.3" resname="setup.step.3">
+			<trans-unit id="setup.step.3">
 				<source>Step 3</source>
 			</trans-unit>
-			<trans-unit id="setup.qrCode.label" resname="setup.qrCode.label">
+			<trans-unit id="setup.qrCode.label">
 				<source>Scan the displayed QR code</source>
 			</trans-unit>
-			<trans-unit id="setup.qrCode.help" resname="setup.qrCode.help">
+			<trans-unit id="setup.qrCode.help">
 				<source>Scan this code with your OTP application (e.g. Google Authenticator).</source>
 			</trans-unit>
-			<trans-unit id="setup.secret.label" resname="setup.secret.label">
+			<trans-unit id="setup.secret.label">
 				<source>Copy the shared secret</source>
 			</trans-unit>
-			<trans-unit id="setup.secret.help" resname="setup.secret.help">
+			<trans-unit id="setup.secret.help">
 				<source>You can also enter the shared secret manually in your OTP application or device.</source>
 			</trans-unit>
-			<trans-unit id="setup.name.label" resname="setup.name.label">
+			<trans-unit id="setup.name.label">
 				<source>Enter a name (optional)</source>
 			</trans-unit>
-			<trans-unit id="setup.name.help" resname="setup.name.help">
+			<trans-unit id="setup.name.help">
 				<source>Specify a custom name for this provider.</source>
 			</trans-unit>
-			<trans-unit id="setup.recoveryCodes.InputLabel" resname="setup.recoveryCodes.InputLabel">
+			<trans-unit id="setup.recoveryCodes.InputLabel">
 				<source>Recovery codes</source>
 			</trans-unit>
-			<trans-unit id="setup.recoveryCodes.InputHelp" resname="setup.recoveryCodes.InputHelp">
+			<trans-unit id="setup.recoveryCodes.InputHelp">
 				<source>Copy these codes and store them at a safe place.</source>
 			</trans-unit>
-			<trans-unit id="setup.recoveryCodes.reloadTitle" resname="setup.recoveryCodes.reloadTitle">
+			<trans-unit id="setup.recoveryCodes.reloadTitle">
 				<source>Reload recovery codes</source>
 			</trans-unit>
-			<trans-unit id="setup.recoveryCodes.reloadLabel" resname="setup.recoveryCodes.reloadLabel">
+			<trans-unit id="setup.recoveryCodes.reloadLabel">
 				<source>Reload</source>
 			</trans-unit>
-			<trans-unit id="setup.recoveryCodes.noActiveProviders.title" resname="setup.recoveryCodes.noActiveProviders.title">
+			<trans-unit id="setup.recoveryCodes.noActiveProviders.title">
 				<source>Setup not possible</source>
 			</trans-unit>
-			<trans-unit id="setup.recoveryCodes.noActiveProviders.message" resname="setup.recoveryCodes.noActiveProviders.message">
+			<trans-unit id="setup.recoveryCodes.noActiveProviders.message">
 				<source>Recovery codes are only meant as a fallback if you lose access to your main multi-factorauthentication credentials. Therefore, please activate a comprehensive MFA provider first.</source>
 			</trans-unit>
-			<trans-unit id="setup.totpAuthUrlButton.title" resname="setup.totpAuthUrlButton.title">
+			<trans-unit id="setup.totpAuthUrlButton.title">
 				<source>Show authentication URL</source>
 			</trans-unit>
-			<trans-unit id="setup.totpAuthUrlModal.title" resname="setup.totpAuthUrlModal.title">
+			<trans-unit id="setup.totpAuthUrlModal.title">
 				<source>Authentication URL</source>
 			</trans-unit>
-			<trans-unit id="setup.totpAuthUrlModal.description" resname="setup.totpAuthUrlModal.description">
+			<trans-unit id="setup.totpAuthUrlModal.description">
 				<source>In case you are not able to scan the QR code, but your OTP application supports
 					authentication URLs next to, or instead of plain shared secrets, you can copy and
 					paste the URL shown below. The URL contains some information like the issuer (this site)
@@ -150,25 +150,25 @@
 					next to the generated codes.
 				</source>
 			</trans-unit>
-			<trans-unit id="setup.totpAuthUrlModal.ok" resname="setup.totpAuthUrlModal.ok">
+			<trans-unit id="setup.totpAuthUrlModal.ok">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="auth.totp.inputLabel" resname="auth.totp.inputLabel">
+			<trans-unit id="auth.totp.inputLabel">
 				<source>Enter the six-digit code</source>
 			</trans-unit>
-			<trans-unit id="auth.recoveryCodes.inputLabel" resname="auth.recoveryCodes.inputLabel">
+			<trans-unit id="auth.recoveryCodes.inputLabel">
 				<source>Enter an eight-digit recovery code</source>
 			</trans-unit>
-			<trans-unit id="unlock.recoveryCodes.title" resname="unlock.recoveryCodes.title">
+			<trans-unit id="unlock.recoveryCodes.title">
 				<source>Your recovery codes were automatically updated!</source>
 			</trans-unit>
-			<trans-unit id="unlock.recoveryCodes.message" resname="unlock.recoveryCodes.message">
+			<trans-unit id="unlock.recoveryCodes.message">
 				<source>Please copy and store them at a safe place: %s</source>
 			</trans-unit>
-			<trans-unit id="update.recoveryCodes.title" resname="unlock.recoveryCodes.title">
+			<trans-unit id="update.recoveryCodes.title">
 				<source>Recovery codes successfully regenerated</source>
 			</trans-unit>
-			<trans-unit id="update.recoveryCodes.message" resname="unlock.recoveryCodes.message">
+			<trans-unit id="update.recoveryCodes.message">
 				<source>Please copy and store them at a safe place: %s</source>
 			</trans-unit>
 		</body>

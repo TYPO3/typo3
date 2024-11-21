@@ -4,64 +4,64 @@
 		  product-name="adminpanel">
 		<header/>
 		<body>
-			<trans-unit id="module.label" resname="module.label">
+			<trans-unit id="module.label">
 				<source>Debug</source>
 			</trans-unit>
-			<trans-unit id="module.shortinfoErrorsAndSQL" resname="module.shortinfoErrorsAndSQL">
+			<trans-unit id="module.shortinfoErrorsAndSQL">
 				<source>(%1$u Errors/Warnings, SQL: %2$ux / %3$u ms)</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.label" resname="submodule.log.label">
+			<trans-unit id="submodule.log.label">
 				<source>Log</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.message" resname="submodule.log.message">
+			<trans-unit id="submodule.log.message">
 				<source>Log Message</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.component" resname="submodule.log.component">
+			<trans-unit id="submodule.log.component">
 				<source>Component</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.level" resname="submodule.log.level">
+			<trans-unit id="submodule.log.level">
 				<source>Level</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.groupByComponent" resname="submodule.log.groupByComponent">
+			<trans-unit id="submodule.log.groupByComponent">
 				<source>Group by Component</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.groupByLevel" resname="submodule.log.groupByLevel">
+			<trans-unit id="submodule.log.groupByLevel">
 				<source>Group by Level</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.startLevel" resname="submodule.log.startLevel">
+			<trans-unit id="submodule.log.startLevel">
 				<source>Display only levels equal or higher to</source>
 			</trans-unit>
-			<trans-unit id="submodule.log.noEntries" resname="submodule.log.noEntries">
+			<trans-unit id="submodule.log.noEntries">
 				<source>No log entries.</source>
 			</trans-unit>
-			<trans-unit id="submodule.events.label" resname="submodule.events.label">
+			<trans-unit id="submodule.events.label">
 				<source>Events</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.label" resname="submodule.queryInformation.label">
+			<trans-unit id="submodule.queryInformation.label">
 				<source>Query Information</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.query" resname="submodule.queryInformation.query">
+			<trans-unit id="submodule.queryInformation.query">
 				<source>Query</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queries" resname="submodule.queryInformation.queries">
+			<trans-unit id="submodule.queryInformation.queries">
 				<source>Queries</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.backtrace" resname="submodule.queryInformation.backtrace">
+			<trans-unit id="submodule.queryInformation.backtrace">
 				<source>Backtrace</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.doctrineDebug" resname="submodule.queryInformation.doctrineDebug">
+			<trans-unit id="submodule.queryInformation.doctrineDebug">
 				<source>SQL Debug</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.sqlQuery" resname="submodule.queryInformation.sqlQuery">
+			<trans-unit id="submodule.queryInformation.sqlQuery">
 				<source>SQL Query</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queryCount" resname="submodule.queryInformation.queryCount">
+			<trans-unit id="submodule.queryInformation.queryCount">
 				<source>Count</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.queryTime" resname="submodule.queryInformation.queryTime">
+			<trans-unit id="submodule.queryInformation.queryTime">
 				<source>Total Time [ms]</source>
 			</trans-unit>
-			<trans-unit id="submodule.queryInformation.total" resname="submodule.queryInformation.total">
+			<trans-unit id="submodule.queryInformation.total">
 				<source>Total</source>
 			</trans-unit>
 			<trans-unit id="submodule.pageTitle.label">

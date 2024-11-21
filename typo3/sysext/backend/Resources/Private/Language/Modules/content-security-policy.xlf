@@ -3,95 +3,95 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf" date="2023-01-11T00:00:00Z" product-name="typo3-cms-backend">
 		<header/>
 		<body>
-			<trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+			<trans-unit id="mlang_labels_tablabel">
 				<source>Content Security Policy</source>
 			</trans-unit>
-			<trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+			<trans-unit id="mlang_labels_tabdescr">
 				<source>Allows to manage Content Security Policy settings.</source>
 			</trans-unit>
-			<trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+			<trans-unit id="mlang_tabs_tab">
 				<source>Content Security Policy</source>
 			</trans-unit>
 
-			<trans-unit id="module.callout.featureDisabled.message" resname="module.callout.featureDisabled.message">
+			<trans-unit id="module.callout.featureDisabled.message">
 				<source>The following features flags are currently disabled and won't be shown in this module:</source>
 			</trans-unit>
 
-			<trans-unit id="module.callout.customReporting.message" resname="module.callout.customReporting.message">
+			<trans-unit id="module.callout.customReporting.message">
 				<source>Reporting is currently configured with these custom endpoints and won't be shown in this module:</source>
 			</trans-unit>
 
-			<trans-unit id="module.label.noEntriesAvailable" resname="module.label.noEntriesAvailable">
+			<trans-unit id="module.label.noEntriesAvailable">
 				<source>No entries available.</source>
 			</trans-unit>
-			<trans-unit id="module.label.reports" resname="module.label.reports">
+			<trans-unit id="module.label.reports">
 				<source>Reports</source>
 			</trans-unit>
-			<trans-unit id="module.label.created" resname="module.label.created">
+			<trans-unit id="module.label.created">
 				<source>Created</source>
 			</trans-unit>
-			<trans-unit id="module.label.scope" resname="module.label.scope">
+			<trans-unit id="module.label.scope">
 				<source>Scope</source>
 			</trans-unit>
-			<trans-unit id="module.label.removeAll" resname="module.label.removeAll">
+			<trans-unit id="module.label.removeAll">
 				<source>Remove all</source>
 			</trans-unit>
-			<trans-unit id="module.label.violation" resname="module.label.violation">
+			<trans-unit id="module.label.violation">
 				<source>Violation</source>
 			</trans-unit>
-			<trans-unit id="module.label.uri" resname="module.label.uri">
+			<trans-unit id="module.label.uri">
 				<source>URI</source>
 			</trans-unit>
-			<trans-unit id="module.label.all" resname="module.label.all">
+			<trans-unit id="module.label.all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="module.label.details" resname="module.label.details">
+			<trans-unit id="module.label.details">
 				<source>Details</source>
 			</trans-unit>
-			<trans-unit id="module.label.disposition" resname="module.label.disposition">
+			<trans-unit id="module.label.disposition">
 				<source>Disposition</source>
 			</trans-unit>
-			<trans-unit id="module.label.directive" resname="module.label.directive">
+			<trans-unit id="module.label.directive">
 				<source>Directive</source>
 			</trans-unit>
-			<trans-unit id="module.label.blocked_uri" resname="module.label.blocked_uri">
+			<trans-unit id="module.label.blocked_uri">
 				<source>Blocked URI</source>
 			</trans-unit>
-			<trans-unit id="module.label.document_uri" resname="module.label.document_uri">
+			<trans-unit id="module.label.document_uri">
 				<source>Document URI</source>
 			</trans-unit>
-			<trans-unit id="module.label.sample" resname="module.label.sample">
+			<trans-unit id="module.label.sample">
 				<source>Sample</source>
 			</trans-unit>
-			<trans-unit id="module.label.user_agent" resname="module.label.user_agent">
+			<trans-unit id="module.label.user_agent">
 				<source>User Agent</source>
 			</trans-unit>
-			<trans-unit id="module.label.uuid" resname="module.label.uuid">
+			<trans-unit id="module.label.uuid">
 				<source>UUID</source>
 			</trans-unit>
-			<trans-unit id="module.label.source_file" resname="module.label.source_file">
+			<trans-unit id="module.label.source_file">
 				<source>Source File</source>
 			</trans-unit>
-			<trans-unit id="module.label.summary" resname="module.label.summary">
+			<trans-unit id="module.label.summary">
 				<source>Summary</source>
 			</trans-unit>
-			<trans-unit id="module.label.suggestions" resname="module.label.suggestions">
+			<trans-unit id="module.label.suggestions">
 				<source>Suggestions</source>
 			</trans-unit>
-			<trans-unit id="module.label.guide.no_record_selected" resname="module.label.guide.no_record_selected">
+			<trans-unit id="module.label.guide.no_record_selected">
 				<source>Select a row to see more information.</source>
 			</trans-unit>
 
-			<trans-unit id="module.button.apply" resname="module.button.apply">
+			<trans-unit id="module.button.apply">
 				<source>Apply</source>
 			</trans-unit>
-			<trans-unit id="module.button.close" resname="module.button.close">
+			<trans-unit id="module.button.close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="module.button.mute" resname="module.button.mute">
+			<trans-unit id="module.button.mute">
 				<source>Mute</source>
 			</trans-unit>
-			<trans-unit id="module.button.delete" resname="module.button.delete">
+			<trans-unit id="module.button.delete">
 				<source>Delete</source>
 			</trans-unit>
 		</body>

@@ -3,45 +3,45 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_text.xlf" date="2017-01-30T03:38:32Z" product-name="form">
         <header/>
         <body>
-            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" resname="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
                 <source>TEXT EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label" resname="form-runtime-identifier.element.form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label" xml:space="preserve">
                 <source>form-element-identifier LABEL EN</source>
             </trans-unit>
-            <trans-unit id="element.form-element-identifier.properties.label" resname="element.form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="element.form-element-identifier.properties.label" xml:space="preserve">
                 <source>form-element-identifier LABEL EN 1</source>
             </trans-unit>
-            <trans-unit id="element.Text.properties.label" resname="element.Text.properties.label" xml:space="preserve">
+            <trans-unit id="element.Text.properties.label" xml:space="preserve">
                 <source>form-element-identifier LABEL EN 2</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.placeholder" resname="form-runtime-identifier.element.form-element-identifier.properties.placeholder" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.placeholder" xml:space="preserve">
                 <source>form-element-identifier PLACEHOLDER EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier-page.renderingOptions.nextButtonLabel" resname="form-runtime-identifier.element.form-element-identifier-page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier-page.renderingOptions.nextButtonLabel" xml:space="preserve">
                 <source>form-element-identifier nextButtonLabel EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue1" resname="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue1" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue1" xml:space="preserve">
                 <source>options-form-element-identifier option 1 EN</source>
             </trans-unit>
-            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue2" resname="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue2" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.options-form-element-identifier.properties.options.optionValue2" xml:space="preserve">
                 <source>options-form-element-identifier option 2 EN</source>
             </trans-unit>
 
-            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue1" resname="element.options-form-element-identifier.properties.options.optionValue1" xml:space="preserve">
+            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue1" xml:space="preserve">
                 <source>options-form-element-identifier option 1 EN</source>
             </trans-unit>
-            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue2" resname="element.options-form-element-identifier.properties.options.optionValue2" xml:space="preserve">
+            <trans-unit id="element.options-form-element-identifier.properties.options.optionValue2" xml:space="preserve">
                 <source>options-form-element-identifier option 2 EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.finisher.SaveToDatabase.subject" resname="form-runtime-identifier.finisher.SaveToDatabase.subject" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.finisher.SaveToDatabase.subject" xml:space="preserve">
                 <source>form-element-identifier SaveToDatabase subject EN</source>
             </trans-unit>
-            <trans-unit id="finisher.SaveToDatabase.subject" resname="finisher.SaveToDatabase.subject" xml:space="preserve">
+            <trans-unit id="finisher.SaveToDatabase.subject" xml:space="preserve">
                 <source>form-element-identifier SaveToDatabase subject EN 1</source>
             </trans-unit>
         </body>

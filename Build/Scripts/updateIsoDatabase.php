@@ -74,7 +74,6 @@ class XliffDumper extends \Symfony\Component\Translation\Dumper\XliffFileDumper
             $translation = $dom->createElement('trans-unit');
 
             $translation->setAttribute('id', $source);
-            $translation->setAttribute('resname', $source);
 
             $s = $translation->appendChild($dom->createElement('source'));
             if ($isBaseLanguage) {

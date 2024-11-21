@@ -3,214 +3,214 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang.xlf" date="2015-01-02T11:16:11Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="onlineDocumentation" resname="onlineDocumentation">
+			<trans-unit id="onlineDocumentation">
 				<source>TYPO3 Online Documentation</source>
 			</trans-unit>
-			<trans-unit id="opensInANewWindow" resname="opensInANewWindow">
+			<trans-unit id="opensInANewWindow">
 				<source>opens in a new window</source>
 			</trans-unit>
-			<trans-unit id="no_modules_registered" resname="no_modules_registered">
+			<trans-unit id="no_modules_registered">
 				<source>No modules have been registered. Please contact your system administrator.</source>
 			</trans-unit>
-			<trans-unit id="show_references" resname="show_references">
+			<trans-unit id="show_references">
 				<source>Show references</source>
 			</trans-unit>
-			<trans-unit id="config.loginLogo" resname="config.loginLogo">
+			<trans-unit id="config.loginLogo">
 				<source>Logo: If set, this logo will be used instead of the TYPO3 logo above the login credential fields (e.g. fileadmin/images/login-logo.png or EXT:my_theme/Resources/Public/Images/login-logo.png or //domain.tld/login-logo.png).</source>
 			</trans-unit>
-			<trans-unit id="config.loginLogoAlt" resname="config.loginLogoAlt">
+			<trans-unit id="config.loginLogoAlt">
 				<source>Logo Alt-Text: If a custom logo is set, this text will be used as the alt attribute of the img tag.</source>
 			</trans-unit>
-			<trans-unit id="config.loginHighlightColor" resname="config.loginHighlightColor">
+			<trans-unit id="config.loginHighlightColor">
 				<source>Highlight Color: If set, this color will be used as highlight color in the login screen.</source>
 			</trans-unit>
-			<trans-unit id="config.loginBackgroundImage" resname="config.loginBackgroundImage">
+			<trans-unit id="config.loginBackgroundImage">
 				<source>Background Image: If set, this image will be used as background image for the login screen (e.g. fileadmin/images/my-background.jpg or EXT:my_theme/Resources/Public/Images/my-background.jpg or //domain.tld/my-background.png).</source>
 			</trans-unit>
-			<trans-unit id="config.loginFootnote" resname="config.loginFootnote">
+			<trans-unit id="config.loginFootnote">
 				<source>Footnote: If set, this text will be displayed on the login screen to provide copyright information for the background image (e.g. background image © 2017 by John Doe) or a descriptive text.</source>
 			</trans-unit>
-			<trans-unit id="config.backendLogo" resname="config.backendLogo">
+			<trans-unit id="config.backendLogo">
 				<source>Logo: If set, this logo will be used instead of the TYPO3 logo in the TYPO3 backend in the left top corner (e.g. fileadmin/images/backend-logo.png or EXT:my_theme/Resources/Public/Images/backend-logo.png).</source>
 			</trans-unit>
-			<trans-unit id="config.backendFavicon" resname="config.backendFavicon">
+			<trans-unit id="config.backendFavicon">
 				<source>Favicon: If set, this favicon will be used instead of the TYPO3 logo (e.g. EXT:my_theme/Resources/Public/Images/favicon.ico).</source>
 			</trans-unit>
-			<trans-unit id="foldertreeview.noFolders.title" resname="foldertreeview.noFolders.title">
+			<trans-unit id="foldertreeview.noFolders.title">
 				<source>No folders available</source>
 			</trans-unit>
-			<trans-unit id="foldertreeview.noFolders.message" resname="foldertreeview.noFolders.message">
+			<trans-unit id="foldertreeview.noFolders.message">
 				<source>You do not have access to any folder. Please ask your administrator to fix access permissions for your account.</source>
 			</trans-unit>
-			<trans-unit id="login.header" resname="login.header">
+			<trans-unit id="login.header">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="login.region.footnote" resname="login.region.footnote">
+			<trans-unit id="login.region.footnote">
 				<source>Footnote</source>
 			</trans-unit>
-			<trans-unit id="login.link" resname="login.link">
+			<trans-unit id="login.link">
 				<source>Login with username and password</source>
 			</trans-unit>
-			<trans-unit id="login.username" resname="login.username">
+			<trans-unit id="login.username">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="login.password" resname="login.password">
+			<trans-unit id="login.password">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="login.togglePassword" resname="login.togglePassword">
+			<trans-unit id="login.togglePassword">
 				<source>Toggle password visibility</source>
 			</trans-unit>
-			<trans-unit id="login.password_forget" resname="login.password_forget">
+			<trans-unit id="login.password_forget">
 				<source>Forgot your password?</source>
 			</trans-unit>
-			<trans-unit id="login.error.capslock" resname="login.error.capslock">
+			<trans-unit id="login.error.capslock">
 				<source>Attention: Caps lock enabled!</source>
 			</trans-unit>
-			<trans-unit id="login.error.capslockStatus" resname="login.error.capslockStatus">
+			<trans-unit id="login.error.capslockStatus">
 				<source>Caps lock enabled</source>
 			</trans-unit>
-			<trans-unit id="login.news.header" resname="login.news.header">
+			<trans-unit id="login.news.header">
 				<source>System News</source>
 			</trans-unit>
-			<trans-unit id="login.news.date" resname="login.news.date">
+			<trans-unit id="login.news.date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="login.news.previous" resname="login.news.previous">
+			<trans-unit id="login.news.previous">
 				<source>Previous</source>
 			</trans-unit>
-			<trans-unit id="login.news.next" resname="login.news.next">
+			<trans-unit id="login.news.next">
 				<source>Next</source>
 			</trans-unit>
-			<trans-unit id="login.navigation.loginProvider" resname="login.navigation.loginProvider">
+			<trans-unit id="login.navigation.loginProvider">
 				<source>Login Provider</source>
 			</trans-unit>
-			<trans-unit id="login.navigation.typo3" resname="login.navigation.typo3">
+			<trans-unit id="login.navigation.typo3">
 				<source>Further information about TYPO3</source>
 			</trans-unit>
-			<trans-unit id="login.error.message" resname="login.error.message">
+			<trans-unit id="login.error.message">
 				<source>Your login attempt did not succeed</source>
 			</trans-unit>
-			<trans-unit id="login.error.description" resname="login.error.description">
+			<trans-unit id="login.error.description">
 				<source>Make sure to spell your username and password correctly, including upper/lowercase characters.</source>
 			</trans-unit>
-			<trans-unit id="login.error.javascript" resname="login.error.javascript">
+			<trans-unit id="login.error.javascript">
 				<source>Please activate JavaScript!</source>
 			</trans-unit>
-			<trans-unit id="login.error.cookies" resname="login.error.cookies">
+			<trans-unit id="login.error.cookies">
 				<source>Please activate Cookies!</source>
 			</trans-unit>
-			<trans-unit id="login.error.referrer" resname="login.error.referrer">
+			<trans-unit id="login.error.referrer">
 				<source>TYPO3 relies on HTTP referrers for security reasons in the backend. It seems your browser refused to send this information.</source>
 			</trans-unit>
-			<trans-unit id="login.process" resname="login.process">
+			<trans-unit id="login.process">
 				<source>Verifying Login Data ...</source>
 			</trans-unit>
-			<trans-unit id="login.submit" resname="login.submit">
+			<trans-unit id="login.submit">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="login.copyrightLink" resname="login.copyrightLink">
+			<trans-unit id="login.copyrightLink">
 				<source>More about TYPO3</source>
 			</trans-unit>
-			<trans-unit id="login.typo3Logo" resname="login.typo3Logo">
+			<trans-unit id="login.typo3Logo">
 				<source>TYPO3 logo</source>
 			</trans-unit>
-			<trans-unit id="login.donate" resname="login.donate">
+			<trans-unit id="login.donate">
 				<source>Donate</source>
 			</trans-unit>
-			<trans-unit id="formEngine.databaseRecordErrorInlineChildChild" resname="formEngine.databaseRecordErrorInlineChildChild">
+			<trans-unit id="formEngine.databaseRecordErrorInlineChildChild">
 				<source>The record with uid %2$s from table %1$s could not be retrieved from the database. This data inconsistency can occur if
 				a base record has been deleted but the intermediate record from table %3$s with uid %4$s still points to it. To fix
 				this situation, either delete the intermediate record, or recover the deleted record using the recycler module.
 				</source>
 			</trans-unit>
-			<trans-unit id="modulemenu.label" resname="modulemenu.label">
+			<trans-unit id="modulemenu.label">
 				<source>Module Menu</source>
 			</trans-unit>
-			<trans-unit id="module.noAccess.title" resname="module.noAccess.title">
+			<trans-unit id="module.noAccess.title">
 				<source>No module access</source>
 			</trans-unit>
-			<trans-unit id="module.noAccess.message" resname="module.noAccess.message">
+			<trans-unit id="module.noAccess.message">
 				<source>You've been redirected to the "%s" module, because you currently can't access the "%s" module. You either don't have the necessary permissions or access is temporarily not possible, e.g. due to workspace restrictions.</source>
 			</trans-unit>
-			<trans-unit id="clearcache.title" resname="clearcache.title">
+			<trans-unit id="clearcache.title">
 				<source>Page cache</source>
 			</trans-unit>
-			<trans-unit id="clearcache.message.success" resname="clearcache.message.success">
+			<trans-unit id="clearcache.message.success">
 				<source>Successfully cleared page cache</source>
 			</trans-unit>
-			<trans-unit id="clearcache.message.error" resname="clearcache.message.error">
+			<trans-unit id="clearcache.message.error">
 				<source>Page cache could not be cleared</source>
 			</trans-unit>
-			<trans-unit id="error.linkHandlerTitleMissing" resname="error.linkHandlerTitleMissing">
+			<trans-unit id="error.linkHandlerTitleMissing">
 				<source>[title missing]</source>
 			</trans-unit>
-			<trans-unit id="create_folder.title" resname="create_folder.title">
+			<trans-unit id="create_folder.title">
 				<source>Create new folder</source>
 			</trans-unit>
-			<trans-unit id="create_folder.placeholder" resname="create_folder.placeholder">
+			<trans-unit id="create_folder.placeholder">
 				<source>Your new folder name</source>
 			</trans-unit>
-			<trans-unit id="create_folder.submit" resname="create_folder.submit">
+			<trans-unit id="create_folder.submit">
 				<source>Create folder</source>
 			</trans-unit>
-			<trans-unit id="row.deletePlaceholder.title" resname="row.deletePlaceholder.title">
+			<trans-unit id="row.deletePlaceholder.title">
 				<source>The live pendant of this record will be deleted when this workspace record is published.</source>
 			</trans-unit>
-			<trans-unit id="shortcut.title" resname="shortcut.title">
+			<trans-unit id="shortcut.title">
 				<source>%s%s on page "%s" [%d]</source>
 			</trans-unit>
-			<trans-unit id="liveSearch.databaseRecordProvider.filterLabel" resname="liveSearch.databaseRecordProvider.filterLabel">
+			<trans-unit id="liveSearch.databaseRecordProvider.filterLabel">
 				<source>Database records</source>
 			</trans-unit>
-			<trans-unit id="liveSearch.databaseRecordProvider.typeLabel" resname="liveSearch.databaseRecordProvider.typeLabel">
+			<trans-unit id="liveSearch.databaseRecordProvider.typeLabel">
 				<source>Database record</source>
 			</trans-unit>
-			<trans-unit id="liveSearch.pageRecordProvider.filterLabel" resname="liveSearch.pageRecordProvider.filterLabel">
+			<trans-unit id="liveSearch.pageRecordProvider.filterLabel">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="liveSearch.pageRecordProvider.typeLabel" resname="liveSearch.pageRecordProvider.typeLabel">
+			<trans-unit id="liveSearch.pageRecordProvider.typeLabel">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="liveSearch.backendModuleProvider.filterLabel" resname="liveSearch.backendModuleProvider.filterLabel">
+			<trans-unit id="liveSearch.backendModuleProvider.filterLabel">
 				<source>Backend modules</source>
 			</trans-unit>
-			<trans-unit id="liveSearch.backendModuleProvider.typeLabel" resname="liveSearch.backendModuleProvider.typeLabel">
+			<trans-unit id="liveSearch.backendModuleProvider.typeLabel">
 				<source>Backend module</source>
 			</trans-unit>
-			<trans-unit id="resultItem.backendModuleProvider.openModule" resname="resultItem.backendModuleProvider.openModule">
+			<trans-unit id="resultItem.backendModuleProvider.openModule">
 				<source>Open module</source>
 			</trans-unit>
-			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+			<trans-unit id="moduleMenu.dropdown.label">
 				<source>Module action</source>
 			</trans-unit>
-			<trans-unit id="pagelayout.moduleMenu.dropdown.label" resname="pagelayout.moduleMenu.dropdown.label">
+			<trans-unit id="pagelayout.moduleMenu.dropdown.label">
 				<source>Display mode</source>
 			</trans-unit>
-			<trans-unit id="editdocument.moduleMenu.dropdown.label" resname="editdocument.moduleMenu.dropdown.label">
+			<trans-unit id="editdocument.moduleMenu.dropdown.label">
 				<source>Record language</source>
 			</trans-unit>
-			<trans-unit id="theme" resname="theme">
+			<trans-unit id="theme">
 				<source>Theme</source>
 			</trans-unit>
-			<trans-unit id="theme.classic" resname="theme.classic">
+			<trans-unit id="theme.classic">
 				<source>Classic</source>
 			</trans-unit>
-			<trans-unit id="theme.modern" resname="theme.modern">
+			<trans-unit id="theme.modern">
 				<source>Modern</source>
 			</trans-unit>
-			<trans-unit id="colorScheme" resname="colorScheme">
+			<trans-unit id="colorScheme">
 				<source>Color scheme</source>
 			</trans-unit>
-			<trans-unit id="toggleColorScheme" resname="toggleColorScheme">
+			<trans-unit id="toggleColorScheme">
 				<source>Toggle color scheme between light and dark mode</source>
 			</trans-unit>
-			<trans-unit id="colorScheme.auto" resname="colorScheme.auto">
+			<trans-unit id="colorScheme.auto">
 				<source>Auto detect</source>
 			</trans-unit>
-			<trans-unit id="colorScheme.light" resname="colorScheme.light">
+			<trans-unit id="colorScheme.light">
 				<source>Light mode</source>
 			</trans-unit>
-			<trans-unit id="colorScheme.dark" resname="colorScheme.dark">
+			<trans-unit id="colorScheme.dark">
 				<source>Dark mode</source>
 			</trans-unit>
 		</body>

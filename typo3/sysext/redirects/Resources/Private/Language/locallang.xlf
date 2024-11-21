@@ -3,40 +3,40 @@
 	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang.xlf" date="2017-12-29T20:22:14Z" product-name="redirects">
 		<header/>
 		<body>
-			<trans-unit id="redirects" resname="redirects">
+			<trans-unit id="redirects">
 				<source>Redirect Settings</source>
 			</trans-unit>
-			<trans-unit id="redirects.autoUpdateSlugs" resname="redirects.autoUpdateSlugs">
+			<trans-unit id="redirects.autoUpdateSlugs">
 				<source>Update the slugs of all sub pages automatically</source>
 			</trans-unit>
-			<trans-unit id="redirects.autoCreateRedirects" resname="redirects.autoCreateRedirects">
+			<trans-unit id="redirects.autoCreateRedirects">
 				<source>Create redirects for pages with a new slug automatically</source>
 			</trans-unit>
-			<trans-unit id="redirects.redirectTTL" resname="redirects.redirectTTL">
+			<trans-unit id="redirects.redirectTTL">
 				<source>Time To Live of redirect records in days</source>
 			</trans-unit>
-			<trans-unit id="redirects.httpStatusCode" resname="redirects.httpStatusCode">
+			<trans-unit id="redirects.httpStatusCode">
 				<source>HTTP Status Code for the redirect, 301 is the default</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.days" resname="cleanupRedirectsCommand.label.days">
+			<trans-unit id="cleanupRedirectsCommand.label.days">
 				<source>Cleanup redirects older than provided number of days</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.domain" resname="cleanupRedirectsCommand.label.domain">
+			<trans-unit id="cleanupRedirectsCommand.label.domain">
 				<source>Cleanup redirects matching provided domain(s)</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.hitCount" resname="cleanupRedirectsCommand.label.hitCount">
+			<trans-unit id="cleanupRedirectsCommand.label.hitCount">
 				<source>Cleanup redirects matching hit counts lower than given number</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.path" resname="cleanupRedirectsCommand.label.path">
+			<trans-unit id="cleanupRedirectsCommand.label.path">
 				<source>Cleanup redirects matching given path (as database like expression)</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.creationType" resname="cleanupRedirectsCommand.label.creationType">
+			<trans-unit id="cleanupRedirectsCommand.label.creationType">
 				<source>Cleanup redirects matching provided creation type</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.statusCode" resname="cleanupRedirectsCommand.label.statusCode">
+			<trans-unit id="cleanupRedirectsCommand.label.statusCode">
 				<source>Cleanup redirects matching provided status code(s)</source>
 			</trans-unit>
-			<trans-unit id="cleanupRedirectsCommand.label.integrityStatus" resname="cleanupRedirectsCommand.label.integrityStatus">
+			<trans-unit id="cleanupRedirectsCommand.label.integrityStatus">
 				<source>Cleanup redirects matching provided integrity status</source>
 			</trans-unit>
 		</body>

@@ -3,11 +3,11 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_additional_text.xlf" date="2017-01-30T03:38:32Z" product-name="form">
         <header/>
         <body>
-            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" resname="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
                 <source>TEXT EN</source>
             </trans-unit>
 
-            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label" resname="form-runtime-identifier.element.form-element-identifier.properties.label" xml:space="preserve">
+            <trans-unit id="form-runtime-identifier.element.form-element-identifier.properties.label" xml:space="preserve">
                 <source>form-element-identifier ADDITIONAL LABEL EN</source>
             </trans-unit>
         </body>

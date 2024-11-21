@@ -3,404 +3,404 @@
 	<file source-language="en" datatype="plaintext" original="EXT:lowlevel/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="lowlevel">
 		<header/>
 		<body>
-			<trans-unit id="module.configuration.title" resname="module.configuration.title">
+			<trans-unit id="module.configuration.title">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.shortDescription" resname="module.configuration.shortDescription">
+			<trans-unit id="module.configuration.shortDescription">
 				<source>View configuration from localconf.php and tables.php</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.description" resname="module.configuration.description">
+			<trans-unit id="module.configuration.description">
 				<source>Allows you to browse the values of the $TCA array (table configuration) and $TYPO3_CONF_VARS. You cannot set any values, only browse them.</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.numberOfSearchMatches" resname="module.configuration.numberOfSearchMatches">
+			<trans-unit id="module.configuration.numberOfSearchMatches">
 				<source>%s search match(es)</source>
 			</trans-unit>
 
-			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+			<trans-unit id="moduleMenu.dropdown.label">
 				<source>Configuration to show</source>
 			</trans-unit>
-			<trans-unit id="configuration.headline" resname="configuration.headline">
+			<trans-unit id="configuration.headline">
 				<source>Configuration of "%1s"</source>
 			</trans-unit>
-			<trans-unit id="typo3ConfVars" resname="typo3ConfVars">
+			<trans-unit id="typo3ConfVars">
 				<source>$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)</source>
 			</trans-unit>
-			<trans-unit id="tca" resname="tca">
+			<trans-unit id="tca">
 				<source>$GLOBALS['TCA'] (Table configuration array)</source>
 			</trans-unit>
-			<trans-unit id="beUserTsConfig" resname="beUserTsConfig">
+			<trans-unit id="beUserTsConfig">
 				<source>$GLOBALS['BE_USER']-&gt;getTSConfig() (User TSconfig)</source>
 			</trans-unit>
-			<trans-unit id="beUser" resname="beUser">
+			<trans-unit id="beUser">
 				<source>$GLOBALS['BE_USER']-&gt;uc (User Settings)</source>
 			</trans-unit>
-			<trans-unit id="usersettings" resname="usersettings">
+			<trans-unit id="usersettings">
 				<source>$GLOBALS['TYPO3_USER_SETTINGS'] (User Settings Configuration)</source>
 			</trans-unit>
-			<trans-unit id="routes" resname="routes">
+			<trans-unit id="routes">
 				<source>Backend Routes</source>
 			</trans-unit>
-			<trans-unit id="httpMiddlewareStacks" resname="httpMiddlewareStacks">
+			<trans-unit id="httpMiddlewareStacks">
 				<source>HTTP Middlewares (PSR-15)</source>
 			</trans-unit>
-			<trans-unit id="contentSecurityPolicyMutations" resname="contentSecurityPolicyMutations">
+			<trans-unit id="contentSecurityPolicyMutations">
 				<source>Content Security Policy Mutations</source>
 			</trans-unit>
-			<trans-unit id="sitesTcaConfiguration" resname="sitesTcaConfiguration">
+			<trans-unit id="sitesTcaConfiguration">
 				<source>Sites: TCA configuration</source>
 			</trans-unit>
-			<trans-unit id="sitesYamlConfiguration" resname="sitesYamlConfiguration">
+			<trans-unit id="sitesYamlConfiguration">
 				<source>Sites: YAML configuration</source>
 			</trans-unit>
-			<trans-unit id="eventListeners" resname="eventListeners">
+			<trans-unit id="eventListeners">
 				<source>Event Listeners (PSR-14)</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders" resname="mfaProviders">
+			<trans-unit id="mfaProviders">
 				<source>MFA providers</source>
 			</trans-unit>
-			<trans-unit id="softReferenceParsers" resname="softReferenceParsers">
+			<trans-unit id="softReferenceParsers">
 				<source>Soft Reference Parsers</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems" resname="toolbarItems">
+			<trans-unit id="toolbarItems">
 				<source>Backend Toolbar Items</source>
 			</trans-unit>
-			<trans-unit id="symfonyExpressionLanguage" resname="symfonyExpressionLanguage">
+			<trans-unit id="symfonyExpressionLanguage">
 				<source>Symfony Expression Language Providers</source>
 			</trans-unit>
-			<trans-unit id="doctrineDbalDriverMiddlewares" resname="doctrineDbalDriverMiddlewares">
+			<trans-unit id="doctrineDbalDriverMiddlewares">
 				<source>Doctrine DBAL Driver Middlewares</source>
 			</trans-unit>
-			<trans-unit id="formYamlConfiguration" resname="formYamlConfiguration">
+			<trans-unit id="formYamlConfiguration">
 				<source>Form: YAML Configuration</source>
 			</trans-unit>
-			<trans-unit id="t3services" resname="t3services">
+			<trans-unit id="t3services">
 				<source>$GLOBALS['T3_SERVICES'] (Registered Services)</source>
 			</trans-unit>
-			<trans-unit id="backendModules" resname="backendModules">
+			<trans-unit id="backendModules">
 				<source>Backend Modules</source>
 			</trans-unit>
-			<trans-unit id="pagesTypes" resname="pagesTypes">
+			<trans-unit id="pagesTypes">
 				<source>Table permissions per page type</source>
 			</trans-unit>
 
-			<trans-unit id="module.dbint.title" resname="module.dbint.title">
+			<trans-unit id="module.dbint.title">
 				<source>DB Check</source>
 			</trans-unit>
-			<trans-unit id="module.dbint.shortDescription" resname="module.dbint.shortDescription">
+			<trans-unit id="module.dbint.shortDescription">
 				<source>Database integrity check</source>
 			</trans-unit>
-			<trans-unit id="module.dbint.description" resname="module.dbint.description">
+			<trans-unit id="module.dbint.description">
 				<source>Here you can check the integrity of the database tables configured by the $TCA. For instance all records must belong to a page record. You can also get a view of the total pagetree including deleted pages. Finally you've got access to a global database search facility.</source>
 			</trans-unit>
 
-			<trans-unit id="module.dbint.docheader.viewmode" resname="module.dbint.docheader.viewmode">
+			<trans-unit id="module.dbint.docheader.viewmode">
 				<source>Module action</source>
 			</trans-unit>
-			<trans-unit id="search.submit" resname="search.submit">
+			<trans-unit id="search.submit">
 				<source>Search All Records</source>
 				<note>Label of submit button to search within the database (raw search in all fields)</note>
 			</trans-unit>
-			<trans-unit id="search" resname="search">
+			<trans-unit id="search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="recordStatistics" resname="recordStatistics">
+			<trans-unit id="recordStatistics">
 				<source>Record Statistics</source>
 			</trans-unit>
-			<trans-unit id="totalPageTree" resname="totalPageTree">
+			<trans-unit id="totalPageTree">
 				<source>Total Page Tree</source>
 			</trans-unit>
-			<trans-unit id="databaseRelations" resname="databaseRelations">
+			<trans-unit id="databaseRelations">
 				<source>Database Relations</source>
 			</trans-unit>
-			<trans-unit id="fullSearch" resname="fullSearch">
+			<trans-unit id="fullSearch">
 				<source>Full search</source>
 			</trans-unit>
-			<trans-unit id="findFilename" resname="findFilename">
+			<trans-unit id="findFilename">
 				<source>Find filename</source>
 			</trans-unit>
-			<trans-unit id="manageRefIndex" resname="manageRefIndex">
+			<trans-unit id="manageRefIndex">
 				<source>Manage Reference Index</source>
 			</trans-unit>
-			<trans-unit id="rawSearch" resname="rawSearch">
+			<trans-unit id="rawSearch">
 				<source>Raw search in all fields</source>
 			</trans-unit>
-			<trans-unit id="advancedQuery" resname="advancedQuery">
+			<trans-unit id="advancedQuery">
 				<source>Advanced query</source>
 			</trans-unit>
-			<trans-unit id="selectRecords" resname="selectRecords">
+			<trans-unit id="selectRecords">
 				<source>Select records</source>
 			</trans-unit>
-			<trans-unit id="countResults" resname="countResults">
+			<trans-unit id="countResults">
 				<source>Count results</source>
 			</trans-unit>
-			<trans-unit id="explainQuery" resname="explainQuery">
+			<trans-unit id="explainQuery">
 				<source>Explain query</source>
 			</trans-unit>
-			<trans-unit id="csvExport" resname="csvExport">
+			<trans-unit id="csvExport">
 				<source>CSV Export</source>
 			</trans-unit>
-			<trans-unit id="xmlExport" resname="xmlExport">
+			<trans-unit id="xmlExport">
 				<source>XML Export</source>
 			</trans-unit>
-			<trans-unit id="clickToUpdateRefIndex" resname="clickToUpdateRefIndex">
+			<trans-unit id="clickToUpdateRefIndex">
 				<source>Click here to update reference index</source>
 			</trans-unit>
-			<trans-unit id="updateNow" resname="updateNow">
+			<trans-unit id="updateNow">
 				<source>Update now!</source>
 			</trans-unit>
-			<trans-unit id="clickToTestRefIndex" resname="clickToTestRefIndex">
+			<trans-unit id="clickToTestRefIndex">
 				<source>Click here to test reference index</source>
 			</trans-unit>
-			<trans-unit id="referenceIndex_description" resname="referenceIndex_description">
+			<trans-unit id="referenceIndex_description">
 				<source>TYPO3's reference index keeps track of the relations between records. As it can happen that the reference index contains outdated values, you can check and update it here.</source>
 			</trans-unit>
-			<trans-unit id="referenceIndex_buttonUpdate" resname="referenceIndex_buttonUpdate">
+			<trans-unit id="referenceIndex_buttonUpdate">
 				<source>Update reference index</source>
 			</trans-unit>
-			<trans-unit id="referenceIndex_buttonCheck" resname="referenceIndex_buttonCheck">
+			<trans-unit id="referenceIndex_buttonCheck">
 				<source>Check reference index</source>
 			</trans-unit>
-			<trans-unit id="checkNow" resname="checkNow">
+			<trans-unit id="checkNow">
 				<source>Check now!</source>
 			</trans-unit>
-			<trans-unit id="checkScript_headline" resname="checkScript_headline">
+			<trans-unit id="checkScript_headline">
 				<source>Using the command line interface</source>
 			</trans-unit>
-			<trans-unit id="checkScript" resname="checkScript">
+			<trans-unit id="checkScript">
 				<source>You can also run the check as a shell script using CLI if the processing takes longer than the PHP max_execution_time allows.</source>
 			</trans-unit>
-			<trans-unit id="checkScript_check_description" resname="checkScript_check_description">
+			<trans-unit id="checkScript_check_description">
 				<source>To check the reference index use:</source>
 			</trans-unit>
-			<trans-unit id="checkScript_update_description" resname="checkScript_update_description">
+			<trans-unit id="checkScript_update_description">
 				<source>To update the reference index use:</source>
 			</trans-unit>
-			<trans-unit id="checkScript_moreDetails" resname="checkScript_moreDetails">
+			<trans-unit id="checkScript_moreDetails">
 				<source>For more details see:</source>
 			</trans-unit>
-			<trans-unit id="updateRefIndex" resname="updateRefIndex">
+			<trans-unit id="updateRefIndex">
 				<source>Update reference index</source>
 			</trans-unit>
 
-			<trans-unit id="fullSearch.flashMessage.noResultsFoundMessage" resname="fullSearch.flashMessage.noResultsFoundMessage">
+			<trans-unit id="fullSearch.flashMessage.noResultsFoundMessage">
 				<source>The query returned no results.</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.section.queryOptions" resname="fullSearch.section.queryOptions">
+			<trans-unit id="fullSearch.section.queryOptions">
 				<source>Query options</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.section.querySQL" resname="fullSearch.section.querySQL">
+			<trans-unit id="fullSearch.section.querySQL">
 				<source>Full SQL query</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.section.querySQL.error" resname="fullSearch.section.querySQL.error">
+			<trans-unit id="fullSearch.section.querySQL.error">
 				<source>SQL error</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.section.querySettings" resname="fullSearch.section.querySettings">
+			<trans-unit id="fullSearch.section.querySettings">
 				<source>Query compilation</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.section.queryStorage" resname="fullSearch.section.queryStorage">
+			<trans-unit id="fullSearch.section.queryStorage">
 				<source>Load/save query</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.section.result" resname="fullSearch.section.result">
+			<trans-unit id="fullSearch.section.result">
 				<source>Result</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.type.count.resultsFound" resname="fullSearch.type.count.resultsFound">
+			<trans-unit id="fullSearch.type.count.resultsFound">
 				<source>records found.</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.type.all.noResultsFound" resname="fullSearch.type.all.noResultsFound">
+			<trans-unit id="fullSearch.type.all.noResultsFound">
 				<source>No records found.</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.btn.delete.label" resname="fullSearch.form.btn.delete.label">
+			<trans-unit id="fullSearch.form.btn.delete.label">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.btn.load.label" resname="fullSearch.form.btn.load.label">
+			<trans-unit id="fullSearch.form.btn.load.label">
 				<source>Load</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.btn.save.label" resname="fullSearch.form.btn.save.label">
+			<trans-unit id="fullSearch.form.btn.save.label">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.groupBy.label" resname="fullSearch.form.field.groupBy.label">
+			<trans-unit id="fullSearch.form.field.groupBy.label">
 				<source>Group by</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.limit.label" resname="fullSearch.form.field.limit.label">
+			<trans-unit id="fullSearch.form.field.limit.label">
 				<source>Limit</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.makeQuery.label" resname="fullSearch.form.field.makeQuery.label">
+			<trans-unit id="fullSearch.form.field.makeQuery.label">
 				<source>Result type</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.orderBy.label" resname="fullSearch.form.field.orderBy.label">
+			<trans-unit id="fullSearch.form.field.orderBy.label">
 				<source>Order by</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.orderBy.descending" resname="fullSearch.form.field.orderBy.descending">
+			<trans-unit id="fullSearch.form.field.orderBy.descending">
 				<source>Descending</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.searchType.label" resname="fullSearch.form.field.searchType.label">
+			<trans-unit id="fullSearch.form.field.searchType.label">
 				<source>Search type</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.query.label" resname="fullSearch.form.field.query.label">
+			<trans-unit id="fullSearch.form.field.query.label">
 				<source>Query</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryFields.label" resname="fullSearch.form.field.queryFields.label">
+			<trans-unit id="fullSearch.form.field.queryFields.label">
 				<source>Fields</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryTable.label" resname="fullSearch.form.field.queryTable.label">
+			<trans-unit id="fullSearch.form.field.queryTable.label">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryStore.storage.label" resname="fullSearch.form.field.queryStore.storage.label">
+			<trans-unit id="fullSearch.form.field.queryStore.storage.label">
 				<source>Saved queries</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryStore.storage.0" resname="fullSearch.form.field.queryStore.storage.0">
+			<trans-unit id="fullSearch.form.field.queryStore.storage.0">
 				<source>[New]</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryStore.title.label" resname="fullSearch.form.field.queryStore.title.label">
+			<trans-unit id="fullSearch.form.field.queryStore.title.label">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="fullSearch.form.field.queryConfig.comparison.negate" resname="fullSearch.form.field.queryConfig.comparison.negate">
+			<trans-unit id="fullSearch.form.field.queryConfig.comparison.negate">
 				<source>Negate</source>
 			</trans-unit>
 
-			<trans-unit id="showSQL" resname="showSQL">
+			<trans-unit id="showSQL">
 				<source>Show SQL parts</source>
 			</trans-unit>
-			<trans-unit id="useFormattedStrings" resname="useFormattedStrings">
+			<trans-unit id="useFormattedStrings">
 				<source>Use formatted strings, labels and dates instead of original values for results</source>
 			</trans-unit>
-			<trans-unit id="dontUseOrigValues" resname="dontUseOrigValues">
+			<trans-unit id="dontUseOrigValues">
 				<source>Don't use original values in brackets as prefix for labeled results</source>
 			</trans-unit>
-			<trans-unit id="sortOptions" resname="sortOptions">
+			<trans-unit id="sortOptions">
 				<source>Sort selectbox-options for relations by label and not by value</source>
 			</trans-unit>
-			<trans-unit id="showDeleted" resname="showDeleted">
+			<trans-unit id="showDeleted">
 				<source>Show even deleted entries (with undelete buttons)</source>
 			</trans-unit>
-			<trans-unit id="result" resname="result">
+			<trans-unit id="result">
 				<source>Result</source>
 			</trans-unit>
-			<trans-unit id="no_results" resname="no_results">
+			<trans-unit id="no_results">
 				<source>No results found for "%s".</source>
 				<note>Info text in case no results are found for a given search term</note>
 			</trans-unit>
-			<trans-unit id="no_sword" resname="no_sword">
+			<trans-unit id="no_sword">
 				<source>Enter a search term to search for records</source>
 			</trans-unit>
-			<trans-unit id="tables" resname="tables">
+			<trans-unit id="tables">
 				<source>Tables</source>
 			</trans-unit>
-			<trans-unit id="references" resname="references">
+			<trans-unit id="references">
 				<source>references</source>
 			</trans-unit>
-			<trans-unit id="isMissing" resname="isMissing">
+			<trans-unit id="isMissing">
 				<source>is missing!</source>
 			</trans-unit>
-			<trans-unit id="referencedFrom" resname="referencedFrom">
+			<trans-unit id="referencedFrom">
 				<source>Referenced from</source>
 			</trans-unit>
-			<trans-unit id="enterRegexPattern" resname="enterRegexPattern">
+			<trans-unit id="enterRegexPattern">
 				<source>Enter regex pattern</source>
 			</trans-unit>
-			<trans-unit id="searchButton" resname="searchButton">
+			<trans-unit id="searchButton">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="pattern" resname="pattern">
+			<trans-unit id="pattern">
 				<source>Pattern</source>
 			</trans-unit>
-			<trans-unit id="beingChecked" resname="beingChecked">
+			<trans-unit id="beingChecked">
 				<source>being checked...</source>
 			</trans-unit>
-			<trans-unit id="directories" resname="directories">
+			<trans-unit id="directories">
 				<source>Dirs</source>
 			</trans-unit>
-			<trans-unit id="directoriesTooDeep" resname="directoriesTooDeep">
+			<trans-unit id="directoriesTooDeep">
 				<source>ERROR: Directories deeper than the following number of levels</source>
 			</trans-unit>
-			<trans-unit id="files" resname="files">
+			<trans-unit id="files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="matchingFiles" resname="matchingFiles">
+			<trans-unit id="matchingFiles">
 				<source>Matching files</source>
 			</trans-unit>
-			<trans-unit id="notChecked" resname="notChecked">
+			<trans-unit id="notChecked">
 				<source>not checked.</source>
 			</trans-unit>
-			<trans-unit id="searchingForFilenames" resname="searchingForFilenames">
+			<trans-unit id="searchingForFilenames">
 				<source>Searching for filenames</source>
 			</trans-unit>
-			<trans-unit id="fixLostRecord" resname="fixLostRecord">
+			<trans-unit id="fixLostRecord">
 				<source>Click to move this lost record to rootlevel (pid=0)</source>
 			</trans-unit>
-			<trans-unit id="doktype" resname="doktype">
+			<trans-unit id="doktype">
 				<source>Document types</source>
 			</trans-unit>
-			<trans-unit id="doktype_value" resname="doktype_value">
+			<trans-unit id="doktype_value">
 				<source>Document types (value)</source>
 			</trans-unit>
-			<trans-unit id="pages" resname="pages">
+			<trans-unit id="pages">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="total_pages" resname="total_pages">
+			<trans-unit id="total_pages">
 				<source>Total number of default language pages</source>
 			</trans-unit>
-			<trans-unit id="translated_pages" resname="translated_pages">
+			<trans-unit id="translated_pages">
 				<source>Total number of translated pages</source>
 			</trans-unit>
-			<trans-unit id="deleted_pages" resname="deleted_pages">
+			<trans-unit id="deleted_pages">
 				<source>Marked-deleted pages</source>
 			</trans-unit>
-			<trans-unit id="hidden_pages" resname="hidden_pages">
+			<trans-unit id="hidden_pages">
 				<source>Hidden pages</source>
 			</trans-unit>
-			<trans-unit id="count" resname="count">
+			<trans-unit id="count">
 				<source>Count</source>
 			</trans-unit>
-			<trans-unit id="label" resname="label">
+			<trans-unit id="label">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="tablename" resname="tablename">
+			<trans-unit id="tablename">
 				<source>Table name</source>
 			</trans-unit>
-			<trans-unit id="total_lost" resname="total_lost">
+			<trans-unit id="total_lost">
 				<source>Records total / lost</source>
 			</trans-unit>
-			<trans-unit id="relations" resname="relations">
+			<trans-unit id="relations">
 				<source>Relations</source>
 			</trans-unit>
-			<trans-unit id="relations_description" resname="relations_description">
+			<trans-unit id="relations_description">
 				<source>The module gives some overview of missing relations in fields of the TCA types 'select' and 'group'.</source>
 			</trans-unit>
-			<trans-unit id="relations_noRecordsFound" resname="relations_noRecordsFound">
+			<trans-unit id="relations_noRecordsFound">
 				<source>No records found.</source>
 			</trans-unit>
-			<trans-unit id="select_db" resname="select_db">
+			<trans-unit id="select_db">
 				<source>Select fields</source>
 			</trans-unit>
-			<trans-unit id="group_db" resname="group_db">
+			<trans-unit id="group_db">
 				<source>Group fields</source>
 			</trans-unit>
-			<trans-unit id="tree" resname="tree">
+			<trans-unit id="tree">
 				<source>The Page Tree</source>
 			</trans-unit>
-			<trans-unit id="tree_description" resname="tree_description">
+			<trans-unit id="tree_description">
 				<source>This shows all pages in the system in one large tree. Beware that this will probably result in a very long document which will also take some time for the server to compute!</source>
 			</trans-unit>
-			<trans-unit id="records" resname="records">
+			<trans-unit id="records">
 				<source>Records Statistics</source>
 			</trans-unit>
-			<trans-unit id="records_description" resname="records_description">
+			<trans-unit id="records_description">
 				<source>This shows some statistics for the records in the database. This runs through the entire page-tree and therefore it will also load the server heavily!</source>
 			</trans-unit>
-			<trans-unit id="search_whole_database" resname="search_whole_database">
+			<trans-unit id="search_whole_database">
 				<source>Search whole Database</source>
 			</trans-unit>
-			<trans-unit id="search_description" resname="search_description">
+			<trans-unit id="search_description">
 				<source>This searches through all database tables and records for a text string.</source>
 			</trans-unit>
-			<trans-unit id="refindex" resname="refindex">
+			<trans-unit id="refindex">
 				<source>Check and update global reference index</source>
 			</trans-unit>
-			<trans-unit id="refindex_description" resname="refindex_description">
+			<trans-unit id="refindex_description">
 				<source>Allows you to maintain the reference index kept by TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="refindex_ok" resname="refindex_ok">
+			<trans-unit id="refindex_ok">
 				<source>Index integrity was perfect!</source>
 			</trans-unit>
 		</body>
