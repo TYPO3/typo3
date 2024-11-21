@@ -346,15 +346,17 @@ class ElementInformationController
     protected function getFieldList(string $table, array $row): array
     {
         $fieldNamesToExclude = [];
-        $schema = $this->tcaSchemaFactory->get($table);
-        if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
-            $fieldNamesToExclude[] = $schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName();
-        }
-        if ($schema->isLanguageAware()) {
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $fieldNamesToExclude[] = $languageCapability->getTranslationOriginPointerField()->getName();
-            if ($languageCapability->hasDiffSourceField()) {
-                $fieldNamesToExclude[] = $languageCapability->getDiffSourceField()?->getName();
+        if ($this->tcaSchemaFactory->has($table)) {
+            $schema = $this->tcaSchemaFactory->get($table);
+            if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
+                $fieldNamesToExclude[] = $schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName();
+            }
+            if ($schema->isLanguageAware()) {
+                $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+                $fieldNamesToExclude[] = $languageCapability->getTranslationOriginPointerField()->getName();
+                if ($languageCapability->hasDiffSourceField()) {
+                    $fieldNamesToExclude[] = $languageCapability->getDiffSourceField()?->getName();
+                }
             }
         }
 
@@ -386,6 +388,10 @@ class ElementInformationController
                     'value' => BackendUtility::datetime($this->row['modification_date']),
                     'fieldLabel' => htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.timestamp')),
                     'isDatetime' => true,
+                ];
+            } else {
+                $keyLabelPair['uid'] = [
+                    'value' => $this->folderObject->getCombinedIdentifier(),
                 ];
             }
         } else {
