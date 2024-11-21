@@ -41,9 +41,7 @@ ExtensionManagementUtility::addTCAcolumns(
             'label' => 'LLL:EXT:test_irre_foreignfield/Resources/Private/Language/locallang_db.xlf:tt_content.tx_testirreforeignfield_flexform',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => 'FILE:EXT:test_irre_foreignfield/Configuration/FlexForms/tt_content_flexform.xml',
-                ],
+                'ds' => 'FILE:EXT:test_irre_foreignfield/Configuration/FlexForms/tt_content_flexform.xml',
                 'default' => '',
             ],
         ],

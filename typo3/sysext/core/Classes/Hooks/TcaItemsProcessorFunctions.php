@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\CategoryFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Various items processor functions, mainly used for special select fields in `be_users` and `be_groups`
@@ -255,7 +254,7 @@ readonly class TcaItemsProcessorFunctions
         $tableToTranslation = [];
         // All TCA keys
         foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
-            $tableToTranslation[$table] = $schema->getTitle($languageService->sL(...));
+            $tableToTranslation[$table] = $schema->getTitle($languageService->sL(...)) ?: $table;
         }
         // Sort by translations
         asort($tableToTranslation);
@@ -293,14 +292,17 @@ readonly class TcaItemsProcessorFunctions
             // All FlexForm fields
             $flexFormArray = $this->getRegisteredFlexForms((string)$table);
             foreach ($flexFormArray as $tableField => $flexForms) {
-                // Prefix for field label, e.g. "Plugin Options:"
-                $labelPrefix = '';
-                $fieldDefinition = $schema->getField($tableField);
-                if ($fieldDefinition->getLabel() !== '') {
-                    $labelPrefix = $languageService->sL($fieldDefinition->getLabel());
-                }
+                $flexFieldLabel = '';
                 // Get all sheets
                 foreach ($flexForms as $extIdent => $extConf) {
+                    if ($schema->hasSubSchema($extIdent)) {
+                        $fieldDefinition = $schema->getSubSchema($extIdent)->getField($tableField);
+                    } else {
+                        $fieldDefinition = $schema->getField($tableField);
+                    }
+                    if ($fieldDefinition->getLabel() !== '') {
+                        $flexFieldLabel = $languageService->sL($fieldDefinition->getLabel());
+                    }
                     if (empty($extConf['sheets']) || !is_array($extConf['sheets'])) {
                         continue;
                     }
@@ -316,8 +318,8 @@ readonly class TcaItemsProcessorFunctions
                             }
                             $fieldLabel = !empty($field['label']) ? $languageService->sL($field['label']) : $pluginFieldName;
                             $excludeFieldGroup[] = [
-                                'labels' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ': ') . ':' . $fieldLabel,
-                                'sectionHeader' => trim($translatedTable . ' ' . $labelPrefix . ' ' . $extIdent, ':'),
+                                'labels' => trim($translatedTable . ' ' . $flexFieldLabel . ' ' . $extIdent, ': ') . ':' . $fieldLabel,
+                                'sectionHeader' => trim($translatedTable . ' ' . $flexFieldLabel . ' ' . $extIdent, ':'),
                                 'table' => $table,
                                 'tableField' => $tableField,
                                 'extIdent' => $extIdent,
@@ -351,7 +353,7 @@ readonly class TcaItemsProcessorFunctions
      * Returns FlexForm data structures it finds. Used in select "special" for be_groups
      * to set "exclude" flags for single flex form fields.
      *
-     * This only finds flex forms registered in 'ds' config sections.
+     * This only finds flex forms registered in 'ds' config sections - default and record type specific.
      * This does not resolve other sophisticated flex form data structure references.
      *
      * @todo: This approach is limited and doesn't find everything. It works for casual tt_content plugins, though:
@@ -372,40 +374,45 @@ readonly class TcaItemsProcessorFunctions
         }
         $schema = $this->tcaSchemaFactory->get($table);
         $flexForms = [];
+        // Get all flex fields and add the default data structure
         foreach ($schema->getFields() as $field => $fieldDefinition) {
             if ($fieldDefinition->getType() !== TableColumnType::FLEX->value) {
                 continue;
             }
-            $fieldDefinition = $fieldDefinition->getConfiguration();
-            if (empty($fieldDefinition['ds']) || !is_array($fieldDefinition['ds'])) {
-                continue;
-            }
             $flexForms[$field] = [];
-            foreach (array_keys($fieldDefinition['ds']) as $flexFormKey) {
-                $flexFormKey = (string)$flexFormKey;
-                // Get extension identifier (uses second value if it's not empty, "list" or "*", else first one)
-                $identFields = GeneralUtility::trimExplode(',', $flexFormKey);
-                $extIdent = $identFields[0] ?? '';
-                // @todo resolve this special handling together with EMU::addPiFlexFormValue
-                if (!empty($identFields[1]) && $identFields[1] !== 'list' && $identFields[1] !== '*') {
-                    $extIdent = $identFields[1];
-                }
-                $flexFormDataStructureIdentifier = json_encode([
+            // Default data structure
+            try {
+                $flexForms[$field]['default'] = $this->flexFormTools->parseDataStructureByIdentifier(json_encode([
                     'type' => 'tca',
                     'tableName' => $table,
                     'fieldName' => $field,
-                    'dataStructureKey' => $flexFormKey,
-                ]);
-                try {
-                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($flexFormDataStructureIdentifier);
-                    $flexForms[$field][$extIdent] = $dataStructure;
-                } catch (InvalidIdentifierException $e) {
-                    // Deliberately empty: The DS identifier is guesswork and the flex ds parser throws
-                    // this exception if it can not resolve to a valid data structure. This is "ok" here
-                    // and the exception is just eaten.
+                    'dataStructureKey' => 'default',
+                ]), $schema);
+            } catch (InvalidIdentifierException $e) {
+                // Skip default on error
+            }
+        }
+
+        // If flex fields exist and the table supports sub schemata, add specific data strcuturs for those sub schemas
+        if ($flexForms !== [] && $schema->supportsSubSchema()) {
+            foreach ($schema->getSubSchemata() as $recordType => $subSchema) {
+                foreach (array_keys($flexForms) as $fieldName) {
+                    if ($subSchema->hasField($fieldName)) {
+                        try {
+                            $flexForms[$fieldName][$recordType] = $this->flexFormTools->parseDataStructureByIdentifier(json_encode([
+                                'type' => 'tca',
+                                'tableName' => $table,
+                                'fieldName' => $fieldName,
+                                'dataStructureKey' => $recordType,
+                            ]), $schema);
+                        } catch (InvalidIdentifierException $e) {
+                            // Skip record type specific config on error
+                        }
+                    }
                 }
             }
         }
+
         return $flexForms;
     }
 

@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Schema;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Domain\RawRecord;
+use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FlexFormFieldType;
 use TYPO3\CMS\Core\Schema\Struct\FlexSectionContainer;
@@ -34,7 +36,8 @@ final readonly class FlexFormSchemaFactory
 {
     public function __construct(
         protected FlexFormTools $flexFormTools,
-        protected FieldTypeFactory $fieldTypeFactory
+        protected FieldTypeFactory $fieldTypeFactory,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -44,17 +47,18 @@ final readonly class FlexFormSchemaFactory
     public function getSchemaForRecord(RawRecord $record, FlexFormFieldType $field, RelationMap $relationMap): ?FlexFormSchema
     {
         try {
+            $schema = $this->tcaSchemaFactory->get($record->getMainType());
             $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 ['config' => $field->getConfiguration()],
                 $record->getMainType(),
                 $field->getName(),
-                $record->toArray()
+                $record->toArray(),
+                $schema
             );
-        } catch (InvalidSinglePointerFieldException) {
+            $resolvedDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
+        } catch (InvalidTcaException|InvalidIdentifierException|UndefinedSchemaException) {
             return null;
         }
-
-        $resolvedDataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
 
         $sheets = [];
         foreach ($resolvedDataStructure['sheets'] ?? [] as $sheetIdentifier => $sheetData) {

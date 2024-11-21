@@ -47,18 +47,14 @@ return [
             'label' => 'inline_2',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => 'FILE:EXT:styleguide/Configuration/FlexForms/SimpleSection.xml',
-                ],
+                'ds' => 'FILE:EXT:styleguide/Configuration/FlexForms/SimpleSection.xml',
             ],
         ],
         'inline_3' => [
             'label' => 'inline_3',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => 'FILE:EXT:styleguide/Configuration/FlexForms/MultipleSheets.xml',
-                ],
+                'ds' => 'FILE:EXT:styleguide/Configuration/FlexForms/MultipleSheets.xml',
             ],
         ],
     ],

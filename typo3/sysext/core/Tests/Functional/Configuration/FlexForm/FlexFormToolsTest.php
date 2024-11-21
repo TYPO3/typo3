@@ -24,12 +24,13 @@ use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierIniti
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidDataStructureException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaSchemaException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FlexFormToolsTest extends FunctionalTestCase
@@ -37,14 +38,18 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function getDataStructureIdentifierWithNoListenersReturnsDefault(): void
     {
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'default' => '<T3DataStructure>...',
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
                 ],
             ],
         ];
-        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config'], 'aTableName', 'aFieldName', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         self::assertSame($expected, $result);
     }
@@ -52,13 +57,17 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function getDataStructureIdentifierWithNoOpListenerReturnsDefault(): void
     {
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'default' => '<T3DataStructure>...',
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
                 ],
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         /** @var Container $container */
         $container = $this->get('service_container');
         $container->set(
@@ -69,7 +78,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         );
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFlexFormDataStructureIdentifierInitializedEvent::class, 'noop');
-        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['aTableName']['columns']['aFieldName'], 'aTableName', 'aFieldName', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         self::assertSame($expected, $result);
     }
@@ -77,6 +86,16 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function getDataStructureIdentifierWithListenerReturnsThatListenersValue(): void
     {
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         /** @var Container $container */
         $container = $this->get('service_container');
         $container->set(
@@ -90,7 +109,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
         );
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(BeforeFlexFormDataStructureIdentifierInitializedEvent::class, 'identifier-one');
-        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier([], 'aTableName', 'aFieldName', []);
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier([], 'aTableName', 'aFieldName', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         $expected = '{"type":"myExtension","further":"data"}';
         self::assertSame($expected, $result);
     }
@@ -98,6 +117,17 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function getDataStructureIdentifierWithModifyListenerCallsListener(): void
     {
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         /** @var Container $container */
         $container = $this->get('service_container');
         $container->set(
@@ -108,310 +138,394 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 $event->setIdentifier($id);
             }
         );
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'default' => '<T3DataStructure>...',
-                ],
-            ],
-        ];
         $eventListener = $this->get(ListenerProvider::class);
         $eventListener->addListener(AfterFlexFormDataStructureIdentifierInitializedEvent::class, 'modifier-one');
-        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['aTableName']['columns']['aFieldName'], 'aTableName', 'aFieldName', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default","beep":"boop"}';
         self::assertSame($expected, $result);
     }
 
     #[Test]
-    public function getDataStructureIdentifierThrowsExceptionIfDsIsNotAnArrayAndNoDsPointerField(): void
+    public function getDataStructureIdentifierThrowsExceptionsIfDsIsEmptyAndNoTypeSpecificDefinitionExists(): void
     {
-        $fieldTca = [
-            'config' => [
-                'ds' => 'someStringOnly',
-                // no ds_pointerField,
-            ],
-        ];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1463826960);
-        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierReturnsDefaultIfDsIsSetButNoDsPointerField(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'default' => '<T3DataStructure>...',
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '',
+                    ],
                 ],
             ],
         ];
-        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1732198004);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['aTableName']['columns']['aFieldName'], 'aTableName', 'aFieldName', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
-    public function getDataStructureIdentifierThrowsExceptionsIfNoDsPointerFieldIsSetAndDefaultDoesNotExist(): void
+    public function getDataStructureIdentifierThrowsExceptionIfDsIsAnArrayAndNoTypeSpecificDefinitionExists(): void
     {
-        $fieldTca = [
-            'config' => [
-                'ds' => [],
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => [],
+                    ],
+                ],
             ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1732198004);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config'], 'aTableName', 'aFieldName', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierThrowsExceptionForMissingTcaSchema(): void
+    {
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'someStringOnly',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->expectException(InvalidTcaSchemaException::class);
+        $this->expectExceptionCode(1753182123);
+        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['aTableName']['columns']['aFieldName'], 'aTableName', 'aFieldName', []));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierReturnsDefaultIfDsIsSetAndNoTypeSpecificDefinitionExists(): void
+    {
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'someStringOnly',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['aTableName']['columns']['aFieldName'], 'aTableName', 'aFieldName', [], $this->get(TcaSchemaFactory::class)->get('aTableName')));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierReturnsDefaultForInvalidRecordType(): void
+    {
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
+                ],
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'foo' => [
+                    'showitem' => 'type',
+                ],
+                'bar' => [
+                    'showitem' => 'type,bFieldName',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $row = [
+            'type' => 'notExist',
+        ];
+        $expected = '{"type":"tca","tableName":"bTableName","fieldName":"bFieldName","dataStructureKey":"default"}';
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['bTableName']['columns']['bFieldName'], 'bTableName', 'bFieldName', $row, $this->get(TcaSchemaFactory::class)->get('bTableName')));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierThrowsExceptionForInvalidRecordTypeAndInvalidDefaultDs(): void
+    {
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
+                ],
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '',
+                    ],
+                ],
+            ],
+            'types' => [
+                'foo' => [
+                    'showitem' => 'type',
+                ],
+                'bar' => [
+                    'showitem' => 'type,bFieldName',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $row = [
+            'type' => 'notExist',
         ];
         $this->expectException(InvalidTcaException::class);
-        $this->expectExceptionCode(1463652560);
-        self::assertSame('default', $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []));
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldStringHasMoreThanTwoFields(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [],
-                'ds_pointerField' => 'first,second,third',
-            ],
-        ];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1463577497);
-        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', []);
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldWithStringSingleFieldDoesNotExist(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [],
-                'ds_pointerField' => 'notExist',
-            ],
-        ];
-        $row = [
-            'foo' => '',
-        ];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1463578899);
-        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsFirstDoesNotExist(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [],
-                'ds_pointerField' => 'notExist,second',
-            ],
-        ];
-        $row = [
-            'second' => '',
-        ];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1463578899);
-        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldSWithTwoFieldsSecondDoesNotExist(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [],
-                'ds_pointerField' => 'first,notExist',
-            ],
-        ];
-        $row = [
-            'first' => '',
-        ];
-        $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1463578900);
-        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierReturnsPointerFieldValueIfDataStructureExists(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'thePointerValue' => 'FILE:...',
-                ],
-                'ds_pointerField' => 'aField',
-            ],
-        ];
-        $row = [
-            'aField' => 'thePointerValue',
-        ];
-        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"thePointerValue"}';
-        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierReturnsDefaultIfPointerFieldValueDoesNotExist(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'default' => 'theDataStructure',
-                ],
-                'ds_pointerField' => 'aField',
-            ],
-        ];
-        $row = [
-            'aField' => 'thePointerValue',
-        ];
-        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierThrowsExceptionIfPointerFieldValueDoesNotExistAndDefaultToo(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'aDifferentDataStructure' => 'aDataStructure',
-                ],
-                'ds_pointerField' => 'aField',
-            ],
-        ];
-        $row = [
-            'uid' => 23,
-            'aField' => 'aNotDefinedDataStructure',
-        ];
-        $this->expectException(InvalidSinglePointerFieldException::class);
-        $this->expectExceptionCode(1463653197);
-        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $this->expectExceptionCode(1732198004);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['bTableName']['columns']['bFieldName'], 'bTableName', 'bFieldName', $row, $this->get(TcaSchemaFactory::class)->get('bTableName'));
     }
 
     /**
-     * Data provider for getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations
+     * @todo - Is this correct?
      */
-    public static function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider(): array
-    {
-        return [
-            'direct match of two fields' => [
-                [
-                    // $row
-                    'firstField' => 'firstValue',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    // registered data structure names
-                    'firstValue,secondValue' => '',
-                ],
-                // expected name
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,secondValue"}',
-            ],
-            'match on first field, * for second' => [
-                [
-                    'firstField' => 'firstValue',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    'firstValue,*' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,*"}',
-            ],
-            'match on second field, * for first' => [
-                [
-                    'firstField' => 'firstValue',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    '*,secondValue' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"*,secondValue"}',
-            ],
-            'match on first field only' => [
-                [
-                    'firstField' => 'firstValue',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    'firstValue' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue"}',
-            ],
-            'fallback to default' => [
-                [
-                    'firstField' => 'firstValue',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    'default' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}',
-            ],
-            'chain falls through with no match on second value to *' => [
-                [
-                    'firstField' => 'firstValue',
-                    'secondField' => 'noMatch',
-                ],
-                [
-                    'firstValue,secondValue' => '',
-                    'firstValue,*' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"firstValue,*"}',
-            ],
-            'chain falls through with no match on first value to *' => [
-                [
-                    'firstField' => 'noMatch',
-                    'secondField' => 'secondValue',
-                ],
-                [
-                    'firstValue,secondValue' => '',
-                    '*,secondValue' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"*,secondValue"}',
-            ],
-            'chain falls through with no match on any field to default' => [
-                [
-                    'firstField' => 'noMatch',
-                    'secondField' => 'noMatchToo',
-                ],
-                [
-                    'firstValue,secondValue' => '',
-                    'secondValue,*' => '',
-                    'default' => '',
-                ],
-                '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}',
-            ],
-        ];
-    }
-
-    #[DataProvider('getDataStructureIdentifierReturnsValidNameForTwoFieldCombinationsDataProvider')]
     #[Test]
-    public function getDataStructureIdentifierReturnsValidNameForTwoFieldCombinations(array $row, array $ds, string $expected): void
+    public function getDataStructureIdentifierReturnsDefaultStructureKeyForRecordTypeWithoutFlexField(): void
     {
-        $fieldTca = [
-            'config' => [
-                'ds' => $ds,
-                'ds_pointerField' => 'firstField,secondField',
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
             ],
-        ];
-        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row));
-    }
-
-    #[Test]
-    public function getDataStructureIdentifierThrowsExceptionForTwoFieldsWithNoMatchAndNoDefault(): void
-    {
-        $fieldTca = [
-            'config' => [
-                'ds' => [
-                    'firstValue,secondValue' => '',
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
                 ],
-                'ds_pointerField' => 'firstField,secondField',
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'foo' => [
+                    'showitem' => 'type',
+                ],
+                'bar' => [
+                    'showitem' => 'type,bFieldName',
+                ],
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $row = [
-            'uid' => 23,
-            'firstField' => 'noMatch',
-            'secondField' => 'noMatchToo',
+            'type' => 'foo',
         ];
-        $this->expectException(InvalidCombinedPointerFieldException::class);
-        $this->expectExceptionCode(1463678524);
-        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row);
+        $expected = '{"type":"tca","tableName":"bTableName","fieldName":"bFieldName","dataStructureKey":"default"}';
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['bTableName']['columns']['bFieldName'], 'bTableName', 'bFieldName', $row, $this->get(TcaSchemaFactory::class)->get('bTableName')));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierThorwsExceptionOnInvalidDsInRecordTypeOverride(): void
+    {
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
+                ],
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'foo' => [
+                    'showitem' => 'type',
+                ],
+                'bar' => [
+                    'showitem' => 'type,bFieldName',
+                    'columnsOverrides' => [
+                        'bFieldName' => [
+                            'config' => [
+                                'ds' => '',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $row = [
+            'type' => 'bar',
+        ];
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1751796940);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['bTableName']['columns']['bFieldName'], 'bTableName', 'bFieldName', $row, $this->get(TcaSchemaFactory::class)->get('bTableName'));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierReturnsIdentifierWithRecordTypeAsDataStructureKey(): void
+    {
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
+                ],
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'foo' => [
+                    'showitem' => 'type',
+                ],
+                'bar' => [
+                    'showitem' => 'type,bFieldName',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $row = [
+            'type' => 'bar',
+        ];
+        $expected = '{"type":"tca","tableName":"bTableName","fieldName":"bFieldName","dataStructureKey":"bar"}';
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['bTableName']['columns']['bFieldName'], 'bTableName', 'bFieldName', $row, $this->get(TcaSchemaFactory::class)->get('bTableName')));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierThrowsExceptionOnRecordTypeWithNoSpecificConfigAndMissingDefaultFallback(): void
+    {
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
+                ],
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        // missing 'ds'
+                    ],
+                ],
+            ],
+            'types' => [
+                'foo' => [
+                    'showitem' => 'type',
+                ],
+                'bar' => [
+                    'showitem' => 'type,bFieldName',
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $row = [
+            'type' => 'bar',
+        ];
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1751796940);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['bTableName']['columns']['bFieldName'], 'bTableName', 'bFieldName', $row, $this->get(TcaSchemaFactory::class)->get('bTableName'));
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierReturnsIdentifierWithRecordTypeWithSpecificConfigAndMissingDefaultFallback(): void
+    {
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
+                ],
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        // missing 'ds'
+                    ],
+                ],
+            ],
+            'types' => [
+                'foo' => [
+                    'showitem' => 'type',
+                ],
+                'bar' => [
+                    'showitem' => 'type,bFieldName',
+                    'columnsOverrides' => [
+                        'bFieldName' => [
+                            'config' => [
+                                'ds' => '<T3DataStructure>...',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $row = [
+            'type' => 'bar',
+        ];
+        $expected = '{"type":"tca","tableName":"bTableName","fieldName":"bFieldName","dataStructureKey":"bar"}';
+        self::assertSame($expected, $this->get(FlexFormTools::class)->getDataStructureIdentifier($GLOBALS['TCA']['bTableName']['columns']['bFieldName'], 'bTableName', 'bFieldName', $row, $this->get(TcaSchemaFactory::class)->get('bTableName')));
     }
 
     #[Test]
@@ -475,17 +589,74 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForIncompleteTcaSyntax(): void
     {
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1478113471);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName"}';
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
-    public function parseDataStructureByIdentifierThrowsExceptionForInvalidTcaSyntaxPointer(): void
+    public function parseDataStructureByIdentifierThrowsExceptionForInvalidDataStructureKey(): void
     {
+        $GLOBALS['TCA']['bTableName'] = [
+            'ctrl' => [
+                'type' => 'type',
+            ],
+            'columns' => [
+                'type' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['foo', 'foo'],
+                            ['bar', 'bar'],
+                        ],
+                    ],
+                ],
+                'bFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->expectException(InvalidIdentifierException::class);
-        $this->expectExceptionCode(1478105491);
+        $this->expectExceptionCode(1732199538);
+        $identifier = '{"type":"tca","tableName":"bTableName","fieldName":"bFieldName","dataStructureKey":"foo"}';
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('bTableName'));
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierThrowsExceptionForMissingTcaSchema(): void
+    {
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets></sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->expectException(InvalidTcaSchemaException::class);
+        $this->expectExceptionCode(1753182125);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
     }
@@ -493,34 +664,61 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function parseDataStructureByIdentifierResolvesTcaSyntaxPointer(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets></sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets></sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => '',
         ];
-        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName')));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionIfDataStructureFileDoesNotExist(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default']
-            = 'FILE:EXT:core/Does/Not/Exist.xml';
+        $rawTca = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'FILE:EXT:core/Does/Not/Exist.xml',
+                    ],
+                ],
+            ],
+        ];
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478105826);
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
     }
 
     #[Test]
     public function parseDataStructureByIdentifierFetchesFromFile(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default']
-            = ' FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureWithSheet.xml ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureWithSheet.xml',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -540,59 +738,88 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName')));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForInvalidXmlStructure(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <bar>
-                </sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <bar>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(InvalidIdentifierException::class);
         $this->expectExceptionCode(1478106090);
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionIfStructureHasBothSheetAndRoot(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT></ROOT>
-                <sheets></sheets>
-            </T3DataStructure>
-        ';
+        $rawTca = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT></ROOT>
+                                <sheets></sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1440676540);
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
     }
 
     #[Test]
     public function parseDataStructureByIdentifierCreatesDefaultSheet(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT>
-                    <sheetTitle>aTitle</sheetTitle>
-                    <type>array</type>
-                    <el>
-                        <aFlexField>
-                            <label>aFlexFieldLabel</label>
-                            <config>
-                                <type>input</type>
-                            </config>
-                        </aFlexField>
-                    </el>
-                </ROOT>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT>
+                                    <sheetTitle>aTitle</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <aFlexField>
+                                            <label>aFlexFieldLabel</label>
+                                            <config>
+                                                <type>input</type>
+                                            </config>
+                                        </aFlexField>
+                                    </el>
+                                </ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -612,21 +839,31 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName')));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheets(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <aSheet>
-                        EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
-                    </aSheet>
-                </sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <aSheet>
+                                        EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
+                                    </aSheet>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -646,21 +883,31 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName')));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierResolvesExtReferenceForSingleSheetsWithFilePrefix(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <aSheet>
-                        FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
-                    </aSheet>
-                </sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <aSheet>
+                                        FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureOfSingleSheet.xml
+                                    </aSheet>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -680,17 +927,27 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName')));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierModifyEventManipulatesDataStructure(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets></sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets></sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         /** @var Container $container */
         $container = $this->get('service_container');
@@ -711,98 +968,128 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 'foo' => 'bar',
             ],
         ];
-        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
+        self::assertSame($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName')));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForDataStructureTypeArrayWithoutSection(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(InvalidDataStructureException::class);
         $this->expectExceptionCode(1440685208);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <sDEF>
-                        <ROOT>
-                            <sheetTitle>aTitle</sheetTitle>
-                            <type>array</type>
-                            <el>
-                                <aSection>
-                                    <type>array</type>
-                                </aSection>
-                            </el>
-                        </ROOT>
-                    </sDEF>
-                </sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <sDEF>
+                                        <ROOT>
+                                            <sheetTitle>aTitle</sheetTitle>
+                                            <type>array</type>
+                                            <el>
+                                                <aSection>
+                                                    <type>array</type>
+                                                </aSection>
+                                            </el>
+                                        </ROOT>
+                                    </sDEF>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForDataStructureSectionWithoutTypeArray(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(InvalidDataStructureException::class);
         $this->expectExceptionCode(1440685208);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <sDEF>
-                        <ROOT>
-                            <sheetTitle>aTitle</sheetTitle>
-                            <type>array</type>
-                            <el>
-                                <aSection>
-                                    <section>1</section>
-                                </aSection>
-                            </el>
-                        </ROOT>
-                    </sDEF>
-                </sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <sDEF>
+                                        <ROOT>
+                                            <sheetTitle>aTitle</sheetTitle>
+                                            <type>array</type>
+                                            <el>
+                                                <aSection>
+                                                    <section>1</section>
+                                                </aSection>
+                                            </el>
+                                        </ROOT>
+                                    </sDEF>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForNestedSectionContainers(): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(InvalidDataStructureException::class);
         $this->expectExceptionCode(1458745712);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <sDEF>
-                        <ROOT>
-                            <sheetTitle>aTitle</sheetTitle>
-                            <type>array</type>
-                            <el>
-                                <aSection>
-                                    <type>array</type>
-                                    <section>1</section>
-                                    <el>
-                                        <container_1>
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <sDEF>
+                                        <ROOT>
+                                            <sheetTitle>aTitle</sheetTitle>
                                             <type>array</type>
                                             <el>
-                                                <section_nested>
+                                                <aSection>
                                                     <type>array</type>
                                                     <section>1</section>
-                                                    <el></el>
-                                                </section_nested>
+                                                    <el>
+                                                        <container_1>
+                                                            <type>array</type>
+                                                            <el>
+                                                                <section_nested>
+                                                                    <type>array</type>
+                                                                    <section>1</section>
+                                                                    <el></el>
+                                                                </section_nested>
+                                                            </el>
+                                                        </container_1>
+                                                    </el>
+                                                </aSection>
                                             </el>
-                                        </container_1>
-                                    </el>
-                                </aSection>
-                            </el>
-                        </ROOT>
-                    </sDEF>
-                </sheets>
-            </T3DataStructure>
-        ';
+                                        </ROOT>
+                                    </sDEF>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     public static function parseDataStructureByIdentifierThrowsExceptionForSectionContainerElementsWithDbRelationsDataProvider(): array
@@ -888,36 +1175,46 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionForSectionContainerElementsWithDbRelations(string $element): void
     {
-        $this->expectException(\UnexpectedValueException::class);
+        $this->expectException(InvalidDataStructureException::class);
         $this->expectExceptionCode(1458745468);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <sDEF>
-                        <ROOT>
-                            <sheetTitle>aTitle</sheetTitle>
-                            <type>array</type>
-                            <el>
-                                <aSection>
-                                    <type>array</type>
-                                    <section>1</section>
-                                    <el>
-                                        <container_1>
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <sDEF>
+                                        <ROOT>
+                                            <sheetTitle>aTitle</sheetTitle>
                                             <type>array</type>
                                             <el>
-                                                ' . $element . '
+                                                <aSection>
+                                                    <type>array</type>
+                                                    <section>1</section>
+                                                    <el>
+                                                        <container_1>
+                                                            <type>array</type>
+                                                            <el>
+                                                                ' . $element . '
+                                                            </el>
+                                                        </container_1>
+                                                    </el>
+                                                </aSection>
                                             </el>
-                                        </container_1>
-                                    </el>
-                                </aSection>
-                            </el>
-                        </ROOT>
-                    </sDEF>
-                </sheets>
-            </T3DataStructure>
-        ';
+                                        </ROOT>
+                                    </sDEF>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
@@ -926,27 +1223,37 @@ final class FlexFormToolsTest extends FunctionalTestCase
         // Register special error handler to suppress E_USER_DEPRECATED triggered by subject.
         // This is a feature of the subject, but usually lets the test fail.
         set_error_handler(fn() => false, E_USER_DEPRECATED);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <sDEF>
-                        <ROOT>
-                            <sheetTitle>aTitle</sheetTitle>
-                            <type>array</type>
-                            <el>
-                                <aFlexField>
-                                    <label>aFlexFieldLabel</label>
-                                    <config>
-                                        <type>input</type>
-                                        <eval>email</eval>
-                                    </config>
-                                </aFlexField>
-                            </el>
-                        </ROOT>
-                    </sDEF>
-                </sheets>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <sDEF>
+                                        <ROOT>
+                                            <sheetTitle>aTitle</sheetTitle>
+                                            <type>array</type>
+                                            <el>
+                                                <aFlexField>
+                                                    <label>aFlexFieldLabel</label>
+                                                    <config>
+                                                        <type>input</type>
+                                                        <eval>email</eval>
+                                                    </config>
+                                                </aFlexField>
+                                            </el>
+                                        </ROOT>
+                                    </sDEF>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -969,7 +1276,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
         restore_error_handler();
         self::assertEquals($expected, $result);
     }
@@ -980,39 +1287,49 @@ final class FlexFormToolsTest extends FunctionalTestCase
         // Register special error handler to suppress E_USER_DEPRECATED triggered by subject.
         // This is a feature of the subject, but usually lets the test fail.
         set_error_handler(fn() => false, E_USER_DEPRECATED);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <sheets>
-                    <sDEF>
-                        <ROOT>
-                            <type>array</type>
-                            <el>
-                                <section_1>
-                                    <title>section_1</title>
-                                    <type>array</type>
-                                    <section>1</section>
-                                    <el>
-                                        <container_1>
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <sheets>
+                                    <sDEF>
+                                        <ROOT>
                                             <type>array</type>
-                                            <title>container_1 label</title>
                                             <el>
-                                                <aFlexField>
-                                                    <label>aFlexFieldLabel</label>
-                                                    <config>
-                                                        <type>input</type>
-                                                        <eval>email</eval>
-                                                    </config>
-                                                </aFlexField>
+                                                <section_1>
+                                                    <title>section_1</title>
+                                                    <type>array</type>
+                                                    <section>1</section>
+                                                    <el>
+                                                        <container_1>
+                                                            <type>array</type>
+                                                            <title>container_1 label</title>
+                                                            <el>
+                                                                <aFlexField>
+                                                                    <label>aFlexFieldLabel</label>
+                                                                    <config>
+                                                                        <type>input</type>
+                                                                        <eval>email</eval>
+                                                                    </config>
+                                                                </aFlexField>
+                                                            </el>
+                                                        </container_1>
+                                                    </el>
+                                                </section_1>
                                             </el>
-                                        </container_1>
-                                    </el>
-                                </section_1>
-                            </el>
-                        </ROOT>
-                    </sDEF>
-                </sheets>
-            </T3DataStructure>
-        ';
+                                        </ROOT>
+                                    </sDEF>
+                                </sheets>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -1047,7 +1364,7 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
         restore_error_handler();
         self::assertEquals($expected, $result);
     }
@@ -1055,28 +1372,38 @@ final class FlexFormToolsTest extends FunctionalTestCase
     #[Test]
     public function parseDataStructureByIdentifierPreparesCategoryField(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT>
-                    <sheetTitle>aTitle</sheetTitle>
-                    <type>array</type>
-                    <el>
-                        <category>
-                            <label>Single category</label>
-                            <config>
-                                <type>category</type>
-                                <relationship>oneToOne</relationship>
-                            </config>
-                        </category>
-                        <categories>
-                            <config>
-                                <type>category</type>
-                            </config>
-                        </categories>
-                    </el>
-                </ROOT>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT>
+                                    <sheetTitle>aTitle</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <category>
+                                            <label>Single category</label>
+                                            <config>
+                                                <type>category</type>
+                                                <relationship>oneToOne</relationship>
+                                            </config>
+                                        </category>
+                                        <categories>
+                                            <config>
+                                                <type>category</type>
+                                            </config>
+                                        </categories>
+                                    </el>
+                                </ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $expected = [
             'sheets' => [
@@ -1113,91 +1440,120 @@ final class FlexFormToolsTest extends FunctionalTestCase
                 ],
             ],
         ];
-        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier));
+        self::assertEquals($expected, $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName')));
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionOnInvalidCategoryRelationship(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT>
-                    <sheetTitle>aTitle</sheetTitle>
-                    <type>array</type>
-                    <el>
-                        <categories>
-                            <config>
-                                <type>category</type>
-                                <relationship>manyToMany</relationship>
-                            </config>
-                        </categories>
-                    </el>
-                </ROOT>
-            </T3DataStructure>
-        ';
+        $rawTca = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT>
+                                    <sheetTitle>aTitle</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <categories>
+                                            <config>
+                                                <type>category</type>
+                                                <relationship>manyToMany</relationship>
+                                            </config>
+                                        </categories>
+                                    </el>
+                                </ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(\UnexpectedValueException::class);
         $this->expectExceptionCode(1627640208);
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionOnInvalidMaxitemsForOneToOne(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT>
-                    <sheetTitle>aTitle</sheetTitle>
-                    <type>array</type>
-                    <el>
-                        <categories>
-                            <config>
-                                <type>category</type>
-                                <relationship>oneToOne</relationship>
-                                <maxitems>12</maxitems>
-                            </config>
-                        </categories>
-                    </el>
-                </ROOT>
-            </T3DataStructure>
-        ';
+        $rawTca = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT>
+                                    <sheetTitle>aTitle</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <categories>
+                                            <config>
+                                                <type>category</type>
+                                                <relationship>oneToOne</relationship>
+                                                <maxitems>12</maxitems>
+                                            </config>
+                                        </categories>
+                                    </el>
+                                </ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1627335016);
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
     }
 
     #[Test]
     public function parseDataStructureByIdentifierThrowsExceptionOnInvalidMaxitems(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT>
-                    <sheetTitle>aTitle</sheetTitle>
-                    <type>array</type>
-                    <el>
-                        <categories>
-                            <config>
-                                <type>category</type>
-                                <maxitems>1</maxitems>
-                            </config>
-                        </categories>
-                    </el>
-                </ROOT>
-            </T3DataStructure>
-        ';
+        $rawTca = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT>
+                                    <sheetTitle>aTitle</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <categories>
+                                            <config>
+                                                <type>category</type>
+                                                <maxitems>1</maxitems>
+                                            </config>
+                                        </categories>
+                                    </el>
+                                </ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
         $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1627335017);
-        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
     }
 
     #[Test]
     public function cleanFlexFormXMLThrowsWithMissingTca(): void
     {
+        $GLOBALS['TCA']['aTableName'] = [];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1697554398);
-        $this->get(FlexFormTools::class)->cleanFlexFormXML('fooTable', 'fooField', []);
+        $this->get(FlexFormTools::class)->cleanFlexFormXML('fooTable', 'fooField', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
@@ -1205,37 +1561,58 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1697554398);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = 'invalid';
-        $this->get(FlexFormTools::class)->cleanFlexFormXML('fooTable', 'fooField', []);
+        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds'] = 'invalid';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->get(FlexFormTools::class)->cleanFlexFormXML('fooTable', 'fooField', [], $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
     public function cleanFlexFormXMLReturnsEmptyStringWithInvalidDataStructure(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = 'invalid';
-        $result = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'invalid',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $result = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid'], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         self::assertSame('', $result);
     }
 
     #[Test]
     public function cleanFlexFormXMLReturnsEmptyStringWithInvalidValue(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT>
-                    <type>array</type>
-                    <el>
-                        <aFlexField>
-                            <label>aFlexFieldLabel</label>
-                            <config>
-                                <type>input</type>
-                            </config>
-                        </aFlexField>
-                    </el>
-                </ROOT>
-            </T3DataStructure>
-        ';
-        $result = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid']);
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT>
+                                    <type>array</type>
+                                    <el>
+                                        <aFlexField>
+                                            <label>aFlexFieldLabel</label>
+                                            <config>
+                                                <type>input</type>
+                                            </config>
+                                        </aFlexField>
+                                    </el>
+                                </ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $result = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'invalid'], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         self::assertSame('', $result);
     }
 
@@ -1244,37 +1621,842 @@ final class FlexFormToolsTest extends FunctionalTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1697555523);
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = '
-            <T3DataStructure>
-                <ROOT></ROOT>
-            </T3DataStructure>
-        ';
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT></ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $flexXml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
             <T3FlexForms>
                 <data>
                 </data>
             </T3FlexForms>
         ';
-        $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXml]);
+        $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXml], $this->get(TcaSchemaFactory::class)->get('aTableName'));
     }
 
     #[Test]
     public function cleanFlexFormHandlesValuesOfSimpleDataStructure(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructure.xml');
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructure.xml'),
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $flexXmlInput = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructureValueInput.xml');
         $flexXmlExpected = trim(file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfSimpleDataStructureValueExpected.xml'));
-        $flexXmlOutput = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
+        $flexXmlOutput = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         self::assertSame($flexXmlExpected, $flexXmlOutput);
     }
 
     #[Test]
     public function cleanFlexFormHandlesValuesOfComplexDataStructure(): void
     {
-        $GLOBALS['TCA']['aTableName']['columns']['aFieldName']['config']['ds']['default'] = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructure.xml');
+        $GLOBALS['TCA']['aTableName'] = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructure.xml'),
+                    ],
+                ],
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $flexXmlInput = file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructureValueInput.xml');
         $flexXmlExpected = trim(file_get_contents(__DIR__ . '/Fixtures/cleanFlexFormHandlesValuesOfComplexDataStructureValueExpected.xml'));
-        $flexXmlOutput = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput]);
+        $flexXmlOutput = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => $flexXmlInput], $this->get(TcaSchemaFactory::class)->get('aTableName'));
         self::assertSame($flexXmlExpected, $flexXmlOutput);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaReturnsDefault(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>...',
+                    ],
+                ],
+            ],
+        ];
+
+        $fieldTca = ['config' => $rawTca['columns']['aFieldName']['config']];
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', [], $rawTca);
+        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaThrowsExceptionForEmptySchema(): void
+    {
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1732198005);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier([], 'aTableName', 'aFieldName', [], []);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaThrowsExceptionForMissingDs(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        // missing 'ds'
+                    ],
+                ],
+            ],
+        ];
+
+        $fieldTca = ['config' => $rawTca['columns']['aFieldName']['config']];
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1732198005);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', [], $rawTca);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaThrowsExceptionForEmptyDs(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '',
+                    ],
+                ],
+            ],
+        ];
+
+        $fieldTca = ['config' => $rawTca['columns']['aFieldName']['config']];
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1732198005);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', [], $rawTca);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaSupportsRecordTypes(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'record_type' => [
+                    'config' => [
+                        'type' => 'select',
+                    ],
+                ],
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>default...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'record_type,aFieldName',
+                    'columnsOverrides' => [
+                        'aFieldName' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => '<T3DataStructure>special...',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $row = ['record_type' => 'special_type'];
+        $fieldTca = ['config' => $rawTca['columns']['aFieldName']['config']];
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row, $rawTca);
+        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"special_type"}';
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaFallsBackToDefaultForRecordTypeWithoutFieldInShowitem(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'record_type' => [
+                    'config' => [
+                        'type' => 'select',
+                    ],
+                ],
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>default...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'record_type',
+                    'columnsOverrides' => [
+                        'aFieldName' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => '<T3DataStructure>special...',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $row = ['record_type' => 'special_type'];
+        $fieldTca = ['config' => $rawTca['columns']['aFieldName']['config']];
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row, $rawTca);
+        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaThrowsExceptionForInvalidRecordTypeConfig(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'record_type' => [
+                    'config' => [
+                        'type' => 'select',
+                    ],
+                ],
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>default...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'record_type,aFieldName',
+                    'columnsOverrides' => [
+                        'aFieldName' => [
+                            'config' => [
+                                'type' => 'text', // wrong type
+                                'ds' => '<T3DataStructure>special...',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $row = ['record_type' => 'special_type'];
+        $fieldTca = ['config' => $rawTca['columns']['aFieldName']['config']];
+        $this->expectException(InvalidTcaException::class);
+        $this->expectExceptionCode(1751796941);
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row, $rawTca);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithRawTcaFallsBackToDefaultForUnknownRecordType(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'record_type' => [
+                    'config' => [
+                        'type' => 'select',
+                    ],
+                ],
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>default...',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'record_type,aFieldName',
+                ],
+            ],
+        ];
+
+        $row = ['record_type' => 'unknown_type'];
+        $fieldTca = ['config' => $rawTca['columns']['aFieldName']['config']];
+        $result = $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'aTableName', 'aFieldName', $row, $rawTca);
+        $expected = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWithRawTcaResolvesDefault(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure><sheets></sheets></T3DataStructure>',
+                    ],
+                ],
+            ],
+        ];
+
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $expected = [
+            'sheets' => '',
+        ];
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWithRawTcaResolvesRecordType(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure><sheets>default</sheets></T3DataStructure>',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'aFieldName',
+                    'columnsOverrides' => [
+                        'aFieldName' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => '<T3DataStructure><sheets>special</sheets></T3DataStructure>',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"special_type"}';
+        $expected = [
+            'sheets' => 'special',
+        ];
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWithRawTcaDoesNotFallBackToDefaultForRecordTypeWithoutFieldInShowitem(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure><sheets>default</sheets></T3DataStructure>',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'record_type',
+                    'columnsOverrides' => [
+                        'aFieldName' => [
+                            'config' => [
+                                'type' => 'flex',
+                                'ds' => '<T3DataStructure><sheets>special</sheets></T3DataStructure>',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $this->expectException(InvalidIdentifierException::class);
+        $this->expectExceptionCode(1732199538);
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"special_type"}';
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWithRawTcaThrowsExceptionForMissingSchema(): void
+    {
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $this->expectException(InvalidTcaSchemaException::class);
+        $this->expectExceptionCode(1753182125);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWithRawTcaThrowsExceptionForEmptyDataStructure(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '', // empty
+                    ],
+                ],
+            ],
+        ];
+
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $this->expectException(InvalidIdentifierException::class);
+        $this->expectExceptionCode(1732199538);
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
+    }
+
+    #[Test]
+    public function cleanFlexFormXMLWithRawTcaWorksCorrectly(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure>
+                            <ROOT>
+                                <type>array</type>
+                                <el>
+                                    <aFlexField>
+                                        <label>aFlexFieldLabel</label>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </aFlexField>
+                                </el>
+                            </ROOT>
+                        </T3DataStructure>',
+                    ],
+                ],
+            ],
+        ];
+
+        $flexXml = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+            <T3FlexForms>
+                <data>
+                    <sheet index="sDEF">
+                        <language index="lDEF">
+                            <field index="aFlexField">
+                                <value index="vDEF">test_value</value>
+                            </field>
+                            <field index="nonExistentField">
+                                <value index="vDEF">should_be_removed</value>
+                            </field>
+                        </language>
+                    </sheet>
+                </data>
+            </T3FlexForms>';
+
+        $row = ['aFieldName' => $flexXml];
+        $result = $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', $row, $rawTca);
+
+        // Should only contain the valid field
+        self::assertStringContainsString('aFlexField', $result);
+        self::assertStringContainsString('test_value', $result);
+        self::assertStringNotContainsString('nonExistentField', $result);
+        self::assertStringNotContainsString('should_be_removed', $result);
+    }
+
+    #[Test]
+    public function cleanFlexFormXMLWithRawTcaThrowsExceptionForMissingField(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                // missing aFieldName
+            ],
+        ];
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1697554398);
+        $this->get(FlexFormTools::class)->cleanFlexFormXML('aTableName', 'aFieldName', ['aFieldName' => 'test'], $rawTca);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierThrowsExceptionWithoutSchema(): void
+    {
+        $this->expectException(InvalidTcaSchemaException::class);
+        $this->expectExceptionCode(1753182123);
+
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier(
+            ['config' => ['type' => 'flex']],
+            'aTableName',
+            'aFieldName',
+            []
+            // no schema parameter
+        );
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWorksWithFileReference(): void
+    {
+        $rawTca = [
+            'ctrl' => [],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureWithSheet.xml',
+                    ],
+                ],
+            ],
+        ];
+
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
+
+        // Should contain the expected structure from the file
+        self::assertArrayHasKey('sheets', $result);
+        self::assertArrayHasKey('sDEF', $result['sheets']);
+    }
+
+    #[Test]
+    public function getRecordTypeSpecificFieldConfigReturnsCorrectConfig(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'default_ds',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'aFieldName',
+                    'columnsOverrides' => [
+                        'aFieldName' => [
+                            'config' => [
+                                'ds' => 'override_ds',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        // Use reflection to access the protected method
+        $flexFormTools = $this->get(FlexFormTools::class);
+        $reflection = new \ReflectionClass($flexFormTools);
+        $method = $reflection->getMethod('getRecordTypeSpecificFieldConfig');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($flexFormTools, $rawTca, 'special_type', 'aFieldName');
+
+        $expected = [
+            'config' => [
+                'type' => 'flex',
+                'ds' => 'override_ds', // overridden value
+            ],
+        ];
+
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function getRecordTypeSpecificFieldConfigReturnsEmptyForMissingField(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'otherField' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => 'otherField', // missing aFieldName
+                    'columnsOverrides' => [
+                        'aFieldName' => [
+                            'config' => [
+                                'type' => 'input',
+                                'ds' => 'override_ds',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        // Use reflection to access the protected method
+        $flexFormTools = $this->get(FlexFormTools::class);
+        $reflection = new \ReflectionClass($flexFormTools);
+        $method = $reflection->getMethod('getRecordTypeSpecificFieldConfig');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($flexFormTools, $rawTca, 'special_type', 'aFieldName');
+
+        self::assertSame([], $result);
+    }
+
+    #[Test]
+    public function getRecordTypeSpecificFieldConfigHandlesPalettes(): void
+    {
+        $rawTca = [
+            'ctrl' => [
+                'type' => 'record_type',
+            ],
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => 'default_ds',
+                    ],
+                ],
+            ],
+            'types' => [
+                'special_type' => [
+                    'showitem' => '--palette--;;test_palette',
+                ],
+            ],
+            'palettes' => [
+                'test_palette' => [
+                    'showitem' => 'aFieldName',
+                ],
+            ],
+        ];
+
+        // Use reflection to access the protected method
+        $flexFormTools = $this->get(FlexFormTools::class);
+        $reflection = new \ReflectionClass($flexFormTools);
+        $method = $reflection->getMethod('getRecordTypeSpecificFieldConfig');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($flexFormTools, $rawTca, 'special_type', 'aFieldName');
+
+        $expected = [
+            'config' => [
+                'type' => 'flex',
+                'ds' => 'default_ds',
+            ],
+        ];
+
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function flexArray2XmlConvertsArrayToValidXml(): void
+    {
+        $input = [
+            'data' => [
+                'sDEF' => [
+                    'lDEF' => [
+                        'field1' => [
+                            'vDEF' => 'value1',
+                        ],
+                        'field2' => [
+                            'vDEF' => 'value2',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->get(FlexFormTools::class)->flexArray2Xml($input);
+
+        self::assertStringStartsWith('<?xml version="1.0" encoding="utf-8" standalone="yes" ?>', $result);
+        self::assertStringContainsString('<T3FlexForms>', $result);
+        self::assertStringContainsString('<sheet index="sDEF">', $result);
+        self::assertStringContainsString('<field index="field1">', $result);
+        self::assertStringContainsString('<value index="vDEF">value1</value>', $result);
+        self::assertStringContainsString('<field index="field2">', $result);
+        self::assertStringContainsString('<value index="vDEF">value2</value>', $result);
+    }
+
+    #[Test]
+    public function flexArray2XmlHandlesEmptyArray(): void
+    {
+        $input = [];
+        $result = $this->get(FlexFormTools::class)->flexArray2Xml($input);
+
+        self::assertStringStartsWith('<?xml version="1.0" encoding="utf-8" standalone="yes" ?>', $result);
+        self::assertStringContainsString('</T3FlexForms>', $result);
+    }
+
+    #[Test]
+    public function flexArray2XmlHandlesSectionElements(): void
+    {
+        $input = [
+            'data' => [
+                'sDEF' => [
+                    'lDEF' => [
+                        'section1' => [
+                            'el' => [
+                                '1' => [
+                                    'container1' => [
+                                        'el' => [
+                                            'field1' => [
+                                                'vDEF' => 'section_value',
+                                            ],
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->get(FlexFormTools::class)->flexArray2Xml($input);
+
+        self::assertStringContainsString('<section index="1">', $result);
+        self::assertStringContainsString('<itemType index="container1">', $result);
+        self::assertStringContainsString('<value index="vDEF">section_value</value>', $result);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWithMixedSchemaTypes(): void
+    {
+        $rawTca = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '
+                            <T3DataStructure>
+                                <ROOT>
+                                    <sheetTitle>Test Sheet</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <field1>
+                                            <config>
+                                                <type>text</type>
+                                            </config>
+                                        </field1>
+                                    </el>
+                                </ROOT>
+                            </T3DataStructure>
+                        ',
+                    ],
+                ],
+            ],
+        ];
+
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+
+        $resultRaw = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
+
+        $GLOBALS['TCA']['aTableName'] = $rawTca;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $resultSchema = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $this->get(TcaSchemaFactory::class)->get('aTableName'));
+
+        self::assertEquals($resultRaw, $resultSchema);
+        self::assertArrayHasKey('sheets', $resultRaw);
+        self::assertArrayHasKey('sDEF', $resultRaw['sheets']);
+    }
+
+    #[Test]
+    public function getDataStructureIdentifierWithNullSchemaThrowsException(): void
+    {
+        $this->expectException(InvalidTcaSchemaException::class);
+        $this->expectExceptionCode(1753182123);
+
+        $fieldTca = ['config' => ['type' => 'flex', 'ds' => 'test']];
+        $this->get(FlexFormTools::class)->getDataStructureIdentifier($fieldTca, 'test_table', 'test_field', [], null);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierWithNullSchemaThrowsException(): void
+    {
+        $this->expectException(InvalidTcaSchemaException::class);
+        $this->expectExceptionCode(1753182125);
+
+        $identifier = '{"type":"tca","tableName":"test_table","fieldName":"test_field","dataStructureKey":"default"}';
+        $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, null);
+    }
+
+    #[Test]
+    public function parseDataStructureByIdentifierHandlesDataStructureAlreadyAsArray(): void
+    {
+        $dataStructureArray = [
+            'ROOT' => [
+                'sheetTitle' => 'Test',
+                'type' => 'array',
+                'el' => [
+                    'field1' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'BeforeFlexFormDataStructureParsedEvent',
+            static function (BeforeFlexFormDataStructureParsedEvent $event) use ($dataStructureArray) {
+                $event->setDataStructure($dataStructureArray);
+            }
+        );
+        $listenerProvider = $this->get(ListenerProvider::class);
+        $listenerProvider->addListener(BeforeFlexFormDataStructureParsedEvent::class, 'BeforeFlexFormDataStructureParsedEvent');
+
+        $rawTca = [
+            'columns' => [
+                'aFieldName' => [
+                    'config' => [
+                        'type' => 'flex',
+                        'ds' => '<T3DataStructure><ROOT><type>array</type></ROOT></T3DataStructure>',
+                    ],
+                ],
+            ],
+        ];
+
+        $identifier = '{"type":"tca","tableName":"aTableName","fieldName":"aFieldName","dataStructureKey":"default"}';
+        $result = $this->get(FlexFormTools::class)->parseDataStructureByIdentifier($identifier, $rawTca);
+
+        self::assertArrayHasKey('sheets', $result);
+        self::assertArrayHasKey('sDEF', $result['sheets']);
+        self::assertEquals($dataStructureArray['ROOT'], $result['sheets']['sDEF']['ROOT']);
     }
 }

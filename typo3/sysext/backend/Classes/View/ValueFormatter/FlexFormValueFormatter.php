@@ -68,8 +68,11 @@ readonly class FlexFormValueFormatter
     protected function getFlexFormDataStructure(array $tcaConfiguration, string $tableName, string $fieldName, array $record): array
     {
         $conf['config'] = $tcaConfiguration;
-        $flexFormIdentifier = $this->flexFormTools->getDataStructureIdentifier($conf, $tableName, $fieldName, $record);
-        return $this->flexFormTools->parseDataStructureByIdentifier($flexFormIdentifier);
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        return $this->flexFormTools->parseDataStructureByIdentifier(
+            $this->flexFormTools->getDataStructureIdentifier($conf, $tableName, $fieldName, $record, $schema),
+            $schema
+        );
     }
 
     /**

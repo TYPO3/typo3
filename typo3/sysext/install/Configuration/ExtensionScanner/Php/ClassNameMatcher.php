@@ -2589,4 +2589,9 @@ return [
             'Breaking-33747-RemoveNonImplementedSortableCollectionLogic.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException' => [
+        'restFiles' => [
+            'Breaking-107047-RemovePointerFieldFunctionalityOfTCAFlex.rst',
+        ],
+    ],
 ];

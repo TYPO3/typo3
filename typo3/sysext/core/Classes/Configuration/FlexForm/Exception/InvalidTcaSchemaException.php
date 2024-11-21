@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +18,6 @@
 namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 
 /**
- * Thrown if a combined ds_pointerField can not be resolved.
+ * Thrown if data structure can not be determined due to missing TCA schema
  */
-class InvalidCombinedPointerFieldException extends AbstractInvalidDataStructureException {}
+class InvalidTcaSchemaException extends AbstractInvalidDataStructureException {}

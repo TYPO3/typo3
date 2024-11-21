@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema;
 
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidDataStructureException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaSchemaException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 
 /**
@@ -33,7 +36,7 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 final readonly class RelationMapBuilder
 {
     public function __construct(
-        private FlexFormTools $flexFormTools,
+        private FlexFormTools $flexFormTools
     ) {}
 
     public function buildFromStructure(array $tca): RelationMap
@@ -48,7 +51,7 @@ final readonly class RelationMapBuilder
                 }
 
                 if ($fieldConfig['type'] === 'flex') {
-                    $this->addRelationsForFlexFieldToRelationMap($fieldConfig, $table, $fieldName, $relationMap);
+                    $this->addRelationsForFlexFieldToRelationMap($table, $tableConfig, $fieldName, $relationMap);
                 } else {
                     $relationMap->add($table, $fieldName, $fieldConfig);
                 }
@@ -62,25 +65,30 @@ final readonly class RelationMapBuilder
      * Note: Inside a section, it is not possible to add a field with a relation (type 'inline', 'file', 'folder', 'group', 'category').
      * See TcaFlexProcess class for details.
      */
-    protected function addRelationsForFlexFieldToRelationMap(array $tcaConfig, string $tableName, string $fieldName, RelationMap $relationMap): array
+    protected function addRelationsForFlexFieldToRelationMap(string $tableName, array $tableConfig, string $fieldName, RelationMap $relationMap): void
     {
-        $resolvedDataStructures = [];
-        foreach ($tcaConfig['ds'] as $dataStructureKey => $dataStructure) {
-            $dataStructureIdentifier = [
-                'type' => 'tca',
-                'tableName' => $tableName,
-                'fieldName' => $fieldName,
-                'dataStructureKey' => $dataStructureKey,
-            ];
-            // @todo: FlexFormTools should not be used here, as it should only work with real records.
-            $flexStructureAsArray = $this->flexFormTools->parseDataStructureByIdentifier(json_encode($dataStructureIdentifier));
-            foreach ($flexStructureAsArray['sheets'] as $sheetIdentifier => $sheet) {
+        foreach (array_merge(['default'], array_keys($tableConfig['types'] ?? [])) as $recordType) {
+            try {
+                $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier(json_encode([
+                    'type' => 'tca',
+                    'tableName' => $tableName,
+                    'fieldName' => $fieldName,
+                    'dataStructureKey' => $recordType,
+                ]), $tableConfig);
+            } catch (InvalidTcaSchemaException|InvalidIdentifierException|InvalidDataStructureException) {
+                // Skip default on error
+                continue;
+            }
+
+            if (!is_array($dataStructure['sheets'] ?? null)) {
+                continue;
+            }
+            foreach ($dataStructure['sheets'] as $sheetIdentifier => $sheet) {
                 foreach ($sheet['ROOT']['el'] as $flexFieldName => $flexFieldConfig) {
                     $fieldIdentifier = $sheetIdentifier . '/' . $flexFieldName;
                     $relationMap->add($tableName, $fieldName, $flexFieldConfig['config'] ?? [], $fieldIdentifier);
                 }
             }
         }
-        return $resolvedDataStructures;
     }
 }

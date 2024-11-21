@@ -272,60 +272,58 @@ return [
             'description' => 'Diplay conditions within a Flexform',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <ROOT>
-                                <type>array</type>
-                                <el>
-                                    <check_1>
-                                        <label>check_1</label>
-                                        <description>display input_1 and select_tree_3 on flex_1, hide input_1 on flex_2 </description>
-                                        <onChange>reload</onChange>
-                                        <config>
-                                            <type>check</type>
-                                        </config>
-                                    </check_1>
-                                    <input_1>
-                                        <label>input_1</label>
-                                        <description>FIELD:check_1:REQ:TRUE</description>
-                                        <displayCond>FIELD:check_1:REQ:TRUE</displayCond>
-                                        <config>
-                                            <type>input</type>
-                                        </config>
-                                    </input_1>
-                                    <input_2>
-                                        <label>input_2</label>
-                                        <description>FIELD:parentRec.select_3:=:1</description>
-                                        <displayCond>FIELD:parentRec.select_3:=:1</displayCond>
-                                        <config>
-                                            <type>input</type>
-                                        </config>
-                                    </input_2>
-                                    <select_tree_1>
-                                        <label>select_tree_1</label>
-                                        <description>FIELD:check_1:REQ:TRUE</description>
-                                        <displayCond>FIELD:check_1:REQ:TRUE</displayCond>
-                                        <config>
-                                            <type>select</type>
-                                            <renderType>selectTree</renderType>
-                                            <foreign_table>pages</foreign_table>
-                                            <size>20</size>
-                                            <maxitems>4</maxitems>
-                                            <treeConfig>
-                                                <expandAll>1</expandAll>
-                                                <parentField>pid</parentField>
-                                                <appearance>
-                                                    <showHeader>1</showHeader>
-                                                </appearance>
-                                            </treeConfig>
-                                        </config>
-                                    </select_tree_1>
-                                </el>
-                            </ROOT>
-                        </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+                    <T3DataStructure>
+                        <ROOT>
+                            <type>array</type>
+                            <el>
+                                <check_1>
+                                    <label>check_1</label>
+                                    <description>display input_1 and select_tree_3 on flex_1, hide input_1 on flex_2 </description>
+                                    <onChange>reload</onChange>
+                                    <config>
+                                        <type>check</type>
+                                    </config>
+                                </check_1>
+                                <input_1>
+                                    <label>input_1</label>
+                                    <description>FIELD:check_1:REQ:TRUE</description>
+                                    <displayCond>FIELD:check_1:REQ:TRUE</displayCond>
+                                    <config>
+                                        <type>input</type>
+                                    </config>
+                                </input_1>
+                                <input_2>
+                                    <label>input_2</label>
+                                    <description>FIELD:parentRec.select_3:=:1</description>
+                                    <displayCond>FIELD:parentRec.select_3:=:1</displayCond>
+                                    <config>
+                                        <type>input</type>
+                                    </config>
+                                </input_2>
+                                <select_tree_1>
+                                    <label>select_tree_1</label>
+                                    <description>FIELD:check_1:REQ:TRUE</description>
+                                    <displayCond>FIELD:check_1:REQ:TRUE</displayCond>
+                                    <config>
+                                        <type>select</type>
+                                        <renderType>selectTree</renderType>
+                                        <foreign_table>pages</foreign_table>
+                                        <size>20</size>
+                                        <maxitems>4</maxitems>
+                                        <treeConfig>
+                                            <expandAll>1</expandAll>
+                                            <parentField>pid</parentField>
+                                            <appearance>
+                                                <showHeader>1</showHeader>
+                                            </appearance>
+                                        </treeConfig>
+                                    </config>
+                                </select_tree_1>
+                            </el>
+                        </ROOT>
+                    </T3DataStructure>
+                ',
             ],
         ],
         'flex_2' => [
@@ -333,107 +331,105 @@ return [
             'description' => 'Diplay conditions within a Flexform',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure><sheets>
-                            <sheet_1>
-                                <ROOT>
-                                    <sheetTitle>sheet_1</sheetTitle>
-                                    <type>array</type>
-                                    <el>
-                                        <select_1>
-                                            <label>select_1</label>
-                                            <onChange>reload</onChange>
-                                            <config>
-                                                <type>select</type>
-                                                <renderType>selectSingle</renderType>
-                                                <items type="array">
-                                                    <numIndex index="0" type="array">
-                                                        <label>hide input_2</label>
-                                                        <value>0</value>
-                                                    </numIndex>
-                                                    <numIndex index="1" type="array">
-                                                        <label>show input_2</label>
-                                                        <value>1</value>
-                                                    </numIndex>
-                                                </items>
-                                                <maxitems>1</maxitems>
-                                                <size>1</size>
-                                            </config>
-                                        </select_1>
-                                        <!-- todo: This one gets never displayed -->
-                                        <input_1>
-                                            <label>input_1</label>
-                                            <description>FIELD:parentRec.flex_1.check_1:=:0</description>
-                                            <displayCond>FIELD:parentRec.flex_1.check_1:=:0</displayCond>
-                                            <config>
-                                                <type>input</type>
-                                            </config>
-                                        </input_1>
-                                        <input_2>
-                                            <label>input_2</label>
-                                            <description>FIELD:select_1:=:1</description>
-                                            <displayCond>FIELD:select_1:=:1</displayCond>
-                                            <config>
-                                                <type>input</type>
-                                            </config>
-                                        </input_2>
-                                        <input_3>
-                                            <label>input_3</label>
-                                            <description>FIELD:sheet_2.select_1:=:1</description>
-                                            <displayCond>FIELD:sheet_2.select_1:=:1</displayCond>
-                                            <config>
-                                                <type>input</type>
-                                            </config>
-                                        </input_3>
-                                        <input_4>
-                                            <label>input_4</label>
-                                            <description>FIELD:sheet_2.select_1:=:1 AND FIELD:parentRec.select_3:=:1</description>
-                                            <displayCond>
-                                                <and>
-                                                    <value1>FIELD:sheet_2.select_1:=:1</value1>
-                                                    <value2>FIELD:parentRec.select_3:=:1</value2>
-                                                </and>
-                                            </displayCond>
-                                            <config>
-                                                <type>input</type>
-                                            </config>
-                                        </input_4>
-                                    </el>
-                                </ROOT>
-                            </sheet_1>
-                            <sheet_2>
-                                <ROOT>
-                                    <sheetTitle>sheet_2</sheetTitle>
-                                    <type>array</type>
-                                    <el>
-                                        <select_1>
-                                            <label>select_1</label>
-                                            <onChange>reload</onChange>
-                                            <config>
-                                                <type>select</type>
-                                                <renderType>selectSingle</renderType>
-                                                <items type="array">
-                                                    <numIndex index="0" type="array">
-                                                        <label>hide input_3 on sheet_1</label>
-                                                        <value>0</value>
-                                                    </numIndex>
-                                                    <numIndex index="1" type="array">
-                                                        <label>show input_3 on sheet_1</label>
-                                                        <value>1</value>
-                                                    </numIndex>
-                                                </items>
-                                                <maxitems>1</maxitems>
-                                                <size>1</size>
-                                            </config>
-                                        </select_1>
-                                    </el>
-                                </ROOT>
-                            </sheet_2>
-                        </sheets>
-                    </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+<T3DataStructure><sheets>
+    <sheet_1>
+        <ROOT>
+            <sheetTitle>sheet_1</sheetTitle>
+            <type>array</type>
+            <el>
+                <select_1>
+                    <label>select_1</label>
+                    <onChange>reload</onChange>
+                    <config>
+                        <type>select</type>
+                        <renderType>selectSingle</renderType>
+                        <items type="array">
+                            <numIndex index="0" type="array">
+                                <label>hide input_2</label>
+                                <value>0</value>
+                            </numIndex>
+                            <numIndex index="1" type="array">
+                                <label>show input_2</label>
+                                <value>1</value>
+                            </numIndex>
+                        </items>
+                        <maxitems>1</maxitems>
+                        <size>1</size>
+                    </config>
+                </select_1>
+                <!-- todo: This one gets never displayed -->
+                <input_1>
+                    <label>input_1</label>
+                    <description>FIELD:parentRec.flex_1.check_1:=:0</description>
+                    <displayCond>FIELD:parentRec.flex_1.check_1:=:0</displayCond>
+                    <config>
+                        <type>input</type>
+                    </config>
+                </input_1>
+                <input_2>
+                    <label>input_2</label>
+                    <description>FIELD:select_1:=:1</description>
+                    <displayCond>FIELD:select_1:=:1</displayCond>
+                    <config>
+                        <type>input</type>
+                    </config>
+                </input_2>
+                <input_3>
+                    <label>input_3</label>
+                    <description>FIELD:sheet_2.select_1:=:1</description>
+                    <displayCond>FIELD:sheet_2.select_1:=:1</displayCond>
+                    <config>
+                        <type>input</type>
+                    </config>
+                </input_3>
+                <input_4>
+                    <label>input_4</label>
+                    <description>FIELD:sheet_2.select_1:=:1 AND FIELD:parentRec.select_3:=:1</description>
+                    <displayCond>
+                        <and>
+                            <value1>FIELD:sheet_2.select_1:=:1</value1>
+                            <value2>FIELD:parentRec.select_3:=:1</value2>
+                        </and>
+                    </displayCond>
+                    <config>
+                        <type>input</type>
+                    </config>
+                </input_4>
+            </el>
+        </ROOT>
+    </sheet_1>
+    <sheet_2>
+        <ROOT>
+            <sheetTitle>sheet_2</sheetTitle>
+            <type>array</type>
+            <el>
+                <select_1>
+                    <label>select_1</label>
+                    <onChange>reload</onChange>
+                    <config>
+                        <type>select</type>
+                        <renderType>selectSingle</renderType>
+                        <items type="array">
+                            <numIndex index="0" type="array">
+                                <label>hide input_3 on sheet_1</label>
+                                <value>0</value>
+                            </numIndex>
+                            <numIndex index="1" type="array">
+                                <label>show input_3 on sheet_1</label>
+                                <value>1</value>
+                            </numIndex>
+                        </items>
+                        <maxitems>1</maxitems>
+                        <size>1</size>
+                    </config>
+                </select_1>
+            </el>
+        </ROOT>
+    </sheet_2>
+</sheets>
+</T3DataStructure>
+                ',
             ],
         ],
 
@@ -454,150 +450,148 @@ return [
             'label' => 'flex3',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <sheets>
-                                <sheet_1>
-                                    <ROOT>
-                                        <sheetTitle>sheet_1</sheetTitle>
-                                        <type>array</type>
-                                        <el>
-                                            <select_1>
-                                                <label>select_1</label>
-                                                <onChange>reload</onChange>
-                                                <config>
-                                                    <type>select</type>
-                                                    <renderType>selectSingle</renderType>
-                                                    <items type="array">
-                                                        <numIndex index="0" type="array">
-                                                            <label>input_3 and input_4 not shown</label>
-                                                            <value>0</value>
-                                                        </numIndex>
-                                                        <numIndex index="1" type="array">
-                                                            <label>input_3 and input_4 shown</label>
-                                                            <value>1</value>
-                                                        </numIndex>
-                                                    </items>
-                                                    <maxitems>1</maxitems>
-                                                    <size>1</size>
-                                                </config>
-                                            </select_1>
-                                            <section_1>
-                                                <title>section_1</title>
-                                                <type>array</type>
-                                                <section>1</section>
-                                                <el>
-                                                    <container_1>
-                                                        <type>array</type>
-                                                        <title>container_1</title>
-                                                        <el>
-                                                             <select_2>
-                                                                <label>select_2</label>
-                                                                <onChange>reload</onChange>
-                                                                <config>
-                                                                    <type>select</type>
-                                                                    <renderType>selectSingle</renderType>
-                                                                    <items type="array">
-                                                                        <numIndex index="0" type="array">
-                                                                            <label>input_5 not shown</label>
-                                                                            <value>0</value>
-                                                                        </numIndex>
-                                                                        <numIndex index="1" type="array">
-                                                                            <label>input_5 shown</label>
-                                                                            <value>1</value>
-                                                                        </numIndex>
-                                                                    </items>
-                                                                    <maxitems>1</maxitems>
-                                                                    <size>1</size>
-                                                                </config>
-                                                            </select_2>
-                                                            <input_1>
-                                                                <label>input_1</label>
-                                                                <description>Always shown</description>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </input_1>
-                                                            <input_2>
-                                                                <label>input_2</label>
-                                                                <description>FIELD:parentRec.select_4:=:1</description>
-                                                                <displayCond>FIELD:parentRec.select_4:=:1</displayCond>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </input_2>
-                                                            <input_3>
-                                                                <label>input_3</label>
-                                                                <description>FIELD:select_1:=:1</description>
-                                                                <displayCond>FIELD:select_1:=:1</displayCond>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </input_3>
-                                                            <input_4>
-                                                                <label>input_4</label>
-                                                                <description>FIELD:sheet_1.select_1:=:1</description>
-                                                                <displayCond>FIELD:sheet_1.select_1:=:1</displayCond>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </input_4>
-                                                            <input_5>
-                                                                <label>input_5</label>
-                                                                <description>FIELD:select_2:=:1</description>
-                                                                <displayCond>FIELD:select_2:=:1</displayCond>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </input_5>
-                                                            <input_6>
-                                                                <label>input_6</label>
-                                                                <description>FIELD:sheet_2.select_1:=:1</description>
-                                                                <displayCond>FIELD:sheet_2.select_1:=:1</displayCond>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </input_6>
-                                                        </el>
-                                                    </container_1>
-                                                </el>
-                                            </section_1>
-                                        </el>
-                                    </ROOT>
-                                </sheet_1>
-                                <sheet_2>
-                                    <ROOT>
-                                        <sheetTitle>sheet_2</sheetTitle>
-                                        <type>array</type>
-                                        <el>
-                                            <select_1>
-                                                <label>select_1</label>
-                                                <onChange>reload</onChange>
-                                                <config>
-                                                    <type>select</type>
-                                                    <renderType>selectSingle</renderType>
-                                                    <items type="array">
-                                                        <numIndex index="0" type="array">
-                                                            <label>input_6 on sheet_1 containers not shown</label>
-                                                            <value>0</value>
-                                                        </numIndex>
-                                                        <numIndex index="1" type="array">
-                                                            <label>input_6 on sheet_1 containers shown</label>
-                                                            <value>1</value>
-                                                        </numIndex>
-                                                    </items>
-                                                    <maxitems>1</maxitems>
-                                                    <size>1</size>
-                                                </config>
-                                            </select_1>
-                                        </el>
-                                    </ROOT>
-                                </sheet_2>
-                            </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+<T3DataStructure>
+    <sheets>
+        <sheet_1>
+            <ROOT>
+                <sheetTitle>sheet_1</sheetTitle>
+                <type>array</type>
+                <el>
+                    <select_1>
+                        <label>select_1</label>
+                        <onChange>reload</onChange>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items type="array">
+                                <numIndex index="0" type="array">
+                                    <label>input_3 and input_4 not shown</label>
+                                    <value>0</value>
+                                </numIndex>
+                                <numIndex index="1" type="array">
+                                    <label>input_3 and input_4 shown</label>
+                                    <value>1</value>
+                                </numIndex>
+                            </items>
+                            <maxitems>1</maxitems>
+                            <size>1</size>
+                        </config>
+                    </select_1>
+                    <section_1>
+                        <title>section_1</title>
+                        <type>array</type>
+                        <section>1</section>
+                        <el>
+                            <container_1>
+                                <type>array</type>
+                                <title>container_1</title>
+                                <el>
+                                     <select_2>
+                                        <label>select_2</label>
+                                        <onChange>reload</onChange>
+                                        <config>
+                                            <type>select</type>
+                                            <renderType>selectSingle</renderType>
+                                            <items type="array">
+                                                <numIndex index="0" type="array">
+                                                    <label>input_5 not shown</label>
+                                                    <value>0</value>
+                                                </numIndex>
+                                                <numIndex index="1" type="array">
+                                                    <label>input_5 shown</label>
+                                                    <value>1</value>
+                                                </numIndex>
+                                            </items>
+                                            <maxitems>1</maxitems>
+                                            <size>1</size>
+                                        </config>
+                                    </select_2>
+                                    <input_1>
+                                        <label>input_1</label>
+                                        <description>Always shown</description>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </input_1>
+                                    <input_2>
+                                        <label>input_2</label>
+                                        <description>FIELD:parentRec.select_4:=:1</description>
+                                        <displayCond>FIELD:parentRec.select_4:=:1</displayCond>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </input_2>
+                                    <input_3>
+                                        <label>input_3</label>
+                                        <description>FIELD:select_1:=:1</description>
+                                        <displayCond>FIELD:select_1:=:1</displayCond>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </input_3>
+                                    <input_4>
+                                        <label>input_4</label>
+                                        <description>FIELD:sheet_1.select_1:=:1</description>
+                                        <displayCond>FIELD:sheet_1.select_1:=:1</displayCond>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </input_4>
+                                    <input_5>
+                                        <label>input_5</label>
+                                        <description>FIELD:select_2:=:1</description>
+                                        <displayCond>FIELD:select_2:=:1</displayCond>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </input_5>
+                                    <input_6>
+                                        <label>input_6</label>
+                                        <description>FIELD:sheet_2.select_1:=:1</description>
+                                        <displayCond>FIELD:sheet_2.select_1:=:1</displayCond>
+                                        <config>
+                                            <type>input</type>
+                                        </config>
+                                    </input_6>
+                                </el>
+                            </container_1>
+                        </el>
+                    </section_1>
+                </el>
+            </ROOT>
+        </sheet_1>
+        <sheet_2>
+            <ROOT>
+                <sheetTitle>sheet_2</sheetTitle>
+                <type>array</type>
+                <el>
+                    <select_1>
+                        <label>select_1</label>
+                        <onChange>reload</onChange>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items type="array">
+                                <numIndex index="0" type="array">
+                                    <label>input_6 on sheet_1 containers not shown</label>
+                                    <value>0</value>
+                                </numIndex>
+                                <numIndex index="1" type="array">
+                                    <label>input_6 on sheet_1 containers shown</label>
+                                    <value>1</value>
+                                </numIndex>
+                            </items>
+                            <maxitems>1</maxitems>
+                            <size>1</size>
+                        </config>
+                    </select_1>
+                </el>
+            </ROOT>
+        </sheet_2>
+    </sheets>
+</T3DataStructure>
+                ',
             ],
         ],
         // Tab Flexforms end

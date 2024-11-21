@@ -2336,13 +2336,15 @@ class DataHandler
         // ok in certain scenarios, for instance on new record rows. Those are ok to "eat" here
         // and substitute with a dummy DS.
         try {
+            $schema = $this->tcaSchemaFactory->get($table);
             $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 ['config' => $tcaFieldConf],
                 $table,
                 $field,
-                $row
+                $row,
+                $schema
             );
-            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
         } catch (InvalidIdentifierException) {
             $dataStructureArray = ['sheets' => ['sDEF' => []]];
         }
@@ -3885,13 +3887,15 @@ class DataHandler
         // For "flex" fieldtypes we need to traverse the structure for two reasons: If there are file references they have to be prepended with absolute paths and if there are database reference they MIGHT need to be remapped (still done in remapListedDBRecords())
         if (isset($conf['type']) && $conf['type'] === 'flex') {
             // Get current value array:
+            $schema = $this->tcaSchemaFactory->get($table);
             $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                 ['config' => $conf],
                 $table,
                 $field,
-                $row
+                $row,
+                $schema
             );
-            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
             $currentValue = is_string($value) ? GeneralUtility::xml2array($value) : null;
             // Traversing the XML structure, processing relations in FlexForm such as inline records:
             if (is_array($currentValue)) {
@@ -4558,8 +4562,9 @@ class DataHandler
                     // Children attached to flex inline fields have to be moved to new pid along with their parent record
                     try {
                         $fieldConfig['config'] = $fieldConfig;
-                        $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier($fieldConfig, $table, $field, $workspaceRecord ?? $liveRecord);
-                        $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                        $schema = $this->tcaSchemaFactory->get($table);
+                        $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier($fieldConfig, $table, $field, $workspaceRecord ?? $liveRecord, $schema);
+                        $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                         $flexFormValueParsed = GeneralUtility::xml2array($value);
                     } catch (AbstractInvalidDataStructureException) {
                         // Nothing to do if data structure could not be determined
@@ -5689,13 +5694,15 @@ class DataHandler
                 }
             } elseif ($configuration['type'] === 'flex' && (string)$value !== '') {
                 try {
+                    $schema = $this->tcaSchemaFactory->get($table);
                     $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                         ['config' => $configuration],
                         $table,
                         $fieldName,
-                        $recordToDelete
+                        $recordToDelete,
+                        $schema
                     );
-                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                 } catch (AbstractInvalidDataStructureException) {
                     // Nothing to do if data structure could not be determined
                     continue;
@@ -6167,8 +6174,9 @@ class DataHandler
                 $this->discardMmRelations($table, $fieldConfig, $record);
             } elseif ($fieldType->isType(TableColumnType::FLEX) && (string)$value !== '') {
                 try {
-                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $fieldConfig], $table, $fieldName, $record);
-                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                    $schema = $this->tcaSchemaFactory->get($table);
+                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $fieldConfig], $table, $fieldName, $record, $schema);
+                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                 } catch (AbstractInvalidDataStructureException) {
                     // Nothing to do if data structure could not be determined
                     continue;
@@ -6492,8 +6500,9 @@ class DataHandler
             }
             if ($fieldType->isType(TableColumnType::FLEX)) {
                 // Find possible mm tables attached to live record flex from data structures, mark as to delete
-                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $liveRecord);
-                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                $schema = $this->tcaSchemaFactory->get($table);
+                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $liveRecord, $schema);
+                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                 foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
                     foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
                         if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
@@ -6502,8 +6511,9 @@ class DataHandler
                     }
                 }
                 // Find possible mm tables attached to workspace record flex from data structures, mark as to update uid
-                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $workspaceRecord);
-                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                $schema = $this->tcaSchemaFactory->get($table);
+                $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $dbFieldConfig], $table, $fieldType->getName(), $workspaceRecord, $schema);
+                $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                 foreach (($dataStructureArray['sheets'] ?? []) as $flexSheetDefinition) {
                     foreach (($flexSheetDefinition['ROOT']['el'] ?? []) as $flexFieldDefinition) {
                         if (is_array($flexFieldDefinition) && $this->flexFieldDefinitionIsMmRelation($flexFieldDefinition)) {
@@ -6671,13 +6681,15 @@ class DataHandler
                                     if (is_array($origRecordRow)) {
                                         BackendUtility::workspaceOL($table, $origRecordRow, $this->BE_USER->workspace);
                                         // Get current data structure and value array:
+                                        $schema = $this->tcaSchemaFactory->get($table);
                                         $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                                             ['config' => $fieldType->getConfiguration()],
                                             $table,
                                             $fieldName,
-                                            $origRecordRow
+                                            $origRecordRow,
+                                            $schema
                                         );
-                                        $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                                        $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                                         $currentValueArray = GeneralUtility::xml2array($origRecordRow[$fieldName]);
                                         // Do recursive processing of the XML data:
                                         $currentValueArray['data'] = $this->checkValue_flex_procInData($currentValueArray['data'], [], $dataStructureArray, [$table, $theUidToUpdate, $fieldName], 'remapListedDBRecords_flexFormCallBack');

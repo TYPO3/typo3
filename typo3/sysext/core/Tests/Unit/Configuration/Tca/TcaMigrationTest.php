@@ -4155,4 +4155,86 @@ final class TcaMigrationTest extends UnitTestCase
 
         self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
+
+    #[Test]
+    public function migrateSingleDataStructureConfiguration(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => '<some>flex</some>',
+                        ],
+                    ],
+                    'dColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                'default' => '<some>flex</some>',
+                            ],
+                        ],
+                    ],
+                    'eColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                '1,2' => '<some>flex</some>',
+                                '2,1' => '<some>flex</some>',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                        ],
+                    ],
+                    'cColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => '<some>flex</some>',
+                        ],
+                    ],
+                    'dColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => '<some>flex</some>',
+                        ],
+                    ],
+                    'eColumn' => [
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => [
+                                '1,2' => '<some>flex</some>',
+                                '2,1' => '<some>flex</some>',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+    }
 }

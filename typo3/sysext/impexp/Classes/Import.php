@@ -1295,13 +1295,15 @@ class Import extends ImportExport
                                 }
                                 $actualRecord = BackendUtility::getRecord($table, $actualUid);
                                 if (is_array($actualRecord)) {
+                                    $schema = $this->tcaSchemaFactory->get($table);
                                     $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                                         ['config' => $fieldInfo->getConfiguration()],
                                         $table,
                                         $field,
-                                        $actualRecord
+                                        $actualRecord,
+                                        $schema
                                     );
-                                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                                     $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
                                         (string)($this->dat['records'][$table . ':' . $uid]['data'][$field] ?? ''),
                                         new Typo3XmlSerializerOptions([
@@ -1409,13 +1411,15 @@ class Import extends ImportExport
                             if ($fieldInfo->isType(TableColumnType::FLEX)) {
                                 $actualRecord = BackendUtility::getRecord($table, $actualUid, '*');
                                 if (is_array($actualRecord)) {
+                                    $schema = $this->tcaSchemaFactory->get($table);
                                     $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                                         ['config' => $fieldInfo->getConfiguration()],
                                         $table,
                                         $field,
-                                        $actualRecord
+                                        $actualRecord,
+                                        $schema
                                     );
-                                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                                    $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
                                     $flexFormData = (new Typo3XmlParser())->decodeWithReturningExceptionAsString(
                                         (string)($actualRecord[$field] ?? ''),
                                         new Typo3XmlSerializerOptions([

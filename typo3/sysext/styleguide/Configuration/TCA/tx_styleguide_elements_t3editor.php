@@ -74,78 +74,76 @@ return [
             'label' => 't3editor_flex_1',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <sheets>
-                                <sGeneral>
-                                    <ROOT>
-                                        <sheetTitle>tab</sheetTitle>
-                                        <type>array</type>
-                                        <el>
-                                            <t3editor_1>
-                                                <label>t3editor_1 description</label>
-                                                <description>field description</description>
-                                                <config>
-                                                    <type>text</type>
-                                                    <renderType>codeEditor</renderType>
-                                                    <format>html</format>
-                                                </config>
-                                            </t3editor_1>
-                                        </el>
-                                    </ROOT>
-                                </sGeneral>
-                                <sSection>
-                                    <ROOT>
-                                        <sheetTitle>section</sheetTitle>
-                                        <type>array</type>
-                                        <el>
-                                            <section_1>
-                                                <title>section_1</title>
-                                                <type>array</type>
-                                                <section>1</section>
-                                                <el>
-                                                    <container_1>
-                                                        <type>array</type>
-                                                        <title>container_1</title>
-                                                        <el>
-                                                            <t3editor_1>
-                                                                <label>t3editor_1 description</label>
-                                                                <description>field description</description>
-                                                                <config>
-                                                                    <type>text</type>
-                                                                    <renderType>codeEditor</renderType>
-                                                                    <format>html</format>
-                                                                </config>
-                                                            </t3editor_1>
-                                                        </el>
-                                                    </container_1>
-                                                </el>
-                                            </section_1>
-                                        </el>
-                                    </ROOT>
-                                </sSection>
-                                <sInline>
-                                    <ROOT>
-                                        <sheetTitle>inline</sheetTitle>
-                                        <type>array</type>
-                                        <el>
-                                            <inline_1>
-                                                <label>inline_1</label>
-                                                <config>
-                                                    <type>inline</type>
-                                                    <foreign_table>tx_styleguide_elements_t3editor_flex_1_inline_1_child</foreign_table>
-                                                    <foreign_field>parentid</foreign_field>
-                                                    <foreign_table_field>parenttable</foreign_table_field>
-                                                </config>
-                                            </inline_1>
-                                        </el>
-                                    </ROOT>
-                                </sInline>
-                            </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+<T3DataStructure>
+    <sheets>
+        <sGeneral>
+            <ROOT>
+                <sheetTitle>tab</sheetTitle>
+                <type>array</type>
+                <el>
+                    <t3editor_1>
+                        <label>t3editor_1 description</label>
+                        <description>field description</description>
+                        <config>
+                            <type>text</type>
+                            <renderType>codeEditor</renderType>
+                            <format>html</format>
+                        </config>
+                    </t3editor_1>
+                </el>
+            </ROOT>
+        </sGeneral>
+        <sSection>
+            <ROOT>
+                <sheetTitle>section</sheetTitle>
+                <type>array</type>
+                <el>
+                    <section_1>
+                        <title>section_1</title>
+                        <type>array</type>
+                        <section>1</section>
+                        <el>
+                            <container_1>
+                                <type>array</type>
+                                <title>container_1</title>
+                                <el>
+                                    <t3editor_1>
+                                        <label>t3editor_1 description</label>
+                                        <description>field description</description>
+                                        <config>
+                                            <type>text</type>
+                                            <renderType>codeEditor</renderType>
+                                            <format>html</format>
+                                        </config>
+                                    </t3editor_1>
+                                </el>
+                            </container_1>
+                        </el>
+                    </section_1>
+                </el>
+            </ROOT>
+        </sSection>
+        <sInline>
+            <ROOT>
+                <sheetTitle>inline</sheetTitle>
+                <type>array</type>
+                <el>
+                    <inline_1>
+                        <label>inline_1</label>
+                        <config>
+                            <type>inline</type>
+                            <foreign_table>tx_styleguide_elements_t3editor_flex_1_inline_1_child</foreign_table>
+                            <foreign_field>parentid</foreign_field>
+                            <foreign_table_field>parenttable</foreign_table_field>
+                        </config>
+                    </inline_1>
+                </el>
+            </ROOT>
+        </sInline>
+    </sheets>
+</T3DataStructure>
+                ',
             ],
         ],
 

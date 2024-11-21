@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -18,7 +20,6 @@ namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 use TYPO3\CMS\Core\Exception;
 
 /**
- * Abstract exception thrown if data structures can not be resolved,
- * found or parsed.
+ * Abstract exception thrown if data structures can not be resolved, found or parsed.
  */
 abstract class AbstractInvalidDataStructureException extends Exception {}

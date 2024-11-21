@@ -91,15 +91,17 @@ class DriverRegistry implements SingletonInterface
      * Adds the TCA information so the registered drivers can be selected when creating a sys_file_storage
      * in the TYPO3 Backend.
      */
-    public function addDriversToTCA()
+    public function addDriversToTCA(): void
     {
         $driverFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['driver']['config'];
-        $configurationFieldConfig = &$GLOBALS['TCA']['sys_file_storage']['columns']['configuration']['config'];
+        $types = &$GLOBALS['TCA']['sys_file_storage']['types'];
         foreach ($this->driverConfigurations as $driver) {
             $label = $driver['label'] ?: $driver['class'];
-            $driverFieldConfig['items'][$driver['shortName']] = ['label' => $label, 'value' => $driver['shortName']];
+            $driverId = $driver['shortName'];
+            $driverFieldConfig['items'][$driverId] = ['label' => $label, 'value' => $driverId];
+            $types[$driverId] = $types['0'];
             if ($driver['flexFormDS']) {
-                $configurationFieldConfig['ds'][$driver['shortName']] = $driver['flexFormDS'];
+                $types[$driverId]['columnsOverrides']['configuration']['config']['ds'] = $driver['flexFormDS'];
             }
         }
     }

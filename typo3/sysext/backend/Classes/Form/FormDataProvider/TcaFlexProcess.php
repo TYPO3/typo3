@@ -74,7 +74,6 @@ class TcaFlexProcess implements FormDataProviderInterface
      * If the data structure identifier is not type=tca based and if dataStructureKey is not as expected, fallback is "default"
      *
      * Example pi_flexform with ext:news in tt_content:
-     * * TCA config of pi_flexform ds_pointerfield is set to "CType"
      * * CType in databaseRow is "news_pi1"
      * * The resulting dataStructureIdentifier calculated by FlexFormTools is then:
      *   {"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"news_pi1"}
@@ -98,15 +97,21 @@ class TcaFlexProcess implements FormDataProviderInterface
      * more comments on this.
      * Another limitation is that the current syntax in both pageTsConfig and exclude fields does not
      * consider flex form section containers at all.
+     *
+     * @deprecated will be removed in TYPO3 v15
      */
     protected function getSimplifiedDataStructureIdentifier(string $dataStructureIdentifier): string
     {
         $identifierArray = json_decode($dataStructureIdentifier, true);
         $simpleDataStructureIdentifier = 'default';
-        if (isset($identifierArray['type']) && $identifierArray['type'] === 'tca' && isset($identifierArray['dataStructureKey'])) {
+        if (isset($identifierArray['type'], $identifierArray['dataStructureKey']) && $identifierArray['type'] === 'tca') {
             $explodedKey = explode(',', $identifierArray['dataStructureKey']);
             if (!empty($explodedKey[1])) {
                 $simpleDataStructureIdentifier = $explodedKey[1];
+                trigger_error(
+                    'Resolving the comma-separated dataStructureKey \'' . $identifierArray['dataStructureKey'] . '\' has been deprecated and will be removed in TYPO3 v15.',
+                    E_USER_DEPRECATED
+                );
             } elseif (!empty($explodedKey[0])) {
                 $simpleDataStructureIdentifier = $explodedKey[0];
             }

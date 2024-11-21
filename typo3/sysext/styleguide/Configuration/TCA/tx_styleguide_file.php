@@ -108,70 +108,68 @@ return [
             'label' => 'flex_1',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                        <sheets>
-                            <sInline>
-                                <ROOT>
-                                    <sheetTitle>File</sheetTitle>
-                                    <type>array</type>
-                                    <el>
-                                        <fal>
-                                            <label>file_flex_1</label>
-                                            <config>
-                                                <type>file</type>
-                                                <allowed>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</allowed>
-                                                <appearance>
-                                                    <headerThumbnail>
-                                                        <width>45</width>
-                                                        <height>45c</height>
-                                                    </headerThumbnail>
-                                                    <createNewRelationLinkTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference</createNewRelationLinkTitle>
-                                                </appearance>
-                                                <overrideChildTca>
-                                                    <types type="array">
-                                                        <numIndex index="0">
-                                                            <showitem>
-                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="1">
-                                                            <showitem>
-                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="2">
-                                                            <showitem>
-                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="3">
-                                                            <showitem>
-                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="4">
-                                                            <showitem>
-                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                        <numIndex index="5">
-                                                            <showitem>
-                                                                --palette--;;imageoverlayPalette,--palette--;;filePalette
-                                                            </showitem>
-                                                        </numIndex>
-                                                    </types>
-                                                </overrideChildTca>
-                                            </config>
-                                        </fal>
-                                    </el>
-                                </ROOT>
-                            </sInline>
-                        </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+<T3DataStructure>
+    <sheets>
+        <sInline>
+            <ROOT>
+                <sheetTitle>File</sheetTitle>
+                <type>array</type>
+                <el>
+                    <fal>
+                        <label>file_flex_1</label>
+                        <config>
+                            <type>file</type>
+                            <allowed>gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai</allowed>
+                            <appearance>
+                                <headerThumbnail>
+                                    <width>45</width>
+                                    <height>45c</height>
+                                </headerThumbnail>
+                                <createNewRelationLinkTitle>LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference</createNewRelationLinkTitle>
+                            </appearance>
+                            <overrideChildTca>
+                                <types type="array">
+                                    <numIndex index="0">
+                                        <showitem>
+                                            --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                        </showitem>
+                                    </numIndex>
+                                    <numIndex index="1">
+                                        <showitem>
+                                            --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                        </showitem>
+                                    </numIndex>
+                                    <numIndex index="2">
+                                        <showitem>
+                                            --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                        </showitem>
+                                    </numIndex>
+                                    <numIndex index="3">
+                                        <showitem>
+                                            --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                        </showitem>
+                                    </numIndex>
+                                    <numIndex index="4">
+                                        <showitem>
+                                            --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                        </showitem>
+                                    </numIndex>
+                                    <numIndex index="5">
+                                        <showitem>
+                                            --palette--;;imageoverlayPalette,--palette--;;filePalette
+                                        </showitem>
+                                    </numIndex>
+                                </types>
+                            </overrideChildTca>
+                        </config>
+                    </fal>
+                </el>
+            </ROOT>
+        </sInline>
+    </sheets>
+</T3DataStructure>
+                ',
             ],
         ],
     ],

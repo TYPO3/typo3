@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the TYPO3 CMS project.
  *
@@ -16,6 +18,6 @@
 namespace TYPO3\CMS\Core\Configuration\FlexForm\Exception;
 
 /**
- * Thrown if a single ds_pointerField can not be resolved.
+ * Thrown if parsed data structure contains invalid config like references in sections
  */
-class InvalidSinglePointerFieldException extends AbstractInvalidDataStructureException {}
+class InvalidDataStructureException extends AbstractInvalidDataStructureException {}

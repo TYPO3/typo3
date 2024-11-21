@@ -21,21 +21,41 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\AfterFlexFormDataStructureParsedEvent;
+use TYPO3\CMS\Core\Configuration\Event\AfterTcaCompilationEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureIdentifierInitializedEvent;
 use TYPO3\CMS\Core\Configuration\Event\BeforeFlexFormDataStructureParsedEvent;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidCombinedPointerFieldException;
+use TYPO3\CMS\Core\Configuration\Event\BeforeTcaOverridesEvent;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidDataStructureException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
-use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidSinglePointerFieldException;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaException;
+use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidTcaSchemaException;
 use TYPO3\CMS\Core\Configuration\Tca\TcaMigration;
 use TYPO3\CMS\Core\Configuration\Tca\TcaPreparation;
+use TYPO3\CMS\Core\Schema\Field\FlexFormFieldType;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Service class to help with TCA type="flex" details.
+ * Unified service class for TCA type="flex" operations.
  *
- * This service provides various helpers to determine the data structure of flex form
- * fields and to maintain integrity of flex form related details in general.
+ * This service provides comprehensive FlexForm handling capabilities that work with both:
+ * - TCA Schema objects (high-level, schema-aware operations)
+ * - Raw TCA configuration arrays (low-level operations during schema building)
+ *
+ * Note: Using the raw TCA configuration is not recommended and only available to support
+ * FlexFormTools during schema building. For extensions this might be the case on using
+ * {@see BeforeTcaOverridesEvent} or {@see AfterTcaCompilationEvent}.
+ *
+ * Usage examples:
+ * ```php
+ * // With TCA Schema (typical application usage)
+ * $flexFormTools->getDataStructureIdentifier($fieldTca, $table, $field, $row, $tcaSchema);
+ *
+ * // With raw TCA array (only during schema)
+ * $flexFormTools->getDataStructureIdentifier($fieldTca, $table, $field, $row, $rawTcaArray);
+ * ```
+ *
+ * The service automatically detects the input type and uses the appropriate resolution strategy.
  */
 #[Autoconfigure(public: true)]
 readonly class FlexFormTools
@@ -60,14 +80,14 @@ readonly class FlexFormTools
      * This method gets: Source data that influences the target location of a data structure
      * This method returns: Target specification of the data structure
      *
-     * This method is "paired" with method getFlexFormDataStructureByIdentifier() that
+     * This method is "paired" with method parseDataStructureByIdentifier() that
      * will resolve the returned syntax again and returns the data structure itself.
      *
      * Both methods can be extended via events to return and accept additional
      * identifier strings if needed, and to transmit further information within the identifier strings.
      *
-     * Important: The TCA for data structure definitions MUST NOT be overridden by
-     * 'columnsOverrides' or by parent TCA in an inline relation! This would create a huge mess.
+     * Important: The TCA for data structure definitions MUST be overridden by 'columnsOverrides'
+     * as the "ds" config is a string, containing the data structure or a file pointer.
      *
      * Note: This method and the resolving methods below are well unit tested and document all
      * nasty details this way.
@@ -76,18 +96,23 @@ readonly class FlexFormTools
      * @param string $tableName The table name of the TCA field
      * @param string $fieldName The field name
      * @param array $row The data row
+     * @param array|TcaSchema|null $schema Either be the Tca Schema object or raw TCA configuration. Only omit in
+     *                                     case handling is done via events. Otherwise, this will throw an exception
+     *                                     on resolving the default identifier {@see InvalidTcaSchemaException}.
+     *                                     Using the raw TCA configuration is furthermore not recommended and only
+     *                                     available to support FlexFormTools during schema building. For extensions
+     *                                     this might be the case on using {@see BeforeTcaOverridesEvent} or
+     *                                     {@see AfterTcaCompilationEvent}.
      *
      * @return string Identifier JSON string
      * @throws \RuntimeException If TCA is misconfigured
-     * @throws InvalidCombinedPointerFieldException
-     * @throws InvalidSinglePointerFieldException
      * @throws InvalidTcaException
      */
-    public function getDataStructureIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): string
+    public function getDataStructureIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row, array|TcaSchema|null $schema = null): string
     {
         $dataStructureIdentifier = $this->eventDispatcher
             ->dispatch(new BeforeFlexFormDataStructureIdentifierInitializedEvent($fieldTca, $tableName, $fieldName, $row))
-            ->getIdentifier() ?? $this->getDefaultIdentifier($fieldTca, $tableName, $fieldName, $row);
+            ->getIdentifier() ?? $this->getDefaultDataStructureIdentifier($tableName, $fieldName, $row, $schema);
         $dataStructureIdentifier = $this->eventDispatcher
             ->dispatch(new AfterFlexFormDataStructureIdentifierInitializedEvent($fieldTca, $tableName, $fieldName, $row, $dataStructureIdentifier))
             ->getIdentifier();
@@ -99,15 +124,16 @@ readonly class FlexFormTools
      * This method is called after getDataStructureIdentifier(), finds the data structure
      * and returns it.
      *
-     * Hooks allow to manipulate the find logic and to post process the data structure array.
+     * Events allow to manipulate the find logic and to post process the data structure array.
      *
-     * Important: The TCA for data structure definitions MUST NOT be overridden by
-     * 'columnsOverrides' or by parent TCA in an inline relation! This would create a huge mess.
+     * Important: The TCA for data structure definitions MUST be overridden by 'columnsOverrides'
+     * as the "ds" config is a string, containing the data structure or a file pointer.
      *
      * After the data structure definition is found, the method resolves:
      * - FILE:EXT: prefix of the data structure itself - the ds is in a file
      * - FILE:EXT: prefix for sheets - if single sheets are in files
      * - Create a sDEF sheet if the data structure has non, yet.
+     * - TCA Migration and Preparation is done for the resolved fields
      *
      * After that method is run, the data structure is fully resolved to an array,
      * and same base normalization is done: If the ds did not contain a sheet,
@@ -116,20 +142,27 @@ readonly class FlexFormTools
      * This method gets: Target specification of the data structure.
      * This method returns: The normalized data structure parsed to an array.
      *
-     * Read the unit tests for nasty details.
-     *
      * @param string $identifier JSON string to find the data structure location
+     * @param array|TcaSchema|null $schema Either be the Tca Schema object or raw TCA configuration. Only omit in
+     *                                     case handling is done via events. Otherwise, this will throw an exception
+     *                                     on resolving the default identifier {@see InvalidTcaSchemaException}.
+     *                                     Using the raw TCA configuration is furthermore not recommended and only
+     *                                     available to support FlexFormTools during schema building. For extensions
+     *                                     this might be the case on using {@see BeforeTcaOverridesEvent} or
+     *                                     {@see AfterTcaCompilationEvent}.
      *
      * @return array Parsed and normalized data structure
      * @throws InvalidIdentifierException
+     * @throws InvalidTcaSchemaException
+     * @throws InvalidDataStructureException
      */
-    public function parseDataStructureByIdentifier(string $identifier): array
+    public function parseDataStructureByIdentifier(string $identifier, array|TcaSchema|null $schema = null): array
     {
         // Throw an exception for an empty string. This might be a valid use case for new
         // records in some situations, so this is catchable to give callers a chance to deal with that.
-        if (empty($identifier)) {
+        if ($identifier === '') {
             throw new InvalidIdentifierException(
-                'Empty string given to parseFlexFormDataStructureByIdentifier(). This exception might '
+                'Empty string given to parseDataStructureByIdentifier(). This exception might '
                 . ' be caught to handle some new record situations properly',
                 1478100828
             );
@@ -144,7 +177,7 @@ readonly class FlexFormTools
         }
         $dataStructure = $this->eventDispatcher
             ->dispatch(new BeforeFlexFormDataStructureParsedEvent($parsedIdentifier))
-            ->getDataStructure() ?? $this->getDefaultStructureForIdentifier($parsedIdentifier);
+            ->getDataStructure() ?? $this->getDefaultStructureForIdentifier($parsedIdentifier, $schema);
         $dataStructure = $this->convertDataStructureToArray($dataStructure);
         $dataStructure = $this->ensureDefaultSheet($dataStructure);
         $dataStructure = $this->resolveFileDirectives($dataStructure);
@@ -158,17 +191,23 @@ readonly class FlexFormTools
      * Clean up FlexForm value XML to hold only the values it may according to its Data Structure.
      * The order of tags will follow that of the data structure.
      *
+     * @param array|TcaSchema $schema Main schema only, no sub schema! Using the raw TCA configuration is
+     *                                furthermore not recommended and only available to support FlexFormTools
+     *                                during schema building. For extensions this might be the case on
+     *                                using {@see BeforeTcaOverridesEvent} or {@see AfterTcaCompilationEvent}.
+     *
      * @internal Signature may change, for instance to split 'DS finding' and flexArray2Xml(),
      *           which would allow broader use of the method. It is currently consumed by
      *           cleanup:flexforms CLI only.
      */
-    public function cleanFlexFormXML(string $table, string $field, array $row): string
+    public function cleanFlexFormXML(string $table, string $field, array $row, array|TcaSchema $schema): string
     {
-        if (!is_array($GLOBALS['TCA'][$table]['columns'][$field]['config'] ?? false) || !isset($row[$field])) {
+        if ((is_array($schema) && !isset($schema['columns'][$field]['config'])) || ($schema instanceof TcaSchema && !$schema->hasField($field)) || !isset($row[$field])) {
             throw new \RuntimeException('Can not clean up FlexForm XML for a column not declared in TCA or not in record.', 1697554398);
         }
         try {
-            $dataStructureArray = $this->parseDataStructureByIdentifier($this->getDataStructureIdentifier($GLOBALS['TCA'][$table]['columns'][$field], $table, $field, $row));
+            $fieldTca = is_array($schema) ? ['config' => $schema['columns'][$field]['config']] : ['config' => $schema->getField($field)->getConfiguration()];
+            $dataStructureArray = $this->parseDataStructureByIdentifier($this->getDataStructureIdentifier($fieldTca, $table, $field, $row, $schema), $schema);
         } catch (InvalidIdentifierException) {
             // Data structure can not be resolved or parsed. Reset value to empty string.
             return '';
@@ -252,56 +291,18 @@ readonly class FlexFormTools
     }
 
     /**
-     * Returns the default data structure identifier.
-     *
-     * @param array $fieldTca Full TCA of the field in question that has type=flex set
-     * @param string $tableName The table name of the TCA field
-     * @param string $fieldName The field name
-     * @param array $row The data row
-     * @throws InvalidCombinedPointerFieldException
-     * @throws InvalidSinglePointerFieldException
-     * @throws InvalidTcaException
-     */
-    protected function getDefaultIdentifier(array $fieldTca, string $tableName, string $fieldName, array $row): array
-    {
-        $tcaDataStructureArray = $fieldTca['config']['ds'] ?? null;
-        if (is_array($tcaDataStructureArray)) {
-            $dataStructureIdentifier = $this->getDataStructureIdentifierFromTcaArray(
-                $fieldTca,
-                $tableName,
-                $fieldName,
-                $row
-            );
-        } else {
-            throw new \RuntimeException(
-                'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
-                . ' The field is configured as type="flex" and no "ds_pointerField" is defined and "ds" is not an array.'
-                . ' Either configure a default data structure in [\'ds\'][\'default\'] or add a "ds_pointerField" lookup mechanism'
-                . ' that specifies the data structure',
-                1463826960
-            );
-        }
-        return $dataStructureIdentifier;
-    }
-
-    /**
-     * Find matching data structure in TCA ds array.
-     *
-     * Data structure is defined in 'ds' config array, optionally with 'ds_pointerField'.
+     * Finds data structure in TCA, defined in column config 'ds'
      *
      * fieldTca = [
      *     'config' => [
      *         'type' => 'flex',
-     *         'ds' => [
-     *             'aName' => '<T3DataStructure>...' OR 'FILE:...'
-     *         ],
-     *         'ds_pointerField' => 'optionalSetting,upToTwoCommaSeparatedFieldNames',
+     *         'ds' => '<T3DataStructure>...' OR 'FILE:...',
      *     ]
      * ]
      *
      * This method returns an array of the form:
      * [
-     *     'type' => 'Tca:',
+     *     'type' => 'tca',
      *     'tableName' => $tableName,
      *     'fieldName' => $fieldName,
      *     'dataStructureKey' => $key,
@@ -309,133 +310,109 @@ readonly class FlexFormTools
      *
      * Example:
      * [
-     *     'type' => 'Tca:',
+     *     'type' => 'tca',
      *     'tableName' => 'tt_content',
      *     'fieldName' => 'pi_flexform',
-     *     'dataStructureKey' => 'powermail_pi1,list',
+     *     'dataStructureKey' => 'default',
      * ];
      *
-     * @param array $fieldTca Full TCA of the field in question that has type=flex set
-     * @param string $tableName The table name of the TCA field
-     * @param string $fieldName The field name
-     * @param array $row The data row
+     * In case the TCA table supports record types and the given $row uses a record type with a custom
+     * data structure (via columnsOverrides) the record type is used as "dataStructureKey".
+     *
+     *  Example:
+     *  [
+     *      'type' => 'tca',
+     *      'tableName' => 'tt_content',
+     *      'fieldName' => 'pi_flexform',
+     *      'dataStructureKey' => 'powermail_pi1',
+     *  ];
+     *
      * @return array Identifier as array, see example above
-     * @throws InvalidCombinedPointerFieldException
-     * @throws InvalidSinglePointerFieldException
      * @throws InvalidTcaException
+     * @throws InvalidTcaSchemaException
      */
-    protected function getDataStructureIdentifierFromTcaArray(array $fieldTca, string $tableName, string $fieldName, array $row): array
+    protected function getDefaultDataStructureIdentifier(string $tableName, string $fieldName, array $row, array|TcaSchema|null $schema = null): array
     {
-        $dataStructureIdentifier = [
+        if ($schema === null) {
+            throw new InvalidTcaSchemaException('Can not resolve default data structure without TCA.', 1753182123);
+        }
+
+        $defaultIdentifier = [
             'type' => 'tca',
             'tableName' => $tableName,
             'fieldName' => $fieldName,
             'dataStructureKey' => null,
         ];
-        $tcaDataStructurePointerField = $fieldTca['config']['ds_pointerField'] ?? null;
-        if ($tcaDataStructurePointerField === null) {
-            // No ds_pointerField set -> use 'default' as ds array key if exists.
-            if (isset($fieldTca['config']['ds']['default'])) {
-                $dataStructureIdentifier['dataStructureKey'] = 'default';
-            } else {
-                // A tca is configured as flex without ds_pointerField. A 'default' key must exist, otherwise
-                // this is a configuration error.
-                // May happen with an unloaded extension -> catchable
-                throw new InvalidTcaException(
-                    'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
-                    . ' The field is configured as type="flex" and no "ds_pointerField" is defined. Either configure'
-                    . ' a default data structure in [\'ds\'][\'default\'] or add a "ds_pointerField" lookup mechanism'
-                    . ' that specifies the data structure',
-                    1463652560
-                );
-            }
-        } else {
-            // ds_pointerField is set, it can be a comma separated list of two fields, explode it.
-            $pointerFieldArray = GeneralUtility::trimExplode(',', $tcaDataStructurePointerField, true);
-            // Obvious configuration error, either one or two fields must be declared
-            $pointerFieldsCount = count($pointerFieldArray);
-            if ($pointerFieldsCount !== 1 && $pointerFieldsCount !== 2) {
-                // If it's there, it must be correct -> not catchable
-                throw new \RuntimeException(
-                    'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
-                    . ' ds_pointerField must be either a single field name, or a comma separated list of two fields,'
-                    . ' the invalid configuration string provided was: "' . $tcaDataStructurePointerField . '"',
-                    1463577497
-                );
-            }
-            // Verify first field exists in row array. If not, this is a hard error: Any extension that sets a
-            // ds_pointerField to some field name should take care that field does exist, too. They are a pair,
-            // so there shouldn't be a situation where the field does not exist. Throw an exception if that is violated.
-            if (!isset($row[$pointerFieldArray[0]])) {
-                // If it's declared, it must exist -> not catchable
-                throw new \RuntimeException(
-                    'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
-                    . ' ds_pointerField "' . $pointerFieldArray[0] . '" points to a field name that does not exist.',
-                    1463578899
-                );
-            }
-            // Similar situation for the second field: If it is set, the field must exist.
-            if (isset($pointerFieldArray[1]) && !isset($row[$pointerFieldArray[1]])) {
-                // If it's declared, it must exist -> not catchable
-                throw new \RuntimeException(
-                    'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
-                    . ' Second part "' . $pointerFieldArray[1] . '" of ds_pointerField with full value "'
-                    . $tcaDataStructurePointerField . '" points to a field name that does not exist.',
-                    1463578900
-                );
-            }
-            if ($pointerFieldsCount === 1) {
-                if (isset($fieldTca['config']['ds'][$row[$pointerFieldArray[0]]])) {
-                    // Field value points directly to an existing key in tca ds
-                    $dataStructureIdentifier['dataStructureKey'] = $row[$pointerFieldArray[0]];
-                } elseif (isset($fieldTca['config']['ds']['default'])) {
-                    // Field value does not exit in tca ds, fall back to default key if exists
-                    $dataStructureIdentifier['dataStructureKey'] = 'default';
-                } else {
-                    // The value of the ds_pointerField field points to a key in the ds array that does
-                    // not exist, and there is no fallback either. This can happen if an extension brings
-                    // new flex form definitions and that extension is unloaded later. "Old" records of the
-                    // extension could then still point to the no longer existing key in ds. We throw a
-                    // specific exception here to give controllers an opportunity to catch this case.
-                    throw new InvalidSinglePointerFieldException(
-                        'Field value of field "' . $pointerFieldArray[0] . '" of database record with uid "'
-                        . $row['uid'] . '" from table "' . $tableName . '" points to a "ds" key ' . $row[$pointerFieldArray[0]]
-                        . ' but this key does not exist and there is no "default" fallback.',
-                        1463653197
-                    );
-                }
-            } else {
-                // Two comma separated field names
-                if (isset($fieldTca['config']['ds'][$row[$pointerFieldArray[0]] . ',' . $row[$pointerFieldArray[1]]])) {
-                    // firstValue,secondValue
-                    $dataStructureIdentifier['dataStructureKey'] = $row[$pointerFieldArray[0]] . ',' . $row[$pointerFieldArray[1]];
-                } elseif (isset($fieldTca['config']['ds'][$row[$pointerFieldArray[0]] . ',*'])) {
-                    // firstValue,*
-                    $dataStructureIdentifier['dataStructureKey'] = $row[$pointerFieldArray[0]] . ',*';
-                } elseif (isset($fieldTca['config']['ds']['*,' . $row[$pointerFieldArray[1]]])) {
-                    // *,secondValue
-                    $dataStructureIdentifier['dataStructureKey'] = '*,' . $row[$pointerFieldArray[1]];
-                } elseif (isset($fieldTca['config']['ds'][$row[$pointerFieldArray[0]]])) {
-                    // firstValue
-                    $dataStructureIdentifier['dataStructureKey'] = $row[$pointerFieldArray[0]];
-                } elseif (isset($fieldTca['config']['ds']['default'])) {
-                    // Fall back to default
-                    $dataStructureIdentifier['dataStructureKey'] = 'default';
-                } else {
-                    // No ds_pointerField value could be determined and 'default' does not exist as
-                    // fallback. This is the same case as the above scenario, throw a
-                    // InvalidCombinedPointerFieldException here, too.
-                    throw new InvalidCombinedPointerFieldException(
-                        'Field combination of fields "' . $pointerFieldArray[0] . '" and "' . $pointerFieldArray[1] . '" of database'
-                        . 'record with uid "' . $row['uid'] . '" from table "' . $tableName . '" with values "' . $row[$pointerFieldArray[0]] . '"'
-                        . ' and "' . $row[$pointerFieldArray[1]] . '" could not be resolved to any registered data structure and '
-                        . ' no "default" fallback exists.',
-                        1463678524
-                    );
-                }
-            }
+
+        return is_array($schema)
+            ? $this->getDataStructureIdentifierFromRawTca($schema, $tableName, $fieldName, $row, $defaultIdentifier)
+            : $this->getDataStructureIdentifierFromTcaSchema($schema, $tableName, $fieldName, $row, $defaultIdentifier);
+    }
+
+    /**
+     * Finds and returns the data structure from TCA -  defined in column config 'ds'
+     *
+     * fieldTca = [
+     *     'config' => [
+     *         'type' => 'flex',
+     *         'ds' => '<T3DataStructure>...' OR 'FILE:...',
+     *     ]
+     * ]
+     *
+     * Based on an identifier, e.g.:
+     * [
+     *     'type' => 'tca',
+     *     'tableName' => 'tt_content',
+     *     'fieldName' => 'pi_flexform',
+     *     'dataStructureKey' => 'default',
+     * ];
+     *
+     * this method returns '<T3DataStructure>...' OR 'FILE:...'.
+     *
+     * In case the TCA table supports record types and the "dataStructureKey" points to a record type,
+     * which is only the case if a record type defines a custom flex config (via columnsOverrides), this
+     * custom data structure is returned.
+     *
+     * @return string resolved data structure
+     * @throws InvalidTcaSchemaException
+     */
+    protected function getDefaultStructureForIdentifier(array $identifier, array|TcaSchema|null $schema = null): string
+    {
+        // For the default only type "tca" is handled. Custom types need to be handled by corresponding events.
+        if (($identifier['type'] ?? '') !== 'tca') {
+            throw new InvalidIdentifierException(
+                'Identifier ' . json_encode($identifier) . ' could not be resolved',
+                1478104554
+            );
         }
-        return $dataStructureIdentifier;
+
+        $tableName = (string)($identifier['tableName'] ?? '');
+        $fieldName = (string)($identifier['fieldName'] ?? '');
+        $dataStructureKey = (string)($identifier['dataStructureKey'] ?? '');
+
+        if ($tableName === '' || $fieldName === '' || $dataStructureKey === '') {
+            throw new \RuntimeException(
+                'Incomplete "tca" based identifier: ' . json_encode($identifier),
+                1478113471
+            );
+        }
+
+        if ($schema === null) {
+            throw new InvalidTcaSchemaException('Can not resolve default data structure without TCA.', 1753182125);
+        }
+
+        $dataStructure = is_array($schema)
+            ? $this->resolveDataStructureFromRawTca($schema, $fieldName, $dataStructureKey)
+            : $this->resolveDataStructureFromTcaSchema($schema, $tableName, $fieldName, $dataStructureKey);
+
+        if ($dataStructure === '') {
+            throw new InvalidIdentifierException(
+                'Specified identifier ' . json_encode($identifier) . ' does not resolve to a valid data structure',
+                1732199538
+            );
+        }
+
+        return $dataStructure;
     }
 
     protected function convertDataStructureToArray(string|array $dataStructure): array
@@ -448,7 +425,7 @@ readonly class FlexFormTools
             $fileName = substr(trim($dataStructure), 5);
             $file = GeneralUtility::getFileAbsFileName($fileName);
             if (empty($file) || !is_file($file)) {
-                throw new \RuntimeException(
+                throw new InvalidIdentifierException(
                     'Data structure file "' . $fileName . '" could not be resolved to an existing file',
                     1478105826
                 );
@@ -467,39 +444,6 @@ readonly class FlexFormTools
             );
         }
 
-        return $dataStructure;
-    }
-
-    protected function getDefaultStructureForIdentifier(array $identifier): string
-    {
-        if (($identifier['type'] ?? '') === 'tca') {
-            // Handle "tca" type, see getDataStructureIdentifierFromTcaArray
-            if (empty($identifier['tableName']) || empty($identifier['fieldName']) || empty($identifier['dataStructureKey'])) {
-                throw new \RuntimeException(
-                    'Incomplete "tca" based identifier: ' . json_encode($identifier),
-                    1478113471
-                );
-            }
-            $table = $identifier['tableName'];
-            $field = $identifier['fieldName'];
-            $dataStructureKey = $identifier['dataStructureKey'];
-            if (!isset($GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey])
-                || !is_string($GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey])
-            ) {
-                // This may happen for elements pointing to an unloaded extension -> catchable
-                throw new InvalidIdentifierException(
-                    'Specified identifier ' . json_encode($identifier) . ' does not resolve to a valid'
-                    . ' TCA array value',
-                    1478105491
-                );
-            }
-            $dataStructure = $GLOBALS['TCA'][$table]['columns'][$field]['config']['ds'][$dataStructureKey];
-        } else {
-            throw new InvalidIdentifierException(
-                'Identifier ' . json_encode($identifier) . ' could not be resolved',
-                1478104554
-            );
-        }
         return $dataStructure;
     }
 
@@ -546,6 +490,7 @@ readonly class FlexFormTools
 
     /**
      * Check for invalid flex form structures, migrate and prepare single fields.
+     * @throws InvalidDataStructureException
      */
     private function checkMigratePrepareFlexTca(array $dataStructure): array
     {
@@ -563,7 +508,7 @@ readonly class FlexFormTools
                 }
                 if (($sheetElementConfig['type'] ?? null) === 'array' xor ($sheetElementConfig['section'] ?? null) === '1') {
                     // Section element, but type=array without section=1 or vice versa is not ok
-                    throw new \UnexpectedValueException(
+                    throw new InvalidDataStructureException(
                         'Broken data structure on field name ' . $sheetElementName . '. section without type or vice versa is not allowed',
                         1440685208
                     );
@@ -590,7 +535,7 @@ readonly class FlexFormTools
                                 || isset($containerElementConfig['config']['foreign_table'])
                             ) {
                                 // Nesting types that use DB relations in container sections is not supported.
-                                throw new \UnexpectedValueException(
+                                throw new InvalidDataStructureException(
                                     'Invalid flex form data structure on field name "' . $containerElementName . '" with element "' . $sheetElementName . '"'
                                     . ' in section container "' . $containerName . '": Nesting elements that have database relations in flex form'
                                     . ' sections is not allowed.',
@@ -599,7 +544,7 @@ readonly class FlexFormTools
                             }
                             if (($containerElementConfig['type'] ?? null) === 'array' && ($containerElementConfig['section'] ?? null) === '1') {
                                 // Nesting sections is not supported. Throw an exception if configured.
-                                throw new \UnexpectedValueException(
+                                throw new InvalidDataStructureException(
                                     'Invalid flex form data structure on field name "' . $containerElementName . '" with element "' . $sheetElementName . '"'
                                     . ' in section container "' . $containerName . '": Nesting sections in container elements'
                                     . ' sections is not allowed.',
@@ -655,5 +600,164 @@ readonly class FlexFormTools
         ];
         $preparedTca = $this->tcaPreparation->prepare($dummyTca, true);
         return $preparedTca['dummyTable']['columns'][$fieldName];
+    }
+
+    /**
+     * Resolve data structure identifier from raw TCA configuration.
+     */
+    private function getDataStructureIdentifierFromRawTca(array $schema, string $tableName, string $fieldName, array $row, array $defaultIdentifier): array
+    {
+        // Check for record type specific configuration
+        if (isset($schema['ctrl']['type'])) {
+            $recordType = $row[$schema['ctrl']['type']] ?? '';
+            if (isset($schema['types'][$recordType]) && ($fieldConfig = $this->getRecordTypeSpecificFieldConfig($schema, $recordType, $fieldName)) !== []) {
+                if ($fieldConfig['config']['type'] === 'flex' && $fieldConfig['config']['ds'] !== '') {
+                    $defaultIdentifier['dataStructureKey'] = $recordType;
+                    return $defaultIdentifier;
+                }
+
+                throw new InvalidTcaException(
+                    'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" with record type "' . $recordType . '"'
+                    . ' The field is either not configured as type="flex" or no valid data structure is defined for this record type.',
+                    1751796941
+                );
+            }
+        }
+
+        // Fall back to base field configuration
+        $baseField = $schema['columns'][$fieldName]['config'] ?? [];
+        if (($baseField['type'] ?? '') === 'flex' && ($baseField['ds'] ?? '') !== '') {
+            $defaultIdentifier['dataStructureKey'] = 'default';
+            return $defaultIdentifier;
+        }
+
+        throw new InvalidTcaException(
+            'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
+            . ' The field is either not configured as type="flex" or no valid data structure is defined.',
+            1732198005
+        );
+    }
+
+    /**
+     * Resolve data structure identifier from TCA Schema.
+     */
+    private function getDataStructureIdentifierFromTcaSchema(TcaSchema $schema, string $tableName, string $fieldName, array $row, array $defaultIdentifier): array
+    {
+        if ($schema->getName() !== $tableName) {
+            throw new InvalidTcaSchemaException('Given Tca Schema does not match table ' . $tableName . ' from data structure identifier.', 1753182124);
+        }
+
+        // Check for record type specific configuration
+        if ($schema->supportsSubSchema()) {
+            $recordType = $row[$schema->getSubSchemaTypeInformation()->getFieldName()] ?? '';
+            if ($schema->hasSubSchema($recordType) && ($subSchema = $schema->getSubSchema($recordType))->hasField($fieldName)) {
+                $flexField = $subSchema->getField($fieldName);
+                if ($flexField instanceof FlexFormFieldType && $flexField->getDataStructure() !== '') {
+                    $defaultIdentifier['dataStructureKey'] = $recordType;
+                    return $defaultIdentifier;
+                }
+
+                throw new InvalidTcaException(
+                    'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" with record type "' . $recordType . '"'
+                    . ' The field is either not configured as type="flex" or no valid data structure is defined for this record type.',
+                    1751796940
+                );
+            }
+        }
+
+        // Fall back to base field
+        $baseField = $schema->getField($fieldName);
+        if ($baseField instanceof FlexFormFieldType && $baseField->getDataStructure() !== '') {
+            $defaultIdentifier['dataStructureKey'] = 'default';
+            return $defaultIdentifier;
+        }
+
+        throw new InvalidTcaException(
+            'TCA misconfiguration in table "' . $tableName . '" field "' . $fieldName . '" config section:'
+            . ' The field is either not configured as type="flex" or no valid data structure is defined.',
+            1732198004
+        );
+    }
+
+    /**
+     * Resolve data structure from raw TCA configuration.
+     */
+    private function resolveDataStructureFromRawTca(array $schema, string $fieldName, string $dataStructureKey): string
+    {
+        // Try record type specific configuration first
+        if (isset($schema['ctrl']['type'], $schema['types'][$dataStructureKey])
+            && ($fieldConfig = $this->getRecordTypeSpecificFieldConfig($schema, $dataStructureKey, $fieldName)) !== []
+            && ($fieldConfig['config']['type'] ?? '') === 'flex'
+            && is_string($fieldConfig['config']['ds'] ?? false)
+        ) {
+            return $fieldConfig['config']['ds'];
+        }
+
+        // Fall back to default configuration
+        if ($dataStructureKey === 'default') {
+            $baseField = $schema['columns'][$fieldName]['config'] ?? [];
+            if (($baseField['type'] ?? '') === 'flex' && is_string($baseField['ds'] ?? false)) {
+                return $baseField['ds'];
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * Resolve data structure from TCA Schema.
+     */
+    private function resolveDataStructureFromTcaSchema(TcaSchema $schema, string $table, string $field, string $dataStructureKey): string
+    {
+        if ($schema->getName() !== $table) {
+            throw new InvalidTcaSchemaException('Given Tca Schema does not match table ' . $table . ' from data structure identifier.', 1753182126);
+        }
+
+        // Try record type specific configuration first
+        if ($schema->supportsSubSchema()
+            && $schema->hasSubSchema($dataStructureKey)
+            && ($subSchema = $schema->getSubSchema($dataStructureKey))->hasField($field)
+            && ($flexField = $subSchema->getField($field)) instanceof FlexFormFieldType
+        ) {
+            return $flexField->getDataStructure();
+        }
+
+        // Fall back to default configuration
+        if ($dataStructureKey === 'default' && ($flexField = $schema->getField($field)) instanceof FlexFormFieldType) {
+            return $flexField->getDataStructure();
+        }
+
+        return '';
+    }
+
+    /**
+     * Returns the record type specific configuration, also already taking columnsOverrides into account.
+     * In case the field is not defined for the record type, no configuration is returned.
+     */
+    protected function getRecordTypeSpecificFieldConfig(array $tcaForTable, string $recordType, string $fieldName): array
+    {
+        $recordTypeConfig = $tcaForTable['types'][$recordType];
+        $showItemArray = GeneralUtility::trimExplode(',', $recordTypeConfig['showitem'] ?? '', true);
+        foreach ($showItemArray as $aShowItemFieldString) {
+            [$name, , $paletteName] = GeneralUtility::trimExplode(';', $aShowItemFieldString . ';;;');
+            if ($name === '--div--') {
+                continue;
+            }
+            if ($name === '--palette--' && !empty($paletteName)) {
+                if (!isset($tcaForTable['palettes'][$paletteName]['showitem'])) {
+                    continue;
+                }
+                $palettesArray = GeneralUtility::trimExplode(',', $tcaForTable['palettes'][$paletteName]['showitem']);
+                foreach ($palettesArray as $aPalettesString) {
+                    [$name] = GeneralUtility::trimExplode(';', $aPalettesString . ';;');
+                    if ($name === $fieldName && isset($tcaForTable['columns'][$name])) {
+                        return array_replace_recursive($tcaForTable['columns'][$name], $recordTypeConfig['columnsOverrides'][$name] ?? []);
+                    }
+                }
+            } elseif ($name === $fieldName && isset($tcaForTable['columns'][$name])) {
+                return array_replace_recursive($tcaForTable['columns'][$name], $recordTypeConfig['columnsOverrides'][$name] ?? []);
+            }
+        }
+        return [];
     }
 }

@@ -133,9 +133,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
     private function createTcaSchemaFactory(): TcaSchemaFactory
     {
         return new TcaSchemaFactory(
-            new RelationMapBuilder(
-                $this->createMock(FlexFormTools::class)
-            ),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             'cacheIdentifier',
             new NullFrontend('runtime')

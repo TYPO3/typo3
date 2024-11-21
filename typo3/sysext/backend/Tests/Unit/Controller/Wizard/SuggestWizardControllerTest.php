@@ -36,8 +36,8 @@ final class SuggestWizardControllerTest extends UnitTestCase
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
         $request = (new ServerRequest())->withParsedBody([
             'value' => 'theSearchValue',
-            'table' => 'aTable',
-            'field' => 'aField',
+            'tableName' => 'aTable',
+            'fieldName' => 'aField',
             'uid' => 'aUid',
             'pid' => 'aPid',
             'dataStructureIdentifier' => $dataStructureIdentifier,
@@ -62,12 +62,16 @@ final class SuggestWizardControllerTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $schema = new TcaSchema('aTable', new FieldCollection(), []);
         $flexFormToolsMock = $this->createMock(FlexFormTools::class);
-        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier)->willReturn($dataStructure);
+        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier, $schema)->willReturn($dataStructure);
+        $tcaSchemaFactoryMock = $this->createMock(TcaSchemaFactory::class);
+        $tcaSchemaFactoryMock->method('get')->with('aTable')->willReturn($schema);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController($flexFormToolsMock, $this->createMock(TcaSchemaFactory::class)))->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock))->searchAction($request);
     }
 
     #[Test]
@@ -76,8 +80,8 @@ final class SuggestWizardControllerTest extends UnitTestCase
         $dataStructureIdentifier = '{"type":"tca","tableName":"tt_content","fieldName":"pi_flexform","dataStructureKey":"blog_example,list"}';
         $request = (new ServerRequest())->withParsedBody([
             'value' => 'theSearchValue',
-            'table' => 'aTable',
-            'field' => 'aField',
+            'tableName' => 'aTable',
+            'fieldName' => 'aField',
             'uid' => 'aUid',
             'pid' => 'aPid',
             'dataStructureIdentifier' => $dataStructureIdentifier,
@@ -102,12 +106,16 @@ final class SuggestWizardControllerTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $schema = new TcaSchema('aTable', new FieldCollection(), []);
         $flexFormToolsMock = $this->createMock(FlexFormTools::class);
-        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier)->willReturn($dataStructure);
+        $flexFormToolsMock->method('parseDataStructureByIdentifier')->with($dataStructureIdentifier, $schema)->willReturn($dataStructure);
+        $tcaSchemaFactoryMock = $this->createMock(TcaSchemaFactory::class);
+        $tcaSchemaFactoryMock->method('get')->with('aTable')->willReturn($schema);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController($flexFormToolsMock, $this->createMock(TcaSchemaFactory::class)))->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock, $tcaSchemaFactoryMock))->searchAction($request);
     }
 
     #[DataProvider('currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider')]

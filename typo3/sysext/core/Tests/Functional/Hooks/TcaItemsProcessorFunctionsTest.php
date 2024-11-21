@@ -325,6 +325,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
             'fooTable' => [
                 'ctrl' => [
                     'title' => 'fooTableTitle',
+                    'type' => 'pointerField',
                 ],
                 'columns' => [
                     'pointerField' => [
@@ -332,36 +333,97 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                         'config' => [
                             'type' => 'select',
                             'items' => [
-                                'value' => 'dummy',
-                                'label' => 'dummy',
+                                [
+                                    'value' => 'dummy',
+                                    'label' => 'dummy',
+                                ],
+                                [
+                                    'value' => 'dummy2',
+                                    'label' => 'dummy2',
+                                ],
                             ],
                         ],
                     ],
                     'aFlexField' => [
-                        'label' => 'aFlexFieldTitle',
+                        'label' => 'defaultFlexFieldTitle',
                         'config' => [
                             'type' => 'flex',
                             'title' => 'title',
-                            'ds_pointerField' => 'pointerField',
-                            'ds' => [
-                                'dummy' => '
-									<T3DataStructure>
-										<ROOT>
-											<type>array</type>
-											<el>
-												<input1>
-													<label>flexInputLabel</label>
-													<exclude>1</exclude>
-													<config>
-														<type>input</type>
-														<size>23</size>
-													</config>
-												</input1>
-											</el>
-										</ROOT>
-									</T3DataStructure>
-								',
+                            'ds' => '
+                                <T3DataStructure>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <el>
+                                            <input1>
+                                                <label>defaultFieldLabel</label>
+                                                <exclude>1</exclude>
+                                                <config>
+                                                    <type>input</type>
+                                                </config>
+                                            </input1>
+                                        </el>
+                                    </ROOT>
+                                </T3DataStructure>
+                            ',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'dummy' => [
+                        'showitem' => 'pointerField,aFlexField',
+                        // Specific record type override
+                        'columnsOverrides' => [
+                            'aFlexField' => [
+                                'label' => 'overrideFieldTitle',
+                                'config' => [
+                                    'ds' => '
+                                        <T3DataStructure>
+                                            <ROOT>
+                                                <type>array</type>
+                                                <el>
+                                                    <text1>
+                                                        <label>overrideFieldLabel</label>
+                                                        <exclude>1</exclude>
+                                                        <config>
+                                                            <type>text</type>
+                                                        </config>
+                                                    </text1>
+                                                </el>
+                                            </ROOT>
+                                        </T3DataStructure>
+                                    ',
+                                ],
                             ],
+                        ],
+                    ],
+                    'dummy2' => [
+                        // Fallback to default ds
+                        'showitem' => 'pointerField,aFlexField',
+                    ],
+                    'dummy3' => [
+                        'showitem' => 'pointerField,aFlexField',
+                        // Invalid override
+                        'columnsOverrides' => [
+                            'aFlexField' => [
+                                'config' => [
+                                    'ds' => '',
+                                ],
+                            ],
+                        ],
+                    ],
+                    'dummy4' => [
+                        // No flex field
+                        'showitem' => 'pointerField',
+                    ],
+                ],
+            ],
+            'barTable' => [
+                'columns' => [
+                    'barflexField' => [
+                        'label' => 'barflexFieldTitle',
+                        'config' => [
+                            'type' => 'flex',
+                            'ds' => 'FILE:EXT:core/Tests/Functional/Configuration/FlexForm/Fixtures/DataStructureWithSheetAndExclude.xml',
                         ],
                     ],
                 ],
@@ -372,14 +434,44 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
         ];
         $expected = [
             'items' => [
-                'fooTableTitle aFlexFieldTitle dummy' => [
-                    'label' => 'fooTableTitle aFlexFieldTitle dummy',
+                'barTable barflexFieldTitle default' => [
+                    'label' => 'barTable barflexFieldTitle default',
                     'value' => '--div--',
                     'icon' => '',
                 ],
                 0 => [
-                    'label' => 'flexInputLabel (input1)',
-                    'value' => 'fooTable:aFlexField;dummy;sDEF;input1',
+                    'label' => 'anExcludeFlexField (input_exclude)',
+                    'value' => 'barTable:barflexField;default;sDEF;input_exclude',
+                    'icon' => 'empty-empty',
+                ],
+                'fooTableTitle defaultFlexFieldTitle default' => [
+                    'label' => 'fooTableTitle defaultFlexFieldTitle default',
+                    'value' => '--div--',
+                    'icon' => '',
+                ],
+                1 => [
+                    'label' => 'defaultFieldLabel (input1)',
+                    'value' => 'fooTable:aFlexField;default;sDEF;input1',
+                    'icon' => 'empty-empty',
+                ],
+                'fooTableTitle defaultFlexFieldTitle dummy2' => [
+                    'label' => 'fooTableTitle defaultFlexFieldTitle dummy2',
+                    'value' => '--div--',
+                    'icon' => '',
+                ],
+                2 => [
+                    'label' => 'defaultFieldLabel (input1)',
+                    'value' => 'fooTable:aFlexField;dummy2;sDEF;input1',
+                    'icon' => 'empty-empty',
+                ],
+                'fooTableTitle overrideFieldTitle dummy' => [
+                    'label' => 'fooTableTitle overrideFieldTitle dummy',
+                    'value' => '--div--',
+                    'icon' => '',
+                ],
+                3 => [
+                    'label' => 'overrideFieldLabel (text1)',
+                    'value' => 'fooTable:aFlexField;dummy;sDEF;text1',
                     'icon' => 'empty-empty',
                 ],
             ],

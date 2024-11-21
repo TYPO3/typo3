@@ -115,14 +115,15 @@ class EditController
         // Initialize:
         $table = $this->P['table'];
         $field = $this->P['field'];
+        $schema = $this->tcaSchemaFactory->get($table);
 
         if (empty($this->P['flexFormDataStructureIdentifier'])) {
             // If there is not flex data structure identifier, field config is found in globals
-            $config = $this->tcaSchemaFactory->get($table)->getField($field)->getConfiguration();
+            $config = $schema->getField($field)->getConfiguration();
         } else {
             // If there is a flex data structure identifier, parse that data structure and
             // fetch config defined by given flex path
-            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($this->P['flexFormDataStructureIdentifier']);
+            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($this->P['flexFormDataStructureIdentifier'], $schema);
             $config = ArrayUtility::getValueByPath($dataStructure, $this->P['flexFormDataStructurePath']);
             if (!is_array($config)) {
                 throw new \RuntimeException(

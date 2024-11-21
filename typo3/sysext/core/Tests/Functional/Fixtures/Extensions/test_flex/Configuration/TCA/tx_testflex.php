@@ -23,48 +23,46 @@ return [
             'label' => 'flex_1 file',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <sheets>
-                                <sInline>
-                                    <ROOT>
-                                        <sheetTitle>file</sheetTitle>
-                                        <type>array</type>
-                                        <el>
-                                            <file_1>
-                                                <label>file_1</label>
-                                                <config>
-                                                    <type>file</type>
-                                                    <allowed>common-media-types</allowed>
-                                                </config>
-                                            </file_1>
-                                            <irre_csv_1>
-                                                <label>irre_csv_1</label>
-                                                <config>
-                                                    <type>inline</type>
-                                                    <foreign_table>tx_testirrecsv_hotel</foreign_table>
-                                                </config>
-                                            </irre_csv_1>
-                                            <irre_foreignfield_1>
-                                                <label>irre_foreignfield_1</label>
-                                                <config>
-                                                    <type>inline</type>
-                                                    <foreign_table>tx_testirreforeignfield_hotel</foreign_table>
-                                                    <foreign_field>parentid</foreign_field>
-                                                    <foreign_table_field>parenttable</foreign_table_field>
-                                                    <foreign_match_fields type="array">
-                                                        <parentidentifier>flex_1.irre_foreignfield_1</parentidentifier>
-                                                    </foreign_match_fields>
-                                                </config>
-                                            </irre_foreignfield_1>
-                                        </el>
-                                    </ROOT>
-                                </sInline>
-                            </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+                    <T3DataStructure>
+                        <sheets>
+                            <sInline>
+                                <ROOT>
+                                    <sheetTitle>file</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <file_1>
+                                            <label>file_1</label>
+                                            <config>
+                                                <type>file</type>
+                                                <allowed>common-media-types</allowed>
+                                            </config>
+                                        </file_1>
+                                        <irre_csv_1>
+                                            <label>irre_csv_1</label>
+                                            <config>
+                                                <type>inline</type>
+                                                <foreign_table>tx_testirrecsv_hotel</foreign_table>
+                                            </config>
+                                        </irre_csv_1>
+                                        <irre_foreignfield_1>
+                                            <label>irre_foreignfield_1</label>
+                                            <config>
+                                                <type>inline</type>
+                                                <foreign_table>tx_testirreforeignfield_hotel</foreign_table>
+                                                <foreign_field>parentid</foreign_field>
+                                                <foreign_table_field>parenttable</foreign_table_field>
+                                                <foreign_match_fields type="array">
+                                                    <parentidentifier>flex_1.irre_foreignfield_1</parentidentifier>
+                                                </foreign_match_fields>
+                                            </config>
+                                        </irre_foreignfield_1>
+                                    </el>
+                                </ROOT>
+                            </sInline>
+                        </sheets>
+                    </T3DataStructure>
+                ',
             ],
         ],
 

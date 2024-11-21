@@ -544,27 +544,23 @@ return [
             'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:pi_flexform',
             'config' => [
                 'type' => 'flex',
-                // @todo this is a hack and will be handled separately together with EMU::addPiFlexFormValue
-                'ds_pointerField' => 'CType,CType',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                          <ROOT>
-                            <type>array</type>
-                            <el>
-                                <!-- Repeat an element like "xmlTitle" beneath for as many elements you like. Remember to name them uniquely  -->
-                              <xmlTitle>
-                                <label>The Title:</label>
-                                <config>
-                                    <type>input</type>
-                                    <size>48</size>
-                                </config>
-                              </xmlTitle>
-                            </el>
-                          </ROOT>
-                        </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+                    <T3DataStructure>
+                      <ROOT>
+                        <type>array</type>
+                        <el>
+                            <!-- Repeat an element like "xmlTitle" beneath for as many elements you like. Remember to name them uniquely  -->
+                          <xmlTitle>
+                            <label>The Title:</label>
+                            <config>
+                                <type>input</type>
+                                <size>48</size>
+                            </config>
+                          </xmlTitle>
+                        </el>
+                      </ROOT>
+                    </T3DataStructure>
+                ',
             ],
         ],
         'selected_categories' => [

@@ -100,8 +100,7 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_storage.configuration',
             'config' => [
                 'type' => 'flex',
-                'ds_pointerField' => 'driver',
-                'ds' => [],
+                'ds' => '',
             ],
         ],
     ],

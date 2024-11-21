@@ -23,42 +23,40 @@ return [
             'label' => 'flex_1',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <sheets>
-                                <sSection>
-                                    <ROOT>
-                                        <sheetTitle>section</sheetTitle>
-                                        <type>array</type>
-                                        <el>
-                                            <section_1>
-                                                <title>section_1</title>
-                                                <type>array</type>
-                                                <section>1</section>
-                                                <el>
-                                                    <container_1>
-                                                        <type>array</type>
-                                                        <title>container_1</title>
-                                                        <el>
-                                                            <input_1>
-                                                                <label>input_1 description</label>
-                                                                <description>field description</description>
-                                                                <config>
-                                                                    <type>input</type>
-                                                                </config>
-                                                            </input_1>
-                                                        </el>
-                                                    </container_1>
-                                                </el>
-                                            </section_1>
-                                        </el>
-                                    </ROOT>
-                                </sSection>
-                            </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+                'ds' => '
+                    <T3DataStructure>
+                        <sheets>
+                            <sSection>
+                                <ROOT>
+                                    <sheetTitle>section</sheetTitle>
+                                    <type>array</type>
+                                    <el>
+                                        <section_1>
+                                            <title>section_1</title>
+                                            <type>array</type>
+                                            <section>1</section>
+                                            <el>
+                                                <container_1>
+                                                    <type>array</type>
+                                                    <title>container_1</title>
+                                                    <el>
+                                                        <input_1>
+                                                            <label>input_1 description</label>
+                                                            <description>field description</description>
+                                                            <config>
+                                                                <type>input</type>
+                                                            </config>
+                                                        </input_1>
+                                                    </el>
+                                                </container_1>
+                                            </el>
+                                        </section_1>
+                                    </el>
+                                </ROOT>
+                            </sSection>
+                        </sheets>
+                    </T3DataStructure>
+                ',
             ],
         ],
 

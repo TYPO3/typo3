@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Functional\Form\FormDataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Form\FormDataProvider\TcaFlexPrepare;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TcaFlexPrepareTest extends FunctionalTestCase
@@ -66,7 +67,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             ],
         ];
         $expected = $input;
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->addData($input));
     }
 
     #[Test]
@@ -86,23 +87,21 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
-                            'ds' => [
-                                'default' => '
-                                    <T3DataStructure>
-                                        <ROOT>
-                                            <type>array</type>
-                                            <el>
-                                                <aFlexField>
-                                                    <label>aFlexFieldLabel</label>
-                                                    <config>
-                                                        <type>input</type>
-                                                    </config>
-                                                </aFlexField>
-                                            </el>
-                                        </ROOT>
-                                    </T3DataStructure>
-                                ',
-                            ],
+                            'ds' => '
+                                <T3DataStructure>
+                                    <ROOT>
+                                        <type>array</type>
+                                        <el>
+                                            <aFlexField>
+                                                <label>aFlexFieldLabel</label>
+                                                <config>
+                                                    <type>input</type>
+                                                </config>
+                                            </aFlexField>
+                                        </el>
+                                    </ROOT>
+                                </T3DataStructure>
+                            ',
                         ],
                     ],
                 ],
@@ -110,6 +109,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
         ];
 
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
@@ -133,7 +133,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->addData($input));
     }
 
     #[Test]
@@ -153,28 +153,26 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
-                            'ds' => [
-                                'default' => '
-                                    <T3DataStructure>
-                                        <sheets>
-                                            <sDEF>
-                                                <ROOT>
-                                                    <sheetTitle>aTitle</sheetTitle>
-                                                    <type>array</type>
-                                                    <el>
-                                                        <aFlexField>
-                                                            <label>aFlexFieldLabel</label>
-                                                            <config>
-                                                                <type>input</type>
-                                                            </config>
-                                                        </aFlexField>
-                                                    </el>
-                                                </ROOT>
-                                            </sDEF>
-                                        </sheets>
-                                    </T3DataStructure>
-                                ',
-                            ],
+                            'ds' => '
+                                <T3DataStructure>
+                                    <sheets>
+                                        <sDEF>
+                                            <ROOT>
+                                                <sheetTitle>aTitle</sheetTitle>
+                                                <type>array</type>
+                                                <el>
+                                                    <aFlexField>
+                                                        <label>aFlexFieldLabel</label>
+                                                        <config>
+                                                            <type>input</type>
+                                                        </config>
+                                                    </aFlexField>
+                                                </el>
+                                            </ROOT>
+                                        </sDEF>
+                                    </sheets>
+                                </T3DataStructure>
+                            ',
                         ],
                     ],
                 ],
@@ -182,6 +180,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
         ];
 
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
@@ -206,7 +205,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->addData($input));
     }
 
     #[Test]
@@ -221,13 +220,11 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
-                            'ds' => [
-                                'default' => '
-                                    <T3DataStructure>
-                                        <ROOT></ROOT>
-                                    </T3DataStructure>
-                                ',
-                            ],
+                            'ds' => '
+                                <T3DataStructure>
+                                    <ROOT></ROOT>
+                                </T3DataStructure>
+                            ',
                         ],
                     ],
                 ],
@@ -235,6 +232,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
         ];
 
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
@@ -248,7 +246,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->addData($input));
     }
 
     #[Test]
@@ -268,59 +266,57 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
                     'aField' => [
                         'config' => [
                             'type' => 'flex',
-                            'ds' => [
-                                'default' => '
-                                    <T3DataStructure>
-                                        <sheets>
-                                            <sTree>
-                                                <ROOT>
-                                                    <type>array</type>
-                                                    <sheetTitle>selectTree</sheetTitle>
-                                                    <el>
-                                                        <select_tree_1>
-                                                            <label>select_tree_1</label>
-                                                            <description>select_tree_1 description</description>
-                                                            <config>
-                                                                <type>select</type>
-                                                                <renderType>selectTree</renderType>
-                                                            </config>
-                                                        </select_tree_1>
-                                                    </el>
-                                                </ROOT>
-                                            </sTree>
-                                            <sSection>
-                                                <ROOT>
-                                                    <type>array</type>
-                                                    <sheetTitle>section</sheetTitle>
-                                                    <el>
-                                                        <section_1>
-                                                            <title>section_1</title>
-                                                            <type>array</type>
-                                                            <section>1</section>
-                                                            <el>
-                                                                <container_1>
-                                                                    <type>array</type>
-                                                                    <title>container_1</title>
-                                                                    <el>
-                                                                        <select_tree_2>
-                                                                            <label>select_tree_2</label>
-                                                                            <description>select_tree_2 description</description>
-                                                                            <config>
-                                                                                <type>select</type>
-                                                                                <renderType>selectTree</renderType>
-                                                                            </config>
-                                                                        </select_tree_2>
-                                                                    </el>
-                                                                </container_1>
-                                                            </el>
-                                                        </section_1>
-                                                    </el>
-                                                </ROOT>
-                                            </sSection>
-                                        </sheets>
-                                    </T3DataStructure>
-                                ',
-                            ],
+                            'ds' => '
+                                <T3DataStructure>
+                                    <sheets>
+                                        <sTree>
+                                            <ROOT>
+                                                <type>array</type>
+                                                <sheetTitle>selectTree</sheetTitle>
+                                                <el>
+                                                    <select_tree_1>
+                                                        <label>select_tree_1</label>
+                                                        <description>select_tree_1 description</description>
+                                                        <config>
+                                                            <type>select</type>
+                                                            <renderType>selectTree</renderType>
+                                                        </config>
+                                                    </select_tree_1>
+                                                </el>
+                                            </ROOT>
+                                        </sTree>
+                                        <sSection>
+                                            <ROOT>
+                                                <type>array</type>
+                                                <sheetTitle>section</sheetTitle>
+                                                <el>
+                                                    <section_1>
+                                                        <title>section_1</title>
+                                                        <type>array</type>
+                                                        <section>1</section>
+                                                        <el>
+                                                            <container_1>
+                                                                <type>array</type>
+                                                                <title>container_1</title>
+                                                                <el>
+                                                                    <select_tree_2>
+                                                                        <label>select_tree_2</label>
+                                                                        <description>select_tree_2 description</description>
+                                                                        <config>
+                                                                            <type>select</type>
+                                                                            <renderType>selectTree</renderType>
+                                                                        </config>
+                                                                    </select_tree_2>
+                                                                </el>
+                                                            </container_1>
+                                                        </el>
+                                                    </section_1>
+                                                </el>
+                                            </ROOT>
+                                        </sSection>
+                                    </sheets>
+                                </T3DataStructure>
+                            ',
                         ],
                     ],
                 ],
@@ -328,6 +324,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
         ];
 
         $GLOBALS['TCA']['aTableName']['columns'] = $input['processedTca']['columns'];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $expected = $input;
         $expected['processedTca']['columns']['aField']['config']['dataStructureIdentifier']
@@ -384,7 +381,7 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
             'meta' => [],
         ];
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->addData($input));
     }
 
     /**
@@ -455,6 +452,6 @@ final class TcaFlexPrepareTest extends FunctionalTestCase
                     ['container_1']['el']
                         ['select_section_1'] = $columnConfig;
 
-        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class)))->addData($input));
+        self::assertEquals($expected, (new TcaFlexPrepare($this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->addData($input));
     }
 }

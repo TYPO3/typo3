@@ -857,218 +857,215 @@ return [
             'label' => 'flex_1',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <sheets>
-                                <sSingle>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>selectSingle</sheetTitle>
-                                        <el>
-                                            <select_single_1>
-                                                <label>select_single_1 description</label>
-                                                <description>field description</description>
-                                                <config>
-                                                    <type>select</type>
-                                                    <renderType>selectSingle</renderType>
-                                                    <items>
-                                                        <numIndex index="0">
-                                                            <label>foo1</label>
-                                                            <value>foo1</value>
-                                                        </numIndex>
-                                                        <numIndex index="1">
-                                                            <label>foo2</label>
-                                                            <value>foo2</value>
-                                                        </numIndex>
-                                                    </items>
-                                                </config>
-                                            </select_single_1>
-                                        </el>
-                                    </ROOT>
-                                </sSingle>
+                'ds' => '
+<T3DataStructure>
+    <sheets>
+        <sSingle>
+            <ROOT>
+                <type>array</type>
+                <sheetTitle>selectSingle</sheetTitle>
+                <el>
+                    <select_single_1>
+                        <label>select_single_1 description</label>
+                        <description>field description</description>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectSingle</renderType>
+                            <items>
+                                <numIndex index="0">
+                                    <label>foo1</label>
+                                    <value>foo1</value>
+                                </numIndex>
+                                <numIndex index="1">
+                                    <label>foo2</label>
+                                    <value>foo2</value>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </select_single_1>
+                </el>
+            </ROOT>
+        </sSingle>
 
-                                <sCheckbox>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>selectCheckBox</sheetTitle>
-                                        <el>
-                                            <select_checkxox_1>
-                                                <label>select_checkxox_1 description</label>
-                                                <description>field description</description>
-                                                <config>
-                                                    <type>select</type>
-                                                    <renderType>selectCheckBox</renderType>
-                                                    <items>
-                                                        <numIndex index="0">
-                                                            <label>foo1</label>
-                                                            <value>1</value>
-                                                        </numIndex>
-                                                        <numIndex index="1">
-                                                            <label>foo 2</label>
-                                                            <value>2</value>
-                                                        </numIndex>
-                                                    </items>
-                                                </config>
-                                            </select_checkxox_1>
-                                        </el>
-                                    </ROOT>
-                                </sCheckbox>
+        <sCheckbox>
+            <ROOT>
+                <type>array</type>
+                <sheetTitle>selectCheckBox</sheetTitle>
+                <el>
+                    <select_checkxox_1>
+                        <label>select_checkxox_1 description</label>
+                        <description>field description</description>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectCheckBox</renderType>
+                            <items>
+                                <numIndex index="0">
+                                    <label>foo1</label>
+                                    <value>1</value>
+                                </numIndex>
+                                <numIndex index="1">
+                                    <label>foo 2</label>
+                                    <value>2</value>
+                                </numIndex>
+                            </items>
+                        </config>
+                    </select_checkxox_1>
+                </el>
+            </ROOT>
+        </sCheckbox>
 
-                                <sTree>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>selectTree</sheetTitle>
-                                        <el>
-                                            <select_tree_1>
-                                                <label>select_tree_1 description</label>
-                                                <description>field description</description>
-                                                <config>
-                                                    <type>select</type>
-                                                    <renderType>selectTree</renderType>
-                                                    <foreign_table>pages</foreign_table>
-                                                    <size>20</size>
-                                                    <maxitems>4</maxitems>
-                                                    <treeConfig>
-                                                        <expandAll>1</expandAll>
-                                                        <parentField>pid</parentField>
-                                                        <appearance>
-                                                            <showHeader>1</showHeader>
-                                                        </appearance>
-                                                    </treeConfig>
-                                                </config>
-                                            </select_tree_1>
-                                        </el>
-                                    </ROOT>
-                                </sTree>
+        <sTree>
+            <ROOT>
+                <type>array</type>
+                <sheetTitle>selectTree</sheetTitle>
+                <el>
+                    <select_tree_1>
+                        <label>select_tree_1 description</label>
+                        <description>field description</description>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectTree</renderType>
+                            <foreign_table>pages</foreign_table>
+                            <size>20</size>
+                            <maxitems>4</maxitems>
+                            <treeConfig>
+                                <expandAll>1</expandAll>
+                                <parentField>pid</parentField>
+                                <appearance>
+                                    <showHeader>1</showHeader>
+                                </appearance>
+                            </treeConfig>
+                        </config>
+                    </select_tree_1>
+                </el>
+            </ROOT>
+        </sTree>
 
-                                <sMultiplesidebyside>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>selectMultipleSideBySide</sheetTitle>
-                                        <el>
-                                            <select_multiplesidebyside_1>
-                                                <label>select_multiplesidebyside_1 description</label>
-                                                <description>field description</description>
-                                                <config>
-                                                    <type>select</type>
-                                                    <renderType>selectMultipleSideBySide</renderType>
-                                                    <foreign_table>tx_styleguide_staticdata</foreign_table>
-                                                    <size>5</size>
-                                                    <autoSizeMax>5</autoSizeMax>
-                                                    <minitems>0</minitems>
-                                                    <multiSelectFilterItems>
-                                                        <numIndex index="0">
-                                                            <numIndex index="0"></numIndex>
-                                                            <numIndex index="1"></numIndex>
-                                                        </numIndex>
-                                                        <numIndex index="1">
-                                                            <numIndex index="0">foo</numIndex>
-                                                            <numIndex index="1">foo</numIndex>
-                                                        </numIndex>
-                                                        <numIndex index="2">
-                                                            <numIndex index="0">bar</numIndex>
-                                                            <numIndex index="1">bar</numIndex>
-                                                        </numIndex>
-                                                    </multiSelectFilterItems>
-                                                    <fieldControl>
-                                                        <editPopup>
-                                                            <renderType>editPopup</renderType>
-                                                            <disabled>0</disabled>
-                                                        </editPopup>
-                                                        <addRecord>
-                                                            <renderType>addRecord</renderType>
-                                                            <disabled>0</disabled>
-                                                            <options>
-                                                                <setValue>prepend</setValue>
-                                                            </options>
-                                                        </addRecord>
-                                                        <listModule>
-                                                            <renderType>listModule</renderType>
-                                                            <disabled>0</disabled>
-                                                        </listModule>
-                                                    </fieldControl>
-                                                </config>
-                                            </select_multiplesidebyside_1>
-                                            <select_multiplesidebyside_2>
-                                                <label>select_multiplesidebyside_2</label>
-                                                <description>select_multiplesidebyside_2 foreign_table MM</description>
-                                                <config>
-                                                    <type>select</type>
-                                                    <renderType>selectMultipleSideBySide</renderType>
-                                                    <foreign_table>tx_styleguide_staticdata</foreign_table>
-                                                    <MM>tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm</MM>
-                                                    <size>5</size>
-                                                    <autoSizeMax>5</autoSizeMax>
-                                                </config>
-                                            </select_multiplesidebyside_2>
-                                        </el>
-                                    </ROOT>
-                                </sMultiplesidebyside>
-
-                                <sCountry>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>Country</sheetTitle>
-                                        <el>
-                                            <country_1>
-                                                <label>Country Basic</label>
-                                                <config>
-                                                    <type>country</type>
-                                                    <labelField>iso2</labelField>
-                                                </config>
-                                            </country_1>
-                                            <country_2>
-                                                <label>Country 2</label>
-                                                <description>labelField=officialName,prioritizedCountries=AT,CH,sortByOptionLabel</description>
-                                                <config>
-                                                    <type>country</type>
-                                                    <labelField>officialName</labelField>
-                                                    <prioritizedCountries>
-                                                        <numIndex index="0">AT</numIndex>
-                                                        <numIndex index="1">CH</numIndex>
-                                                    </prioritizedCountries>
-                                                    <default>CH</default>
-                                                    <sortItems>
-                                                        <label>asc</label>
-                                                    </sortItems>
-                                                </config>
-                                            </country_2>
-                                            <country_3>
-                                                <label>Country 3</label>
-                                                <description>labelField=localizedOfficialName,filter</description>
-                                                <config>
-                                                    <type>country</type>
-                                                    <labelField>localizedOfficialName</labelField>
-                                                    <filter>
-                                                        <onlyCountries>
-                                                            <numIndex index="0">DE</numIndex>
-                                                            <numIndex index="1">AT</numIndex>
-                                                            <numIndex index="2">CH</numIndex>
-                                                            <numIndex index="1">FR</numIndex>
-                                                            <numIndex index="3">IT</numIndex>
-                                                            <numIndex index="4">HU</numIndex>
-                                                            <numIndex index="5">US</numIndex>
-                                                            <numIndex index="6">GR</numIndex>
-                                                            <numIndex index="7">ES</numIndex>
-                                                        </onlyCountries>
-                                                        <excludeCountries>
-                                                            <numIndex index="0">DE</numIndex>
-                                                            <numIndex index="1">ES</numIndex>
-                                                        </excludeCountries>
-                                                    </filter>
-                                                    <sortItems>
-                                                        <label>desc</label>
-                                                    </sortItems>
-                                                </config>
-                                            </country_3>
-                                        </el>
-                                    </ROOT>
-                                </sCountry>
-                            </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+        <sMultiplesidebyside>
+            <ROOT>
+                <type>array</type>
+                <sheetTitle>selectMultipleSideBySide</sheetTitle>
+                <el>
+                    <select_multiplesidebyside_1>
+                        <label>select_multiplesidebyside_1 description</label>
+                        <description>field description</description>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectMultipleSideBySide</renderType>
+                            <foreign_table>tx_styleguide_staticdata</foreign_table>
+                            <size>5</size>
+                            <autoSizeMax>5</autoSizeMax>
+                            <minitems>0</minitems>
+                            <multiSelectFilterItems>
+                                <numIndex index="0">
+                                    <numIndex index="0"></numIndex>
+                                    <numIndex index="1"></numIndex>
+                                </numIndex>
+                                <numIndex index="1">
+                                    <numIndex index="0">foo</numIndex>
+                                    <numIndex index="1">foo</numIndex>
+                                </numIndex>
+                                <numIndex index="2">
+                                    <numIndex index="0">bar</numIndex>
+                                    <numIndex index="1">bar</numIndex>
+                                </numIndex>
+                            </multiSelectFilterItems>
+                            <fieldControl>
+                                <editPopup>
+                                    <renderType>editPopup</renderType>
+                                    <disabled>0</disabled>
+                                </editPopup>
+                                <addRecord>
+                                    <renderType>addRecord</renderType>
+                                    <disabled>0</disabled>
+                                    <options>
+                                        <setValue>prepend</setValue>
+                                    </options>
+                                </addRecord>
+                                <listModule>
+                                    <renderType>listModule</renderType>
+                                    <disabled>0</disabled>
+                                </listModule>
+                            </fieldControl>
+                        </config>
+                    </select_multiplesidebyside_1>
+                    <select_multiplesidebyside_2>
+                        <label>select_multiplesidebyside_2</label>
+                        <description>select_multiplesidebyside_2 foreign_table MM</description>
+                        <config>
+                            <type>select</type>
+                            <renderType>selectMultipleSideBySide</renderType>
+                            <foreign_table>tx_styleguide_staticdata</foreign_table>
+                            <MM>tx_styleguide_elements_select_flex_1_multiplesidebyside_2_mm</MM>
+                            <size>5</size>
+                            <autoSizeMax>5</autoSizeMax>
+                        </config>
+                    </select_multiplesidebyside_2>
+                </el>
+            </ROOT>
+        </sMultiplesidebyside>
+        <sCountry>
+            <ROOT>
+                <type>array</type>
+                <sheetTitle>Country</sheetTitle>
+                <el>
+                    <country_1>
+                        <label>Country Basic</label>
+                        <config>
+                            <type>country</type>
+                            <labelField>iso2</labelField>
+                        </config>
+                    </country_1>
+                    <country_2>
+                        <label>Country 2</label>
+                        <description>labelField=officialName,prioritizedCountries=AT,CH,sortByOptionLabel</description>
+                        <config>
+                            <type>country</type>
+                            <labelField>officialName</labelField>
+                            <prioritizedCountries>
+                                <numIndex index="0">AT</numIndex>
+                                <numIndex index="1">CH</numIndex>
+                            </prioritizedCountries>
+                            <default>CH</default>
+                            <sortItems>
+                                <label>asc</label>
+                            </sortItems>
+                        </config>
+                    </country_2>
+                    <country_3>
+                        <label>Country 3</label>
+                        <description>labelField=localizedOfficialName,filter</description>
+                        <config>
+                            <type>country</type>
+                            <labelField>localizedOfficialName</labelField>
+                            <filter>
+                                <onlyCountries>
+                                    <numIndex index="0">DE</numIndex>
+                                    <numIndex index="1">AT</numIndex>
+                                    <numIndex index="2">CH</numIndex>
+                                    <numIndex index="1">FR</numIndex>
+                                    <numIndex index="3">IT</numIndex>
+                                    <numIndex index="4">HU</numIndex>
+                                    <numIndex index="5">US</numIndex>
+                                    <numIndex index="6">GR</numIndex>
+                                    <numIndex index="7">ES</numIndex>
+                                </onlyCountries>
+                                <excludeCountries>
+                                    <numIndex index="0">DE</numIndex>
+                                    <numIndex index="1">ES</numIndex>
+                                </excludeCountries>
+                            </filter>
+                            <sortItems>
+                                <label>desc</label>
+                            </sortItems>
+                        </config>
+                    </country_3>
+                </el>
+            </ROOT>
+        </sCountry>
+    </sheets>
+</T3DataStructure>
+                ',
             ],
         ],
 

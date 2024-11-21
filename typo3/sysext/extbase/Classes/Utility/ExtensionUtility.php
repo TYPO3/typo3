@@ -113,9 +113,10 @@ tt_content.' . $pluginSignature . ' {
      * @param string|null $pluginIcon is an icon identifier or file path prepended with "EXT:", that will be displayed in the drop down menu in the backend (optional)
      * @param string $group add this plugin to a plugin group, should be something like "news" or the like, "plugins" as regular
      * @param string $pluginDescription additional description
+     * @param string $flexForm The flex form (data structure) to be used for the plugin. Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
      * @throws \InvalidArgumentException
      */
-    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null, $group = 'plugins', string $pluginDescription = ''): string
+    public static function registerPlugin($extensionName, $pluginName, $pluginTitle, $pluginIcon = null, $group = 'plugins', string $pluginDescription = '', string $flexForm = ''): string
     {
         self::checkPluginNameFormat($pluginName);
         self::checkExtensionNameFormat($extensionName);
@@ -131,8 +132,9 @@ tt_content.' . $pluginSignature . ' {
                 $pluginSignature,
                 $pluginIcon ?? 'content-plugin',
                 $group,
-                $pluginDescription,
-            )
+                $pluginDescription
+            ),
+            $flexForm
         );
         return $pluginSignature;
     }

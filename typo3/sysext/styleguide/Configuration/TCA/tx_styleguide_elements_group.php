@@ -171,61 +171,59 @@ return [
             'label' => 'flex_1',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <sheets>
+                'ds' => '
+<T3DataStructure>
+    <sheets>
 
-                                <sDb>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>group</sheetTitle>
-                                        <el>
-                                            <group_db_1>
-                                                <label>group_db_1 description</label>
-                                                <description>field description</description>
-                                                <config>
-                                                    <type>group</type>
-                                                    <allowed>tx_styleguide_staticdata</allowed>
-                                                </config>
-                                            </group_db_1>
-                                            <group_db_2>
-                                                <label>group_db_2 suggest, order by uid DESC</label>
-                                                <config>
-                                                    <type>group</type>
-                                                    <allowed>tx_styleguide_staticdata</allowed>
-                                                    <suggestOptions>
-                                                        <default>
-                                                            <orderBy>uid DESC</orderBy>
-                                                        </default>
-                                                    </suggestOptions>
-                                                    <fieldControl>
-                                                        <editPopup>
-                                                            <renderType>editPopup</renderType>
-                                                            <disabled>0</disabled>
-                                                        </editPopup>
-                                                        <addRecord>
-                                                            <renderType>addRecord</renderType>
-                                                            <disabled>0</disabled>
-                                                            <options>
-                                                                <setValue>prepend</setValue>
-                                                            </options>
-                                                        </addRecord>
-                                                        <listModule>
-                                                            <renderType>listModule</renderType>
-                                                            <disabled>0</disabled>
-                                                        </listModule>
-                                                    </fieldControl>
-                                                </config>
-                                            </group_db_2>
-                                        </el>
-                                    </ROOT>
-                                </sDb>
+        <sDb>
+            <ROOT>
+                <type>array</type>
+                <sheetTitle>group</sheetTitle>
+                <el>
+                    <group_db_1>
+                        <label>group_db_1 description</label>
+                        <description>field description</description>
+                        <config>
+                            <type>group</type>
+                            <allowed>tx_styleguide_staticdata</allowed>
+                        </config>
+                    </group_db_1>
+                    <group_db_2>
+                        <label>group_db_2 suggest, order by uid DESC</label>
+                        <config>
+                            <type>group</type>
+                            <allowed>tx_styleguide_staticdata</allowed>
+                            <suggestOptions>
+                                <default>
+                                    <orderBy>uid DESC</orderBy>
+                                </default>
+                            </suggestOptions>
+                            <fieldControl>
+                                <editPopup>
+                                    <renderType>editPopup</renderType>
+                                    <disabled>0</disabled>
+                                </editPopup>
+                                <addRecord>
+                                    <renderType>addRecord</renderType>
+                                    <disabled>0</disabled>
+                                    <options>
+                                        <setValue>prepend</setValue>
+                                    </options>
+                                </addRecord>
+                                <listModule>
+                                    <renderType>listModule</renderType>
+                                    <disabled>0</disabled>
+                                </listModule>
+                            </fieldControl>
+                        </config>
+                    </group_db_2>
+                </el>
+            </ROOT>
+        </sDb>
 
-                            </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+    </sheets>
+</T3DataStructure>
+                ',
             ],
         ],
 

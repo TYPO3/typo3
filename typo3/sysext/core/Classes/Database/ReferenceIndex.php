@@ -905,7 +905,8 @@ class ReferenceIndex
             $tableTcaSchema = $this->tcaSchemaFactory->get($tableName);
             $fieldConfig['config'] = $tableTcaSchema->getField($fieldName)->getConfiguration();
             $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier(
-                $this->flexFormTools->getDataStructureIdentifier($fieldConfig, $tableName, $fieldName, $row)
+                $this->flexFormTools->getDataStructureIdentifier($fieldConfig, $tableName, $fieldName, $row, $tableTcaSchema),
+                $tableTcaSchema
             );
         } catch (InvalidIdentifierException) {
             // Data structure can not be resolved or parsed. No relations.

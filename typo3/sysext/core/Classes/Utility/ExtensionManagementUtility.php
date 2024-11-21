@@ -847,8 +847,9 @@ class ExtensionManagementUtility
      * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
      *
      * @param array|SelectItem $itemArray Numerical or assoc array: [0 or 'label'] => Plugin label, [1 or 'value'] => Plugin identifier / plugin key, ideally prefixed with an extension-specific name (e.g. "events2_list"), [2 or 'icon'] => Icon identifier or path to plugin icon, [3 or 'group'] => an optional "group" ID, falls back to "plugins"
+     * @param string $flexForm The flex form (data structure) to be used for the plugin. Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
      */
-    public static function addPlugin(array|SelectItem $itemArray): void
+    public static function addPlugin(array|SelectItem $itemArray, string $flexForm = ''): void
     {
         $selectItem = is_array($itemArray) ? SelectItem::fromTcaItemArray($itemArray) : $itemArray;
         if ($selectItem->getIcon() && !isset($GLOBALS['TCA']['tt_content']['ctrl']['typeicon_classes'][$selectItem->getValue()])) {
@@ -873,6 +874,18 @@ class ExtensionManagementUtility
         ) {
             $GLOBALS['TCA']['tt_content']['types'][$selectItem->getValue()] = $GLOBALS['TCA']['tt_content']['types']['header'];
         }
+
+        // Add data structure for the plugin
+        if ($flexForm !== '') {
+            $GLOBALS['TCA']['tt_content']['types'][$selectItem->getValue()]['columnsOverrides']['pi_flexform']['config']['ds'] = $flexForm;
+            // Add flexform to showitem list
+            self::addToAllTCAtypes(
+                'tt_content',
+                '--div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:plugin, pi_flexform',
+                $selectItem->getValue(),
+                'after:palette:headers'
+            );
+        }
     }
 
     /**
@@ -880,17 +893,24 @@ class ExtensionManagementUtility
      * This is used by plugins to add a flexform XML reference / content for use when they are selected as plugin or content element.
      * FOR USE IN files in Configuration/TCA/Overrides/*.php Use in ext_tables.php FILES may break the frontend.
      *
-     * @param string $piKeyToMatch Plugin key as used in the list_type field. Use the asterisk * to match all list_type values.
+     * @param string $_ previously $piKeyToMatch but now unused since there is no plugin key anymore => plugins are proper record (content) types
      * @param string $value Either a reference to a flex-form XML file (eg. "FILE:EXT:newloginbox/flexform_ds.xml") or the XML directly.
-     * @param string $CTypeToMatch Value of tt_content.CType (Content Type) to match. The default is "list" which corresponds to the "Insert Plugin" content element.  Use the asterisk * to match all CType values.
+     * @param string $CTypeToMatch Value of tt_content.CType (Content Type) to add the data structure
      * @see addPlugin()
-     * @todo This has to be deprecated / changed / dropped as matching "list_type" with CType (default:list) does no longer make any sense
+     * @deprecated Will be removed in TYPO3 v15
      */
-    public static function addPiFlexFormValue(string $piKeyToMatch, string $value, string $CTypeToMatch = 'list'): void
+    public static function addPiFlexFormValue(string $_, string $value, string $CTypeToMatch = ''): void
     {
-        if (is_array($GLOBALS['TCA']['tt_content']['columns']) && is_array($GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'])) {
-            $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'][$piKeyToMatch . ',' . $CTypeToMatch] = $value;
+        trigger_error(
+            __METHOD__ . ' is deprecated and will be removed in TYPO3 v15. Define the data structure for you content type by adding it in the addPlugin() call or setting it via columnsOverrides directly.',
+            E_USER_DEPRECATED
+        );
+
+        if ($CTypeToMatch === '' || $value === '') {
+            return;
         }
+
+        $GLOBALS['TCA']['tt_content']['types'][$CTypeToMatch]['columnsOverrides']['pi_flexform']['config']['ds'] = $value;
     }
 
     /**

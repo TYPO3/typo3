@@ -95,6 +95,7 @@ class TcaMigration
         $tcaProcessingResult = $this->removeIsStaticControlOption($tcaProcessingResult);
         $tcaProcessingResult = $this->removeFieldSearchConfigOptions($tcaProcessingResult);
         $tcaProcessingResult = $this->removeSearchFieldsControlOption($tcaProcessingResult);
+        $tcaProcessingResult = $this->migrateSingleDataStructureConfiguration($tcaProcessingResult);
 
         return $tcaProcessingResult;
     }
@@ -1766,6 +1767,37 @@ class TcaMigration
                         . ' but no longer evaluated \'searchFields\' TCA \'ctrl\' option, it was automatically set to'
                         . ' searchable => false, to be excluded in searches. Please consider this when adjusting your'
                         . ' TCA towards proper usage of searchable fields.'
+                    );
+                }
+            }
+        }
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    protected function migrateSingleDataStructureConfiguration(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => $tableDefinition) {
+            if (!is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (($fieldConfig['config']['type'] ?? '') !== 'flex'
+                    || !isset($fieldConfig['config']['ds'])
+                    || is_string($fieldConfig['config']['ds'])
+                ) {
+                    continue;
+                }
+
+                $dataStructureConfiguration = $fieldConfig['config']['ds'];
+                if (is_array($dataStructureConfiguration) && count($dataStructureConfiguration) === 1) {
+                    $dataStructureKey = key($dataStructureConfiguration);
+                    $tca[$table]['columns'][$fieldName]['config']['ds'] = reset($dataStructureConfiguration);
+                    $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages(
+                        'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines '
+                        . 'a data structure below key \'' . $dataStructureKey . '\' in \'ds\'. Since \'ds\' does '
+                        . 'now contain the data strcuture directly, the corresponding configuration has been migrated. '
+                        . 'Please adjust your TCA accordingly.'
                     );
                 }
             }

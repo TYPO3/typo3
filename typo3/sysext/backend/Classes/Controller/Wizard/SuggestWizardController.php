@@ -66,11 +66,11 @@ class SuggestWizardController
         $flexFormContainerName = $parsedBody['flexFormContainerName'] ?? null;
         $flexFormContainerFieldName = $parsedBody['flexFormContainerFieldName'] ?? null;
         $recordType = (string)($parsedBody['recordTypeValue'] ?? '');
+        $schema = $this->tcaSchemaFactory->get($tableName);
 
         // Determine TCA config of field
         if (empty($dataStructureIdentifier)) {
             // Normal columns field
-            $schema = $this->tcaSchemaFactory->get($tableName);
             $fieldInformation = $schema->getField($fieldName);
             $fieldConfig = $fieldInformation->getConfiguration();
             $fieldNameInPageTsConfig = $fieldName;
@@ -88,7 +88,7 @@ class SuggestWizardController
             }
         } else {
             // A flex-form field
-            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
             if (empty($flexFormContainerFieldName)) {
                 // @todo: See if a path in pageTsConfig like "TCEForm.tableName.theContainerFieldName =" is useful and works with other pageTs, too.
                 $fieldNameInPageTsConfig = $flexFormFieldName;

@@ -29,9 +29,13 @@ final readonly class FlexFormFieldType extends AbstractFieldType
         return (bool)($this->configuration['searchable'] ?? true);
     }
 
-    public function getDataStructure(): array
+    public function getDataStructure(): string
     {
-        return is_array($this->configuration['ds'] ?? null) ? $this->configuration['ds'] : [];
+        if (!isset($this->configuration['ds'])) {
+            return '';
+        }
+
+        return is_string($this->configuration['ds']) ? $this->configuration['ds'] : '';
     }
 
     public function isNullable(): false

@@ -1707,4 +1707,11 @@ return [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-107047-ExtensionManagementUtilityAddPiFlexFormValue.rst',
+        ],
+    ],
 ];

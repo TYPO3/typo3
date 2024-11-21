@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaSelectTreeAjaxFieldData;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -37,6 +38,7 @@ class FormSelectTreeAjaxController
     public function __construct(
         private readonly FormDataCompiler $formDataCompiler,
         private readonly FlexFormTools $flexFormTools,
+        private readonly TcaSchemaFactory $schemaFactory,
     ) {}
 
     /**
@@ -51,19 +53,22 @@ class FormSelectTreeAjaxController
 
         // Prepare processedTca: Remove all column definitions except the one that contains
         // our tree definition. This way only this field is calculated, everything else is ignored.
-        if (!isset($GLOBALS['TCA'][$tableName]) || !is_array($GLOBALS['TCA'][$tableName])) {
+        if (!$this->schemaFactory->has($tableName)) {
             throw new \RuntimeException(
                 'TCA for table ' . $tableName . ' not found',
                 1479386729
             );
         }
-        $processedTca = $GLOBALS['TCA'][$tableName];
-        if (!isset($processedTca['columns'][$fieldName]) || !is_array($processedTca['columns'][$fieldName])) {
+        $schema = $this->schemaFactory->get($tableName);
+        if (!$schema->hasField($fieldName)) {
             throw new \RuntimeException(
                 'TCA for table ' . $tableName . ' and field ' . $fieldName . ' not found',
                 1479386990
             );
         }
+
+        // @todo Replace with a mutable schema
+        $processedTca = $GLOBALS['TCA'][$tableName];
 
         // Force given record type and set showitem to our field only
         $recordTypeValue = $request->getQueryParams()['recordTypeValue'];
@@ -90,7 +95,7 @@ class FormSelectTreeAjaxController
             $flexFormContainerFieldName = $request->getQueryParams()['flexFormContainerFieldName'];
             $flexFormSectionContainerIsNew = (bool)$request->getQueryParams()['flexFormSectionContainerIsNew'];
 
-            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+            $dataStructure = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier, $schema);
 
             // Reduce given data structure down to the relevant element only
             if (empty($flexFormContainerFieldName)) {

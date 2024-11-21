@@ -15,23 +15,26 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
+namespace TYPO3\CMS\Backend\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormSelectTreeAjaxController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class FormSelectTreeAjaxControllerTest extends UnitTestCase
+final class FormSelectTreeAjaxControllerTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function fetchDataActionThrowsExceptionIfTcaOfTableDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386729);
-        (new FormSelectTreeAjaxController(new FormDataCompiler(), $this->createMock(FlexFormTools::class)))->fetchDataAction(new ServerRequest());
+        (new FormSelectTreeAjaxController(new FormDataCompiler(), $this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->fetchDataAction(new ServerRequest());
     }
 
     #[Test]
@@ -42,8 +45,9 @@ final class FormSelectTreeAjaxControllerTest extends UnitTestCase
             'fieldName' => 'aField',
         ]);
         $GLOBALS['TCA']['aTable']['columns'] = [];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1479386990);
-        (new FormSelectTreeAjaxController(new FormDataCompiler(), $this->createMock(FlexFormTools::class)))->fetchDataAction($serverRequest);
+        (new FormSelectTreeAjaxController(new FormDataCompiler(), $this->get(FlexFormTools::class), $this->get(TcaSchemaFactory::class)))->fetchDataAction($serverRequest);
     }
 }

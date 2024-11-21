@@ -1570,7 +1570,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
 </T3FlexForms>',
         ]);
 
-        $GLOBALS['TCA']['tt_content']['columns']['typo3tests_contentelementb_flexfield']['config']['ds']['typo3tests_contentelementb'] = '<T3FlexForms>
+        $GLOBALS['TCA']['tt_content']['types']['typo3tests_contentelementb']['columnsOverrides']['typo3tests_contentelementb_flexfield']['config']['ds'] = '<T3FlexForms>
     <sheets type="array">
         <sDEF type="array">
             <ROOT type="array">
@@ -1953,7 +1953,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
 </T3FlexForms>',
         ]);
 
-        unset($GLOBALS['TCA']['tt_content']['columns']['typo3tests_contentelementb_flexfield']['config']['ds']['default']);
+        unset($GLOBALS['TCA']['tt_content']['columns']['typo3tests_contentelementb_flexfield']['config']['ds']);
         $schemaFactory = $this->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild($GLOBALS['TCA']);
         $fieldInformation = $schemaFactory->get('tt_content')->getField('typo3tests_contentelementb_flexfield');

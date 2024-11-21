@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\Flexform;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\ActionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -40,7 +41,7 @@ final class ActionTest extends FunctionalTestCase
     #[Test]
     public function transformationAppliesForRichTextFieldsWithoutSheets(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<?xml version="1.0" encoding="UTF-8"?>
+        $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'] = '<?xml version="1.0" encoding="UTF-8"?>
 <T3DataStructure>
     <meta>
         <langDisable>0</langDisable>
@@ -61,6 +62,7 @@ final class ActionTest extends FunctionalTestCase
         </el>
     </ROOT>
 </T3DataStructure>';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $expected = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3FlexForms>
@@ -113,7 +115,7 @@ final class ActionTest extends FunctionalTestCase
     #[Test]
     public function transformationAppliesForRichTextFieldsWithSheets(): void
     {
-        $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds']['default'] = '<T3DataStructure>
+        $GLOBALS['TCA']['tt_content']['columns']['pi_flexform']['config']['ds'] = '<T3DataStructure>
     <meta>
         <langDisable>1</langDisable>
     </meta>
@@ -140,6 +142,7 @@ final class ActionTest extends FunctionalTestCase
         </sheet1>
     </sheets>
 </T3DataStructure>';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $expected = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <T3FlexForms>

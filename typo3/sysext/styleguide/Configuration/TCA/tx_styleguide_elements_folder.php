@@ -52,31 +52,29 @@ return [
             'label' => 'flex_1',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
-                        <T3DataStructure>
-                            <sheets>
+                'ds' => '
+<T3DataStructure>
+    <sheets>
 
-                                <sDb>
-                                    <ROOT>
-                                        <type>array</type>
-                                        <sheetTitle>folder</sheetTitle>
-                                        <el>
-                                            <folder_1>
-                                                <label>folder_1 description</label>
-                                                <description>field description</description>
-                                                <config>
-                                                    <type>folder</type>
-                                                </config>
-                                            </folder_1>
-                                        </el>
-                                    </ROOT>
-                                </sDb>
+        <sDb>
+            <ROOT>
+                <type>array</type>
+                <sheetTitle>folder</sheetTitle>
+                <el>
+                    <folder_1>
+                        <label>folder_1 description</label>
+                        <description>field description</description>
+                        <config>
+                            <type>folder</type>
+                        </config>
+                    </folder_1>
+                </el>
+            </ROOT>
+        </sDb>
 
-                            </sheets>
-                        </T3DataStructure>
-                    ',
-                ],
+    </sheets>
+</T3DataStructure>
+                ',
             ],
         ],
 

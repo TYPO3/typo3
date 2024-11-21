@@ -105,7 +105,7 @@ class CleanFlexFormsCommand extends Command
                         continue;
                     }
                     // Clean XML and check against current record value.
-                    $cleanXml = $this->flexFormTools->cleanFlexFormXML($tableName, $field->getName(), $record);
+                    $cleanXml = $this->flexFormTools->cleanFlexFormXML($tableName, $field->getName(), $record, $schema);
                     if ($cleanXml !== $record[$field->getName()]) {
                         $recordHadUpdate = true;
                         $tableHadUpdate = true;

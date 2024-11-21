@@ -1689,9 +1689,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             'label' => 'aLabel',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '',
-                ],
+                'ds' => '<T3DataStructure><ROOT></ROOT></T3DataStructure>',
             ],
         ];
         $subject = new DefaultTcaSchema($this->getPreparedTcaSchemaFactory($tca));
@@ -2856,10 +2854,8 @@ final class DefaultTcaSchemaTest extends UnitTestCase
 
     private function getPreparedTcaSchemaFactory(array $tca): TcaSchemaFactory
     {
-        $flexFormMock = $this->createMock(FlexFormTools::class);
-        $flexFormMock->method('parseDataStructureByIdentifier')->willReturn(['sheets' => []]);
         $tcaSchemaFactory = new TcaSchemaFactory(
-            new RelationMapBuilder($flexFormMock),
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
             'null',
             new NullFrontend('null')

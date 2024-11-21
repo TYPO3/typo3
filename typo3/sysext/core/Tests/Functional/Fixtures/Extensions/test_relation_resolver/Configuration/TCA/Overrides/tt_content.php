@@ -176,8 +176,7 @@ $overrides = [
         'typo3tests_contentelementb_flexfield' => [
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'typo3tests_contentelementb' => '<T3FlexForms>
+                'ds' => '<T3FlexForms>
     <sheets type="array">
         <sDEF type="array">
             <ROOT type="array">
@@ -313,7 +312,7 @@ $overrides = [
         </sheet2>
     </sheets>
 </T3FlexForms>',
-                    'default' => '<T3DataStructure>
+                'default' => '<T3DataStructure>
   <ROOT>
     <type>array</type>
     <el>
@@ -327,8 +326,6 @@ $overrides = [
     </el>
   </ROOT>
 </T3DataStructure>',
-                ],
-                'ds_pointerField' => 'CType',
             ],
             'exclude' => true,
             'label' => 'flexfield',
@@ -336,8 +333,8 @@ $overrides = [
         'typo3tests_contentelementb_flexfield_ds' => [
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '<T3FlexForms>
+                'ds' => '
+<T3FlexForms>
     <sheets type="array">
         <sDEF type="array">
             <ROOT type="array">
@@ -397,7 +394,6 @@ $overrides = [
         </sheet2>
     </sheets>
 </T3FlexForms>',
-                ],
             ],
             'exclude' => true,
             'label' => 'flexfield',

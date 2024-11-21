@@ -59,8 +59,8 @@ return [
             'exclude' => true,
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '<T3FlexForms>
+                'ds' => '
+<T3FlexForms>
     <sheets type="array">
         <sheet type="array">
             <ROOT type="array">
@@ -95,7 +95,6 @@ return [
         </sheet>
     </sheets>
 </T3FlexForms>',
-                ],
             ],
         ],
     ],

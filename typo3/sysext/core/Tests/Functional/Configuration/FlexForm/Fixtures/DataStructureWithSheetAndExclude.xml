@@ -1,0 +1,25 @@
+<T3DataStructure>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <sheetTitle>aTitle</sheetTitle>
+                <type>array</type>
+                <el>
+                    <aFlexField>
+                        <label>aFlexFieldLabel</label>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </aFlexField>
+                    <input_exclude>
+                        <label>anExcludeFlexField</label>
+                        <exclude>1</exclude>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </input_exclude>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>

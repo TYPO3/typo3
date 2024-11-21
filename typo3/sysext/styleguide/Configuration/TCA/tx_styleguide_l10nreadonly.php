@@ -495,8 +495,7 @@ return [
             'l10n_display' => 'defaultAsReadonly',
             'config' => [
                 'type' => 'flex',
-                'ds' => [
-                    'default' => '
+                'ds' => '
 <T3DataStructure>
     <sheets>
         <sDEF>
@@ -515,8 +514,7 @@ return [
         </sDEF>
     </sheets>
 </T3DataStructure>
-                    ',
-                ],
+                ',
             ],
         ],
     ],
