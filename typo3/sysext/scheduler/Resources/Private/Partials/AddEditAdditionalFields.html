@@ -67,6 +67,9 @@
                     <f:if condition="{field.type} == 'select'">
                         <f:then>
                             <div class="formengine-field-item t3js-formengine-field-item">
+                                <f:if condition="{field.description}">
+                                    <div class="form-description">{field.description}</div>
+                                </f:if>
                                 <div class="form-control-wrap">
                                     <div class="form-wizards-wrap">
                                         <div class="form-wizards-item-element">
@@ -92,6 +95,9 @@
                         </f:else>
                         <f:else if="{field.type} == 'textarea'">
                             <typo3-formengine-element-text class="formengine-field-item t3js-formengine-field-item">
+                                <f:if condition="{field.description}">
+                                    <div class="form-description">{field.description}</div>
+                                </f:if>
                                 <div class="form-control-wrap">
                                     <div class="form-wizards-wrap">
                                         <div class="form-wizards-item-element">
@@ -103,6 +109,9 @@
                         </f:else>
                         <f:else if="{field.type} == 'check'">
                             <div class="formengine-field-item t3js-formengine-field-item">
+                                <f:if condition="{field.description}">
+                                    <div class="form-description">{field.description}</div>
+                                </f:if>
                                 <div class="form-wizards-wrap">
                                     <div class="form-wizards-item-element">
                                         <div class="form-check form-check-type-icon-toggle">
@@ -124,6 +133,9 @@
                         </f:else>
                         <f:else if="{field.type} == 'checkToggle'">
                             <div class="formengine-field-item t3js-formengine-field-item">
+                                <f:if condition="{field.description}">
+                                    <div class="form-description">{field.description}</div>
+                                </f:if>
                                 <div class="form-wizards-wrap">
                                     <div class="form-wizards-item-element">
                                         <div class="form-check form-switch">
