@@ -488,14 +488,18 @@ class DefaultTcaSchema
                         break;
 
                     case 'datetime':
+                        $dbType = $fieldConfig['config']['dbType'] ?? '';
                         // Add datetime fields for all tables, defining datetime columns (TCA type=datetime), except
                         // those columns, which had already been added due to definition in "ctrl", e.g. "starttime".
-                        if (in_array($fieldConfig['config']['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true)) {
+                        if (in_array($dbType, QueryHelper::getDateTimeTypes(), true)) {
+                            $nullable = $fieldConfig['config']['nullable'] ?? true;
                             $tables[$tableName]->addColumn(
                                 $this->quote($fieldName),
-                                $fieldConfig['config']['dbType'],
+                                $dbType,
                                 [
-                                    'notnull' => false,
+                                    // native datetime fields are nullable by default, and
+                                    // are only not-nullable if `nullable` is explicitly set to false.
+                                    'notnull' => !$nullable,
                                 ]
                             );
                         } else {

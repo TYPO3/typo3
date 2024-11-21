@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
-use Doctrine\DBAL\Types\BigIntType;
-use Doctrine\DBAL\Types\IntegerType;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
 
@@ -39,31 +36,21 @@ final class TypeDatetimeFormatTime extends AbstractFieldGenerator implements Fie
         ],
     ];
 
-    public function __construct(private readonly ConnectionPool $connectionPool) {}
-
     public function generate(array $data): string|int
     {
         // 05:23
         $value = 19380;
-
-        // If database field is configured as integer field type, keep the integer-like value.
-        $tableSchemaInformation = $this->connectionPool
-            ->getConnectionForTable($data['tableName'])
-            ->getSchemaInformation()
-            ->introspectTable($data['tableName']);
-        if ($tableSchemaInformation->hasColumn($data['fieldName'])
-            && ($tableSchemaInformation->getColumn($data['fieldName'])->getType() instanceof IntegerType ||
-                $tableSchemaInformation->getColumn($data['fieldName'])->getType() instanceof BigIntType)
-        ) {
-            return $value;
-        }
 
         // We need to partly do the same work as the DataHandler for some dbTypes for the DateTime type to get
         // database compatible values. Without it, we will get invalid format database exception when inserted.
         // See \TYPO3\CMS\Core\DataHandling\DataHandler::checkValueForDatetime().
         $nativeDateTimeType = $data['fieldConfig']['config']['dbType'] ?? '';
         $dateTimeFormats = QueryHelper::getDateTimeFormats();
-        $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'] ?? 'h:i:s';
-        return gmdate($nativeDateTimeFieldFormat, (int)$value);
+        $format = $dateTimeFormats[$nativeDateTimeType]['format'] ?? null;
+        if ($format === null) {
+            // If database field is configured as integer field type, keep the integer-like value.
+            return $value;
+        }
+        return gmdate($format, $value);
     }
 }

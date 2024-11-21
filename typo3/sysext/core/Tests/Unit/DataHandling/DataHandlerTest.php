@@ -464,16 +464,19 @@ final class DataHandlerTest extends UnitTestCase
     public static function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmptyDataProvider(): array
     {
         return [
-            'Empty string returns the number zero' => [
+            'Empty string returns null if nullable, zero otherwise' => [
                 '',
                 0,
+                null,
             ],
             'Zero returns zero' => [
+                0,
                 0,
                 0,
             ],
             'Zero as a string returns zero' => [
                 '0',
+                0,
                 0,
             ],
         ];
@@ -484,6 +487,7 @@ final class DataHandlerTest extends UnitTestCase
     public function inputValueRangeCheckIsIgnoredWhenDefaultIsZeroAndInputValueIsEmpty(
         string|int $inputValue,
         int $expected,
+        ?int $expectedNullable,
     ): void {
         $tcaFieldConf = [
             'type' => 'datetime',
@@ -495,6 +499,10 @@ final class DataHandlerTest extends UnitTestCase
 
         $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConf);
         self::assertSame($expected, $returnValue['value']);
+
+        $tcaFieldConf['nullable'] = true;
+        $returnValue = $this->subject->_call('checkValueForDatetime', $inputValue, $tcaFieldConf);
+        self::assertSame($expectedNullable, $returnValue['value']);
     }
 
     public static function datetimeValueCheckDbtypeIsIndependentFromTimezoneDataProvider(): array
@@ -561,49 +569,43 @@ final class DataHandlerTest extends UnitTestCase
             'Datetime at unix epoch' => [
                 '1970-01-01T00:00:00Z',
                 'datetime',
-                false,
+                '1970-01-01 00:00:00',
                 '1970-01-01 00:00:00',
             ],
             'Default datetime' => [
                 '0000-00-00 00:00:00',
                 'datetime',
-                false,
                 null,
+                '0000-00-00 00:00:00',
             ],
             'Default date' => [
                 '0000-00-00',
                 'date',
-                false,
                 null,
+                '0000-00-00',
             ],
             'Default time' => [
                 '00:00:00',
                 'time',
-                false,
+                null,
                 '00:00:00',
             ],
-            'Null on nullable time' => [
+            'Null time' => [
                 null,
                 'time',
-                true,
                 null,
-            ],
-            'Null on not nullable time' => [
-                null,
-                'time',
-                false,
                 '00:00:00',
             ],
             'Minimum mysql datetime' => [
                 '1000-01-01 00:00:00',
                 'datetime',
-                false,
+                '1000-01-01 00:00:00',
                 '1000-01-01 00:00:00',
             ],
             'Maximum mysql datetime' => [
                 '9999-12-31 23:59:59',
                 'datetime',
-                false,
+                '9999-12-31 23:59:59',
                 '9999-12-31 23:59:59',
             ],
         ];
@@ -611,18 +613,43 @@ final class DataHandlerTest extends UnitTestCase
 
     #[DataProvider('inputValueCheckNativeDbTypeDataProvider')]
     #[Test]
-    public function inputValueCheckNativeDbType(?string $value, string $dbType, bool $nullable, ?string $expectedOutput): void
-    {
+    public function inputValueCheckNativeDbType(
+        ?string $value,
+        string $dbType,
+        ?string $expectedNullableOutput,
+        string $expectedNotNullableOutput
+    ): void {
+        // Explicit nullable
         $tcaFieldConf = [
             'input' => [],
             'dbType' => $dbType,
             'format' => $dbType,
-            'nullable' => $nullable,
+            'nullable' => true,
         ];
 
         $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+        self::assertEquals($expectedNullableOutput, $returnValue['value']);
 
-        self::assertEquals($expectedOutput, $returnValue['value']);
+        // Implicit nullable
+        $tcaFieldConf = [
+            'input' => [],
+            'dbType' => $dbType,
+            'format' => $dbType,
+        ];
+
+        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+        self::assertEquals($expectedNullableOutput, $returnValue['value']);
+
+        // Not null
+        $tcaFieldConf = [
+            'input' => [],
+            'dbType' => $dbType,
+            'format' => $dbType,
+            'nullable' => false,
+        ];
+
+        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+        self::assertEquals($expectedNotNullableOutput, $returnValue['value']);
     }
 
     #[Test]
