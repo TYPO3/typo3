@@ -179,6 +179,7 @@ class QueryHelper
      */
     public static function getDateTimeFormats(): array
     {
+        // @todo: 'reset' is unused these days, remove in v14
         return [
             'date' => [
                 'empty' => '0000-00-00',

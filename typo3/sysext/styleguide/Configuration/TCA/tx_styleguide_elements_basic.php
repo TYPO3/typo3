@@ -1722,6 +1722,22 @@ backend_layout {
                                                     <format>timesec</format>
                                                 </config>
                                             </inputDateTime_6>
+                                            <inputDateTime_7>
+                                                <label>inputDateTime_7 format=time</label>
+                                                <config>
+                                                    <type>datetime</type>
+                                                    <format>time</format>
+                                                    <dbType>time</dbType>
+                                                </config>
+                                            </inputDateTime_7>
+                                            <inputDateTime_8>
+                                                <label>inputDateTime_8 format=timesec</label>
+                                                <config>
+                                                    <type>datetime</type>
+                                                    <format>timesec</format>
+                                                    <dbType>time</dbType>
+                                                </config>
+                                            </inputDateTime_8>
                                         </el>
                                     </ROOT>
                                 </sInputDateTime>

@@ -2098,14 +2098,13 @@ class DataHandler
         // Handle native date/time fields
         $isNativeDateTimeField = false;
         $nativeDateTimeFieldFormat = '';
-        $nativeDateTimeFieldResetValue = '';
+        $nativeDateTimeFieldEmptyValue = '';
         $nativeDateTimeType = $tcaFieldConf['dbType'] ?? '';
         if (in_array($nativeDateTimeType, QueryHelper::getDateTimeTypes(), true)) {
             $isNativeDateTimeField = true;
             $dateTimeFormats = QueryHelper::getDateTimeFormats();
             $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'];
             $nativeDateTimeFieldEmptyValue = $dateTimeFormats[$nativeDateTimeType]['empty'];
-            $nativeDateTimeFieldResetValue = $dateTimeFormats[$nativeDateTimeType]['reset'];
             if (empty($value)) {
                 $value = null;
             } else {
@@ -2166,13 +2165,15 @@ class DataHandler
 
         // Handle native date/time fields
         if ($isNativeDateTimeField) {
-            if ($tcaFieldConf['nullable'] ?? false) {
+            if ($tcaFieldConf['nullable'] ?? true) {
                 // Convert the timestamp back to a date/time if not null
                 $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : null;
             } else {
                 // Convert the timestamp back to a date/time
-                $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : $nativeDateTimeFieldResetValue;
+                $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : $nativeDateTimeFieldEmptyValue;
             }
+        } elseif ((string)$value === '' && ($tcaFieldConf['nullable'] ?? false)) {
+            $value = null;
         } else {
             // Ensure value is always an int if no native field is used
             $value = (int)$value;

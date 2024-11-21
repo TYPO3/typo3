@@ -180,6 +180,282 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         $this->runInputFieldTest($I, $testData);
     }
 
+    private function typeDatetimeFormatTimeMidnightDataProvider(): array
+    {
+        return [
+            [
+                'label' => 'inputdatetime_5',
+                'inputValue' => '00:00',
+                'expectedValue' => '00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                // Field is not nullable, 00:00 is therefore interpred as empty
+                'expectedInternalValueAfterSave' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_5 format=time',
+            ],
+            [
+                'label' => 'inputdatetime_12',
+                'inputValue' => '00:00',
+                'expectedValue' => '00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                // @todo render time-based values based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00+00:00',
+                'comment' => 'inputdatetime_12 format=time dbType=time',
+            ],
+            [
+                'label' => 'inputdatetime_25',
+                'inputValue' => '00:00',
+                'expectedValue' => '00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00+00:00',
+                'comment' => 'inputdatetime_25 format=time nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_32',
+                'inputValue' => '00:00',
+                'expectedValue' => '00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                // @todo return time-based value based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00+00:00',
+                'comment' => 'inputdatetime_32 format=time dbType=time nullable=true',
+            ],
+        ];
+    }
+
+    #[DataProvider('typeDatetimeFormatTimeMidnightDataProvider')]
+    public function typeDatetimeFormatTimeMidnight(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldTest($I, $testData);
+    }
+
+    private function typeDatetimeFormatTimeAnteMeridiemDataProvider(): array
+    {
+        return [
+            [
+                'label' => 'inputdatetime_5',
+                'inputValue' => '05:43',
+                'expectedValue' => '05:43',
+                'expectedInternalValue' => '1970-01-01T05:43:00Z',
+                'expectedValueAfterSave' => '1970-01-01T05:43:00+00:00',
+                'comment' => 'inputdatetime_5 format=time',
+            ],
+            [
+                'label' => 'inputdatetime_12',
+                'inputValue' => '05:43',
+                'expectedValue' => '05:43',
+                'expectedInternalValue' => '1970-01-01T05:43:00Z',
+                // @todo render time-based values based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:00+00:00',
+                'comment' => 'inputdatetime_12 format=time dbType=time',
+            ],
+            [
+                'label' => 'inputdatetime_25',
+                'inputValue' => '05:43',
+                'expectedValue' => '05:43',
+                'expectedInternalValue' => '1970-01-01T05:43:00Z',
+                'expectedValueAfterSave' => '1970-01-01T05:43:00+00:00',
+                'comment' => 'inputdatetime_25 format=time nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_32',
+                'inputValue' => '05:43',
+                'expectedValue' => '05:43',
+                'expectedInternalValue' => '1970-01-01T05:43:00Z',
+                // @todo return time-based value based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:00+00:00',
+                'comment' => 'inputdatetime_32 format=time dbType=time nullable=true',
+            ],
+        ];
+    }
+
+    #[DataProvider('typeDatetimeFormatTimeAnteMeridiemDataProvider')]
+    public function typeDatetimeFormatTimeAnteMeridiem(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldTest($I, $testData);
+    }
+
+    private function typeDatetimeFormatTimeEmptyDataProvider(): array
+    {
+        return [
+            [
+                'label' => 'inputdatetime_5',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_5 format=time',
+            ],
+            [
+                'label' => 'inputdatetime_12',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_12 format=time dbType=time',
+            ],
+            [
+                'label' => 'inputdatetime_25',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_25 format=time nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_32',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_32 format=time dbType=time nullable=true',
+            ],
+        ];
+    }
+
+    #[DataProvider('typeDatetimeFormatTimeEmptyDataProvider')]
+    public function typeDatetimeFormatTimeEmpty(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldTest($I, $testData);
+    }
+
+    private function typeDatetimeFormatTimesecMidnightDataProvider(): array
+    {
+        return [
+            [
+                'label' => 'inputdatetime_6',
+                'inputValue' => '00:00:00',
+                'expectedValue' => '00:00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                // Field is not nullable, 00:00 is therefore interpred as empty
+                'expectedInternalValueAfterSave' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_6 format=timesec',
+            ],
+            [
+                'label' => 'inputdatetime_13',
+                'inputValue' => '00:00:00',
+                'expectedValue' => '00:00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                // @todo render time-based values based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00+00:00',
+                'comment' => 'inputdatetime_13 format=timesec dbType=time',
+            ],
+            [
+                'label' => 'inputdatetime_26',
+                'inputValue' => '00:00:00',
+                'expectedValue' => '00:00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00+00:00',
+                'comment' => 'inputdatetime_26 format=timesec nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_33',
+                'inputValue' => '00:00:00',
+                'expectedValue' => '00:00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                // @todo return time-based value based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00+00:00',
+                'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
+            ],
+        ];
+    }
+
+    #[DataProvider('typeDatetimeFormatTimesecMidnightDataProvider')]
+    public function typeDatetimeFormatTimesecMidnight(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldTest($I, $testData);
+    }
+
+    private function typeDatetimeFormatTimesecAnteMeridiemDataProvider(): array
+    {
+        return [
+            [
+                'label' => 'inputdatetime_6',
+                'inputValue' => '05:43:21',
+                'expectedValue' => '05:43:21',
+                'expectedInternalValue' => '1970-01-01T05:43:21Z',
+                'expectedValueAfterSave' => '1970-01-01T05:43:21+00:00',
+                'comment' => 'inputdatetime_6 format=timesec',
+            ],
+            [
+                'label' => 'inputdatetime_13',
+                'inputValue' => '05:43:21',
+                'expectedValue' => '05:43:21',
+                'expectedInternalValue' => '1970-01-01T05:43:21Z',
+                // @todo render time-based values based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:21+00:00',
+                'comment' => 'inputdatetime_13 format=timesec dbType=time',
+            ],
+            [
+                'label' => 'inputdatetime_26',
+                'inputValue' => '05:43:21',
+                'expectedValue' => '05:43:21',
+                'expectedInternalValue' => '1970-01-01T05:43:21Z',
+                'expectedValueAfterSave' => '1970-01-01T05:43:21+00:00',
+                'comment' => 'inputdatetime_26 format=timesec nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_33',
+                'inputValue' => '05:43:21',
+                'expectedValue' => '05:43:21',
+                'expectedInternalValue' => '1970-01-01T05:43:21Z',
+                // @todo return time-based value based on 1970 instead of "today"
+                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:21+00:00',
+                'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
+            ],
+        ];
+    }
+
+    #[DataProvider('typeDatetimeFormatTimesecAnteMeridiemDataProvider')]
+    public function typeDatetimeFormatTimesecAnteMeridiem(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldTest($I, $testData);
+    }
+
+    private function typeDatetimeFormatTimesecEmptyDataProvider(): array
+    {
+        return [
+            [
+                'label' => 'inputdatetime_6',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_6 format=timesec',
+            ],
+            [
+                'label' => 'inputdatetime_13',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_13 format=timesec dbType=time',
+            ],
+            [
+                'label' => 'inputdatetime_26',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_26 format=timesec nullable=true',
+            ],
+            [
+                'label' => 'inputdatetime_33',
+                'inputValue' => '',
+                'expectedValue' => '',
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
+                'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
+            ],
+        ];
+    }
+
+    #[DataProvider('typeDatetimeFormatTimesecEmptyDataProvider')]
+    public function typeDatetimeFormatTimesecEmpty(ApplicationTester $I, Example $testData): void
+    {
+        $this->runInputFieldTest($I, $testData);
+    }
+
     /**
      * Overridden from AbstractElementsInBasicCest to cope with flatpickr, until it's gone
      */
