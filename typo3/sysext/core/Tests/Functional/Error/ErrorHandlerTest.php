@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Error;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Error\ErrorHandler;
 use TYPO3\CMS\Core\Log\Logger;
@@ -42,6 +43,7 @@ final class ErrorHandlerTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function handleErrorFetchesDeprecations(): void
     {
         trigger_error(
@@ -52,7 +54,6 @@ final class ErrorHandlerTest extends FunctionalTestCase
             'The second error should be caught by ErrorHandler as well.',
             E_USER_DEPRECATED
         );
-        self::assertTrue(true);
     }
 
     /**

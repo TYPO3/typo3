@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Functional\Domain\Configuration;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
@@ -70,6 +71,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function validateAllFormElementPropertyValuesByHmacOkWithValidHmac(): void
     {
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
@@ -138,6 +140,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function validateAllPropertyCollectionElementValuesByHmacOkWithValidHmac(): void
     {
         $subjectMock = $this->getAccessibleMock(FormDefinitionValidationService::class, null, [], '', false);
@@ -242,6 +245,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function validateAllPropertyValuesFromCreatableFormElementOkWithValidHmac(): void
     {
         $configurationService = $this->createMock(ConfigurationService::class);
@@ -342,6 +346,7 @@ final class FormDefinitionValidationServiceTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function validateAllPropertyValuesFromCreatablePropertyCollectionElementOkWithValidHmac(): void
     {
         $configurationService = $this->createMock(ConfigurationService::class);

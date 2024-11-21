@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -387,6 +388,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function flushByTagWorksWithEmptyCacheTables(): void
     {
         $subject = $this->getSubjectObject();
@@ -394,6 +396,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function flushByTagsWorksWithEmptyCacheTables(): void
     {
         $subject = $this->getSubjectObject();
@@ -433,6 +436,7 @@ final class Typo3DatabaseBackendTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function collectGarbageWorksWithEmptyTable(): void
     {
         $subject = $this->getSubjectObject();

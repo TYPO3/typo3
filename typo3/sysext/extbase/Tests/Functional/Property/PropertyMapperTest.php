@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Property;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -44,11 +45,10 @@ final class PropertyMapperTest extends FunctionalTestCase
     ];
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function convertCreatesAPropertyMappingConfigurationIfNotGiven(): void
     {
-        // This test just increases the test coverage
-        $this->get(PropertyMapper::class)
-            ->convert('string', 'string');
+        $this->get(PropertyMapper::class)->convert('string', 'string');
     }
 
     #[Test]

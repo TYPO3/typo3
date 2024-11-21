@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -43,6 +44,7 @@ final class ProcessedFileTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function processedFileArrayCanBeSerialized(): void
     {
         $resourceFactory = $this->get(ResourceFactory::class);

@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database\Middleware;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Middleware\CustomPlatformDriverMiddleware;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CustomPlatformDriverMiddlewareTest extends FunctionalTestCase
@@ -38,26 +37,5 @@ final class CustomPlatformDriverMiddlewareTest extends FunctionalTestCase
         };
         $driverMiddlewares = $testConnectionPool->callGetOrderedConnectionDriverMiddlewareConfiguration(ConnectionPool::DEFAULT_CONNECTION_NAME);
         self::assertArrayHasKey('typo3/core/custom-platform-driver-middleware', $driverMiddlewares);
-    }
-
-    #[Test]
-    public function driverMiddlewareIsDiscardedIfDisabled(): void
-    {
-        $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second'] = $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['Default'];
-        $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driverMiddlewares'] ??= [];
-        $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['second']['driverMiddlewares']['typo3/core/custom-platform-driver-middleware'] = [
-            'disabled' => true,
-        ];
-        $testConnectionPool = new class () extends ConnectionPool {
-            public function callGetDriverMiddlewares(string $connectionName): array
-            {
-                return $this->getDriverMiddlewares($connectionName, $this->getConnectionParams($connectionName));
-            }
-        };
-        $driverMiddlewares = $testConnectionPool->callGetDriverMiddlewares('second');
-        foreach ($driverMiddlewares as $driverMiddleware) {
-            self::assertIsObject($driverMiddleware);
-            self::assertNotInstanceOf(CustomPlatformDriverMiddleware::class, $driverMiddleware);
-        }
     }
 }

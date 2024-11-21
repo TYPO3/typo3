@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Impexp\Tests\Functional\Import;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Impexp\Import;
@@ -219,6 +220,7 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function importImageIntoSystemAndMatchingThePathOfTheSecondStorage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/DatabaseImports/sys_file_single_image.csv');
@@ -228,7 +230,6 @@ final class PagesAndTtContentWithImagesInFilledDatabaseTest extends AbstractImpo
         $subject->setPid(0);
         $subject->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlImports/pages-and-ttcontent-with-two-images.xml');
         $subject->checkImportPrerequisites();
-        self::assertTrue(true);
     }
 
     #[Test]

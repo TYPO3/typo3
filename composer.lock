@@ -9445,12 +9445,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "751ef06d5f99d00172a1092793b638c16126d8be"
+                "reference": "f31a26fd94e9a030a3a46d6524de83624b9a27c5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/751ef06d5f99d00172a1092793b638c16126d8be",
-                "reference": "751ef06d5f99d00172a1092793b638c16126d8be",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/f31a26fd94e9a030a3a46d6524de83624b9a27c5",
+                "reference": "f31a26fd94e9a030a3a46d6524de83624b9a27c5",
                 "shasum": ""
             },
             "require": {
@@ -9469,9 +9469,9 @@
                 "sbuerk/typo3-cmscomposerinstallers-testingframework-bridge": "*"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.59.3",
-                "phpstan/phpstan": "^1.11.5",
-                "phpstan/phpstan-phpunit": "^1.4.0",
+                "friendsofphp/php-cs-fixer": "^3.65.0",
+                "phpstan/phpstan": "^2.0.2",
+                "phpstan/phpstan-phpunit": "^2.0.1",
                 "typo3/cms-workspaces": "13.*.*@dev || 14.*.*@dev"
             },
             "default-branch": true,
@@ -9509,9 +9509,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/main"
+                "source": "https://github.com/TYPO3/testing-framework/tree/9.0.2"
             },
-            "time": "2024-11-09T06:37:11+00:00"
+            "time": "2024-11-26T21:37:54+00:00"
         }
     ],
     "aliases": [],
@@ -9535,7 +9535,7 @@
         "ext-xml": "*",
         "composer-runtime-api": "^2.1"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.2.0"
     },

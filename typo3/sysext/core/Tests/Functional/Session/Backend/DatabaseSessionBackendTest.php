@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Session\Backend;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\CMS\Core\Session\Backend\Exception\SessionNotCreatedException;
@@ -57,6 +58,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function canValidateSessionBackend(): void
     {
         $this->subject->validateConfiguration();

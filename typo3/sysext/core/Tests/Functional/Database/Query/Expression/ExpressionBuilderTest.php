@@ -905,7 +905,6 @@ final class ExpressionBuilderTest extends FunctionalTestCase
      */
     public function notLikeReturnsExpectedDataSets(string $searchWord, array $expectedRows, array $excludePlatforms): void
     {
-        self::assertTrue(true);
         $this->importCSVDataSet(__DIR__ . '/../../Fixtures/DataSet/TestExpressionBuilderLikeAndNotLike.csv');
         $queryBuilder = (new ConnectionPool())->getQueryBuilderForTable('tx_expressionbuildertest');
         if ($excludePlatforms !== []) {
