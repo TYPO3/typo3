@@ -3,109 +3,109 @@
 	<file source-language="en" datatype="plaintext" original="EXT:extbase/Resources/Private/Language/locallang.xlf" date="2012-10-17T19:30:32Z" product-name="extbase">
 		<header/>
 		<body>
-			<trans-unit id="converter.datetime.notrecognized" resname="converter.datetime.notrecognized">
+			<trans-unit id="converter.datetime.notrecognized">
 				<source>The date "%s" was not recognized (for format "%s").</source>
 			</trans-unit>
-			<trans-unit id="property.error" resname="property.error">
+			<trans-unit id="property.error">
 				<source>Validation errors for property "%s"</source>
 			</trans-unit>
-			<trans-unit id="validator.emailaddress.notvalid" resname="validator.emailaddress.notvalid">
+			<trans-unit id="validator.emailaddress.notvalid">
 				<source>The given subject was not a valid email address.</source>
 			</trans-unit>
-			<trans-unit id="validator.stringlength.between" resname="validator.stringlength.between">
+			<trans-unit id="validator.stringlength.between">
 				<source>The length of the given string was not between %s and %s characters.</source>
 			</trans-unit>
-			<trans-unit id="validator.stringlength.less" resname="validator.stringlength.less">
+			<trans-unit id="validator.stringlength.less">
 				<source>The length of the given string is less than %s characters.</source>
 			</trans-unit>
-			<trans-unit id="validator.string.notvalid" resname="validator.string.notvalid">
+			<trans-unit id="validator.string.notvalid">
 				<source>A valid string is expected.</source>
 			</trans-unit>
-			<trans-unit id="validator.stringlength.exceed" resname="validator.stringlength.exceed">
+			<trans-unit id="validator.stringlength.exceed">
 				<source>The length of the given string exceeded %s characters.</source>
 			</trans-unit>
-			<trans-unit id="validator.alphanumeric.notvalid" resname="validator.alphanumeric.notvalid">
+			<trans-unit id="validator.alphanumeric.notvalid">
 				<source>The given subject was not a valid alphanumeric string.</source>
 			</trans-unit>
-			<trans-unit id="validator.datetime.notvalid" resname="validator.datetime.notvalid">
+			<trans-unit id="validator.datetime.notvalid">
 				<source>The given subject was not a valid DateTime. Got: '%s'</source>
 			</trans-unit>
-			<trans-unit id="validator.float.notvalid" resname="validator.float.notvalid">
+			<trans-unit id="validator.float.notvalid">
 				<source>The given subject was not a valid float.</source>
 			</trans-unit>
-			<trans-unit id="validator.text.notvalid" resname="validator.text.notvalid">
+			<trans-unit id="validator.text.notvalid">
 				<source>The given subject was not a valid text (e.g. contained XML tags).</source>
 			</trans-unit>
-			<trans-unit id="validator.regularexpression.nomatch" resname="validator.regularexpression.nomatch">
+			<trans-unit id="validator.regularexpression.nomatch">
 				<source>The given subject did not match the pattern.</source>
 			</trans-unit>
-			<trans-unit id="validator.numberrange.notvalid" resname="validator.numberrange.notvalid">
+			<trans-unit id="validator.numberrange.notvalid">
 				<source>The given subject was not a valid number.</source>
 			</trans-unit>
-			<trans-unit id="validator.numberrange.range" resname="validator.numberrange.range">
+			<trans-unit id="validator.numberrange.range">
 				<source>The given subject was not in the valid range (%s - %s).</source>
 			</trans-unit>
-			<trans-unit id="validator.notempty.null" resname="validator.notempty.null">
+			<trans-unit id="validator.notempty.null">
 				<source>The given subject was NULL.</source>
 			</trans-unit>
-			<trans-unit id="validator.notempty.empty" resname="validator.notempty.empty">
+			<trans-unit id="validator.notempty.empty">
 				<source>The given subject was empty.</source>
 			</trans-unit>
-			<trans-unit id="validator.number.notvalid" resname="validator.number.notvalid">
+			<trans-unit id="validator.number.notvalid">
 				<source>The given subject was not a valid number.</source>
 			</trans-unit>
-			<trans-unit id="validator.integer.notvalid" resname="validator.integer.notvalid">
+			<trans-unit id="validator.integer.notvalid">
 				<source>The given subject was not a valid integer.</source>
 			</trans-unit>
-			<trans-unit id="validator.boolean.nottrue" resname="validator.boolean.nottrue">
+			<trans-unit id="validator.boolean.nottrue">
 				<source>The given subject was not true.</source>
 			</trans-unit>
-			<trans-unit id="validator.boolean.notfalse" resname="validator.boolean.notfalse">
+			<trans-unit id="validator.boolean.notfalse">
 				<source>The given subject was not false.</source>
 			</trans-unit>
-			<trans-unit id="validator.url.notvalid" resname="validator.url.notvalid">
+			<trans-unit id="validator.url.notvalid">
 				<source>The given subject is no valid URL.</source>
 			</trans-unit>
-			<trans-unit id="validation.mimetype.notallowed" resname="validation.mimetype.notallowed">
+			<trans-unit id="validation.mimetype.notallowed">
 				<source>The mime type '%s' is not allowed.</source>
 			</trans-unit>
-			<trans-unit id="validation.mimetype.invalidextension" resname="validation.mimetype.invalidextension">
+			<trans-unit id="validation.mimetype.invalidextension">
 				<source>The file extension provided "%s" does not match to expected media types.</source>
 			</trans-unit>
-			<trans-unit id="validation.denyphpupload.notallowed" resname="validation.denyphpupload.notallowed">
+			<trans-unit id="validation.denyphpupload.notallowed">
 				<source>Uploading of files with PHP executable file extensions is not allowed.</source>
 			</trans-unit>
-			<trans-unit id="validation.filesize.less" resname="validation.filesize.less">
+			<trans-unit id="validation.filesize.less">
 				<source>The file must be larger than %s in size.</source>
 			</trans-unit>
-			<trans-unit id="validation.filesize.exceed" resname="validation.filesize.exceed">
+			<trans-unit id="validation.filesize.exceed">
 				<source>The file must be smaller than %s in size.</source>
 			</trans-unit>
-			<trans-unit id="validation.imagedimensions.width.notvalid" resname="validation.imagedimensions.width.notvalid">
+			<trans-unit id="validation.imagedimensions.width.notvalid">
 				<source>The image must be exactly %s pixels in width.</source>
 			</trans-unit>
-			<trans-unit id="validation.imagedimensions.height.notvalid" resname="validation.imagedimensions.height.notvalid">
+			<trans-unit id="validation.imagedimensions.height.notvalid">
 				<source>The image must be exactly %s pixels in height.</source>
 			</trans-unit>
-			<trans-unit id="validation.imagedimensions.minwidth.notvalid" resname="validation.imagedimensions.minwidth.notvalid">
+			<trans-unit id="validation.imagedimensions.minwidth.notvalid">
 				<source>The image must at least have a width of %s pixels.</source>
 			</trans-unit>
-			<trans-unit id="validation.imagedimensions.minheight.notvalid" resname="validation.imagedimensions.minheight.notvalid">
+			<trans-unit id="validation.imagedimensions.minheight.notvalid">
 				<source>The image must at least have a height of %s pixels.</source>
 			</trans-unit>
-			<trans-unit id="validation.imagedimensions.maxwidth.notvalid" resname="validation.imagedimensions.maxwidth.notvalid">
+			<trans-unit id="validation.imagedimensions.maxwidth.notvalid">
 				<source>The image is too wide. The maximum width is %s pixels.</source>
 			</trans-unit>
-			<trans-unit id="validation.imagedimensions.maxheight.notvalid" resname="validation.imagedimensions.maxheight.notvalid">
+			<trans-unit id="validation.imagedimensions.maxheight.notvalid">
 				<source>The image is too high. The maximum height is %s pixels.</source>
 			</trans-unit>
-			<trans-unit id="filehandlingserviceconfiguration.minfiles.notvalid" resname="filehandlingserviceconfiguration.minfiles.notvalid">
+			<trans-unit id="filehandlingserviceconfiguration.minfiles.notvalid">
 				<source>You must at least upload %s file(s).</source>
 			</trans-unit>
-			<trans-unit id="filehandlingserviceconfiguration.minfiles.delete.notvalid" resname="filehandlingserviceconfiguration.minfiles.delete.notvalid">
+			<trans-unit id="filehandlingserviceconfiguration.minfiles.delete.notvalid">
 				<source>The file could not be deleted, because the minimum file upload amount would not be fulfilled after deletion.</source>
 			</trans-unit>
-			<trans-unit id="filehandlingserviceconfiguration.maxfiles.notvalid" resname="filehandlingserviceconfiguration.maxfiles.notvalid">
+			<trans-unit id="filehandlingserviceconfiguration.maxfiles.notvalid">
 				<source>The maximum amount of %s file(s) is exceeded.</source>
 			</trans-unit>
 		</body>

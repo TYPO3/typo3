@@ -3,541 +3,541 @@
 	<file source-language="en" datatype="plaintext" original="EXT:frontend/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="mod_tx_cms_webinfo_page" resname="mod_tx_cms_webinfo_page">
+			<trans-unit id="mod_tx_cms_webinfo_page">
 				<source>Pagetree Overview</source>
 			</trans-unit>
-			<trans-unit id="mod_tx_cms_webinfo_lang" resname="mod_tx_cms_webinfo_lang">
+			<trans-unit id="mod_tx_cms_webinfo_lang">
 				<source>Localization Overview</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.standard" resname="pages.palettes.standard">
+			<trans-unit id="pages.palettes.standard">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.title" resname="pages.palettes.title">
+			<trans-unit id="pages.palettes.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.visibility" resname="pages.palettes.visibility">
+			<trans-unit id="pages.palettes.visibility">
 				<source>Visibility</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.access" resname="pages.palettes.access">
+			<trans-unit id="pages.palettes.access">
 				<source>Publish Dates and Access Rights</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.abstract" resname="pages.palettes.abstract">
+			<trans-unit id="pages.palettes.abstract">
 				<source>Abstract</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.metatags" resname="pages.palettes.metatags">
+			<trans-unit id="pages.palettes.metatags">
 				<source>Meta Tags</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.editorial" resname="pages.palettes.editorial">
+			<trans-unit id="pages.palettes.editorial">
 				<source>Editorial</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.layout" resname="pages.palettes.layout">
+			<trans-unit id="pages.palettes.layout">
 				<source>Page Layout</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.module" resname="pages.palettes.module">
+			<trans-unit id="pages.palettes.module">
 				<source>Use as Container</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.replace" resname="pages.palettes.replace">
+			<trans-unit id="pages.palettes.replace">
 				<source>Replace Content</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.links" resname="pages.palettes.links">
+			<trans-unit id="pages.palettes.links">
 				<source>Links to this Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.caching" resname="pages.palettes.caching">
+			<trans-unit id="pages.palettes.caching">
 				<source>Caching</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.language" resname="pages.palettes.language">
+			<trans-unit id="pages.palettes.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.miscellaneous" resname="pages.palettes.miscellaneous">
+			<trans-unit id="pages.palettes.miscellaneous">
 				<source>Miscellaneous</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.media" resname="pages.palettes.media">
+			<trans-unit id="pages.palettes.media">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.storage" resname="pages.palettes.storage">
+			<trans-unit id="pages.palettes.storage">
 				<source>General Record Storage Page</source>
 			</trans-unit>
-			<trans-unit id="pages.palettes.config" resname="pages.palettes.config">
+			<trans-unit id="pages.palettes.config">
 				<source>Page TSconfig</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype_formlabel" resname="pages.doktype_formlabel">
+			<trans-unit id="pages.doktype_formlabel">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.0" resname="pages.doktype.I.0">
+			<trans-unit id="pages.doktype.I.0">
 				<source>Advanced</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.2" resname="pages.doktype.I.2">
+			<trans-unit id="pages.doktype.I.2">
 				<source>Shortcut</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.3" resname="pages.doktype.I.3">
+			<trans-unit id="pages.doktype.I.3">
 				<source>Not in Menu</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.4" resname="pages.doktype.I.4">
+			<trans-unit id="pages.doktype.I.4">
 				<source>Backend User Section</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.5" resname="pages.doktype.I.5">
+			<trans-unit id="pages.doktype.I.5">
 				<source>Mount Point</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.7" resname="pages.doktype.I.7">
+			<trans-unit id="pages.doktype.I.7">
 				<source>Menu Separator</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.I.8" resname="pages.doktype.I.8">
+			<trans-unit id="pages.doktype.I.8">
 				<source>Link to External URL</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.page" resname="pages.doktype.div.page">
+			<trans-unit id="pages.doktype.div.page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.link" resname="pages.doktype.div.link">
+			<trans-unit id="pages.doktype.div.link">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="pages.doktype.div.special" resname="pages.doktype.div.special">
+			<trans-unit id="pages.doktype.div.special">
 				<source>Special</source>
 			</trans-unit>
-			<trans-unit id="pages.title_formlabel" resname="pages.title_formlabel">
+			<trans-unit id="pages.title_formlabel">
 				<source>Page Title</source>
 			</trans-unit>
-			<trans-unit id="pages.starttime_formlabel" resname="pages.starttime_formlabel">
+			<trans-unit id="pages.starttime_formlabel">
 				<source>Publish Date</source>
 			</trans-unit>
-			<trans-unit id="pages.endtime_formlabel" resname="pages.endtime_formlabel">
+			<trans-unit id="pages.endtime_formlabel">
 				<source>Expiration Date</source>
 			</trans-unit>
-			<trans-unit id="pages.fe_group_formlabel" resname="pages.fe_group_formlabel">
+			<trans-unit id="pages.fe_group_formlabel">
 				<source>Usergroup Access Rights</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden" resname="pages.hidden">
+			<trans-unit id="pages.hidden">
 				<source>Hide page</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden_formlabel" resname="pages.hidden_formlabel">
+			<trans-unit id="pages.hidden_formlabel">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden_checkbox_1_formlabel" resname="pages.hidden_checkbox_1_formlabel">
+			<trans-unit id="pages.hidden_checkbox_1_formlabel">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.1" resname="pages.layout.I.1">
+			<trans-unit id="pages.layout.I.1">
 				<source>Layout 1</source>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.2" resname="pages.layout.I.2">
+			<trans-unit id="pages.layout.I.2">
 				<source>Layout 2</source>
 			</trans-unit>
-			<trans-unit id="pages.layout.I.3" resname="pages.layout.I.3">
+			<trans-unit id="pages.layout.I.3">
 				<source>Layout 3</source>
 			</trans-unit>
-			<trans-unit id="pages.extendToSubpages" resname="pages.extendToSubpages">
+			<trans-unit id="pages.extendToSubpages">
 				<source>Include Subpages</source>
 			</trans-unit>
-			<trans-unit id="pages.extendToSubpages_formlabel" resname="pages.extendToSubpages_formlabel">
+			<trans-unit id="pages.extendToSubpages_formlabel">
 				<source>Extend to Subpages</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_title" resname="pages.nav_title">
+			<trans-unit id="pages.nav_title">
 				<source>Navigation Title</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_title_formlabel" resname="pages.nav_title_formlabel">
+			<trans-unit id="pages.nav_title_formlabel">
 				<source>Alternative Navigation Title</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide" resname="pages.nav_hide">
+			<trans-unit id="pages.nav_hide">
 				<source>Hide in Menu</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_formlabel" resname="pages.nav_hide_formlabel">
+			<trans-unit id="pages.nav_hide_formlabel">
 				<source>In Menus</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_checkbox_1_formlabel" resname="pages.nav_hide_checkbox_1_formlabel">
+			<trans-unit id="pages.nav_hide_checkbox_1_formlabel">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="pages.subtitle" resname="pages.subtitle">
+			<trans-unit id="pages.subtitle">
 				<source>Subtitle</source>
 			</trans-unit>
-			<trans-unit id="pages.subtitle_formlabel" resname="pages.subtitle_formlabel">
+			<trans-unit id="pages.subtitle_formlabel">
 				<source>Subtitle</source>
 			</trans-unit>
-			<trans-unit id="pages.target" resname="pages.target">
+			<trans-unit id="pages.target">
 				<source>Target</source>
 			</trans-unit>
-			<trans-unit id="pages.target_formlabel" resname="pages.target_formlabel">
+			<trans-unit id="pages.target_formlabel">
 				<source>Link Target</source>
 			</trans-unit>
-			<trans-unit id="pages.url" resname="pages.url">
+			<trans-unit id="pages.url">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="pages.url_formlabel" resname="pages.url_formlabel">
+			<trans-unit id="pages.url_formlabel">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="pages.lastUpdated" resname="pages.lastUpdated">
+			<trans-unit id="pages.lastUpdated">
 				<source>Last Updated</source>
 			</trans-unit>
-			<trans-unit id="pages.lastUpdated_formlabel" resname="pages.lastUpdated_formlabel">
+			<trans-unit id="pages.lastUpdated_formlabel">
 				<source>Last Update</source>
 			</trans-unit>
-			<trans-unit id="pages.newUntil" resname="pages.newUntil">
+			<trans-unit id="pages.newUntil">
 				<source>'New' Until</source>
 			</trans-unit>
-			<trans-unit id="pages.newUntil_formlabel" resname="pages.newUntil_formlabel">
+			<trans-unit id="pages.newUntil_formlabel">
 				<source>Mark as 'New' Until</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout" resname="pages.cache_timeout">
+			<trans-unit id="pages.cache_timeout">
 				<source>Cache Expires</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout_formlabel" resname="pages.cache_timeout_formlabel">
+			<trans-unit id="pages.cache_timeout_formlabel">
 				<source>Cache Lifetime</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.1" resname="pages.cache_timeout.I.1">
+			<trans-unit id="pages.cache_timeout.I.1">
 				<source>1 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.2" resname="pages.cache_timeout.I.2">
+			<trans-unit id="pages.cache_timeout.I.2">
 				<source>5 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.3" resname="pages.cache_timeout.I.3">
+			<trans-unit id="pages.cache_timeout.I.3">
 				<source>15 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.4" resname="pages.cache_timeout.I.4">
+			<trans-unit id="pages.cache_timeout.I.4">
 				<source>30 min</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.5" resname="pages.cache_timeout.I.5">
+			<trans-unit id="pages.cache_timeout.I.5">
 				<source>1 hour</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.6" resname="pages.cache_timeout.I.6">
+			<trans-unit id="pages.cache_timeout.I.6">
 				<source>4 hours</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.7" resname="pages.cache_timeout.I.7">
+			<trans-unit id="pages.cache_timeout.I.7">
 				<source>1 day</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.8" resname="pages.cache_timeout.I.8">
+			<trans-unit id="pages.cache_timeout.I.8">
 				<source>2 days</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.9" resname="pages.cache_timeout.I.9">
+			<trans-unit id="pages.cache_timeout.I.9">
 				<source>7 days</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_timeout.I.10" resname="pages.cache_timeout.I.10">
+			<trans-unit id="pages.cache_timeout.I.10">
 				<source>1 month</source>
 			</trans-unit>
-			<trans-unit id="pages.cache_tags" resname="pages.cache_tags">
+			<trans-unit id="pages.cache_tags">
 				<source>Cache Tags</source>
 			</trans-unit>
-			<trans-unit id="pages.editlock_formlabel" resname="pages.editlock_formlabel">
+			<trans-unit id="pages.editlock_formlabel">
 				<source>Editable for Admins Only</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.metadata" resname="pages.tabs.metadata">
+			<trans-unit id="pages.tabs.metadata">
 				<source>Metadata</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.files" resname="pages.tabs.files">
+			<trans-unit id="pages.tabs.files">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.resources" resname="pages.tabs.resources">
+			<trans-unit id="pages.tabs.resources">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.access" resname="pages.tabs.access">
+			<trans-unit id="pages.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.options" resname="pages.tabs.options">
+			<trans-unit id="pages.tabs.options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.mount" resname="pages.tabs.mount">
+			<trans-unit id="pages.tabs.mount">
 				<source>Mount</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.shortcut" resname="pages.tabs.shortcut">
+			<trans-unit id="pages.tabs.shortcut">
 				<source>Shortcut</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.url" resname="pages.tabs.url">
+			<trans-unit id="pages.tabs.url">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.extended" resname="pages.tabs.extended">
+			<trans-unit id="pages.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.appearance" resname="pages.tabs.appearance">
+			<trans-unit id="pages.tabs.appearance">
 				<source>Appearance</source>
 			</trans-unit>
-			<trans-unit id="pages.tabs.behaviour" resname="pages.tabs.behaviour">
+			<trans-unit id="pages.tabs.behaviour">
 				<source>Behavior</source>
 			</trans-unit>
-			<trans-unit id="pages.no_search" resname="pages.no_search">
+			<trans-unit id="pages.no_search">
 				<source>Include in Search</source>
 			</trans-unit>
-			<trans-unit id="pages.no_search_formlabel" resname="pages.no_search_formlabel">
+			<trans-unit id="pages.no_search_formlabel">
 				<source>Include in Search</source>
 			</trans-unit>
-			<trans-unit id="pages.no_search_checkbox_1_formlabel" resname="pages.no_search_checkbox_1_formlabel">
+			<trans-unit id="pages.no_search_checkbox_1_formlabel">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode" resname="pages.shortcut_mode">
+			<trans-unit id="pages.shortcut_mode">
 				<source>Shortcut Mode</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode_formlabel" resname="pages.shortcut_mode_formlabel">
+			<trans-unit id="pages.shortcut_mode_formlabel">
 				<source>Shortcut Mode</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.0" resname="pages.shortcut_mode.I.0">
+			<trans-unit id="pages.shortcut_mode.I.0">
 				<source>Selected page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.1" resname="pages.shortcut_mode.I.1">
+			<trans-unit id="pages.shortcut_mode.I.1">
 				<source>First subpage of selected/current page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.2" resname="pages.shortcut_mode.I.2">
+			<trans-unit id="pages.shortcut_mode.I.2">
 				<source>Random subpage of selected/current page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_mode.I.3" resname="pages.shortcut_mode.I.3">
+			<trans-unit id="pages.shortcut_mode.I.3">
 				<source>Parent page of selected/current page</source>
 			</trans-unit>
-			<trans-unit id="pages.shortcut_formlabel" resname="pages.shortcut_formlabel">
+			<trans-unit id="pages.shortcut_formlabel">
 				<source>Shortcut Target</source>
 			</trans-unit>
-			<trans-unit id="pages.content_from_pid" resname="pages.content_from_pid">
+			<trans-unit id="pages.content_from_pid">
 				<source>Show content from this page instead</source>
 			</trans-unit>
-			<trans-unit id="pages.content_from_pid_formlabel" resname="pages.content_from_pid_formlabel">
+			<trans-unit id="pages.content_from_pid_formlabel">
 				<source>Show Content from Page</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid" resname="pages.mount_pid">
+			<trans-unit id="pages.mount_pid">
 				<source>Mount Point of</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_formlabel" resname="pages.mount_pid_formlabel">
+			<trans-unit id="pages.mount_pid_formlabel">
 				<source>Mounted page</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol" resname="pages.mount_pid_ol">
+			<trans-unit id="pages.mount_pid_ol">
 				<source>Mount Point redirects to mounted page</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol_formlabel" resname="pages.mount_pid_ol_formlabel">
+			<trans-unit id="pages.mount_pid_ol_formlabel">
 				<source>Mount Point Display Option</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol.I.0" resname="pages.mount_pid_ol.I.0">
+			<trans-unit id="pages.mount_pid_ol.I.0">
 				<source>Show this page</source>
 			</trans-unit>
-			<trans-unit id="pages.mount_pid_ol.I.1" resname="pages.mount_pid_ol.I.1">
+			<trans-unit id="pages.mount_pid_ol.I.1">
 				<source>Show the mounted page</source>
 			</trans-unit>
-			<trans-unit id="pages.abstract" resname="pages.abstract">
+			<trans-unit id="pages.abstract">
 				<source>Abstract</source>
 			</trans-unit>
-			<trans-unit id="pages.abstract_formlabel" resname="pages.abstract_formlabel">
+			<trans-unit id="pages.abstract_formlabel">
 				<source>Abstract</source>
 			</trans-unit>
-			<trans-unit id="pages.keywords_formlabel" resname="pages.keywords_formlabel">
+			<trans-unit id="pages.keywords_formlabel">
 				<source>Keywords</source>
 			</trans-unit>
-			<trans-unit id="pages.author_formlabel" resname="pages.author_formlabel">
+			<trans-unit id="pages.author_formlabel">
 				<source>Author Name</source>
 			</trans-unit>
-			<trans-unit id="pages.author_email_formlabel" resname="pages.author_email_formlabel">
+			<trans-unit id="pages.author_email_formlabel">
 				<source>Author Email</source>
 			</trans-unit>
-			<trans-unit id="pages.media" resname="pages.media">
+			<trans-unit id="pages.media">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="pages.media_formlabel" resname="pages.media_formlabel">
+			<trans-unit id="pages.media_formlabel">
 				<source>Media</source>
 			</trans-unit>
-			<trans-unit id="pages.php_tree_stop_formlabel" resname="pages.php_tree_stop_formlabel">
+			<trans-unit id="pages.php_tree_stop_formlabel">
 				<source>Hide child pages in page tree</source>
 			</trans-unit>
-			<trans-unit id="pages.is_siteroot" resname="pages.is_siteroot">
+			<trans-unit id="pages.is_siteroot">
 				<source>Is Root of Website</source>
 			</trans-unit>
-			<trans-unit id="pages.is_siteroot_formlabel" resname="pages.is_siteroot_formlabel">
+			<trans-unit id="pages.is_siteroot_formlabel">
 				<source>Use as Root Page</source>
 			</trans-unit>
-			<trans-unit id="pages.module" resname="pages.module">
+			<trans-unit id="pages.module">
 				<source>Contains Plugin</source>
 			</trans-unit>
-			<trans-unit id="pages.module_formlabel" resname="pages.module_formlabel">
+			<trans-unit id="pages.module_formlabel">
 				<source>Contains Plugin</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.1" resname="pages.module.I.1">
+			<trans-unit id="pages.module.I.1">
 				<source>Shop</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.2" resname="pages.module.I.2">
+			<trans-unit id="pages.module.I.2">
 				<source>Board</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.3" resname="pages.module.I.3">
+			<trans-unit id="pages.module.I.3">
 				<source>News</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.4" resname="pages.module.I.4">
+			<trans-unit id="pages.module.I.4">
 				<source>Website Users</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.5" resname="pages.module.I.5">
+			<trans-unit id="pages.module.I.5">
 				<source>Direct Mail</source>
 			</trans-unit>
-			<trans-unit id="pages.module.I.6" resname="pages.module.I.6">
+			<trans-unit id="pages.module.I.6">
 				<source>Approvals</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg" resname="pages.l18n_cfg">
+			<trans-unit id="pages.l18n_cfg">
 				<source>Localization Settings</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg_formlabel" resname="pages.l18n_cfg_formlabel">
+			<trans-unit id="pages.l18n_cfg_formlabel">
 				<source>Localization</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.1" resname="pages.l18n_cfg.I.1">
+			<trans-unit id="pages.l18n_cfg.I.1">
 				<source>Hide default language of page</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.2" resname="pages.l18n_cfg.I.2">
+			<trans-unit id="pages.l18n_cfg.I.2">
 				<source>Hide page if no translation for current language exists</source>
 			</trans-unit>
-			<trans-unit id="pages.l18n_cfg.I.2a" resname="pages.l18n_cfg.I.2a">
+			<trans-unit id="pages.l18n_cfg.I.2a">
 				<source>Show page even if no translation exists</source>
 			</trans-unit>
-			<trans-unit id="pages.storage_pid_formlabel" resname="pages.storage_pid_formlabel">
+			<trans-unit id="pages.storage_pid_formlabel">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.TSconfig_formlabel" resname="pages.TSconfig_formlabel">
+			<trans-unit id="pages.TSconfig_formlabel">
 				<source>Page TSconfig</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout_formlabel" resname="pages.backend_layout_formlabel">
+			<trans-unit id="pages.backend_layout_formlabel">
 				<source>Backend Layout (this page only)</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout_next_level_formlabel" resname="pages.backend_layout_next_level_formlabel">
+			<trans-unit id="pages.backend_layout_next_level_formlabel">
 				<source>Backend Layout (subpages of this page)</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout.none" resname="pages.backend_layout.none">
+			<trans-unit id="pages.backend_layout.none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="pages.backend_layout.default" resname="pages.backend_layout.default">
+			<trans-unit id="pages.backend_layout.default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="pages.tsconfig_includes" resname="pages.tsconfig_includes">
+			<trans-unit id="pages.tsconfig_includes">
 				<source>Include static Page TSconfig (from extensions)</source>
 			</trans-unit>
-			<trans-unit id="tt_content" resname="tt_content">
+			<trans-unit id="tt_content">
 				<source>Page Content</source>
 			</trans-unit>
-			<trans-unit id="fe_users" resname="fe_users">
+			<trans-unit id="fe_users">
 				<source>Website User</source>
 			</trans-unit>
-			<trans-unit id="fe_users.username" resname="fe_users.username">
+			<trans-unit id="fe_users.username">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="fe_users.password" resname="fe_users.password">
+			<trans-unit id="fe_users.password">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="fe_users.usergroup" resname="fe_users.usergroup">
+			<trans-unit id="fe_users.usergroup">
 				<source>Groups</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.personalData" resname="fe_users.tabs.personalData">
+			<trans-unit id="fe_users.tabs.personalData">
 				<source>Personal Data</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.access" resname="fe_users.tabs.access">
+			<trans-unit id="fe_users.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tabs.extended" resname="fe_users.tabs.extended">
+			<trans-unit id="fe_users.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="fe_groups" resname="fe_groups">
+			<trans-unit id="fe_groups">
 				<source>Website Usergroup</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.title" resname="fe_groups.title">
+			<trans-unit id="fe_groups.title">
 				<source>Group Title</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.subgroup" resname="fe_groups.subgroup">
+			<trans-unit id="fe_groups.subgroup">
 				<source>Subgroups</source>
 			</trans-unit>
-			<trans-unit id="fe_groups.tabs.extended" resname="fe_groups.tabs.extended">
+			<trans-unit id="fe_groups.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="sys_template" resname="sys_template">
+			<trans-unit id="sys_template">
 				<source>TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="sys_template.title" resname="sys_template.title">
+			<trans-unit id="sys_template.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="sys_template.root" resname="sys_template.root">
+			<trans-unit id="sys_template.root">
 				<source>Rootlevel</source>
 			</trans-unit>
-			<trans-unit id="sys_template.rootDescription" resname="sys_template.rootDescription">
+			<trans-unit id="sys_template.rootDescription">
 				<source>When enabled, the page is marked as "Rootline Root". This is most often set only once for the uppermost TypoScript record.
 				This can be used in frontend to stop at this page when creating for example "breadcrumb" menus, even if there are further parent pages. The flag especially
 				affects these TypoScript "getText" properties: "level", "levelmedia", "leveltitle", "levelfield" and "leveluid".</source>
 			</trans-unit>
-			<trans-unit id="sys_template.clear" resname="sys_template.clear">
+			<trans-unit id="sys_template.clear">
 				<source>Clear</source>
 			</trans-unit>
-			<trans-unit id="sys_template.clearDescription" resname="sys_template.clearDescription">
+			<trans-unit id="sys_template.clearDescription">
 				<source>Remove TypoScript settings from TypoScript records up in rootline. This is most often set only once for the uppermost TypoScript record that is most often
 			 	located on the same page that has "Use as Root Page" flag set and the "Site" configuration attached in the site module.</source>
 			</trans-unit>
-			<trans-unit id="sys_template.constants" resname="sys_template.constants">
+			<trans-unit id="sys_template.constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="sys_template.resources" resname="sys_template.resources">
+			<trans-unit id="sys_template.resources">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="sys_template.include_static_file" resname="sys_template.include_static_file">
+			<trans-unit id="sys_template.include_static_file">
 				<source>Include TypoScript sets</source>
 			</trans-unit>
-			<trans-unit id="sys_template.include_static_fileDescription" resname="sys_template.include_static_fileDescription">
+			<trans-unit id="sys_template.include_static_fileDescription">
 				<source>Extensions often deliver default TypoScript to set up basic frontend rendering. These can be loaded here.
 				To keep TypoScript structures clean and tidy, this is often set only for the main TypoScript record located on the same page that has "Use as Root Page" flag set,
 				has a "Site" configuration attached in the site module, and has the above "Clear" and "Rootlevel" flags set.</source>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOn" resname="sys_template.basedOn">
+			<trans-unit id="sys_template.basedOn">
 				<source>Include TypoScript records</source>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOnDescription" resname="sys_template.basedOnDescription">
+			<trans-unit id="sys_template.basedOnDescription">
 				<source>Include additional TypoScript records located elsewhere in the page tree. This can be used to load the same TypoScript records at multiple places in a page tree.
 			 	This isn't used very often nowadays and it's often easier to understand and maintain the site by extracting TypoScript configuration to files
 				and to load the full set in a single main TypoScript record.
 			</source>
 			</trans-unit>
-			<trans-unit id="sys_template.includeStaticAfterBasedOn" resname="sys_template.includeStaticAfterBasedOn">
+			<trans-unit id="sys_template.includeStaticAfterBasedOn">
 				<source>Load TypoScript sets after included TypoScript records</source>
 			</trans-unit>
-			<trans-unit id="sys_template.includeStaticAfterBasedOnDescription" resname="sys_template.includeStaticAfterBasedOnDescription">
+			<trans-unit id="sys_template.includeStaticAfterBasedOnDescription">
 				<source>When using both fields "Include TypoScript sets" and "Include TypoScript records" in a TypoScript record, this flag allows swapping their load order.</source>
 			</trans-unit>
-			<trans-unit id="sys_template.config" resname="sys_template.config">
+			<trans-unit id="sys_template.config">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode" resname="sys_template.static_file_mode">
+			<trans-unit id="sys_template.static_file_mode">
 				<source>Loading order of TypoScript sets</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_modeDescription" resname="sys_template.static_file_modeDescription">
+			<trans-unit id="sys_template.static_file_modeDescription">
 				<source>This seldom used feature affects if and when TypoScript sets from extensions (ext_typoscript_setup.typoscript and ext_typoscript_constants.typoscript)
 				are loaded. There are very few cases where setting this to a different value than the default value "0" is useful.</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.0" resname="sys_template.static_file_mode.0">
+			<trans-unit id="sys_template.static_file_mode.0">
 				<source>Default (include before if root flag is set)</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.1" resname="sys_template.static_file_mode.1">
+			<trans-unit id="sys_template.static_file_mode.1">
 				<source>Always include before this typoscript record</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.2" resname="sys_template.static_file_mode.2">
+			<trans-unit id="sys_template.static_file_mode.2">
 				<source>Never include before this typoscript record</source>
 			</trans-unit>
-			<trans-unit id="sys_template.static_file_mode.3" resname="sys_template.static_file_mode.3">
+			<trans-unit id="sys_template.static_file_mode.3">
 				<source>Include before all static typoscript if root flag is set</source>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOn_add" resname="sys_template.basedOn_add">
+			<trans-unit id="sys_template.basedOn_add">
 				<source>Add new TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="sys_template.basedOn_edit" resname="sys_template.basedOn_edit">
+			<trans-unit id="sys_template.basedOn_edit">
 				<source>Edit template</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.files" resname="sys_template.tabs.files">
+			<trans-unit id="sys_template.tabs.files">
 				<source>Resources</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.options" resname="sys_template.tabs.options">
+			<trans-unit id="sys_template.tabs.options">
 				<source>Advanced Options</source>
 			</trans-unit>
-			<trans-unit id="sys_template.tabs.access" resname="sys_template.tabs.access">
+			<trans-unit id="sys_template.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="backend_layout" resname="backend_layout">
+			<trans-unit id="backend_layout">
 				<source>Backend Layout</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.title" resname="backend_layout.title">
+			<trans-unit id="backend_layout.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.config" resname="backend_layout.config">
+			<trans-unit id="backend_layout.config">
 				<source>Config</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.wizard" resname="backend_layout.wizard">
+			<trans-unit id="backend_layout.wizard">
 				<source>Wizard</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.icon" resname="backend_layout.icon">
+			<trans-unit id="backend_layout.icon">
 				<source>Icon</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.tabs.access" resname="backend_layout.tabs.access">
+			<trans-unit id="backend_layout.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="backend_layout.tabs.extended" resname="backend_layout.tabs.extended">
+			<trans-unit id="backend_layout.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="no_mount_pid" resname="no_mount_pid">
+			<trans-unit id="no_mount_pid">
 				<source>No Mount Point is set</source>
 			</trans-unit>
 		</body>

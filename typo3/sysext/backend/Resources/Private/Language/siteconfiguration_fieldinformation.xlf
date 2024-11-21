@@ -3,52 +3,52 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/siteconfiguration_fieldinformation.xlf" date="2015-01-02T11:16:11Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="site.rootPageId" resname="site.rootPageId">
+			<trans-unit id="site.rootPageId">
 				<source>You must create a page with a site root flag.</source>
 			</trans-unit>
-			<trans-unit id="site.identifier" resname="site.identifier">
+			<trans-unit id="site.identifier">
 				<source>This name will be used to create the configuration directory. Mind the recommendations for directory names (only a-z,0-9,_,-) and make it unique.</source>
 			</trans-unit>
-			<trans-unit id="site.base" resname="site.base">
+			<trans-unit id="site.base">
 				<source>Main URL to call the frontend in default language. Can be https://www.example.com/ or just /, if it is just a / you cannot rely on TYPO3 creating full URLs</source>
 			</trans-unit>
-			<trans-unit id="site.websiteTitle" resname="site.websiteTitle">
+			<trans-unit id="site.websiteTitle">
 				<source>The title of the website is used for the title tag in the frontend</source>
 			</trans-unit>
-			<trans-unit id="site.baseVariants" resname="site.baseVariants">
+			<trans-unit id="site.baseVariants">
 				<source>This allows you to specify variants of the site's base. Can be used, for example, if you have a different domain for your staging environment.</source>
 			</trans-unit>
-			<trans-unit id="site.dependencies" resname="site.dependencies">
+			<trans-unit id="site.dependencies">
 				<source>Site sets ship parts of site configuration as composable pieces. Sets deliver Settings, TypoScript, and Page TSConfig for the scope of this site.</source>
 			</trans-unit>
-			<trans-unit id="site_language.base" resname="site_language.base">
+			<trans-unit id="site_language.base">
 				<source>Use a full qualified domain "https://www.mydomain.fr/" or "/fr/". Use "/" to keep the main URL for the default language. Add language specific suffixes to use those, or configure complete URLs for independent domains.</source>
 			</trans-unit>
-			<trans-unit id="site_language.locale" resname="site_language.locale">
+			<trans-unit id="site_language.locale">
 				<source>Used for localized date and currency formats. E.g. "de_DE" or "en_US.UTF-8".</source>
 			</trans-unit>
-			<trans-unit id="site_language.hreflang" resname="site_language.hreflang">
+			<trans-unit id="site_language.hreflang">
 				<source>Optional, used for "hreflang" attributes - if empty, the information is retrieved from the locale</source>
 			</trans-unit>
-			<trans-unit id="site_language.websiteTitle" resname="site_language.websiteTitle">
+			<trans-unit id="site_language.websiteTitle">
 				<source>With this language based Website title, you can override the Website title for this language</source>
 			</trans-unit>
-			<trans-unit id="site_language.navigationTitle" resname="site_language.navigationTitle">
+			<trans-unit id="site_language.navigationTitle">
 				<source>Used within language-related menus</source>
 			</trans-unit>
-			<trans-unit id="site_errorhandling.errorCode" resname="site_errorhandling.errorCode">
+			<trans-unit id="site_errorhandling.errorCode">
 				<source>Make sure to have at least 0 (not defined otherwise) configured in order to serve helpful error messages to your visitors.</source>
 			</trans-unit>
-			<trans-unit id="site_errorhandling.errorFluidTemplate" resname="site_errorhandling.errorFluidTemplate">
+			<trans-unit id="site_errorhandling.errorFluidTemplate">
 				<source>Path to the fluid template file given by absolute, relative path (from site root) or by referring the template file inside an extension with "EXT:" prefix.</source>
 			</trans-unit>
-			<trans-unit id="site_errorhandling.errorPhpClassFQCN" resname="site_errorhandling.errorPhpClassFQCN">
+			<trans-unit id="site_errorhandling.errorPhpClassFQCN">
 				<source>Fully qualified class name to a class that implements the PageErrorHandlerInterface.</source>
 			</trans-unit>
-			<trans-unit id="site_base_variant.base" resname="site_base_variant.base">
+			<trans-unit id="site_base_variant.base">
 				<source>For example "https://staging.domain.tld" or "http://www.domain.local"</source>
 			</trans-unit>
-			<trans-unit id="site_base_variant.condition" resname="site_base_variant.condition">
+			<trans-unit id="site_base_variant.condition">
 				<source>Expression to match this base variant.</source>
 			</trans-unit>
 		</body>

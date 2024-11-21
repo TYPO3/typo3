@@ -3,119 +3,119 @@
 	<file source-language="en" datatype="plaintext" original="EXT:linkvalidator/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:34Z" product-name="linkvalidator">
 		<header/>
 		<body>
-			<trans-unit id="mod_linkvalidator" resname="mod_linkvalidator">
+			<trans-unit id="mod_linkvalidator">
 				<source>LinkValidator</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.name" resname="tasks.validate.name">
+			<trans-unit id="tasks.validate.name">
 				<source>LinkValidator</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.description" resname="tasks.validate.description">
+			<trans-unit id="tasks.validate.description">
 				<source>Search for broken links and store the result into the temporary table tx_linkvalidator_link in order to ease up the backend module.</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.page" resname="tasks.validate.page">
+			<trans-unit id="tasks.validate.page">
 				<source>Start page (uid)</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.depth" resname="tasks.validate.depth">
+			<trans-unit id="tasks.validate.depth">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.languages" resname="tasks.validate.languages">
+			<trans-unit id="tasks.validate.languages">
 				<source>Languages to search for broken links (Leave empty for all languages).</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.conf" resname="tasks.validate.conf">
+			<trans-unit id="tasks.validate.conf">
 				<source>Overwrite TSconfig</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.email" resname="tasks.validate.email">
+			<trans-unit id="tasks.validate.email">
 				<source>Send email report to</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.emailOnBrokenLinkOnly" resname="tasks.validate.emailOnBrokenLinkOnly">
+			<trans-unit id="tasks.validate.emailOnBrokenLinkOnly">
 				<source>Send email on new broken links only</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.emailTemplateName" resname="tasks.validate.emailTemplateName">
+			<trans-unit id="tasks.validate.emailTemplateName">
 				<source>Email template name (without the extension)</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.invalidEmail" resname="tasks.validate.invalidEmail">
+			<trans-unit id="tasks.validate.invalidEmail">
 				<source>Invalid email format!</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.invalidPage" resname="tasks.validate.invalidPage">
+			<trans-unit id="tasks.validate.invalidPage">
 				<source>Invalid page uid, please enter a valid page uid!</source>
 			</trans-unit>
-			<trans-unit id="tasks.validate.invalidDepth" resname="tasks.validate.invalidDepth">
+			<trans-unit id="tasks.validate.invalidDepth">
 				<source>There is no depth set, please set it to one of the offered values!</source>
 			</trans-unit>
-			<trans-unit id="tasks.notice.useDefaultTemplate" resname="tasks.notice.useDefaultTemplate">
+			<trans-unit id="tasks.notice.useDefaultTemplate">
 				<source>
 					The templateName was automatically set to the default because either the field in the task
 					configuration is empty or no file is found for the given name. Please note that both a .html and
 					.txt file must exist under the configured templatePath.
 				</source>
 			</trans-unit>
-			<trans-unit id="tasks.error.emptyToEmail" resname="tasks.error.emptyToEmail">
+			<trans-unit id="tasks.error.emptyToEmail">
 				<source>There must be at least one recipient defined!</source>
 			</trans-unit>
-			<trans-unit id="tasks.error.invalidToEmail" resname="tasks.error.invalidToEmail">
+			<trans-unit id="tasks.error.invalidToEmail">
 				<source>Invalid format of one or more of the recipient email addresses!</source>
 			</trans-unit>
-			<trans-unit id="tasks.error.invalidFromEmail" resname="tasks.error.invalidFromEmail">
+			<trans-unit id="tasks.error.invalidFromEmail">
 				<source>Invalid format of the email address in the from header</source>
 			</trans-unit>
-			<trans-unit id="tasks.error.invalidPageUid" resname="tasks.error.invalidPageUid">
+			<trans-unit id="tasks.error.invalidPageUid">
 				<source>The given page id %d is invalid!</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.title" resname="tasks.email.title">
+			<trans-unit id="tasks.email.title">
 				<source>TYPO3 LinkValidator report</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.overview" resname="tasks.email.overview">
+			<trans-unit id="tasks.email.overview">
 				<source>Overview of broken links</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.overview.all" resname="tasks.email.overview.all">
+			<trans-unit id="tasks.email.overview.all">
 				<source>Total broken links: %s (last report: %s)</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.overview.internal" resname="tasks.email.overview.internal">
+			<trans-unit id="tasks.email.overview.internal">
 				<source>Internal links: %s (last report: %s)</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.overview.external" resname="tasks.email.overview.external">
+			<trans-unit id="tasks.email.overview.external">
 				<source>External links: %s (last report: %s)</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.overview.file" resname="tasks.email.overview.file">
+			<trans-unit id="tasks.email.overview.file">
 				<source>File / Media links: %s (last report: %s)</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.listing" resname="tasks.email.lisiting">
+			<trans-unit id="tasks.email.listing">
 				<source>Listing of broken links</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.listing.pageExplanation" resname="tasks.email.lisiting">
+			<trans-unit id="tasks.email.listing.pageExplanation">
 				<source>If record type is "Page", the page id is the parent page.</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.listing.hoverExpalantion" resname="tasks.email.lisiting">
+			<trans-unit id="tasks.email.listing.hoverExpalantion">
 				<source>Hover over an element to see more information e.g. the record title.</source>
 			</trans-unit>
-			<trans-unit id="tasks.email.listing.explanation" resname="tasks.email.explanation">
+			<trans-unit id="tasks.email.listing.explanation">
 				<source>Explanation: Record | Language | Page | Record type | Target | Link type</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.record" resname="tasks.email.brokenLinks.record">
+			<trans-unit id="task.email.brokenLinks.record">
 				<source>Record</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.language" resname="tasks.email.brokenLinks.language">
+			<trans-unit id="task.email.brokenLinks.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.page" resname="tasks.email.brokenLinks.page">
+			<trans-unit id="task.email.brokenLinks.page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.recordType" resname="tasks.email.brokenLinks.recordType">
+			<trans-unit id="task.email.brokenLinks.recordType">
 				<source>Record type</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.target" resname="tasks.email.brokenLinks.target">
+			<trans-unit id="task.email.brokenLinks.target">
 				<source>Target</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.type" resname="tasks.email.brokenLinks.type">
+			<trans-unit id="task.email.brokenLinks.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.type.db" resname="tasks.email.brokenLinks.db">
+			<trans-unit id="task.email.brokenLinks.type.db">
 				<source>Internal</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.type.external" resname="tasks.email.brokenLinks.external">
+			<trans-unit id="task.email.brokenLinks.type.external">
 				<source>External</source>
 			</trans-unit>
-			<trans-unit id="task.email.brokenLinks.type.file" resname="tasks.email.brokenLinks.file">
+			<trans-unit id="task.email.brokenLinks.type.file">
 				<source>File / Media</source>
 			</trans-unit>
 		</body>

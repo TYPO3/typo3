@@ -5,25 +5,25 @@
         <header/>
 
         <body>
-            <trans-unit id="module.label" resname="module.label">
+            <trans-unit id="module.label">
                 <source>Preview</source>
             </trans-unit>
-            <trans-unit id="showHiddenPages" resname="showHiddenPages">
+            <trans-unit id="showHiddenPages">
                 <source>Show hidden pages</source>
             </trans-unit>
-            <trans-unit id="showHiddenRecords" resname="showHiddenRecords">
+            <trans-unit id="showHiddenRecords">
                 <source>Show hidden records</source>
             </trans-unit>
-            <trans-unit id="showScheduledRecords" resname="showScheduledRecords">
+            <trans-unit id="showScheduledRecords">
                 <source>Ignore start and end time</source>
             </trans-unit>
-            <trans-unit id="showFluidDebug" resname="showFluidDebug">
+            <trans-unit id="showFluidDebug">
                 <source>Show fluid debug output</source>
             </trans-unit>
-            <trans-unit id="simulateDate" resname="simulateDate">
+            <trans-unit id="simulateDate">
                 <source>Simulate time</source>
             </trans-unit>
-            <trans-unit id="simulateUserGroup" resname="simulateUserGroup">
+            <trans-unit id="simulateUserGroup">
                 <source>Simulate user group</source>
             </trans-unit>
         </body>

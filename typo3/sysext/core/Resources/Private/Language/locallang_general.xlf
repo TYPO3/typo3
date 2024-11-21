@@ -3,193 +3,193 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_general.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="LGL.endtime" resname="LGL.endtime">
+			<trans-unit id="LGL.endtime">
 				<source>Stop</source>
 			</trans-unit>
-			<trans-unit id="LGL.hidden" resname="LGL.hidden">
+			<trans-unit id="LGL.hidden">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="LGL.timestamp" resname="LGL.timestamp">
+			<trans-unit id="LGL.timestamp">
 				<source>Last Modified</source>
 			</trans-unit>
-			<trans-unit id="LGL.creationDate" resname="LGL.creationDate">
+			<trans-unit id="LGL.creationDate">
 				<source>Created At</source>
 			</trans-unit>
-			<trans-unit id="LGL.creationUserId" resname="LGL.creationUserId">
+			<trans-unit id="LGL.creationUserId">
 				<source>Created By</source>
 			</trans-unit>
-			<trans-unit id="LGL.starttime" resname="LGL.starttime">
+			<trans-unit id="LGL.starttime">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="LGL.fe_group" resname="LGL.fe_group">
+			<trans-unit id="LGL.fe_group">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="LGL.hide_at_login" resname="LGL.hide_at_login">
+			<trans-unit id="LGL.hide_at_login">
 				<source>Hide at login</source>
 			</trans-unit>
-			<trans-unit id="LGL.any_login" resname="LGL.any_login">
+			<trans-unit id="LGL.any_login">
 				<source>Show at any login</source>
 			</trans-unit>
-			<trans-unit id="LGL.usergroups" resname="LGL.usergroups">
+			<trans-unit id="LGL.usergroups">
 				<source>__Usergroups:__</source>
 			</trans-unit>
-			<trans-unit id="LGL.type" resname="LGL.type">
+			<trans-unit id="LGL.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="LGL.description" resname="LGL.description">
+			<trans-unit id="LGL.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="LGL.prependAtCopy" resname="LGL.prependAtCopy">
+			<trans-unit id="LGL.prependAtCopy">
 				<source>(copy %s)</source>
 			</trans-unit>
-			<trans-unit id="LGL.layout" resname="LGL.layout">
+			<trans-unit id="LGL.layout">
 				<source>Frontend Layout</source>
 			</trans-unit>
-			<trans-unit id="LGL.default_value" resname="LGL.default_value">
+			<trans-unit id="LGL.default_value">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="LGL.normal" resname="LGL.normal">
+			<trans-unit id="LGL.normal">
 				<source>Normal</source>
 			</trans-unit>
-			<trans-unit id="LGL.images" resname="LGL.images">
+			<trans-unit id="LGL.images">
 				<source>Images</source>
 			</trans-unit>
-			<trans-unit id="LGL.image" resname="LGL.image">
+			<trans-unit id="LGL.image">
 				<source>Image</source>
 			</trans-unit>
-			<trans-unit id="LGL.width" resname="LGL.width">
+			<trans-unit id="LGL.width">
 				<source>Width</source>
 			</trans-unit>
-			<trans-unit id="LGL.height" resname="LGL.height">
+			<trans-unit id="LGL.height">
 				<source>Height</source>
 			</trans-unit>
-			<trans-unit id="LGL.caption" resname="LGL.caption">
+			<trans-unit id="LGL.caption">
 				<source>Caption</source>
 			</trans-unit>
-			<trans-unit id="LGL.subheader" resname="LGL.subheader">
+			<trans-unit id="LGL.subheader">
 				<source>Subheader</source>
 			</trans-unit>
-			<trans-unit id="LGL.text" resname="LGL.text">
+			<trans-unit id="LGL.text">
 				<source>Text</source>
 			</trans-unit>
-			<trans-unit id="LGL.name" resname="LGL.name">
+			<trans-unit id="LGL.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="LGL.first_name" resname="LGL.first_name">
+			<trans-unit id="LGL.first_name">
 				<source>First name</source>
 			</trans-unit>
-			<trans-unit id="LGL.middle_name" resname="LGL.middle_name">
+			<trans-unit id="LGL.middle_name">
 				<source>Middle name</source>
 			</trans-unit>
-			<trans-unit id="LGL.last_name" resname="LGL.last_name">
+			<trans-unit id="LGL.last_name">
 				<source>Last name</source>
 			</trans-unit>
-			<trans-unit id="LGL.title" resname="LGL.title">
+			<trans-unit id="LGL.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="LGL.title_person" resname="LGL.title_person">
+			<trans-unit id="LGL.title_person">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="LGL.address" resname="LGL.address">
+			<trans-unit id="LGL.address">
 				<source>Address</source>
 			</trans-unit>
-			<trans-unit id="LGL.phone" resname="LGL.phone">
+			<trans-unit id="LGL.phone">
 				<source>Phone</source>
 			</trans-unit>
-			<trans-unit id="LGL.fax" resname="LGL.fax">
+			<trans-unit id="LGL.fax">
 				<source>Fax</source>
 			</trans-unit>
-			<trans-unit id="LGL.author" resname="LGL.author">
+			<trans-unit id="LGL.author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="LGL.email" resname="LGL.email">
+			<trans-unit id="LGL.email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="LGL.company" resname="LGL.company">
+			<trans-unit id="LGL.company">
 				<source>Company</source>
 			</trans-unit>
-			<trans-unit id="LGL.city" resname="LGL.city">
+			<trans-unit id="LGL.city">
 				<source>City</source>
 			</trans-unit>
-			<trans-unit id="LGL.zip" resname="LGL.zip">
+			<trans-unit id="LGL.zip">
 				<source>Zipcode</source>
 			</trans-unit>
-			<trans-unit id="LGL.country" resname="LGL.country">
+			<trans-unit id="LGL.country">
 				<source>Country</source>
 			</trans-unit>
-			<trans-unit id="LGL.www" resname="LGL.www">
+			<trans-unit id="LGL.www">
 				<source>www</source>
 			</trans-unit>
-			<trans-unit id="LGL.lastlogin" resname="LGL.lastlogin">
+			<trans-unit id="LGL.lastlogin">
 				<source>Last login</source>
 			</trans-unit>
-			<trans-unit id="LGL.note" resname="LGL.note">
+			<trans-unit id="LGL.note">
 				<source>Note</source>
 			</trans-unit>
-			<trans-unit id="LGL.parameters" resname="LGL.parameters">
+			<trans-unit id="LGL.parameters">
 				<source>Parameters</source>
 			</trans-unit>
-			<trans-unit id="LGL.code" resname="LGL.code">
+			<trans-unit id="LGL.code">
 				<source>CODE</source>
 			</trans-unit>
-			<trans-unit id="LGL.links" resname="LGL.links">
+			<trans-unit id="LGL.links">
 				<source>Links</source>
 			</trans-unit>
-			<trans-unit id="LGL.language" resname="LGL.language">
+			<trans-unit id="LGL.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="LGL.category" resname="LGL.category">
+			<trans-unit id="LGL.category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="LGL.shortcut_page" resname="LGL.shortcut_page">
+			<trans-unit id="LGL.shortcut_page">
 				<source>Shortcut to page</source>
 			</trans-unit>
-			<trans-unit id="LGL.keywords" resname="LGL.keywords">
+			<trans-unit id="LGL.keywords">
 				<source>Keywords (,)</source>
 			</trans-unit>
-			<trans-unit id="LGL.disable" resname="LGL.disable">
+			<trans-unit id="LGL.disable">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="LGL.baseStorage" resname="LGL.baseStorage">
+			<trans-unit id="LGL.baseStorage">
 				<source>Storage</source>
 			</trans-unit>
-			<trans-unit id="LGL.folder" resname="LGL.folder">
+			<trans-unit id="LGL.folder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="LGL.startingpoint" resname="LGL.startingpoint">
+			<trans-unit id="LGL.startingpoint">
 				<source>Startingpoint</source>
 			</trans-unit>
-			<trans-unit id="LGL.disableRTE" resname="LGL.disableRTE">
+			<trans-unit id="LGL.disableRTE">
 				<source>Disable Rich Text Editor</source>
 			</trans-unit>
-			<trans-unit id="LGL.external" resname="LGL.external">
+			<trans-unit id="LGL.external">
 				<source>External URL</source>
 			</trans-unit>
-			<trans-unit id="LGL.recursive" resname="LGL.recursive">
+			<trans-unit id="LGL.recursive">
 				<source>Recursive</source>
 			</trans-unit>
-			<trans-unit id="LGL.l18n_parent" resname="LGL.l18n_parent">
+			<trans-unit id="LGL.l18n_parent">
 				<source>Transl.Orig</source>
 			</trans-unit>
-			<trans-unit id="LGL.siteLanguages" resname="LGL.siteLanguages">
+			<trans-unit id="LGL.siteLanguages">
 				<source>Site languages</source>
 			</trans-unit>
-			<trans-unit id="LGL.specialLanguages" resname="LGL.specialLanguages">
+			<trans-unit id="LGL.specialLanguages">
 				<source>Special languages</source>
 			</trans-unit>
-			<trans-unit id="LGL.allLanguages" resname="LGL.allLanguages">
+			<trans-unit id="LGL.allLanguages">
 				<source>[All]</source>
 			</trans-unit>
-			<trans-unit id="LGL.error" resname="LGL.error">
+			<trans-unit id="LGL.error">
 				<source>Error!</source>
 			</trans-unit>
-			<trans-unit id="LGL.visible" resname="LGL.visible">
+			<trans-unit id="LGL.visible">
 				<source>Visible</source>
 			</trans-unit>
-			<trans-unit id="LGL.enabled" resname="LGL.enabled">
+			<trans-unit id="LGL.enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="LGL.disabled" resname="LGL.disabled">
+			<trans-unit id="LGL.disabled">
 				<source>Disabled</source>
 			</trans-unit>
 		</body>

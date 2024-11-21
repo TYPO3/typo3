@@ -3,73 +3,73 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf" date="2024-09-10T12:13:00Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="overview.title" resname="overview.title">
+			<trans-unit id="overview.title">
 				<source>Site Settings Overview</source>
 			</trans-unit>
-			<trans-unit id="overview.setSummary" resname="overview.setSummary">
+			<trans-unit id="overview.setSummary">
 				<source>Sets (%d)</source>
 			</trans-unit>
-			<trans-unit id="overview.customSettingsSummary" resname="overview.customSettingsSummary">
+			<trans-unit id="overview.customSettingsSummary">
 				<source>Custom Settings (%d)</source>
 			</trans-unit>
-			<trans-unit id="overview.editSettings" resname="overview.editSettings">
+			<trans-unit id="overview.editSettings">
 				<source>Edit Settings</source>
 			</trans-unit>
-			<trans-unit id="overview.message.notEditable" resname="overview.message.notEditable">
+			<trans-unit id="overview.message.notEditable">
 				<source>The sets of this site do not provide any configurable settings.</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteSettingsExists.title" resname="overview.noSiteSettingsExists.title">
+			<trans-unit id="overview.noSiteSettingsExists.title">
 				<source>No configurable Site Settings found</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteSettingsExists.message" resname="overview.noSiteSettingsExists.message">
+			<trans-unit id="overview.noSiteSettingsExists.message">
 				<source>See the documentation for instructions on defining settings via site sets.</source>
 			</trans-unit>
-			<trans-unit id="overview.noSiteSettingsExists.button-documentation-label" resname="overview.noSiteSettingsExists.button-documentation-label">
+			<trans-unit id="overview.noSiteSettingsExists.button-documentation-label">
 				<source>Open the documentation</source>
 			</trans-unit>
-			<trans-unit id="edit.headline" resname="edit.headline">
+			<trans-unit id="edit.headline">
 				<source>Site Settings for "%s"</source>
 			</trans-unit>
-			<trans-unit id="edit.noSettings.title" resname="edit.noSettings.title">
+			<trans-unit id="edit.noSettings.title">
 				<source>No settings available</source>
 			</trans-unit>
-			<trans-unit id="edit.noSettings.message" resname="edit.noSettings.message">
+			<trans-unit id="edit.noSettings.message">
 				<source>The site '%s' does not provide configurable settings.</source>
 			</trans-unit>
-			<trans-unit id="edit.yamlExport" resname="edit.yamlExport">
+			<trans-unit id="edit.yamlExport">
 				<source>YAML export</source>
 			</trans-unit>
-			<trans-unit id="edit.editSiteConfiguration" resname="edit.editSiteConfiguration">
+			<trans-unit id="edit.editSiteConfiguration">
 				<source>Edit site configuration</source>
 			</trans-unit>
-			<trans-unit id="edit.resetSetting" resname="edit.resetSetting">
+			<trans-unit id="edit.resetSetting">
 				<source>Reset setting</source>
 			</trans-unit>
-			<trans-unit id="edit.copySettingsIdentifier" resname="edit.copySettingsIdentifier">
+			<trans-unit id="edit.copySettingsIdentifier">
 				<source>Copy identifier</source>
 			</trans-unit>
-			<trans-unit id="edit.copyAsYaml" resname="edit.copyAsYaml">
+			<trans-unit id="edit.copyAsYaml">
 				<source>Copy as YAML</source>
 			</trans-unit>
-			<trans-unit id="edit.searchTermVisuallyHiddenLabel" resname="edit.searchTermVisuallyHiddenLabel">
+			<trans-unit id="edit.searchTermVisuallyHiddenLabel">
 				<source>Search settings</source>
 			</trans-unit>
-			<trans-unit id="edit.searchTermPlaceholder" resname="edit.searchTermPlaceholder">
+			<trans-unit id="edit.searchTermPlaceholder">
 				<source>Search settings</source>
 			</trans-unit>
-			<trans-unit id="edit.search.noResultsTitle" resname="edit.search.noResultsTitle">
+			<trans-unit id="edit.search.noResultsTitle">
 				<source>No settings were found.</source>
 			</trans-unit>
-			<trans-unit id="edit.search.noResultsMessage" resname="edit.search.noResultsMessage">
+			<trans-unit id="edit.search.noResultsMessage">
 				<source>The search filters by setting value, label, description or identifier.</source>
 			</trans-unit>
-			<trans-unit id="edit.search.noResultsResetButtonLabel" resname="edit.search.noResultsResetButtonLabel">
+			<trans-unit id="edit.search.noResultsResetButtonLabel">
 				<source>Reset filter</source>
 			</trans-unit>
-			<trans-unit id="save.message.updated" resname="save.message.updated">
+			<trans-unit id="save.message.updated">
 				<source>Settings updated.</source>
 			</trans-unit>
-			<trans-unit id="categories.other" resname="categories.other">
+			<trans-unit id="categories.other">
 				<source>Other</source>
 			</trans-unit>
 		</body>

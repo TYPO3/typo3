@@ -25,7 +25,7 @@ If the attribute approved is omitted, the translation is still taken into accoun
 
 ..  code-block:: xml
 
-    <trans-unit id="label2" resname="label2" approved="yes">
+    <trans-unit id="label2" approved="yes">
       <source>This is label #2</source>
       <target>Ceci est le libellé no. 2</target>
     </trans-unit>

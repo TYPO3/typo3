@@ -3,22 +3,22 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_ceditor.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="submodule.title" resname="submodule.title">
+			<trans-unit id="submodule.title">
 				<source>Constant Editor</source>
 			</trans-unit>
-			<trans-unit id="submodule.titleWithRecord" resname="submodule.titleWithRecord">
+			<trans-unit id="submodule.titleWithRecord">
 				<source>Constant Editor for TypoScript record "%s"</source>
 			</trans-unit>
-			<trans-unit id="submodule.description" resname="submodule.description">
+			<trans-unit id="submodule.description">
 				<source>Overwrite constants and save them to the selected TypoScript record on the current page. Only options that have been made available for editing in the constant editor are shown below. In addition, more constants can exist in the system.</source>
 			</trans-unit>
-			<trans-unit id="options.selectedCategory" resname="options.selectedCategory">
+			<trans-unit id="options.selectedCategory">
 				<source>Selected category</source>
 			</trans-unit>
-			<trans-unit id="options.selectedRecord" resname="options.selectedRecord">
+			<trans-unit id="options.selectedRecord">
 				<source>Selected record</source>
 			</trans-unit>
-			<trans-unit id="infobox.message.noConstants" resname="infobox.message.noConstants">
+			<trans-unit id="infobox.message.noConstants">
 				<source>There are no editable constants available for the Constant Editor.</source>
 			</trans-unit>
 		</body>

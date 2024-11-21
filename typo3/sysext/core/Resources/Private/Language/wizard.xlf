@@ -3,16 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/wizard.xlf" date="2016-02-14T16:11:24Z" product-name="core">
 		<header/>
 		<body>
-			<trans-unit id="wizard.button.next" resname="wizard.button.next">
+			<trans-unit id="wizard.button.next">
 				<source>Next</source>
 			</trans-unit>
 			<trans-unit id="wizard.button.prev">
 				<source>Previous</source>
 			</trans-unit>
-			<trans-unit id="wizard.button.cancel" resname="wizard.button.cancel">
+			<trans-unit id="wizard.button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="wizard.progress" resname="wizard.progress">
+			<trans-unit id="wizard.progress">
 				<source>Step {0} of {1}</source>
 			</trans-unit>
 			<trans-unit id="wizard.progressStep.configure">
@@ -21,7 +21,7 @@
 			<trans-unit id="wizard.progressStep.finish">
 				<source>Finish</source>
 			</trans-unit>
-			<trans-unit id="wizard.processing.title" resname="wizard.processing.title">
+			<trans-unit id="wizard.processing.title">
 				<source>Processing...</source>
 			</trans-unit>
 		</body>

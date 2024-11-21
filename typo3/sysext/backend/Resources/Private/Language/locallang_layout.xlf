@@ -3,416 +3,416 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>Page content</source>
 			</trans-unit>
-			<trans-unit id="noEditItems" resname="noEditItems">
+			<trans-unit id="noEditItems">
 				<source>Sorry, you do not have permissions to edit items on this page!</source>
 			</trans-unit>
-			<trans-unit id="noEditPage" resname="noEditPage">
+			<trans-unit id="noEditPage">
 				<source>Sorry, you do not have permissions to edit this page!</source>
 			</trans-unit>
-			<trans-unit id="moveUp" resname="moveUp">
+			<trans-unit id="moveUp">
 				<source>Move record up</source>
 			</trans-unit>
-			<trans-unit id="moveDown" resname="moveDown">
+			<trans-unit id="moveDown">
 				<source>Move record down</source>
 			</trans-unit>
-			<trans-unit id="unHide" resname="unHide">
+			<trans-unit id="unHide">
 				<source>Un-hide</source>
 			</trans-unit>
-			<trans-unit id="hide" resname="hide">
+			<trans-unit id="hide">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="edit" resname="edit">
+			<trans-unit id="edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="newAfter" resname="newAfter">
+			<trans-unit id="newAfter">
 				<source>New record after this one</source>
 			</trans-unit>
-			<trans-unit id="move_record" resname="move_record">
+			<trans-unit id="move_record">
 				<source>Re-position current content element</source>
 			</trans-unit>
-			<trans-unit id="move_page" resname="move_page">
+			<trans-unit id="move_page">
 				<source>Move page</source>
 			</trans-unit>
-			<trans-unit id="transfer_multiple" resname="transfer_multiple">
+			<trans-unit id="transfer_multiple">
 				<source>Transfer multiple items</source>
 			</trans-unit>
-			<trans-unit id="mess.transfer_multiple" resname="mess.transfer_multiple">
+			<trans-unit id="mess.transfer_multiple">
 				<source>Transfer %d items into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="drop.conflict" resname="drop.conflict">
+			<trans-unit id="drop.conflict">
 				<source>Conflict with dropped node</source>
 			</trans-unit>
-			<trans-unit id="mess.drop.conflict" resname="mess.drop.conflict">
+			<trans-unit id="mess.drop.conflict">
 				<source>The node %s is a parent of %s and therefore cannot be moved. Operation canceled.</source>
 			</trans-unit>
-			<trans-unit id="deleteItem" resname="deleteItem">
+			<trans-unit id="deleteItem">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="deleteWarning" resname="deleteWarning">
+			<trans-unit id="deleteWarning">
 				<source>Are you sure you want to delete the record '%s'?</source>
 			</trans-unit>
-			<trans-unit id="pasteIntoColumn" resname="pasteIntoColumn">
+			<trans-unit id="pasteIntoColumn">
 				<source>Paste into this column</source>
 			</trans-unit>
-			<trans-unit id="pasteAfterRecord" resname="pasteAfterRecord">
+			<trans-unit id="pasteAfterRecord">
 				<source>Paste after this record</source>
 			</trans-unit>
-			<trans-unit id="paste.modal.title.paste" resname="paste.modal.title.paste">
+			<trans-unit id="paste.modal.title.paste">
 				<source>Paste record</source>
 			</trans-unit>
-			<trans-unit id="paste.modal.paste" resname="paste.modal.paste">
+			<trans-unit id="paste.modal.paste">
 				<source>Do you want to paste the record to this position?</source>
 			</trans-unit>
-			<trans-unit id="paste.modal.button.cancel" resname="paste.modal.button.cancel">
+			<trans-unit id="paste.modal.button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="paste.modal.button.paste" resname="paste.modal.button.paste">
+			<trans-unit id="paste.modal.button.paste">
 				<source>Paste</source>
 			</trans-unit>
-			<trans-unit id="editColumn" resname="editColumn">
+			<trans-unit id="editColumn">
 				<source>Edit this column</source>
 			</trans-unit>
-			<trans-unit id="editPageProperties_curLang" resname="editPageProperties_curLang">
+			<trans-unit id="editPageProperties_curLang">
 				<source>Edit translation properties</source>
 			</trans-unit>
-			<trans-unit id="editInRTE" resname="editInRTE">
+			<trans-unit id="editInRTE">
 				<source>Edit in Rich Text Editor</source>
 			</trans-unit>
-			<trans-unit id="newPageContent" resname="newPageContent">
+			<trans-unit id="newPageContent">
 				<source>Create page content</source>
 			</trans-unit>
-			<trans-unit id="newPageContent_translate" resname="newPageContent_translate">
+			<trans-unit id="newPageContent_translate">
 				<source>Translate</source>
 			</trans-unit>
-			<trans-unit id="newPageContent2" resname="newPageContent2">
+			<trans-unit id="newPageContent2">
 				<source>New content</source>
 			</trans-unit>
-			<trans-unit id="content" resname="content">
+			<trans-unit id="content">
 				<source>Content</source>
 			</trans-unit>
-			<trans-unit id="createNewContent" resname="createNewContent">
+			<trans-unit id="createNewContent">
 				<source>Create new content</source>
 			</trans-unit>
-			<trans-unit id="newInColumn" resname="newInColumn">
+			<trans-unit id="newInColumn">
 				<source>Create new record in top of this column</source>
 			</trans-unit>
-			<trans-unit id="records" resname="records">
+			<trans-unit id="records">
 				<source>records</source>
 			</trans-unit>
-			<trans-unit id="pageInformation" resname="pageInformation">
+			<trans-unit id="pageInformation">
 				<source>Page information</source>
 			</trans-unit>
-			<trans-unit id="goToTable" resname="goToTable">
+			<trans-unit id="goToTable">
 				<source>Go to table</source>
 			</trans-unit>
-			<trans-unit id="internalNotes" resname="internalNotes">
+			<trans-unit id="internalNotes">
 				<source>Internal notes</source>
 			</trans-unit>
-			<trans-unit id="clearCache" resname="clearCache">
+			<trans-unit id="clearCache">
 				<source>Click here to clear cache for this page.</source>
 			</trans-unit>
-			<trans-unit id="hiddenCE" resname="hiddenCE">
+			<trans-unit id="hiddenCE">
 				<source>Show hidden content elements</source>
 			</trans-unit>
-			<trans-unit id="new_language" resname="new_language">
+			<trans-unit id="new_language">
 				<source>Create a new translation of this page</source>
 			</trans-unit>
-			<trans-unit id="newLabel" resname="newLabel">
+			<trans-unit id="newLabel">
 				<source>NEW</source>
 			</trans-unit>
-			<trans-unit id="defaultLanguage" resname="defaultLanguage">
+			<trans-unit id="defaultLanguage">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="editLanguageHeader" resname="editLanguageHeader">
+			<trans-unit id="editLanguageHeader">
 				<source>Edit language header</source>
 			</trans-unit>
-			<trans-unit id="editPageProperties" resname="editPageProperties">
+			<trans-unit id="editPageProperties">
 				<source>Edit page properties</source>
 			</trans-unit>
-			<trans-unit id="editPageTitle" resname="editPageTitle">
+			<trans-unit id="editPageTitle">
 				<source>Edit the page title</source>
 			</trans-unit>
-			<trans-unit id="editPageTitle.input.field.label" resname="editPageTitle.input.field.label">
+			<trans-unit id="editPageTitle.input.field.label">
 				<source>Enter a page title</source>
 			</trans-unit>
-			<trans-unit id="editPageLanguageOverlayProperties" resname="editPageLanguageOverlayProperties">
+			<trans-unit id="editPageLanguageOverlayProperties">
 				<source>Edit page language overlay properties</source>
 			</trans-unit>
-			<trans-unit id="editThisColumn" resname="editThisColumn">
+			<trans-unit id="editThisColumn">
 				<source>Edit the '%s' field of the listed pages</source>
 			</trans-unit>
-			<trans-unit id="editDefaultLanguagePage" resname="editDefaultLanguagePage">
+			<trans-unit id="editDefaultLanguagePage">
 				<source>Edit default language page properties</source>
 			</trans-unit>
-			<trans-unit id="newRecordGeneral" resname="newRecordGeneral">
+			<trans-unit id="newRecordGeneral">
 				<source>Create new record</source>
 			</trans-unit>
-			<trans-unit id="newContentElement" resname="newContentElement">
+			<trans-unit id="newContentElement">
 				<source>New Page Content</source>
 			</trans-unit>
-			<trans-unit id="CEonThisPage" resname="CEonThisPage">
+			<trans-unit id="CEonThisPage">
 				<source>Content elements on this page</source>
 			</trans-unit>
-			<trans-unit id="newPage" resname="newPage">
+			<trans-unit id="newPage">
 				<source>Create new page</source>
 			</trans-unit>
-			<trans-unit id="newPage2" resname="newPage2">
+			<trans-unit id="newPage2">
 				<source>New page</source>
 			</trans-unit>
-			<trans-unit id="noAccess" resname="noAccess">
+			<trans-unit id="noAccess">
 				<source>No edit access</source>
 			</trans-unit>
-			<trans-unit id="noAccess_msg" resname="noAccess_msg">
+			<trans-unit id="noAccess_msg">
 				<source>You do not have access to edit the requested record.</source>
 			</trans-unit>
-			<trans-unit id="notAssigned" resname="notAssigned">
+			<trans-unit id="notAssigned">
 				<source>Not assigned</source>
 			</trans-unit>
-			<trans-unit id="emptyColPos" resname="emptyColPos">
+			<trans-unit id="emptyColPos">
 				<source>Empty section</source>
 			</trans-unit>
-			<trans-unit id="emptyColPos.message" resname="emptyColPos.message">
+			<trans-unit id="emptyColPos.message">
 				<source>This section is only for display purposes, no "colPos" configuration is set.</source>
 			</trans-unit>
-			<trans-unit id="unusedColPos" resname="unusedColPos">
+			<trans-unit id="unusedColPos">
 				<source>Unused</source>
 			</trans-unit>
-			<trans-unit id="undoLastChange" resname="undoLastChange">
+			<trans-unit id="undoLastChange">
 				<source>Undo/Redo last change (%s ago)</source>
 			</trans-unit>
-			<trans-unit id="recordHistory" resname="recordHistory">
+			<trans-unit id="recordHistory">
 				<source>View record change history</source>
 			</trans-unit>
-			<trans-unit id="viewContent" resname="viewContent">
+			<trans-unit id="viewContent">
 				<source>Viewing content of</source>
 			</trans-unit>
-			<trans-unit id="tt_board_subject" resname="tt_board_subject">
+			<trans-unit id="tt_board_subject">
 				<source>Subject</source>
 			</trans-unit>
-			<trans-unit id="tt_board_author" resname="tt_board_author">
+			<trans-unit id="tt_board_author">
 				<source>Author</source>
 			</trans-unit>
-			<trans-unit id="tt_board_date" resname="tt_board_date">
+			<trans-unit id="tt_board_date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="tt_board_age" resname="tt_board_age">
+			<trans-unit id="tt_board_age">
 				<source>Age</source>
 			</trans-unit>
-			<trans-unit id="tt_board_RE" resname="tt_board_RE">
+			<trans-unit id="tt_board_RE">
 				<source>RE</source>
 			</trans-unit>
-			<trans-unit id="gridView" resname="gridView">
+			<trans-unit id="gridView">
 				<source>Grid-View</source>
 			</trans-unit>
-			<trans-unit id="m_tt_board_0" resname="m_tt_board_0">
+			<trans-unit id="m_tt_board_0">
 				<source>List topics only</source>
 			</trans-unit>
-			<trans-unit id="m_tt_board_expand" resname="m_tt_board_expand">
+			<trans-unit id="m_tt_board_expand">
 				<source>Expand Threads</source>
 			</trans-unit>
-			<trans-unit id="m_tt_address_0" resname="m_tt_address_0">
+			<trans-unit id="m_tt_address_0">
 				<source>Short List</source>
 			</trans-unit>
-			<trans-unit id="m_tt_address_1" resname="m_tt_address_1">
+			<trans-unit id="m_tt_address_1">
 				<source>Address list</source>
 			</trans-unit>
-			<trans-unit id="m_tt_address_2" resname="m_tt_address_2">
+			<trans-unit id="m_tt_address_2">
 				<source>Personal info</source>
 			</trans-unit>
-			<trans-unit id="m_tt_links_1" resname="m_tt_links_1">
+			<trans-unit id="m_tt_links_1">
 				<source>Whole URL</source>
 			</trans-unit>
-			<trans-unit id="m_tt_links_2" resname="m_tt_links_2">
+			<trans-unit id="m_tt_links_2">
 				<source>Alternative note</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_date" resname="m_tt_calender_date">
+			<trans-unit id="m_tt_calender_date">
 				<source>Date</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_date_ext" resname="m_tt_calender_date_ext">
+			<trans-unit id="m_tt_calender_date_ext">
 				<source>Date - extended</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_todo" resname="m_tt_calender_todo">
+			<trans-unit id="m_tt_calender_todo">
 				<source>Todo</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_todo_ext" resname="m_tt_calender_todo_ext">
+			<trans-unit id="m_tt_calender_todo_ext">
 				<source>Todo - extended</source>
 			</trans-unit>
-			<trans-unit id="m_tt_calender_ext" resname="m_tt_calender_ext">
+			<trans-unit id="m_tt_calender_ext">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="m_tt_products_ext" resname="m_tt_products_ext">
+			<trans-unit id="m_tt_products_ext">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="m_default" resname="m_default">
+			<trans-unit id="m_default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="clickAPage_content" resname="clickAPage_content">
+			<trans-unit id="clickAPage_content">
 				<source>Please select a page in the page tree to edit page content.</source>
 			</trans-unit>
-			<trans-unit id="pI_crUser" resname="pI_crUser">
+			<trans-unit id="pI_crUser">
 				<source>Created by</source>
 			</trans-unit>
-			<trans-unit id="pI_crDate" resname="pI_crDate">
+			<trans-unit id="pI_crDate">
 				<source>Created date</source>
 			</trans-unit>
-			<trans-unit id="pI_lastChange" resname="pI_lastChange">
+			<trans-unit id="pI_lastChange">
 				<source>Last change</source>
 			</trans-unit>
-			<trans-unit id="pI_lastChangeContent" resname="pI_lastChangeContent">
+			<trans-unit id="pI_lastChangeContent">
 				<source>Last change, content</source>
 			</trans-unit>
-			<trans-unit id="pI_hitsTotal" resname="pI_hitsTotal">
+			<trans-unit id="pI_hitsTotal">
 				<source>Total Hits</source>
 			</trans-unit>
-			<trans-unit id="pI_hitsPeriod" resname="pI_hitsPeriod">
+			<trans-unit id="pI_hitsPeriod">
 				<source>Hits Period</source>
 			</trans-unit>
-			<trans-unit id="pI_hits24hours" resname="pI_hits24hours">
+			<trans-unit id="pI_hits24hours">
 				<source>Last 24 hours</source>
 			</trans-unit>
-			<trans-unit id="pI_hits10days" resname="pI_hits10days">
+			<trans-unit id="pI_hits10days">
 				<source>Last 10 days</source>
 			</trans-unit>
-			<trans-unit id="content_from_pid_title" resname="content_from_pid_title">
+			<trans-unit id="content_from_pid_title">
 				<source>Page uses content from this page: %s</source>
 			</trans-unit>
-			<trans-unit id="content_from_pid_invalid_title" resname="content_from_pid_invalid_title">
+			<trans-unit id="content_from_pid_invalid_title">
 				<source>Page is defined to use content from PID %s, but this page does not exist or is inaccessible</source>
 			</trans-unit>
-			<trans-unit id="content_on_pid_title" resname="content_on_pid_title">
+			<trans-unit id="content_on_pid_title">
 				<source>This content is also shown on: %s</source>
 			</trans-unit>
-			<trans-unit id="pageIsExternalLinkMessage" resname="pageIsExternalLinkMessage">
+			<trans-unit id="pageIsExternalLinkMessage">
 				<source>Page is a link to the following external URL: %s</source>
 			</trans-unit>
-			<trans-unit id="pageIsInternalLinkMessage" resname="pageIsInternalLinkMessage">
+			<trans-unit id="pageIsInternalLinkMessage">
 				<source>Page is a link to the following page: %s</source>
 			</trans-unit>
-			<trans-unit id="pageIsRandomInternalLinkMessage" resname="pageIsRandomInternalLinkMessage">
+			<trans-unit id="pageIsRandomInternalLinkMessage">
 				<source>Page is a link to a random subpage.</source>
 			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredInternalLinkMessage" resname="pageIsMisconfiguredInternalLinkMessage">
+			<trans-unit id="pageIsMisconfiguredInternalLinkMessage">
 				<source>Page is configured to be a link but there is actually no valid target defined.</source>
 			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage">
+			<trans-unit id="pageIsMisconfiguredOrNotAccessibleInternalLinkMessage">
 				<source>Page is configured to be a link but there is actually no target defined which is accessible in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage" resname="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage">
+			<trans-unit id="pageIsMisconfiguredOrNotAccessibleRandomInternalLinkMessage">
 				<source>Page is configured to be a link to a random subpage but there is actually no subpage which is accessible in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredFirstSubpageMessage" resname="pageIsMisconfiguredFirstSubpageMessage">
+			<trans-unit id="pageIsMisconfiguredFirstSubpageMessage">
 				<source>Page is configured to be a link to the first subpage but there is actually no such page accessible in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredParentPageMessage" resname="pageIsMisconfiguredParentPageMessage">
+			<trans-unit id="pageIsMisconfiguredParentPageMessage">
 				<source>Page is configured to be a link to the parent page but there is actually no such page accessible in the frontend.</source>
 			</trans-unit>
-			<trans-unit id="pageIsMisconfiguredExternalLinkMessage" resname="pageIsMisconfiguredExternalLinkMessage">
+			<trans-unit id="pageIsMisconfiguredExternalLinkMessage">
 				<source>Page is configured to be an external link but there is actually no URL defined.</source>
 			</trans-unit>
-			<trans-unit id="goToListModule" resname="goToListModule">
+			<trans-unit id="goToListModule">
 				<source>Go to list module</source>
 			</trans-unit>
-			<trans-unit id="goToListModuleMessage" resname="goToListModuleMessage">
+			<trans-unit id="goToListModuleMessage">
 				<source>The current page is a folder. Folders usually don't contain content elements but are used for collecting other types of records.</source>
 			</trans-unit>
-			<trans-unit id="noPluginSelected" resname="noPluginSelected">
+			<trans-unit id="noPluginSelected">
 				<source>No plugin selected</source>
 			</trans-unit>
-			<trans-unit id="staleTranslationWarning" resname="staleTranslationWarning">
+			<trans-unit id="staleTranslationWarning">
 				<source>Make sure that this behavior is intended and does not pose a problem for you. We highlighted the problematic records for you.</source>
 			</trans-unit>
-			<trans-unit id="staleTranslationWarningTitle" resname="staleTranslationWarningTitle">
+			<trans-unit id="staleTranslationWarningTitle">
 				<source>Inconsistent content detected in language "%s"</source>
 			</trans-unit>
-			<trans-unit id="languageModeFree" resname="languageModeFree">
+			<trans-unit id="languageModeFree">
 				<source>Free Mode</source>
 			</trans-unit>
-			<trans-unit id="languageModeConnected" resname="languageModeConnected">
+			<trans-unit id="languageModeConnected">
 				<source>Connected Mode</source>
 			</trans-unit>
-			<trans-unit id="languageModeMixed" resname="languageModeMixed">
+			<trans-unit id="languageModeMixed">
 				<source>Mixed Mode</source>
 			</trans-unit>
-			<trans-unit id="staleUnusedElementsWarning" resname="staleUnusedElementsWarning">
+			<trans-unit id="staleUnusedElementsWarning">
 				<source>These elements don't belong to any of the available columns of this page. You should either delete them or move them to existing columns. We highlighted the problematic records for you.</source>
 			</trans-unit>
-			<trans-unit id="staleUnusedElementsWarningTitle" resname="staleUnusedElementsWarningTitle">
+			<trans-unit id="staleUnusedElementsWarningTitle">
 				<source>Unused elements detected on this page</source>
 			</trans-unit>
-			<trans-unit id="localize.chooseLanguage" resname="localize.chooseLanguage">
+			<trans-unit id="localize.chooseLanguage">
 				<source>Choose your language</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.header" resname="localize.wizard.header">
+			<trans-unit id="localize.wizard.header">
 				<source>Localize record &quot;{0}&quot; into {1}</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.header_page" resname="localize.wizard.header_page">
+			<trans-unit id="localize.wizard.header_page">
 				<source>Localize page &quot;{0}&quot; into {1}</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.button.translate" resname="localize.wizard.button.translate">
+			<trans-unit id="localize.wizard.button.translate">
 				<source>Translate</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.button.copy" resname="localize.wizard.button.copy">
+			<trans-unit id="localize.wizard.button.copy">
 				<source>Copy</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.button.cancel" resname="localize.wizard.button.cancel">
+			<trans-unit id="localize.wizard.button.cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.button.next" resname="localize.wizard.button.next">
+			<trans-unit id="localize.wizard.button.next">
 				<source>Next</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.button.process" resname="localize.wizard.button.process">
+			<trans-unit id="localize.wizard.button.process">
 				<source>Start processing</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.step.selectMode" resname="localize.wizard.step.selectMode">
+			<trans-unit id="localize.wizard.step.selectMode">
 				<source>Localization mode</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.step.chooseLanguage" resname="localize.wizard.step.chooseLanguage">
+			<trans-unit id="localize.wizard.step.chooseLanguage">
 				<source>Source Language</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.step.chooseLanguage" resname="localize.wizard.step.chooseLanguage">
+			<trans-unit id="localize.wizard.step.chooseLanguage">
 				<source>Source Language</source>
 			</trans-unit>
-			<trans-unit id="localize.wizard.step.selectRecords" resname="localize.wizard.step.selectRecords">
+			<trans-unit id="localize.wizard.step.selectRecords">
 				<source>Records</source>
 			</trans-unit>
-			<trans-unit id="localize.view.chooseLanguage" resname="localize.view.chooseLanguage">
+			<trans-unit id="localize.view.chooseLanguage">
 				<source>Choose the language from which you want to localize the content</source>
 			</trans-unit>
-			<trans-unit id="localize.view.summary" resname="localize.view.summary">
+			<trans-unit id="localize.view.summary">
 				<source>Record summary</source>
 			</trans-unit>
-			<trans-unit id="localize.view.processing" resname="localize.view.processing">
+			<trans-unit id="localize.view.processing">
 				<source>Processing...</source>
 			</trans-unit>
-			<trans-unit id="localize.progress.step" resname="localize.progress.step">
+			<trans-unit id="localize.progress.step">
 				<source>Step {0} of {1}</source>
 			</trans-unit>
-			<trans-unit id="localize.educate.translate" resname="localize.educate.translate" xml:space="preserve">
+			<trans-unit id="localize.educate.translate" xml:space="preserve">
 				<source>Translating content will create a direct connection between the original language and the language you translate to.&lt;br&gt;
 					This means that moving an element or setting meta information like start- or endtime will be taken from the original content and you will not be able to set these values on a translated content element.&lt;br&gt;
 					&lt;strong&gt;Use this when your workflow demands a strict translation workflow.&lt;/strong&gt;
 				</source>
 			</trans-unit>
-			<trans-unit id="localize.educate.copy" resname="localize.educate.copy" xml:space="preserve">
+			<trans-unit id="localize.educate.copy" xml:space="preserve">
 				<source>Copying content will take the content elements from the source language and create copies in a different language.&lt;br&gt;
 					This means that you will be able to move content elements around freely, but you will not have the benefit of being able to compare changes made in the source language later on.&lt;br&gt;
 					&lt;strong&gt;Use this when you want to have freedom in designing your translated website.&lt;/strong&gt;
 				</source>
 			</trans-unit>
-			<trans-unit id="window.localization.mixed_mode.title" resname="window.localization.mixed_mode.title">
+			<trans-unit id="window.localization.mixed_mode.title">
 				<source>Localization not possible</source>
 			</trans-unit>
-			<trans-unit id="window.localization.mixed_mode.message" resname="window.localization.mixed_mode.message">
+			<trans-unit id="window.localization.mixed_mode.message">
 				<source>Using the translation wizard is not possible, because either translation is disabled or the translated page is in "mixed mode". Being in "mixed mode" means that both translated records that have a source language and "free mode" records without a parent, are present.
 					We highlighted the problematic records for you in this case.</source>
 			</trans-unit>
-			<trans-unit id="error.invalidBackendLayout" resname="error.invalidBackendLayout">
+			<trans-unit id="error.invalidBackendLayout">
 				<source>The selected page layout is mis-configured, no columns are specified to be editable. Please update your backend layout to have at least one parameter "colPos" set.</source>
 			</trans-unit>
-			<trans-unit id="dragdrop.copy.message" resname="dragdrop.copy.message">
+			<trans-unit id="dragdrop.copy.message">
 				<source>Press CTRL to copy</source>
 			</trans-unit>
 		</body>

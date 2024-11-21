@@ -4,22 +4,22 @@
 		  product-name="adminpanel">
 		<header/>
 		<body>
-			<trans-unit id="settings.label" resname="settings.label">
+			<trans-unit id="settings.label">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="settings.updateButtonLabel" resname="settings.updateButtonLabel">
+			<trans-unit id="settings.updateButtonLabel">
 				<source>Update Settings</source>
 			</trans-unit>
-			<trans-unit id="settings.openBackendUrlLabel" resname="settings.openBackendUrlLabel">
+			<trans-unit id="settings.openBackendUrlLabel">
 				<source>Open page in backend</source>
 			</trans-unit>
-			<trans-unit id="button.close" resname="button.close">
+			<trans-unit id="button.close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="button.view" resname="button.view">
+			<trans-unit id="button.view">
 				<source>View</source>
 			</trans-unit>
-			<trans-unit id="button.clearAll" resname="button.clearAll">
+			<trans-unit id="button.clearAll">
 				<source>Clear all</source>
 			</trans-unit>
 		</body>

@@ -3,463 +3,463 @@
 	<file source-language="en" datatype="plaintext" original="EXT:indexed_search/Resources/Private/Language/locallang.xlf" date="2011-12-18T10:19:20Z" product-name="indexed_search">
 		<header/>
 		<body>
-			<trans-unit id="localizedOperandAnd" resname="localizedOperandAnd">
+			<trans-unit id="localizedOperandAnd">
 				<source>AND</source>
 			</trans-unit>
-			<trans-unit id="localizedOperandOr" resname="localizedOperandOr">
+			<trans-unit id="localizedOperandOr">
 				<source>OR</source>
 			</trans-unit>
-			<trans-unit id="localizedOperandNot" resname="localizedOperandNot">
+			<trans-unit id="localizedOperandNot">
 				<source>NOT</source>
 			</trans-unit>
 
-			<trans-unit id="form.legend" resname="form.legend">
+			<trans-unit id="form.legend">
 				<source>Search form</source>
 			</trans-unit>
-			<trans-unit id="form.searchFor" resname="form.searchFor">
+			<trans-unit id="form.searchFor">
 				<source>Search for</source>
 			</trans-unit>
-			<trans-unit id="form.extResume" resname="form.extResume">
+			<trans-unit id="form.extResume">
 				<source>Extended resume</source>
 			</trans-unit>
-			<trans-unit id="form.atATime" resname="form.atATime">
+			<trans-unit id="form.atATime">
 				<source>at a time</source>
 			</trans-unit>
-			<trans-unit id="form.orderBy" resname="form.orderBy">
+			<trans-unit id="form.orderBy">
 				<source>Order by</source>
 			</trans-unit>
-			<trans-unit id="form.fromSection" resname="form.fromSection">
+			<trans-unit id="form.fromSection">
 				<source>From section</source>
 			</trans-unit>
-			<trans-unit id="form.freeIndexUid" resname="form.freeIndexUid">
+			<trans-unit id="form.freeIndexUid">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="form.searchIn" resname="form.searchIn">
+			<trans-unit id="form.searchIn">
 				<source>Search in</source>
 			</trans-unit>
-			<trans-unit id="form.match" resname="form.match">
+			<trans-unit id="form.match">
 				<source>Match</source>
 			</trans-unit>
-			<trans-unit id="form.style" resname="form.style">
+			<trans-unit id="form.style">
 				<source>Style</source>
 			</trans-unit>
-			<trans-unit id="form.submit" resname="form.submit">
+			<trans-unit id="form.submit">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="form.addToSearch" resname="form.addToSearch">
+			<trans-unit id="form.addToSearch">
 				<source>Add to current search words</source>
 			</trans-unit>
 
-			<trans-unit id="form.linkToRegularSearch" resname="form.linkToRegularSearch">
+			<trans-unit id="form.linkToRegularSearch">
 				<source>Regular search</source>
 			</trans-unit>
-			<trans-unit id="form.linkToAdvancedSearch" resname="form.linkToAdvancedSearch">
+			<trans-unit id="form.linkToAdvancedSearch">
 				<source>Advanced search</source>
 			</trans-unit>
 
-			<trans-unit id="searchTypes.0" resname="searchTypes.0">
+			<trans-unit id="searchTypes.0">
 				<source>Distinct word</source>
 			</trans-unit>
-			<trans-unit id="searchTypes.1" resname="searchTypes.1">
+			<trans-unit id="searchTypes.1">
 				<source>Part of word</source>
 			</trans-unit>
-			<trans-unit id="searchTypes.2" resname="searchTypes.2">
+			<trans-unit id="searchTypes.2">
 				<source>First part of word</source>
 			</trans-unit>
-			<trans-unit id="searchTypes.3" resname="searchTypes.3">
+			<trans-unit id="searchTypes.3">
 				<source>Last part of word</source>
 			</trans-unit>
-			<trans-unit id="searchTypes.20" resname="searchTypes.20">
+			<trans-unit id="searchTypes.20">
 				<source>Sentence</source>
 			</trans-unit>
 
-			<trans-unit id="defaultOperands.0" resname="defaultOperands.0">
+			<trans-unit id="defaultOperands.0">
 				<source>All words (AND)</source>
 			</trans-unit>
-			<trans-unit id="defaultOperands.1" resname="defaultOperands.1">
+			<trans-unit id="defaultOperands.1">
 				<source>Any words (OR)</source>
 			</trans-unit>
-			<trans-unit id="sections.0" resname="sections.0">
+			<trans-unit id="sections.0">
 				<source>Whole site</source>
 			</trans-unit>
-			<trans-unit id="sections.-1" resname="sections.-1">
+			<trans-unit id="sections.-1">
 				<source>Only this page</source>
 			</trans-unit>
-			<trans-unit id="sections.-2" resname="sections.-2">
+			<trans-unit id="sections.-2">
 				<source>Top + level 1</source>
 			</trans-unit>
-			<trans-unit id="sections.-3" resname="sections.-3">
+			<trans-unit id="sections.-3">
 				<source>Level 2 and out</source>
 			</trans-unit>
-			<trans-unit id="sections.rootLevel1" resname="sections.rootLevel1">
+			<trans-unit id="sections.rootLevel1">
 				<source>Level 1</source>
 			</trans-unit>
-			<trans-unit id="sections.rootLevel1All" resname="sections.rootLevel1All">
+			<trans-unit id="sections.rootLevel1All">
 				<source>All pages on level 1</source>
 			</trans-unit>
-			<trans-unit id="sections.rootLevel2" resname="sections.rootLevel2">
+			<trans-unit id="sections.rootLevel2">
 				<source>- Level 2</source>
 			</trans-unit>
-			<trans-unit id="sections.rootLevel2All" resname="sections.rootLevel2All">
+			<trans-unit id="sections.rootLevel2All">
 				<source>- All pages on level 2</source>
 			</trans-unit>
 
-			<trans-unit id="mediaTypes.0" resname="mediaTypes.0">
+			<trans-unit id="mediaTypes.0">
 				<source>Internal pages</source>
 			</trans-unit>
-			<trans-unit id="mediaTypes.-1" resname="mediaTypes.-1">
+			<trans-unit id="mediaTypes.-1">
 				<source>All media</source>
 			</trans-unit>
-			<trans-unit id="mediaTypes.-2" resname="mediaTypes.-2">
+			<trans-unit id="mediaTypes.-2">
 				<source>All External</source>
 			</trans-unit>
 
-			<trans-unit id="indexingConfigurations.-1" resname="indexingConfigurations.-1">
+			<trans-unit id="indexingConfigurations.-1">
 				<source>All, mixed</source>
 			</trans-unit>
-			<trans-unit id="indexingConfigurations.-2" resname="indexingConfigurations.-2">
+			<trans-unit id="indexingConfigurations.-2">
 				<source>All, categorized</source>
 			</trans-unit>
-			<trans-unit id="indexingConfigurations.0" resname="indexingConfigurations.0">
+			<trans-unit id="indexingConfigurations.0">
 				<source>Pages</source>
 			</trans-unit>
 
-			<trans-unit id="indexingConfigurationHeader.-1" resname="indexingConfigurationHeader.-1">
+			<trans-unit id="indexingConfigurationHeader.-1">
 				<source>Mixed categories</source>
 			</trans-unit>
-			<trans-unit id="indexingConfigurationHeader.0" resname="indexingConfigurationHeader.0">
+			<trans-unit id="indexingConfigurationHeader.0">
 				<source>Website Pages</source>
 			</trans-unit>
 
-			<trans-unit id="sortOrders.rank_flag" resname="sortOrders.rank_flag">
+			<trans-unit id="sortOrders.rank_flag">
 				<source>Weight/Frequency</source>
 			</trans-unit>
-			<trans-unit id="sortOrders.rank_freq" resname="sortOrders.rank_freq">
+			<trans-unit id="sortOrders.rank_freq">
 				<source>Frequency</source>
 			</trans-unit>
-			<trans-unit id="sortOrders.rank_first" resname="sortOrders.rank_first">
+			<trans-unit id="sortOrders.rank_first">
 				<source>Close to top</source>
 			</trans-unit>
-			<trans-unit id="sortOrders.rank_count" resname="sortOrders.rank_count">
+			<trans-unit id="sortOrders.rank_count">
 				<source>Number of words</source>
 			</trans-unit>
-			<trans-unit id="sortOrders.mtime" resname="sortOrders.mtime">
+			<trans-unit id="sortOrders.mtime">
 				<source>Date Modified</source>
 			</trans-unit>
-			<trans-unit id="sortOrders.title" resname="sortOrders.title">
+			<trans-unit id="sortOrders.title">
 				<source>Document title</source>
 			</trans-unit>
-			<trans-unit id="sortOrders.crdate" resname="sortOrders.crdate">
+			<trans-unit id="sortOrders.crdate">
 				<source>Creation date</source>
 			</trans-unit>
 
-			<trans-unit id="sortOrders.descending" resname="sortOrders.descending">
+			<trans-unit id="sortOrders.descending">
 				<source>Highest first</source>
 			</trans-unit>
-			<trans-unit id="sortOrders.ascending" resname="sortOrders.ascending">
+			<trans-unit id="sortOrders.ascending">
 				<source>Lowest first</source>
 			</trans-unit>
 
-			<trans-unit id="groupBy.sections" resname="groupBy.sections">
+			<trans-unit id="groupBy.sections">
 				<source>Section hierarchy</source>
 			</trans-unit>
-			<trans-unit id="groupBy.flat" resname="groupBy.flat">
+			<trans-unit id="groupBy.flat">
 				<source>Flat list</source>
 			</trans-unit>
 
-			<trans-unit id="result.page" resname="result.page">
+			<trans-unit id="result.page">
 				<source>page</source>
 			</trans-unit>
-			<trans-unit id="result.pages" resname="result.pages">
+			<trans-unit id="result.pages">
 				<source>pages</source>
 			</trans-unit>
-			<trans-unit id="result.unnamedSection" resname="result.unnamedSection">
+			<trans-unit id="result.unnamedSection">
 				<source>Other</source>
 			</trans-unit>
-			<trans-unit id="result.otherMatching" resname="result.otherMatching">
+			<trans-unit id="result.otherMatching">
 				<source>Other matching pages in the same document</source>
 			</trans-unit>
-			<trans-unit id="result.otherPageAsWell" resname="result.otherPageAsWell">
+			<trans-unit id="result.otherPageAsWell">
 				<source>INFO: There was another page indexed as well. Probably indexed with another or no usergroup.</source>
 			</trans-unit>
-			<trans-unit id="result.path" resname="result.path">
+			<trans-unit id="result.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="result.modified" resname="result.modified">
+			<trans-unit id="result.modified">
 				<source>Modified</source>
 			</trans-unit>
-			<trans-unit id="result.created" resname="result.created">
+			<trans-unit id="result.created">
 				<source>Created</source>
 			</trans-unit>
-			<trans-unit id="result.size" resname="result.size">
+			<trans-unit id="result.size">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="result.noResume" resname="result.noResume">
+			<trans-unit id="result.noResume">
 				<source>Note: This search hit may not accurately match the content on this page. The page resume cannot be shown.</source>
 			</trans-unit>
-			<trans-unit id="result.memberGroups" resname="result.memberGroups">
+			<trans-unit id="result.memberGroups">
 				<source>Require membership of group numbers %s</source>
 			</trans-unit>
 
-			<trans-unit id="result.ratingMatches" resname="result.ratingMatches">
+			<trans-unit id="result.ratingMatches">
 				<source>matches</source>
 			</trans-unit>
-			<trans-unit id="result.noResult" resname="result.noResult">
+			<trans-unit id="result.noResult">
 				<source>No results found.</source>
 			</trans-unit>
-			<trans-unit id="result.inSection" resname="result.inSection">
+			<trans-unit id="result.inSection">
 				<source>in the section</source>
 			</trans-unit>
-			<trans-unit id="result.inNsection" resname="result.inNsection">
+			<trans-unit id="result.inNsection">
 				<source>in %s section</source>
 			</trans-unit>
-			<trans-unit id="result.inNsections" resname="result.inNsections">
+			<trans-unit id="result.inNsections">
 				<source>in %s sections</source>
 			</trans-unit>
 
-			<trans-unit id="searchFor" resname="searchFor">
+			<trans-unit id="searchFor">
 				<source>Search for</source>
 			</trans-unit>
-			<trans-unit id="searchFor.or" resname="searchFor.or">
+			<trans-unit id="searchFor.or">
 				<source>or</source>
 			</trans-unit>
-			<trans-unit id="searchFor.and" resname="searchFor.and">
+			<trans-unit id="searchFor.and">
 				<source>and</source>
 			</trans-unit>
-			<trans-unit id="searchFor.andnot" resname="searchFor.andnot">
+			<trans-unit id="searchFor.andnot">
 				<source>but not</source>
 			</trans-unit>
 
-			<trans-unit id="displayResults.previous" resname="displayResults.previous">
+			<trans-unit id="displayResults.previous">
 				<source>Previous</source>
 			</trans-unit>
-			<trans-unit id="displayResults.page" resname="displayResults.page">
+			<trans-unit id="displayResults.page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="displayResults.next" resname="displayResults.next">
+			<trans-unit id="displayResults.next">
 				<source>Next</source>
 			</trans-unit>
-			<trans-unit id="displayResults" resname="displayResults">
+			<trans-unit id="displayResults">
 				<source><![CDATA[Displaying results <strong>%1$s to %2$s</strong> out of <strong>%3$s</strong>]]></source>
 			</trans-unit>
 
-			<trans-unit id="administration.menu.general" resname="administration.menu.general">
+			<trans-unit id="administration.menu.general">
 				<source>General statistics</source>
 			</trans-unit>
-			<trans-unit id="administration.menu.pages" resname="administration.menu.pages">
+			<trans-unit id="administration.menu.pages">
 				<source>List of indexed pages</source>
 			</trans-unit>
-			<trans-unit id="administration.menu.externalDocuments" resname="administration.menu.externalDocuments">
+			<trans-unit id="administration.menu.externalDocuments">
 				<source>List of indexed external documents</source>
 			</trans-unit>
-			<trans-unit id="administration.menu.searchStatistic" resname="administration.menu.searchStatistic">
+			<trans-unit id="administration.menu.searchStatistic">
 				<source>Search statistics</source>
 			</trans-unit>
-			<trans-unit id="administration.menu.statistic" resname="administration.menu.statistic">
+			<trans-unit id="administration.menu.statistic">
 				<source>Detailed statistics</source>
 			</trans-unit>
 
-			<trans-unit id="administration.externalDocuments.headline" resname="administration.externalDocuments.headline">
+			<trans-unit id="administration.externalDocuments.headline">
 				<source>List of indexed external documents</source>
 			</trans-unit>
-			<trans-unit id="administration.index.headline" resname="administration.index.headline">
+			<trans-unit id="administration.index.headline">
 				<source>General statistics</source>
 			</trans-unit>
-			<trans-unit id="administration.pages.headline" resname="administration.pages.headline">
+			<trans-unit id="administration.pages.headline">
 				<source>List of indexed pages</source>
 			</trans-unit>
-			<trans-unit id="administration.statistic.headline" resname="administration.statistic.headline">
+			<trans-unit id="administration.statistic.headline">
 				<source>Detailed statistics</source>
 			</trans-unit>
-			<trans-unit id="administration.statisticDetails.headline" resname="administration.statisticDetails.headline">
+			<trans-unit id="administration.statisticDetails.headline">
 				<source>Details for a single result row</source>
 			</trans-unit>
-			<trans-unit id="administration.statisticDetails.headlineWithItemTitle" resname="administration.statisticDetails.headlineWithItemTitle">
+			<trans-unit id="administration.statisticDetails.headlineWithItemTitle">
 				<source>Details for single result row "%s"</source>
 			</trans-unit>
-			<trans-unit id="administration.wordDetail.headline" resname="administration.wordDetail.headline">
+			<trans-unit id="administration.wordDetail.headline">
 				<source>Detail view of a single word</source>
 			</trans-unit>
-			<trans-unit id="administration.wordDetail.headlineWithWordTitle" resname="administration.wordDetail.headlineWithWordTitle">
+			<trans-unit id="administration.wordDetail.headlineWithWordTitle">
 				<source>Detail view of single word "%s"</source>
 			</trans-unit>
 
-			<trans-unit id="administration.statistics.header" resname="administration.statistics.header">
+			<trans-unit id="administration.statistics.header">
 				<source>Row count by database table</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.name" resname="administration.statistics.name">
+			<trans-unit id="administration.statistics.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.count" resname="administration.statistics.count">
+			<trans-unit id="administration.statistics.count">
 				<source>Count</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.headerTypes" resname="administration.statistics.headerTypes">
+			<trans-unit id="administration.statistics.headerTypes">
 				<source>Hash Header Types</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.headerTypes.count" resname="administration.statistics.headerTypes.count">
+			<trans-unit id="administration.statistics.headerTypes.count">
 				<source>Count / Unique count</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.word" resname="administration.statistics.word">
+			<trans-unit id="administration.statistics.word">
 				<source>Word</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.title" resname="administration.statistics.mostSearched.title">
+			<trans-unit id="administration.statistics.mostSearched.title">
 				<source>List of most searched words</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.description" resname="administration.statistics.mostSearched.description">
+			<trans-unit id="administration.statistics.mostSearched.description">
 				<source>Statistics for all pages. Select a page with indexed search form to see several statistics.</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.all" resname="administration.statistics.mostSearched.all">
+			<trans-unit id="administration.statistics.mostSearched.all">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.last30days" resname="administration.statistics.mostSearched.last30days">
+			<trans-unit id="administration.statistics.mostSearched.last30days">
 				<source>Last 30 days</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.mostSearched.last24hours" resname="administration.statistics.mostSearched.last24hours">
+			<trans-unit id="administration.statistics.mostSearched.last24hours">
 				<source>Last 24 hours</source>
 			</trans-unit>
-			<trans-unit id="field.pageTitle" resname="field.pageTitle">
+			<trans-unit id="field.pageTitle">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="field.fileName" resname="field.fileName">
+			<trans-unit id="field.fileName">
 				<source>Filename</source>
 			</trans-unit>
-			<trans-unit id="field.fileSize" resname="field.fileSize">
+			<trans-unit id="field.fileSize">
 				<source>Filesize</source>
 			</trans-unit>
-			<trans-unit id="field.wordCount" resname="field.wordCount">
+			<trans-unit id="field.wordCount">
 				<source>Word count</source>
 			</trans-unit>
-			<trans-unit id="field.words" resname="field.words">
+			<trans-unit id="field.words">
 				<source>Words</source>
 			</trans-unit>
-			<trans-unit id="field.mtime" resname="field.mtime">
+			<trans-unit id="field.mtime">
 				<source>Modification time</source>
 			</trans-unit>
-			<trans-unit id="field.indexed" resname="field.indexed">
+			<trans-unit id="field.indexed">
 				<source>Indexed</source>
 			</trans-unit>
-			<trans-unit id="field.updated" resname="field.updated">
+			<trans-unit id="field.updated">
 				<source>Updated</source>
 			</trans-unit>
-			<trans-unit id="field.parseTime" resname="field.parseTime">
+			<trans-unit id="field.parseTime">
 				<source>Parsetime [ms]</source>
 			</trans-unit>
-			<trans-unit id="field.groups" resname="field.groups">
+			<trans-unit id="field.groups">
 				<source>#sec/gr/full</source>
 			</trans-unit>
-			<trans-unit id="field.sub" resname="field.sub">
+			<trans-unit id="field.sub">
 				<source>Sub</source>
 			</trans-unit>
-			<trans-unit id="field.staticPageArguments" resname="field.staticPageArguments">
+			<trans-unit id="field.staticPageArguments">
 				<source>Static Page Arguments</source>
 			</trans-unit>
-			<trans-unit id="field.count" resname="field.count">
+			<trans-unit id="field.count">
 				<source>Count</source>
 			</trans-unit>
-			<trans-unit id="field.first" resname="field.first">
+			<trans-unit id="field.first">
 				<source>First</source>
 			</trans-unit>
-			<trans-unit id="field.pHash" resname="field.pHash">
+			<trans-unit id="field.pHash">
 				<source>PageHash</source>
 			</trans-unit>
-			<trans-unit id="field.path" resname="field.path">
+			<trans-unit id="field.path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="field.id" resname="field.id">
+			<trans-unit id="field.id">
 				<source>Page Id</source>
 			</trans-unit>
-			<trans-unit id="field.uniqueId" resname="field.uniqueId">
+			<trans-unit id="field.uniqueId">
 				<source>Uid</source>
 			</trans-unit>
-			<trans-unit id="field.type" resname="field.type">
+			<trans-unit id="field.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="field.title" resname="field.title">
+			<trans-unit id="field.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="field.language" resname="field.language">
+			<trans-unit id="field.language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="field.frequency" resname="field.frequency">
+			<trans-unit id="field.frequency">
 				<source>Frequency</source>
 			</trans-unit>
-			<trans-unit id="field.flag" resname="field.flag">
+			<trans-unit id="field.flag">
 				<source>Flag</source>
 			</trans-unit>
-			<trans-unit id="field.content" resname="field.content">
+			<trans-unit id="field.content">
 				<source>Content</source>
 			</trans-unit>
-			<trans-unit id="administration.notIndexed" resname="administration.notIndexed">
+			<trans-unit id="administration.notIndexed">
 				<source>Not indexed</source>
 			</trans-unit>
 
-			<trans-unit id="administration.document.words" resname="administration.document.words">
+			<trans-unit id="administration.document.words">
 				<source>Words found on this page</source>
 			</trans-unit>
-			<trans-unit id="administration.stopWords" resname="administration.stopWords">
+			<trans-unit id="administration.stopWords">
 				<source>Stopwords</source>
 			</trans-unit>
-			<trans-unit id="administration.stopWords.save" resname="administration.stopWords.save">
+			<trans-unit id="administration.stopWords.save">
 				<source>Save stopwords</source>
 			</trans-unit>
-			<trans-unit id="administration.word" resname="administration.word">
+			<trans-unit id="administration.word">
 				<source>Word</source>
 			</trans-unit>
-			<trans-unit id="administration.words" resname="administration.words">
+			<trans-unit id="administration.words">
 				<source>Words</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.sectionRecords" resname="administration.statistics.sectionRecords">
+			<trans-unit id="administration.statistics.sectionRecords">
 				<source>Section records for this phash</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.view.overview" resname="administration.statistics.view.overview">
+			<trans-unit id="administration.statistics.view.overview">
 				<source>Overview</source>
 			</trans-unit>
-			<trans-unit id="administration.statistics.view.content" resname="administration.statistics.view.content">
+			<trans-unit id="administration.statistics.view.content">
 				<source>Words and content</source>
 			</trans-unit>
-			<trans-unit id="administration.phash.tableHeader" resname="administration.phash.tableHeader">
+			<trans-unit id="administration.phash.tableHeader">
 				<source>Phash row content</source>
 			</trans-unit>
-			<trans-unit id="administration.removeEntry" resname="administration.removeEntry">
+			<trans-unit id="administration.removeEntry">
 				<source>Remove entry</source>
 			</trans-unit>
-			<trans-unit id="administration.removeAllEntries" resname="administration.removeAllEntries">
+			<trans-unit id="administration.removeAllEntries">
 				<source>Remove all listed entries</source>
 			</trans-unit>
-			<trans-unit id="administration.back" resname="administration.back">
+			<trans-unit id="administration.back">
 				<source>Back</source>
 			</trans-unit>
-			<trans-unit id="administration.moduleFunctions.mode" resname="administration.moduleFunctions.mode">
+			<trans-unit id="administration.moduleFunctions.mode">
 				<source>Mode</source>
 			</trans-unit>
-			<trans-unit id="administration.moduleFunctions.depth" resname="administration.moduleFunctions.depth">
+			<trans-unit id="administration.moduleFunctions.depth">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="administration.btn.details.title" resname="administration.btn.details.title">
+			<trans-unit id="administration.btn.details.title">
 				<source>Show details</source>
 			</trans-unit>
-			<trans-unit id="administration.noPageSelected" resname="administration.noPageSelected">
+			<trans-unit id="administration.noPageSelected">
 				<source>Please select a page in the page tree.</source>
 			</trans-unit>
-			<trans-unit id="administration.noRecords" resname="administration.noRecords">
+			<trans-unit id="administration.noRecords">
 				<source>No records found.</source>
 			</trans-unit>
-			<trans-unit id="administration.noResult" resname="administration.noResult">
+			<trans-unit id="administration.noResult">
 				<source>No result found.</source>
 			</trans-unit>
-			<trans-unit id="administration.noResultForPage" resname="administration.noResultForPage">
+			<trans-unit id="administration.noResultForPage">
 				<source>No result for the selected page found.</source>
 			</trans-unit>
-			<trans-unit id="error.noTypoScript" resname="error.noTypoScript">
+			<trans-unit id="error.noTypoScript">
 				<source>Error: Please check that TypoScript for the Indexed Search plugin is included.</source>
 			</trans-unit>
-			<trans-unit id="administration.flag.32" resname="administration.flag.32">
+			<trans-unit id="administration.flag.32">
 				<source>description</source>
 			</trans-unit>
-			<trans-unit id="administration.flag.64" resname="administration.flag.64">
+			<trans-unit id="administration.flag.64">
 				<source>keyword</source>
 			</trans-unit>
-			<trans-unit id="administration.flag.128" resname="administration.flag.128">
+			<trans-unit id="administration.flag.128">
 				<source>title</source>
 			</trans-unit>
 		</body>

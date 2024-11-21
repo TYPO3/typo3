@@ -3,136 +3,136 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Resources/Private/Language/locallang_formManager_javascript.xlf" date="2016-10-09T03:38:32Z" product-name="form">
         <header/>
         <body>
-            <trans-unit id="formManager.form_name" resname="formManager.form_name" xml:space="preserve">
+            <trans-unit id="formManager.form_name" xml:space="preserve">
                 <source>Name</source>
             </trans-unit>
-            <trans-unit id="formManager.form_name_description" resname="formManager.form_name_description" xml:space="preserve">
+            <trans-unit id="formManager.form_name_description" xml:space="preserve">
                 <source>Enter a meaningful and descriptive name for the form. The name is displayed only in the TYPO3 backend.</source>
             </trans-unit>
-            <trans-unit id="formManager.new_form_name" resname="formManager.new_form_name" xml:space="preserve">
+            <trans-unit id="formManager.new_form_name" xml:space="preserve">
                 <source>New form name</source>
             </trans-unit>
-            <trans-unit id="formManager.form_save_path" resname="formManager.form_save_path" xml:space="preserve">
+            <trans-unit id="formManager.form_save_path" xml:space="preserve">
                 <source>Storage</source>
             </trans-unit>
-            <trans-unit id="formManager.form_save_path_description" resname="formManager.form_save_path_description" xml:space="preserve">
+            <trans-unit id="formManager.form_save_path_description" xml:space="preserve">
                 <source>Select the storage where you want to save your form definition.</source>
             </trans-unit>
-            <trans-unit id="formManager.form_prototype" resname="formManager.form_prototype" xml:space="preserve">
+            <trans-unit id="formManager.form_prototype" xml:space="preserve">
                 <source>Form prototype</source>
             </trans-unit>
-            <trans-unit id="formManager.form_template" resname="formManager.form_template" xml:space="preserve">
+            <trans-unit id="formManager.form_template" xml:space="preserve">
                 <source>Template</source>
             </trans-unit>
-            <trans-unit id="formManager.form_template_description" resname="formManager.form_template_description" xml:space="preserve">
+            <trans-unit id="formManager.form_template_description" xml:space="preserve">
                 <source>Select a template on which you want to build your new form.</source>
             </trans-unit>
-            <trans-unit id="formManager.form_headline_general" resname="formManager.form_headline_general" xml:space="preserve">
+            <trans-unit id="formManager.form_headline_general" xml:space="preserve">
                 <source>General</source>
             </trans-unit>
             <trans-unit id="formManager.form_copied" xml:space="preserve">
                 <source>Copied form</source>
             </trans-unit>
-            <trans-unit id="formManager.cancel" resname="formManager.cancel" xml:space="preserve">
+            <trans-unit id="formManager.cancel" xml:space="preserve">
                 <source>Cancel</source>
             </trans-unit>
-            <trans-unit id="formManager.remove_form" resname="formManager.remove_form" xml:space="preserve">
+            <trans-unit id="formManager.remove_form" xml:space="preserve">
                 <source>Delete</source>
             </trans-unit>
-            <trans-unit id="formManager.remove_form_title" resname="formManager.remove_form_title" xml:space="preserve">
+            <trans-unit id="formManager.remove_form_title" xml:space="preserve">
                 <source>Confirm deletion</source>
             </trans-unit>
-            <trans-unit id="formManager.remove_form_message" resname="formManager.remove_form_message" xml:space="preserve">
+            <trans-unit id="formManager.remove_form_message" xml:space="preserve">
                 <source>Do you really want to delete the form "{0}" permanently? You cannot revert this action!</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step1.title" resname="formManager.newFormWizard.step1.title" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step1.title" xml:space="preserve">
                 <source>Create new form</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step1.progressLabel" resname="formManager.newFormWizard.step1.progressLabel" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step1.progressLabel" xml:space="preserve">
                 <source>Choose</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step1.noStorages" resname="formManager.newFormWizard.step1.noStorages" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step1.noStorages" xml:space="preserve">
                 <source>No accessible form storage folders</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step2.title" resname="formManager.newFormWizard.step2.title" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step2.title" xml:space="preserve">
                 <source>Settings</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step3.title" resname="formManager.newFormWizard.step3.title" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step3.title" xml:space="preserve">
                 <source>Ready?</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step3.progressLabel" resname="formManager.newFormWizard.step3.progressLabel" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step3.progressLabel" xml:space="preserve">
                 <source>Check</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step3.message" resname="formManager.newFormWizard.step3.message" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step3.message" xml:space="preserve">
                 <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
             </trans-unit>
             <trans-unit id="formManager.newFormWizard.step3.check" xml:space="preserve">
                 <source>Check and confirm</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step4.errorTitle" resname="formManager.newFormWizard.step4.errorTitle" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step4.errorTitle" xml:space="preserve">
                 <source>Create</source>
             </trans-unit>
-            <trans-unit id="formManager.newFormWizard.step4.errorMessage" resname="formManager.newFormWizard.step4.errorMessage" xml:space="preserve">
+            <trans-unit id="formManager.newFormWizard.step4.errorMessage" xml:space="preserve">
                 <source>The form could not be saved</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step1.title" resname="formManager.duplicateFormWizard.step1.title" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step1.title" xml:space="preserve">
                 <source>Duplicate form "{0}"</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step2.title" resname="formManager.duplicateFormWizard.step2.title" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step2.title" xml:space="preserve">
                 <source>Ready?</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step2.progressLabel" resname="formManager.duplicateFormWizard.step2.progressLabel" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step2.progressLabel" xml:space="preserve">
                 <source>Check</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step2.check" resname="formManager.duplicateFormWizard.step2.check" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step2.check" xml:space="preserve">
                 <source>Check and confirm</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step2.message" resname="formManager.duplicateFormWizard.step2.message" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step2.message" xml:space="preserve">
                 <source>Just check and confirm the settings you have entered. Done? Then you are ready to go.</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" resname="formManager.duplicateFormWizard.step3.errorTitle" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step3.errorTitle" xml:space="preserve">
                 <source>Duplicate</source>
             </trans-unit>
-            <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage" resname="formManager.duplicateFormWizard.step3.errorMessage" xml:space="preserve">
+            <trans-unit id="formManager.duplicateFormWizard.step3.errorMessage" xml:space="preserve">
                 <source>The form could not be saved</source>
             </trans-unit>
-            <trans-unit id="formManager.no_references" resname="formManager.no_references" xml:space="preserve">
+            <trans-unit id="formManager.no_references" xml:space="preserve">
                 <source>There are no references yet.</source>
             </trans-unit>
-            <trans-unit id="formManager.table.field.control" resname="formManager.table.field.control">
+            <trans-unit id="formManager.table.field.control">
                 <source>Control</source>
             </trans-unit>
-            <trans-unit id="formManager.table.field.uid" resname="formManager.table.field.uid">
+            <trans-unit id="formManager.table.field.uid">
                 <source>Uid</source>
             </trans-unit>
-            <trans-unit id="formManager.table.field.title" resname="formManager.table.field.title" xml:space="preserve">
+            <trans-unit id="formManager.table.field.title" xml:space="preserve">
                 <source>Title</source>
             </trans-unit>
-            <trans-unit id="formManager.btn.edit.title" resname="formManager.btn.edit.title" xml:space="preserve">
+            <trans-unit id="formManager.btn.edit.title" xml:space="preserve">
                 <source>Edit</source>
             </trans-unit>
-            <trans-unit id="formManager.references.title" resname="formManager.references.title" xml:space="preserve">
+            <trans-unit id="formManager.references.title" xml:space="preserve">
                 <source>Form: {0}</source>
             </trans-unit>
-            <trans-unit id="formManager.references.headline" resname="formManager.references.headline" xml:space="preserve">
+            <trans-unit id="formManager.references.headline" xml:space="preserve">
                 <source>References to this item</source>
             </trans-unit>
-            <trans-unit id="formManager.blankForm.label" resname="formManager.blankForm.label" xml:space="preserve">
+            <trans-unit id="formManager.blankForm.label" xml:space="preserve">
                 <source>Blank form</source>
             </trans-unit>
-            <trans-unit id="formManager.blankForm.subtitle" resname="formManager.blankForm.subtitle" xml:space="preserve">
+            <trans-unit id="formManager.blankForm.subtitle" xml:space="preserve">
                 <source>Start fresh</source>
             </trans-unit>
-            <trans-unit id="formManager.blankForm.description" resname="formManager.blankForm.description" xml:space="preserve">
+            <trans-unit id="formManager.blankForm.description" xml:space="preserve">
                 <source>Create a new form from scratch.</source>
             </trans-unit>
-            <trans-unit id="formManager.predefinedForm.label" resname="formManager.predefinedForm.label" xml:space="preserve">
+            <trans-unit id="formManager.predefinedForm.label" xml:space="preserve">
                 <source>Predefined form</source>
             </trans-unit>
-            <trans-unit id="formManager.predefinedForm.subtitle" resname="formManager.predefinedForm.subtitle" xml:space="preserve">
+            <trans-unit id="formManager.predefinedForm.subtitle" xml:space="preserve">
                 <source>Use a form template</source>
             </trans-unit>
-            <trans-unit id="formManager.predefinedForm.description" resname="formManager.predefinedForm.description" xml:space="preserve">
+            <trans-unit id="formManager.predefinedForm.description" xml:space="preserve">
                 <source>Create a new form and use an existing form template for it.</source>
             </trans-unit>
         </body>

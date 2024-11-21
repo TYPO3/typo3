@@ -3,124 +3,124 @@
 	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_db.xlf" date="2017-12-29T20:22:14Z" product-name="redirects">
 		<header/>
 		<body>
-			<trans-unit id="sys_redirect" resname="sys_redirect">
+			<trans-unit id="sys_redirect">
 				<source>Redirect</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.source_host" resname="sys_redirect.source_host">
+			<trans-unit id="sys_redirect.source_host">
 				<source>Source Domain</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.source_path" resname="sys_redirect.source_path">
+			<trans-unit id="sys_redirect.source_path">
 				<source>Source Path</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.force_https" resname="sys_redirect.force_https">
+			<trans-unit id="sys_redirect.force_https">
 				<source>SSL Redirect</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.force_https.0" resname="sys_redirect.force_https.0">
+			<trans-unit id="sys_redirect.force_https.0">
 				<source>Force SSL Redirect</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.keep_query_parameters" resname="sys_redirect.keep_query_parameters">
+			<trans-unit id="sys_redirect.keep_query_parameters">
 				<source>GET Parameters</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.keep_query_parameters.0" resname="sys_redirect.keep_query_parameters.0">
+			<trans-unit id="sys_redirect.keep_query_parameters.0">
 				<source>Keep GET Parameters</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.respect_query_parameters" resname="sys_redirect.respect_query_parameters">
+			<trans-unit id="sys_redirect.respect_query_parameters">
 				<source>GET Parameters (source)</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.respect_query_parameters.0" resname="sys_redirect.respect_query_parameters.0">
+			<trans-unit id="sys_redirect.respect_query_parameters.0">
 				<source>Respect GET Parameters</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target" resname="sys_redirect.target">
+			<trans-unit id="sys_redirect.target">
 				<source>Target</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode" resname="sys_redirect.target_statuscode">
+			<trans-unit id="sys_redirect.target_statuscode">
 				<source>Status Code HTTP Header</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode.301" resname="sys_redirect.target_statuscode.301">
+			<trans-unit id="sys_redirect.target_statuscode.301">
 				<source>301 Moved Permanently</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode.302" resname="sys_redirect.target_statuscode.302">
+			<trans-unit id="sys_redirect.target_statuscode.302">
 				<source>302 Found</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode.303" resname="sys_redirect.target_statuscode.303">
+			<trans-unit id="sys_redirect.target_statuscode.303">
 				<source>303 See Other</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode.307" resname="sys_redirect.target_statuscode.307">
+			<trans-unit id="sys_redirect.target_statuscode.307">
 				<source>307 Temporary Redirect</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode.308" resname="sys_redirect.target_statuscode.308">
+			<trans-unit id="sys_redirect.target_statuscode.308">
 				<source>308 Permanent Redirect</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode.keep" resname="sys_redirect.target_statuscode.keep">
+			<trans-unit id="sys_redirect.target_statuscode.keep">
 				<source>Keep HTTP method</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.target_statuscode.change" resname="sys_redirect.target_statuscode.change">
+			<trans-unit id="sys_redirect.target_statuscode.change">
 				<source>Change HTTP method to GET</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.hitcount" resname="sys_redirect.hitcount">
+			<trans-unit id="sys_redirect.hitcount">
 				<source>Hit count</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.lasthiton" resname="sys_redirect.lasthiton">
+			<trans-unit id="sys_redirect.lasthiton">
 				<source>Last Hit on</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.hitcountState" resname="sys_redirect.hitcountState">
+			<trans-unit id="sys_redirect.hitcountState">
 				<source>Hit Counter</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.disable_hitcount" resname="sys_redirect.disable_hitcount">
+			<trans-unit id="sys_redirect.disable_hitcount">
 				<source>Disable Hit Counter</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.disable_hitcount.0" resname="sys_redirect.disable_hitcount.0">
+			<trans-unit id="sys_redirect.disable_hitcount.0">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="tabs.redirectCount" resname="tabs.redirectCount">
+			<trans-unit id="tabs.redirectCount">
 				<source>Statistics</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.protected" resname="sys_redirect.protected">
+			<trans-unit id="sys_redirect.protected">
 				<source>Protected</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.protected.description" resname="sys_redirect.protected">
+			<trans-unit id="sys_redirect.protected.description">
 				<source>When enabled, this redirect will be skipped by scheduled cleanup tasks that might delete redirects under certain conditions.</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.is_regexp" resname="sys_redirect.is_regexp">
+			<trans-unit id="sys_redirect.is_regexp">
 				<source>Is regular expression?</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.is_regexp.0" resname="sys_redirect.is_regexp.0">
+			<trans-unit id="sys_redirect.is_regexp.0">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.disabled" resname="sys_redirect.disabled">
+			<trans-unit id="sys_redirect.disabled">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.disabled.0" resname="sys_redirect.disabled.0">
+			<trans-unit id="sys_redirect.disabled.0">
 				<source>Deactivate redirect</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.creation_type" resname="sys_redirect.creation_type">
+			<trans-unit id="sys_redirect.creation_type">
 				<source>Creation Type</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.creation_type.description" resname="sys_redirect.creation_type.description">
+			<trans-unit id="sys_redirect.creation_type.description">
 				<source>Defines how the redirect was created.</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.creation_type.1" resname="sys_redirect.creation_type.1">
+			<trans-unit id="sys_redirect.creation_type.1">
 				<source>manually created</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.creation_type.0" resname="sys_redirect.creation_type.0">
+			<trans-unit id="sys_redirect.creation_type.0">
 				<source>automatically created</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.webhook_type.typo3-redirect-was-hit" resname="sys_redirect.webhook_type.typo3-redirect-was-hit">
+			<trans-unit id="sys_redirect.webhook_type.typo3-redirect-was-hit">
 				<source>... when a redirect has been hit</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.integrity_status" resname="sys_redirect.integrity_status">
+			<trans-unit id="sys_redirect.integrity_status">
 				<source>Integrity status</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.integrity_status.description" resname="sys_redirect.integrity_status.description">
+			<trans-unit id="sys_redirect.integrity_status.description">
 				<source>Redirects can be checked via the command redirects:checkintegrity.</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.integrity_status.no_conflict" resname="sys_redirect.integrity_status.no_conflict">
+			<trans-unit id="sys_redirect.integrity_status.no_conflict">
 				<source>No conflict</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.integrity_status.self_reference" resname="sys_redirect.integrity_status.self_reference">
+			<trans-unit id="sys_redirect.integrity_status.self_reference">
 				<source>Self reference</source>
 			</trans-unit>
-			<trans-unit id="sys_redirect.uid" resname="sys_redirect.uid">
+			<trans-unit id="sys_redirect.uid">
 				<source>UID</source>
 			</trans-unit>
 		</body>

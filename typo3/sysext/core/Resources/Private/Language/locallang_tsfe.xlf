@@ -3,80 +3,80 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tsfe.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="adminOptions" resname="adminOptions">
+			<trans-unit id="adminOptions">
 				<source>ADMIN PANEL</source>
 			</trans-unit>
-			<trans-unit id="adminPanelTitle" resname="adminPanelTitle">
+			<trans-unit id="adminPanelTitle">
 				<source>TYPO3 ADMIN PANEL</source>
 			</trans-unit>
-			<trans-unit id="preview" resname="preview">
+			<trans-unit id="preview">
 				<source>Preview</source>
 			</trans-unit>
-			<trans-unit id="publish" resname="publish">
+			<trans-unit id="publish">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="publish_levels" resname="publish_levels">
+			<trans-unit id="publish_levels">
 				<source>Publish levels</source>
 			</trans-unit>
-			<trans-unit id="publish_tree" resname="publish_tree">
+			<trans-unit id="publish_tree">
 				<source>Publish pages</source>
 			</trans-unit>
-			<trans-unit id="publish_doit" resname="publish_doit">
+			<trans-unit id="publish_doit">
 				<source>Publish now!</source>
 			</trans-unit>
-			<trans-unit id="tsdebug" resname="tsdebug">
+			<trans-unit id="tsdebug">
 				<source>TypoScript</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_tree" resname="tsdebug_tree">
+			<trans-unit id="tsdebug_tree">
 				<source>Tree display</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_LR" resname="tsdebug_LR">
+			<trans-unit id="tsdebug_LR">
 				<source>Track content rendering</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_forceTemplateParsing" resname="tsdebug_forceTemplateParsing">
+			<trans-unit id="tsdebug_forceTemplateParsing">
 				<source>Force TS Rendering</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayTimes" resname="tsdebug_displayTimes">
+			<trans-unit id="tsdebug_displayTimes">
 				<source>Display all times</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayMessages" resname="tsdebug_displayMessages">
+			<trans-unit id="tsdebug_displayMessages">
 				<source>Display messages</source>
 			</trans-unit>
-			<trans-unit id="tsdebug_displayContent" resname="tsdebug_displayContent">
+			<trans-unit id="tsdebug_displayContent">
 				<source>Display content</source>
 			</trans-unit>
 
-			<trans-unit id="update" resname="update">
+			<trans-unit id="update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="p_editRecord" resname="p_editRecord">
+			<trans-unit id="p_editRecord">
 				<source>Edit record</source>
 			</trans-unit>
-			<trans-unit id="p_moveUp" resname="p_moveUp">
+			<trans-unit id="p_moveUp">
 				<source>Move up</source>
 			</trans-unit>
-			<trans-unit id="p_moveDown" resname="p_moveDown">
+			<trans-unit id="p_moveDown">
 				<source>Move down</source>
 			</trans-unit>
-			<trans-unit id="p_unhide" resname="p_unhide">
+			<trans-unit id="p_unhide">
 				<source>Un-Hide</source>
 			</trans-unit>
-			<trans-unit id="p_hide" resname="p_hide">
+			<trans-unit id="p_hide">
 				<source>Hide</source>
 			</trans-unit>
-			<trans-unit id="p_newSubpage" resname="p_newSubpage">
+			<trans-unit id="p_newSubpage">
 				<source>New subpage</source>
 			</trans-unit>
-			<trans-unit id="p_newRecordAfter" resname="p_newRecordAfter">
+			<trans-unit id="p_newRecordAfter">
 				<source>New record after</source>
 			</trans-unit>
-			<trans-unit id="p_delete" resname="p_delete">
+			<trans-unit id="p_delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="p_deleteConfirm" resname="p_deleteConfirm">
+			<trans-unit id="p_deleteConfirm">
 				<source>Are you sure you want to delete this record?</source>
 			</trans-unit>
-			<trans-unit id="p_hideConfirm" resname="p_hideConfirm" xml:space="preserve">
+			<trans-unit id="p_hideConfirm" xml:space="preserve">
 				<source>Hiding a record will make it invisible on the webpage.  To edit the hidden record enter the backend or enable the frontend preview.
 Continue?</source>
 			</trans-unit>

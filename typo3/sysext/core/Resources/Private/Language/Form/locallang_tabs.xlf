@@ -3,46 +3,46 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf" date="2016-10-23T20:22:33Z" product-name="tabs">
 		<header/>
 		<body>
-			<trans-unit id="general" resname="general">
+			<trans-unit id="general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="access" resname="access">
+			<trans-unit id="access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="accesscapabilities" resname="accesscapabilities">
+			<trans-unit id="accesscapabilities">
 				<source>Access capabilities</source>
 			</trans-unit>
-			<trans-unit id="categories" resname="categories">
+			<trans-unit id="categories">
 				<source>Categories</source>
 			</trans-unit>
-			<trans-unit id="notes" resname="notes">
+			<trans-unit id="notes">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="language" resname="language">
+			<trans-unit id="language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="extended" resname="extended">
+			<trans-unit id="extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="appearance" resname="appearance">
+			<trans-unit id="appearance">
 				<source>Appearance</source>
 			</trans-unit>
-			<trans-unit id="behaviour" resname="behaviour">
+			<trans-unit id="behaviour">
 				<source>Behavior</source>
 			</trans-unit>
-			<trans-unit id="images" resname="images">
+			<trans-unit id="images">
 				<source>Images</source>
 			</trans-unit>
-			<trans-unit id="accessibility" resname="accessibility">
+			<trans-unit id="accessibility">
 				<source>Accessibility</source>
 			</trans-unit>
-			<trans-unit id="text" resname="text">
+			<trans-unit id="text">
 				<source>Text</source>
 			</trans-unit>
-			<trans-unit id="media" resname="media">
+			<trans-unit id="media">
 				<source>Media</source>
 			</trans-unit>
-			<trans-unit id="plugin" resname="plugin">
+			<trans-unit id="plugin">
 				<source>Plugin</source>
 			</trans-unit>
 		</body>

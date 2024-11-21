@@ -3,73 +3,73 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_sort.xlf" date="2011-10-17T20:22:37Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>Sort sub pages</source>
 			</trans-unit>
-			<trans-unit id="currentPageOrder" resname="currentPageOrder">
+			<trans-unit id="currentPageOrder">
 				<source>Current page order</source>
 			</trans-unit>
-			<trans-unit id="changeOrder" resname="changeOrder">
+			<trans-unit id="changeOrder">
 				<source>Sort these pages by</source>
 			</trans-unit>
-			<trans-unit id="changeOrderConfirm" resname="changeOrderConfirm">
+			<trans-unit id="changeOrderConfirm">
 				<source>You're about to change the order of the above pages. Are you sure you want to continue?</source>
 			</trans-unit>
 
-			<trans-unit id="fieldTitle" resname="fieldTitle">
+			<trans-unit id="fieldTitle">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="fieldSubtitle" resname="fieldSubtitle">
+			<trans-unit id="fieldSubtitle">
 				<source>Subtitle</source>
 			</trans-unit>
-			<trans-unit id="fieldNavitle" resname="fieldNavitle">
+			<trans-unit id="fieldNavitle">
 				<source>Navigation title</source>
 			</trans-unit>
-			<trans-unit id="fieldCrdate" resname="fieldCrdate">
+			<trans-unit id="fieldCrdate">
 				<source>Create-time</source>
 			</trans-unit>
-			<trans-unit id="fieldTstamp" resname="fieldTstamp">
+			<trans-unit id="fieldTstamp">
 				<source>Change-time</source>
 			</trans-unit>
 
-			<trans-unit id="changeOrderByTitle" resname="changeOrderByTitle">
+			<trans-unit id="changeOrderByTitle">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="changeOrderBySubtitle" resname="changeOrderBySubtitle">
+			<trans-unit id="changeOrderBySubtitle">
 				<source>Subtitle</source>
 			</trans-unit>
-			<trans-unit id="changeOrderByNavtitle" resname="changeOrderByNavtitle">
+			<trans-unit id="changeOrderByNavtitle">
 				<source>Navigation title</source>
 			</trans-unit>
-			<trans-unit id="changeOrderByTstamp" resname="changeOrderByTstamp">
+			<trans-unit id="changeOrderByTstamp">
 				<source>Change-time</source>
 			</trans-unit>
-			<trans-unit id="changeOrderByCreate" resname="changeOrderByCreate">
+			<trans-unit id="changeOrderByCreate">
 				<source>Create-time</source>
 			</trans-unit>
-			<trans-unit id="changeOrderReverse" resname="changeOrderReverse">
+			<trans-unit id="changeOrderReverse">
 				<source>Reverse current order</source>
 			</trans-unit>
 
-			<trans-unit id="hasInvisiblePage.title" resname="hasInvisiblePage.title">
+			<trans-unit id="hasInvisiblePage.title">
 				<source>Invisible subpages</source>
 			</trans-unit>
-			<trans-unit id="hasInvisiblePage.message" resname="hasInvisiblePage.message">
+			<trans-unit id="hasInvisiblePage.message">
 				<source>The page has invisible subpages which are not shown due to access restrictions. Those will not be sorted among others.</source>
 			</trans-unit>
-			<trans-unit id="noSubpages.title" resname="noSubpages.title">
+			<trans-unit id="noSubpages.title">
 				<source>No subpages</source>
 			</trans-unit>
-			<trans-unit id="noSubpages.message" resname="noSubpages.message">
+			<trans-unit id="noSubpages.message">
 				<source>Please select a page with subpages.</source>
 			</trans-unit>
-			<trans-unit id="notAvailableInWorkspace.title" resname="notAvailableInWorkspace.title">
+			<trans-unit id="notAvailableInWorkspace.title">
 				<source>Not implemented</source>
 			</trans-unit>
-			<trans-unit id="notAvailableInWorkspace.message" resname="notAvailableInWorkspace.message">
+			<trans-unit id="notAvailableInWorkspace.message">
 				<source>Sorry, this function is not available in the current draft workspace!</source>
 			</trans-unit>
-			<trans-unit id="noEditPermissions" resname="noEditPermissions">
+			<trans-unit id="noEditPermissions">
 				<source>No edit permissions on this sub page. This page can not be re-sorted among others.</source>
 			</trans-unit>
 		</body>

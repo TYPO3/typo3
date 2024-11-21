@@ -3,16 +3,16 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_t3lib_fullsearch.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="query_loaded" resname="query_loaded">
+			<trans-unit id="query_loaded">
 				<source>Query "%s" loaded!</source>
 			</trans-unit>
-			<trans-unit id="query_saved" resname="query_saved">
+			<trans-unit id="query_saved">
 				<source>Query saved!</source>
 			</trans-unit>
-			<trans-unit id="query_removed" resname="query_removed">
+			<trans-unit id="query_removed">
 				<source>"%s" query entry removed!</source>
 			</trans-unit>
-			<trans-unit id="undelete_only" resname="undelete_only">
+			<trans-unit id="undelete_only">
 				<source>Undelete</source>
 			</trans-unit>
 		</body>

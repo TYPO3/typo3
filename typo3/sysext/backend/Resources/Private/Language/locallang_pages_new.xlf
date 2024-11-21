@@ -3,55 +3,55 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_pages_new.xlf" date="2011-10-17T20:22:37Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>Create multiple pages</source>
 			</trans-unit>
 
-			<trans-unit id="canNotCreateNew.title" resname="canNotCreateNew.title">
+			<trans-unit id="canNotCreateNew.title">
 				<source>Insufficient permissions</source>
 			</trans-unit>
-			<trans-unit id="canNotCreateNew.message" resname="canNotCreateNew.message">
+			<trans-unit id="canNotCreateNew.message">
 				<source>Sorry, you are not allowed to create new subpages to this page due to access restrictions.</source>
 			</trans-unit>
 
-			<trans-unit id="newPage" resname="newPage">
+			<trans-unit id="newPage">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="addMoreLines" resname="addMoreLines">
+			<trans-unit id="addMoreLines">
 				<source>Add more lines</source>
 			</trans-unit>
-			<trans-unit id="listEnd" resname="listEnd">
+			<trans-unit id="listEnd">
 				<source>Place new pages after the existing subpages</source>
 			</trans-unit>
-			<trans-unit id="hidePages" resname="hidePages">
+			<trans-unit id="hidePages">
 				<source>Hide new pages</source>
 			</trans-unit>
-			<trans-unit id="hidePagesInMenus" resname="hidePagesInMenus">
+			<trans-unit id="hidePagesInMenus">
 				<source>Hide new pages in menus</source>
 			</trans-unit>
-			<trans-unit id="create" resname="create">
+			<trans-unit id="create">
 				<source>Create pages</source>
 			</trans-unit>
-			<trans-unit id="reset" resname="reset">
+			<trans-unit id="reset">
 				<source>Clear fields</source>
 			</trans-unit>
 
-			<trans-unit id="newSubPages" resname="newSubPages">
+			<trans-unit id="newSubPages">
 				<source>New page structure</source>
 			</trans-unit>
-			<trans-unit id="newSubPages.pageTitle" resname="newSubPages.pageTitle">
+			<trans-unit id="newSubPages.pageTitle">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="noPagesCreated.title" resname="noPagesCreated.title">
+			<trans-unit id="noPagesCreated.title">
 				<source>No pages added</source>
 			</trans-unit>
-			<trans-unit id="noPagesCreated.message" resname="noPagesCreated.message">
+			<trans-unit id="noPagesCreated.message">
 				<source>No pages were created.</source>
 			</trans-unit>
-			<trans-unit id="pagesCreated.title" resname="pagesCreated.title">
+			<trans-unit id="pagesCreated.title">
 				<source>Pages added</source>
 			</trans-unit>
-			<trans-unit id="pagesCreated.message" resname="pagesCreated.message">
+			<trans-unit id="pagesCreated.message">
 				<source>The pages were created successfully.</source>
 			</trans-unit>
 		</body>

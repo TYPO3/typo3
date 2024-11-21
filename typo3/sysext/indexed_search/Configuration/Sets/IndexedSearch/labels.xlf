@@ -3,30 +3,30 @@
 	<file source-language="en" datatype="plaintext" original="EXT:indexed_search/Configuration/Sets/IndexedSearch/labels.xlf" date="2024-09-05T09:00:00Z" product-name="indexed_search">
 		<header/>
 		<body>
-			<trans-unit id="label" resname="label">
+			<trans-unit id="label">
 				<source>Indexed Search</source>
 			</trans-unit>
 
-			<trans-unit id="categories.indexedsearch" resname="categories.indexedsearch">
+			<trans-unit id="categories.indexedsearch">
 				<source>Indexed Search</source>
 			</trans-unit>
-			<trans-unit id="categories.indexedsearch.templates" resname="categories.indexedsearch.templates">
+			<trans-unit id="categories.indexedsearch.templates">
 				<source>Templates</source>
 			</trans-unit>
 
-			<trans-unit id="settings.indexedsearch.view.templateRootPath" resname="settings.indexedsearch.view.templateRootPath">
+			<trans-unit id="settings.indexedsearch.view.templateRootPath">
 				<source>Path to template root (FE)</source>
 			</trans-unit>
-			<trans-unit id="settings.indexedsearch.view.partialRootPath" resname="settings.indexedsearch.view.partialRootPath">
+			<trans-unit id="settings.indexedsearch.view.partialRootPath">
 				<source>Path to template partials (FE)</source>
 			</trans-unit>
-			<trans-unit id="settings.indexedsearch.view.layoutRootPath" resname="settings.indexedsearch.view.layoutRootPath">
+			<trans-unit id="settings.indexedsearch.view.layoutRootPath">
 				<source>Path to template layouts (FE)</source>
 			</trans-unit>
-			<trans-unit id="settings.indexedsearch.targetPid" resname="settings.indexedsearch.targetPid">
+			<trans-unit id="settings.indexedsearch.targetPid">
 				<source>Set the target page where search results are shown</source>
 			</trans-unit>
-			<trans-unit id="settings.indexedsearch.rootPidList" resname="settings.indexedsearch.rootPidList">
+			<trans-unit id="settings.indexedsearch.rootPidList">
 				<source>A list of integer which should be root-pages to search from</source>
 			</trans-unit>
 		</body>

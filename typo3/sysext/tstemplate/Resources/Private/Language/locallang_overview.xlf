@@ -3,25 +3,25 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_overview.xlf" date="2023-01-22T19:53:00Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="typoscriptRecords.title" resname="typoscriptRecords.title">
+			<trans-unit id="typoscriptRecords.title">
 				<source>TypoScript Overview</source>
 			</trans-unit>
-			<trans-unit id="typoscriptRecords.description" resname="typoscriptRecords.description">
+			<trans-unit id="typoscriptRecords.description">
 				<source>Global overview of all pages with active TypoScript definitions (database records and site sets).</source>
 			</trans-unit>
-			<trans-unit id="typoscriptRecords.noRecordsFound" resname="typoscriptRecords.noRecordsFound">
+			<trans-unit id="typoscriptRecords.noRecordsFound">
 				<source>No TypoScript definitions found.</source>
 			</trans-unit>
-			<trans-unit id="typoscriptRecords.table.column.pageTitle" resname="typoscriptRecords.table.column.pageTitle">
+			<trans-unit id="typoscriptRecords.table.column.pageTitle">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="typoscriptRecords.table.column.typoscriptRecords" resname="typoscriptRecords.table.column.typoscriptRecords">
+			<trans-unit id="typoscriptRecords.table.column.typoscriptRecords">
 				<source>TypoScript definitions</source>
 			</trans-unit>
-			<trans-unit id="typoscriptRecords.table.column.site" resname="typoscriptRecords.table.column.site">
+			<trans-unit id="typoscriptRecords.table.column.site">
 				<source>Site set</source>
 			</trans-unit>
-			<trans-unit id="typoscriptRecords.table.column.root" resname="typoscriptRecords.table.column.root">
+			<trans-unit id="typoscriptRecords.table.column.root">
 				<source>Marked as root</source>
 			</trans-unit>
 		</body>

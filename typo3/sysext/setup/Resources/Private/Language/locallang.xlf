@@ -3,154 +3,154 @@
 	<file source-language="en" datatype="plaintext" original="EXT:setup/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="setup">
 		<header/>
 		<body>
-			<trans-unit id="UserSettings" resname="UserSettings">
+			<trans-unit id="UserSettings">
 				<source>User Settings</source>
 			</trans-unit>
-			<trans-unit id="language" resname="language">
+			<trans-unit id="language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="languageUnavailable" resname="languageUnavailable">
+			<trans-unit id="languageUnavailable">
 				<source>The selected language "%s" is not available before the language files are installed.</source>
 			</trans-unit>
-			<trans-unit id="languageUnavailable.admin" resname="languageUnavailable.admin">
+			<trans-unit id="languageUnavailable.admin">
 				<source>You can use "Manage Language Packs" in the Maintenance module to easily download new language files.</source>
 			</trans-unit>
-			<trans-unit id="languageUnavailable.user" resname="languageUnavailable.user">
+			<trans-unit id="languageUnavailable.user">
 				<source>Please ask your system administrator to do this.</source>
 			</trans-unit>
-			<trans-unit id="simulate" resname="simulate">
+			<trans-unit id="simulate">
 				<source>Simulate backend user</source>
 			</trans-unit>
-			<trans-unit id="opening" resname="opening">
+			<trans-unit id="opening">
 				<source>Backend appearance</source>
 			</trans-unit>
-			<trans-unit id="personal_data" resname="personal_data">
+			<trans-unit id="personal_data">
 				<source>Personal data</source>
 			</trans-unit>
-			<trans-unit id="startModule" resname="startModule">
+			<trans-unit id="startModule">
 				<source>Start up in the following module</source>
 			</trans-unit>
-			<trans-unit id="emailMeAtLogin" resname="emailMeAtLogin">
+			<trans-unit id="emailMeAtLogin">
 				<source>Notify me by email when somebody logs in from my account</source>
 			</trans-unit>
-			<trans-unit id="helpText" resname="helpText">
+			<trans-unit id="helpText">
 				<source>Show help text when applicable</source>
 			</trans-unit>
-			<trans-unit id="maxTitleLen" resname="maxTitleLen">
+			<trans-unit id="maxTitleLen">
 				<source>Max. title length</source>
 			</trans-unit>
-			<trans-unit id="edit_docModuleUpload" resname="edit_docModuleUpload">
+			<trans-unit id="edit_docModuleUpload">
 				<source>File upload directly in Doc-module</source>
 			</trans-unit>
-			<trans-unit id="showHiddenFilesAndFolders" resname="showHiddenFilesAndFolders">
+			<trans-unit id="showHiddenFilesAndFolders">
 				<source>Show hidden files and folders in the filelist</source>
 			</trans-unit>
-			<trans-unit id="editFunctionsTab" resname="editFunctionsTab">
+			<trans-unit id="editFunctionsTab">
 				<source>Edit and advanced functions</source>
 			</trans-unit>
-			<trans-unit id="setToStandard" resname="setToStandard">
+			<trans-unit id="setToStandard">
 				<source>Reset all values to default</source>
 			</trans-unit>
-			<trans-unit id="resetTab" resname="resetTab">
+			<trans-unit id="resetTab">
 				<source>Reset configuration</source>
 			</trans-unit>
-			<trans-unit id="resetConfiguration" resname="resetConfiguration">
+			<trans-unit id="resetConfiguration">
 				<source>Reset configuration and clear temporary data</source>
 			</trans-unit>
-			<trans-unit id="resetConfigurationButton" resname="resetConfigurationButton">
+			<trans-unit id="resetConfigurationButton">
 				<source>Reset user settings to default state</source>
 			</trans-unit>
-			<trans-unit id="setToStandardQuestion" resname="setToStandardQuestion">
+			<trans-unit id="setToStandardQuestion">
 				<source>Are you sure you want to reset all values to default?</source>
 			</trans-unit>
-			<trans-unit id="functions" resname="functions">
+			<trans-unit id="functions">
 				<source>Advanced functions</source>
 			</trans-unit>
-			<trans-unit id="copyLevels" resname="copyLevels">
+			<trans-unit id="copyLevels">
 				<source>Recursive copy: Enter the number of page sublevels to include, when a page is copied</source>
 			</trans-unit>
-			<trans-unit id="levels" resname="levels">
+			<trans-unit id="levels">
 				<source>levels</source>
 			</trans-unit>
-			<trans-unit id="beUser_realName" resname="beUser_realName">
+			<trans-unit id="beUser_realName">
 				<source>Your name</source>
 			</trans-unit>
-			<trans-unit id="beUser_avatar" resname="beUser_avatar">
+			<trans-unit id="beUser_avatar">
 				<source>Avatar</source>
 			</trans-unit>
-			<trans-unit id="beUser_email" resname="beUser_email">
+			<trans-unit id="beUser_email">
 				<source>Your email address</source>
 			</trans-unit>
-			<trans-unit id="save" resname="save">
+			<trans-unit id="save">
 				<source>Save configuration</source>
 			</trans-unit>
-			<trans-unit id="newPassword" resname="newPassword">
+			<trans-unit id="newPassword">
 				<source>New password</source>
 			</trans-unit>
-			<trans-unit id="newPasswordAgain" resname="newPasswordAgain">
+			<trans-unit id="newPasswordAgain">
 				<source>New password (repetition)</source>
 			</trans-unit>
-			<trans-unit id="newPassword_ok" resname="newPassword_ok">
+			<trans-unit id="newPassword_ok">
 				<source>Password was updated.</source>
 			</trans-unit>
-			<trans-unit id="passwordCurrent" resname="passwordCurrent">
+			<trans-unit id="passwordCurrent">
 				<source>Current password</source>
 			</trans-unit>
-			<trans-unit id="passwordPolicyFailed" resname="passwordPolicyFailed">
+			<trans-unit id="passwordPolicyFailed">
 				<source>The password was NOT updated, since it does not meet the password policy requirements.</source>
 			</trans-unit>
-			<trans-unit id="accountSecurity" resname="accountSecurity">
+			<trans-unit id="accountSecurity">
 				<source>Account security</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders" resname="mfaProviders">
+			<trans-unit id="mfaProviders">
 				<source>Multi-factor authentication</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders.notAvailable" resname="mfaProviders.notAvailable">
+			<trans-unit id="mfaProviders.notAvailable">
 				<source>Multi-factor authentication is currently not available.</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders.description" resname="mfaProviders.description">
+			<trans-unit id="mfaProviders.description">
 				<source>Use multi-factor authentication to secure your account by providing another factor next to your password.</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders.lockedMfaProviders" resname="mfaProviders.lockedMfaProviders">
+			<trans-unit id="mfaProviders.lockedMfaProviders">
 				<source>Some providers are currently locked!</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders.enabled" resname="mfaProviders.enabled">
+			<trans-unit id="mfaProviders.enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders.setupLinkTitle" resname="mfaProviders.setupLinkTitle">
+			<trans-unit id="mfaProviders.setupLinkTitle">
 				<source>Setup multi-factor authentication</source>
 			</trans-unit>
-			<trans-unit id="mfaProviders.manageLinkTitle" resname="mfaProviders.manageLinkTitle">
+			<trans-unit id="mfaProviders.manageLinkTitle">
 				<source>Manage multi-factor authentication</source>
 			</trans-unit>
-			<trans-unit id="setupWasUpdated" resname="setupWasUpdated">
+			<trans-unit id="setupWasUpdated">
 				<source>User settings were updated.</source>
 			</trans-unit>
-			<trans-unit id="newPassword_failed" resname="newPassword_failed">
+			<trans-unit id="newPassword_failed">
 				<source>Password was NOT updated because you didn't enter the same password twice.</source>
 			</trans-unit>
-			<trans-unit id="oldPassword_failed" resname="oldPassword_failed">
+			<trans-unit id="oldPassword_failed">
 				<source>Password was NOT updated because you didn't enter the correct current password.</source>
 			</trans-unit>
-			<trans-unit id="settingsAreReset" resname="settingsAreReset">
+			<trans-unit id="settingsAreReset">
 				<source>The user settings have been reset to default values and temporary data has been cleared.</source>
 			</trans-unit>
-			<trans-unit id="startModule.firstInMenu" resname="startModule.firstInMenu">
+			<trans-unit id="startModule.firstInMenu">
 				<source>- First module in menu -</source>
 			</trans-unit>
-			<trans-unit id="avatar.clear" resname="avatar.clear">
+			<trans-unit id="avatar.clear">
 				<source>Remove selected avatar image</source>
 			</trans-unit>
-			<trans-unit id="avatar.openFileBrowser" resname="avatar.openFileBrowser">
+			<trans-unit id="avatar.openFileBrowser">
 				<source>Open file browser to select avatar image</source>
 			</trans-unit>
-			<trans-unit id="backendTitleFormat" resname="backendTitleFormat">
+			<trans-unit id="backendTitleFormat">
 				<source>Format of window title in backend</source>
 			</trans-unit>
-			<trans-unit id="backendTitleFormat.sitenameFirst" resname="backendTitleFormat.sitenameFirst">
+			<trans-unit id="backendTitleFormat.sitenameFirst">
 				<source>[sitename] · [title]</source>
 			</trans-unit>
-			<trans-unit id="backendTitleFormat.titleFirst" resname="backendTitleFormat.titleFirst">
+			<trans-unit id="backendTitleFormat.titleFirst">
 				<source>[title] · [sitename]</source>
 			</trans-unit>
 		</body>

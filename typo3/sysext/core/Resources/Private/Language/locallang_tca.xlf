@@ -3,628 +3,628 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="file_mountpoints" resname="file_mountpoints">
+			<trans-unit id="file_mountpoints">
 				<source>File Mounts</source>
 			</trans-unit>
-			<trans-unit id="file_mountpoints_edit_title" resname="file_mountpoints_edit_title">
+			<trans-unit id="file_mountpoints_edit_title">
 				<source>Edit filemount</source>
 			</trans-unit>
-			<trans-unit id="file_mountpoints_add_title" resname="file_mountpoints_add_title">
+			<trans-unit id="file_mountpoints_add_title">
 				<source>Create new filemount</source>
 			</trans-unit>
-			<trans-unit id="file_mountpoints_list_title" resname="file_mountpoints_list_title">
+			<trans-unit id="file_mountpoints_list_title">
 				<source>List filemounts</source>
 			</trans-unit>
-			<trans-unit id="db_mountpoints" resname="db_mountpoints">
+			<trans-unit id="db_mountpoints">
 				<source>DB Mounts</source>
 			</trans-unit>
-			<trans-unit id="userMods" resname="userMods">
+			<trans-unit id="userMods">
 				<source>Allowed modules</source>
 			</trans-unit>
-			<trans-unit id="availableWidgets" resname="userMods">
+			<trans-unit id="availableWidgets">
 				<source>Allowed dashboard widgets</source>
 			</trans-unit>
-			<trans-unit id="mfa_providers" resname="mfa_providers">
+			<trans-unit id="mfa_providers">
 				<source>Allowed multi-factor authentication providers</source>
 			</trans-unit>
-			<trans-unit id="allowed_languages" resname="allowed_languages">
+			<trans-unit id="allowed_languages">
 				<source>Limit to languages</source>
 			</trans-unit>
-			<trans-unit id="allowed_languages.description" resname="allowed_languages.description">
+			<trans-unit id="allowed_languages.description">
 				<source>If no language is selected, all languages will be available by default.</source>
 			</trans-unit>
-			<trans-unit id="category_perms" resname="category_perms">
+			<trans-unit id="category_perms">
 				<source>Category Mounts</source>
 			</trans-unit>
-			<trans-unit id="workspace_perms" resname="workspace_perms">
+			<trans-unit id="workspace_perms">
 				<source>Workspace permissions</source>
 			</trans-unit>
-			<trans-unit id="workspace_perms.description" resname="workspace_perms.description">
+			<trans-unit id="workspace_perms.description">
 				<source>Live workspace permissions are also required to allow management of files/resources</source>
 			</trans-unit>
-			<trans-unit id="workspace_perms_live" resname="workspace_perms_live">
+			<trans-unit id="workspace_perms_live">
 				<source>Edit Live (Online)</source>
 			</trans-unit>
-			<trans-unit id="TSconfig" resname="TSconfig">
+			<trans-unit id="TSconfig">
 				<source>TSconfig</source>
 			</trans-unit>
-			<trans-unit id="be_users.username" resname="be_users.username">
+			<trans-unit id="be_users.username">
 				<source>Username</source>
 			</trans-unit>
-			<trans-unit id="be_users.password" resname="be_users.password">
+			<trans-unit id="be_users.password">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="be_users.mfa" resname="be_users.mfa">
+			<trans-unit id="be_users.mfa">
 				<source>Multi-factor authentication</source>
 			</trans-unit>
-			<trans-unit id="be_users.avatar" resname="be_users.avatar">
+			<trans-unit id="be_users.avatar">
 				<source>Avatar</source>
 			</trans-unit>
-			<trans-unit id="be_users.usergroup" resname="be_users.usergroup">
+			<trans-unit id="be_users.usergroup">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="be_users.usergroup_edit_title" resname="be_users.usergroup_edit_title">
+			<trans-unit id="be_users.usergroup_edit_title">
 				<source>Edit usergroup</source>
 			</trans-unit>
-			<trans-unit id="be_users.usergroup_add_title" resname="be_users.usergroup_add_title">
+			<trans-unit id="be_users.usergroup_add_title">
 				<source>Create new group</source>
 			</trans-unit>
-			<trans-unit id="be_users.usergroup_list_title" resname="be_users.usergroup_list_title">
+			<trans-unit id="be_users.usergroup_list_title">
 				<source>List groups</source>
 			</trans-unit>
-			<trans-unit id="be_users.admin" resname="be_users.admin">
+			<trans-unit id="be_users.admin">
 				<source>Admin (!)</source>
 			</trans-unit>
-			<trans-unit id="be_users.options" resname="be_users.options">
+			<trans-unit id="be_users.options">
 				<source>Mount from groups</source>
 			</trans-unit>
-			<trans-unit id="be_users.options_db_mounts" resname="be_users.options_db_mounts">
+			<trans-unit id="be_users.options_db_mounts">
 				<source>DB Mounts</source>
 			</trans-unit>
-			<trans-unit id="be_users.options_file_mounts" resname="be_users.options_file_mounts">
+			<trans-unit id="be_users.options_file_mounts">
 				<source>File Mounts</source>
 			</trans-unit>
-			<trans-unit id="be_users.fileoper_perms" resname="be_users.fileoper_perms">
+			<trans-unit id="be_users.fileoper_perms">
 				<source>Fileoperation permissions</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files" resname="be_users.file_permissions.files">
+			<trans-unit id="be_users.file_permissions.files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files_read" resname="be_users.file_permissions.files_read">
+			<trans-unit id="be_users.file_permissions.files_read">
 				<source>Files: Read</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files_write" resname="be_users.file_permissions.files_write">
+			<trans-unit id="be_users.file_permissions.files_write">
 				<source>Files: Write</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files_add" resname="be_users.file_permissions.files_add">
+			<trans-unit id="be_users.file_permissions.files_add">
 				<source>Files: Add</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files_rename" resname="be_users.file_permissions.files_rename">
+			<trans-unit id="be_users.file_permissions.files_rename">
 				<source>Files: Rename</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_replace" resname="be_groups.file_permissions.files_replace">
+			<trans-unit id="be_groups.file_permissions.files_replace">
 				<source>Files: Replace</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files_move" resname="be_users.file_permissions.files_move">
+			<trans-unit id="be_users.file_permissions.files_move">
 				<source>Files: Move</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.files_copy" resname="be_users.file_permissions.files_copy">
+			<trans-unit id="be_users.file_permissions.files_copy">
 				<source>Files: Copy</source>
 			</trans-unit>
-			<trans-unit id="be_users.fileoper_perms_unzip" resname="be_users.fileoper_perms_unzip">
+			<trans-unit id="be_users.fileoper_perms_unzip">
 				<source>Files: Unzip</source>
 			</trans-unit>
-			<trans-unit id="be_users.file_permissions.file_delete" resname="be_users.file_permissions.file_delete">
+			<trans-unit id="be_users.file_permissions.file_delete">
 				<source>Files: Delete</source>
 			</trans-unit>
-			<trans-unit id="be_users.fileoper_perms_general" resname="be_users.fileoper_perms_general">
+			<trans-unit id="be_users.fileoper_perms_general">
 				<source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
 			</trans-unit>
-			<trans-unit id="be_users.fileoper_perms_diroper_perms" resname="be_users.fileoper_perms_diroper_perms">
+			<trans-unit id="be_users.fileoper_perms_diroper_perms">
 				<source>Directory: Move,Delete,Rename,New</source>
 			</trans-unit>
-			<trans-unit id="be_users.fileoper_perms_diroper_perms_copy" resname="be_users.fileoper_perms_diroper_perms_copy">
+			<trans-unit id="be_users.fileoper_perms_diroper_perms_copy">
 				<source>Directory: Copy</source>
 			</trans-unit>
-			<trans-unit id="be_users.fileoper_perms_diroper_perms_delete" resname="be_users.fileoper_perms_diroper_perms_delete">
+			<trans-unit id="be_users.fileoper_perms_diroper_perms_delete">
 				<source>Directory: Delete recursively (rm -Rf)</source>
 			</trans-unit>
-			<trans-unit id="be_users.lang" resname="be_users.lang">
+			<trans-unit id="be_users.lang">
 				<source>User Interface Language</source>
 			</trans-unit>
-			<trans-unit id="be_users.languageItemGroups.default" resname="be_users.languageItemGroups.default">
+			<trans-unit id="be_users.languageItemGroups.default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="be_users.languageItemGroups.installed" resname="be_users.languageItemGroups.installed">
+			<trans-unit id="be_users.languageItemGroups.installed">
 				<source>Installed Languages</source>
 			</trans-unit>
-			<trans-unit id="be_users.languageItemGroups.unavailable" resname="be_users.languageItemGroups.unavailable">
+			<trans-unit id="be_users.languageItemGroups.unavailable">
 				<source>Unavailable Languages</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.permissions" resname="be_users.tabs.permissions">
+			<trans-unit id="be_users.tabs.permissions">
 				<source>Permissions</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.mounts_and_workspaces" resname="be_users.tabs.mounts_and_workspaces">
+			<trans-unit id="be_users.tabs.mounts_and_workspaces">
 				<source>Mounts and Workspaces</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.options" resname="be_users.tabs.options">
+			<trans-unit id="be_users.tabs.options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.extended" resname="be_users.tabs.extended">
+			<trans-unit id="be_users.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.access" resname="be_users.tabs.access">
+			<trans-unit id="be_users.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="be_users.tabs.personal_data" resname="be_users.tabs.personal_data">
+			<trans-unit id="be_users.tabs.personal_data">
 				<source>Personal Data</source>
 			</trans-unit>
-			<trans-unit id="be_groups.title" resname="be_groups.title">
+			<trans-unit id="be_groups.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="be_groups.pagetypes_select" resname="be_groups.pagetypes_select">
+			<trans-unit id="be_groups.pagetypes_select">
 				<source>Allowed page types</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tables_modify" resname="be_groups.tables_modify">
+			<trans-unit id="be_groups.tables_modify">
 				<source>Table permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tables_modify.description" resname="be_groups.tables_modify.description">
+			<trans-unit id="be_groups.tables_modify.description">
 				<source>Tables chosen for writing automatically receive read access permissions.</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tables_modify.permissions.none" resname="be_groups.tables_modify.permissions.none">
+			<trans-unit id="be_groups.tables_modify.permissions.none">
 				<source>No Access</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tables_modify.permissions.select" resname="be_groups.tables_modify.permissions.select">
+			<trans-unit id="be_groups.tables_modify.permissions.select">
 				<source>Read</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tables_modify.permissions.modify" resname="be_groups.tables_modify.permissions.modify">
+			<trans-unit id="be_groups.tables_modify.permissions.modify">
 				<source>Read &amp; Write</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tables_select" resname="be_groups.tables_select">
+			<trans-unit id="be_groups.tables_select">
 				<source>Tables (listing)</source>
 			</trans-unit>
-			<trans-unit id="be_groups.non_exclude_fields" resname="be_groups.non_exclude_fields">
+			<trans-unit id="be_groups.non_exclude_fields">
 				<source>Allowed fields</source>
 			</trans-unit>
-			<trans-unit id="be_groups.non_exclude_fields.description" resname="be_groups.non_exclude_fields.description">
+			<trans-unit id="be_groups.non_exclude_fields.description">
 				<source>Allow fields that are excluded in forms by default for non-admin users. This option refers to the 'exclude' configuration set in TCA (Table Configuration Array).</source>
 			</trans-unit>
-			<trans-unit id="be_groups.explicit_allowdeny" resname="be_groups.explicit_allowdeny">
+			<trans-unit id="be_groups.explicit_allowdeny">
 				<source>Explicitly allow field values</source>
 			</trans-unit>
-			<trans-unit id="be_groups.custom_options" resname="be_groups.custom_options">
+			<trans-unit id="be_groups.custom_options">
 				<source>Custom module options</source>
 			</trans-unit>
-			<trans-unit id="be_groups.subgroup" resname="be_groups.subgroup">
+			<trans-unit id="be_groups.subgroup">
 				<source>Inherit settings from groups</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.record_permissions" resname="be_groups.tabs.record_permissions">
+			<trans-unit id="be_groups.tabs.record_permissions">
 				<source>Record Permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.module_permissions" resname="be_groups.tabs.module_permissions">
+			<trans-unit id="be_groups.tabs.module_permissions">
 				<source>Module Permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.mounts_and_workspaces" resname="be_groups.tabs.mounts_and_workspaces">
+			<trans-unit id="be_groups.tabs.mounts_and_workspaces">
 				<source>Mounts and Workspaces</source>
 			</trans-unit>
-			<trans-unit id="be_groups.fileoper_perms" resname="be_groups.fileoper_perms">
+			<trans-unit id="be_groups.fileoper_perms">
 				<source>Fileoperation permissions</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder" resname="be_groups.file_permissions.folder">
+			<trans-unit id="be_groups.file_permissions.folder">
 				<source>Directory</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_read" resname="be_groups.file_permissions.folder_read">
+			<trans-unit id="be_groups.file_permissions.folder_read">
 				<source>Directory: Read</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_write" resname="be_groups.file_permissions.folder_write">
+			<trans-unit id="be_groups.file_permissions.folder_write">
 				<source>Directory: Write</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_add" resname="be_groups.file_permissions.folder_add">
+			<trans-unit id="be_groups.file_permissions.folder_add">
 				<source>Directory: Add</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_rename" resname="be_groups.file_permissions.folder_rename">
+			<trans-unit id="be_groups.file_permissions.folder_rename">
 				<source>Directory: Rename</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_move" resname="be_groups.file_permissions.folder_move">
+			<trans-unit id="be_groups.file_permissions.folder_move">
 				<source>Directory: Move</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_copy" resname="be_groups.file_permissions.folder_copy">
+			<trans-unit id="be_groups.file_permissions.folder_copy">
 				<source>Directory: Copy</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_delete" resname="be_groups.file_permissions.folder_delete">
+			<trans-unit id="be_groups.file_permissions.folder_delete">
 				<source>Directory: Delete</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.folder_recursivedelete" resname="be_groups.file_permissions.folder_recursivedelete">
+			<trans-unit id="be_groups.file_permissions.folder_recursivedelete">
 				<source>Directory: Delete recursively</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files" resname="be_groups.file_permissions.files">
+			<trans-unit id="be_groups.file_permissions.files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_read" resname="be_groups.file_permissions.files_read">
+			<trans-unit id="be_groups.file_permissions.files_read">
 				<source>Files: Read</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_write" resname="be_groups.file_permissions.files_write">
+			<trans-unit id="be_groups.file_permissions.files_write">
 				<source>Files: Write</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_edit" resname="be_groups.file_permissions.files_edit">
+			<trans-unit id="be_groups.file_permissions.files_edit">
 				<source>Files: Edit</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_add" resname="be_groups.file_permissions.files_add">
+			<trans-unit id="be_groups.file_permissions.files_add">
 				<source>Files: Add</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_rename" resname="be_groups.file_permissions.files_rename">
+			<trans-unit id="be_groups.file_permissions.files_rename">
 				<source>Files: Rename</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_move" resname="be_groups.file_permissions.files_move">
+			<trans-unit id="be_groups.file_permissions.files_move">
 				<source>Files: Move</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_copy" resname="be_groups.file_permissions.files_copy">
+			<trans-unit id="be_groups.file_permissions.files_copy">
 				<source>Files: Copy</source>
 			</trans-unit>
-			<trans-unit id="be_groups.fileoper_perms_unzip" resname="be_groups.fileoper_perms_unzip">
+			<trans-unit id="be_groups.fileoper_perms_unzip">
 				<source>Files: Unzip</source>
 			</trans-unit>
-			<trans-unit id="be_groups.file_permissions.files_delete" resname="be_groups.file_permissions.files_delete">
+			<trans-unit id="be_groups.file_permissions.files_delete">
 				<source>Files: Delete</source>
 			</trans-unit>
-			<trans-unit id="be_groups.fileoper_perms_general" resname="be_groups.fileoper_perms_general">
+			<trans-unit id="be_groups.fileoper_perms_general">
 				<source>Files: Upload,Copy,Move,Delete,Rename,New,Edit</source>
 			</trans-unit>
-			<trans-unit id="be_groups.fileoper_perms_diroper_perms" resname="be_groups.fileoper_perms_diroper_perms">
+			<trans-unit id="be_groups.fileoper_perms_diroper_perms">
 				<source>Directory: Move,Delete,Rename,New</source>
 			</trans-unit>
-			<trans-unit id="be_groups.fileoper_perms_diroper_perms_copy" resname="be_groups.fileoper_perms_diroper_perms_copy">
+			<trans-unit id="be_groups.fileoper_perms_diroper_perms_copy">
 				<source>Directory: Copy</source>
 			</trans-unit>
-			<trans-unit id="be_groups.fileoper_perms_diroper_perms_delete" resname="be_groups.fileoper_perms_diroper_perms_delete">
+			<trans-unit id="be_groups.fileoper_perms_diroper_perms_delete">
 				<source>Directory: Delete recursively (rm -Rf)</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.options" resname="be_groups.tabs.options">
+			<trans-unit id="be_groups.tabs.options">
 				<source>Options</source>
 			</trans-unit>
-			<trans-unit id="be_groups.tabs.extended" resname="be_groups.tabs.extended">
+			<trans-unit id="be_groups.tabs.extended">
 				<source>Extended</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.tabs.users" resname="sys_filemounts.tabs.users">
+			<trans-unit id="sys_filemounts.tabs.users">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.tabs.mountpoints" resname="sys_filemounts.tabs.mountpoints">
+			<trans-unit id="sys_filemounts.tabs.mountpoints">
 				<source>Mountpoints</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.tabs.publishing" resname="sys_filemounts.tabs.publishing">
+			<trans-unit id="sys_filemounts.tabs.publishing">
 				<source>Publishing</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.tabs.other" resname="sys_filemounts.tabs.other">
+			<trans-unit id="sys_filemounts.tabs.other">
 				<source>Other</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.identifier" resname="sys_filemounts.identifier">
+			<trans-unit id="sys_filemounts.identifier">
 				<source>Entry point</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.title" resname="sys_filemounts.title">
+			<trans-unit id="sys_filemounts.title">
 				<source>Label</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts.read_only" resname="sys_filemounts.read_only">
+			<trans-unit id="sys_filemounts.read_only">
 				<source>Read-only</source>
 			</trans-unit>
-			<trans-unit id="sys_history" resname="sys_history">
+			<trans-unit id="sys_history">
 				<source>System History</source>
 			</trans-unit>
-			<trans-unit id="sys_log" resname="sys_log">
+			<trans-unit id="sys_log">
 				<source>System Log</source>
 			</trans-unit>
-			<trans-unit id="sys_news" resname="sys_news">
+			<trans-unit id="sys_news">
 				<source>System News</source>
 			</trans-unit>
-			<trans-unit id="sys_news.tabs.access" resname="sys_news.tabs.access">
+			<trans-unit id="sys_news.tabs.access">
 				<source>Access</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.adminusers" resname="sys_workspace.adminusers">
+			<trans-unit id="sys_workspace.adminusers">
 				<source>Owners</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.members" resname="sys_workspace.members">
+			<trans-unit id="sys_workspace.members">
 				<source>Members</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.publish_time" resname="sys_workspace.publish_time">
+			<trans-unit id="sys_workspace.publish_time">
 				<source>Publish</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.freeze" resname="sys_workspace.freeze">
+			<trans-unit id="sys_workspace.freeze">
 				<source>Freeze Editing</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.live_edit" resname="sys_workspace.live_edit">
+			<trans-unit id="sys_workspace.live_edit">
 				<source>Allow "live" editing of records from tables without versioning</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.review_stage_edit" resname="sys_workspace.review_stage_edit">
+			<trans-unit id="sys_workspace.review_stage_edit">
 				<source>Allow members to edit records in "Review" stage</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.disable_autocreate" resname="sys_workspace.disable_autocreate">
+			<trans-unit id="sys_workspace.disable_autocreate">
 				<source>Disable auto-versioning when editing</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.publish_access" resname="sys_workspace.publish_access">
+			<trans-unit id="sys_workspace.publish_access">
 				<source>Publish access</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace.stagechg_notification" resname="sys_workspace.stagechg_notification">
+			<trans-unit id="sys_workspace.stagechg_notification">
 				<source>Stage change notification by email</source>
 			</trans-unit>
-			<trans-unit id="pages" resname="pages">
+			<trans-unit id="pages">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden_toggle" resname="pages.hidden_toggle">
+			<trans-unit id="pages.hidden_toggle">
 				<source>Page visible</source>
 			</trans-unit>
-			<trans-unit id="pages.hidden_toggle_formlabel" resname="pages.hidden_toggle_formlabel">
+			<trans-unit id="pages.hidden_toggle_formlabel">
 				<source>Page visible</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide" resname="pages.nav_hide">
+			<trans-unit id="pages.nav_hide">
 				<source>Page not enabled in menus</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_toggle" resname="pages.nav_hide_toggle">
+			<trans-unit id="pages.nav_hide_toggle">
 				<source>Page enabled in menus</source>
 			</trans-unit>
-			<trans-unit id="pages.nav_hide_toggle_formlabel" resname="pages.nav_hide_toggle_formlabel">
+			<trans-unit id="pages.nav_hide_toggle_formlabel">
 				<source>Page enabled in menus</source>
 			</trans-unit>
-			<trans-unit id="doktype.I.0" resname="doktype.I.0">
+			<trans-unit id="doktype.I.0">
 				<source>Standard</source>
 			</trans-unit>
-			<trans-unit id="doktype.I.1" resname="doktype.I.1">
+			<trans-unit id="doktype.I.1">
 				<source>SysFolder</source>
 			</trans-unit>
-			<trans-unit id="doktype.I.folder" resname="doktype.I.folder">
+			<trans-unit id="doktype.I.folder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>Page title</source>
 			</trans-unit>
-			<trans-unit id="php_tree_stop" resname="php_tree_stop">
+			<trans-unit id="php_tree_stop">
 				<source>Hide child pages in page tree</source>
 			</trans-unit>
-			<trans-unit id="is_siteroot" resname="is_siteroot">
+			<trans-unit id="is_siteroot">
 				<source>Is root of website</source>
 			</trans-unit>
-			<trans-unit id="pages.slug" resname="pages.slug">
+			<trans-unit id="pages.slug">
 				<source>URL Segment</source>
 			</trans-unit>
-			<trans-unit id="pages.description" resname="pages.description">
+			<trans-unit id="pages.description">
 				<source>Description for search engines</source>
 			</trans-unit>
-			<trans-unit id="be_users" resname="be_users">
+			<trans-unit id="be_users">
 				<source>Backend user</source>
 			</trans-unit>
-			<trans-unit id="be_groups" resname="be_groups">
+			<trans-unit id="be_groups">
 				<source>Backend usergroup</source>
 			</trans-unit>
-			<trans-unit id="sys_filemounts" resname="sys_filemounts">
+			<trans-unit id="sys_filemounts">
 				<source>Filemount</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage" resname="sys_file_storage">
+			<trans-unit id="sys_file_storage">
 				<source>File Storage</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.type" resname="sys_file_storage.type">
+			<trans-unit id="sys_file_storage.type">
 				<source>Entry point</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.name" resname="sys_file_storage.name">
+			<trans-unit id="sys_file_storage.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.hidden" resname="sys_file_storage.hidden">
+			<trans-unit id="sys_file_storage.hidden">
 				<source>Hide from listings</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.is_online" resname="sys_file_storage.is_online">
+			<trans-unit id="sys_file_storage.is_online">
 				<source>Is online?</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.is_default" resname="sys_file_storage.is_default">
+			<trans-unit id="sys_file_storage.is_default">
 				<source>Is default storage?</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.is_browsable" resname="sys_file_storage.is_browsable">
+			<trans-unit id="sys_file_storage.is_browsable">
 				<source>Is browsable?</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.is_public" resname="sys_file_storage.is_public">
+			<trans-unit id="sys_file_storage.is_public">
 				<source>Is publicly available?</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.is_writable" resname="sys_file_storage.is_writable">
+			<trans-unit id="sys_file_storage.is_writable">
 				<source>Is writable?</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.auto_extract_metadata" resname="sys_file_storage.auto_extract_metadata">
+			<trans-unit id="sys_file_storage.auto_extract_metadata">
 				<source>Automatically extract metadata after upload</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.capabilities" resname="sys_file_storage.capabilities">
+			<trans-unit id="sys_file_storage.capabilities">
 				<source>Capabilities</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.processingfolder" resname="sys_file_storage.processingfolder">
+			<trans-unit id="sys_file_storage.processingfolder">
 				<source>Folder for manipulated and temporary images etc.</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.processingfolder.placeholder" resname="sys_file_storage.processingfolder.placeholder">
+			<trans-unit id="sys_file_storage.processingfolder.placeholder">
 				<source>_processed_ or 1:/processed_files_storage_x</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.driver" resname="sys_file_storage.driver">
+			<trans-unit id="sys_file_storage.driver">
 				<source>Driver</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.driver.local" resname="sys_file_storage.driver.local">
+			<trans-unit id="sys_file_storage.driver.local">
 				<source>Local Filesystem</source>
 			</trans-unit>
-			<trans-unit id="sys_file_storage.configuration" resname="sys_file_storage.configuration">
+			<trans-unit id="sys_file_storage.configuration">
 				<source>Driver Configuration</source>
 			</trans-unit>
-			<trans-unit id="sys_file" resname="sys_file">
+			<trans-unit id="sys_file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="sys_file.storage" resname="sys_file.storage">
+			<trans-unit id="sys_file.storage">
 				<source>Storage</source>
 			</trans-unit>
-			<trans-unit id="sys_file.identifier" resname="sys_file.identifier">
+			<trans-unit id="sys_file.identifier">
 				<source>Identifier</source>
 			</trans-unit>
-			<trans-unit id="sys_file.name" resname="sys_file.name">
+			<trans-unit id="sys_file.name">
 				<source>Filename</source>
 			</trans-unit>
-			<trans-unit id="sys_file.title" resname="sys_file.title">
+			<trans-unit id="sys_file.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="sys_file.type" resname="sys_file.type">
+			<trans-unit id="sys_file.type">
 				<source>File Type</source>
 			</trans-unit>
-			<trans-unit id="sys_file.type.unknown" resname="sys_file.type.unknown">
+			<trans-unit id="sys_file.type.unknown">
 				<source>Unknown</source>
 			</trans-unit>
-			<trans-unit id="sys_file.type.text" resname="sys_file.type.text">
+			<trans-unit id="sys_file.type.text">
 				<source>Text</source>
 			</trans-unit>
-			<trans-unit id="sys_file.type.image" resname="sys_file.type.image">
+			<trans-unit id="sys_file.type.image">
 				<source>Image</source>
 			</trans-unit>
-			<trans-unit id="sys_file.type.audio" resname="sys_file.type.audio">
+			<trans-unit id="sys_file.type.audio">
 				<source>Audio</source>
 			</trans-unit>
-			<trans-unit id="sys_file.type.video" resname="sys_file.type.video">
+			<trans-unit id="sys_file.type.video">
 				<source>Video</source>
 			</trans-unit>
-			<trans-unit id="sys_file.type.software" resname="sys_file.type.software">
+			<trans-unit id="sys_file.type.software">
 				<source>Software</source>
 			</trans-unit>
-			<trans-unit id="sys_file.mime_type" resname="sys_file.mime_type">
+			<trans-unit id="sys_file.mime_type">
 				<source>Mime Type</source>
 			</trans-unit>
-			<trans-unit id="sys_file.sha1" resname="sys_file.sha1">
+			<trans-unit id="sys_file.sha1">
 				<source>SHA1</source>
 			</trans-unit>
-			<trans-unit id="sys_file.size" resname="sys_file.size">
+			<trans-unit id="sys_file.size">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="sys_file.usage_count" resname="sys_file.usage_count">
+			<trans-unit id="sys_file.usage_count">
 				<source>Usage Count</source>
 			</trans-unit>
-			<trans-unit id="sys_file.description" resname="sys_file.description">
+			<trans-unit id="sys_file.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="sys_file.alternative" resname="sys_file.alternative">
+			<trans-unit id="sys_file.alternative">
 				<source>Alternative Text</source>
 			</trans-unit>
-			<trans-unit id="sys_file.alternative.description" resname="sys_file.alternative.description">
+			<trans-unit id="sys_file.alternative.description">
 				<source>Images must have text alternatives that describe the information or function represented by them. This should only be empty for purely decorative images.</source>
 			</trans-unit>
-			<trans-unit id="sys_file.missing" resname="sys_file.missing">
+			<trans-unit id="sys_file.missing">
 				<source>Marked as missing</source>
 			</trans-unit>
-			<trans-unit id="sys_file.metadata" resname="sys_file.metadata">
+			<trans-unit id="sys_file.metadata">
 				<source>Metadata records</source>
 			</trans-unit>
-			<trans-unit id="file.width" resname="file.width">
+			<trans-unit id="file.width">
 				<source>Width</source>
 			</trans-unit>
-			<trans-unit id="file.height" resname="file.height">
+			<trans-unit id="file.height">
 				<source>Height</source>
 			</trans-unit>
-			<trans-unit id="sys_file_metadata" resname="sys_file_metadata">
+			<trans-unit id="sys_file_metadata">
 				<source>File Metadata</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference" resname="sys_file_reference">
+			<trans-unit id="sys_file_reference">
 				<source>File Reference</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.uid_local" resname="sys_file_reference.uid_local">
+			<trans-unit id="sys_file_reference.uid_local">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.uid_foreign" resname="sys_file_reference.uid_foreign">
+			<trans-unit id="sys_file_reference.uid_foreign">
 				<source>Used by content elements</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.tablenames" resname="sys_file_reference.tablenames">
+			<trans-unit id="sys_file_reference.tablenames">
 				<source>Table name</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.fieldname" resname="sys_file_reference.fieldname">
+			<trans-unit id="sys_file_reference.fieldname">
 				<source>Foreign Field</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.sorting_foreign" resname="sys_file_reference.sorting_foreign">
+			<trans-unit id="sys_file_reference.sorting_foreign">
 				<source>Sorting foreign</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.basicoverlayPalette" resname="sys_file_reference.basicoverlayPalette">
+			<trans-unit id="sys_file_reference.basicoverlayPalette">
 				<source>File Metadata</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.imageoverlayPalette" resname="sys_file_reference.imageoverlayPalette">
+			<trans-unit id="sys_file_reference.imageoverlayPalette">
 				<source>Image Metadata</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.audioOverlayPalette" resname="sys_file_reference.audioOverlayPalette">
+			<trans-unit id="sys_file_reference.audioOverlayPalette">
 				<source>Audio Metadata</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.videoOverlayPalette" resname="sys_file_reference.videoOverlayPalette">
+			<trans-unit id="sys_file_reference.videoOverlayPalette">
 				<source>Video Metadata</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.title" resname="sys_file_reference.title">
+			<trans-unit id="sys_file_reference.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.description" resname="sys_file_reference.description">
+			<trans-unit id="sys_file_reference.description">
 				<source>Description (Caption)</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.downloadname" resname="sys_file_reference.downloadname">
+			<trans-unit id="sys_file_reference.downloadname">
 				<source>Download Name</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.alternative" resname="sys_file_reference.alternative">
+			<trans-unit id="sys_file_reference.alternative">
 				<source>Alternative Text</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.link" resname="sys_file_reference.link">
+			<trans-unit id="sys_file_reference.link">
 				<source>Link</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.crop" resname="sys_file_reference.crop">
+			<trans-unit id="sys_file_reference.crop">
 				<source>Image manipulation</source>
 			</trans-unit>
-			<trans-unit id="sys_file_reference.autoplay" resname="sys_file_reference.autoplay">
+			<trans-unit id="sys_file_reference.autoplay">
 				<source>Autoplay</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection" resname="sys_file_collection">
+			<trans-unit id="sys_file_collection">
 				<source>File collection</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.files" resname="sys_file_collection.files">
+			<trans-unit id="sys_file_collection.files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.title" resname="sys_file_collection.title">
+			<trans-unit id="sys_file_collection.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.type" resname="sys_file_collection.type">
+			<trans-unit id="sys_file_collection.type">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.type.0" resname="sys_file_collection.type.0">
+			<trans-unit id="sys_file_collection.type.0">
 				<source>Static selection of files</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.type.1" resname="sys_file_collection.type.1">
+			<trans-unit id="sys_file_collection.type.1">
 				<source>Folder from Storage</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.type.2" resname="sys_file_collection.type.2">
+			<trans-unit id="sys_file_collection.type.2">
 				<source>Select by category</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.storage" resname="sys_file_collection.storage">
+			<trans-unit id="sys_file_collection.storage">
 				<source>File Storage</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.folder" resname="sys_file_collection.folder">
+			<trans-unit id="sys_file_collection.folder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.recursive" resname="sys_file_collection.recursive">
+			<trans-unit id="sys_file_collection.recursive">
 				<source>Recursive</source>
 			</trans-unit>
-			<trans-unit id="sys_file_collection.category" resname="sys_file_collection.category">
+			<trans-unit id="sys_file_collection.category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="sys_workspace" resname="sys_workspace">
+			<trans-unit id="sys_workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="editlock" resname="editlock">
+			<trans-unit id="editlock">
 				<source>Restrict editing by non-Admins</source>
 			</trans-unit>
-			<trans-unit id="sys_category" resname="sys_category">
+			<trans-unit id="sys_category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="sys_category.title" resname="sys_category.title">
+			<trans-unit id="sys_category.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="sys_category.parent" resname="sys_category.parent">
+			<trans-unit id="sys_category.parent">
 				<source>Parent</source>
 			</trans-unit>
-			<trans-unit id="sys_category.items" resname="sys_category.items">
+			<trans-unit id="sys_category.items">
 				<source>Items</source>
 			</trans-unit>
-			<trans-unit id="sys_category.categories" resname="sys_category.categories">
+			<trans-unit id="sys_category.categories">
 				<source>Categories</source>
 			</trans-unit>
-			<trans-unit id="sys_category.tabs.category" resname="sys_category.tabs.category">
+			<trans-unit id="sys_category.tabs.category">
 				<source>Categories</source>
 			</trans-unit>
-			<trans-unit id="sys_category.tabs.items" resname="sys_category.tabs.items">
+			<trans-unit id="sys_category.tabs.items">
 				<source>Items</source>
 			</trans-unit>
 		</body>

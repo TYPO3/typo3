@@ -3,250 +3,250 @@
 	<file source-language="en" datatype="plaintext" original="EXT:reports/Resources/Private/Language/locallang_reports.xlf" date="2011-10-17T20:22:35Z" product-name="reports">
 		<header/>
 		<body>
-			<trans-unit id="status_report_title" resname="status_report_title">
+			<trans-unit id="status_report_title">
 				<source>Status Report</source>
 			</trans-unit>
-			<trans-unit id="status_report_description" resname="status_report_description">
+			<trans-unit id="status_report_description">
 				<source>Get a status report about your site's operation and any detected problems.</source>
 			</trans-unit>
-			<trans-unit id="status_report_explanation" resname="status_report_explanation">
+			<trans-unit id="status_report_explanation">
 				<source>Here you can find a short overview of your site's parameters as well as any problems detected with your installation. It may be useful to copy and paste this information into support requests filed on TYPO3's support mailing lists and project issue trackers.</source>
 			</trans-unit>
-			<trans-unit id="status_ok" resname="status_ok">
+			<trans-unit id="status_ok">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="status_wrongValue" resname="status_wrongValue">
+			<trans-unit id="status_wrongValue">
 				<source>Wrong value detected</source>
 			</trans-unit>
-			<trans-unit id="status_info" resname="status_info">
+			<trans-unit id="status_info">
 				<source>Information</source>
 			</trans-unit>
-			<trans-unit id="status_insecure" resname="status_insecure">
+			<trans-unit id="status_insecure">
 				<source>Insecure</source>
 			</trans-unit>
-			<trans-unit id="status_disabled" resname="status_disabled">
+			<trans-unit id="status_disabled">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="status_enabled" resname="status_enabled">
+			<trans-unit id="status_enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="status_enabledPermanently" resname="status_enabledPermanently">
+			<trans-unit id="status_enabledPermanently">
 				<source>Enabled permanently</source>
 			</trans-unit>
-			<trans-unit id="status_enabledTemporarily" resname="status_enabledTemporarily">
+			<trans-unit id="status_enabledTemporarily">
 				<source>Enabled temporarily</source>
 			</trans-unit>
-			<trans-unit id="status_empty" resname="status_empty">
+			<trans-unit id="status_empty">
 				<source>Empty</source>
 			</trans-unit>
-			<trans-unit id="status_none" resname="status_none">
+			<trans-unit id="status_none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="status_connectionFailed" resname="status_connectionFailed">
+			<trans-unit id="status_connectionFailed">
 				<source>Connection Failed</source>
 			</trans-unit>
-			<trans-unit id="status_checkFailed" resname="status_checkFailed">
+			<trans-unit id="status_checkFailed">
 				<source>Check Failed</source>
 			</trans-unit>
-			<trans-unit id="status_updateComplete" resname="status_updateComplete">
+			<trans-unit id="status_updateComplete">
 				<source>Update Complete</source>
 			</trans-unit>
-			<trans-unit id="status_updateIncomplete" resname="status_updateIncomplete">
+			<trans-unit id="status_updateIncomplete">
 				<source>Update Incomplete</source>
 			</trans-unit>
-			<trans-unit id="status_problemNotification" resname="status_problemNotification">
+			<trans-unit id="status_problemNotification">
 				<source>One or more problems were detected with your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
 			</trans-unit>
-			<trans-unit id="status_allNotification" resname="status_allNotification">
+			<trans-unit id="status_allNotification">
 				<source>This report contains all System Status Notifications from your TYPO3 installation. Please check the %sstatus report%s for more information.</source>
 			</trans-unit>
-			<trans-unit id="status_typo3" resname="status_typo3">
+			<trans-unit id="status_typo3">
 				<source>TYPO3 System</source>
 			</trans-unit>
-			<trans-unit id="status_system" resname="status_system">
+			<trans-unit id="status_system">
 				<source>System</source>
 			</trans-unit>
-			<trans-unit id="status_security" resname="status_security">
+			<trans-unit id="status_security">
 				<source>Security</source>
 			</trans-unit>
-			<trans-unit id="status_configuration" resname="status_configuration">
+			<trans-unit id="status_configuration">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="status_referenceIndex" resname="status_referenceIndex">
+			<trans-unit id="status_referenceIndex">
 				<source>Reference Index</source>
 			</trans-unit>
-			<trans-unit id="status_fal" resname="status_fal">
+			<trans-unit id="status_fal">
 				<source>File Abstraction Layer</source>
 			</trans-unit>
-			<trans-unit id="status_missingFiles" resname="status_missingFiles">
+			<trans-unit id="status_missingFiles">
 				<source>Files flagged as missing</source>
 			</trans-unit>
-			<trans-unit id="status_missingFilesCount" resname="status_missingFilesCount">
+			<trans-unit id="status_missingFilesCount">
 				<source>%1$s files</source>
 			</trans-unit>
-			<trans-unit id="status_missingFilesMessage" resname="status_missingFilesMessage">
+			<trans-unit id="status_missingFilesMessage">
 				<source>These files are flagged as missing. Restore the files and run the indexer to reset the missing flag.</source>
 			</trans-unit>
-			<trans-unit id="status_memcachedConfiguration" resname="status_memcachedConfiguration">
+			<trans-unit id="status_memcachedConfiguration">
 				<source>Memcached Configuration</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedFilePermissions" resname="status_CreatedFilePermissions">
+			<trans-unit id="status_CreatedFilePermissions">
 				<source>Permissions of created files</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedFilePermissions.writable" resname="status_CreatedFilePermissions.writable">
+			<trans-unit id="status_CreatedFilePermissions.writable">
 				<source>Files created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to files by "others". A sane default is often '0660' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['fileCreateMask']. This can be set in the install tool.</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedDirectoryPermissions" resname="status_CreatedDirectoryPermissions">
+			<trans-unit id="status_CreatedDirectoryPermissions">
 				<source>Permissions of created directories</source>
 			</trans-unit>
-			<trans-unit id="status_CreatedDirectoryPermissions.writable" resname="status_CreatedDirectoryPermissions.writable">
+			<trans-unit id="status_CreatedDirectoryPermissions.writable">
 				<source>Directories created by TYPO3 are configured to be world writable. Depending on your server configuration, this can be a security risk. It is usually better to configure the create mask to not allow writing to directories by "others". A sane default is often '2770' for $GLOBALS['TYPO3_CONF_VARS']['SYS']['folderCreateMask']. This can be set in the install tool.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet" resname="status_MysqlDatabaseCharacterSet">
+			<trans-unit id="status_MysqlDatabaseCharacterSet">
 				<source>MySQL Database Character Set</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed" resname="status_MysqlDatabaseCharacterSet_CheckFailed">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_CheckFailed">
 				<source>Checking database character set failed, got key "%1$s" instead of "character_set_database"</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported" resname="status_MysqlDatabaseCharacterSet_Unsupported">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Unsupported">
 				<source>Your default database uses character set "%1$s", but only "utf8", "utf8mb3" or "utf8mb4" is supported with TYPO3.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_Ok" resname="status_MysqlDatabaseCharacterSet_Ok">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Ok">
 				<source>Your default database uses utf-8. All good.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_Info" resname="status_MysqlDatabaseCharacterSet_Info">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_Info">
 				<source>Your default database uses a different charset, but all tables uses utf-8. All good. But consider fixing your database collation and check the table creation settings.</source>
 			</trans-unit>
-			<trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations" resname="status_MysqlDatabaseCharacterSet_MixedCollations">
+			<trans-unit id="status_MysqlDatabaseCharacterSet_MixedCollations">
 				<source>Your default database is set to create tables with character set "%1$s", but contains tables or columns with different collations. Please fix these tables to avoid "illegal mix of collations" errors.</source>
 			</trans-unit>
-			<trans-unit id="status_encryptedConnectionStatus" resname="status_encryptedConnectionStatus">
+			<trans-unit id="status_encryptedConnectionStatus">
 				<source>Encrypted backend connection (HTTPS)</source>
 			</trans-unit>
-			<trans-unit id="status_encryptedConnectionStatus_insecure" resname="status_encryptedConnectionStatus_insecure">
+			<trans-unit id="status_encryptedConnectionStatus_insecure">
 				<source>Your backend access is not secured using HTTPS but relies on HTTP which sends all your data (including login passwords) over an insecure connection. All modern web sites should rely on HTTPS and only sites secured differently, for instance some intranet installations may use HTTP only.</source>
 			</trans-unit>
-			<trans-unit id="status_lockSslStatus" resname="status_lockSslStatus">
+			<trans-unit id="status_lockSslStatus">
 				<source>Backend only accessible through HTTPS</source>
 			</trans-unit>
-			<trans-unit id="status_lockSslStatus_insecure" resname="status_lockSslStatus_insecure">
+			<trans-unit id="status_lockSslStatus_insecure">
 				<source><![CDATA[It is highly recommended to activate the option (<code>$GLOBALS['TYPO3_CONF_VARS']['BE']['lockSSL']</code>).]]></source>
 			</trans-unit>
-			<trans-unit id="status_trustedHostsPattern" resname="status_trustedHostsPattern">
+			<trans-unit id="status_trustedHostsPattern">
 				<source>Trusted Hosts Pattern</source>
 			</trans-unit>
-			<trans-unit id="status_encryptionKey" resname="status_encryptionKey">
+			<trans-unit id="status_encryptionKey">
 				<source>Encryption Key</source>
 			</trans-unit>
-			<trans-unit id="status_fileDenyPattern" resname="status_fileDenyPattern">
+			<trans-unit id="status_fileDenyPattern">
 				<source>File Deny Pattern</source>
 			</trans-unit>
-			<trans-unit id="status_htaccessUploadProtection" resname="status_htaccessUploadProtection">
+			<trans-unit id="status_htaccessUploadProtection">
 				<source>.htaccess Upload Protection</source>
 			</trans-unit>
-			<trans-unit id="status_exceptionHandler" resname="status_exceptionHandler">
+			<trans-unit id="status_exceptionHandler">
 				<source>Exception Handler / Error Reporting</source>
 			</trans-unit>
-			<trans-unit id="status_exportedFiles" resname="status_exportedFiles">
+			<trans-unit id="status_exportedFiles">
 				<source>XML/T3D export files</source>
 			</trans-unit>
-			<trans-unit id="status_exceptionHandler_warningMessage" resname="status_exceptionHandler_warningMessage">
+			<trans-unit id="status_exceptionHandler_warningMessage">
 				<source>Display Errors is set to 1 - errors will be displayed with the DebugExceptionHandler including stack traces.</source>
 			</trans-unit>
-			<trans-unit id="status_exceptionHandler_errorMessage" resname="status_exceptionHandler_errorMessage">
+			<trans-unit id="status_exceptionHandler_errorMessage">
 				<source>Debug Exception Handler enabled in Production Context - will show full error messages including stack traces.</source>
 			</trans-unit>
-			<trans-unit id="status_exportedFiles_warningMessage" resname="status_exportedFiles_warningMessage">
+			<trans-unit id="status_exportedFiles_warningMessage">
 				<source>The following exported files were found:</source>
 			</trans-unit>
-			<trans-unit id="status_exportedFiles_warningRecommendation" resname="status_exportedFiles_warningRecommendation">
+			<trans-unit id="status_exportedFiles_warningRecommendation">
 				<source>It is recommended to delete exported files to avoid possible disclosure of exported data to backend users with lower/different access rights than user(s) who originally created the export(s).</source>
 			</trans-unit>
-			<trans-unit id="status_installTool" resname="status_installTool">
+			<trans-unit id="status_installTool">
 				<source>Install Tool</source>
 			</trans-unit>
-			<trans-unit id="status_phpModules" resname="status_phpModules">
+			<trans-unit id="status_phpModules">
 				<source>PHP Modules</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesMissing" resname="status_phpModulesMissing">
+			<trans-unit id="status_phpModulesMissing">
 				<source>One or more modules are missing.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesList" resname="status_phpModulesList">
+			<trans-unit id="status_phpModulesList">
 				<source>The following PHP module(s) is/are missing: %s.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesInfo" resname="status_phpModulesInfo">
+			<trans-unit id="status_phpModulesInfo">
 				<source>You need to install and enable these modules to let TYPO3 function correctly.</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesGroup" resname="status_phpModulesGroup">
+			<trans-unit id="status_phpModulesGroup">
 				<source>one of: %s</source>
 			</trans-unit>
-			<trans-unit id="status_phpModulesPresent" resname="status_phpModulesPresent">
+			<trans-unit id="status_phpModulesPresent">
 				<source>All required modules are installed.</source>
 			</trans-unit>
-			<trans-unit id="status_installEnabledTemporarily" resname="status_installEnabledTemporarily">
+			<trans-unit id="status_installEnabledTemporarily">
 				<source>The Install Tool is temporarily enabled. Delete the file "%s" when you have finished setting up TYPO3. If not used the Install Tool will be disabled automatically in %s minutes.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskTitle" resname="status_updateTaskTitle">
+			<trans-unit id="status_updateTaskTitle">
 				<source>System Status Update</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskDescription" resname="status_updateTaskDescription">
+			<trans-unit id="status_updateTaskDescription">
 				<source>Runs a system status check and sends notifications if problems have been found.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail" resname="status_updateTaskField_notificationEmail">
+			<trans-unit id="status_updateTaskField_notificationEmail">
 				<source>Notification Email Address</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmails" resname="status_updateTaskField_notificationEmails">
+			<trans-unit id="status_updateTaskField_notificationEmails">
 				<source>Notification Email Addresses (one per line)</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmail_invalid" resname="status_updateTaskField_notificationEmail_invalid">
+			<trans-unit id="status_updateTaskField_notificationEmail_invalid">
 				<source>Empty or invalid notification email address.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationEmails_invalid" resname="status_updateTaskField_notificationEmails_invalid">
+			<trans-unit id="status_updateTaskField_notificationEmails_invalid">
 				<source>Empty or invalid notification email addresses.</source>
 			</trans-unit>
-			<trans-unit id="status_updateTaskField_notificationAll" resname="status_updateTaskField_notificationAll">
+			<trans-unit id="status_updateTaskField_notificationAll">
 				<source>Always send notification mail (not only on errors or warnings)</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_subject" resname="status_updateTask_email_subject">
+			<trans-unit id="status_updateTask_email_subject">
 				<source>System Status Notification for site %s</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_site" resname="status_updateTask_email_site">
+			<trans-unit id="status_updateTask_email_site">
 				<source>Site</source>
 			</trans-unit>
-			<trans-unit id="status_updateTask_email_issues" resname="status_updateTask_email_issues">
+			<trans-unit id="status_updateTask_email_issues">
 				<source>Issues</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsage" resname="status_xclassUsage">
+			<trans-unit id="status_xclassUsage">
 				<source>XCLASS used</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsageFound" resname="status_xclassUsageFound">
+			<trans-unit id="status_xclassUsageFound">
 				<source>Your system registers XCLASS</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsageFound_message" resname="status_xclassUsageFound_message">
+			<trans-unit id="status_xclassUsageFound_message">
 				<source>XCLASS can overwrite methods or classes of the core or other extensions. This is not necessarily a bad thing, but those XCLASS might break during extension or core upgrades. You should keep an eye on extension compatibility and make sure the intended functionality is still given after updates.</source>
 			</trans-unit>
-			<trans-unit id="status_xclassUsageFound_message_detail" resname="status_xclassUsageFound_message_detail">
+			<trans-unit id="status_xclassUsageFound_message_detail">
 				<source>%2$s registers an XCLASS of %1$s</source>
 			</trans-unit>
-			<trans-unit id="status_imageprocessing" resname="status_imageprocessing">
+			<trans-unit id="status_imageprocessing">
 				<source>Image Processing</source>
 			</trans-unit>
-			<trans-unit id="status_imageprocessing_webp" resname="status_imageprocessing_webp">
+			<trans-unit id="status_imageprocessing_webp">
 				<source>WebP support and availability</source>
 			</trans-unit>
-			<trans-unit id="status_imageprocessing_disabled" resname="status_imageprocessing_disabled">
+			<trans-unit id="status_imageprocessing_disabled">
 				<source>Image processing via ImageMagick/GraphicsMagick is disabled</source>
 			</trans-unit>
-			<trans-unit id="status_imageprocessing_webp_not_configured" resname="status_imageprocessing_webp_not_configured">
+			<trans-unit id="status_imageprocessing_webp_not_configured">
 				<source>Support for WebP image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext]. No WebP image files will be generated.</source>
 			</trans-unit>
-			<trans-unit id="status_imageprocessing_webp_available" resname="status_imageprocessing_webp_available">
+			<trans-unit id="status_imageprocessing_webp_available">
 				<source>Support for WebP image generation is not configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick supports generation of WebP image files.</source>
 			</trans-unit>
-			<trans-unit id="status_imageprocessing_webp_not_available" resname="status_imageprocessing_webp_not_available">
+			<trans-unit id="status_imageprocessing_webp_not_available">
 				<source>Support for WebP image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext], but ImageMagick/GraphicsMagick does NOT support generation of WebP image files, update your system environment or disable webp support in TYPO3 Configuration.</source>
 			</trans-unit>
-			<trans-unit id="status_imageprocessing_webp_available_and_configured" resname="status_imageprocessing_webp_available_and_configured">
+			<trans-unit id="status_imageprocessing_webp_available_and_configured">
 				<source>Support for WebP image generation is configured in $TYPO3_CONF_VARS[GFX][imagefile_ext] and ImageMagick/GraphicsMagick supports generation of WebP image files - all fine!</source>
 			</trans-unit>
 		</body>

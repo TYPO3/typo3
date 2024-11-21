@@ -3,37 +3,37 @@
 	<file source-language="en" datatype="plaintext" original="EXT:sys_note/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="sys_note">
 		<header/>
 		<body>
-			<trans-unit id="sys_note" resname="sys_note">
+			<trans-unit id="sys_note">
 				<source>Internal note</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.1" resname="sys_note.category.I.1">
+			<trans-unit id="sys_note.category.I.1">
 				<source>Instructions</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.2" resname="sys_note.category.I.2">
+			<trans-unit id="sys_note.category.I.2">
 				<source>Template</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.3" resname="sys_note.category.I.3">
+			<trans-unit id="sys_note.category.I.3">
 				<source>Notes</source>
 			</trans-unit>
-			<trans-unit id="sys_note.category.I.4" resname="sys_note.category.I.4">
+			<trans-unit id="sys_note.category.I.4">
 				<source>To-do</source>
 			</trans-unit>
-			<trans-unit id="sys_note.subject" resname="sys_note.subject">
+			<trans-unit id="sys_note.subject">
 				<source>Subject</source>
 			</trans-unit>
-			<trans-unit id="sys_note.message" resname="sys_note.message">
+			<trans-unit id="sys_note.message">
 				<source>Message</source>
 			</trans-unit>
-			<trans-unit id="sys_note.personal" resname="sys_note.personal">
+			<trans-unit id="sys_note.personal">
 				<source>Personal</source>
 			</trans-unit>
-			<trans-unit id="sys_note.position" resname="sys_note.position">
+			<trans-unit id="sys_note.position">
 				<source>Position</source>
 			</trans-unit>
-			<trans-unit id="sys_note.position.top" resname="sys_note.position.top">
+			<trans-unit id="sys_note.position.top">
 				<source>Top</source>
 			</trans-unit>
-			<trans-unit id="sys_note.position.bottom" resname="sys_note.position.bottom">
+			<trans-unit id="sys_note.position.bottom">
 				<source>Bottom</source>
 			</trans-unit>
 		</body>

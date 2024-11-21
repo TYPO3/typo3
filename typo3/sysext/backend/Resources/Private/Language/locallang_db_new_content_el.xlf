@@ -5,184 +5,184 @@
 			<note>@deprecated will be removed in TYPO3 v14.0</note>
 		</header>
 		<body>
-			<trans-unit id="sel1" resname="sel1">
+			<trans-unit id="sel1">
 				<source>Please select the type of page content you wish to create</source>
 			</trans-unit>
-			<trans-unit id="sel2" resname="sel2">
+			<trans-unit id="sel2">
 				<source>Now, click the position where you wish to place the element on the page</source>
 			</trans-unit>
-			<trans-unit id="common" resname="common">
+			<trans-unit id="common">
 				<source>Typical page content</source>
 			</trans-unit>
-			<trans-unit id="common_headerOnly_title" resname="common_headerOnly_title">
+			<trans-unit id="common_headerOnly_title">
 				<source>Header Only</source>
 			</trans-unit>
-			<trans-unit id="common_headerOnly_description" resname="common_headerOnly_description">
+			<trans-unit id="common_headerOnly_description">
 				<source>Adds a header only.</source>
 			</trans-unit>
-			<trans-unit id="common_regularText_title" resname="common_regularText_title">
+			<trans-unit id="common_regularText_title">
 				<source>Regular Text Element</source>
 			</trans-unit>
-			<trans-unit id="common_regularText_description" resname="common_regularText_description">
+			<trans-unit id="common_regularText_description">
 				<source>A regular text element with header and bodytext fields.</source>
 			</trans-unit>
-			<trans-unit id="common_textImage_title" resname="common_textImage_title">
+			<trans-unit id="common_textImage_title">
 				<source>Text &amp; Images</source>
 			</trans-unit>
-			<trans-unit id="common_textImage_description" resname="common_textImage_description">
+			<trans-unit id="common_textImage_description">
 				<source>Any number of images wrapped right around a regular text element.</source>
 			</trans-unit>
-			<trans-unit id="common_textMedia_title" resname="common_textMedia_title">
+			<trans-unit id="common_textMedia_title">
 				<source>Text &amp; Media</source>
 			</trans-unit>
-			<trans-unit id="common_textMedia_description" resname="common_textMedia_description">
+			<trans-unit id="common_textMedia_description">
 				<source>Any number of media wrapped right around a regular text element.</source>
 			</trans-unit>
-			<trans-unit id="common_imagesOnly_title" resname="common_imagesOnly_title">
+			<trans-unit id="common_imagesOnly_title">
 				<source>Images Only</source>
 			</trans-unit>
-			<trans-unit id="common_imagesOnly_description" resname="common_imagesOnly_description">
+			<trans-unit id="common_imagesOnly_description">
 				<source>Any number of images aligned in columns and rows with a caption.</source>
 			</trans-unit>
-			<trans-unit id="common_bulletList_title" resname="common_bulletList_title">
+			<trans-unit id="common_bulletList_title">
 				<source>Bullet List</source>
 			</trans-unit>
-			<trans-unit id="common_bulletList_description" resname="common_bulletList_description">
+			<trans-unit id="common_bulletList_description">
 				<source>A single bullet list.</source>
 			</trans-unit>
-			<trans-unit id="common_table_title" resname="common_table_title">
+			<trans-unit id="common_table_title">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="common_table_description" resname="common_table_description">
+			<trans-unit id="common_table_description">
 				<source>A simple table.</source>
 			</trans-unit>
-			<trans-unit id="menu" resname="menu">
+			<trans-unit id="menu">
 				<source>Menu</source>
 			</trans-unit>
-			<trans-unit id="menu_abstract.title" resname="menu_abstract.title">
+			<trans-unit id="menu_abstract.title">
 				<source>Abstracts</source>
 			</trans-unit>
-			<trans-unit id="menu_abstract.description" resname="menu_abstract.description">
+			<trans-unit id="menu_abstract.description">
 				<source>Menu of subpages of selected pages including abstracts</source>
 			</trans-unit>
-			<trans-unit id="menu_categorized_content.title" resname="menu_categorized_content.title">
+			<trans-unit id="menu_categorized_content.title">
 				<source>Categorized content</source>
 			</trans-unit>
-			<trans-unit id="menu_categorized_content.description" resname="menu_categorized_content.description">
+			<trans-unit id="menu_categorized_content.description">
 				<source>Content elements for selected categories</source>
 			</trans-unit>
-			<trans-unit id="menu_categorized_pages.title" resname="menu_categorized_pages.title">
+			<trans-unit id="menu_categorized_pages.title">
 				<source>Categorized pages</source>
 			</trans-unit>
-			<trans-unit id="menu_pages.title" resname="menu_pages.title">
+			<trans-unit id="menu_pages.title">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="menu_pages.description" resname="menu_pages.description">
+			<trans-unit id="menu_pages.description">
 				<source>Menu of selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_subpages.title" resname="menu_subpages.title">
+			<trans-unit id="menu_subpages.title">
 				<source>Subpages</source>
 			</trans-unit>
-			<trans-unit id="menu_subpages.description" resname="menu_subpages.description">
+			<trans-unit id="menu_subpages.description">
 				<source>Menu of subpages of selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_categorized_pages.description" resname="menu_categorized_pages.description">
+			<trans-unit id="menu_categorized_pages.description">
 				<source>Pages for selected categories</source>
 			</trans-unit>
-			<trans-unit id="menu_recently_updated.title" resname="menu_recently_updated.title">
+			<trans-unit id="menu_recently_updated.title">
 				<source>Recently updated pages</source>
 			</trans-unit>
-			<trans-unit id="menu_recently_updated.description" resname="menu_recently_updated.description">
+			<trans-unit id="menu_recently_updated.description">
 				<source>Menu of recently updated pages</source>
 			</trans-unit>
-			<trans-unit id="menu_related_pages.title" resname="menu_related_pages.title">
+			<trans-unit id="menu_related_pages.title">
 				<source>Related pages</source>
 			</trans-unit>
-			<trans-unit id="menu_related_pages.description" resname="menu_related_pages.description">
+			<trans-unit id="menu_related_pages.description">
 				<source>Menu of related pages based on keywords</source>
 			</trans-unit>
-			<trans-unit id="menu_section.title" resname="menu_section.title">
+			<trans-unit id="menu_section.title">
 				<source>Section index</source>
 			</trans-unit>
-			<trans-unit id="menu_section.description" resname="menu_section.description">
+			<trans-unit id="menu_section.description">
 				<source>Page content marked for section menus</source>
 			</trans-unit>
-			<trans-unit id="menu_section_pages.title" resname="menu_section_pages.title">
+			<trans-unit id="menu_section_pages.title">
 				<source>Section index of subpages from selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_section_pages.description" resname="menu_section_pages.description">
+			<trans-unit id="menu_section_pages.description">
 				<source>Menu of subpages of selected pages including sections</source>
 			</trans-unit>
-			<trans-unit id="menu_sitemap.title" resname="menu_sitemap.title">
+			<trans-unit id="menu_sitemap.title">
 				<source>Sitemap</source>
 			</trans-unit>
-			<trans-unit id="menu_sitemap.description" resname="menu_sitemap.description">
+			<trans-unit id="menu_sitemap.description">
 				<source>Expanded menu of all subpages of the current site</source>
 			</trans-unit>
-			<trans-unit id="menu_sitemap_pages.title" resname="menu_sitemap_pages.title">
+			<trans-unit id="menu_sitemap_pages.title">
 				<source>Sitemaps of selected pages</source>
 			</trans-unit>
-			<trans-unit id="menu_sitemap_pages.description" resname="menu_sitemap_pages.description">
+			<trans-unit id="menu_sitemap_pages.description">
 				<source>Expanded menu of all subpages for selected pages</source>
 			</trans-unit>
-			<trans-unit id="special" resname="special">
+			<trans-unit id="special">
 				<source>Special elements</source>
 			</trans-unit>
-			<trans-unit id="special_filelinks_title" resname="special_filelinks_title">
+			<trans-unit id="special_filelinks_title">
 				<source>File Links</source>
 			</trans-unit>
-			<trans-unit id="special_filelinks_description" resname="special_filelinks_description">
+			<trans-unit id="special_filelinks_description">
 				<source>Makes a list of files for download.</source>
 			</trans-unit>
-			<trans-unit id="special_sitemap_title" resname="special_sitemap_title">
+			<trans-unit id="special_sitemap_title">
 				<source>Sitemap</source>
 			</trans-unit>
-			<trans-unit id="special_menus_title" resname="special_menus_title">
+			<trans-unit id="special_menus_title">
 				<source>Special Menus</source>
 			</trans-unit>
-			<trans-unit id="special_menus_description" resname="special_menus_description">
+			<trans-unit id="special_menus_description">
 				<source>Creates a menu of pages, sitemap or other special menus.</source>
 			</trans-unit>
-			<trans-unit id="special_plainHTML_title" resname="special_plainHTML_title">
+			<trans-unit id="special_plainHTML_title">
 				<source>Plain HTML</source>
 			</trans-unit>
-			<trans-unit id="special_plainHTML_description" resname="special_plainHTML_description">
+			<trans-unit id="special_plainHTML_description">
 				<source>With this element you can insert raw HTML code on the page.</source>
 			</trans-unit>
-			<trans-unit id="special_divider_title" resname="special_divider_title">
+			<trans-unit id="special_divider_title">
 				<source>Divider</source>
 			</trans-unit>
-			<trans-unit id="special_divider_description" resname="special_divider_description">
+			<trans-unit id="special_divider_description">
 				<source>This element inserts a visual divider, which is by default a horizontal line.</source>
 			</trans-unit>
-			<trans-unit id="special_shortcut_title" resname="special_shortcut_title">
+			<trans-unit id="special_shortcut_title">
 				<source>Insert records</source>
 			</trans-unit>
-			<trans-unit id="special_shortcut_description" resname="special_shortcut_description">
+			<trans-unit id="special_shortcut_description">
 				<source>With this element you can embed other content elements.</source>
 			</trans-unit>
-			<trans-unit id="forms" resname="forms">
+			<trans-unit id="forms">
 				<source>Form elements</source>
 			</trans-unit>
-			<trans-unit id="forms_mail_title" resname="forms_mail_title">
+			<trans-unit id="forms_mail_title">
 				<source>Mail Form</source>
 			</trans-unit>
-			<trans-unit id="forms_mail_description" resname="forms_mail_description">
+			<trans-unit id="forms_mail_description">
 				<source>A mail form allowing website users to submit responses.</source>
 			</trans-unit>
-			<trans-unit id="forms_login_title" resname="forms_login_title">
+			<trans-unit id="forms_login_title">
 				<source>Login Form</source>
 			</trans-unit>
-			<trans-unit id="forms_login_description" resname="forms_login_description">
+			<trans-unit id="forms_login_description">
 				<source>Login/logout form used to password protect pages allowing only authorised website users and groups access.</source>
 			</trans-unit>
-			<trans-unit id="plugins" resname="plugins">
+			<trans-unit id="plugins">
 				<source>Plugins</source>
 			</trans-unit>
-			<trans-unit id="plugins_general_title" resname="plugins_general_title">
+			<trans-unit id="plugins_general_title">
 				<source>General Plugin</source>
 			</trans-unit>
-			<trans-unit id="plugins_general_description" resname="plugins_general_description">
+			<trans-unit id="plugins_general_description">
 				<source>Select this element type to insert a plugin which cannot be found amongst the options below.</source>
 			</trans-unit>
 		</body>

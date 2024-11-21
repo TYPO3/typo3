@@ -3,28 +3,28 @@
 	<file source-language="en" datatype="plaintext" original="EXT:redirects/Resources/Private/Language/locallang_reports.xlf" date="2019-09-05T15:20:15Z" product-name="redirects">
 		<header/>
 		<body>
-			<trans-unit id="statusProvider" resname="statusProvider">
+			<trans-unit id="statusProvider">
 				<source>Redirects</source>
 			</trans-unit>
-			<trans-unit id="status.conflictingRedirects" resname="status.conflictingRedirects">
+			<trans-unit id="status.conflictingRedirects">
 				<source>Conflicting Redirects</source>
 			</trans-unit>
-			<trans-unit id="status.conflictingRedirects.none" resname="status.conflictingRedirects.none">
+			<trans-unit id="status.conflictingRedirects.none">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="status.conflictingRedirects.count" resname="status.conflictingRedirects.count">
+			<trans-unit id="status.conflictingRedirects.count">
 				<source>%1$s conflicting redirects</source>
 			</trans-unit>
-			<trans-unit id="status.conflictingRedirects.message" resname="status.conflictingRedirects.message">
+			<trans-unit id="status.conflictingRedirects.message">
 				<source>These redirects cause a conflict as there are pages that are still accessible with the same URL.</source>
 			</trans-unit>
-			<trans-unit id="status.checkIntegrityResultState" resname="status.checkIntegrityResultState">
+			<trans-unit id="status.checkIntegrityResultState">
 				<source>Redirects integrity check</source>
 			</trans-unit>
-			<trans-unit id="status.checkIntegrityResultState.title" resname="status.checkIntegrityResultState.title">
+			<trans-unit id="status.checkIntegrityResultState.title">
 				<source>List of conflicting redirects may not be up to date!</source>
 			</trans-unit>
-			<trans-unit id="status.checkIntegrityResultState.message" resname="status.checkIntegrityResultState.message">
+			<trans-unit id="status.checkIntegrityResultState.message">
 				<source>Regularly run the console command redirects:checkintegrity.</source>
 			</trans-unit>
 		</body>

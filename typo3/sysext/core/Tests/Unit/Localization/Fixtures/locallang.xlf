@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf" date="2011-12-21T11:57:33Z" product-name="tests">
 		<header/>
 		<body>
-			<trans-unit id="label1" resname="label1">
+			<trans-unit id="label1">
 				<source>This is label #1</source>
 			</trans-unit>
 		</body>

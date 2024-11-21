@@ -3,43 +3,43 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="headline" resname="headline">
+			<trans-unit id="headline">
 				<source>Move page "%1$s" [%2$d]</source>
 			</trans-unit>
-			<trans-unit id="currentPath" resname="currentPath">
+			<trans-unit id="currentPath">
 				<source>Current path</source>
 			</trans-unit>
-			<trans-unit id="makeCopy" resname="makeCopy">
+			<trans-unit id="makeCopy">
 				<source>Copy page instead of moving page</source>
 			</trans-unit>
-			<trans-unit id="samePageConflict" resname="samePageConflict">
+			<trans-unit id="samePageConflict">
 				<source>The page "%1$s" [%2$d] cannot get moved into itself.</source>
 			</trans-unit>
-			<trans-unit id="action.pasteAbove" resname="action.pasteAbove">
+			<trans-unit id="action.pasteAbove">
 				<source>Paste above</source>
 			</trans-unit>
-			<trans-unit id="action.pasteBelow" resname="action.pasteBelow">
+			<trans-unit id="action.pasteBelow">
 				<source>Paste below</source>
 			</trans-unit>
-			<trans-unit id="action.pasteInto" resname="action.pasteInto">
+			<trans-unit id="action.pasteInto">
 				<source>Paste into</source>
 			</trans-unit>
-			<trans-unit id="movePage.notification.pageMoved.title" resname="movePage.notification.pageMoved.title">
+			<trans-unit id="movePage.notification.pageMoved.title">
 				<source>Page successfully moved</source>
 			</trans-unit>
-			<trans-unit id="movePage.notification.pageMoved.message" resname="movePage.notification.pageMoved.message">
+			<trans-unit id="movePage.notification.pageMoved.message">
 				<source>The page "%s" has been successfully moved.</source>
 			</trans-unit>
-			<trans-unit id="movePage.notification.pageCopied.title" resname="movePage.notification.pageCopied.title">
+			<trans-unit id="movePage.notification.pageCopied.title">
 				<source>Page successfully copied</source>
 			</trans-unit>
-			<trans-unit id="movePage.notification.pageCopied.message" resname="movePage.notification.pageCopied.message">
+			<trans-unit id="movePage.notification.pageCopied.message">
 				<source>The page "%s" has been successfully copied.</source>
 			</trans-unit>
-			<trans-unit id="movePage.notification.pagePasted.action.dismiss" resname="movePage.notification.pagePasted.action.dismiss">
+			<trans-unit id="movePage.notification.pagePasted.action.dismiss">
 				<source>Dismiss</source>
 			</trans-unit>
-			<trans-unit id="movePage.notification.pagePasted.action.open" resname="movePage.notification.pagePasted.action.open">
+			<trans-unit id="movePage.notification.pagePasted.action.open">
 				<source>Open "%s"</source>
 			</trans-unit>
 		</body>

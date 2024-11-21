@@ -3,10 +3,10 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_codeeditor.xlf" date="2023-11-20T10:56:42Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="pageIDInteger" resname="pageIDInteger">
+			<trans-unit id="pageIDInteger">
 				<source>Syntax error: Parameter pageID must be a valid integer.</source>
 			</trans-unit>
-			<trans-unit id="noPermission" resname="noPermission">
+			<trans-unit id="noPermission">
 				<source>Access denied: No permission to template records.</source>
 			</trans-unit>
 		</body>

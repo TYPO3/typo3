@@ -3,355 +3,355 @@
 	<file source-language="en" datatype="plaintext" original="EXT:belog/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:32Z" product-name="belog">
 		<header/>
 		<body>
-			<trans-unit id="adminLog" resname="adminLog">
+			<trans-unit id="adminLog">
 				<source>Administration log</source>
 			</trans-unit>
-			<trans-unit id="allUsers" resname="allUsers">
+			<trans-unit id="allUsers">
 				<source>[All users]</source>
 			</trans-unit>
-			<trans-unit id="any" resname="any">
+			<trans-unit id="any">
 				<source>[Any]</source>
 			</trans-unit>
-			<trans-unit id="viaUser" resname="viaUser">
+			<trans-unit id="viaUser">
 				<source>via</source>
 			</trans-unit>
-			<trans-unit id="live" resname="live">
+			<trans-unit id="live">
 				<source>LIVE</source>
 			</trans-unit>
-			<trans-unit id="draft" resname="draft">
+			<trans-unit id="draft">
 				<source>Draft</source>
 			</trans-unit>
-			<trans-unit id="self" resname="self">
+			<trans-unit id="self">
 				<source>Self</source>
 			</trans-unit>
-			<trans-unit id="userGroup" resname="userGroup">
+			<trans-unit id="userGroup">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="set" resname="set">
+			<trans-unit id="set">
 				<source>Filter</source>
 			</trans-unit>
-			<trans-unit id="reset" resname="reset">
+			<trans-unit id="reset">
 				<source>Reset</source>
 			</trans-unit>
-			<trans-unit id="all" resname="all">
+			<trans-unit id="all">
 				<source>[all]</source>
 			</trans-unit>
-			<trans-unit id="actionAll" resname="actionAll">
+			<trans-unit id="actionAll">
 				<source>All</source>
 			</trans-unit>
-			<trans-unit id="actionDatabase" resname="actionDatabase">
+			<trans-unit id="actionDatabase">
 				<source>Database</source>
 			</trans-unit>
-			<trans-unit id="actionFile" resname="actionFile">
+			<trans-unit id="actionFile">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="actionCache" resname="actionCache">
+			<trans-unit id="actionCache">
 				<source>Cache</source>
 			</trans-unit>
-			<trans-unit id="actionSettings" resname="actionSettings">
+			<trans-unit id="actionSettings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="actionLogin" resname="actionLogin">
+			<trans-unit id="actionLogin">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="actionErrors" resname="actionErrors">
+			<trans-unit id="actionErrors">
 				<source>Errors</source>
 			</trans-unit>
-			<trans-unit id="group" resname="group">
+			<trans-unit id="group">
 				<source>Group</source>
 			</trans-unit>
-			<trans-unit id="user" resname="user">
+			<trans-unit id="user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="users" resname="users">
+			<trans-unit id="users">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="time" resname="time">
+			<trans-unit id="time">
 				<source>Time</source>
 			</trans-unit>
-			<trans-unit id="max" resname="max">
+			<trans-unit id="max">
 				<source>Max</source>
 			</trans-unit>
-			<trans-unit id="showHistory" resname="showHistory">
+			<trans-unit id="showHistory">
 				<source>Show History</source>
 			</trans-unit>
-			<trans-unit id="action" resname="action">
+			<trans-unit id="action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="channel" resname="channel">
+			<trans-unit id="channel">
 				<source>Channel</source>
 			</trans-unit>
-			<trans-unit id="levels" resname="levels">
+			<trans-unit id="levels">
 				<source>Levels</source>
 			</trans-unit>
-			<trans-unit id="workspace" resname="workspace">
+			<trans-unit id="workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="overview" resname="overview">
+			<trans-unit id="overview">
 				<source>Overview</source>
 			</trans-unit>
-			<trans-unit id="type_1" resname="type_1">
+			<trans-unit id="type_1">
 				<source>DB</source>
 			</trans-unit>
-			<trans-unit id="action_1_1" resname="action_1_1">
+			<trans-unit id="action_1_1">
 				<source>Insert</source>
 			</trans-unit>
-			<trans-unit id="action_1_2" resname="action_1_2">
+			<trans-unit id="action_1_2">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="action_1_3" resname="action_1_3">
+			<trans-unit id="action_1_3">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="action_1_4" resname="action_1_4">
+			<trans-unit id="action_1_4">
 				<source>Move</source>
 			</trans-unit>
-			<trans-unit id="action_1_5" resname="action_1_5">
+			<trans-unit id="action_1_5">
 				<source>Check</source>
 			</trans-unit>
-			<trans-unit id="msg_1_0_1" resname="msg_1_0_1">
+			<trans-unit id="msg_1_0_1">
 				<source>Referer host '%s' and server host '%s' did not match!</source>
 			</trans-unit>
-			<trans-unit id="msg_1_1_11" resname="msg_1_1_11">
+			<trans-unit id="msg_1_1_11">
 				<source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
 			</trans-unit>
-			<trans-unit id="msg_1_1_12" resname="msg_1_1_12">
+			<trans-unit id="msg_1_1_12">
 				<source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_1" resname="msg_1_2_1">
+			<trans-unit id="msg_1_2_1">
 				<source>Attempt to modify table '%s' without permission</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_2" resname="msg_1_2_2">
+			<trans-unit id="msg_1_2_2">
 				<source>Attempt to modify record '%s' (%s) without permission. Or non-existing page.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_10" resname="msg_1_2_10">
+			<trans-unit id="msg_1_2_10">
 				<source>Record '%s' (%s) was updated.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_2_12" resname="msg_1_2_12">
+			<trans-unit id="msg_1_2_12">
 				<source>MySQL error: '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_1" resname="msg_1_4_1">
+			<trans-unit id="msg_1_4_1">
 				<source>Attempt to move record '%s' (%s) to after a non-existing record (uid=%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_2" resname="msg_1_4_2">
+			<trans-unit id="msg_1_4_2">
 				<source>Moved record '%s' (%s) to page '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_3" resname="msg_1_4_3">
+			<trans-unit id="msg_1_4_3">
 				<source>Moved record '%s' (%s) from page '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_4" resname="msg_1_4_4">
+			<trans-unit id="msg_1_4_4">
 				<source>Moved record '%s' (%s) on page '%s' (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_10" resname="msg_1_4_10">
+			<trans-unit id="msg_1_4_10">
 				<source>Attempt to move page '%s' (%s) to inside of its own rootline (at page '%s' (%s))</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_11" resname="msg_1_4_11">
+			<trans-unit id="msg_1_4_11">
 				<source>Attempt to insert record on page '%s' (%s) where this table, %s, is not allowed</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_12" resname="msg_1_4_12">
+			<trans-unit id="msg_1_4_12">
 				<source>Attempt to insert a record on page '%s' (%s) from table '%s' without permissions. Or non-existing page.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_13" resname="msg_1_4_13">
+			<trans-unit id="msg_1_4_13">
 				<source>Attempt to move record '%s' (%s) to after another record, although the table has no sorting row.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_4_14" resname="msg_1_4_14">
+			<trans-unit id="msg_1_4_14">
 				<source>Attempt to move record '%s' (%s) without having permissions to do so</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_1" resname="msg_1_5_1">
+			<trans-unit id="msg_1_5_1">
 				<source>You cannot change the 'doktype' of page '%s' to the desired value.</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_2" resname="msg_1_5_2">
+			<trans-unit id="msg_1_5_2">
 				<source>'doktype' of page '%s' could not be changed because the page contains records from disallowed tables; %s</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_3" resname="msg_1_5_3">
+			<trans-unit id="msg_1_5_3">
 				<source>Too few items in the list of values. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_10" resname="msg_1_5_10">
+			<trans-unit id="msg_1_5_10">
 				<source>Could not delete file '%s' (does not exist). (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_11" resname="msg_1_5_11">
+			<trans-unit id="msg_1_5_11">
 				<source>Copying file '%s' failed!: No destination file (%s) possible!. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_12" resname="msg_1_5_12">
+			<trans-unit id="msg_1_5_12">
 				<source>File extension '%s' is not allowed. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_13" resname="msg_1_5_13">
+			<trans-unit id="msg_1_5_13">
 				<source>File size (%s) of file '%s' exceeds limit (%s). (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_14" resname="msg_1_5_14">
+			<trans-unit id="msg_1_5_14">
 				<source>The destination (%s) or the source file (%s) does not exist. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_15" resname="msg_1_5_15">
+			<trans-unit id="msg_1_5_15">
 				<source>Copying to file '%s' failed! (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_16" resname="msg_1_5_16">
+			<trans-unit id="msg_1_5_16">
 				<source>Copying file '%s' failed!: The destination path (%s) may be write protected. Please make it write enabled!. (%s)</source>
 			</trans-unit>
-			<trans-unit id="msg_1_5_4" resname="msg_1_5_4">
+			<trans-unit id="msg_1_5_4">
 				<source>The value of the field "%s" has been changed from "%s" to "%s" as it is required to be unique.</source>
 			</trans-unit>
-			<trans-unit id="type_2" resname="type_2">
+			<trans-unit id="type_2">
 				<source>FILE</source>
 			</trans-unit>
-			<trans-unit id="action_2_1" resname="action_2_1">
+			<trans-unit id="action_2_1">
 				<source>Upload</source>
 			</trans-unit>
-			<trans-unit id="action_2_2" resname="action_2_2">
+			<trans-unit id="action_2_2">
 				<source>Copy</source>
 			</trans-unit>
-			<trans-unit id="action_2_3" resname="action_2_3">
+			<trans-unit id="action_2_3">
 				<source>Move</source>
 			</trans-unit>
-			<trans-unit id="action_2_4" resname="action_2_4">
+			<trans-unit id="action_2_4">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="action_2_5" resname="action_2_5">
+			<trans-unit id="action_2_5">
 				<source>Rename</source>
 			</trans-unit>
-			<trans-unit id="action_2_6" resname="action_2_6">
+			<trans-unit id="action_2_6">
 				<source>New</source>
 			</trans-unit>
-			<trans-unit id="action_2_7" resname="action_2_7">
+			<trans-unit id="action_2_7">
 				<source>Unzip</source>
 			</trans-unit>
-			<trans-unit id="action_2_8" resname="action_2_8">
+			<trans-unit id="action_2_8">
 				<source>New file</source>
 			</trans-unit>
-			<trans-unit id="action_2_9" resname="action_2_9">
+			<trans-unit id="action_2_9">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="msg_2_9_1" resname="msg_2_9_1">
+			<trans-unit id="msg_2_9_1">
 				<source>File saved to '%s', bytes: %s, MD5: %s </source>
 			</trans-unit>
-			<trans-unit id="type_3" resname="type_3">
+			<trans-unit id="type_3">
 				<source>CACHE</source>
 			</trans-unit>
-			<trans-unit id="action_3_1" resname="action_3_1">
+			<trans-unit id="action_3_1">
 				<source>Clear Cache</source>
 			</trans-unit>
-			<trans-unit id="type_4" resname="type_4">
+			<trans-unit id="type_4">
 				<source>EXTENSION</source>
 			</trans-unit>
-			<trans-unit id="type_5" resname="type_5">
+			<trans-unit id="type_5">
 				<source>ERROR</source>
 			</trans-unit>
-			<trans-unit id="action_5_0" resname="action_5_0">
+			<trans-unit id="action_5_0">
 				<source>Error handler</source>
 			</trans-unit>
-			<trans-unit id="type_254" resname="type_254">
+			<trans-unit id="type_254">
 				<source>SETTING</source>
 			</trans-unit>
-			<trans-unit id="action_254_1" resname="action_254_1">
+			<trans-unit id="action_254_1">
 				<source>Change</source>
 			</trans-unit>
-			<trans-unit id="type_255" resname="type_255">
+			<trans-unit id="type_255">
 				<source>LOGIN</source>
 			</trans-unit>
-			<trans-unit id="action_255_1" resname="action_255_1">
+			<trans-unit id="action_255_1">
 				<source>LOGIN</source>
 			</trans-unit>
-			<trans-unit id="action_255_2" resname="action_255_2">
+			<trans-unit id="action_255_2">
 				<source>LOGOUT</source>
 			</trans-unit>
-			<trans-unit id="action_255_3" resname="action_255_3">
+			<trans-unit id="action_255_3">
 				<source>ATTEMPT</source>
 			</trans-unit>
-			<trans-unit id="chLog_title" resname="chLog_title">
+			<trans-unit id="chLog_title">
 				<source>Admin Changelog</source>
 			</trans-unit>
-			<trans-unit id="chLog_users_0" resname="chLog_users_0">
+			<trans-unit id="chLog_users_0">
 				<source>All users</source>
 			</trans-unit>
-			<trans-unit id="chLog_users_-1" resname="chLog_users_-1">
+			<trans-unit id="chLog_users_-1">
 				<source>Self</source>
 			</trans-unit>
-			<trans-unit id="chLog_time_0" resname="chLog_time_0">
+			<trans-unit id="chLog_time_0">
 				<source>This week</source>
 			</trans-unit>
-			<trans-unit id="chLog_time_1" resname="chLog_time_1">
+			<trans-unit id="chLog_time_1">
 				<source>Last week</source>
 			</trans-unit>
-			<trans-unit id="chLog_time_2" resname="chLog_time_2">
+			<trans-unit id="chLog_time_2">
 				<source>Last 7 days</source>
 			</trans-unit>
-			<trans-unit id="chLog_time_10" resname="chLog_time_10">
+			<trans-unit id="chLog_time_10">
 				<source>This month</source>
 			</trans-unit>
-			<trans-unit id="chLog_time_11" resname="chLog_time_11">
+			<trans-unit id="chLog_time_11">
 				<source>Last month</source>
 			</trans-unit>
-			<trans-unit id="chLog_time_12" resname="chLog_time_12">
+			<trans-unit id="chLog_time_12">
 				<source>Last 31 days</source>
 			</trans-unit>
-			<trans-unit id="chLog_time_20" resname="chLog_time_20">
+			<trans-unit id="chLog_time_20">
 				<source>No limit</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_time" resname="chLog_l_time">
+			<trans-unit id="chLog_l_time">
 				<source>Time</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_user" resname="chLog_l_user">
+			<trans-unit id="chLog_l_user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_action" resname="chLog_l_action">
+			<trans-unit id="chLog_l_action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_channel" resname="chLog_l_channel">
+			<trans-unit id="chLog_l_channel">
 				<source>Channel</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_types" resname="chLog_l_types">
+			<trans-unit id="chLog_l_types">
 				<source>Type</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_level" resname="chLog_l_level">
+			<trans-unit id="chLog_l_level">
 				<source>Level</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_table" resname="chLog_l_table">
+			<trans-unit id="chLog_l_table">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="chLog_l_details" resname="chLog_l_details">
+			<trans-unit id="chLog_l_details">
 				<source>Details</source>
 			</trans-unit>
-			<trans-unit id="chLog_menuUsers" resname="chLog_menuUsers">
+			<trans-unit id="chLog_menuUsers">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="chLog_menuPageId" resname="chLog_menuPageId">
+			<trans-unit id="chLog_menuPageId">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="chLog_menuDepth" resname="chLog_menuDepth">
+			<trans-unit id="chLog_menuDepth">
 				<source>Depth</source>
 			</trans-unit>
-			<trans-unit id="chLog_menuTime" resname="chLog_menuTime">
+			<trans-unit id="chLog_menuTime">
 				<source>Time</source>
 			</trans-unit>
-			<trans-unit id="systemmessage.errorsInPeriod" resname="systemmessage.errorsInPeriod">
+			<trans-unit id="systemmessage.errorsInPeriod">
 				<source><![CDATA[We have found %1$d error(s). Please check your <a href="%2$s">system log</a>.]]></source>
 			</trans-unit>
-			<trans-unit id="actions" resname="actions">
+			<trans-unit id="actions">
 				<source>Actions</source>
 			</trans-unit>
-			<trans-unit id="actions.delete" resname="actions.delete">
+			<trans-unit id="actions.delete">
 				<source>Delete similar errors</source>
 			</trans-unit>
-			<trans-unit id="actions.deleteWarnings" resname="actions.deleteWarnings">
+			<trans-unit id="actions.deleteWarnings">
 				<source>Delete similar warnings</source>
 			</trans-unit>
-			<trans-unit id="actions.delete.message" resname="actions.delete.message">
+			<trans-unit id="actions.delete.message">
 				<source>Total entries deleted: %1$d</source>
 			</trans-unit>
-			<trans-unit id="actions.delete.noRowFound" resname="actions.delete.noRowFound">
+			<trans-unit id="actions.delete.noRowFound">
 				<source>Log entry could not be found.</source>
 			</trans-unit>
-			<trans-unit id="info.noRecords.message" resname="info.noRecords.message">
+			<trans-unit id="info.noRecords.message">
 				<source>No records found.</source>
 			</trans-unit>
-			<trans-unit id="info.selectPage.title" resname="info.selectPage.title">
+			<trans-unit id="info.selectPage.title">
 				<source>No page selected</source>
 			</trans-unit>
-			<trans-unit id="info.selectPage.message" resname="info.selectPage.message">
+			<trans-unit id="info.selectPage.message">
 				<source>Select a page to display logs for.</source>
 			</trans-unit>
-			<trans-unit id="error.noAccess.title" resname="error.noAccess.title">
+			<trans-unit id="error.noAccess.title">
 				<source>No access!</source>
 			</trans-unit>
-			<trans-unit id="error.noAccess.message" resname="error.noAccess.message">
+			<trans-unit id="error.noAccess.message">
 				<source>You don't have access to the selected page.</source>
 			</trans-unit>
 		</body>

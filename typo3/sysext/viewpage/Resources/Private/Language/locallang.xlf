@@ -3,55 +3,55 @@
 	<file source-language="en" datatype="plaintext" original="EXT:viewpage/Resources/Private/Language/locallang.xlf" date="2011-10-17T20:22:37Z" product-name="viewpage">
 		<header/>
 		<body>
-			<trans-unit id="width" resname="width">
+			<trans-unit id="width">
 				<source>Width</source>
 			</trans-unit>
-			<trans-unit id="tablet" resname="tablet">
+			<trans-unit id="tablet">
 				<source>Tablet</source>
 			</trans-unit>
-			<trans-unit id="mobile" resname="mobile">
+			<trans-unit id="mobile">
 				<source>Mobile</source>
 			</trans-unit>
-			<trans-unit id="computer" resname="computer">
+			<trans-unit id="computer">
 				<source>Computer</source>
 			</trans-unit>
-			<trans-unit id="desktop" resname="desktop">
+			<trans-unit id="desktop">
 				<source>Desktop</source>
 			</trans-unit>
-			<trans-unit id="customWidth" resname="customWidth">
+			<trans-unit id="customWidth">
 				<source>Custom Size</source>
 			</trans-unit>
-			<trans-unit id="autoSize" resname="autoSize">
+			<trans-unit id="autoSize">
 				<source>Auto Size</source>
 			</trans-unit>
-			<trans-unit id="refreshPage" resname="refreshPage">
+			<trans-unit id="refreshPage">
 				<source>Refresh page</source>
 			</trans-unit>
-			<trans-unit id="language" resname="language">
+			<trans-unit id="language">
 				<source>Language</source>
 			</trans-unit>
-			<trans-unit id="automatic" resname="automatic">
+			<trans-unit id="automatic">
 				<source>Automatic</source>
 			</trans-unit>
-			<trans-unit id="maximized" resname="maximized">
+			<trans-unit id="maximized">
 				<source>Maximized</source>
 			</trans-unit>
-			<trans-unit id="custom" resname="custom">
+			<trans-unit id="custom">
 				<source>Custom</source>
 			</trans-unit>
-			<trans-unit id="unidentified" resname="unidentified">
+			<trans-unit id="unidentified">
 				<source>Unidentified</source>
 			</trans-unit>
-			<trans-unit id="noValidPageSelected" resname="noValidPageSelected">
+			<trans-unit id="noValidPageSelected">
 				<source>Please select a page with a valid page type in the page tree to get a preview of it in different screen resolutions.</source>
 			</trans-unit>
-			<trans-unit id="noSiteConfiguration" resname="noSiteConfiguration">
+			<trans-unit id="noSiteConfiguration">
 				<source>The requested page is missing a valid site configuration.</source>
 			</trans-unit>
-			<trans-unit id="iframe.title" resname="iframe.title">
+			<trans-unit id="iframe.title">
 				<source>View selected page in different screen resolutions</source>
 			</trans-unit>
-			<trans-unit id="moduleMenu.dropdown.label" resname="moduleMenu.dropdown.label">
+			<trans-unit id="moduleMenu.dropdown.label">
 				<source>Page language</source>
 			</trans-unit>
 		</body>

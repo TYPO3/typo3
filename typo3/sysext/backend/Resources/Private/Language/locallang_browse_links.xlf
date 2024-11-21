@@ -3,163 +3,163 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="openLinkWizard" resname="openLinkWizard">
+			<trans-unit id="openLinkWizard">
 				<source>Open link wizard</source>
 			</trans-unit>
-			<trans-unit id="removeLink" resname="removeLink">
+			<trans-unit id="removeLink">
 				<source>Remove link</source>
 			</trans-unit>
-			<trans-unit id="uploadImage" resname="uploadImage">
+			<trans-unit id="uploadImage">
 				<source>Upload Image</source>
 			</trans-unit>
-			<trans-unit id="update" resname="update">
+			<trans-unit id="update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="path" resname="path">
+			<trans-unit id="path">
 				<source>Path</source>
 			</trans-unit>
-			<trans-unit id="page" resname="page">
+			<trans-unit id="page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="file" resname="file">
+			<trans-unit id="file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="folder" resname="folder">
+			<trans-unit id="folder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="extUrl" resname="extUrl">
+			<trans-unit id="extUrl">
 				<source>External URL</source>
 			</trans-unit>
-			<trans-unit id="email" resname="email">
+			<trans-unit id="email">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="email.subject" resname="email.subject">
+			<trans-unit id="email.subject">
 				<source>Subject</source>
 			</trans-unit>
-			<trans-unit id="email.cc" resname="email.cc">
+			<trans-unit id="email.cc">
 				<source>CC</source>
 			</trans-unit>
-			<trans-unit id="email.bcc" resname="email.bcc">
+			<trans-unit id="email.bcc">
 				<source>BCC</source>
 			</trans-unit>
-			<trans-unit id="email.body" resname="email.body">
+			<trans-unit id="email.body">
 				<source>Body</source>
 			</trans-unit>
-			<trans-unit id="telephone" resname="telephone">
+			<trans-unit id="telephone">
 				<source>Telephone</source>
 			</trans-unit>
-			<trans-unit id="special" resname="special">
+			<trans-unit id="special">
 				<source>Special</source>
 			</trans-unit>
-			<trans-unit id="folderTree" resname="folderTree">
+			<trans-unit id="folderTree">
 				<source>Folder Tree</source>
 			</trans-unit>
-			<trans-unit id="files" resname="files">
+			<trans-unit id="files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="folders" resname="folders">
+			<trans-unit id="folders">
 				<source>Folders</source>
 			</trans-unit>
-			<trans-unit id="target" resname="target">
+			<trans-unit id="target">
 				<source>Target</source>
 			</trans-unit>
-			<trans-unit id="linkRelationship" resname="linkRelationship">
+			<trans-unit id="linkRelationship">
 				<source>Relationship</source>
 			</trans-unit>
-			<trans-unit id="class" resname="class">
+			<trans-unit id="class">
 				<source>CSS-Class</source>
 			</trans-unit>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="params" resname="params">
+			<trans-unit id="params">
 				<source>Additional link parameters</source>
 			</trans-unit>
-			<trans-unit id="newWindow" resname="newWindow">
+			<trans-unit id="newWindow">
 				<source>New window</source>
 			</trans-unit>
-			<trans-unit id="top" resname="top">
+			<trans-unit id="top">
 				<source>Top</source>
 			</trans-unit>
-			<trans-unit id="none" resname="none">
+			<trans-unit id="none">
 				<source>None - new link!</source>
 			</trans-unit>
-			<trans-unit id="pageTree" resname="pageTree">
+			<trans-unit id="pageTree">
 				<source>Page tree</source>
 			</trans-unit>
-			<trans-unit id="contentElements" resname="contentElements">
+			<trans-unit id="contentElements">
 				<source>Content elements</source>
 			</trans-unit>
-			<trans-unit id="selectRecords" resname="selectRecords">
+			<trans-unit id="selectRecords">
 				<source>Select Records</source>
 			</trans-unit>
-			<trans-unit id="addToList" resname="addToList">
+			<trans-unit id="addToList">
 				<source>Add to list...</source>
 			</trans-unit>
-			<trans-unit id="info" resname="info">
+			<trans-unit id="info">
 				<source>Info</source>
 			</trans-unit>
-			<trans-unit id="emailAddress" resname="emailAddress">
+			<trans-unit id="emailAddress">
 				<source>Email address</source>
 			</trans-unit>
-			<trans-unit id="telephoneNumber" resname="telephoneNumber">
+			<trans-unit id="telephoneNumber">
 				<source>Telephone number</source>
 			</trans-unit>
-			<trans-unit id="setLink" resname="setLink">
+			<trans-unit id="setLink">
 				<source>Set Link</source>
 			</trans-unit>
-			<trans-unit id="linkTo" resname="linkTo">
+			<trans-unit id="linkTo">
 				<source>Link to %s</source>
 			</trans-unit>
-			<trans-unit id="urlPlaceholder" resname="urlPlaceholder" translate="no">
+			<trans-unit id="urlPlaceholder" translate="no">
 				<source>https://...</source>
 			</trans-unit>
-			<trans-unit id="clickToRedrawFullSize" resname="clickToRedrawFullSize">
+			<trans-unit id="clickToRedrawFullSize">
 				<source>Image is larger than shown here! Click to redraw page with full sized images.</source>
 			</trans-unit>
-			<trans-unit id="findDragDrop" resname="findDragDrop">
+			<trans-unit id="findDragDrop">
 				<source>Find and click on your image then drag it into the editor in the main window!</source>
 			</trans-unit>
-			<trans-unit id="noWebFolder" resname="noWebFolder">
+			<trans-unit id="noWebFolder">
 				<source>You cannot drag images from this folder (yellow) because it is internal on the server.</source>
 			</trans-unit>
-			<trans-unit id="currentLink" resname="currentLink">
+			<trans-unit id="currentLink">
 				<source>Current Link</source>
 			</trans-unit>
-			<trans-unit id="invalidChar" resname="invalidChar">
+			<trans-unit id="invalidChar">
 				<source>ERROR: Invalid character found in file path (%s). Cannot add the file!</source>
 			</trans-unit>
-			<trans-unit id="toggleSelection" resname="toggleSelection">
+			<trans-unit id="toggleSelection">
 				<source>Toggle selection</source>
 			</trans-unit>
-			<trans-unit id="importSelection" resname="importSelection">
+			<trans-unit id="importSelection">
 				<source>Import selection</source>
 			</trans-unit>
-			<trans-unit id="recordSelector" resname="recordSelector">
+			<trans-unit id="recordSelector">
 				<source>Record selector</source>
 			</trans-unit>
-			<trans-unit id="fileSelector" resname="fileSelector">
+			<trans-unit id="fileSelector">
 				<source>File selector</source>
 			</trans-unit>
-			<trans-unit id="folderSelector" resname="folderSelector">
+			<trans-unit id="folderSelector">
 				<source>Folder selector</source>
 			</trans-unit>
-			<trans-unit id="createFolder" resname="createFolder">
+			<trans-unit id="createFolder">
 				<source>Create new folder</source>
 			</trans-unit>
-			<trans-unit id="page_id" resname="page_id">
+			<trans-unit id="page_id">
 				<source>Page ID</source>
 			</trans-unit>
-			<trans-unit id="displayThumbs" resname="displayThumbs">
+			<trans-unit id="displayThumbs">
 				<source>Display thumbnails</source>
 			</trans-unit>
-			<trans-unit id="no_files" resname="no_files">
+			<trans-unit id="no_files">
 				<source>No files found in %s</source>
 			</trans-unit>
-			<trans-unit id="no_files_search" resname="no_files_search">
+			<trans-unit id="no_files_search">
 				<source>No files found in %s for "%s"</source>
 			</trans-unit>
-			<trans-unit id="recordNotFound" resname="recordNotFound">
+			<trans-unit id="recordNotFound">
 				<source>Record not found</source>
 			</trans-unit>
 		</body>

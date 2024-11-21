@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:fluid_styled_content/Resources/Private/Language/locallang.xlf" date="2014-02-07T20:22:32Z" product-name="fluid_styled_content">
 		<header/>
 		<body>
-			<trans-unit id="toTop" resname="toTop">
+			<trans-unit id="toTop">
 				<source>To top</source>
 			</trans-unit>
 		</body>

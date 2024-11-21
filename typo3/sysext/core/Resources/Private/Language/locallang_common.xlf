@@ -3,208 +3,208 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/locallang_common.xlf" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="about" resname="about">
+			<trans-unit id="about">
 				<source>About</source>
 			</trans-unit>
-			<trans-unit id="and" resname="and">
+			<trans-unit id="and">
 				<source>and</source>
 			</trans-unit>
-			<trans-unit id="ascending" resname="ascending">
+			<trans-unit id="ascending">
 				<source>Ascending</source>
 			</trans-unit>
-			<trans-unit id="back" resname="back">
+			<trans-unit id="back">
 				<source>Back</source>
 			</trans-unit>
-			<trans-unit id="byteSizeUnits" resname="byteSizeUnits">
+			<trans-unit id="byteSizeUnits">
 				<source> B| KB| MB| GB</source>
 			</trans-unit>
-			<trans-unit id="cancel" resname="cancel">
+			<trans-unit id="cancel">
 				<source>Cancel</source>
 			</trans-unit>
-			<trans-unit id="category" resname="category">
+			<trans-unit id="category">
 				<source>Category</source>
 			</trans-unit>
-			<trans-unit id="close" resname="close">
+			<trans-unit id="close">
 				<source>Close</source>
 			</trans-unit>
-			<trans-unit id="delete" resname="delete">
+			<trans-unit id="delete">
 				<source>Delete</source>
 			</trans-unit>
-			<trans-unit id="descending" resname="descending">
+			<trans-unit id="descending">
 				<source>Descending</source>
 			</trans-unit>
-			<trans-unit id="details" resname="details">
+			<trans-unit id="details">
 				<source>Details</source>
 			</trans-unit>
-			<trans-unit id="disable" resname="disable">
+			<trans-unit id="disable">
 				<source>Disable</source>
 			</trans-unit>
-			<trans-unit id="disabled" resname="disabled">
+			<trans-unit id="disabled">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="down" resname="down">
+			<trans-unit id="down">
 				<source>Down</source>
 			</trans-unit>
-			<trans-unit id="download" resname="download">
+			<trans-unit id="download">
 				<source>Download</source>
 			</trans-unit>
-			<trans-unit id="edit" resname="edit">
+			<trans-unit id="edit">
 				<source>Edit</source>
 			</trans-unit>
-			<trans-unit id="editField" resname="editField">
+			<trans-unit id="editField">
 				<source>Edit field</source>
 			</trans-unit>
-			<trans-unit id="editFile" resname="editFile">
+			<trans-unit id="editFile">
 				<source>Edit file</source>
 			</trans-unit>
-			<trans-unit id="enable" resname="enable">
+			<trans-unit id="enable">
 				<source>Enable</source>
 			</trans-unit>
-			<trans-unit id="enabled" resname="enabled">
+			<trans-unit id="enabled">
 				<source>Enabled</source>
 			</trans-unit>
-			<trans-unit id="file" resname="file">
+			<trans-unit id="file">
 				<source>File</source>
 			</trans-unit>
-			<trans-unit id="files" resname="files">
+			<trans-unit id="files">
 				<source>Files</source>
 			</trans-unit>
-			<trans-unit id="folder" resname="folder">
+			<trans-unit id="folder">
 				<source>Folder</source>
 			</trans-unit>
-			<trans-unit id="first" resname="first">
+			<trans-unit id="first">
 				<source>First</source>
 			</trans-unit>
-			<trans-unit id="from" resname="from">
+			<trans-unit id="from">
 				<source>From</source>
 			</trans-unit>
-			<trans-unit id="go" resname="go">
+			<trans-unit id="go">
 				<source>Go</source>
 			</trans-unit>
-			<trans-unit id="goTo" resname="goTo">
+			<trans-unit id="goTo">
 				<source>Go to</source>
 			</trans-unit>
-			<trans-unit id="help" resname="help">
+			<trans-unit id="help">
 				<source>Help</source>
 			</trans-unit>
-			<trans-unit id="item" resname="item">
+			<trans-unit id="item">
 				<source>Item</source>
 			</trans-unit>
-			<trans-unit id="items" resname="items">
+			<trans-unit id="items">
 				<source>Items</source>
 			</trans-unit>
-			<trans-unit id="last" resname="last">
+			<trans-unit id="last">
 				<source>Last</source>
 			</trans-unit>
-			<trans-unit id="left" resname="left">
+			<trans-unit id="left">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="login" resname="login">
+			<trans-unit id="login">
 				<source>Login</source>
 			</trans-unit>
-			<trans-unit id="logout" resname="logout">
+			<trans-unit id="logout">
 				<source>Logout</source>
 			</trans-unit>
-			<trans-unit id="more" resname="more">
+			<trans-unit id="more">
 				<source>More</source>
 			</trans-unit>
-			<trans-unit id="move" resname="move">
+			<trans-unit id="move">
 				<source>Move</source>
 			</trans-unit>
-			<trans-unit id="new" resname="new">
+			<trans-unit id="new">
 				<source>New</source>
 			</trans-unit>
-			<trans-unit id="next" resname="next">
+			<trans-unit id="next">
 				<source>Next</source>
 			</trans-unit>
-			<trans-unit id="no" resname="no">
+			<trans-unit id="no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="ok" resname="ok">
+			<trans-unit id="ok">
 				<source>OK</source>
 			</trans-unit>
-			<trans-unit id="open" resname="open">
+			<trans-unit id="open">
 				<source>Open</source>
 			</trans-unit>
-			<trans-unit id="page" resname="page">
+			<trans-unit id="page">
 				<source>Page</source>
 			</trans-unit>
-			<trans-unit id="pages" resname="pages">
+			<trans-unit id="pages">
 				<source>Pages</source>
 			</trans-unit>
-			<trans-unit id="previous" resname="previous">
+			<trans-unit id="previous">
 				<source>Previous</source>
 			</trans-unit>
-			<trans-unit id="print" resname="print">
+			<trans-unit id="print">
 				<source>Print</source>
 			</trans-unit>
-			<trans-unit id="reload" resname="reload">
+			<trans-unit id="reload">
 				<source>Reload</source>
 			</trans-unit>
-			<trans-unit id="right" resname="right">
+			<trans-unit id="right">
 				<source>Right</source>
 			</trans-unit>
-			<trans-unit id="save" resname="save">
+			<trans-unit id="save">
 				<source>Save</source>
 			</trans-unit>
-			<trans-unit id="saveAndClose" resname="saveAndClose">
+			<trans-unit id="saveAndClose">
 				<source>Save and close</source>
 			</trans-unit>
-			<trans-unit id="saveAndCloseDoc" resname="saveAndCloseDoc">
+			<trans-unit id="saveAndCloseDoc">
 				<source>Save and close document</source>
 			</trans-unit>
-			<trans-unit id="saveAndCreateNewDoc" resname="saveAndCreateNewDoc">
+			<trans-unit id="saveAndCreateNewDoc">
 				<source>Save and create new document</source>
 			</trans-unit>
-			<trans-unit id="saveAndViewPage" resname="saveAndViewPage">
+			<trans-unit id="saveAndViewPage">
 				<source>Save and view page</source>
 			</trans-unit>
-			<trans-unit id="search" resname="search">
+			<trans-unit id="search">
 				<source>Search</source>
 			</trans-unit>
-			<trans-unit id="send" resname="send">
+			<trans-unit id="send">
 				<source>Send</source>
 			</trans-unit>
-			<trans-unit id="start" resname="start">
+			<trans-unit id="start">
 				<source>Start</source>
 			</trans-unit>
-			<trans-unit id="stop" resname="stop">
+			<trans-unit id="stop">
 				<source>Stop</source>
 			</trans-unit>
-			<trans-unit id="submit" resname="submit">
+			<trans-unit id="submit">
 				<source>Submit</source>
 			</trans-unit>
-			<trans-unit id="to" resname="to">
+			<trans-unit id="to">
 				<source>To</source>
 			</trans-unit>
-			<trans-unit id="tsRef" resname="tsRef">
+			<trans-unit id="tsRef">
 				<source>TSref reference</source>
 			</trans-unit>
-			<trans-unit id="undefined" resname="undefined">
+			<trans-unit id="undefined">
 				<source>Undefined</source>
 			</trans-unit>
-			<trans-unit id="up" resname="up">
+			<trans-unit id="up">
 				<source>Up</source>
 			</trans-unit>
-			<trans-unit id="upload" resname="upload">
+			<trans-unit id="upload">
 				<source>Upload</source>
 			</trans-unit>
-			<trans-unit id="user" resname="user">
+			<trans-unit id="user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="users" resname="users">
+			<trans-unit id="users">
 				<source>Users</source>
 			</trans-unit>
-			<trans-unit id="view" resname="view">
+			<trans-unit id="view">
 				<source>View</source>
 			</trans-unit>
-			<trans-unit id="yes" resname="yes">
+			<trans-unit id="yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="notAvailableAbbreviation" resname="notAvailableAbbreviation">
+			<trans-unit id="notAvailableAbbreviation">
 				<source>N/A</source>
 			</trans-unit>
-			<trans-unit id="pleaseConfirm" resname="pleaseConfirm">
+			<trans-unit id="pleaseConfirm">
 				<source>Please confirm</source>
 			</trans-unit>
 		</body>

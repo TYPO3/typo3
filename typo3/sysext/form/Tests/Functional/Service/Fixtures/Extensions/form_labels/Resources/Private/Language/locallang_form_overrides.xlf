@@ -3,7 +3,7 @@
     <file source-language="en" datatype="plaintext" original="EXT:form/Tests/Unit/Service/Fixtures/locallang_form_translation_override.xlf" date="2024-06-19T16:32:32Z" product-name="tests">
         <header/>
         <body>
-            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" resname="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
+            <trans-unit id="element.Page.renderingOptions.nextButtonLabel" xml:space="preserve">
                 <source>FORM EN OVERRIDE</source>
             </trans-unit>
 

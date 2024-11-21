@@ -3,88 +3,88 @@
 	<file source-language="en" datatype="plaintext" original="EXT:reactions/Resources/Private/Language/locallang_db.xlf" date="2022-08-15T20:22:32Z" product-name="reactions">
 		<header/>
 		<body>
-			<trans-unit id="reactions" resname="reactions">
+			<trans-unit id="reactions">
 				<source>Reactions</source>
 			</trans-unit>
 
-			<trans-unit id="sys_reaction" resname="sys_reaction">
+			<trans-unit id="sys_reaction">
 				<source>System Reactions</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.name" resname="sys_reaction.name">
+			<trans-unit id="sys_reaction.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.name.description" resname="sys_reaction.name.description">
+			<trans-unit id="sys_reaction.name.description">
 				<source>Meaningful name of the reaction</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.identifier" resname="sys_reaction.identifier">
+			<trans-unit id="sys_reaction.identifier">
 				<source>Identifier</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.identifier.description" resname="sys_reaction.identifier.description">
+			<trans-unit id="sys_reaction.identifier.description">
 				<source>This is your unique reaction identifier within the TYPO3 URL</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.secret" resname="sys_reaction.secret">
+			<trans-unit id="sys_reaction.secret">
 				<source>Secret</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.secret.description" resname="sys_reaction.secret.description">
+			<trans-unit id="sys_reaction.secret.description">
 				<source>The secret is required to call the reaction from the outside. The secret can be re-created anytime, but will only be visible once (until the record got saved).</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.secret.passwordGenerator" resname="sys_reaction.secret.passwordGenerator">
+			<trans-unit id="sys_reaction.secret.passwordGenerator">
 				<source>Generate secret token</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.reaction_type" resname="sys_reaction.reaction_type">
+			<trans-unit id="sys_reaction.reaction_type">
 				<source>Reaction Type</source>
 			</trans-unit>
-			<trans-unit id="sys_reactions.reaction_type.description" resname="sys_reactions.reaction_type.description">
+			<trans-unit id="sys_reactions.reaction_type.description">
 				<source>Select the reaction type to be configured.</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.reaction_type.select" resname="sys_reaction.reaction_type.select">
+			<trans-unit id="sys_reaction.reaction_type.select">
 				<source>Select a reaction</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.reaction_type.create_record" resname="sys_reaction.reaction_type.create_record">
+			<trans-unit id="sys_reaction.reaction_type.create_record">
 				<source>Create database record</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.impersonate_user" resname="sys_reaction.impersonate_user">
+			<trans-unit id="sys_reaction.impersonate_user">
 				<source>Impersonate User</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.impersonate_user.description" resname="sys_reaction.impersonate_user.description">
+			<trans-unit id="sys_reaction.impersonate_user.description">
 				<source>Select the user with the appropriate access rights that is allowed to add a record of this type. If in doubt, use the CLI user.</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.table_name" resname="sys_reaction.table_name">
+			<trans-unit id="sys_reaction.table_name">
 				<source>Table</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.table_name.description" resname="sys_reaction.table_name.description">
+			<trans-unit id="sys_reaction.table_name.description">
 				<source>Select one tables to display the corresponding fields.</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.table_name.select" resname="sys_reaction.table_name.select">
+			<trans-unit id="sys_reaction.table_name.select">
 				<source>Select a table</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.storage_pid" resname="sys_reaction.storage_pid">
+			<trans-unit id="sys_reaction.storage_pid">
 				<source>Storage PID</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.storage_pid.description" resname="sys_reaction.storage_pid.description">
+			<trans-unit id="sys_reaction.storage_pid.description">
 				<source>Select the page on which a new record is created on.</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.fields" resname="sys_reaction.fields">
+			<trans-unit id="sys_reaction.fields">
 				<source>Fields</source>
 			</trans-unit>
-			<trans-unit id="sys_reaction.fields.description" resname="sys_reaction.fields.description">
+			<trans-unit id="sys_reaction.fields.description">
 				<source>The available fields depend on the selected table. The usage of placeholders like ${foo.bar} is possible.</source>
 			</trans-unit>
 
-			<trans-unit id="palette.config" resname="palette.config">
+			<trans-unit id="palette.config">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="palette.config.description" resname="palette.config.description">
+			<trans-unit id="palette.config.description">
 				<source>General configuration of the reaction.</source>
 			</trans-unit>
-			<trans-unit id="palette.additional" resname="palette.additional">
+			<trans-unit id="palette.additional">
 				<source>Additional configuration</source>
 			</trans-unit>
-			<trans-unit id="palette.additional.description" resname="palette.additional.description">
+			<trans-unit id="palette.additional.description">
 				<source>Specific configuration for the selected reaction type</source>
 			</trans-unit>
 
-			<trans-unit id="fieldMapElement.noFields" resname="fieldMapElement.noFields">
+			<trans-unit id="fieldMapElement.noFields">
 				<source>The selected table '%s' does not define any valid fields to be configured.</source>
 			</trans-unit>
 		</body>

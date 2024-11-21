@@ -3,142 +3,142 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_show_rechis.xlf" date="2011-10-17T20:22:34Z" product-name="lang">
 		<header/>
 		<body>
-			<trans-unit id="title" resname="title">
+			<trans-unit id="title">
 				<source>History/Undo</source>
 			</trans-unit>
-			<trans-unit id="headline.titleOf" resname="title">
+			<trans-unit id="headline.titleOf">
 				<source>of</source>
 			</trans-unit>
-			<trans-unit id="time" resname="time">
+			<trans-unit id="time">
 				<source>Time</source>
 			</trans-unit>
-			<trans-unit id="user" resname="user">
+			<trans-unit id="user">
 				<source>User</source>
 			</trans-unit>
-			<trans-unit id="workspace" resname="workspace">
+			<trans-unit id="workspace">
 				<source>Workspace</source>
 			</trans-unit>
-			<trans-unit id="column.action" resname="column.action">
+			<trans-unit id="column.action">
 				<source>Action</source>
 			</trans-unit>
-			<trans-unit id="column.recordTitle" resname="column.recordTitle">
+			<trans-unit id="column.recordTitle">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="differences" resname="differences">
+			<trans-unit id="differences">
 				<source>Differences</source>
 			</trans-unit>
-			<trans-unit id="changes" resname="changes">
+			<trans-unit id="changes">
 				<source>Changelog</source>
 			</trans-unit>
-			<trans-unit id="return" resname="return">
+			<trans-unit id="return">
 				<source>Return</source>
 			</trans-unit>
-			<trans-unit id="returnLink" resname="returnLink">
+			<trans-unit id="returnLink">
 				<source>Click here to go back</source>
 			</trans-unit>
-			<trans-unit id="revertAll" resname="revertAll">
+			<trans-unit id="revertAll">
 				<source>Rollback all changes shown</source>
 			</trans-unit>
-			<trans-unit id="revertRecord" resname="revertRecord">
+			<trans-unit id="revertRecord">
 				<source>Rollback single record</source>
 			</trans-unit>
-			<trans-unit id="revertField" resname="revertField">
+			<trans-unit id="revertField">
 				<source>Rollback single field</source>
 			</trans-unit>
-			<trans-unit id="userNotFound" resname="userNotFound">
+			<trans-unit id="userNotFound">
 				<source>[Not Found]</source>
 			</trans-unit>
-			<trans-unit id="externalChange" resname="externalChange">
+			<trans-unit id="externalChange">
 				<source>Intermediate external change!</source>
 			</trans-unit>
-			<trans-unit id="viaUser" resname="viaUser">
+			<trans-unit id="viaUser">
 				<source>via</source>
 			</trans-unit>
-			<trans-unit id="sumUpChanges" resname="sumUpChanges">
+			<trans-unit id="sumUpChanges">
 				<source>Rollback all changes to this state (preview)</source>
 			</trans-unit>
-			<trans-unit id="markState" resname="markState">
+			<trans-unit id="markState">
 				<source>mark this change</source>
 			</trans-unit>
-			<trans-unit id="unmarkState" resname="unmarkState">
+			<trans-unit id="unmarkState">
 				<source>unMark this change</source>
 			</trans-unit>
-			<trans-unit id="elementHistory" resname="elementHistory">
+			<trans-unit id="elementHistory">
 				<source>You are currently seeing the history for an element</source>
 			</trans-unit>
-			<trans-unit id="elementHistory_link" resname="elementHistory_link">
+			<trans-unit id="elementHistory_link">
 				<source>Show the full page history</source>
 			</trans-unit>
-			<trans-unit id="linkRecordHistory" resname="linkRecordHistory">
+			<trans-unit id="linkRecordHistory">
 				<source>Limit history to this record</source>
 			</trans-unit>
-			<trans-unit id="differenceMsg" resname="differenceMsg">
+			<trans-unit id="differenceMsg">
 				<source>In the Difference column you can see the changes at every modification of records. New changes are displayed in green colored text and the red colored text are the old values which were removed.</source>
 			</trans-unit>
-			<trans-unit id="fullView" resname="fullView">
+			<trans-unit id="fullView">
 				<source>Return to full view</source>
 			</trans-unit>
-			<trans-unit id="historyRow.actiontype.1" resname="historyRow.actiontype.1">
+			<trans-unit id="historyRow.actiontype.1">
 				<source>created</source>
 			</trans-unit>
-			<trans-unit id="historyRow.actiontype.2" resname="historyRow.actiontype.2">
+			<trans-unit id="historyRow.actiontype.2">
 				<source>modified</source>
 			</trans-unit>
-			<trans-unit id="historyRow.actiontype.3" resname="historyRow.actiontype.3">
+			<trans-unit id="historyRow.actiontype.3">
 				<source>moved</source>
 			</trans-unit>
-			<trans-unit id="historyRow.actiontype.4" resname="historyRow.actiontype.4">
+			<trans-unit id="historyRow.actiontype.4">
 				<source>deleted</source>
 			</trans-unit>
-			<trans-unit id="historyRow.actiontype.5" resname="historyRow.actiontype.5">
+			<trans-unit id="historyRow.actiontype.5">
 				<source>undeleted</source>
 			</trans-unit>
-			<trans-unit id="historyRow.actiontype.6" resname="historyRow.actiontype.6">
+			<trans-unit id="historyRow.actiontype.6">
 				<source>stage changed</source>
 			</trans-unit>
-			<trans-unit id="rollback.plannedAction.insert" resname="rollback.plannedAction.insert">
+			<trans-unit id="rollback.plannedAction.insert">
 				<source>The record has been deleted and will be restored again with the rollback.</source>
 			</trans-unit>
-			<trans-unit id="rollback.plannedAction.delete" resname="rollback.plannedAction.delete">
+			<trans-unit id="rollback.plannedAction.delete">
 				<source>The record will be deleted with the rollback.</source>
 			</trans-unit>
-			<trans-unit id="undelete" resname="undelete">
+			<trans-unit id="undelete">
 				<source>undelete</source>
 			</trans-unit>
-			<trans-unit id="mergedDifferences" resname="mergedDifferences">
+			<trans-unit id="mergedDifferences">
 				<source>Preview for rollback</source>
 			</trans-unit>
-			<trans-unit id="mergedDifferences.description" resname="mergedDifferences.description">
+			<trans-unit id="mergedDifferences.description">
 				<source>It is possible to rollback either individual fields or entire elements. Alternatively, all displayed changes can be rolled back.</source>
 			</trans-unit>
-			<trans-unit id="settings" resname="settings">
+			<trans-unit id="settings">
 				<source>Settings</source>
 			</trans-unit>
-			<trans-unit id="maxSteps" resname="maxSteps">
+			<trans-unit id="maxSteps">
 				<source>Show entries</source>
 			</trans-unit>
-			<trans-unit id="maxSteps_all" resname="maxSteps_all">
+			<trans-unit id="maxSteps_all">
 				<source>ALL</source>
 			</trans-unit>
-			<trans-unit id="maxSteps_marked" resname="maxSteps_marked">
+			<trans-unit id="maxSteps_marked">
 				<source>marked</source>
 			</trans-unit>
-			<trans-unit id="showDiff" resname="showDiff">
+			<trans-unit id="showDiff">
 				<source>Show differences</source>
 			</trans-unit>
-			<trans-unit id="showSubElements" resname="showSubElements">
+			<trans-unit id="showSubElements">
 				<source>Show sub elements</source>
 			</trans-unit>
-			<trans-unit id="no" resname="no">
+			<trans-unit id="no">
 				<source>No</source>
 			</trans-unit>
-			<trans-unit id="yes" resname="yes">
+			<trans-unit id="yes">
 				<source>Yes</source>
 			</trans-unit>
-			<trans-unit id="noDifferences" resname="noDifferences">
+			<trans-unit id="noDifferences">
 				<source>There are no differences to the current page</source>
 			</trans-unit>
-			<trans-unit id="editLockIsActive" resname="editLockIsActive">
+			<trans-unit id="editLockIsActive">
 				<source>Editing is blocked for non-admins</source>
 			</trans-unit>
 		</body>

@@ -4,16 +4,16 @@
           product-name="adminpanel">
         <header/>
         <body>
-            <trans-unit id="module.label" resname="module.label">
+            <trans-unit id="module.label">
                 <source>Cache</source>
             </trans-unit>
-            <trans-unit id="cache.no_cache" resname="cache.no_cache">
+            <trans-unit id="cache.no_cache">
                 <source>No caching</source>
             </trans-unit>
-            <trans-unit id="cache.clear_current" resname="cache.clear_current">
+            <trans-unit id="cache.clear_current">
                 <source>Clear cache of current page</source>
             </trans-unit>
-            <trans-unit id="cache.clear_pages" resname="cache.clear_pages">
+            <trans-unit id="cache.clear_pages">
                 <source>Clear frontend cache</source>
             </trans-unit>
         </body>

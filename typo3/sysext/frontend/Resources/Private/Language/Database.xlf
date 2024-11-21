@@ -5,100 +5,100 @@
 			<note>@deprecated will be removed in TYPO3 v14.0</note>
 		</header>
 		<body>
-			<trans-unit id="tt_content.asset_references" resname="tt_content.asset_references">
+			<trans-unit id="tt_content.asset_references">
 				<source>Media elements</source>
 			</trans-unit>
-			<trans-unit id="tt_content.asset_references.addFileReference" resname="tt_content.asset_references.addFileReference">
+			<trans-unit id="tt_content.asset_references.addFileReference">
 				<source>Add media file</source>
 			</trans-unit>
-			<trans-unit id="tt_content.palette.gallerySettings" resname="tt_content.palette.gallerySettings">
+			<trans-unit id="tt_content.palette.gallerySettings">
 				<source>Gallery Settings</source>
 			</trans-unit>
-			<trans-unit id="tt_content.palette.mediaAdjustments" resname="tt_content.palette.mediaAdjustments">
+			<trans-unit id="tt_content.palette.mediaAdjustments">
 				<source>Media Adjustments</source>
 			</trans-unit>
-			<trans-unit id="tt_content.palette.mediaAdjustments.imagewidth" resname="tt_content.palette.mediaAdjustments.imagewidth">
+			<trans-unit id="tt_content.palette.mediaAdjustments.imagewidth">
 				<source>Width of each element (px)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.palette.mediaAdjustments.imageheight" resname="tt_content.palette.mediaAdjustments.imageheight">
+			<trans-unit id="tt_content.palette.mediaAdjustments.imageheight">
 				<source>Height of each element (px)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.palette.mediaAdjustments.imageborder" resname="tt_content.palette.mediaAdjustments.imageborder">
+			<trans-unit id="tt_content.palette.mediaAdjustments.imageborder">
 				<source>Border around each element</source>
 			</trans-unit>
-			<trans-unit id="tt_content.uploads_description" resname="tt_content.uploads_description">
+			<trans-unit id="tt_content.uploads_description">
 				<source>Display description</source>
 			</trans-unit>
-			<trans-unit id="tt_content.uploads_type" resname="tt_content.uploads_type">
+			<trans-unit id="tt_content.uploads_type">
 				<source>Display file/icon/thumbnail</source>
 			</trans-unit>
-			<trans-unit id="tt_content.uploads_type.0" resname="tt_content.uploads_type.0">
+			<trans-unit id="tt_content.uploads_type.0">
 				<source>Only file name</source>
 			</trans-unit>
-			<trans-unit id="tt_content.uploads_type.1" resname="tt_content.uploads_type.1">
+			<trans-unit id="tt_content.uploads_type.1">
 				<source>File name and file extension icon</source>
 			</trans-unit>
-			<trans-unit id="tt_content.uploads_type.2" resname="tt_content.uploads_type.2">
+			<trans-unit id="tt_content.uploads_type.2">
 				<source>File name and thumbnail (if possible)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_class" resname="tt_content.table_class">
+			<trans-unit id="tt_content.table_class">
 				<source>Table style</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_class.default" resname="tt_content.table_class.default">
+			<trans-unit id="tt_content.table_class.default">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_class.striped" resname="tt_content.table_class.striped">
+			<trans-unit id="tt_content.table_class.striped">
 				<source>Striped</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_class.bordered" resname="tt_content.table_class.bordered">
+			<trans-unit id="tt_content.table_class.bordered">
 				<source>Bordered</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_caption" resname="tt_content.table_caption">
+			<trans-unit id="tt_content.table_caption">
 				<source>Table caption</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_delimiter" resname="tt_content.table_delimiter">
+			<trans-unit id="tt_content.table_delimiter">
 				<source>Field Delimiter</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_delimiter.124" resname="tt_content.table_delimiter.124">
+			<trans-unit id="tt_content.table_delimiter.124">
 				<source>| (Pipe)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_delimiter.59" resname="tt_content.table_delimiter.59">
+			<trans-unit id="tt_content.table_delimiter.59">
 				<source>; (Semicolon)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_delimiter.58" resname="tt_content.table_delimiter.58">
+			<trans-unit id="tt_content.table_delimiter.58">
 				<source>: (Colon)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_delimiter.44" resname="tt_content.table_delimiter.44">
+			<trans-unit id="tt_content.table_delimiter.44">
 				<source>, (Comma)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_delimiter.9" resname="tt_content.table_delimiter.9">
+			<trans-unit id="tt_content.table_delimiter.9">
 				<source>⇥ (Tab)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_enclosure" resname="tt_content.table_enclosure">
+			<trans-unit id="tt_content.table_enclosure">
 				<source>Text enclosure</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_enclosure.0" resname="tt_content.table_enclosure.0">
+			<trans-unit id="tt_content.table_enclosure.0">
 				<source>None</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_enclosure.39" resname="tt_content.table_enclosure.39">
+			<trans-unit id="tt_content.table_enclosure.39">
 				<source>' (Single quotes)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_enclosure.34" resname="tt_content.table_enclosure.34">
+			<trans-unit id="tt_content.table_enclosure.34">
 				<source>" (Double quotes)</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_header_position" resname="tt_content.table_header_position">
+			<trans-unit id="tt_content.table_header_position">
 				<source>Table header position</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_header_position.0" resname="tt_content.table_header_position.0">
+			<trans-unit id="tt_content.table_header_position.0">
 				<source>No header</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_header_position.1" resname="tt_content.table_header_position.1">
+			<trans-unit id="tt_content.table_header_position.1">
 				<source>Top</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_header_position.2" resname="tt_content.table_header_position.2">
+			<trans-unit id="tt_content.table_header_position.2">
 				<source>Left</source>
 			</trans-unit>
-			<trans-unit id="tt_content.table_tfoot" resname="tt_content.table_tfoot">
+			<trans-unit id="tt_content.table_tfoot">
 				<source>Use table footer (wrap last row with &lt;tfoot&gt; tags)</source>
 			</trans-unit>
 		</body>

@@ -3,11 +3,11 @@
 	<file source-language="en" datatype="plaintext" original="EXT:test_localization/Resources/Private/Language/fr.locallang_override.xlf" date="2011-12-21T11:57:33Z" product-name="tests" target-language="fr">
 		<header/>
 		<body>
-			<trans-unit id="label1" resname="label1" approved="yes">
+			<trans-unit id="label1" approved="yes">
 				<source>This is label #1</source>
 				<target>Ceci est mon 1er libellé</target>
 			</trans-unit>
-			<trans-unit id="label3" resname="label3" approved="yes">
+			<trans-unit id="label3" approved="yes">
 				<source>This is label #3</source>
 				<target>Ceci est mon 3e libellé</target>
 			</trans-unit>

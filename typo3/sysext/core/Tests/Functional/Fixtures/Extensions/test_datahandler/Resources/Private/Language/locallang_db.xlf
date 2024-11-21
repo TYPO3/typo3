@@ -2,10 +2,10 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
 	<file source-language="en" datatype="plaintext" original="EXT:test_datahandler/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="test_datahandler">
 		<body>
-			<trans-unit id="tabs.general" resname="tabs.general">
+			<trans-unit id="tabs.general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+			<trans-unit id="tabs.visibility">
 				<source>Visibility</source>
 			</trans-unit>
 		</body>

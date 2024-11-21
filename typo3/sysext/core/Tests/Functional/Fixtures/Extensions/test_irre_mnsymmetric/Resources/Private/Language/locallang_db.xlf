@@ -3,33 +3,33 @@
 	<file source-language="en" datatype="plaintext" original="EXT:test_irre_mnsymmetric/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="test_irre_mnsymmetric">
 		<header/>
 		<body>
-			<trans-unit id="tabs.general" resname="tabs.general">
+			<trans-unit id="tabs.general">
 				<source>General</source>
 			</trans-unit>
-			<trans-unit id="tabs.visibility" resname="tabs.visibility">
+			<trans-unit id="tabs.visibility">
 				<source>Visibility</source>
 			</trans-unit>
 
-			<trans-unit id="tx_testirremnsymmetric_hotel" resname="tx_testirremnsymmetric_hotel">
+			<trans-unit id="tx_testirremnsymmetric_hotel">
 				<source>m:n Sym: Hotels</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnsymmetric_hotel_rel" resname="tx_testirremnsymmetric_hotel_rel">
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel">
 				<source>m:n Sym: Hotels&lt;-&gt;Hotels</source>
 			</trans-unit>
 
-			<trans-unit id="tx_testirremnsymmetric_hotel.title" resname="tx_testirremnsymmetric_hotel.title">
+			<trans-unit id="tx_testirremnsymmetric_hotel.title">
 				<source>Title:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnsymmetric_hotel.branches" resname="tx_testirremnsymmetric_hotel.branches">
+			<trans-unit id="tx_testirremnsymmetric_hotel.branches">
 				<source>Branches:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnsymmetric_hotel_rel" resname="tx_testirremnsymmetric_hotel_rel">
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel">
 				<source>Hotels&lt;-&gt;Hotels</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnsymmetric_hotel_rel.hotelid" resname="tx_testirremnsymmetric_hotel_rel.hotelid">
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel.hotelid">
 				<source>Hotel:</source>
 			</trans-unit>
-			<trans-unit id="tx_testirremnsymmetric_hotel_rel.branchid" resname="tx_testirremnsymmetric_hotel_rel.branchid">
+			<trans-unit id="tx_testirremnsymmetric_hotel_rel.branchid">
 				<source>Branch:</source>
 			</trans-unit>
 

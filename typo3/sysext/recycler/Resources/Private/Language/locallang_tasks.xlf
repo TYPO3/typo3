@@ -3,31 +3,31 @@
 	<file source-language="en" datatype="plaintext" original="EXT:recycler/Resources/Private/Language/locallang_tasks.xlf" date="2011-10-17T20:22:35Z" product-name="recycler">
 		<header />
 		<body>
-			<trans-unit id="cleanerTaskTitle" resname="cleanerTaskTitle">
+			<trans-unit id="cleanerTaskTitle">
 				<source>Remove deleted records</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskDescription" resname="cleanerTaskDescription">
+			<trans-unit id="cleanerTaskDescription">
 				<source>Deletes rows from the database which are flagged "deleted"</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskPeriod" resname="cleanerTaskPeriod">
+			<trans-unit id="cleanerTaskPeriod">
 				<source>Delete entries older than (in days)</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskTCA" resname="cleanerTaskTCA">
+			<trans-unit id="cleanerTaskTCA">
 				<source>Tables</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskDescriptionTables" resname="cleanerTaskDescriptionTables">
+			<trans-unit id="cleanerTaskDescriptionTables">
 				<source>Tables: %s</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskDescriptionDays" resname="cleanerTaskDescriptionDays">
+			<trans-unit id="cleanerTaskDescriptionDays">
 				<source>Older than %d day(s)</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskErrorPeriod" resname="cleanerTaskErrorPeriod">
+			<trans-unit id="cleanerTaskErrorPeriod">
 				<source>The period has to be an integer and greater than zero.</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskErrorTCAempty" resname="cleanerTaskErrorTCAempty">
+			<trans-unit id="cleanerTaskErrorTCAempty">
 				<source>You have to select at least one table.</source>
 			</trans-unit>
-			<trans-unit id="cleanerTaskErrorTCANotSet" resname="cleanerTaskErrorTCANotSet">
+			<trans-unit id="cleanerTaskErrorTCANotSet">
 				<source>The table "%s" is not in the TCA.</source>
 			</trans-unit>
 		</body>

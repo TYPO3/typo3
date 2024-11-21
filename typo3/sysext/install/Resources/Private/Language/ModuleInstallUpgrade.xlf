@@ -3,13 +3,13 @@
     <file source-language="en" datatype="plaintext" original="EXT:install/Resources/Private/Language/ModuleInstallUpgrade.xlf" date="2017-07-13T22:04:31Z" product-name="upgrade">
         <header/>
         <body>
-            <trans-unit id="mlang_labels_tablabel" resname="mlang_labels_tablabel">
+            <trans-unit id="mlang_labels_tablabel">
                 <source>Upgrade</source>
             </trans-unit>
-            <trans-unit id="mlang_labels_tabdescr" resname="mlang_labels_tabdescr">
+            <trans-unit id="mlang_labels_tabdescr">
                 <source>Provides a simple link to the Install&#160;Tool. Notice the Install&#160;Tool (in typo3/install/) must be enabled.</source>
             </trans-unit>
-            <trans-unit id="mlang_tabs_tab" resname="mlang_tabs_tab">
+            <trans-unit id="mlang_tabs_tab">
                 <source>Upgrade</source>
             </trans-unit>
         </body>

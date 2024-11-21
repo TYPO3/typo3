@@ -3,833 +3,833 @@
 	<file source-language="en" datatype="plaintext" original="messages" date="2013-05-01T00:00:000" product-name="styleguide">
 		<header/>
 		<body>
-			<trans-unit id="module.configuration.title" resname="module.configuration.title">
+			<trans-unit id="module.configuration.title">
 				<source>Styleguide</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.shortDescription" resname="module.configuration.shortDescription">
+			<trans-unit id="module.configuration.shortDescription">
 				<source>Styleguide of the TYPO3 CMS</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.description" resname="module.configuration.description">
+			<trans-unit id="module.configuration.description">
 				<source>The module offers the creation of a page tree either with TCA demo records or content elements.&lt;br /&gt;In addition, the most well-known backend components that come with the TYPO3 CMS are presented.</source>
 			</trans-unit>
 
-			<trans-unit id="module.configuration.components.title" resname="module.configuration.components.title">
+			<trans-unit id="module.configuration.components.title">
 				<source>Component Library: Components</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.pageTrees.title" resname="module.configuration.pageTrees.title">
+			<trans-unit id="module.configuration.pageTrees.title">
 				<source>Manage example page trees</source>
 			</trans-unit>
-			<trans-unit id="module.configuration.styles.title" resname="module.configuration.styles.title">
+			<trans-unit id="module.configuration.styles.title">
 				<source>Component Library: Styles</source>
 			</trans-unit>
 
-			<trans-unit id="componentsOverview.headline" resname="componentsOverview.headline">
+			<trans-unit id="componentsOverview.headline">
 				<source>Components</source>
 			</trans-unit>
-			<trans-unit id="componentsOverview.link.title" resname="componentsOverview.link.title">
+			<trans-unit id="componentsOverview.link.title">
 				<source>Open %1s component</source>
 			</trans-unit>
-			<trans-unit id="managePageTrees.headline" resname="managePageTrees.headline">
+			<trans-unit id="managePageTrees.headline">
 				<source>Manage example page trees</source>
 			</trans-unit>
-			<trans-unit id="stylesOverview.headline" resname="stylesOverview.headline">
+			<trans-unit id="stylesOverview.headline">
 				<source>Styles</source>
 			</trans-unit>
-			<trans-unit id="stylesOverview.link.title" resname="stylesOverview.link.title">
+			<trans-unit id="stylesOverview.link.title">
 				<source>Open %1s style</source>
 			</trans-unit>
 
-			<trans-unit id="styleguide" resname="styleguide">
+			<trans-unit id="styleguide">
 				<source>Styleguide</source>
 			</trans-unit>
 
-			<trans-unit id="action.accordion" resname="action.accordion">
+			<trans-unit id="action.accordion">
 				<source>Accordion</source>
 			</trans-unit>
-			<trans-unit id="action.avatar" resname="action.avatar">
+			<trans-unit id="action.avatar">
 				<source>Avatar</source>
 			</trans-unit>
-			<trans-unit id="action.badges" resname="action.badges">
+			<trans-unit id="action.badges">
 				<source>Badges</source>
 			</trans-unit>
-			<trans-unit id="action.buttons" resname="action.buttons">
+			<trans-unit id="action.buttons">
 				<source>Buttons</source>
 			</trans-unit>
-			<trans-unit id="action.cards" resname="action.cards">
+			<trans-unit id="action.cards">
 				<source>Cards</source>
 			</trans-unit>
-			<trans-unit id="action.checkboxes" resname="action.checkboxes">
+			<trans-unit id="action.checkboxes">
 				<source>Checkboxes</source>
 			</trans-unit>
-			<trans-unit id="action.colorTokens" resname="action.colorTokens">
+			<trans-unit id="action.colorTokens">
 				<source>Color Tokens</source>
 			</trans-unit>
-			<trans-unit id="action.componentsOverview" resname="action.componentsOverview">
+			<trans-unit id="action.componentsOverview">
 				<source>Components overview</source>
 			</trans-unit>
-			<trans-unit id="action.developerTools" resname="action.developerTools">
+			<trans-unit id="action.developerTools">
 				<source>Developer Tools</source>
 			</trans-unit>
-			<trans-unit id="action.flashMessages" resname="action.flashMessages">
+			<trans-unit id="action.flashMessages">
 				<source>Flash messages</source>
 			</trans-unit>
-			<trans-unit id="action.form" resname="action.form">
+			<trans-unit id="action.form">
 				<source>Form</source>
 			</trans-unit>
-			<trans-unit id="action.icons" resname="action.icons">
+			<trans-unit id="action.icons">
 				<source>Icons</source>
 			</trans-unit>
-			<trans-unit id="action.infobox" resname="action.infobox">
+			<trans-unit id="action.infobox">
 				<source>Infobox</source>
 			</trans-unit>
-			<trans-unit id="action.input" resname="action.input">
+			<trans-unit id="action.input">
 				<source>Input</source>
 			</trans-unit>
-			<trans-unit id="action.managePageTrees" resname="action.managePageTrees">
+			<trans-unit id="action.managePageTrees">
 				<source>Manage example page trees</source>
 			</trans-unit>
-			<trans-unit id="action.modal" resname="action.modal">
+			<trans-unit id="action.modal">
 				<source>Modal</source>
 			</trans-unit>
-			<trans-unit id="action.navs" resname="action.navs">
+			<trans-unit id="action.navs">
 				<source>Navs</source>
 			</trans-unit>
-			<trans-unit id="action.notifications" resname="action.notifications">
+			<trans-unit id="action.notifications">
 				<source>Notifications</source>
 			</trans-unit>
-			<trans-unit id="action.pagination" resname="action.pagination">
+			<trans-unit id="action.pagination">
 				<source>Pagination</source>
 			</trans-unit>
-			<trans-unit id="action.panels" resname="action.panels">
+			<trans-unit id="action.panels">
 				<source>Panels</source>
 			</trans-unit>
-			<trans-unit id="action.progressIndicators" resname="action.progressIndicators">
+			<trans-unit id="action.progressIndicators">
 				<source>Progress indicators</source>
 			</trans-unit>
-			<trans-unit id="action.progressTrackers" resname="action.progressTrackers">
+			<trans-unit id="action.progressTrackers">
 				<source>Progress trackers</source>
 			</trans-unit>
-			<trans-unit id="action.select" resname="action.select">
+			<trans-unit id="action.select">
 				<source>Select</source>
 			</trans-unit>
-			<trans-unit id="action.shadows" resname="action.shadows">
+			<trans-unit id="action.shadows">
 				<source>Shadows</source>
 			</trans-unit>
-			<trans-unit id="action.stylesOverview" resname="action.stylesOverview">
+			<trans-unit id="action.stylesOverview">
 				<source>Styles overview</source>
 			</trans-unit>
-			<trans-unit id="action.surfaces" resname="action.surfaces">
+			<trans-unit id="action.surfaces">
 				<source>Surfaces</source>
 			</trans-unit>
-			<trans-unit id="action.tab" resname="action.tab">
+			<trans-unit id="action.tab">
 				<source>Tabs</source>
 			</trans-unit>
-			<trans-unit id="action.tables" resname="action.tables">
+			<trans-unit id="action.tables">
 				<source>Tables</source>
 			</trans-unit>
-			<trans-unit id="action.textarea" resname="action.textarea">
+			<trans-unit id="action.textarea">
 				<source>Textarea</source>
 			</trans-unit>
-			<trans-unit id="action.trees" resname="action.trees">
+			<trans-unit id="action.trees">
 				<source>Trees</source>
 			</trans-unit>
-			<trans-unit id="action.typography" resname="action.typography">
+			<trans-unit id="action.typography">
 				<source>Typography</source>
 			</trans-unit>
 
-			<trans-unit id="tcaCreateButton" resname="tcaCreateButton">
+			<trans-unit id="tcaCreateButton">
 				<source>Create page tree</source>
 			</trans-unit>
-			<trans-unit id="tcaDeleteButton" resname="tcaDeleteButton">
+			<trans-unit id="tcaDeleteButton">
 				<source>Delete page tree and all related records</source>
 			</trans-unit>
-			<trans-unit id="tcaCreateActionOkTitle" resname="tcaCreateActionOkTitle">
+			<trans-unit id="tcaCreateActionOkTitle">
 				<source>Data created</source>
 			</trans-unit>
-			<trans-unit id="tcaCreateActionOkBody" resname="tcaCreateActionOkBody">
+			<trans-unit id="tcaCreateActionOkBody">
 				<source>A page tree with TCA demo records was created.</source>
 			</trans-unit>
-			<trans-unit id="tcaCreateActionFailedTitle" resname="tcaCreateActionFailedTitle">
+			<trans-unit id="tcaCreateActionFailedTitle">
 				<source>No data created</source>
 			</trans-unit>
-			<trans-unit id="tcaCreateActionFailedBody" resname="tcaCreateActionFailedBody">
+			<trans-unit id="tcaCreateActionFailedBody">
 				<source>A page tree with TCA demo records exists already. Please delete that first.</source>
 			</trans-unit>
-			<trans-unit id="tcaDeleteActionOkTitle" resname="tcaDeleteActionOkTitle">
+			<trans-unit id="tcaDeleteActionOkTitle">
 				<source>Data deleted</source>
 			</trans-unit>
-			<trans-unit id="tcaDeleteActionOkBody" resname="tcaDeleteActionOkBody">
+			<trans-unit id="tcaDeleteActionOkBody">
 				<source>The page tree and all related records were deleted.</source>
 			</trans-unit>
-			<trans-unit id="extConfTemplateLocalizedLabel" resname="extConfTemplateLocalizedLabel">
+			<trans-unit id="extConfTemplateLocalizedLabel">
 				<source>A localized label</source>
 			</trans-unit>
-			<trans-unit id="translatedHelpTextForSelectCheckBox3" resname="translatedHelpTextForSelectCheckBox3">
+			<trans-unit id="translatedHelpTextForSelectCheckBox3">
 				<source>A localized help text</source>
 			</trans-unit>
-			<trans-unit id="minimalTableTitle" resname="minimalTableTitle">
+			<trans-unit id="minimalTableTitle">
 				<source>Form engine - Minimal table configuration</source>
 			</trans-unit>
-			<trans-unit id="minimalTableTitleField" resname="minimalTableTitleField">
+			<trans-unit id="minimalTableTitleField">
 				<source>Title field</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateButtonWithSets" resname="frontendCreateButtonWithSets">
+			<trans-unit id="frontendCreateButtonWithSets">
 				<source>Create page tree with site sets</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateButtonWithSysTemplate" resname="frontendCreateButtonWithSysTemplate">
+			<trans-unit id="frontendCreateButtonWithSysTemplate">
 				<source>Create page tree with sys_template</source>
 			</trans-unit>
-			<trans-unit id="frontendDeleteButton" resname="frontendDeleteButton">
+			<trans-unit id="frontendDeleteButton">
 				<source>Delete page tree and all related records</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionOkTitle" resname="frontendCreateActionOkTitle">
+			<trans-unit id="frontendCreateActionOkTitle">
 				<source>Data created</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionOkBody" resname="frontendCreateActionOkBody">
+			<trans-unit id="frontendCreateActionOkBody">
 				<source>A page tree with content elements was created.</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionFailedTitle" resname="frontendCreateActionFailedTitle">
+			<trans-unit id="frontendCreateActionFailedTitle">
 				<source>No data created</source>
 			</trans-unit>
-			<trans-unit id="frontendCreateActionFailedBody" resname="frontendCreateActionFailedBody">
+			<trans-unit id="frontendCreateActionFailedBody">
 				<source>A page tree with content elements exists already. Please delete that first.</source>
 			</trans-unit>
-			<trans-unit id="frontendDeleteActionOkTitle" resname="frontendDeleteActionOkTitle">
+			<trans-unit id="frontendDeleteActionOkTitle">
 				<source>Data deleted</source>
 			</trans-unit>
-			<trans-unit id="frontendDeleteActionOkBody" resname="frontendDeleteActionOkBody">
+			<trans-unit id="frontendDeleteActionOkBody">
 				<source>The page tree and all related records were deleted.</source>
 			</trans-unit>
-			<trans-unit id="itemGroupLabel" resname="itemGroupLabel">
+			<trans-unit id="itemGroupLabel">
 				<source>Item group from locallang</source>
 			</trans-unit>
-			<trans-unit id="backendLayouts.styleguideFrontend.title" resname="backendLayouts.styleguideFrontend.title">
+			<trans-unit id="backendLayouts.styleguideFrontend.title">
 				<source>Styleguide Frontend</source>
 			</trans-unit>
-			<trans-unit id="backendLayouts.styleguideFrontend.colpos.0" resname="backendLayouts.styleguideFrontend.colpos.0">
+			<trans-unit id="backendLayouts.styleguideFrontend.colpos.0">
 				<source>Main content</source>
 			</trans-unit>
 
-			<trans-unit id="colorScheme.selector.label" resname="colorScheme.selector.label">
+			<trans-unit id="colorScheme.selector.label">
 				<source>Color scheme:</source>
 			</trans-unit>
-			<trans-unit id="colorScheme.dark.label" resname="colorScheme.dark.label">
+			<trans-unit id="colorScheme.dark.label">
 				<source>Dark mode</source>
 			</trans-unit>
-			<trans-unit id="colorScheme.light.label" resname="colorScheme.light.label">
+			<trans-unit id="colorScheme.light.label">
 				<source>Light mode</source>
 			</trans-unit>
-			<trans-unit id="section.colorScheme.headline" resname="section.colorScheme.headline">
+			<trans-unit id="section.colorScheme.headline">
 				<source>Color scheme</source>
 			</trans-unit>
-			<trans-unit id="section.frontend.headline" resname="section.frontend.headline">
+			<trans-unit id="section.frontend.headline">
 				<source>Frontend Styleguide</source>
 			</trans-unit>
 
 			<!-- Component: Avatar -->
-			<trans-unit id="component.avatar.headline" resname="component.avatar.headline">
+			<trans-unit id="component.avatar.headline">
 				<source>Avatar</source>
 			</trans-unit>
-			<trans-unit id="component.avatar.introtext" resname="component.avatar.introtext">
+			<trans-unit id="component.avatar.introtext">
 				<source><![CDATA[An avatar displays an image that represents a backend user and can provide additional information such as their status.<br>Avatars can be displayed with an own ViewHelper. If an avatar image is stored in the user settings, this will be used instead of the standard image.]]></source>
 			</trans-unit>
-			<trans-unit id="component.avatar.section.default.headline" resname="component.avatar.section.default.headline">
+			<trans-unit id="component.avatar.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.avatar.section.default.text" resname="component.avatar.section.default.text">
+			<trans-unit id="component.avatar.section.default.text">
 				<source>Display the backend user's avatar image or a static fallback image for users without avatar images.</source>
 			</trans-unit>
-			<trans-unit id="component.avatar.section.withStatus.headline" resname="component.avatar.section.withStatus.headline">
+			<trans-unit id="component.avatar.section.withStatus.headline">
 				<source>Status</source>
 			</trans-unit>
-			<trans-unit id="component.avatar.section.withStatus.text" resname="component.avatar.section.withStatus.text">
+			<trans-unit id="component.avatar.section.withStatus.text">
 				<source>If set, the backend user type (normal user or admin user) and its status (disabled or not) will be displayed next to the avatar. </source>
 			</trans-unit>
 
 			<!-- Component: Badge -->
-			<trans-unit id="component.badge.headline" resname="component.badge.headline">
+			<trans-unit id="component.badge.headline">
 				<source>Badges</source>
 			</trans-unit>
-			<trans-unit id="component.badge.section.color.headline" resname="component.badge.section.color.headline">
+			<trans-unit id="component.badge.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="component.badge.section.default.headline" resname="component.badge.section.default.headline">
+			<trans-unit id="component.badge.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.badge.section.shape.headline" resname="component.badge.section.shape.headline">
+			<trans-unit id="component.badge.section.shape.headline">
 				<source>Shape</source>
 			</trans-unit>
-			<trans-unit id="component.badge.section.withinHeadlines.headline" resname="component.badge.section.withinHeadlines.headline">
+			<trans-unit id="component.badge.section.withinHeadlines.headline">
 				<source>Usage within headings</source>
 			</trans-unit>
 
 			<!-- Component: Button -->
-			<trans-unit id="component.button.headline" resname="component.button.headline">
+			<trans-unit id="component.button.headline">
 				<source>Buttons</source>
 			</trans-unit>
-			<trans-unit id="component.button.section.color.headline" resname="component.button.section.color.headline">
+			<trans-unit id="component.button.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="component.button.section.default.headline" resname="component.button.section.default.headline">
+			<trans-unit id="component.button.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.button.section.stateActive.headline" resname="component.button.section.stateActive.headline">
+			<trans-unit id="component.button.section.stateActive.headline">
 				<source>Active state</source>
 			</trans-unit>
-			<trans-unit id="component.button.section.stateDisabled.headline" resname="component.button.section.stateDisabled.headline">
+			<trans-unit id="component.button.section.stateDisabled.headline">
 				<source>Disabled state</source>
 			</trans-unit>
-			<trans-unit id="component.button.section.types.headline" resname="component.button.section.types.headline">
+			<trans-unit id="component.button.section.types.headline">
 				<source>Types</source>
 			</trans-unit>
-			<trans-unit id="component.button.section.withIcon.headline" resname="component.button.section.withIcon.headline">
+			<trans-unit id="component.button.section.withIcon.headline">
 				<source>Additional icon</source>
 			</trans-unit>
 
 			<!-- Component: Card -->
-			<trans-unit id="component.card.headline" resname="component.card.headline">
+			<trans-unit id="component.card.headline">
 				<source>Cards</source>
 			</trans-unit>
-			<trans-unit id="component.card.introtext" resname="component.card.introtext">
+			<trans-unit id="component.card.introtext">
 				<source>Cards can be displayed individually or in groups.</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.alignment.headline" resname="component.card.section.alignment.headline">
+			<trans-unit id="component.card.section.alignment.headline">
 				<source>Alignment</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.alignment.text" resname="component.card.section.alignment.text">
+			<trans-unit id="component.card.section.alignment.text">
 				<source><![CDATA[If you have multiple cards and each have a link or button, they may not align properly depending on the length of the previously placed headings or description text. To ensure they align regardless of previous content, place the link or button inside <code>div.card-footer</code> and not inside <code>div.card-body</code>. This way the links will always be aligned at the bottom of the card.]]></source>
 			</trans-unit>
-			<trans-unit id="component.card.section.color.headline" resname="component.card.section.color.headline">
+			<trans-unit id="component.card.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.color.text" resname="component.card.section.color.text">
+			<trans-unit id="component.card.section.color.text">
 				<source><![CDATA[It is possible to color cards. However, this option is rarely used - so please use this option sparingly. All available options are listed below. If needed assign one of the following classes to the <code>div.card</code>.<br> If you want to display the card in its default state, it is not necessary to add <code>.card-default</code> to the <code>div.card</code> - just omit the extra class.]]></source>
 			</trans-unit>
-			<trans-unit id="component.card.section.default.headline" resname="component.card.section.default.headline">
+			<trans-unit id="component.card.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.default.text" resname="component.card.section.default.text">
+			<trans-unit id="component.card.section.default.text">
 				<source>This is an example of a single card with its possible content. Unless further defined via CSS, a single card takes on the full width of the place it has been put into.</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.extensionManangerModule.headline" resname="component.card.section.extensionManangerModule.headline">
+			<trans-unit id="component.card.section.extensionManangerModule.headline">
 				<source>"Extension Manager" module</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.extensionManangerModule.text" resname="component.card.section.extensionManangerModule.text">
+			<trans-unit id="component.card.section.extensionManangerModule.text">
 				<source>In the extension manager it is possible to get pre-configured distributions. For this view, the cards have been enhanced with an image and some badges.</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.formFieldsInCards.headline" resname="component.card.section.formFieldsInCards.headline">
+			<trans-unit id="component.card.section.formFieldsInCards.headline">
 				<source>Form fields in cards</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.formFieldsInCards.text" resname="component.card.section.formFieldsInCards.text">
+			<trans-unit id="component.card.section.formFieldsInCards.text">
 				<source><![CDATA[It is also possible to display forms and form fields in cards. This is done, for example, in the "Upload Extension" section of the <a href="%1s">"Extensions" module</a>, in the "Feature Toggles" overlay in the <a href="%2s">"Settings" module</a> and in the "Full search" submodule of the <a href="%3s">"DB Check" module</a>.]]></source>
 			</trans-unit>
-			<trans-unit id="component.card.section.multipleCards.headline" resname="component.card.section.multipleCards.headline">
+			<trans-unit id="component.card.section.multipleCards.headline">
 				<source>Multiple cards</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.multipleCards.text" resname="component.card.section.multipleCards.text">
+			<trans-unit id="component.card.section.multipleCards.text">
 				<source><![CDATA[To display multiple cards, group them by wrapping them with <code>div.card-container</code>.]]></source>
 			</trans-unit>
-			<trans-unit id="component.card.section.rowsInCards.headline" resname="component.card.section.rowsInCards.headline">
+			<trans-unit id="component.card.section.rowsInCards.headline">
 				<source>Rows in cards</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.rowsInCards.text" resname="component.card.section.rowsInCards.text">
+			<trans-unit id="component.card.section.rowsInCards.text">
 				<source>On top of the element information overlay, rows are included within the card component.</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.size.headline" resname="component.card.section.size.headline">
+			<trans-unit id="component.card.section.size.headline">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="component.card.section.size.text" resname="component.card.section.size.text">
+			<trans-unit id="component.card.section.size.text">
 				<source><![CDATA[To give the card the desired size, assign one of the following classes to the <code>div.card</code>. If only a single card is used, it must be wrapped with <code>div.card-container</code> as with multiple cards.]]></source>
 			</trans-unit>
 
 			<!-- Component: Checkbox -->
-			<trans-unit id="component.checkbox.headline" resname="component.checkbox.headline">
+			<trans-unit id="component.checkbox.headline">
 				<source>Checkboxes</source>
 			</trans-unit>
-			<trans-unit id="component.checkbox.section.checkBoxToggleButton.headline" resname="component.checkbox.section.checkBoxToggleButton.headline">
+			<trans-unit id="component.checkbox.section.checkBoxToggleButton.headline">
 				<source>Checkbox toggle button</source>
 			</trans-unit>
-			<trans-unit id="component.checkbox.section.default.headline" resname="component.checkbox.section.default.headline">
+			<trans-unit id="component.checkbox.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.checkbox.section.iconToggle.headline" resname="component.checkbox.section.iconToggle.headline">
+			<trans-unit id="component.checkbox.section.iconToggle.headline">
 				<source>Icon Toggle</source>
 			</trans-unit>
-			<trans-unit id="component.checkbox.section.labeledToggle.headline" resname="component.checkbox.section.labeledToggle.headline">
+			<trans-unit id="component.checkbox.section.labeledToggle.headline">
 				<source>Labeled Toggle</source>
 			</trans-unit>
-			<trans-unit id="component.checkbox.section.switch.headline" resname="component.checkbox.section.switch.headline">
+			<trans-unit id="component.checkbox.section.switch.headline">
 				<source>Switch</source>
 			</trans-unit>
-			<trans-unit id="component.checkbox.section.toggle.headline" resname="component.checkbox.section.toggle.headline">
+			<trans-unit id="component.checkbox.section.toggle.headline">
 				<source>Toggle</source>
 			</trans-unit>
 
 			<!-- Component: Developer Tools -->
-			<trans-unit id="component.developerTools.headline" resname="component.developerTools.headline">
+			<trans-unit id="component.developerTools.headline">
 				<source>Flash messages</source>
 			</trans-unit>
-			<trans-unit id="component.developerTools.section.default.headline" resname="component.developerTools.section.default.headline">
+			<trans-unit id="component.developerTools.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
 
 			<!-- Component: Flash message -->
-			<trans-unit id="component.flashMessage.headline" resname="component.flashMessage.headline">
+			<trans-unit id="component.flashMessage.headline">
 				<source>Flash messages</source>
 			</trans-unit>
-			<trans-unit id="component.flashMessage.section.color.headline" resname="component.flashMessage.section.color.headline">
+			<trans-unit id="component.flashMessage.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="component.flashMessage.section.color.text" resname="component.flashMessage.section.color.text">
+			<trans-unit id="component.flashMessage.section.color.text">
 				<source><![CDATA[The color is decided by setting the corresponding <code>TYPO3\CMS\Core\Type\ContextualFeedbackSeverity</code>. The following options are available:]]></source>
 			</trans-unit>
-			<trans-unit id="component.flashMessage.section.default.headline" resname="component.flashMessage.section.default.headline">
+			<trans-unit id="component.flashMessage.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
 
 			<!-- Component: Form -->
-			<trans-unit id="component.form.headline" resname="component.form.headline">
+			<trans-unit id="component.form.headline">
 				<source>Form</source>
 			</trans-unit>
-			<trans-unit id="component.form.section.allFields.headline" resname="component.form.section.allFields.headline">
+			<trans-unit id="component.form.section.allFields.headline">
 				<source>Form with all fields and labels</source>
 			</trans-unit>
-			<trans-unit id="component.form.section.allFieldsRtlDirection.headline" resname="component.form.section.allFieldsRtlDirection.headline">
+			<trans-unit id="component.form.section.allFieldsRtlDirection.headline">
 				<source>Form with all fields and labels (right-to-left direction)</source>
 			</trans-unit>
-			<trans-unit id="component.form.section.formFieldsInRows.headline" resname="component.form.section.formFieldsInRows.headline">
+			<trans-unit id="component.form.section.formFieldsInRows.headline">
 				<source>Form fields in rows</source>
 			</trans-unit>
-			<trans-unit id="component.form.section.loginFormExample.headline" resname="component.form.section.loginFormExample.headline">
+			<trans-unit id="component.form.section.loginFormExample.headline">
 				<source>Login form example</source>
 			</trans-unit>
 
 			<!-- Component: Infobox -->
-			<trans-unit id="component.infobox.headline" resname="component.infobox.headline">
+			<trans-unit id="component.infobox.headline">
 				<source>Infobox</source>
 			</trans-unit>
-			<trans-unit id="component.infobox.introtext" resname="component.infobox.introtext">
+			<trans-unit id="component.infobox.introtext">
 				<source>This is a fluid based widget for the backend that can be inserted as view helper.</source>
 			</trans-unit>
-			<trans-unit id="component.infobox.section.color.headline" resname="component.infobox.section.color.headline">
+			<trans-unit id="component.infobox.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="component.infobox.section.customIcon.headline" resname="component.infobox.section.customIcon.headline">
+			<trans-unit id="component.infobox.section.customIcon.headline">
 				<source>Custom icon</source>
 			</trans-unit>
-			<trans-unit id="component.infobox.section.customIcon.text" resname="component.infobox.section.customIcon.text">
+			<trans-unit id="component.infobox.section.customIcon.text">
 				<source><![CDATA[It is also possible to use a custom icon. Just pass the icon identifier as <code>iconName</code> to the view helper. The identifier must be registered in your TYPO3 installation.]]></source>
 			</trans-unit>
-			<trans-unit id="component.infobox.section.default.headline" resname="component.infobox.section.default.headline">
+			<trans-unit id="component.infobox.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.infobox.section.withoutIcon.headline" resname="component.infobox.section.withoutIcon.headline">
+			<trans-unit id="component.infobox.section.withoutIcon.headline">
 				<source>Without icon</source>
 			</trans-unit>
 
 			<!-- Component: Input -->
-			<trans-unit id="component.input.headline" resname="component.input.headline">
+			<trans-unit id="component.input.headline">
 				<source>Input</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.default.headline" resname="component.input.section.default.headline">
+			<trans-unit id="component.input.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.disabled.headline" resname="component.input.disabled.default.headline">
+			<trans-unit id="component.input.section.disabled.headline">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.fileUpload.headline" resname="component.input.section.fileUpload.headline">
+			<trans-unit id="component.input.section.fileUpload.headline">
 				<source>File upload</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.email.headline" resname="component.input.section.email.headline">
+			<trans-unit id="component.input.section.email.headline">
 				<source>Email</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.placeholder.headline" resname="component.input.section.placeholder.headline">
+			<trans-unit id="component.input.section.placeholder.headline">
 				<source>Placeholder</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.additionalText.headline" resname="component.input.section.additionalText.headline">
+			<trans-unit id="component.input.section.additionalText.headline">
 				<source>Additional text</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.password.headline" resname="component.input.section.password.headline">
+			<trans-unit id="component.input.section.password.headline">
 				<source>Password</source>
 			</trans-unit>
-			<trans-unit id="component.input.section.state.headline" resname="component.input.section.state.headline">
+			<trans-unit id="component.input.section.state.headline">
 				<source>State</source>
 			</trans-unit>
 
 			<!-- Component: Modal -->
-			<trans-unit id="component.modal.headline" resname="component.modal.headline">
+			<trans-unit id="component.modal.headline">
 				<source>Modal</source>
 			</trans-unit>
-			<trans-unit id="component.modal.introtext" resname="component.modal.introtext">
+			<trans-unit id="component.modal.introtext">
 				<source>Modals on buttons can be triggered using the t3js-modal-trigger class. There are various data attributes to customize text and behavior. Not all of them are shown here.</source>
 			</trans-unit>
-			<trans-unit id="component.modal.section.customTitleContent.headline" resname="component.modal.section.customTitleContent.headline">
+			<trans-unit id="component.modal.section.customTitleContent.headline">
 				<source>Custom title and content within the modal</source>
 			</trans-unit>
-			<trans-unit id="component.modal.section.default.headline" resname="component.modal.section.default.headline">
+			<trans-unit id="component.modal.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.modal.section.severity.headline" resname="component.modal.section.severity.headline">
+			<trans-unit id="component.modal.section.severity.headline">
 				<source>Severity</source>
 			</trans-unit>
-			<trans-unit id="component.modal.section.size.headline" resname="component.modal.section.size.headline">
+			<trans-unit id="component.modal.section.size.headline">
 				<source>Size</source>
 			</trans-unit>
 
 			<!-- Component: Navs -->
-			<trans-unit id="component.navs.headline" resname="component.navs.headline">
+			<trans-unit id="component.navs.headline">
 				<source>Navs</source>
 			</trans-unit>
-			<trans-unit id="component.navs.basic.headline" resname="component.navs.basic.headline">
+			<trans-unit id="component.navs.basic.headline">
 				<source>Basic</source>
 			</trans-unit>
-			<trans-unit id="component.navs.flat.headline" resname="component.navs.flat.headline">
+			<trans-unit id="component.navs.flat.headline">
 				<source>Flat</source>
 			</trans-unit>
-			<trans-unit id="component.navs.pills.headline" resname="component.navs.pills.headline">
+			<trans-unit id="component.navs.pills.headline">
 				<source>Pills</source>
 			</trans-unit>
-			<trans-unit id="component.navs.tabs.headline" resname="component.navs.tabs.headline">
+			<trans-unit id="component.navs.tabs.headline">
 				<source>Tabs</source>
 			</trans-unit>
 
 
 			<!-- Component: Notification -->
-			<trans-unit id="component.notification.headline" resname="component.notification.headline">
+			<trans-unit id="component.notification.headline">
 				<source>Notifications</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.actionButtons.headline" resname="component.notification.section.actionButtons.headline">
+			<trans-unit id="component.notification.section.actionButtons.headline">
 				<source>Action Buttons</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.actionButtons.text" resname="component.notification.section.actionButtons.text">
+			<trans-unit id="component.notification.section.actionButtons.text">
 				<source>Notification can be enriched with action buttons to trigger two kinds of actions: immediate action and deferred actions.</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.actionButtons.immediateAction.headline" resname="component.notification.section.actionButtons.immediateAction.headline">
+			<trans-unit id="component.notification.section.actionButtons.immediateAction.headline">
 				<source>Immediate Action</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.actionButtons.immediateAction.text" resname="component.notification.section.actionButtons.immediateAction.text">
+			<trans-unit id="component.notification.section.actionButtons.immediateAction.text">
 				<source>Immediate actions are executed directly when the action button is triggered. The notification will dismiss immediately. This action type is suitable for action that don't need any processing time, e.g. calling a backend module.</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.actionButtons.deferredAction.headline" resname="component.notification.section.actionButtons.deferredAction.headline">
+			<trans-unit id="component.notification.section.actionButtons.deferredAction.headline">
 				<source>Deferred Action</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.actionButtons.deferredAction.text" resname="component.notification.section.actionButtons.deferredAction.text">
+			<trans-unit id="component.notification.section.actionButtons.deferredAction.text">
 				<source>Deferred actions are suitable for actions that need a period of time until they finish, e.g. AJAX calls. The notifications will close as soon the action has ended successfully. When invoked, the button will show a spinner icon to indicate some activity.</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.default.headline" resname="component.notification.section.default.headline">
+			<trans-unit id="component.notification.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.notification.implementation.html" resname="component.notification.implementation.html">
+			<trans-unit id="component.notification.implementation.html">
 				<source>Implementation via HTML:</source>
 			</trans-unit>
-			<trans-unit id="component.notification.implementation.script" resname="component.notification.implementation.script">
+			<trans-unit id="component.notification.implementation.script">
 				<source>Implementation via script:</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.severity.headline" resname="component.notification.section.severity.headline">
+			<trans-unit id="component.notification.section.severity.headline">
 				<source>Severity</source>
 			</trans-unit>
-			<trans-unit id="component.notification.section.severity.text" resname="component.notification.section.severity.text">
+			<trans-unit id="component.notification.section.severity.text">
 				<source>All notifications disappear after 5 seconds by default, except for the error message, which will remain stuck unless reconfigured.</source>
 			</trans-unit>
 
 			<!-- Component: Pagination -->
-			<trans-unit id="component.pagination.headline" resname="component.pagination.headline">
+			<trans-unit id="component.pagination.headline">
 				<source>Pagination</source>
 			</trans-unit>
-			<trans-unit id="component.pagination.section.default.headline" resname="component.pagination.section.default.headline">
+			<trans-unit id="component.pagination.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
 
 			<!-- Component: Panels -->
-			<trans-unit id="component.panels.headline" resname="component.panels.headline">
+			<trans-unit id="component.panels.headline">
 				<source>Panels</source>
 			</trans-unit>
-			<trans-unit id="component.panels.collapsible.headline" resname="component.panels.collapsible.headline">
+			<trans-unit id="component.panels.collapsible.headline">
 				<source>Collapsible</source>
 			</trans-unit>
-			<trans-unit id="component.panels.nesting.headline" resname="component.panels.nesting.headline">
+			<trans-unit id="component.panels.nesting.headline">
 				<source>Nesting</source>
 			</trans-unit>
-			<trans-unit id="component.panels.variants.headline" resname="component.panels.variants.headline">
+			<trans-unit id="component.panels.variants.headline">
 				<source>Variants</source>
 			</trans-unit>
-			<trans-unit id="component.panels.loader.headline" resname="component.panels.loader.headline">
+			<trans-unit id="component.panels.loader.headline">
 				<source>Loader</source>
 			</trans-unit>
-			<trans-unit id="component.panels.size.headline" resname="component.panels.size.headline">
+			<trans-unit id="component.panels.size.headline">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="component.panels.progress.headline" resname="component.panels.progress.headline">
+			<trans-unit id="component.panels.progress.headline">
 				<source>Progress</source>
 			</trans-unit>
-			<trans-unit id="component.panels.header.headline" resname="component.panels.header.headline">
+			<trans-unit id="component.panels.header.headline">
 				<source>Header</source>
 			</trans-unit>
-			<trans-unit id="component.panels.body.headline" resname="component.panels.body.headline">
+			<trans-unit id="component.panels.body.headline">
 				<source>Body</source>
 			</trans-unit>
-			<trans-unit id="component.panels.footer.headline" resname="component.panels.footer.headline">
+			<trans-unit id="component.panels.footer.headline">
 				<source>Footer</source>
 			</trans-unit>
-			<trans-unit id="component.panels.list.headline" resname="component.panels.list.headline">
+			<trans-unit id="component.panels.list.headline">
 				<source>List</source>
 			</trans-unit>
-			<trans-unit id="component.panels.table.headline" resname="component.panels.table.headline">
+			<trans-unit id="component.panels.table.headline">
 				<source>Table</source>
 			</trans-unit>
 
 			<!-- Component: Progress indicator -->
-			<trans-unit id="component.progressIndicator.headline" resname="component.progressIndicator.headline">
+			<trans-unit id="component.progressIndicator.headline">
 				<source>Progress indicators</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.introtext" resname="component.progressIndicator.introtext">
+			<trans-unit id="component.progressIndicator.introtext">
 				<source><![CDATA[Progress bars represent a specific state that can be displayed in a percental fashion, e.g. amount of uploaded files, executed Upgrade Wizards or disk space usage.<br>If the exact amount of data being loaded is not known, progress bars may be rendered in an indeterminate state.<br>If applicable, use clear wording that describes the progress bar.]]></source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.customLabel.headline" resname="component.progressIndicator.section.customLabel.headline">
+			<trans-unit id="component.progressIndicator.section.customLabel.headline">
 				<source>Custom label</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.customLabel.text" resname="component.progressIndicator.section.customLabel.text">
+			<trans-unit id="component.progressIndicator.section.customLabel.text">
 				<source>Optionally, a label can be displayed below the progress bar.</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.default.headline" resname="component.progressIndicator.section.default.headline">
+			<trans-unit id="component.progressIndicator.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.default.text" resname="component.progressIndicator.section.default.text">
+			<trans-unit id="component.progressIndicator.section.default.text">
 				<source>By default, an indefinite progress is displayed.</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.maxValue.headline" resname="component.progressIndicator.section.maxValue.headline">
+			<trans-unit id="component.progressIndicator.section.maxValue.headline">
 				<source>Max value</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline" resname="component.progressIndicator.section.ridiculousMaxValue.headline">
+			<trans-unit id="component.progressIndicator.section.ridiculousMaxValue.headline">
 				<source>Ridiculous max value</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.severity.headline" resname="component.progressIndicator.section.severity.headline">
+			<trans-unit id="component.progressIndicator.section.severity.headline">
 				<source>Severity</source>
 			</trans-unit>
-			<trans-unit id="component.progressIndicator.section.value.headline" resname="component.progressIndicator.section.value.headline">
+			<trans-unit id="component.progressIndicator.section.value.headline">
 				<source>Value</source>
 			</trans-unit>
 
 			<!-- Component: Progress trackers -->
-			<trans-unit id="component.progressTrackers.headline" resname="component.progressTrackers.headline">
+			<trans-unit id="component.progressTrackers.headline">
 				<source>Progress trackers</source>
 			</trans-unit>
-			<trans-unit id="component.progressTrackers.introtext" resname="component.progressTrackers.introtext">
+			<trans-unit id="component.progressTrackers.introtext">
 				<source><![CDATA[Progress trackers are a segmented variant of progress bars, dividing the progress bar into equal chunks.<br>The primary usage is in wizard components.]]></source>
 			</trans-unit>
-			<trans-unit id="component.progressTrackers.section.default.headline" resname="component.progressTrackers.section.default.headline">
+			<trans-unit id="component.progressTrackers.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.progressTrackers.section.activeStage.headline" resname="component.progressTrackers.section.activeStage.headline">
+			<trans-unit id="component.progressTrackers.section.activeStage.headline">
 				<source>Active stage</source>
 			</trans-unit>
 
 			<!-- Component: Select -->
-			<trans-unit id="component.select.headline" resname="component.select.headline">
+			<trans-unit id="component.select.headline">
 				<source>Select</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.default.headline" resname="component.select.section.default.headline">
+			<trans-unit id="component.select.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.multiple.headline" resname="component.select.section.multiple.headline">
+			<trans-unit id="component.select.section.multiple.headline">
 				<source>Multiple selection</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.optgroup.headline" resname="component.select.section.optgroup.headline">
+			<trans-unit id="component.select.section.optgroup.headline">
 				<source>Option groups</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.optgroup.single.headline" resname="component.select.section.optgroup.single.headline">
+			<trans-unit id="component.select.section.optgroup.single.headline">
 				<source>Single selection with option groups</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.optgroup.multiple.headline" resname="component.select.section.optgroup.multiple.headline">
+			<trans-unit id="component.select.section.optgroup.multiple.headline">
 				<source>Multiple selection with option groups</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.state.headline" resname="component.select.section.state.headline">
+			<trans-unit id="component.select.section.state.headline">
 				<source>State</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.colorScheme.optgroup.single.headline" resname="component.select.section.colorScheme.optgroup.single.headline">
+			<trans-unit id="component.select.section.colorScheme.optgroup.single.headline">
 				<source>Single selection with option groups</source>
 			</trans-unit>
-			<trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline" resname="component.select.section.colorScheme.optgroup.multiple.headline">
+			<trans-unit id="component.select.section.colorScheme.optgroup.multiple.headline">
 				<source>Multiple selection with option groups</source>
 			</trans-unit>
 
 			<!-- Component: Tabs -->
-			<trans-unit id="component.tabs.headline" resname="component.tabs.headline">
+			<trans-unit id="component.tabs.headline">
 				<source>Tab</source>
 			</trans-unit>
-			<trans-unit id="component.tabs.section.default.headline" resname="component.tabs.section.default.headline">
+			<trans-unit id="component.tabs.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.tabs.section.default.text" resname="component.tabs.section.default.text">
+			<trans-unit id="component.tabs.section.default.text">
 				<source>The last selected tab is stored in local browser storage.</source>
 			</trans-unit>
 
 			<!-- Component: Table -->
-			<trans-unit id="component.table.headline" resname="component.table.headline">
+			<trans-unit id="component.table.headline">
 				<source>Tables</source>
 			</trans-unit>
-			<trans-unit id="component.table.introtext" resname="component.table.introtext">
+			<trans-unit id="component.table.introtext">
 				<source>Use tables to show tabular data. The action icons should always be in the last table row cell.</source>
 			</trans-unit>
-			<trans-unit id="component.table.section.color.headline" resname="component.table.section.color.headline">
+			<trans-unit id="component.table.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="component.table.section.color.text" resname="component.table.section.color.text">
+			<trans-unit id="component.table.section.color.text">
 				<source><![CDATA[To color table rows, a class can be added to the <code>tr</code> element.]]></source>
 			</trans-unit>
-			<trans-unit id="component.table.section.colorScheme.default.headline" resname="component.table.section.colorScheme.default.headline">
+			<trans-unit id="component.table.section.colorScheme.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.table.section.colorScheme.colorFullExample.headline" resname="component.table.section.colorScheme.colorFullExample.headline">
+			<trans-unit id="component.table.section.colorScheme.colorFullExample.headline">
 				<source>Color (full example)</source>
 			</trans-unit>
-			<trans-unit id="component.table.section.default.headline" resname="component.table.section.default.headline">
+			<trans-unit id="component.table.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.table.section.wideTables.headline" resname="component.table.section.wideTables.headline">
+			<trans-unit id="component.table.section.wideTables.headline">
 				<source>Wide tables</source>
 			</trans-unit>
 
 			<!-- Component: Textarea -->
-			<trans-unit id="component.textarea.headline" resname="component.textarea.headline">
+			<trans-unit id="component.textarea.headline">
 				<source>Textarea</source>
 			</trans-unit>
-			<trans-unit id="component.textarea.section.default.headline" resname="component.textarea.section.default.headline">
+			<trans-unit id="component.textarea.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="component.textarea.section.disabled.headline" resname="component.textarea.disabled.default.headline">
+			<trans-unit id="component.textarea.section.disabled.headline">
 				<source>Disabled</source>
 			</trans-unit>
-			<trans-unit id="component.textarea.section.placeholder.headline" resname="component.textarea.section.placeholder.headline">
+			<trans-unit id="component.textarea.section.placeholder.headline">
 				<source>Placeholder</source>
 			</trans-unit>
-			<trans-unit id="component.textarea.section.state.headline" resname="component.textarea.section.state.headline">
+			<trans-unit id="component.textarea.section.state.headline">
 				<source>State</source>
 			</trans-unit>
 
 			<!-- Component: Tree -->
-			<trans-unit id="component.tree.headline" resname="component.tree.headline">
+			<trans-unit id="component.tree.headline">
 				<source>Trees</source>
 			</trans-unit>
-			<trans-unit id="component.tree.section.collapsibleTree.headline" resname="component.tree.section.collapsibleTree.headline">
+			<trans-unit id="component.tree.section.collapsibleTree.headline">
 				<source>Collapsible tree</source>
 			</trans-unit>
-			<trans-unit id="component.tree.section.collapsibleTree.text" resname="component.tree.section.collapsibleTree.text">
+			<trans-unit id="component.tree.section.collapsibleTree.text">
 				<source><![CDATA[Collapsible trees are used to show the configuration in a more structured way. Lower levels can be opened and closed, while the entries are collapsed by default. If a user opens entries, this state is saved in the session. There are additional data attributes that can be added to <code>div.treelist-collapse</code> to configure the collapse state.]]></source>
 			</trans-unit>
-			<trans-unit id="component.tree.section.fileTree.headline" resname="component.tree.section.fileTree.headline">
+			<trans-unit id="component.tree.section.fileTree.headline">
 				<source>File tree</source>
 			</trans-unit>
-			<trans-unit id="component.tree.section.fileTree.text" resname="component.tree.section.fileTree.text">
+			<trans-unit id="component.tree.section.fileTree.text">
 				<source>File trees are initialized via TypeScript like the page trees.</source>
 			</trans-unit>
-			<trans-unit id="component.tree.section.pageTree.headline" resname="component.tree.section.pageTree.headline">
+			<trans-unit id="component.tree.section.pageTree.headline">
 				<source>Page tree</source>
 			</trans-unit>
-			<trans-unit id="component.tree.section.pageTree.text" resname="component.tree.section.pageTree.text">
+			<trans-unit id="component.tree.section.pageTree.text">
 				<source>Initialization of a page tree is done via TypeScript as in the code example below.</source>
 			</trans-unit>
 
 			<!-- Styles: Color tokens -->
-			<trans-unit id="styles.colorTokens.headline" resname="styles.colorTokens.headline">
+			<trans-unit id="styles.colorTokens.headline">
 				<source>Color Tokens</source>
 			</trans-unit>
-			<trans-unit id="styles.colorTokens.introtext" resname="styles.colorTokens.introtext">
+			<trans-unit id="styles.colorTokens.introtext">
 				<source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
 			</trans-unit>
 
 			<!-- Styles: Icons -->
-			<trans-unit id="styles.icons.headline" resname="styles.icons.headline">
+			<trans-unit id="styles.icons.headline">
 				<source>Icons</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.introtext" resname="styles.icons.introtext">
+			<trans-unit id="styles.icons.introtext">
 				<source>Icons can be used in backend modules. TYPO3 automatically sends the corresponding HTML output code.</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.default.headline" resname="styles.icons.section.default.headline">
+			<trans-unit id="styles.icons.section.default.headline">
 				<source>Default</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.overlay.headline" resname="styles.icons.section.overlay.headline">
+			<trans-unit id="styles.icons.section.overlay.headline">
 				<source>Overlay</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.overview.headline" resname="styles.icons.section.overview.headline">
+			<trans-unit id="styles.icons.section.overview.headline">
 				<source>Overview</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.size.headline" resname="styles.icons.section.size.headline">
+			<trans-unit id="styles.icons.section.size.headline">
 				<source>Size</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.usage.headline" resname="styles.icons.section.usage.headline">
+			<trans-unit id="styles.icons.section.usage.headline">
 				<source>Usage</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.usage.bitmap.headline" resname="styles.icons.section.usage.bitmap.headline">
+			<trans-unit id="styles.icons.section.usage.bitmap.headline">
 				<source>Bitmap</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.usage.implementation" resname="styles.icons.section.usage.implementation">
+			<trans-unit id="styles.icons.section.usage.implementation">
 				<source>Implementation in Fluid via ViewHelper:</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.usage.registration" resname="styles.icons.section.usage.registration">
+			<trans-unit id="styles.icons.section.usage.registration">
 				<source>Registration:</source>
 			</trans-unit>
-			<trans-unit id="styles.icons.section.usage.svg.headline" resname="styles.icons.section.usage.svg.headline">
+			<trans-unit id="styles.icons.section.usage.svg.headline">
 				<source>SVG</source>
 			</trans-unit>
 
 			<!-- Styles: Shadows -->
-			<trans-unit id="styles.shadows.headline" resname="styles.shadows.headline">
+			<trans-unit id="styles.shadows.headline">
 				<source>Shadows</source>
 			</trans-unit>
-			<trans-unit id="styles.shadows.introtext" resname="styles.shadows.introtext">
+			<trans-unit id="styles.shadows.introtext">
 				<source><![CDATA[Shadows used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
 			</trans-unit>
 
 			<!-- Styles: Surfaces -->
-			<trans-unit id="styles.surfaces.headline" resname="styles.surfaces.headline">
+			<trans-unit id="styles.surfaces.headline">
 				<source>Surfaces</source>
 			</trans-unit>
-			<trans-unit id="styles.surfaces.introtext" resname="styles.surfaces.introtext">
+			<trans-unit id="styles.surfaces.introtext">
 				<source><![CDATA[Surfaces used in the TYPO3 Backend, for <strong>internal usage only</strong>.]]></source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.color.headline" resname="styles.typography.section.color.headline">
+			<trans-unit id="styles.typography.section.color.headline">
 				<source>Color</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.natural.headline" resname="styles.typography.section.natural.headline">
+			<trans-unit id="styles.typography.section.natural.headline">
 				<source>Natural</source>
 			</trans-unit>
 
 			<!-- Styles: Typography -->
-			<trans-unit id="styles.typography.headline" resname="styles.typography.headline">
+			<trans-unit id="styles.typography.headline">
 				<source>Typography</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.headings.headline" resname="styles.typography.section.headings.headline">
+			<trans-unit id="styles.typography.section.headings.headline">
 				<source>Headings</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.headings.text" resname="styles.typography.section.headings.text">
+			<trans-unit id="styles.typography.section.headings.text">
 				<source><![CDATA[Headline "H1" is the main headline within each backend module. Only added once to every backend page.<br>Headline "H2" is the headline for every section in backend modules. Place above each section and use several times.<br>Headline "H3" can be used to split section content into logical units. Place in between paragraphs within section.<br>Headline "H4" might be used to split off meta / footer information.]]></source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.links.headline" resname="styles.typography.section.links.headline">
+			<trans-unit id="styles.typography.section.links.headline">
 				<source>Links</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.lists.headline" resname="styles.typography.section.lists.headline">
+			<trans-unit id="styles.typography.section.lists.headline">
 				<source>Lists</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.lists.text" resname="styles.typography.section.lists.text">
+			<trans-unit id="styles.typography.section.lists.text">
 				<source><![CDATA[By default, ordered and unordered lists are formatted with bullets and decimals. By adding <code>class="list-unstyled"</code> to the ol or ul tag, it is possible to structure content in list form without the typical list styling.]]></source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.lists.ordered.headline" resname="styles.typography.section.lists.ordered.headline">
+			<trans-unit id="styles.typography.section.lists.ordered.headline">
 				<source>Ordered list</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.lists.unordered.headline" resname="styles.typography.section.lists.unordered.headline">
+			<trans-unit id="styles.typography.section.lists.unordered.headline">
 				<source>Unordered list</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.paragraph.headline" resname="styles.typography.section.paragraph.headline">
+			<trans-unit id="styles.typography.section.paragraph.headline">
 				<source>Paragraph</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.smallText.headline" resname="styles.typography.section.smallText.headline">
+			<trans-unit id="styles.typography.section.smallText.headline">
 				<source>Small text</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.smallText.text" resname="styles.typography.section.smallText.text">
+			<trans-unit id="styles.typography.section.smallText.text">
 				<source>Footer information, small notices can be wrapped in small text tag.</source>
 			</trans-unit>
-			<trans-unit id="styles.typography.section.textColor.headline" resname="styles.typography.section.textColor.headline">
+			<trans-unit id="styles.typography.section.textColor.headline">
 				<source>Text color</source>
 			</trans-unit>
 		</body>

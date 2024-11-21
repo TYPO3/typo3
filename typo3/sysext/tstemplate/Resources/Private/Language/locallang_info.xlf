@@ -3,40 +3,40 @@
 	<file source-language="en" datatype="plaintext" original="EXT:tstemplate/Resources/Private/Language/locallang_info.xlf" date="2011-10-17T20:22:37Z" product-name="tstemplate">
 		<header/>
 		<body>
-			<trans-unit id="submodule.title" resname="submodule.title">
+			<trans-unit id="submodule.title">
 				<source>Edit TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="submodule.titleWithRecord" resname="submodule.titleWithRecord">
+			<trans-unit id="submodule.titleWithRecord">
 				<source>Edit TypoScript record "%s"</source>
 			</trans-unit>
-			<trans-unit id="submodule.description" resname="submodule.description">
+			<trans-unit id="submodule.description">
 				<source>Modify the content of the selected TypoScript record of the current page. Modifications can be made either for configurations like TypoScript constants and setup or basics like the title and description of the TypoScript record itself.</source>
 			</trans-unit>
-			<trans-unit id="options.selectedRecord" resname="options.selectedRecord">
+			<trans-unit id="options.selectedRecord">
 				<source>Selected record</source>
 			</trans-unit>
-			<trans-unit id="table.column.constants" resname="table.column.constants">
+			<trans-unit id="table.column.constants">
 				<source>Constants</source>
 			</trans-unit>
-			<trans-unit id="table.column.description" resname="table.column.description">
+			<trans-unit id="table.column.description">
 				<source>Description</source>
 			</trans-unit>
-			<trans-unit id="table.column.lines" resname="table.column.lines">
+			<trans-unit id="table.column.lines">
 				<source>%s lines</source>
 			</trans-unit>
-			<trans-unit id="table.column.setup" resname="table.column.setup">
+			<trans-unit id="table.column.setup">
 				<source>Setup</source>
 			</trans-unit>
-			<trans-unit id="table.column.title" resname="table.column.title">
+			<trans-unit id="table.column.title">
 				<source>Title</source>
 			</trans-unit>
-			<trans-unit id="btn.editTypoScriptRecord" resname="btn.editTypoScriptRecord">
+			<trans-unit id="btn.editTypoScriptRecord">
 				<source>Edit the whole TypoScript record</source>
 			</trans-unit>
-			<trans-unit id="infoTypoScriptRecordFromSite.title" resname="infoTypoScriptRecordFromSite.title">
+			<trans-unit id="infoTypoScriptRecordFromSite.title">
 				<source>Includes via site sets</source>
 			</trans-unit>
-			<trans-unit id="infoTypoScriptRecordFromSite.message" resname="infoTypoScriptRecordFromSite.message">
+			<trans-unit id="infoTypoScriptRecordFromSite.message">
 				<source>The site configuration '%s' has one or more dependencies on site sets. The TypoScript definitions can be edited on the file system.</source>
 			</trans-unit>
 		</body>

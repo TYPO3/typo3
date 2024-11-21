@@ -3,7 +3,7 @@
 	<file source-language="en" datatype="plaintext" original="EXT:test_tca_select/Resources/Private/Language/locallang.xlf" date="2022-12-21T19:27:00Z" product-name="test_tca_select">
 		<header/>
 		<body>
-			<trans-unit id="aLabel" resname="aLabel">
+			<trans-unit id="aLabel">
 				<source>translated</source>
 			</trans-unit>
 		</body>

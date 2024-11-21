@@ -3,105 +3,105 @@
 	<file source-language="en" datatype="plaintext" original="EXT:webhooks/Resources/Private/Language/locallang_db.xlf" date="2023-01-11T20:22:32Z" product-name="webhooks">
 		<header/>
 		<body>
-			<trans-unit id="webhooks" resname="webhooks">
+			<trans-unit id="webhooks">
 				<source>Webhooks</source>
 			</trans-unit>
 
-			<trans-unit id="sys_webhook" resname="sys_webhook">
+			<trans-unit id="sys_webhook">
 				<source>System webhooks</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.name" resname="sys_webhook.name">
+			<trans-unit id="sys_webhook.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.name.description" resname="sys_webhook.name.description">
+			<trans-unit id="sys_webhook.name.description">
 				<source>Meaningful name of the webhook</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.url" resname="sys_webhook.url">
+			<trans-unit id="sys_webhook.url">
 				<source>URL</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.url.description" resname="sys_webhook.url.description">
+			<trans-unit id="sys_webhook.url.description">
 				<source>Target URL that should be called.</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.method" resname="sys_webhook.method">
+			<trans-unit id="sys_webhook.method">
 				<source>HTTP Method</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.verify_ssl" resname="sys_webhook.verify_ssl">
+			<trans-unit id="sys_webhook.verify_ssl">
 				<source>Verify SSL</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.verify_ssl.description" resname="sys_webhook.verify_ssl.description">
+			<trans-unit id="sys_webhook.verify_ssl.description">
 				<source>Verify that the connection is secure and valid, this setting should only be disabled in case a verification is not possible.</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.additional_headers" resname="sys_webhook.additional_headers">
+			<trans-unit id="sys_webhook.additional_headers">
 				<source>Additional Headers</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.additional_headers.description" resname="sys_webhook.additional_headers.description">
+			<trans-unit id="sys_webhook.additional_headers.description">
 				<source>Additional headers that should be added to the HTTP request. Data must be provided as valid JSON string.</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.identifier" resname="sys_webhook.identifier">
+			<trans-unit id="sys_webhook.identifier">
 				<source>Identifier</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.identifier.description" resname="sys_webhook.identifier.description">
+			<trans-unit id="sys_webhook.identifier.description">
 				<source>This is your unique webhook identifier</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type" resname="sys_webhook.webhook_type">
+			<trans-unit id="sys_webhook.webhook_type">
 				<source>Webhook Trigger</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.secret" resname="sys_webhook.secret">
+			<trans-unit id="sys_webhook.secret">
 				<source>Secret</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.secret.description" resname="sys_webhook.secret.description">
+			<trans-unit id="sys_webhook.secret.description">
 				<source>The secret is mandatory to create a hash that is sent with the request. The secret can be used to verify the payload has not been modified, see the documentation for more details.</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.secret.passwordGenerator" resname="sys_webhook.secret.passwordGenerator">
+			<trans-unit id="sys_webhook.secret.passwordGenerator">
 				<source>Generate secret</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.description" resname="sys_webhook.webhook_type.description">
+			<trans-unit id="sys_webhook.webhook_type.description">
 				<source>Trigger the webhook, ...</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.select" resname="sys_webhook.webhook_type.select">
+			<trans-unit id="sys_webhook.webhook_type.select">
 				<source>Select a trigger</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.typo3-content-page-modification" resname="sys_webhook.webhook_type.typo3-content-page-modification">
+			<trans-unit id="sys_webhook.webhook_type.typo3-content-page-modification">
 				<source>... when a page is added or changed</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.typo3-login-error" resname="sys_webhook.webhook_type.typo3-login-error">
+			<trans-unit id="sys_webhook.webhook_type.typo3-login-error">
 				<source>... when an error occurs on log in</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.typo3-mfa-error" resname="sys_webhook.webhook_type.typo3-mfa-error">
+			<trans-unit id="sys_webhook.webhook_type.typo3-mfa-error">
 				<source>... when an error occurs on multi-factor authentication</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.typo3-file-added" resname="sys_webhook.webhook_type.typo3-file-added">
+			<trans-unit id="sys_webhook.webhook_type.typo3-file-added">
 				<source>... when a file is added</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.typo3-file-removed" resname="sys_webhook.webhook_type.typo3-file-removed">
+			<trans-unit id="sys_webhook.webhook_type.typo3-file-removed">
 				<source>... when a file is removed</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.webhook_type.typo3-file-updated" resname="sys_webhook.webhook_type.typo3-file-updated">
+			<trans-unit id="sys_webhook.webhook_type.typo3-file-updated">
 				<source>... when a file is updated</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.storage_pid" resname="sys_webhook.storage_pid">
+			<trans-unit id="sys_webhook.storage_pid">
 				<source>Storage PID</source>
 			</trans-unit>
-			<trans-unit id="sys_webhook.storage_pid.description" resname="sys_webhook.storage_pid.description">
+			<trans-unit id="sys_webhook.storage_pid.description">
 				<source>Select the page on which a new record is created on.</source>
 			</trans-unit>
 
-			<trans-unit id="palette.config" resname="palette.config">
+			<trans-unit id="palette.config">
 				<source>Configuration</source>
 			</trans-unit>
-			<trans-unit id="palette.config.description" resname="palette.config.description">
+			<trans-unit id="palette.config.description">
 				<source>General configuration of the webhook.</source>
 			</trans-unit>
-			<trans-unit id="palette.http_settings" resname="palette.http_settings">
+			<trans-unit id="palette.http_settings">
 				<source>HTTP Settings</source>
 			</trans-unit>
-			<trans-unit id="palette.http_settings.description" resname="palette.http_settings.description">
+			<trans-unit id="palette.http_settings.description">
 				<source>Advanced HTTP request settings.</source>
 			</trans-unit>
-			<trans-unit id="palette.additional" resname="palette.additional">
+			<trans-unit id="palette.additional">
 				<source>Additional configuration</source>
 			</trans-unit>
-			<trans-unit id="palette.additional.description" resname="palette.additional.description">
+			<trans-unit id="palette.additional.description">
 				<source>Specific configuration for the selected webhook type</source>
 			</trans-unit>
 		</body>
