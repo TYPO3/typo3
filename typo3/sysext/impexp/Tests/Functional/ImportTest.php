@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Impexp\Exception\LoadingFileFailedException;
@@ -39,14 +40,13 @@ final class ImportTest extends AbstractImportExportTestCase
 
     #[DataProvider('loadingFileFromWithinTypo3BaseFolderSucceedsProvider')]
     #[Test]
+    #[DoesNotPerformAssertions]
     public function loadingFileFromWithinTypo3BaseFolderSucceeds(string $filePath): void
     {
         $filePath = str_replace('%EnvironmentPublicPath%', Environment::getPublicPath(), $filePath);
 
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->loadFile($filePath);
-
-        self::assertTrue(true);
     }
 
     public static function loadingFileFailsProvider(): array
@@ -229,21 +229,21 @@ final class ImportTest extends AbstractImportExportTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function loadXmlSucceeds(): void
     {
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/XmlExports/empty.xml');
-        self::assertTrue(true);
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function loadT3dSucceeds(): void
     {
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty.t3d');
-        self::assertTrue(true);
     }
 
     #[Test]
@@ -257,6 +257,7 @@ final class ImportTest extends AbstractImportExportTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function loadT3dCompressedSucceeds(): void
     {
         if (!function_exists('gzuncompress')) {
@@ -266,6 +267,5 @@ final class ImportTest extends AbstractImportExportTestCase
         $importMock = $this->getAccessibleMock(Import::class, null);
         $importMock->setPid(0);
         $importMock->loadFile('EXT:impexp/Tests/Functional/Fixtures/T3dExports/empty-z.t3d');
-        self::assertTrue(true);
     }
 }

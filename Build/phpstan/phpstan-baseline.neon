@@ -2095,12 +2095,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/DataHandling/RecordFieldTransformerTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Database/Query/Expression/ExpressionBuilderTest.php
-
-		-
 			message: '#^Parameter \#1 \$array \(array\{string\}\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
@@ -2179,12 +2173,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Domain/Repository/PageRepositoryTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Error/ErrorHandlerTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with array and array will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -2207,18 +2195,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Functional/Resource/StorageRepositoryTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/ExtensionManagementUtility/ExtensionManagementUtilityTcaOverrideRequireTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Utility/ExtensionManagementUtility/ExtensionManagementUtilityTcaRequireTest.php
 
 		-
 			message: '#^Parameter \#2 \$data of method TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend\:\:set\(\) expects string, array\<int, string\> given\.$#'
@@ -4679,18 +4655,6 @@ parameters:
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/impexp/Classes/ImportExport.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/impexp/Tests/Functional/Import/PagesAndTtContentWithImagesInFilledDatabaseTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 4
-			path: ../../typo3/sysext/impexp/Tests/Functional/ImportTest.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'

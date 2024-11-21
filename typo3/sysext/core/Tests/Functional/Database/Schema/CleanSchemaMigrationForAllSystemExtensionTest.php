@@ -55,15 +55,11 @@ final class CleanSchemaMigrationForAllSystemExtensionTest extends FunctionalTest
         $sqlStatements = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
         $addCreateChange = $schemaMigrator->getUpdateSuggestions($sqlStatements);
         foreach ($addCreateChange['Default'] as $operation => $targets) {
-            if (!empty($targets)) {
-                self::fail("Schema probably polluted by previous test, unclean operation: $operation");
-            }
+            self::assertEmpty($targets, "Schema probably polluted by previous test, unclean operation: $operation");
         }
         $dropRename = $schemaMigrator->getUpdateSuggestions($sqlStatements, true);
         foreach ($dropRename['Default'] as $operation => $targets) {
-            if (!empty($targets)) {
-                self::fail("Schema probably polluted by previous test, unclean operation: $operation");
-            }
+            self::assertEmpty($targets, "Schema probably polluted by previous test, unclean operation: $operation");
         }
     }
 }

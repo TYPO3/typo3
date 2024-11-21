@@ -15,7 +15,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.2/phpunit.xsd"
     backupGlobals="true"
-    beStrictAboutTestsThatDoNotTestAnything="false"
     bootstrap="UnitTestsBootstrap.php"
     cacheDirectory=".phpunit.cache"
     cacheResult="false"
