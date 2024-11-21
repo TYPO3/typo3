@@ -83,6 +83,7 @@ export class SettingsEditorElement extends LitElement {
   @property({ type: String, attribute: 'action-url' }) actionUrl: string;
   @property({ type: String, attribute: 'dump-url' }) dumpUrl: string;
   @property({ type: Object, attribute: 'custom-form-data' }) customFormData: Record<string, string> = {};
+  @property({ type: Boolean }) debug: boolean = false;
 
   @state() searchTerm: string = '';
   @state() activeCategory: string = '';
@@ -153,6 +154,7 @@ export class SettingsEditorElement extends LitElement {
               ?hidden=${setting.__hidden}
               .setting=${setting}
               .dumpuri=${this.dumpUrl}
+              ?debug=${this.debug}
           ></typo3-backend-editable-setting>
         `)}
       </div>

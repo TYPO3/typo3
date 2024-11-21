@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, TemplateResult } from 'lit';
+import { html, nothing, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { BaseElement } from './base';
 
@@ -32,7 +32,7 @@ export class StringTypeElement extends BaseElement<string> {
         @change=${(e: InputEvent) => this.value = (e.target as HTMLInputElement).value}
       >
         ${Object.entries(this.enum).map(([value, label]) => html`
-          <option ?selected=${this.value === value} value=${value}>${label}</option>
+          <option ?selected=${this.value === value} value=${value}>${label}${this.debug ? html` [${value}]` : nothing}</option>
         `)}
       </select>
     `;

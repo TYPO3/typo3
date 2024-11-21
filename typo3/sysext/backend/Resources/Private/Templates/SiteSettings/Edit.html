@@ -33,6 +33,7 @@
                 dump-url="{dumpUrl}"
                 categories="{categories -> f:format.json()}"
                 custom-form-data="{f:format.json(value: {formToken: formToken, returnUrl: returnUrl})}"
+                {f:if(condition: debug, then: 'debug')}
             ></typo3-backend-settings-editor>
         </f:else>
     </f:if>

@@ -53,6 +53,7 @@ export class EditableSettingElement extends LitElement {
 
   @property({ type: Object }) setting: EditableSetting;
   @property({ type: String }) dumpuri: string;
+  @property({ type: Boolean }) debug: boolean = false;
 
   @state()
   hasChange: boolean = false;
@@ -114,6 +115,7 @@ export class EditableSettingElement extends LitElement {
       formid: `setting-${definition.key}`,
       name: `settings[${definition.key}]`,
       value: Array.isArray(value) ? JSON.stringify(value) : String(value),
+      debug: this.debug,
       readonly: definition.readonly,
       enum: enumEntries.length > 0 ? JSON.stringify(Object.fromEntries(enumEntries)) : false,
       default: Array.isArray(definition.default) ? JSON.stringify(definition.default) : String(definition.default),

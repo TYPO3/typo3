@@ -155,6 +155,7 @@ readonly class SiteSettingsController
         $view->assign('returnUrl', $returnUrl);
         $view->assign('dumpUrl', (string)$this->uriBuilder->buildUriFromRoute('site_settings.dump', ['site' => $site->getIdentifier()]));
         $view->assign('categories', $categories);
+        $view->assign('debug', $this->getBackendUser()->shallDisplayDebugInformation());
 
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $view->assign('formToken', $formProtection->generateToken('site_settings', 'save'));
