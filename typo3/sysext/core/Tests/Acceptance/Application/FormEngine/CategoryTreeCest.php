@@ -65,5 +65,14 @@ final class CategoryTreeCest
         $I->waitForElement('.svg-tree-wrapper svg');
         $I->waitForText('Category');
         $I->see('level-1-4');
+
+        $I->click('.t3js-editform-close');
+        // Reset all collapsed tables
+        $I->click('button[data-table="be_users"] .icon-actions-view-list-expand');
+        $I->wait(1);
+        $I->click('button[data-table="be_groups"] .icon-actions-view-list-expand');
+        $I->wait(1);
+        $I->click('button[data-table="pages"] .icon-actions-view-list-expand');
+        $I->wait(1);
     }
 }

@@ -79,6 +79,7 @@ return [
             'config' => [
                 'type' => 'datetime',
                 'dbType' => 'datetime',
+                'nullable' => true,
             ],
         ],
 
@@ -106,6 +107,7 @@ return [
                 'type' => 'datetime',
                 'format' => 'date',
                 'dbType' => 'date',
+                'nullable' => true,
             ],
         ],
 
@@ -133,6 +135,7 @@ return [
                 'type' => 'datetime',
                 'format' => 'timesec',
                 'dbType' => 'time',
+                'nullable' => true,
             ],
         ],
 
@@ -160,6 +163,7 @@ return [
                 'type' => 'datetime',
                 'format' => 'time',
                 'dbType' => 'time',
+                'nullable' => true,
             ],
         ],
 

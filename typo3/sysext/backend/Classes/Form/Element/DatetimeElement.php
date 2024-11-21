@@ -193,6 +193,8 @@ class DatetimeElement extends AbstractFormElement
                 // time(sec) is stored as elapsed seconds in DB, hence we interpret it as UTC time on 1970-01-01
                 // and pass on the ISO format to JS.
                 $itemValue = gmdate('c', (int)$itemValue);
+            } elseif ((int)$itemValue === 0) {
+                $itemValue = null;
             }
         }
 

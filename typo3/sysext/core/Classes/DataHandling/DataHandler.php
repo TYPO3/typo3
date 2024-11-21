@@ -2169,14 +2169,12 @@ class DataHandler implements LoggerAwareInterface
         $isNativeDateTimeField = false;
         $nativeDateTimeFieldFormat = '';
         $nativeDateTimeFieldEmptyValue = '';
-        $nativeDateTimeFieldResetValue = '';
         $nativeDateTimeType = $tcaFieldConf['dbType'] ?? '';
         if (in_array($nativeDateTimeType, QueryHelper::getDateTimeTypes(), true)) {
             $isNativeDateTimeField = true;
             $dateTimeFormats = QueryHelper::getDateTimeFormats();
             $nativeDateTimeFieldFormat = $dateTimeFormats[$nativeDateTimeType]['format'];
             $nativeDateTimeFieldEmptyValue = $dateTimeFormats[$nativeDateTimeType]['empty'];
-            $nativeDateTimeFieldResetValue = $dateTimeFormats[$nativeDateTimeType]['reset'];
             if (empty($value)) {
                 $value = null;
             } else {
@@ -2242,8 +2240,10 @@ class DataHandler implements LoggerAwareInterface
                 $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : null;
             } else {
                 // Convert the timestamp back to a date/time
-                $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : $nativeDateTimeFieldResetValue;
+                $value = $value !== null ? gmdate($nativeDateTimeFieldFormat, $value) : $nativeDateTimeFieldEmptyValue;
             }
+        } elseif ((string)$value === '' && ($tcaFieldConf['nullable'] ?? false)) {
+            $value = null;
         } else {
             // Ensure value is always an int if no native field is used
             $value = (int)$value;
