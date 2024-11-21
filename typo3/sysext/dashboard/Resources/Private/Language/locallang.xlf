@@ -203,7 +203,7 @@
 				<source>Latest changed pages</source>
 			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.description" xml:space="preserve">
-				<source>Show a list of pages where the latest changes where made</source>
+				<source>Show a list of pages where the latest changes were made</source>
 			</trans-unit>
 			<trans-unit id="widgets.latestChangedPages.empty" xml:space="preserve">
 				<source>No history found</source>
