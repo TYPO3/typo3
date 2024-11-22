@@ -25,6 +25,7 @@ enum Selectors {
   toggleFieldSelector = '.t3js-flex-control-toggle',
   controlSectionSelector = '.t3js-formengine-irre-control',
   sectionContentContainerSelector = '.t3js-flex-section-content',
+  sectionContainerLabelSelector = '.t3js-formengine-label',
   deleteContainerButtonSelector = '.t3js-delete',
   contentPreviewSelector = '.content-preview',
 }
@@ -104,7 +105,7 @@ class FlexFormContainerContainer {
 
           this.container.appendChild(actionField);
           this.container.classList.add('t3-flex-section--deleted');
-          this.container.classList.add('has-change');
+          this.container.closest('.t3-form-field-container.t3-form-flex')?.querySelector(Selectors.sectionContainerLabelSelector)?.classList.add('has-change');
           new RegularEvent('transitionend', (): void => {
             this.container.classList.add('hidden');
 
