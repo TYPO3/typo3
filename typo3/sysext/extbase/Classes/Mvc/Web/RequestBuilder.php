@@ -18,11 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Mvc\Web;
 
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Module\ExtbaseModule;
 use TYPO3\CMS\Core\Error\Http\PageNotFoundException;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Routing\PageArguments;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception as MvcException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException;
@@ -30,47 +30,26 @@ use TYPO3\CMS\Extbase\Mvc\Exception\InvalidArgumentNameException;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 
 /**
- * Builds a web request.
+ * Builds an extbase web request.
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class RequestBuilder implements SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class RequestBuilder
 {
-    protected ConfigurationManagerInterface $configurationManager;
-    protected ExtensionService $extensionService;
-
-    public function __construct(ConfigurationManagerInterface $configurationManager, ExtensionService $extensionService)
-    {
-        $this->configurationManager = $configurationManager;
-        $this->extensionService = $extensionService;
-    }
+    public function __construct(
+        protected ConfigurationManagerInterface $configurationManager,
+        protected ExtensionService $extensionService,
+    ) {}
 
     /**
-     * @throws MvcException
-     * @see \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration
+     * Decorate a PSR-7 request as extbase web Request with the extbase attribute.
      */
-    protected function loadDefaultValues(array $configuration = []): RequestBuilderDefaultValues
-    {
-        // todo: See comment in \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration for further explanation
-        // todo: on why we shouldn't use the configuration manager here.
-        $configuration = array_replace_recursive($this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK), $configuration);
-
-        try {
-            return RequestBuilderDefaultValues::fromConfiguration($configuration);
-        } catch (\InvalidArgumentException $e) {
-            throw MvcException::fromPrevious($e);
-        }
-    }
-
-    /**
-     * Builds a web request object from the raw HTTP information and the configuration
-     *
-     * @return Request The web request as an object
-     */
-    public function build(ServerRequestInterface $mainRequest)
+    public function build(ServerRequestInterface $mainRequest): RequestInterface
     {
         $configuration = [];
         // Parameters, which are not part of the request URL (e.g. due to "useArgumentsWithoutNamespace"), which however
@@ -157,13 +136,28 @@ class RequestBuilder implements SingletonInterface
     }
 
     /**
+     * @throws MvcException
+     */
+    protected function loadDefaultValues(array $configuration = []): RequestBuilderDefaultValues
+    {
+        // todo: See comment in \TYPO3\CMS\Extbase\Core\Bootstrap::initializeConfiguration for further explanation
+        // todo: on why we shouldn't use the configuration manager here.
+        $configuration = array_replace_recursive($this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK), $configuration);
+        try {
+            return RequestBuilderDefaultValues::fromConfiguration($configuration);
+        } catch (\InvalidArgumentException $e) {
+            throw MvcException::fromPrevious($e);
+        }
+    }
+
+    /**
      * Returns the current ControllerName extracted from given $parameters.
      * If no controller is specified, the defaultControllerName will be returned.
      * If that's not available, an exception is thrown.
      *
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidControllerNameException
+     * @throws InvalidControllerNameException
      * @throws MvcException if the controller could not be resolved
-     * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+     * @throws PageNotFoundException
      * @return class-string
      */
     protected function resolveControllerClassName(RequestBuilderDefaultValues $defaultValues, array $parameters): string
@@ -194,9 +188,9 @@ class RequestBuilder implements SingletonInterface
      * If that's not available or the specified action is not defined in the current plugin, an exception is thrown.
      *
      * @param class-string $controllerClassName
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidActionNameException
+     * @throws InvalidActionNameException
      * @throws MvcException
-     * @throws \TYPO3\CMS\Core\Error\Http\PageNotFoundException
+     * @throws PageNotFoundException
      * @return non-empty-string
      */
     protected function resolveActionName(RequestBuilderDefaultValues $defaultValues, string $controllerClassName, array $parameters): string
