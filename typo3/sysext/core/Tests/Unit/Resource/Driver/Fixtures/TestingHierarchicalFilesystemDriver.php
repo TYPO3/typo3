@@ -54,7 +54,7 @@ final class TestingHierarchicalFilesystemDriver extends AbstractHierarchicalFile
         throw new \BadMethodCallException('Not implemented', 1694348376);
     }
 
-    public function sanitizeFileName(string $fileName, string $charset = ''): string
+    public function sanitizeFileName(string $fileName): string
     {
         throw new \BadMethodCallException('Not implemented', 1694348363);
     }

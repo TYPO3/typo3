@@ -1104,16 +1104,10 @@ final class LocalDriverTest extends FunctionalTestCase
     /**
      * Every array splits into:
      * - String value fileName
-     * - String value charset (none = '', utf-8, latin1, etc.)
      * - Expected result (cleaned fileName)
      */
     public static function sanitizeFileNameNonUTF8FilesystemDataProvider(): array
     {
-        // Generate string containing all characters for the iso8859-1 charset, charcode greater than 127
-        $iso88591GreaterThan127 = '';
-        for ($i = 0xA0; $i <= 0xFF; $i++) {
-            $iso88591GreaterThan127 .= chr($i);
-        }
         // Generate string containing all characters for the utf-8 Latin-1 Supplement (U+0080 to U+00FF)
         // without U+0080 to U+009F: control characters
         // Based on http://www.utf8-chartable.de/unicode-utf8-table.pl
@@ -1135,70 +1129,34 @@ final class LocalDriverTest extends FunctionalTestCase
 
         return [
             // Characters ordered by ASCII table
-            'allowed characters iso-8859-1' => [
-                '-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz',
-                'iso-8859-1',
-                '-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz',
-            ],
-            // Characters ordered by ASCII table
             'allowed characters utf-8' => [
                 '-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz',
-                'utf-8',
                 '-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz',
-            ],
-            // Characters ordered by ASCII table (except for space-character, because space-character ist trimmed)
-            'replace special characters with _ (not allowed characters) iso-8859-1' => [
-                '! "#$%&\'()*+,/:;<=>?[\\]^`{|}~',
-                'iso-8859-1',
-                '_____________________________',
             ],
             // Characters ordered by ASCII table (except for space-character, because space-character ist trimmed)
             'replace special characters with _ (not allowed characters) utf-8' => [
                 '! "#$%&\'()*+,/:;<=>?[\\]^`{|}~',
-                'utf-8',
                 '_____________________________',
-            ],
-            'iso-8859-1 (code > 127)' => [
-                // http://de.wikipedia.org/wiki/ISO_8859-1
-                // chr(0xA0) = NBSP (no-break space) => gets trimmed
-                $iso88591GreaterThan127,
-                'iso-8859-1',
-                '_centpound_yen____c_a_____R_____-23_u___1o__1_41_23_4_AAAAAEAAAECEEEEIIIIDNOOOOOExOEUUUUEYTHssaaaaaeaaaeceeeeiiiidnoooooe_oeuuuueythy',
             ],
             'utf-8 (Latin-1 Supplement)' => [
                 // chr(0xC2) . chr(0x0A) = NBSP (no-break space) => gets trimmed
                 $utf8Latin1Supplement,
-                'utf-8',
                 '_centpound__yen______c_a_______R_______-23__u_____1o__1_41_23_4_AAAAAEAAAECEEEEIIIIDNOOOOOExOEUUUUEYTHssaaaaaeaaaeceeeeiiiidnoooooe_oeuuuueythy',
             ],
             'utf-8 (Latin-1 Extended A)' => [
                 $utf8Latin1ExtendedA,
-                'utf-8',
                 'AaAaAaCcCcCcCcDdDdEeEeEeEeEeGgGgGgGgHhHhIiIiIiIiIiIJijJjKk__LlLlLlL_l_LlNnNnNn_n____OOooOoOoOEoeRrRrRrSsSsSsSsTtTtTtUuUuUuUuUuUuWwYyYZzZzZzs',
             ],
             'utf-8 but not in NFC (Canonical Composition)' => [
                 hex2bin('667275cc88686e65757a6569746c696368656e'),
-                'utf-8',
                 'fruehneuzeitlichen',
-            ],
-            'trim leading and tailing spaces iso-8859-1' => [
-                ' test.txt  ',
-                'iso-8859-1',
-                'test.txt',
             ],
             'trim leading and tailing spaces utf-8' => [
                 ' test.txt  ',
-                'utf-8',
-                'test.txt',
-            ],
-            'remove tailing dot iso-8859-1' => [
-                'test.txt.',
-                'iso-8859-1',
                 'test.txt',
             ],
             'remove tailing dot utf-8' => [
                 'test.txt.',
-                'utf-8',
                 'test.txt',
             ],
         ];
@@ -1206,11 +1164,11 @@ final class LocalDriverTest extends FunctionalTestCase
 
     #[DataProvider('sanitizeFileNameNonUTF8FilesystemDataProvider')]
     #[Test]
-    public function sanitizeFileNameNonUTF8Filesystem(string $fileName, string $charset, string $expectedResult): void
+    public function sanitizeFileNameNonUTF8Filesystem(string $fileName, string $expectedResult): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem'] = 0;
         $subject = $this->getDefaultInitializedSubject();
-        self::assertEquals($expectedResult, $subject->sanitizeFileName($fileName, $charset));
+        self::assertEquals($expectedResult, $subject->sanitizeFileName($fileName));
     }
 
     #[Test]

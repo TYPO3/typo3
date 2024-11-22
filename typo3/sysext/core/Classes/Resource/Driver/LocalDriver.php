@@ -306,32 +306,24 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      * Previously in \TYPO3\CMS\Core\Utility\File\BasicFileUtility::cleanFileName()
      *
      * @param string $fileName Input string, typically the body of a fileName
-     * @param non-empty-string $charset Charset of the a fileName (defaults to utf-8)
      * @return non-empty-string Output string with any characters not matching [.a-zA-Z0-9_-] is substituted by '_' and trailing dots removed
-     * @todo: at some point it is safe to drop the second argument $charset
      */
-    public function sanitizeFileName(string $fileName, string $charset = 'utf-8'): string
+    public function sanitizeFileName(string $fileName): string
     {
-        if ($charset === 'utf-8') {
-            $fileName = \Normalizer::normalize($fileName) ?: $fileName;
-        }
-
+        $fileName = \Normalizer::normalize($fileName) ?: $fileName;
         // Handle UTF-8 characters
         if ($GLOBALS['TYPO3_CONF_VARS']['SYS']['UTF8filesystem']) {
             // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
             $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
         } else {
-            $fileName = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII($charset, $fileName);
+            $fileName = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII('utf-8', $fileName);
             // Replace unwanted characters with underscores
             $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
         }
         // Strip trailing dots and return
         $cleanFileName = rtrim($cleanFileName, '.');
         if ($cleanFileName === '') {
-            throw new InvalidFileNameException(
-                'File name ' . $fileName . ' is invalid.',
-                1320288991
-            );
+            throw new InvalidFileNameException('File name ' . $fileName . ' is invalid.', 1320288991);
         }
         return $cleanFileName;
     }

@@ -55,7 +55,7 @@ final class TestingDriver extends AbstractDriver
         throw new \BadMethodCallException('Not implemented', 1691577300);
     }
 
-    public function sanitizeFileName(string $fileName, string $charset = ''): string
+    public function sanitizeFileName(string $fileName): string
     {
         throw new \BadMethodCallException('Not implemented', 1691577304);
     }
