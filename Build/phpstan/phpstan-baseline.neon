@@ -4843,12 +4843,6 @@ parameters:
 			path: ../../typo3/sysext/redirects/Tests/Functional/EventListener/AddPageTypeZeroSourceTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<string\> will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 16
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
