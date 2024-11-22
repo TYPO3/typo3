@@ -210,7 +210,7 @@ class ModuleProvider
                 ) {
                     return false;
                 }
-            } elseif ($user->workspace === -99) {
+            } elseif ($user->workspace === -99 && $workspaceAccess !== '*') {
                 return false;
             }
         }
