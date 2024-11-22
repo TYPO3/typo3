@@ -27,6 +27,7 @@ enum Selectors {
   actionFieldSelector = '.t3js-flex-control-action',
   sectionContainerSelector = '.t3js-flex-section',
   sectionContentContainerSelector = '.t3js-flex-section-content',
+  sectionContainerLabelSelector = '.t3js-formengine-label',
   sortContainerButtonSelector = '.t3js-sortable-handle',
 }
 
@@ -177,7 +178,7 @@ class FlexFormSectionContainer {
       FormEngine.Validation.initializeInputFields();
       FormEngine.Validation.validate(sectionContainer);
 
-      this.container.classList.add('has-change');
+      this.container.querySelector(Selectors.sectionContainerLabelSelector)?.classList.add('has-change');
     });
   }
 
