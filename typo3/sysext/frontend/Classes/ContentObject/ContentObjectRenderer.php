@@ -3154,7 +3154,13 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $contentAccumP = 0;
 
         $allowTags = GeneralUtility::trimExplode(',', strtolower($conf['allowTags'] ?? ''), true);
+        if (in_array('*', $allowTags, true)) {
+            $allowTags = ['*'];
+        }
         $denyTags = GeneralUtility::trimExplode(',', strtolower($conf['denyTags'] ?? ''), true);
+        if (in_array('*', $denyTags, true)) {
+            $denyTags = ['*'];
+        }
         $totalLen = strlen($theValue);
         do {
             if (!$inside) {

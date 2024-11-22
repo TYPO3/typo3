@@ -2143,6 +2143,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 [
                     'parseFunc' => '1',
                     'parseFunc.' => [
+                        // This inherits allowTags=* and htmlSanitize=1
                         'somethingElse' => '',
                     ],
                 ],

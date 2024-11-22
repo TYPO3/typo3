@@ -30,6 +30,10 @@ lib.parseFunc {
             }
         }
     }
+    # This is the default; HTML tags are cleaned by the HTML Sanitizer (see #104220)
+    # "*" is set here so it can be extended via `allowTags := addToList(XXX)` in custom code.
+    # Without this, addToList would result in only "XXX" and not "*,XXX" thus breaking functionality.
+    allowTags = *
     nonTypoTagStdWrap {
         HTMLparser = 1
         HTMLparser {
