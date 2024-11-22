@@ -176,8 +176,6 @@ final class RedirectServiceTest extends FunctionalTestCase
             new InternalRequest($url)
         );
         self::assertEquals($statusCode, $response->getStatusCode());
-        self::assertIsArray($response->getHeader('X-Redirect-By'));
-        self::assertIsArray($response->getHeader('location'));
         self::assertEquals('TYPO3 Redirect ' . $redirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertEquals($targetUrl, $response->getHeader('location')[0]);
     }
@@ -325,8 +323,6 @@ final class RedirectServiceTest extends FunctionalTestCase
             false
         );
         self::assertEquals($expectedStatusCode, $response->getStatusCode());
-        self::assertIsArray($response->getHeader('X-Redirect-By'));
-        self::assertIsArray($response->getHeader('location'));
         self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
     }
@@ -383,8 +379,6 @@ final class RedirectServiceTest extends FunctionalTestCase
             false
         );
         self::assertSame($expectedStatusCode, $response->getStatusCode());
-        self::assertIsArray($response->getHeader('X-Redirect-By'));
-        self::assertIsArray($response->getHeader('location'));
         self::assertSame('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertSame($expectedRedirectUri, $response->getHeader('location')[0]);
     }
@@ -540,8 +534,6 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         self::assertEquals($expectedStatusCode, $response->getStatusCode());
         if ($expectedRedirectUri) {
-            self::assertIsArray($response->getHeader('X-Redirect-By'));
-            self::assertIsArray($response->getHeader('location'));
             self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
             self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
         }
@@ -683,8 +675,6 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         self::assertEquals($expectedStatusCode, $response->getStatusCode());
         if ($expectedRedirectUri) {
-            self::assertIsArray($response->getHeader('X-Redirect-By'));
-            self::assertIsArray($response->getHeader('location'));
             self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
             self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
         }
@@ -846,8 +836,6 @@ final class RedirectServiceTest extends FunctionalTestCase
         );
         self::assertEquals($expectedStatusCode, $response->getStatusCode());
         if ($expectedRedirectUri) {
-            self::assertIsArray($response->getHeader('X-Redirect-By'));
-            self::assertIsArray($response->getHeader('location'));
             self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
             self::assertEquals($expectedRedirectUri, $response->getHeader('location')[0]);
         }
@@ -964,8 +952,6 @@ final class RedirectServiceTest extends FunctionalTestCase
             new InternalRequest($url)
         );
         self::assertEquals($statusCode, $response->getStatusCode());
-        self::assertIsArray($response->getHeader('X-Redirect-By'));
-        self::assertIsArray($response->getHeader('location'));
         self::assertEquals('TYPO3 Redirect ' . $redirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertEquals($targetUrl, $response->getHeader('location')[0]);
     }
@@ -1076,8 +1062,6 @@ final class RedirectServiceTest extends FunctionalTestCase
 
         $response = $this->executeFrontendSubRequest($request);
         self::assertEquals($expectedRedirectStatusCode, $response->getStatusCode());
-        self::assertIsArray($response->getHeader('X-Redirect-By'));
-        self::assertIsArray($response->getHeader('location'));
         self::assertEquals('TYPO3 Redirect ' . $expectedRedirectUid, $response->getHeader('X-Redirect-By')[0]);
         self::assertEquals($expectedRedirectLocationUri, $response->getHeader('location')[0]);
     }
