@@ -316,7 +316,7 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             // Allow ".", "-", 0-9, a-z, A-Z and everything beyond U+C0 (latin capital letter a with grave)
             $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . ']/u', '_', trim($fileName));
         } else {
-            $fileName = GeneralUtility::makeInstance(CharsetConverter::class)->specCharsToASCII('utf-8', $fileName);
+            $fileName = GeneralUtility::makeInstance(CharsetConverter::class)->utf8_char_mapping($fileName);
             // Replace unwanted characters with underscores
             $cleanFileName = (string)preg_replace('/[' . self::UNSAFE_FILENAME_CHARACTER_EXPRESSION . '\\xC0-\\xFF]/', '_', trim($fileName));
         }

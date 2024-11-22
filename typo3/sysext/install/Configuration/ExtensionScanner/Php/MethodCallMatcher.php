@@ -6390,4 +6390,46 @@ return [
             'Breaking-101948-FileBasedAbstractRepositoryClassRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->conv' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-105695-SimplifiedCharsetConverter.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->utf8_encode' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-105695-SimplifiedCharsetConverter.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->utf8_decode' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Breaking-105695-SimplifiedCharsetConverter.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->specCharsToASCII' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-105695-SimplifiedCharsetConverter.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->sb_char_mapping' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-105695-SimplifiedCharsetConverter.rst',
+        ],
+    ],
+    'TYPO3\CMS\Core\Charset\CharsetConverter->euc_char_mapping' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-105695-SimplifiedCharsetConverter.rst',
+        ],
+    ],
 ];

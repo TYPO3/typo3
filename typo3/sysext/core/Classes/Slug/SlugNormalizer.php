@@ -49,9 +49,8 @@ final readonly class SlugNormalizer
             $value = \Normalizer::normalize($value) ?: $value;
         }
 
-        // Convert extended letters to ascii equivalents
-        // The specCharsToASCII() converts "€" to "EUR"
-        $value = $this->charsetConverter->specCharsToASCII('utf-8', $value);
+        // Convert extended letters to ascii equivalents, for example "€" to "EUR"
+        $value = $this->charsetConverter->utf8_char_mapping($value);
 
         // Get rid of all invalid characters, but allow slashes
         $value = (string)preg_replace('/[^\p{L}\p{M}0-9\/' . preg_quote($fallbackCharacter) . ']/u', '', $value);

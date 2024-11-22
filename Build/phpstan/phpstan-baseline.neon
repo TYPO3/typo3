@@ -733,12 +733,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and false will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Charset/CharsetConverter.php
-
-		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			identifier: new.static
 			count: 1

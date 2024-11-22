@@ -519,7 +519,7 @@ class FormManagerController extends ActionController
     protected function convertFormNameToIdentifier(string $formName): string
     {
         $formName = \Normalizer::normalize($formName) ?: $formName;
-        $formIdentifier = $this->charsetConverter->specCharsToASCII('utf-8', $formName);
+        $formIdentifier = $this->charsetConverter->utf8_char_mapping($formName);
         $formIdentifier = (string)preg_replace('/[^a-zA-Z0-9-_]/', '', $formIdentifier);
         return lcfirst($formIdentifier);
     }
