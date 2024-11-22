@@ -183,28 +183,27 @@ readonly class TcaPreparation
                 continue;
             }
             foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
-                if (($fieldConfig['config']['type'] ?? '') !== 'file') {
-                    continue;
+                if (($fieldConfig['config']['type'] ?? '') === 'file') {
+                    // Set static values for this type. Most of them are not needed due to the
+                    // dedicated TCA type. However a lot of underlying code in DataHandler and
+                    // friends relies on those keys, especially "foreign_table" and "foreign_selector".
+                    // @todo Check which of those values can be removed since only used by FormEngine
+                    $fieldConfig['config'] = array_replace_recursive($fieldConfig['config'], [
+                        'foreign_table' => 'sys_file_reference',
+                        'foreign_field' => 'uid_foreign',
+                        'foreign_sortby' => 'sorting_foreign',
+                        'foreign_table_field' => 'tablenames',
+                        'foreign_match_fields' => [
+                            'fieldname' => $fieldName,
+                        ],
+                        'foreign_label' => 'uid_local',
+                        'foreign_selector' => 'uid_local',
+                    ]);
+                    if (!$isFlexForm) {
+                        $fieldConfig['config']['foreign_match_fields']['tablenames'] = $table;
+                    }
+                    $fieldConfig['config'] = $this->configureAllowedDisallowedFileExtensions($fieldConfig['config']);
                 }
-                // Set static values for this type. Most of them are not needed due to the
-                // dedicated TCA type. However a lot of underlying code in DataHandler and
-                // friends relies on those keys, especially "foreign_table" and "foreign_selector".
-                // @todo Check which of those values can be removed since only used by FormEngine
-                $fieldConfig['config'] = array_replace_recursive($fieldConfig['config'], [
-                    'foreign_table' => 'sys_file_reference',
-                    'foreign_field' => 'uid_foreign',
-                    'foreign_sortby' => 'sorting_foreign',
-                    'foreign_table_field' => 'tablenames',
-                    'foreign_match_fields' => [
-                        'fieldname' => $fieldName,
-                    ],
-                    'foreign_label' => 'uid_local',
-                    'foreign_selector' => 'uid_local',
-                ]);
-                if (!$isFlexForm) {
-                    $fieldConfig['config']['foreign_match_fields']['tablenames'] = $table;
-                }
-                $fieldConfig['config'] = $this->configureAllowedDisallowedFileExtensions($fieldConfig['config']);
                 if (is_array($fieldConfig['config']['overrideChildTca'] ?? null)) {
                     $fieldConfig['config']['overrideChildTca'] = $this->configureAllowedDisallowedInOverrideChildTca($fieldConfig['config']['overrideChildTca']);
                 }
