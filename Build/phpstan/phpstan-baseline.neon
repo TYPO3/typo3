@@ -733,12 +733,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Cache/Frontend/PhpFrontend.php
 
 		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Charset/CharsetConverter.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between string and false will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -2225,48 +2219,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/core/Tests/Unit/Cache/Frontend/PhpFrontendTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotSame\(\) with '''' and ''€'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Charset/CharsetConverterTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotSame\(\) with '''' and ''〣'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Charset/CharsetConverterTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with ''A'' and ''A'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Charset/CharsetConverterTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with 1 and 1 will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 11
-			path: ../../typo3/sysext/core/Tests/Unit/Charset/CharsetConverterTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with 2 and 2 will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Charset/CharsetConverterTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with 3 and 3 will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 5
-			path: ../../typo3/sysext/core/Tests/Unit/Charset/CharsetConverterTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertSame\(\) with 4 and 4 will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Charset/CharsetConverterTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\Console\\\\CommandLoader\\\\CommandLoaderInterface'' and TYPO3\\CMS\\Core\\Console\\CommandRegistry will always evaluate to true\.$#'
