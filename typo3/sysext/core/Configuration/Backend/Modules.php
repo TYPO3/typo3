@@ -22,6 +22,7 @@ return [
     'user' => [
         'labels' => 'LLL:EXT:core/Resources/Private/Language/locallang_mod_usertools.xlf',
         'iconIdentifier' => 'modulegroup-user',
+        'workspaces' => '*',
         'appearance' => [
             'renderInModuleMenu' => false,
         ],

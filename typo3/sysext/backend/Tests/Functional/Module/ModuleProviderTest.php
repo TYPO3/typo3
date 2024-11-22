@@ -38,10 +38,24 @@ final class ModuleProviderTest extends FunctionalTestCase
             ]
         );
 
+        $parentModuleAll = $this->get(ModuleFactory::class)->createModule(
+            'parent_module_all',
+            [
+                'workspaces' => '*',
+            ]
+        );
+
         $subModule = $this->get(ModuleFactory::class)->createModule(
             'sub_module',
             [
                 'parent' => 'parent_module',
+            ]
+        );
+
+        $subModuleAll = $this->get(ModuleFactory::class)->createModule(
+            'sub_module_all',
+            [
+                'parent' => 'parent_module_all',
             ]
         );
 
@@ -68,17 +82,25 @@ final class ModuleProviderTest extends FunctionalTestCase
 
         self::assertFalse($moduleProvider->accessGranted('parent_module', $user)); // Default -99 is disallowed
 
+        self::assertFalse($moduleProvider->accessGranted('parent_module_all', $user)); // Default -99 is allowed
+
         self::assertFalse($moduleProvider->accessGranted('sub_module', $user)); // Default -99 is disallowed
+
+        self::assertFalse($moduleProvider->accessGranted('sub_module_all', $user)); // Default -99 is allowed
 
         self::assertFalse($moduleProvider->accessGranted('another_sub_module', $user)); // Default -99 is disallowed
 
-        self::assertFalse($moduleProvider->accessGranted('all_workspaces', $user)); // Default -99 is disallowed
+        self::assertTrue($moduleProvider->accessGranted('all_workspaces', $user)); // Default -99 is allowed
 
         $user->workspace = 0;
 
         self::assertTrue($moduleProvider->accessGranted('parent_module', $user)); // 0=live is allowed
 
+        self::assertFalse($moduleProvider->accessGranted('parent_module_all', $user)); // 0=live is allowed
+
         self::assertTrue($moduleProvider->accessGranted('sub_module', $user)); // 0=live is allowed
+
+        self::assertFalse($moduleProvider->accessGranted('sub_module_all', $user)); // 0=live is allowed
 
         self::assertFalse($moduleProvider->accessGranted('offline_workspace', $user)); // 0=live is explicitly disallowed
 
@@ -88,7 +110,11 @@ final class ModuleProviderTest extends FunctionalTestCase
 
         self::assertFalse($moduleProvider->accessGranted('parent_module', $user)); // 1=workspace is disallowed
 
+        self::assertFalse($moduleProvider->accessGranted('parent_module_all', $user)); // 1=workspace is allowed
+
         self::assertFalse($moduleProvider->accessGranted('sub_module', $user)); // 1=workspace is disallowed
+
+        self::assertFalse($moduleProvider->accessGranted('sub_module_all', $user)); // 1=workspace is allowed
 
         self::assertTrue($moduleProvider->accessGranted('offline_workspace', $user)); // 1=workspace is explicitly allowed
 
