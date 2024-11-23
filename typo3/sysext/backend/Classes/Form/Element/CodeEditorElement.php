@@ -211,7 +211,7 @@ class CodeEditorElement extends AbstractFormElement
         ]);
 
         $code[] = '<typo3-t3editor-codemirror ' . GeneralUtility::implodeAttributes($codeMirrorConfig, true) . '>';
-        $code[] = '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars($content) . '</textarea>';
+        $code[] = GeneralUtility::renderTextarea($content, $attributes);
 
         if (!empty($hiddenfields)) {
             foreach ($hiddenfields as $attributeName => $value) {

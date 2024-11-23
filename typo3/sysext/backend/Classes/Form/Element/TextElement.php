@@ -120,9 +120,7 @@ class TextElement extends AbstractFormElement
             $html[] =   '<div class="form-wizards-wrap">';
             $html[] =       '<div class="form-wizards-item-element">';
             $html[] =           '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
-            $html[] =               '<textarea class="form-control" id="' . htmlspecialchars($fieldId) . '" name="' . htmlspecialchars($itemName) . '" rows="' . $rows . '" disabled>';
-            $html[] =                   htmlspecialchars((string)$itemValue);
-            $html[] =               '</textarea>';
+            $html[] =               GeneralUtility::renderTextarea((string)$itemValue, ['class' => 'form-control', 'id' => $fieldId, 'name' => $itemName, 'rows' => $rows, 'disabled' => 'disabled']);
             $html[] =           '</div>';
             $html[] =       '</div>';
             $html[] =   '</div>';
@@ -228,7 +226,7 @@ class TextElement extends AbstractFormElement
         $mainFieldHtml[] = '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
         $mainFieldHtml[] =  '<div class="form-wizards-wrap">';
         $mainFieldHtml[] =      '<div class="form-wizards-item-element">';
-        $mainFieldHtml[] =          '<textarea ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . htmlspecialchars((string)$itemValue) . '</textarea>';
+        $mainFieldHtml[] =          GeneralUtility::renderTextarea((string)$itemValue, $attributes);
         $mainFieldHtml[] =      '</div>';
         if (!empty($valuePickerHtml) || !empty($fieldControlHtml)) {
             $mainFieldHtml[] =      '<div class="form-wizards-item-aside form-wizards-item-aside--field-control">';
@@ -284,6 +282,14 @@ class TextElement extends AbstractFormElement
                     'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.placeholder.override_not_available'
                 );
             }
+            $textareaAttributes = [
+                'class' => 'form-control formengine-textarea' . (isset($config['fixedFont']) ? ' font-monospace' : ''),
+                'disabled' => 'disabled',
+                'rows' => $attributes['rows'],
+                'wrap' => $attributes['wrap'],
+                ...(isset($attributes['style']) ? ['style' => $attributes['style']] : []),
+                ...(isset($attributes['maxlength']) ? ['maxlength' => $attributes['maxlength']] : []),
+            ];
             $fullElement = [];
             $fullElement[] = '<div class="form-check t3js-form-field-eval-null-placeholder-checkbox">';
             $fullElement[] =     '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
@@ -294,16 +300,7 @@ class TextElement extends AbstractFormElement
             $fullElement[] = '</div>';
             $fullElement[] = '<div class="t3js-formengine-placeholder-placeholder">';
             $fullElement[] =    '<div class="form-control-wrap"' . ($width ? ' style="max-width: ' . $width . 'px">' : '>');
-            $fullElement[] =        '<textarea';
-            $fullElement[] =            ' class="form-control formengine-textarea' . (isset($config['fixedFont']) ? ' font-monospace' : '') . '"';
-            $fullElement[] =            ' disabled="disabled"';
-            $fullElement[] =            ' rows="' . htmlspecialchars($attributes['rows']) . '"';
-            $fullElement[] =            ' wrap="' . htmlspecialchars($attributes['wrap']) . '"';
-            $fullElement[] =            isset($attributes['style']) ? ' style="' . htmlspecialchars($attributes['style']) . '"' : '';
-            $fullElement[] =            isset($attributes['maxlength']) ? ' maxlength="' . htmlspecialchars($attributes['maxlength']) . '"' : '';
-            $fullElement[] =        '>';
-            $fullElement[] =            htmlspecialchars($shortenedPlaceholder);
-            $fullElement[] =        '</textarea>';
+            $fullElement[] =        GeneralUtility::renderTextarea($shortenedPlaceholder, $textareaAttributes);
             $fullElement[] =    '</div>';
             $fullElement[] = '</div>';
             $fullElement[] = '<div class="t3js-formengine-placeholder-formfield">';
