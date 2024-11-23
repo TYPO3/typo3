@@ -1032,6 +1032,35 @@ class GeneralUtility
     }
 
     /**
+     * Render a textarea, taking into account whether a leading linefeed needs to be added
+     *
+     * The HTML `<textarea>` element has very specific rules for leading
+     * linefeed (0x0a) characters: if the first char of the content is a
+     * linefeed, it is to be ignored by parsers:
+     * https://html.spec.whatwg.org/multipage/parsing.html#parsing-main-inbody:~:text=A%20start%20tag%20whose%20tag%20name%20is%20%22textarea%22
+     *
+     * To represent the exact number of leading line breaks, a supplementary
+     * linefeed character needs to be prepended to the textarea value, which
+     * will always be ignored, but ensures that subsequent linefeeds are
+     * respected.
+     *
+     * @param string $value textarea content
+     * @param array<string, string|int> $attributes Array with attribute key/value pairs, eg. "class" => "my-textarea"
+     * @return string Generated HTML tag, e.g. <textarea class="my-textarea">\nmyvalue</textarea>
+     * @internal
+     */
+    public static function renderTextarea(string $value, array $attributes = []): string
+    {
+        return sprintf(
+            '<textarea%s%s>%s%s</textarea>',
+            $attributes === [] ? '' : ' ',
+            GeneralUtility::implodeAttributes($attributes, true),
+            $value !== '' ? LF : '',
+            htmlspecialchars($value),
+        );
+    }
+
+    /**
      * Wraps JavaScript code XHTML ready with <script>-tags
      * Automatic re-indenting of the JS code is done by using the first line as indent reference.
      * This is nice for indenting JS code with PHP code on the same level.
