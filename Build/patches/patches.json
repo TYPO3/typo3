@@ -1,7 +1,0 @@
-{
-    "patches": {
-        "firebase/php-jwt": {
-            "firebase/php-jwt PHP 8.4": "Build/patches/firebase-php-jwt-572-php-8.4.diff"
-        }
-    }
-}
