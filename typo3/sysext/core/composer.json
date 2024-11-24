@@ -39,7 +39,7 @@
 		"doctrine/lexer": "^3.0.1",
 		"egulias/email-validator": "^4.0",
 		"enshrined/svg-sanitize": "^0.20.0",
-		"firebase/php-jwt": "^6.10.1",
+		"firebase/php-jwt": "^6.10.2",
 		"guzzlehttp/guzzle": "^7.9.2",
 		"guzzlehttp/psr7": "^2.7.0",
 		"lolli42/finediff": "^1.1.1",
