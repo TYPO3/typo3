@@ -375,7 +375,7 @@ final class ComponentsController
         $view = $this->createModuleTemplate($request, 'progressTrackers');
         $view->assignMultiple([
             'actions' => $this->allowedActions,
-            'currentAction' => 'renderProgressTrackersView',
+            'currentAction' => 'progressTrackers',
             'routeIdentifier' => 'styleguide_components',
         ]);
         return $view->renderResponse('Backend/Components/ProgressTrackers');
