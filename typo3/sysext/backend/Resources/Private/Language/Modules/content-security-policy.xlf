@@ -13,10 +13,26 @@
 				<source>Content Security Policy</source>
 			</trans-unit>
 
-			<trans-unit id="module.callout.featureDisabled.message">
-				<source>The following features flags are currently disabled and won't be shown in this module:</source>
+			<trans-unit id="module.headline">
+				<source>Content Security Policy</source>
+			</trans-unit>
+			<trans-unit id="module.introtext">
+				<source>A list of the existing Content Security Policy Mutations can be viewed in the %s module.</source>
+			</trans-unit>
+			<trans-unit id="module.introtext.moduleName">
+				<source>Configuration</source>
 			</trans-unit>
 
+			<trans-unit id="module.callout.featureDisabled.title">
+				<source>Disabled feature flags</source>
+			</trans-unit>
+			<trans-unit id="module.callout.featureDisabled.message">
+				<source>The following feature flags are currently disabled and won't be shown in this module:</source>
+			</trans-unit>
+
+			<trans-unit id="module.callout.customReporting.title">
+				<source>Reporting</source>
+			</trans-unit>
 			<trans-unit id="module.callout.customReporting.message">
 				<source>Reporting is currently configured with these custom endpoints and won't be shown in this module:</source>
 			</trans-unit>
