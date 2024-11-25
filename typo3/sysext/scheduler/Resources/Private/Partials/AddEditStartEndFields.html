@@ -6,9 +6,9 @@
 
 <f:variable name="dateFormat">Y-m-d\TH:i:sp</f:variable>
 
-<div class="row">
-    <div class="form-group col-sm-6" id="task_start_col">
-        <label class="form-label" for="tceforms-datetimefield-task_start_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.start"/></label>
+<div class="form-group col-sm-6" id="task_start_col">
+    <label class="form-label" for="tceforms-datetimefield-task_start_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.start"/></label>
+    <div class="formengine-field-item">
         <div class="form-control-wrap">
             <div class="form-wizards-wrap">
                 <div class="form-wizards-item-element">
@@ -22,7 +22,13 @@
                             type="text"
                             id="tceforms-datetimefield-task_start_row"
                         >
-                        <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#tceforms-datetimefield-task_start_row">
+                        <button
+                            class="btn btn-default"
+                            aria-label="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.datepicker.label')}"
+                            type="button"
+                            data-global-event="click"
+                            data-action-focus="#tceforms-datetimefield-task_start_row"
+                        >
                             <core:icon identifier="actions-edit-pick-date" />
                         </button>
                     </div>
@@ -30,13 +36,15 @@
             </div>
         </div>
     </div>
-    <div class="form-group col-sm-6" id="task_end_col">
-        <label class="form-label" for="tceforms-datetimefield-task_end_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.end"/></label>
+</div>
+<div class="form-group col-sm-6" id="task_end_col">
+    <label class="form-label" for="tceforms-datetimefield-task_end_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.end"/></label>
+    <div class="formengine-field-item">
         <div class="form-control-wrap">
             <div class="form-wizards-wrap">
                 <div class="form-wizards-item-element">
                     <div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">
-                        <f:variable name="formattedEnd"><f:if condition="{currentData.end}"><f:then>{f:format.date(format: dateFormat, date: currentData.end)}</f:then><f:else></f:else></f:if></f:variable>
+                        <f:if condition="{currentData.end}"><f:variable name="formattedEnd" value="{f:format.date(format: dateFormat, date: currentData.end)}" /></f:if>
                         <input
                             name="tx_scheduler[end]"
                             value="{formattedEnd}"
@@ -46,7 +54,13 @@
                             type="text"
                             id="tceforms-datetimefield-task_end_row"
                         >
-                        <button class="btn btn-default" type="button" data-global-event="click" data-action-focus="#tceforms-datetimefield-task_end_row">
+                        <button
+                            class="btn btn-default"
+                            aria-label="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.datepicker.label')}"
+                            type="button"
+                            data-global-event="click"
+                            data-action-focus="#tceforms-datetimefield-task_end_row"
+                        >
                             <core:icon identifier="actions-edit-pick-date" />
                         </button>
                     </div>

@@ -4,32 +4,30 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="row" id="task_group_row">
-    <div class="form-group">
-        <label class="form-label" for="task_group"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group"/></label>
-        <div class="formengine-field-item">
-            <div class="form-wizards-wrap">
-                <div class="form-wizards-item-element">
-                    <input type="hidden" name="tx_scheduler[select_latest_group]" value="0">
-                    <select name="tx_scheduler[task_group]" id="task_group" class="form-select">
-                        <option value="0" title="" {f:if(condition:'{currentData.task_group} == 0',then:'selected="selected"')} ></option>
-                        <f:for each="{registeredTaskGroups}" as="registeredTaskGroup">
-                            <option
-                                value="{registeredTaskGroup.uid}"
-                                title="{registeredTaskGroup.groupName}"
-                                {f:if(condition:'{currentData.task_group} == {registeredTaskGroup.uid} || {preSelectedTaskGroup} == {registeredTaskGroup.uid}',then:'selected="selected"')}
-                            >
-                            {registeredTaskGroup.groupName}
-                            </option>
-                        </f:for>
-                    </select>
-                </div>
-                <div class="form-wizards-item-aside form-wizards-item-aside--field-control">
-                    <div class="btn-group-vertical">
-                        <button class="btn btn-default t3js-create-group">
-                            <core:icon identifier="actions-plus" />
-                        </button>
-                    </div>
+<div class="form-group" id="task_group_row">
+    <label class="form-label" for="task_group"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.group"/></label>
+    <div class="formengine-field-item">
+        <div class="form-wizards-wrap">
+            <div class="form-wizards-item-element">
+                <input type="hidden" name="tx_scheduler[select_latest_group]" value="0">
+                <select name="tx_scheduler[task_group]" id="task_group" class="form-select">
+                    <option value="0" title="" {f:if(condition:'{currentData.task_group} == 0',then:'selected="selected"')} ></option>
+                    <f:for each="{registeredTaskGroups}" as="registeredTaskGroup">
+                        <option
+                            value="{registeredTaskGroup.uid}"
+                            title="{registeredTaskGroup.groupName}"
+                            {f:if(condition:'{currentData.task_group} == {registeredTaskGroup.uid} || {preSelectedTaskGroup} == {registeredTaskGroup.uid}',then:'selected="selected"')}
+                        >
+                        {registeredTaskGroup.groupName}
+                        </option>
+                    </f:for>
+                </select>
+            </div>
+            <div class="form-wizards-item-aside form-wizards-item-aside--field-control">
+                <div class="btn-group-vertical">
+                    <button class="btn btn-default t3js-create-group">
+                        <core:icon identifier="actions-plus" />
+                    </button>
                 </div>
             </div>
         </div>

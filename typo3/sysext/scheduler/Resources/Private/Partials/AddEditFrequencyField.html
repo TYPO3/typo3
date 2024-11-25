@@ -3,27 +3,25 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="row" id="task_frequency_row">
-    <div class="form-group">
-        <label class="form-label" for="task_frequency"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency.long"/></label>
-        <div class="form-control-wrap">
-            <div class="form-wizards-wrap">
-                <div class="form-wizards-item-element">
-                    <input type="text" name="tx_scheduler[frequency]" class="form-control form-control-clearable t3js-clearable" id="task_frequency" value="{currentData.frequency}">
-                </div>
-                <f:if condition="{frequencyOptions}">
-                    <div class="form-wizards-item-aside form-wizards-item-aside--field-control">
-                        <div class="btn-group">
-                            <select data-update-task-frequency class="form-select">
-                                <option></option>
-                                <f:for each="{frequencyOptions}" as="label" key="command">
-                                    <option value="{command}">{f:translate(key:label,default:label)} ({command})</option>
-                                </f:for>
-                            </select>
-                        </div>
-                    </div>
-                </f:if>
+<div class="form-group" id="task_frequency_row">
+    <label class="form-label" for="task_frequency"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.frequency.long"/></label>
+    <div class="form-control-wrap">
+        <div class="form-wizards-wrap">
+            <div class="form-wizards-item-element">
+                <input type="text" name="tx_scheduler[frequency]" class="form-control form-control-clearable t3js-clearable" id="task_frequency" value="{currentData.frequency}">
             </div>
+            <f:if condition="{frequencyOptions}">
+                <div class="form-wizards-item-aside form-wizards-item-aside--field-control">
+                    <div class="btn-group">
+                        <select data-update-task-frequency class="form-select">
+                            <option></option>
+                            <f:for each="{frequencyOptions}" as="label" key="command">
+                                <option value="{command}">{f:translate(key:label,default:label)} ({command})</option>
+                            </f:for>
+                        </select>
+                    </div>
+                </div>
+            </f:if>
         </div>
     </div>
 </div>

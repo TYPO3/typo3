@@ -3,16 +3,14 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="row" id="task_multiple_row">
-    <div class="form-group">
-        <label class="form-label" for="task_multiple"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.parallel.long"/></label>
-        <div class="formengine-field-item">
-            <div class="form-wizards-wrap">
-                <div class="form-wizards-item-element">
-                    <input type="hidden" name="tx_scheduler[multiple]" value="0">
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple" {f:if(condition:currentData.multiple,then:'checked="checked"')}>
-                    </div>
+<div class="form-group" id="task_multiple_row">
+    <label class="form-label" for="task_multiple"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.parallel.long"/></label>
+    <div class="formengine-field-item">
+        <div class="form-wizards-wrap">
+            <div class="form-wizards-item-element">
+                <input type="hidden" name="tx_scheduler[multiple]" value="0">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" name="tx_scheduler[multiple]" value="1" id="task_multiple" {f:if(condition:currentData.multiple,then:'checked="checked"')}>
                 </div>
             </div>
         </div>
