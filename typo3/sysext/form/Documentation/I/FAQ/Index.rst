@@ -119,18 +119,6 @@ corresponding form.
        });
 
 
-.. _faq-migrate-from-v7:
-
-How do I migrate from EXT:form v7?
-==================================
-
-The old form extension (used in TYPO3 v7, which is compatible to TYPO3 v6)
-was moved into an own extension called ``form_legacy``.  This extension can
-be found within the official `TER <https://typo3.org/extensions/repository/view/form_legacy>`_.
-When upgrading to TYPO3 v8 an upgrade wizard will tell you if form_legacy is
-still needed.
-
-
 .. _faq-date-picker:
 
 How does the date picker (jQuery) work?
