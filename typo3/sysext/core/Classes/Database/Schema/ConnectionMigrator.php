@@ -1639,7 +1639,7 @@ class ConnectionMigrator
     protected function applyDefaultOptionsToTable(AbstractPlatform $platform, SchemaConfig $schemaConfig, Table $table): void
     {
         $defaultTableOptions = $schemaConfig->getDefaultTableOptions();
-        $defaultColumnCollation = $defaultTableOptions['collation'] ?? $defaultTableOptions['collate'] ?? null;
+        $defaultColumnCollation = $defaultTableOptions['collation'] ?? null;
         $defaultColumCharset = $defaultTableOptions['charset'] ?? null;
         $defaultTableEngine = $defaultTableOptions['engine'] ?? 'InnoDB';
 
@@ -1662,7 +1662,7 @@ class ConnectionMigrator
     protected function applyDefaultPlatformOptionsToColumns(AbstractPlatform $platform, SchemaConfig $schemaConfig, Table $table): void
     {
         $defaultTableOptions = $schemaConfig->getDefaultTableOptions();
-        $defaultColumnCollation = $defaultTableOptions['collation'] ?? $defaultTableOptions['collate'] ?? '';
+        $defaultColumnCollation = $defaultTableOptions['collation'] ?? '';
         $defaultColumCharset = $defaultTableOptions['charset'] ?? '';
         foreach ($table->getColumns() as $column) {
             $columnType = $column->getType();
