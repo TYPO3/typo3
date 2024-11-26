@@ -298,6 +298,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyContentDeleteFileRefAddFileRefCopyElement(): void
+    {
+        parent::modifyContentDeleteFileRefAddFileRefCopyElement();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['copiedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentDeleteFileRefAddFileRefCopyElement.csv');
+    }
+
+    #[Test]
     public function createContentWithFileReferenceAndDeleteFileReference(): void
     {
         parent::createContentWithFileReferenceAndDeleteFileReference();
