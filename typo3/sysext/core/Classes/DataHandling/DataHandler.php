@@ -3576,6 +3576,13 @@ class DataHandler
         $data = [];
         $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,' . $excludeFields, true));
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
+        if (BackendUtility::isTableWorkspaceEnabled($table)
+            && $this->BE_USER->workspace > 0
+            && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
+        ) {
+            // The to-copy record turns out to be a delete placeholder. Those do not make sense to be copied and are skipped.
+            return null;
+        }
         $row = BackendUtility::purgeComputedPropertiesFromRecord($row);
 
         // Initializing:

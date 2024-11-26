@@ -31,7 +31,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_ContentIdFirst = 330;
     protected const VALUE_ContentIdLast = 331;
     protected const VALUE_FileIdFirst = 1;
-    protected const VALUE_FileIdLast = 21;
+    protected const VALUE_FileIdSecond = 21;
+    protected const VALUE_FileIdThird = 22;
     protected const VALUE_LanguageId = 1;
 
     protected const VALUE_FileReferenceContentFirstFileFirst = 126;
@@ -186,6 +187,38 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             [self::FIELD_ContentImage => ''],
             [self::TABLE_FileReference => [self::VALUE_FileReferenceContentLastFileFirst, self::VALUE_FileReferenceContentLastFileLast]]
         );
+    }
+
+    public function modifyContentDeleteFileRefAddFileRefCopyElement(): void
+    {
+        // This scenario is mainly targeted to workspaces.
+        // tt_content:331 has file refs 128 and 129 attached. delete 128.
+        // creates an overlay (t3ver_state=0) sys_fire_reference for 129, and a delete placeholder (t3ver_state=2) for 128
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            [self::FIELD_ContentImage => self::VALUE_FileReferenceContentLastFileFirst],
+            [self::TABLE_FileReference => [self::VALUE_FileReferenceContentLastFileLast]]
+        );
+        // attach third image 22 to tt_content:331, creating a new (t3ver_state=1) sys_file_reference
+        $this->actionService->modifyRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => [
+                    'uid' => self::VALUE_ContentIdLast,
+                    self::FIELD_ContentImage => '130,__nextUid',
+                ],
+                self::TABLE_FileReference => [
+                    'uid' => '__NEW',
+                    'title' => 'Image #3',
+                    self::FIELD_FileReferenceImage => self::VALUE_FileIdThird,
+                ],
+            ]
+        );
+        // we now have a content element in live with 2 attached images, one being deleted in workspaces, another
+        // one being added in workspaces. now copy that element.
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
+        $this->recordIds['copiedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
     protected function createContentWithFileReferenceAndDeleteFileReference(): void
