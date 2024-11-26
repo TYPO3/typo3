@@ -25,7 +25,8 @@ Furthermore, Doctrine DBAL 3.x switched from using they array key :php:`collate`
 :php:`collation`, ignoring the old array key with Doctrine DBAL 4.x. This was silently
 migrated by TYPO3, too.
 
-These silent migrations are now deprecated in favor of using the final array keys.
+These options and migration are now deprecated in favor of using the final array
+keys and will be removed with TYPO3 v15 (or later) as breaking change.
 
 ..  note::
 
