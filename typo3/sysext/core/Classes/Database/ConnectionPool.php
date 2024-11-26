@@ -164,7 +164,7 @@ class ConnectionPool
      * Migrate old `tableoptions` to `defaultTableOptions` on MariaDB/MySQL connections.
      * Note `tableoptions` overrides `defaultTableOptions` for now.
      *
-     * @deprecated since 13.4 and will be removed in v14.
+     * @deprecated since 13.4 and will be removed in v15 (or later as it does not hurt to keep them).
     */
     private function migrateTableOptionsToDefaultTableOptions(string $connectionName, array $params): array
     {
@@ -176,7 +176,7 @@ class ConnectionPool
             trigger_error(
                 sprintf(
                     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'DB\'][\'Connections\'][\'%s\'][\'tableoptions\'] '
-                    . 'is deprecated since v13 and will be ignored in v14. Use '
+                    . 'is deprecated since v13 and will be ignored in v15 (or later). Use '
                     . '$GLOBALS[\'TYPO3_CONF_VARS\'][\'DB\'][\'Connections\'][\'%s\'][\'defaultTableOptions\'] '
                     . 'instead. Note in v13 the deprecated key still takes precedence over the new key if set.',
                     $connectionName,
@@ -198,7 +198,7 @@ class ConnectionPool
      * Note that `collate` overrides manual set `collation` for now.
      *
      * @link https://github.com/doctrine/dbal/pull/5246
-     * @deprecated since 13.4 and will be removed in v14.
+     * @deprecated since 13.4 and will be removed in v15 (or later as it does not hurt to keep them).
      */
     private function migrateDefaultTableOptionCollateToCollation(string $connectionName, array $params): array
     {
@@ -212,7 +212,7 @@ class ConnectionPool
             trigger_error(
                 sprintf(
                     '$GLOBALS[\'TYPO3_CONF_VARS\'][\'DB\'][\'Connections\'][\'%s\'][\'defaultTableOptions\'][\'collate\'] '
-                    . 'is deprecated since v13 and will be ignored in v14. Set "collation" instead. Note "collate" overrides '
+                    . 'is deprecated since v13 and will be ignored in v15 (or later). Set "collation" instead. Note "collate" overrides '
                     . '"collation" in v13.',
                     $connectionName,
                 ),
