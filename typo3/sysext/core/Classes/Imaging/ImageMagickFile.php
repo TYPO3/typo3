@@ -86,7 +86,7 @@ class ImageMagickFile
      *
      * @var string[]
      */
-    protected $allowedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'tif', 'tiff', 'bmp', 'pcx', 'tga', 'ico'];
+    protected $allowedExtensions = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'tif', 'tiff', 'bmp', 'pcx', 'tga', 'ico', 'avif'];
 
     /**
      * File extensions that never shall be used.
@@ -109,6 +109,7 @@ class ImageMagickFile
         'image/heic' => 'heic',
         'image/heif' => 'heif',
         'image/webp' => 'webp',
+        'image/avif' => 'avif',
         'image/svg' => 'svg',
         'image/svg+xml' => 'svg',
         'image/tiff' => 'tif',

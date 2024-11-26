@@ -82,6 +82,9 @@ class GraphicalFunctions
     /**
      * Allowed file extensions perceived as images by TYPO3.
      * List should be set to `gif,png,jpeg,jpg` if IM is not available.
+     * Due to 'avif' still missing support with GraphicsMagick (https://sourceforge.net/p/graphicsmagick/feature-requests/64/),
+     * this is not enabled by default. But if availability is detected, it is automatically appended to $webImageExt.
+     * Also, system maintainers can add this format to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].
      *
      * @var list<non-empty-string>
      */
@@ -92,10 +95,10 @@ class GraphicalFunctions
      *
      * @var list<non-empty-string>
      */
-    protected array $webImageExt = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
+    protected array $webImageExt = ['gif', 'jpg', 'jpeg', 'png', 'webp', 'avif'];
 
     /**
-     * @var array{jpg: string, jpeg: string, gif: string, png: string, webp: string}
+     * @var array{jpg: string, jpeg: string, gif: string, png: string, webp: string, avif: string}
      */
     public array $cmds = [
         'jpg' => '',
@@ -103,6 +106,7 @@ class GraphicalFunctions
         'gif' => '',
         'png' => '',
         'webp' => '',
+        'avif' => '',
     ];
 
     /**
@@ -326,6 +330,9 @@ class GraphicalFunctions
         if ($targetFileExtension === 'web') {
             if (in_array($originalFileExtension, $this->webImageExt, true)) {
                 $targetFileExtension = $originalFileExtension;
+            } elseif ($originalFileExtension === 'avif' && $this->avifSupportAvailable()) {
+                // Special case for AVIF format - only use this if supported (ImageMagick: YES, GraphicsMagick: NO)
+                $targetFileExtension = $originalFileExtension;
             } else {
                 $targetFileExtension = $this->gif_or_jpg($originalFileExtension, $info->getWidth(), $info->getHeight());
             }
@@ -490,7 +497,7 @@ class GraphicalFunctions
         if (!file_exists($imageFile)) {
             return null;
         }
-        // @todo: check if we actually need this, ass ImageInfo deals with this much more professionally
+        // @todo: check if we actually need this, as ImageInfo deals with this much more professionally
         if (!in_array(strtolower($reg[0]), $this->imageFileExt, true)) {
             return null;
         }
@@ -673,20 +680,41 @@ class GraphicalFunctions
     }
 
     /**
-     * convert -list format returns all formats, ideally with a line like this:
-     * "WEBP P rw- WebP Image Format (libwepb v1.3.2, ENCODER ABI 0x020F)"
-     * only if we have "rw" included, TYPO3 can fully support to read and write webp images.
+     * Check if a specific format is writable with image/graphicsmagick
      *
      * @internal
      */
     public function webpSupportAvailable(): bool
+    {
+        return $this->isConvertSupportAvailableForFormat('WEBP');
+    }
+
+    /**
+     * Check if a specific format is writable with image/graphicsmagick
+     *
+     * @internal
+     */
+    public function avifSupportAvailable(): bool
+    {
+        return $this->isConvertSupportAvailableForFormat('AVIF');
+    }
+
+    /**
+     * convert -list format returns all formats, ideally with a line like this:
+     * "WEBP P rw- WebP Image Format (libwepb v1.3.2, ENCODER ABI 0x020F)"
+     * "AVIF* HEIC      rw+   AV1 Image File Format (1.15.1)"
+     * only if we have "rw" included, TYPO3 can fully support to read and write webp images.
+     *
+     * @internal
+     */
+    public function isConvertSupportAvailableForFormat(string $fileFormat): bool
     {
         $cmd = CommandUtility::imageMagickCommand('convert', '-list format');
         CommandUtility::exec($cmd, $output);
         $this->IM_commands[] = ['', $cmd];
         foreach ($output as $outputLine) {
             $outputLine = trim($outputLine);
-            if (str_starts_with($outputLine, 'WEBP') && str_contains($outputLine, ' rw')) {
+            if (str_starts_with($outputLine, $fileFormat) && str_contains($outputLine, ' rw')) {
                 return true;
             }
         }

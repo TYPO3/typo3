@@ -411,6 +411,21 @@ final class ImageViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function fileExtensionArgumentWritesAvif(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" fileExtension="avif" />');
+
+        // Only for this specific test we want ImageMagick instead of GraphicsMagick.
+        // (AVIF not yet supported by GraphicsMagick)
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] = 'ImageMagick';
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.avif" width="400" height="300" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
     public function absoluteArgument(): void
     {
         GeneralUtility::setIndpEnv('TYPO3_REQUEST_DIR', 'https://typo3-testing.local/');

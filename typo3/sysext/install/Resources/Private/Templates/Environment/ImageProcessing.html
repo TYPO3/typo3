@@ -8,10 +8,10 @@
 
 <h2>Convert image formats to jpg</h2>
 <p>
-    This verifies that your ImageMagick installation is able to read the default
+    This verifies that your ImageMagick / GraphicsMagick installation is able to read the default
     formats <code>jpg</code>, <code>gif</code>, <code>png</code>, <code>tif</code>, <code>pdf</code> and
-    <code>ai</code>.
-    The tool <code>identify</code> is used to read the pixeldimensions of non-web formats and 'convert' is used to
+    <code>ai</code>, <code>webp</code> and <code>avif</code>.
+    The tool <code>identify</code> is used to read the pixel dimensions of non-web formats and 'convert' is used to
     read the image and convert it to <code>jpg</code>.
 </p>
 <f:be.infobox title="Dark images" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
@@ -33,6 +33,9 @@
 <h3>Read webp</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadWebp"></div>
 
+<h3>Read avif</h3>
+<div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadAvif"></div>
+
 <h3>Read tif</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadTif"></div>
 
@@ -42,9 +45,9 @@
 <h3>Read ai</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingReadAi"></div>
 
-<h2>Writing gif, png, webp</h2>
+<h2>Writing gif, png, webp, avif</h2>
 <p>
-    This verifies that ImageMagick is able to write GIF and PNG and WEBP files.
+    This verifies that ImageMagick / GraphicsMagick is able to write GIF, PNG, WEBP and AVIF files.
 </p>
 
 <h3>Write gif</h3>
@@ -56,9 +59,12 @@
 <h3>Write webp</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingWriteWebp"></div>
 
+<h3>Write avif</h3>
+<div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingWriteAvif"></div>
+
 <h2>Scaling images</h2>
 <p>
-    This shows how ImageMagick reacts when scaling transparent GIF and PNG files.
+    This shows how ImageMagick / GraphicsMagick reacts when scaling transparent GIF and PNG files.
 </p>
 
 <h3>gif to gif</h3>
@@ -70,12 +76,20 @@
 <h3>gif to jpg</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGifToJpg"></div>
 
+<h2>Special image formats</h2>
+<p>
+    This shows how ImageMagick /GraphicsMagicks reacts when converting to image formats like WEBP and AVIF.
+</p>
+
 <h3>jpg to webp</h3>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingJpgToWebp"></div>
 
+<h3>jpg to avif</h3>
+<div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingJpgToAvif"></div>
+
 <h2>Combining images</h2>
 <p>
-    This verifies that the ImageMagick tools, <code>combine</code>, <code>composite</code>, are able to
+    This verifies that the ImageMagick / GraphicsMagick tools, <code>combine</code>, <code>composite</code>, are able to
     combine two images through a grayscale mask.
 </p>
 
@@ -110,7 +124,7 @@
     <p>
         'niceText' is a concept that tries to improve the antialiasing of the rendered type by actually
         rendering the textstring in double size on a black/white mask, downscaling the mask and masking
-        the text onto the image through this mask. This involves ImageMagick 'combine'/'composite' and 'convert'.
+        the text onto the image through this mask. This involves ImageMagick / GraphicsMagick 'combine'/'composite' and 'convert'.
     </p>
 </f:be.infobox>
 <div class="t3js-imageProcessing-twinContainer" data-test="imageProcessingGdlibNiceText"></div>
@@ -119,7 +133,7 @@
 <f:be.infobox title="Note on 'shadow'" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
     <p>
         This test makes sense only if the above test had a correct output. But if so, you may not see
-        a soft dropshadow from the third text string as you should. In that case you are most likely using
+        a soft drop-shadow from the third text string as you should. In that case you are most likely using
         ImageMagick 5 and should set the flag <code>$GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_effects']</code>.
     </p>
 </f:be.infobox>
@@ -254,11 +268,12 @@
                 <p>
                     In the backend interface (TBE) thumbnails are automatically generated
                     as well as icons, menu items and pane tabs (by GDLib).
-                    In the frontend all kinds of graphical elements are processed. Typically images are
-                    scaled down to fit the pages (by ImageMagick) and menu items, graphical headers and
-                    such are generated automatically (by GDLib + ImageMagick). In addition TYPO3 is able
-                    to handle many file formats (thanks to ImageMagick), for example TIF, BMP, PCX, TGA,
-                    AI and PDF in addition to the standard web formats; JPG, GIF, PNG.
+                    In the frontend all kinds of graphical elements are processed. Typically, images are
+                    scaled down to fit the pages (by ImageMagick/GraphicsMagick) and menu items, graphical headers and
+                    such are generated automatically (by GDLib + ImageMagick/GraphicsMagick). In addition, TYPO3 is able
+                    to handle many file formats (thanks to ImageMagick/GraphicsMagick), for example TIF, BMP, PCX, TGA,
+                    AI and PDF in addition to the standard web formats; JPG, GIF, PNG. Additional image formats like WEBP
+                    and AVIF are available depending on installed codecs on the system.
                 </p>
                 <p>
                     In order to do this, TYPO3 uses two sets of tools:
@@ -267,23 +282,23 @@
                     ImageMagick / GraphicsMagick:
                 </strong>
                 <p>
-                    For conversion of non-web formats to webformats, combining images with alpha-masks,
+                    For conversion of non-web formats to web formats, combining images with alpha-masks,
                     performing image-effects like blurring and sharpening.
                 </p>
                 <p>
                     ImageMagick is a collection of external programs on the server called by the exec()
-                    function in PHP. TYPO3 uses three of these, namely 'convert' (converting fileformats,
+                    function in PHP. TYPO3 uses three of these, namely 'convert' (converting file formats,
                     scaling, effects), 'combine'/'composite' (combining images with masks) and 'identify'
                     (returns image information). GraphicsMagick is an alternative to ImageMagick and can
                     be enabled by setting [GFX][processor] to 'GraphicsMagick'. This is recommended and enabled
-                    by default. Because ImageMagick and Graphicsmagick are external programs, a requirement
+                    by default. Because ImageMagick and GraphicsMagick are external programs, a requirement
                     must be met: The programs must be installed on the server and working. ImageMagick is
                     available for both Windows and Unix. The current version is 6+. ImageMagick homepage is
-                    at <a href="http://www.imagemagick.org/">http://www.imagemagick.org/</a>
+                    at <a href="https://www.imagemagick.org/">https://www.imagemagick.org/</a>
                 </p>
                 <strong>GDLib:</strong>
                 <p>
-                    For drawing boxes and rendering text on images with truetype fonts. Also used for
+                    For drawing boxes and rendering text on images with TrueType fonts. Also used for
                     icons, menuitems and generally the TypoScript GIFBUILDER object is based on GDlib,
                     but extensively utilizing ImageMagick to process intermediate results.
                 </p>
