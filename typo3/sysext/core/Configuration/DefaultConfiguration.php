@@ -38,7 +38,7 @@ return [
     ],
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,
-        'imagefile_ext' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai,svg,webp',
+        'imagefile_ext' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai,svg,webp,avif',
         'processor_enabled' => true,
         'processor_path' => '/usr/bin/',
         'processor' => 'ImageMagick',
@@ -358,6 +358,7 @@ return [
             // In special cases the mime type is not detected correctly.
             // Use this array only if the automatic detection does not work correct!
             'fileExtensionToMimeType' => [
+                'avif' => 'image/avif',
                 'svg' => 'image/svg+xml',
                 'youtube' => 'video/youtube',
                 'vimeo' => 'video/vimeo',

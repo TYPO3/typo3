@@ -35,7 +35,8 @@ class ImageProcessingStatus implements StatusProviderInterface
     public function getStatus(): array
     {
         return [
-            'webp' => $this->getMissingFilesStatus(),
+            'webp' => $this->getMissingFilesStatus('webp'),
+            'avif' => $this->getMissingFilesStatus('avif'),
         ];
     }
 
@@ -45,39 +46,58 @@ class ImageProcessingStatus implements StatusProviderInterface
     }
 
     /**
-     * Checks if webp support is activated, but webp is not enabled in ImageMagick / GraphicsMagick
+     * Checks if webp | avif support is activated, but webp | avif is not enabled in ImageMagick / GraphicsMagick
      */
-    protected function getMissingFilesStatus(): Status
+    protected function getMissingFilesStatus(string $fileFormat = 'webp'): Status
     {
+        switch ($fileFormat) {
+            case 'avif':
+                $messageNotConfigured = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_avif_not_configured';
+                $messageAvailable = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_avif_available';
+                $messageNotAvailable = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_avif_not_available';
+                $messageAvailableAndConfigured = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_avif_available_and_configured';
+                $messageTitle = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_avif';
+                break;
+
+            case 'webp':
+            default:
+                $messageNotConfigured = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_not_configured';
+                $messageAvailable = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_available';
+                $messageNotAvailable = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_not_available';
+                $messageAvailableAndConfigured = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_available_and_configured';
+                $messageTitle = 'LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp';
+                break;
+        }
+
         $imageProcessing = GeneralUtility::makeInstance(GraphicalFunctions::class);
         if (!$imageProcessing->isProcessingEnabled()) {
             $severity = ContextualFeedbackSeverity::INFO;
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_disabled');
             $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_disabled');
             // ImageMagick / GraphicsMagick is not enabled, all good
-        } elseif (!in_array('webp', $imageProcessing->getImageFileExt(), true)) {
-            // webp is not enabled in TYPO3's Configuration
+        } elseif (!in_array($fileFormat, $imageProcessing->getImageFileExt(), true)) {
+            // webp | avif is not enabled in TYPO3's Configuration
             $severity = ContextualFeedbackSeverity::INFO;
-            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_not_configured');
+            $message = $this->getLanguageService()->sL($messageNotConfigured);
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_disabled');
             // But ImageMagick can do it, maybe it could be activated
-            if ($imageProcessing->webpSupportAvailable()) {
-                $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_available');
+            if ($imageProcessing->isConvertSupportAvailableForFormat(strtoupper($fileFormat))) {
+                $message = $this->getLanguageService()->sL($messageAvailable);
             }
-        } elseif (!$imageProcessing->webpSupportAvailable()) {
-            // webp is configured to be available, but ImageMagick/GraphicsMagick does not support this.
+        } elseif (!$imageProcessing->isConvertSupportAvailableForFormat(strtoupper($fileFormat))) {
+            // webp | avif is configured to be available, but ImageMagick/GraphicsMagick does not support this.
             $severity = ContextualFeedbackSeverity::WARNING;
-            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_not_available');
+            $message = $this->getLanguageService()->sL($messageNotAvailable);
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_enabled');
         } else {
-            // webp is configured to be available, and ImageMagick/GraphicsMagick supports this.
+            // webp | avif is configured to be available, and ImageMagick/GraphicsMagick supports this.
             $severity = ContextualFeedbackSeverity::OK;
-            $message = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp_available_and_configured');
+            $message = $this->getLanguageService()->sL($messageAvailableAndConfigured);
             $value = $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_enabled');
         }
 
         return new Status(
-            $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_imageprocessing_webp'),
+            $this->getLanguageService()->sL($messageTitle),
             $value,
             $message,
             $severity
