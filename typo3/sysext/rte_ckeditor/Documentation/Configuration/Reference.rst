@@ -122,11 +122,40 @@ editor.config
 
    Defines headings available in the heading dropdown.
 
-   Example::
+   Example:
+
+   .. code-block:: yaml
 
       heading:
         options:
           - { model: 'heading2', view: 'h2', title: 'Heading 2' }
+          - { model: 'heading3', view: 'h3', title: 'Heading 3' }
+          - { model: 'heading4', view: 'h4', title: 'Heading 4' }
+
+   It is also possible to set a class for a heading by default
+   (for example, :html:`<h2 class="h2">`):
+
+   .. code-block:: yaml
+
+      heading:
+        options:
+           - { model: 'heading2', view: { name: 'h2', classes: 'h2' }, title: 'Heading 2' }
+           - { model: 'heading3', view: { name: 'h3', classes: 'h3' }, title: 'Heading 3' }
+           - { model: 'heading4', view: { name: 'h4', classes: 'h4' }, title: 'Heading 4' }
+
+   To be able to reset a heading to a paragraph, add also the :yaml:`paragraph`
+   option:
+
+   .. code-block:: yaml
+      :emphasize-lines: 3
+
+      heading:
+        options:
+           - { model: 'paragraph', title: 'Paragraph' }
+           - { model: 'heading2', view 'h2', title: 'Heading 2' }
+           # ...
+
+   A title can also be localized with `LLL:EXT:...`.
 
 .. option:: editor.config.style
 
