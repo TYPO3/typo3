@@ -151,7 +151,7 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
     {
         // Early return if there are no items or invalid values should not be displayed
         if (empty($fieldConf['config']['items'])
-            || $fieldConf['config']['renderType'] !== 'selectSingle'
+            || ($fieldConf['config']['renderType'] ?? '') !== 'selectSingle'
             || ($result['pageTsConfig']['TCEFORM.'][$table . '.'][$fieldName . '.']['disableNoMatchingValueElement'] ?? false)
             || ($fieldConf['config']['disableNoMatchingValueElement'] ?? false)
         ) {
@@ -201,6 +201,6 @@ class TcaSelectItems extends AbstractItemProvider implements FormDataProviderInt
      */
     protected function isTargetRenderType(array $fieldConfig)
     {
-        return $fieldConfig['config']['renderType'] !== 'selectTree';
+        return ($fieldConfig['config']['renderType'] ?? '') !== 'selectTree';
     }
 }
