@@ -431,14 +431,12 @@ class RedisBackend extends AbstractBackend implements TaggableBackendInterface
     }
 
     /**
-     * Finds and returns all cache entry identifiers which are tagged by the
-     * specified tag.
+     * Finds and returns all cache entry identifiers which are tagged by the specified tag.
      *
      * Scales O(1) with number of cache entries
      * Scales O(n) with number of tag entries
      *
      * @param string $tag The tag to search for
-     * @return array An array of entries with all matching entries. An empty array if no entries matched
      * @throws \InvalidArgumentException if tag is not a string
      */
     public function findIdentifiersByTag($tag): array

@@ -72,11 +72,8 @@ class NullBackend extends AbstractBackend implements PhpCapableBackendInterface,
 
     /**
      * Returns an empty array
-     *
-     * @param string $tag ignored
-     * @return array An empty array
      */
-    public function findIdentifiersByTag($tag)
+    public function findIdentifiersByTag($tag): array
     {
         return [];
     }

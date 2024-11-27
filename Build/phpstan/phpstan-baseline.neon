@@ -1975,12 +1975,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Utility/RootlineUtility.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Functional/Cache/Backend/FileBackendTest.php
-
-		-
 			message: '#^Parameter \#2 \$data of method TYPO3\\CMS\\Core\\Cache\\Backend\\FileBackend\:\:set\(\) expects string, array\<int, string\> given\.$#'
 			identifier: argument.type
 			count: 1
