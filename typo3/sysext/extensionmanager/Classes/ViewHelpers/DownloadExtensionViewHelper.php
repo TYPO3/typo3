@@ -27,7 +27,6 @@ use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3\CMS\Extbase\Service\ExtensionService;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
-use TYPO3\CMS\Extensionmanager\Enum\ExtensionType;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormViewHelper;
 
 /**
@@ -65,19 +64,6 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
     {
         /** @var Extension $extension */
         $extension = $this->arguments['extension'];
-        $installPaths =  [
-            ExtensionType::System->value,
-            ExtensionType::Local->value,
-        ];
-        $pathSelector = '<ul class="extensionmanager-is-hidden">';
-        foreach ($installPaths as $installPathType) {
-            /** @var string $installPathType */
-            $pathSelector .= '<li>
-                <input type="radio" id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '" name="downloadPath" class="downloadPath" value="' . htmlspecialchars($installPathType) . '" ' . ($installPathType === 'Local' ? 'checked="checked"' : '') . ' />
-                <label for="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadPath-' . htmlspecialchars($installPathType) . '">' . htmlspecialchars($installPathType) . '</label>
-            </li>';
-        }
-        $pathSelector .= '</ul>';
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         /** @var RequestInterface $request */
         $request = $this->renderingContext->getAttribute(ServerRequestInterface::class);
@@ -107,7 +93,7 @@ final class DownloadExtensionViewHelper extends AbstractFormViewHelper
                 </button>
             </div>';
 
-        $this->tag->setContent($label . $pathSelector);
+        $this->tag->setContent($label);
         return '<div id="' . htmlspecialchars($extension->getExtensionKey()) . '-downloadFromTer" class="downloadFromTer">' . $this->tag->render() . '</div>';
     }
 

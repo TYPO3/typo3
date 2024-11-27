@@ -36,8 +36,6 @@ interface ExtensionInstallResult {
 }
 
 class Repository {
-  public downloadPath: string = '';
-
   public initDom(): void {
     NProgress.configure({ parent: '.module-loading-indicator', showSpinner: false });
 
@@ -61,7 +59,6 @@ class Repository {
 
       const form = target.closest('form');
       const url = form.dataset.href;
-      this.downloadPath = (form.querySelector('input.downloadPath:checked') as HTMLInputElement).value;
       NProgress.start();
       new AjaxRequest(url).get().then(this.getDependencies);
     }).delegateTo(document, '.downloadFromTer form.download button[type=submit]');
@@ -86,8 +83,7 @@ class Repository {
           text: TYPO3.lang['button.resolveDependencies'],
           btnClass: 'btn-primary',
           trigger: (): void => {
-            this.getResolveDependenciesAndInstallResult(data.url
-              + '&downloadPath=' + this.downloadPath);
+            this.getResolveDependenciesAndInstallResult(data.url);
             Modal.dismiss();
           },
         },
@@ -96,8 +92,7 @@ class Repository {
       if (data.hasErrors) {
         Notification.error(data.title, data.message, 15);
       } else {
-        this.getResolveDependenciesAndInstallResult(data.url
-          + '&downloadPath=' + this.downloadPath);
+        this.getResolveDependenciesAndInstallResult(data.url);
       }
     }
   };
