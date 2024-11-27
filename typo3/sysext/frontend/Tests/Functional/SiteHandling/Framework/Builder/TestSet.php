@@ -19,9 +19,9 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\SiteHandling\Framework\Builder;
 
 class TestSet
 {
-    private ?VariableValue $url;
+    private ?VariableValue $url = null;
 
-    private ?int $targetPageId;
+    private ?int $targetPageId = null;
 
     /**
      * @var Applicable[]

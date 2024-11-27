@@ -22,9 +22,6 @@ class VariableCompiler
     public const FLAG_MERGE_OVERRIDE = 1;
     public const FLAG_MERGE_RECURSIVE = 2;
 
-    private array $items;
-    private Variables $variables;
-    private ?int $flags;
     private array $results;
 
     public static function create(array $items, Variables $variables, int $flags = self::FLAG_MERGE_RECURSIVE): self
@@ -32,12 +29,11 @@ class VariableCompiler
         return new static($items, $variables, $flags);
     }
 
-    public function __construct(array $items, Variables $variables, int $flags = self::FLAG_MERGE_RECURSIVE)
-    {
-        $this->items = $items;
-        $this->variables = $variables;
-        $this->flags = $flags;
-    }
+    public function __construct(
+        private readonly array $items,
+        private readonly Variables $variables,
+        private readonly int $flags = self::FLAG_MERGE_RECURSIVE
+    ) {}
 
     public function compile(): self
     {
