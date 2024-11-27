@@ -231,7 +231,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
      * @param string $searchedTag The tag to search for
      * @return array An array with identifiers of all matching entries. An empty array if no entries matched
      */
-    public function findIdentifiersByTag($searchedTag)
+    public function findIdentifiersByTag($searchedTag): array
     {
         $entryIdentifiers = [];
         $now = $GLOBALS['EXEC_TIME'];

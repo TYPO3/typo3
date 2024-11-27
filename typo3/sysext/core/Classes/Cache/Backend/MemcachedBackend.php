@@ -330,7 +330,7 @@ class MemcachedBackend extends AbstractBackend implements TaggableBackendInterfa
      * @param string $tag The tag to search for
      * @return array An array of entries with all matching entries. An empty array if no entries matched
      */
-    public function findIdentifiersByTag($tag)
+    public function findIdentifiersByTag($tag): array
     {
         $identifiers = $this->memcache->get($this->identifierPrefix . 'tag_' . $tag);
         if ($identifiers !== false) {

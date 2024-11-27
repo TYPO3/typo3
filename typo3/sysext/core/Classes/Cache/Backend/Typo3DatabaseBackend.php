@@ -218,9 +218,8 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
      * Finds and returns all cache entries which are tagged by the specified tag.
      *
      * @param string $tag The tag to search for
-     * @return array An array with identifiers of all matching entries. An empty array if no entries matched
      */
-    public function findIdentifiersByTag($tag)
+    public function findIdentifiersByTag($tag): array
     {
         $this->throwExceptionIfFrontendDoesNotExist();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

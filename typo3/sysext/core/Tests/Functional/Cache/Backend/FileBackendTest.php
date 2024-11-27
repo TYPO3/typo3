@@ -509,7 +509,6 @@ final class FileBackendTest extends FunctionalTestCase
         $subject->set('BackendFileTest3', $data, ['UnitTestTag%test']);
         $expectedEntry = 'BackendFileTest2';
         $actualEntries = $subject->findIdentifiersByTag('UnitTestTag%special');
-        self::assertIsArray($actualEntries);
         self::assertEquals($expectedEntry, array_pop($actualEntries));
     }
 
