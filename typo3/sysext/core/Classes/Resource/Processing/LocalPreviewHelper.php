@@ -28,26 +28,19 @@ use TYPO3\CMS\Frontend\Imaging\GifBuilder;
 class LocalPreviewHelper
 {
     /**
-     * Default preview configuration
-     *
-     * @todo once preProcessConfiguration() is not needed anymore (or the whole class), this property can be removed
-     */
-    protected static array $defaultConfiguration = [
-        'width' => 64,
-        'height' => 64,
-    ];
-
-    /**
      * Enforce default configuration for preview processing
      *
      * @todo This method is not needed anymore and will be deprecated (once the whole class can be removed)
      */
     public static function preProcessConfiguration(array $configuration): array
     {
-        $configuration = array_replace(static::$defaultConfiguration, $configuration);
+        $defaultPreviewConfiguration = [
+            'width' => 64,
+            'height' => 64,
+        ];
+        $configuration = array_replace($defaultPreviewConfiguration, $configuration);
         $configuration['width'] = MathUtility::forceIntegerInRange($configuration['width'], 1, 1000);
         $configuration['height'] = MathUtility::forceIntegerInRange($configuration['height'], 1, 1000);
-
         return array_filter(
             $configuration,
             static function (string|int|bool|array|null $value, string $name): bool {
