@@ -323,17 +323,13 @@ class ConnectionPool
         $driverMiddlewares = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] ?? [] as $identifier => $middleware) {
             $identifier = (string)$identifier;
-            $driverMiddlewares[$identifier] = $driverMiddlewareService->ensureCompleteMiddlewareConfiguration(
-                $driverMiddlewareService->normalizeMiddlewareConfiguration($identifier, $middleware)
-            );
+            $driverMiddlewares[$identifier] = $driverMiddlewareService->ensureCompleteMiddlewareConfiguration($middleware);
             $driverMiddlewares[$identifier]['type'] = 'global';
         }
         foreach ($connectionParams['driverMiddlewares'] ?? [] as $identifier => $middleware) {
             $identifier = (string)$identifier;
-            $middleware = array_replace(
-                $driverMiddlewares[$identifier] ?? [],
-                $driverMiddlewareService->normalizeMiddlewareConfiguration($identifier, $middleware)
-            );
+            // Merge driverMiddlewares over globalDriverMiddlewares
+            $middleware = array_replace($driverMiddlewares[$identifier] ?? [], $middleware);
             $middleware = $driverMiddlewareService->ensureCompleteMiddlewareConfiguration($middleware);
             $driverMiddlewares[$identifier] = $middleware;
             $driverMiddlewares[$identifier]['type'] = $driverMiddlewares[$identifier]['type']

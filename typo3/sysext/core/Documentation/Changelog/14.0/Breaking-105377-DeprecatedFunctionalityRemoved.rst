@@ -215,9 +215,10 @@ The following global option handling have been dropped and are ignored:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultPageTSconfig']` :ref:`(Deprecation entry) <deprecation-101799-1693397542>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['BE']['defaultUserTSconfig']` :ref:`(Deprecation entry) <deprecation-101807-1693474000>`
 
-The following global variables have been removed:
+The following global variables have been changed:
 
-- :php:`$GLOBALS['X']`
+- :php:`$GLOBALS['TYPO3_CONF_VARS']['DB']['Connections']['SecondDatabase']['driverMiddlewares']['driver-middleware-identifier']`
+  must be an array, not a class string :ref:`(Deprecation entry) <deprecation-102586-1701536568>`
 
 The following hooks have been removed:
 

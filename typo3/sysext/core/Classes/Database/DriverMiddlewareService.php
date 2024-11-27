@@ -22,41 +22,15 @@ use TYPO3\CMS\Core\Service\DependencyOrderingService;
 /**
  * @internal
  */
-class DriverMiddlewareService
+readonly class DriverMiddlewareService
 {
-    public function __construct(private readonly DependencyOrderingService $dependencyOrderingService) {}
+    public function __construct(
+        private DependencyOrderingService $dependencyOrderingService
+    ) {}
 
     public function order(array $middlewares): array
     {
         return $this->dependencyOrderingService->orderByDependencies($middlewares);
-    }
-
-    public function normalizeMiddlewareConfiguration(string $identifier, array|string $middleware): array
-    {
-        // @deprecated class-string middleware configuration since v13. Remove this in v14 or throw an exception.
-        if (is_string($middleware)) {
-            trigger_error(
-                sprintf(
-                    'DriverMiddleware registration with class-string is deprecated since v13 for "%s". Please configure as array.',
-                    $identifier
-                ),
-                E_USER_DEPRECATED
-            );
-            if ($middleware === '') {
-                $middleware = [
-                    'disabled' => true,
-                ];
-            } else {
-                $middleware = [
-                    'target' => $middleware,
-                    'after' => [
-                        'typo3/core/custom-platform-driver-middleware',
-                    ],
-                ];
-            }
-        }
-
-        return $middleware;
     }
 
     /**
