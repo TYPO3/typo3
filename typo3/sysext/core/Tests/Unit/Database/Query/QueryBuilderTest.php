@@ -49,7 +49,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class QueryBuilderTest extends UnitTestCase
 {
     private Connection&MockObject $connection;
-    private ?QueryBuilder $subject;
+    private QueryBuilder $subject;
     private ConcreteQueryBuilder&MockObject $concreteQueryBuilder;
 
     /**

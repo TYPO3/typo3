@@ -35,12 +35,11 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TypeConverterRegistryTest extends UnitTestCase
 {
-    private ?TypeConverterRegistry $subject;
+    private TypeConverterRegistry $subject;
 
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->subject = new TypeConverterRegistry();
         $this->subject->add(new BooleanConverter(), 10, ['boolean', 'integer'], 'boolean');
     }

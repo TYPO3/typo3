@@ -553,12 +553,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Resources/Private/Php/legacy-backend.php
 
 		-
-			message: '#^Property TYPO3\\CMS\\Backend\\Tests\\Functional\\RecordList\\DownloadRecordListTest\:\:\$user \(TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/backend/Tests/Functional/RecordList/DownloadRecordListTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with TYPO3\\CMS\\Backend\\ElementBrowser\\ElementBrowserInterface will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -2407,12 +2401,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/QueryBuilderTest.php
 
 		-
-			message: '#^Property TYPO3\\CMS\\Core\\Tests\\Unit\\Database\\Query\\QueryBuilderTest\:\:\$subject \(TYPO3\\CMS\\Core\\Database\\Query\\QueryBuilder\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Database/Query/QueryBuilderTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Database\\\\Schema\\\\Parser\\\\AST\\\\ReferenceDefinition'' and TYPO3\\CMS\\Core\\Database\\Schema\\Parser\\AST\\ReferenceDefinition will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -3523,12 +3511,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Property/PropertyMappingConfigurationBuilderTest.php
 
 		-
-			message: '#^Property TYPO3\\CMS\\Extbase\\Tests\\Unit\\Property\\TypeConverterRegistryTest\:\:\$subject \(TYPO3\\CMS\\Extbase\\Property\\TypeConverterRegistry\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Property/TypeConverterRegistryTest.php
-
-		-
 			message: '#^Constructor of an anonymous class has an unused parameter \$copy\.$#'
 			identifier: constructor.unusedParameter
 			count: 1
@@ -4465,24 +4447,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/EnhancerDeclaration.php
 
 		-
-			message: '#^Property TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\ExceptionExpectation\:\:\$className \(string\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/ExceptionExpectation.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\ExceptionExpectation\:\:\$code \(int\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/ExceptionExpectation.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\ExceptionExpectation\:\:\$message \(string\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/ExceptionExpectation.php
-
-		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			identifier: new.static
 			count: 1
@@ -4513,18 +4477,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Permutation.php
 
 		-
-			message: '#^Property TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\TestSet\:\:\$targetPageId \(int\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/TestSet.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\TestSet\:\:\$url \(TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\VariableValue\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/TestSet.php
-
-		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			identifier: new.static
 			count: 1
@@ -4535,12 +4487,6 @@ parameters:
 			identifier: new.static
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/Variable.php
-
-		-
-			message: '#^Property TYPO3\\CMS\\Frontend\\Tests\\Functional\\SiteHandling\\Framework\\Builder\\VariableCompiler\:\:\$flags \(int\|null\) is never assigned null so it can be removed from the property type\.$#'
-			identifier: property.unusedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/SiteHandling/Framework/Builder/VariableCompiler.php
 
 		-
 			message: '#^Unsafe usage of new static\(\)\.$#'

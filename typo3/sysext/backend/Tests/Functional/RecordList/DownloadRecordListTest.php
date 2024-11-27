@@ -28,7 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DownloadRecordListTest extends FunctionalTestCase
 {
-    private ?BackendUserAuthentication $user;
+    private BackendUserAuthentication $user;
 
     protected function setUp(): void
     {
