@@ -175,12 +175,9 @@ class QueryHelper
 
     /**
      * Returns the date and time formats compatible with the given database.
-     *
      * This simple method should probably be deprecated and removed later.
-     *
-     * @return array
      */
-    public static function getDateTimeFormats()
+    public static function getDateTimeFormats(): array
     {
         return [
             'date' => [
@@ -203,12 +200,9 @@ class QueryHelper
 
     /**
      * Returns the date and time types compatible with the given database.
-     *
      * This simple method should probably be deprecated and removed later.
-     *
-     * @return array
      */
-    public static function getDateTimeTypes()
+    public static function getDateTimeTypes(): array
     {
         return [
             'date',
@@ -232,7 +226,6 @@ class QueryHelper
                 $sql
             );
         }
-
         return $sql;
     }
 }
