@@ -37,7 +37,7 @@ final class ChildNodeTest extends UnitTestCase
     {
         $node = new ChildNode('someName');
         $node->setIdentifier('testing');
-        self::assertIsString($node->getIdentifier());
+        self::assertNotEmpty($node->getIdentifier());
     }
 
     #[Test]

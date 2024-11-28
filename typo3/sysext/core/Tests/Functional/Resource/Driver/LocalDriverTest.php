@@ -915,7 +915,6 @@ final class LocalDriverTest extends FunctionalTestCase
         file_put_contents($this->baseDirectory . '/sourceFolder/subFolder/file', 'asdfg');
         $subject = $this->getDefaultInitializedSubject();
         $mappingInformation = $subject->renameFolder('/sourceFolder/', 'newFolder');
-        self::assertIsArray($mappingInformation);
         self::assertEquals('/newFolder/', $mappingInformation['/sourceFolder/']);
         self::assertEquals('/newFolder/file2', $mappingInformation['/sourceFolder/file2']);
         self::assertEquals('/newFolder/subFolder/file', $mappingInformation['/sourceFolder/subFolder/file']);

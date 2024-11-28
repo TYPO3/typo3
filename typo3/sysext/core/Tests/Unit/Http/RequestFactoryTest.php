@@ -18,24 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\RequestInterface;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\RequestFactory
- */
 final class RequestFactoryTest extends UnitTestCase
 {
-    #[Test]
-    public function implementsPsr17FactoryInterface(): void
-    {
-        $factory = new RequestFactory(new GuzzleClientFactory());
-        self::assertInstanceOf(RequestFactoryInterface::class, $factory);
-    }
-
     #[Test]
     public function requestHasMethodSet(): void
     {
@@ -50,8 +38,6 @@ final class RequestFactoryTest extends UnitTestCase
         $factory = new RequestFactory(new GuzzleClientFactory());
         $request = $factory->createRequest('GET', '/');
         $body = $request->getBody();
-
-        self::assertInstanceOf(RequestInterface::class, $request);
 
         self::assertSame('', $body->__toString());
         self::assertSame(0, $body->getSize());

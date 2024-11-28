@@ -18,35 +18,24 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\StreamFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\StreamFactory
- */
 final class StreamFactoryTest extends UnitTestCase
 {
     /**
      * Helper method to create a random directory and return the path.
      * The path will be registered for deletion upon test ending
      */
-    protected function getTestDirectory(string $prefix = 'root_'): string
+    private function getTestDirectory(): string
     {
-        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId($prefix);
+        $path = Environment::getVarPath() . '/tests/' . StringUtility::getUniqueId('root_');
         GeneralUtility::mkdir_deep($path);
         $this->testFilesToDelete[] = $path;
         return $path;
-    }
-
-    #[Test]
-    public function implementsPsr17FactoryInterface(): void
-    {
-        $factory = new StreamFactory();
-        self::assertInstanceOf(StreamFactoryInterface::class, $factory);
     }
 
     #[Test]

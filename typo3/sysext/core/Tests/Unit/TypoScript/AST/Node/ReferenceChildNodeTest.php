@@ -37,7 +37,7 @@ final class ReferenceChildNodeTest extends UnitTestCase
     {
         $rootNode = new ReferenceChildNode('someName');
         $rootNode->setIdentifier('testing');
-        self::assertIsString($rootNode->getIdentifier());
+        self::assertNotEmpty($rootNode->getIdentifier());
     }
 
     #[Test]

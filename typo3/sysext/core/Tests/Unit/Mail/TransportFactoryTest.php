@@ -17,12 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\NullLogger;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
-use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Log\LogManagerInterface;
@@ -203,7 +203,8 @@ final class TransportFactoryTest extends UnitTestCase
     }
 
     #[Test]
-    public function getReturnsMailerTransportInterface(): void
+    #[DoesNotPerformAssertions]
+    public function getDoesNotThrowExceptionWithValidConfiguration(): void
     {
         $mailSettings = [
             'transport' => 'smtp',
@@ -222,9 +223,7 @@ final class TransportFactoryTest extends UnitTestCase
             'transport_spool_type' => '',
             'transport_spool_filepath' => Environment::getVarPath() . '/messages/',
         ];
-
         $transport = $this->getSubject($eventDispatcher)->get($mailSettings);
-        self::assertInstanceOf(TransportInterface::class, $transport);
     }
 
     #[Test]

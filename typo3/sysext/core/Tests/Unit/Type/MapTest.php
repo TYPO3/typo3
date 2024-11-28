@@ -35,7 +35,6 @@ final class MapTest extends UnitTestCase
         $map[$aKey] = $aValue;
         $map[$bKey] = $bValue;
 
-        self::assertInstanceOf(Map::class, $map);
         self::assertCount(2, $map);
         self::assertSame($aValue, $map[$aKey]);
         self::assertSame($bValue, $map[$bKey]);

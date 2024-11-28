@@ -18,60 +18,35 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Localization;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StateTest extends UnitTestCase
 {
-    public const TABLE_NAME = 'tx_test_table';
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $GLOBALS['TCA'] = [];
-    }
-
-    #[DataProvider('stateObjectCanBeCreatedDataProvider')]
-    #[Test]
-    public function stateObjectCanBeCreated(string $tableName, array $states): void
-    {
-        $subject = new State($tableName, $states);
-
-        self::assertInstanceOf(State::class, $subject);
-    }
+    private const TABLE_NAME = 'tx_test_table';
 
     public static function stateObjectCanBeCreatedDataProvider(): array
     {
         return [
             'without states' => [
-                static::TABLE_NAME,
+                self::TABLE_NAME,
                 [],
             ],
             'with states' => [
-                static::TABLE_NAME,
+                self::TABLE_NAME,
                 ['nonExistingField' => 'invalidState'],
             ],
         ];
     }
 
-    #[DataProvider('statesAreEnrichedAndSanitizedOnObjectCreationDataProvider')]
+    #[DataProvider('stateObjectCanBeCreatedDataProvider')]
     #[Test]
-    public function statesAreEnrichedAndSanitizedOnObjectCreation(
-        array $states,
-        array $expected
-    ): void {
-        $GLOBALS['TCA'] = $this->provideTableConfiguration(
-            'first_field',
-            'second_field'
-        );
-
-        $subject = new State(static::TABLE_NAME, $states);
-
-        self::assertSame(
-            $expected,
-            $subject->toArray()
-        );
+    #[DoesNotPerformAssertions]
+    public function stateObjectCanBeCreated(string $tableName, array $states): void
+    {
+        new State($tableName, $states);
     }
 
     public static function statesAreEnrichedAndSanitizedOnObjectCreationDataProvider(): array
@@ -156,19 +131,31 @@ final class StateTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string[] ...$fieldNames
-     */
-    private function provideTableConfiguration(string ...$fieldNames): array
+    #[DataProvider('statesAreEnrichedAndSanitizedOnObjectCreationDataProvider')]
+    #[Test]
+    public function statesAreEnrichedAndSanitizedOnObjectCreation(array $states, array $expected): void
     {
-        $columnsConfiguration = [];
-        foreach ($fieldNames as $fieldName) {
-            $columnsConfiguration[$fieldName]['config']['behaviour']['allowLanguageSynchronization'] = true;
-        }
-        return [
-            static::TABLE_NAME => [
-                'columns' => $columnsConfiguration,
+        $GLOBALS['TCA'] = [
+            'tx_test_table' => [
+                'columns' => [
+                    'first_field' => [
+                        'config' => [
+                            'behaviour' => [
+                                'allowLanguageSynchronization' => true,
+                            ],
+                        ],
+                    ],
+                    'second_field' => [
+                        'config' => [
+                            'behaviour' => [
+                                'allowLanguageSynchronization' => true,
+                            ],
+                        ],
+                    ],
+                ],
             ],
         ];
+        $subject = new State('tx_test_table', $states);
+        self::assertSame($expected, $subject->toArray());
     }
 }

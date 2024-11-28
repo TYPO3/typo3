@@ -31,10 +31,7 @@ final class ElementBrowserRegistryTest extends UnitTestCase
             new class () {},
             $this->getElementBrowser('valid-identifier'),
         ];
-
         $elementBrowserRegistry = new ElementBrowserRegistry($elementBrowser);
-
-        self::assertNotNull($elementBrowserRegistry->getElementBrowser('valid-identifier'));
         self::assertCount(1, $elementBrowserRegistry->getElementBrowsers());
         self::assertTrue($elementBrowserRegistry->hasElementBrowser('valid-identifier'));
     }

@@ -54,8 +54,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function andXReturnType(): void
     {
         $result = $this->subject->and('"uid" = 1', '"pid" = 0');
-
-        self::assertInstanceOf(CompositeExpression::class, $result);
         self::assertSame(CompositeExpression::TYPE_AND, $result->getType());
     }
 
@@ -63,8 +61,6 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function orXReturnType(): void
     {
         $result = $this->subject->or('"uid" = 1', '"uid" = 7');
-
-        self::assertInstanceOf(CompositeExpression::class, $result);
         self::assertSame(CompositeExpression::TYPE_OR, $result->getType());
     }
 

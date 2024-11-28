@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Log;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LogLevel;
-use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Log\Processor\NullProcessor;
 use TYPO3\CMS\Core\Log\Writer\NullWriter;
@@ -28,12 +27,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LogManagerTest extends UnitTestCase
 {
-    #[Test]
-    public function logManagerReturnsLoggerWhenRequestedWithGetLogger(): void
-    {
-        self::assertInstanceOf(Logger::class, (new LogManager())->getLogger('test'));
-    }
-
     #[Test]
     public function logManagerTurnsUnderScoreStyleLoggerNamesIntoDotStyleLoggerNames(): void
     {

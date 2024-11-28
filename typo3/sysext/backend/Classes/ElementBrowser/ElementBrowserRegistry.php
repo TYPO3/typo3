@@ -64,7 +64,6 @@ class ElementBrowserRegistry
         if (!$this->hasElementBrowser($identifier)) {
             throw new \UnexpectedValueException('Element browser with identifier ' . $identifier . ' is not registered.', 1647241086);
         }
-
         return $this->elementBrowsers[$identifier];
     }
 

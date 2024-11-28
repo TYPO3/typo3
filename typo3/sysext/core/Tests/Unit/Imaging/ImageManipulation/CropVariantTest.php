@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Imaging\ImageManipulation;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariant;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\InvalidConfigurationException;
@@ -24,7 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CropVariantTest extends UnitTestCase
 {
-    private static array $tca = [
+    private const TCA = [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
         'cropArea' => [
             'x' => 0.0,
@@ -67,39 +68,37 @@ final class CropVariantTest extends UnitTestCase
         ],
     ];
 
-    private static $expectedConfig = [];
-
-    public static function setUpBeforeClass(): void
+    private function getExpectedConfig(): array
     {
-        parent::setUpBeforeClass();
-        self::$expectedConfig = array_merge(['id' => 'default'], self::$tca);
-        foreach (self::$expectedConfig['allowedAspectRatios'] as $id => &$allowedAspectRatio) {
+        $expectedConfig = array_merge(['id' => 'default'], self::TCA);
+        foreach ($expectedConfig['allowedAspectRatios'] as $id => &$allowedAspectRatio) {
             $allowedAspectRatio = array_merge(['id' => $id], $allowedAspectRatio);
         }
+        return $expectedConfig;
     }
 
     #[Test]
     public function createFromTcaWorks(): void
     {
-        $cropVariant = CropVariant::createFromConfiguration(self::$expectedConfig['id'], self::$tca);
-        self::assertInstanceOf(CropVariant::class, $cropVariant);
-        self::assertSame(self::$expectedConfig, $cropVariant->asArray());
+        $cropVariant = CropVariant::createFromConfiguration($this->getExpectedConfig()['id'], self::TCA);
+        self::assertSame($this->getExpectedConfig(), $cropVariant->asArray());
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function selectedRatioCanBeNull(): void
     {
-        $tca = self::$tca;
+        $tca = self::TCA;
         unset($tca['selectedRatio']);
-        self::assertInstanceOf(CropVariant::class, CropVariant::createFromConfiguration(self::$expectedConfig['id'], $tca));
+        CropVariant::createFromConfiguration($this->getExpectedConfig()['id'], $tca);
     }
 
     #[Test]
     public function throwsExceptionOnTypeMismatchInRatio(): void
     {
-        $tca = self::$tca;
+        $tca = self::TCA;
         $this->expectException(InvalidConfigurationException::class);
         $tca['allowedAspectRatios'][0]['value'] = '1.77777777';
-        CropVariant::createFromConfiguration(self::$expectedConfig['id'], $tca);
+        CropVariant::createFromConfiguration($this->getExpectedConfig()['id'], $tca);
     }
 }

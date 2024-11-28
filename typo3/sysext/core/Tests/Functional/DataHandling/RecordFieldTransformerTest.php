@@ -79,7 +79,6 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
 
         self::assertInstanceOf(FileReference::class, $result);
         self::assertEquals('/kasper-skarhoj1.jpg', $result->getIdentifier());
-        self::assertIsArray($result->getProperties());
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
         self::assertInstanceOf(FileReference::class, $resolvedRecord->get('image'));
@@ -656,7 +655,6 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
         $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_circular_relation');
         self::assertCount(1, $resolvedRelation);
-        self::assertInstanceOf(LazyRecordCollection::class, $result);
         self::assertSame(260, $resolvedRelation[0]->getUid());
         self::assertSame(260, $resolvedRelation[0]->get('uid'));
     }

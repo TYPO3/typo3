@@ -96,12 +96,6 @@ final class DataHandlerTest extends UnitTestCase
     }
 
     #[Test]
-    public function fixtureCanBeCreated(): void
-    {
-        self::assertInstanceOf(DataHandler::class, $this->subject);
-    }
-
-    #[Test]
     public function adminIsAllowedToModifyNonAdminTable(): void
     {
         $this->subject->admin = true;

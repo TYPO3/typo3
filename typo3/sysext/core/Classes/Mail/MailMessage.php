@@ -45,6 +45,9 @@ class MailMessage extends Email
      * This is a short-hand method. It is however more useful to create
      * a Mailer instance which can be used via Mailer->send($message);
      *
+     * @todo: Deprecate (or break?) send() and isSent() after Mailer has been fixed
+     *        towards proper DI to turn this class into a proper DO and not a mixture
+     *        of a DO and a service.
      * @return bool whether the message was accepted or not
      */
     public function send(): bool

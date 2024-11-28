@@ -59,7 +59,6 @@ final class SQLiteSchemaManagerTest extends UnitTestCase
         self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('values'));
 
         $column = $subject->callProtectedGetPortableTableColumnDefinition(['Type' => "enum('value1', 'value2','value3')"]);
-        self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(EnumType::class, $column->getType());
         self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('values'));
     }
@@ -84,7 +83,6 @@ final class SQLiteSchemaManagerTest extends UnitTestCase
         self::assertSame(['value1', 'value3'], $column->getPlatformOption('values'));
 
         $column = $subject->callProtectedGetPortableTableColumnDefinition(['Type' => "set('value1', 'value3')"]);
-        self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(SetType::class, $column->getType());
         self::assertSame(['value1', 'value3'], $column->getPlatformOption('values'));
     }

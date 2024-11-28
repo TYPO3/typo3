@@ -22,34 +22,19 @@ use TYPO3\CMS\Core\Imaging\Dimension;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Imaging\Dimension
- */
 final class DimensionTest extends UnitTestCase
 {
-    protected ?Dimension $subject;
-    protected int $width = 32;
-    protected int $height = 32;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->subject = new Dimension(IconSize::MEDIUM);
-    }
-
     #[Test]
     public function getWidthReturnsValidInteger(): void
     {
-        $value = $this->subject->getWidth();
-        self::assertEquals($this->width, $value);
-        self::assertIsInt($value);
+        $subject = new Dimension(IconSize::MEDIUM);
+        self::assertSame(32, $subject->getWidth());
     }
 
     #[Test]
     public function getHeightReturnsValidInteger(): void
     {
-        $value = $this->subject->getHeight();
-        self::assertEquals($this->height, $value);
-        self::assertIsInt($value);
+        $subject = new Dimension(IconSize::MEDIUM);
+        self::assertSame(32, $subject->getWidth());
     }
 }

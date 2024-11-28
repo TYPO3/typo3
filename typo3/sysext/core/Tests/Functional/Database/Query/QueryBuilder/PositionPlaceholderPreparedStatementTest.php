@@ -21,11 +21,11 @@ use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Statement;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\UnsupportedPreparedStatementParameterTypeException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -40,20 +40,16 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function canBeInstantiated(): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
-
-        self::assertIsObject($queryBuilder);
-        self::assertInstanceOf(QueryBuilder::class, $queryBuilder);
+        $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
     }
 
     #[Test]
     public function preparedStatementWithPositionPlaceholderAndBindValueWorks(): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -92,8 +88,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
     #[Test]
     public function preparedStatementWithPositionPlaceholderAndBindValueWithWileLoopWorks(): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -139,8 +134,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
     #[Test]
     public function preparedStatementWithoutRetrievingFullResultSetAndWithoutFreeingPriorResultSetWorks(): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -176,8 +170,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $cacheIdentifier = 'prepared-statement-through-runtime-cache';
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -236,8 +229,7 @@ final class PositionPlaceholderPreparedStatementTest extends FunctionalTestCase
         // expected exception
         $this->expectExceptionObject(UnsupportedPreparedStatementParameterTypeException::new($arrayParameterName));
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));

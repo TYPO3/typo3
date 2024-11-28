@@ -18,8 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
@@ -2548,7 +2548,6 @@ final class GeneralUtilityTest extends UnitTestCase
         $directoryCreated = is_dir($directory);
         rmdir($directory);
         self::assertTrue($directoryCreated);
-        self::assertIsArray($fileInfo);
         self::assertEquals($directoryPath, $fileInfo['path']);
         self::assertEquals($directoryName, $fileInfo['file']);
         self::assertEquals($directoryName, $fileInfo['filebody']);
@@ -2561,7 +2560,6 @@ final class GeneralUtilityTest extends UnitTestCase
     {
         $testFile = 'fileadmin/media/someFile.png';
         $fileInfo = GeneralUtility::split_fileref($testFile);
-        self::assertIsArray($fileInfo);
         self::assertEquals('fileadmin/media/', $fileInfo['path']);
         self::assertEquals('someFile.png', $fileInfo['file']);
         self::assertEquals('someFile', $fileInfo['filebody']);
@@ -2673,9 +2671,10 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
-    public function makeInstanceReturnsClassInstance(): void
+    #[DoesNotPerformAssertions]
+    public function makeInstanceCanInstantiateStdClass(): void
     {
-        self::assertInstanceOf(\stdClass::class, GeneralUtility::makeInstance(\stdClass::class));
+        GeneralUtility::makeInstance(\stdClass::class);
     }
 
     #[Test]
@@ -2727,10 +2726,11 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function makeInstanceInjectsLogger(): void
     {
         $instance = GeneralUtility::makeInstance(GeneralUtilityMakeInstanceInjectLoggerFixture::class);
-        self::assertInstanceOf(LoggerInterface::class, $instance->getLogger());
+        $instance->getLogger();
     }
 
     #[Test]

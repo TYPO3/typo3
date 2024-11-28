@@ -25,9 +25,9 @@ use GuzzleHttp\Handler\MockHandler as GuzzleMockHandler;
 use GuzzleHttp\HandlerStack as GuzzleHandlerStack;
 use GuzzleHttp\Middleware as GuzzleMiddleware;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Client\ClientInterface;
 use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Client\RequestExceptionInterface;
 use TYPO3\CMS\Core\Http\Request;
@@ -39,10 +39,10 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class ClientTest extends UnitTestCase
 {
     #[Test]
-    public function implementsPsr18ClientInterface(): void
+    #[DoesNotPerformAssertions]
+    public function canBeInstantiated(): void
     {
-        $client = new Client();
-        self::assertInstanceOf(ClientInterface::class, $client);
+        new Client();
     }
 
     #[Test]

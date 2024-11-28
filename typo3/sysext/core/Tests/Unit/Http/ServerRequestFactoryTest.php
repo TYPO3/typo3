@@ -18,25 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\ServerRequestFactoryInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\ServerRequestFactory
- */
 final class ServerRequestFactoryTest extends UnitTestCase
 {
-    #[Test]
-    public function implementsPsr17FactoryInterface(): void
-    {
-        $factory = new ServerRequestFactory();
-        self::assertInstanceOf(ServerRequestFactoryInterface::class, $factory);
-    }
-
     #[Test]
     public function serverRequestHasMethodSet(): void
     {
@@ -51,8 +38,6 @@ final class ServerRequestFactoryTest extends UnitTestCase
         $factory = new ServerRequestFactory();
         $request = $factory->createServerRequest('GET', '/');
         $body = $request->getBody();
-
-        self::assertInstanceOf(ServerRequestInterface::class, $request);
 
         self::assertSame('', $body->__toString());
         self::assertSame(0, $body->getSize());
@@ -179,7 +164,6 @@ final class ServerRequestFactoryTest extends UnitTestCase
 
         $request = ServerRequestFactory::fromGlobals();
 
-        self::assertInstanceOf(ServerRequest::class, $request, '$_SERVER with numeric key prevented creation.');
         self::assertEquals([], $request->getHeader('1'), 'Numeric keys are not processed, default empty array should be returned.');
     }
 }

@@ -18,43 +18,26 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Console;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\CommandLoader\CommandLoaderInterface;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CommandRegistryTest extends UnitTestCase
 {
-    protected ContainerInterface&MockObject $containerMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->containerMock = $this->createMock(ContainerInterface::class);
-    }
-
-    #[Test]
-    public function implementsCommandLoaderInterface(): void
-    {
-        $commandRegistry = new CommandRegistry($this->containerMock);
-        self::assertInstanceof(CommandLoaderInterface::class, $commandRegistry);
-    }
-
     #[Test]
     public function iteratesLazyCommandsOfActivePackages(): void
     {
         $command1Mock = $this->createMock(Command::class);
         $command2Mock = $this->createMock(Command::class);
 
-        $this->containerMock->method('get')->willReturnMap([
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $containerMock->method('get')->willReturnMap([
             ['command1', $command1Mock],
             ['command2', $command2Mock],
         ]);
 
-        $commandRegistry = new CommandRegistry($this->containerMock);
+        $commandRegistry = new CommandRegistry($containerMock);
         $commandRegistry->addLazyCommand('test:command', 'command1');
         $commandRegistry->addLazyCommand('test:command2', 'command2');
 

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\Stream;
@@ -40,17 +41,17 @@ final class StreamTest extends UnitTestCase
     }
 
     #[Test]
-    public function canInstantiateWithStreamIdentifier(): void
+    #[DoesNotPerformAssertions]
+    public function canBeInstantiatedWithStreamIdentifier(): void
     {
-        self::assertInstanceOf(Stream::class, new Stream('php://memory', 'wb+'));
+        new Stream('php://memory', 'wb+');
     }
 
     #[Test]
-    public function canInstantiateWithStreamResource(): void
+    #[DoesNotPerformAssertions]
+    public function canBeInstantiatedWithStreamResource(): void
     {
-        $resource = fopen('php://memory', 'wb+');
-        $subject = new Stream($resource);
-        self::assertInstanceOf(Stream::class, $subject);
+        new Stream(fopen('php://memory', 'wb+'));
     }
 
     #[Test]

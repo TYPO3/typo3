@@ -470,7 +470,7 @@ class GeneralUtility
      * @param string $fileNameWithPath File name with path to be analyzed (must exist if open_basedir is set)
      * @return array<string, string> Contains keys [path], [file], [filebody], [fileext], [realFileext]
      */
-    public static function split_fileref($fileNameWithPath)
+    public static function split_fileref(string $fileNameWithPath): array
     {
         $info = [];
         $reg = [];
@@ -491,7 +491,6 @@ class GeneralUtility
             $info['filebody'] = $info['file'];
             $info['fileext'] = '';
         }
-        reset($info);
         return $info;
     }
 

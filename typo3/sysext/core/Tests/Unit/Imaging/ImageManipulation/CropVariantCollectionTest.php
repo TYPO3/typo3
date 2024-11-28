@@ -26,7 +26,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CropVariantCollectionTest extends UnitTestCase
 {
-    private static array $tca = [
+    private const TCA = [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_wizards.xlf:imwizard.crop_variant.default',
         'cropArea' => [
             'x' => 0.0,
@@ -72,11 +72,9 @@ final class CropVariantCollectionTest extends UnitTestCase
     #[Test]
     public function createFromJsonWorks(): void
     {
-        $cropVariant1 = self::$tca;
-        $cropVariant2 = self::$tca;
+        $cropVariant1 = self::TCA;
+        $cropVariant2 = self::TCA;
         $cropVariantCollection = CropVariantCollection::create(json_encode(['default' => $cropVariant1, 'Second' => $cropVariant2]));
-        self::assertInstanceOf(CropVariantCollection::class, $cropVariantCollection);
-
         $assertSameValues = function ($expected, $actual) use (&$assertSameValues) {
             if (is_array($expected)) {
                 foreach ($expected as $key => $value) {

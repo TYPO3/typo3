@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
@@ -74,7 +73,7 @@ final class ConsoleCommandPassTest extends UnitTestCase
         self::assertTrue($commandRegistry->has('test:cmd'));
         self::assertEquals(['test:cmd'], $commandRegistry->getNames());
         self::assertEquals('Dummy description including new as word', $commandRegistry->filter()['test:cmd']['description'] ?? '');
-        self::assertInstanceOf(Command::class, $commandRegistry->getCommandByIdentifier('test:cmd'));
+        $commandRegistry->getCommandByIdentifier('test:cmd');
     }
 
     #[Test]

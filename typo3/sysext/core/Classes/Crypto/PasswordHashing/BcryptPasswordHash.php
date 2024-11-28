@@ -82,9 +82,6 @@ class BcryptPasswordHash implements PasswordHashInterface
         return password_verify($this->processPlainPassword($plainPW), $saltedHashPW);
     }
 
-    /**
-     * Extend parent method to workaround bcrypt limitations.
-     */
     public function getHashedPassword(string $password): ?string
     {
         $hashedPassword = null;

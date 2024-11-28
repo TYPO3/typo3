@@ -37,7 +37,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         $this->packageManagerMock = $this->createMock(PackageManager::class);
     }
 
-    protected function mockPackage(string $packageKey, string $serviceProvider): void
+    protected function mockPackage(string $packageKey, string $serviceProvider): Package
     {
         $this->packageManagerMock->method('isPackageActive')->with($packageKey)->willReturn(true);
         $package = $this->createMock(Package::class);
@@ -45,6 +45,7 @@ final class ServiceProviderRegistryTest extends UnitTestCase
         $package->method('getServiceProvider')->willReturn($serviceProvider);
         $this->packageManagerMock->method('getPackage')->with($packageKey)->willReturn($package);
         $this->packageManagerMock->method('getActivePackages')->willReturn([$package]);
+        return $package;
     }
 
     #[Test]
@@ -67,10 +68,10 @@ final class ServiceProviderRegistryTest extends UnitTestCase
     #[Test]
     public function registryPassesPackageAsConstructorArgument(): void
     {
-        $this->mockPackage('core', TestStatefulServiceProvider::class);
+        $package = $this->mockPackage('core', TestStatefulServiceProvider::class);
         $subject = new ServiceProviderRegistry($this->packageManagerMock);
         self::assertInstanceOf(TestStatefulServiceProvider::class, $subject->get('core'));
-        self::assertInstanceOf(Package::class, $subject->get('core')->package);
+        self::assertSame($package, $subject->get('core')->package);
     }
 
     #[Test]

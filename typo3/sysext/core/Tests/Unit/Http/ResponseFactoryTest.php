@@ -18,22 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\ResponseFactoryInterface;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\ResponseFactory
- */
 final class ResponseFactoryTest extends UnitTestCase
 {
-    #[Test]
-    public function implementsPsr17FactoryInterface(): void
-    {
-        $factory = new ResponseFactory();
-        self::assertInstanceOf(ResponseFactoryInterface::class, $factory);
-    }
-
     #[Test]
     public function responseHasStatusCode200ByDefault(): void
     {

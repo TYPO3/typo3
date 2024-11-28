@@ -29,16 +29,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ImageInfoTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    #[Test]
-    public function classImageInfoCanBeInstantiated(): void
-    {
-        $className = ImageInfo::class;
-        $classInstance = new ImageInfo('FooFileName');
-        self::assertInstanceOf($className, $classInstance);
-    }
-
     #[Test]
     public function doesNotBreakOnFileWithInvalidEnding(): void
     {

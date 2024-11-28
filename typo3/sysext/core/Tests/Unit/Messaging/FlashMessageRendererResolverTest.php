@@ -17,16 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
-use TYPO3\CMS\Core\Messaging\Renderer\FlashMessageRendererInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class FlashMessageRendererResolverTest extends UnitTestCase
 {
     #[Test]
-    public function flashMessageRendererResolverResolveRendererWithoutContext(): void
+    #[DoesNotPerformAssertions]
+    public function flashMessageRendererResolverResolveDoesNotThrowException(): void
     {
-        self::assertInstanceOf(FlashMessageRendererInterface::class, (new FlashMessageRendererResolver())->resolve());
+        (new FlashMessageRendererResolver())->resolve();
     }
 }

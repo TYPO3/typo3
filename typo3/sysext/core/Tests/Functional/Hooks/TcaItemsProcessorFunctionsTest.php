@@ -92,7 +92,6 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
             'items' => [],
         ];
         $this->get(TcaItemsProcessorFunctions::class)->populateAvailablePageTypes($fieldDefinition);
-        self::assertSame($fieldDefinition, $fieldDefinition);
         $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] = [
             0 => [
                 'label' => 'Divider',

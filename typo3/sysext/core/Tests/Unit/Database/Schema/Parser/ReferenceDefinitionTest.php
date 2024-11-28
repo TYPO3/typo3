@@ -187,7 +187,6 @@ final class ReferenceDefinitionTest extends UnitTestCase
         $statement = sprintf('CREATE TABLE `aTable`(`aField` INT(11) %s);', $columnAttribute);
         $subject = $this->createSubject($statement);
 
-        self::assertInstanceOf(ReferenceDefinition::class, $subject);
         self::assertSame($table, $subject->tableName->schemaObjectName);
         self::assertSame($match, $subject->match);
         self::assertSame($onDelete, $subject->onDelete);

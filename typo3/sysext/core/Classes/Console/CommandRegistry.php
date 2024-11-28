@@ -30,28 +30,22 @@ use TYPO3\CMS\Core\SingletonInterface;
 class CommandRegistry implements CommandLoaderInterface, SingletonInterface
 {
     /**
-     * @var ContainerInterface
-     */
-    protected $container;
-
-    /**
      * Map of command configurations with the command name as key
      *
      * @var array[]
      */
-    protected $commandConfigurations = [];
+    protected array $commandConfigurations = [];
 
     /**
      * Map of command aliases
      *
      * @var array[]
      */
-    protected $aliases = [];
+    protected array $aliases = [];
 
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
+    public function __construct(
+        protected readonly ContainerInterface $container
+    ) {}
 
     /**
      * {@inheritdoc}

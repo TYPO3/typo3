@@ -18,30 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\UriFactoryInterface;
-use Psr\Http\Message\UriInterface;
 use TYPO3\CMS\Core\Http\UriFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase for \TYPO3\CMS\Core\Http\UriFactory
- */
 final class UriFactoryTest extends UnitTestCase
 {
-    #[Test]
-    public function implementsPsr17FactoryInterface(): void
-    {
-        $factory = new UriFactory();
-        self::assertInstanceOf(UriFactoryInterface::class, $factory);
-    }
-
     #[Test]
     public function uriIsCreated(): void
     {
         $factory = new UriFactory();
         $uri = $factory->createUri('https://user:pass@domain.localhost:3000/path?query');
-
-        self::assertInstanceOf(UriInterface::class, $uri);
         self::assertSame('user:pass', $uri->getUserInfo());
         self::assertSame('domain.localhost', $uri->getHost());
         self::assertSame(3000, $uri->getPort());

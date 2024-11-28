@@ -700,9 +700,8 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $statements = $this->createSqlReader()->getStatementArray($sqlCode);
         $result = $subject->importStaticData($statements);
         // Table not created and insert statements are returning database errors in the result set, check for that !
-        self::assertIsArray($result);
         self::assertCount(2, $result);
-        foreach ($result as $hash => $message) {
+        foreach ($result as $message) {
             self::assertNotSame('', $message);
         }
         self::assertNotContains('another_test_table', $this->getSchemaManager()->listTableNames());

@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
-use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerInterface;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
 use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -248,10 +247,10 @@ final class SiteTest extends UnitTestCase
                 [
                     'errorCode' => 0,
                     'errorContentSource' => 123,
-                    'errorHandler' => 'Page',
+                    'errorHandler' => 'Page', // PageContentErrorHandler fallback
                 ],
             ],
         ]);
-        self::assertInstanceOf(PageErrorHandlerInterface::class, $subject->getErrorHandler(404));
+        self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(404));
     }
 }

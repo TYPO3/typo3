@@ -21,11 +21,11 @@ use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\AbstractMySQLDriver;
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -70,9 +70,10 @@ final class ConnectionTest extends UnitTestCase
     }
 
     #[Test]
-    public function createQueryBuilderReturnsInstanceOfTypo3QueryBuilder(): void
+    #[DoesNotPerformAssertions]
+    public function createQueryBuilderWorks(): void
     {
-        self::assertInstanceOf(QueryBuilder::class, $this->connection->createQueryBuilder());
+        $this->connection->createQueryBuilder();
     }
 
     public static function quoteIdentifierDataProvider(): array

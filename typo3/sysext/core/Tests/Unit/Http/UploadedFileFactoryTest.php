@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\UploadedFileFactoryInterface;
-use Psr\Http\Message\UploadedFileInterface;
 use TYPO3\CMS\Core\Http\Stream;
 use TYPO3\CMS\Core\Http\UploadedFileFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -27,20 +25,12 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class UploadedFileFactoryTest extends UnitTestCase
 {
     #[Test]
-    public function implementsPsr17FactoryInterface(): void
-    {
-        $factory = new UploadedFileFactory();
-        self::assertInstanceOf(UploadedFileFactoryInterface::class, $factory);
-    }
-
-    #[Test]
     public function createUploadedFile(): void
     {
         $stream = new Stream('php://memory');
         $factory = new UploadedFileFactory();
         $uploadedFile = $factory->createUploadedFile($stream, 0);
 
-        self::assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
         self::assertSame(UPLOAD_ERR_OK, $uploadedFile->getError());
         self::assertNull($uploadedFile->getClientFileName());
         self::assertNull($uploadedFile->getClientMediaType());
@@ -53,7 +43,6 @@ final class UploadedFileFactoryTest extends UnitTestCase
         $factory = new UploadedFileFactory();
         $uploadedFile = $factory->createUploadedFile($stream, 0, UPLOAD_ERR_NO_FILE, 'filename.html', 'text/html');
 
-        self::assertInstanceOf(UploadedFileInterface::class, $uploadedFile);
         self::assertSame(UPLOAD_ERR_NO_FILE, $uploadedFile->getError());
         self::assertSame('filename.html', $uploadedFile->getClientFileName());
         self::assertSame('text/html', $uploadedFile->getClientMediaType());

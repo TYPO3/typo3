@@ -39,10 +39,8 @@ class FileReference implements FileInterface
     /**
      * Various properties of the FileReference. Note that these information can be different
      * to the ones found in the originalFile.
-     *
-     * @var array
      */
-    protected $propertiesOfFileReference;
+    protected array $propertiesOfFileReference;
 
     /**
      * Reference to the original File object underlying this FileReference.
@@ -55,10 +53,8 @@ class FileReference implements FileInterface
      * Properties merged with the parent object (File) if
      * the value is not defined (NULL). Thus, FileReference properties act
      * as overlays for the defined File properties.
-     *
-     * @var array
      */
-    protected $mergedProperties = [];
+    protected array $mergedProperties = [];
 
     /**
      * Constructor for a file in use object. Should normally not be used
@@ -135,10 +131,8 @@ class FileReference implements FileInterface
 
     /**
      * Gets all properties, falling back to values of the parent.
-     *
-     * @return array
      */
-    public function getProperties()
+    public function getProperties(): array
     {
         if (empty($this->mergedProperties)) {
             $this->mergedProperties = $this->propertiesOfFileReference;
@@ -151,7 +145,6 @@ class FileReference implements FileInterface
             );
             array_walk($this->mergedProperties, $this->restoreNonNullValuesCallback(...));
         }
-
         return $this->mergedProperties;
     }
 

@@ -93,16 +93,9 @@ final class IconRegistryTest extends UnitTestCase
     }
 
     #[Test]
-    public function getAllRegisteredIconIdentifiersReturnsAnArrayWithIconIdentifiers(): void
-    {
-        self::assertIsArray((new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getAllRegisteredIconIdentifiers());
-    }
-
-    #[Test]
     public function getAllRegisteredIconIdentifiersReturnsArrayWithAllRegisteredIconIdentifiers(): void
     {
         $result = (new IconRegistry(new NullFrontend('test'), 'BackendIcons'))->getAllRegisteredIconIdentifiers();
-        self::assertIsArray($result);
         self::assertContains('default-not-found', $result);
     }
 
