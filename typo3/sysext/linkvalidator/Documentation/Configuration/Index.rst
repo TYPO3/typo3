@@ -72,8 +72,8 @@ searchFields.[key]
             Currently, LinkValidator will only detect links for fields if the
             TCA configuration meets one of these criteria:
 
-            *   at least one :ref:`softref <t3tca:columns-input-properties-softref>`
-            *   type is set to :ref:`link <t3tca:columns-link>`
+            * at least one :ref:`softref <t3tca:tca_property_softref>`
+            * type is set to :ref:`link <t3tca:columns-link>`
 
             For this reason, it is currently not possible to check for
             `pages.media`. This will be fixed in the future.
