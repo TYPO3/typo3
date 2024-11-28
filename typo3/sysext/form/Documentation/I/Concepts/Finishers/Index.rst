@@ -590,10 +590,13 @@ following to the backend yaml setup:
                     config:
                       type: 'text'
 
-Make sure the setup file is registered in the backend:
+Make sure the setup file is registered for the backend in a :file:`EXT:my_extension/ext_localconf.php` file:
 
-.. code-block:: typoscript
+..  code-block:: php
+    :caption: EXT:my_extension/ext_localconf.php
 
-   module.tx_form.settings.yamlConfigurations {
-      123456789 = EXT:yourExtension/Configuration/Form/Backend.yaml
-   }
+    ExtensionManagementUtility::addTypoScriptSetup('
+        module.tx_form.settings.yamlConfigurations {
+            123456789 = EXT:yourExtension/Configuration/Form/Backend.yaml
+        }
+    ');
