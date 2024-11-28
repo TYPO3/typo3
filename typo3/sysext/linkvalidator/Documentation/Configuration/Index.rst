@@ -72,7 +72,7 @@ searchFields.[key]
             Currently, LinkValidator will only detect links for fields if the
             TCA configuration meets one of these criteria:
 
-            * at least one :ref:`softref <t3tca:columns-input-properties-softref>`
+            * at least one :ref:`softref <t3tca:tca_property_softref>`
             * type is set to :ref:`link <t3tca:columns-link>`
             * type is set to :ref:`email <t3tca:columns-email>`
 
