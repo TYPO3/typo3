@@ -141,8 +141,8 @@ with a rich text editor.
 Relevant Settings for `rte_ckeditor`
 ------------------------------------
 
-* :ref:`t3tca:columns-text-properties-enableRichtext`
-* :ref:`t3tca:columns-text-properties-richtextConfiguration`
+*   :ref:`t3tca:confval-text-enablerichtext`
+*   :ref:`t3tca:confval-text-richtextConfiguration`
 
 How to change values
 --------------------

@@ -138,9 +138,9 @@ for the sys_news database table, which can be found in
          'richtextConfiguration' => 'default',
       ],
 
-Enabling Rich Text Parsing itself is done via :ref:`t3tca:columns-text-properties-enableRichtext`,
+Enabling Rich Text Parsing itself is done via :ref:`t3tca:confval-text-enablerichtext`,
 and a specific configuration
-can be set via :ref:`t3tca:columns-text-properties-richtextConfiguration`, setting it to for example
+can be set via :ref:`t3tca:confval-text-richtextConfiguration`, setting it to for example
 “news”.
 
 .. _override-configuration-via-page-tsconfig:
