@@ -105,82 +105,64 @@ beginning with the key ``100``.
 
 
 .. _concepts-configuration-yamlregistration-backend:
+.. _concepts-configuration-yamlregistration-backend-addtyposcriptsetup:
 
 YAML registration for the backend
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 For the backend the whole YAML configuration is loaded via the following
-TypoScript (see ``EXT:form/ext_localconf.php``):
+TypoScript in :file:`EXT:form/ext_localconf.php`.
 
-.. code-block:: typoscript
+..  code-block:: php
+    :caption: EXT:form/ext_localconf.php
 
-   module.tx_form {
-       settings {
-           yamlConfigurations {
-               10 = EXT:form/Configuration/Yaml/FormSetup.yaml
+    ExtensionManagementUtility::addTypoScriptSetup('
+        module.tx_form {
+           settings {
+               yamlConfigurations {
+                   10 = EXT:form/Configuration/Yaml/FormSetup.yaml
+               }
            }
-       }
-   }
+        }
+    ');
 
 Since the key ``10`` is already taken, we recommend registering
-your own configuration beginning with the key ``100``.
+your own configuration beginning with a unique number (for instance current timestamp)
+in a :file:`EXT:my_extension/ext_localconf.php` file:
 
-.. code-block:: typoscript
+..  code-block:: php
+    :caption: EXT:my_extension/ext_localconf.php
 
-   module.tx_form {
-       settings {
-           yamlConfigurations {
-               100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
+    <?php
+
+    declare(strict_types=1);
+
+    use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+
+    defined('TYPO3') or die();
+
+    ExtensionManagementUtility::addTypoScriptSetup('
+        module.tx_form {
+           settings {
+               yamlConfigurations {
+                   1732785702 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
+               }
            }
-       }
-   }
-
-.. important::
-   Consider the following methods to register TypoScript for the backend.
+        }
+    ');
 
 The backend module of EXT:form is based on Extbase. Such backend modules
 can, like frontend plugins, be configured via TypoScript. The frontend
-plugins are configured below ``plugin.tx_[pluginkey]``. For the
-configuration of the backend ``module.tx_[pluginkey]`` is used.
+plugins are configured below ``plugin.tx_form``. For the
+configuration of the backend ``module.tx_form`` is used.
 
-There are different ways to include the TypoScript configuration for the
-backend:
-
-- a) use the API function :php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()`,
-- b) add the configuration to your existing TypoScript record.
-
-In both cases, the ``form editor`` will work as expected regardless the
-chosen page from the page tree. If using the aforementioned method b, the
-configuration would only be valid on a specific page tree, unless you add
-your configuration to all trees within your installation. Nevertheless,
-being on the root page (uid 0) would still be a problem.
-
-To sum it up: choose either method a or b, and you will be fine.
-
-
-.. _concepts-configuration-yamlregistration-backend-addtyposcriptsetup:
-
-YAML registration for the backend via addTypoScriptSetup()
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-Add the following PHP code to your :file:`ext_localconf.php` of your site
-package::
-
-   defined('TYPO3') or die();
-
-   call_user_func(function () {
-        \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup(
-            trim('
-                module.tx_form {
-                    settings {
-                        yamlConfigurations {
-                            100 = EXT:my_site_package/Configuration/Form/CustomFormSetup.yaml
-                        }
-                    }
-                }
-            ')
-        );
-   });
+The recommended way to include "global" backend TypoScript is by using the API function
+:php:`\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTypoScriptSetup()`
+in a :file:`EXT:my_extension/ext_localconf.php` file. This registers
+TypoScript as "global" snippet: TypoScript is usually bound to pages and page
+uids in some way - via sys_template records, or via site sets. The form backend module
+however is not bound to a page, and the extbase backend bootstrap did a lot of magic in
+the past to find an appropriate page if none is given.
 
 
 .. _concepts-configuration-yamlloading:
