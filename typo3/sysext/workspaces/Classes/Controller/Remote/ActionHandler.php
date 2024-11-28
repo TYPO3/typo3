@@ -584,7 +584,7 @@ class ActionHandler
         foreach ($elements as $element) {
             // Avoid any action on records that have already been published to live
             $elementRecord = BackendUtility::getRecord($element->table, $element->uid);
-            if ((int)$elementRecord['t3ver_wsid'] === 0) {
+            if ((int)($elementRecord['t3ver_wsid'] ?? 0) === 0) {
                 continue;
             }
 
