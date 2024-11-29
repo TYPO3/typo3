@@ -5,7 +5,7 @@
 	"license": "GPL-2.0-or-later",
 	"require": {
 		"typo3/cms-core": "13.4.*@dev",
-		"typo3/testing-framework": "dev-main"
+		"typo3/testing-framework": "^9.0.3"
 	},
 	"extra": {
 		"typo3/cms": {
