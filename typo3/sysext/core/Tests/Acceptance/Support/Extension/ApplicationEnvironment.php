@@ -81,6 +81,15 @@ final class ApplicationEnvironment extends BackendEnvironment
             'MAIL' => [
                 'transport' => NullTransport::class,
             ],
+            'SYS' => [
+                'features' => [
+                    // @todo Temporary setting {@see typo3/sysext/core/Configuration/DefaultConfiguration.php} feature
+                    //       toggle for `redirects.hitCount` to false to prepare removal from typo3/testing-framework
+                    //       which enables this. {@see https://github.com/TYPO3/testing-framework/issues/554}
+                    //       Remove this when updating TF after removing toggle setting.
+                    'redirects.hitCount' => false,
+                ],
+            ],
         ],
         'additionalFoldersToCreate' => [
             '/fileadmin/user_upload/',

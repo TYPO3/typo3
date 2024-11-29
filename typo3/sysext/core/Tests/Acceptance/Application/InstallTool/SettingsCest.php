@@ -170,12 +170,7 @@ final class SettingsCest extends AbstractCest
         // Switch back hit count feature toggle
         $I->click($button);
         $modalDialog->canSeeDialog();
-        if (str_contains($scenario->current('env'), 'classic')) {
-            // ['features']['redirects.hitCount'] is enabled by default in classic mode (set by TF BackendEnvironment setup)
-            $I->cantSeeCheckboxIsChecked($featureToggle);
-        } else {
-            $I->canSeeCheckboxIsChecked($featureToggle);
-        }
+        $I->canSeeCheckboxIsChecked($featureToggle);
         $I->amGoingTo('reset hit count feature toggle and save it');
         $I->click($featureToggle);
         $I->click($modalButton, ModalDialog::$openedModalButtonContainerSelector);
