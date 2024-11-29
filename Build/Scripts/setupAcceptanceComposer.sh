@@ -33,7 +33,7 @@ $GLOBALS['TYPO3_CONF_VARS']['MAIL']['transport_mbox_file'] = \TYPO3\CMS\Core\Cor
 EOF
 
 # `composer require` will implicitly perform an initial `composer install` since there is no composer.lock
-composer require --no-progress --no-interaction --dev typo3tests/dataset-import:@dev typo3/cms-styleguide:^12.0.5 ${EXTRA_PACKAGES}
+composer require --no-progress --no-interaction --dev typo3tests/dataset-import:@dev typo3/cms-styleguide:^12.0.5 typo3/testing-framework:^8.2.4 ${EXTRA_PACKAGES}
 
 
 TYPO3_SERVER_TYPE=apache \
