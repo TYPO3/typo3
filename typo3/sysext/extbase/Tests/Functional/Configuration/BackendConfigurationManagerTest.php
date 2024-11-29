@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Configuration;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\BackendConfigurationManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -54,7 +53,8 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
             ],
         ];
-        self::assertEquals($expectedResult, $subject->getConfiguration(new ServerRequest(), [], 'CurrentExtensionName'));
+        $request = (new ServerRequest())->withQueryParams(['id' => 1]);
+        self::assertEquals($expectedResult, $subject->getConfiguration($request, [], 'CurrentExtensionName'));
     }
 
     #[Test]
@@ -85,7 +85,8 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
                 'throwPageNotFoundExceptionIfActionCantBeResolved' => '0',
             ],
         ];
-        self::assertEquals($expectedResult, $subject->getConfiguration(new ServerRequest(), [], 'CurrentExtensionName', 'CurrentPluginName'));
+        $request = (new ServerRequest())->withQueryParams(['id' => 1]);
+        self::assertEquals($expectedResult, $subject->getConfiguration($request, [], 'CurrentExtensionName', 'CurrentPluginName'));
     }
 
     #[Test]
@@ -106,41 +107,6 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
         $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
         $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, $request);
         self::assertEquals(321, $actualResult);
-    }
-
-    #[Test]
-    public function getCurrentPageIdReturnsPidFromFirstRootTemplateIfIdIsNotSetAndNoRootPageWasFound(): void
-    {
-        (new ConnectionPool())->getConnectionForTable('sys_template')->insert(
-            'sys_template',
-            [
-                'pid' => 123,
-                'deleted' => 0,
-                'hidden' => 0,
-                'root' => 1,
-            ]
-        );
-        $subject = $this->get(BackendConfigurationManager::class);
-        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
-        self::assertEquals(123, $actualResult);
-    }
-
-    #[Test]
-    public function getCurrentPageIdReturnsUidFromFirstRootPageIfIdIsNotSet(): void
-    {
-        (new ConnectionPool())->getConnectionForTable('pages')->insert(
-            'pages',
-            [
-                'deleted' => 0,
-                'hidden' => 0,
-                'is_siteroot' => 1,
-            ]
-        );
-        $subject = $this->get(BackendConfigurationManager::class);
-        $getCurrentPageIdReflectionMethod = (new \ReflectionMethod($subject, 'getCurrentPageId'));
-        $actualResult = $getCurrentPageIdReflectionMethod->invoke($subject, new ServerRequest());
-        self::assertEquals(1, $actualResult);
     }
 
     #[Test]

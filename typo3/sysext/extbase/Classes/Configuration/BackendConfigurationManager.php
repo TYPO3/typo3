@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -53,17 +52,6 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
  * TypoScript. Furthermore, in contrast to Frontend, Backend Modules are not necessarily bound to
  * pages in the first place - they may not have a page tree und thus no page id at all, like
  * for instance the ext:beuser module.
- *
- * Unfortunately, extbase *still* has to calculate *some* TypoScript in any case, even if there
- * is no page id at all: The default configuration of extbase Backend modules is the "module."
- * TypoScript setup top-level key. The base config of this is delivered by extbase extensions that
- * have Backend Modules using ext_typoscript_setup.typoscript, and/or via TYPO3_CONF_VARS TypoScript
- * setup defaults. Those have to be loaded in any case, even if there is no page at all in the page
- * tree.
- *
- * The code thus has to hop through quite some loops to "find" some relevant page id it can guess
- * if none is incoming from the request. It even fakes a default sys_template row to trigger
- * TypoScript loading of globals and ext_typoscript_setup.typoscript if it couldn't find anything.
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
@@ -99,9 +87,14 @@ final readonly class BackendConfigurationManager
         $pluginNameFromConfig = $configuration['pluginName'] ?? null;
         $configuration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($configuration);
 
-        $frameworkConfiguration = $this->getExtbaseConfiguration($request);
+        $typoscriptSetup = $this->getTypoScriptSetup($request);
+        $frameworkConfiguration = [];
+        if (isset($typoscriptSetup['config.']['tx_extbase.'])) {
+            $frameworkConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($typoscriptSetup['config.']['tx_extbase.']);
+        }
+
         if (!isset($frameworkConfiguration['persistence']['storagePid'])) {
-            $currentPageId = $this->getCachedCurrentPageId($request);
+            $currentPageId = $this->getCurrentPageId($request);
             $frameworkConfiguration['persistence']['storagePid'] = $currentPageId;
         }
         // only merge $configuration and override controller configuration when retrieving configuration of the current plugin
@@ -145,7 +138,7 @@ final readonly class BackendConfigurationManager
      */
     public function getTypoScriptSetup(ServerRequestInterface $request): array
     {
-        $currentPageId = $this->getCachedCurrentPageId($request);
+        $currentPageId = $this->getCurrentPageId($request);
 
         $cacheIdentifier = 'extbase-backend-typoscript-pageId-' . $currentPageId;
         $setupArray = $this->runtimeCache->get($cacheIdentifier);
@@ -174,34 +167,33 @@ final readonly class BackendConfigurationManager
 
         $rootLine = [];
         $sysTemplateRows = [];
-        $sysTemplateFakeRow = [
-            'uid' => 0,
-            'pid' => 0,
-            'title' => 'Fake sys_template row to force extension statics loading',
-            'root' => 1,
-            'clear' => 3,
-            'include_static_file' => '',
-            'basedOn' => '',
-            'includeStaticAfterBasedOn' => 0,
-            'static_file_mode' => false,
-            'constants' => '',
-            'config' => '',
-            'deleted' => 0,
-            'hidden' => 0,
-            'starttime' => 0,
-            'endtime' => 0,
-            'sorting' => 0,
-        ];
         if ($currentPageId > 0) {
             $rootLine = GeneralUtility::makeInstance(RootlineUtility::class, $currentPageId)->get();
             $sysTemplateRows = $this->sysTemplateRepository->getSysTemplateRowsByRootline($rootLine, $request);
             ksort($rootLine);
         }
-
         $sets = $site instanceof Site ? $this->setRegistry->getSets(...$site->getSets()) : [];
         if (empty($sysTemplateRows) && $sets === []) {
-            // If there is no page (pid 0 only), or if the first 'is_siteroot' site has no sys_template record or assigned site sets,
-            // then we "fake" a sys_template row: This triggers inclusion of 'global' and 'extension static' TypoScript.
+            // If no page with sys_template rows or site sets could be derived, we
+            // "fake" a row to trigger inclusion of 'global' TypoScript only.
+            $sysTemplateFakeRow = [
+                'uid' => 0,
+                'pid' => 0,
+                'title' => 'Fake sys_template row to force global TypoScript loading',
+                'root' => 1,
+                'clear' => 3,
+                'include_static_file' => '',
+                'basedOn' => '',
+                'includeStaticAfterBasedOn' => 0,
+                'static_file_mode' => false,
+                'constants' => '',
+                'config' => '',
+                'deleted' => 0,
+                'hidden' => 0,
+                'starttime' => 0,
+                'endtime' => 0,
+                'sorting' => 0,
+            ];
             $sysTemplateRows[] = $sysTemplateFakeRow;
         }
 
@@ -218,19 +210,6 @@ final readonly class BackendConfigurationManager
         $setupArray = $typoScript->getSetupArray();
         $this->runtimeCache->set($cacheIdentifier, $setupArray);
         return $setupArray;
-    }
-
-    /**
-     * Returns the TypoScript configuration found in config.tx_extbase
-     */
-    private function getExtbaseConfiguration(ServerRequestInterface $request): array
-    {
-        $setup = $this->getTypoScriptSetup($request);
-        $extbaseConfiguration = [];
-        if (isset($setup['config.']['tx_extbase.'])) {
-            $extbaseConfiguration = $this->typoScriptService->convertTypoScriptArrayToPlainArray($setup['config.']['tx_extbase.']);
-        }
-        return $extbaseConfiguration;
     }
 
     /**
@@ -256,39 +235,10 @@ final readonly class BackendConfigurationManager
         return $pluginConfiguration;
     }
 
-    private function getCachedCurrentPageId(ServerRequestInterface $request): int
-    {
-        $currentPageId = $this->runtimeCache->get('extbase-backend-typoscript-currentPageId');
-        if (!is_int($currentPageId)) {
-            $currentPageId = $this->getCurrentPageId($request);
-            $this->runtimeCache->set('extbase-backend-typoscript-currentPageId', $currentPageId);
-        }
-        return $currentPageId;
-    }
-
     /**
-     * The full madness to guess a page id:
-     * - First try to get one from the request, accessing POST / GET 'id'
-     * - else, fetch the first page in page tree that has 'is_siteroot' set
-     * - else, fetch the first sys_template record that has 'root' flag set, and use its pid
-     * - else, 0, indicating "there are no 'is_siteroot' pages and no sys_template 'root' records"
-     *
-     * @return int current page id. If no page is selected current root page id is returned
+     * Get page id from the request, accessing POST / GET 'id'
      */
     private function getCurrentPageId(ServerRequestInterface $request): int
-    {
-        $currentPageId = $this->getCurrentPageIdFromRequest($request);
-        $currentPageId = $currentPageId ?: $this->getCurrentPageIdFromCurrentSiteRoot();
-        $currentPageId = $currentPageId ?: $this->getCurrentPageIdFromRootTemplate();
-        return $currentPageId ?: 0;
-    }
-
-    /**
-     * Gets the current page ID from the GET/POST data.
-     *
-     * @return int the page UID, will be 0 if none has been set
-     */
-    private function getCurrentPageIdFromRequest(ServerRequestInterface $request): int
     {
         // @todo: This misuses 'id' as a broken convention for pages-uid. The filelist module for instance
         //        uses 'id' as "storage-uid:path", which is only mitigated here by testing the argument
@@ -300,64 +250,6 @@ final readonly class BackendConfigurationManager
             $id = (int)$potentialId;
         }
         return $id;
-    }
-
-    /**
-     * Gets the current page ID from the first site root in tree.
-     *
-     * @return int the page UID, will be 0 if none has been set
-     */
-    private function getCurrentPageIdFromCurrentSiteRoot(): int
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-        $rootPage = $queryBuilder
-            ->select('uid')
-            ->from('pages')
-            ->where(
-                $queryBuilder->expr()->eq('is_siteroot', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                // Only consider live root page IDs, never return a versioned root page ID
-                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
-            )
-            ->orderBy('sorting')
-            ->setMaxResults(1)
-            ->executeQuery()
-            ->fetchAssociative();
-        if (empty($rootPage)) {
-            return 0;
-        }
-        return (int)$rootPage['uid'];
-    }
-
-    /**
-     * Gets the current page ID from the first created root template.
-     *
-     * @return int the page UID, will be 0 if none has been set
-     */
-    private function getCurrentPageIdFromRootTemplate(): int
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_template');
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(HiddenRestriction::class));
-        $rootTemplate = $queryBuilder
-            ->select('pid')
-            ->from('sys_template')
-            ->where(
-                $queryBuilder->expr()->eq('root', $queryBuilder->createNamedParameter(1, Connection::PARAM_INT))
-            )
-            ->orderBy('crdate')
-            ->setMaxResults(1)
-            ->executeQuery()
-            ->fetchAssociative();
-        if (empty($rootTemplate)) {
-            return 0;
-        }
-        return (int)$rootTemplate['pid'];
     }
 
     /**
@@ -390,7 +282,6 @@ final readonly class BackendConfigurationManager
     /**
      * Recursively fetch all children of a given page
      *
-     * @param int $pid uid of the page
      * @return int[] List of child row $uid's
      */
     private function getPageChildrenRecursive(int $pid, int $depth, int $begin, string $permsClause): array
