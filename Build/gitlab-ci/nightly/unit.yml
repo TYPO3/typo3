@@ -197,3 +197,35 @@ unit php 8.3 min random:
   script:
     - Build/Scripts/runTests.sh -s composerInstallMin -p 8.3
     - Build/Scripts/runTests.sh -s unitRandom -p 8.3
+
+# Not testing PHP 8.4 min since minimum dependencies are not PHP 8.4 compatible
+unit php 8.4 max:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s unit -p 8.4
+unit php 8.4 max deprecated:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s unitDeprecated -p 8.4
+unit php 8.4 max random:
+  stage: unit
+  tags:
+    - metal2
+  needs: []
+  only:
+    - schedules
+  script:
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s unitRandom -p 8.4

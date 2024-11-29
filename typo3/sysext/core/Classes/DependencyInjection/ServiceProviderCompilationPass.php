@@ -202,7 +202,7 @@ class ServiceProviderCompilationPass implements CompilerPassInterface
             $reflectionScope = $reflection->getClosureScopeClass();
             $usedVariables = count($reflection->getClosureUsedVariables());
 
-            if ($reflection->isStatic() && !str_contains($reflection->getName(), '{closure}') && $reflectionScope !== null && $usedVariables === 0) {
+            if ($reflection->isStatic() && !str_contains($reflection->getName(), '{closure') && $reflectionScope !== null && $usedVariables === 0) {
                 return [
                     $reflectionScope->getName(),
                     $reflection->getName(),
