@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Install\Tests\Unit\ExtensionScanner\Php\Matcher\Fixtures\AbstractCoreMatcherFixture;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -24,6 +25,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class AbstractCoreMatcherTest extends UnitTestCase
 {
     #[Test]
+    #[DoesNotPerformAssertions]
     public function validateMatcherDefinitionsRunsFineWithProperDefinition(): void
     {
         $subject = new AbstractCoreMatcherFixture();

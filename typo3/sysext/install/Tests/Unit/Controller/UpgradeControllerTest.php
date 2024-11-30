@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -26,47 +27,74 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class UpgradeControllerTest extends UnitTestCase
 {
-    public static function versionDataProvider(): array
+    public static function versionDataProviderWithoutException(): array
     {
         return [
-            ['master', false],
-            ['1.0', false],
-            ['1.10', false],
-            ['2.3.4', false],
-            ['2.3.20', false],
-            ['7.6.x', false],
-            ['10.0', false],
-            ['10.10', false],
-            ['10.10.5', false],
-            ['10.10.husel', true],
-            ['1.2.3.4', true],
-            ['9.8.x.x', true],
-            ['a.b.c', true],
-            ['4.3.x.1', true],
-            ['../../../../../../../etc/passwd', true],
-            ['husel', true],
+            ['master'],
+            ['1.0'],
+            ['1.10'],
+            ['2.3.4'],
+            ['2.3.20'],
+            ['7.6.x'],
+            ['10.0'],
+            ['10.10'],
+            ['10.10.5'],
         ];
     }
 
-    #[DataProvider('versionDataProvider')]
+    #[DataProvider('versionDataProviderWithoutException')]
     #[Test]
-    public function versionIsAsserted(string $version, bool $expectsException): void
+    #[DoesNotPerformAssertions]
+    public function versionIsAccepted(string $version): void
     {
-        if ($expectsException) {
-            $this->expectException(\InvalidArgumentException::class);
-            $this->expectExceptionCode(1537209128);
-        }
         $request = (new ServerRequest())->withQueryParams([
             'install' => [
                 'version' => $version,
             ],
         ]);
-
         $subject = $this->getMockBuilder(UpgradeController::class)
             ->disableOriginalConstructor()
             ->onlyMethods(['getDocumentationFiles', 'initializeView'])
             ->getMock();
+        $subject->method('getDocumentationFiles')->willReturn([
+            'normalFiles' => [],
+            'readFiles' => [],
+            'notAffectedFiles' => [],
+        ]);
+        $viewMock = $this->getMockBuilder(ViewInterface::class)->getMock();
+        $viewMock->expects(self::any())->method('assignMultiple')->willReturn($viewMock);
+        $viewMock->expects(self::any())->method('render')->willReturn('');
+        $subject->method('initializeView')->willReturn($viewMock);
+        $subject->upgradeDocsGetChangelogForVersionAction($request);
+    }
+    public static function versionDataProvider(): array
+    {
+        return [
+            ['10.10.husel'],
+            ['1.2.3.4'],
+            ['9.8.x.x'],
+            ['a.b.c'],
+            ['4.3.x.1'],
+            ['../../../../../../../etc/passwd'],
+            ['husel'],
+        ];
+    }
 
+    #[DataProvider('versionDataProvider')]
+    #[Test]
+    public function versionIsNotAccepted(string $version): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1537209128);
+        $request = (new ServerRequest())->withQueryParams([
+            'install' => [
+                'version' => $version,
+            ],
+        ]);
+        $subject = $this->getMockBuilder(UpgradeController::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods(['getDocumentationFiles', 'initializeView'])
+            ->getMock();
         $subject->method('getDocumentationFiles')->willReturn([
             'normalFiles' => [],
             'readFiles' => [],

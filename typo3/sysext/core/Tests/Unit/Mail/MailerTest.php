@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Mail;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -37,9 +38,9 @@ final class MailerTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
 
-    protected $subject;
-    protected ?LogManagerInterface $logManager;
-    protected EventDispatcherInterface $eventDispatcher;
+    private $subject;
+    private LogManagerInterface $logManager;
+    private EventDispatcherInterface $eventDispatcher;
 
     protected function setUp(): void
     {
@@ -66,8 +67,10 @@ final class MailerTest extends UnitTestCase
     public function injectedSettingsAreNotReplacedByGlobalSettings(): void
     {
         $settings = ['transport' => 'mbox', 'transport_mbox_file' => '/path/to/file'];
-        $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs'];
-
+        $GLOBALS['TYPO3_CONF_VARS']['MAIL'] = [
+            'transport' => 'sendmail',
+            'transport_sendmail_command' => 'sendmail -bs',
+        ];
         $transportFactory = $this->createMock(TransportFactory::class);
         $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
             ->willReturn($this->createMock(SendmailTransport::class));
@@ -79,8 +82,10 @@ final class MailerTest extends UnitTestCase
     #[Test]
     public function globalSettingsAreUsedIfNoSettingsAreInjected(): void
     {
-        $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = ['transport' => 'sendmail', 'transport_sendmail_command' => 'sendmail -bs']);
-
+        $settings = ($GLOBALS['TYPO3_CONF_VARS']['MAIL'] = [
+            'transport' => 'sendmail',
+            'transport_sendmail_command' => 'sendmail -bs',
+        ]);
         $transportFactory = $this->createMock(TransportFactory::class);
         $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
             ->willReturn($this->createMock(SendmailTransport::class));
@@ -103,7 +108,6 @@ final class MailerTest extends UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1291068569);
-
         $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
@@ -111,6 +115,7 @@ final class MailerTest extends UnitTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function providingCorrectClassnameDoesNotThrowException(): void
     {
         $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
@@ -174,7 +179,6 @@ final class MailerTest extends UnitTestCase
         GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $transport = $this->subject->getRealTransport();
-
         self::assertInstanceOf(TransportInterface::class, $transport);
         self::assertNotInstanceOf(DelayedTransportInterface::class, $transport);
     }

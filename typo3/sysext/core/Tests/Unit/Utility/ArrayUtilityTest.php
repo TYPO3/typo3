@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\Utility\Fixtures\ArrayUtilityFilterRecursiveCallbackFixture;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -29,18 +30,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
  */
 final class ArrayUtilityTest extends UnitTestCase
 {
-    ///////////////////////
-    // Tests concerning filterByValueRecursive
-    ///////////////////////
     /**
-     * Data provider for filterByValueRecursiveCorrectlyFiltersArray
-     *
      * Every array splits into:
-     * - String value to search for
+     * - Value to search for
      * - Input array
      * - Expected result array
      */
-    public static function filterByValueRecursive(): array
+    public static function filterByValueRecursiveDataProvider(): array
     {
         return [
             'empty search array' => [
@@ -162,19 +158,11 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param array $needle
-     * @param array $haystack
-     * @param array $expectedResult
-     */
-    #[DataProvider('filterByValueRecursive')]
+    #[DataProvider('filterByValueRecursiveDataProvider')]
     #[Test]
-    public function filterByValueRecursiveCorrectlyFiltersArray($needle, $haystack, $expectedResult): void
+    public function filterByValueRecursiveCorrectlyFiltersArray(mixed $needle, array $haystack, array $expectedResult): void
     {
-        self::assertEquals(
-            $expectedResult,
-            ArrayUtility::filterByValueRecursive($needle, $haystack)
-        );
+        self::assertEquals($expectedResult, ArrayUtility::filterByValueRecursive($needle, $haystack));
     }
 
     #[Test]
@@ -196,9 +184,6 @@ final class ArrayUtilityTest extends UnitTestCase
         );
     }
 
-    ///////////////////////
-    // Tests concerning isValidPath
-    ///////////////////////
     #[Test]
     public function isValidPathReturnsTrueIfPathExistsStringVersion(): void
     {
@@ -223,9 +208,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertFalse(ArrayUtility::isValidPath(['foo' => 'bar'], ['bar']));
     }
 
-    ///////////////////////
-    // Tests concerning getValueByPath
-    ///////////////////////
     #[Test]
     public function getValueByPathThrowsExceptionIfPathIsEmpty(): void
     {
@@ -248,7 +230,6 @@ final class ArrayUtilityTest extends UnitTestCase
     }
 
     /**
-     * Data provider for getValueByPathThrowsExceptionIfPathNotExists
      * Every array splits into:
      * - Array to get value from
      * - String path
@@ -315,12 +296,9 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $path
-     */
     #[DataProvider('getValueByPathInvalidPathDataProvider')]
     #[Test]
-    public function getValueByPathThrowsExceptionIfPathNotExists(array $array, $path): void
+    public function getValueByPathThrowsExceptionIfPathNotExists(array $array, string $path): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1341397869);
@@ -337,7 +315,6 @@ final class ArrayUtilityTest extends UnitTestCase
     }
 
     /**
-     * Data provider for getValueByPathReturnsCorrectValue
      * Every array splits into:
      * - Array to get value from
      * - String path
@@ -442,13 +419,9 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $path
-     * @param mixed $expectedResult
-     */
     #[DataProvider('getValueByPathValidDataProvider')]
     #[Test]
-    public function getValueByPathGetsCorrectValue(array $array, $path, $expectedResult): void
+    public function getValueByPathGetsCorrectValue(array $array, string $path, mixed $expectedResult): void
     {
         self::assertEquals($expectedResult, ArrayUtility::getValueByPath($array, $path));
     }
@@ -473,15 +446,11 @@ final class ArrayUtilityTest extends UnitTestCase
         );
     }
 
-    ///////////////////////
-    // Tests concerning setValueByPath
-    ///////////////////////
     #[Test]
     public function setValueByPathThrowsExceptionIfPathIsEmpty(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1341406194);
-
         ArrayUtility::setValueByPath([], '', null);
     }
 
@@ -490,7 +459,6 @@ final class ArrayUtilityTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1341406846);
-
         ArrayUtility::setValueByPath(['foo' => 'bar'], '/foo', 'value');
     }
 
@@ -507,8 +475,6 @@ final class ArrayUtilityTest extends UnitTestCase
     }
 
     /**
-     * Data provider for setValueByPathSetsCorrectValueDataProvider
-     *
      * Every array splits into:
      * - Array to set value in
      * - String path
@@ -717,14 +683,9 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $path
-     * @param string $value
-     * @param array $expectedResult
-     */
     #[DataProvider('setValueByPathSetsCorrectValueDataProvider')]
     #[Test]
-    public function setValueByPathSetsCorrectValue(array $array, $path, $value, $expectedResult): void
+    public function setValueByPathSetsCorrectValue(array $array, string $path, mixed $value, array $expectedResult): void
     {
         self::assertEquals(
             $expectedResult,
@@ -732,15 +693,11 @@ final class ArrayUtilityTest extends UnitTestCase
         );
     }
 
-    /**********************
-       /* Tests concerning removeByPath
-        ***********************/
     #[Test]
     public function removeByPathThrowsExceptionIfPathIsEmpty(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1371757718);
-
         ArrayUtility::removeByPath([], '');
     }
 
@@ -752,10 +709,8 @@ final class ArrayUtilityTest extends UnitTestCase
                 'bar' => 42,
             ],
         ];
-
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1371757720);
-
         ArrayUtility::removeByPath($inputArray, 'foo//bar');
     }
 
@@ -765,7 +720,6 @@ final class ArrayUtilityTest extends UnitTestCase
         $inputArray = [
             'foo' => ['bar'],
         ];
-
         self::assertSame(['foo' => []], ArrayUtility::removeByPath($inputArray, 'foo/0'));
     }
 
@@ -773,7 +727,6 @@ final class ArrayUtilityTest extends UnitTestCase
     public function removeByPathRemovesFirstIndexWithZeroAsPath(): void
     {
         $inputArray = ['bar'];
-
         self::assertSame([], ArrayUtility::removeByPath($inputArray, '0'));
     }
 
@@ -785,10 +738,8 @@ final class ArrayUtilityTest extends UnitTestCase
                 'bar' => 42,
             ],
         ];
-
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1371758436);
-
         ArrayUtility::removeByPath($inputArray, 'foo/baz');
     }
 
@@ -800,10 +751,8 @@ final class ArrayUtilityTest extends UnitTestCase
                 'bar' => 42,
             ],
         ];
-
         $this->expectException(MissingArrayPathException::class);
         $this->expectExceptionCode(1371758436);
-
         ArrayUtility::removeByPath($inputArray, 'foo/baz');
     }
 
@@ -822,15 +771,9 @@ final class ArrayUtilityTest extends UnitTestCase
                 'keep' => 23,
             ],
         ];
-        self::assertEquals(
-            $expected,
-            ArrayUtility::removeByPath($inputArray, $path, '.')
-        );
+        self::assertEquals($expected, ArrayUtility::removeByPath($inputArray, $path, '.'));
     }
 
-    /**
-     * Data provider for removeByPathRemovesCorrectPath
-     */
     public static function removeByPathRemovesCorrectPathDataProvider(): array
     {
         return [
@@ -876,13 +819,9 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $path
-     * @param array $expectedResult
-     */
     #[DataProvider('removeByPathRemovesCorrectPathDataProvider')]
     #[Test]
-    public function removeByPathRemovesCorrectPath(array $array, $path, $expectedResult): void
+    public function removeByPathRemovesCorrectPath(array $array, string $path, array $expectedResult): void
     {
         self::assertEquals(
             $expectedResult,
@@ -890,9 +829,6 @@ final class ArrayUtilityTest extends UnitTestCase
         );
     }
 
-    ///////////////////////
-    // Tests concerning sortByKeyRecursive
-    ///////////////////////
     #[Test]
     public function sortByKeyRecursiveCheckIfSortingIsCorrect(): void
     {
@@ -919,12 +855,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertSame($expectedResult, ArrayUtility::sortByKeyRecursive($unsortedArray));
     }
 
-    ///////////////////////
-    // Tests concerning sortArraysByKey
-    ///////////////////////
-    /**
-     * Data provider for sortArraysByKeyCheckIfSortingIsCorrect
-     */
     public static function sortArraysByKeyCheckIfSortingIsCorrectDataProvider(): array
     {
         return [
@@ -1121,14 +1051,9 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param string $key
-     * @param bool $ascending
-     * @param array $expectedResult
-     */
     #[DataProvider('sortArraysByKeyCheckIfSortingIsCorrectDataProvider')]
     #[Test]
-    public function sortArraysByKeyCheckIfSortingIsCorrect(array $array, $key, $ascending, $expectedResult): void
+    public function sortArraysByKeyCheckIfSortingIsCorrect(array $array, string $key, bool $ascending, array $expectedResult): void
     {
         $sortedArray = ArrayUtility::sortArraysByKey($array, $key, $ascending);
         self::assertSame($expectedResult, $sortedArray);
@@ -1139,7 +1064,6 @@ final class ArrayUtilityTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1373727309);
-
         ArrayUtility::sortArraysByKey([['a'], ['a']], 'dummy');
     }
 
@@ -1148,7 +1072,6 @@ final class ArrayUtilityTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1373727310);
-
         ArrayUtility::sortArraysByKey(
             [
                 [
@@ -1169,7 +1092,6 @@ final class ArrayUtilityTest extends UnitTestCase
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1373727311);
-
         ArrayUtility::sortArraysByKey(
             [
                 [
@@ -1185,9 +1107,6 @@ final class ArrayUtilityTest extends UnitTestCase
         );
     }
 
-    ///////////////////////
-    // Tests concerning arrayExport
-    ///////////////////////
     #[Test]
     public function arrayExportReturnsFormattedMultidimensionalArray(): void
     {
@@ -1233,10 +1152,8 @@ final class ArrayUtilityTest extends UnitTestCase
                 'bar' => new \stdClass(),
             ],
         ];
-
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1342294987);
-
         ArrayUtility::arrayExport($array);
     }
 
@@ -2426,25 +2343,14 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param array $input1 Input 1
-     * @param array $input2 Input 2
-     * @param bool $addKeys TRUE if should add keys, else FALSE
-     * @param bool $includeEmptyValues TRUE if should include empty values, else FALSE
-     * @param bool $enableUnsetFeature TRUE if should enable unset feature, else FALSE
-     * @param array $expected expected array
-     */
     #[DataProvider('mergeRecursiveWithOverruleCalculatesExpectedResultDataProvider')]
     #[Test]
-    public function mergeRecursiveWithOverruleCalculatesExpectedResult($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature, $expected): void
+    public function mergeRecursiveWithOverruleCalculatesExpectedResult(array $input1, array $input2, bool $addKeys, bool $includeEmptyValues, bool $enableUnsetFeature, array $expected): void
     {
         ArrayUtility::mergeRecursiveWithOverrule($input1, $input2, $addKeys, $includeEmptyValues, $enableUnsetFeature);
         self::assertEquals($expected, $input1);
     }
 
-    //////////////////////////////////
-    // Tests concerning removeArrayEntryByValue
-    //////////////////////////////////
     #[Test]
     public function checkRemoveArrayEntryByValueRemovesEntriesFromOneDimensionalArray(): void
     {
@@ -2499,24 +2405,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    //////////////////////////////////
-    // Tests concerning keepItemsInArray
-    //////////////////////////////////
-    /**
-     * @param mixed $search The items which are allowed/kept in the array
-     * @param array $array target array
-     * @param array $expected expected array
-     */
-    #[DataProvider('keepItemsInArrayWorksWithOneArgumentDataProvider')]
-    #[Test]
-    public function keepItemsInArrayWorksWithOneArgument($search, $array, $expected): void
-    {
-        self::assertEquals($expected, ArrayUtility::keepItemsInArray($array, $search));
-    }
-
-    /**
-     * Data provider for keepItemsInArrayWorksWithOneArgument
-     */
     public static function keepItemsInArrayWorksWithOneArgumentDataProvider(): array
     {
         $array = [
@@ -2532,6 +2420,13 @@ final class ArrayUtilityTest extends UnitTestCase
             'Multiple matches' => ['two,one', $array, ['one' => 'one', 'two' => 'two']],
             'Argument can be an array' => [['three'], $array, ['three' => 'three']],
         ];
+    }
+
+    #[DataProvider('keepItemsInArrayWorksWithOneArgumentDataProvider')]
+    #[Test]
+    public function keepItemsInArrayWorksWithOneArgument(mixed $search, array $array, array $expected): void
+    {
+        self::assertEquals($expected, ArrayUtility::keepItemsInArray($array, $search));
     }
 
     /**
@@ -2559,9 +2454,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, $match);
     }
 
-    //////////////////////////////////
-    // Tests concerning remapArrayKeys
-    //////////////////////////////////
     #[Test]
     public function remapArrayKeysExchangesKeysWithGivenMapping(): void
     {
@@ -2583,9 +2475,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expected, $array);
     }
 
-    //////////////////////////////////////
-    // Tests concerning arrayDiffKeyRecursive
-    //////////////////////////////////////
     #[Test]
     public function arrayDiffKeyRecursiveHandlesOneDimensionalArrays(): void
     {
@@ -2688,9 +2577,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    //////////////////////////////////////
-    // Tests concerning arrayDiffAssocRecursive
-    //////////////////////////////////////
     #[Test]
     public function arrayDiffAssocRecursiveHandlesOneDimensionalArrays(): void
     {
@@ -2795,9 +2681,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $actualResult);
     }
 
-    //////////////////////////////////////
-    // Tests concerning naturalKeySortRecursive
-    //////////////////////////////////////
     #[Test]
     public function naturalKeySortRecursiveSortsOneDimensionalArrayByNaturalOrder(): void
     {
@@ -2893,7 +2776,7 @@ final class ArrayUtilityTest extends UnitTestCase
     /**
      * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue
      */
-    public static function filterAndSortByNumericKeysWithAcceptAnyKey(): array
+    public static function filterAndSortByNumericKeysWithAcceptAnyKeyDataProvider(): array
     {
         return [
             'ordered list of plain numeric keys' => [
@@ -2972,22 +2855,15 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param array $input
-     * @param array $expected
-     */
-    #[DataProvider('filterAndSortByNumericKeysWithAcceptAnyKey')]
+    #[DataProvider('filterAndSortByNumericKeysWithAcceptAnyKeyDataProvider')]
     #[Test]
-    public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue($input, $expected): void
+    public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsTrue(array $input, array $expected): void
     {
         $result = ArrayUtility::filterAndSortByNumericKeys($input, true);
         self::assertEquals($result, $expected);
     }
 
-    /**
-     * Data provider for filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse
-     */
-    public static function filterAndSortByNumericKeysWithoutAcceptAnyKey(): array
+    public static function filterAndSortByNumericKeysWithoutAcceptAnyKeyDataProvider(): array
     {
         return [
             'ordered list of plain numeric keys' => [
@@ -3035,21 +2911,14 @@ final class ArrayUtilityTest extends UnitTestCase
         ];
     }
 
-    /**
-     * @param array $input
-     * @param array $expected
-     */
-    #[DataProvider('filterAndSortByNumericKeysWithoutAcceptAnyKey')]
+    #[DataProvider('filterAndSortByNumericKeysWithoutAcceptAnyKeyDataProvider')]
     #[Test]
-    public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse($input, $expected): void
+    public function filterAndSortByNumericKeysBehavesCorrectlyForAcceptAnyKeysIsFalse(array $input, array $expected): void
     {
         $result = ArrayUtility::filterAndSortByNumericKeys($input);
         self::assertEquals($result, $expected);
     }
 
-    /**
-     * dataProvider for sortArrayWithIntegerKeys
-     */
     public static function sortArrayWithIntegerKeysDataProvider(): array
     {
         return [
@@ -3105,36 +2974,32 @@ final class ArrayUtilityTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1325697085);
-
         $arrayToTest = [
             'roger' => '',
             'francine' => '',
             'stan' => '',
         ];
-
         $allowedArrayKeys = [
             'roger',
             'francine',
         ];
-
         ArrayUtility::assertAllArrayKeysAreValid($arrayToTest, $allowedArrayKeys);
     }
 
     #[Test]
-    public function assertAllArrayKeysAreValidReturnsNullOnAllowedArrayKeys(): void
+    #[DoesNotPerformAssertions]
+    public function assertAllArrayKeysAreValidDoesNotThrowOnAllowedArrayKeys(): void
     {
         $arrayToTest = [
             'roger' => '',
             'francine' => '',
             'stan' => '',
         ];
-
         $allowedArrayKeys = [
             'roger',
             'francine',
             'stan',
         ];
-
         ArrayUtility::assertAllArrayKeysAreValid($arrayToTest, $allowedArrayKeys);
     }
 
@@ -3151,7 +3016,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 10 => 'b',
             ],
         ];
-
         $expected = [
             10 => 'a',
             20 => 'b',
@@ -3162,7 +3026,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 20 => 'a',
             ],
         ];
-
         self::assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
     }
 
@@ -3175,14 +3038,12 @@ final class ArrayUtilityTest extends UnitTestCase
             40 => 'd',
             30 => 'c',
         ];
-
         $expected = [
             'b' => 'b',
             10 => 'a',
             40 => 'd',
             30 => 'c',
         ];
-
         self::assertSame($expected, ArrayUtility::sortArrayWithIntegerKeysRecursive($input));
     }
 
@@ -3199,7 +3060,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 10 => 'b',
             ],
         ];
-
         $expected = [
             0 => 'b',
             1 => 'a',
@@ -3210,7 +3070,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 1 => 'b',
             ],
         ];
-
         self::assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
     }
 
@@ -3227,7 +3086,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 10 => 'b',
             ],
         ];
-
         $expected = [
             'a' => 'b',
             10 => 'a',
@@ -3238,7 +3096,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 1 => 'b',
             ],
         ];
-
         self::assertSame($expected, ArrayUtility::reIndexNumericArrayKeysRecursive($input));
     }
 
@@ -3252,14 +3109,12 @@ final class ArrayUtilityTest extends UnitTestCase
                 'd' => 'd',
             ],
         ];
-
         $expected = [
             'a' => 'a',
             'b' => [
                 'd' => 'd',
             ],
         ];
-
         self::assertSame($expected, ArrayUtility::removeNullValuesRecursive($input));
     }
 
@@ -3273,7 +3128,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 'd' => 'd',
             ],
         ];
-
         $expected = [
             'a' => 'a',
             'b' => [
@@ -3281,7 +3135,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 'd' => 'd',
             ],
         ];
-
         self::assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
     }
 
@@ -3289,7 +3142,6 @@ final class ArrayUtilityTest extends UnitTestCase
     public function stripTagsFromValuesRecursiveExpectNoTypeCast(): void
     {
         $testObject = new \stdClass();
-
         $input = [
             'stringWithTags' => '<b>i am evil</b>',
             'boolean' => true,
@@ -3306,7 +3158,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 }
             },
         ];
-
         $expected = [
             'stringWithTags' => 'i am evil',
             'boolean' => true,
@@ -3315,7 +3166,6 @@ final class ArrayUtilityTest extends UnitTestCase
             'object' => $testObject,
             'objectWithStringConversion' => 'i am evil too',
         ];
-
         self::assertSame($expected, ArrayUtility::stripTagsFromValuesRecursive($input));
     }
 
@@ -3329,7 +3179,6 @@ final class ArrayUtilityTest extends UnitTestCase
                 'd' => 'd',
             ],
         ];
-
         $expected = [
             'a' => 'a',
             'b' => [
@@ -3337,13 +3186,9 @@ final class ArrayUtilityTest extends UnitTestCase
                 'd' => 'd',
             ],
         ];
-
         self::assertSame($expected, ArrayUtility::convertBooleanStringsToBooleanRecursive($input));
     }
 
-    /**
-     * Data provider for arrayFilterRecursiveFiltersFalseElements
-     */
     public static function filterRecursiveFiltersFalseElementsDataProvider(): array
     {
         return [
@@ -3412,9 +3257,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * Data provider for filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerByCallback
-     */
     public static function filterRecursiveCallbackFiltersEmptyElementsWithoutIntegerZeroByCallbackDataProvider(): array
     {
         return [
@@ -3492,9 +3334,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * Data provider for filterRecursiveSupportsCallableCallback
-     */
     public static function filterRecursiveSupportsCallableCallbackDataProvider(): array
     {
         $input = [
@@ -3511,7 +3350,6 @@ final class ArrayUtilityTest extends UnitTestCase
             ],
             'keep2' => 'keep',
         ];
-
         return [
             'filter using a closure' => [
                 $input,
@@ -3563,9 +3401,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * Data provider for isAssociativeCorrectlyFindsStringKeys
-     */
     public static function isAssociativeCorrectlyFindsStringKeysDataProvider(): array
     {
         return [
@@ -3603,9 +3438,6 @@ final class ArrayUtilityTest extends UnitTestCase
         self::assertEquals($expectedResult, $result);
     }
 
-    /**
-     * Data provider for replaceAndAppendScalarValuesRecursiveCorrectlyMergesArrays
-     */
     public static function replaceAndAppendScalarValuesRecursiveCorrectlyMergesArraysDataProvider(): array
     {
         return [

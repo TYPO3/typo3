@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\TypoScript\Tokenizer\Token;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\IdentifierTokenStream;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\Token\Token;
@@ -35,6 +36,7 @@ final class IdentifierTokenStreamTest extends UnitTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function canAppendIdentifierToken(): void
     {
         $token = new Token(TokenType::T_IDENTIFIER, '', 0, 0);

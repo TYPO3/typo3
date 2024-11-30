@@ -99,12 +99,10 @@ final class ArgumentsTest extends UnitTestCase
     #[Test]
     public function getArgumentWithNonExistingArgumentNameThrowsException(): void
     {
+        $this->expectException(NoSuchArgumentException::class);
+        $this->expectExceptionCode(1195815178);
         $arguments = new Arguments();
-        try {
-            $arguments->getArgument('someArgument');
-            self::fail('getArgument() did not throw an exception although the specified argument does not exist.');
-        } catch (NoSuchArgumentException $exception) {
-        }
+        $arguments->getArgument('someArgument');
     }
 
     #[Test]
@@ -189,18 +187,6 @@ final class ArgumentsTest extends UnitTestCase
         self::assertInstanceOf(Argument::class, $addedArgument, 'addNewArgument() either did not add a new argument or did not return it.');
         $retrievedArgument = $arguments['dummyName'];
         self::assertSame($addedArgument, $retrievedArgument, 'The added and the retrieved argument are not the same.');
-    }
-
-    #[Test]
-    public function addNewArgumentAssumesTextDataTypeByDefault(): void
-    {
-        $mockArgument = $this->getMockBuilder(Argument::class)
-            ->onlyMethods(['getName'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockArgument->method('getName')->willReturn('dummyName');
-        $arguments = new Arguments();
-        $arguments->addNewArgument('dummyName');
     }
 
     #[Test]

@@ -17,21 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Tests\Unit\FormProtection\Fixtures\FormProtectionTesting;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-/**
- * Testcase
- */
 final class AbstractFormProtectionTest extends UnitTestCase
 {
-    protected ?FormProtectionTesting $subject;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->subject = new FormProtectionTesting();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '';
     }
 
@@ -61,9 +56,10 @@ final class AbstractFormProtectionTest extends UnitTestCase
     public function cleanMakesTokenInvalid(): void
     {
         $formName = 'foo';
-        $tokenId = $this->subject->generateToken($formName);
-        $this->subject->clean();
-        self::assertFalse($this->subject->validateToken($tokenId, $formName));
+        $subject = new FormProtectionTesting();
+        $tokenId = $subject->generateToken($formName);
+        $subject->clean();
+        self::assertFalse($subject->validateToken($tokenId, $formName));
     }
 
     #[Test]
@@ -81,49 +77,62 @@ final class AbstractFormProtectionTest extends UnitTestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1294586643);
-        $this->subject->generateToken('', 'edit', 'bar');
+        $subject = new FormProtectionTesting();
+        $subject->generateToken('', 'edit', 'bar');
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function generateTokenFormForEmptyActionNotThrowsException(): void
     {
-        $this->subject->generateToken('foo', '', '42');
+        $subject = new FormProtectionTesting();
+        $subject->generateToken('foo', '', '42');
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function generateTokenFormForEmptyFormInstanceNameNotThrowsException(): void
     {
-        $this->subject->generateToken('foo', 'edit', '');
+        $subject = new FormProtectionTesting();
+        $subject->generateToken('foo', 'edit', '');
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function generateTokenFormForOmittedActionAndFormInstanceNameNotThrowsException(): void
     {
-        $this->subject->generateToken('foo');
+        $subject = new FormProtectionTesting();
+        $subject->generateToken('foo');
     }
 
     #[Test]
     public function generateTokenReturns32CharacterHexToken(): void
     {
-        self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $this->subject->generateToken('foo'));
+        $subject = new FormProtectionTesting();
+        self::assertMatchesRegularExpression('/^[0-9a-f]{40}$/', $subject->generateToken('foo'));
     }
 
     #[Test]
     public function generateTokenCalledTwoTimesWithSameParametersReturnsSameTokens(): void
     {
-        self::assertEquals($this->subject->generateToken('foo', 'edit', 'bar'), $this->subject->generateToken('foo', 'edit', 'bar'));
+        $subject = new FormProtectionTesting();
+        self::assertEquals($subject->generateToken('foo', 'edit', 'bar'), $subject->generateToken('foo', 'edit', 'bar'));
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function validateTokenWithFourEmptyParametersNotThrowsException(): void
     {
-        $this->subject->validateToken('', '', '', '');
+        $subject = new FormProtectionTesting();
+        $subject->validateToken('', '', '', '');
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function validateTokenWithTwoEmptyAndTwoMissingParametersNotThrowsException(): void
     {
-        $this->subject->validateToken('', '');
+        $subject = new FormProtectionTesting();
+        $subject->validateToken('', '');
     }
 
     #[Test]
@@ -132,14 +141,16 @@ final class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
-        self::assertTrue($this->subject->validateToken($this->subject->generateToken($formName, $action, $formInstanceName), $formName, $action, $formInstanceName));
+        $subject = new FormProtectionTesting();
+        self::assertTrue($subject->validateToken($subject->generateToken($formName, $action, $formInstanceName), $formName, $action, $formInstanceName));
     }
 
     #[Test]
     public function validateTokenWithDataFromGenerateTokenWithMissingActionAndFormInstanceNameReturnsTrue(): void
     {
         $formName = 'foo';
-        self::assertTrue($this->subject->validateToken($this->subject->generateToken($formName), $formName));
+        $subject = new FormProtectionTesting();
+        self::assertTrue($subject->validateToken($subject->generateToken($formName), $formName));
     }
 
     #[Test]
@@ -148,9 +159,10 @@ final class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
-        $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
-        $this->subject->validateToken($tokenId, $formName, $action, $formInstanceName);
-        self::assertTrue($this->subject->validateToken($tokenId, $formName, $action, $formInstanceName));
+        $subject = new FormProtectionTesting();
+        $tokenId = $subject->generateToken($formName, $action, $formInstanceName);
+        $subject->validateToken($tokenId, $formName, $action, $formInstanceName);
+        self::assertTrue($subject->validateToken($tokenId, $formName, $action, $formInstanceName));
     }
 
     #[Test]
@@ -159,8 +171,9 @@ final class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
-        $this->subject->generateToken($formName, $action, $formInstanceName);
-        self::assertFalse($this->subject->validateToken('Hello world!', $formName, $action, $formInstanceName));
+        $subject = new FormProtectionTesting();
+        $subject->generateToken($formName, $action, $formInstanceName);
+        self::assertFalse($subject->validateToken('Hello world!', $formName, $action, $formInstanceName));
     }
 
     #[Test]
@@ -169,8 +182,9 @@ final class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
-        $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
-        self::assertFalse($this->subject->validateToken($tokenId, 'espresso', $action, $formInstanceName));
+        $subject = new FormProtectionTesting();
+        $tokenId = $subject->generateToken($formName, $action, $formInstanceName);
+        self::assertFalse($subject->validateToken($tokenId, 'espresso', $action, $formInstanceName));
     }
 
     #[Test]
@@ -179,8 +193,9 @@ final class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
-        $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
-        self::assertFalse($this->subject->validateToken($tokenId, $formName, 'delete', $formInstanceName));
+        $subject = new FormProtectionTesting();
+        $tokenId = $subject->generateToken($formName, $action, $formInstanceName);
+        self::assertFalse($subject->validateToken($tokenId, $formName, 'delete', $formInstanceName));
     }
 
     #[Test]
@@ -189,8 +204,9 @@ final class AbstractFormProtectionTest extends UnitTestCase
         $formName = 'foo';
         $action = 'edit';
         $formInstanceName = 'bar';
-        $tokenId = $this->subject->generateToken($formName, $action, $formInstanceName);
-        self::assertFalse($this->subject->validateToken($tokenId, $formName, $action, 'beer'));
+        $subject = new FormProtectionTesting();
+        $tokenId = $subject->generateToken($formName, $action, $formInstanceName);
+        self::assertFalse($subject->validateToken($tokenId, $formName, $action, 'beer'));
     }
 
     #[Test]
