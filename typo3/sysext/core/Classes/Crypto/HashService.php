@@ -18,12 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Crypto;
 
 use TYPO3\CMS\Core\Exception\Crypto\InvalidHashStringException;
-use TYPO3\CMS\Core\SingletonInterface;
 
 /**
  * A hash service to generate and validate SHA-1 hashes.
  */
-final class HashService implements SingletonInterface
+final readonly class HashService
 {
     /**
      * Returns a proper HMAC with a length of 40 (HMAC-SHA-1) on a given input string, additional secret
@@ -36,7 +35,6 @@ final class HashService implements SingletonInterface
         if ($additionalSecret === '') {
             throw new \LogicException('The ' . __METHOD__ . ' function requires a non-empty additional secret.', 1704453167);
         }
-
         $secret = $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] . $additionalSecret;
         return hash_hmac('sha1', $input, $secret);
     }
