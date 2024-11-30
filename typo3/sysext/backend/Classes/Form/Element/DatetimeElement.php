@@ -242,20 +242,7 @@ class DatetimeElement extends AbstractFormElement
         $nullControlNameEscaped = htmlspecialchars('control[active][' . $table . '][' . $this->data['databaseRow']['uid'] . '][' . $fieldName . ']');
 
         $fullElement = $expansionHtml;
-        if ($this->hasNullCheckboxButNoPlaceholder()) {
-            $checked = $itemValue !== null ? ' checked="checked"' : '';
-            $fullElement = [];
-            $fullElement[] = '<div class="t3-form-field-disable"></div>';
-            $fullElement[] = '<div class="form-check t3-form-field-eval-null-checkbox">';
-            $fullElement[] =     '<input type="hidden" name="' . $nullControlNameEscaped . '" value="0" />';
-            $fullElement[] =     '<input type="checkbox" class="form-check-input" name="' . $nullControlNameEscaped . '" id="' . $nullControlNameEscaped . '" value="1"' . $checked . ' />';
-            $fullElement[] =     '<label class="form-check-label" for="' . $nullControlNameEscaped . '">';
-            $fullElement[] =         $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.nullCheckbox');
-            $fullElement[] =     '</label>';
-            $fullElement[] = '</div>';
-            $fullElement[] = $expansionHtml;
-            $fullElement = implode(LF, $fullElement);
-        } elseif ($this->hasNullCheckboxWithPlaceholder()) {
+        if ($this->hasNullCheckboxWithPlaceholder()) {
             $checked = $itemValue !== null ? ' checked="checked"' : '';
             $placeholder = $shortenedPlaceholder = (string)($config['placeholder'] ?? '');
             if ($placeholder !== '') {
