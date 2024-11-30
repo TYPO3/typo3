@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Cache\Frontend;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TaggableBackendInterface;
@@ -41,6 +42,7 @@ final class VariableFrontendTest extends UnitTestCase
 
     #[Test]
     #[DataProvider('constructAcceptsValidIdentifiersDataProvider')]
+    #[DoesNotPerformAssertions]
     public function constructAcceptsValidIdentifiers(string $identifier): void
     {
         new VariableFrontend($identifier, $this->createMock(BackendInterface::class));

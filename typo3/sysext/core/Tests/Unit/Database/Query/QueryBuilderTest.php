@@ -659,29 +659,20 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
-        $connectionBuilder = GeneralUtility::makeInstance(
-            ConcreteQueryBuilder::class,
-            $this->connection
-        );
+        $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
         /** @var QueryBuilder $subject */
-        $subject = GeneralUtility::makeInstance(
-            QueryBuilder::class,
-            $this->connection,
-            null,
-            $connectionBuilder,
-            null
-        );
+        $subject = GeneralUtility::makeInstance(QueryBuilder::class, $this->connection, null, $connectionBuilder, null);
 
         $subject->select('*')
             ->from('pages')
             ->where('uid=1');
 
         $expectedSQL = 'SELECT * FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
-        $this->connection->method('executeQuery')->with($expectedSQL, self::anything(), self::anything(), self::anything())
+        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything(), self::anything(), self::anything())
             ->willReturn($this->createMock(Result::class));
 
         $subject->executeQuery();
@@ -704,27 +695,17 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
-        $connectionBuilder = GeneralUtility::makeInstance(
-            ConcreteQueryBuilder::class,
-            $this->connection
-        );
+        $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $subject = GeneralUtility::makeInstance(
-            QueryBuilder::class,
-            $this->connection,
-            null,
-            $connectionBuilder
-        );
+        $subject = GeneralUtility::makeInstance(QueryBuilder::class, $this->connection, null, $connectionBuilder);
 
-        $subject->count('uid')
-            ->from('pages')
-            ->where('uid=1');
+        $subject->count('uid')->from('pages')->where('uid=1');
 
         $expectedSQL = 'SELECT COUNT(uid) FROM pages WHERE (uid=1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))';
-        $this->connection->method('executeQuery')->with($expectedSQL, self::anything())
+        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with($expectedSQL, self::anything())
             ->willReturn($this->createMock(Result::class));
 
         $subject->executeQuery();
@@ -1081,10 +1062,8 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, string|ParameterType|Type|ArrayParameterType $type): void
     {
-        $this->connection->method('quoteIdentifier')->with('aField')
-            ->willReturnArgument(0);
+        $this->connection->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
-
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
         $subject->set('aField', $input, true, $type);
         self::assertSame($type, $concreteQueryBuilder->getParameterType('dcValue1'));
@@ -1138,16 +1117,11 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function castFieldToTextType(DoctrineAbstractPlatform $platform, string $expectation): void
     {
-        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')
-            ->willReturnArgument(0);
-
+        $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connection->method('getDatabasePlatform')->willReturn($platform);
-
         $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
-
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
         $result = $subject->castFieldToTextType('aField');
-
         self::assertSame($expectation, $result);
     }
 
@@ -1165,19 +1139,12 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
-        $connectionBuilder = GeneralUtility::makeInstance(
-            ConcreteQueryBuilder::class,
-            $this->connection
-        );
+        $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $subject = new QueryBuilder(
-            $this->connection,
-            null,
-            $connectionBuilder
-        );
+        $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->limitRestrictionsToTables(['pages']);
 
         $subject->select('*')
@@ -1190,7 +1157,7 @@ final class QueryBuilderTest extends UnitTestCase
             )
             ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->method('executeQuery')->with(
+        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
         )->willReturn($this->createMock(Result::class));
@@ -1212,19 +1179,12 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
-        $connectionBuilder = GeneralUtility::makeInstance(
-            ConcreteQueryBuilder::class,
-            $this->connection
-        );
+        $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $subject = new QueryBuilder(
-            $this->connection,
-            null,
-            $connectionBuilder
-        );
+        $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->limitRestrictionsToTables(['pages']);
         $subject->getRestrictions()->removeByType(DeletedRestriction::class);
 
@@ -1238,7 +1198,7 @@ final class QueryBuilderTest extends UnitTestCase
             )
             ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->method('executeQuery')->with(
+        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON pages.uid = content.pid WHERE (uid = 1) AND (pages.hidden = 0)',
             self::anything()
         )->willReturn($this->createMock(Result::class));
@@ -1260,20 +1220,12 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
-        $connectionBuilder = GeneralUtility::makeInstance(
-            ConcreteQueryBuilder::class,
-            $this->connection
-        );
+        $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $subject = new QueryBuilder(
-            $this->connection,
-            null,
-            $connectionBuilder
-        );
-
+        $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->select('*')
                 ->from('pages')
                 ->leftJoin(
@@ -1284,7 +1236,7 @@ final class QueryBuilderTest extends UnitTestCase
                 )
                 ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->method('executeQuery')->with(
+        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM pages LEFT JOIN tt_content content ON ((pages.uid = content.pid) AND (((content.deleted = 0) AND (content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
         )->willReturn($this->createMock(Result::class));
@@ -1306,20 +1258,12 @@ final class QueryBuilderTest extends UnitTestCase
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
-        $connectionBuilder = GeneralUtility::makeInstance(
-            ConcreteQueryBuilder::class,
-            $this->connection
-        );
+        $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $subject = new QueryBuilder(
-            $this->connection,
-            null,
-            $connectionBuilder
-        );
-
+        $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->select('*')
                 ->from('tt_content')
                 ->rightJoin(
@@ -1330,7 +1274,7 @@ final class QueryBuilderTest extends UnitTestCase
                 )
                 ->where($expressionBuilder->eq('uid', 1));
 
-        $this->connection->method('executeQuery')->with(
+        $this->connection->expects(self::atLeastOnce())->method('executeQuery')->with(
             'SELECT * FROM tt_content RIGHT JOIN pages pages ON ((pages.uid = tt_content.pid) AND (((tt_content.deleted = 0) AND (tt_content.hidden = 0)))) WHERE (uid = 1) AND (((pages.deleted = 0) AND (pages.hidden = 0)))',
             self::anything()
         )->willReturn($this->createMock(Result::class));

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -35,7 +36,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class ExtensionManagementUtilityTest extends UnitTestCase
 {
     protected bool $resetSingletonInstances = true;
-    protected ?PackageManager $backUpPackageManager;
+    private PackageManager $backUpPackageManager;
 
     protected function setUp(): void
     {
@@ -1507,6 +1508,7 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function addServiceDoesNotFailIfValueIsNotSet(): void
     {
         ExtensionManagementUtility::addService(

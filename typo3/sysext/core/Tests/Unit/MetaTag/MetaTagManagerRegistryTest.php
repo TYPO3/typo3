@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\MetaTag;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\MetaTag\GenericMetaTagManager;
 use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
@@ -31,55 +32,14 @@ final class MetaTagManagerRegistryTest extends UnitTestCase
     protected bool $resetSingletonInstances = true;
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function checkRegisterNonExistingManagerDoesntThrowErrorWhenFetchingManagers(): void
     {
         $metaTagManagerRegistry = new MetaTagManagerRegistry();
-
         $metaTagManagerRegistry->registerManager('name', 'fake//class//name');
         $metaTagManagerRegistry->getAllManagers();
     }
 
-    #[DataProvider('registerMetaTagManagersProvider')]
-    #[Test]
-    public function checkRegisterExistingManagerDoRegister(array $managersToRegister, array $expected): void
-    {
-        $metaTagManagerRegistry = new MetaTagManagerRegistry();
-
-        foreach ($managersToRegister as $managerToRegister) {
-            $metaTagManagerRegistry->registerManager(
-                $managerToRegister['name'],
-                $managerToRegister['className'],
-                (array)$managerToRegister['before'],
-                (array)$managerToRegister['after']
-            );
-        }
-
-        // Remove all properties from the manager if it was set by a previous unittest
-        foreach ($metaTagManagerRegistry->getAllManagers() as $manager) {
-            $manager->removeAllProperties();
-        }
-
-        $managers = $metaTagManagerRegistry->getAllManagers();
-
-        self::assertEquals($expected, $managers);
-    }
-
-    #[Test]
-    public function checkConditionRaceResultsIntoException(): void
-    {
-        $input = [
-            'name' => 'opengraph',
-            'className' => OpenGraphMetaTagManager::class,
-            'before' => ['opengraph'],
-            'after' => [],
-        ];
-
-        $this->expectException(\UnexpectedValueException::class);
-
-        $metaTagManagerRegistry = new MetaTagManagerRegistry();
-        $metaTagManagerRegistry->registerManager($input['name'], $input['className'], (array)$input['before'], (array)$input['after']);
-        $metaTagManagerRegistry->getAllManagers();
-    }
     public static function registerMetaTagManagersProvider(): array
     {
         return [
@@ -215,5 +175,41 @@ final class MetaTagManagerRegistryTest extends UnitTestCase
                 ],
             ],
         ];
+    }
+
+    #[DataProvider('registerMetaTagManagersProvider')]
+    #[Test]
+    public function checkRegisterExistingManagerDoRegister(array $managersToRegister, array $expected): void
+    {
+        $metaTagManagerRegistry = new MetaTagManagerRegistry();
+        foreach ($managersToRegister as $managerToRegister) {
+            $metaTagManagerRegistry->registerManager(
+                $managerToRegister['name'],
+                $managerToRegister['className'],
+                (array)$managerToRegister['before'],
+                (array)$managerToRegister['after']
+            );
+        }
+        // Remove all properties from the manager if it was set by a previous unittest
+        foreach ($metaTagManagerRegistry->getAllManagers() as $manager) {
+            $manager->removeAllProperties();
+        }
+        $managers = $metaTagManagerRegistry->getAllManagers();
+        self::assertEquals($expected, $managers);
+    }
+
+    #[Test]
+    public function checkConditionRaceResultsIntoException(): void
+    {
+        $input = [
+            'name' => 'opengraph',
+            'className' => OpenGraphMetaTagManager::class,
+            'before' => ['opengraph'],
+            'after' => [],
+        ];
+        $this->expectException(\UnexpectedValueException::class);
+        $metaTagManagerRegistry = new MetaTagManagerRegistry();
+        $metaTagManagerRegistry->registerManager($input['name'], $input['className'], (array)$input['before'], (array)$input['after']);
+        $metaTagManagerRegistry->getAllManagers();
     }
 }

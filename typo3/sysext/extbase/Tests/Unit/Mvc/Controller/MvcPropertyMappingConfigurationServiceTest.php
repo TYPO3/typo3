@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Mvc\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
@@ -169,6 +170,7 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function initializePropertyMappingConfigurationDoesNothingIfTrustedPropertiesAreNotSet(): void
     {
         $extbaseAttribute = (new ExtbaseRequestParameters())->setArgument('__trustedProperties', null);
@@ -235,15 +237,6 @@ final class MvcPropertyMappingConfigurationServiceTest extends UnitTestCase
         $this->expectExceptionCode(1699604555);
 
         $requestHashService->initializePropertyMappingConfigurationFromRequest($extbaseRequest, $arguments);
-    }
-
-    #[Test]
-    public function initializePropertyMappingConfigurationReturnsEarlyIfNoTrustedPropertiesAreSet(): void
-    {
-        $trustedProperties = [
-            'foo' => 1,
-        ];
-        $this->initializePropertyMappingConfiguration($trustedProperties);
     }
 
     #[Test]
