@@ -191,8 +191,6 @@ class TableDiff extends DoctrineTableDiff
             // really dropping tables instead. Therefore, we need to add here an empty check for the reintroduced
             // property.See for example: ConnectionMigrator->migrateUnprefixedRemovedTablesToRenames
             && $this->getNewName() !== null && $this->getNewName() !== ''
-            // @todo doctrine/dbal 3.5 deprecated schema events, thus a new way to provide table option has to
-            //       be found and implemented. Recheck this afterwards.
             && $this->getTableOptions() === [];
     }
 
