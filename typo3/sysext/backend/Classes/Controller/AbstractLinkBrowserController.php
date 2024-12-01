@@ -189,7 +189,9 @@ abstract class AbstractLinkBrowserController
             $content = $view->render();
         }
         $this->initDocumentTemplate();
-        $this->pageRenderer->setTitle('Link Browser');
+        $this->pageRenderer->setTitle($this->getLanguageService()->sL(
+            'LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkBrowser'
+        ));
         if ($request->getQueryParams()['contentOnly'] ?? false) {
             return new HtmlResponse($content);
         }

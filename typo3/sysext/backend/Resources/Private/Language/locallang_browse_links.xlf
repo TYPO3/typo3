@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_browse_links.xlf" date="2011-10-17T20:22:33Z" product-name="lang">
 		<header/>
 		<body>
+			<trans-unit id="linkBrowser">
+				<source>Link Browser</source>
+			</trans-unit>
 			<trans-unit id="openLinkWizard">
 				<source>Open link wizard</source>
 			</trans-unit>
