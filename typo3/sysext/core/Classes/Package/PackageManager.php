@@ -343,8 +343,7 @@ class PackageManager implements SingletonInterface
                 $path = PathUtility::dirname($fileInfo->getPathname());
                 $extensionName = PathUtility::basename($path);
                 // Fix Windows backslashes
-                // we can't use GeneralUtility::fixWindowsFilePath as we have to keep double slashes for Unit Tests (vfs://)
-                $currentPath = str_replace('\\', '/', $path) . '/';
+                $currentPath = GeneralUtility::fixWindowsFilePath($path) . '/';
                 if (!isset($collectedExtensionPaths[$extensionName])) {
                     $collectedExtensionPaths[$extensionName] = $currentPath;
                 }

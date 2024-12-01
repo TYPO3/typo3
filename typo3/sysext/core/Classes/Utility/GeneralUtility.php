@@ -2460,9 +2460,6 @@ class GeneralUtility
      */
     public static function isAllowedAbsPath(string $path): bool
     {
-        if (substr($path, 0, 6) === 'vfs://') {
-            return true;
-        }
         return PathUtility::isAbsolutePath($path) && static::validPathStr($path)
             && (
                 str_starts_with($path, Environment::getProjectPath())

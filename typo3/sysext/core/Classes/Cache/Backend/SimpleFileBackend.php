@@ -114,12 +114,6 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
      */
     public function setCacheDirectory($cacheDirectory)
     {
-        // Skip handling if directory is a stream resource
-        // This is used by unit tests with vfs:// directories
-        if (PathUtility::hasProtocolAndScheme($cacheDirectory)) {
-            $this->temporaryCacheDirectory = $cacheDirectory;
-            return;
-        }
         $documentRoot = Environment::getProjectPath() . '/';
         if ($open_basedir = ini_get('open_basedir')) {
             if (Environment::isWindows()) {

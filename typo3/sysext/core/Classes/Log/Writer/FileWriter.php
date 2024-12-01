@@ -104,8 +104,7 @@ class FileWriter extends AbstractWriter
     public function setLogFile(string $relativeLogFile)
     {
         $logFile = $relativeLogFile;
-        // Skip handling if logFile is a stream resource. This is used by unit tests with vfs:// directories
-        if (!PathUtility::hasProtocolAndScheme($logFile) && !PathUtility::isAbsolutePath($logFile)) {
+        if (!PathUtility::isAbsolutePath($logFile)) {
             $logFile = GeneralUtility::getFileAbsFileName($logFile);
             if (empty($logFile)) {
                 throw new InvalidLogWriterConfigurationException(
@@ -214,9 +213,9 @@ class FileWriter extends AbstractWriter
             return;
         }
 
-        // skip mkdir if logFile refers to any scheme but vfs://, file:// or empty
+        // skip mkdir if logFile refers to any scheme but file:// or empty
         $scheme = parse_url($this->logFile, PHP_URL_SCHEME);
-        if ($scheme === null || $scheme === 'file' || $scheme === 'vfs' || PathUtility::isAbsolutePath($this->logFile)) {
+        if ($scheme === null || $scheme === 'file' || PathUtility::isAbsolutePath($this->logFile)) {
             // remove file:/ before creating the directory
             $logFileDirectory = PathUtility::dirname((string)preg_replace('#^file:/#', '', $this->logFile));
             if (!@is_dir($logFileDirectory)) {

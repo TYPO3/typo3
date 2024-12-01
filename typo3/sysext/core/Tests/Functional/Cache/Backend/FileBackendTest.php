@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Cache\Backend;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Backend\FileBackend;
-use TYPO3\CMS\Core\Cache\Exception;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\AbstractFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
@@ -37,16 +36,6 @@ final class FileBackendTest extends FunctionalTestCase
     {
         GeneralUtility::rmdir($this->instancePath . '/Foo/', true);
         parent::tearDown();
-    }
-
-    #[Test]
-    public function setCacheDirectoryThrowsExceptionOnNonWritableDirectory(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionCode(1303669848);
-        $subject = new FileBackend('');
-        $subject->setCacheDirectory('http://localhost/');
-        $subject->setCache(new NullFrontend('foo'));
     }
 
     #[Test]
