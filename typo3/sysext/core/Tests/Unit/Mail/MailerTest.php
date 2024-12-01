@@ -27,10 +27,12 @@ use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Exception;
+use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Log\LogManagerInterface;
 use TYPO3\CMS\Core\Mail\DelayedTransportInterface;
 use TYPO3\CMS\Core\Mail\Mailer;
 use TYPO3\CMS\Core\Mail\TransportFactory;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -74,7 +76,7 @@ final class MailerTest extends UnitTestCase
         $transportFactory = $this->createMock(TransportFactory::class);
         $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
             ->willReturn($this->createMock(SendmailTransport::class));
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
     }
@@ -89,7 +91,7 @@ final class MailerTest extends UnitTestCase
         $transportFactory = $this->createMock(TransportFactory::class);
         $transportFactory->expects(self::atLeastOnce())->method('get')->with($settings)
             ->willReturn($this->createMock(SendmailTransport::class));
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
     }
@@ -108,8 +110,8 @@ final class MailerTest extends UnitTestCase
     {
         $this->expectException(Exception::class);
         $this->expectExceptionCode(1291068569);
-        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager, new Logger('foo'), new FileNameValidator());
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $this->subject->__construct();
     }
@@ -118,8 +120,8 @@ final class MailerTest extends UnitTestCase
     #[DoesNotPerformAssertions]
     public function providingCorrectClassnameDoesNotThrowException(): void
     {
-        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager, new Logger('foo'), new FileNameValidator());
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => NullTransport::class]);
         $this->subject->__construct();
     }
@@ -127,8 +129,8 @@ final class MailerTest extends UnitTestCase
     #[Test]
     public function noPortSettingSetsPortTo25(): void
     {
-        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager, new Logger('foo'), new FileNameValidator());
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getStream()->getPort();
@@ -138,8 +140,8 @@ final class MailerTest extends UnitTestCase
     #[Test]
     public function emptyPortSettingSetsPortTo25(): void
     {
-        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager, new Logger('foo'), new FileNameValidator());
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getStream()->getPort();
@@ -149,8 +151,8 @@ final class MailerTest extends UnitTestCase
     #[Test]
     public function givenPortSettingIsRespected(): void
     {
-        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager, new Logger('foo'), new FileNameValidator());
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings(['transport' => 'smtp', 'transport_smtp_server' => 'localhost:12345']);
         $this->subject->__construct();
         $port = $this->subject->getTransport()->getStream()->getPort();
@@ -175,8 +177,8 @@ final class MailerTest extends UnitTestCase
     #[Test]
     public function getRealTransportReturnsNoSpoolTransport($settings): void
     {
-        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager);
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
+        $transportFactory = new TransportFactory($this->eventDispatcher, $this->logManager, new Logger('foo'), new FileNameValidator());
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
         $this->subject->injectMailSettings($settings);
         $transport = $this->subject->getRealTransport();
         self::assertInstanceOf(TransportInterface::class, $transport);

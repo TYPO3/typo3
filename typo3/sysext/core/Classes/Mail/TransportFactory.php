@@ -17,41 +17,33 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Mail;
 
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mailer\Transport\SendmailTransport;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\Mailer\Transport\TransportInterface;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Log\LogManagerInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-/**
- * TransportFactory
- */
-class TransportFactory implements SingletonInterface, LoggerAwareInterface
+readonly class TransportFactory
 {
-    use LoggerAwareTrait;
-
     public const SPOOL_MEMORY = 'memory';
     public const SPOOL_FILE = 'file';
 
     public function __construct(
-        protected readonly EventDispatcherInterface $dispatcher,
-        protected readonly LogManagerInterface $logManager,
+        protected SymfonyEventDispatcherInterface $dispatcher,
+        protected LogManagerInterface $logManager,
+        private LoggerInterface $logger,
+        private FileNameValidator $fileNameValidator,
     ) {}
 
     /**
-     * Gets a transport from settings.
-     *
-     * @param array $mailSettings from $GLOBALS['TYPO3_CONF_VARS']['MAIL']
+     * @param array $mailSettings Typically from $GLOBALS['TYPO3_CONF_VARS']['MAIL']
      * @throws Exception
-     * @throws \RuntimeException
      */
     public function get(array $mailSettings): TransportInterface
     {
@@ -62,8 +54,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
             throw new \InvalidArgumentException('Mail transport can not be set to "spool"', 1469363238);
         }
 
-        $transportType = isset($mailSettings['transport_spool_type'])
-            && !empty($mailSettings['transport_spool_type'])
+        $transportType = !empty($mailSettings['transport_spool_type'])
             ? 'spool' : (string)$mailSettings['transport'];
 
         switch ($transportType) {
@@ -151,8 +142,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 if ($mboxFile === '') {
                     throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_mbox_file\'] needs to be set when transport is set to "mbox".', 1294586645);
                 }
-                $fileNameValidator = GeneralUtility::makeInstance(FileNameValidator::class);
-                if (!$fileNameValidator->isValid($mboxFile)) {
+                if (!$this->fileNameValidator->isValid($mboxFile)) {
                     throw new Exception('$GLOBALS[\'TYPO3_CONF_VARS\'][\'MAIL\'][\'transport_mbox_file\'] failed against deny-pattern', 1705312431);
                 }
                 // Create our transport
@@ -198,8 +188,6 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
 
     /**
      * Creates a spool from mail settings.
-     *
-     * @throws \RuntimeException
      */
     protected function createSpool(array $mailSettings): DelayedTransportInterface
     {
@@ -226,7 +214,7 @@ class TransportFactory implements SingletonInterface, LoggerAwareInterface
                 break;
             default:
                 $spool = GeneralUtility::makeInstance($transportSpoolType, $mailSettings);
-                if (!($spool instanceof DelayedTransportInterface)) {
+                if (!$spool instanceof DelayedTransportInterface) {
                     throw new \RuntimeException(
                         $mailSettings['transport_spool_type'] . ' is not an implementation of DelayedTransportInterface, but must implement that interface to be used as a mail spool.',
                         1466799482

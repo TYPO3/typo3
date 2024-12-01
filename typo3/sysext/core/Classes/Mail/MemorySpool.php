@@ -35,7 +35,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * To have only one memory spool per request seems to be more appropriate anyway.
  *
- * @internal This class is experimental and subject to change!
+ * @internal This class is handled internally in TransportFactory
  */
 class MemorySpool extends AbstractTransport implements SingletonInterface, DelayedTransportInterface
 {

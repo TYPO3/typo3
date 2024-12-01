@@ -30,20 +30,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BeforeMailerSentMessageEventTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $transportFactory = $this->createMock(TransportFactory::class);
-        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
-    }
-
     #[Test]
     public function gettersReturnInitializedObjects(): void
     {
+        $transportFactory = $this->createMock(TransportFactory::class);
+        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
+
         $mailer = (new Mailer());
         $rawMessage = (new Email())->subject('some subject');
         $envelope = (new Envelope(new Address('kasperYYYY@typo3.org'), [new Address('acme@example.com')]));
@@ -57,6 +50,10 @@ final class BeforeMailerSentMessageEventTest extends UnitTestCase
     #[Test]
     public function modifyingInitializedObjects(): void
     {
+        $transportFactory = $this->createMock(TransportFactory::class);
+        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
+
         $mailer = (new Mailer());
         $rawMessage = (new Email())->subject('some subject');
         $envelope = (new Envelope(new Address('kasperYYYY@typo3.org'), [new Address('acme@example.com')]));

@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Mail\FileSpool;
 use TYPO3\CMS\Core\Mail\MailMessage;
 use TYPO3\CMS\Core\Mail\MemorySpool;
 use TYPO3\CMS\Core\Mail\TransportFactory;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeFileSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeInvalidSpoolFixture;
 use TYPO3\CMS\Core\Tests\Unit\Mail\Fixtures\FakeMemorySpoolFixture;
@@ -45,14 +46,9 @@ final class TransportFactoryTest extends UnitTestCase
     {
         $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
         $logger = new NullLogger();
-
         $logManager = $this->createMock(LogManagerInterface::class);
         $logManager->method('getLogger')->willReturn($logger);
-
-        $transportFactory = new TransportFactory($eventDispatcher, $logManager);
-        $transportFactory->setLogger($logger);
-
-        return $transportFactory;
+        return new TransportFactory($eventDispatcher, $logManager, $logger, new FileNameValidator());
     }
 
     #[Test]

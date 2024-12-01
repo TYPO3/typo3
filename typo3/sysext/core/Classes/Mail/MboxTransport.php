@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Additional Mbox Transport option
+ *
+ * @internal This class is handled internally in TransportFactory
  */
 class MboxTransport extends AbstractTransport
 {

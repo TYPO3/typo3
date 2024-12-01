@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
@@ -107,6 +108,7 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\Driver\DriverRegistry::class => self::getDriverRegistry(...),
             Resource\ProcessedFileRepository::class => self::getProcessedFileRepository(...),
             Resource\ResourceFactory::class => self::getResourceFactory(...),
+            Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
             Resource\StorageRepository::class => self::getStorageRepository(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
             Service\FlexFormService::class => self::getFlexFormService(...),
@@ -420,6 +422,8 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Mail\TransportFactory::class, [
             $container->get(SymfonyEventDispatcher::class),
             $container->get(Log\LogManager::class),
+            $container->get(Log\LogManager::class)->getLogger(Mail\TransportFactory::class),
+            $container->get(Resource\Security\FileNameValidator::class),
         ]);
     }
 
@@ -492,6 +496,11 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Resource\StorageRepository::class),
             $container->get('cache.runtime'),
         ]);
+    }
+
+    public static function getFileNameValidator(ContainerInterface $container): Resource\Security\FileNameValidator
+    {
+        return new FileNameValidator();
     }
 
     public static function getStorageRepository(ContainerInterface $container): Resource\StorageRepository

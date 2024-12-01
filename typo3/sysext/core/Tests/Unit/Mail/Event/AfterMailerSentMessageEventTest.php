@@ -27,20 +27,13 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class AfterMailerSentMessageEventTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $transportFactory = $this->createMock(TransportFactory::class);
-        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
-        GeneralUtility::setSingletonInstance(TransportFactory::class, $transportFactory);
-    }
-
     #[Test]
     public function gettersReturnInitializedObjects(): void
     {
+        $transportFactory = $this->createMock(TransportFactory::class);
+        $transportFactory->method('get')->with(self::anything())->willReturn($this->createMock(SendmailTransport::class));
+        GeneralUtility::addInstance(TransportFactory::class, $transportFactory);
+
         $mailer = (new Mailer());
         $event = new AfterMailerSentMessageEvent($mailer);
 

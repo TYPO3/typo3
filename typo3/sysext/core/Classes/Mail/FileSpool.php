@@ -33,7 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * Inspired by SwiftMailer, adapted for TYPO3 and Symfony/Mailer
  *
- * @internal This class is experimental and subject to change!
+ * @internal This class is handled internally in TransportFactory
  */
 class FileSpool extends AbstractTransport implements DelayedTransportInterface
 {
