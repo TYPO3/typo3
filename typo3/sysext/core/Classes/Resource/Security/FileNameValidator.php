@@ -21,28 +21,9 @@ namespace TYPO3\CMS\Core\Resource\Security;
  * Ensures that any filename that an editor chooses for naming (or uses for uploading a file) is valid, meaning
  * that no invalid characters (null-bytes) are added, or that the file does not contain an invalid file extension.
  */
-class FileNameValidator
+readonly class FileNameValidator
 {
-    /**
-     * Previously this was used within SystemEnvironmentBuilder
-     */
     public const DEFAULT_FILE_DENY_PATTERN = '\\.(php[3-8]?|phpsh|phtml|pht|phar|shtml|cgi)(\\..*)?$|\\.pl$|^\\.htaccess$';
-
-    /**
-     * @var string
-     */
-    protected $fileDenyPattern;
-
-    public function __construct(?string $fileDenyPattern = null)
-    {
-        if ($fileDenyPattern !== null) {
-            $this->fileDenyPattern = $fileDenyPattern;
-        } elseif (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) {
-            $this->fileDenyPattern = (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'];
-        } else {
-            $this->fileDenyPattern = static::DEFAULT_FILE_DENY_PATTERN;
-        }
-    }
 
     /**
      * Verifies the input filename against the 'fileDenyPattern'
@@ -56,8 +37,8 @@ class FileNameValidator
     public function isValid(string $fileName): bool
     {
         $pattern = '/[[:cntrl:]]/';
-        if ($fileName !== '' && $this->fileDenyPattern !== '') {
-            $pattern = '/(?:[[:cntrl:]]|' . $this->fileDenyPattern . ')/iu';
+        if ($fileName !== '' && $this->getCurrentFileDenyPattern() !== '') {
+            $pattern = '/(?:[[:cntrl:]]|' . $this->getCurrentFileDenyPattern() . ')/iu';
         }
         return preg_match($pattern, $fileName) === 0;
     }
@@ -67,7 +48,7 @@ class FileNameValidator
      */
     public function customFileDenyPatternConfigured(): bool
     {
-        return $this->fileDenyPattern !== self::DEFAULT_FILE_DENY_PATTERN;
+        return $this->getCurrentFileDenyPattern() !== self::DEFAULT_FILE_DENY_PATTERN;
     }
 
     /**
@@ -77,8 +58,17 @@ class FileNameValidator
     public function missingImportantPatterns(): bool
     {
         $defaultParts = explode('|', self::DEFAULT_FILE_DENY_PATTERN);
-        $givenParts = explode('|', $this->fileDenyPattern);
+        $givenParts = explode('|', $this->getCurrentFileDenyPattern());
         $missingParts = array_diff($defaultParts, $givenParts);
         return !empty($missingParts);
+    }
+
+    protected function getCurrentFileDenyPattern(): string
+    {
+        if (isset($GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'])) {
+            return (string)$GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'];
+        }
+        return static::DEFAULT_FILE_DENY_PATTERN;
+
     }
 }

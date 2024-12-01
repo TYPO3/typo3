@@ -43,7 +43,8 @@ readonly class FileDumpController
         protected EventDispatcherInterface $eventDispatcher,
         protected ResourceFactory $resourceFactory,
         protected ResponseFactoryInterface $responseFactory,
-        protected HashService $hashService
+        protected HashService $hashService,
+        private FileNameValidator $fileNameValidator,
     ) {}
 
     /**
@@ -221,8 +222,7 @@ readonly class FileDumpController
     protected function isFileValid(FileInterface $file): bool
     {
         return $file->getStorage()->getDriverType() !== 'Local'
-            || GeneralUtility::makeInstance(FileNameValidator::class)
-                ->isValid(basename($file->getIdentifier()));
+            || $this->fileNameValidator->isValid(basename($file->getIdentifier()));
     }
 
     /**

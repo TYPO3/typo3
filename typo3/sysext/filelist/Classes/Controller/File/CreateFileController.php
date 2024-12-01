@@ -64,6 +64,7 @@ class CreateFileController
         protected readonly ResourceFactory $resourceFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
+        private readonly FileNameValidator $fileNameValidator,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -81,9 +82,8 @@ class CreateFileController
             // Create a list of allowed file extensions with the readable format "youtube, vimeo" etc.
             $fileExtList = [];
             $onlineMediaFileExt = $this->onlineMediaHelperRegistry->getSupportedFileExtensions();
-            $fileNameVerifier = GeneralUtility::makeInstance(FileNameValidator::class);
             foreach ($onlineMediaFileExt as $fileExt) {
-                if ($fileNameVerifier->isValid('.' . $fileExt)) {
+                if ($this->fileNameValidator->isValid('.' . $fileExt)) {
                     $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
                 }
             }
@@ -93,7 +93,7 @@ class CreateFileController
             $fileExtList = [];
             $textFileExt = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['SYS']['textfile_ext'], true);
             foreach ($textFileExt as $fileExt) {
-                if ($fileNameVerifier->isValid('.' . $fileExt)) {
+                if ($this->fileNameValidator->isValid('.' . $fileExt)) {
                     $fileExtList[] = strtoupper(htmlspecialchars($fileExt));
                 }
             }

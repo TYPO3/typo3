@@ -42,7 +42,7 @@ final class FileNameValidatorTest extends TestCase
     #[Test]
     public function verifyNulCharacterFilesAgainstPatternWithoutFileDenyPattern(string $deniedFile): void
     {
-        $subject = new FileNameValidator('');
+        $subject = new FileNameValidator();
         self::assertFalse($subject->isValid($deniedFile));
 
         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = '';
@@ -168,25 +168,24 @@ final class FileNameValidatorTest extends TestCase
     #[Test]
     public function isCustomDenyPatternConfigured(): void
     {
-        $subject = new FileNameValidator('nothing-really');
-        self::assertTrue($subject->customFileDenyPatternConfigured());
+        $subject = new FileNameValidator();
+        self::assertFalse($subject->customFileDenyPatternConfigured());
         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = 'something-else';
         $subject = new FileNameValidator();
         self::assertTrue($subject->customFileDenyPatternConfigured());
         $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = FileNameValidator::DEFAULT_FILE_DENY_PATTERN;
         $subject = new FileNameValidator();
         self::assertFalse($subject->customFileDenyPatternConfigured());
-        $subject = new FileNameValidator(FileNameValidator::DEFAULT_FILE_DENY_PATTERN);
-        self::assertFalse($subject->customFileDenyPatternConfigured());
     }
 
     #[Test]
     public function customFileDenyPatternFindsMissingImportantParts(): void
     {
-        $subject = new FileNameValidator('\\.php$|.php8$');
-        self::assertTrue($subject->missingImportantPatterns());
-        $subject = new FileNameValidator(FileNameValidator::DEFAULT_FILE_DENY_PATTERN);
+        $subject = new FileNameValidator();
         self::assertFalse($subject->missingImportantPatterns());
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['fileDenyPattern'] = '\\.php$|.php8$';
+        $subject = new FileNameValidator();
+        self::assertTrue($subject->missingImportantPatterns());
     }
 
     /**

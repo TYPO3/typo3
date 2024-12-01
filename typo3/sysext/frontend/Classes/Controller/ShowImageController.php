@@ -110,7 +110,8 @@ class ShowImageController
 EOF;
 
     public function __construct(
-        protected readonly Features $features
+        protected readonly Features $features,
+        private readonly FileNameValidator $fileNameValidator,
     ) {}
 
     /**
@@ -237,7 +238,6 @@ EOF;
     protected function isFileValid(FileInterface $file): bool
     {
         return $file->getStorage()->getDriverType() !== 'Local'
-            || GeneralUtility::makeInstance(FileNameValidator::class)
-                ->isValid(basename($file->getIdentifier()));
+            || $this->fileNameValidator->isValid(basename($file->getIdentifier()));
     }
 }
