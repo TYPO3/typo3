@@ -64,6 +64,13 @@ class FileLinkHandler extends AbstractResourceLinkHandler
     {
         $contentHtml = '';
         if ($this->selectedFolder !== null) {
+
+            // store the selected folder
+            $backendUser = $this->getBackendUser();
+            $modData = $backendUser->getModuleData('browse_links.php', 'ses');
+            $modData['expandFolder'] = $this->selectedFolder->getCombinedIdentifier();
+            $backendUser->pushModuleData('browse_links.php', $modData);
+
             // Create the filelist
             $this->filelist->start(
                 $this->selectedFolder,
