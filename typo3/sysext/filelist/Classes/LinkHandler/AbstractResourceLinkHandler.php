@@ -180,6 +180,10 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
                         }
                     }
                 }
+            } else {
+                // Look up in the user's session which folder was opened the last time
+                $moduleSessionData = $this->getBackendUser()->getModuleData('browse_links.php', 'ses');
+                $this->expandFolder = $moduleSessionData['expandFolder'] ?? null;
             }
         }
         if ($this->expandFolder) {
