@@ -34,11 +34,6 @@ use TYPO3\CMS\Reports\Status as ReportStatus;
 class SecurityStatus implements RequestAwareStatusProviderInterface
 {
     /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    /**
      * Determines the security of this TYPO3 installation
      *
      * @param ServerRequestInterface|null $request
