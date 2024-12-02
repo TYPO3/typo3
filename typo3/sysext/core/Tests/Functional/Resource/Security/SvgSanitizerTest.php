@@ -54,9 +54,9 @@ final class SvgSanitizerTest extends FunctionalTestCase
     public function svgContentIsSanitized(string $filePath, string $sanitizedFilePath): void
     {
         $sanitizer = new SvgSanitizer();
-        self::assertStringEqualsFile(
-            $sanitizedFilePath,
-            $sanitizer->sanitizeContent(file_get_contents($filePath))
-        );
+        $sanitizedFileContent = file_get_contents($sanitizedFilePath);
+        // Align lowercase / uppercase "UTF-8" in files - Casing changed in PHP 8.4 generated XML.
+        $sanitizedFileContent = str_replace('utf-8', 'UTF-8', $sanitizedFileContent);
+        self::assertEquals($sanitizedFileContent, $sanitizer->sanitizeContent(file_get_contents($filePath)));
     }
 }
