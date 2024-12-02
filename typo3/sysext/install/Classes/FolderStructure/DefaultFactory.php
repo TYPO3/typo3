@@ -73,11 +73,6 @@ final readonly class DefaultFactory
                                         'targetContentFile' => self::TEMPLATE_PATH . '/typo3temp-var-htaccess',
                                     ],
                                     [
-                                        'name' => 'charset',
-                                        'type' => DirectoryNode::class,
-                                        'targetPermission' => $directoryPermission,
-                                    ],
-                                    [
                                         'name' => 'cache',
                                         'type' => DirectoryNode::class,
                                         'targetPermission' => $directoryPermission,

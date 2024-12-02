@@ -387,7 +387,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->createMock(ExtFormConfigurationManagerInterface::class),
                 $this->createMock(TranslationService::class),
-                new CharsetConverter(),
+                $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
             ],
         );
@@ -410,7 +410,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->createMock(ExtFormConfigurationManagerInterface::class),
                 $this->createMock(TranslationService::class),
-                new CharsetConverter(),
+                $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
             ],
         );
@@ -433,7 +433,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->createMock(ExtFormConfigurationManagerInterface::class),
                 $this->createMock(TranslationService::class),
-                new CharsetConverter(),
+                $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
             ],
         );
@@ -456,7 +456,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(FormPersistenceManagerInterface::class),
                 $this->createMock(ExtFormConfigurationManagerInterface::class),
                 $this->createMock(TranslationService::class),
-                new CharsetConverter(),
+                $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
             ],
         );

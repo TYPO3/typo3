@@ -264,6 +264,7 @@ Options:
             - cglHeader: test and fix file header for all core php files
             - cglHeaderGit: test and fix latest committed patch for CGL file header compliance
             - checkBom: check UTF-8 files do not contain BOM
+            - checkCharsets: Verify "updateCharsetTables.php" does not change anything
             - checkComposer: check composer.json files for version integrity
             - checkIntegritySetLabels: check labels.xlf file integrity of site sets
             - checkExtensionScannerRst: test all .rst files referenced by extension scanner exist
@@ -272,7 +273,7 @@ Options:
             - checkGitSubmodule: test core git has no sub modules defined
             - checkGruntClean: Verify "grunt build" is clean. Warning: Executes git commands! Usually used in CI only.
             - checkIntegrityPhp: check php code for with registered integrity rules
-            - checkIsoDatabase: Verify "updateIsoDatabase.php" does not change anything.
+            - checkIsoDatabase: Verify "updateIsoDatabase.php" does not change anything
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
             - clean: clean up build, cache and testing related files and folders
@@ -961,6 +962,11 @@ case ${TEST_SUITE} in
     checkIsoDatabase)
         COMMAND="git checkout -- composer.json; git checkout -- composer.lock; php -dxdebug.mode=off Build/Scripts/updateIsoDatabase.php; git add *; git status; git status | grep -q \"nothing to commit, working tree clean\""
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-iso-database-${SUFFIX} ${IMAGE_PHP} /bin/sh -c "${COMMAND}"
+        SUITE_EXIT_CODE=$?
+        ;;
+    checkCharsets)
+        COMMAND="git checkout -- composer.json; git checkout -- composer.lock; php -dxdebug.mode=off Build/Scripts/updateCharsetTables.php; git add *; git status; git status | grep -q \"nothing to commit, working tree clean\""
+        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-charsets-${SUFFIX} ${IMAGE_PHP} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;
     checkPermissions)

@@ -260,4 +260,93 @@ final class GifBuilderTest extends FunctionalTestCase
         self::assertSame($setup1, $setup2, 'The Setup resulting from two equal configurations must be equal');
         self::assertSame($imageResource1->getPublicUrl(), $imageResource2->getPublicUrl());
     }
+
+    /**
+     * @return array<string, array{0: non-empty-string}>
+     */
+    public static function singleIntegerDataProvider(): array
+    {
+        return [
+            'positive integer' => ['1'],
+            'negative integer' => ['-1'],
+            'zero' => ['0'],
+        ];
+    }
+
+    #[DataProvider('singleIntegerDataProvider')]
+    #[Test]
+    public function calcOffsetWithSingleIntegerReturnsTheGivenIntegerAsString(string $number): void
+    {
+        $gifBuilder = new GifBuilder();
+        $result = $gifBuilder->calcOffset($number);
+
+        self::assertSame($number, $result);
+    }
+
+    #[Test]
+    public function calcOffsetWithMultipleIntegersReturnsTheGivenIntegerCommaSeparated(): void
+    {
+        $gifBuilder = new GifBuilder();
+        $numbers = '1,2,3';
+        $result = $gifBuilder->calcOffset($numbers);
+
+        self::assertSame($numbers, $result);
+    }
+
+    #[Test]
+    public function calcOffsetTrimsWhitespaceAroundProvidedNumbers(): void
+    {
+        $gifBuilder = new GifBuilder();
+        $result = $gifBuilder->calcOffset(' 1, 2, 3 ');
+
+        self::assertSame('1,2,3', $result);
+    }
+
+    /**
+     * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function roundingDataProvider(): array
+    {
+        return [
+            'rounding down' => ['1.1', '1'],
+            'rounding up' => ['1.9', '2'],
+        ];
+    }
+
+    #[DataProvider('roundingDataProvider')]
+    #[Test]
+    public function calcOffsetRoundsNumbersToNearestInteger(string $input, string $expectedResult): void
+    {
+        $gifBuilder = new GifBuilder();
+        $result = $gifBuilder->calcOffset($input);
+
+        self::assertSame($expectedResult, $result);
+    }
+
+    /**
+     * @return array<string, array{0: non-empty-string, 1: non-empty-string}>
+     */
+    public static function calculationDataProvider(): array
+    {
+        return [
+            'addition of positive numbers' => ['1+1', '2'],
+            'addition of negative numbers' => ['-1+-1', '-2'],
+            'subtraction' => ['5-2', '3'],
+            'multiplication' => ['2*5', '10'],
+            'division with whole-number result' => ['10/5', '2'],
+            'division with rounding up' => ['19/5', '4'],
+            'division with rounding down' => ['21/5', '4'],
+            'modulo' => ['21%5', '1'],
+        ];
+    }
+
+    #[DataProvider('calculationDataProvider')]
+    #[Test]
+    public function calcOffsetDoesTheProvidedCalculation(string $input, string $expectedResult): void
+    {
+        $gifBuilder = new GifBuilder();
+        $result = $gifBuilder->calcOffset($input);
+
+        self::assertSame($expectedResult, $result);
+    }
 }

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Charset;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Charset\CharsetProvider;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class CharsetConverterTest extends UnitTestCase
@@ -48,7 +49,7 @@ final class CharsetConverterTest extends UnitTestCase
             'j',
             'i',
         ];
-        self::assertSame($expectedArray, (new CharsetConverter())->utf8_to_numberarray($string));
+        self::assertSame($expectedArray, (new CharsetConverter(new CharsetProvider()))->utf8_to_numberarray($string));
     }
 
     public static function utf8CharMappingDataProvider(): array
@@ -70,6 +71,6 @@ final class CharsetConverterTest extends UnitTestCase
     #[Test]
     public function utf8CharMapping(string $input, string $expectedString): void
     {
-        self::assertSame($expectedString, (new CharsetConverter())->utf8_char_mapping($input));
+        self::assertSame($expectedString, (new CharsetConverter(new CharsetProvider()))->utf8_char_mapping($input));
     }
 }

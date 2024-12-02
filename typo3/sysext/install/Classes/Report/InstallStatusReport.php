@@ -89,7 +89,6 @@ final class InstallStatusReport implements StatusProviderInterface
             $sitePath . '/typo3temp/assets/_processed_/' => 0,
             $varPath => 2,
             $varPath . '/transient/' => 2,
-            $varPath . '/charset/' => 2,
             $varPath . '/lock/' => 2,
             Environment::getLabelsPath() => 0,
             $sitePath . '/' . $GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] => -1,

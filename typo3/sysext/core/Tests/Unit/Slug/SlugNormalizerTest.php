@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Slug;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Charset\CharsetProvider;
 use TYPO3\CMS\Core\Slug\SlugNormalizer;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -137,7 +138,7 @@ final class SlugNormalizerTest extends UnitTestCase
     #[Test]
     public function normalizeConvertsString(string $input, ?string $fallbackCharacter, string $expected): void
     {
-        $subject = new SlugNormalizer(new CharsetConverter());
+        $subject = new SlugNormalizer(new CharsetConverter(new CharsetProvider()));
         self::assertEquals($expected, $subject->normalize($input, $fallbackCharacter));
     }
 }
