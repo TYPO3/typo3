@@ -93,7 +93,7 @@ All dashboards allow to add further widgets in the lower right corner through th
 
    Empty dashboard with possibilities to add new widgets.
 
-Once the action to add a new wizard was triggered, a wizard opens which allows to
+Once the action to add a new widget was triggered, a wizard opens which allows to
 select the widget to add.
 
 Widgets are grouped in tabs and can be added by clicking on them.
