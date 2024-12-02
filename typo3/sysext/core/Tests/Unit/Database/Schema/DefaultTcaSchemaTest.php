@@ -891,7 +891,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
     }
 
     #[Test]
-    public function enrichAddsMmWithTablenamesAndFieldname(): void
+    public function enrichAddsMmWithTablenamesAndFieldnameWithGivenOppositeUsage(): void
     {
         $this->mockDefaultConnectionPlatformInConnectionPool();
         $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
@@ -902,6 +902,170 @@ final class DefaultTcaSchemaTest extends UnitTestCase
                     'categories',
                 ],
             ],
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedMmTable = new Table(
+            'tx_myext_atable_afield_mm',
+            [
+                new Column(
+                    '`uid_local`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`uid_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`tablenames`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                        'length' => 64,
+                    ]
+                ),
+                new Column(
+                    '`fieldname`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                        'length' => 64,
+                    ]
+                ),
+            ],
+            [
+                new Index(
+                    'uid_local',
+                    ['uid_local']
+                ),
+                new Index(
+                    'uid_foreign',
+                    ['uid_foreign']
+                ),
+                new Index(
+                    'primary',
+                    ['uid_local', 'uid_foreign', 'tablenames', 'fieldname'],
+                    true,
+                    true
+                ),
+            ]
+        );
+        self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
+    }
+
+    #[Test]
+    public function enrichAddsMmWithTablenamesAndFieldnameWithGroupAndTwoAllowedTables(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
+            'type' => 'group',
+            'MM' => 'tx_myext_atable_afield_mm',
+            'allowed' => 'be_users, be_groups',
+        ];
+        $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
+        $expectedMmTable = new Table(
+            'tx_myext_atable_afield_mm',
+            [
+                new Column(
+                    '`uid_local`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`uid_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`sorting_foreign`',
+                    new IntegerType(),
+                    [
+                        'default' => 0,
+                        'unsigned' => true,
+                    ]
+                ),
+                new Column(
+                    '`tablenames`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                        'length' => 64,
+                    ]
+                ),
+                new Column(
+                    '`fieldname`',
+                    new StringType(),
+                    [
+                        'default' => '',
+                        'length' => 64,
+                    ]
+                ),
+            ],
+            [
+                new Index(
+                    'uid_local',
+                    ['uid_local']
+                ),
+                new Index(
+                    'uid_foreign',
+                    ['uid_foreign']
+                ),
+                new Index(
+                    'primary',
+                    ['uid_local', 'uid_foreign', 'tablenames', 'fieldname'],
+                    true,
+                    true
+                ),
+            ]
+        );
+        self::assertEquals($expectedMmTable, $result['tx_myext_atable_afield_mm']);
+    }
+
+    #[Test]
+    public function enrichAddsMmWithTablenamesAndFieldnameWithGroupAndAllowedAll(): void
+    {
+        $this->mockDefaultConnectionPlatformInConnectionPool();
+        $GLOBALS['TCA']['aTable']['columns']['aField']['config'] = [
+            'type' => 'group',
+            'MM' => 'tx_myext_atable_afield_mm',
+            'allowed' => '*',
         ];
         $result = $this->subject->enrich(['aTable' => $this->defaultTable]);
         $expectedMmTable = new Table(

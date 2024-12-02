@@ -146,6 +146,19 @@ return [
             ],
         ],
 
+        'group_db_13' => [
+            // @todo: This scenario is not covered by functional DataScenarios/ tests,
+            //        we should add coverage that use MM and are not based on type=category
+            //        to gain more coverage in this area.
+            // @todo: Add a styleguide generator
+            'label' => 'group_db_13 allowed=be_users,be_groups MM simple',
+            'config' => [
+                'type' => 'group',
+                'allowed' => 'be_users,be_groups',
+                'MM' => 'tx_styleguide_element_group_group_13_mm',
+            ],
+        ],
+
         'group_requestUpdate_1' => [
             'label' => 'group_requestUpdate_1',
             'onChange' => 'reload',
@@ -223,7 +236,7 @@ return [
         '0' => [
             'showitem' => '
                 --div--;type=group,
-                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_11, group_db_4, group_db_5, group_db_7, group_db_10, group_db_12,
+                    group_db_1, group_db_2, group_db_9, group_db_3, group_db_8, group_db_11, group_db_4, group_db_5, group_db_7, group_db_10, group_db_12, group_db_13,
                 --div--;in flex,
                     flex_1,
                 --div--;requestUpdate,
