@@ -1136,7 +1136,19 @@ class DefaultTcaSchema
                     );
                 }
 
-                if (!empty($tcaColumn['config']['MM_oppositeUsage'])) {
+                $hasTablenamesFieldname = false;
+                if ( // Local side of MM with MM_oppositeUsage forces tablenames and fieldname
+                    !empty($tcaColumn['config']['MM_oppositeUsage'])
+                    || (
+                        // MM group with allowed more than one table forces tablenames and fieldname
+                        $tcaColumn['config']['type'] === 'group' && !empty($tcaColumn['config']['allowed'])
+                        && (
+                            count(GeneralUtility::trimExplode(',', $tcaColumn['config']['allowed'])) > 1
+                            || $tcaColumn['config']['allowed'] === '*'
+                        )
+                    )
+                ) {
+                    $hasTablenamesFieldname = true;
                     // This local table can be the target of multiple foreign tables and table fields. The mm table
                     // thus needs two further fields to specify which foreign/table field combination links is used.
                     // Those are stored in two additional fields called "tablenames" and "fieldname".
@@ -1167,7 +1179,7 @@ class DefaultTcaSchema
                 // Primary key handling: If there is a uid field, PK has been added above already.
                 // Otherwise, the PK combination is either "uid_local, uid_foreign", or
                 // "uid_local, uid_foreign, tablenames, fieldname" if this is a multi-foreign setup.
-                if (!$needsUid && $tables[$mmTableName]->getPrimaryKey() === null && !empty($tcaColumn['config']['MM_oppositeUsage'])) {
+                if (!$needsUid && $tables[$mmTableName]->getPrimaryKey() === null && $hasTablenamesFieldname) {
                     $tables[$mmTableName]->setPrimaryKey(['uid_local', 'uid_foreign', 'tablenames', 'fieldname']);
                 } elseif (!$needsUid && $tables[$mmTableName]->getPrimaryKey() === null) {
                     $tables[$mmTableName]->setPrimaryKey(['uid_local', 'uid_foreign']);
