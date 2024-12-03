@@ -150,7 +150,6 @@ return [
             // @todo: This scenario is not covered by functional DataScenarios/ tests,
             //        we should add coverage that use MM and are not based on type=category
             //        to gain more coverage in this area.
-            // @todo: Add a styleguide generator
             'label' => 'group_db_13 allowed=be_users,be_groups MM simple',
             'config' => [
                 'type' => 'group',
