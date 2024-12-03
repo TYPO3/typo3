@@ -11,22 +11,22 @@ See :issue:`93023`
 Description
 ===========
 
-The overall session handling withing TYPO3 Core has been overhauled. This was
+The overall session handling within TYPO3 Core has been overhauled. This was
 done to separate the actual User object, the Authentication process and the
 session handling.
 
 The main result of this refactoring is the user authentication objects such as
 :php:`BackendUserAuthentication` and :php:`FrontendUserAuthentication`
-do not longer contain the session data directly. Instead this is now encapsulated
+do not longer contain the session data directly. Instead, this is now encapsulated
 in a :php:`UserSession` object which is handled by the new
 :php:`UserSessionManager`.
 
-Furthermore the user authentication objects internally do not longer know about
+Furthermore, the user authentication objects internally do not longer know about
 a specific session backend implementation, since this is also wrapped by the
 :php:`UserSessionManager`. This also means it is not possible to create sessions
 outside of the new session manager anymore.
 
-For this purpose there are several changes within the user authentication
+For this purpose, there are several changes within the user authentication
 classes which are described below.
 
 The array :php:`AbstractUserAuthentication->user` previously contained the logged-in
@@ -107,7 +107,7 @@ This value can also be set dynamically in e.g. a middleware if needed. Because
 it is only needed for User Session objects, it is now resolved within
 the :php:`UserSessionManager` object.
 
-:php:`gc_time` is still set to `86400` per default and will be overwritten
+:php:`gc_time` is still set to `86400` by default and will be overwritten
 with the value from :php:`sessionTimeout` (see above) if greater than `0`.
 
 Since it's very unlikely that :php:`gc_probability` will be changed in
@@ -141,7 +141,7 @@ then they have to be adjusted accordingly.
 The :sql:`fe_sessions.ses_anonymous` field is not needed anymore since this
 information can also be obtained using the :sql:`fe_sessions.ses_userid` field.
 If it's lower or equals `0` the session is an anonymous one. If you perform
-database queries using this field, change it to use use :sql:`ses_userid` instead.
+database queries using this field, change it to use :sql:`ses_userid` instead.
 If a session is anonymous can furthermore be checked using
 :php:`UserSession->isAnonymous()`.
 
