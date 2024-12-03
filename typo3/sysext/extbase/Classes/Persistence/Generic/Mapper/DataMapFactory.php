@@ -227,16 +227,13 @@ class DataMapFactory implements SingletonInterface
             $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionDisabledField));
         }
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
-            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionStartTime));
+            $dataMap->setStartTimeColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionStartTime));
         }
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
-            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionEndTime));
+            $dataMap->setEndTimeColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionEndTime));
         }
         if ($schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
-            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionUserGroup));
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
-            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionDisabledField));
+            $dataMap->setFrontEndUserGroupColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionUserGroup));
         }
         return $dataMap;
     }
