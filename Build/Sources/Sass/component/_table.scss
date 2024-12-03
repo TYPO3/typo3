@@ -51,6 +51,12 @@
         }
     }
 
+    > :not(caption) > * {
+        &.inactive > * {
+            color: color-mix(in srgb, var(--typo3-table-color), transparent 50%);
+        }
+    }
+
     caption {
         padding-top: var(--typo3-table-padding-y);
         padding-bottom: var(--typo3-table-padding-y);
@@ -387,11 +393,39 @@
 .table .active {
     --typo3-table-color: var(--typo3-table-primary-color);
     --typo3-table-bg: var(--typo3-table-primary-bg);
-    --typo3-table-border-color: color-mix(in srgb, var(--typo3-table-bg), var(--typo3-table-color) 10%);
+    --typo3-table-border-color: var(--typo3-table-primary-border-color);
 }
 
 .table-selected,
 .table .selected {
+    --typo3-table-color: var(--typo3-table-info-color);
+    --typo3-table-bg: var(--typo3-table-info-bg);
+    --typo3-table-border-color: var(--typo3-table-info-border-color);
+}
+
+.table-installed,
+.table .installed {
+    --typo3-table-color: var(--typo3-table-success-color);
+    --typo3-table-bg: var(--typo3-table-success-bg);
+    --typo3-table-border-color: var(--typo3-table-success-border-color);
+}
+
+.table-insecure,
+.table .insecure {
+    --typo3-table-color: var(--typo3-table-danger-color);
+    --typo3-table-bg: var(--typo3-table-danger-bg);
+    --typo3-table-border-color: var(--typo3-table-danger-border-color);
+}
+
+.table-outdated,
+.table .outdated {
+    --typo3-table-color: var(--typo3-table-warning-color);
+    --typo3-table-bg: var(--typo3-table-warning-bg);
+    --typo3-table-border-color: var(--typo3-table-warning-border-color);
+}
+
+.table-available,
+.table .available {
     --typo3-table-color: var(--typo3-table-info-color);
     --typo3-table-bg: var(--typo3-table-info-bg);
     --typo3-table-border-color: var(--typo3-table-info-border-color);
