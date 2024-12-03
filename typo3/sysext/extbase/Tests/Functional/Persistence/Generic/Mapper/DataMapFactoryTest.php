@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
@@ -32,20 +32,20 @@ final class DataMapFactoryTest extends FunctionalTestCase
 
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    protected DataMapFactory $dataMapFactory;
-
-    protected function setUp(): void
+    #[Test]
+    public function buildDataMapThrowsExceptionIfClassNameIsNotKnown(): void
     {
-        parent::setUp();
-        $this->dataMapFactory = $this->get(DataMapFactory::class);
-        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
+        $this->expectException(InvalidClassException::class);
+        $this->expectExceptionCode(1476045117);
+        $subject = $this->get(DataMapFactory::class);
+        $subject->buildDataMap('UnknownClass');
     }
 
     #[Test]
     public function classSettingsAreResolved(): void
     {
-        $dataMap = $this->dataMapFactory->buildDataMap(Administrator::class);
-
+        $subject = $this->get(DataMapFactory::class);
+        $dataMap = $subject->buildDataMap(Administrator::class);
         self::assertInstanceOf(DataMap::class, $dataMap);
         self::assertEquals('TYPO3Tests\BlogExample\Domain\Model\Administrator', $dataMap->getRecordType());
         self::assertEquals('fe_users', $dataMap->getTableName());
@@ -54,13 +54,11 @@ final class DataMapFactoryTest extends FunctionalTestCase
     #[Test]
     public function columnMapPropertiesAreResolved(): void
     {
-        $dataMap = $this->dataMapFactory->buildDataMap(TtContent::class);
-
+        $subject = $this->get(DataMapFactory::class);
+        $dataMap = $subject->buildDataMap(TtContent::class);
         self::assertInstanceOf(DataMap::class, $dataMap);
         self::assertNull($dataMap->getColumnMap('thisPropertyDoesNotExist'));
-
         $headerColumnMap = $dataMap->getColumnMap('header');
-
         self::assertInstanceOf(ColumnMap::class, $headerColumnMap);
         self::assertEquals('header', $headerColumnMap->getColumnName());
     }

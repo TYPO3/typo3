@@ -34,10 +34,6 @@ services:
   TYPO3\CMS\Extbase\Persistence\ClassesConfiguration:
     factory: ['@TYPO3\CMS\Extbase\Persistence\ClassesConfigurationFactory', 'createClassesConfiguration']
 
-  TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory:
-    arguments:
-      $baseCacheIdentifier: '@=service("TYPO3\\CMS\\Core\\Package\\Cache\\PackageDependentCacheIdentifier").toString()'
-
   # Content Object for Extbase Plugins
   TYPO3\CMS\Extbase\ContentObject\ExtbasePluginContentObject:
     tags:

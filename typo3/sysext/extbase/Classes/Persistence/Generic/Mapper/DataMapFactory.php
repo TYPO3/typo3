@@ -17,80 +17,32 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
-use TYPO3\CMS\Core\Cache\CacheManager;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
-use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * A factory for a data map to map a single table configured in $TCA on a domain object.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class DataMapFactory implements SingletonInterface
+readonly class DataMapFactory
 {
-    /**
-     * @var \TYPO3\CMS\Extbase\Reflection\ReflectionService
-     */
-    protected $reflectionService;
-
-    /**
-     * @var \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface
-     */
-    protected $configurationManager;
-
-    /**
-     * @var \TYPO3\CMS\Core\Cache\CacheManager
-     */
-    protected $cacheManager;
-
-    /**
-     * @var FrontendInterface
-     */
-    protected $dataMapCache;
-
-    /**
-     * Runtime cache for data maps, to reduce number of calls to cache backend.
-     *
-     * @var array
-     */
-    protected $dataMaps = [];
-
-    /**
-     * @var ClassesConfiguration
-     */
-    private $classesConfiguration;
-
-    private ColumnMapFactory $columnMapFactory;
-
-    private TcaSchemaFactory $tcaSchemaFactory;
-
-    protected string $baseCacheIdentifier;
-
     public function __construct(
-        ReflectionService $reflectionService,
-        ConfigurationManagerInterface $configurationManager,
-        CacheManager $cacheManager,
-        ClassesConfiguration $classesConfiguration,
-        ColumnMapFactory $columnMapFactory,
-        TcaSchemaFactory $tcaSchemaFactory,
-        string $baseCacheIdentifier
-    ) {
-        $this->reflectionService = $reflectionService;
-        $this->configurationManager = $configurationManager;
-        $this->cacheManager = $cacheManager;
-        $this->dataMapCache = $this->cacheManager->getCache('extbase');
-        $this->classesConfiguration = $classesConfiguration;
-        $this->columnMapFactory = $columnMapFactory;
-        $this->tcaSchemaFactory = $tcaSchemaFactory;
-        $this->baseCacheIdentifier = $baseCacheIdentifier;
-    }
+        private ClassesConfiguration $classesConfiguration,
+        private ColumnMapFactory $columnMapFactory,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        #[Autowire(expression: 'service("package-dependent-cache-identifier").toString()')]
+        private string $baseCacheIdentifier,
+        #[Autowire(service: 'cache.runtime')]
+        private FrontendInterface $firstLevelCache,
+        #[Autowire(service: 'cache.extbase')]
+        private FrontendInterface $secondLevelCache,
+    ) {}
 
     /**
      * Builds a data map by adding column maps for all the configured columns in the $TCA.
@@ -98,22 +50,24 @@ class DataMapFactory implements SingletonInterface
      * represents.
      *
      * @param string $className The class name you want to fetch the Data Map for
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap The data map
      */
     public function buildDataMap(string $className): DataMap
     {
         $className = ltrim($className, '\\');
-        if (isset($this->dataMaps[$className])) {
-            return $this->dataMaps[$className];
-        }
         $cacheIdentifierClassName = str_replace('\\', '', $className) . '_';
         $cacheIdentifier = 'DataMap_' . $cacheIdentifierClassName . $this->baseCacheIdentifier;
-        $dataMap = $this->dataMapCache->get($cacheIdentifier);
-        if ($dataMap === false) {
-            $dataMap = $this->buildDataMapInternal($className);
-            $this->dataMapCache->set($cacheIdentifier, $dataMap);
+        $dataMap = $this->firstLevelCache->get($cacheIdentifier);
+        if ($dataMap instanceof DataMap) {
+            return $dataMap;
         }
-        $this->dataMaps[$className] = $dataMap;
+        $dataMap = $this->secondLevelCache->get($cacheIdentifier);
+        if ($dataMap instanceof DataMap) {
+            $this->firstLevelCache->set($cacheIdentifier, $dataMap);
+            return $dataMap;
+        }
+        $dataMap = $this->buildDataMapInternal($className);
+        $this->firstLevelCache->set($cacheIdentifier, $dataMap);
+        $this->secondLevelCache->set($cacheIdentifier, $dataMap);
         return $dataMap;
     }
 
@@ -123,8 +77,7 @@ class DataMapFactory implements SingletonInterface
      * represents.
      *
      * @param string $className The class name you want to fetch the Data Map for
-     * @throws \TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException
-     * @return \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap The data map
+     * @throws InvalidClassException
      */
     protected function buildDataMapInternal(string $className): DataMap
     {
@@ -174,8 +127,6 @@ class DataMapFactory implements SingletonInterface
 
     /**
      * Resolve the table name for the given class name
-     *
-     * @return string The table name
      */
     protected function resolveTableName(string $className): string
     {
@@ -187,9 +138,7 @@ class DataMapFactory implements SingletonInterface
         } else {
             $classPartsToSkip = 1;
         }
-        $tableName = 'tx_' . strtolower(implode('_', array_slice($classNameParts, $classPartsToSkip)));
-
-        return $tableName;
+        return 'tx_' . strtolower(implode('_', array_slice($classNameParts, $classPartsToSkip)));
     }
 
     protected function addMetaDataColumnNames(DataMap $dataMap, TcaSchema $schema): DataMap

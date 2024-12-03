@@ -20,10 +20,9 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic\Mapper;
 use Doctrine\Instantiator\InstantiatorInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Schema\Field\SelectRelationFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMapFactory;
@@ -38,8 +37,6 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class DataMapperTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     protected ColumnMap $columnMap;
     protected ColumnMapFactory $columnMapFactory;
     protected DataMapper $dataMapper;
@@ -55,13 +52,12 @@ final class DataMapperTest extends UnitTestCase
         );
 
         $dataMapFactory = new DataMapFactory(
-            $this->createMock(ReflectionService::class),
-            $this->createMock(ConfigurationManager::class),
-            $this->createMock(CacheManager::class),
             $this->createMock(ClassesConfiguration::class),
             $this->columnMapFactory,
             $this->createMock(TcaSchemaFactory::class),
-            'foo'
+            'foo',
+            $this->createMock(FrontendInterface::class),
+            $this->createMock(FrontendInterface::class),
         );
 
         $this->dataMapper = new DataMapper(

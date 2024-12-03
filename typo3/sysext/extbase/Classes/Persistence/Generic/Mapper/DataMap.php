@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 /**
  * A data map to map a single table configured in $TCA on a domain object.
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class DataMap
