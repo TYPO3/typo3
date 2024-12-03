@@ -60,7 +60,7 @@ class QueryFactory implements QueryFactoryInterface, SingletonInterface
         $querySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
 
         $dataMap = $this->dataMapFactory->buildDataMap($className);
-        if ($dataMap->getIsStatic() || $dataMap->getRootLevel()) {
+        if ($dataMap->isStatic || $dataMap->rootLevel) {
             $querySettings->setRespectStoragePage(false);
         }
 

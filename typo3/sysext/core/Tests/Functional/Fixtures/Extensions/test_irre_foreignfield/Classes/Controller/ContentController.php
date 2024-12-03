@@ -76,7 +76,7 @@ class ContentController extends ActionController
         }
         foreach ($iterator as $entity) {
             $dataMap = $this->dataMapFactory->buildDataMap(get_class($entity));
-            $tableName = $dataMap->getTableName();
+            $tableName = $dataMap->tableName;
             $identifier = $tableName . ':' . $entity->getUid();
             $properties = ObjectAccess::getGettableProperties($entity);
             $structureItem = [];

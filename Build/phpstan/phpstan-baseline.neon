@@ -2419,12 +2419,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Mvc/Request.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 7
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Backend.php
-
-		-
 			message: '#^Instanceof between TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface and TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
@@ -2452,12 +2446,6 @@ parameters:
 			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 3
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
@@ -2589,7 +2577,7 @@ parameters:
 		-
 			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
 
 		-

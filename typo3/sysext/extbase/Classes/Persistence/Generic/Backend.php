@@ -442,7 +442,7 @@ class Backend implements BackendInterface, SingletonInterface
             $row[$parentKeyFieldName] = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) ?: $parentObject->getUid();
             $parentTableFieldName = $parentColumnMap->getParentTableFieldName();
             if ($parentTableFieldName !== null) {
-                $row[$parentTableFieldName] = $parentDataMap->getTableName();
+                $row[$parentTableFieldName] = $parentDataMap->tableName;
             }
             $relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
             if (is_array($relationTableMatchFields)) {
@@ -538,15 +538,15 @@ class Backend implements BackendInterface, SingletonInterface
             }
         }
         $this->addCommonFieldsToRow($object, $row);
-        if ($dataMap->getLanguageIdColumnName() !== null && $object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) === null) {
-            $row[$dataMap->getLanguageIdColumnName()] = 0;
+        if ($dataMap->languageIdColumnName !== null && $object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) === null) {
+            $row[$dataMap->languageIdColumnName] = 0;
             $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 0);
         }
-        if ($dataMap->getTranslationOriginColumnName() !== null) {
-            $row[$dataMap->getTranslationOriginColumnName()] = 0;
+        if ($dataMap->translationOriginColumnName !== null) {
+            $row[$dataMap->translationOriginColumnName] = 0;
         }
-        if ($dataMap->getTranslationOriginDiffSourceName() !== null) {
-            $row[$dataMap->getTranslationOriginDiffSourceName()] = '';
+        if ($dataMap->translationOriginDiffSourceName !== null) {
+            $row[$dataMap->translationOriginDiffSourceName] = '';
         }
         if ($parentObject !== null && $parentPropertyName) {
             $parentColumnDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject))->getColumnMap($parentPropertyName);
@@ -569,7 +569,7 @@ class Backend implements BackendInterface, SingletonInterface
             $row['pid'] = $storagePidForObject;
         }
 
-        $uid = $this->storageBackend->addRow($dataMap->getTableName(), $row);
+        $uid = $this->storageBackend->addRow($dataMap->tableName, $row);
         $localizedUid = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         $identifier = $uid . ($localizedUid ? '_' . $localizedUid : '');
         $object->_setProperty(AbstractDomainObject::PROPERTY_UID, $uid);
@@ -579,7 +579,7 @@ class Backend implements BackendInterface, SingletonInterface
         }
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
-            $this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), $uid);
+            $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $uid);
         }
         $this->session->registerObject($object, $identifier);
         if ($uid >= 1) {
@@ -715,18 +715,18 @@ class Backend implements BackendInterface, SingletonInterface
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($object));
         $this->addCommonFieldsToRow($object, $row);
         $row['uid'] = $object->getUid();
-        if ($dataMap->getLanguageIdColumnName() !== null) {
-            $row[$dataMap->getLanguageIdColumnName()] = (int)$object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
+        if ($dataMap->languageIdColumnName !== null) {
+            $row[$dataMap->languageIdColumnName] = (int)$object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
             if ($object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
                 $row['uid'] = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
             }
         }
-        $this->storageBackend->updateRow($dataMap->getTableName(), $row);
+        $this->storageBackend->updateRow($dataMap->tableName, $row);
         $this->eventDispatcher->dispatch(new EntityUpdatedInPersistenceEvent($object));
 
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
-            $this->referenceIndex->updateRefIndexTable($dataMap->getTableName(), (int)$row['uid']);
+            $this->referenceIndex->updateRefIndexTable($dataMap->tableName, (int)$row['uid']);
         }
         return true;
     }
@@ -738,8 +738,8 @@ class Backend implements BackendInterface, SingletonInterface
     {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($object));
         $this->addCommonDateFieldsToRow($object, $row);
-        if ($dataMap->getRecordTypeColumnName() !== null && $dataMap->getRecordType() !== null) {
-            $row[$dataMap->getRecordTypeColumnName()] = $dataMap->getRecordType();
+        if ($dataMap->recordTypeColumnName !== null && $dataMap->recordType !== null) {
+            $row[$dataMap->recordTypeColumnName] = $dataMap->recordType;
         }
         if ($object->_isNew() && !isset($row['pid'])) {
             $row['pid'] = $this->determineStoragePageIdForNewRecord($object);
@@ -752,11 +752,11 @@ class Backend implements BackendInterface, SingletonInterface
     protected function addCommonDateFieldsToRow(DomainObjectInterface $object, array &$row): void
     {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($object));
-        if ($object->_isNew() && $dataMap->getCreationDateColumnName() !== null) {
-            $row[$dataMap->getCreationDateColumnName()] = $GLOBALS['EXEC_TIME'];
+        if ($object->_isNew() && $dataMap->creationDateColumnName !== null) {
+            $row[$dataMap->creationDateColumnName] = $GLOBALS['EXEC_TIME'];
         }
-        if ($dataMap->getModificationDateColumnName() !== null) {
-            $row[$dataMap->getModificationDateColumnName()] = $GLOBALS['EXEC_TIME'];
+        if ($dataMap->modificationDateColumnName !== null) {
+            $row[$dataMap->modificationDateColumnName] = $GLOBALS['EXEC_TIME'];
         }
     }
 
@@ -781,24 +781,23 @@ class Backend implements BackendInterface, SingletonInterface
     protected function removeEntity(DomainObjectInterface $object, bool $markAsDeleted = true): void
     {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($object));
-        $tableName = $dataMap->getTableName();
-        if ($markAsDeleted === true && $dataMap->getDeletedFlagColumnName() !== null) {
-            $deletedColumnName = $dataMap->getDeletedFlagColumnName();
+        if ($markAsDeleted === true && $dataMap->deletedFlagColumnName !== null) {
+            $deletedColumnName = $dataMap->deletedFlagColumnName;
             $row = [
                 'uid' => $object->getUid(),
                 $deletedColumnName => 1,
             ];
             $this->addCommonDateFieldsToRow($object, $row);
-            $this->storageBackend->updateRow($tableName, $row);
+            $this->storageBackend->updateRow($dataMap->tableName, $row);
         } else {
-            $this->storageBackend->removeRow($tableName, ['uid' => $object->getUid()]);
+            $this->storageBackend->removeRow($dataMap->tableName, ['uid' => $object->getUid()]);
         }
         $this->eventDispatcher->dispatch(new EntityRemovedFromPersistenceEvent($object));
 
         $this->removeRelatedObjects($object);
         $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
         if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
-            $this->referenceIndex->updateRefIndexTable($tableName, $object->getUid());
+            $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $object->getUid());
         }
     }
 
@@ -825,7 +824,7 @@ class Backend implements BackendInterface, SingletonInterface
                 } elseif ($propertyValue instanceof DomainObjectInterface) {
                     $this->removeEntity($propertyValue);
                 }
-            } elseif ($dataMap->getDeletedFlagColumnName() === null
+            } elseif ($dataMap->deletedFlagColumnName === null
                 && $columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY
             ) {
                 $this->deleteAllRelationsFromRelationtable($object, $propertyName);

@@ -49,11 +49,14 @@ final class QueryFactoryTest extends UnitTestCase
     #[Test]
     public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue(bool $static, bool $rootLevel, bool $expectedResult): void
     {
+        $className = 'Vendor\\Ext\\Domain\\Model\\ClubMate';
         $container = $this->createMock(ContainerInterface::class);
-        $dataMap = $this->getMockBuilder(DataMap::class)
-            ->onlyMethods(['getIsStatic', 'getRootLevel'])
-            ->setConstructorArgs(['Vendor\\Ext\\Domain\\Model\\ClubMate', 'tx_ext_domain_model_clubmate'])
-            ->getMock();
+        $dataMap = new DataMap(
+            className: $className,
+            tableName: 'tx_ext_domain_model_clubmate',
+            isStatic: $static,
+            rootLevel: $rootLevel,
+        );
         $dataMapFactoryMock = $this->createMock(DataMapFactory::class);
         $dataMapFactoryMock->method('buildDataMap')->willReturn($dataMap);
         $queryFactory = new QueryFactory(
@@ -61,8 +64,6 @@ final class QueryFactoryTest extends UnitTestCase
             $dataMapFactoryMock,
             $container
         );
-        $dataMap->method('getIsStatic')->willReturn($static);
-        $dataMap->method('getRootLevel')->willReturn($rootLevel);
         $query = $this->createMock(QueryInterface::class);
         $querySettings = new Typo3QuerySettings(
             new Context(),

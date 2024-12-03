@@ -47,8 +47,8 @@ final class DataMapFactoryTest extends FunctionalTestCase
         $subject = $this->get(DataMapFactory::class);
         $dataMap = $subject->buildDataMap(Administrator::class);
         self::assertInstanceOf(DataMap::class, $dataMap);
-        self::assertEquals('TYPO3Tests\BlogExample\Domain\Model\Administrator', $dataMap->getRecordType());
-        self::assertEquals('fe_users', $dataMap->getTableName());
+        self::assertEquals('TYPO3Tests\BlogExample\Domain\Model\Administrator', $dataMap->recordType);
+        self::assertEquals('fe_users', $dataMap->tableName);
     }
 
     #[Test]

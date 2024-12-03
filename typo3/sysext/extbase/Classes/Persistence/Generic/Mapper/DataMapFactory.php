@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\ClassesConfiguration;
@@ -87,6 +86,7 @@ readonly class DataMapFactory
                 1476045117
             );
         }
+
         $recordType = null;
         $subclasses = [];
         $tableName = $this->resolveTableName($className);
@@ -104,25 +104,62 @@ readonly class DataMapFactory
                 $fieldNameToPropertyNameMapping[$propertyDefinition['fieldName']] = $propertyName;
             }
         }
-        $dataMap = GeneralUtility::makeInstance(DataMap::class, $className, $tableName, $recordType, $subclasses);
-        if (!$this->tcaSchemaFactory->has($tableName)) {
-            return $dataMap;
+
+        $schema = null;
+        $languageCapability = null;
+        $columnMaps = [];
+        if ($this->tcaSchemaFactory->has($tableName)) {
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            if ($schema->hasCapability(TcaSchemaCapability::Language)) {
+                $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            }
+            foreach ($schema->getFields() as $columnName => $columnDefinition) {
+                $propertyName = $fieldNameToPropertyNameMapping[$columnName] ?? GeneralUtility::underscoredToLowerCamelCase($columnName);
+                $columnMaps[$propertyName] = $this->columnMapFactory->create($columnDefinition, $propertyName, $className);
+            }
         }
-        $schema = $this->tcaSchemaFactory->get($tableName);
-        $dataMap = $this->addMetaDataColumnNames($dataMap, $schema);
-        foreach ($schema->getFields() as $columnName => $columnDefinition) {
-            $propertyName = $fieldNameToPropertyNameMapping[$columnName]
-                ?? GeneralUtility::underscoredToLowerCamelCase($columnName);
-            $dataMap->addColumnMap(
-                $propertyName,
-                $this->columnMapFactory->create(
-                    $columnDefinition,
-                    $propertyName,
-                    $className
-                )
-            );
-        }
-        return $dataMap;
+
+        return new DataMap(
+            className: $className,
+            tableName: $tableName,
+            recordType: $recordType,
+            subclasses: $subclasses,
+            columnMaps: $columnMaps,
+            languageIdColumnName: $languageCapability?->getLanguageField()->getName(),
+            translationOriginColumnName: $languageCapability?->getTranslationOriginPointerField()->getName(),
+            translationOriginDiffSourceName: $languageCapability?->hasDiffSourceField()
+                ? $languageCapability->getDiffSourceField()->getName()
+                : null,
+            modificationDateColumnName: $schema?->hasCapability(TcaSchemaCapability::UpdatedAt)
+                ? (string)$schema->getCapability(TcaSchemaCapability::UpdatedAt)
+                : null,
+            creationDateColumnName: $schema?->hasCapability(TcaSchemaCapability::CreatedAt)
+                ? (string)$schema->getCapability(TcaSchemaCapability::CreatedAt)
+                : null,
+            deletedFlagColumnName: $schema?->hasCapability(TcaSchemaCapability::SoftDelete)
+                ? (string)$schema->getCapability(TcaSchemaCapability::SoftDelete)
+                : null,
+            disabledFlagColumnName: $schema?->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
+                ? (string)$schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)
+                : null,
+            startTimeColumnName: $schema?->hasCapability(TcaSchemaCapability::RestrictionStartTime)
+                ? (string)$schema->getCapability(TcaSchemaCapability::RestrictionStartTime)
+                : null,
+            endTimeColumnName: $schema?->hasCapability(TcaSchemaCapability::RestrictionEndTime)
+                ? (string)$schema->getCapability(TcaSchemaCapability::RestrictionEndTime)
+                : null,
+            frontendUserGroupColumnName: $schema?->hasCapability(TcaSchemaCapability::RestrictionUserGroup)
+                ? (string)$schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)
+                : null,
+            recordTypeColumnName: $schema?->getSubSchemaDivisorField()
+                ? $schema->getSubSchemaDivisorField()->getName()
+                : null,
+            isStatic: (bool)($schema?->getRawConfiguration()['is_static'] ?? false),
+            // @todo Evaluate if this is correct. We currently have to use canExistOnPages() to keep previous
+            //       behavior, which is (bool)$rootLevel, so treating "-1" and "1" as TURE, and only 0 als FALSE.
+            rootLevel: $schema?->hasCapability(TcaSchemaCapability::RestrictionRootLevel)
+                && $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->canExistOnPages(),
+        );
     }
 
     /**
@@ -139,51 +176,5 @@ readonly class DataMapFactory
             $classPartsToSkip = 1;
         }
         return 'tx_' . strtolower(implode('_', array_slice($classNameParts, $classPartsToSkip)));
-    }
-
-    protected function addMetaDataColumnNames(DataMap $dataMap, TcaSchema $schema): DataMap
-    {
-        $dataMap->setPageIdColumnName('pid');
-        if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
-            $dataMap->setModificationDateColumnName((string)$schema->getCapability(TcaSchemaCapability::UpdatedAt));
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
-            $dataMap->setCreationDateColumnName((string)$schema->getCapability(TcaSchemaCapability::CreatedAt));
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
-            $dataMap->setDeletedFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::SoftDelete));
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::Language)) {
-            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-            $dataMap->setLanguageIdColumnName($languageCapability->getLanguageField()->getName());
-            $dataMap->setTranslationOriginColumnName($languageCapability->getTranslationOriginPointerField()->getName());
-            if ($languageCapability->hasDiffSourceField()) {
-                $dataMap->setTranslationOriginDiffSourceName($languageCapability->getDiffSourceField()->getName());
-            }
-        }
-        if ($schema->getSubSchemaDivisorField() !== null) {
-            $dataMap->setRecordTypeColumnName($schema->getSubSchemaDivisorField()->getName());
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::RestrictionRootLevel)) {
-            // @todo Evaluate if this is correct. We currently have to use canExistOnPages() to keep previous
-            //       behaviour, which is (bool)$rootlevel, so treating "-1" and "1" as TURE, and only 0 als FALSE.
-            $dataMap->setRootLevel($schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->canExistOnPages());
-        }
-        if (isset($schema->getRawConfiguration()['is_static'])) {
-            $dataMap->setIsStatic($schema->getRawConfiguration()['is_static']);
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
-            $dataMap->setDisabledFlagColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionDisabledField));
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
-            $dataMap->setStartTimeColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionStartTime));
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
-            $dataMap->setEndTimeColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionEndTime));
-        }
-        if ($schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
-            $dataMap->setFrontEndUserGroupColumnName((string)$schema->getCapability(TcaSchemaCapability::RestrictionUserGroup));
-        }
-        return $dataMap;
     }
 }

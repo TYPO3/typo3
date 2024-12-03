@@ -30,6 +30,9 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
+/**
+ * @todo: Change me into functional tests
+ */
 final class BackendTest extends UnitTestCase
 {
     protected function tearDown(): void
@@ -41,47 +44,36 @@ final class BackendTest extends UnitTestCase
     #[Test]
     public function insertRelationInRelationtableSetsMmMatchFieldsInRow(): void
     {
-        $fixture = $this->getAccessibleMock(Backend::class, null, [], '', false);
-        $dataMapFactory = $this->createMock(DataMapFactory::class);
-        $dataMap = $this->createMock(DataMap::class);
-        $columnMap = $this->createMock(ColumnMap::class);
-        $storageBackend = $this->createMock(BackendInterface::class);
         $domainObject = $this->createMock(DomainObjectInterface::class);
 
         $mmMatchFields = [
             'identifier' => 'myTable:myField',
         ];
 
+        $columnMap = $this->createMock(ColumnMap::class);
+        $columnMap->expects(self::once())->method('getRelationTableName')->willReturn('myTable');
+        $columnMap->expects(self::once())->method('getRelationTableMatchFields')->willReturn($mmMatchFields);
+        $columnMap->method('getChildSortByFieldName')->willReturn('');
+
+        $dataMap = new DataMap(
+            className: 'dummy',
+            tableName: 'dummy',
+            columnMaps: ['testProperty' => $columnMap],
+        );
+        $dataMapFactory = $this->createMock(DataMapFactory::class);
+        $dataMapFactory->method('buildDataMap')->willReturn($dataMap);
+
         $expectedRow = [
             'identifier' => 'myTable:myField',
             '' => 0,
         ];
+        $storageBackend = $this->createMock(BackendInterface::class);
+        $storageBackend->expects(self::once())->method('addRow')->with('myTable', $expectedRow, true);
 
-        $columnMap
-            ->expects(self::once())
-            ->method('getRelationTableName')
-            ->willReturn('myTable');
-        $columnMap
-            ->expects(self::once())
-            ->method('getRelationTableMatchFields')
-            ->willReturn($mmMatchFields);
-        $columnMap
-            ->method('getChildSortByFieldName')
-            ->willReturn('');
-        $dataMap
-            ->method('getColumnMap')
-            ->willReturn($columnMap);
-        $dataMapFactory
-            ->method('buildDataMap')
-            ->willReturn($dataMap);
-        $storageBackend
-            ->expects(self::once())
-            ->method('addRow')
-            ->with('myTable', $expectedRow, true);
-
-        $fixture->_set('dataMapFactory', $dataMapFactory);
-        $fixture->_set('storageBackend', $storageBackend);
-        $fixture->_call('insertRelationInRelationtable', $domainObject, $domainObject, '');
+        $subject = $this->getAccessibleMock(Backend::class, null, [], '', false);
+        $subject->_set('dataMapFactory', $dataMapFactory);
+        $subject->_set('storageBackend', $storageBackend);
+        $subject->_call('insertRelationInRelationtable', $domainObject, $domainObject, 'testProperty');
     }
 
     #[Test]

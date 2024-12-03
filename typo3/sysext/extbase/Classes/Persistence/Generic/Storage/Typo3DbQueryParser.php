@@ -178,7 +178,7 @@ class Typo3DbQueryParser
     {
         if ($source instanceof SelectorInterface) {
             $className = $source->getNodeTypeName();
-            $tableName = $this->dataMapper->getDataMap($className)->getTableName();
+            $tableName = $this->dataMapper->getDataMap($className)->tableName;
             $this->tableName = $tableName;
 
             $this->queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -557,23 +557,22 @@ class Typo3DbQueryParser
     {
         if ($className !== null) {
             $dataMap = $this->dataMapper->getDataMap($className);
-            if ($dataMap->getRecordTypeColumnName() !== null) {
+            if ($dataMap->recordTypeColumnName !== null) {
                 $recordTypes = [];
-                if ($dataMap->getRecordType() !== null) {
-                    $recordTypes[] = $dataMap->getRecordType();
+                if ($dataMap->recordType !== null) {
+                    $recordTypes[] = $dataMap->recordType;
                 }
-                foreach ($dataMap->getSubclasses() as $subclassName) {
+                foreach ($dataMap->subclasses as $subclassName) {
                     $subclassDataMap = $this->dataMapper->getDataMap($subclassName);
-                    if ($subclassDataMap->getRecordType() !== null) {
-                        $recordTypes[] = $subclassDataMap->getRecordType();
+                    if ($subclassDataMap->recordType !== null) {
+                        $recordTypes[] = $subclassDataMap->recordType;
                     }
                 }
                 if (!empty($recordTypes)) {
                     $recordTypeStatements = [];
                     foreach ($recordTypes as $recordType) {
-                        $tableName = $dataMap->getTableName();
                         $recordTypeStatements[] = $this->queryBuilder->expr()->eq(
-                            $tableName . '.' . $dataMap->getRecordTypeColumnName(),
+                            $dataMap->tableName . '.' . $dataMap->recordTypeColumnName,
                             $this->queryBuilder->createNamedParameter($recordType)
                         );
                     }

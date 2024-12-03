@@ -207,7 +207,7 @@ class Query implements QueryInterface
     public function getSource(): SourceInterface
     {
         if ($this->source === null) {
-            $this->source = $this->qomFactory->selector($this->getType(), $this->dataMapFactory->buildDataMap($this->getType())->getTableName());
+            $this->source = $this->qomFactory->selector($this->getType(), $this->dataMapFactory->buildDataMap($this->getType())->tableName);
         }
         return $this->source;
     }

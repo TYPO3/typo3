@@ -114,10 +114,10 @@ class DataMapper
     {
         $dataMap = $this->getDataMap($className);
         $targetType = $className;
-        if ($dataMap->getRecordTypeColumnName() !== null) {
-            foreach ($dataMap->getSubclasses() as $subclassName) {
-                $recordSubtype = $this->getDataMap($subclassName)->getRecordType();
-                if ((string)$row[$dataMap->getRecordTypeColumnName()] === (string)$recordSubtype) {
+        if ($dataMap->recordTypeColumnName !== null) {
+            foreach ($dataMap->subclasses as $subclassName) {
+                $recordSubtype = $this->getDataMap($subclassName)->recordType;
+                if ((string)$row[$dataMap->recordTypeColumnName] === (string)$recordSubtype) {
                     $targetType = $subclassName;
                     break;
                 }
@@ -199,13 +199,13 @@ class DataMapper
         $object->_setProperty(AbstractDomainObject::PROPERTY_PID, (int)($row['pid'] ?? 0));
         $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['uid']);
         $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['uid']);
-        if ($dataMap->getLanguageIdColumnName() !== null) {
-            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, (int)($row[$dataMap->getLanguageIdColumnName()] ?? 0));
+        if ($dataMap->languageIdColumnName !== null) {
+            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, (int)($row[$dataMap->languageIdColumnName] ?? 0));
             if (isset($row['_LOCALIZED_UID'])) {
                 $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['_LOCALIZED_UID']);
             }
         }
-        if (!empty($row['_ORIG_uid']) && $this->tcaSchemaFactory->get($dataMap->getTableName())->isWorkspaceAware()) {
+        if (!empty($row['_ORIG_uid']) && $this->tcaSchemaFactory->get($dataMap->tableName)->isWorkspaceAware()) {
             $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['_ORIG_uid']);
         }
         foreach ($classSchema->getDomainObjectProperties() as $property) {
@@ -437,7 +437,7 @@ class DataMapper
         if ($this->query) {
             $languageAspect = $this->query->getQuerySettings()->getLanguageAspect();
             $languageUid = $languageAspect->getContentId();
-            if ($dataMap->getLanguageIdColumnName() !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
+            if ($dataMap->languageIdColumnName !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
                 //pass language of parent record to child objects, so they can be overlaid correctly in case
                 //e.g. findByUid is used.
                 //the languageUid is used for getRecordOverlay later on, despite RespectSysLanguage being false
@@ -547,7 +547,7 @@ class DataMapper
             if ($columnMap->getParentTableFieldName() !== null) {
                 $constraint = $query->logicalAnd(
                     $constraint,
-                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->getTableName())
+                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->tableName)
                 );
             }
         } elseif ($columnMap->getParentKeyFieldName() !== null) {
@@ -564,7 +564,7 @@ class DataMapper
             if ($columnMap->getParentTableFieldName() !== null) {
                 $constraint = $query->logicalAnd(
                     $constraint,
-                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->getTableName())
+                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->tableName)
                 );
             }
         } else {
@@ -609,7 +609,7 @@ class DataMapper
         $relationHandler->setWorkspaceId($workspaceId);
         $relationHandler->setUseLiveReferenceIds(true);
         $relationHandler->setUseLiveParentIds(true);
-        $tableName = $dataMap->getTableName();
+        $tableName = $dataMap->tableName;
         $fieldName = $columnMap->getColumnName();
         if (!$this->tcaSchemaFactory->get($tableName)->hasField($fieldName)) {
             return [];
@@ -794,7 +794,7 @@ class DataMapper
      */
     public function convertClassNameToTableName($className)
     {
-        return $this->getDataMap($className)->getTableName();
+        return $this->getDataMap($className)->tableName;
     }
 
     /**

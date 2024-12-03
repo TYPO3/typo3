@@ -363,8 +363,7 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         /** @var DataMapper $dataMapper */
         $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         $dataMap = $dataMapper->getDataMap($className);
-        $tableName = $dataMap->getTableName();
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($dataMap->tableName);
         if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
             && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isFrontend()
         ) {
@@ -388,7 +387,7 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         }
         $queryBuilder
             ->select('uid')
-            ->from($tableName)
+            ->from($dataMap->tableName)
             ->where(...$whereClause);
 
         try {
