@@ -20,9 +20,6 @@ namespace TYPO3Tests\TestIrreForeignfield\Domain\Repository;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Persistence\Repository;
 
-/**
- * Content Repository
- */
 class ContentRepository extends Repository
 {
     protected $defaultOrderings = [
