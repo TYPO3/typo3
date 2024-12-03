@@ -396,8 +396,8 @@ class InlineControlContainer extends AbstractContainer
             case 'newRecord':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.createnew'));
                 $icon = 'actions-plus';
-                $className = 'typo3-newRecordLink t3js-inline-controls';
                 $attributes['class'] = 'btn btn-default t3js-create-new-button';
+                $attributes['data-type'] = 'newRecord';
                 if (!empty($conf['inline']['inlineNewButtonStyle'])) {
                     $attributes['style'] = $conf['inline']['inlineNewButtonStyle'];
                 }
@@ -413,38 +413,27 @@ class InlineControlContainer extends AbstractContainer
             case 'localize':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords'));
                 $icon = 'actions-document-localize';
-                $className = 'typo3-localizationLink';
                 $attributes['class'] = 'btn btn-default t3js-synchronizelocalize-button';
                 $attributes['data-type'] = 'localize';
                 break;
             case 'synchronize':
                 $title = htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage'));
                 $icon = 'actions-document-synchronize';
-                $className = 'typo3-synchronizationLink';
                 $attributes['class'] = 'btn btn-default inlineNewButton t3js-synchronizelocalize-button';
                 $attributes['data-type'] = 'synchronize';
                 break;
             default:
                 $title = '';
                 $icon = '';
-                $className = '';
         }
         // Create the button:
         $icon = $icon ? $this->iconFactory->getIcon($icon, IconSize::SMALL)->render() : '';
-        $button = $this->wrapWithButton($icon . ' ' . $title, $attributes);
-        return '<div' . ($className ? ' class="' . $className . '"' : '') . 'title="' . $title . '">' . $button . '</div>';
-    }
-
-    /**
-     * Wraps a text with a button and returns the HTML representation.
-     *
-     * @param string $text The text to be wrapped by a button
-     * @param array<string, string> $attributes Array of attributes to be used in the anchor
-     * @return string The wrapped text as HTML representation
-     */
-    protected function wrapWithButton(string $text, array $attributes = []): string
-    {
-        return '<button type="button" ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>' . $text . '</button>';
+        $attributes['title'] = $title;
+        return '
+            <button type="button" ' . GeneralUtility::implodeAttributes($attributes, true, true) . '>
+                ' . $icon . ' ' . $title . '
+            </button>
+        ';
     }
 
     /**

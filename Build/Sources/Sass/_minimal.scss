@@ -66,9 +66,6 @@
 // Utilities
 @import "../../node_modules/bootstrap/scss/utilities/api";
 
-// bootstrap v3 legacy
-@import "legacy";
-
 //
 // Scaffold
 //
@@ -82,6 +79,7 @@
 //
 @import "component/root";
 @import "component/type";
+@import "component/utility";
 @import "component/order";
 @import "component/nav";
 @import "component/pagination";
