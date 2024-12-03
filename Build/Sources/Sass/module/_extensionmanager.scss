@@ -43,31 +43,6 @@
             width: 11%;
         }
     }
-
-    tr {
-        &.installed td {
-            background-color: #ccdec2;
-        }
-
-        &.available td {
-            background-color: #e1e1aa;
-        }
-
-        &.insecure,
-        &.insecure td {
-            background-color: #ffd9d9;
-        }
-
-        &.outdated,
-        &.outdated td {
-            background-color: #d1d0ff;
-        }
-
-        &.inactive,
-        &.inactive td {
-            color: #aaa;
-        }
-    }
 }
 
 .extension-list-search {
