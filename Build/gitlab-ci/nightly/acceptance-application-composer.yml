@@ -1,4 +1,4 @@
-acceptance application composer mariadb 10.10 php 8.3 max:
+acceptance application composer mariadb 10.10 php 8.4 max:
   stage: acceptance
   tags:
     - metal2
@@ -12,8 +12,8 @@ acceptance application composer mariadb 10.10 php 8.3 max:
       - typo3temp/var/tests/AcceptanceReports
   parallel: 8
   script:
-    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.3
-    - Build/Scripts/runTests.sh -s acceptanceComposer -d mariadb -i 10.10 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s composerInstallMax -p 8.4
+    - Build/Scripts/runTests.sh -s acceptanceComposer -d mariadb -i 10.10 -p 8.4 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 acceptance application composer mysql 8.0 php 8.2 max:
   stage: acceptance
