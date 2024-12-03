@@ -120,6 +120,12 @@
     }
 }
 
+.page-header {
+    padding: .625rem 1rem;
+    margin: 2rem 0 1rem;
+    border-bottom: 1px solid $gray-700;
+}
+
 .module-action-list {
     display: grid;
     gap: .25rem;

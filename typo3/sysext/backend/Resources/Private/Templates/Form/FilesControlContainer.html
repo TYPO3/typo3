@@ -34,20 +34,16 @@
             </div>
         </div>
         <f:if condition="{showAllLocalizationLink}">
-            <div class="typo3-localizationLink" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords')}">
-                <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="localize">
-                    <core:icon identifier="actions-document-localize" size="small" />
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords" />
-                </button>
-            </div>
+            <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="localize" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords')}">
+                <core:icon identifier="actions-document-localize" size="small" />
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:localizeAllRecords" />
+            </button>
         </f:if>
         <f:if condition="{showSynchronizationLink}">
-            <div class="typo3-synchronizationLink" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage')}">
-                <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="synchronize">
-                    <core:icon identifier="actions-document-synchronize" size="small" />
-                    <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage" />
-                </button>
-            </div>
+            <button type="button" class="btn btn-default t3js-synchronizelocalize-button" data-type="synchronize" title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage')}">
+                <core:icon identifier="actions-document-synchronize" size="small" />
+                <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeWithOriginalLanguage" />
+            </button>
         </f:if>
         <div class="panel-group panel-hover {f:if(condition: '{showAllLocalizationLink} || {showSynchronizationLink}', then: 'mt-3')}" id="{fileReferences.id}" data-title="{fileReferences.title}">
             <f:format.raw>{fileReferences.records}</f:format.raw>
