@@ -106,6 +106,7 @@ services:
 
         # type=group
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupFal'
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedBeUsersBeGroupsMM'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedBeUsersBeGroups'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedBeUsers'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeGroupAllowedStaticdata'
