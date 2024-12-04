@@ -1637,9 +1637,10 @@ class EditDocumentController
      */
     protected function registerHistoryButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
     {
+        $userTsConfig = $this->getBackendUser()->getTSConfig();
         if ($this->isSingleRecordView()
             && !empty($this->firstEl['table'])
-            && $this->getTsConfigOption($this->firstEl['table'], 'showHistory')
+            && (bool)trim($userTsConfig['options.']['showHistory.'][$this->firstEl['table']] ?? $userTsConfig['options.']['showHistory'] ?? '1')
         ) {
             $historyUrl = (string)$this->uriBuilder->buildUriFromRoute('record_history', [
                 'element' => $this->firstEl['table'] . ':' . $this->firstEl['uid'],
