@@ -49,6 +49,7 @@
 @import "component/settings";
 @import "component/example";
 @import "component/dropzone";
+@import "component/grideditor";
 @import "component/debugger-utility";
 
 //
@@ -80,7 +81,6 @@
 @import "typo3/install";
 @import "typo3/login_screen";
 @import "typo3/main_content";
-@import "typo3/main_backend_layout_wizard";
 @import "typo3/main_form";
 @import "typo3/wizard_localization";
 @import "typo3/visual/element_typoscript";
