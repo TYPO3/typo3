@@ -179,7 +179,9 @@
                                             <button
                                                 type="submit"
                                                 class="btn btn-default t3js-modal-trigger"
-                                                data-target-form="site_configuration_delete_{page.siteIdentifier}"
+                                                form="form-site-configuration-delete"
+                                                name="site"
+                                                value="{page.siteIdentifier}"
                                                 title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
                                                 data-severity="error"
                                                 data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
@@ -188,9 +190,6 @@
                                             >
                                                 <core:icon identifier="actions-delete" />
                                             </button>
-                                            <form action="{be:moduleLink(route:'site_configuration.delete')}" name="site_configuration_delete_{page.siteIdentifier}" id="site_configuration_delete_{page.siteIdentifier}" method="post">
-                                                <input name="site" type="hidden" value="{page.siteIdentifier}">
-                                            </form>
                                         </f:if>
                                     </div>
                                 </td>
@@ -228,7 +227,9 @@
                                     <button
                                         type="submit"
                                         class="btn btn-default t3js-modal-trigger"
-                                        data-target-form="site_configuration_delete_{unassignedSite.identifier}"
+                                        form="form-site-configuration-delete"
+                                        name="site"
+                                        value="{unassignedSite.identifier}"
                                         title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
                                         data-severity="error"
                                         data-title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.deleteSiteConfiguration')}"
@@ -237,9 +238,6 @@
                                     >
                                         <core:icon identifier="actions-delete" />
                                     </button>
-                                    <form action="{be:moduleLink(route:'site_configuration.delete')}" name="site_configuration_delete_{unassignedSite.identifier}" id="site_configuration_delete_{unassignedSite.identifier}" method="post">
-                                        <input name="site" type="hidden" value="{unassignedSite.identifier}">
-                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -249,6 +247,7 @@
         </div>
     </f:if>
 
+    <form action="{be:moduleLink(route:'site_configuration.delete')}" id="form-site-configuration-delete" method="post" class="hidden"></form>
 </f:section>
 
 </html>

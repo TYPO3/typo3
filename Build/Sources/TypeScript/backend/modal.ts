@@ -543,14 +543,11 @@ class Modal {
               if (targetLocation && targetLocation !== '#') {
                 triggerElement.ownerDocument.location.href = targetLocation;
               }
-              if (triggerElement.getAttribute('type') === 'submit') {
-                // Submit a possible form in case the trigger has type=submit and is child of a form
-                (triggerElement.closest('form') as HTMLFormElement)?.submit();
-                if (triggerElement.tagName === 'BUTTON' && triggerElement.hasAttribute('form')) {
-                  // Submit a possible form in case the trigger is a BUTTON, having a
-                  // form attribute set to a valid form identifier in the ownerDocument.
-                  (triggerElement.ownerDocument.querySelector('form#' + triggerElement.getAttribute('form')) as HTMLFormElement)?.submit();
-                }
+              if (triggerElement.getAttribute('type') === 'submit' && (
+                triggerElement.tagName === 'BUTTON' || triggerElement.tagName === 'INPUT'
+              )) {
+                const submitter = triggerElement as HTMLButtonElement|HTMLInputElement;
+                submitter.form?.requestSubmit(submitter);
               }
               if (triggerElement.dataset.targetForm) {
                 // Submit a possible form in case the trigger has the data-target-form
