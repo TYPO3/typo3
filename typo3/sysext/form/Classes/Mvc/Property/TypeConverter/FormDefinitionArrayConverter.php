@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
 use TYPO3\CMS\Extbase\Property\TypeConverter\AbstractTypeConverter;
-use TYPO3\CMS\Form\Domain\Configuration\ConfigurationService;
 use TYPO3\CMS\Form\Domain\Configuration\Exception\PropertyException;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionConversionService;
 use TYPO3\CMS\Form\Domain\Configuration\FormDefinitionValidationService;
@@ -36,21 +35,19 @@ use TYPO3\CMS\Form\Type\FormDefinitionArray;
 class FormDefinitionArrayConverter extends AbstractTypeConverter
 {
     /**
-     * @var ConfigurationService
-     */
-    protected $configurationService;
-
-    /**
      * Convert from $source to $targetType, a noop if the source is an array.
      * If it is an empty string it will be converted to an empty array.
      *
      * @param string $source
      * @param string $targetType
-     * @return FormDefinitionArray
      * @throws PropertyException
      */
-    public function convertFrom($source, $targetType, array $convertedChildProperties = [], ?PropertyMappingConfigurationInterface $configuration = null)
-    {
+    public function convertFrom(
+        $source,
+        $targetType,
+        array $convertedChildProperties = [],
+        ?PropertyMappingConfigurationInterface $configuration = null
+    ): FormDefinitionArray {
         $rawFormDefinitionArray = json_decode($source, true);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
@@ -90,8 +87,7 @@ class FormDefinitionArrayConverter extends AbstractTypeConverter
         $rawFormDefinitionArray = ArrayUtility::stripTagsFromValuesRecursive($rawFormDefinitionArray);
         $rawFormDefinitionArray = $formDefinitionConversionService->removeHmacData($rawFormDefinitionArray);
 
-        $formDefinitionArray = GeneralUtility::makeInstance(FormDefinitionArray::class, $rawFormDefinitionArray);
-        return $formDefinitionArray;
+        return GeneralUtility::makeInstance(FormDefinitionArray::class, $rawFormDefinitionArray);
     }
 
     /**

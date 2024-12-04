@@ -143,8 +143,6 @@ final class SvgImageRenderingTest extends FunctionalTestCase
         $content = (string)$response->getBody();
 
         preg_match('@<body>(.+)</body>@imsU', $content, $bodyContent);
-        self::assertIsArray($bodyContent);
-
         foreach ($expectedAssets as $expectedAsset) {
             self::assertMatchesRegularExpression($expectedAsset, $bodyContent[1]);
         }

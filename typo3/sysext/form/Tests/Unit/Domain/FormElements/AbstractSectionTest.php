@@ -17,13 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotFoundException;
 use TYPO3\CMS\Form\Domain\Exception\TypeDefinitionNotValidException;
 use TYPO3\CMS\Form\Domain\Model\FormDefinition;
-use TYPO3\CMS\Form\Domain\Model\FormElements\AbstractSection;
 use TYPO3\CMS\Form\Domain\Model\FormElements\UnknownFormElement;
 use TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures\AbstractSectionFixture;
 use TYPO3\CMS\Form\Tests\Unit\Domain\FormElements\Fixtures\TestingFormElement;
@@ -42,10 +42,10 @@ final class AbstractSectionTest extends UnitTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString(): void
     {
-        $subject = new AbstractSectionFixture('foobar', '');
-        self::assertInstanceOf(AbstractSection::class, $subject);
+        new AbstractSectionFixture('foobar', '');
     }
 
     #[Test]

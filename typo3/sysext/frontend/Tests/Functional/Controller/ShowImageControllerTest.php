@@ -95,7 +95,6 @@ final class ShowImageControllerTest extends FunctionalTestCase
         $response = $this->executeFrontendSubRequest($request);
         self::assertSame(200, $response->getStatusCode());
         $content = (string)$response->getBody();
-        self::assertIsString($content);
         self::assertNotEmpty($content);
 
         $document = (new HTML5())->loadHTML($content);

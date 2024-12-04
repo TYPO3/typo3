@@ -29,28 +29,10 @@ use TYPO3\CMS\Extensionmanager\Remote\TerExtensionRemote;
 use TYPO3\CMS\Extensionmanager\Report\ExtensionStatus;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
 use TYPO3\CMS\Reports\Status;
-use TYPO3\CMS\Reports\StatusProviderInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExtensionStatusTest extends UnitTestCase
 {
-    #[Test]
-    public function extensionStatusImplementsStatusProviderInterface(): void
-    {
-        $reportMock = $this->createMock(ExtensionStatus::class);
-        self::assertInstanceOf(StatusProviderInterface::class, $reportMock);
-    }
-
-    #[Test]
-    public function getStatusReturnsArray(): void
-    {
-        $report = $this->getMockBuilder(ExtensionStatus::class)
-            ->onlyMethods(['getSecurityStatusOfExtensions', 'getMainRepositoryStatus'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        self::assertIsArray($report->getStatus());
-    }
-
     #[Test]
     public function getStatusReturnArrayContainsFiveEntries(): void
     {

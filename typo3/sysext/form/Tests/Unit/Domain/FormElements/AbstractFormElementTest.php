@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Form\Tests\Unit\Domain\FormElements;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Form\Domain\Exception\IdentifierNotValidException;
@@ -31,7 +32,6 @@ final class AbstractFormElementTest extends UnitTestCase
     public function newInstanceHasNoProperties(): void
     {
         $subject = new TestingFormElement();
-        self::assertNotNull($subject);
         self::assertCount(0, $subject->getProperties());
     }
 
@@ -127,11 +127,10 @@ final class AbstractFormElementTest extends UnitTestCase
     }
 
     #[Test]
+    #[DoesNotPerformAssertions]
     public function constructMustNotThrowExceptionWhenIdentifierIsNonEmptyString(): void
     {
-        $formElement = new TestingFormElement();
-
-        self::assertInstanceOf(TestingFormElement::class, $formElement);
+        new TestingFormElement();
     }
 
     #[Test]

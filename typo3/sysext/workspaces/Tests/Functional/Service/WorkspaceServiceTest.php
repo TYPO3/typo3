@@ -22,9 +22,6 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-/**
- * Workspace service test
- */
 final class WorkspaceServiceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
@@ -41,10 +38,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     #[Test]
     public function emptyWorkspaceReturnsEmptyArray(): void
     {
-        $service = new WorkspaceService();
-        $result = $service->selectVersionsInWorkspace(90);
-        self::assertEmpty($result, 'The workspace 90 contains no changes and the result was supposed to be empty');
-        self::assertIsArray($result, 'Even the empty result from workspace 90 is supposed to be an array');
+        self::assertEmpty((new WorkspaceService())->selectVersionsInWorkspace(90));
     }
 
     #[Test]
@@ -53,7 +47,6 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, -99, 2);
-        self::assertIsArray($result, 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             1,
             $result['pages'],
@@ -69,7 +62,6 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $service = new WorkspaceService();
         $result = $service->selectVersionsInWorkspace(91, -99, 1, 99);
-        self::assertIsArray($result, 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             4,
             $result['pages'],
@@ -84,7 +76,6 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         $service = new WorkspaceService();
         // testing stage 1
         $result = $service->selectVersionsInWorkspace(91, 1, 1, 99);
-        self::assertIsArray($result, 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             2,
             $result['pages'],
@@ -94,7 +85,6 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertEquals(105, $result['pages'][1]['uid'], 'First records is supposed to have the uid 105');
         // testing stage 2
         $result = $service->selectVersionsInWorkspace(91, 2, 1, 99);
-        self::assertIsArray($result, 'The result from workspace 91 is supposed to be an array');
         self::assertCount(
             2,
             $result['pages'],

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Frontend\ContentObject\Menu\AbstractMenuContentObject;
@@ -31,44 +32,46 @@ final class MenuContentObjectFactoryTest extends UnitTestCase
     {
         $this->expectException(NoSuchMenuTypeException::class);
         $this->expectExceptionCode(1363278130);
-        $factory = new MenuContentObjectFactory();
-        $factory->getMenuObjectByType(StringUtility::getUniqueId('foo_'));
+        $subject = new MenuContentObjectFactory();
+        $subject->getMenuObjectByType(StringUtility::getUniqueId('foo_'));
     }
 
     #[Test]
-    public function getMenuObjectByTypeReturnsObjectForRegisteredMenuType(): void
+    #[DoesNotPerformAssertions]
+    public function getMenuObjectByTypeDoesNotThrowException(): void
     {
-        $factory = new MenuContentObjectFactory();
-        self::assertIsObject($factory->getMenuObjectByType('TMENU'));
+        $subject = new MenuContentObjectFactory();
+        $subject->getMenuObjectByType('TMENU');
     }
 
     #[Test]
-    public function getMenuObjectByTypeReturnsObjectWithLowercasedMenuType(): void
+    #[DoesNotPerformAssertions]
+    public function getMenuObjectByTypeDoesNotThrowExceptionWithLowercasedMenuType(): void
     {
-        $factory = new MenuContentObjectFactory();
-        self::assertIsObject($factory->getMenuObjectByType('tmenu'));
+        $subject = new MenuContentObjectFactory();
+        $subject->getMenuObjectByType('tmenu');
     }
 
     #[Test]
     public function getMenuObjectByTypeReturnsInstanceOfOwnRegisteredTypeInsteadOfInternalType(): void
     {
-        $factory = new MenuContentObjectFactory();
+        $subject = new MenuContentObjectFactory();
         $selfClassName = 'tx_menutest_' . uniqid();
         $selfClass = new class () extends AbstractMenuContentObject {};
         class_alias($selfClass::class, $selfClassName);
-        $factory->registerMenuType('TMENU', $selfClassName);
-        self::assertInstanceOf($selfClassName, $factory->getMenuObjectByType('TMENU'));
+        $subject->registerMenuType('TMENU', $selfClassName);
+        self::assertInstanceOf($selfClassName, $subject->getMenuObjectByType('TMENU'));
     }
 
     #[Test]
     public function getMenuObjectByTypeReturnsInstanceOfNewRegisteredType(): void
     {
-        $factory = new MenuContentObjectFactory();
+        $subject = new MenuContentObjectFactory();
         $selfClassName = 'tx_menutest_' . uniqid();
         $selfClass = new class () extends AbstractMenuContentObject {};
         class_alias($selfClass::class, $selfClassName);
         $uniqueMenuType = StringUtility::getUniqueId('foo_');
-        $factory->registerMenuType($uniqueMenuType, $selfClassName);
-        self::assertInstanceOf($selfClassName, $factory->getMenuObjectByType($uniqueMenuType));
+        $subject->registerMenuType($uniqueMenuType, $selfClassName);
+        self::assertInstanceOf($selfClassName, $subject->getMenuObjectByType($uniqueMenuType));
     }
 }

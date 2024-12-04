@@ -76,9 +76,6 @@ final class DatabaseServiceTest extends FunctionalTestCase
     {
         $subject = new DatabaseService();
         $data = $subject->getReferencesByPersistenceIdentifier($yamlFile);
-        // Expectation wants to see that specific hash entries in sys_refindex
-        // could be retrieved, and the service returned an array.
-        self::assertIsArray($data);
         self::assertSame($expectedHash, $data[0]['hash']);
     }
 

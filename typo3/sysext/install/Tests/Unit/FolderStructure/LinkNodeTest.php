@@ -30,7 +30,7 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class LinkNodeTest extends UnitTestCase
 {
-    protected string $testRoot;
+    private string $testRoot;
 
     public function setUp(): void
     {
@@ -94,21 +94,6 @@ final class LinkNodeTest extends UnitTestCase
         $target = '../' . StringUtility::getUniqueId('test_');
         $node->__construct(['name' => $name, 'target' => $target], $parent);
         self::assertSame($target, $node->_call('getTarget'));
-    }
-
-    #[Test]
-    public function getStatusReturnsArray(): void
-    {
-        $node = $this->getAccessibleMock(
-            LinkNode::class,
-            ['isWindowsOs', 'getAbsolutePath', 'exists'],
-            [],
-            '',
-            false
-        );
-        $path = $this->testRoot . StringUtility::getUniqueId('dir_');
-        $node->method('getAbsolutePath')->willReturn($path);
-        self::assertIsArray($node->getStatus());
     }
 
     #[Test]

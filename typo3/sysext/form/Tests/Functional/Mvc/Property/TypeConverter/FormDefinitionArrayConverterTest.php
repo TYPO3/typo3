@@ -87,7 +87,6 @@ final class FormDefinitionArrayConverterTest extends FunctionalTestCase
             FormDefinitionArray::class
         );
 
-        self::assertInstanceOf(FormDefinitionArray::class, $result);
         self::assertSame($expected, $result->getArrayCopy());
     }
 

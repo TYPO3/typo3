@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Unit\FolderStructure;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Install\FolderStructure\RootNode;
 use TYPO3\CMS\Install\FolderStructure\StructureFacade;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -26,24 +25,22 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class StructureFacadeTest extends UnitTestCase
 {
     #[Test]
-    public function getStatusReturnsStatusOfStructureAndReturnsItsResult(): void
+    public function getStatusCallsRootGetStatus(): void
     {
         $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);
         $root = $this->createMock(RootNode::class);
         $root->expects(self::once())->method('getStatus')->willReturn([]);
         $facade->_set('structure', $root);
-        $status = $facade->getStatus();
-        self::assertInstanceOf(FlashMessageQueue::class, $status);
+        $facade->getStatus();
     }
 
     #[Test]
-    public function fixCallsFixOfStructureAndReturnsItsResult(): void
+    public function fixCallsFixOfStructure(): void
     {
         $facade = $this->getAccessibleMock(StructureFacade::class, null, [], '', false);
         $root = $this->createMock(RootNode::class);
         $root->expects(self::once())->method('fix')->willReturn([]);
         $facade->_set('structure', $root);
-        $status = $facade->fix();
-        self::assertInstanceOf(FlashMessageQueue::class, $status);
+        $facade->fix();
     }
 }

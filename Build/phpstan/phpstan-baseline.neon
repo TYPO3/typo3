@@ -3145,28 +3145,10 @@ parameters:
 			path: ../../typo3/sysext/extensionmanager/Classes/Utility/EmConfUtility.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplObjectStorage'' and iterable\<TYPO3\\CMS\\Extensionmanager\\Domain\\Model\\Dependency\>&SplObjectStorage will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Domain/Model/ExtensionTest.php
-
-		-
 			message: '#^Property TYPO3\\CMS\\Extensionmanager\\Tests\\Unit\\Fixtures\\LatestCompatibleExtensionObjectStorageFixture\:\:\$position is never read, only written\.$#'
 			identifier: property.onlyWritten
 			count: 1
 			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Fixtures/LatestCompatibleExtensionObjectStorageFixture.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Reports\\\\StatusProviderInterface'' and PHPUnit\\Framework\\MockObject\\MockObject&TYPO3\\CMS\\Extensionmanager\\Report\\ExtensionStatus will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Report/ExtensionStatusTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<string, array\|TYPO3\\CMS\\Reports\\Status\> will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extensionmanager/Tests/Unit/Report/ExtensionStatusTest.php
 
 		-
 			message: '#^Undefined variable\: \$EM_CONF$#'
@@ -3493,40 +3475,10 @@ parameters:
 			path: ../../typo3/sysext/form/Tests/Functional/Framework/FormHandling/FormDataFactory.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Form\\\\Type\\\\FormDefinitionArray'' and TYPO3\\CMS\\Form\\Type\\FormDefinitionArray will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Functional/Mvc/Property/TypeConverter/FormDefinitionArrayConverterTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Functional/Service/DatabaseServiceTest.php
-
-		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
 			count: 2
 			path: ../../typo3/sysext/form/Tests/Functional/Service/TranslationServiceTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Form\\\\Tests\\\\Unit\\\\Domain\\\\FormElements\\\\Fixtures\\\\TestingFormElement'' and TYPO3\\CMS\\Form\\Tests\\Unit\\Domain\\FormElements\\Fixtures\\TestingFormElement will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Unit/Domain/FormElements/AbstractFormElementTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertNotNull\(\) with TYPO3\\CMS\\Form\\Tests\\Unit\\Domain\\FormElements\\Fixtures\\TestingFormElement will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Unit/Domain/FormElements/AbstractFormElementTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Form\\\\Domain\\\\Model\\\\FormElements\\\\AbstractSection'' and TYPO3\\CMS\\Form\\Tests\\Unit\\Domain\\FormElements\\Fixtures\\AbstractSectionFixture will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Tests/Unit/Domain/FormElements/AbstractSectionTest.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
@@ -3901,18 +3853,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Classes/Typolink/PageLinkBuilder.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/ShowImageControllerTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\{0\?\: string, 1\?\: non\-empty\-string\} will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/SvgImageRenderingTest.php
-
-		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			identifier: new.static
 			count: 1
@@ -4069,18 +4009,6 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ContentObjectRendererTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/ImageContentObjectTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsObject\(\) with TYPO3\\CMS\\Frontend\\ContentObject\\Menu\\AbstractMenuContentObject will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/frontend/Tests/Unit/ContentObject/Menu/MenuContentObjectFactoryTest.php
-
-		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array\<string, mixed\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
@@ -4223,36 +4151,6 @@ parameters:
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Updates/DatabaseRowsUpdateWizard.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Install\\\\FolderStructure\\\\StructureFacadeInterface'' and TYPO3\\CMS\\Install\\FolderStructure\\StructureFacadeInterface will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DefaultFactoryTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<TYPO3\\CMS\\Core\\Messaging\\FlashMessage\> will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/DirectoryNodeTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<TYPO3\\CMS\\Core\\Messaging\\FlashMessage\> will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/FileNodeTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<TYPO3\\CMS\\Core\\Messaging\\FlashMessage\> will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/LinkNodeTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Messaging\\\\FlashMessageQueue'' and TYPO3\\CMS\\Core\\Messaging\\FlashMessageQueue will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/install/Tests/Unit/FolderStructure/StructureFacadeTest.php
 
 		-
 			message: '#^Instanceof between TYPO3\\CMS\\Core\\Messaging\\FlashMessage and TYPO3\\CMS\\Core\\Messaging\\FlashMessage will always evaluate to true\.$#'
@@ -4411,24 +4309,6 @@ parameters:
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/scheduler/Tests/Unit/CronCommand/CronCommandTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsInt\(\) with int will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/scheduler/Tests/Unit/CronCommand/CronCommandTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsInt\(\) with int will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/scheduler/Tests/Unit/CronCommand/NormalizeCommandTest.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Scheduler\\Task\\AbstractTask@anonymous/scheduler/Tests/Unit/Validation/Validator/TaskValidatorTest\.php\:53\:\:getExecution\(\) never returns null so it can be removed from the return type\.$#'
 			identifier: return.unusedType
 			count: 1
@@ -4523,27 +4403,3 @@ parameters:
 			identifier: notIdentical.alwaysTrue
 			count: 2
 			path: ../../typo3/sysext/workspaces/Classes/Service/StagesService.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array and ''The result from…'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 4
-			path: ../../typo3/sysext/workspaces/Tests/Functional/Service/WorkspaceServiceTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\{\} and ''Even the empty…'' will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Functional/Service/WorkspaceServiceTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\AbstractRecord'' and TYPO3\\CMS\\Workspaces\\Domain\\Record\\WorkspaceRecord will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Unit/Domain/Model/WorkspaceRecordTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\WorkspaceRecord'' and TYPO3\\CMS\\Workspaces\\Domain\\Record\\WorkspaceRecord will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Unit/Domain/Model/WorkspaceRecordTest.php

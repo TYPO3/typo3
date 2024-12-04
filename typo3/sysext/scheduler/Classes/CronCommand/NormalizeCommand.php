@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Special fields like three letter weekdays, ranges and steps are substituted
  * to a comma separated list of integers. Example:
  * '2-4 10-40/10 * mar * fri'  will be normalized to '2,4 10,20,30,40 * * 3 1,2'
+ *
+ * @internal not part of TYPO3 Public API
  */
 class NormalizeCommand
 {
@@ -318,13 +320,12 @@ class NormalizeCommand
 
     /**
      * Accept a string representation or integer number of a month like
-     * 'jan', 'February', 01, ... and convert to normalized integer value 1 .. 12
+     * 'jan', 'February', 01, ... and convert to normalized integer value between 1 and 12
      *
      * @throws \InvalidArgumentException If month string can not be converted to integer
      * @param string $month Month representation
-     * @return int month integer representation between 1 and 12
      */
-    protected static function normalizeMonth($month)
+    protected static function normalizeMonth($month): int
     {
         $timestamp = strtotime('2010-' . $month . '-01');
         // timestamp must be >= 2010-01-01 and <= 2010-12-01
@@ -336,13 +337,12 @@ class NormalizeCommand
 
     /**
      * Accept a string representation or integer number of a weekday like
-     * 'mon', 'Friday', 3, ... and convert to normalized integer value 1 .. 7
+     * 'mon', 'Friday', 3, ... and convert to normalized integer value between 1 and 7
      *
      * @throws \InvalidArgumentException If weekday string can not be converted
      * @param string $weekday Weekday representation
-     * @return int weekday integer representation between 1 and 7
      */
-    protected static function normalizeWeekday($weekday)
+    protected static function normalizeWeekday($weekday): int
     {
         $normalizedWeekday = false;
         // 0 (sunday) -> 7

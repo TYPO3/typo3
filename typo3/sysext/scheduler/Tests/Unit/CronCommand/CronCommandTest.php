@@ -302,16 +302,9 @@ final class CronCommandTest extends UnitTestCase
     }
 
     #[Test]
-    public function getTimestampReturnsInteger(): void
-    {
-        $instance = new CronCommand('* * * * *');
-        self::assertIsInt($instance->getTimestamp());
-    }
-
-    #[Test]
     public function getCronCommandSectionsReturnsArray(): void
     {
         $instance = new CronCommand('* * * * *');
-        self::assertIsArray($instance->getCronCommandSections());
+        self::assertSame(['*', '*', '*', '*', '*'], $instance->getCronCommandSections());
     }
 }

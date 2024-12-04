@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extensionmanager\Tests\Unit\Domain\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -25,7 +26,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 final class ExtensionTest extends UnitTestCase
 {
     #[Test]
-    public function convertDependenciesToObjectsCreatesObjectStorage(): void
+    #[DoesNotPerformAssertions]
+    public function convertDependenciesToObjectsDoesNotFail(): void
     {
         $serializedDependencies = [
             'depends' => [
@@ -34,8 +36,7 @@ final class ExtensionTest extends UnitTestCase
                 'fn_lib' => '',
             ],
         ];
-        $dependencyObjects = Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
-        self::assertInstanceOf(\SplObjectStorage::class, $dependencyObjects);
+        Extension::createFromExtensionArray(['key' => 'no-name', 'constraints' => $serializedDependencies])->getDependencies();
     }
 
     #[Test]

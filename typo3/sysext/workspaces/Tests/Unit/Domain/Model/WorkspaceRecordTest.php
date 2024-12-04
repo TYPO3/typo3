@@ -17,9 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Tests\Unit\Domain\Model;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Workspaces\Domain\Record\AbstractRecord;
 use TYPO3\CMS\Workspaces\Domain\Record\WorkspaceRecord;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -38,19 +38,10 @@ final class WorkspaceRecordTest extends UnitTestCase
     }
 
     #[Test]
-    public function isAbstractRecord(): void
+    #[DoesNotPerformAssertions]
+    public function getWorks(): void
     {
-        $subject = new WorkspaceRecord([]);
-
-        self::assertInstanceOf(AbstractRecord::class, $subject);
-    }
-
-    #[Test]
-    public function getReturnsWorkspaceRecordInstance(): void
-    {
-        $instance = WorkspaceRecord::get(1, ['title' => '']);
-
-        self::assertInstanceOf(WorkspaceRecord::class, $instance);
+        WorkspaceRecord::get(1, ['title' => '']);
     }
 
     #[Test]

@@ -37,7 +37,7 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionCode(1366927513);
         $node = $this->getAccessibleMock(FileNode::class, null, [], '', false);
-        $node->__construct([], null);
+        $node->__construct([]);
     }
 
     #[Test]
@@ -159,30 +159,6 @@ final class FileNodeTest extends AbstractFolderStructureTestCase
         ];
         $node->__construct($structure, $parent);
         self::assertNull($node->_get('targetContent'));
-    }
-
-    #[Test]
-    public function getStatusReturnsArray(): void
-    {
-        $node = $this->getAccessibleMock(
-            FileNode::class,
-            ['getAbsolutePath', 'exists', 'isFile', 'isWritable', 'isPermissionCorrect', 'isContentCorrect'],
-            [],
-            '',
-            false
-        );
-        // do not use var path here, as file nodes explicitly check for public path
-        $testRoot = Environment::getPublicPath() . '/typo3temp/tests/';
-        $this->testFilesToDelete[] = $testRoot;
-        GeneralUtility::mkdir_deep($testRoot);
-        $path = $testRoot . StringUtility::getUniqueId('dir_');
-        $node->method('getAbsolutePath')->willReturn($path);
-        $node->method('exists')->willReturn(true);
-        $node->method('isFile')->willReturn(true);
-        $node->method('isPermissionCorrect')->willReturn(true);
-        $node->method('isWritable')->willReturn(true);
-        $node->method('isContentCorrect')->willReturn(true);
-        self::assertIsArray($node->getStatus());
     }
 
     #[Test]

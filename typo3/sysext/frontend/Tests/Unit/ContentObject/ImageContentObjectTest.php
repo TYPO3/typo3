@@ -471,20 +471,6 @@ final class ImageContentObjectTest extends UnitTestCase
     }
 
     /**
-     * Handles the arguments that have been sent to the getImgResource hook.
-     *
-     * @see getImageSourceCollectionHookCalled
-     */
-    public function isGetOneSourceCollectionCalledCallback(
-        array $sourceRenderConfiguration,
-        array $sourceConfiguration
-    ): string {
-        self::assertIsArray($sourceRenderConfiguration);
-        self::assertIsArray($sourceConfiguration);
-        return 'isGetOneSourceCollectionCalledCallback';
-    }
-
-    /**
      * Data provider for linkWrap
      *
      * @return array [[$expected, $content, $wrap],]

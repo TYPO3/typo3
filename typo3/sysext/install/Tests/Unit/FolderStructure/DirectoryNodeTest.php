@@ -106,26 +106,6 @@ final class DirectoryNodeTest extends AbstractFolderStructureTestCase
     }
 
     #[Test]
-    public function getStatusReturnsArray(): void
-    {
-        $node = $this->getAccessibleMock(
-            DirectoryNode::class,
-            ['getAbsolutePath', 'getRelativePathBelowSiteRoot', 'exists', 'isDirectory', 'isWritable', 'isPermissionCorrect'],
-            [],
-            '',
-            false
-        );
-        $path = $this->getTestDirectory('dir_');
-        $node->method('getAbsolutePath')->willReturn($path);
-        $node->method('getRelativePathBelowSiteRoot')->willReturn($path);
-        $node->method('exists')->willReturn(true);
-        $node->method('isDirectory')->willReturn(true);
-        $node->method('isPermissionCorrect')->willReturn(true);
-        $node->method('isWritable')->willReturn(true);
-        self::assertIsArray($node->getStatus());
-    }
-
-    #[Test]
     public function getStatusReturnsArrayWithWarningStatusIfDirectoryNotExists(): void
     {
         $node = $this->getAccessibleMock(

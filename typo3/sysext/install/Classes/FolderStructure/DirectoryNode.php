@@ -84,8 +84,7 @@ class DirectoryNode extends AbstractNode implements NodeInterface
         } else {
             $result = $this->getSelfStatus();
         }
-        $result = array_merge($result, $this->getChildrenStatus());
-        return $result;
+        return array_merge($result, $this->getChildrenStatus());
     }
 
     /**

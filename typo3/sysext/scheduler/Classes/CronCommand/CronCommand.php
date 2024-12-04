@@ -19,6 +19,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * This class provides calculations for the cron command format.
+ *
+ * @internal not part of TYPO3 Public API
  */
 class CronCommand
 {
@@ -33,19 +35,16 @@ class CronCommand
      * day of month   1-31
      * month          1-12
      * day of week    1-7
-     *
-     * @var array $cronCommandSections
      */
-    protected $cronCommandSections;
+    protected array $cronCommandSections;
 
     /**
      * Timestamp of next execution date.
      * This value starts with 'now + 1 minute' if not set externally
      * by unit tests. After a call to calculateNextValue() it holds the timestamp of
      * the next execution date which matches the cron command restrictions.
-     * @var int
      */
-    protected $timestamp;
+    protected int $timestamp;
 
     /**
      * Constructor
@@ -109,10 +108,8 @@ class CronCommand
 
     /**
      * Get next timestamp
-     *
-     * @return int Unix timestamp
      */
-    public function getTimestamp()
+    public function getTimestamp(): int
     {
         return $this->timestamp;
     }
@@ -121,10 +118,9 @@ class CronCommand
      * Get cron command sections. Array of strings, each containing either
      * a list of comma separated integers or *
      *
-     * @return array command sections:
      * @internal
      */
-    public function getCronCommandSections()
+    public function getCronCommandSections(): array
     {
         return $this->cronCommandSections;
     }
