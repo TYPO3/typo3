@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
+use TYPO3Tests\BlogExample\Domain\Model\RestrictedComment;
 use TYPO3Tests\BlogExample\Domain\Model\TtContent;
 
 final class DataMapFactoryTest extends FunctionalTestCase
@@ -61,5 +62,24 @@ final class DataMapFactoryTest extends FunctionalTestCase
         $headerColumnMap = $dataMap->getColumnMap('header');
         self::assertInstanceOf(ColumnMap::class, $headerColumnMap);
         self::assertEquals('header', $headerColumnMap->getColumnName());
+    }
+
+    #[Test]
+    public function customRestrictionFieldsAreMappedWithProperDataMap(): void
+    {
+        $subject = $this->get(DataMapFactory::class);
+        $map = $subject->buildDataMap(RestrictedComment::class);
+
+        self::assertSame('customhidden', $map->disabledFlagColumnName);
+        self::assertSame('customstarttime', $map->startTimeColumnName);
+        self::assertSame('customendtime', $map->endTimeColumnName);
+        self::assertSame('customfegroup', $map->frontendUserGroupColumnName);
+        self::assertSame('customsyslanguageuid', $map->languageIdColumnName);
+        self::assertSame('custom_l10182342n_parent', $map->translationOriginColumnName);
+        self::assertSame('custom_l10182342n_diff', $map->translationOriginDiffSourceName);
+        self::assertSame('customtstamp', $map->modificationDateColumnName);
+        self::assertSame('customcrdate', $map->creationDateColumnName);
+        self::assertSame('customdeleted', $map->deletedFlagColumnName);
+        self::assertSame('custom_ctype', $map->recordTypeColumnName);
     }
 }
