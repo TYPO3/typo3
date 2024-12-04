@@ -114,6 +114,24 @@
 			<trans-unit id="tx_blogexample_domain_model_comment.content">
 				<source>Content</source>
 			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_restrictedcomment">
+				<source>Restricted Comment</source>
+			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_restrictedcomment.customhidden">
+				<source>Disabled (custom)</source>
+			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_restrictedcomment.customstarttime">
+				<source>Starttime (custom)</source>
+			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_restrictedcomment.customendtime">
+				<source>Endtime (custom)</source>
+			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_restrictedcomment.customfegroup">
+				<source>Fe-Group (custom)</source>
+			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_restrictedcomment.content">
+				<source>Content</source>
+			</trans-unit>
 			<trans-unit id="tx_blogexample_domain_model_registryentry.name">
 				<source>Registry Entry Key</source>
 			</trans-unit>

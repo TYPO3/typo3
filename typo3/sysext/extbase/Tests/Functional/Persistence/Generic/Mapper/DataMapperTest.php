@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
@@ -36,6 +37,8 @@ use TYPO3Tests\BlogExample\Domain\Model\Comment;
 use TYPO3Tests\BlogExample\Domain\Model\DateExample;
 use TYPO3Tests\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
+use TYPO3Tests\BlogExample\Domain\Model\RestrictedComment;
+use TYPO3Tests\BlogExample\Domain\Repository\RestrictedCommentRepository;
 use TYPO3Tests\TestDataMapper\Domain\Model\CustomDateTime;
 use TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum;
 use TYPO3Tests\TestDataMapper\Domain\Model\Enum\StringBackedEnum;
@@ -49,12 +52,9 @@ final class DataMapperTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_data_mapper',
     ];
 
-    protected PersistenceManager $persistenceManager;
-
     protected function setUp(): void
     {
         parent::setUp();
-        $this->persistenceManager = $this->get(PersistenceManager::class);
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
 
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -68,13 +68,14 @@ final class DataMapperTest extends FunctionalTestCase
         $date = new \DateTime('2016-03-06T12:40:00+01:00');
         $example->setDatetimeInt($date);
 
-        $this->persistenceManager->add($example);
-        $this->persistenceManager->persistAll();
-        $uid = $this->persistenceManager->getIdentifierByObject($example);
-        $this->persistenceManager->clearState();
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($example);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($example);
+        $persistenceManager->clearState();
 
         /** @var DateExample $example */
-        $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
+        $example = $persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
         self::assertEquals($example->getDatetimeInt()->getTimestamp(), $date->getTimestamp());
     }
@@ -86,13 +87,14 @@ final class DataMapperTest extends FunctionalTestCase
         $date = new \DateTime('2016-03-06T12:40:00+01:00');
         $example->setDatetimeText($date);
 
-        $this->persistenceManager->add($example);
-        $this->persistenceManager->persistAll();
-        $uid = $this->persistenceManager->getIdentifierByObject($example);
-        $this->persistenceManager->clearState();
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($example);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($example);
+        $persistenceManager->clearState();
 
         /** @var DateExample $example */
-        $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
+        $example = $persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
         self::assertEquals($example->getDatetimeText()->getTimestamp(), $date->getTimestamp());
     }
@@ -104,13 +106,14 @@ final class DataMapperTest extends FunctionalTestCase
         $date = new \DateTime('2016-03-06T12:40:00');
         $example->setDatetimeDatetime($date);
 
-        $this->persistenceManager->add($example);
-        $this->persistenceManager->persistAll();
-        $uid = $this->persistenceManager->getIdentifierByObject($example);
-        $this->persistenceManager->clearState();
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($example);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($example);
+        $persistenceManager->clearState();
 
         /** @var DateExample $example */
-        $example = $this->persistenceManager->getObjectByIdentifier($uid, DateExample::class);
+        $example = $persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
         self::assertEquals($example->getDatetimeDatetime()->getTimestamp(), $date->getTimestamp());
     }
@@ -122,13 +125,14 @@ final class DataMapperTest extends FunctionalTestCase
         $date = new \DateTimeImmutable('2018-07-24T20:40:00');
         $subject->setDatetimeImmutableInt($date);
 
-        $this->persistenceManager->add($subject);
-        $this->persistenceManager->persistAll();
-        $uid = $this->persistenceManager->getIdentifierByObject($subject);
-        $this->persistenceManager->clearState();
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($subject);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($subject);
+        $persistenceManager->clearState();
 
         /** @var DateTimeImmutableExample $subject */
-        $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
+        $subject = $persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
 
         self::assertEquals($date, $subject->getDatetimeImmutableInt());
     }
@@ -140,13 +144,14 @@ final class DataMapperTest extends FunctionalTestCase
         $date = new \DateTimeImmutable('2018-07-24T20:40:00');
         $subject->setDatetimeImmutableText($date);
 
-        $this->persistenceManager->add($subject);
-        $this->persistenceManager->persistAll();
-        $uid = $this->persistenceManager->getIdentifierByObject($subject);
-        $this->persistenceManager->clearState();
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($subject);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($subject);
+        $persistenceManager->clearState();
 
         /** @var DateTimeImmutableExample $subject */
-        $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
+        $subject = $persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
 
         self::assertEquals($date, $subject->getDatetimeImmutableText());
     }
@@ -158,13 +163,14 @@ final class DataMapperTest extends FunctionalTestCase
         $date = new \DateTimeImmutable('2018-07-24T20:40:00');
         $subject->setDatetimeImmutableDatetime($date);
 
-        $this->persistenceManager->add($subject);
-        $this->persistenceManager->persistAll();
-        $uid = $this->persistenceManager->getIdentifierByObject($subject);
-        $this->persistenceManager->clearState();
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($subject);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($subject);
+        $persistenceManager->clearState();
 
         /** @var DateTimeImmutableExample $subject */
-        $subject = $this->persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
+        $subject = $persistenceManager->getObjectByIdentifier($uid, DateTimeImmutableExample::class);
 
         self::assertSame($date->getTimestamp(), $subject->getDatetimeImmutableDatetime()->getTimestamp());
     }
@@ -544,5 +550,58 @@ final class DataMapperTest extends FunctionalTestCase
         $subject = $this->get(DataMapper::class);
         $subjectReflection = new \ReflectionObject($subject);
         $subjectReflection->getMethod('createEmptyObject')->invoke($subject, HydrationFixtureEntity::class);
+    }
+
+    #[Test]
+    public function customRestrictionFieldsAreMapped(): void
+    {
+        $restrictedCommentRows = [
+            [
+                'uid' => 123,
+                'content' => 'abc',
+                'customhidden' => 1,
+                'customstarttime' => 1449066092,
+                'customendtime' => 1449067092,
+                'customfegroup' => '-1',
+            ],
+        ];
+        $dataMapper = $this->get(DataMapper::class);
+        $mappedObjectArray = $dataMapper->map(RestrictedComment::class, $restrictedCommentRows);
+
+        self::assertSame(123, $mappedObjectArray[0]->getUid());
+        self::assertSame('abc', $mappedObjectArray[0]->getContent());
+        self::assertTrue($mappedObjectArray[0]->getCustomhidden());
+        self::assertSame('1449066092', $mappedObjectArray[0]->getCustomstarttime()->format('U'));
+        self::assertSame('1449067092', $mappedObjectArray[0]->getCustomendtime()->format('U'));
+        self::assertSame('-1', $mappedObjectArray[0]->getCustomfegroup());
+    }
+
+    #[Test]
+    public function customRestrictionFieldsAreMappedFromPersistence(): void
+    {
+        $example = new RestrictedComment();
+        $example->setPid(1);
+        $example->setContent('abc');
+        $example->setCustomhidden(true);
+        $example->setCustomstarttime(new \DateTime('@1449066092'));
+        $example->setCustomendtime(new \DateTime('@1449067092'));
+        $example->setCustomfegroup('-1');
+
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($example);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($example);
+        $persistenceManager->clearState();
+
+        $example = $persistenceManager->getObjectByIdentifier($uid, RestrictedComment::class);
+        // Due to restrictions, default fetching shall NOT be successful!
+        self::assertNull($example);
+
+        // Do the same via specific repository access
+        $retrievedComment = $this->get(RestrictedCommentRepository::class)->findByUid((int)$uid);
+        // Due to restrictions, default fetching shall NOT be successful!
+        self::assertNull($retrievedComment);
+
+        self::assertCSVDataSet(__DIR__ . '/Fixtures/DataMapperCustomRestrictionFields.csv');
     }
 }
