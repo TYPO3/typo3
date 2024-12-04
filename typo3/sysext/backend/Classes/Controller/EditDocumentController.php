@@ -37,6 +37,7 @@ use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
+use TYPO3\CMS\Backend\Template\Components\Buttons\GenericButton;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -1321,8 +1322,9 @@ class EditDocumentController
             }
         }
 
-        $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2, $request);
-        $this->registerShortcutButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
+        $this->registerInfoButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $this->registerOpenInNewWindowButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 3, $request);
+        $this->registerShortcutButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_RIGHT, 4, $request);
     }
 
     /**
@@ -1618,6 +1620,27 @@ class EditDocumentController
                 ->setShowLabelText(true)
                 ->setTitle($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:deleteItem'));
             $buttonBar->addButton($deleteButton, $position, $group);
+        }
+    }
+
+    /**
+     * Register the info button to the button bar
+     */
+    protected function registerInfoButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group): void
+    {
+        if ($this->isSingleRecordView()
+            && !empty($this->firstEl['table'])
+            && $this->isSavedRecord
+        ) {
+            $button = GeneralUtility::makeInstance(GenericButton::class);
+            $button->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:showInfo'));
+            $button->setAttributes([
+                'type' => 'button',
+                'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
+                'data-dispatch-args-list' => $this->firstEl['table'] . ',' . $this->firstEl['uid'],
+            ]);
+            $button->setIcon($this->iconFactory->getIcon('actions-document-info', IconSize::SMALL));
+            $buttonBar->addButton($button, $position, $group);
         }
     }
 
