@@ -1,20 +1,25 @@
 @use "sass:list";
 
-:root {
+.grideditor {
     --grideditor-grid-spacing: 1rem;
     --grideditor-cell-spacing: 1rem;
-    --grideditor-cell-bg: #fff;
+    --grideditor-cell-color: var(--typo3-component-color);
+    --grideditor-cell-bg: var(--typo3-component-bg);
     --grideditor-cell-border-radius: 4px;
+    --grideditor-cell-border-color: var(--typo3-component-border-color);
     --grideditor-cell-shadow: var(--typo3-component-box-shadow-strong);
     --grideditor-action-size: 32px;
     --grideditor-action-spacing: 2px;
-    --grideditor-action-bg: #fafafa;
-    --grideditor-action-focus-bg: #{tint-color($primary, 90%)};
-    --grideditor-action-focus-outline-color: #{tint-color($primary, 20%)};
-    --grideditor-action-hover-bg: #{tint-color($primary, 95%)};
-}
-
-.grideditor {
+    --grideditor-action-color: var(--typo3-state-default-color);
+    --grideditor-action-bg: var(--typo3-state-default-bg);
+    --grideditor-action-border-color: var(--typo3-state-default-border-color);
+    --grideditor-action-border-radius: var(--typo3-input-border-radius);
+    --grideditor-action-hover-color: var(--typo3-state-default-hover-color);
+    --grideditor-action-hover-bg: var(--typo3-state-default-hover-bg);
+    --grideditor-action-hover-border-color: var(--typo3-state-default-hover-border-color);
+    --grideditor-action-focus-color: var(--typo3-state-default-focus-color);
+    --grideditor-action-focus-bg: var(--typo3-state-default-focus-bg);
+    --grideditor-action-focus-border-color: var(--typo3-state-default-focus-border-color);
     display: grid;
     grid-template: "grideditor-control-top ." "grideditor-editor grideditor-control-right" "grideditor-control-bottom ." "grideditor-preview grideditor-preview" auto / minmax(auto, 1fr);
     gap: var(--grideditor-grid-spacing);
@@ -65,7 +70,8 @@
     display: flex;
     min-height: 100px;
     flex-direction: column;
-    border: 1px solid var(--grideditor-cell-bg);
+    color: var(--grideditor-cell-color);
+    border: 1px solid var(--grideditor-cell-border-color);
     background-color: var(--grideditor-cell-bg);
     border-radius: var(--grideditor-cell-border-radius);
     box-shadow: var(--grideditor-cell-shadow);
@@ -86,7 +92,7 @@
         font-size: .75rem;
         line-height: 1.2em;
         padding: calc(var(--grideditor-cell-spacing) / 2) var(--grideditor-cell-spacing);
-        background-color: rgba(0, 0, 0, .05);
+        background-color: color-mix(in srgb, var(--grideditor-cell-bg), currentColor 5%);
         border-end-start-radius: var(--grideditor-cell-border-radius);
         border-end-end-radius: var(--grideditor-cell-border-radius);
     }
@@ -102,20 +108,27 @@
     transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
     width: var(--grideditor-action-size);
     height: var(--grideditor-action-size);
-    border: 0;
-    border-radius: 2px;
+    border-radius: var(--grideditor-action-border-radius);
+    color: var(--grideditor-action-color);
     background-color: var(--grideditor-action-bg);
+    border: 1px solid var(--grideditor-action-border-color);
 
-    &:hover,
-    &:focus {
+    &:hover {
         outline: none;
+        color: var(--grideditor-action-hover-color);
         background-color: var(--grideditor-action-hover-bg);
+        border-color: var(--grideditor-action-hover-border-color);
     }
 
     &:focus {
         z-index: 1;
+        color: var(--grideditor-action-focus-color);
         background-color: var(--grideditor-action-focus-bg);
-        outline: 1px solid var(--grideditor-action-focus-outline-color);
+        border-color: var(--grideditor-action-focus-border-color);
+    }
+
+    &:focus-visible {
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--grideditor-action-focus-border-color), transparent 25%);
         outline-offset: 0;
     }
 
