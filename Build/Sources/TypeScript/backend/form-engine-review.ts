@@ -68,7 +68,7 @@ export class FormEngineReview {
     const leastButtonBar: HTMLElement = document.querySelector('.t3js-module-docheader-bar-buttons').lastElementChild.querySelector('[role="toolbar"]');
 
     const icon = document.createElement('typo3-backend-icon');
-    icon.setAttribute('identifier', 'actions-info');
+    icon.setAttribute('identifier', 'actions-exclamation-circle');
     icon.setAttribute('size', 'small');
 
     const button = document.createElement('button');
