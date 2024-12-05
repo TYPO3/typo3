@@ -9445,12 +9445,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "4d4fc36a6f7dac63057c1de137f6e80585f0c24e"
+                "reference": "e9c3bc4df912a0fd5d1c69cc1cab0cca984b0207"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/4d4fc36a6f7dac63057c1de137f6e80585f0c24e",
-                "reference": "4d4fc36a6f7dac63057c1de137f6e80585f0c24e",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/e9c3bc4df912a0fd5d1c69cc1cab0cca984b0207",
+                "reference": "e9c3bc4df912a0fd5d1c69cc1cab0cca984b0207",
                 "shasum": ""
             },
             "require": {
@@ -9509,9 +9509,9 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/9.1.0"
+                "source": "https://github.com/TYPO3/testing-framework/tree/9.1.2"
             },
-            "time": "2024-11-30T15:52:50+00:00"
+            "time": "2024-12-05T15:39:20+00:00"
         }
     ],
     "aliases": [],
@@ -9535,7 +9535,7 @@
         "ext-xml": "*",
         "composer-runtime-api": "^2.1"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.2.0"
     },
