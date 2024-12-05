@@ -95,13 +95,15 @@ class SysLogSerializationUpdate implements UpgradeWizardInterface
     protected function hasRecordsToUpdate(): bool
     {
         $queryBuilder = $this->getPreparedQueryBuilder();
-        return (bool)$queryBuilder
-            ->count('uid')
+        $record = $queryBuilder
+            ->select('uid')
             ->where(
                 $queryBuilder->expr()->like('log_data', $queryBuilder->createNamedParameter('a:%'))
             )
+            ->setMaxResults(1)
             ->executeQuery()
             ->fetchOne();
+        return $record !== false;
     }
 
     protected function getPreparedQueryBuilder(): QueryBuilder
