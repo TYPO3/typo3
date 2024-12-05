@@ -18,122 +18,50 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 
 /**
  * A column map to map a column configured in $TCA on a property of a domain object.
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class ColumnMap
+final readonly class ColumnMap
 {
     /**
-     * The column name
-     *
-     * @var string
+     * @param string $columnName Name of the DB column
+     * @param TableColumnType $type TCA column type like "input", "inline"
+     * @param string|null $dateTimeStorageFormat Alternative DataTime format instead of using unix timestamps. Allowed: "date", "datetime", "time"
+     * @param Relation|null $typeOfRelation Extbase "Relation" enum if any
+     * @param string|null $childTableName TCA "foreign_table" if any, @todo: Does not consider group "allowed" for multi table relations
+     * @param string|null $relationTableName TCA "MM" if any
+     * @param array $relationTableMatchFields TCA "MM_match_fields" if any in MM, TCA "foreign_match_fields" if any
+     * @param string|null $parentKeyFieldName TCA "uid_local" or "uid_foreign" with TCA "MM" depending on "opposite",
+     *                                        TCA "foreign_field" with TCA "foreign_table" relations
+     * @param string|null $parentTableFieldName TCA "foreign_table_field" with TCA "foreign_table" relations
+     * @param string|null $childKeyFieldName TCA "uid_local" or "uid_foreign" with TCA "MM" depending on "opposite"
+     * @param string|null $childSortByFieldName Name of the field results from child's table are sorted by:
+     *                                          TCA "sorting" or "sorting_foreign" with TCA "MM" depending on TCA "opposite" situation,
+     *                                          TCA "foreign_sortby" with TCA "foreign_table"
+     * @param string|null $childTableDefaultSortings name of the fields with direction results from child's table are sorted by default:
+     *                                               TCA "foreign_default_sortby" with TCA "foreign_table"
      */
-    private $columnName;
+    public function __construct(
+        public string $columnName,
+        public TableColumnType $type,
+        public ?string $dateTimeStorageFormat = null,
+        public ?Relation $typeOfRelation = Relation::NONE,
+        public ?string $childTableName = null,
+        public ?string $relationTableName = null,
+        public array $relationTableMatchFields = [],
+        public ?string $parentKeyFieldName = null,
+        public ?string $parentTableFieldName = null,
+        public ?string $childKeyFieldName = null,
+        public ?string $childSortByFieldName = null,
+        public ?string $childTableDefaultSortings = null,
+    ) {}
 
-    private ColumnMap\Relation $typeOfRelation = ColumnMap\Relation::NONE;
+    // Getters below could be removed but don't harm much and kept as b/w compat for now.
 
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * The name of the child's table
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Select/Properties/ForeignTable.html
-     * @var string|null
-     */
-    private $childTableName;
-
-    /**
-     * The name of the fields with direction the results from the child's table are sorted by default
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignDefaultSortby.html
-     */
-    private ?string $childTableDefaultSortings = null;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * The name of the field the results from the child's table are sorted by
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignSortby.html
-     * @var string|null
-     */
-    private $childSortByFieldName;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * The name of the relation table
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/Mm.html
-     * @var string|null
-     */
-    private $relationTableName;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * An array of field => value pairs to both insert and match against when writing/reading MM relations
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignMatchFields.html
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/Mm.html
-     * @var array|null
-     */
-    private $relationTableMatchFields;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * The name of the field holding the parents key
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignField.html
-     * @var string|null
-     */
-    private $parentKeyFieldName;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * The name of the field holding the name of the table of the parent's records
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Inline/Properties/ForeignTableField.html
-     * @var string|null
-     */
-    private $parentTableFieldName;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * The name of the field holding the children key
-     *
-     * @var string|null
-     */
-    private $childKeyFieldName;
-
-    /**
-     * todo: Check if this property should support null. If not, set default value.
-     * Alternative format for storing DataTime formats
-     * (instead of using unix-time stamps). Allowed values
-     * are 'date', 'datetime' and 'time'
-     *
-     * @see https://docs.typo3.org/m/typo3/reference-tca/main/en-us/ColumnsConfig/Type/Datetime/Properties/DbType.html
-     * @var string|null
-     */
-    private $dateTimeStorageFormat;
-
-    private TableColumnType $type = TableColumnType::INPUT;
-
-    /**
-     * Constructs a Column Map
-     *
-     * @param string $columnName The column name
-     */
-    public function __construct(string $columnName)
-    {
-        // @todo Enable aliases (tx_anotherextension_addedcolumn -> theAddedColumn)
-        $this->columnName = $columnName;
-    }
-
-    public function setTypeOfRelation(ColumnMap\Relation $typeOfRelation): void
-    {
-        $this->typeOfRelation = $typeOfRelation;
-    }
-
-    public function getTypeOfRelation(): ColumnMap\Relation
+    public function getTypeOfRelation(): Relation
     {
         return $this->typeOfRelation;
     }
@@ -143,19 +71,9 @@ class ColumnMap
         return $this->columnName;
     }
 
-    public function setChildTableName(?string $childTableName): void
-    {
-        $this->childTableName = $childTableName;
-    }
-
     public function getChildTableName(): ?string
     {
         return $this->childTableName;
-    }
-
-    public function setChildTableDefaultSortings(?string $childTableDefaultSortings): void
-    {
-        $this->childTableDefaultSortings = $childTableDefaultSortings;
     }
 
     public function getChildTableDefaultSortings(): ?string
@@ -163,19 +81,9 @@ class ColumnMap
         return $this->childTableDefaultSortings;
     }
 
-    public function setChildSortByFieldName(?string $childSortByFieldName): void
-    {
-        $this->childSortByFieldName = $childSortByFieldName;
-    }
-
     public function getChildSortByFieldName(): ?string
     {
         return $this->childSortByFieldName;
-    }
-
-    public function setRelationTableName(?string $relationTableName): void
-    {
-        $this->relationTableName = $relationTableName;
     }
 
     public function getRelationTableName(): ?string
@@ -183,19 +91,9 @@ class ColumnMap
         return $this->relationTableName;
     }
 
-    public function setRelationTableMatchFields(?array $relationTableMatchFields): void
-    {
-        $this->relationTableMatchFields = $relationTableMatchFields;
-    }
-
-    public function getRelationTableMatchFields(): ?array
+    public function getRelationTableMatchFields(): array
     {
         return $this->relationTableMatchFields;
-    }
-
-    public function setParentKeyFieldName(?string $parentKeyFieldName): void
-    {
-        $this->parentKeyFieldName = $parentKeyFieldName;
     }
 
     public function getParentKeyFieldName(): ?string
@@ -203,19 +101,9 @@ class ColumnMap
         return $this->parentKeyFieldName;
     }
 
-    public function setParentTableFieldName(?string $parentTableFieldName): void
-    {
-        $this->parentTableFieldName = $parentTableFieldName;
-    }
-
     public function getParentTableFieldName(): ?string
     {
         return $this->parentTableFieldName;
-    }
-
-    public function setChildKeyFieldName(string $childKeyFieldName): void
-    {
-        $this->childKeyFieldName = $childKeyFieldName;
     }
 
     public function getChildKeyFieldName(): ?string
@@ -223,19 +111,9 @@ class ColumnMap
         return $this->childKeyFieldName;
     }
 
-    public function setDateTimeStorageFormat(?string $dateTimeStorageFormat): void
-    {
-        $this->dateTimeStorageFormat = $dateTimeStorageFormat;
-    }
-
     public function getDateTimeStorageFormat(): ?string
     {
         return $this->dateTimeStorageFormat;
-    }
-
-    public function setType(TableColumnType $type): void
-    {
-        $this->type = $type;
     }
 
     public function getType(): TableColumnType

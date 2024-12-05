@@ -258,11 +258,11 @@ class Backend implements BackendInterface, SingletonInterface
                     if ($propertyValue->_isNew()) {
                         $this->insertObject($propertyValue, $object, $propertyName);
                     }
-                    $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, null, $property);
+                    $row[$columnMap->columnName] = $this->getPlainValue($propertyValue, null, $property);
                 }
                 $queue[] = $propertyValue;
             } elseif ($object->_isNew() || $object->_isDirty($propertyName)) {
-                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap, $property);
+                $row[$columnMap->columnName] = $this->getPlainValue($propertyValue, $columnMap, $property);
             }
         }
         if (!empty($row)) {
@@ -313,7 +313,7 @@ class Backend implements BackendInterface, SingletonInterface
         $property = $this->reflectionService->getClassSchema($className)->getProperty($propertyName);
         foreach ($this->getRemovedChildObjects($parentObject, $propertyName) as $removedObject) {
             $this->detachObjectFromParentObject($removedObject, $parentObject, $propertyName);
-            if ($columnMap->getTypeOfRelation() === Relation::HAS_MANY && $property->getCascadeValue() === 'remove') {
+            if ($columnMap->typeOfRelation === Relation::HAS_MANY && $property->getCascadeValue() === 'remove') {
                 $this->removeEntity($removedObject);
             }
         }
@@ -353,10 +353,10 @@ class Backend implements BackendInterface, SingletonInterface
             $currentUids[] = $object->getUid();
         }
 
-        if ($columnMap->getParentKeyFieldName() === null) {
-            $row[$columnMap->getColumnName()] = implode(',', $currentUids);
+        if ($columnMap->parentKeyFieldName === null) {
+            $row[$columnMap->columnName] = implode(',', $currentUids);
         } else {
-            $row[$columnMap->getColumnName()] = $dataMapper->countRelated($parentObject, $propertyName);
+            $row[$columnMap->columnName] = $dataMapper->countRelated($parentObject, $propertyName);
         }
     }
 
@@ -389,11 +389,10 @@ class Backend implements BackendInterface, SingletonInterface
         int $sortingPosition = 0
     ): void {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
-
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() === Relation::HAS_MANY) {
+        if ($parentColumnMap->typeOfRelation === Relation::HAS_MANY) {
             $this->attachObjectToParentObjectRelationHasMany($object, $parentObject, $parentPropertyName, $sortingPosition);
-        } elseif ($parentColumnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($parentColumnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
             $this->insertRelationInRelationtable($object, $parentObject, $parentPropertyName, $sortingPosition);
         }
     }
@@ -409,9 +408,9 @@ class Backend implements BackendInterface, SingletonInterface
     ): void {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() === Relation::HAS_MANY) {
+        if ($parentColumnMap->typeOfRelation === Relation::HAS_MANY) {
             $this->attachObjectToParentObjectRelationHasMany($object, $parentObject, $parentPropertyName, $sortingPosition);
-        } elseif ($parentColumnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($parentColumnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
             $this->updateRelationInRelationTable($object, $parentObject, $parentPropertyName, $sortingPosition);
         }
     }
@@ -429,27 +428,22 @@ class Backend implements BackendInterface, SingletonInterface
     ): void {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() !== Relation::HAS_MANY) {
+        if ($parentColumnMap->typeOfRelation !== Relation::HAS_MANY) {
             throw new IllegalRelationTypeException(
-                'Parent column relation type is ' . Relation::class . '::' . $parentColumnMap->getTypeOfRelation()->name .
+                'Parent column relation type is ' . Relation::class . '::' . $parentColumnMap->typeOfRelation->name .
                 ' but should be ' . Relation::class . '::' . Relation::HAS_MANY->name,
                 1345368105
             );
         }
         $row = [];
-        $parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
-        if ($parentKeyFieldName !== null) {
-            $row[$parentKeyFieldName] = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) ?: $parentObject->getUid();
-            $parentTableFieldName = $parentColumnMap->getParentTableFieldName();
-            if ($parentTableFieldName !== null) {
-                $row[$parentTableFieldName] = $parentDataMap->tableName;
+        if ($parentColumnMap->parentKeyFieldName !== null) {
+            $row[$parentColumnMap->parentKeyFieldName] = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) ?: $parentObject->getUid();
+            if ($parentColumnMap->parentTableFieldName !== null) {
+                $row[$parentColumnMap->parentTableFieldName] = $parentDataMap->tableName;
             }
-            $relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
-            if (is_array($relationTableMatchFields)) {
-                $row = array_merge($relationTableMatchFields, $row);
-            }
+            $row = array_merge($parentColumnMap->relationTableMatchFields, $row);
         }
-        $childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
+        $childSortByFieldName = $parentColumnMap->childSortByFieldName;
         if (!empty($childSortByFieldName)) {
             $row[$childSortByFieldName] = $sortingPosition;
         }
@@ -468,28 +462,24 @@ class Backend implements BackendInterface, SingletonInterface
     ): void {
         $parentDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $parentColumnMap = $parentDataMap->getColumnMap($parentPropertyName);
-        if ($parentColumnMap->getTypeOfRelation() === Relation::HAS_MANY) {
+        if ($parentColumnMap->typeOfRelation === Relation::HAS_MANY) {
             $row = [];
-            $parentKeyFieldName = $parentColumnMap->getParentKeyFieldName();
-            if ($parentKeyFieldName !== null) {
-                $row[$parentKeyFieldName] = 0;
-                $parentTableFieldName = $parentColumnMap->getParentTableFieldName();
-                if ($parentTableFieldName !== null) {
-                    $row[$parentTableFieldName] = '';
+            if ($parentColumnMap->parentKeyFieldName !== null) {
+                $row[$parentColumnMap->parentKeyFieldName] = 0;
+                if ($parentColumnMap->parentTableFieldName !== null) {
+                    $row[$parentColumnMap->parentTableFieldName] = '';
                 }
-                $relationTableMatchFields = $parentColumnMap->getRelationTableMatchFields();
-                if (is_array($relationTableMatchFields) && !empty($relationTableMatchFields)) {
-                    $row = array_merge(array_fill_keys(array_keys($relationTableMatchFields), ''), $row);
+                if (!empty($parentColumnMap->relationTableMatchFields)) {
+                    $row = array_merge(array_fill_keys(array_keys($parentColumnMap->relationTableMatchFields), ''), $row);
                 }
             }
-            $childSortByFieldName = $parentColumnMap->getChildSortByFieldName();
-            if (!empty($childSortByFieldName)) {
-                $row[$childSortByFieldName] = 0;
+            if (!empty($parentColumnMap->childSortByFieldName)) {
+                $row[$parentColumnMap->childSortByFieldName] = 0;
             }
             if (!empty($row)) {
                 $this->updateObject($object, $row);
             }
-        } elseif ($parentColumnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($parentColumnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
             $this->deleteRelationFromRelationtable($object, $parentObject, $parentPropertyName);
         }
     }
@@ -523,18 +513,18 @@ class Backend implements BackendInterface, SingletonInterface
                 continue;
             }
             $columnMap = $dataMap->getColumnMap($propertyName);
-            if ($columnMap->getTypeOfRelation() === Relation::HAS_ONE) {
-                $row[$columnMap->getColumnName()] = 0;
-            } elseif ($columnMap->getTypeOfRelation() !== Relation::NONE) {
-                if ($columnMap->getParentKeyFieldName() === null) {
+            if ($columnMap->typeOfRelation === Relation::HAS_ONE) {
+                $row[$columnMap->columnName] = 0;
+            } elseif ($columnMap->typeOfRelation !== Relation::NONE) {
+                if ($columnMap->parentKeyFieldName === null) {
                     // CSV type relation
-                    $row[$columnMap->getColumnName()] = '';
+                    $row[$columnMap->columnName] = '';
                 } else {
                     // MM type relation
-                    $row[$columnMap->getColumnName()] = 0;
+                    $row[$columnMap->columnName] = 0;
                 }
             } elseif ($propertyValue !== null) {
-                $row[$columnMap->getColumnName()] = $this->getPlainValue($propertyValue, $columnMap, $property);
+                $row[$columnMap->columnName] = $this->getPlainValue($propertyValue, $columnMap, $property);
             }
         }
         $this->addCommonFieldsToRow($object, $row);
@@ -550,12 +540,9 @@ class Backend implements BackendInterface, SingletonInterface
         }
         if ($parentObject !== null && $parentPropertyName) {
             $parentColumnDataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject))->getColumnMap($parentPropertyName);
-            $relationTableMatchFields = $parentColumnDataMap->getRelationTableMatchFields();
-            if (is_array($relationTableMatchFields)) {
-                $row = array_merge($relationTableMatchFields, $row);
-            }
-            if ($parentColumnDataMap->getParentKeyFieldName() !== null) {
-                $row[$parentColumnDataMap->getParentKeyFieldName()] = (int)$parentObject->getUid();
+            $row = array_merge($parentColumnDataMap->relationTableMatchFields, $row);
+            if ($parentColumnDataMap->parentKeyFieldName !== null) {
+                $row[$parentColumnDataMap->parentKeyFieldName] = (int)$parentObject->getUid();
             }
         }
 
@@ -615,20 +602,16 @@ class Backend implements BackendInterface, SingletonInterface
             $parentUid = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         }
         $row = [
-            $columnMap->getParentKeyFieldName() => (int)$parentUid,
-            $columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-            $columnMap->getChildSortByFieldName() => $sortingPosition !== null ? (int)$sortingPosition : 0,
+            $columnMap->parentKeyFieldName => (int)$parentUid,
+            $columnMap->childKeyFieldName => (int)$object->getUid(),
+            $columnMap->childSortByFieldName => $sortingPosition !== null ? (int)$sortingPosition : 0,
         ];
-        $relationTableName = $columnMap->getRelationTableName();
+        $relationTableName = $columnMap->relationTableName;
         if (isset($GLOBALS['TCA'][$relationTableName])) {
             $row[AbstractDomainObject::PROPERTY_PID] = $this->determineStoragePageIdForNewRecord();
         }
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $row = array_merge($relationTableMatchFields, $row);
-        }
-        $res = $this->storageBackend->addRow($relationTableName, $row, true);
-        return $res;
+        $row = array_merge($columnMap->relationTableMatchFields, $row);
+        return $this->storageBackend->addRow($relationTableName, $row, true);
     }
 
     /**
@@ -645,19 +628,13 @@ class Backend implements BackendInterface, SingletonInterface
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($propertyName);
         $row = [
-            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-            $columnMap->getChildKeyFieldName() => (int)$object->getUid(),
-            $columnMap->getChildSortByFieldName() => $sortingPosition,
+            $columnMap->parentKeyFieldName => (int)$parentObject->getUid(),
+            $columnMap->childKeyFieldName => (int)$object->getUid(),
+            $columnMap->childSortByFieldName => $sortingPosition,
         ];
-        $relationTableName = $columnMap->getRelationTableName();
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $row = array_merge($relationTableMatchFields, $row);
-        }
-        $this->storageBackend->updateRelationTableRow(
-            $relationTableName,
-            $row
-        );
+        $relationTableName = $columnMap->relationTableName;
+        $row = array_merge($columnMap->relationTableMatchFields, $row);
+        $this->storageBackend->updateRelationTableRow($relationTableName, $row);
         return true;
     }
 
@@ -672,15 +649,12 @@ class Backend implements BackendInterface, SingletonInterface
     ): bool {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($parentPropertyName);
-        $relationTableName = $columnMap->getRelationTableName();
+        $relationTableName = $columnMap->relationTableName;
         $relationMatchFields = [
-            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
+            $columnMap->parentKeyFieldName => (int)$parentObject->getUid(),
         ];
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
-        }
-        $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
+        $relationMatchFields = array_merge($columnMap->relationTableMatchFields, $relationMatchFields);
+        $this->storageBackend->removeRow($relationTableName, $relationMatchFields);
         return true;
     }
 
@@ -694,16 +668,13 @@ class Backend implements BackendInterface, SingletonInterface
     ): bool {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($parentPropertyName);
-        $relationTableName = $columnMap->getRelationTableName();
+        $relationTableName = $columnMap->relationTableName;
         $relationMatchFields = [
-            $columnMap->getParentKeyFieldName() => (int)$parentObject->getUid(),
-            $columnMap->getChildKeyFieldName() => (int)$relatedObject->getUid(),
+            $columnMap->parentKeyFieldName => (int)$parentObject->getUid(),
+            $columnMap->childKeyFieldName => (int)$relatedObject->getUid(),
         ];
-        $relationTableMatchFields = $columnMap->getRelationTableMatchFields();
-        if (is_array($relationTableMatchFields)) {
-            $relationMatchFields = array_merge($relationTableMatchFields, $relationMatchFields);
-        }
-        $this->storageBackend->removeRow($relationTableName, $relationMatchFields, false);
+        $relationMatchFields = array_merge($columnMap->relationTableMatchFields, $relationMatchFields);
+        $this->storageBackend->removeRow($relationTableName, $relationMatchFields);
         return true;
     }
 
@@ -817,7 +788,7 @@ class Backend implements BackendInterface, SingletonInterface
             }
             $propertyValue = $object->_getProperty($propertyName);
             if ($property->getCascadeValue() === 'remove') {
-                if ($columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
+                if ($columnMap->typeOfRelation === Relation::HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {
                         $this->removeEntity($containedObject);
                     }
@@ -825,7 +796,7 @@ class Backend implements BackendInterface, SingletonInterface
                     $this->removeEntity($propertyValue);
                 }
             } elseif ($dataMap->deletedFlagColumnName === null
-                && $columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY
+                && $columnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY
             ) {
                 $this->deleteAllRelationsFromRelationtable($object, $propertyName);
             }
@@ -876,34 +847,28 @@ class Backend implements BackendInterface, SingletonInterface
         if ($input !== null) {
             return GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap);
         }
-
         if (!$property) {
             return null;
         }
-
         $className = $property->getPrimaryType()->getClassName();
-
         // Nullable domain model property
         if (is_subclass_of($className, DomainObjectInterface::class)) {
             return 0;
         }
-
         // Nullable DateTime property
         if ($columnMap && is_subclass_of($className, \DateTimeInterface::class)) {
             $datetimeFormats = QueryHelper::getDateTimeFormats();
-            $dateFormat = $columnMap->getDateTimeStorageFormat();
+            $dateFormat = $columnMap->dateTimeStorageFormat;
             if (!$dateFormat) {
                 // Datetime property with no TCA dbType
                 return 0;
             }
-
             if (isset($datetimeFormats[$dateFormat])) {
                 // Datetime property with TCA dbType defined. Nullable fields will be saved with the empty value
                 // (e.g. "00:00:00" for dbType = time) as well, but DataMapper will correctly map those values to null
                 return $datetimeFormats[$dateFormat]['empty'];
             }
         }
-
         return null;
     }
 }

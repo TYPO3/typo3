@@ -99,7 +99,7 @@ class ContentController extends ActionController
             foreach ($properties as $propertyName => $propertyValue) {
                 $columnMap = $dataMap->getColumnMap($propertyName);
                 if ($columnMap !== null) {
-                    $propertyName = $columnMap->getColumnName();
+                    $propertyName = $columnMap->columnName;
                 }
                 if ($propertyValue instanceof \Iterator) {
                     $structureItem[$propertyName] = $this->getStructure($propertyValue);

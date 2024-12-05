@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Exception\InvalidClassException;
@@ -450,10 +451,16 @@ final class DataMapperTest extends FunctionalTestCase
     public function getPlainValueReturnsCorrectDateTimeFormat(): void
     {
         $dataMapper = $this->get(DataMapper::class);
-        $columnMapDateTime = new ColumnMap('column_name');
-        $columnMapDateTime->setDateTimeStorageFormat('datetime');
-        $columnMapDate = new ColumnMap('column_name');
-        $columnMapDate->setDateTimeStorageFormat('date');
+        $columnMapDateTime = new ColumnMap(
+            columnName: 'column_name',
+            type: TableColumnType::DATETIME,
+            dateTimeStorageFormat: 'datetime',
+        );
+        $columnMapDate = new ColumnMap(
+            columnName: 'column_name',
+            type: TableColumnType::DATETIME,
+            dateTimeStorageFormat: 'date',
+        );
         $input = new \DateTime('2013-04-15 09:30:00');
 
         $plainValueDateTime = $dataMapper->getPlainValue($input, $columnMapDateTime);
@@ -514,16 +521,10 @@ final class DataMapperTest extends FunctionalTestCase
     public function fetchRelatedRespectsForeignDefaultSortByTCAConfiguration(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataMapperTestImport.csv');
-
-        $dataMapper = $this->get(DataMapper::class);
-
         $post = new Post();
         $post->_setProperty('uid', 1);
-
-        // Act
-        $comments = $dataMapper->fetchRelated($post, 'comments', '5', false)->toArray();
-
-        // Assert
+        $subject = $this->get(DataMapper::class);
+        $comments = $subject->fetchRelated($post, 'comments', '5', false)->toArray();
         self::assertSame(
             [5, 4, 3, 2, 1], // foreign_default_sortby is set to uid desc, see
             array_map(static fn(Comment $comment): int => $comment->getUid(), $comments)

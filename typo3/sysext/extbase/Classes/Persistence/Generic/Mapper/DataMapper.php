@@ -217,13 +217,10 @@ class DataMapper
             if (!$columnMap instanceof ColumnMap) {
                 continue;
             }
-
-            $columnName = $columnMap->getColumnName();
-            if (!isset($row[$columnName])) {
+            if (!isset($row[$columnMap->columnName])) {
                 continue;
             }
-
-            $propertyValue = $row[$columnName];
+            $propertyValue = $row[$columnMap->columnName];
 
             $nonProxyPropertyTypes = $property->getFilteredTypes([$property, 'filterLazyLoadingProxyAndLazyObjectStorage']);
             if ($nonProxyPropertyTypes === []) {
@@ -295,11 +292,7 @@ class DataMapper
         }
 
         if (is_subclass_of($targetClassName, \DateTimeInterface::class)) {
-            return $this->mapDateTime(
-                $propertyValue,
-                $columnMap->getDateTimeStorageFormat(),
-                $targetClassName
-            );
+            return $this->mapDateTime($propertyValue, $columnMap->dateTimeStorageFormat, $targetClassName);
         }
 
         if (TypeHandlingUtility::isCoreType($targetClassName)) {
@@ -398,7 +391,7 @@ class DataMapper
     protected function getEmptyRelationValue(DomainObjectInterface $parentObject, $propertyName)
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-        $relatesToOne = $columnMap->getTypeOfRelation() == Relation::HAS_ONE;
+        $relatesToOne = $columnMap->typeOfRelation == Relation::HAS_ONE;
         return $relatesToOne ? null : [];
     }
 
@@ -457,17 +450,17 @@ class DataMapper
         );
         $query->getQuerySettings()->setLanguageAspect($languageAspect);
 
-        if ($columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
+        if ($columnMap->typeOfRelation === Relation::HAS_MANY) {
             if (null !== $orderings = $this->getOrderingsForColumnMap($columnMap)) {
                 $query->setOrderings($orderings);
             }
-        } elseif ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
+        } elseif ($columnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
             $query->setSource($this->getSource($parentObject, $propertyName));
-            if ($columnMap->getChildSortByFieldName() !== null) {
-                $query->setOrderings([$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING]);
+            if ($columnMap->childSortByFieldName !== null) {
+                $query->setOrderings([$columnMap->childSortByFieldName => QueryInterface::ORDER_ASCENDING]);
             }
         }
-        $query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, (array)$columnMap->getRelationTableMatchFields()));
+        $query->matching($this->getConstraint($query, $parentObject, $propertyName, $fieldValue, $columnMap->relationTableMatchFields));
         return $query;
     }
 
@@ -479,16 +472,16 @@ class DataMapper
      */
     public function getOrderingsForColumnMap(ColumnMap $columnMap): ?array
     {
-        if ($columnMap->getChildSortByFieldName() !== null) {
-            return [$columnMap->getChildSortByFieldName() => QueryInterface::ORDER_ASCENDING];
+        if ($columnMap->childSortByFieldName !== null) {
+            return [$columnMap->childSortByFieldName => QueryInterface::ORDER_ASCENDING];
         }
 
-        if ($columnMap->getChildTableDefaultSortings() === null) {
+        if ($columnMap->childTableDefaultSortings === null) {
             return null;
         }
 
         $orderings = [];
-        $fields = QueryHelper::parseOrderBy($columnMap->getChildTableDefaultSortings());
+        $fields = QueryHelper::parseOrderBy($columnMap->childTableDefaultSortings);
         foreach ($fields as $field) {
             $fieldName = $field[0] ?? null;
             if ($fieldName === null) {
@@ -537,34 +530,34 @@ class DataMapper
                 // When querying MM relations directly, Typo3DbQueryParser uses enableFields and thus, filters
                 // out versioned records by default. However, we directly query versioned UIDs here, so we want
                 // to include the versioned records explicitly.
-                if ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
+                if ($columnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
                     $query->getQuerySettings()->setEnableFieldsToBeIgnored(['pid']);
                     $query->getQuerySettings()->setIgnoreEnableFields(true);
                 }
             } else {
                 $constraint = $query->in('uid', $resolvedRelationIds);
             }
-            if ($columnMap->getParentTableFieldName() !== null) {
+            if ($columnMap->parentTableFieldName !== null) {
                 $constraint = $query->logicalAnd(
                     $constraint,
-                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->tableName)
+                    $query->equals($columnMap->parentTableFieldName, $dataMap->tableName)
                 );
             }
-        } elseif ($columnMap->getParentKeyFieldName() !== null) {
+        } elseif ($columnMap->parentKeyFieldName !== null) {
             $value = $parentObject;
             // If this a MM relation, and MM relations do not know about workspaces, the MM relations always point to the
             // versioned record, so this must be taken into account here and the versioned record's UID must be used.
-            if ($columnMap->getTypeOfRelation() === Relation::HAS_AND_BELONGS_TO_MANY) {
+            if ($columnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
                 // The versioned UID is used ideally the version ID of a translated record, so this takes precedence over the localized UID
                 if ($value->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $value->getUid()) {
                     $value = (int)$value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);
                 }
             }
-            $constraint = $query->equals($columnMap->getParentKeyFieldName(), $value);
-            if ($columnMap->getParentTableFieldName() !== null) {
+            $constraint = $query->equals($columnMap->parentKeyFieldName, $value);
+            if ($columnMap->parentTableFieldName !== null) {
                 $constraint = $query->logicalAnd(
                     $constraint,
-                    $query->equals($columnMap->getParentTableFieldName(), $dataMap->tableName)
+                    $query->equals($columnMap->parentTableFieldName, $dataMap->tableName)
                 );
             }
         } else {
@@ -610,7 +603,7 @@ class DataMapper
         $relationHandler->setUseLiveReferenceIds(true);
         $relationHandler->setUseLiveParentIds(true);
         $tableName = $dataMap->tableName;
-        $fieldName = $columnMap->getColumnName();
+        $fieldName = $columnMap->columnName;
         if (!$this->tcaSchemaFactory->get($tableName)->hasField($fieldName)) {
             return [];
         }
@@ -639,10 +632,10 @@ class DataMapper
     protected function getSource(DomainObjectInterface $parentObject, $propertyName): SourceInterface
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-        $left = $this->qomFactory->selector(null, $columnMap->getRelationTableName());
+        $left = $this->qomFactory->selector(null, $columnMap->relationTableName);
         $childClassName = $this->getType(get_class($parentObject), $propertyName);
-        $right = $this->qomFactory->selector($childClassName, $columnMap->getChildTableName());
-        $joinCondition = $this->qomFactory->equiJoinCondition($columnMap->getRelationTableName(), $columnMap->getChildKeyFieldName(), $columnMap->getChildTableName(), 'uid');
+        $right = $this->qomFactory->selector($childClassName, $columnMap->childTableName);
+        $joinCondition = $this->qomFactory->equiJoinCondition($columnMap->relationTableName, $columnMap->childKeyFieldName, $columnMap->childTableName, 'uid');
         return $this->qomFactory->join($left, $right, Query::JCR_JOIN_TYPE_INNER, $joinCondition);
     }
 
@@ -706,7 +699,7 @@ class DataMapper
     protected function propertyMapsByForeignKey(DomainObjectInterface $parentObject, $propertyName)
     {
         $columnMap = $this->getDataMap(get_class($parentObject))->getColumnMap($propertyName);
-        return $columnMap->getParentKeyFieldName() !== null;
+        return $columnMap->parentKeyFieldName !== null;
     }
 
     /**
@@ -811,7 +804,7 @@ class DataMapper
             if ($dataMap !== null) {
                 $columnMap = $dataMap->getColumnMap($propertyName);
                 if ($columnMap !== null) {
-                    return $columnMap->getColumnName();
+                    return $columnMap->columnName;
                 }
             }
         }
@@ -885,8 +878,8 @@ class DataMapper
         }
 
         if ($input instanceof \DateTimeInterface) {
-            if ($columnMap !== null && $columnMap->getDateTimeStorageFormat() !== null) {
-                $storageFormat = $columnMap->getDateTimeStorageFormat();
+            if ($columnMap !== null && $columnMap->dateTimeStorageFormat !== null) {
+                $storageFormat = $columnMap->dateTimeStorageFormat;
                 return match ($storageFormat) {
                     'datetime' => $input->format('Y-m-d H:i:s'),
                     'date' => $input->format('Y-m-d'),

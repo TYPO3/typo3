@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Tests\Unit\Persistence\Generic;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -50,15 +51,18 @@ final class BackendTest extends UnitTestCase
             'identifier' => 'myTable:myField',
         ];
 
-        $columnMap = $this->createMock(ColumnMap::class);
-        $columnMap->expects(self::once())->method('getRelationTableName')->willReturn('myTable');
-        $columnMap->expects(self::once())->method('getRelationTableMatchFields')->willReturn($mmMatchFields);
-        $columnMap->method('getChildSortByFieldName')->willReturn('');
-
         $dataMap = new DataMap(
             className: 'dummy',
             tableName: 'dummy',
-            columnMaps: ['testProperty' => $columnMap],
+            columnMaps: [
+                'test_column' => new ColumnMap(
+                    columnName: 'test_column',
+                    type: TableColumnType::GROUP,
+                    relationTableName: 'myTable',
+                    relationTableMatchFields: $mmMatchFields,
+                    childSortByFieldName: '',
+                ),
+            ],
         );
         $dataMapFactory = $this->createMock(DataMapFactory::class);
         $dataMapFactory->method('buildDataMap')->willReturn($dataMap);
@@ -73,7 +77,7 @@ final class BackendTest extends UnitTestCase
         $subject = $this->getAccessibleMock(Backend::class, null, [], '', false);
         $subject->_set('dataMapFactory', $dataMapFactory);
         $subject->_set('storageBackend', $storageBackend);
-        $subject->_call('insertRelationInRelationtable', $domainObject, $domainObject, 'testProperty');
+        $subject->_call('insertRelationInRelationtable', $domainObject, $domainObject, 'test_column');
     }
 
     #[Test]

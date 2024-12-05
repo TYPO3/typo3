@@ -153,7 +153,7 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     public function count(): int
     {
         $columnMap = $this->dataMapper->getDataMap(get_class($this->parentObject))->getColumnMap($this->propertyName);
-        if (!$this->isInitialized && $columnMap->getTypeOfRelation() === Relation::HAS_MANY) {
+        if (!$this->isInitialized && $columnMap->typeOfRelation === Relation::HAS_MANY) {
             $numberOfElements = $this->dataMapper->countRelated($this->parentObject, $this->propertyName, $this->fieldValue);
         } else {
             $this->initialize();
