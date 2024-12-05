@@ -19,7 +19,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**
  * Render header and footer row.
@@ -58,16 +57,8 @@ class OuterWrapContainer extends AbstractContainer
 
         $childHtml = $result['html'];
 
-        $recordPath = '';
-        // @todo: what is this >= 0 check for? wsol cases?!
-        if ($this->data['effectivePid'] >= 0) {
-            $permissionsClause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
-            $recordPath = BackendUtility::getRecordPath($this->data['effectivePid'], $permissionsClause, 15);
-        }
-
         $icon = $this->iconFactory
             ->getIconForRecord($table, $row, IconSize::SMALL)
-            ->setTitle($recordPath)
             ->render();
 
         // @todo: Could this be done in a more clever way? Does it work at all?
@@ -90,7 +81,6 @@ class OuterWrapContainer extends AbstractContainer
                 $pageTitle = sprintf($label, $tableTitle, $pageTitle);
             }
         } else {
-            $icon = BackendUtility::wrapClickMenuOnIcon($icon, $table, $row['uid'], '', $row);
             $newOrUid = ' <span class="typo3-TCEforms-recUid">[' . htmlspecialchars($row['uid']) . ']</span>';
 
             // @todo: getRecordTitlePrep applies an htmlspecialchars here
