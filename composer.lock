@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5c20e3a8d5b7a2889f1a975cf3ea1657",
+    "content-hash": "acfaded9671ff71dfc9fb44f388a3e5f",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -9604,16 +9604,16 @@
         },
         {
             "name": "typo3/testing-framework",
-            "version": "8.2.4",
+            "version": "8.2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/TYPO3/testing-framework.git",
-                "reference": "c627c85f18ab00f328dc7858a723df300897e13f"
+                "reference": "7396ef0e3761da635580e3d767aa79afb2fa9f24"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/c627c85f18ab00f328dc7858a723df300897e13f",
-                "reference": "c627c85f18ab00f328dc7858a723df300897e13f",
+                "url": "https://api.github.com/repos/TYPO3/testing-framework/zipball/7396ef0e3761da635580e3d767aa79afb2fa9f24",
+                "reference": "7396ef0e3761da635580e3d767aa79afb2fa9f24",
                 "shasum": ""
             },
             "require": {
@@ -9671,14 +9671,14 @@
             "support": {
                 "general": "https://typo3.org/support/",
                 "issues": "https://github.com/TYPO3/testing-framework/issues",
-                "source": "https://github.com/TYPO3/testing-framework/tree/8.2.4"
+                "source": "https://github.com/TYPO3/testing-framework/tree/8.2.7"
             },
-            "time": "2024-11-29T09:46:05+00:00"
+            "time": "2024-12-05T15:41:58+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {},
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
@@ -9695,7 +9695,7 @@
         "ext-xml": "*",
         "composer-runtime-api": "^2.1"
     },
-    "platform-dev": [],
+    "platform-dev": {},
     "platform-overrides": {
         "php": "8.1.1"
     },
