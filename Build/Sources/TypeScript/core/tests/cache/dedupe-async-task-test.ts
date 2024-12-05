@@ -112,7 +112,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       const aPromise = dedupe.get('foo', boolTask, abortControllerA.signal);
 
       let a: boolean | null;
-      const aInBackground = aPromise.then((v) => a = v).catch(() => a = null);
+      const aInBackground = aPromise.then((v) => a = v).catch((): void => a = null);
 
       const abortControllerB = new AbortController();
       const bPromise = dedupe.get('foo', boolTask, abortControllerB.signal);
