@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller\ContentElement;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\ContentElement\NewContentElementController;
+use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class NewContentElementControllerTest extends UnitTestCase
@@ -344,6 +345,214 @@ final class NewContentElementControllerTest extends UnitTestCase
                 [$contentElementWizardItems, $pageTsConfigWizardItems]
             );
 
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function contentElementWizardsAreLinkedTogetherWithAfterPosition(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl']['type'] = 'CType';
+        $GLOBALS['TCA']['tt_content']['columns']['CType'] = [
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    [
+                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                        'value' => 'header',
+                        'icon' => 'content-header',
+                        'group' => 'default',
+                    ],
+                    [
+                        'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
+                        'value' => 'text',
+                        'icon' => 'content-text',
+                        'group' => 'default',
+                    ],
+                ],
+                'itemGroups' => [
+                    'default' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
+                    'lists' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
+                    'menu' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
+                    'forms' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
+                    'special' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
+                    'plugins' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
+                ],
+            ],
+        ];
+        $expected = [
+            'default.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
+                'elements.' => [
+                    'header.' => [
+                        'iconIdentifier' => 'content-header',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                        'defaultValues' => [
+                            'CType' => 'header',
+                        ],
+                    ],
+                    'text.' => [
+                        'iconIdentifier' => 'content-text',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
+                        'defaultValues' => [
+                            'CType' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+            'lists.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
+                'contentElementAfter' => 'default',
+            ],
+            'menu.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
+                'contentElementAfter' => 'lists',
+            ],
+            'forms.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
+                'contentElementAfter' => 'menu',
+            ],
+            'special.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
+                'contentElementAfter' => 'forms',
+            ],
+            'plugins.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
+                'contentElementAfter' => 'special',
+            ],
+        ];
+        $result = (new \ReflectionClass(NewContentElementController::class))
+            ->getMethod('loadAvailableWizards')
+            ->invokeArgs(
+                $this->createMock(
+                    NewContentElementController::class
+                ),
+                ['CType', false],
+            );
+        self::assertSame($expected, $result);
+    }
+
+    #[Test]
+    public function contentElementWizardsAreOrderedByContentElementAfter(): void
+    {
+        $wizards = [
+            'default.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
+                'elements.' => [
+                    'header.' => [
+                        'iconIdentifier' => 'content-header',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                        'defaultValues' => [
+                            'CType' => 'header',
+                        ],
+                    ],
+                    'text.' => [
+                        'iconIdentifier' => 'content-text',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
+                        'defaultValues' => [
+                            'CType' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+            'forms.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
+                'contentElementAfter' => [
+                    'menu.',
+                ],
+            ],
+            'menu.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
+                'contentElementAfter' => [
+                    'lists.',
+                ],
+            ],
+            'plugins.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
+                'contentElementAfter' => [
+                    'special.',
+                ],
+            ],
+            'lists.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
+                'contentElementAfter' => [
+                    'default.',
+                ],
+            ],
+            'special.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
+                'contentElementAfter' => [
+                    'forms.',
+                ],
+            ],
+        ];
+        $expected = [
+            'default.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.default',
+                'elements.' => [
+                    'header.' => [
+                        'iconIdentifier' => 'content-header',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.header.description',
+                        'defaultValues' => [
+                            'CType' => 'header',
+                        ],
+                    ],
+                    'text.' => [
+                        'iconIdentifier' => 'content-text',
+                        'title' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text',
+                        'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.text.description',
+                        'defaultValues' => [
+                            'CType' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+            'lists.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.lists',
+                'after' => [
+                    'default.',
+                ],
+            ],
+            'menu.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.menu',
+                'after' => [
+                    'lists.',
+                ],
+            ],
+            'forms.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.forms',
+                'after' => [
+                    'menu.',
+                ],
+            ],
+            'special.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.special',
+                'after' => [
+                    'forms.',
+                ],
+            ],
+            'plugins.' => [
+                'header' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:group.plugins',
+                'after' => [
+                    'special.',
+                ],
+            ],
+        ];
+        $result = (new \ReflectionClass(NewContentElementController::class))
+            ->getMethod('orderWizards')
+            ->invokeArgs(
+                $this->createMock(
+                    NewContentElementController::class
+                ),
+                [$wizards, new DependencyOrderingService()]
+            );
         self::assertSame($expected, $result);
     }
 }

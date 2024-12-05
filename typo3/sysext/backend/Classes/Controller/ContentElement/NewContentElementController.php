@@ -242,8 +242,10 @@ class NewContentElementController
         foreach ($wizards as $groupKey => $wizardGroup) {
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'before');
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
+            $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'contentElementAfter');
         }
-        foreach ($this->dependencyOrderingService->orderByDependencies($wizards) as $groupKey => $wizardGroup) {
+        $orderedWizards = $this->orderWizards($wizards, $this->dependencyOrderingService);
+        foreach ($orderedWizards as $groupKey => $wizardGroup) {
             $groupKey = rtrim($groupKey, '.');
             $groupItems = [];
             $appendWizardElements = $appendWizards[$groupKey . '.']['elements.'] ?? null;
@@ -291,7 +293,17 @@ class NewContentElementController
     {
         $fieldConfig = $GLOBALS['TCA']['tt_content']['columns'][$typeField] ?? [];
         $items = $fieldConfig['config']['items'] ?? [];
+        $itemGroups = $fieldConfig['config']['itemGroups'] ?? [];
         $groupedWizardItems = [];
+        // Auto-set positional information based on TCA itemGroups sorting.
+        $lastGroup = null;
+        foreach (array_keys($itemGroups) as $groupIdentifier) {
+            $groupedWizardItems[$groupIdentifier . '.']['header'] = $itemGroups[$groupIdentifier];
+            if ($lastGroup !== null) {
+                $groupedWizardItems[$groupIdentifier . '.']['contentElementAfter'] = $lastGroup;
+            }
+            $lastGroup = $groupIdentifier;
+        }
         foreach ($items as $item) {
             $selectItem = SelectItem::fromTcaItemArray($item);
             if ($selectItem->isDivider()) {
@@ -299,12 +311,9 @@ class NewContentElementController
             }
             $recordType = $selectItem->getValue();
             $groupIdentifier = $selectItem->getGroup();
-            if (!is_array($groupedWizardItems[$groupIdentifier . '.'] ?? null)) {
-                $groupedWizardItems[$groupIdentifier . '.'] = [
-                    'elements.' => [],
-                    'header' => $fieldConfig['config']['itemGroups'][$groupIdentifier] ?? $groupIdentifier,
-                ];
-            }
+            $groupedWizardItems[$groupIdentifier . '.']['elements.'] ??= [];
+            // In case this group is not defined in itemGroups, use the group identifier as label.
+            $groupedWizardItems[$groupIdentifier . '.']['header'] ??= $groupIdentifier;
             $itemDescription = $selectItem->getDescription();
             $wizardEntry = [
                 'iconIdentifier' => $selectItem->getIcon(),
@@ -377,6 +386,55 @@ class NewContentElementController
             $contentElementWizards[$group]['elements.'] = array_merge($contentElementWizardElements, $pluginSubTypeWizardElements);
         }
         return $contentElementWizards;
+    }
+
+    /*
+     * There are two separate ordering systems for wizard groups:
+     * 1. TCA itemGroup sorting by associative array item order.
+     * 2. PageTS defined order by "before" and "after".
+     *
+     * System 1. has a well-defined order, where every item defines "after" (linked list).
+     * Due to this, the two system cannot be combined.
+     * As soon as system 2 defines at least one "before" or "after" it takes over.
+     */
+    protected function orderWizards(array $wizards, DependencyOrderingService $dependencyOrderingService): array
+    {
+        // First round: Order by TCA defined sorting.
+        $hasAtLeastOnePositionalArgument = false;
+        foreach ($wizards as $group => $wizard) {
+            if (isset($wizard['before'])) {
+                $hasAtLeastOnePositionalArgument = true;
+                $wizards[$group]['pageTsBefore'] = $wizard['before'];
+                unset($wizards[$group]['before']);
+            }
+            if (isset($wizard['after'])) {
+                $hasAtLeastOnePositionalArgument = true;
+                $wizards[$group]['pageTsAfter'] = $wizard['after'];
+                unset($wizards[$group]['after']);
+            }
+            if (isset($wizard['contentElementAfter'])) {
+                $wizards[$group]['after'] = $wizard['contentElementAfter'];
+                unset($wizards[$group]['contentElementAfter']);
+            }
+        }
+        // No order defined by pageTS. Use TCA sorting.
+        if (!$hasAtLeastOnePositionalArgument) {
+            return $dependencyOrderingService->orderByDependencies($wizards);
+        }
+        // Override order by pageTsConfig.
+        foreach ($wizards as $group => $wizard) {
+            // Unset "after" previously set by Content Element wizards.
+            unset($wizards[$group]['after']);
+            if (isset($wizard['pageTsBefore'])) {
+                $wizards[$group]['before'] = $wizard['pageTsBefore'];
+                unset($wizards[$group]['pageTsBefore']);
+            }
+            if (isset($wizard['pageTsAfter'])) {
+                $wizards[$group]['after'] = $wizard['pageTsAfter'];
+                unset($wizards[$group]['pageTsAfter']);
+            }
+        }
+        return $dependencyOrderingService->orderByDependencies($wizards);
     }
 
     /**
