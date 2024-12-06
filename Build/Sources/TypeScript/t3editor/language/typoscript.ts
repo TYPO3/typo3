@@ -114,7 +114,7 @@ function parseCodeMirror5CompatibleCompletionState(context: CompletionContext): 
 }
 
 function extractCodemirror5StyleLineTokens(lineCount: number, context: CompletionContext): Token[][] {
-  const lineTokens = Array(lineCount).fill('').map(() => []);
+  const lineTokens = Array(lineCount).fill('').map((): Token[] => []);
 
   let lastToken = 0;
   let lineNumber = 1;
