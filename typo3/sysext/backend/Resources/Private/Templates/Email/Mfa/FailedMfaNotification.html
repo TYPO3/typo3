@@ -1,0 +1,43 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+<f:layout name="SystemEmail" />
+
+<f:section name="Subject">Attempted login using incorrect multi-factor authentication at "{typo3.sitename}"</f:section>
+<f:section name="Title">Attempted login using incorrect multi-factor authentication</f:section>
+<f:section name="Main">
+    <p>
+        TYPO3 detected a login attempt to your TYPO3 backend account using incorrect multi-factor authentication.
+    </p>
+    <table cellpadding="3">
+        <tr>
+            <td>Sitename:</td>
+            <td>{typo3.sitename} ({normalizedParams.httpHost})</td>
+        </tr>
+        <tr>
+            <td>IP Address:</td>
+            <td>{normalizedParams.remoteAddress}</td>
+        </tr>
+        <tr>
+            <td>Time:</td>
+            <td><f:format.date date="now"/> <f:format.date date="now" format="H:i:s T"/></td>
+        </tr>
+        <tr>
+            <td>MFA provider:</td>
+            <td>{f:translate(key: provider.title, default: provider.title)}</td>
+        </tr>
+    </table>
+    <p>
+        If you recently tried to sign in, but mistakenly used incorrect multi-factor authentication,
+        you can ignore this email.
+    </p>
+    <p>
+        If you did not recently try to sign in, you should immediately change your password and verify your account
+        settings for any unauthorized changes.
+    </p>
+    <p>
+        Contact your TYPO3 administrator if you notice suspicious activity.
+    </p>
+</f:section>
+</html>

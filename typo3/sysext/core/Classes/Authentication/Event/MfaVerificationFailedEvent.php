@@ -40,6 +40,11 @@ final class MfaVerificationFailedEvent extends AbstractAuthenticationFailedEvent
         return $this->propertyManager->getUser();
     }
 
+    public function getProvider(): MfaProviderManifestInterface
+    {
+        return $this->mfaProvider;
+    }
+
     public function getProviderIdentifier(): string
     {
         return $this->mfaProvider->getIdentifier();

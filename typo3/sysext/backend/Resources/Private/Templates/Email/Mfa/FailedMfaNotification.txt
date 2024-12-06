@@ -1,0 +1,19 @@
+<f:layout name="SystemEmail" />
+
+<f:section name="Subject">Attempted login using incorrect multi-factor authentication at "{typo3.sitename}"</f:section>
+<f:section name="Title">Attempted login using incorrect multi-factor authentication</f:section>
+<f:section name="Main">
+TYPO3 detected a login attempt to your TYPO3 backend account using incorrect multi-factor authentication.
+
+Sitename: {typo3.sitename} ({normalizedParams.httpHost})
+IP Address: {normalizedParams.remoteAddress}
+Time: <f:format.date date="now"/> <f:format.date date="now" format="H:i:s T"/>
+MFA provider: {f:translate(key: provider.title, default: provider.title)}
+
+If you recently tried to sign in, but mistakenly used incorrect multi-factor authentication, you can ignore this email.
+
+If you did not recently try to sign in, you should immediately change your password and verify your account
+settings for any unauthorized changes.
+
+Contact your TYPO3 administrator if you notice suspicious activity.
+</f:section>
