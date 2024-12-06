@@ -61,6 +61,19 @@ final class General extends AbstractTableHandler implements TableHandlerInterfac
         if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['crdate'])) {
             $fieldValues[$GLOBALS['TCA'][$tableName]['ctrl']['crdate']] = $this->context->getAspect('date')->get('timestamp');
         }
+
+        // Generate UUIDs for UUID columns that are not nullable
+        $uuidColumns = array_filter(
+            array_keys($GLOBALS['TCA'][$tableName]['columns']),
+            static fn(string $columnName): bool => $GLOBALS['TCA'][$tableName]['columns'][$columnName]['config']['type'] === 'uuid'
+        );
+        if ($uuidColumns !== []) {
+            $values = $this->recordData->generate($tableName, $fieldValues);
+            foreach ($uuidColumns as $uuidColumn) {
+                $fieldValues[$uuidColumn] = $values[$uuidColumn];
+            }
+        }
+
         $connection = $this->connectionPool->getConnectionForTable($tableName);
         $connection->insert($tableName, $fieldValues);
         $fieldValues['uid'] = $connection->lastInsertId();

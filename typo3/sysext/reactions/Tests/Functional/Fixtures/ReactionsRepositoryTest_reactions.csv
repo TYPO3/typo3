@@ -1,6 +1,6 @@
 sys_reaction,,,,,,,,,,,,,
 ,uid,pid,createdon,deleted,disabled,name,secret,reaction_type,table_name,fields,storage_pid,identifier,impersonate_user
-,1,0,1,0,0,Test Visual,secret1,create-record,pages,{"title":"Test ${foo}"},1,"visual-reaction-uuid",1
-,2,0,1,0,0,Random Test,anysecret,foo-reaction,pages,{"title":"Test ${foo}"},1,"foo-uuid",1
-,3,0,1,0,0,Invalid Table,secret323,table-reaction,be_users,{"title":"Test ${foo}"},1,"invalid-table",1
-,4,0,1,0,0,Invalid Feilds,secret523,fields-reaction,pages,"{}",1,"invalid-fields",1
+,1,0,1,0,0,Test Visual,secret1,create-record,pages,{"title":"Test ${foo}"},1,c6e9c385-d15b-4ae1-9302-931c78f1a458,1
+,2,0,1,0,0,Random Test,anysecret,foo-reaction,pages,{"title":"Test ${foo}"},1,0ffcf2a5-c872-4ce5-b7b0-2148d44649a1,1
+,3,0,1,0,0,Invalid Table,secret323,table-reaction,be_users,{"title":"Test ${foo}"},1,5d37024e-2af4-4323-abcd-494a9ec37927,1
+,4,0,1,0,0,Invalid Feilds,secret523,fields-reaction,pages,"{}",1,9d5167ef-d9f6-4d02-9dd3-b132e50492f1,1

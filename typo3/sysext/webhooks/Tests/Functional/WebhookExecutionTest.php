@@ -159,6 +159,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
             'record' => [
                 'pid' => 0,
                 'name' => 'test-001',
+                'identifier' => 'f2c49559-a87f-416a-9d97-31771368326b',
                 'secret' => 'some-secret-hash',
                 'webhook_type' => 'typo3/file-added',
                 'verify_ssl' => 1,
@@ -168,6 +169,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
             'expectedRow' => [
                 'pid' => 0,
                 'name' => 'test-001',
+                'identifier' => 'f2c49559-a87f-416a-9d97-31771368326b',
                 'secret' => 'some-secret-hash',
                 'webhook_type' => 'typo3/file-added',
                 'verify_ssl' => 1,
@@ -180,6 +182,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
             'record' => [
                 'pid' => 0,
                 'name' => 'test-001',
+                'identifier' => '68242dd3-9ad0-4f69-9b16-265cfcc79d14',
                 'secret' => 'some-secret-hash',
                 'webhook_type' => 'typo3/file-added',
                 'verify_ssl' => 1,
@@ -191,6 +194,7 @@ final class WebhookExecutionTest extends FunctionalTestCase
             'expectedRow' => [
                 'pid' => 0,
                 'name' => 'test-001',
+                'identifier' => '68242dd3-9ad0-4f69-9b16-265cfcc79d14',
                 'secret' => 'some-secret-hash',
                 'webhook_type' => 'typo3/file-added',
                 'verify_ssl' => 1,

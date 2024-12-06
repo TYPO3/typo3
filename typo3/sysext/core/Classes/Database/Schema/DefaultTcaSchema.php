@@ -589,10 +589,8 @@ class DefaultTcaSchema
                     case $fieldType instanceof UuidFieldType:
                         $tables[$tableName]->addColumn(
                             $this->quote($fieldName),
-                            Types::STRING,
+                            Types::GUID,
                             [
-                                'length' => 36,
-                                'default' => '',
                                 'notnull' => true,
                             ]
                         );
