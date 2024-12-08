@@ -46,7 +46,7 @@ readonly class AuthenticationStyleInformation
         $backgroundImageUri = $this->getUriForFileName($backgroundImage);
         if ($backgroundImageUri === '') {
             $this->logger->warning('The configured TYPO3 backend login background image "{image_url}" can\'t be resolved. Please check if the file exists and the extension is activated.', [
-                'image_url' => $backgroundImageUri,
+                'image_url' => $backgroundImage,
             ]);
             return '';
         }
