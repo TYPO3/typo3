@@ -274,12 +274,13 @@ class FormViewHelper extends AbstractFormViewHelper
             '@action' => $actionName,
         ];
 
+        $endingSlash = ($this->shouldUseXHtmlSlash() ? '/' : '');
         $result = LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@extension]')) . '" value="' . htmlspecialchars($extensionName) . '" />' . LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@controller]')) . '" value="' . htmlspecialchars($controllerName) . '" />' . LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@action]')) . '" value="' . htmlspecialchars($actionName) . '" />' . LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[arguments]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())), HashScope::ReferringArguments->prefix())) . '" />' . LF;
-        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@request]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(json_encode($actionRequest), HashScope::ReferringRequest->prefix())) . '" />' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@extension]')) . '" value="' . htmlspecialchars($extensionName) . '" ' . $endingSlash . '>' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@controller]')) . '" value="' . htmlspecialchars($controllerName) . '" ' . $endingSlash . '>' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@action]')) . '" value="' . htmlspecialchars($actionName) . '" ' . $endingSlash . '>' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[arguments]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(base64_encode(serialize($request->getArguments())), HashScope::ReferringArguments->prefix())) . '" ' . $endingSlash . '>' . LF;
+        $result .= '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__referrer[@request]')) . '" value="' . htmlspecialchars($this->hashService->appendHmac(json_encode($actionRequest), HashScope::ReferringRequest->prefix())) . '" ' . $endingSlash . '>' . LF;
 
         return $result;
     }
@@ -438,7 +439,7 @@ class FormViewHelper extends AbstractFormViewHelper
     {
         $formFieldNames = $this->renderingContext->getViewHelperVariableContainer()->get(FormViewHelper::class, 'formFieldNames');
         $requestHash = $this->mvcPropertyMappingConfigurationService->generateTrustedPropertiesToken($formFieldNames, $this->getFieldNamePrefix());
-        return '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__trustedProperties')) . '" value="' . htmlspecialchars($requestHash) . '" />';
+        return '<input type="hidden" name="' . htmlspecialchars($this->prefixFieldName('__trustedProperties')) . '" value="' . htmlspecialchars($requestHash) . '" ' . ($this->shouldUseXHtmlSlash() ? '/' : '') . '>';
     }
 
     protected function renderRequestTokenHiddenField(): string
@@ -481,6 +482,7 @@ class FormViewHelper extends AbstractFormViewHelper
             'name' => RequestToken::PARAM_NAME,
             'value' => $requestToken->toHashSignedJwt($signingSecret),
         ];
-        return '<input ' . GeneralUtility::implodeAttributes($attrs, true) . '/>';
+        return '<input ' . GeneralUtility::implodeAttributes($attrs, true) . ($this->shouldUseXHtmlSlash() ? '/' : '') . '>';
     }
+
 }

@@ -103,8 +103,8 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
             'No translation available, so only hreflang tags expected for default language and fallback languages' => [
                 'https://acme.com/',
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/"/>',
-                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/">',
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/">',
                 ],
                 [
                     '<link rel="alternate" hreflang="de-DE"',
@@ -113,81 +113,81 @@ final class HrefLangGeneratorTest extends FunctionalTestCase
             'English page, with German translation' => [
                 'https://acme.com/hello',
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello"/>',
-                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen"/>',
-                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello">',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen">',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello">',
                 ],
                 [],
             ],
             'German page, with English translation and English default' => [
                 'https://acme.com/de/willkommen',
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello"/>',
-                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen"/>',
-                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello">',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen">',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello">',
                 ],
                 [],
             ],
             'English page, with German and Dutch translation, without Dutch hreflang config' => [
                 'https://acme.com/hello',
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello"/>',
-                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen"/>',
-                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello">',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen">',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello">',
                 ],
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/nl/welkom"/>',
-                    '<link rel="alternate" hreflang="" href="https://acme.com/nl/welkom"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/nl/welkom">',
+                    '<link rel="alternate" hreflang="" href="https://acme.com/nl/welkom">',
                 ],
             ],
             'Dutch page, with German and English translation, without Dutch hreflang config' => [
                 'https://acme.com/hello',
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello"/>',
-                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen"/>',
-                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/hello">',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/willkommen">',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/hello">',
                 ],
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/nl/welkom"/>',
-                    '<link rel="alternate" hreflang="" href="https://acme.com/nl/welkom"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/nl/welkom">',
+                    '<link rel="alternate" hreflang="" href="https://acme.com/nl/welkom">',
                 ],
             ],
             'English page with canonical' => [
                 'https://acme.com/contact',
                 [
-                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/kontakt"/>',
-                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/kontakt"/>',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/kontakt">',
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/kontakt">',
                 ],
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/contact"/>',
-                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/contact"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/contact">',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/contact">',
                 ],
             ],
             'Swiss german page with canonical' => [
                 'https://acme.com/de-ch/uber',
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/about"/>',
-                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/about"/>',
-                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/uber"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/about">',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/about">',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/uber">',
                 ],
                 [
-                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/uber"/>',
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/uber">',
                 ],
             ],
             'Swiss german page with fallback to German, without content' => [
                 'https://acme.com/de-ch/produkte',
                 [
-                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/products"/>',
-                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/products"/>',
-                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/produkte"/>',
-                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/produkte"/>',
+                    '<link rel="alternate" hreflang="en-US" href="https://acme.com/products">',
+                    '<link rel="alternate" hreflang="x-default" href="https://acme.com/products">',
+                    '<link rel="alternate" hreflang="de-DE" href="https://acme.com/de/produkte">',
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/produkte">',
                 ],
                 [],
             ],
             'Languages with fallback should have hreflang even when page record is not translated, strict languages without translations shouldnt' => [
                 'https://acme.com/hello',
                 [
-                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/willkommen"/>',
+                    '<link rel="alternate" hreflang="de-CH" href="https://acme.com/de-ch/willkommen">',
                 ],
                 [
                     '<link rel="alternate" hreflang="fr-FR"',

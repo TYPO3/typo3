@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -39,6 +40,7 @@ readonly class CanonicalGenerator
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
+        private PageRenderer $pageRenderer,
     ) {}
 
     public function generate(array $params): string
@@ -80,7 +82,7 @@ readonly class CanonicalGenerator
             $canonical = '<link ' . GeneralUtility::implodeAttributes([
                 'rel' => 'canonical',
                 'href' => $href,
-            ], true) . '/>' . LF;
+            ], true) . ($this->pageRenderer->getDocType()->isXmlCompliant() ? '/' : '') . '>' . LF;
             $request->getAttribute('frontend.controller')->additionalHeaderData[] = $canonical;
             return $canonical;
         }
