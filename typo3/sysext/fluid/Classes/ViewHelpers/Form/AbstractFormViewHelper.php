@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
@@ -34,10 +35,16 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
 {
     protected PersistenceManagerInterface $persistenceManager;
+    protected PageRenderer $pageRenderer;
 
     public function injectPersistenceManager(PersistenceManagerInterface $persistenceManager): void
     {
         $this->persistenceManager = $persistenceManager;
+    }
+
+    public function injectPageRenderer(PageRenderer $pageRenderer): void
+    {
+        $this->pageRenderer = $pageRenderer;
     }
 
     /**
@@ -91,7 +98,8 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
         $name = $this->prefixFieldName($name ?? '') . '[__identity]';
         $this->registerFieldNameForFormTokenGeneration($name);
 
-        return LF . '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars((string)$identifier) . '" />' . LF;
+        $endingSlash = ($this->shouldUseXHtmlSlash() ? '/' : '');
+        return LF . '<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars((string)$identifier) . '" ' . $endingSlash . '>' . LF;
     }
 
     /**
@@ -107,5 +115,10 @@ abstract class AbstractFormViewHelper extends AbstractTagBasedViewHelper
         }
         $formFieldNames[] = $fieldName;
         $viewHelperVariableContainer->addOrUpdate(FormViewHelper::class, 'formFieldNames', $formFieldNames);
+    }
+
+    protected function shouldUseXHtmlSlash(): bool
+    {
+        return $this->pageRenderer->getDocType()->isXmlCompliant();
     }
 }

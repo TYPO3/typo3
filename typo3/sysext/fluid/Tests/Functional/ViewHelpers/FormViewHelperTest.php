@@ -53,7 +53,7 @@ final class FormViewHelperTest extends FunctionalTestCase
                     'fieldNamePrefix' => 'fieldNamePrefix<>&"\'',
                 ],
                 // first element having "@extension" in name attribute
-                '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" />',
+                '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" >',
             ],
             '#2' => [
                 '{f:form(action:action, method:method, fieldNamePrefix:fieldNamePrefix)}',
@@ -63,7 +63,7 @@ final class FormViewHelperTest extends FunctionalTestCase
                     'fieldNamePrefix' => 'fieldNamePrefix<>&"\'',
                 ],
                 // first element having "@extension" in name attribute
-                '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" />',
+                '<input type="hidden" name="fieldNamePrefix&lt;&gt;&amp;&quot;&#039;[__referrer][@extension]" value="" >',
             ],
         ];
     }
@@ -97,7 +97,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
+        $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" >';
         self::assertStringContainsString($expected, $view->render());
     }
 
@@ -145,7 +145,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<input type="hidden" name="prefix[formName][__identity]" value="123" />';
+        $expected = '<input type="hidden" name="prefix[formName][__identity]" value="123" >';
         self::assertStringContainsString($expected, $view->render());
     }
 
@@ -160,7 +160,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
         $view = new TemplateView($context);
         $view->assign('object', $extendsAbstractEntity);
-        $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />';
+        $expected = '<input type="hidden" name="prefix[myObjectName][__identity]" value="123" >';
         self::assertStringContainsString($expected, $view->render());
     }
 
@@ -212,14 +212,14 @@ final class FormViewHelperTest extends FunctionalTestCase
         $view->assign('object', $extendsAbstractEntity);
         $expected = '<form action="" method="post">
 <div>
-<input type="hidden" name="prefix[myObjectName][__identity]" value="123" />
+<input type="hidden" name="prefix[myObjectName][__identity]" value="123" >
 
-<input type="hidden" name="prefix[__referrer][@extension]" value="extensionName" />
-<input type="hidden" name="prefix[__referrer][@controller]" value="controllerName" />
-<input type="hidden" name="prefix[__referrer][@action]" value="controllerActionName" />
-<input type="hidden" name="prefix[__referrer][arguments]" value="YTowOnt99e84bd507db45be875f9238be42d954813180d05" />
-<input type="hidden" name="prefix[__referrer][@request]" value="{&quot;@extension&quot;:&quot;extensionName&quot;,&quot;@controller&quot;:&quot;controllerName&quot;,&quot;@action&quot;:&quot;controllerActionName&quot;}d5e7bc06c14881c8fe6f373c2236c4b62d13465c" />
-<input type="hidden" name="prefix[__trustedProperties]" value="{&quot;myObjectName&quot;:{&quot;__identity&quot;:1}}9e6686e8fe21e9b4d3f5a89a66fed4193f4758b4" />
+<input type="hidden" name="prefix[__referrer][@extension]" value="extensionName" >
+<input type="hidden" name="prefix[__referrer][@controller]" value="controllerName" >
+<input type="hidden" name="prefix[__referrer][@action]" value="controllerActionName" >
+<input type="hidden" name="prefix[__referrer][arguments]" value="YTowOnt99e84bd507db45be875f9238be42d954813180d05" >
+<input type="hidden" name="prefix[__referrer][@request]" value="{&quot;@extension&quot;:&quot;extensionName&quot;,&quot;@controller&quot;:&quot;controllerName&quot;,&quot;@action&quot;:&quot;controllerActionName&quot;}d5e7bc06c14881c8fe6f373c2236c4b62d13465c" >
+<input type="hidden" name="prefix[__trustedProperties]" value="{&quot;myObjectName&quot;:{&quot;__identity&quot;:1}}9e6686e8fe21e9b4d3f5a89a66fed4193f4758b4" >
 </div>
 </form>';
         self::assertSame($expected, $view->render());

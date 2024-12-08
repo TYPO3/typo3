@@ -80,23 +80,23 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
         return [
             'uid: 1 with canonical_link' => [
                 'http://localhost/',
-                '<link rel="canonical" href="http://localhost/"/>' . chr(10),
+                '<link rel="canonical" href="http://localhost/">' . chr(10),
             ],
             'uid: 2 with canonical_link' => [
                 'http://localhost/dummy-1-2',
-                '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10),
+                '<link rel="canonical" href="http://localhost/dummy-1-2">' . chr(10),
             ],
             'uid: 3 with canonical_link AND content_from_pid = 2' => [
                 'http://localhost/dummy-1-3',
-                '<link rel="canonical" href="http://localhost/dummy-1-3"/>' . chr(10),
+                '<link rel="canonical" href="http://localhost/dummy-1-3">' . chr(10),
             ],
             'uid: 4 without canonical_link AND content_from_pid = 2' => [
                 'http://localhost/dummy-1-4',
-                '<link rel="canonical" href="http://localhost/dummy-1-2"/>' . chr(10),
+                '<link rel="canonical" href="http://localhost/dummy-1-2">' . chr(10),
             ],
             'uid: 5 without canonical_link AND without content_from_pid set' => [
                 'http://localhost/dummy-1-2-5',
-                '<link rel="canonical" href="http://localhost/dummy-1-2-5"/>' . chr(10),
+                '<link rel="canonical" href="http://localhost/dummy-1-2-5">' . chr(10),
             ],
             'uid: 8 without canonical_link AND content_from_pid = 9 (but target page is hidden) results in no canonical' => [
                 'http://localhost/dummy-1-2-8',
@@ -108,19 +108,19 @@ final class CanonicalGeneratorTest extends FunctionalTestCase
             ],
             'uid: 11 with mount_pid_ol = 0' => [
                 'http://localhost/dummy-1-2-11',
-                '<link rel="canonical" href="http://localhost/dummy-1-2-11"/>' . chr(10),
+                '<link rel="canonical" href="http://localhost/dummy-1-2-11">' . chr(10),
             ],
             'uid: 12 with mount_pid_ol = 1' => [
                 'http://localhost/dummy-1-2-12',
-                '<link rel="canonical" href="http://example.com/"/>' . chr(10),
+                '<link rel="canonical" href="http://example.com/">' . chr(10),
             ],
             'subpage of page with mount_pid_ol = 0' => [
                 'http://localhost/dummy-1-2-11/subpage-of-new-root',
-                '<link rel="canonical" href="http://example.com/subpage-of-new-root"/>' . chr(10),
+                '<link rel="canonical" href="http://example.com/subpage-of-new-root">' . chr(10),
             ],
             'subpage of page with mount_pid_ol = 1' => [
                 'http://localhost/dummy-1-2-12/subpage-of-new-root',
-                '<link rel="canonical" href="http://example.com/subpage-of-new-root"/>' . chr(10),
+                '<link rel="canonical" href="http://example.com/subpage-of-new-root">' . chr(10),
             ],
             'mountpoint to page without siteroot' => [
                 'http://localhost/dummy-1-2-13',
