@@ -46,7 +46,7 @@ export class SelectTreeToolbar extends LitElement {
           <span class="input-group-text input-group-icon filter">
             <typo3-backend-icon identifier="actions-filter" size="small"></typo3-backend-icon>
           </span>
-          <input type="text" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
+          <input type="search" class="form-control ${this.settings.searchInput}" placeholder="${lll('tcatree.findItem')}" @input="${(evt: InputEvent) => this.filter(evt)}">
         </div>
         <div class="btn-group">
           <button type="button" class="btn btn-default ${this.settings.expandAllBtn}" title="${lll('tcatree.expandAll')}" @click="${() => this.expandAll()}">
