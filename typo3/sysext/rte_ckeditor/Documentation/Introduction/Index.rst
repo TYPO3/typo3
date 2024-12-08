@@ -1,14 +1,14 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _introduction:
+..  _introduction:
 
 ============
 Introduction
 ============
 
 
-.. _what-it-does:
+..  _what-it-does:
 
 What does it do?
 ================
@@ -22,10 +22,10 @@ backend or frontend (if frontend editing is used). Rich text fields are
 fields which may contain text with markup, for example for adding a style
 such as bold, using lists or enumerations, headlines or adding links.
 
-.. figure:: images/example_textfield.png
-   :class: with-shadow
+..  figure:: images/example_textfield.png
+    :class: with-shadow
 
-   Editing a textfield in the backend with rte_ckeditor.
+    Editing a textfield in the backend with rte_ckeditor.
 
 CKEditor is a :abbr:`WYSIWYG (what you see is what you get)` editor mostly written
 in JavaScript, and is used in many systems due to its flexibility. There are hundreds
@@ -44,21 +44,19 @@ within an extension called `rte_ckeditor`.
 
 With TYPO3 v12, CKEditor 4 has been updated to CKEditor 5.
 
-.. _features:
+..  _features:
 
 Features
 ========
-
 
 The extension `rte_ckeditor` incorporates the features of CKEditor and adds
 additional functionality, configuration presets and plugins.
 
 Some examples of features:
 
-* Configurable via YAML files
-* Configuration presets (minimal, default, full) for TYPO3
-* Toolbar customization
-* Link functionality: integration with TYPO3 link wizard
-* Wordcount: plugin that counts and shows the chars/words/paragraphs in
-  the footer of the editor. It also supports limiting the max. amount of chars/words.
-
+*   Configurable via YAML files
+*   Configuration presets (minimal, default, full) for TYPO3
+*   Toolbar customization
+*   Link functionality: integration with TYPO3 link wizard
+*   Wordcount: plugin that counts and shows the chars/words/paragraphs in
+    the footer of the editor. It also supports limiting the max. amount of chars/words.

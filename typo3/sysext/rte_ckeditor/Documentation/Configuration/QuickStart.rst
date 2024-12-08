@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _config-quickstart:
+..  _config-quickstart:
 
 ========================
 Configuration Quickstart
@@ -20,16 +20,16 @@ To view the existing RTE presets in the "Global Configuration", go to
 :guilabel:`$GLOBALS['TYPO3_CONF_VARS'] (Global Configuration)` and select
 :guilabel:`RTE`:
 
-.. figure:: images/global-configuration-rte.png
-   :class: with-shadow
+..  figure:: images/global-configuration-rte.png
+    :class: with-shadow
 
-   Global Configuration: RTE > Presets
+    Global Configuration: RTE > Presets
 
 By default, TYPO3 is shipped with three configuration presets:
 
-* default
-* full
-* minimal
+*   default
+*   full
+*   minimal
 
 Minimal Example
 ===============
@@ -41,22 +41,22 @@ configuration is done in a custom sitepackage extension, see also
 Override the configuration preset "default" by adding this in :file:`<my_extension>/ext_localconf.php`
 (replace `my_extension` with your extension key):
 
-.. code-block:: php
+..  code-block:: php
 
-   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:my_extension/Configuration/RTE/Default.yaml';
+    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:my_extension/Configuration/RTE/Default.yaml';
 
 Add the file :file:`Configuration/RTE/Default.yaml` to your extension, use the file
 :t3src:`rte_ckeditor/Configuration/RTE/Full.yaml` as example.
 
 We explain the example :file:`Minimal.yaml` from the Core:
 
-.. literalinclude:: _Quickstart/_Minimal.yaml
-   :language: yaml
-   :caption: EXT:rte_ckeditor/Configuration/RTE/Minimal.yaml
-   :linenos:
+..  literalinclude:: _Quickstart/_Minimal.yaml
+    :language: yaml
+    :caption: EXT:rte_ckeditor/Configuration/RTE/Minimal.yaml
+    :linenos:
 
 line #2
-   Imports existing files to make basic parts reusable and improve structure of configuration
+    Imports existing files to make basic parts reusable and improve structure of configuration
 
 line #9 toolbar
-   See `toolbar <https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html>`__
+    See `toolbar <https://ckeditor.com/docs/ckeditor5/latest/features/toolbar/toolbar.html>`__

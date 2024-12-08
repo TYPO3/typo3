@@ -1,7 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-
-.. _config-concepts:
+..  _config-concepts:
 
 ======================
 Configuration Concepts
@@ -20,30 +19,29 @@ embedded in the TYPO3 core and not specific to `rte_ckeditor`.
 There are three main parts relevant for rich text editing with TYPO3:
 
 Editor configuration
-   This covers how the actual editor (in this case CKEditor) should behave,
-   what buttons should be shown, what options are available.
+    This covers how the actual editor (in this case CKEditor) should behave,
+    what buttons should be shown, what options are available.
 
 RTE transformations
-   This defines how the information is processed when saved from the Rich Text Editor to the database.
-   And when loaded from the database into the Rich Text Editor.
+    This defines how the information is processed when saved from the Rich Text Editor to the database.
+    And when loaded from the database into the Rich Text Editor.
 
 Frontend output configuration
-   The information fetched from the database may need to be processed for the frontend.
-   The configuration of the frontend output is configured via TypoScript.
+    The information fetched from the database may need to be processed for the frontend.
+    The configuration of the frontend output is configured via TypoScript.
 
-.. todo: diagram: overview with DB <-> RTE, DB -> FE etc.
+..  todo: diagram: overview with DB <-> RTE, DB -> FE etc.
 
 This section mainly covers editor configuration and RTE transformations, as for
 TypoScript the TypoScript reference handles output of HTML content and
 has everything preset (see :ref:`t3tsref:parsefunc`).
 
 
-.. tip::
+..  tip::
+    Before you start, have a look at the :ref:`config-best-practices`.
 
-   Before you start, have a look at the :ref:`config-best-practices`.
 
-
-.. _config-editor:
+..  _config-editor:
 
 Editor Configuration
 ====================
@@ -58,36 +56,36 @@ can be used.
 YAML Basics
 ~~~~~~~~~~~
 
-* YAML is case sensitive
-* Indenting level reflects hierarchy level and indenting must be used consistently
-  (indent with 2 spaces in `rte_ckeditor` configuration).
-* Comments begin with a `#`.
-* White space is important, use a space after `:`.
+*   YAML is case sensitive
+*   Indenting level reflects hierarchy level and indenting must be used consistently
+    (indent with 2 spaces in `rte_ckeditor` configuration).
+*   Comments begin with a `#`.
+*   White space is important, use a space after `:`.
 
 This is a dictionary (associative array)::
 
-   key1: value
-   key2: value
+    key1: value
+    key2: value
 
 A dictionary can be nested, for example::
 
-   key1:
-     key1-2: value
+    key1:
+      key1-2: value
 
 This is a list::
 
-   - list item 1
-   - list item 2
+    - list item 1
+    - list item 2
 
 A dictionary can be combined with a list::
 
-   key:
-     key2:
-       - item 1
-       - item 2
+    key:
+      key2:
+        - item 1
+        - item 2
 
 
-.. _configuration-presets:
+..  _configuration-presets:
 
 Configuration Presets
 ---------------------
@@ -105,16 +103,16 @@ Registration of a preset happens within :file:`system/config.php`,
 :file:`system/additional.php` or within
 :file:`ext_localconf.php` of an extension:
 
-.. code-block:: php
+..  code-block:: php
 
-   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:rte_ckeditor/Configuration/RTE/Default.yaml';
+    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:rte_ckeditor/Configuration/RTE/Default.yaml';
 
 This way, it is possible to override the default preset, for example by using
 the configuration defined in a custom extension:
 
-.. code-block:: php
+..  code-block:: php
 
-   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:my_extension/Configuration/RTE/Default.yaml';
+    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:my_extension/Configuration/RTE/Default.yaml';
 
 
 TYPO3 uses the “default” preset for all Rich-Text-Element fields. To use
@@ -126,24 +124,25 @@ configuration of a field. The following example shows the TCA configuration
 for the sys_news database table, which can be found in
 :file:`EXT:core/Configuration/TCA/sys_news.php`.
 
-.. code-block:: php
+..  code-block:: php
 
-   'content' => [
-      'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.text',
-      'config' => [
-         'type' => 'text',
-         'cols' => 48,
-         'rows' => 5,
-         'enableRichtext' => true,
-         'richtextConfiguration' => 'default',
-      ],
+    'content' => [
+        'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.text',
+        'config' => [
+            'type' => 'text',
+            'cols' => 48,
+            'rows' => 5,
+            'enableRichtext' => true,
+            'richtextConfiguration' => 'default',
+        ],
+    ],
 
 Enabling Rich Text Parsing itself is done via :ref:`t3tca:confval-text-enablerichtext`,
 and a specific configuration
 can be set via :ref:`t3tca:confval-text-richtextConfiguration`, setting it to for example
 “news”.
 
-.. _override-configuration-via-page-tsconfig:
+..  _override-configuration-via-page-tsconfig:
 
 Overriding Configuration via page TSconfig
 ------------------------------------------
@@ -154,22 +153,22 @@ to override this information via page TSconfig.
 The option :typoscript:`RTE.default.preset = news` can also be set on a per-field
 and per-type basis:
 
-.. code-block:: typoscript
-   :caption: EXT:my_sitepackage/Configuration/page.tsconfig
-   :linenos:
+..  code-block:: typoscript
+    :caption: EXT:my_sitepackage/Configuration/page.tsconfig
+    :linenos:
 
-   # per-field
-   RTE.config.tt_content.bodytext.preset = minimal
+    # per-field
+    RTE.config.tt_content.bodytext.preset = minimal
 
-   # per-type
-   RTE.config.tt_content.bodytext.types.bullets.preset = bullets
+    # per-type
+    RTE.config.tt_content.bodytext.types.bullets.preset = bullets
 
 line #2
-   This sets the "minimal" preset for all bodytext fields of content elements.
+    This sets the "minimal" preset for all bodytext fields of content elements.
 
 line #4
-   This sets the "bullets" preset for all bodytext fields of content elements,
-   with Content Type “Bullet list” (CType=bullets).
+    This sets the "bullets" preset for all bodytext fields of content elements,
+    with Content Type “Bullet list” (CType=bullets).
 
 Of course, any other specific option set via YAML can be overridden via Page TSconfig as well:
 
@@ -177,24 +176,24 @@ Specific options set via YAML can be overridden via page TSconfig as well - but
 be aware that boolean values can not be set, and arrays are not merged but
 overridden.
 
-.. code-block:: typoscript
-   :caption: EXT:my_sitepackage/Configuration/page.tsconfig
+..  code-block:: typoscript
+    :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
-   # Restrict format_tags to h2 in bodytext field of content elements
-   RTE.config.tt_content.bodytext.editor.config.format_tags = h2
+    # Restrict format_tags to h2 in bodytext field of content elements
+    RTE.config.tt_content.bodytext.editor.config.format_tags = h2
 
 The loading order for configuration is:
 
-#. ``preset`` defined for a specific field via PageTS
-#. ``richtextConfiguration`` defined for a specific field via TCA
-#. general preset defined via page TSconfig
-#. ``default``
+#.  ``preset`` defined for a specific field via PageTS
+#.  ``richtextConfiguration`` defined for a specific field via TCA
+#.  general preset defined via page TSconfig
+#.  ``default``
 
 
 For more examples, see :ref:`t3tsref:pageTsRte` in "TSconfig Reference".
 
 
-.. _config-rte-transformations:
+..  _config-rte-transformations:
 
 RTE Transformations
 ===================
@@ -211,7 +210,7 @@ Transformations from the RTE towards the database can filter out HTML tags or at
 You can read more about
 :ref:`RTE Transformations in TYPO3 Explained <t3coreapi:transformations-introduction>`.
 
-.. todo: diagram rte -> DB -> RTE
+..  todo: diagram rte -> DB -> RTE
 
 A Brief Dive Into History
 -------------------------
@@ -243,7 +242,7 @@ Transformations for invalid links and images (still available in HtmlArea) are s
 Most logic related to transformations can be found within :php:`TYPO3\CMS\Core\Html\RteHtmlParser`.
 
 
-.. _transformations-vs-acf:
+..  _transformations-vs-acf:
 
 Transformations vs. CKEditor’s Advanced Content Filter
 ------------------------------------------------------
@@ -270,7 +269,7 @@ cleans content right away which was e.g. copy-pasted from MS Word and does not
 match the allowed tags.
 
 
-.. _config-frontend:
+..  _config-frontend:
 
 Frontend Output Configuration
 =============================
@@ -286,7 +285,7 @@ There are, of course, more options to it, like default “target” attributes f
 external links or spam-protecting links to email addresses, which all happens within the
 typolink logic, the master for generating a link in the TYPO3 Frontend rendering process.
 
-.. todo: [DIAGRAM DB => FE]
+..  todo: [DIAGRAM DB => FE]
 
 
 TypoScript
@@ -299,22 +298,22 @@ Content comes :typoscript:`lib.parseFunc` and :typoscript:`lib.parseFunc_RTE` wh
 support for parsing :html:`<a>` and :html:`<link>` tags and dumping them into the typolink
 functionality. The shipped TypoScript code looks like this:
 
-.. code-block:: typoscript
+..  code-block:: typoscript
 
-   lib.parseFunc.tags {
+    lib.parseFunc.tags {
       a = TEXT
       a {
-         current = 1
-         typolink {
-            parameter.data = parameters:href
-            title.data = parameters:title
-            ATagParams.data = parameters:allParams
-            target.data = parameters:target
-            extTarget = {$styles.content.links.extTarget}
-            extTarget.override.data = parameters:target
-         }
+        current = 1
+        typolink {
+          parameter.data = parameters:href
+          title.data = parameters:title
+          ATagParams.data = parameters:allParams
+          target.data = parameters:target
+          extTarget = {$styles.content.links.extTarget}
+          extTarget.override.data = parameters:target
+        }
       }
-   }
+    }
 
 
 If you already use Fluid Styled Content and CSS Styled Content and
@@ -334,8 +333,8 @@ You can check if this TypoScript snippet is loaded by using
 :guilabel:`Web > TypoScript` and use the TypoScript Tree (Setup)
 to see if :typoscript:`lib.parseFunc_RTE` is filled.
 
-.. todo: [SCREENSHOT of TSOB having lib.parseFunc_RTE open]
+..  todo: [SCREENSHOT of TSOB having lib.parseFunc_RTE open]
 
-.. important::
-   Take care of where you add opening and closing tags, if you don't use the fluid inline notation.
-   If they are on an own line, the rendered output includes empty paragraphs at beginning and end.
+..  important::
+    Take care of where you add opening and closing tags, if you don't use the fluid inline notation.
+    If they are on an own line, the rendered output includes empty paragraphs at beginning and end.
