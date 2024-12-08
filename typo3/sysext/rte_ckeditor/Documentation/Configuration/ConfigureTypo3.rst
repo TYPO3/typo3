@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
-.. highlight:: typoscript
+..  include:: /Includes.rst.txt
+..  highlight:: typoscript
 
-.. _config-typo3:
+..  _config-typo3:
 
 ==========================
 TYPO3 Configuration Basics
@@ -14,7 +14,7 @@ skip this part and continue reading
 
 We only cover configuration methods that are used to configure `rte_ckeditor`.
 
-.. _config-typo3-page-tsconfig:
+..  _config-typo3-page-tsconfig:
 
 Page TSconfig
 =============
@@ -33,20 +33,20 @@ Page TSconfig can be used to change:
 
 #.  Default preset::
 
-      RTE.default.preset = full
+        RTE.default.preset = full
 
-#. Override for one field (:typoscript:`RTE.config.[tableName].[fieldName].preset`)::
+#.  Override for one field (:typoscript:`RTE.config.[tableName].[fieldName].preset`)::
 
-      RTE.config.tt_content.bodytext.preset = myCustomPreset
-      RTE.config.tx_news_domain_model_news.bodytext.preset = minimal
+        RTE.config.tt_content.bodytext.preset = myCustomPreset
+        RTE.config.tx_news_domain_model_news.bodytext.preset = minimal
 
-#. Override for one field defined in flexform (:typoscript:`RTE.config.[tableName].[flexForm\.field\.name].preset`)::
+#.  Override for one field defined in flexform (:typoscript:`RTE.config.[tableName].[flexForm\.field\.name].preset`)::
 
-      RTE.config.tt_content.settings\.notifications\.emailText.preset = myCustomPreset
+        RTE.config.tt_content.settings\.notifications\.emailText.preset = myCustomPreset
 
-#. Override for one field, if type matches (:typoscript:`RTE.config.[tableName].[fieldName].types.[type].preset`)::
+#.  Override for one field, if type matches (:typoscript:`RTE.config.[tableName].[fieldName].types.[type].preset`)::
 
-      RTE.config.tt_content.bodytext.types.textmedia.preset = minimal
+        RTE.config.tt_content.bodytext.types.textmedia.preset = minimal
 
 
 How to change values
@@ -56,7 +56,7 @@ See the :ref:`Page TSconfig reference,
 chapter Setting Page TSconfig <t3tsref:setting-page-tsconfig>`. This chapter
 also expains how to verify the settings.
 
-.. _config-typo3-global-configuration:
+..  _config-typo3-global-configuration:
 
 Global Configuration
 ====================
@@ -85,14 +85,14 @@ cannot be configured in the backend.
 
 You must either configure this in:
 
-#. The file :file:`%config-dir%/system/additional.php`
-#. Or in an extension in the file :file:`EXT:<extkey>/ext_localconf.php`
+#.  The file :file:`%config-dir%/system/additional.php`
+#.  Or in an extension in the file :file:`EXT:<extkey>/ext_localconf.php`
 
-.. code-block:: php
+..  code-block:: php
 
-   if (empty($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myCustomPreset'])) {
-       $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myCustomPreset'] = 'EXT:<extkey>/Configuration/RTE/MyCustomPreset.yaml';
-   }
+    if (empty($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myCustomPreset'])) {
+        $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myCustomPreset'] = 'EXT:<extkey>/Configuration/RTE/MyCustomPreset.yaml';
+    }
 
 
 How to view settings
@@ -101,14 +101,14 @@ How to view settings
 You can view the Global Configuration in
 :guilabel:`System > Configuration > $GLOBAL['TYPO3_CONF_VARS'] (Global Configuration) > RTE`.
 
-.. figure:: images/global-configuration-rte.png
-   :class: with-shadow
+..  figure:: images/global-configuration-rte.png
+    :class: with-shadow
 
-   Global Configuration: RTE > Presets
+    Global Configuration: RTE > Presets
 
 
 
-.. _config-typo3-yaml:
+..  _config-typo3-yaml:
 
 YAML
 ====
@@ -128,7 +128,7 @@ This is done directly in the file. The YAML file should be included in a
 sitepackage extension, see :ref:`best-practice-sitepackage`.
 
 
-.. _config-typo3-tca:
+..  _config-typo3-tca:
 
 CKEditor related TCA configuration
 ==================================
@@ -163,7 +163,7 @@ find that neither `enableRichtext`, nor `richtextConfiguration` is set here. The
 are configured in :guilabel:`tt_content > types` for various content types, for example
 look at :guilabel:`tt_content > types > text > columnsOverrides`.
 
-.. figure:: images/column_overrides.png
-   :class: with-shadow
+..  figure:: images/column_overrides.png
+    :class: with-shadow
 
-   TCA: tt_content > types > text > columnsOverrides > bodytext
+    TCA: tt_content > types > text > columnsOverrides > bodytext

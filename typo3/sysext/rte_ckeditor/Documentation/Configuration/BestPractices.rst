@@ -1,13 +1,13 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _config-best-practices:
+..  _config-best-practices:
 
 ============================
 Configuration Best Practices
 ============================
 
-.. _best-practice-sitepackage:
+..  _best-practice-sitepackage:
 
 Use a Sitepackage extension
 ===========================
@@ -26,17 +26,17 @@ The YAML preset files should be kept in folder
 RTE configurations need to be registered in your sitepackages
 :file:`ext_localconf.php`:
 
-.. code-block:: php
-   :caption: EXT:my_sitepackage/ext_localconf.php
+..  code-block:: php
+    :caption: EXT:my_sitepackage/ext_localconf.php
 
-   $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myconfig']
-      = 'EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml';
+    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myconfig']
+        = 'EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml';
 
-.. note::
-   It is possible but not recommended to define this setting in the projects
-   :file:`system/settings.php` or :file:`system/additional.php`
+..  note::
+    It is possible but not recommended to define this setting in the projects
+    :file:`system/settings.php` or :file:`system/additional.php`
 
-.. _best-practice-boilerplate:
+..  _best-practice-boilerplate:
 
 Use TYPO3’s Core Default.yaml as boilerplate
 ============================================
@@ -62,13 +62,13 @@ Use Core includes
 It is recommended to use the following includes at the top of your custom
 configuration:
 
-.. code-block:: yaml
-   :caption: EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml
+..  code-block:: yaml
+    :caption: EXT:my_sitepackage/Configuration/RTE/MyConfiguration.yaml
 
-   imports:
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
-       - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
+    imports:
+      - { resource: "EXT:rte_ckeditor/Configuration/RTE/Processing.yaml" }
+      - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml" }
+      - { resource: "EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml" }
 
 If you started out by copying this extensions
 :ref:`Default.yaml as boilerplate <best-practice-boilerplate>` the imports

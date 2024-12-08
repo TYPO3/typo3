@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _configuration:
+..  _configuration:
 
 =============
 Configuration
@@ -11,12 +11,12 @@ You can use the shipped configuration and everything will work as preconfigured
 (using the "default" preset).
 
 
-.. toctree::
+..  toctree::
 
-   QuickStart
-   ConfigureTypo3
-   Concepts
-   BestPractices
-   Examples
-   Reference
+    QuickStart
+    ConfigureTypo3
+    Concepts
+    BestPractices
+    Examples
+    Reference
 
