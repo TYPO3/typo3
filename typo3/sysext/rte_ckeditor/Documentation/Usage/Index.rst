@@ -1,7 +1,7 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 
-.. _usage:
+..  _usage:
 
 ===========
 Basic Usage
@@ -25,8 +25,8 @@ Example: Use bold
 
 Select text and click on the **B** (for bold) button:
 
-.. image:: images/rte_bold.png
-   :class: with-shadow
+..  image:: images/rte_bold.png
+    :class: with-shadow
 
 
 Example: Create a link
@@ -34,5 +34,5 @@ Example: Create a link
 
 Select text and click on the Link button:
 
-.. image:: images/rte_link.png
-   :class: with-shadow
+..  image:: images/rte_link.png
+    :class: with-shadow
