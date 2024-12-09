@@ -68,14 +68,13 @@ class ElementBrowser extends AbstractNode
 
         // Check against inline uniqueness - Create some onclick js for delete control and element browser
         // to override record selection in some FAL scenarios - See 'appearance' docs of group element
-        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $objectPrefix = '';
         if (($this->data['isInlineChild'] ?? false)
             && ($this->data['inlineParentUid'] ?? false)
             && ($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
             && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $fieldName
         ) {
-            $objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $table;
+            $objectPrefix = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($this->data['inlineStructure'], $this->data['inlineFirstPid']) . '-' . $table;
         }
 
         if ($type === 'group') {

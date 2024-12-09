@@ -68,12 +68,10 @@ class FileReferenceContainer extends AbstractContainer
 
     public function render(): array
     {
-        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-
         // Send a mapping information to the browser via JSON:
         // e.g. data[<curTable>][<curId>][<curField>] => data-<pid>-<parentTable>-<parentId>-<parentField>-<curTable>-<curId>-<curField>
-        $formPrefix = $this->inlineStackProcessor->getCurrentStructureFormPrefix();
-        $domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $formPrefix = $this->inlineStackProcessor->getFormPrefixFromStructure($this->data['inlineStructure']);
+        $domObjectId = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($this->data['inlineStructure'], $this->data['inlineFirstPid']);
 
         $this->fileReferenceData = $this->data['inlineData'];
         $this->fileReferenceData['map'][$formPrefix] = $domObjectId;
@@ -185,7 +183,7 @@ class FileReferenceContainer extends AbstractContainer
     {
         $data['tabAndInlineStack'][] = [
             'inline',
-            $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($data['inlineFirstPid'])
+            $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($this->data['inlineStructure'], $data['inlineFirstPid'])
             . '-'
             . $data['tableName']
             . '-'
@@ -213,7 +211,7 @@ class FileReferenceContainer extends AbstractContainer
             $recordTitle = '<em>[' . htmlspecialchars($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>';
         }
 
-        $objectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid'])
+        $objectId = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($this->data['inlineStructure'], $this->data['inlineFirstPid'])
             . '-' . self::FILE_REFERENCE_TABLE
             . '-' . ($databaseRow['uid'] ?? 0);
 

@@ -87,7 +87,7 @@ class InlineControlContainer extends AbstractContainer
 
         $this->inlineData = $this->data['inlineData'];
 
-        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $inlineStructure = $this->data['inlineStructure'];
 
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
@@ -119,7 +119,7 @@ class InlineControlContainer extends AbstractContainer
                 $newStructureItem['flexform'] = $flexFormParts;
             }
         }
-        $this->inlineStackProcessor->pushStableStructureItem($newStructureItem);
+        $inlineStructure['stable'][] = $newStructureItem;
 
         // Transport the flexform DS identifier fields to the FormInlineAjaxController
         if (!empty($newStructureItem['flexform'])
@@ -134,9 +134,9 @@ class InlineControlContainer extends AbstractContainer
         $config['originalReturnUrl'] = $this->data['returnUrl'];
 
         // e.g. data[<table>][<uid>][<field>]
-        $nameForm = $this->inlineStackProcessor->getCurrentStructureFormPrefix();
+        $nameForm = $this->inlineStackProcessor->getFormPrefixFromStructure($inlineStructure);
         // e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
-        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $nameObject = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']);
 
         $inlineChildren = $parameterArray['fieldConf']['children'] ?? [];
 
@@ -152,7 +152,7 @@ class InlineControlContainer extends AbstractContainer
             }
         }
 
-        $top = $this->inlineStackProcessor->getStructureLevel(0);
+        $top = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
 
         $this->inlineData['config'][$nameObject] = [
             'table' => $foreign_table,
@@ -296,9 +296,9 @@ class InlineControlContainer extends AbstractContainer
         // If it's required to select from possible child records (reusable children), add a selector box
         if (!$isReadOnly && ($config['foreign_selector'] ?? false) && ($config['appearance']['showPossibleRecordsSelector'] ?? true) !== false) {
             if (($config['selectorOrUniqueConfiguration']['config']['type'] ?? false) === 'select') {
-                $selectorBox = $this->renderPossibleRecordsSelectorTypeSelect($config, $uniqueIds);
+                $selectorBox = $this->renderPossibleRecordsSelectorTypeSelect($inlineStructure, $config, $uniqueIds);
             } else {
-                $selectorBox = $this->renderPossibleRecordsSelectorTypeGroupDB($config);
+                $selectorBox = $this->renderPossibleRecordsSelectorTypeGroupDB($inlineStructure, $config);
             }
             $html .= $selectorBox . $localizationButtons;
         }
@@ -313,7 +313,7 @@ class InlineControlContainer extends AbstractContainer
             // @todo: this can be removed if this container no longer sets additional info to $config
             $options['inlineParentConfig'] = $config;
             $options['inlineData'] = $this->inlineData;
-            $options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
+            $options['inlineStructure'] = $inlineStructure;
             $options['inlineExpandCollapseStateArray'] = $this->data['inlineExpandCollapseStateArray'];
             $options['renderType'] = 'inlineRecordContainer';
             $childResult = $this->nodeFactory->create($options)->render();
@@ -443,11 +443,11 @@ class InlineControlContainer extends AbstractContainer
      * @param array $inlineConfiguration TCA inline configuration of the parent(!) field
      * @return string A HTML button that opens an element browser in a new window
      */
-    protected function renderPossibleRecordsSelectorTypeGroupDB(array $inlineConfiguration): string
+    protected function renderPossibleRecordsSelectorTypeGroupDB(array $inlineStructure, array $inlineConfiguration): string
     {
         $languageService = $this->getLanguageService();
         $groupFieldConfiguration = $inlineConfiguration['selectorOrUniqueConfiguration']['config'];
-        $objectPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']) . '-' . $inlineConfiguration['foreign_table'];
+        $objectPrefix = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']) . '-' . $inlineConfiguration['foreign_table'];
         $elementBrowserEnabled = true;
         if (is_array($groupFieldConfiguration['appearance'] ?? null)
             && isset($inlineConfiguration['appearance']['elementBrowserEnabled'])
@@ -496,14 +496,14 @@ class InlineControlContainer extends AbstractContainer
      * @param array $uniqueIds The uids that have already been used and should be unique
      * @return string A HTML <select> box with all possible records
      */
-    protected function renderPossibleRecordsSelectorTypeSelect(array $config, array $uniqueIds)
+    protected function renderPossibleRecordsSelectorTypeSelect(array $inlineStructure, array $config, array $uniqueIds)
     {
         $config += [
             'autoSizeMax' => 0,
             'foreign_table' => '',
         ];
         $possibleRecords = $config['selectorOrUniquePossibleRecords'];
-        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $nameObject = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']);
         // Create option tags:
         $opt = [];
         foreach ($possibleRecords as $possibleRecord) {

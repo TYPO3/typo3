@@ -91,7 +91,7 @@ class FilesControlContainer extends AbstractContainer
 
         $this->fileReferenceData = $this->data['inlineData'];
 
-        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $inlineStructure = $this->data['inlineStructure'];
 
         $table = $this->data['tableName'];
         $row = $this->data['databaseRow'];
@@ -131,7 +131,7 @@ class FilesControlContainer extends AbstractContainer
             }
         }
 
-        $this->inlineStackProcessor->pushStableStructureItem($newStructureItem);
+        $inlineStructure['stable'][] = $newStructureItem;
 
         // Hand over original returnUrl to FormFilesAjaxController. Needed if opening for instance a
         // nested element in a new view to then go back to the original returnUrl and not the url of
@@ -139,9 +139,9 @@ class FilesControlContainer extends AbstractContainer
         $config['originalReturnUrl'] = $this->data['returnUrl'];
 
         // e.g. data[<table>][<uid>][<field>]
-        $formFieldName = $this->inlineStackProcessor->getCurrentStructureFormPrefix();
+        $formFieldName = $this->inlineStackProcessor->getFormPrefixFromStructure($inlineStructure);
         // e.g. data-<pid>-<table1>-<uid1>-<field1>-<table2>-<uid2>-<field2>
-        $formFieldIdentifier = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $formFieldIdentifier = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']);
 
         $inlineChildren = $parameterArray['fieldConf']['children'] ?? [];
 
@@ -157,7 +157,7 @@ class FilesControlContainer extends AbstractContainer
             }
         }
 
-        $top = $this->inlineStackProcessor->getStructureLevel(0);
+        $top = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
 
         $this->fileReferenceData['config'][$formFieldIdentifier] = [
             'table' => self::FILE_REFERENCE_TABLE,
@@ -214,7 +214,7 @@ class FilesControlContainer extends AbstractContainer
             $options['inlineFirstPid'] = $this->data['inlineFirstPid'];
             $options['inlineParentConfig'] = $config;
             $options['inlineData'] = $this->fileReferenceData;
-            $options['inlineStructure'] = $this->inlineStackProcessor->getStructure();
+            $options['inlineStructure'] = $inlineStructure;
             $options['inlineExpandCollapseStateArray'] = $this->data['inlineExpandCollapseStateArray'];
             $options['renderType'] = 'fileReferenceContainer';
             $fileReference = $this->nodeFactory->create($options)->render();
@@ -262,7 +262,7 @@ class FilesControlContainer extends AbstractContainer
             $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
             $fileExtensionFilter->setAllowedFileExtensions($config['allowed'] ?? null);
             $fileExtensionFilter->setDisallowedFileExtensions($config['disallowed'] ?? null);
-            $view->assign('fileSelectors', $this->getFileSelectors($config, $fileExtensionFilter));
+            $view->assign('fileSelectors', $this->getFileSelectors($inlineStructure, $config, $fileExtensionFilter));
             $view->assignMultiple($fileExtensionFilter->getFilteredFileExtensions());
             // Render the localization buttons if needed
             if ($numberOfNotYetLocalizedChildren) {
@@ -299,12 +299,12 @@ class FilesControlContainer extends AbstractContainer
     /**
      * Generate buttons to select, reference and upload files.
      */
-    protected function getFileSelectors(array $inlineConfiguration, FileExtensionFilter $fileExtensionFilter): array
+    protected function getFileSelectors(array $inlineStructure, array $inlineConfiguration, FileExtensionFilter $fileExtensionFilter): array
     {
         $languageService = $this->getLanguageService();
         $backendUser = $this->getBackendUserAuthentication();
 
-        $currentStructureDomObjectIdPrefix = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $currentStructureDomObjectIdPrefix = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']);
         $objectPrefix = $currentStructureDomObjectIdPrefix . '-' . self::FILE_REFERENCE_TABLE;
 
         $controls = [];

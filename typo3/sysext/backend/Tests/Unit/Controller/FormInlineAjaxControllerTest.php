@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\FormInlineAjaxController;
 use TYPO3\CMS\Backend\Form\FormDataCompiler;
+use TYPO3\CMS\Backend\Form\InlineStackProcessor;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -46,7 +47,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->createAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->createAction($request);
     }
 
     #[Test]
@@ -61,7 +63,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->createAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->createAction($request);
     }
 
     #[Test]
@@ -83,7 +86,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->createAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->createAction($request);
     }
 
     #[Test]
@@ -98,7 +102,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->detailsAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->detailsAction($request);
     }
 
     #[Test]
@@ -113,7 +118,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->detailsAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->detailsAction($request);
     }
 
     #[Test]
@@ -135,7 +141,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->detailsAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->detailsAction($request);
     }
 
     #[Test]
@@ -150,7 +157,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751361);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->synchronizeLocalizeAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->synchronizeLocalizeAction($request);
     }
 
     #[Test]
@@ -165,7 +173,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751362);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->synchronizeLocalizeAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->synchronizeLocalizeAction($request);
     }
 
     #[Test]
@@ -187,7 +196,8 @@ final class FormInlineAjaxControllerTest extends UnitTestCase
         );
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1489751363);
-        (new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory()))->synchronizeLocalizeAction($request);
+        $subject = new FormInlineAjaxController(new FormDataCompiler(), new HashService(), new NodeFactory(), $this->createMock(InlineStackProcessor::class));
+        $subject->synchronizeLocalizeAction($request);
     }
 
     /**

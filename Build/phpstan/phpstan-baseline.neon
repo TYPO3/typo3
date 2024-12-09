@@ -286,24 +286,6 @@ parameters:
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
-
-		-
-			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, list\<array\|string\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
-
-		-
-			message: '#^Variable \$unstable in empty\(\) always exists and is not falsy\.$#'
-			identifier: empty.variable
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/InlineStackProcessor.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
 			path: ../../typo3/sysext/backend/Classes/Form/Utility/FormEngineUtility.php
 
 		-

@@ -261,29 +261,27 @@ final class InlineStackProcessorTest extends UnitTestCase
 
     #[DataProvider('structureStringIsParsedDataProvider')]
     #[Test]
-    public function initializeByParsingDomObjectIdStringParsesStructureString(string $string, array $expectedInlineStructure, array $_): void
+    public function getStructureFromStringParsesStructureString(string $string, array $expectedInlineStructure, array $_): void
     {
-        $subject = $this->getAccessibleMock(InlineStackProcessor::class, null);
-        $subject->initializeByParsingDomObjectIdString($string);
-        $structure = $subject->_get('inlineStructure');
-        self::assertEquals($expectedInlineStructure, $structure);
+        $subject = new InlineStackProcessor();
+        self::assertEquals($expectedInlineStructure, $subject->getStructureFromString($string));
     }
 
     #[DataProvider('structureStringIsParsedDataProvider')]
     #[Test]
-    public function getCurrentStructureFormPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
+    public function getFormPrefixFromStructureReturnsExpectedString(string $string, array $_, array $expectedFormName): void
     {
         $subject = new InlineStackProcessor();
-        $subject->initializeByParsingDomObjectIdString($string);
-        self::assertEquals($expectedFormName['form'], $subject->getCurrentStructureFormPrefix());
+        $structure = $subject->getStructureFromString($string);
+        self::assertEquals($expectedFormName['form'], $subject->getFormPrefixFromStructure($structure));
     }
 
     #[DataProvider('structureStringIsParsedDataProvider')]
     #[Test]
-    public function getCurrentStructureDomObjectIdPrefixReturnsExpectedStringAfterInitializationByStructureString(string $string, array $_, array $expectedFormName): void
+    public function getDomObjectIdPrefixFromStructureReturnsExpectedString(string $string, array $_, array $expectedFormName): void
     {
         $subject = new InlineStackProcessor();
-        $subject->initializeByParsingDomObjectIdString($string);
-        self::assertEquals($expectedFormName['object'], $subject->getCurrentStructureDomObjectIdPrefix('pageId'));
+        $structure = $subject->getStructureFromString($string);
+        self::assertEquals($expectedFormName['object'], $subject->getDomObjectIdPrefixFromStructure($structure, 'pageId'));
     }
 }

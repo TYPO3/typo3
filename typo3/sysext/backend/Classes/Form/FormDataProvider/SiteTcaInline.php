@@ -36,6 +36,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
 {
     public function __construct(
         private readonly SiteFinder $siteFinder,
+        private readonly InlineStackProcessor $inlineStackProcessor,
     ) {}
 
     /**
@@ -159,9 +160,7 @@ class SiteTcaInline extends AbstractDatabaseRecordProvider implements FormDataPr
         $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
 
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($result['inlineStructure'], 0);
 
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [

@@ -35,12 +35,12 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * Handle FormEngine flex field ajax calls
  */
 #[AsController]
-class FormFlexAjaxController extends AbstractFormEngineAjaxController
+readonly class FormFlexAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
-        private readonly FormDataCompiler $formDataCompiler,
-        private readonly FlexFormTools $flexFormTools,
-        private readonly NodeFactory $nodeFactory,
+        private FormDataCompiler $formDataCompiler,
+        private FlexFormTools $flexFormTools,
+        private NodeFactory $nodeFactory,
     ) {}
 
     /**

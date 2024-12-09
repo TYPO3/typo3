@@ -35,11 +35,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class FormSlugAjaxController extends AbstractFormEngineAjaxController
+readonly class FormSlugAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
         private Context $context,
-        private readonly HashService $hashService
+        private HashService $hashService
     ) {}
 
     /**

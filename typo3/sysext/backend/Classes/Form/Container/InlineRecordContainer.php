@@ -62,9 +62,6 @@ class InlineRecordContainer extends AbstractContainer
         $data = $this->data;
         $this->inlineData = $data['inlineData'];
 
-        $inlineStackProcessor = $this->inlineStackProcessor;
-        $inlineStackProcessor->initializeByGivenStructure($data['inlineStructure']);
-
         $record = $data['databaseRow'];
         $inlineConfig = $data['inlineParentConfig'];
         $foreignTable = $inlineConfig['foreign_table'];
@@ -73,8 +70,8 @@ class InlineRecordContainer extends AbstractContainer
 
         // Send a mapping information to the browser via JSON:
         // e.g. data[<curTable>][<curId>][<curField>] => data-<pid>-<parentTable>-<parentId>-<parentField>-<curTable>-<curId>-<curField>
-        $formPrefix = $inlineStackProcessor->getCurrentStructureFormPrefix();
-        $domObjectId = $inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($data['inlineFirstPid']);
+        $formPrefix = $this->inlineStackProcessor->getFormPrefixFromStructure($data['inlineStructure']);
+        $domObjectId = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($data['inlineStructure'], $data['inlineFirstPid']);
         $this->inlineData['map'][$formPrefix] = $domObjectId;
 
         $resultArray['inlineData'] = $this->inlineData;
@@ -207,7 +204,7 @@ class InlineRecordContainer extends AbstractContainer
      */
     protected function renderChild(array $data)
     {
-        $domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($data['inlineFirstPid']);
+        $domObjectId = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($this->data['inlineStructure'], $data['inlineFirstPid']);
         $data['tabAndInlineStack'][] = [
             'inline',
             $domObjectId . '-' . $data['tableName'] . '-' . $data['databaseRow']['uid'],
@@ -298,7 +295,7 @@ class InlineRecordContainer extends AbstractContainer
         $record = $data['databaseRow'];
         $recordTitle = $data['recordTitle'];
         $foreignTable = $data['inlineParentConfig']['foreign_table'];
-        $domObjectId = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($data['inlineFirstPid']);
+        $domObjectId = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($this->data['inlineStructure'], $data['inlineFirstPid']);
 
         if (!empty($recordTitle)) {
             // The user function may return HTML, therefore we can't escape it

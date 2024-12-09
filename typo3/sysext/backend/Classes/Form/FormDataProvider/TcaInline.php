@@ -39,6 +39,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
 {
     public function __construct(
         private readonly FlashMessageService $flashMessageService,
+        private readonly InlineStackProcessor $inlineStackProcessor,
     ) {}
 
     /**
@@ -332,11 +333,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     {
         $parentConfig = $result['processedTca']['columns'][$parentFieldName]['config'];
         $childTableName = $parentConfig['foreign_table'];
-
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0) ?: [];
-
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($result['inlineStructure'], 0) ?: [];
         $formDataCompiler = GeneralUtility::makeInstance(FormDataCompiler::class);
         $formDataCompilerInput = [
             'request' => $result['request'],

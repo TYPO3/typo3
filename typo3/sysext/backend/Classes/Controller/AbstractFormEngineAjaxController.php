@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  *
  * @internal Marked as internal for now, methods in this class may change any time.
  */
-abstract class AbstractFormEngineAjaxController
+abstract readonly class AbstractFormEngineAjaxController
 {
     protected function addJavaScriptModulesToJavaScriptItems(array $modules, JavaScriptItems $items): void
     {

@@ -39,12 +39,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Handle FormEngine inline ajax calls
  */
 #[AsController]
-class FormInlineAjaxController extends AbstractFormEngineAjaxController
+readonly class FormInlineAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
-        private readonly FormDataCompiler $formDataCompiler,
-        private readonly HashService $hashService,
-        private readonly NodeFactory $nodeFactory,
+        private FormDataCompiler $formDataCompiler,
+        private HashService $hashService,
+        private NodeFactory $nodeFactory,
+        private InlineStackProcessor $inlineStackProcessor,
     ) {}
 
     /**
@@ -71,16 +72,14 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         }
 
         // Parse the DOM identifier, add the levels to the structure stack
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
-
+        $inlineStructure = $this->inlineStackProcessor->getStructureFromString($domObjectId);
+        $inlineStructure = $this->inlineStackProcessor->addAjaxConfigurationToStructure($inlineStructure, $parentConfig);
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
         // Parent, this table embeds the child table
-        $parent = $inlineStackProcessor->getStructureLevel(-1);
-
+        $inlineParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, -1);
         // Child, a record from this table should be rendered
-        $child = $inlineStackProcessor->getUnstableStructure();
+        $child = $this->inlineStackProcessor->getUnstableStructureFromStructure($inlineStructure);
+
         if (isset($child['uid']) && MathUtility::canBeInterpretedAsInteger($child['uid'])) {
             // If uid comes in, it is the id of the record neighbor record "create after"
             $childVanillaUid = -1 * abs((int)$child['uid']);
@@ -97,11 +96,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'tableName' => $childTableName,
             'vanillaUid' => $childVanillaUid,
             'isInlineChild' => true,
-            'inlineStructure' => $inlineStackProcessor->getStructure(),
+            'inlineStructure' => $inlineStructure,
             'inlineFirstPid' => $inlineFirstPid,
-            'inlineParentUid' => $parent['uid'],
-            'inlineParentTableName' => $parent['table'],
-            'inlineParentFieldName' => $parent['field'],
+            'inlineParentUid' => $inlineParent['uid'],
+            'inlineParentTableName' => $inlineParent['table'],
+            'inlineParentFieldName' => $inlineParent['field'],
             'inlineParentConfig' => $parentConfig,
             'inlineTopMostParentUid' => $inlineTopMostParent['uid'],
             'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
@@ -122,7 +121,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                 $childData['databaseRow'][$parentConfig['foreign_selector']] = [
                     $childChildUid,
                 ];
-                $childData['combinationChild'] = $this->compileChildChild($request, $childData, $parentConfig, $inlineStackProcessor->getStructure());
+                $childData['combinationChild'] = $this->compileChildChild($request, $childData, $parentConfig, $inlineStructure);
             } else {
                 $formDataCompilerInput = [
                     'request' => $request,
@@ -131,14 +130,14 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     'vanillaUid' => $inlineFirstPid,
                     'isInlineChild' => true,
                     'isInlineAjaxOpeningContext' => true,
-                    'inlineStructure' => $inlineStackProcessor->getStructure(),
+                    'inlineStructure' => $inlineStructure,
                     'inlineFirstPid' => $inlineFirstPid,
                 ];
                 $childData['combinationChild'] = $this->formDataCompiler->compile($formDataCompilerInput, GeneralUtility::makeInstance(TcaDatabaseRecord::class));
             }
         }
 
-        $childData['inlineParentUid'] = $parent['uid'];
+        $childData['inlineParentUid'] = $inlineParent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
         $childResult = $this->nodeFactory->create($childData)->render();
 
@@ -170,13 +169,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         // Parse the DOM identifier, add the levels to the structure stack
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
-
+        $inlineStructure = $this->inlineStackProcessor->getStructureFromString($domObjectId);
+        $inlineStructure = $this->inlineStackProcessor->addAjaxConfigurationToStructure($inlineStructure, $parentConfig);
         // Parent, this table embeds the child table
-        $parent = $inlineStackProcessor->getStructureLevel(-1);
-        $parentFieldName = $parent['field'];
+        $inlineParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, -1);
+        $parentFieldName = $inlineParent['field'];
 
         // Set flag in config so that only the fields are rendered
         // @todo: Solve differently / rename / whatever
@@ -190,8 +187,8 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     ],
                 ],
             ],
-            'uid' => $parent['uid'],
-            'tableName' => $parent['table'],
+            'uid' => $inlineParent['uid'],
+            'tableName' => $inlineParent['table'],
             'inlineFirstPid' => $inlineFirstPid,
             // Hand over given original return url to compile stack. Needed if inline children compile links to
             // another view (eg. edit metadata in a nested inline situation like news with inline content element image),
@@ -201,11 +198,11 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         ];
 
         // Child, a record from this table should be rendered
-        $child = $inlineStackProcessor->getUnstableStructure();
+        $child = $this->inlineStackProcessor->getUnstableStructureFromStructure($inlineStructure);
 
-        $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$child['uid'], $inlineStackProcessor->getStructure());
+        $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$child['uid'], $inlineStructure);
 
-        $childData['inlineParentUid'] = (int)$parent['uid'];
+        $childData['inlineParentUid'] = (int)$inlineParent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
         $childResult = $this->nodeFactory->create($childData)->render();
 
@@ -234,10 +231,9 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $type = $ajaxArguments[1] ?? null;
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         // Parse the DOM identifier (string), add the levels to the structure stack (array), load the TCA config:
-        $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
+        $inlineStructure = $this->inlineStackProcessor->getStructureFromString($domObjectId);
+        $inlineStructure = $this->inlineStackProcessor->addAjaxConfigurationToStructure($inlineStructure, $parentConfig);
         $inlineFirstPid = $this->getInlineFirstPidFromDomObjectId($domObjectId);
 
         $jsonArray = [
@@ -250,7 +246,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         ];
         if ($type === 'localize' || $type === 'synchronize' || MathUtility::canBeInterpretedAsInteger($type)) {
             // Parent, this table embeds the child table
-            $parent = $inlineStackProcessor->getStructureLevel(-1);
+            $parent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, -1);
             $parentFieldName = $parent['field'];
 
             $processedTca = $GLOBALS['TCA'][$parent['table']];
@@ -267,7 +263,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
                     $parentFieldName,
                 ],
                 // @todo: still needed? NO!
-                'inlineStructure' => $inlineStackProcessor->getStructure(),
+                'inlineStructure' => $inlineStructure,
                 // Do not compile existing children, we don't need them now
                 'inlineCompileExistingChildren' => false,
             ];
@@ -332,7 +328,7 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
 
             $localizedItems = array_diff($newItems, $oldItems);
             foreach ($localizedItems as $i => $childUid) {
-                $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$childUid, $inlineStackProcessor->getStructure());
+                $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$childUid, $inlineStructure);
 
                 $childData['inlineParentUid'] = (int)$parent['uid'];
                 $childData['renderType'] = 'inlineRecordContainer';
@@ -386,16 +382,15 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
         $ajaxArguments = $request->getParsedBody()['ajax'] ?? $request->getQueryParams()['ajax'];
         [$domObjectId, $expand, $collapse] = $ajaxArguments;
 
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
         // Parse the DOM identifier (string), add the levels to the structure stack (array), don't load TCA config
-        $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
+        $inlineStructure = $this->inlineStackProcessor->getStructureFromString($domObjectId);
 
         $backendUser = $this->getBackendUserAuthentication();
         // The current table - for this table we should add/import records
-        $currentTable = $inlineStackProcessor->getUnstableStructure();
+        $currentTable = $this->inlineStackProcessor->getUnstableStructureFromStructure($inlineStructure);
         $currentTable = $currentTable['table'];
         // The top parent table - this table embeds the current table
-        $top = $inlineStackProcessor->getStructureLevel(0);
+        $top = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
         $topTable = $top['table'];
         $topUid = $top['uid'];
         $inlineView = $this->getInlineExpandCollapseStateArray();
@@ -437,13 +432,12 @@ class FormInlineAjaxController extends AbstractFormEngineAjaxController
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
 
-        // @todo: do not use stack processor here ...
-        $child = $inlineStackProcessor->getUnstableStructure();
-        $childTableName = $child['table'];
+        $childTableName = $inlineStructure['unstable']['table'] ?? null;
+        if (!$childTableName) {
+            throw new \RuntimeException('No unstable inline structure found', 1733754245);
+        }
 
         $formDataCompilerInput = [
             'request' => $request,

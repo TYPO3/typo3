@@ -34,12 +34,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class SingleFieldContainer extends AbstractContainer
 {
-    /**
-     * Entry method
-     *
-     * @throws \InvalidArgumentException
-     * @return array As defined in initializeResultArray() of AbstractNode
-     */
+    public function __construct(
+        private readonly InlineStackProcessor $inlineStackProcessor
+    ) {}
+
     public function render(): array
     {
         $backendUser = $this->getBackendUserAuthentication();
@@ -144,28 +142,19 @@ class SingleFieldContainer extends AbstractContainer
 
     /**
      * Rendering of inline fields should be skipped under certain circumstances
-     *
-     * @return bool TRUE if field should be skipped based on inline configuration
      */
-    protected function inlineFieldShouldBeSkipped()
+    protected function inlineFieldShouldBeSkipped(): bool
     {
         $table = $this->data['tableName'];
         $fieldName = $this->data['fieldName'];
         $fieldConfig = $this->data['processedTca']['columns'][$fieldName]['config'];
-
         $fieldConfig += [
             'MM' => '',
             'foreign_table' => '',
             'foreign_selector' => '',
             'foreign_field' => '',
         ];
-
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
-        $structureDepth = $inlineStackProcessor->getStructureDepth();
-
-        $skipThisField = false;
-        if ($structureDepth > 0) {
+        if (count($this->data['inlineStructure']['stable'] ?? []) > 0) {
             $searchArray = [
                 '%OR' => [
                     'config' => [
@@ -190,8 +179,6 @@ class SingleFieldContainer extends AbstractContainer
                     ],
                 ],
             ];
-            // Get the parent record from structure stack
-            $level = $inlineStackProcessor->getStructureLevel(-1) ?: [];
             // If we have symmetric fields, check on which side we are and hide fields, that are set automatically:
             if ($this->data['isOnSymmetricSide']) {
                 $searchArray['%OR']['config'][0]['%AND']['%OR']['symmetric_field'] = $fieldName;
@@ -200,9 +187,11 @@ class SingleFieldContainer extends AbstractContainer
                 $searchArray['%OR']['config'][0]['%AND']['%OR']['foreign_field'] = $fieldName;
                 $searchArray['%OR']['config'][0]['%AND']['%OR']['foreign_sortby'] = $fieldName;
             }
-            $skipThisField = $this->arrayCompareComplex($level, $searchArray);
+            // Parent record from structure stack
+            $parent = $this->inlineStackProcessor->getStructureLevelFromStructure($this->data['inlineStructure'], -1) ?? [];
+            return $this->arrayCompareComplex($parent, $searchArray);
         }
-        return $skipThisField;
+        return false;
     }
 
     /**
@@ -237,7 +226,7 @@ class SingleFieldContainer extends AbstractContainer
      * @param string $type Use '%AND' or '%OR' for comparison
      * @return bool The result of the comparison
      */
-    protected function arrayCompareComplex($subjectArray, $searchArray, $type = '')
+    protected function arrayCompareComplex($subjectArray, $searchArray, $type = ''): bool
     {
         $localMatches = 0;
         $localEntries = 0;

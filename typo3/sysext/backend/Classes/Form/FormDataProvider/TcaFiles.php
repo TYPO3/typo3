@@ -38,6 +38,10 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
     private const FILE_REFERENCE_TABLE = 'sys_file_reference';
     private const FOREIGN_SELECTOR = 'uid_local';
 
+    public function __construct(
+        private readonly InlineStackProcessor $inlineStackProcessor,
+    ) {}
+
     public function addData(array $result): array
     {
         // inlineFirstPid is currently resolved by TcaInline
@@ -273,10 +277,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
 
     protected function compileFileReference(array $result, string $parentFieldName, int $childUid, $isInlineDefaultLanguageRecordInLocalizedParentContext = false): array
     {
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0) ?: [];
-
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($result['inlineStructure'], 0) ?: [];
         return GeneralUtility::makeInstance(FormDataCompiler::class)
             ->compile(
                 [

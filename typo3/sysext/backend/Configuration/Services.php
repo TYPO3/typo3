@@ -27,9 +27,8 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
     // Single NodeInterface nodes *may* be stateful, for instance when they have properties that are not
     // properly reset in render(), or if stateful services are injected. Thus, the second argument is true,
     // which will trigger a new object creation each time, instead of re-using an already existing one.
-    // Note we *may* be able to get rid of this later (to create fewer objects), but it will need some changes
-    // for instance with the stateful InlineStackProcessor injection, plus proper communication that single
-    // nodes have to be set "shared: false" manually, in case they are stateful.
+    // Note we *may* be able to get rid of this later (to create fewer objects), but it may need some changes,
+    // plus proper communication that single nodes have to be set "shared: false" manually, in case they are stateful.
     $containerBuilder->addCompilerPass(new PublicServicePass('backend.form.node', true));
 
     $containerBuilder->addCompilerPass(new PublicServicePass('backend.form.dataprovider'));

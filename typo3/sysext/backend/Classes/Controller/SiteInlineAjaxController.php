@@ -42,13 +42,14 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class SiteInlineAjaxController extends AbstractFormEngineAjaxController
+readonly class SiteInlineAjaxController extends AbstractFormEngineAjaxController
 {
     public function __construct(
-        private readonly FormDataCompiler $formDataCompiler,
-        private readonly SiteLanguagePresets $siteLanguagePresets,
-        private readonly HashService $hashService,
-        private readonly NodeFactory $nodeFactory,
+        private FormDataCompiler $formDataCompiler,
+        private SiteLanguagePresets $siteLanguagePresets,
+        private HashService $hashService,
+        private NodeFactory $nodeFactory,
+        private InlineStackProcessor $inlineStackProcessor,
     ) {
         // Bring site TCA into global scope.
         // @todo: We might be able to get rid of that later
@@ -71,14 +72,13 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             $childChildUid = (int)$ajaxArguments[1];
         }
         // Parse the DOM identifier, add the levels to the structure stack
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
+        $inlineStructure = $this->inlineStackProcessor->getStructureFromString($domObjectId);
+        $inlineStructure = $this->inlineStackProcessor->addAjaxConfigurationToStructure($inlineStructure, $parentConfig);
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
         // Parent, this table embeds the child table
-        $parent = $inlineStackProcessor->getStructureLevel(-1);
+        $inlineParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, -1);
         // Child, a record from this table should be rendered
-        $child = $inlineStackProcessor->getUnstableStructure();
+        $child = $this->inlineStackProcessor->getUnstableStructureFromStructure($inlineStructure);
         if (MathUtility::canBeInterpretedAsInteger($child['uid'] ?? false)) {
             // If uid comes in, it is the id of the record neighbor record "create after"
             $childVanillaUid = -1 * abs((int)$child['uid']);
@@ -138,11 +138,11 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             'vanillaUid' => $childVanillaUid,
             'databaseRow' => $defaultDatabaseRow,
             'isInlineChild' => true,
-            'inlineStructure' => $inlineStackProcessor->getStructure(),
+            'inlineStructure' => $inlineStructure,
             'inlineFirstPid' => $inlineFirstPid,
-            'inlineParentUid' => $parent['uid'],
-            'inlineParentTableName' => $parent['table'],
-            'inlineParentFieldName' => $parent['field'],
+            'inlineParentUid' => $inlineParent['uid'],
+            'inlineParentTableName' => $inlineParent['table'],
+            'inlineParentFieldName' => $inlineParent['field'],
             'inlineParentConfig' => $parentConfig,
             'inlineTopMostParentUid' => $inlineTopMostParent['uid'],
             'inlineTopMostParentTableName' => $inlineTopMostParent['table'],
@@ -157,7 +157,7 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             throw new \RuntimeException('useCombination not implemented in sites module', 1522493094);
         }
 
-        $childData['inlineParentUid'] = (int)$parent['uid'];
+        $childData['inlineParentUid'] = (int)$inlineParent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
         $childResult = $this->nodeFactory->create($childData)->render();
 
@@ -191,13 +191,11 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         $parentConfig = $this->extractSignedParentConfigFromRequest((string)$ajaxArguments['context']);
 
         // Parse the DOM identifier, add the levels to the structure stack
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByParsingDomObjectIdString($domObjectId);
-        $inlineStackProcessor->setAjaxConfiguration($parentConfig);
-
+        $inlineStructure = $this->inlineStackProcessor->getStructureFromString($domObjectId);
+        $inlineStructure = $this->inlineStackProcessor->addAjaxConfigurationToStructure($inlineStructure, $parentConfig);
         // Parent, this table embeds the child table
-        $parent = $inlineStackProcessor->getStructureLevel(-1);
-        $parentFieldName = $parent['field'];
+        $inlineParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, -1);
+        $parentFieldName = $inlineParent['field'];
 
         // Set flag in config so that only the fields are rendered
         // @todo: Solve differently / rename / whatever
@@ -211,8 +209,8 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
                     ],
                 ],
             ],
-            'uid' => $parent['uid'],
-            'tableName' => $parent['table'],
+            'uid' => $inlineParent['uid'],
+            'tableName' => $inlineParent['table'],
             'inlineFirstPid' => $inlineFirstPid,
             // Hand over given original return url to compile stack. Needed if inline children compile links to
             // another view (eg. edit metadata in a nested inline situation like news with inline content element image),
@@ -222,11 +220,11 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
         ];
 
         // Child, a record from this table should be rendered
-        $child = $inlineStackProcessor->getUnstableStructure();
+        $child = $this->inlineStackProcessor->getUnstableStructureFromStructure($inlineStructure);
 
-        $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$child['uid'], $inlineStackProcessor->getStructure());
+        $childData = $this->compileChild($request, $parentData, $parentFieldName, (int)$child['uid'], $inlineStructure);
 
-        $childData['inlineParentUid'] = (int)$parent['uid'];
+        $childData['inlineParentUid'] = (int)$inlineParent['uid'];
         $childData['renderType'] = 'inlineRecordContainer';
         $childResult = $this->nodeFactory->create($childData)->render();
 
@@ -258,13 +256,12 @@ class SiteInlineAjaxController extends AbstractFormEngineAjaxController
     {
         $parentConfig = $parentData['processedTca']['columns'][$parentFieldName]['config'];
 
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($inlineStructure);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
 
-        // @todo: do not use stack processor here ...
-        $child = $inlineStackProcessor->getUnstableStructure();
-        $childTableName = $child['table'];
+        $childTableName = $inlineStructure['unstable']['table'] ?? null;
+        if (!$childTableName) {
+            throw new \RuntimeException('No unstable inline structure found', 1733754246);
+        }
 
         $formDataCompilerInput = [
             'request' => $request,

@@ -56,7 +56,7 @@ class SiteLanguageContainer extends AbstractContainer
     {
         $this->inlineData = $this->data['inlineData'];
 
-        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
+        $inlineStructure = $this->data['inlineStructure'];
 
         $row = $this->data['databaseRow'];
         $parameterArray = $this->data['parameterArray'];
@@ -64,12 +64,12 @@ class SiteLanguageContainer extends AbstractContainer
         $resultArray = $this->initializeResultArray();
 
         // Add the current inline job to the structure stack
-        $this->inlineStackProcessor->pushStableStructureItem([
+        $inlineStructure['stable'][] = [
             'table' => $this->data['tableName'],
             'uid' => $row['uid'],
             'field' => $this->data['fieldName'],
             'config' => $config,
-        ]);
+        ];
 
         // Hand over original returnUrl to SiteInlineAjaxController. Needed if opening for instance a
         // nested element in a new view to then go back to the original returnUrl and not the url of
@@ -77,11 +77,11 @@ class SiteLanguageContainer extends AbstractContainer
         $config['originalReturnUrl'] = $this->data['returnUrl'];
 
         // e.g. data[site][1][languages]
-        $nameForm = $this->inlineStackProcessor->getCurrentStructureFormPrefix();
+        $nameForm = $this->inlineStackProcessor->getFormPrefixFromStructure($inlineStructure);
         // e.g. data-0-site-1-languages
-        $nameObject = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+        $nameObject = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($inlineStructure, $this->data['inlineFirstPid']);
         // e.g. array('table' => 'site', 'uid' => '1', 'field' => 'languages', 'config' => array())
-        $top = $this->inlineStackProcessor->getStructureLevel(0);
+        $top = $this->inlineStackProcessor->getStructureLevelFromStructure($inlineStructure, 0);
 
         $this->inlineData['config'][$nameObject] = [
             'table' => self::FOREIGN_TABLE,
@@ -146,7 +146,7 @@ class SiteLanguageContainer extends AbstractContainer
             $children['inlineFirstPid'] = $this->data['inlineFirstPid'];
             $children['inlineParentConfig'] = $config;
             $children['inlineData'] = $this->inlineData;
-            $children['inlineStructure'] = $this->inlineStackProcessor->getStructure();
+            $children['inlineStructure'] = $inlineStructure;
             $children['inlineExpandCollapseStateArray'] = $this->data['inlineExpandCollapseStateArray'];
             $children['renderType'] = 'inlineRecordContainer';
             $childResult = $this->nodeFactory->create($children)->render();

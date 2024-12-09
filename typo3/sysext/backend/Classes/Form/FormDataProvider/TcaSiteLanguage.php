@@ -34,12 +34,14 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormDataProviderInterface
 {
+    private const FOREIGN_TABLE = 'site_language';
+
+    private const FOREIGN_FIELD = 'languageId';
+
     public function __construct(
         private readonly SiteFinder $siteFinder,
+        private readonly InlineStackProcessor $inlineStackProcessor,
     ) {}
-
-    private const FOREIGN_TABLE = 'site_language';
-    private const FOREIGN_FIELD = 'languageId';
 
     public function addData(array $result): array
     {
@@ -206,10 +208,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
 
     protected function compileDefaultSiteLanguageChild(array $result, string $parentFieldName): array
     {
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
-
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($result['inlineStructure'], 0);
         return GeneralUtility::makeInstance(FormDataCompiler::class)
             ->compile(
                 [
@@ -238,10 +237,7 @@ class TcaSiteLanguage extends AbstractDatabaseRecordProvider implements FormData
 
     protected function compileChild(array $result, string $parentFieldName, int $childUid): array
     {
-        $inlineStackProcessor = GeneralUtility::makeInstance(InlineStackProcessor::class);
-        $inlineStackProcessor->initializeByGivenStructure($result['inlineStructure']);
-        $inlineTopMostParent = $inlineStackProcessor->getStructureLevel(0);
-
+        $inlineTopMostParent = $this->inlineStackProcessor->getStructureLevelFromStructure($result['inlineStructure'], 0);
         return GeneralUtility::makeInstance(FormDataCompiler::class)
             ->compile(
                 [

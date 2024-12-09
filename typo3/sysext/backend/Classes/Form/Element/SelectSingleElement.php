@@ -88,12 +88,11 @@ class SelectSingleElement extends AbstractFormElement
         $classList = ['form-select', 'form-control-adapt'];
 
         // Check against inline uniqueness
-        $this->inlineStackProcessor->initializeByGivenStructure($this->data['inlineStructure']);
         $uniqueIds = [];
         if (($this->data['isInlineChild'] ?? false) && ($this->data['inlineParentUid'] ?? false)) {
             // If config[foreign_unique] is set for the parent inline field, all
             // already used unique ids must be excluded from the select items.
-            $inlineObjectName = $this->inlineStackProcessor->getCurrentStructureDomObjectIdPrefix($this->data['inlineFirstPid']);
+            $inlineObjectName = $this->inlineStackProcessor->getDomObjectIdPrefixFromStructure($this->data['inlineStructure'], $this->data['inlineFirstPid']);
             if (($this->data['inlineParentConfig']['foreign_table'] ?? false) === $table
                 && ($this->data['inlineParentConfig']['foreign_unique'] ?? false) === $field
             ) {

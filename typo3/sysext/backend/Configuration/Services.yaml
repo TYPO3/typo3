@@ -41,9 +41,6 @@ services:
     tags:
       - { name: 'livesearch.provider', priority: 60 }
 
-  TYPO3\CMS\Backend\Form\InlineStackProcessor:
-    shared: false
-
   TYPO3\CMS\Backend\ElementBrowser\DatabaseBrowser:
     shared: false
 
