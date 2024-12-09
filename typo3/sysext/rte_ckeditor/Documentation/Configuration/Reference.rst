@@ -76,14 +76,20 @@ editor.config
     defines the location of one or multiple CSS file(s) of the editor, containing the style
     definitions that will be applied to the backend editor RTE element.
 
-    Example with single file::
+    Example with single file:
+
+    ..  code-block:: yaml
+        :caption: MyCKPreset.yaml
 
         editor.config.contentsCss:
           - "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
 
     This is the default, as defined in :t3src:`rte_ckeditor/Configuration/RTE/Editor/Base.yaml`.
 
-    Example with multiple files::
+    Example with multiple files:
+
+    ..  code-block:: yaml
+        :caption: MyCKPreset.yaml
 
         editor.config.contentsCss:
           - "EXT:rte_ckeditor/Resources/Public/Css/contents.css"
@@ -124,6 +130,7 @@ editor.config
     Example:
 
     ..  code-block:: yaml
+        :caption: MyCKPreset.yaml
 
         heading:
           options:
@@ -135,6 +142,7 @@ editor.config
     (for example, :html:`<h2 class="h2">`):
 
     ..  code-block:: yaml
+        :caption: MyCKPreset.yaml
 
         heading:
           options:
@@ -146,6 +154,7 @@ editor.config
     option:
 
     ..  code-block:: yaml
+        :caption: MyCKPreset.yaml
         :emphasize-lines: 3
 
         heading:
@@ -160,7 +169,10 @@ editor.config
 
     Defines styles available in the style dropdown.
 
-    Example::
+    Example:
+
+    ..  code-block:: yaml
+        :caption: MyCKPreset.yaml
 
         style:
           definitions:
@@ -246,14 +258,14 @@ Valid attributes keys are:
 To set all of them, you can use:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     allowedOptions: 'target,title,class,params,rel'
 
 To remove all options you can use an empty string:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     allowedOptions: ''
 
@@ -271,14 +283,14 @@ for the Link Browser. These are currently:
 *   `...` any custom Link Type
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     allowedTypes: 'page,url,file,folder,email,customType'
 
 To remove all types you can use an empty string:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     allowedTypes: ''
 
@@ -288,7 +300,7 @@ classesAnchor
 This is a sub-array of default CSS classes and target attributes, per Link Type:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     classesAnchor:
       - { class: "customPageCssClass", type: "page", target: "" }
@@ -313,7 +325,7 @@ buttons.link.options.removeItems
 Can be set to exclude certain Link Types:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     buttons:
       link:
@@ -327,7 +339,7 @@ If the `allowedOptions` string list contains `rel` for setting relation
 attributes, this option must also be enabled:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     buttons:
       link:
@@ -341,7 +353,7 @@ If the `allowedOptions` string list contains `params` for setting URI argument
 attributes, this option must also be enabled:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     buttons:
       link:
@@ -356,7 +368,7 @@ If the `allowedOptions` string list contains `target`, a dropdown is displayed b
 default. If you want to hide it, you must set this option to `true`:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     buttons:
       link:
@@ -369,7 +381,7 @@ buttons.link.properties.class.required
 A CSS class selection can be forced, so that it may not be empty:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     buttons:
       link:
@@ -388,7 +400,7 @@ The names of the CSS classes can be adjusted via the `classes` top-level configu
 hierarchy (see below)
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     buttons:
       link:
@@ -403,7 +415,7 @@ For each Link Type, a default CSS class can be defined, using the name of the
 Link Type as a key:
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     buttons:
       link:
@@ -429,7 +441,7 @@ defining `name` (the actual label) and `value` (the possible CSS styling of the 
 inside the dropdown):
 
 ..  code-block:: yaml
-    :caption: MyCKPreset.yml
+    :caption: MyCKPreset.yaml
 
     classes:
       globalCss1:

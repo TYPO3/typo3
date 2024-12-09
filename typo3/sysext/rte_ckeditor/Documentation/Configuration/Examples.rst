@@ -12,7 +12,7 @@ How do I use a different preset?
 Instead of using the default "default" preset, you can change this, for example
 to "full", using **page TSconfig**:
 
-..  code-block:: typoscript
+..  code-block:: tsconfig
     :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
     RTE.default.preset = full
@@ -24,7 +24,7 @@ Additionally, you can set specific presets for specific types of textfields.
 
 For example to use preset "full" for the field "bodytext" of all content elements:
 
-..  code-block:: typoscript
+..  code-block:: tsconfig
     :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
     RTE.config.tt_content.bodytext.preset = full
@@ -32,7 +32,7 @@ For example to use preset "full" for the field "bodytext" of all content element
 To use preset "minimal" for the field "bodytext" of only content elements
 with ctype="text":
 
-..  code-block:: typoscript
+..  code-block:: tsconfig
     :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
     RTE.config.tt_content.bodytext.types.text.preset = minimal
