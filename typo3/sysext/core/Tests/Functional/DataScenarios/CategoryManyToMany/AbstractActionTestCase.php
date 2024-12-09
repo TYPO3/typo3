@@ -34,8 +34,12 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_CategoryIdThird = 30;
     protected const VALUE_CategoryIdFourth = 31;
 
+    protected const TABLE_Page = 'pages';
     protected const TABLE_Content = 'tt_content';
     protected const TABLE_Category = 'sys_category';
+
+    protected const VALUE_LanguageId = 1;
+    protected const VALUE_LanguageIdSecond = 2;
 
     protected const FIELD_Categories = 'categories';
 
@@ -58,9 +62,9 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
-            self::VALUE_ContentIdLast,
+            self::VALUE_ContentIdFirst,
             self::FIELD_Categories,
-            [self::VALUE_CategoryIdThird]
+            [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird]
         );
     }
 
@@ -68,29 +72,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
-            self::VALUE_ContentIdLast,
-            self::FIELD_Categories,
-            [self::VALUE_CategoryIdThird, self::VALUE_CategoryIdFourth]
-        );
-    }
-
-    public function addCategoryRelationToExisting(): void
-    {
-        $this->actionService->modifyReferences(
-            self::TABLE_Content,
-            self::VALUE_ContentIdFirst,
-            self::FIELD_Categories,
-            [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird]
-        );
-    }
-
-    public function addCategoryRelationsToExisting(): void
-    {
-        $this->actionService->modifyReferences(
-            self::TABLE_Content,
             self::VALUE_ContentIdFirst,
             self::FIELD_Categories,
             [self::VALUE_CategoryIdFirst, self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird, self::VALUE_CategoryIdFourth]
+        );
+    }
+
+    public function changeCategoryRelationSorting(): void
+    {
+        $this->actionService->modifyReferences(
+            self::TABLE_Content,
+            self::VALUE_ContentIdFirst,
+            'categories',
+            [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdFirst]
         );
     }
 
@@ -143,7 +137,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
-    public function addAndDeleteCategoryRelationsOnExisting(): void
+    public function replaceCategoryRelationsOnExisting(): void
     {
         $this->actionService->modifyReferences(
             self::TABLE_Content,
@@ -183,6 +177,42 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->moveRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, -self::VALUE_CategoryIdSecond);
     }
 
+    public function copyCategoryOfRelation(): void
+    {
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, 0);
+        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
+    }
+
+    /**
+     * See DataSet/copyCategoryToLanguageOfRelation.csv
+     * @todo: This action does not copy the relations with it (at least in workspaces), and should be re-evaluated
+     */
+    public function copyCategoryToLanguageOfRelation(): void
+    {
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
+    }
+
+    public function copyContentOfRelation(): void
+    {
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function copyContentToLanguageOfRelation(): void
+    {
+        $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function copyPage(): void
+    {
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_TargetPageId);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
+        $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+        $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
     public function deleteCategoryRelation(): void
     {
         $this->actionService->modifyReferences(
@@ -201,5 +231,80 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
             self::FIELD_Categories,
             []
         );
+    }
+
+    public function deleteContentOfRelation(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+    }
+
+    public function localizeCategoryOfRelation(): void
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedCategoryId'] = $localizedTableIds[self::TABLE_Category][self::VALUE_CategoryIdFirst];
+    }
+
+    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], self::VALUE_LanguageIdSecond);
+        $this->recordIds['localizedContentIdSecond'] = $localizedTableIds[self::TABLE_Content][$this->recordIds['localizedContentId']];
+        $this->actionService->modifyRecord(
+            self::TABLE_Content,
+            $this->recordIds['localizedContentIdSecond'],
+            ['l10n_state' => [self::FIELD_Categories => 'source']]
+        );
+        $this->actionService->modifyReferences(
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::FIELD_Categories,
+            [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird, self::VALUE_CategoryIdFourth]
+        );
+    }
+
+    public function localizeContentOfRelation(): void
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+        $this->actionService->modifyReferences(
+            self::TABLE_Content,
+            self::VALUE_ContentIdLast,
+            self::FIELD_Categories,
+            [self::VALUE_CategoryIdSecond, self::VALUE_CategoryIdThird, self::VALUE_CategoryIdFourth]
+        );
+    }
+
+    public function localizeContentOfRelationWithLanguageExclude(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['l10n_mode'] = 'exclude';
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function localizeContentOfRelationWithLanguageSynchronization(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Categories]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function modifyBothOfRelation(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
+    }
+
+    public function moveContentOfRelationToDifferentPage(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_TargetPageId);
     }
 }
