@@ -62,22 +62,30 @@ YAML Basics
 *   Comments begin with a `#`.
 *   White space is important, use a space after `:`.
 
-This is a dictionary (associative array)::
+This is a dictionary (associative array):
+
+..  code-block:: yaml
 
     key1: value
     key2: value
 
-A dictionary can be nested, for example::
+A dictionary can be nested, for example:
+
+..  code-block:: yaml
 
     key1:
       key1-2: value
 
-This is a list::
+This is a list:
+
+..  code-block:: yaml
 
     - list item 1
     - list item 2
 
-A dictionary can be combined with a list::
+A dictionary can be combined with a list:
+
+..  code-block:: yaml
 
     key:
       key2:
@@ -105,14 +113,16 @@ Registration of a preset happens within :file:`system/config.php`,
 
 ..  code-block:: php
 
-    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:rte_ckeditor/Configuration/RTE/Default.yaml';
+    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default']
+        = 'EXT:rte_ckeditor/Configuration/RTE/Default.yaml';
 
 This way, it is possible to override the default preset, for example by using
 the configuration defined in a custom extension:
 
 ..  code-block:: php
 
-    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default'] = 'EXT:my_extension/Configuration/RTE/Default.yaml';
+    $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['default']
+        = 'EXT:my_extension/Configuration/RTE/Default.yaml';
 
 
 TYPO3 uses the “default” preset for all Rich-Text-Element fields. To use
@@ -153,7 +163,7 @@ to override this information via page TSconfig.
 The option :typoscript:`RTE.default.preset = news` can also be set on a per-field
 and per-type basis:
 
-..  code-block:: typoscript
+..  code-block:: tsconfig
     :caption: EXT:my_sitepackage/Configuration/page.tsconfig
     :linenos:
 
@@ -176,7 +186,7 @@ Specific options set via YAML can be overridden via page TSconfig as well - but
 be aware that boolean values can not be set, and arrays are not merged but
 overridden.
 
-..  code-block:: typoscript
+..  code-block:: tsconfig
     :caption: EXT:my_sitepackage/Configuration/page.tsconfig
 
     # Restrict format_tags to h2 in bodytext field of content elements

@@ -31,20 +31,28 @@ Relevant Settings for `rte_ckeditor`
 
 Page TSconfig can be used to change:
 
-#.  Default preset::
+#.  Default preset:
+
+    ..  code-block:: tsconfig
 
         RTE.default.preset = full
 
-#.  Override for one field (:typoscript:`RTE.config.[tableName].[fieldName].preset`)::
+#.  Override for one field (:typoscript:`RTE.config.[tableName].[fieldName].preset`):
+
+    ..  code-block:: tsconfig
 
         RTE.config.tt_content.bodytext.preset = myCustomPreset
         RTE.config.tx_news_domain_model_news.bodytext.preset = minimal
 
-#.  Override for one field defined in flexform (:typoscript:`RTE.config.[tableName].[flexForm\.field\.name].preset`)::
+#.  Override for one field defined in flexform (:typoscript:`RTE.config.[tableName].[flexForm\.field\.name].preset`):
+
+    ..  code-block:: tsconfig
 
         RTE.config.tt_content.settings\.notifications\.emailText.preset = myCustomPreset
 
-#.  Override for one field, if type matches (:typoscript:`RTE.config.[tableName].[fieldName].types.[type].preset`)::
+#.  Override for one field, if type matches (:typoscript:`RTE.config.[tableName].[fieldName].types.[type].preset`):
+
+    ..  code-block:: tsconfig
 
         RTE.config.tt_content.bodytext.types.textmedia.preset = minimal
 
@@ -91,7 +99,8 @@ You must either configure this in:
 ..  code-block:: php
 
     if (empty($GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myCustomPreset'])) {
-        $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myCustomPreset'] = 'EXT:<extkey>/Configuration/RTE/MyCustomPreset.yaml';
+        $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets']['myCustomPreset']
+            = 'EXT:<extkey>/Configuration/RTE/MyCustomPreset.yaml';
     }
 
 
