@@ -43,7 +43,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\Traits\CompileWithRenderStatic;
  * ::
  *
  *    <f:debug title="My Title" maxDepth="5"
- *        blacklistedClassNames="{0:'Tx_BlogExample_Domain_Model_Administrator'}"
+ *        blacklistedClassNames="{0:'ACME\BlogExample\Domain\Model\Administrator'}"
  *        blacklistedPropertyNames="{0:'posts'}"
  *        plainText="true" ansiColors="false"
  *        inline="true"
@@ -89,13 +89,13 @@ final class DebugViewHelper extends AbstractViewHelper
     {
         return DebuggerUtility::var_dump(
             $renderChildrenClosure(),
-            $arguments['title'],
-            $arguments['maxDepth'],
-            $arguments['plainText'],
-            $arguments['ansiColors'],
-            $arguments['inline'],
-            $arguments['blacklistedClassNames'],
-            $arguments['blacklistedPropertyNames']
+            is_scalar($arguments['title']) ? (string)$arguments['title'] : null,
+            (int)$arguments['maxDepth'],
+            (bool)$arguments['plainText'],
+            (bool)$arguments['ansiColors'],
+            (bool)$arguments['inline'],
+            is_array($arguments['blacklistedClassNames']) ? $arguments['blacklistedClassNames'] : null,
+            is_array($arguments['blacklistedPropertyNames']) ? $arguments['blacklistedPropertyNames'] : null
         );
     }
 }
