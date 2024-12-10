@@ -331,10 +331,14 @@ class Bootstrap
      *
      * @param string $identifier
      * @param bool $disableCaching
+     * @param class-string<BackendInterface>|null $enforcedCacheBackend
      * @internal
      */
-    public static function createCache(string $identifier, bool $disableCaching = false): FrontendInterface
-    {
+    public static function createCache(
+        string $identifier,
+        bool $disableCaching = false,
+        ?string $enforcedCacheBackend = null
+    ): FrontendInterface {
         $cacheConfigurations = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
         $cacheConfigurations['di']['frontend'] = PhpFrontend::class;
         $cacheConfigurations['di']['backend'] = ContainerBackend::class;
@@ -342,7 +346,7 @@ class Bootstrap
         $configuration = $cacheConfigurations[$identifier] ?? [];
 
         $frontend = $configuration['frontend'] ?? VariableFrontend::class;
-        $backend = $configuration['backend'] ?? Typo3DatabaseBackend::class;
+        $backend = $enforcedCacheBackend ?? $configuration['backend'] ?? Typo3DatabaseBackend::class;
         $options = $configuration['options'] ?? [];
 
         if ($disableCaching) {
