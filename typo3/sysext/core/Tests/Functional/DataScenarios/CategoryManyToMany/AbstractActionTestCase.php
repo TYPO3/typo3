@@ -318,4 +318,14 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_TargetPageId);
     }
+
+    public function modifyCategoryOfRelation(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
+    }
+
+    public function deleteCategoryOfRelation(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
+    }
 }
