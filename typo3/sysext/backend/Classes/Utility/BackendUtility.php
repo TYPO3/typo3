@@ -677,6 +677,11 @@ class BackendUtility
                 $typeNum = 0;
             }
         }
+        // If typeNum is an array, e.g. when using type=select and renderType=selectCheckBox, use the
+        // first value or fallback to NULL in case multiple values are selected - which does not work.
+        if (is_array($typeNum)) {
+            $typeNum = count($typeNum) === 1 ? reset($typeNum) : null;
+        }
         // If current typeNum doesn't exist, set it to 0 (or to 1 for historical reasons, if 0 doesn't exist)
         if (!isset($GLOBALS['TCA'][$table]['types'][$typeNum]) || !$GLOBALS['TCA'][$table]['types'][$typeNum]) {
             $typeNum = isset($GLOBALS['TCA'][$table]['types']['0']) ? 0 : 1;
