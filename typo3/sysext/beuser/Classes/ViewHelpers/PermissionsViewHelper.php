@@ -17,11 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Beuser\ViewHelpers;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -43,7 +44,11 @@ final class PermissionsViewHelper extends AbstractViewHelper
      */
     protected $escapeOutput = false;
 
-    protected static array $cachePermissionLabels = [];
+    public function __construct(
+        private readonly IconFactory $iconFactory,
+        #[Autowire(service: 'cache.runtime')]
+        private readonly FrontendInterface $cachePermissionLabels
+    ) {}
 
     public function initializeArguments(): void
     {
@@ -54,7 +59,6 @@ final class PermissionsViewHelper extends AbstractViewHelper
 
     public function render(): string
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $icon = '';
         foreach (self::MASKS as $mask) {
             if ($this->arguments['permission'] & $mask) {
@@ -67,7 +71,7 @@ final class PermissionsViewHelper extends AbstractViewHelper
                 $mode = 'add';
             }
 
-            $label = self::resolvePermissionLabel($mask);
+            $label = $this->resolvePermissionLabel($mask);
             $icon .= '<button'
                 . ' aria-label="' . htmlspecialchars($label) . ', ' . htmlspecialchars($mode) . ', ' . htmlspecialchars($this->arguments['scope']) . '"'
                 . ' title="' . htmlspecialchars($label) . '"'
@@ -77,23 +81,24 @@ final class PermissionsViewHelper extends AbstractViewHelper
                 . ' data-bits="' . htmlspecialchars((string)$mask) . '"'
                 . ' data-mode="' . htmlspecialchars($mode) . '"'
                 . ' class="btn btn-default btn-icon btn-borderless change-permission ' . htmlspecialchars($iconClass) . '">'
-                . $iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE)
+                . $this->iconFactory->getIcon($iconIdentifier, IconSize::SMALL)->render(SvgIconProvider::MARKUP_IDENTIFIER_INLINE)
                 . '</button>';
         }
         return $icon;
     }
 
-    protected static function resolvePermissionLabel(int $mask): string
+    protected function resolvePermissionLabel(int $mask): string
     {
-        if (!isset(self::$cachePermissionLabels[$mask])) {
-            self::$cachePermissionLabels[$mask] = htmlspecialchars(self::getLanguageService()->sL(
+        $cacheIdentifier = 'beuser-viewhelper-permission_' . $mask;
+        if (!$this->cachePermissionLabels->has($cacheIdentifier)) {
+            $this->cachePermissionLabels->set($cacheIdentifier, htmlspecialchars($this->getLanguageService()->sL(
                 'LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:' . $mask,
-            ));
+            )));
         }
-        return self::$cachePermissionLabels[$mask];
+        return $this->cachePermissionLabels->get($cacheIdentifier);
     }
 
-    protected static function getLanguageService(): LanguageService
+    protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
