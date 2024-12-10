@@ -233,6 +233,26 @@ export default class DragUploader {
   }
 
   public static init(): void {
+    const observer = new MutationObserver((mutations: MutationRecord[]): void => {
+      for (const mutation of mutations) {
+        if (mutation.type === 'childList') {
+          for (const node of [...mutation.addedNodes.values()]) {
+            if (!(node instanceof HTMLElement)) {
+              continue;
+            }
+            if (node.matches('.t3js-drag-uploader')) {
+              new DragUploader(node);
+            } else {
+              node.querySelectorAll('.t3js-drag-uploader').forEach((element: HTMLElement): void => {
+                new DragUploader(element);
+              });
+            }
+          }
+        }
+      }
+    });
+    observer.observe(document, { childList: true, subtree: true });
+
     DocumentService.ready().then((): void => {
       document.querySelectorAll('.t3js-drag-uploader').forEach((element: HTMLElement): void => {
         new DragUploader(element);
