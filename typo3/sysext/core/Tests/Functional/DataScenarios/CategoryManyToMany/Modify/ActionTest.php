@@ -64,7 +64,7 @@ final class ActionTest extends AbstractActionTestCase
             $responseSections,
             (new StructureHasRecordConstraint())
                 ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Categories)
-                ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A')
+                ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category C', 'Category A.A')
         );
     }
 
