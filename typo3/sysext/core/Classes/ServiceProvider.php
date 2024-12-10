@@ -629,7 +629,12 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRuntimeCache(ContainerInterface $container): FrontendInterface
     {
-        return Bootstrap::createCache('runtime');
+        $defaultBackend = Cache\Backend\TransientMemoryBackend::class;
+        $cacheBackend = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']['runtime']['backend'] ?? $defaultBackend;
+        if (!array_key_exists(Cache\Backend\TransientBackendInterface::class, class_implements($cacheBackend))) {
+            $cacheBackend = $defaultBackend;
+        }
+        return Bootstrap::createCache('runtime', false, $cacheBackend);
     }
 
     public static function getCoreMiddlewares(ContainerInterface $container): \ArrayObject
