@@ -41,7 +41,7 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  * ::
  *
  *    <f:debug title="My Title" maxDepth="5"
- *        blacklistedClassNames="{0:'Tx_BlogExample_Domain_Model_Administrator'}"
+ *        blacklistedClassNames="{0:'ACME\BlogExample\Domain\Model\Administrator'}"
  *        blacklistedPropertyNames="{0:'posts'}"
  *        plainText="true" ansiColors="false"
  *        inline="true"
@@ -85,13 +85,13 @@ final class DebugViewHelper extends AbstractViewHelper
     {
         return DebuggerUtility::var_dump(
             $this->renderChildren(),
-            $this->arguments['title'],
-            $this->arguments['maxDepth'],
-            $this->arguments['plainText'],
-            $this->arguments['ansiColors'],
-            $this->arguments['inline'],
-            $this->arguments['blacklistedClassNames'],
-            $this->arguments['blacklistedPropertyNames']
+            is_scalar($this->arguments['title']) ? (string)$this->arguments['title'] : null,
+            (int)$this->arguments['maxDepth'],
+            (bool)$this->arguments['plainText'],
+            (bool)$this->arguments['ansiColors'],
+            (bool)$this->arguments['inline'],
+            is_array($this->arguments['blacklistedClassNames']) ? $this->arguments['blacklistedClassNames'] : null,
+            is_array($this->arguments['blacklistedPropertyNames']) ? $this->arguments['blacklistedPropertyNames'] : null
         );
     }
 }
