@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'MetaData Test',
     'description' => 'MetaData Test',
     'category' => 'example',
-    'version' => '12.4.24',
+    'version' => '12.4.25',
     'state' => 'beta',
     'author' => 'Frank Nägler',
     'author_email' => 'frank.naegler@typo3.org',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.24',
+            'typo3' => '12.4.25',
         ],
         'conflicts' => [],
         'suggests' => [],
