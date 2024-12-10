@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Cache;
 
 use TYPO3\CMS\Core\Cache\Backend\BackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\NullBackend;
+use TYPO3\CMS\Core\Cache\Backend\TransientBackendInterface;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\Event\CacheFlushEvent;
@@ -324,6 +325,10 @@ class CacheManager implements SingletonInterface
         if ($this->disableCaching && $backend !== TransientMemoryBackend::class) {
             $backend = NullBackend::class;
             $backendOptions = [];
+        }
+
+        if ($identifier === 'runtime' && !array_key_exists(TransientBackendInterface::class, class_implements($backend))) {
+            $backend = TransientMemoryBackend::class;
         }
 
         // Add the cache identifier to the groups that it should be attached to, or use the default ones.
