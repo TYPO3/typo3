@@ -2638,6 +2638,12 @@ parameters:
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
+			path: ../../typo3/sysext/core/Tests/Functional/DataScenarios/CategoryManyToMany/WorkspacesModify/ActionTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
 			path: ../../typo3/sysext/core/Tests/Functional/DataScenarios/CategoryOneToMany/Modify/ActionTest.php
 
 		-

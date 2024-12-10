@@ -249,7 +249,7 @@ final class ActionTest extends AbstractActionTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, $this->getRequestSectionStructureHasRecordConstraint()
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
     }
 
     #[Test]
