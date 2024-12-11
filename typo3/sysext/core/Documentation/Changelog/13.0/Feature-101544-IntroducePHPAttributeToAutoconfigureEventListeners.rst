@@ -140,21 +140,21 @@ Method level example
     namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Core\Attribute\AsEventListener;
-    use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
+    use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
     use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 
     final readonly class MailerEventListener
     {
         #[AsEventListener(
             identifier: 'my-extension/mailer-after-sent-message',
-            event: AfterMailerInitializationEvent::class
+            event: AfterMailerSentMessageEvent::class
         )]
         #[AsEventListener(
             identifier: 'my-extension/mailer-before-sent-message',
             event: BeforeMailerSentMessageEvent::class
         )]
         public function __invoke(
-            AfterMailerInitializationEvent | BeforeMailerSentMessageEvent $event
+            AfterMailerSentMessageEvent | BeforeMailerSentMessageEvent $event
         ): void {
             // do something
         }

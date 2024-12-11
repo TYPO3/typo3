@@ -25,7 +25,6 @@ use Symfony\Component\Mailer\Transport\NullTransport;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
-use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
 use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\Mailer;
@@ -36,18 +35,11 @@ final class MailerTest extends FunctionalTestCase
     #[Test]
     public function mailerEventsAreTriggered(): void
     {
-        $afterMailerInitializedEvent = null;
         $beforeMailerSentMessageEvent = null;
         $afterMailerSentMessageEvent = null;
 
         /** @var Container $container */
         $container = $this->get('service_container');
-        $container->set(
-            'after-mailer-initialized-listener',
-            static function (AfterMailerInitializationEvent $event) use (&$afterMailerInitializedEvent) {
-                $afterMailerInitializedEvent = $event;
-            }
-        );
         $container->set(
             'before-mailer-sent-message-listener',
             static function (BeforeMailerSentMessageEvent $event) use (&$beforeMailerSentMessageEvent) {
@@ -62,7 +54,6 @@ final class MailerTest extends FunctionalTestCase
         );
 
         $eventListener = $container->get(ListenerProvider::class);
-        $eventListener->addListener(AfterMailerInitializationEvent::class, 'after-mailer-initialized-listener');
         $eventListener->addListener(BeforeMailerSentMessageEvent::class, 'before-mailer-sent-message-listener');
         $eventListener->addListener(AfterMailerSentMessageEvent::class, 'after-mailer-sent-message-listener');
 
@@ -71,9 +62,6 @@ final class MailerTest extends FunctionalTestCase
         $mailer = (new Mailer(new NullTransport(), $container->get(EventDispatcherInterface::class)));
 
         $mailer->send($message, $envelope);
-
-        self::assertInstanceOf(AfterMailerInitializationEvent::class, $afterMailerInitializedEvent);
-        self::assertEquals($mailer, $afterMailerInitializedEvent->getMailer());
 
         self::assertInstanceOf(BeforeMailerSentMessageEvent::class, $beforeMailerSentMessageEvent);
         self::assertEquals($message, $beforeMailerSentMessageEvent->getMessage());

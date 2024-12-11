@@ -4,7 +4,7 @@ services:
     class: stdClass
     tags:
       - { name: event.listener,
-          event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent,
+          event: TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent,
           method: 'onEvent',
           before: 'legacy-hook' }
 

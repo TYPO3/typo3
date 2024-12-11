@@ -25,7 +25,6 @@ use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mime\RawMessage;
 use TYPO3\CMS\Core\Exception as CoreException;
-use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
 use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
 use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -68,8 +67,6 @@ class Mailer implements MailerInterface
         } catch (\Exception $e) {
             throw new CoreException($e->getMessage(), 1291068569);
         }
-
-        $this->eventDispatcher?->dispatch(new AfterMailerInitializationEvent($this));
     }
 
     public function send(RawMessage $message, ?Envelope $envelope = null): void

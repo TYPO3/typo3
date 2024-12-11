@@ -66,7 +66,7 @@ final class ListenerProviderPassTest extends UnitTestCase
 
         self::assertEquals(
             [
-                'TYPO3\\CMS\\Core\\Mail\\Event\\AfterMailerInitializationEvent' => [
+                'TYPO3\\CMS\\Core\\Mail\\Event\\AfterMailerSentMessageEvent' => [
                     'package2.listener' => [
                         'service' => 'package2.listener',
                         'method' => 'onEvent',

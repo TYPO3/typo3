@@ -5,7 +5,7 @@ services:
     tags:
       - { name: event.listener,
           identifier: 'legacy-hook',
-          event: TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent,
+          event: TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent,
           before: 'unavailable' }
 
   package1.listener2:

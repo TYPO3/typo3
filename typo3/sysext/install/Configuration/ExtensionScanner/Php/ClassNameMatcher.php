@@ -2579,4 +2579,9 @@ return [
             'Deprecation-105230-TypoScriptFrontendControllerAndGLOBALSTSFE.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent' => [
+        'restFiles' => [
+            'Breaking-105809-AfterMailerInitializationEventRemoved.rst',
+        ],
+    ],
 ];
