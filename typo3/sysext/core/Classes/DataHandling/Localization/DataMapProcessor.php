@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
@@ -1322,9 +1323,22 @@ class DataMapProcessor
             return $data;
         }
 
+        $translateToMessage = '[' . $translateToMessage . '] ';
+        $schema = $this->getSchema($tableName);
+        // @todo The hook in DataHandler is not applied here
         foreach ($prefixFieldNames as $prefixFieldName) {
-            // @todo The hook in DataHandler is not applied here
-            $data[$prefixFieldName] = '[' . $translateToMessage . '] ' . $data[$prefixFieldName];
+            if (!isset($data[$prefixFieldName])) {
+                continue;
+            }
+            $fieldContent = $data[$prefixFieldName];
+            if ($schema->getField($prefixFieldName)->isType(TableColumnType::TEXT) && str_starts_with($fieldContent, '<')) {
+                // If the field is a text field, we need to prepend the translation message to the content
+                // that means, it should be after the first opening HTML tag, if one exists.
+                // @todo: Ideally we can use TcaSchema and Subschema in the future, to resolve this issue properly
+                $data[$prefixFieldName] = preg_replace('/(<[^>]+>)/', '$1' . $translateToMessage, $fieldContent, 1);
+            } else {
+                $data[$prefixFieldName] = $translateToMessage . $fieldContent;
+            }
         }
 
         return $data;
