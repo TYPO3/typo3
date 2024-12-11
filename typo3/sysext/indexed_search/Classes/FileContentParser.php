@@ -769,7 +769,10 @@ class FileContentParser
         foreach ($pdfInfoArray as $line) {
             $parts = explode(':', $line, 2);
             if (count($parts) > 1 && trim($parts[0])) {
-                $res[strtolower(trim($parts[0]))] = trim($parts[1]);
+                $key = strtolower(trim($parts[0]));
+                if (!isset($res[$key])) {
+                    $res[$key] = trim($parts[1]);
+                }
             }
         }
         return $res;
