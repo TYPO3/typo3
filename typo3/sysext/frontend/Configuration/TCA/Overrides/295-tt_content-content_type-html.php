@@ -2,8 +2,6 @@
 
 defined('TYPO3') or die();
 
-$contentType = 'html';
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType(
     [
         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.html',
@@ -24,6 +22,13 @@ $contentType = 'html';
         'columnsOverrides' => [
             'header' => [
                 'description' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header.description.ALT',
+            ],
+            'bodytext' => [
+                'config' => [
+                    'renderType' => 'codeEditor',
+                    'wrap' => 'off',
+                    'format' => 'html',
+                ],
             ],
         ],
     ]
