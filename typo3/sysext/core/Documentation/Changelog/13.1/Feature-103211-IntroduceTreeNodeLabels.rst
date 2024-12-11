@@ -64,9 +64,9 @@ The labels can also be added by using the event
         public function __invoke(AfterPageTreeItemsPreparedEvent $event): void
         {
             $items = $event->getItems();
-            foreach ($items as $item) {
+            foreach ($items as &$item) {
                 // Add special label for all pages with parent page ID 123
-                if ($item['_page']['pid'] === 123) {
+                if (($item['_page']['pid'] ?? null) === 123) {
                     $item['labels'][] = new Label(
                         label: 'Campaign B',
                         color: '#00658f',
