@@ -522,6 +522,8 @@ class FileContentParser
             case 'xltx':
                 if ($this->app['unzip']) {
                     $this->setLocaleForServerFileSystem();
+                    $utf8_content = null;
+                    $cmd = '';
                     switch ($ext) {
                         case 'docx':
                         case 'dotx':
@@ -531,22 +533,23 @@ class FileContentParser
                         case 'ppsx':
                         case 'pptx':
                         case 'potx':
-                            // Read slide1.xml:
-                            $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' ppt/slides/slide1.xml';
+                            $utf8_content = $this->extractPptxContent($absFile);
                             break;
                         case 'xlsx':
                         case 'xltx':
-                            // Read sheet1.xml:
-                            $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' xl/worksheets/sheet1.xml';
+                            // Read sharedStrings.xml:
+                            $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' xl/sharedStrings.xml';
                             break;
                         default:
                             $cmd = '';
                             break;
                     }
-                    CommandUtility::exec($cmd, $res);
-                    $content_xml = implode(LF, $res);
-                    unset($res);
-                    $utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
+                    if ($utf8_content === null) {
+                        CommandUtility::exec($cmd, $res);
+                        $content_xml = implode(LF, $res);
+                        unset($res);
+                        $utf8_content = trim(strip_tags(str_replace('<', ' <', $content_xml)));
+                    }
                     $indexingDataDto = $this->pObj->splitRegularContent($utf8_content);
                     // Make sure the title doesn't expose the absolute path!
                     $indexingDataDto->title = PathUtility::basename($absFile);
@@ -787,6 +790,31 @@ class FileContentParser
     public function removeEndJunk(string $string): string
     {
         return trim((string)preg_replace('/[' . LF . chr(12) . ']*$/', '', $string));
+    }
+
+    /**
+     * @param string $absFile Absolute filename of file (must exist and be validated OK before calling function)
+     */
+    protected function extractPptxContent(string $absFile): string
+    {
+        // Extract the list of slides:
+        $cmd = $this->app['unzip'] . ' -l ' . escapeshellarg($absFile);
+        CommandUtility::exec($cmd, $res);
+
+        $buffer = [];
+        foreach ($res as $line) {
+            if (preg_match('#\s+(ppt/slides/slide\d+.xml)$#', $line, $matches)) {
+                $slideFile = $matches[1];
+                // Extract the content of the slide:
+                $cmd = $this->app['unzip'] . ' -p ' . escapeshellarg($absFile) . ' ' . $slideFile;
+                CommandUtility::exec($cmd, $xml);
+                $content_xml = implode(LF, $xml);
+                unset($xml);
+                $buffer[] = trim(strip_tags(str_replace('<', ' <', $content_xml)));
+            }
+        }
+
+        return trim(implode(LF, $buffer));
     }
 
     /************************
