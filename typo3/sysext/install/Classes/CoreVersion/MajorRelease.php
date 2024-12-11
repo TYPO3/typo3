@@ -31,7 +31,7 @@ class MajorRelease
         $maintenanceWindow = MaintenanceWindow::fromApiResponse($response);
         $ltsVersion = isset($response['lts']) ? (string)$response['lts'] : null;
 
-        return new self((string)$response['version'], $ltsVersion, $response['title'], $maintenanceWindow);
+        return new self((string)($response['version'] ?? ''), $ltsVersion, (string)($response['title'] ?? ''), $maintenanceWindow);
     }
 
     public function getVersion(): string
