@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Generator;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\GeneratorFrontend;
 use TYPO3\TestingFramework\Core\Acceptance\Extension\BackendEnvironment;
-use TYPO3\TestingFramework\Core\Testbase;
 
 /**
  * Load various core extensions and styleguide and call styleguide generator
@@ -129,41 +128,8 @@ final class ApplicationEnvironment extends BackendEnvironment
         $styleguideGeneratorFrontend = GeneralUtility::makeInstance(GeneratorFrontend::class);
         $styleguideGeneratorFrontend->create('/', 0, $useSiteSets);
 
-        $testbase = new Testbase();
-        $instancePath = getenv('TYPO3_PATH_ROOT', true);
-        $copyFiles = [
-            // Create favicon.ico to suppress potential javascript errors in console
-            // which are caused by calling a non html in the browser, e.g. seo sitemap xml
-            'typo3/sysext/backend/Resources/Public/Icons/favicon.ico' => [
-                'favicon.ico',
-            ],
-            // Provide some files into the test instance normally added by installer
-            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess' => [
-                '.htaccess',
-            ],
-            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/resources-root-htaccess' => [
-                'fileadmin/.htaccess',
-            ],
-            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-htaccess' => [
-                'fileadmin/_temp_/.htaccess',
-            ],
-            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/fileadmin-temp-index.html' => [
-                'fileadmin/_temp_/index.html',
-            ],
-            'typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/typo3temp-var-htaccess' => [
-                'typo3temp/var/.htaccess',
-            ],
-        ];
-        foreach ($copyFiles as $sourceFile => $targetFiles) {
-            foreach ($targetFiles as $targetFile) {
-                $testbase->createDirectory(dirname(ltrim($targetFile, '/')));
-                copy(
-                    from: ltrim($sourceFile, '/'),
-                    to: ltrim($targetFile, '/'),
-                );
-            }
-        }
         // @todo: ugly workaround for InstallTool/AbstractCest.php
+        $instancePath = getenv('TYPO3_PATH_ROOT', true);
         putenv('TYPO3_ACCEPTANCE_PATH_WEB=' . $instancePath);
         putenv('TYPO3_ACCEPTANCE_PATH_VAR=' . $instancePath . '/typo3temp/var');
         putenv('TYPO3_ACCEPTANCE_PATH_CONFIG=' . $instancePath . '/typo3conf');
