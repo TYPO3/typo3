@@ -145,7 +145,9 @@ class VimeoRenderer implements FileRendererInterface
         if (!empty($options['loop'])) {
             $urlParams[] = 'loop=1';
         }
-
+        if (!empty($options['background'])) {
+            $urlParams[] = 'background=1';
+        }
         if (isset($options['api']) && (int)$options['api'] === 1) {
             $urlParams[] = 'api=1';
         }
@@ -155,7 +157,6 @@ class VimeoRenderer implements FileRendererInterface
         $urlParams[] = 'title=' . (int)!empty($options['showinfo']);
         $urlParams[] = 'byline=' . (int)!empty($options['showinfo']);
         $urlParams[] = 'portrait=0';
-
         return sprintf('https://player.vimeo.com/video/%s?%s', $videoId, implode('&', $urlParams));
     }
 
