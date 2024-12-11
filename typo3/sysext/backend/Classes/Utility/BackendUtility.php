@@ -2315,9 +2315,8 @@ class BackendUtility
      *
      * @param string $table Table name present in TCA
      * @param array $row Row from table
-     * @return array
      */
-    public static function getTCEFORM_TSconfig($table, $row)
+    public static function getTCEFORM_TSconfig($table, $row): array
     {
         $res = [];
         // Get main config for the table
