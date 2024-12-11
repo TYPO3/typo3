@@ -267,6 +267,7 @@ return [
             'enable' => true,
             'parameters' => [
                 'edit' => true,
+                'columnsOnly' => true,
             ],
         ],
     ],
