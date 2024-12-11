@@ -500,6 +500,13 @@ export default class FormEngineValidation {
         tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass)
       });
     }
+
+    const sectionElement = section || document;
+    for (const field of sectionElement.querySelectorAll<FormEngineFieldElement>(FormEngineValidation.rulesSelector)) {
+      if (field.closest('.t3js-flex-section-deleted, .t3js-inline-record-deleted, .t3js-file-reference-deleted') === null) {
+        FormEngineValidation.validateField(field);
+      }
+    }
   }
 
   /**
