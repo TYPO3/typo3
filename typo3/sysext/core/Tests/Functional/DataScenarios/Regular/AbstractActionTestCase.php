@@ -29,6 +29,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     protected const VALUE_PageId = 89;
     protected const VALUE_PageIdTarget = 90;
     protected const VALUE_PageIdWebsite = 1;
+    protected const VALUE_PageIdParent = 88;
     protected const VALUE_ContentIdFirst = 297;
     protected const VALUE_ContentIdSecond = 298;
     protected const VALUE_ContentIdThird = 299;
@@ -347,7 +348,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function createPageAndChangePageSorting(): void
     {
-        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, 88, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
+        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_PageIdParent, ['title' => 'Testing #1', 'hidden' => 0, 'nav_title' => 'Nav Testing #1']);
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][0];
         $this->actionService->moveRecord(self::TABLE_Page, $this->recordIds['newPageId'], -self::VALUE_PageId);
     }
@@ -391,6 +392,19 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageId];
         $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
         $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+    }
+    public function copyPageRecursively(): void
+    {
+        $this->backendUser->uc['copyLevels'] = 10;
+        // Create translated page for the original page first because the initial setup does not have this
+        $copiedTableIds1 = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdParent, self::VALUE_LanguageId);
+        $copiedTableIds2 = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdParent, self::VALUE_LanguageIdSecond);
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageIdParent, self::VALUE_PageIdWebsite);
+        $this->recordIds['newPageId'] = $newTableIds[self::TABLE_Page][self::VALUE_PageIdParent];
+        $this->recordIds['newContentIdFirst'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+        $this->recordIds['newContentIdLast'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdSecond];
+        $this->recordIds['localizedPageId1'] = $copiedTableIds1[self::TABLE_Page][self::VALUE_PageIdParent];
+        $this->recordIds['localizedPageId2'] = $copiedTableIds2[self::TABLE_Page][self::VALUE_PageIdParent];
     }
 
     public function changePageSorting(): void
