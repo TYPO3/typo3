@@ -46,7 +46,7 @@ The corresponding event listener class:
         public function __invoke(AfterPageTreeItemsPreparedEvent $event): void
         {
             $items = $event->getItems();
-            foreach ($items as $item) {
+            foreach ($items as &$item) {
                 // Setting special item for page with id 123
                 if ($item['_page']['uid'] === 123) {
                     $item['icon'] = 'my-special-icon';
