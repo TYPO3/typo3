@@ -562,13 +562,14 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private toggleContainerControls(visible: boolean): void {
-    const controlContainer = this.container.querySelector(Selectors.controlContainer);
-    if (controlContainer === null) {
-      return;
-    }
-    const controlContainerButtons = controlContainer.querySelectorAll('button, a');
-    controlContainerButtons.forEach((button: HTMLElement): void => {
-      button.style.display = visible ? null : 'none';
+    const controlContainer = this.container.querySelectorAll(
+      ':scope > ' + Selectors.controlContainer
+    );
+    controlContainer.forEach((container: HTMLElement): void => {
+      const controlContainerButtons = container.querySelectorAll('button, a');
+      controlContainerButtons.forEach((button: HTMLElement): void => {
+        button.style.display = visible ? null : 'none';
+      });
     });
   }
 

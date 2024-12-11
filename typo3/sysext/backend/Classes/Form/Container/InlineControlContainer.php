@@ -290,7 +290,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Add the level buttons before all child records:
         if (in_array($config['appearance']['levelLinksPosition'] ?? null, ['both', 'top'], true)) {
-            $html .= '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $newRecordButton . $localizationButtons . '</div>';
+            $html .= '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls">' . $newRecordButton . $localizationButtons . '</div>';
         }
 
         // If it's required to select from possible child records (reusable children), add a selector box
@@ -335,7 +335,7 @@ class InlineControlContainer extends AbstractContainer
 
         // Add the level buttons after all child records:
         if (!$isReadOnly && in_array($config['appearance']['levelLinksPosition'] ?? false, ['both', 'bottom'], true)) {
-            $html .= $newRecordButton . $localizationButtons;
+            $html .= '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls">' . $newRecordButton . $localizationButtons . '</div>';
         }
         if (is_array($config['customControls'] ?? false)) {
             $html .= '<div id="' . $nameObject . '_customControls">';
@@ -485,7 +485,7 @@ class InlineControlContainer extends AbstractContainer
                     </ul>
                 </div>';
         }
-        return '<div class="form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';
+        return '<div class="form-group t3js-formengine-validation-marker">' . $item . '</div>';
     }
 
     /**
@@ -541,7 +541,7 @@ class InlineControlContainer extends AbstractContainer
         }
 
         // Wrap the selector and add a spacer to the bottom
-        $item = '<div class="input-group form-group t3js-formengine-validation-marker t3js-inline-controls-top-outer-container">' . $item . '</div>';
+        $item = '<div class="input-group form-group t3js-formengine-validation-marker t3js-inline-controls">' . $item . '</div>';
         return $item;
     }
 
