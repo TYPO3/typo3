@@ -4868,7 +4868,16 @@ class DataHandler
                     }
                 }
                 if (!empty($translateToMsg)) {
-                    $overrideValues[$field->getName()] = '[' . $translateToMsg . '] ' . $row[$field->getName()];
+                    $translateToMessage = '[' . $translateToMsg . '] ';
+                    $fieldContent = $row[$field->getName()];
+                    if ($field->isType(TableColumnType::TEXT) && str_starts_with($fieldContent, '<')) {
+                        // If the field is a text field, we need to prepend the translation message to the content
+                        // that means, it should be after the first opening HTML tag, if one exists.
+                        // @todo: Ideally we can use TcaSchema and Subschema in the future, to resolve this issue properly
+                        $overrideValues[$field->getName()] = preg_replace('/(<[^>]+>)/', '$1' . $translateToMessage, $fieldContent, 1);
+                    } else {
+                        $overrideValues[$field->getName()] = $translateToMessage . $fieldContent;
+                    }
                 } else {
                     $overrideValues[$field->getName()] = $row[$field->getName()];
                 }
