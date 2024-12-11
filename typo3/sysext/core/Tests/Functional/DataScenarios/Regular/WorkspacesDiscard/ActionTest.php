@@ -333,6 +333,16 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function copyPageRecursively(): void
+    {
+        parent::copyPageRecursively();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['newPageId']);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId1']);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, $this->recordIds['localizedPageId2']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageRecursively.csv');
+    }
+
+    #[Test]
     public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();

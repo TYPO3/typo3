@@ -514,6 +514,27 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function copyPageRecursively(): void
+    {
+        parent::copyPageRecursively();
+        // note by benni in 2024: interestingly enough, publishing the $newPageId does not publish their translations,
+        // I assume this is expected behaviour (= because people can publish a translation later-on),
+        // but it's worth noting until documented properly somewhere else.
+        $this->actionService->publishRecords(
+            [
+                self::TABLE_Page => [$this->recordIds['newPageId']],
+                self::TABLE_Content => [$this->recordIds['newContentIdFirst'], $this->recordIds['newContentIdLast']],
+            ]
+        );
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageRecursively.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('DataHandlerTest (copy 1)'));
+    }
+
+    #[Test]
     public function createPageAndChangePageSorting(): void
     {
         parent::createPageAndChangePageSorting();

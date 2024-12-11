@@ -618,6 +618,18 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function copyPageRecursively(): void
+    {
+        parent::copyPageRecursively();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageRecursively.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId($this->recordIds['newPageId']));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Page)->setField('title')->setValues('DataHandlerTest (copy 1)'));
+    }
+
+    #[Test]
     public function changePageSorting(): void
     {
         parent::changePageSorting();

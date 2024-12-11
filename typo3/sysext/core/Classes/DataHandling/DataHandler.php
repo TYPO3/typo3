@@ -8500,7 +8500,10 @@ class DataHandler
             $queryBuilder
                 ->select('uid')
                 ->from('pages')
-                ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
+                ->where(
+                    $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)),
+                    $queryBuilder->expr()->eq('sys_language_uid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
+                )
                 ->orderBy('sorting', 'DESC');
             if (!$this->admin) {
                 $queryBuilder->andWhere($this->BE_USER->getPagePermsClause(Permission::PAGE_SHOW));
