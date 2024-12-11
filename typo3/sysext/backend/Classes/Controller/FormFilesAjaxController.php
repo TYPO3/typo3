@@ -122,7 +122,6 @@ readonly class FormFilesAjaxController extends AbstractFormEngineAjaxController
                     'compilerInput' => [
                         'uid' => $fileReferenceData['databaseRow']['uid'],
                         'childChildUid' => $fileId,
-                        'parentConfig' => $parentConfig,
                     ],
                 ],
                 $this->nodeFactory->create($fileReferenceData)->render()

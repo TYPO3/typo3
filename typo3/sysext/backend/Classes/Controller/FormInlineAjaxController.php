@@ -148,7 +148,6 @@ readonly class FormInlineAjaxController extends AbstractFormEngineAjaxController
             'compilerInput' => [
                 'uid' => $childData['databaseRow']['uid'],
                 'childChildUid' => $childChildUid,
-                'parentConfig' => $parentConfig,
             ],
         ];
 

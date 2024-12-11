@@ -168,7 +168,6 @@ readonly class SiteInlineAjaxController extends AbstractFormEngineAjaxController
             'compilerInput' => [
                 'uid' => $childData['databaseRow']['uid'],
                 'childChildUid' => $childChildUid,
-                'parentConfig' => $parentConfig,
             ],
         ];
 

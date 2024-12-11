@@ -29,7 +29,6 @@ interface InlineData {
 interface CompilerInput {
   uid: string;
   childChildUid: string;
-  parentConfig: { [key: string]: any };
   delete?: Array<string>;
   localize?: Array<LocalizeItem>;
 }
