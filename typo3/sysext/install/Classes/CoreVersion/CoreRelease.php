@@ -39,7 +39,13 @@ class CoreRelease
 
     public static function fromApiResponse(array $response): self
     {
-        return new self($response['version'], new \DateTimeImmutable($response['date']), $response['type'], $response['tar_package']['sha1sum'], $response['elts'] ?? false);
+        return new self(
+            (string)($response['version'] ?? ''),
+            new \DateTimeImmutable((string)($response['date'] ?? '')),
+            (string)($response['type'] ?? ''),
+            (string)($response['tar_package']['sha1sum'] ?? ''),
+            $response['elts'] ?? false
+        );
     }
 
     public function getVersion(): string

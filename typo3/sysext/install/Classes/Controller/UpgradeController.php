@@ -399,12 +399,13 @@ class UpgradeController extends AbstractController
                 if (!empty($supportedMajorReleases['elts'])) {
                     $supportMessages[] = sprintf('Currently supported TYPO3 ELTS versions: %s (more information at https://typo3.com/elts).', implode(', ', $supportedMajorReleases['elts']));
                 }
-
-                $messages[] = [
-                    'title' => 'TYPO3 Version information',
-                    'message' => implode(' ', $supportMessages),
-                    'severity' => ContextualFeedbackSeverity::INFO,
-                ];
+                if ($supportMessages !== []) {
+                    $messages[] = [
+                        'title' => 'TYPO3 Version information',
+                        'message' => implode(' ', $supportMessages),
+                        'severity' => ContextualFeedbackSeverity::INFO,
+                    ];
+                }
             }
 
             foreach ($messages as $message) {
