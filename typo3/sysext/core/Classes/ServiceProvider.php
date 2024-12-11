@@ -94,6 +94,7 @@ class ServiceProvider extends AbstractServiceProvider
             Localization\LanguageStore::class => self::getLanguageStore(...),
             Localization\Locales::class => self::getLocales(...),
             Localization\LocalizationFactory::class => self::getLocalizationFactory(...),
+            Mail\Mailer::class => self::getMailer(...),
             Mail\TransportFactory::class => self::getMailTransportFactory(...),
             Messaging\FlashMessageService::class => self::getFlashMessageService(...),
             Middleware\ResponsePropagation::class => self::getResponsePropagationMiddleware(...),
@@ -414,6 +415,14 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Localization\LocalizationFactory::class, [
             $container->get(Localization\LanguageStore::class),
             $container->get(Cache\CacheManager::class),
+        ]);
+    }
+
+    public static function getMailer(ContainerInterface $container): Mail\Mailer
+    {
+        return self::new($container, Mail\Mailer::class, [
+            null,
+            $container->get(EventDispatcherInterface::class),
         ]);
     }
 

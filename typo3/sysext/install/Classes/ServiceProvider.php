@@ -108,7 +108,6 @@ class ServiceProvider extends AbstractServiceProvider
             Command\SetupCommand::class => self::getSetupCommand(...),
             Command\SetupDefaultBackendUserGroupsCommand::class => self::getSetupDefaultBackendUserGroupsCommand(...),
             Database\PermissionsCheck::class => self::getPermissionsCheck(...),
-            Mailer::class => self::getMailer(...),
             Updates\DatabaseUpdatedPrerequisite::class => self::getDatabaseUpdatedPrerequisite(...),
         ];
     }
@@ -429,14 +428,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
         return new Database\PermissionsCheck();
-    }
-
-    public static function getMailer(ContainerInterface $container): Mailer
-    {
-        return self::new($container, Mailer::class, [
-            null,
-            $container->get(EventDispatcherInterface::class),
-        ]);
     }
 
     public static function getDatabaseUpdatedPrerequisite(ContainerInterface $container): Updates\DatabaseUpdatedPrerequisite
