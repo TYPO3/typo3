@@ -38,25 +38,30 @@ Before:
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Services.yaml
 
-    MyVendor\MyExtension\EventListener\NullMailer:
+    MyVendor\MyExtension\EventListener\AddMailMessageBcc:
       tags:
         - name: event.listener
-          identifier: 'my-extension/null-mailer'
+          identifier: 'my-extension/add-mail-message-bcc'
 
 ..  code-block:: php
-    :caption: EXT:my_extension/Classes/EventListener/NullMailer.php
+    :caption: EXT:my_extension/Classes/EventListener/AddMailMessageBcc.php
 
     <?php
 
     namespace MyVendor\MyExtension\EventListener;
 
-    use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
+    use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
+    use TYPO3\CMS\Core\Mail\MailMessage;
 
-    final class NullMailer
+    final readonly class AddMailMessageBcc
     {
-        public function __invoke(AfterMailerInitializationEvent $event): void
+        public function __invoke(BeforeMailerSentMessageEvent $event): void
         {
-            $event->getMailer()->injectMailSettings(['transport' => 'null']);
+            $message = $event->getMessage();
+            if ($message instanceof MailMessage) {
+                $message->addBcc('me@example.com');
+            }
+            $event->setMessage($message);
         }
     }
 
@@ -66,23 +71,28 @@ The configuration is removed from the :file:`Services.yaml` file and the
 attribute is assigned to the class instead:
 
 ..  code-block:: php
-    :caption: EXT:my_extension/Classes/EventListener/NullMailer.php
+    :caption: EXT:my_extension/Classes/EventListener/AddMailMessageBcc.php
 
     <?php
 
     namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Core\Attribute\AsEventListener;
-    use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
+    use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
+    use TYPO3\CMS\Core\Mail\MailMessage;
 
     #[AsEventListener(
-        identifier: 'my-extension/null-mailer'
+        identifier: 'my-extension/add-mail-message-bcc'
     )]
-    final class NullMailer
+    final readonly class AddMailMessageBcc
     {
-        public function __invoke(AfterMailerInitializationEvent $event): void
+        public function __invoke(BeforeMailerSentMessageEvent $event): void
         {
-            $event->getMailer()->injectMailSettings(['transport' => 'null']);
+            $message = $event->getMessage();
+            if ($message instanceof MailMessage) {
+                $message->addBcc('me@example.com');
+            }
+            $event->setMessage($message);
         }
     }
 
@@ -91,30 +101,30 @@ Repeatable example
 ==================
 
 ..  code-block:: php
-    :caption: EXT:my_extension/Classes/EventListener/NullMailer.php
+    :caption: EXT:my_extension/Classes/EventListener/MailerEventListener.php
 
     <?php
 
     namespace MyVendor\MyExtension\EventListener;
 
     use TYPO3\CMS\Core\Attribute\AsEventListener;
-    use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
+    use TYPO3\CMS\Core\Mail\Event\AfterMailerSentMessageEvent;
     use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 
     #[AsEventListener(
-        identifier: 'my-extension/null-mailer-initialization',
-        event: AfterMailerInitializationEvent::class
+        identifier: 'my-extension/mailer-after-sent-message',
+        event: AfterMailerSentMessageEvent::class
     )]
     #[AsEventListener(
-        identifier: 'my-extension/null-mailer-sent-message',
+        identifier: 'my-extension/mailer-before-sent-message',
         event: BeforeMailerSentMessageEvent::class
     )]
-    final class NullMailer
+    final readonly class MailerEventListener
     {
         public function __invoke(
-            AfterMailerInitializationEvent | BeforeMailerSentMessageEvent $event
+            AfterMailerSentMessageEvent | BeforeMailerSentMessageEvent $event
         ): void {
-            $event->getMailer()->injectMailSettings(['transport' => 'null']);
+            // do something
         }
     }
 
@@ -123,7 +133,7 @@ Method level example
 ====================
 
 ..  code-block:: php
-    :caption: EXT:my_extension/Classes/EventListener/NullMailer.php
+    :caption: EXT:my_extension/Classes/EventListener/MailerEventListener.php
 
     <?php
 
@@ -133,20 +143,20 @@ Method level example
     use TYPO3\CMS\Core\Mail\Event\AfterMailerInitializationEvent;
     use TYPO3\CMS\Core\Mail\Event\BeforeMailerSentMessageEvent;
 
-    final class NullMailer
+    final readonly class MailerEventListener
     {
         #[AsEventListener(
-            identifier: 'my-extension/null-mailer-initialization',
+            identifier: 'my-extension/mailer-after-sent-message',
             event: AfterMailerInitializationEvent::class
         )]
         #[AsEventListener(
-            identifier: 'my-extension/null-mailer-sent-message',
+            identifier: 'my-extension/mailer-before-sent-message',
             event: BeforeMailerSentMessageEvent::class
         )]
         public function __invoke(
             AfterMailerInitializationEvent | BeforeMailerSentMessageEvent $event
         ): void {
-            $event->getMailer()->injectMailSettings(['transport' => 'null']);
+            // do something
         }
     }
 
