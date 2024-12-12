@@ -135,7 +135,7 @@ readonly class ColorType implements SettingsTypeInterface
             return null;
         }
 
-        if (!preg_match('/^[0-9a-f]+$/', $values)) {
+        if (!preg_match('/^[0-9a-f]+$/i', $values)) {
             return null;
         }
 
