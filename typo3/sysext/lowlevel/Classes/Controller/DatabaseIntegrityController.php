@@ -267,14 +267,14 @@ class DatabaseIntegrityController
         // Values NOT in this array will not be saved in the settings-array for the module.
         $this->MOD_MENU = [
             'function' => [
-                'refindex' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex')),
-                'records' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics')),
-                'relations' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:databaseRelations')),
-                'search' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch')),
+                'refindex' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex'),
+                'records' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics'),
+                'relations' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:databaseRelations'),
+                'search' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'),
             ],
             'search' => [
-                'raw' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:rawSearch')),
-                'query' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:advancedQuery')),
+                'raw' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:rawSearch'),
+                'query' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:advancedQuery'),
             ],
             'search_query_smallparts' => '',
             'search_result_labels' => '',
@@ -304,10 +304,10 @@ class DatabaseIntegrityController
             'storeQueryConfigs' => '',
             // Used to store the available Query configs in memory
             'search_query_makeQuery' => [
-                'all' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:selectRecords')),
-                'count' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:countResults')),
-                'explain' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:explainQuery')),
-                'csv' => htmlspecialchars($lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:csvExport')),
+                'all' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:selectRecords'),
+                'count' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:countResults'),
+                'explain' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:explainQuery'),
+                'csv' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:csvExport'),
             ],
             'sword' => '',
         ];
