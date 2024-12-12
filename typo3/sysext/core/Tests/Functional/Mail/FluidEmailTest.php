@@ -121,6 +121,8 @@ final class FluidEmailTest extends FunctionalTestCase
 
         // Check content
         self::assertStringContainsString('<!doctype html>', $result);
+        self::assertStringContainsString("<html\n", $result);
+        self::assertStringContainsString('</html>', $result);
         self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result);
     }
 
@@ -150,6 +152,8 @@ final class FluidEmailTest extends FunctionalTestCase
 
         // Check content
         self::assertStringNotContainsString('<!doctype html>', $result);
+        self::assertStringNotContainsString("<html\n", $result);
+        self::assertStringNotContainsString('</html>', $result);
         self::assertStringContainsString('Plain content from Functional test', $result);
     }
 
@@ -182,6 +186,8 @@ final class FluidEmailTest extends FunctionalTestCase
 
         // Check content
         self::assertStringContainsString('<!doctype html>', $result2);
+        self::assertStringContainsString("<html\n", $result2);
+        self::assertStringContainsString('</html>', $result2);
         self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result2);
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
@@ -218,6 +224,8 @@ final class FluidEmailTest extends FunctionalTestCase
 
         // Check content
         self::assertStringNotContainsString('<!doctype html>', $result2);
+        self::assertStringNotContainsString("<html\n", $result2);
+        self::assertStringNotContainsString('</html>', $result2);
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
 
@@ -253,6 +261,8 @@ final class FluidEmailTest extends FunctionalTestCase
 
         // Check content
         self::assertStringContainsString('<!doctype html>', $result2);
+        self::assertStringContainsString("<html\n", $result2);
+        self::assertStringContainsString('</html>', $result2);
         self::assertStringContainsString('&lt;strong&gt;from&lt;/strong&gt;', $result2);
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
@@ -286,6 +296,8 @@ final class FluidEmailTest extends FunctionalTestCase
 
         // Check content
         self::assertStringNotContainsString('<!doctype html>', $result2);
+        self::assertStringNotContainsString("<html\n", $result2);
+        self::assertStringNotContainsString('</html>', $result2);
         self::assertStringContainsString('Reassigned Plain content ', $result2);
     }
 
@@ -348,6 +360,8 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertNotNull($resultHtml);
         self::assertStringContainsString('Reassigned plain content from Functional test', $resultPlain);
         self::assertStringContainsString('<!doctype html>', $resultHtml);
+        self::assertStringContainsString("<html\n", $resultHtml);
+        self::assertStringContainsString('</html>', $resultHtml);
         self::assertStringContainsString('Reassigned plain content from Functional test', $resultHtml);
     }
 
@@ -384,6 +398,8 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertNotNull($resultHtml);
         self::assertStringContainsString('Reassigned plain content from Functional test', $resultPlain);
         self::assertStringContainsString('<!doctype html>', $resultHtml);
+        self::assertStringContainsString("<html\n", $resultHtml);
+        self::assertStringContainsString('</html>', $resultHtml);
         self::assertStringContainsString('Reassigned plain content from Functional test', $resultHtml);
     }
 
@@ -459,6 +475,8 @@ final class FluidEmailTest extends FunctionalTestCase
         self::assertNotNull($resultHtml);
         self::assertEquals($text, $resultPlain);
         self::assertStringContainsString('<!doctype html>', $resultHtml);
+        self::assertStringContainsString("<html\n", $resultHtml);
+        self::assertStringContainsString('</html>', $resultHtml);
         self::assertEquals($html, $resultHtml);
     }
 }
