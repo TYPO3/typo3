@@ -588,11 +588,22 @@ final class DataHandlerTest extends UnitTestCase
         $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
         self::assertEquals($expectedNullableOutput, $returnValue['value']);
 
+        // Implicit: nullable for datetime|date, not nullable for time
+        $tcaFieldConf = [
+            'input' => [],
+            'dbType' => $dbType,
+            'format' => $format,
+        ];
+
+        $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
+        self::assertEquals($dbType === 'time' ? $expectedNotNullableOutput : $expectedNullableOutput, $returnValue['value']);
+
         // Not null
         $tcaFieldConf = [
             'input' => [],
             'dbType' => $dbType,
             'format' => $format,
+            'nullable' => false,
         ];
 
         $returnValue = $this->subject->_call('checkValueForDatetime', $value, $tcaFieldConf);
