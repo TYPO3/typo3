@@ -2597,6 +2597,7 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .form-wizards-wrap>.form-wizards-item-element .form-select[multiple],.form-wizards-wrap>.form-wizards-item-element .form-select[size]:not([size="1"]){height:100%}
 .form-wizards-wrap>.form-wizards-item-aside{grid-column:2/3;align-self:flex-start;white-space:nowrap}
 .form-wizards-wrap>.form-wizards-item-aside+.form-wizards-item-aside{grid-column:3/4}
+.form-wizards-wrap>.form-wizards-item-bottom .btn{text-align:left;white-space:wrap}
 .form-wizard-icon-list{color:var(--typo3-component-color);background:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-input-border-radius);margin-top:.25rem;padding:calc(var(--typo3-spacing)/ 4);display:flex;flex-wrap:wrap;gap:2px}
 .form-wizard-icon-list-item a{display:flex;height:100%;color:var(--typo3-component-color);border-radius:calc(var(--typo3-component-border-radius)/ 2);padding:calc(var(--typo3-spacing)/ 2);align-items:center;justify-content:center;outline-offset:-1px}
 .form-wizard-icon-list-item a:hover{color:var(--typo3-list-item-hover-color);background-color:var(--typo3-list-item-hover-bg);outline:1px solid var(--typo3-list-item-hover-border-color)}
