@@ -47,6 +47,11 @@
     > .form-wizards-item-aside + .form-wizards-item-aside {
         grid-column: 3 / 4;
     }
+
+    > .form-wizards-item-bottom .btn {
+        text-align: left;
+        white-space: wrap;
+    }
 }
 
 //
