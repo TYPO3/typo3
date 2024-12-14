@@ -28,7 +28,7 @@ use TYPO3\CMS\Install\Updates\RowUpdater\SysRedirectRootPageMoveMigration;
 /**
  * This is a generic updater to migrate content of TCA rows.
  *
- * Multiple classes implementing interface "RowUpdateInterface" can be
+ * Multiple classes implementing interface "RowUpdaterInterface" can be
  * registered here, each for a specific update purpose.
  *
  * The updater fetches each row of all TCA registered tables and
