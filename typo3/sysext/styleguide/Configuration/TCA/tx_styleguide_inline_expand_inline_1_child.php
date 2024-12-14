@@ -52,28 +52,6 @@ return [
                     ],
                     'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
                 ],
-                'overrideChildTca' => [
-                    'types' => [
-                        0 => [
-                            'showitem' => '--palette--;;imageoverlayPalette,--palette--;;filePalette',
-                        ],
-                        1 => [
-                            'showitem' => '--palette--;;imageoverlayPalette,--palette--;;filePalette',
-                        ],
-                        2 => [
-                            'showitem' => '--palette--;;imageoverlayPalette,--palette--;;filePalette',
-                        ],
-                        3 => [
-                            'showitem' => '--palette--;;imageoverlayPalette,--palette--;;filePalette',
-                        ],
-                        4 => [
-                            'showitem' => '--palette--;;imageoverlayPalette,--palette--;;filePalette',
-                        ],
-                        5 => [
-                            'showitem' => '--palette--;;imageoverlayPalette,--palette--;;filePalette',
-                        ],
-                    ],
-                ],
             ],
         ],
 
