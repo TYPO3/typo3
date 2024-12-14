@@ -296,13 +296,12 @@ class Clipboard
                     /** @var File $fileObject */
                     if (!$folder && ($fileObject->isImage() || $fileObject->isMediaFile())) {
                         $processedFile = $fileObject->process(
-                            ProcessedFile::CONTEXT_IMAGEPREVIEW,
+                            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
                             [
-                                'width' => 64,
-                                'height' => 64,
+                                'maxWidth' => 64,
+                                'maxHeight' => 64,
                             ]
                         );
-
                         $thumb = '<img src="' . htmlspecialchars($processedFile->getPublicUrl() ?? '') . '" ' .
                             'width="' . htmlspecialchars((string)$processedFile->getProperty('width')) . '" ' .
                             'height="' . htmlspecialchars((string)$processedFile->getProperty('height')) . '" ' .

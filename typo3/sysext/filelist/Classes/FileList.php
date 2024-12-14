@@ -657,10 +657,10 @@ class FileList
         }
 
         $processedFile = $resourceView->getPreview()->process(
-            ProcessedFile::CONTEXT_IMAGEPREVIEW,
+            ProcessedFile::CONTEXT_IMAGECROPSCALEMASK,
             [
-                'width' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['width'] ?? 64),
-                'height' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['height'] ?? 64),
+                'maxWidth' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['width'] ?? 64),
+                'maxHeight' => (int)($this->getBackendUser()->getTSConfig()['options.']['file_list.']['thumbnail.']['height'] ?? 64),
             ]
         );
 
