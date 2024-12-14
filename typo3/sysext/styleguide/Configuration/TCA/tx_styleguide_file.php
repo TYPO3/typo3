@@ -37,13 +37,6 @@ return [
                             'description' => 'field description',
                         ],
                     ],
-                    'types' => [
-                        \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => [
-                            'showitem' => '
-                                --palette--;;imageoverlayPalette,
-                                --palette--;;filePalette',
-                        ],
-                    ],
                 ],
             ],
         ],
@@ -59,13 +52,6 @@ return [
                     'columns' => [
                         'crop' => [
                             'description' => 'field description',
-                        ],
-                    ],
-                    'types' => [
-                        \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => [
-                            'showitem' => '
-                                --palette--;;imageoverlayPalette,
-                                --palette--;;filePalette',
                         ],
                     ],
                 ],

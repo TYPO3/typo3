@@ -528,37 +528,22 @@ return [
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
-                // Use the imageoverlayPalette instead of the basicoverlayPalette
+                // @todo Only kept for backwards compatibility. Remove in v14.
                 'overrideChildTca' => [
                     'types' => [
                         '0' => [
                             'showitem' => '
-                                    --palette--;;imageoverlayPalette,
+                                    --palette--;;extendedBasicOverlayPalette,
                                     --palette--;;filePalette',
                         ],
                         \TYPO3\CMS\Core\Resource\FileType::TEXT->value => [
                             'showitem' => '
-                                    --palette--;;imageoverlayPalette,
-                                    --palette--;;filePalette',
-                        ],
-                        \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => [
-                            'showitem' => '
-                                    --palette--;;imageoverlayPalette,
-                                    --palette--;;filePalette',
-                        ],
-                        \TYPO3\CMS\Core\Resource\FileType::AUDIO->value => [
-                            'showitem' => '
-                                    --palette--;;audioOverlayPalette,
-                                    --palette--;;filePalette',
-                        ],
-                        \TYPO3\CMS\Core\Resource\FileType::VIDEO->value => [
-                            'showitem' => '
-                                    --palette--;;videoOverlayPalette,
+                                    --palette--;;extendedBasicOverlayPalette,
                                     --palette--;;filePalette',
                         ],
                         \TYPO3\CMS\Core\Resource\FileType::APPLICATION->value => [
                             'showitem' => '
-                                    --palette--;;imageoverlayPalette,
+                                    --palette--;;extendedBasicOverlayPalette,
                                     --palette--;;filePalette',
                         ],
                     ],

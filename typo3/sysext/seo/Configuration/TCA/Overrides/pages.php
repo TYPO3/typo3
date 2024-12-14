@@ -189,20 +189,7 @@ $tca = [
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
-                // Use the imageoverlayPalette instead of the basicoverlayPalette
                 'overrideChildTca' => [
-                    'types' => [
-                        '0' => [
-                            'showitem' => '
-                                --palette--;;imageoverlayPalette,
-                                --palette--;;filePalette',
-                        ],
-                        \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => [
-                            'showitem' => '
-                                --palette--;;imageoverlayPalette,
-                                --palette--;;filePalette',
-                        ],
-                    ],
                     'columns' => [
                         'crop' => $openGraphCropConfiguration,
                     ],
@@ -239,20 +226,7 @@ $tca = [
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
-                // Use the imageoverlayPalette instead of the basicoverlayPalette
                 'overrideChildTca' => [
-                    'types' => [
-                        '0' => [
-                            'showitem' => '
-                                --palette--;;imageoverlayPalette,
-                                --palette--;;filePalette',
-                        ],
-                        \TYPO3\CMS\Core\Resource\FileType::IMAGE->value => [
-                            'showitem' => '
-                                --palette--;;imageoverlayPalette,
-                                --palette--;;filePalette',
-                        ],
-                    ],
                     'columns' => [
                         'crop' => $openGraphCropConfiguration,
                     ],
