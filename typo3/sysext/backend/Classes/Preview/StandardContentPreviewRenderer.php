@@ -283,20 +283,18 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             ) {
                 $cropVariantCollection = CropVariantCollection::create((string)$fileReferenceObject->getProperty('crop'));
                 $cropArea = $cropVariantCollection->getCropArea();
-                $taskType = ProcessedFile::CONTEXT_IMAGEPREVIEW;
                 $processingConfiguration = [
-                    'width' => 64,
-                    'height' => 64,
+                    'maxWidth' => 64,
+                    'maxHeight' => 64,
                 ];
                 if (!$cropArea->isEmpty()) {
-                    $taskType = ProcessedFile::CONTEXT_IMAGECROPSCALEMASK;
                     $processingConfiguration = [
                         'maxWidth' => 64,
                         'maxHeight' => 64,
                         'crop' => $cropArea->makeAbsoluteBasedOnFile($fileReferenceObject),
                     ];
                 }
-                $processedImage = $fileObject->process($taskType, $processingConfiguration);
+                $processedImage = $fileObject->process(ProcessedFile::CONTEXT_IMAGECROPSCALEMASK, $processingConfiguration);
                 $attributes = [
                     'src' => $processedImage->getPublicUrl() ?? '',
                     'width' => $processedImage->getProperty('width'),
@@ -311,7 +309,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $thumbData .= '<div class="preview-thumbnails-element"><div class="preview-thumbnails-element-image">' . $imgTag . '</div></div>';
         }
 
-        return $thumbData ? '<div class="preview-thumbnails" style="--preview-thumbnails-size: 64px">' . $thumbData . '</div>' : '';
+        return $thumbData ? '<div class="preview-thumbnails">' . $thumbData . '</div>' : '';
     }
 
     /**
