@@ -7598,8 +7598,9 @@ class DataHandler
     {
         if ($this->tcaSchemaFactory->has($table)) {
             $liveUid = ($row['t3ver_oid'] ?? null) ?: ($row['uid'] ?? null);
+            $fullRow = $this->recordInfo($table, $liveUid);
             return [
-                'header' => BackendUtility::getRecordTitle($table, $row),
+                'header' => BackendUtility::getRecordTitle($table, $fullRow ?: $row),
                 'pid' => $row['pid'] ?? null,
                 'event_pid' => $this->eventPid($table, (int)$liveUid, $row['pid'] ?? null),
                 't3ver_state' => $this->tcaSchemaFactory->get($table)->isWorkspaceAware() ? ($row['t3ver_state'] ?? '') : '',
