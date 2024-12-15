@@ -303,25 +303,28 @@
 //
 // Thumbnails
 //
-:root {
-    --preview-thumbnails-size: 64px;
-}
-
 .preview-thumbnails {
+    --preview-thumbnails-element-bg: var(--typo3-surface-bright);
+    --preview-thumbnails-element-border-color: color-mix(in srgb, var(--preview-thumbnails-element-bg), currentColor 15%);
+    --preview-thumbnails-element-border-radius: var(--typo3-component-border-radius);
+    --preview-thumbnails-element-spacing: .5rem;
+    --preview-thumbnails-size: 64px;
     display: flex;
     flex-wrap: wrap;
     gap: .5rem;
 
     &-element {
+        background-color: var(--preview-thumbnails-element-bg);
+        border: 1px solid var(--preview-thumbnails-element-border-color);
+        border-radius: var(--preview-thumbnails-element-border-radius);
         display: block;
+        padding: var(--preview-thumbnails-element-spacing);
 
         &-image {
             height: var(--preview-thumbnails-size);
             width: var(--preview-thumbnails-size);
             display: flex;
-            background-color: rgba(0, 0, 0, .05);
             overflow: hidden;
-            border-radius: 2px;
             justify-content: center;
             align-items: center;
 
