@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Tests\Functional\Tree\Repository\Fixtures\Tree\NormalizeTreeTrait;
 use TYPO3\CMS\Backend\Tree\Repository\AfterRawPageRowPreparedEvent;
+use TYPO3\CMS\Backend\Tree\Repository\BeforePageTreeIsFilteredEvent;
 use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -600,5 +601,34 @@ final class PageTreeRepositoryTest extends FunctionalTestCase
         $actual = $this->normalizeTreeArray($actual, $keepProperties);
         self::assertEquals($expectedResult, $actual[0]);
         self::assertCount(4, $afterRawPageRowPreparedEvent);
+    }
+
+    #[Test]
+    public function beforePageTreeIsFilteredEventIsCalled(): void
+    {
+        $beforePageTreeIsFilteredEvent = null;
+
+        /** @var Container $container */
+        $container = $this->get('service_container');
+        $container->set(
+            'before-page-is-filtered-listener',
+            static function (BeforePageTreeIsFilteredEvent $event) use (&$beforePageTreeIsFilteredEvent) {
+                $beforePageTreeIsFilteredEvent = $event;
+                $event->searchParts = $event->searchParts->with(
+                    $event->queryBuilder->expr()->eq('pid', (int)$event->searchPhrase)
+                );
+                $event->searchUids[] = 432;
+            }
+        );
+
+        $eventListener = $container->get(ListenerProvider::class);
+        $eventListener->addListener(BeforePageTreeIsFilteredEvent::class, 'before-page-is-filtered-listener');
+
+        $pageTreeRepository = new PageTreeRepository(0);
+        $pageTreeRepository->fetchFilteredTree('31', [1], '');
+
+        self::assertInstanceOf(BeforePageTreeIsFilteredEvent::class, $beforePageTreeIsFilteredEvent);
+        self::assertStringContainsString('pid = 31', preg_replace('/["\'`]/', '', (string)$beforePageTreeIsFilteredEvent->searchParts));
+        self::assertEquals([31, 432], $beforePageTreeIsFilteredEvent->searchUids);
     }
 }

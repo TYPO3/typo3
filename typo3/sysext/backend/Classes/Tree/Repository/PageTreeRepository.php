@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -551,17 +550,12 @@ class PageTreeRepository
                 QueryHelper::stripLogicalOperatorPrefix($additionalWhereClause)
             );
 
-        $searchParts = $expressionBuilder->or();
-
-        // Extract true integers from search string
-        $searchUids = [];
-        $searchPhrases = GeneralUtility::trimExplode(',', $searchFilter, true);
-        foreach ($searchPhrases as $searchPhrase) {
-            if (MathUtility::canBeInterpretedAsInteger($searchPhrase) && $searchPhrase > 0) {
-                $searchUids[] = (int)$searchPhrase;
-            }
-        }
-        $searchUids = array_unique($searchUids);
+        // Allow to extend search parts and search uids
+        $event = $this->eventDispatcher->dispatch(
+            new BeforePageTreeIsFilteredEvent($expressionBuilder->or(), [], $searchFilter, $queryBuilder)
+        );
+        $searchParts = $event->searchParts;
+        $searchUids = $event->searchUids;
 
         if (!empty($searchUids)) {
             // Ensure that the LIVE id is also found
@@ -589,19 +583,6 @@ class PageTreeRepository
             }
             $searchParts = $searchParts->with($uidFilter);
         }
-        $searchFilter = '%' . $queryBuilder->escapeLikeWildcards($searchFilter) . '%';
-
-        $searchWhereAlias = $expressionBuilder->or(
-            $expressionBuilder->like(
-                'nav_title',
-                $queryBuilder->createNamedParameter($searchFilter)
-            ),
-            $expressionBuilder->like(
-                'title',
-                $queryBuilder->createNamedParameter($searchFilter)
-            )
-        );
-        $searchParts = $searchParts->with($searchWhereAlias);
 
         $queryBuilder->andWhere($searchParts);
         $pageRecords = $queryBuilder
