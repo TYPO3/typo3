@@ -18,11 +18,11 @@ The following PHP classes that have previously been marked as deprecated with v1
 - :php:`\TYPO3\CMS\Core\Resource\DuplicationBehavior` :ref:`(Deprecation entry) <deprecation-101151-1688113521>`
 - :php:`\TYPO3\CMS\Core\Type\Enumeration` :ref:`(Deprecation entry) <deprecation-101163-1681741493>`
 - :php:`\TYPO3\CMS\Core\Type\Icon\IconState` :ref:`(Deprecation entry) <deprecation-101133-1687875352>`
-- :php:`\TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver` :ref:`(Deprecation entry) <deprecation-104773-1724940753>`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\GenericViewResolver` :ref:`(Deprecation entry) <deprecation-104773-1724942036>`
 - :php:`\TYPO3\CMS\Extbase\Security\Cryptography\HashService` :ref:`(Deprecation entry) <deprecation-102763-1706358913>`
-- :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView` :ref:`(Deprecation entry) <deprecation-104773-1724940753>`
-- :php:`\TYPO3\CMS\Fluid\View\StandaloneView` :ref:`(Deprecation entry) <deprecation-104773-1724940753>`
-- :php:`\TYPO3\CMS\Fluid\View\TemplateView` :ref:`(Deprecation entry) <deprecation-104773-1724940753>`
+- :php:`\TYPO3\CMS\Fluid\View\AbstractTemplateView` :ref:`(Deprecation entry) <deprecation-104773-1724942036>`
+- :php:`\TYPO3\CMS\Fluid\View\StandaloneView` :ref:`(Deprecation entry) <deprecation-104773-1724942036>`
+- :php:`\TYPO3\CMS\Fluid\View\TemplateView` :ref:`(Deprecation entry) <deprecation-104773-1724942036>`
 
 The following PHP classes have been declared :php:`final`:
 
@@ -32,7 +32,7 @@ The following PHP interfaces that have previously been marked as deprecated with
 
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryInitHookInterface` :ref:`(Deprecation entry) <deprecation-102806-1704876661>`
 - :php:`\TYPO3\CMS\Core\Domain\Repository\PageRepositoryGetPageHookInterface` :ref:`(Deprecation entry) <deprecation-102806-1704876661>`
-- :php:`\TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface` :ref:`(Deprecation entry) <deprecation-104773-1724940753>`
+- :php:`\TYPO3\CMS\Extbase\Mvc\View\ViewResolverInterface` :ref:`(Deprecation entry) <deprecation-104773-1724942036>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetDataHookInterface` :ref:`(Deprecation entry) <deprecation-102614-1701869807>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectGetImageResourceHookInterface` :ref:`(Deprecation entry) <deprecation-102755-1704449836>`
 - :php:`\TYPO3\CMS\Frontend\ContentObject\ContentObjectOneSourceCollectionHookInterface` :ref:`(Deprecation entry) <deprecation-102624-1701943829>`
