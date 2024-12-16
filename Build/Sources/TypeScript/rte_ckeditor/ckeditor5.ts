@@ -1,6 +1,7 @@
 import { html, LitElement, TemplateResult } from 'lit';
 import { customElement, property, queryAssignedElements } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import DebounceEvent from '@typo3/core/event/debounce-event';
 import { prefixAndRebaseCss } from '@typo3/rte-ckeditor/css-prefixer';
 import { ClassicEditor } from '@ckeditor/ckeditor5-editor-classic';
 import type { Editor, EditorConfig, PluginConstructor } from '@ckeditor/ckeditor5-core';
@@ -8,6 +9,7 @@ import type { WordCount, WordCountConfig } from '@ckeditor/ckeditor5-word-count'
 import type { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import type { GeneralHtmlSupportConfig } from '@ckeditor/ckeditor5-html-support';
 import type { TypingConfig } from '@ckeditor/ckeditor5-typing';
+import { EventInfo } from '@ckeditor/ckeditor5-utils';
 
 type PluginModuleDescriptor = {
   module: string,
@@ -153,13 +155,30 @@ export class CKEditor5Element extends LitElement {
         this.applyEditableElementStyles(editor, width, height);
         this.handleWordCountPlugin(editor, wordCount);
         this.applyReadOnly(editor, readOnly);
+        editor.model.document.on('change:data', (): void => {
+          editor.updateSourceElement()
+          this.target[0].dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
+        });
         if (editor.plugins.has('SourceEditing')) {
           const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
-          editor.model.document.on('change:data', (): void => {
-            if (!sourceEditingPlugin.isSourceEditingMode) {
-              editor.updateSourceElement()
+          sourceEditingPlugin.on('change:isSourceEditingMode', (eventInfo: EventInfo, eventName: string, isEnabled: boolean): void => {
+            for (const [ rootName ] of editor.editing.view.domRoots) {
+              // Behold, CKEditor doesn't exposes events for the edit textarea that replaces the editor UI
+              // therefore we have to register an `input` event handler ourselves.
+              // The neat thing: if the user switches back to wysiwyg mode, the textarea is disposed,
+              // we don't have to remove the event handler by ourselves.
+              if (isEnabled) {
+                const sourceEditingTextarea = editor.ui.getEditableElement(`sourceEditing:${rootName}`)
+                if (sourceEditingTextarea instanceof HTMLTextAreaElement) {
+                  new DebounceEvent('input', (): void => {
+                    // Force editor model update on input, this will dispatch `change:data`
+                    sourceEditingPlugin.updateEditorData();
+                  }, 100).bindTo(sourceEditingTextarea);
+                } else {
+                  throw new Error('Cannot find textarea related to source editing. Has CKEditor been upgraded?');
+                }
+              }
             }
-            this.target[0].dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
           });
         }
 
