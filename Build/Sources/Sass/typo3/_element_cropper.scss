@@ -3,8 +3,12 @@
         background-color: transparent;
     }
 
-    .cropper-dashed {
+    .cropper-face {
         border: 1px dashed var(--typo3-state-primary-bg);
+    }
+
+    .cropper-dashed {
+        border-color: var(--typo3-state-primary-bg);
     }
 
     .cropper-point {
