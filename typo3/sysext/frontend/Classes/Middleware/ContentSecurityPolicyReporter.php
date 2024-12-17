@@ -20,9 +20,11 @@ namespace TYPO3\CMS\Frontend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Http\NullResponse;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Middleware\AbstractContentSecurityPolicyReporter;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
+use TYPO3\CMS\Core\Site\Entity\Site;
 
 /**
  * @internal
@@ -33,11 +35,24 @@ class ContentSecurityPolicyReporter extends AbstractContentSecurityPolicyReporte
     {
         $site = $request->getAttribute('site');
         $scope = Scope::frontendSite($site);
-        if ($this->isCspReport($scope, $request)) {
+        if ($this->targetsCspReportUri($scope, $request)) {
+            $dispositionMap = $this->dispositionMapFactory->buildDispositionMap(
+                $site instanceof Site ? ($site->getConfiguration()['contentSecurityPolicies'] ?? []) : []
+            );
+            // find at least one configured reporting endpoint for the current request
+            foreach ($dispositionMap->values() as $dispositionConfiguration) {
+                if ($this->isCspReport($scope, $request, $dispositionConfiguration)) {
+                    $isCspReport = true;
+                    break;
+                }
+            }
+            if (!($isCspReport ?? false)) {
+                return new HtmlResponse('Submission to CSP reporting endpoint denied', 403);
+            }
             // @todo check/store headers `origin` + `referer`
             // @todo create report, then call persist, then dispatch new event
             $this->persistCspReport($scope, $request);
-            return new NullResponse();
+            return (new Response())->withStatus(201);
         }
         return $handler->handle($request);
     }

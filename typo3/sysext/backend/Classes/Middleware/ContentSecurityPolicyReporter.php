@@ -20,7 +20,8 @@ namespace TYPO3\CMS\Backend\Middleware;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use TYPO3\CMS\Core\Http\NullResponse;
+use TYPO3\CMS\Core\Http\HtmlResponse;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Middleware\AbstractContentSecurityPolicyReporter;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 
@@ -32,11 +33,14 @@ class ContentSecurityPolicyReporter extends AbstractContentSecurityPolicyReporte
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $scope = Scope::backend();
-        if ($this->isCspReport($scope, $request)) {
+        if ($this->targetsCspReportUri($scope, $request)) {
+            if (!$this->isCspReport($scope, $request)) {
+                return new HtmlResponse('Submission to CSP reporting endpoint denied', 403);
+            }
             // @todo check/store headers `origin` + `referer`
             // @todo create report, then call persist, then dispatch new event
             $this->persistCspReport($scope, $request);
-            return new NullResponse();
+            return (new Response())->withStatus(201);
         }
         return $handler->handle($request);
     }

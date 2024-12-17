@@ -378,7 +378,7 @@ BE:
             description: 'If set, make a loose comparison ('''' equals 0) when validating record values after saving in DataHandler.'
         contentSecurityPolicyReportingUrl:
             type: text
-            description: 'Content-Security-Policy reporting HTTP endpoint, if empty system default will be used'
+            description: 'Content-Security-Policy reporting HTTP endpoint. If blank (""), the system default will be used. If set to zero ("0"), the reporting endpoint is disabled.'
         fileDenyPattern:
             type: text
             readonly: true
@@ -501,7 +501,7 @@ FE:
           description: 'Indicates that the cookie should send proper information where the cookie can be shared (first-party cookies vs. third-party cookies) in TYPO3 Frontend.'
         contentSecurityPolicyReportingUrl:
             type: text
-            description: 'Content-Security-Policy reporting HTTP endpoint, if empty system default will be used'
+            description: 'Content-Security-Policy reporting HTTP endpoint. If blank (""), the system default will be used. If set to zero ("0"), the reporting endpoint is disabled.'
         defaultTypoScript_constants:
             type: multiline
             description: 'Enter lines of default TypoScript, constants-field.'

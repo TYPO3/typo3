@@ -24,13 +24,35 @@ namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration;
  */
 final class DispositionConfiguration
 {
+    public null|bool|string $reportingUrl;
+
     public function __construct(
         public readonly bool $inheritDefault,
         public readonly bool $includeResolutions,
+        mixed $reportingUrl,
         public readonly array $mutations = [],
         /** @var array<string, bool> $packages */
         public readonly array $packages = [],
-    ) {}
+    ) {
+        $this->reportingUrl = self::normalizeReportingUrl($reportingUrl);
+    }
+
+    public static function normalizeReportingUrl(mixed $reportingUrl): null|bool|string
+    {
+        if ($reportingUrl === null || is_bool($reportingUrl)) {
+            return $reportingUrl;
+        }
+        if (!is_scalar($reportingUrl)) {
+            return null;
+        }
+        if ($reportingUrl === 0 || $reportingUrl === '0') {
+            return false;
+        }
+        if ($reportingUrl === 1 || $reportingUrl === '1') {
+            return true;
+        }
+        return (string)$reportingUrl;
+    }
 
     public function resolveEffectivePackages(string ...$packageNames): array
     {
