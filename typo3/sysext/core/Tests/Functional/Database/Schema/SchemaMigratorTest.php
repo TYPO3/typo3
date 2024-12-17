@@ -419,7 +419,31 @@ final class SchemaMigratorTest extends FunctionalTestCase
     protected function readFixtureFile(string $fixtureName): array
     {
         $sqlCode = file_get_contents(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'Fixtures', $fixtureName]) . '.sql');
-
         return $this->sqlReader->getCreateTableStatementArray($sqlCode);
+    }
+
+    #[Group('not-sqlite')]
+    #[Group('not-postgres')]
+    #[Test]
+    public function enumFieldCanBeAddedRenamedAndDropped(): void
+    {
+        // enum field can be added
+        $statements = $this->readFixtureFile('enumTable');
+        $this->subject->install($statements);
+        self::assertTrue($this->getTableDetails()->hasColumn('test1'));
+        // rename unused enum field
+        $statements = $this->readFixtureFile('enumTable_removedEnumField');
+        $updateSuggestions = $this->subject->getUpdateSuggestions($statements, true);
+        $selectedUpdateStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        $this->subject->migrate($statements, $selectedUpdateStatements);
+        self::assertFalse($this->getTableDetails()->hasColumn('test1'));
+        self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_test1'));
+        // remove renamed unused enum field
+        $statements = $this->readFixtureFile('enumTable_removedEnumField');
+        $updateSuggestions = $this->subject->getUpdateSuggestions($statements, true);
+        $selectedUpdateStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['drop'];
+        $this->subject->migrate($statements, $selectedUpdateStatements);
+        self::assertFalse($this->getTableDetails()->hasColumn('test1'));
+        self::assertFalse($this->getTableDetails()->hasColumn('zzz_deleted_test1'));
     }
 }
