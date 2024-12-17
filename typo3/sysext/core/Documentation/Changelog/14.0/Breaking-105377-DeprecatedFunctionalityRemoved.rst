@@ -146,42 +146,9 @@ The following public class properties have been dropped:
 - :php:`\TYPO3\CMS\Core\DataHandling->checkStoredRecords_loose` :ref:`(Deprecation entry) <deprecation-101793-1693356502>`
 - :php:`\TYPO3\CMS\Core\Utility\DiffUtility->stripTags` :ref:`(Deprecation entry) <deprecation-104325-1720298173>`
 
-The following class method visibility has been changed to protected:
-
-- :php:``
-
-The following class methods are now marked as internal:
-
-- :php:``
-
-The following class methods now have a native return type and removed the
-:php:`#[\ReturnTypeWillChange]` attribute:
-
-- :php:``
-
-The following class properties visibility have been changed to protected:
-
-- :php:``
-
-The following class property visibility has been changed to private:
-
-- :php:``
-
-The following class properties have been marked as internal:
-
-- :php:``
-
 The following class property has changed/enforced type:
 
 - :php:`\TYPO3\CMS\Extbase\Mvc\Controller\ActionController->view` (is now :php:`\TYPO3\CMS\Core\View\ViewInterface`) :ref:`(Deprecation entry) <deprecation-101559-1721761906>`
-
-The following eID entry point has been removed:
-
-- :php:``
-
-The following ViewHelpers have been changed or removed:
-
-- :html:`<f:>` removed
 
 The following TypoScript options have been dropped or adapted:
 
@@ -190,10 +157,6 @@ The following TypoScript options have been dropped or adapted:
 The following user TSconfig options have been removed:
 
 - :typoscript:`options.pageTree.backgroundColor` :ref:`(Deprecation entry) <deprecation-103211-1709038752>`
-
-The following constant has been dropped:
-
-- :php:``
 
 The following class constants have been dropped:
 
@@ -225,14 +188,6 @@ The following hooks have been removed:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvHeader']` :ref:`(Deprecation entry) <deprecation-102337-1715591179>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvRow']` :ref:`(Deprecation entry) <deprecation-102337-1715591179>`
 
-The following single field configuration has been removed from TCA:
-
-- :php:`MM_foo` (for TCA fields with `X` configuration)
-
-The following event has been removed:
-
-- :php:``
-
 The following extbase validator options have been removed:
 
 - :php:`errorMessage` in :php:`TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator` :ref:`(Deprecation entry) <deprecation-102326-1699703964>`
@@ -261,29 +216,9 @@ The following upgrade wizards have been removed:
 - Migrate sys_log entries to a JSON formatted value
 - Migrate storage and folder to the new folder_identifier property of the "sys_file_collection" table
 
-The following features are now always enabled:
-
-- `foo.bar`
-
-The following feature has been removed:
-
-- X
-
 The following database table fields have been removed:
 
 - :sql:`tt_content.list_type` :ref:`(Deprecation entry) <deprecation-105076-1726923626>`
-
-The following backend route identifier has been removed:
-
-- ``
-
-The following global JavaScript variable has been removed:
-
-- :js:`TYPO3.X`
-
-The following global JavaScript function has been removed:
-
-- :js:``
 
 The following JavaScript modules have been removed:
 
@@ -303,14 +238,6 @@ The following JavaScript method has been removed:
 The following smooth migration for JavaScript modules have been removed:
 
 - :js:`@typo3/backend/page-tree/page-tree-element` to :js:`@typo3/backend/tree/page-tree-element` :ref:`(Deprecation entry) <deprecation-103850-1715873982>`
-
-The following CKEditor plugin has been removed:
-
-- :js:``
-
-The following dependency injection service alias has been removed:
-
-- :yaml:`@x.y`
 
 The following localization XLIFF files have been removed:
 
