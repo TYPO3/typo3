@@ -89,6 +89,19 @@ renderables:
         label: 'Single select'
       -
         properties:
+          prioritizedCountries:
+            - CI
+            - DK
+          excludeCountries:
+            - BS
+            - DE
+          fluidAdditionalAttributes:
+            autocomplete: country
+        type: CountrySelect
+        identifier: countryselect-1
+        label: 'Country select'
+      -
+        properties:
           options:
             'Radio 1': 'Radio 1'
             'Radio 2': 'Radio 2'
@@ -167,3 +180,10 @@ renderables:
             type: StaticText
             identifier: statictext-1
             label: 'Static text'
+  -
+    renderingOptions:
+      previousButtonLabel: 'Previous step'
+      nextButtonLabel: 'Next step'
+    identifier: summarypage
+    label: 'Summary page'
+    type: SummaryPage
