@@ -215,6 +215,7 @@ final class DispositionMapFactoryTest extends UnitTestCase
         $enforceConfiguration = [
             'inheritDefault' => false,
             'includeResolutions' => false,
+            'reportingUrl' => 'https://csp.example.org/',
             'mutations' => [
                 [
                     'mode' => 'extend',
@@ -231,6 +232,7 @@ final class DispositionMapFactoryTest extends UnitTestCase
         self::assertInstanceOf(DispositionConfiguration::class, $result[Disposition::enforce]);
         self::assertSame($enforceConfiguration['inheritDefault'], $result[Disposition::enforce]->inheritDefault);
         self::assertSame($enforceConfiguration['includeResolutions'], $result[Disposition::enforce]->includeResolutions);
+        self::assertSame($enforceConfiguration['reportingUrl'], $result[Disposition::enforce]->reportingUrl);
         self::assertSame($enforceConfiguration['mutations'], $result[Disposition::enforce]->mutations);
         self::assertSame($enforceConfiguration['packages'], $result[Disposition::enforce]->packages);
     }
@@ -246,6 +248,8 @@ final class DispositionMapFactoryTest extends UnitTestCase
             'inheritDefault' => false,
             // `includeResolutions` will be ignored in top-level configuration
             'includeResolutions' => false,
+            // `reportingUrl` will be ignored in top-level configuration
+            'reportingUrl' => 'https://csp.example.org/',
             'mutations' => [
                 [
                     'mode' => 'extend',
@@ -262,6 +266,8 @@ final class DispositionMapFactoryTest extends UnitTestCase
 
         self::assertInstanceOf(DispositionConfiguration::class, $result[Disposition::enforce]);
         self::assertSame($topLevelConfiguration['inheritDefault'], $result[Disposition::enforce]->inheritDefault);
+        // `reportingUrl` is ignored in top-level configuration
+        self::assertNull($result[Disposition::enforce]->reportingUrl);
         // `includeResolutions` is ignored in top-level configuration
         self::assertTrue($result[Disposition::enforce]->includeResolutions);
         self::assertSame($topLevelConfiguration['mutations'], $result[Disposition::enforce]->mutations);

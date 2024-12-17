@@ -85,7 +85,32 @@ final class DispositionConfigurationTest extends UnitTestCase
     #[Test]
     public function effectivePackagesAreResolved(array $packages, array $packageNames, array $expectation): void
     {
-        $subject = new DispositionConfiguration(true, true, [], $packages);
+        $subject = new DispositionConfiguration(true, true, null, [], $packages);
         self::assertSame($expectation, $subject->resolveEffectivePackages(...$packageNames));
+    }
+
+    public static function reportingUrlIsNormalizedDataProvider(): \Generator
+    {
+        yield 'null' => [null, null];
+        yield 'false' => [false, false];
+        yield 'true' => [true, true];
+        yield 'url' => ['https://example.org/csp', 'https://example.org/csp'];
+        yield 'empty' => ['', ''];
+        yield '0 int to false' => [0, false];
+        yield '0 string to false' => ['0', false];
+        yield '1 int to true' => [1, true];
+        yield '1 string to true' => ['1', true];
+        yield 'int to string' => [12345, '12345'];
+        yield 'string' => ['12345', '12345'];
+        yield 'array to null' => [['array'], null];
+        yield 'object to null' => [new \stdClass(), null];
+    }
+
+    #[DataProvider('reportingUrlIsNormalizedDataProvider')]
+    #[Test]
+    public static function reportingUrlIsNormalized(mixed $reportingUrl, null|bool|string $expectation): void
+    {
+        $subject = new DispositionConfiguration(true, true, $reportingUrl);
+        self::assertSame($expectation, $subject->reportingUrl);
     }
 }
