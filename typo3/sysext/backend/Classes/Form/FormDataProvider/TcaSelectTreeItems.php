@@ -201,6 +201,6 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
      */
     protected function isTargetRenderType(array $fieldConfig)
     {
-        return $fieldConfig['config']['renderType'] === 'selectTree';
+        return ($fieldConfig['config']['renderType'] ?? '') === 'selectTree';
     }
 }
