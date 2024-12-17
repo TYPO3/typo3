@@ -70,14 +70,14 @@ final readonly class ContentSecurityPolicyHeaders implements MiddlewareInterface
             return $response;
         }
 
-        foreach ($dispositionMap->keys() as $disposition) {
+        foreach ($dispositionMap as $disposition => $dispositionConfiguration) {
             $policy = $this->policyProvider->provideFor($scope, $disposition, $request);
             if ($policy->isEmpty()) {
                 continue;
             }
-            $reportingUri = $this->policyProvider->getReportingUrlFor($scope, $request);
-            if ($reportingUri !== null) {
-                $policy = $policy->report(UriValue::fromUri($reportingUri));
+            $reportingUrl = $this->policyProvider->getReportingUrlFor($scope, $request, $dispositionConfiguration);
+            if ($reportingUrl !== null) {
+                $policy = $policy->report(UriValue::fromUri($reportingUrl));
             }
             $response = $response->withHeader(
                 $disposition->getHttpHeaderName(),

@@ -364,7 +364,7 @@ BE:
             description: 'Determines output compression of BE output. Makes output smaller but slows down the page generation depending on the compression level. Requires a) zlib in your PHP installation and b) special rewrite rules for .css.gz and .js.gz (please see <code>_.htaccess</code> for an example). Range 1-9, where 1 is least compression and 9 is greatest compression. ''true'' as value will set the compression based on the PHP default settings (usually 5). Suggested and most optimal value is 5.'
         contentSecurityPolicyReportingUrl:
             type: text
-            description: 'Content-Security-Policy reporting HTTP endpoint, if empty system default will be used'
+            description: 'Content-Security-Policy reporting HTTP endpoint. If blank (""), the system default will be used. If set to zero ("0"), the reporting endpoint is disabled.'
         fileDenyPattern:
             type: text
             readonly: true
@@ -481,7 +481,7 @@ FE:
           description: 'Indicates that the cookie should send proper information where the cookie can be shared (first-party cookies vs. third-party cookies) in TYPO3 Frontend.'
         contentSecurityPolicyReportingUrl:
             type: text
-            description: 'Content-Security-Policy reporting HTTP endpoint, if empty system default will be used'
+            description: 'Content-Security-Policy reporting HTTP endpoint. If blank (""), the system default will be used. If set to zero ("0"), the reporting endpoint is disabled.'
         defaultTypoScript_constants:
             type: multiline
             description: 'Enter lines of default TypoScript, constants-field.'

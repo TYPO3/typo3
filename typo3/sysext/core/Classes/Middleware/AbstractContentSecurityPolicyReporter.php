@@ -21,6 +21,8 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionConfiguration;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionMapFactory;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\Report;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting\ReportDetails;
@@ -38,6 +40,7 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
 
     public function __construct(
         protected readonly PolicyProvider $policyProvider,
+        protected readonly DispositionMapFactory $dispositionMapFactory,
         protected readonly ReportRepository $reportRepository,
         protected readonly HashService $hashService,
     ) {}
@@ -117,20 +120,42 @@ abstract class AbstractContentSecurityPolicyReporter implements MiddlewareInterf
         return (string)$uri->withQuery(http_build_query($query, '', '&', PHP_QUERY_RFC3986));
     }
 
-    protected function isCspReport(Scope $scope, ServerRequestInterface $request): bool
+    /**
+     * Determines, whether current request URI starts with local reporting URI,
+     * (e.g. `https://ip12.anyhost.it:8443/en/@http-reporting?csp=report`).
+     */
+    protected function targetsCspReportUri(Scope $scope, ServerRequestInterface $request): bool
     {
         $normalizedParams = $request->getAttribute('normalizedParams');
-        $contentTypeHeader = $request->getHeaderLine('content-type');
+        $reportingUriBase = $this->policyProvider->getDefaultReportingUriBase($scope, $request, false);
+        return str_starts_with($normalizedParams?->getRequestUri() ?? '', (string)$reportingUriBase);
+    }
 
+    /**
+     * Determines, whether the request is eligible to be handled by the local reporting URI
+     * (`targetsCspReportUri()` must have been called before).
+     */
+    protected function isCspReport(
+        Scope $scope,
+        ServerRequestInterface $request,
+        ?DispositionConfiguration $dispositionConfiguration = null,
+    ): bool {
         // @todo
         // + verify current session
         // + invoke rate limiter
         // + check additional scope (snippet enrichment)
 
-        $reportingUriBase = $this->policyProvider->getDefaultReportingUriBase($scope, $request, false);
-        return $request->getMethod() === 'POST'
-            && str_starts_with($normalizedParams->getRequestUri(), (string)$reportingUriBase)
-            && $contentTypeHeader === 'application/csp-report';
+        $reportingUrl = $this->policyProvider->getReportingUrlFor($scope, $request, $dispositionConfiguration);
+        $reportingUriBase = $this->policyProvider->getDefaultReportingUriBase($scope, $request);
+        $contentTypeHeader = $request->getHeaderLine('content-type');
+
+        return
+            // stop, if reporting was explicitly disabled in `contentSecurityPolicyReportingUrl`
+            $reportingUrl !== null
+            // stop, if different reporting URI was configured in `contentSecurityPolicyReportingUrl`
+            && str_starts_with((string)$reportingUrl, (string)$reportingUriBase)
+            // stop, if request is not `POST` or `Content-Type` is not `application/csp-report`
+            && $request->getMethod() === 'POST' && $contentTypeHeader === 'application/csp-report';
     }
 
     protected function getRequestQueryParam(ServerRequestInterface $request, string $name): ?string

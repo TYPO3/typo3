@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Configuration\DispositionConfiguration;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -122,6 +123,41 @@ final class PolicyProviderTest extends FunctionalTestCase
         $subject = $this->get(PolicyProvider::class);
         $actual = (string)$subject->getDefaultReportingUriBase($scope, $request, $absolute);
         self::assertSame($expectation, $actual);
+    }
+
+    public static function effectiveReportingUrlIsResolvedDataProvider(): \Generator
+    {
+        $disabledReportingEndpoint = new DispositionConfiguration(
+            inheritDefault: true,
+            includeResolutions: true,
+            reportingUrl: false,
+        );
+        $externalReportingEndpoint = new DispositionConfiguration(
+            inheritDefault: true,
+            includeResolutions: true,
+            reportingUrl: 'https://example.org/csp-report',
+        );
+
+        // parts: scope (BE, FE, FE+site) | language preset | disposition-configuration | expected URI pattern
+        yield [null, '#^https://website\.fallback/relative/en/@http-reporting\?csp=report&requestTime=\d+&requestHash=[[:xdigit:]]+$#'];
+        yield [$disabledReportingEndpoint, null];
+        yield [$externalReportingEndpoint, '#^https://example\.org/csp-report$#'];
+    }
+
+    #[DataProvider('effectiveReportingUrlIsResolvedDataProvider')]
+    #[Test]
+    public function effectiveReportingUrlIsResolved(?DispositionConfiguration $dispositionConfiguration, ?string $expectation): void
+    {
+        $scope = Scope::frontendSiteIdentifier('relative');
+        $request = $this->buildServerRequest($scope, null);
+        $subject = $this->get(PolicyProvider::class);
+        $actual = $subject->getReportingUrlFor($scope, $request, $dispositionConfiguration);
+
+        if ($expectation === null) {
+            self::assertNull($actual);
+        } else {
+            self::assertMatchesRegularExpression($expectation, (string)$actual);
+        }
     }
 
     private function buildServerRequest(Scope $scope, ?string $languagePreset): ServerRequestInterface

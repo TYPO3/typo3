@@ -96,17 +96,20 @@ readonly class DispositionMapFactory
             // (`includeResolutions` and `packages` are ignored on purpose)
             $inheritDefault = $siteConfiguration['inheritDefault'] ?? true;
             $includeResolutions = true;
+            $reportingUrl = null;
             $mutations = $siteConfiguration['mutations'] ?? [];
             $packages = [];
         } else {
             $inheritDefault = $assignment['inheritDefault'] ?? true;
             $includeResolutions = $assignment['includeResolutions'] ?? true;
+            $reportingUrl = $assignment['reportingUrl'] ?? null;
             $mutations = $assignment['mutations'] ?? [];
             $packages = $assignment['packages'] ?? [];
         }
         return new DispositionConfiguration(
             (bool)$inheritDefault,
             (bool)$includeResolutions,
+            $reportingUrl,
             is_array($mutations) ? $mutations : [],
             is_array($packages) ? $packages : [],
         );
