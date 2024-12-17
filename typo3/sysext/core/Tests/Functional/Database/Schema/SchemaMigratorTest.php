@@ -201,9 +201,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
     /**
      * Create the base table for all migration tests
      */
-    private function prepareTestTable(SchemaMigrator $schemaMigrator): void
+    private function prepareTestTable(SchemaMigrator $schemaMigrator, ?string $sqlCodeFile = null): void
     {
-        $sqlCode = file_get_contents(__DIR__ . '/../Fixtures/newTable.sql');
+        $sqlCode = file_get_contents($sqlCodeFile ?? __DIR__ . '/../Fixtures/newTable.sql');
         $result = $schemaMigrator->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($sqlCode);
@@ -212,9 +212,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
     /**
      * Helper to return the Doctrine Table object for the test table
      */
-    private function getTableDetails(): Table
+    private function getTableDetails(?string $tableName = null): Table
     {
-        return $this->getSchemaManager()->introspectTable('a_test_table');
+        return $this->getSchemaManager()->introspectTable($tableName ?? 'a_test_table');
     }
 
     #[TestWith(['emptyDefaultTableOptions' => false])]
@@ -1003,6 +1003,35 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($sqlCode);
+    }
+
+    #[Group('not-sqlite')]
+    #[Group('not-postgres')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function renameAndRemoveUnusedEnumFieldWorks(bool $emptyDefaultTableOptions): void
+    {
+        $subject = $this->createSchemaMigrator();
+        $this->prepareTestTable($subject, __DIR__ . '/../Fixtures/enumTable.sql');
+        $removedEnumFieldSqlCode = file_get_contents(__DIR__ . '/../Fixtures/enumTable_removedEnumField.sql');
+        // rename unused enum field
+        $migrateStatements = $this->createSqlReader()->getCreateTableStatementArray($removedEnumFieldSqlCode);
+        $updateStatements = $subject->getUpdateSuggestions($migrateStatements, true);
+        $selectedUpdateStatements = $updateStatements[ConnectionPool::DEFAULT_CONNECTION_NAME]['change'];
+        $migratedResult = $subject->migrate($migrateStatements, $selectedUpdateStatements);
+        $this->verifyMigrationResult($migratedResult);
+        self::assertFalse($this->getTableDetails()->hasColumn('test1'));
+        self::assertTrue($this->getTableDetails()->hasColumn('zzz_deleted_test1'));
+        // remove renamed unused enum field
+        $migrateStatements = $this->createSqlReader()->getCreateTableStatementArray($removedEnumFieldSqlCode);
+        $updateStatements = $subject->getUpdateSuggestions($migrateStatements, true);
+        $selectedUpdateStatements = $updateStatements[ConnectionPool::DEFAULT_CONNECTION_NAME]['drop'];
+        $migratedResult = $subject->migrate($migrateStatements, $selectedUpdateStatements);
+        $this->verifyMigrationResult($migratedResult);
+        $this->verifyCleanDatabaseState($removedEnumFieldSqlCode);
+        self::assertFalse($this->getTableDetails()->hasColumn('test1'));
+        self::assertFalse($this->getTableDetails()->hasColumn('zzz_deleted_test1'));
     }
 
     #[Group('not-sqlite')]
