@@ -408,23 +408,8 @@
 			<trans-unit id="synchronizeFolderRelations.afterFolderRenamed">
 				<source>%d %s records referencing the renamed directory were updated.</source>
 			</trans-unit>
-			<trans-unit id="liveSearch_title">
-				<source>Short result list</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_emptyText">
-				<source>Enter search term</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_loadingText">
-				<source>Searching...</source>
-			</trans-unit>
 			<trans-unit id="liveSearch_listEmptyText">
 				<source>No results found.</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_helpTitle">
-				<source>How to use advanced search tags</source>
-			</trans-unit>
-			<trans-unit id="liveSearch_helpDescription">
-				<source>Search in certain tables</source>
 			</trans-unit>
 			<trans-unit id="liveSearch_helpDescriptionPages">
 				<source>#page:Home will search for all pages with the title "Home"</source>
