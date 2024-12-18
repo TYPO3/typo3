@@ -22,6 +22,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Search\Event\ModifyConstraintsForLiveSearchEvent;
 use TYPO3\CMS\Backend\Search\Event\ModifyQueryForLiveSearchEvent;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandProperty;
 use TYPO3\CMS\Backend\Search\LiveSearch\SearchDemand\DemandPropertyName;
@@ -147,6 +148,8 @@ final class PageRecordProvider implements SearchProviderInterface
             ->removeByType(EndTimeRestriction::class);
 
         $constraints = $this->buildConstraintsForTable($searchDemand->getQuery(), $queryBuilder);
+        $event = $this->eventDispatcher->dispatch(new ModifyConstraintsForLiveSearchEvent($constraints, 'pages', $searchDemand));
+        $constraints = $event->getConstraints();
         if ($constraints === []) {
             return null;
         }

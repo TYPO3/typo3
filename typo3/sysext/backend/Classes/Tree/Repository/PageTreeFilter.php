@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Routing\SiteUrlResolver;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -40,6 +41,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * - Numeric UID search (direct page ID lookup)
  * - Wildcard text search in title/nav_title fields
+ * - Search by Frontend URI
  * - Optional search in translated page titles
  * - Visual labels indicating how pages were matched
  *
@@ -51,6 +53,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * 1. Query Building Phase (BeforePageTreeIsFilteredEvent)
  *    - addUidsFromSearchPhrase: Extracts numeric UIDs from search phrase
  *    - addWildCardAliasFilter: Adds LIKE queries for title/nav_title
+ *    - addUidsFromSearchPhraseWithFrontendUri: Adds numeric UIDs from resolved frontend URIs
  *    - addTranslatedPagesFilter: Queries translated pages (if enabled)
  *
  * 2. Label Attachment Phase (AfterPageTreeItemsPreparedEvent)
@@ -60,7 +63,9 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Runtime Cache Usage
  * ===================
  *
- * Translation matches are stored in runtime cache with the structure:
+ * Two runtime caches are utilized to speed up matching.
+ *
+ * One for translation matches with the structure:
  * [
  *   pageUid => [languageUid1, languageUid2, ...]
  * ]
@@ -71,6 +76,14 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * The cache is populated during query building and consumed during label attachment.
  * Cache key: 'pageTree_translationMatches'
  *
+ * The other is for frontend URI matches with the structure:
+ * [
+ *   pageUid1 => true, pageUid2 => true, ...
+ * ]
+ *
+ * This allows a simple array_key_exists lookup. The cache key is 'pageTree_uriMatches'
+ * and also consumed for label attachment.
+ *
  * User Configuration
  * ==================
  *
@@ -80,9 +93,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * Language restrictions from user groups are respected automatically.
  *
+ * URI search can be controlled via:
+ * - TSConfig: options.pageTree.searchByFrontendUri (default: true)
+ * - User Preference: pageTree_searchByFrontendUri
+ *
  * @internal
  */
-final class PageTreeFilter
+final readonly class PageTreeFilter
 {
     /**
      * Color for "Search result" labels on directly matched pages
@@ -92,12 +109,18 @@ final class PageTreeFilter
     /**
      * Runtime cache identifier for storing translation match information
      */
-    private const CACHE_IDENTIFIER = 'pageTree_translationMatches';
+    private const CACHE_IDENTIFIER_TRANSLATION = 'pageTree_translationMatches';
+
+    /**
+     * Runtime cache identifier for storing URI match information
+     */
+    private const CACHE_IDENTIFIER_URI = 'pageTree_uriMatches';
 
     public function __construct(
-        private readonly SiteFinder $siteFinder,
+        private SiteFinder $siteFinder,
         #[Autowire(service: 'cache.runtime')]
-        private readonly FrontendInterface $runtimeCache,
+        private FrontendInterface $runtimeCache,
+        private SiteUrlResolver $siteUrlResolver,
     ) {}
 
     /**
@@ -126,6 +149,8 @@ final class PageTreeFilter
                 $numericUids[] = $uid;
             }
         }
+
+        // Event listeners after this one may reset this array to clear unwanted UID restrictions.
         $event->searchUids = array_unique($event->searchUids);
 
         // Check if any numeric UIDs match translated pages and add their l10n_parent
@@ -149,7 +174,7 @@ final class PageTreeFilter
      * - title = "Homepage"
      * - nav_title = "Home Navigation"
      */
-    #[AsEventListener('page-tree-wildcard-alias-filter')]
+    #[AsEventListener(identifier: 'page-tree-wildcard-alias-filter', after: 'page-tree-uid-provider')]
     public function addWildCardAliasFilter(BeforePageTreeIsFilteredEvent $event): void
     {
         $searchFilterWildcard = '%' . $event->queryBuilder->escapeLikeWildcards($event->searchPhrase) . '%';
@@ -226,6 +251,8 @@ final class PageTreeFilter
         $items = $event->getItems();
         $searchPhraseLower = mb_strtolower($searchPhrase);
 
+        $uriMatches = $this->runtimeCache->get(self::CACHE_IDENTIFIER_URI) ?: [];
+
         foreach ($items as &$item) {
             $page = $item['_page'] ?? [];
             if (!is_array($page)) {
@@ -249,15 +276,44 @@ final class PageTreeFilter
                 }
             }
 
+            if (!isset($item['labels'])) {
+                $item['labels'] = [];
+            }
+
             if ($matchedDirectly) {
-                if (!isset($item['labels'])) {
-                    $item['labels'] = [];
-                }
                 $item['labels'][] = new Label(
                     label: $label,
                     color: self::SEARCH_RESULT_LABEL_COLOR,
                     inheritByChildren: false,
                 );
+            }
+
+            // Through the populated uriMatches runtime cache, we check if the current item
+            // was matched by its frontend URI
+            if (array_key_exists($page['uid'], $uriMatches)) {
+                $label = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:pageTree.found_in_frontend_uri') ?: $label;
+                $item['labels'][] = new Label(
+                    label: $label,
+                    color: self::SEARCH_RESULT_LABEL_COLOR,
+                    inheritByChildren: false,
+                );
+
+                // Also attach a label to indicate a translated URI
+                if ($uriMatches[$page['uid']]['languageUid'] !== 0) {
+                    if ($uriMatches[$page['uid']]['languageName'] === '') {
+                        $label = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:pageTree.found_translation') ?: 'Found translation';
+                    } else {
+                        $label = sprintf(
+                            $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:pageTree.found_in_translation') ?: 'Found in translation: %s',
+                            $uriMatches[$page['uid']]['languageName']
+                        );
+                    }
+                    $item['labels'][] = new Label(
+                        label: $label,
+                        color: self::SEARCH_RESULT_LABEL_COLOR,
+                        inheritByChildren: false,
+                    );
+                }
             }
         }
         unset($item);
@@ -334,6 +390,36 @@ final class PageTreeFilter
         $event->setItems($items);
     }
 
+    /**
+     * Find pages via their frontend URI
+     */
+    #[AsEventListener(identifier: 'page-tree-frontend-uri-provider', after: 'page-tree-uid-provider')]
+    public function addUidsFromSearchPhraseWithFrontendUri(BeforePageTreeIsFilteredEvent $event): void
+    {
+        if (!$this->isFrontendUriSearchEnabled()) {
+            return;
+        }
+        $uriMatches = $this->runtimeCache->get(self::CACHE_IDENTIFIER_URI) ?: [];
+
+        // Extract possible frontend URIs from search string
+        $searchPhrases = GeneralUtility::trimExplode(',', $event->searchPhrase, true);
+        foreach ($searchPhrases as $searchPhrase) {
+            if (str_starts_with($searchPhrase, 'http://') || str_starts_with($searchPhrase, 'https://')) {
+                // If a search pattern uses "http(s)://...." then a frontend URL will be resolved.
+                $resolvedPage = $this->siteUrlResolver->resolvePageUidAndLanguageBySiteUrl($searchPhrase);
+                if ($resolvedPage !== null) {
+                    $event->searchUids[] = $resolvedPage['uid'];
+                    $uriMatches[$resolvedPage['uid']] = $resolvedPage;
+                }
+            }
+        }
+
+        $this->runtimeCache->set(self::CACHE_IDENTIFIER_URI, $uriMatches);
+
+        // Event listeners after this one may reset this array to clear unwanted UID restrictions.
+        $event->searchUids = array_unique($event->searchUids);
+    }
+
     private function createPreparedPagesQueryBuilder(): QueryBuilder
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
@@ -400,7 +486,7 @@ final class PageTreeFilter
      */
     private function processTranslatedPages(BeforePageTreeIsFilteredEvent $event, array $translatedPages): void
     {
-        $translationMatches = $this->runtimeCache->get(self::CACHE_IDENTIFIER) ?: [];
+        $translationMatches = $this->runtimeCache->get(self::CACHE_IDENTIFIER_TRANSLATION) ?: [];
         $addedParents = [];
 
         foreach ($translatedPages as $translatedPage) {
@@ -422,7 +508,7 @@ final class PageTreeFilter
             }
         }
 
-        $this->runtimeCache->set(self::CACHE_IDENTIFIER, $translationMatches);
+        $this->runtimeCache->set(self::CACHE_IDENTIFIER_TRANSLATION, $translationMatches);
     }
 
     private function getLanguageName(int $pageUid, int $languageUid): string
@@ -455,6 +541,31 @@ final class PageTreeFilter
         // If feature is available, check user preference
         if (isset($backendUser->uc['pageTree_searchInTranslatedPages'])) {
             return (bool)$backendUser->uc['pageTree_searchInTranslatedPages'];
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if frontend URI search is enabled for the current user.
+     *
+     * Checks:
+     * - TSConfig options.pageTree.searchByFrontendUri
+     * - User preference pageTree_searchByFrontendUri
+     */
+    private function isFrontendUriSearchEnabled(): bool
+    {
+        $backendUser = $this->getBackendUser();
+
+        // If feature is disabled, always return false
+        $frontendUriSearchAvailable = (bool)($backendUser->getTSConfig()['options.']['pageTree.']['searchByFrontendUri'] ?? true);
+        if (!$frontendUriSearchAvailable) {
+            return false;
+        }
+
+        // If feature is available, check user preference
+        if (isset($backendUser->uc['pageTree_searchByFrontendUri'])) {
+            return (bool)$backendUser->uc['pageTree_searchByFrontendUri'];
         }
 
         return true;

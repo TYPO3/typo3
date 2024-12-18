@@ -53,14 +53,291 @@ final class PageTreeFilterTest extends FunctionalTestCase
 
         $this->writeSiteConfiguration(
             'test',
-            $this->buildSiteConfiguration(1, '/'),
+            $this->buildSiteConfiguration(1, 'https://acme.com/'),
             [
-                $this->buildDefaultLanguageConfiguration('EN', '/'),
-                $this->buildLanguageConfiguration('DE', '/de/', ['EN']),
-                $this->buildLanguageConfiguration('AR', '/ar/', ['EN']),
-                $this->buildLanguageConfiguration('ZH', '/zh/', ['EN']),
+                $this->buildDefaultLanguageConfiguration('EN', 'https://acme.com/'),
+                $this->buildLanguageConfiguration('DE', 'https://acme.com/de/', ['EN']),
+                $this->buildLanguageConfiguration('AR', 'https://acme.com/ar/', ['EN']),
+                $this->buildLanguageConfiguration('ZH', 'https://acme.com/zh/', ['EN']),
             ]
         );
+    }
+
+    #[Test]
+    public function searchByFrontendUriFindsSinglePage(): void
+    {
+        $searchPhrase = 'https://acme.com/home/main/sub1';
+
+        $queryBuilder = $this->get(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('t3ver_wsid', 0)
+            );
+
+        $event = new BeforePageTreeIsFilteredEvent(
+            searchParts: $queryBuilder->expr()->and(),
+            searchUids: [],
+            searchPhrase: $searchPhrase,
+            queryBuilder: $queryBuilder
+        );
+
+        $subject = $this->get(PageTreeFilter::class);
+        $subject->addUidsFromSearchPhraseWithFrontendUri($event);
+        self::assertEquals([0 => 20], $event->searchUids);
+
+        $subject->addUidsFromSearchPhrase($event);
+        self::assertEquals([0 => 20], $event->searchUids);
+
+        $subject->addWildCardAliasFilter($event);
+        self::assertEquals([0 => 20], $event->searchUids);
+
+        // Execute the query with the added wildcard filter
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->or(
+                $event->searchParts,
+                $queryBuilder->expr()->in('uid', $event->searchUids)
+            )
+        );
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        self::assertEquals([0 => ['uid' => 20]], $results);
+    }
+
+    #[Test]
+    public function searchByMissingFrontendUriFindsNoPage(): void
+    {
+        $searchPhrase = 'https://acme.com/not/the/uri/you/are/looking/for';
+
+        $queryBuilder = $this->get(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('t3ver_wsid', 0)
+            );
+
+        $event = new BeforePageTreeIsFilteredEvent(
+            searchParts: $queryBuilder->expr()->and(),
+            searchUids: [],
+            searchPhrase: $searchPhrase,
+            queryBuilder: $queryBuilder
+        );
+
+        $subject = $this->get(PageTreeFilter::class);
+        $subject->addUidsFromSearchPhraseWithFrontendUri($event);
+        self::assertEquals([], $event->searchUids);
+
+        $subject->addUidsFromSearchPhrase($event);
+        self::assertEquals([], $event->searchUids);
+
+        $subject->addWildCardAliasFilter($event);
+        self::assertEquals([], $event->searchUids);
+
+        // Execute the query with the added wildcard filter
+        $queryBuilder->andWhere(
+            $event->searchParts,
+        );
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        self::assertEquals([], $results);
+    }
+
+    #[Test]
+    public function searchByMultipleFrontendUrisFindsMultiplePages(): void
+    {
+        $searchPhrase = 'https://acme.com/home/main/sub1,https://acme.com/home/main/sub2';
+
+        $queryBuilder = $this->get(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('t3ver_wsid', 0)
+            )->orderBy('uid');
+
+        $event = new BeforePageTreeIsFilteredEvent(
+            searchParts: $queryBuilder->expr()->and(),
+            searchUids: [],
+            searchPhrase: $searchPhrase,
+            queryBuilder: $queryBuilder
+        );
+
+        $subject = $this->get(PageTreeFilter::class);
+        $subject->addUidsFromSearchPhraseWithFrontendUri($event);
+        self::assertEquals([0 => 20, 1 => 21], $event->searchUids);
+
+        $subject->addUidsFromSearchPhrase($event);
+        self::assertEquals([0 => 20, 1 => 21], $event->searchUids);
+
+        $subject->addWildCardAliasFilter($event);
+        self::assertEquals([0 => 20, 1 => 21], $event->searchUids);
+
+        // Execute the query with the added wildcard filter
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->or(
+                $event->searchParts,
+                $queryBuilder->expr()->in('uid', $event->searchUids)
+            )
+        );
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        self::assertEquals([0 => ['uid' => 20], 1 => ['uid' => 21]], $results);
+    }
+
+    #[Test]
+    public function searchByMultipleFrontendUrisAndUidFindsMultiplePages(): void
+    {
+        $searchPhrase = '22,https://acme.com/home/main/sub2';
+
+        $queryBuilder = $this->get(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('t3ver_wsid', 0)
+            )->orderBy('uid');
+
+        $event = new BeforePageTreeIsFilteredEvent(
+            searchParts: $queryBuilder->expr()->and(),
+            searchUids: [],
+            searchPhrase: $searchPhrase,
+            queryBuilder: $queryBuilder
+        );
+
+        $subject = $this->get(PageTreeFilter::class);
+        $subject->addUidsFromSearchPhraseWithFrontendUri($event);
+        // Only one URI is resolved, the other two are covered by the other events
+        self::assertEquals([0 => 21], $event->searchUids);
+
+        // Only one UID is matched here on top of the previous one
+        $subject->addUidsFromSearchPhrase($event);
+        self::assertEquals([0 => 21, 1 => 22], $event->searchUids);
+
+        // The wildcard filter does not attach to searchUids but searchParts.
+        // Thus, searchUids remains identical.
+        $subject->addWildCardAliasFilter($event);
+        self::assertEquals([0 => 21, 1 => 22], $event->searchUids);
+
+        // Execute the query with the added wildcard filter
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->or(
+                $event->searchParts,
+                $queryBuilder->expr()->in('uid', $event->searchUids)
+            )
+        );
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+
+        self::assertEquals([0 => ['uid' => 21], 1 => ['uid' => 22]], $results);
+    }
+
+    #[Test]
+    public function searchByMultipleFrontendUriAndUriMatchingTitleFindsMultiplePages(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FrontendUriPages.csv');
+        $searchPhrase = 'https://acme.com/home/main/sub3';
+
+        $queryBuilder = $this->get(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('t3ver_wsid', 0)
+            )->orderBy('uid');
+
+        $event = new BeforePageTreeIsFilteredEvent(
+            searchParts: $queryBuilder->expr()->and(),
+            searchUids: [],
+            searchPhrase: $searchPhrase,
+            queryBuilder: $queryBuilder
+        );
+
+        $subject = $this->get(PageTreeFilter::class);
+        $subject->addUidsFromSearchPhraseWithFrontendUri($event);
+        self::assertEquals([0 => 22], $event->searchUids);
+
+        // No extra UID resolved here, as no UID present in searchPhrase.
+        $subject->addUidsFromSearchPhrase($event);
+        self::assertEquals([0 => 22], $event->searchUids);
+
+        // The wildcard filter does not attach to searchUids but searchParts.
+        // Thus, searchUids remains identical.
+        // NOTE: In this test, a fixture matches the title by having a URI
+        // in it. This is unlikely, but should showcase that wildcard filtering
+        // also still works.
+        // Also note that the wildcard filter DOES NOT explode the search phrase
+        // into "," separated parts, so a real mix-and-match intentionally does not
+        // work.
+        $subject->addWildCardAliasFilter($event);
+        self::assertEquals([0 => 22], $event->searchUids);
+
+        // Execute the query with the added wildcard filter
+        $queryBuilder->andWhere(
+            $queryBuilder->expr()->or(
+                $event->searchParts, // This now contains the "title LIKE %uri%" part!
+                $queryBuilder->expr()->in('uid', $event->searchUids)
+            )
+        );
+
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+        self::assertEquals([0 => ['uid' => 22], 1 => ['uid' => 33]], $results);
+    }
+
+    #[Test]
+    public function searchByFrontendUriRespectsUserConfiguration(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/FrontendUriPages.csv');
+        // Disable URI search via user preference
+        $this->backendUser->uc['pageTree_searchByFrontendUri'] = false;
+
+        $searchPhrase = 'https://acme.com/home/main/sub3';
+
+        $queryBuilder = $this->get(ConnectionPool::class)
+            ->getQueryBuilderForTable('pages');
+        $queryBuilder
+            ->select('uid')
+            ->from('pages')
+            ->where(
+                $queryBuilder->expr()->eq('sys_language_uid', 0),
+                $queryBuilder->expr()->eq('t3ver_wsid', 0)
+            )->orderBy('uid');
+
+        $event = new BeforePageTreeIsFilteredEvent(
+            searchParts: $queryBuilder->expr()->and(),
+            searchUids: [],
+            searchPhrase: $searchPhrase,
+            queryBuilder: $queryBuilder
+        );
+
+        $subject = $this->get(PageTreeFilter::class);
+        $subject->addUidsFromSearchPhraseWithFrontendUri($event);
+        self::assertEquals([], $event->searchUids);
+        $subject->addUidsFromSearchPhrase($event);
+        self::assertEquals([], $event->searchUids);
+        $subject->addWildCardAliasFilter($event);
+        self::assertEquals([], $event->searchUids);
+
+        // Execute the query with the added wildcard filter
+        $queryBuilder->andWhere(
+            $event->searchParts, // This now contains the "title LIKE %uri%" part!
+        );
+
+        $results = $queryBuilder->executeQuery()->fetchAllAssociative();
+        self::assertEquals([0 => ['uid' => 33]], $results, 'Search must not find UID 22, as frontendUri is search disabled');
+
+        // Re-enable for other tests
+        $this->backendUser->uc['pageTree_searchByFrontendUri'] = true;
     }
 
     #[Test]

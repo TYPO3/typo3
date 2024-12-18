@@ -252,6 +252,9 @@
       <trans-unit id="pageTree.searchResult">
         <source>Search result</source>
       </trans-unit>
+      <trans-unit id="pageTree.found_in_frontend_uri">
+        <source>Found by URI</source>
+      </trans-unit>
       <trans-unit id="viewport.navigation">
         <source>Navigation</source>
       </trans-unit>

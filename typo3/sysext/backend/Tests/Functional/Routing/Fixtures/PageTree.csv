@@ -8,6 +8,4 @@
 ,30,21,64,"Sub Area 1",0,0,0,"/home/main/sub2/sub1"
 ,31,21,128,"Sub Area 2",0,0,0,"/home/main/sub2/sub2"
 ,32,21,256,"Sub Area 3",0,0,0,"/home/main/sub2/sub3"
-,3,0,512,"Home 2",0,0,0,"/home2"
-,1003,2,512,"Main Area Sub 1 Modified",1,20,0,"/home2/sub1"
-,1004,2,512,"Main Area Sub 1 Modified in WS2",2,20,0,"/home2/sub1"
+,33,21,374,"https://acme.com/home/main/sub3",0,0,0,"/home/main/sub2/fake-sub3"

@@ -1335,6 +1335,9 @@
       <trans-unit id="tree.search_in_translated_pages">
         <source>Search in translated pages</source>
       </trans-unit>
+      <trans-unit id="tree.search_by_frontend_uri">
+        <source>Search by frontend URI</source>
+      </trans-unit>
       <trans-unit id="tree.searchTermInfo">
         <source>Enter search term</source>
       </trans-unit>

@@ -154,6 +154,16 @@ class TreeController
                 || $backendUser->uc['pageTree_searchInTranslatedPages']
             );
 
+        // Check if frontend URI search feature is generally available (TSconfig setting)
+        $frontendUriSearchAvailable = (bool)($userTsConfig['options.']['pageTree.']['searchByFrontendUri'] ?? true);
+
+        // Determine if frontend URI search is enabled by the user preference - otherwise TSconfig setting applies
+        $frontendUriSearchEnabled = $frontendUriSearchAvailable
+            && (
+                !isset($backendUser->uc['pageTree_searchByFrontendUri'])
+                || $backendUser->uc['pageTree_searchByFrontendUri']
+            );
+
         $configuration = [
             'allowDragMove' => $this->isDragMoveAllowed(),
             'doktypes' => $this->getDokTypes(),
@@ -166,6 +176,8 @@ class TreeController
             'setTemporaryMountPointUrl' => (string)$this->uriBuilder->buildUriFromRoute('ajax_page_tree_set_temporary_mount_point'),
             'searchInTranslatedPagesEnabled' => $translationSearchEnabled,
             'searchInTranslatedPagesAvailable' => $translationSearchAvailable,
+            'searchByFrontendUriEnabled' => $frontendUriSearchEnabled,
+            'searchByFrontendUriAvailable' => $frontendUriSearchAvailable,
         ];
 
         return new JsonResponse($configuration);

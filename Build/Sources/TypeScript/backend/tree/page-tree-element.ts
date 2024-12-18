@@ -476,12 +476,20 @@ class PageTreeToolbar extends TreeToolbar {
   @property({ type: Boolean })
   searchInTranslatedPages: boolean = false;
 
+  @property({ type: Boolean })
+  searchByFrontendUri: boolean = false;
+
   protected override updated(changedProperties: Map<PropertyKey, unknown>): void {
     super.updated(changedProperties);
 
-    // Update searchInTranslatedPages when tree property changes (initial load or tree replacement)
-    if (changedProperties.has('tree') && this.tree?.settings?.searchInTranslatedPagesEnabled !== undefined) {
-      this.searchInTranslatedPages = this.tree.settings.searchInTranslatedPagesEnabled;
+    // Update searchInTranslatedPages and searchByFrontendUri when tree property changes (initial load or tree replacement)
+    if (changedProperties.has('tree')) {
+      if (this.tree?.settings?.searchInTranslatedPagesEnabled !== undefined) {
+        this.searchInTranslatedPages = this.tree.settings.searchInTranslatedPagesEnabled;
+      }
+      if (this.tree?.settings?.searchByFrontendUriEnabled !== undefined) {
+        this.searchByFrontendUri = this.tree.settings.searchByFrontendUriEnabled;
+      }
     }
   }
 
@@ -531,23 +539,7 @@ class PageTreeToolbar extends TreeToolbar {
                 </span>
               </button>
             </li>
-            ${this.tree?.settings?.searchInTranslatedPagesAvailable ? html`
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li>
-                <button class="dropdown-item" @click="${() => this.toggleTranslationSearch()}">
-                  <span class="dropdown-item-columns">
-                    <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
-                      <typo3-backend-icon identifier="${this.searchInTranslatedPages ? 'actions-check-square' : 'actions-selection'}" size="small"></typo3-backend-icon>
-                    </span>
-                    <span class="dropdown-item-column dropdown-item-column-title">
-                      ${lll('tree.search_in_translated_pages')}
-                    </span>
-                  </span>
-                </button>
-              </li>
-            ` : nothing}
+            ${this.renderSearchOptions()}
           </ul>
           <typo3-backend-content-navigation-toggle
             class="btn btn-sm btn-icon btn-default btn-borderless"
@@ -579,6 +571,49 @@ class PageTreeToolbar extends TreeToolbar {
     `;
   }
 
+  protected renderSearchOptions(): TemplateResult | symbol {
+    const hasTranslationSearch = this.tree?.settings?.searchInTranslatedPagesAvailable;
+    const hasFrontendUriSearch = this.tree?.settings?.searchByFrontendUriAvailable;
+
+    if (!hasTranslationSearch && !hasFrontendUriSearch) {
+      return nothing;
+    }
+
+    return html`
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      ${hasTranslationSearch ? html`
+        <li>
+          <button class="dropdown-item" @click="${() => this.toggleTranslationSearch()}">
+            <span class="dropdown-item-columns">
+              <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                <typo3-backend-icon identifier="${this.searchInTranslatedPages ? 'actions-check-square' : 'actions-selection'}" size="small"></typo3-backend-icon>
+              </span>
+              <span class="dropdown-item-column dropdown-item-column-title">
+                ${lll('tree.search_in_translated_pages')}
+              </span>
+            </span>
+          </button>
+        </li>
+      ` : nothing}
+      ${hasFrontendUriSearch ? html`
+        <li>
+          <button class="dropdown-item" @click="${() => this.toggleFrontendUriSearch()}">
+            <span class="dropdown-item-columns">
+              <span class="dropdown-item-column dropdown-item-column-icon" aria-hidden="true">
+                <typo3-backend-icon identifier="${this.searchByFrontendUri ? 'actions-check-square' : 'actions-selection'}" size="small"></typo3-backend-icon>
+              </span>
+              <span class="dropdown-item-column dropdown-item-column-title">
+                ${lll('tree.search_by_frontend_uri')}
+              </span>
+            </span>
+          </button>
+        </li>
+      ` : nothing}
+    `;
+  }
+
   protected async toggleTranslationSearch(): Promise<void> {
     const newValue = !this.searchInTranslatedPages;
 
@@ -598,6 +633,28 @@ class PageTreeToolbar extends TreeToolbar {
       }
     } catch (error) {
       console.error('Failed to toggle translation search:', error);
+    }
+  }
+
+  protected async toggleFrontendUriSearch(): Promise<void> {
+    const newValue = !this.searchByFrontendUri;
+
+    try {
+      await Persistent.set('pageTree_searchByFrontendUri', newValue ? '1' : '0');
+
+      // Update both local state and tree settings
+      this.searchByFrontendUri = newValue;
+      if (this.tree?.settings) {
+        this.tree.settings.searchByFrontendUriEnabled = newValue;
+      }
+
+      // Refresh the tree if there's an active search
+      const searchInput = this.querySelector('.search-input') as HTMLInputElement;
+      if (searchInput && searchInput.value.trim() !== '') {
+        this.refreshTree();
+      }
+    } catch (error) {
+      console.error('Failed to toggle frontend URI search:', error);
     }
   }
 
