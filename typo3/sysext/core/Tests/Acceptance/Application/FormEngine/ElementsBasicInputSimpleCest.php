@@ -44,6 +44,9 @@ final class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
         $I->click($editRecordLinkCssPath);
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForText('Edit Form', 3, 'h1');
+
+        // Make sure the test operates on the "input" tab
+        $I->click('input');
     }
 
     /**
