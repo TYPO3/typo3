@@ -124,9 +124,11 @@ final readonly class FrontendTypoScriptFactory
         ?PhpFrontend $typoScriptCache,
     ): array {
         $cacheCriteria = [
-            'sets' => $site instanceof Site ? $site->getSets() : [],
             'sysTemplateRows' => $sysTemplateRows,
         ];
+        if ($site instanceof Site && $site->isTypoScriptRoot()) {
+            $cacheCriteria['siteIdentifier'] = $site->getIdentifier();
+        }
         $conditionTreeCacheIdentifier = 'settings-condition-tree-' . hash('xxh3', json_encode($cacheCriteria, JSON_THROW_ON_ERROR));
 
         if ($conditionTree = $typoScriptCache?->require($conditionTreeCacheIdentifier)) {
@@ -339,7 +341,7 @@ final readonly class FrontendTypoScriptFactory
         $setupTypoScriptCacheIdentifier = 'setup-' . hash(
             'xxh3',
             json_encode($sysTemplateRows, JSON_THROW_ON_ERROR)
-            . json_encode($site instanceof Site ? $site->getSets() : [], JSON_THROW_ON_ERROR)
+            . ($site instanceof Site && $site->isTypoScriptRoot() ? $site->getIdentifier() : '')
             . json_encode($frontendTypoScript->getSettingsConditionList(), JSON_THROW_ON_ERROR)
             . json_encode($frontendTypoScript->getSetupConditionList(), JSON_THROW_ON_ERROR)
         );
