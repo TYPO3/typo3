@@ -1,0 +1,16 @@
+"pages"
+,"uid","pid","deleted","title","slug","is_siteroot"
+,1,0,0,"Brand root","/",1
+,2,0,0,"Tech root","/",1
+"sys_template"
+,"uid","pid","deleted","hidden","sorting","title","config"
+,1,1,0,0,256,"Brand root TS","page = PAGE
+page {
+  10 = TEXT
+  10.value = {$settingFromSite}
+}"
+,2,2,0,0,256,"Tech root TS","page = PAGE
+page {
+  10 = TEXT
+  10.value = {$settingFromSite}
+}"
