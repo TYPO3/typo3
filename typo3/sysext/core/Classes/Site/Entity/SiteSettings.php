@@ -30,6 +30,13 @@ final readonly class SiteSettings extends Settings implements \JsonSerializable
     private array $flatSettings;
     private array $settingsTree;
 
+    /**
+     * @param array $settings key-value map of defined settings
+     * @param array $settingsTree nested settings tree, included defined (settings.definitions.yaml) and anonymous settings (only set in settings.yaml)
+     * @param array $flatSettings key-value map of all settings (defined and anonymous settings)
+     *
+     * @internal to be constructed by create() or createFromSettingsTree()
+     */
     public function __construct(array $settings, array $settingsTree, array $flatSettings)
     {
         parent::__construct($settings);
@@ -67,9 +74,12 @@ final readonly class SiteSettings extends Settings implements \JsonSerializable
         return $this->flatSettings;
     }
 
+    /**
+     * @todo Update jsonSerialize() to return settings map and settings tree values, or remove altogether.
+     */
     public function jsonSerialize(): mixed
     {
-        return json_encode($this->settings);
+        return json_encode($this->settingsTree);
     }
 
     /**
