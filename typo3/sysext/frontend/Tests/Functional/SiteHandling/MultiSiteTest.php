@@ -30,6 +30,10 @@ final class MultiSiteTest extends FunctionalTestCase
 {
     use SiteBasedTestTrait;
 
+    protected array $testExtensionsToLoad = [
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_site_sets',
+    ];
+
     protected const LANGUAGE_PRESETS = [
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
@@ -69,6 +73,52 @@ final class MultiSiteTest extends FunctionalTestCase
         self::assertStringContainsString('BrandFoo', (string)$response->getBody());
         $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/tech')));
         // Site settings set this string, it is used in TypoScript of this page as constant.
+        // The test verifies the correct constant value is calculated when first calling one site
+        // and then the other one, when both have the same site setting with different values.
+        self::assertStringContainsString('TechBar', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function twoSetBasedSitesCalculateCorrectSiteSettingsInTypoScript(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/MultiSiteTestPageImport.csv');
+        $this->writeSiteConfiguration(
+            'acme-brand',
+            [
+                'rootPageId' => 1,
+                'base' => 'https://acme.com/brand',
+                'dependencies' => [
+                    'typo3tests/multi-site',
+                ],
+                'settings' => [
+                    'settingFromSite' => 'BrandFoo',
+                ],
+            ],
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'acme-tech',
+            [
+                'rootPageId' => 2,
+                'base' => 'https://acme.com/tech',
+                'dependencies' => [
+                    'typo3tests/multi-site',
+                ],
+                'settings' => [
+                    'settingFromSite' => 'TechBar',
+                ],
+            ],
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/brand')));
+        // Site settings set this string, it is used in TypoScript of the set `typo3tests/multi-site` as a constant.
+        self::assertStringContainsString('BrandFoo', (string)$response->getBody());
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/tech')));
+        // Site settings set this string, it is used in TypoScript of the set `typo3tests/multi-site` as a constant.
         // The test verifies the correct constant value is calculated when first calling one site
         // and then the other one, when both have the same site setting with different values.
         self::assertStringContainsString('TechBar', (string)$response->getBody());
