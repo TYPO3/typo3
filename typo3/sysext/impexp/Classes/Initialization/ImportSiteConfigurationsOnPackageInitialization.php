@@ -63,7 +63,7 @@ final class ImportSiteConfigurationsOnPackageInitialization implements LoggerAwa
         // @todo: Get rid of symfony finder here: We should use low level tools
         //        here to locate such files.
         $finder = GeneralUtility::makeInstance(Finder::class);
-        $finder->directories()->in($importAbsFolder);
+        $finder->directories()->ignoreUnreadableDirs()->in($importAbsFolder);
         if ($finder->hasResults()) {
             foreach ($finder as $siteConfigDirectory) {
                 $siteIdentifier = $siteConfigDirectory->getBasename();

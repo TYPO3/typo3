@@ -67,11 +67,11 @@ class Typo3tempFileService
         $basePath = Environment::getPublicPath() . $typo3TempAssetsPath;
         if (is_dir($basePath)) {
             $dirFinder = new Finder();
-            $dirsInAssets = $dirFinder->directories()->in($basePath)->depth(0)->sortByName();
+            $dirsInAssets = $dirFinder->directories()->ignoreUnreadableDirs()->in($basePath)->depth(0)->sortByName();
             foreach ($dirsInAssets as $dirInAssets) {
                 /** @var SplFileInfo $dirInAssets */
                 $fileFinder = new Finder();
-                $fileCount = $fileFinder->files()->in($dirInAssets->getPathname())->count();
+                $fileCount = $fileFinder->files()->ignoreUnreadableDirs()->in($dirInAssets->getPathname())->count();
                 $folderName = $dirInAssets->getFilename();
                 $stat = [
                     'directory' => $typo3TempAssetsPath . $folderName,
@@ -177,7 +177,7 @@ class Typo3tempFileService
         }
 
         // first remove directories
-        foreach ((new Finder())->directories()->in($basePath)->depth(0) as $directory) {
+        foreach ((new Finder())->directories()->ignoreUnreadableDirs()->in($basePath)->depth(0) as $directory) {
             /** @var SplFileInfo $directory */
             GeneralUtility::rmdir($directory->getPathname(), true);
         }

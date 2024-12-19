@@ -62,6 +62,7 @@ final class DocumentationFile
         $finder
             ->depth(0)
             ->sortByName(true)
+            ->ignoreUnreadableDirs()
             ->name($pattern)
             ->in($path);
 
