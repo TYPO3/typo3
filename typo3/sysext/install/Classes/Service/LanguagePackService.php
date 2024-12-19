@@ -126,7 +126,7 @@ class LanguagePackService
             $path = $package->getPackagePath();
             $finder = new Finder();
             try {
-                $files = $finder->files()->in($path . 'Resources/Private/Language/')->name('*.xlf');
+                $files = $finder->files()->ignoreUnreadableDirs()->in($path . 'Resources/Private/Language/')->name('*.xlf');
                 if ($files->count() === 0) {
                     // This extension has no .xlf files
                     continue;

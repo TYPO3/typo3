@@ -190,6 +190,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
                 ->files()
                 ->sortByName()
                 ->depth(1)
+                ->ignoreUnreadableDirs()
                 ->name('config.yaml')
                 ->in($setPath);
         } catch (\InvalidArgumentException) {

@@ -660,7 +660,7 @@ class UpgradeController extends AbstractController
         }
 
         $finder = new Finder();
-        $files = $finder->files()->in($extensionBasePath)->name('*.php')->sortByName();
+        $files = $finder->files()->ignoreUnreadableDirs()->in($extensionBasePath)->name('*.php')->sortByName();
         // A list of file names relative to extension directory
         $relativeFileNames = [];
         foreach ($files as $file) {
@@ -690,7 +690,7 @@ class UpgradeController extends AbstractController
         $documentationFile = new DocumentationFile();
         $finder = new Finder();
         $restFilesBasePath = ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog';
-        $restFiles = $finder->files()->in($restFilesBasePath);
+        $restFiles = $finder->files()->ignoreUnreadableDirs()->in($restFilesBasePath);
         $fullyScannedRestFilesNotAffected = [];
         foreach ($restFiles as $restFile) {
             // Skip files in "8.x" directory
@@ -807,7 +807,7 @@ class UpgradeController extends AbstractController
             $preparedHit['restFiles'] = [];
             foreach ($match['restFiles'] as $fileName) {
                 $finder = new Finder();
-                $restFileLocation = $finder->files()->in($restFilesBasePath)->name($fileName);
+                $restFileLocation = $finder->files()->ignoreUnreadableDirs()->in($restFilesBasePath)->name($fileName);
                 if ($restFileLocation->count() !== 1) {
                     throw new \RuntimeException(
                         'ResT file ' . $fileName . ' not found or multiple files found.',
