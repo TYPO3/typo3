@@ -69,7 +69,14 @@ class LocalImageProcessor implements ProcessorInterface, LoggerAwareInterface
             } elseif (!empty($result['filePath']) && file_exists($result['filePath'])) {
                 $task->setExecuted(true);
                 $imageInformation = GeneralUtility::makeInstance(ImageInfo::class, $result['filePath']);
-                $task->getTargetFile()->setName($task->getTargetFileName());
+                if (($result['remapProcessedTargetFileExtension'] ?? null) !== null) {
+                    // Processing changed the target filename extension to something else.
+                    // We need to react on this, because otherwise the file contents will not
+                    // match the file extension.
+                    $task->getTargetFile()->setName($task->getTargetFileName() . '.' . $result['remapProcessedTargetFileExtension']);
+                } else {
+                    $task->getTargetFile()->setName($task->getTargetFileName());
+                }
                 $task->getTargetFile()->updateProperties([
                     'width' => $imageInformation->getWidth(),
                     'height' => $imageInformation->getHeight(),

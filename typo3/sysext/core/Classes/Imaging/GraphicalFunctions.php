@@ -92,10 +92,11 @@ class GraphicalFunctions
 
     /**
      * Web image extensions (can be shown by a webbrowser)
+     * Note that 'avif' support is checked on an individual condition, see method resize().
      *
      * @var list<non-empty-string>
      */
-    protected array $webImageExt = ['gif', 'jpg', 'jpeg', 'png', 'webp', 'avif'];
+    protected array $webImageExt = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 
     /**
      * @var array{jpg: string, jpeg: string, gif: string, png: string, webp: string, avif: string}
@@ -327,15 +328,36 @@ class GraphicalFunctions
         $targetFileExtension = strtolower(trim($targetFileExtension));
         // If no extension is given the original extension is used
         $targetFileExtension = $targetFileExtension ?: $originalFileExtension;
+        $useFallback = false;
         if ($targetFileExtension === 'web') {
+            // This code path is not really triggered anymore. The targetFileExtension
+            // is already pre-calculated via:
+            // - TYPO3\CMS\Core\Resource\Processing\ImageCropScaleMaskTask->getTargetFileExtension()
+            // - TYPO3\CMS\Core\Resource\Processing\ImagePreviewTask->getTargetFileExtension()
+            // This place only acts as legacy for be:thumbnail helper and manual code calls to
+            // the the convert() method without an argument.
+            // This would be the "give me anything web-compatible" case. Ideally it will use the original format to do scaling operations.
+            // If it's not a web-format, fallback to JPG/PNG will be applied.
+
+            // Special case for AVIF format - only use this if supported (ImageMagick: YES, GraphicsMagick: NO)
             if (in_array($originalFileExtension, $this->webImageExt, true)) {
                 $targetFileExtension = $originalFileExtension;
             } elseif ($originalFileExtension === 'avif' && $this->avifSupportAvailable()) {
-                // Special case for AVIF format - only use this if supported (ImageMagick: YES, GraphicsMagick: NO)
                 $targetFileExtension = $originalFileExtension;
             } else {
-                $targetFileExtension = $this->gif_or_jpg($originalFileExtension, $info->getWidth(), $info->getHeight());
+                $useFallback = true;
             }
+        } elseif ($targetFileExtension === 'avif' && !$this->avifSupportAvailable()) {
+            // Outside the "web-compatible" case above, we also need to check if a
+            // specific output format can be written.
+            // For now, only AVIF has special support check handling.
+            $useFallback = true;
+        }
+        if ($useFallback) {
+            // Note that this may change the expected targetFileExtension from something like ".avif" to ".jpg".
+            // This is evaluated further on in LocalCropScaleMaskHelper->processWithLocalFile() and the
+            // processed filename will be altered accordingly.
+            $targetFileExtension = $this->gif_or_jpg($originalFileExtension, $info->getWidth(), $info->getHeight());
         }
         if (!in_array($targetFileExtension, $this->imageFileExt, true)) {
             return null;
@@ -665,9 +687,10 @@ class GraphicalFunctions
      */
     public function gif_or_jpg($type, $w, $h)
     {
-        if ($type === 'ai' || $w * $h < $this->pixelLimitGif) {
+        if ($type === 'ai' || $type === 'gif' || $w * $h < $this->pixelLimitGif) {
             return 'png';
         }
+        // @todo Change this to allow specific fallback formats instead of hard-coded.
         return 'jpg';
     }
 
