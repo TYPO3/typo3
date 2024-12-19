@@ -426,6 +426,55 @@ final class ImageViewHelperTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function fileExtensionArgumentWithNonWebimageFormatWritesCompatibleOutputFormat(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperFailTest.tif" width="200" fileExtension="jpg" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/3/3/csm_ImageViewHelperFailTest_.*\.jpg" width="200" height="150" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function fileExtensionArgumentWithNonWebimageFormatWritesFallbackFormatInstead(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        // Note the absence of a fileExtension argument; this uses 'web' as default format then.
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperFailTest.tif" width="200" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/3/3/csm_ImageViewHelperFailTest_.*\.png" width="200" height="150" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function fileExtensionArgumentWithWebimageFormatMayNotWriteNonWebImageFormatButFallback(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="200" fileExtension="tif" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.tif" width="200" height="150" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function fileExtensionArgumentDoesNotWriteAvifWhenUnsupported(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="200" fileExtension="avif" />');
+
+        // Force GraphicsMagick here which does not support AVIF. Output should be in jpeg format then.
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] = 'GraphicsMagick';
+        $renderOutput = (new TemplateView($context))->render();
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.avif.jpg" width="200" height="150" alt="" />$@',
+            $renderOutput,
+        );
+    }
+
+    #[Test]
     public function absoluteArgument(): void
     {
         GeneralUtility::setIndpEnv('TYPO3_REQUEST_DIR', 'https://typo3-testing.local/');
