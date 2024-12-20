@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Configuration;
 
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationExtensionNotConfiguredException;
 use TYPO3\CMS\Core\Configuration\Exception\ExtensionConfigurationPathDoesNotExistException;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
@@ -43,6 +44,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Note only ->get() is official API and other public methods are low level
  * core internal API that is usually only used by extension manager and install tool.
  */
+#[AsAlias('extension-configuration', public: true)]
 class ExtensionConfiguration
 {
     /**
