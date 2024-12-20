@@ -182,12 +182,6 @@ return [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette',
             'showitem' => 'title,description',
         ],
-        // @internal: Same as basic palette with additional "alternative" and "link" fields.
-        // @todo Remove in v14 as breaking change and use basicoverlayPalette instead.
-        'extendedBasicOverlayPalette' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.basicoverlayPalette',
-            'showitem' => 'alternative,description,--linebreak--,link,title',
-        ],
         // Used for everything that is an image (because it has a link and an alternative text)
         'imageoverlayPalette' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file_reference.imageoverlayPalette',

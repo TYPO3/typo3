@@ -528,26 +528,6 @@ return [
                 'behaviour' => [
                     'allowLanguageSynchronization' => true,
                 ],
-                // @todo Only kept for backwards compatibility. Remove in v14.
-                'overrideChildTca' => [
-                    'types' => [
-                        '0' => [
-                            'showitem' => '
-                                    --palette--;;extendedBasicOverlayPalette,
-                                    --palette--;;filePalette',
-                        ],
-                        \TYPO3\CMS\Core\Resource\FileType::TEXT->value => [
-                            'showitem' => '
-                                    --palette--;;extendedBasicOverlayPalette,
-                                    --palette--;;filePalette',
-                        ],
-                        \TYPO3\CMS\Core\Resource\FileType::APPLICATION->value => [
-                            'showitem' => '
-                                    --palette--;;extendedBasicOverlayPalette,
-                                    --palette--;;filePalette',
-                        ],
-                    ],
-                ],
             ],
         ],
         'is_siteroot' => [
