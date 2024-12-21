@@ -21,9 +21,7 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 {
     protected const VALUE_CategoryIdLast = 31;
     protected const VALUE_WorkspaceId = 1;
-
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefaultWorkspaces.csv';
-
     protected array $coreExtensionsToLoad = ['workspaces'];
 
     public function createContentAndAddRelation(): void
@@ -83,7 +81,6 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         );
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
-
         $this->actionService->modifyRecord(
             self::TABLE_Content,
             $this->recordIds['newContentId'],
@@ -102,7 +99,6 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
         $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
-
         $this->actionService->modifyRecord(
             self::TABLE_Category,
             $this->recordIds['newCategoryId'],
