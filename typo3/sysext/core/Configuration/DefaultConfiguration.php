@@ -40,6 +40,19 @@ return [
     'GFX' => [ // Configuration of the image processing features in TYPO3. 'IM' and 'GD' are short for ImageMagick and GD library respectively.
         'thumbnails' => true,
         'imagefile_ext' => 'gif,jpg,jpeg,tif,tiff,bmp,pcx,tga,png,pdf,ai,svg,webp,avif',
+        'imageFileConversionFormats' => [
+            // Default "pass through" web formats
+            'jpg' => 'jpg',
+            'jpeg' => 'jpeg',
+            'gif' => 'gif',
+            'png' => 'png',
+            'svg' => 'svg',
+            'webp' => 'webp',
+            // "Everything else" (default conversion)
+            // A format like PNG is advised to allow keeping transparency.
+            // Ideally, use webp/avif here (future default?). You can also only use "default=webp" to force every format being converted to webp.
+            'default' => 'png',
+        ],
         'processor_enabled' => true,
         'processor_path' => '/usr/bin/',
         'processor' => 'ImageMagick',

@@ -85,10 +85,25 @@ class GraphicalFunctions
      * Due to 'avif' still missing support with GraphicsMagick (https://sourceforge.net/p/graphicsmagick/feature-requests/64/),
      * this is not enabled by default. But if availability is detected, it is automatically appended to $webImageExt.
      * Also, system maintainers can add this format to $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'].
+     * Please note, this array is populated in the constructor.
      *
      * @var list<non-empty-string>
      */
-    protected array $imageFileExt = ['gif', 'jpg', 'jpeg', 'png', 'tif', 'bmp', 'tga', 'pcx', 'ai', 'pdf', 'webp'];
+    protected array $imageFileExt = [];
+
+    /**
+     * Will hold the lookup map of "originalFileExtension" -> "processedFileExtension" according
+     * to the parsed interpretation of $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats']
+     * within the constructor.
+     * @var array<string, string> $defaultImagePreview
+     */
+    protected array $defaultImagePreview = [];
+
+    /**
+     * Last resort fallback when the $defaultImagePreview array does not match an entry, or when
+     * $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] specifies a fallback (via constructor).
+     */
+    protected string $defaultImagePreviewFallback = 'png';
 
     /**
      * Web image extensions (can be shown by a webbrowser)
@@ -232,6 +247,33 @@ class GraphicalFunctions
         }
         // Secures that images are not scaled up.
         $this->mayScaleUp = (bool)$gfxConf['processor_allowUpscaling'];
+
+        // Set up default image preview processing formats
+        $map = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] ?? [];
+        if (!is_array($map)) {
+            $map = [];
+        }
+        // For now only a single file extension is supported as a target format
+        // ([$originalFileExtension => $processedFileExtension]). Maybe in the future,
+        // multiple ones can be specified to indicate fallbacks when certain
+        // formats are not available, or allow to configure things like
+        // "if X amount of pixels, use format A, else format B".
+        // Filter the configuration array: Remove non-string entries, evaluate default
+        // $defaultImagePreviewFallback (if set), populate $defaultImagePreview.
+        array_walk($map, function ($mapProcessedFileExtension, $mapOriginalFileExtension) {
+            if (!is_string($mapProcessedFileExtension)) {
+                return;
+            }
+
+            $mapOriginalFileExtension = trim($mapOriginalFileExtension);
+            $mapProcessedFileExtension = trim($mapProcessedFileExtension);
+
+            if ($mapOriginalFileExtension === 'default') {
+                $this->defaultImagePreviewFallback = $mapProcessedFileExtension;
+            } else {
+                $this->defaultImagePreview[$mapOriginalFileExtension] = $mapProcessedFileExtension;
+            }
+        });
     }
 
     /**
@@ -357,17 +399,20 @@ class GraphicalFunctions
             } else {
                 $useFallback = true;
             }
-        } elseif ($targetFileExtension === 'avif' && !$this->avifSupportAvailable()) {
+        } elseif (
+            ($targetFileExtension === 'avif' && !$this->avifSupportAvailable())
+            || ($targetFileExtension === 'webp' && !$this->webpSupportAvailable())
+        ) {
             // Outside the "web-compatible" case above, we also need to check if a
             // specific output format can be written.
-            // For now, only AVIF has special support check handling.
+            // For now, only AVIF+WEBP has special support check handling.
             $useFallback = true;
         }
         if ($useFallback) {
             // Note that this may change the expected targetFileExtension from something like ".avif" to ".jpg".
             // This is evaluated further on in LocalCropScaleMaskHelper->processWithLocalFile() and the
             // processed filename will be altered accordingly.
-            $targetFileExtension = $this->gif_or_jpg($originalFileExtension, $info->getWidth(), $info->getHeight());
+            $targetFileExtension = $this->determineDefaultProcessingFileExtension($originalFileExtension);
         }
         if (!in_array($targetFileExtension, $this->imageFileExt, true)) {
             return null;
@@ -698,14 +743,45 @@ class GraphicalFunctions
      * @param int $w The width of the output image.
      * @param int $h The height of the output image.
      * @return string The filename, either "jpg" or "png"
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0. Use determineDefaultProcessingFileExtension() instead.
+     * @todo - Move this internal method to a new service class and then update this deprecation info.
+     * @see $this->determineDefaultProcessingFileExtension()
      */
     public function gif_or_jpg($type, $w, $h)
     {
+        trigger_error(
+            'GraphicalFunctions->gif_or_jpg() has been deprecated in TYPO3 v14.0 and will be removed in v15.0.',
+            E_USER_DEPRECATED
+        );
+
         if ($type === 'ai' || $type === 'gif' || $w * $h < $this->pixelLimitGif) {
             return 'png';
         }
-        // @todo Change this to allow specific fallback formats instead of hard-coded.
         return 'jpg';
+    }
+
+    /**
+     * Helper method available to all GraphicalFunctions/AbstractTask implementations, looks up the definition
+     * in $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] to see
+     * which processing output file format (file extension) should be used, based on
+     * Used in both GraphicalFunctions and ImageCropScaleMaskTask / ImagePreviewTask
+     * the file extension of the original file.
+     * @internal - Will get moved into its own service where it can be API (@todo)
+     */
+    public function determineDefaultProcessingFileExtension(string $originalFileExtension = ''): string
+    {
+        $map = $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] ?? [];
+
+        if (!is_array($map) || $map === [] || $originalFileExtension === '') {
+            // Should never be disabled. Last line of defense.
+            return $this->defaultImagePreviewFallback;
+        }
+
+        $originalFileExtension = strtolower($originalFileExtension);
+
+        // When a wanted file extension is not part of the format list, it needs to be converted to
+        // the "default" fallback format.
+        return $this->defaultImagePreview[$originalFileExtension] ?? $this->defaultImagePreviewFallback;
     }
 
     /**

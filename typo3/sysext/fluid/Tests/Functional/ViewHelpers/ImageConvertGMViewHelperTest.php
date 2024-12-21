@@ -358,17 +358,17 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         ];
         yield 'avif to avif' => [
             'template' => '<f:image src="fileadmin/file.avif" fileExtension="avif" width="80" alt="avif-to-avif" />',
-            'contentMatchRegExp' => '<img alt="avif-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.jpg" width="80" height="60" />',
+            'contentMatchRegExp' => '<img alt="avif-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.png" width="80" height="60" />',
             'message' => 'File extension is "avif.jpg" for "avif" (processed/forced)',
         ];
         yield 'bmp to avif' => [
             'template' => '<f:image src="fileadmin/file.bmp" fileExtension="avif" width="80" alt="bmp-to-avif" />',
-            'contentMatchRegExp' => '<img alt="bmp-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.jpg" width="80" height="34" />',
+            'contentMatchRegExp' => '<img alt="bmp-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.png" width="80" height="34" />',
             'message' => 'File extension is "avif.jpg" for "bmp" (processed/forced)',
         ];
         yield 'gif to avif' => [
             'template' => '<f:image src="fileadmin/file.gif" fileExtension="avif" width="80" alt="gif-to-avif" />',
-            'contentMatchRegExp' => '<img alt="gif-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.png" width="80" height="34" />',
+            'contentMatchRegExp' => '<img alt="gif-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.gif" width="80" height="34" />',
             'message' => 'File extension is "avif.jpg" for "gif" (processed/forced)',
         ];
         yield 'jpg to avif' => [
@@ -378,22 +378,22 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
         ];
         yield 'pdf to avif' => [
             'template' => '<f:image src="fileadmin/file.pdf" fileExtension="avif" width="80" alt="pdf-to-avif" />',
-            'contentMatchRegExp' => '<img alt="pdf-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.jpg" width="80" height="34" />',
+            'contentMatchRegExp' => '<img alt="pdf-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.png" width="80" height="34" />',
             'message' => 'File extension is "avif.jpg" for "pdf" (processed/forced)',
         ];
         yield 'png to avif' => [
             'template' => '<f:image src="fileadmin/file.png" fileExtension="avif" width="80" alt="png-to-avif" />',
-            'contentMatchRegExp' => '<img alt="png-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.jpg" width="80" height="34" />',
+            'contentMatchRegExp' => '<img alt="png-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.png" width="80" height="34" />',
             'message' => 'File extension is "avif.jpg" for "png" (processed/forced)',
         ];
         yield 'tif to avif' => [
             'template' => '<f:image src="fileadmin/file.tif" fileExtension="avif" width="80" alt="tif-to-avif" />',
-            'contentMatchRegExp' => '<img alt="tif-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.jpg" width="80" height="34" />',
+            'contentMatchRegExp' => '<img alt="tif-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.png" width="80" height="34" />',
             'message' => 'File extension is "avif.jpg" for "tif" (processed/forced)',
         ];
         yield 'webp to avif' => [
             'template' => '<f:image src="fileadmin/file.webp" fileExtension="avif" width="80" alt="webp-to-avif" />',
-            'contentMatchRegExp' => '<img alt="webp-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.jpg" width="80" height="34" />',
+            'contentMatchRegExp' => '<img alt="webp-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.webp" width="80" height="34" />',
             'message' => 'File extension is "avif.jpg" for "webp" (processed/forced)',
         ];
         // non-web-format
@@ -412,10 +412,10 @@ final class ImageConvertGMViewHelperTest extends FunctionalTestCase
             'contentMatchRegExp' => '<img alt="ps-to-avif" src="fileadmin/file.ps" width="" height="" />',
             'message' => 'File extension is "fax" for "fax" (not-processed/not-forced/non-web-format)',
         ];
-        // pass-through-format
+        // pass-through-format (GM does not support writing AVIF)
         yield 'svg to avif' => [
             'template' => '<f:image src="fileadmin/file.svg" fileExtension="avif" width="80" alt="svg-to-avif" />',
-            'contentMatchRegExp' => '<img alt="svg-to-avif" src="fileadmin/_processed_/.*/.*/csm_file_.*\.avif\.jpg" width="80" height="34" />',
+            'contentMatchRegExp' => '<img alt="svg-to-avif" src="fileadmin/file.svg" width="481" height="203" />',
             'message' => 'File extension is "avif.jpg" for "svg" (processed/forced)',
         ];
         // invalid

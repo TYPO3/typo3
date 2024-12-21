@@ -6563,4 +6563,11 @@ return [
      *  the method name itself. That means, never list generic method names
      *  in this scanner definition.
      */
+    'TYPO3\CMS\Core\Imaging\GraphicalFunctions->gif_or_jpg' => [
+        'numberOfMandatoryArguments' => 3,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-93981-GraphicalFunctionsGifOrJpg.rst',
+        ],
+    ],
 ];

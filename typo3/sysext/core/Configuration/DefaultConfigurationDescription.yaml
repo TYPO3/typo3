@@ -8,7 +8,12 @@ GFX:
             description: 'Enables the use of thumbnails in the backend interface.'
         imagefile_ext:
             type: list
-            description: 'Commalist of file extensions perceived as images by TYPO3. List should be set to ''gif,png,jpeg,jpg'' if IM is not available. Lowercase and no spaces between!'
+            description: 'Commalist of file extensions perceived as images by TYPO3. List should be set to "gif,png,jpeg,jpg" if ImageMagick is not available. Lowercase and no spaces between! To configure default conversion formats, please manually configure the extra array "imageFileConversionFormats" in settings.php.'
+        imageFileConversionFormats:
+            type: map
+            arrayKey: Input format (extension)
+            arrayValue: Output format (extension)
+            description: 'Define how image files are converted by default for preview output in the frontend when referenced with Image ViewHelpers for example. This settings allows to specify a map of input/output formats. The key "Input format (extension)" specifies a file extension like "jpg" (no dot). The right hand value "Output format (extension)" specifies the image file type/extension that files will be converted to. The special input format "default" will set the default preview creation format (usually "png" to preserve alpha-channel transparency). Any source file extension that should be kept when being rendered needs to be specified here, like jpeg=>jpeg, jpeg=>jpg, png=>png. Any other format listed in the "imagefile_ext" list, but not here, will use the "default" format. You can just set "default=>webp" for example to force every image being converted to webp. Non-convertible formats will be saved as png if possible, or else passed through.'
         processor_enabled:
             type: bool
             description: 'Enables the use of Image- or GraphicsMagick.'

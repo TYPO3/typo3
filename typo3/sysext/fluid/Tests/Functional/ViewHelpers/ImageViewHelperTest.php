@@ -507,10 +507,112 @@ final class ImageViewHelperTest extends FunctionalTestCase
 
         // Force GraphicsMagick here which does not support AVIF. Output should be in jpeg format then.
         $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor'] = 'GraphicsMagick';
-        $renderOutput = (new TemplateView($context))->render();
         self::assertMatchesRegularExpression(
             '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.avif.jpg" width="200" height="150" alt="" />$@',
-            $renderOutput,
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function targetExtensionCanBeChangedWithImagefileDefaultProcessingConfigurationOption(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+
+        // Set expectation to render our JPG as 'webp' (ignoring default)
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] = [
+            'webp' => 'webp',
+            'jpg' => 'webp',
+            'default' => 'gif',
+        ];
+
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="201" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.webp" width="201" height="151" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function targetExtensionCanBeChangedWithImagefileDefaultProcessingConfigurationOptionUsingDefault(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+
+        // Set expectation to render our JPG as 'webp' (using default)
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] = [
+            'default' => 'webp',
+        ];
+
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.webp" width="202" height="152" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function targetExtensionCanBeChangedWithImagefileDefaultProcessingConfigurationOptionUsingDefaultIgnoringInvalidKeys(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+
+        // Set expectation to render our JPG as 'webp' (using default)
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] = [
+            'nothing' => 'nothing',
+            'debug',
+            47 => 11,
+            // Invalid, will be ignored!
+            'jpg' => ['4', '8', '15', 16, 23, '42'],
+            'default' => 'webp',
+        ];
+
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.webp" width="202" height="152" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function targetExtensionCanBeChangedWithImagefileDefaultProcessingConfigurationOptionUsingDefaultWhenArrayIsEmpty(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+
+        // Set expectation to render our JPG as 'webp' (using default)
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] = [];
+
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="202" height="152" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function targetExtensionCanBeChangedWithImagefileDefaultProcessingConfigurationOptionUsingDefaultWhenArrayIsInvalid(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+
+        // Set expectation to render our JPG as 'webp' (using default)
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats'] = 'bad string';
+
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="202" height="152" alt="" />$@',
+            (new TemplateView($context))->render(),
+        );
+    }
+
+    #[Test]
+    public function targetExtensionCanBeChangedWithImagefileDefaultProcessingConfigurationOptionUsingDefaultWhenArrayIsMissing(): void
+    {
+        $context = $this->get(RenderingContextFactory::class)->create();
+
+        // Set expectation to render our JPG as 'webp' (using default)
+        unset($GLOBALS['TYPO3_CONF_VARS']['GFX']['imageFileConversionFormats']);
+
+        $context->getTemplatePaths()->setTemplateSource('<f:image src="fileadmin/ImageViewHelperTest.jpg" width="202" />');
+        self::assertMatchesRegularExpression(
+            '@^<img src="fileadmin/_processed_/5/3/csm_ImageViewHelperTest_.*\.png" width="202" height="152" alt="" />$@',
+            (new TemplateView($context))->render(),
         );
     }
 

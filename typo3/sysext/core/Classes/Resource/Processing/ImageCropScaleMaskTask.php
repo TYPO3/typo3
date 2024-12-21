@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Processing;
 
+use TYPO3\CMS\Core\Imaging\GraphicalFunctions;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -56,16 +57,12 @@ class ImageCropScaleMaskTask extends AbstractTask
     protected function determineTargetFileExtension(): string
     {
         if (!empty($this->configuration['fileExtension'])) {
-            $targetFileExtension = $this->configuration['fileExtension'];
-        } elseif (in_array($this->getSourceFile()->getExtension(), ['jpg', 'jpeg', 'png', 'gif', 'svg'], true)) {
-            $targetFileExtension = $this->getSourceFile()->getExtension();
-        } elseif ($this->getSourceFile()->getExtension() === 'webp' && GeneralUtility::inList($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'] ?? '', 'webp')) {
-            $targetFileExtension = $this->getSourceFile()->getExtension();
-        } else {
-            // Thumbnails from non-processable files will be converted to 'png'
-            $targetFileExtension = 'png';
+            return $this->configuration['fileExtension'];
         }
-        return $targetFileExtension;
+
+        // @todo - See note of determineDefaultProcessingFileExtension() - find a better place for this
+        $imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
+        return $imageService->determineDefaultProcessingFileExtension($this->getSourceFile()->getExtension());
     }
 
     public function getTargetFileName(): string
