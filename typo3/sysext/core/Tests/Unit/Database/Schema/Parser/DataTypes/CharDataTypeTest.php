@@ -38,31 +38,35 @@ final class CharDataTypeTest extends AbstractDataTypeBaseTestCase
     {
         return [
             'CHAR without length' => [
-                'CHAR',
-                CharDataType::class,
-                0,
+                'columnDefinition' => 'CHAR',
+                'className' => CharDataType::class,
+                'length' => 0,
+                'isFixed' => true,
             ],
             'CHAR with length' => [
-                'CHAR(200)',
-                CharDataType::class,
-                200,
+                'columnDefinition' => 'CHAR(200)',
+                'className' => CharDataType::class,
+                'length' => 200,
+                'isFixed' => true,
             ],
             'VARCHAR with length' => [
-                'VARCHAR(200)',
-                VarCharDataType::class,
-                200,
+                'columnDefinition' => 'VARCHAR(200)',
+                'className' => VarCharDataType::class,
+                'length' => 200,
+                'isFixed' => false,
             ],
         ];
     }
 
     #[DataProvider('canParseBinaryDataTypeProvider')]
     #[Test]
-    public function canParseDataType(string $columnDefinition, string $className, int $length): void
+    public function canParseDataType(string $columnDefinition, string $className, int $length, bool $isFixed): void
     {
         $subject = $this->createSubject($columnDefinition);
 
         self::assertInstanceOf($className, $subject->dataType);
         self::assertSame($length, $subject->dataType->getLength());
+        self::assertSame($isFixed, $subject->dataType->isFixed());
     }
 
     #[Test]

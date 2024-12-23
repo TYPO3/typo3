@@ -26,6 +26,11 @@ final class CharDataType extends AbstractDataType
 {
     public function __construct(int $length, array $options)
     {
+        /**
+          * CHAR is "fixed type". Setting it here instructs Doctrine DBAL to use this type instead of
+          * the "variable type" when being transformed within the {@see TableBuilder::addColumn()} method.
+          */
+        $this->fixed = true;
         $this->length = $length;
         $this->options = $options;
     }

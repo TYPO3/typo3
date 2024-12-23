@@ -1050,23 +1050,37 @@ final class SchemaMigratorTest extends FunctionalTestCase
 
     public static function introspectTableDoctrineTypeDataSets(): \Generator
     {
+        yield 'char => StringType' => [
+            'createTableDDL' => "CREATE TABLE a_test_table (test_field CHAR(100) NOT NULL DEFAULT '');",
+            'tableName' => 'a_test_table',
+            'fieldName' => 'test_field',
+            'expectedType' => StringType::class,
+            'expectedLength' => 100,
+            'expectedFixed' => true,
+        ];
         yield 'varchar => StringType' => [
             'createTableDDL' => "CREATE TABLE a_test_table (test_field VARCHAR(100) NOT NULL DEFAULT '');",
             'tableName' => 'a_test_table',
             'fieldName' => 'test_field',
             'expectedType' => StringType::class,
+            'expectedLength' => 100,
+            'expectedFixed' => false,
         ];
         yield 'int => IntegerType' => [
             'createTableDDL' => 'CREATE TABLE a_test_table (test_field INT(11) NOT NULL DEFAULT 0);',
             'tableName' => 'a_test_table',
             'fieldName' => 'test_field',
             'expectedType' => IntegerType::class,
+            'expectedLength' => null,
+            'expectedFixed' => null,
         ];
         yield 'json => JsonType' => [
             'createTableDDL' => 'CREATE TABLE a_test_table (test_field JSON);',
             'tableName' => 'a_test_table',
             'fieldName' => 'test_field',
             'expectedType' => JsonType::class,
+            'expectedLength' => null,
+            'expectedFixed' => null,
         ];
     }
 
@@ -1077,6 +1091,8 @@ final class SchemaMigratorTest extends FunctionalTestCase
         string $tableName,
         string $fieldName,
         string $expectedType,
+        ?int $expectedLength,
+        ?bool $expectedFixed,
     ): void {
         $subject = $this->createSchemaMigrator();
         $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($createTableDDL));
@@ -1088,11 +1104,22 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $table = $schemaManager->introspectTable($tableName);
         self::assertTrue($table->hasColumn($fieldName));
         self::assertSame($expectedType, $table->getColumn($fieldName)->getType()::class);
-
+        if ($expectedFixed !== null) {
+            self::assertSame($expectedFixed, $table->getColumn($fieldName)->getFixed());
+        }
+        if ($expectedLength !== null) {
+            self::assertSame($expectedLength, $table->getColumn($fieldName)->getLength());
+        }
         $schemaInfo = (new ConnectionPool())->getConnectionForTable($tableName)->getSchemaInformation();
         self::assertTrue($schemaInfo->introspectSchema()->hasTable($tableName));
         $table = $schemaInfo->introspectTable($tableName);
         self::assertTrue($table->hasColumn($fieldName));
         self::assertSame($expectedType, $table->getColumn($fieldName)->getType()::class);
+        if ($expectedFixed !== null) {
+            self::assertSame($expectedFixed, $table->getColumn($fieldName)->getFixed());
+        }
+        if ($expectedLength !== null) {
+            self::assertSame($expectedLength, $table->getColumn($fieldName)->getLength());
+        }
     }
 }

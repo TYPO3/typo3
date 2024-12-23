@@ -21,6 +21,7 @@ use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\SmallIntType;
+use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Types\TextType;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Schema\Parser\Lexer;
@@ -208,5 +209,27 @@ final class TableBuilderTest extends UnitTestCase
     {
         $subject = $this->table->getIndex('substring');
         self::assertSame(['`TSconfig`(80)'], $subject->getColumns());
+    }
+
+    #[Test]
+    public function isExpectedTitle(): void
+    {
+        $subject = $this->table->getColumn('title');
+        self::assertInstanceOf(StringType::class, $subject->getType());
+        self::assertSame(255, $subject->getLength());
+        self::assertSame('', $subject->getDefault());
+        self::assertTrue($subject->getNotnull());
+        self::assertFalse($subject->getFixed());
+    }
+
+    #[Test]
+    public function isExpectedFixedTitle(): void
+    {
+        $subject = $this->table->getColumn('fixed_title');
+        self::assertInstanceOf(StringType::class, $subject->getType());
+        self::assertSame(200, $subject->getLength());
+        self::assertSame('', $subject->getDefault());
+        self::assertTrue($subject->getNotnull());
+        self::assertTrue($subject->getFixed());
     }
 }
