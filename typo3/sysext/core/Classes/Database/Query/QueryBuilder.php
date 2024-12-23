@@ -28,6 +28,7 @@ use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\From;
 use Doctrine\DBAL\Query\Join;
 use Doctrine\DBAL\Query\QueryBuilder as DoctrineQueryBuilder;
+use Doctrine\DBAL\Query\QueryException;
 use Doctrine\DBAL\Query\QueryType;
 use Doctrine\DBAL\Query\UnionType;
 use Doctrine\DBAL\Result;
@@ -243,6 +244,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      */
     public function executeQuery(): Result
     {
+        $this->throwExceptionForUpdateOrDeleteQueriesWithDefinedTableJoins();
         // Set additional query restrictions
         $originalWhereConditions = $this->addAdditionalWhereConditions();
         $concreteQueryBuilder = $this->concreteQueryBuilder;
@@ -272,6 +274,7 @@ class QueryBuilder extends ConcreteQueryBuilder
      */
     public function executeStatement(): int
     {
+        $this->throwExceptionForUpdateOrDeleteQueriesWithDefinedTableJoins();
         $concreteQueryBuilder = $this->concreteQueryBuilder;
         return $concreteQueryBuilder->executeStatement();
     }
@@ -1550,5 +1553,25 @@ class QueryBuilder extends ConcreteQueryBuilder
             $bindingType = $type;
         }
         return [$value, $bindingType];
+    }
+
+    private function throwExceptionForUpdateOrDeleteQueriesWithDefinedTableJoins(): void
+    {
+        $concreteQueryBuilder = $this->concreteQueryBuilder;
+        if ($concreteQueryBuilder->join === []) {
+            return;
+        }
+        if ($concreteQueryBuilder->type !== QueryType::UPDATE
+            && $concreteQueryBuilder->type !== QueryType::DELETE
+        ) {
+            return;
+        }
+        throw new QueryException(
+            sprintf(
+                'Doctrine DBAL does not support to use the joined tables with "%s" queries.',
+                $concreteQueryBuilder->type->name,
+            ),
+            1734984009
+        );
     }
 }

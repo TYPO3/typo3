@@ -1367,4 +1367,28 @@ final class QueryBuilderTest extends UnitTestCase
 
         self::assertSame('SELECT 1 AS field_one UNION SELECT 2 as field_one ORDER BY `field_one` ASC', $queryBuilder->getSQL());
     }
+
+    #[Test]
+    public function deleteQueryWithJoinsThrowsQueryExceptionOnExecution(): void
+    {
+        self::expectException(QueryException::class);
+        self::expectExceptionCode(1734984009);
+        $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $queryBuilder
+            ->delete('tt_content')
+            ->leftJoin('tt_content', 'sys_file_reference', 'sys_file_reference')
+            ->executeStatement();
+    }
+
+    #[Test]
+    public function updateQueryWithJoinsThrowsQueryExceptionOnExecution(): void
+    {
+        self::expectException(QueryException::class);
+        self::expectExceptionCode(1734984009);
+        $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
+        $queryBuilder
+            ->update('tt_content')
+            ->leftJoin('tt_content', 'sys_file_reference', 'sys_file_reference')
+            ->executeStatement();
+    }
 }
