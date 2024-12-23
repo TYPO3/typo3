@@ -38,30 +38,34 @@ final class BinaryDataTypeTest extends AbstractDataTypeBaseTestCase
     {
         return [
             'BINARY without length' => [
-                'BINARY',
-                BinaryDataType::class,
-                0,
+                'columnDefinition' => 'BINARY',
+                'className' => BinaryDataType::class,
+                'length' => 0,
+                'isFixed' => true,
             ],
             'BINARY with length' => [
-                'BINARY(200)',
-                BinaryDataType::class,
-                200,
+                'columnDefinition' => 'BINARY(200)',
+                'className' => BinaryDataType::class,
+                'length' => 200,
+                'isFixed' => true,
             ],
             'VARBINARY with length' => [
-                'VARBINARY(200)',
-                VarBinaryDataType::class,
-                200,
+                'columnDefinition' => 'VARBINARY(200)',
+                'className' => VarBinaryDataType::class,
+                'length' => 200,
+                'isFixed' => false,
             ],
         ];
     }
 
     #[DataProvider('canParseBinaryDataTypeProvider')]
     #[Test]
-    public function canParseDataType(string $columnDefinition, string $className, int $length): void
+    public function canParseDataType(string $columnDefinition, string $className, int $length, bool $isFixed): void
     {
         $subject = $this->createSubject($columnDefinition);
         self::assertInstanceOf($className, $subject->dataType);
         self::assertSame($length, $subject->dataType->getLength());
+        self::assertSame($isFixed, $subject->dataType->isFixed());
     }
 
     #[Test]

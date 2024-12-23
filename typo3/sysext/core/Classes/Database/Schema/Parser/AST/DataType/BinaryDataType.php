@@ -26,6 +26,11 @@ final class BinaryDataType extends AbstractDataType
 {
     public function __construct(int $length)
     {
+        /**
+         * BINARY is "fixed type". Setting it here instructs Doctrine DBAL to use this type instead of
+         * the "variable type" when being transformed within the {@see TableBuilder::addColumn()} method.
+         */
+        $this->fixed = true;
         $this->length = $length;
     }
 }
