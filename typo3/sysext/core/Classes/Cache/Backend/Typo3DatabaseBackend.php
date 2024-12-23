@@ -389,6 +389,7 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
         $tagsEntryIdentifiers = $result->fetchFirstColumn();
 
         if (!empty($tagsEntryIdentifiers)) {
+            $queryBuilder = $connection->createQueryBuilder();
             $quotedIdentifiers = $queryBuilder->createNamedParameter($tagsEntryIdentifiers, Connection::PARAM_STR_ARRAY);
             $queryBuilder->delete($this->tagsTable)
                 ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
