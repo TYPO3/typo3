@@ -7,7 +7,7 @@
     <f:render partial="RenderLabelOrMessage" arguments="{key: 'status_message'}"/>
 </p>
 
-<f:form action="login" actionUri="{actionUri}" target="_top" fieldNamePrefix="">
+<f:form action="login" target="_top" fieldNamePrefix="">
     <fieldset>
         <legend>
             <f:translate key="logout"/>
@@ -24,6 +24,9 @@
 
         <div class="felogin-hidden">
             <f:form.hidden name="logintype" value="logout"/>
+            <f:if condition="{noRedirect}!=''">
+                <f:form.hidden name="noredirect" value="1" />
+            </f:if>
         </div>
     </fieldset>
 </f:form>

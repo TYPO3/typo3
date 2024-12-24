@@ -138,20 +138,14 @@ class LoginController extends ActionController
     }
 
     /**
-     * Show logout form
+     * Show logout form. Note, that this action should never process any redirects.
      */
-    public function logoutAction(int $redirectPageLogout = 0): ResponseInterface
+    public function logoutAction(): ResponseInterface
     {
         $this->view->assignMultiple(
             [
                 'user' => $this->request->getAttribute('frontend.user')->user,
                 'noRedirect' => $this->isRedirectDisabled(),
-                'actionUri' => $this->redirectHandler->getLogoutFormRedirectUrl(
-                    $this->request,
-                    $this->configuration,
-                    $redirectPageLogout,
-                    $this->isRedirectDisabled()
-                ),
             ]
         );
         return $this->htmlResponse();
@@ -182,7 +176,7 @@ class LoginController extends ActionController
         }
 
         if ($this->userAspect->isLoggedIn()) {
-            return (new ForwardResponse('logout'))->withArguments(['redirectPageLogout' => $this->settings['redirectPageLogout']]);
+            return new ForwardResponse('logout');
         }
 
         return null;

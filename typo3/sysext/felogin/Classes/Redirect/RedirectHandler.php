@@ -235,21 +235,6 @@ class RedirectHandler
     }
 
     /**
-     * Returns the redirect Url that should be used in logout form
-     */
-    public function getLogoutFormRedirectUrl(
-        RequestInterface $request,
-        RedirectConfiguration $configuration,
-        int $redirectPageLogout,
-        bool $redirectDisabled
-    ): string {
-        if (!$redirectDisabled) {
-            return $this->getLogoutRedirectUrl($request, $configuration->getModes(), $redirectPageLogout);
-        }
-        return $this->getRedirectUrlRequestParam($request);
-    }
-
-    /**
      * Returns validated redirect url contained in request param return_url or redirect_url
      */
     private function getRedirectUrlRequestParam(RequestInterface $request): string
