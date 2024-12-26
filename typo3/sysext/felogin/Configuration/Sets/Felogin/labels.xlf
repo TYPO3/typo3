@@ -137,12 +137,6 @@
 			<trans-unit id="settings.description.felogin.domains">
 				<source>Comma separated list of domains which are allowed for the referrer redirect mode</source>
 			</trans-unit>
-			<trans-unit id="settings.felogin.exposeNonexistentUserInForgotPasswordDialog">
-				<source>Expose existing users</source>
-			</trans-unit>
-			<trans-unit id="settings.description.felogin.exposeNonexistentUserInForgotPasswordDialog">
-				<source>Expose the information on whether or not the account for which a new password was requested exists. By default, that information is not disclosed for privacy reasons.</source>
-			</trans-unit>
 			<trans-unit id="settings.felogin.view.templateRootPath">
 				<source>Path to template root (frontend)</source>
 			</trans-unit>

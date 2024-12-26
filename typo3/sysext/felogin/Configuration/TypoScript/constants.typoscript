@@ -55,8 +55,6 @@ styles.content.loginform {
   forgotLinkHashValidTime = 12
   # cat=Frontend Login/06_Security/102; type=string; label= Allowed Referrer-Redirect-Domains: Comma separated list of domains which are allowed for the referrer redirect mode
   domains =
-  # cat=Frontend Login/06_Security/103; type=boolean; label= Expose existing users: Expose the information on whether or not the account for which a new password was requested exists. By default, that information is not disclosed for privacy reasons.
-  exposeNonexistentUserInForgotPasswordDialog = 0
 }
 
 plugin {

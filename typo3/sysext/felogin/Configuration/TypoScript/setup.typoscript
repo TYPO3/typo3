@@ -52,7 +52,6 @@ plugin.tx_felogin_login {
     redirectDisable = {$styles.content.loginform.redirectDisable ?? $felogin.redirectDisable}
 
     # Security
-    exposeNonexistentUserInForgotPasswordDialog = {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog ?? $felogin.exposeNonexistentUserInForgotPasswordDialog}
     forgotLinkHashValidTime = {$styles.content.loginform.forgotLinkHashValidTime ?? $felogin.forgotLinkHashValidTime}
     domains = {$styles.content.loginform.domains ?? $felogin.domains}
   }

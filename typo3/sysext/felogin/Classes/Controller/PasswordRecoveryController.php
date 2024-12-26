@@ -29,7 +29,6 @@ use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyAction;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordPolicyValidator;
 use TYPO3\CMS\Core\PasswordPolicy\Validator\Dto\ContextData;
 use TYPO3\CMS\Core\Session\SessionManager;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Error\Error;
 use TYPO3\CMS\Extbase\Error\Result;
@@ -78,15 +77,7 @@ class PasswordRecoveryController extends ActionController
             $this->recoveryService->sendRecoveryEmail($this->request, $userData, $hash);
         }
 
-        if ($this->exposeNoneExistentUser($userData)) {
-            $this->addFlashMessage(
-                $this->getTranslation('forgot_reset_message_error'),
-                '',
-                ContextualFeedbackSeverity::ERROR
-            );
-        } else {
-            $this->addFlashMessage($this->getTranslation('forgot_reset_message_emailSent'));
-        }
+        $this->addFlashMessage($this->getTranslation('forgot_reset_message_emailSent'));
 
         return $this->redirect('login', 'Login', 'felogin');
     }
@@ -277,20 +268,6 @@ class PasswordRecoveryController extends ActionController
     protected function validateHashFormat(string $hash): bool
     {
         return !empty($hash) && strpos($hash, '|') === 10;
-    }
-
-    /**
-     * Returns whether the `exposeNonexistentUserInForgotPasswordDialog` setting is active or not
-     */
-    protected function exposeNoneExistentUser(?array $user): bool
-    {
-        $acceptedValues = ['1', 1, 'true'];
-
-        return !$user && in_array(
-            $this->settings['exposeNonexistentUserInForgotPasswordDialog'] ?? null,
-            $acceptedValues,
-            true
-        );
     }
 
     /**

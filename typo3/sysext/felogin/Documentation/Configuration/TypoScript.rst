@@ -212,20 +212,6 @@ See also :ref:`configuration-examples-flexform`.
 
             Path to partial directory used for emails
 
-    ..  confval:: exposeNonexistentUserInForgotPasswordDialog
-        :name: typoscript-exposeNonexistentUserInForgotPasswordDialog
-        :type: bool
-        :Site set setting: :confval:`felogin.exposeNonexistentUserInForgotPasswordDialog <felogin-felogin-exposenonexistentuserinforgotpassworddialog>`
-        :TypoScript Constant: {$styles.content.loginform.exposeNonexistentUserInForgotPasswordDialog}
-
-        If set and the user account cannot be found in the forgot password
-        dialogue, an error message will be shown that the account could not be
-        found.
-        ..  warning::
-            Enabling this will disclose information about whether an
-            email address is actually used for a frontend user account! Visitors
-            can find out if a user is known as frontend user.
-
     ..  confval:: forgotLinkHashValidTime
         :name: typoscript-forgotLinkHashValidTime
         :type: integer

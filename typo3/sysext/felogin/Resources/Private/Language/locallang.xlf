@@ -135,9 +135,6 @@ For security reasons, this link is only active until %s. If you do not visit the
 			<trans-unit id="forgot_reset_message_emailSent">
 				<source>An email has been sent to the address stored in your account and contains a link to reset your password. If you do not receive an email, your account or email address was not found.</source>
 			</trans-unit>
-			<trans-unit id="forgot_reset_message_error">
-				<source>Your account or email address does not exist.</source>
-			</trans-unit>
 			<trans-unit id="forgot_header_backToLogin">
 				<source>Return to login form</source>
 			</trans-unit>

@@ -93,10 +93,6 @@ settings:
     default: ''
     type: string
     category: felogin
-  felogin.exposeNonexistentUserInForgotPasswordDialog:
-    default: false
-    type: bool
-    category: felogin
   felogin.view.templateRootPath:
     default: ''
     type: string
