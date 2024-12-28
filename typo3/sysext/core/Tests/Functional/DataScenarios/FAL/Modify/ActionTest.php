@@ -335,4 +335,46 @@ final class ActionTest extends AbstractActionTestCase
         parent::localizeAndMovePageWithMedia();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNMovePageWMedia.csv');
     }
+
+    #[Test]
+    public function createContentWithFileReferenceInLanguage(): void
+    {
+        parent::createContentWithFileReferenceInLanguage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceInLanguage.csv');
+    }
+
+    #[Test]
+    public function createContentWithFileReferenceInDefaultLanguageInLanguage(): void
+    {
+        parent::createContentWithFileReferenceInDefaultLanguageInLanguage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceInLanguage.csv');
+    }
+
+    #[Test]
+    public function createContentWithFileReferenceInAllLanguages(): void
+    {
+        parent::createContentWithFileReferenceInAllLanguages();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceInAllLanguages.csv');
+    }
+
+    #[Test]
+    public function addFileReferenceToContentInLanguage(): void
+    {
+        parent::addFileReferenceToContentInLanguage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addFileReferenceToContentInLanguage.csv');
+    }
+
+    #[Test]
+    public function copyLocalizedContentToDifferentPageAndChangeLanguage(): void
+    {
+        parent::copyLocalizedContentToDifferentPageAndChangeLanguage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLocalizedContentToDifferentPageNChangeLanguage.csv');
+    }
+
+    #[Test]
+    public function changeLanguageOfContentWithFileReferenceAndLocalize(): void
+    {
+        parent::changeLanguageOfContentWithFileReferenceAndLocalize();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeLanguageOfContentWFileReferenceNLocalize.csv');
+    }
 }

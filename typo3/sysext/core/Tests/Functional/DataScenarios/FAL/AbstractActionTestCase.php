@@ -148,6 +148,100 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
+    /**
+     * A new file reference without language value is created along with its new parent in language 1.
+     */
+    public function createContentWithFileReferenceInLanguage(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentImage => '__nextUid', 'sys_language_uid' => self::VALUE_LanguageId],
+                self::TABLE_FileReference => ['title' => 'Image #1', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    /**
+     * A new file reference in default language is created along with its new parent in language 1.
+     */
+    public function createContentWithFileReferenceInDefaultLanguageInLanguage(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentImage => '__nextUid', 'sys_language_uid' => self::VALUE_LanguageId],
+                self::TABLE_FileReference => ['title' => 'Image #1', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst, 'sys_language_uid' => 0],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    /**
+     * A new file reference in default language is created along with its new parent in "all languages",
+     * which is what the backend form submits when the language of the parent is changed before saving.
+     */
+    public function createContentWithFileReferenceInAllLanguages(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentImage => '__nextUid', 'sys_language_uid' => -1],
+                self::TABLE_FileReference => ['title' => 'Image #1', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst, 'sys_language_uid' => 0],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    /**
+     * A new file reference without language value is added to existing content in language 1,
+     * without submitting the language of the content again.
+     */
+    public function addFileReferenceToContentInLanguage(): void
+    {
+        $this->createContentWithFileReferenceInLanguage();
+        $this->actionService->modifyRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['uid' => $this->recordIds['newContentId'], self::FIELD_ContentImage => '130,__nextUid'],
+                self::TABLE_FileReference => ['uid' => '__NEW', 'title' => 'Image #2', self::FIELD_FileReferenceImage => self::VALUE_FileIdSecond],
+            ]
+        );
+    }
+
+    /**
+     * A localized content element is copied to another page and changed to default language.
+     * Its file references are no translations anymore.
+     */
+    public function copyLocalizedContentToDifferentPageAndChangeLanguage(): void
+    {
+        $this->localizeContent();
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_LanguageId);
+        $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, $this->recordIds['localizedContentId'], self::VALUE_PageIdTarget);
+        $this->recordIds['copiedContentId'] = $newTableIds[self::TABLE_Content][$this->recordIds['localizedContentId']];
+        $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['copiedContentId'], ['sys_language_uid' => 0]);
+    }
+
+    /**
+     * Content in "all languages" with a file reference is changed to default language and localized afterward.
+     */
+    public function changeLanguageOfContentWithFileReferenceAndLocalize(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentImage => '__nextUid', 'sys_language_uid' => -1],
+                self::TABLE_FileReference => ['title' => 'Image #1', self::FIELD_FileReferenceImage => self::VALUE_FileIdFirst, 'sys_language_uid' => -1],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['newContentId'], ['sys_language_uid' => 0]);
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
+    }
+
     public function modifyContentWithFileReference(): void
     {
         $this->actionService->modifyRecords(

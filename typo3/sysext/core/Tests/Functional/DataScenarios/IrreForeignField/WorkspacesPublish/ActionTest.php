@@ -681,4 +681,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishRecord(self::TABLE_Page, $this->recordIds['newPageId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPageWNestedChildrenNWorkspaceVersionOfTargetPage.csv');
     }
+
+    #[Test]
+    public function createParentContentInAllLanguagesWithHotelAndOfferChildren(): void
+    {
+        parent::createParentContentInAllLanguagesWithHotelAndOfferChildren();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContentInAllLanguagesNHotelNOfferChildren.csv');
+    }
 }

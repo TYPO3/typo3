@@ -1,0 +1,16 @@
+"tt_content",,,,,,,,,
+,"uid","pid","deleted","sys_language_uid","l18n_parent","t3ver_wsid","header","image"
+,330,89,0,0,0,0,"Regular Element #1",2
+,331,89,0,0,0,0,"Regular Element #2",2
+,332,89,0,1,331,0,"[Translate to Dansk:] Regular Element #2",2
+,333,90,0,0,331,0,"[Translate to Dansk:] Regular Element #2",2
+"sys_file_reference",,,,,,,,,
+,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","uid_local","uid_foreign","title"
+,126,89,0,0,0,0,1,330,"T3BOARD"
+,127,89,0,0,0,0,21,330,"Kasper"
+,128,89,0,0,0,0,21,331,"Taken at T3BOARD"
+,129,89,0,0,0,0,1,331,"This is Kasper"
+,130,89,0,1,128,0,21,332,"[Translate to Dansk:] Taken at T3BOARD"
+,131,89,0,1,129,0,1,332,"[Translate to Dansk:] This is Kasper"
+,132,90,0,0,0,0,21,333,"[Translate to Dansk:] Taken at T3BOARD"
+,133,90,0,0,0,0,1,333,"[Translate to Dansk:] This is Kasper"

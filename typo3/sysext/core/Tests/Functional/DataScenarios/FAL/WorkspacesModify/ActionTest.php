@@ -353,4 +353,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::localizeAndMovePageWithMedia();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNMovePageWMedia.csv');
     }
+
+    #[Test]
+    public function createContentWithFileReferenceInAllLanguages(): void
+    {
+        parent::createContentWithFileReferenceInAllLanguages();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceInAllLanguages.csv');
+    }
 }

@@ -239,6 +239,27 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
 
     /**
+     * New nested children in default language are created along with their new parent in "all languages".
+     */
+    public function createParentContentInAllLanguagesWithHotelAndOfferChildren(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid', 'sys_language_uid' => -1],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid', 'sys_language_uid' => 0],
+                self::TABLE_Offer => ['title' => 'Offer #1', 'sys_language_uid' => 0],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    public function changeLanguageOfParentContent(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, ['sys_language_uid' => -1]);
+    }
+
+    /**
      * Create a content element with hotel and offer children
      */
     public function createParentContentWithHotelAndOfferChildren(): void
