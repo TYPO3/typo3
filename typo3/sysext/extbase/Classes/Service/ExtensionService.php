@@ -154,7 +154,7 @@ class ExtensionService implements SingletonInterface
      * @param string $extensionName name of the extension to retrieve the target PID for
      * @param string $pluginName name of the plugin to retrieve the target PID for
      * @return int|null uid of the target page or NULL if target page could not be determined
-     *@throws Exception
+     * @throws Exception
      */
     public function getTargetPidByPlugin(string $extensionName, string $pluginName): ?int
     {
@@ -174,13 +174,23 @@ class ExtensionService implements SingletonInterface
                     ->select('pid')
                     ->from('tt_content')
                     ->where(
-                        $queryBuilder->expr()->eq(
-                            'list_type',
-                            $queryBuilder->createNamedParameter($pluginSignature)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            'CType',
-                            $queryBuilder->createNamedParameter('list')
+                        $queryBuilder->expr()->or(
+                            // Either CType=list and list_type=XXX (pre v14) ...
+                            $queryBuilder->expr()->and(
+                                $queryBuilder->expr()->eq(
+                                    'list_type',
+                                    $queryBuilder->createNamedParameter($pluginSignature)
+                                ),
+                                $queryBuilder->expr()->eq(
+                                    'CType',
+                                    $queryBuilder->createNamedParameter('list')
+                                ),
+                            ),
+                            // ... or CType=XXX (v14 and upwards only use this)
+                            $queryBuilder->expr()->eq(
+                                'CType',
+                                $queryBuilder->createNamedParameter($pluginSignature)
+                            ),
                         ),
                         $queryBuilder->expr()->eq(
                             'sys_language_uid',

@@ -46,6 +46,7 @@ final class ExtensionServiceTest extends FunctionalTestCase
         $subject = new ExtensionService();
         $subject->injectConfigurationManager($configurationManagerInterfaceMock);
         self::assertEquals(321, $subject->getTargetPidByPlugin('ExtensionName', 'SomePlugin'));
+        self::assertEquals(322, $subject->getTargetPidByPlugin('ExtensionName2', 'SomePlugin2'));
     }
 
     #[Test]
