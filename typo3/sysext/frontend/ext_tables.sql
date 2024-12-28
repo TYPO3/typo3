@@ -2,7 +2,7 @@
 # Table structure for table 'cache_treelist'
 #
 CREATE TABLE cache_treelist (
-	md5hash char(32) DEFAULT '' NOT NULL,
+	md5hash varchar(32) DEFAULT '' NOT NULL,
 	pid int(11) DEFAULT '0' NOT NULL,
 	treelist mediumtext,
 	tstamp int(11) DEFAULT '0' NOT NULL,

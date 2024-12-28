@@ -21,7 +21,7 @@ CREATE TABLE sys_file_metadata (
 	note text,
 
 	# px,mm,cm,m,p, ...
-	unit char(3) DEFAULT '',
+	unit varchar(3) DEFAULT '',
 
 	# AUDIO + VIDEO
 	duration float unsigned DEFAULT '0',
