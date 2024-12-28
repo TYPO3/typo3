@@ -85,15 +85,15 @@ CREATE TABLE sys_file (
 	# @todo: Incomplete or broken TCA
 	identifier text,
 	# No TCA column
-	identifier_hash char(40) DEFAULT '' NOT NULL,
+	identifier_hash varchar(40) DEFAULT '' NOT NULL,
 	# No TCA column
-	folder_hash char(40) DEFAULT '' NOT NULL,
+	folder_hash varchar(40) DEFAULT '' NOT NULL,
 	# No TCA column
 	extension varchar(255) DEFAULT '' NOT NULL,
 	# @todo: Restrict to varchar(255)?
 	name tinytext,
 	# No TCA column
-	sha1 char(40) DEFAULT '' NOT NULL,
+	sha1 varchar(40) DEFAULT '' NOT NULL,
 	# No TCA column
 	creation_date int(11) DEFAULT '0' NOT NULL,
 	# No TCA column
@@ -127,10 +127,10 @@ CREATE TABLE sys_file_processedfile (
 	name tinytext,
 	processing_url text,
 	configuration blob,
-	configurationsha1 char(40) DEFAULT '' NOT NULL,
-	originalfilesha1 char(40) DEFAULT '' NOT NULL,
+	configurationsha1 varchar(40) DEFAULT '' NOT NULL,
+	originalfilesha1 varchar(40) DEFAULT '' NOT NULL,
 	task_type varchar(200) DEFAULT '' NOT NULL,
-	checksum char(32) DEFAULT '' NOT NULL,
+	checksum varchar(32) DEFAULT '' NOT NULL,
 	width int(11) DEFAULT '0',
 	height int(11) DEFAULT '0',
 
