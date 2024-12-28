@@ -461,4 +461,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Testing #2'));
     }
+
+    #[Test]
+    public function changeLanguageOfParentContent(): void
+    {
+        parent::changeLanguageOfParentContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeLanguageOfParentContent.csv');
+    }
 }

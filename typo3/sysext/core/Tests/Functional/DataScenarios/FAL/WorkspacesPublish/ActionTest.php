@@ -333,4 +333,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeNMovePageWMedia.csv');
     }
+
+    #[Test]
+    public function createContentWithFileReferenceInAllLanguages(): void
+    {
+        parent::createContentWithFileReferenceInAllLanguages();
+        $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['newContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWFileReferenceInAllLanguages.csv');
+    }
 }

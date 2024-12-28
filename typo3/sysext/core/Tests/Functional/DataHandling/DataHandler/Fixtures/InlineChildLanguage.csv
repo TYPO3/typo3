@@ -1,0 +1,38 @@
+"be_users"
+,"uid","pid","username","usergroup","deleted","admin","db_mountpoints","workspace_perms"
+,1,0,"admin",,0,1,,1
+,2,0,"editor",1,0,0,1,1
+,3,0,"editorWithoutHotelLanguage",2,0,0,1,1
+,4,0,"editorWithoutFileReferenceAccess",3,0,0,1,1
+"be_groups"
+,"uid","pid","title","deleted","db_mountpoints","tables_select","tables_modify","non_exclude_fields","explicit_allowdeny"
+,1,0,"editors",0,1,"pages,tt_content,sys_file_reference","pages,tt_content,sys_file_reference","tt_content:sys_language_uid","tt_content:CType:text"
+,2,0,"editors without hotel language",0,1,"pages,tx_testirrecsv_hotel,tx_testirrecsv_offer","pages,tx_testirrecsv_hotel,tx_testirrecsv_offer","tx_testirrecsv_hotel:title,tx_testirrecsv_hotel:offers,tx_testirrecsv_offer:title,tx_testirrecsv_offer:sys_language_uid",
+,3,0,"editors without file reference modify access",0,1,"pages,tt_content,sys_file_reference","pages,tt_content","tt_content:sys_language_uid","tt_content:CType:text"
+"sys_workspace"
+,"uid","pid","deleted","title","members"
+,1,0,0,"Workspace #1","be_users_2,be_users_4"
+"pages"
+,"uid","pid","sorting","title","deleted","perms_everybody"
+,1,0,128,"Root 1",0,31
+"tt_content"
+,"uid","pid","sorting","header","deleted","sys_language_uid","image"
+,1,1,256,"Content with image",0,-1,1
+"sys_file_reference"
+,"uid","pid","uid_local","uid_foreign","tablenames","fieldname","deleted","sys_language_uid"
+,1,1,1,1,"tt_content","image",0,-1
+"tx_testirremm_hotel"
+,"uid","pid","title","deleted","sys_language_uid","offers"
+,1,1,"Hotel #1",0,0,1
+"tx_testirremm_offer"
+,"uid","pid","title","deleted","sys_language_uid","hotels"
+,1,1,"Offer #1",0,0,1
+"tx_testirremm_hotel_offer_rel"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,1,1,1,1
+"tx_testirrecsv_hotel"
+,"uid","pid","title","deleted","sys_language_uid","offers"
+,1,1,"Hotel #1",0,0,"1"
+"tx_testirrecsv_offer"
+,"uid","pid","title","deleted","sys_language_uid","prices"
+,1,1,"Offer #1",0,0,"1"

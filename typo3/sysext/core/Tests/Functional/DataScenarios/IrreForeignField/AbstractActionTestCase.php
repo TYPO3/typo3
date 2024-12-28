@@ -507,6 +507,62 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
+    /**
+     * New nested children in default language are created along with their new parent in "all languages".
+     */
+    public function createParentContentInAllLanguagesWithHotelAndOfferChildren(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid', 'sys_language_uid' => -1],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid', 'sys_language_uid' => 0],
+                self::TABLE_Offer => ['title' => 'Offer #1', 'sys_language_uid' => 0],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
+    /**
+     * Parent content with nested children in "all languages" is changed to default
+     * language and localized afterward using language synchronization.
+     */
+    public function changeLanguageOfParentContentAndLocalizeWithLanguageSynchronization(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__nextUid', 'sys_language_uid' => -1],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__nextUid', 'sys_language_uid' => -1],
+                self::TABLE_Offer => ['title' => 'Offer #1', 'sys_language_uid' => -1],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+        $this->actionService->modifyRecord(self::TABLE_Content, $this->recordIds['newContentId'], ['sys_language_uid' => 0]);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, $this->recordIds['newContentId'], self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][$this->recordIds['newContentId']];
+    }
+
+    /**
+     * New nested children are submitted before their new parent in "all languages",
+     * the hotel in default language and the offer in "all languages".
+     */
+    public function createParentContentInAllLanguagesWithChildrenSubmittedFirst(): void
+    {
+        $newTableIds = $this->actionService->createNewRecords(
+            self::VALUE_PageId,
+            [
+                self::TABLE_Offer => ['title' => 'Offer #1', 'sys_language_uid' => -1],
+                self::TABLE_Hotel => ['title' => 'Hotel #1', self::FIELD_HotelOffer => '__previousUid', 'sys_language_uid' => 0],
+                self::TABLE_Content => ['header' => 'Testing #1', self::FIELD_ContentHotel => '__previousUid', 'sys_language_uid' => -1],
+            ]
+        );
+        $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
+    }
+
     public function createAndCopyParentContentWithHotelAndOfferChildren(): void
     {
         $newTableIds = $this->actionService->createNewRecords(

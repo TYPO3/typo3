@@ -688,6 +688,7 @@ class DataHandler
 
         $this->datamap = $this->dataMapProcessor->process($this->datamap, $this->BE_USER, $this->referenceIndexUpdater, $this->correlationId);
         $registerDBList = [];
+        $inlineParents = [];
         $orderOfTables = [];
         if (isset($this->datamap['pages'])) {
             // Handling pages table is always the first task to make sure they are done if other records are added to them.
@@ -868,6 +869,7 @@ class DataHandler
                         } else {
                             $this->insertDB($table, $id, $fieldArray, (int)($incomingFieldArray['uid'] ?? 0));
                         }
+                        $inlineParents = $this->registerInlineParent($inlineParents, $table, (int)($this->substNEWwithIDs[$id] ?? 0));
                     }
                     // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
                     // but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
@@ -991,6 +993,9 @@ class DataHandler
                         }
                         $this->updateDB($table, $id, $fieldArray, (int)$currentRecord['pid']);
                     }
+                    if ($this->isInlineChildLanguageAlignmentRequired($table, $fieldArray, $incomingFieldArray)) {
+                        $inlineParents = $this->registerInlineParent($inlineParents, $table, $id);
+                    }
                     // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
                     // but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
                     $this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, 'update', $table, $id, $fieldArray);
@@ -1001,6 +1006,7 @@ class DataHandler
         // Process the stack of relations to remap/correct
         $this->processRemapStack();
         $this->dbAnalysisStoreExec();
+        $this->alignLanguageOfInlineChildren($inlineParents);
 
         foreach ($hookObjectsArr as $hookObj) {
             if (method_exists($hookObj, 'processDatamap_afterAllOperations')) {
@@ -9822,6 +9828,163 @@ class DataHandler
                 )
             );
         }
+    }
+
+    /**
+     * @param array<string, array<int, true>> $inlineParents
+     * @return array<string, array<int, true>>
+     */
+    private function registerInlineParent(array $inlineParents, string $table, int $id): array
+    {
+        if ($id > 0 && $this->tcaSchemaFactory->get($table)->isLanguageAware()) {
+            $inlineParents[$table][$id] = true;
+        }
+        return $inlineParents;
+    }
+
+    /**
+     * Whether the language of an updated record has changed, or new inline children were submitted for it.
+     */
+    private function isInlineChildLanguageAlignmentRequired(string $table, array $fieldArray, array $incomingFieldArray): bool
+    {
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isLanguageAware()) {
+            return false;
+        }
+        if (isset($fieldArray[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()])) {
+            return true;
+        }
+        foreach ($schema->getFields() as $field) {
+            if (($field instanceof InlineFieldType || $field instanceof FileFieldType)
+                && is_string($incomingFieldArray[$field->getName()] ?? null)
+                && str_contains($incomingFieldArray[$field->getName()], 'NEW')
+            ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Inline children (type "inline" without "MM" and type "file") belong to
+     * exactly one parent and must share its language. Children submitted together
+     * with their parent may carry a different language, and existing children keep
+     * their language when the language of their parent is changed. Both cases are
+     * aligned here, after all relations have been remapped to their final parent,
+     * using the language actually stored for the parent.
+     * The language of a child is not edited by the user, but follows the parent, so
+     * it is written regardless of the access to the language field of the child.
+     * A child is realigned when a parent processed later changes its language
+     * again, which makes the result independent of the order of the data map.
+     * Each child is aligned to a language at most once per run, which keeps
+     * invalid cyclic relations from being processed endlessly.
+     *
+     * @param array<string, array<int, true>> $inlineParents Parent records per table and uid
+     */
+    private function alignLanguageOfInlineChildren(array $inlineParents): void
+    {
+        $alignedRecords = [];
+        while ($inlineParents !== []) {
+            $parents = $inlineParents;
+            $inlineParents = [];
+            foreach ($parents as $table => $ids) {
+                $schema = $this->tcaSchemaFactory->get($table);
+                $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+                $parentLanguages = [];
+                foreach (array_keys($ids) as $id) {
+                    $parent = BackendUtility::getRecord($table, $id, [$languageField]);
+                    if ($parent !== null) {
+                        $parentLanguages[$id] = (int)$parent[$languageField];
+                    }
+                }
+                foreach ($schema->getFields() as $field) {
+                    if (!$field instanceof InlineFieldType && !$field instanceof FileFieldType) {
+                        continue;
+                    }
+                    $configuration = $field->getConfiguration();
+                    $foreignTable = $configuration['foreign_table'] ?? '';
+                    if (!empty($configuration['MM']) || !$this->tcaSchemaFactory->has($foreignTable)) {
+                        continue;
+                    }
+                    $foreignSchema = $this->tcaSchemaFactory->get($foreignTable);
+                    if (!$foreignSchema->isLanguageAware()) {
+                        continue;
+                    }
+                    $foreignLanguageCapability = $foreignSchema->getCapability(TcaSchemaCapability::Language);
+                    $foreignLanguageField = $foreignLanguageCapability->getLanguageField()->getName();
+                    $foreignTranslationFields = [$foreignLanguageCapability->getTranslationOriginPointerField()->getName()];
+                    if ($foreignLanguageCapability->hasTranslationSourceField()) {
+                        $foreignTranslationFields[] = $foreignLanguageCapability->getTranslationSourceField()->getName();
+                    }
+                    foreach ($parentLanguages as $id => $language) {
+                        $itemList = '';
+                        if (empty($configuration['foreign_field'])) {
+                            $itemList = (string)(BackendUtility::getRecord($table, $id, [$field->getName()])[$field->getName()] ?? '');
+                        }
+                        $relationHandler = $this->createRelationHandlerInstance();
+                        $relationHandler->start($itemList, $foreignTable, '', $id, $table, $configuration);
+                        foreach ($relationHandler->itemArray as $item) {
+                            $child = $this->getRecordToWriteInCurrentWorkspace($foreignTable, (int)$item['id'], [$foreignLanguageField, ...$foreignTranslationFields]);
+                            if ($child === null
+                                || isset($alignedRecords[$foreignTable . ':' . $child['uid']][$language])
+                                || (int)$child[$foreignLanguageField] === $language
+                            ) {
+                                continue;
+                            }
+                            $newData = [$foreignLanguageField => $language];
+                            // A child in default language or "all languages" is no translation
+                            if ($language <= 0) {
+                                foreach ($foreignTranslationFields as $translationField) {
+                                    if ((int)$child[$translationField] !== 0) {
+                                        $newData[$translationField] = 0;
+                                    }
+                                }
+                            }
+                            $this->updateFixedFields($foreignTable, $child, $newData);
+                            $alignedRecords[$foreignTable . ':' . $child['uid']][$language] = true;
+                            $inlineParents[$foreignTable][(int)$child['uid']] = true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Returns the record a change of the given record is written to: the record itself or,
+     * in a workspace, its workspace version, which is created if it does not exist yet.
+     * Records of tables that are not workspace aware are never changed from a workspace.
+     */
+    private function getRecordToWriteInCurrentWorkspace(string $table, int $id, array $fieldNames): ?array
+    {
+        $fields = ['uid', 'pid', ...$fieldNames];
+        $workspace = $this->BE_USER->workspace;
+        if ($workspace === 0) {
+            return BackendUtility::getRecord($table, $id, $fields);
+        }
+        if (!$this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
+            return null;
+        }
+        $row = BackendUtility::getRecord($table, $id, [...$fields, 't3ver_wsid']);
+        if ($row === null || (int)$row['t3ver_wsid'] === $workspace) {
+            return $row;
+        }
+        $version = BackendUtility::getWorkspaceVersionOfRecord($workspace, $table, $id, $fields);
+        if (is_array($version)) {
+            return $version;
+        }
+        $localDataHandler = $this->getLocalTCE();
+        $localDataHandler->start(
+            [],
+            [$table => [$id => ['version' => ['action' => 'new', 'label' => 'Auto-created for WS #' . $workspace]]]],
+            $this->BE_USER,
+            $this->referenceIndexUpdater,
+            $this->correlationId
+        );
+        $localDataHandler->process_cmdmap();
+        $this->errorLog = array_merge($this->errorLog, $localDataHandler->errorLog);
+        $versionId = (int)($localDataHandler->copyMappingArray[$table][$id] ?? 0);
+        return $versionId > 0 ? BackendUtility::getRecord($table, $versionId, $fields) : null;
     }
 
     protected function createRelationHandlerInstance(): RelationHandler

@@ -395,6 +395,27 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function createParentContentInAllLanguagesWithHotelAndOfferChildren(): void
+    {
+        parent::createParentContentInAllLanguagesWithHotelAndOfferChildren();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContentInAllLanguagesNHotelNOfferChildren.csv');
+    }
+
+    #[Test]
+    public function createParentContentInAllLanguagesWithChildrenSubmittedFirst(): void
+    {
+        parent::createParentContentInAllLanguagesWithChildrenSubmittedFirst();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createParentContentInAllLanguagesNChildrenSubmittedFirst.csv');
+    }
+
+    #[Test]
+    public function changeLanguageOfParentContentAndLocalizeWithLanguageSynchronization(): void
+    {
+        parent::changeLanguageOfParentContentAndLocalizeWithLanguageSynchronization();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeLanguageOfParentContentNLocalizeWSynchronization.csv');
+    }
+
+    #[Test]
     public function createParentContentWithHotelAndOfferChildren(): void
     {
         parent::createParentContentWithHotelAndOfferChildren();

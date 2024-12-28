@@ -1,0 +1,6 @@
+"tx_testirremm_hotel"
+,"uid","pid","title","deleted","sys_language_uid","offers"
+,1,1,"Hotel #1",0,-1,1
+"tx_testirremm_offer"
+,"uid","pid","title","deleted","sys_language_uid","hotels"
+,1,1,"Offer #1",0,0,1

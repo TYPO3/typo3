@@ -246,4 +246,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyNDiscardNModifyParentWHotelChild.csv');
     }
+
+    #[Test]
+    public function changeLanguageOfParentContent(): void
+    {
+        parent::changeLanguageOfParentContent();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeLanguageOfParentContent.csv');
+    }
 }
