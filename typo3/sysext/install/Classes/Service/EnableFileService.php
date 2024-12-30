@@ -55,6 +55,7 @@ class EnableFileService
     {
         $installEnableFilePath = self::getInstallToolEnableFilePath();
         if (!is_file($installEnableFilePath)) {
+            GeneralUtility::mkdir_deep(dirname($installEnableFilePath));
             $result = touch($installEnableFilePath);
         } else {
             $result = true;
