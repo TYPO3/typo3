@@ -622,9 +622,12 @@ EOT
     protected function getSiteSetup(QuestionHelper $questionHelper, InputInterface $input, OutputInterface $output): string|bool
     {
         $urlValidator = static function ($url) {
-            if ($url && !GeneralUtility::isValidUrl($url)) {
+            if (empty($url) || in_array(strtolower($url), ['no', 'n'], true)) {
+                return false;
+            }
+            if (!GeneralUtility::isValidUrl($url)) {
                 throw new \RuntimeException(
-                    'The given url for the site name is not valid! Please try again.',
+                    'Invalid URL provided for the site name. Please provide a valid URL.',
                     1669747625,
                 );
             }
@@ -636,15 +639,6 @@ EOT
 
         if ($createSiteFromCli === false && $input->isInteractive()) {
             $questionCreateSite = new Question('Create a basic site? Please enter a URL [default: no] ', false);
-            $questionCreateSite->setNormalizer(function (string $value): string {
-                if (strtolower($value) === 'no') {
-                    // User provided "no" as an answer. Normalize the given input to an empty input to trigger the same
-                    // behavior as no input was given at all.
-                    return '';
-                }
-
-                return $value;
-            });
             $questionCreateSite->setValidator($urlValidator);
 
             return $questionHelper->ask($input, $output, $questionCreateSite);
