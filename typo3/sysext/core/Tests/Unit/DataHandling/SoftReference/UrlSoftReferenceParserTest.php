@@ -99,6 +99,42 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'expectedContent' => '',
                 'expectedElements' => [],
             ],
+            'Domain with umlaut' => [
+                'content' => 'https://fö-bar.baz/blah',
+                'expectedContent' => 'https://fö-bar.baz/blah',
+                'expectedElements' => [
+                    2 => [
+                        'matchString' => 'https://fö-bar.baz/blah',
+                    ],
+                ],
+            ],
+            'Domain with umlaut and uppercase' => [
+                'content' => 'https://fö-bÄr.baz/blah',
+                'expectedContent' => 'https://fö-bÄr.baz/blah',
+                'expectedElements' => [
+                    2 => [
+                        'matchString' => 'https://fö-bÄr.baz/blah',
+                    ],
+                ],
+            ],
+            'Domain with umlaut and additional text' => [
+                'content' => 'abc https://fö-bar.baz/blah hello',
+                'expectedContent' => 'abc https://fö-bar.baz/blah hello',
+                'expectedElements' => [
+                    2 => [
+                        'matchString' => 'https://fö-bar.baz/blah',
+                    ],
+                ],
+            ],
+            'Domain with umlaut - encoded (IDN converted into ASCII string, ACE form)' => [
+                'content' => 'https://xn--f-bar-jua.baz/blah',
+                'expectedContent' => 'https://xn--f-bar-jua.baz/blah',
+                'expectedElements' => [
+                    2 => [
+                        'matchString' => 'https://xn--f-bar-jua.baz/blah',
+                    ],
+                ],
+            ],
         ];
     }
 
