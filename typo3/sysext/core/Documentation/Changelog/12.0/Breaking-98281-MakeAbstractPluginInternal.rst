@@ -49,9 +49,15 @@ Class before migration:
 ..  code-block:: php
     :caption: EXT:gh_randomcontent/Classes/Plugin/RandomContent.php
 
+    use Psr\Http\Message\ServerRequestInterface;
+
     class RandomContent extends AbstractPlugin
     {
-        public function main(string $content, array $conf): string
+        public function main(
+          string $content,
+          array $conf,
+          ServerRequestInterface $request,
+        ): string 
         {
             $this->conf = $conf;
 
@@ -75,6 +81,8 @@ Class after migration:
 ..  code-block:: php
     :caption: EXT:gh_randomcontent/Classes/Plugin/RandomContent.php
 
+    use Psr\Http\Message\ServerRequestInterface;
+
     class RandomContent
     {
         /**
@@ -93,7 +101,11 @@ Class after migration:
             $this->cObj = $cObj;
         }
 
-        public function main(string $content, array $conf): string
+        public function main(
+          string $content,
+          array $conf,
+          ServerRequestInterface $request,
+        ): string 
         {
             $this->conf = $conf;
 
