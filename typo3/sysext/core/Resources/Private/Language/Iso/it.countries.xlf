@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="ER.official_name" approved="yes">
         <source>the State of Eritrea</source>
-        <target>Repubblica dell'Eritrea</target>
+        <target>Stato di Eritrea</target>
       </trans-unit>
       <trans-unit id="ES.name" approved="yes">
         <source>Spain</source>
@@ -1518,9 +1518,13 @@
         <source>Kingdom of Tonga</source>
         <target>Regno di Tonga</target>
       </trans-unit>
+      <trans-unit id="TR.name" approved="yes">
+        <source>Türkiye</source>
+        <target>Turchia</target>
+      </trans-unit>
       <trans-unit id="TR.official_name" approved="yes">
         <source>Republic of Türkiye</source>
-        <target>Republic of Türkiye</target>
+        <target>Repubblica di Turchia</target>
       </trans-unit>
       <trans-unit id="TT.name" approved="yes">
         <source>Trinidad and Tobago</source>

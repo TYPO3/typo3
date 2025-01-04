@@ -334,6 +334,10 @@
         <source>Chamic languages</source>
         <target>чамские языки</target>
       </trans-unit>
+      <trans-unit id="cnr" approved="yes">
+        <source>Montenegrin</source>
+        <target>черногорский</target>
+      </trans-unit>
       <trans-unit id="co" approved="yes">
         <source>Corsican</source>
         <target>корсиканский</target>
@@ -992,7 +996,7 @@
       </trans-unit>
       <trans-unit id="li" approved="yes">
         <source>Limburgan; Limburger; Limburgish</source>
-        <target>лимбурганский;лимбургенский; лимбургийский</target>
+        <target>лимбурганский; лимбургенский; лимбургийский</target>
       </trans-unit>
       <trans-unit id="ln" approved="yes">
         <source>Lingala</source>
