@@ -124,7 +124,7 @@
       </trans-unit>
       <trans-unit id="aus" resname="aus" approved="yes">
         <source>Australian languages</source>
-        <target>Lingue australiane aborigene 	</target>
+        <target>Lingue australiane aborigene</target>
       </trans-unit>
       <trans-unit id="av" resname="av" approved="yes">
         <source>Avaric</source>
