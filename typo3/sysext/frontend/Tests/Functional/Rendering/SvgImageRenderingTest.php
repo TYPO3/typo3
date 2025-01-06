@@ -32,10 +32,10 @@ final class SvgImageRenderingTest extends FunctionalTestCase
      * @var string[]
      */
     private array $definedResources = [
-        'localImage1' => 'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest1.svg',
-        'localImage2' => 'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest2.svg',
-        'localImage3' => 'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest3.svg',
-        'localImage4' => 'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest4.svg',
+        'localImage1' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest1.svg',
+        'localImage2' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest2.svg',
+        'localImage3' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest3.svg',
+        'localImage4' => 'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest4.svg',
 
         'localImage1Uid' => '1',
         'localImage2Uid' => '2',
@@ -49,11 +49,11 @@ final class SvgImageRenderingTest extends FunctionalTestCase
     ];
 
     protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest1.svg' => 'fileadmin/user_upload/FALImageViewHelperTest1.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest2.svg' => 'fileadmin/user_upload/FALImageViewHelperTest2.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest3.svg' => 'fileadmin/user_upload/FALImageViewHelperTest3.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest4.svg' => 'fileadmin/user_upload/FALImageViewHelperTest4.svg',
-        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/ImageViewHelperTest5.svg' => 'fileadmin/user_upload/FALImageViewHelperTest5.svg',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest1.svg' => 'fileadmin/user_upload/FALImageViewHelperTest1.svg',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest2.svg' => 'fileadmin/user_upload/FALImageViewHelperTest2.svg',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest3.svg' => 'fileadmin/user_upload/FALImageViewHelperTest3.svg',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest4.svg' => 'fileadmin/user_upload/FALImageViewHelperTest4.svg',
+        'typo3/sysext/frontend/Tests/Functional/Fixtures/ViewHelperImages/ImageViewHelperTest5.svg' => 'fileadmin/user_upload/FALImageViewHelperTest5.svg',
     ];
 
     protected array $additionalFoldersToCreate = [
@@ -69,8 +69,8 @@ final class SvgImageRenderingTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCsvDataSet(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/pages.csv');
-        $this->importCSVDataSet(__DIR__ . '/../../../../fluid/Tests/Functional/Fixtures/crops.csv');
+        $this->importCsvDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Fixtures/pages_frontend.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../../../frontend/Tests/Functional/Fixtures/crops.csv');
 
         $this->writeSiteConfiguration(
             'test',

@@ -27,7 +27,7 @@ use TYPO3Fluid\Fluid\View\TemplateView;
 final class ImageConvertIMViewHelperTest extends FunctionalTestCase
 {
     protected array $pathsToProvideInTestInstance = [
-        'typo3/sysext/core/Tests/Functional/Imaging/Fixtures/' => 'fileadmin/',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/Imaging' => 'fileadmin/',
     ];
 
     protected array $configurationToUseInTestInstance = [
