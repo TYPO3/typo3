@@ -1,7 +1,7 @@
 .. include:: /Includes.rst.txt
 
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors.*:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors:
 
 ==================================================
 [<formElementTypeIdentifier>][formEditor][editors]
@@ -13,7 +13,7 @@
 Properties
 ==========
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.editors-properties-editors:
 
 <formElementTypeIdentifier>.formEditor.editors
 ----------------------------------------------
