@@ -201,7 +201,7 @@ class SelectMultipleSideBySideElement extends AbstractFormElement
 
         // Process groups
         foreach ($selectableItemGroups as $selectableItemGroup) {
-            if (!is_array($selectableItemGroup['items'] ?? false) || $selectableItemGroup['items'] === []) {
+            if (!is_array($selectableItemGroup['items'] ?? false)) {
                 continue;
             }
 
