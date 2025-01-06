@@ -127,8 +127,9 @@ It is best practice to keep your robots.txt as clean as possible. An example of 
 On :ref:`t3coreapi:sitehandling-staticRoutes` you can find more details on how to create a static route that will show
 this information when visiting `https://www.example.com/robots.txt`.
 
-When you want to disallow specific URLs, you can use the :ref:`index-page` option in the backend or set the robot HTTP
-header `X-Robots-tag` manually.
+When you want to disallow specific URLs, you can use the
+`Index this page <https://docs.typo3.org/permalink/t3editors:seo-page-properties-index-page>`_
+option in the page properties or set the robot HTTP header `X-Robots-tag` manually.
 
 Static Routes and redirects
 ---------------------------

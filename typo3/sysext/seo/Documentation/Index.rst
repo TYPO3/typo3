@@ -36,6 +36,11 @@ purposes, HTML meta tags display and sitemaps.
 General information on topics about SEO can be found in
 :ref:`Search engine optimization (SEO) <t3coreapi:seo>`.
 
+Information for editors, including how to use the
+`dashboard widgets <https://docs.typo3.org/permalink/t3editors:dashboard-widgets>`_
+can be found in
+`Tutorial for Editors, Search engine optimization (SEO) for TYPO3 editors <https://docs.typo3.org/permalink/t3editors:seo>`_.
+
 ----
 
 **Table of Contents:**
@@ -45,7 +50,6 @@ General information on topics about SEO can be found in
     :titlesonly:
 
     Introduction/Index
-    Editor/Index
     Installation/Index
     Configuration/Index
     Developer/Index
