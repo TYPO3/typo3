@@ -199,12 +199,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectCheckBoxElement.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between non\-empty\-list\<array\{label\: string, attributes\: array\{title\: mixed, value\: mixed, disabled\?\: ''disabled'', class\?\: ''hidden''\}\}\> and array\{\} will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Form/Element/SelectMultipleSideBySideElement.php
-
-		-
 			message: '#^If condition is always true\.$#'
 			identifier: if.alwaysTrue
 			count: 1
