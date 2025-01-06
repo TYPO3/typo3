@@ -46,7 +46,7 @@ In case you need those fields back, they can be brought back with TCA overrides.
 First, register a new palette for the `sys_file_reference` table with the needed
 set of fields.
 
-..  php::
+..  code-block:: php
     :caption: EXT:my_extension/Configuration/TCA/Overrides/sys_file_reference.php
 
     $GLOBALS['TCA']['sys_file_reference']['palettes']['myCustomPalette'] = [
@@ -58,7 +58,7 @@ Then, use this palette for your specific Core field and file type. This will
 bring back the fields `alternative` and `link` for the `media` field of table
 `pages`, when the file type is `text`.
 
-..  php::
+..  code-block:: php
     :caption: EXT:my_extension/Configuration/TCA/Overrides/pages.php
 
     $GLOBALS['TCA']['pages']['columns']['media']['config']['overrideChildTca']
