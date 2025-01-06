@@ -299,4 +299,4 @@ This example shows how to set a default author based on the TypoScript constant 
 
 .. seealso::
 
-   :ref:`recommendations_field_description`
+   `Recommendations for the description field, TYPO3 explained <https://docs.typo3.org/permalink/t3coreapi:seo-recommendations-field-description>`_
