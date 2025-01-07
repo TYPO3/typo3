@@ -126,6 +126,7 @@ export class CKEditor5Element extends LitElement {
     const plugins = await this.resolvePlugins(defaultPlugins, importModules, removeImportModules);
 
     const config: EditorConfig = {
+      licenseKey: 'GPL',
       ...otherOptions,
       // link.defaultProtocol: 'https://'
       toolbar,
