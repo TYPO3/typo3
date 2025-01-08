@@ -85,16 +85,16 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         return [
             [
                 'label' => 'inputdatetime_3',
-                'inputValue' => '05:23 2016-01-29',
-                'expectedValue' => '05:23 2016-01-29',
+                'inputValue' => '2016-01-29 05:23',
+                'expectedValue' => '2016-01-29 05:23',
                 'expectedInternalValue' => '2016-01-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-01-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_3 eval=datetime simple input',
             ],
             [
                 'label' => 'inputdatetime_3',
-                'inputValue' => '05:23 2016-02-29',
-                'expectedValue' => '05:23 2016-02-29',
+                'inputValue' => '2016-02-29 05:23',
+                'expectedValue' => '2016-02-29 05:23',
                 'expectedInternalValue' => '2016-02-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_3 eval=datetime Check valid leap year input',
@@ -109,8 +109,8 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
             ],
             [
                 'label' => 'inputdatetime_31',
-                'inputValue' => '05:23 2022-03-31',
-                'expectedValue' => '05:23 2022-03-31',
+                'inputValue' => '2022-03-31 05:23',
+                'expectedValue' => '2022-03-31 05:23',
                 'expectedInternalValue' => '2022-03-31T05:23:00Z',
                 'expectedValueAfterSave' => '2022-03-31T05:23:00+00:00',
                 'comment' => 'inputdatetime_31 eval=datetime range.lower=1627208536 Check range validation',
@@ -149,16 +149,16 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
         return [
             [
                 'label' => 'inputdatetime_4',
-                'inputValue' => '05:23 2016-01-29',
-                'expectedValue' => '05:23 2016-01-29',
+                'inputValue' => '2016-01-29 05:23',
+                'expectedValue' => '2016-01-29 05:23',
                 'expectedInternalValue' => '2016-01-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-01-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_4 dbType=datetime eval=datetime no transformation',
             ],
             [
                 'label' => 'inputdatetime_4',
-                'inputValue' => '05:23 2016-02-29',
-                'expectedValue' => '05:23 2016-02-29',
+                'inputValue' => '2016-02-29 05:23',
+                'expectedValue' => '2016-02-29 05:23',
                 'expectedInternalValue' => '2016-02-29T05:23:00Z',
                 'expectedValueAfterSave' => '2016-02-29T05:23:00+00:00',
                 'comment' => 'inputdatetime_4 dbType=datetime eval=datetime Check valid leap year input',
