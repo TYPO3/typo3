@@ -51,6 +51,7 @@ can be found in
 
     Introduction/Index
     Installation/Index
+    Features/Index
     Configuration/Index
     Developer/Index
 
