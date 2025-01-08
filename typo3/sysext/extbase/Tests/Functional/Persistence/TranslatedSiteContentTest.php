@@ -42,7 +42,7 @@ final class TranslatedSiteContentTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
     protected array $pathsToLinkInTestInstance = [
-        'typo3/sysext/frontend/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Images' => 'fileadmin/user_upload',
     ];
 
     private const VALUE_PageId = 89;
