@@ -73,7 +73,7 @@ final class UriPrefixRenderingTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCsvDataSet(__DIR__ . '/../../../../core/Tests/Functional/Fixtures/pages.csv');
+        $this->importCsvDataSet(__DIR__ . '/../Fixtures/pages_frontend.csv');
         $this->writeSiteConfiguration(
             'test',
             $this->buildSiteConfiguration(1, '/'),
