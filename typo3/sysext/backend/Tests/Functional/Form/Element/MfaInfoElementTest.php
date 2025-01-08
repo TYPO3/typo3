@@ -32,7 +32,7 @@ final class MfaInfoElementTest extends FunctionalTestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../../../../../core/Tests/Functional/Authentication/Fixtures/be_users.csv');
+        $this->importCSVDataSet(__DIR__ . '/../../Fixtures/be_users_core.csv');
 
         $GLOBALS['BE_USER'] = GeneralUtility::makeInstance(BackendUserAuthentication::class);
         $GLOBALS['BE_USER']->enablecolumns = ['deleted' => true];
