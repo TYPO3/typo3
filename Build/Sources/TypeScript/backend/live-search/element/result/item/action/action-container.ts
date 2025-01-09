@@ -16,6 +16,7 @@ import { css, html, LitElement, TemplateResult } from 'lit';
 import './action';
 import { ResultItemActionInterface, ResultItemInterface } from '../item';
 import { Action } from './action';
+import type { InvokeActionEventData } from '@typo3/backend/live-search/element/result/result-container';
 
 export const componentName = 'typo3-backend-live-search-result-item-action-container';
 
@@ -43,7 +44,7 @@ export class ActionContainer extends LitElement {
   }
 
   private invokeAction(resultItem: ResultItemInterface, action: ResultItemActionInterface): void {
-    this.closest('typo3-backend-live-search-result-container').dispatchEvent(new CustomEvent('livesearch:invoke-action', {
+    this.closest('typo3-backend-live-search-result-container').dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
       detail: {
         resultItem: resultItem,
         action: action
@@ -115,7 +116,7 @@ export class ActionList extends LitElement {
     e.preventDefault();
 
     const actionElement = e.target as Action;
-    this.parentContainer.dispatchEvent(new CustomEvent('livesearch:invoke-action', {
+    this.parentContainer.dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
       detail: {
         resultItem: actionElement.resultItem,
         action: actionElement.resultItemAction

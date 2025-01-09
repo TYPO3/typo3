@@ -19,6 +19,7 @@ import { until } from 'lit/directives/until';
 import '../../provider/default-result-item';
 import './item';
 import { Item, ResultItemActionInterface, ResultItemInterface } from './item';
+import type { InvokeActionEventData, RequestActionsEventData } from '@typo3/backend/live-search/element/result/result-container';
 
 type GroupedResultItems = { [key: string ]: ResultItemInterface[] };
 
@@ -104,7 +105,7 @@ export class ItemContainer extends LitElement {
   }
 
   private requestActions(resultItem: ResultItemInterface) {
-    this.parentElement.dispatchEvent(new CustomEvent('livesearch:request-actions', {
+    this.parentElement.dispatchEvent(new CustomEvent<RequestActionsEventData>('livesearch:request-actions', {
       detail: {
         resultItem: resultItem
       }
@@ -112,7 +113,7 @@ export class ItemContainer extends LitElement {
   }
 
   private invokeAction(resultItem: ResultItemInterface, action: ResultItemActionInterface): void {
-    this.parentElement.dispatchEvent(new CustomEvent('livesearch:invoke-action', {
+    this.parentElement.dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
       detail: {
         resultItem: resultItem,
         action: action
@@ -207,7 +208,7 @@ export class ResultList extends LitElement {
   }
 
   private invokeAction(item: ResultItemInterface): void {
-    this.parentContainer.dispatchEvent(new CustomEvent('livesearch:invoke-action', {
+    this.parentContainer.dispatchEvent(new CustomEvent<InvokeActionEventData>('livesearch:invoke-action', {
       detail: {
         resultItem: item,
         action: item.actions[0]

@@ -14,6 +14,7 @@
 import { customElement, property } from 'lit/decorators';
 import { html, LitElement, nothing, TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
+import type { SelectPageEventData } from '@typo3/backend/toolbar/live-search';
 
 export type Pagination = {
   itemsPerPage: number,
@@ -105,7 +106,7 @@ export class ResultPaginationPage extends LitElement {
 
   private dispatchPaginationEvent(): void {
     const liveSearchContainer = this.closest('typo3-backend-live-search');
-    liveSearchContainer.dispatchEvent(new CustomEvent('livesearch:pagination-selected', {
+    liveSearchContainer.dispatchEvent(new CustomEvent<SelectPageEventData>('livesearch:pagination-selected', {
       detail: {
         offset: (this.page - 1) * this.perPage,
       }

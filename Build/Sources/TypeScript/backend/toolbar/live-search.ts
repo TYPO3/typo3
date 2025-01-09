@@ -44,6 +44,19 @@ type SearchResponse = {
   results: ResultItemInterface[]|null;
 };
 
+export interface ChooseItemEventData {
+  resultItem: ResultItemInterface;
+}
+
+export interface InvokeOptionEventData {
+  active: boolean;
+}
+
+export interface SelectPageEventData {
+  offset: number;
+}
+
+
 /**
  * Module: @typo3/backend/toolbar/live-search
  * Global search to deal with everything in the backend that is search-related
@@ -110,8 +123,8 @@ class LiveSearch {
           offsetField.value = '0';
         }).bindTo(liveSearchContainer);
 
-        new RegularEvent('livesearch:pagination-selected', (e: CustomEvent): void => {
-          offsetField.value = e.detail.offset;
+        new RegularEvent('livesearch:pagination-selected', (e: CustomEvent<SelectPageEventData>): void => {
+          offsetField.value = e.detail.offset.toString(10);
           searchForm.requestSubmit();
         }).bindTo(liveSearchContainer);
 
@@ -144,7 +157,7 @@ class LiveSearch {
           Modal.dismiss();
         }).bindTo(searchResultContainer);
 
-        new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent): void => {
+        new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent<InvokeOptionEventData>): void => {
           liveSearchContainer.dispatchEvent(new CustomEvent('livesearch:demand-changed'));
 
           const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
