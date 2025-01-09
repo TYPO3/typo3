@@ -433,4 +433,26 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
             GeneralUtility::makeInstance(CacheManager::class)->getCache('database_schema')
         );
     }
+
+    /**
+     * Executes a function in a transaction.
+     *
+     * The function gets passed this Connection instance as an (optional) parameter.
+     *
+     * If an exception occurs during execution of the function or transaction commit,
+     * the transaction is rolled back and the exception re-thrown.
+     *
+     * @param \Closure(self):T $func The function to execute transactionally.
+     *
+     * @return T The value returned by $func
+     *
+     * @throws \Throwable
+     *
+     * @template T
+     */
+    public function transactional(\Closure $func): mixed
+    {
+        /** @var \Closure(\Doctrine\DBAL\Connection):T $func Required to satisfy PHPStan. */
+        return parent::transactional($func);
+    }
 }
