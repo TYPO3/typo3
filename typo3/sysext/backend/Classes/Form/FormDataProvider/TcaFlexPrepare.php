@@ -93,18 +93,17 @@ readonly class TcaFlexPrepare implements FormDataProviderInterface
      */
     protected function initializeDataValues(array $result, string $fieldName): array
     {
-        if (!array_key_exists($fieldName, $result['databaseRow'])) {
-            $result['databaseRow'][$fieldName] = '';
-        }
         $valueArray = [];
-        if (isset($result['databaseRow'][$fieldName])) {
-            $valueArray = $result['databaseRow'][$fieldName];
-        }
-        if (!is_array($result['databaseRow'][$fieldName])) {
-            $valueArray = GeneralUtility::xml2array($result['databaseRow'][$fieldName]);
-        }
-        if (!is_array($valueArray)) {
-            $valueArray = [];
+
+        if (isset($result['databaseRow'][$fieldName]) && $result['databaseRow'][$fieldName] !== '') {
+            if (is_array($result['databaseRow'][$fieldName])) {
+                $valueArray = $result['databaseRow'][$fieldName];
+            } else {
+                $valueArray = GeneralUtility::xml2array($result['databaseRow'][$fieldName]);
+                if (!is_array($valueArray)) {
+                    $valueArray = [];
+                }
+            }
         }
         if (!isset($valueArray['data'])) {
             $valueArray['data'] = [];
