@@ -15,6 +15,7 @@ import { customElement, property } from 'lit/decorators';
 import { html, LitElement, TemplateResult } from 'lit';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import { ifDefined } from 'lit/directives/if-defined';
+import type { InvokeOptionEventData } from '@typo3/backend/toolbar/live-search';
 
 @customElement('typo3-backend-live-search-option-item')
 export class SearchOptionItem extends LitElement {
@@ -53,7 +54,7 @@ export class SearchOptionItem extends LitElement {
 
   private handleInput() {
     this.active = !this.active;
-    this.parentContainer.dispatchEvent(new CustomEvent('typo3:live-search:option-invoked', {
+    this.parentContainer.dispatchEvent(new CustomEvent<InvokeOptionEventData>('typo3:live-search:option-invoked', {
       detail: {
         active: this.active
       }

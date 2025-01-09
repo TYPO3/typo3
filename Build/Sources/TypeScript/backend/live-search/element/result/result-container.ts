@@ -18,9 +18,19 @@ import { html, LitElement, nothing, TemplateResult } from 'lit';
 import { lll } from '@typo3/core/lit-helper';
 import './item/item-container';
 import './result-detail-container';
-import { ResultItemInterface } from './item/item';
+import type { ResultItemActionInterface, ResultItemInterface } from './item/item';
 import { ItemContainer } from './item/item-container';
 import { ResultDetailContainer } from './result-detail-container';
+import type { ChooseItemEventData } from '@typo3/backend/toolbar/live-search';
+
+export interface InvokeActionEventData {
+  resultItem: ResultItemInterface,
+  action: ResultItemActionInterface|null
+}
+
+export interface RequestActionsEventData {
+  resultItem: ResultItemInterface,
+}
 
 export const componentName = 'typo3-backend-live-search-result-container';
 
@@ -70,11 +80,11 @@ export class ResultContainer extends LitElement {
     `;
   }
 
-  private onActionsRequested(e: CustomEvent): void {
+  private onActionsRequested(e: CustomEvent<RequestActionsEventData>): void {
     this.resultDetailContainer.resultItem = e.detail.resultItem;
   }
 
-  private onActionInvoked(e: CustomEvent): void {
+  private onActionInvoked(e: CustomEvent<InvokeActionEventData>): void {
     const invokeHandlers = LiveSearchConfigurator.getInvokeHandlers();
     const resultItem = e.detail.resultItem;
     const action = e.detail.action;
@@ -89,7 +99,7 @@ export class ResultContainer extends LitElement {
       // Default handler to open the URL
       Viewport.ContentContainer.setUrl(action.url);
     }
-    this.dispatchEvent(new CustomEvent('live-search:item-chosen', {
+    this.dispatchEvent(new CustomEvent<ChooseItemEventData>('live-search:item-chosen', {
       detail: { resultItem }
     }));
   }
