@@ -46,6 +46,14 @@ return [
                 'required' => true,
             ],
         ],
+        'input_3' => [
+            'label' => 'input_3 eval=required,trim,datetime',
+            'config' => [
+                'type' => 'datetime',
+                'format' => 'datetime',
+                'required' => true,
+            ],
+        ],
         'color_1' => [
             'label' => 'color_1',
             'config' => [
@@ -367,7 +375,7 @@ return [
                 --div--;not required,
                     notrequired_1,
                 --div--;Input,
-                    input_1, input_2,
+                    input_1, input_2, input_3,
                 --div--;Link,
                     link_1,
                 --div--;Text,
