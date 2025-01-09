@@ -272,7 +272,7 @@ class TypoScriptParser
                 } else {
                     // Return if GLOBAL condition is set - no matter what.
                     if ($line[0] === '[' && stripos($line, '[GLOBAL]') !== false) {
-                        $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': On return to [GLOBAL] scope, the script was short of ' . $this->inBrace . ' end brace(s)', 1);
+                        $this->error('Line ' . ($this->lineNumberOffset + $this->rawP - 1) . ': On return to [GLOBAL] scope, the script was short of ' . $this->inBrace . ' end brace(s)');
                         $this->inBrace = 0;
                         return $line;
                     }
