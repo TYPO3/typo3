@@ -742,7 +742,7 @@ class ConcreteQueryBuilder extends DoctrineQueryBuilder
      */
     public function resetHaving(): self
     {
-        $this->resetHaving();
+        parent::resetHaving();
         $this->having = null;
         $this->sql = null;
         return $this;
