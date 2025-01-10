@@ -15,7 +15,8 @@ import flatpickr from 'flatpickr';
 import ShortcutButtonsPlugin from 'flatpickr/plugins/shortcut-buttons.min';
 import { DateTime } from 'luxon';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
-
+import type { PostValidationEvent } from '@typo3/backend/form-engine-validation';
+import '@typo3/backend/input/clearable';
 
 const ISO8601_UTC = 'ISO8601_UTC';
 
@@ -184,9 +185,17 @@ class DateTimePicker {
           // collides with using altInput – sigh.
           self.altInput.id = self.input.id;
           self.input.removeAttribute('id');
+          self.altInput.clearable();
           if (self.input.dataset.formengineInputName !== undefined) {
             self.altInput.dataset.formengineDatepickerRealInputName = self.input.dataset.formengineInputName;
           }
+
+          // Register a custom event handler for `t3-formengine-postfieldvalidation` to be able to toggle the `has-error` class on the mirrored field
+          self.altInput.form.addEventListener('t3-formengine-postfieldvalidation', (e: CustomEvent<PostValidationEvent>): void => {
+            if (e.detail.field === self.input) {
+              self.altInput.classList.toggle('has-error', !e.detail.isValid);
+            }
+          });
         }
       },
       onChange: (dates: Date[], currentDateString: string, self: flatpickr.Instance): void => {
