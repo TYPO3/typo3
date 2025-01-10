@@ -42,7 +42,14 @@ env:
         WebDriver:
           capabilities:
             goog:chromeOptions:
-              args: ["headless", "no-sandbox", "disable-gpu", "window-size=1280,1024"]
+              # HEADS UP: We need to pin chrome/chromium to version below 132 for --headless=old support
+              # until https://issues.chromium.org/issues/362522328 is resolved.
+              # We need the old headless mode in order to respect `window_size` without adding "magical" pixels
+              # (sometimes 139px, sometimes 124px – also documented in the issue).
+              # This behaviour is caused by the "new" headless mode that became default in chrome 128,
+              # were browser chrome like URL bars are virtually rendered in headless mode and therefore implicitly
+              # shrink the rendered document size.
+              args: ["headless=old", "no-sandbox", "disable-gpu", "window-size=1280,1024"]
 params:
   - parameters.yml
   - env

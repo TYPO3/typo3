@@ -534,18 +534,13 @@ IMAGE_NODEJS="ghcr.io/typo3/core-testing-nodejs22:1.1"
 IMAGE_NODEJS_CHROME="ghcr.io/typo3/core-testing-nodejs22-chrome:1.1"
 IMAGE_PLAYWRIGHT="mcr.microsoft.com/playwright:v1.45.1-jammy"
 IMAGE_ALPINE="docker.io/alpine:3.8"
-IMAGE_SELENIUM="docker.io/selenium/standalone-chrome:4.11.0-20230801"
+# HEADS UP: We need to pin to <132 for --headless=old support until https://issues.chromium.org/issues/362522328 is resolved
+IMAGE_SELENIUM="docker.io/selenium/standalone-chromium:131.0-20250101"
 IMAGE_REDIS="docker.io/redis:4-alpine"
 IMAGE_MEMCACHED="docker.io/memcached:1.5-alpine"
 IMAGE_MARIADB="docker.io/mariadb:${DBMS_VERSION}"
 IMAGE_MYSQL="docker.io/mysql:${DBMS_VERSION}"
 IMAGE_POSTGRES="docker.io/postgres:${DBMS_VERSION}-alpine"
-
-# Detect arm64 to use seleniarm image.
-ARCH=$(uname -m)
-if [ ${ARCH} = "arm64" ]; then
-    IMAGE_SELENIUM="docker.io/seleniarm/standalone-chromium:4.10.0-20230615"
-fi
 
 # Remove handled options and leaving the rest in the line, so it can be passed raw to commands
 shift $((OPTIND - 1))
