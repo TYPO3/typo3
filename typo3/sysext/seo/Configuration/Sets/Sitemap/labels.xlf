@@ -18,9 +18,6 @@
 			<trans-unit id="settings.seo.sitemap.view.templateRootPath">
 				<source>Path to template root (FE)</source>
 			</trans-unit>
-			<trans-unit id="settings.description.seo.sitemap.view.templateRootPath">
-				<source>Test description</source>
-			</trans-unit>
 			<trans-unit id="settings.seo.sitemap.view.partialRootPath">
 				<source>Path to template partials (FE)</source>
 			</trans-unit>
