@@ -1,0 +1,13 @@
+plugin.tx_seo {
+  config {
+    xmlSitemap {
+      sitemaps {
+        myUnsortedTable {
+          config {
+            sortField = uid
+          }
+        }
+      }
+    }
+  }
+}
