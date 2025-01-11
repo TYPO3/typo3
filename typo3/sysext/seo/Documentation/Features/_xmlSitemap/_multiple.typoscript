@@ -1,0 +1,30 @@
+seo_googlenews < seo_sitemap
+seo_googlenews.typeNum = 1571859552
+seo_googlenews.10.sitemapType = googleNewsSitemap
+
+plugin.tx_seo {
+  config {
+    xmlSitemap {
+      sitemaps {
+        news {
+          provider = GeorgRinger\News\Seo\NewsXmlSitemapDataProvider
+          config {
+            # ...
+          }
+        }
+      }
+    }
+    googleNewsSitemap {
+      sitemaps {
+        news {
+          provider = GeorgRinger\News\Seo\NewsXmlSitemapDataProvider
+          config {
+            googleNews = 1
+            # ...
+            template = GoogleNewsXmlSitemap.xml
+          }
+        }
+      }
+    }
+  }
+}

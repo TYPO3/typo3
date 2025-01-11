@@ -12,6 +12,12 @@ fields that can be used to improve visibility of a TYPO3 site in search engines:
 
 ..  contents::
 
+..  toctree::
+    :glob:
+    :hidden:
+
+    *
+
 ..  _seo-page-properties:
 
 Additional tabs "SEO" and "Social media" in the page properties
@@ -62,7 +68,8 @@ The extension :composer:`typo3/cms-seo` comes with the site set
 `typo3/seo-sitemap <https://docs.typo3.org/permalink/typo3/cms-seo:configuration-site-sets>`_,
 which you can use to provide an XML sitemap like `https://example.org/sitemap.xml`.
 
-See also chapter `XML sitemap in TYPO3 explained <https://docs.typo3.org/permalink/t3coreapi:xmlsitemap>`_.
+See chapter `XML sitemap <https://docs.typo3.org/permalink/typo3/cms-seo:xmlsitemap>`_
+for details.
 
 ..  _canonical-url:
 

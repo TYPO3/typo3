@@ -1,0 +1,31 @@
+plugin.tx_seo {
+  config {
+    xmlSitemap {
+      sitemaps {
+        myNewsSitemap {
+          provider = TYPO3\CMS\Seo\XmlSitemap\RecordsXmlSitemapDataProvider
+          config {
+            table = news_table
+            sortField = sorting
+            lastModifiedField = tstamp
+            changeFreqField = news_changefreq
+            priorityField = news_priority
+            additionalWhere = AND ({#no_index} = 0 OR {#no_follow} = 0)
+            pid = <page id('s) containing news records>
+            recursive = <number of subpage levels taken into account beyond the pid page. (default: 0)>
+            url {
+              pageId = <your detail page id>
+              fieldToParameterMap {
+                uid = tx_extension_pi1[news]
+              }
+              additionalGetParameters {
+                tx_extension_pi1.controller = News
+                tx_extension_pi1.action = detail
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
