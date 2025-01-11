@@ -2618,24 +2618,6 @@ class DataHandler
      * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
      * @param string $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
-     * @param array $PP Additional parameters in a numeric array: $table,$id,$curValue,$status,$realPid,$recFID
-     * @param string $field Field name
-     * @param array|null $additionalData Additional data to be forwarded to sub-processors
-     * @internal should only be used from within DataHandler
-     */
-    public function checkValue_inline($res, $value, $tcaFieldConf, $PP, $field, ?array $additionalData = null)
-    {
-        [$table, $id, , $status] = $PP;
-        $this->checkValueForInline($res, $value, $tcaFieldConf, $table, $id, $status, $field, $additionalData);
-    }
-
-    /**
-     * Evaluates 'inline' type values.
-     * (partly copied from the select_group function on this issue)
-     *
-     * @param array $res The result array. The processed value (if any!) is set in the 'value' key.
-     * @param string $value The value to set.
-     * @param array $tcaFieldConf Field configuration from TCA
      * @param string $table Table name
      * @param int $id UID of record
      * @param string $status 'update' or 'new' flag
@@ -8409,23 +8391,6 @@ class DataHandler
     public function disableDeleteClause(): void
     {
         $this->disableDeleteClause = true;
-    }
-
-    /**
-     * Returns delete-clause for the $table
-     *
-     * @param string $table Table name
-     * @return string Delete clause
-     * @internal should only be used from within DataHandler
-     */
-    public function deleteClause($table): string
-    {
-        // Returns the proper delete-clause if any for a table from TCA
-        $schema = $this->tcaSchemaFactory->get($table);
-        if (!$this->disableDeleteClause && $schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
-            return ' AND ' . $table . '.' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() . '=0';
-        }
-        return '';
     }
 
     /**
