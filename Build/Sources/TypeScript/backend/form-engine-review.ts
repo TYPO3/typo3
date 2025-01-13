@@ -18,6 +18,7 @@ import '@typo3/backend/element/icon-element';
 import Popover from './popover';
 import { Popover as BootstrapPopover, Tab as BootstrapTab } from 'bootstrap';
 import DomHelper from '@typo3/backend/utility/dom-helper';
+import type { PostValidationEvent } from '@typo3/backend/form-engine-validation';
 
 /**
  * Module: @typo3/backend/form-engine-review
@@ -26,15 +27,9 @@ import DomHelper from '@typo3/backend/utility/dom-helper';
  */
 export class FormEngineReview {
 
-  /**
-   * Class for the toggle button
-   */
   private readonly toggleButtonClass: string = 't3js-toggle-review-panel';
-
-  /**
-   * Class of FormEngine labels
-   */
   private readonly labelSelector: string = '.t3js-formengine-label';
+  private readonly invalidFields: Set<HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement>;
 
   /**
    * The constructor, set the class properties default values
@@ -42,27 +37,27 @@ export class FormEngineReview {
   constructor(
     private readonly formElement: HTMLFormElement
   ) {
+    this.invalidFields = new Set();
     this.initialize();
-  }
-
-  /**
-   * Fetches all fields that have a failed validation
-   */
-  public static findInvalidField(): NodeListOf<HTMLElement> {
-    return document.querySelectorAll('.tab-content .has-error');
   }
 
   /**
    * Initialize the events
    */
   private initialize(): void {
+    this.formElement.addEventListener('t3-formengine-postfieldvalidation', (e: CustomEvent<PostValidationEvent>): void => {
+      const field = e.detail.field;
+      if (e.detail.isValid) {
+        this.invalidFields.delete(field);
+      } else {
+        this.invalidFields.add(field);
+      }
+      this.checkForReviewableField();
+    });
+
     DocumentService.ready().then((): void => {
       this.attachButtonToModuleHeader();
       this.checkForReviewableField();
-
-      this.formElement.addEventListener('t3-formengine-postfieldvalidation', (): void => {
-        this.checkForReviewableField();
-      });
     });
   }
 
@@ -90,23 +85,30 @@ export class FormEngineReview {
    * Checks if fields have failed validation. In such case, the markup is rendered and the toggle button is unlocked.
    */
   private checkForReviewableField(): void {
-    const invalidFields = FormEngineReview.findInvalidField();
     const toggleButton: HTMLElement = document.querySelector('.' + this.toggleButtonClass);
     if (toggleButton === null) {
       return;
     }
 
-    if (invalidFields.length > 0) {
+    if (this.invalidFields.size > 0) {
       const erroneousListGroup = document.createElement('div');
       erroneousListGroup.classList.add('list-group');
 
-      for (const invalidField of invalidFields) {
+      for (const invalidField of this.invalidFields) {
         const fieldContainer = invalidField.closest('.t3js-formengine-validation-marker');
-        const relatedInputField = invalidField.querySelector('[data-formengine-validation-rules]') as HTMLElement;
+        if (fieldContainer === null) {
+          console.error(invalidField);
+          throw new Error('Could not find an element containing the `t3js-formengine-validation-marker` class for the previously logged input field.');
+        }
+        const relatedInputField = fieldContainer.querySelector('[data-formengine-validation-rules]') as HTMLElement;
+        if (relatedInputField === null) {
+          console.error(fieldContainer);
+          throw new Error('Could not find an element containing the `data-formengine-validation-rules` attribute for the previously logged container.');
+        }
         const link = document.createElement('a');
         link.classList.add('list-group-item');
         link.href = '#';
-        link.textContent = invalidField.querySelector(this.labelSelector)?.textContent || '';
+        link.textContent = fieldContainer.querySelector(this.labelSelector)?.textContent || '';
         link.addEventListener('click', (e: Event) => {
           this.switchToField(e, fieldContainer, relatedInputField)
         });

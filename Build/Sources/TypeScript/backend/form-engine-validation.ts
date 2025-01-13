@@ -32,6 +32,11 @@ type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectEle
 type CustomEvaluationCallback = (value: string) => string;
 type FormEngineInputParams = { field: string, evalList?: string, is_in?: string };
 
+export interface PostValidationEvent {
+  field: FormEngineFieldElement,
+  isValid: boolean,
+}
+
 let formEngineFormElement: HTMLFormElement;
 let validationSuspended = false;
 
@@ -369,7 +374,7 @@ export default class FormEngineValidation {
     field.closest(FormEngineValidation.markerSelector)?.querySelector(FormEngineValidation.labelSelector)?.classList.toggle(FormEngineValidation.errorClass, !isValid);
 
     FormEngineValidation.markParentTab(field, isValid);
-    formEngineFormElement.dispatchEvent(new CustomEvent('t3-formengine-postfieldvalidation', { cancelable: false, bubbles: true }));
+    formEngineFormElement.dispatchEvent(new CustomEvent<PostValidationEvent>('t3-formengine-postfieldvalidation', { detail: { field: field, isValid: isValid }, cancelable: false, bubbles: true }));
 
     return returnValue;
   }
