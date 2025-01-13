@@ -82,7 +82,7 @@ user_1 = 0
 options_1 = default
 # cat=Options/600/11; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - default option_2
 options_2 = option_2
-# cat=Options/600/11; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - no default
+# cat=Options/600/12; type=options[Default=default, Option 1=option_1, Option 2=option_2, Option 3=option_3]; label=Option - no default
 options_3 =
 
 
@@ -117,7 +117,7 @@ int_4 = 2
 intplus_1 = 1
 # cat=Integer/102/11; type=int+; label=Int+ 2 - no value
 intplus_2 =
-# cat=Integer/101/12; type=int+[1-5]; label=Int+ 3 - range
+# cat=Integer/102/12; type=int+[1-5]; label=Int+ 3 - range
 intplus_3 = 2
 
 
