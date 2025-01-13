@@ -7735,74 +7735,67 @@ class DataHandler
      */
     public function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0, $dontSetNewIdIndex = false)
     {
-        if (is_array($fieldArray) && $this->tcaSchemaFactory->has($table) && isset($fieldArray['pid'])) {
-            // Do NOT insert the UID field, ever!
-            unset($fieldArray['uid']);
-            // Check for "suggestedUid".
-            // This feature is used by the import functionality to force a new record to have a certain UID value.
-            // This is only recommended for use when the destination server is a passive mirror of another server.
-            // As a security measure this feature is available only for Admin Users (for now)
-            // The value of $this->suggestedInsertUids["table":"uid"] is either string 'DELETE' (ext:impexp) to trigger
-            // a blind delete of any possibly existing row before insert with forced uid, or boolean true (testing-framework)
-            // to only force the uid insert and skipping deletion of an existing row.
-            $suggestedUid = (int)$suggestedUid;
-            if ($this->BE_USER->isAdmin() && $suggestedUid && ($this->suggestedInsertUids[$table . ':' . $suggestedUid] ?? false)) {
-                // When the value of ->suggestedInsertUids[...] is "DELETE" it will try to remove the previous record
-                if ($this->suggestedInsertUids[$table . ':' . $suggestedUid] === 'DELETE') {
-                    $this->hardDeleteSingleRecord($table, (int)$suggestedUid);
-                }
-                $fieldArray['uid'] = $suggestedUid;
-            }
-            $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
-            $connection = $this->connectionPool->getConnectionForTable($table);
-            $insertErrorMessage = '';
-            try {
-                // Execute the INSERT query:
-                $connection->insert($table, $fieldArray);
-            } catch (DBALException $e) {
-                $insertErrorMessage = $e->getPrevious()->getMessage();
-            }
-            // If succees, do...:
-            if ($insertErrorMessage === '') {
-                // Set mapping for NEW... -> real uid:
-                // the NEW_id now holds the 'NEW....' -id
-                $NEW_id = $id;
-                $id = $this->postProcessDatabaseInsert($connection, $table, $suggestedUid);
-
-                if (!$dontSetNewIdIndex) {
-                    $this->substNEWwithIDs[$NEW_id] = $id;
-                    $this->substNEWwithIDs_table[$NEW_id] = $table;
-                }
-                $newRow = [];
-                if ($this->enableLogging) {
-                    $newRow = $fieldArray;
-                    $newRow['uid'] = $id;
-                }
-                // Update reference index:
-                $this->updateRefIndex($table, $id);
-
-                // Store in history
-                $this->getRecordHistoryStore()->addRecord($table, $id, $newRow, $this->correlationId);
-
-                if ($newVersion) {
-                    if ($this->enableLogging) {
-                        $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                        $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', 10, ['table' => $table, 'uid' => $fieldArray['t3ver_oid'], 'offlineUid' => $id], $propArr['event_pid'], $NEW_id);
-                    }
-                } else {
-                    if ($this->enableLogging) {
-                        $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                        $page_propArr = $this->getRecordProperties('pages', $propArr['pid']);
-                        $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was inserted on page "{pageTitle}" ({pid})', 10, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'pageTitle' => $page_propArr['header'], 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
-                    }
-                    // Clear cache for relevant pages:
-                    $this->registerRecordIdForPageCacheClearing($table, $id);
-                }
-                return $id;
-            }
-            $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', 12, ['reason' => $insertErrorMessage, 'table' => $table, 'uid' => $id]);
+        if (!is_array($fieldArray) || !$this->tcaSchemaFactory->has($table) || !isset($fieldArray['pid'])) {
+            return null;
         }
-        return null;
+        // Do NOT insert the UID field, ever!
+        unset($fieldArray['uid']);
+        // Check for "suggestedUid".
+        // This feature is used by the import functionality to force a new record to have a certain UID value.
+        // This is only recommended for use when the destination server is a passive mirror of another server.
+        // As a security measure this feature is available only for Admin Users (for now)
+        // The value of $this->suggestedInsertUids["table":"uid"] is either string 'DELETE' (ext:impexp) to trigger
+        // a blind delete of any possibly existing row before insert with forced uid, or boolean true (testing-framework)
+        // to only force the uid insert and skipping deletion of an existing row.
+        $suggestedUid = (int)$suggestedUid;
+        if ($this->BE_USER->isAdmin() && $suggestedUid && ($this->suggestedInsertUids[$table . ':' . $suggestedUid] ?? false)) {
+            // When the value of ->suggestedInsertUids[...] is "DELETE" it will try to remove the previous record
+            if ($this->suggestedInsertUids[$table . ':' . $suggestedUid] === 'DELETE') {
+                $this->hardDeleteSingleRecord($table, (int)$suggestedUid);
+            }
+            $fieldArray['uid'] = $suggestedUid;
+        }
+        $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
+        $connection = $this->connectionPool->getConnectionForTable($table);
+        try {
+            // Execute the INSERT query:
+            $connection->insert($table, $fieldArray);
+        } catch (DBALException $e) {
+            $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', 12, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $id]);
+            return null;
+        }
+        // Set mapping for NEW... -> real uid:
+        // the NEW_id now holds the 'NEW....' -id
+        $NEW_id = $id;
+        $id = $this->postProcessDatabaseInsert($connection, $table, $suggestedUid);
+        if (!$dontSetNewIdIndex) {
+            $this->substNEWwithIDs[$NEW_id] = $id;
+            $this->substNEWwithIDs_table[$NEW_id] = $table;
+        }
+        $newRow = [];
+        if ($this->enableLogging) {
+            $newRow = $fieldArray;
+            $newRow['uid'] = $id;
+        }
+        // Update reference index:
+        $this->updateRefIndex($table, $id);
+        // Store in history
+        $this->getRecordHistoryStore()->addRecord($table, $id, $newRow, $this->correlationId);
+        if ($newVersion) {
+            if ($this->enableLogging) {
+                $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
+                $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', 10, ['table' => $table, 'uid' => $fieldArray['t3ver_oid'], 'offlineUid' => $id], $propArr['event_pid'], $NEW_id);
+            }
+        } else {
+            if ($this->enableLogging) {
+                $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
+                $page_propArr = $this->getRecordProperties('pages', $propArr['pid']);
+                $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was inserted on page "{pageTitle}" ({pid})', 10, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'pageTitle' => $page_propArr['header'], 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
+            }
+            // Clear cache for relevant pages:
+            $this->registerRecordIdForPageCacheClearing($table, $id);
+        }
+        return $id;
     }
 
     /**
