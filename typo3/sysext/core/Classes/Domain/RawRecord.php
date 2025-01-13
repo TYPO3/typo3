@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Domain;
 
 use TYPO3\CMS\Core\Domain\Exception\RecordPropertyNotFoundException;
 use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Holds all properties of a raw database row with unfiltered and unprocessed values.
@@ -28,13 +27,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 readonly class RawRecord implements RecordInterface
 {
+    protected string $mainType;
+    protected ?string $recordType;
+
     public function __construct(
         protected int $uid,
         protected int $pid,
         protected array $properties,
         protected ComputedProperties $computedProperties,
-        protected string $type
-    ) {}
+        protected string $fullType
+    ) {
+        $parts = $this->normalizeTypeParts($this->fullType);
+        $this->mainType = $parts[0] ?? '';
+        $this->recordType = $parts[1] ?? null;
+    }
 
     public function getUid(): int
     {
@@ -48,23 +54,20 @@ readonly class RawRecord implements RecordInterface
 
     public function getFullType(): string
     {
-        return $this->type;
+        return $this->fullType;
     }
 
+    /**
+     * @return non-empty-string|null
+     */
     public function getRecordType(): ?string
     {
-        if (str_contains($this->type, '.')) {
-            return GeneralUtility::trimExplode('.', $this->type, true)[1] ?? null;
-        }
-        return null;
+        return $this->recordType;
     }
 
     public function getMainType(): string
     {
-        if (str_contains($this->type, '.')) {
-            return explode('.', $this->type)[0] ?? '';
-        }
-        return $this->type;
+        return $this->mainType;
     }
 
     public function toArray(): array
@@ -97,5 +100,16 @@ readonly class RawRecord implements RecordInterface
     public function getRawRecord(): RawRecord
     {
         return $this;
+    }
+
+    /**
+     * @return array{0?: string, 1?: string}
+     */
+    protected function normalizeTypeParts(string $type): array
+    {
+        return array_filter(
+            array_map(trim(...), explode('.', $type, 2)),
+            static fn(string $part): bool => $part !== ''
+        );
     }
 }

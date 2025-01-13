@@ -33,17 +33,42 @@ final class RawRecordTest extends UnitTestCase
             'tt_content',
             null,
         ];
+        yield 'full type with dot' => [
+            'tt_content.',
+            'tt_content.',
+            'tt_content',
+            null,
+        ];
+        yield 'full type with dot and zero' => [
+            'tt_content.0',
+            'tt_content.0',
+            'tt_content',
+            '0',
+        ];
         yield 'record type' => [
             'tt_content.text',
             'tt_content.text',
             'tt_content',
             'text',
+            'list',
         ];
-        yield 'invalid config' => [
+        yield 'record type with dot' => [
+            'tt_content.record.type',
+            'tt_content.record.type',
+            'tt_content',
+            'record.type',
+        ];
+        yield 'record type with dot at the end' => [
+            'tt_content.record.',
+            'tt_content.record.',
+            'tt_content',
+            'record.',
+        ];
+        yield 'record type with just dots - uncommon but supported' => [
             'tt_content....',
             'tt_content....',
             'tt_content',
-            null,
+            '...',
         ];
     }
 
