@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFolderException;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -216,8 +217,8 @@ abstract class AbstractGenerator
         $folder = $storage->getRootLevelFolder();
         try {
             $folder = $folder->getSubfolder($path);
-            $folder->delete(true);
-        } catch (\InvalidArgumentException $e) {
+            $folder->delete();
+        } catch (FolderDoesNotExistException $e) {
             // No op if folder does not exist
         }
     }

@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Core\Resource;
 
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\ExistingTargetFileNameException;
+use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\ResourcePermissionsUnavailableException;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
@@ -250,14 +251,15 @@ class Folder implements FolderInterface
     }
 
     /**
-     * Returns the object for a subfolder of the current folder, if it exists.
+     * Returns the object for a subfolder of the current folder if it exists,
+     * or throws a FolderDoesNotExistException.
      *
-     * @throws \InvalidArgumentException
+     * @throws FolderDoesNotExistException
      */
     public function getSubfolder(string $name): Folder
     {
         if (!$this->storage->hasFolderInFolder($name, $this)) {
-            throw new \InvalidArgumentException('Folder "' . $name . '" does not exist in "' . $this->identifier . '"', 1329836110);
+            throw new FolderDoesNotExistException('Folder "' . $name . '" does not exist in "' . $this->identifier . '"', 1329836110);
         }
         return $this->storage->getFolderInFolder($name, $this);
     }
