@@ -7814,7 +7814,7 @@ class DataHandler implements LoggerAwareInterface
                     // Execute the INSERT query:
                     $connection->insert($table, $fieldArray);
                 } catch (DBALException $e) {
-                    $insertErrorMessage = $e->getPrevious()->getMessage();
+                    $insertErrorMessage = $e->getMessage();
                 }
                 // If succees, do...:
                 if ($insertErrorMessage === '') {
