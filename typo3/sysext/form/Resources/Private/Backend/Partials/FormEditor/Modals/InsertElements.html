@@ -8,7 +8,7 @@
             <div class="row">
                 <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
                     <div class="col-4 mb-3">
-                        <button type="button" class="text-start t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default d-block" title="{element.key}" data-element-type="{element.key}">
+                        <button type="button" class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default btn-block btn-align-start" title="{element.key}" data-element-type="{element.key}">
                             <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
                             <span>{element.label}</span>
                         </button>
