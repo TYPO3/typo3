@@ -10,17 +10,17 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,t,o,a){var i,n=arguments.length,c=n<3?t:null===a?a=Object.getOwnPropertyDescriptor(t,o):a;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)c=Reflect.decorate(e,t,o,a);else for(var r=e.length-1;r>=0;r--)(i=e[r])&&(c=(n<3?i(c):n>3?i(t,o,c):i(t,o))||c);return n>3&&c&&Object.defineProperty(t,o,c),c};import{html,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import"@typo3/backend/element/icon-element.js";let ColorSchemeSwitchElement=class extends LitElement{constructor(){super(...arguments),this.activeColorScheme=null,this.colorSchemes=null,this.advancedOptionsExpanded=!1,this.autoDetect=null,this.mql=null,this.mediaQueryListener=e=>this.autoDetect=e.matches?"dark":"light"}connectedCallback(){super.connectedCallback(),this.mql=window.matchMedia("(prefers-color-scheme: dark)"),this.mediaQueryListener(this.mql),this.mql.addEventListener("change",this.mediaQueryListener)}disconnectedCallback(){super.disconnectedCallback(),this.mql.removeEventListener("change",this.mediaQueryListener),this.mql=null}createRenderRoot(){return this}getRealColorScheme(){return"auto"===this.activeColorScheme?this.autoDetect??"light":this.activeColorScheme??"light"}render(){const e="dark"===this.getRealColorScheme();return html`
+var __decorate=function(e,t,o,i){var n,a=arguments.length,c=a<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,o):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)c=Reflect.decorate(e,t,o,i);else for(var s=e.length-1;s>=0;s--)(n=e[s])&&(c=(a<3?n(c):a>3?n(t,o,c):n(t,o))||c);return a>3&&c&&Object.defineProperty(t,o,c),c};import{html,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";import"@typo3/backend/element/icon-element.js";let ColorSchemeSwitchElement=class extends LitElement{constructor(){super(...arguments),this.activeColorScheme=null,this.colorSchemes=null,this.advancedOptionsExpanded=!1,this.autoDetect=null,this.mql=null,this.mediaQueryListener=e=>this.autoDetect=e.matches?"dark":"light"}connectedCallback(){super.connectedCallback(),this.mql=window.matchMedia("(prefers-color-scheme: dark)"),this.mediaQueryListener(this.mql),this.mql.addEventListener("change",this.mediaQueryListener)}disconnectedCallback(){super.disconnectedCallback(),this.mql.removeEventListener("change",this.mediaQueryListener),this.mql=null}createRenderRoot(){return this}getRealColorScheme(){return"auto"===this.activeColorScheme?this.autoDetect??"light":this.activeColorScheme??"light"}render(){return html`
       <div class="btn-group">
         <button
             type="button"
-            class="btn ${e?"btn-primary":"btn-default"}"
-            aria-pressed=${e?"true":"false"}
+            class="btn btn-default"
             title=${this.label}
             @click=${e=>this.toggle(e)}
         >
           <typo3-backend-icon identifier=${this.getIcon(this.activeColorScheme??"auto")} size="small"></typo3-backend-icon>
           ${this.getLabel(this.getRealColorScheme())}
+          <typo3-backend-icon identifier="actions-exchange" size="small" style="margin-left: auto;"></typo3-backend-icon>
         </button>
 
         <button
