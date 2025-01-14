@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'This extension simulates b13/bolt.',
     'description' => 'This extension simulates b13/bolt.',
     'category' => 'example',
-    'version' => '12.4.25',
+    'version' => '12.4.26',
     'state' => 'beta',
     'author' => 'Stefan Bürk',
     'author_email' => 'stefan@buerk.tech',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.25',
+            'typo3' => '12.4.26',
         ],
         'conflicts' => [],
         'suggests' => [],

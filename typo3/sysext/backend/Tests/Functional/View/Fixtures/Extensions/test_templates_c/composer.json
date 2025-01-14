@@ -2,7 +2,7 @@
 	"name": "typo3tests/cms-test-templates-c",
 	"type": "typo3-cms-extension",
 	"require": {
-		"typo3/cms-core": "12.4.25"
+		"typo3/cms-core": "12.4.*@dev"
 	},
 	"extra": {
 		"typo3/cms": {

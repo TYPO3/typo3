@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'This extension contains dependency injection fixtures.',
     'description' => 'This extension contains dependency injection fixture.',
     'category' => 'example',
-    'version' => '12.4.25',
+    'version' => '12.4.26',
     'state' => 'beta',
     'author' => 'Benjamin Franzke',
     'author_email' => 'ben@bnf.dev',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.25',
+            'typo3' => '12.4.26',
         ],
         'conflicts' => [],
         'suggests' => [],

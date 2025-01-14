@@ -4,7 +4,7 @@
 	"description": "FluidTemplateContentObject Test",
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"typo3/cms-core": "12.4.25"
+		"typo3/cms-core": "12.4.*@dev"
 	},
 	"autoload": {
 		"psr-4": {
