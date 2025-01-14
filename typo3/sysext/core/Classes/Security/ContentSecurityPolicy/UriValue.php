@@ -36,6 +36,20 @@ final class UriValue extends Uri implements \Stringable, EqualityInterface, Cove
         return new self((string)$other);
     }
 
+    protected function validate(): bool
+    {
+        $backupHost = null;
+        if ($this->host) {
+            $backupHost = $this->host;
+            $this->host = str_replace('*', 'wildcard', $this->host);
+        }
+        $ret = parent::validate();
+        if ($backupHost !== null) {
+            $this->host = $backupHost;
+        }
+        return $ret;
+    }
+
     public function __toString(): string
     {
         if ($this->entireWildcard) {

@@ -117,7 +117,7 @@ class Uri implements UriInterface
 
     /**
      * @param string $uri The full URI including query string and fragment
-     * @throws \InvalidArgumentException when the URI is not a string
+     * @throws \InvalidArgumentException if the URI is malformed.
      */
     public function __construct(string $uri = '')
     {
@@ -154,7 +154,14 @@ class Uri implements UriInterface
             }
         }
         if (isset($uriParts['port'])) {
-            $this->port = (int)$uriParts['port'];
+            $port = (int)$uriParts['port'];
+            if (!$this->validatePort($port)) {
+                throw new \InvalidArgumentException(
+                    'The uri "' . $uri . '" appears to be malformed, invalid port "' . $port . '" specified, must be a valid TCP/UDP port',
+                    1728057215
+                );
+            }
+            $this->port = $port;
         }
         if (isset($uriParts['path'])) {
             $this->path = $this->sanitizePath($uriParts['path']);
@@ -165,6 +172,30 @@ class Uri implements UriInterface
         if (isset($uriParts['fragment'])) {
             $this->fragment = $this->sanitizeFragment($uriParts['fragment']);
         }
+
+        if (!$this->validate()) {
+            throw new \InvalidArgumentException('The uri "' . $uri . '" appears to be malformed', 1728057216);
+        }
+    }
+
+    protected function validate(): bool
+    {
+        $url = clone $this;
+
+        if ($url->scheme === '') {
+            // filter_var will mark //example.com/ as invalid, let's pretend it's https in this case
+            $url->scheme = 'https';
+        }
+
+        if ($url->host === '') {
+            // filter_var will mark /mypath/ as invalid, let's pretend it's localhost in this case
+            $url->host = 'localhost';
+        } else {
+            // filter_var can not validate UTF8 encoded hosts
+            $url->host = idn_to_ascii($url->host);
+        }
+
+        return filter_var($url->__toString(), FILTER_VALIDATE_URL) !== false;
     }
 
     /**
@@ -445,15 +476,21 @@ class Uri implements UriInterface
      */
     public function withPort(?int $port): UriInterface
     {
-        if ($port !== null) {
-            if ($port < 1 || $port > 65535) {
-                throw new \InvalidArgumentException('Invalid port "' . $port . '" specified, must be a valid TCP/UDP port.', 1436717326);
-            }
+        if ($port !== null && !$this->validatePort($port)) {
+            throw new \InvalidArgumentException('Invalid port "' . $port . '" specified, must be a valid TCP/UDP port.', 1436717326);
         }
 
         $clonedObject = clone $this;
         $clonedObject->port = $port;
         return $clonedObject;
+    }
+
+    protected function validatePort(int $port): bool
+    {
+        if ($port < 1 || $port > 65535) {
+            return false;
+        }
+        return true;
     }
 
     /**
