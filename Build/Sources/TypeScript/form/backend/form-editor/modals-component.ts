@@ -199,9 +199,9 @@ function insertElementsModalSetup(
     }
   }
 
-  $('a', modalContent).on('click', function(this: HTMLElement) {
+  $('button', modalContent).on('click', function(this: HTMLElement) {
     getPublisherSubscriber().publish(publisherTopicName, [$(this).data(getHelper().getDomElementDataAttribute('elementType'))]);
-    $('a', modalContent).off();
+    $('button', modalContent).off();
     Modal.currentModal.hideModal();
   });
 }

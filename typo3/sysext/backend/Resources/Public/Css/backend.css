@@ -2644,6 +2644,8 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .btn-block{display:flex;width:100%}
 .btn-block+.btn-block{margin-top:calc(var(--typo3-spacing) * .5)}
 .btn-block-vertical{flex-direction:column;width:100%}
+.btn-align-start{justify-content:start}
+.btn-align-end{justify-content:end}
 .btn-group{position:static}
 .btn-toolbar{gap:.5rem}
 .btn-link{--typo3-btn-padding-y:0;--typo3-btn-padding-x:0;--typo3-btn-focus-border-color:var(--typo3-state-default-focus-border-color)}
