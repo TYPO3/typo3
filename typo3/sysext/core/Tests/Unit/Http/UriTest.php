@@ -110,7 +110,20 @@ final class UriTest extends UnitTestCase
     public function noSchemeWithDomainAlikeIsInterpretedAsPath(): void
     {
         $subject = new Uri('www.example.com');
+        // This is counter intuitive, but interpreted as path.
+        // Although we'd like to see protocol independent `//` here,
+        // we must not change this, as…
         self::assertEquals('/www.example.com', (string)$subject);
+
+        // …this behaviour is security relevant.
+        // This invalid domain name – given without a scheme – is
+        // only "save" because they are considered to be paths
+        // (invalid hostname alike is not parsed as a hostname):
+        $subject = new Uri('evil.tld\\@host.tld');
+        self::assertEquals('/evil.tld%5C@host.tld', (string)$subject);
+
+        $subject = new Uri('evil.tld\\\\\\@host.tld');
+        self::assertEquals('/evil.tld%5C%5C%5C@host.tld', (string)$subject);
     }
 
     #[Test]
@@ -118,6 +131,12 @@ final class UriTest extends UnitTestCase
     {
         $subject = new Uri('www.example.com/');
         self::assertEquals('/www.example.com/', (string)$subject);
+
+        $subject = new Uri('evil.tld\\@host.tld/');
+        self::assertEquals('/evil.tld%5C@host.tld/', (string)$subject);
+
+        $subject = new Uri('evil.tld\\\\\\@host.tld/');
+        self::assertEquals('/evil.tld%5C%5C%5C@host.tld/', (string)$subject);
     }
 
     public static function validPortsDataProvider(): array
@@ -497,6 +516,69 @@ final class UriTest extends UnitTestCase
         self::assertEquals('https://ουτοπία.δπθ.gr/', (string)$uri);
     }
 
+    public static function invalidHostDataProvider(): \Generator
+    {
+        yield [
+            'url' => 'https://evil.tld\\@host.tld/',
+            'parseUrl' => 'host.tld',
+            'chrome' => 'evil.tld',
+        ];
+
+        yield [
+            'url' => 'https://evil.tld\\\\@host.tld/',
+            'parseUrl' => 'host.tld',
+            'chrome' => 'evil.tld',
+        ];
+
+        yield [
+            'url' => 'https://evil.tld\\\\\\@host.tld/',
+            'parseUrl' => 'host.tld',
+            'chrome' => 'evil.tld',
+        ];
+
+        yield [
+            'url' => '//evil.tld\\@host.tld/',
+            'parseUrl' => 'host.tld',
+            'chrome' => 'evil.tld',
+        ];
+
+        yield [
+            'url' => '//evil.tld\\\\\\@host.tld',
+            'parseUrl' => 'host.tld',
+            'chrome' => 'evil.tld',
+        ];
+
+        yield [
+            'url' => 'http://normal.com[@evil.tld]/',
+            'parseUrl' => 'evil.tld]',
+            'chrome' => 'evil.tld',
+        ];
+
+        yield [
+            'url' => 'http://evil.tld\\',
+            'parseUrl' => 'evil.tld\\',
+            'chrome' => 'evil.tld',
+        ];
+    }
+
+    #[DataProvider('invalidHostDataProvider')]
+    #[Test]
+    public function uriParsingThrowsExceptionForParserDeviatingHostValues($url, $parseUrl, $chrome): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionCode(1728057216);
+        new Uri($url);
+    }
+
+    #[DataProvider('invalidHostDataProvider')]
+    #[Test]
+    public function parseUrlReturnsExpectedInvalidHostForInvalidHostURLs($url, $parseUrl, $chrome): void
+    {
+        $result = parse_url($url, PHP_URL_HOST);
+        self::assertSame($parseUrl, $result);
+        self::assertNotSame($chrome, $result);
+    }
+
     #[Test]
     public function canParseAllPropertiesWithIPv6(): void
     {
@@ -562,5 +644,37 @@ final class UriTest extends UnitTestCase
         $expected = 'https://user:pass@[fe80::200:5aee:feaa:20a2]:3001/foo?bar=baz#quz';
         $uri = new Uri($input);
         self::assertSame($expected, (string)$uri);
+    }
+
+    /**
+     * @return iterable<non-empty-string, array{non-empty-string}>
+     */
+    public static function invalidUriProvider(): iterable
+    {
+        yield 'Unsupported scheme ftp' => ['ftp://user:pass@local.example.com:3001/foo?bar=baz#quz'];
+        yield 'Unsupported scheme ssh' => ['ssh://user:pass@local.example.com:3001/foo?bar=baz#quz'];
+        yield 'Unsupported scheme git' => ['git://user:pass@local.example.com:3001/foo?bar=baz#quz'];
+
+        yield 'Invalid port -1 (too small)' => ['https://user:pass@local.example.com:-1/foo?bar=baz#quz'];
+        yield 'Invalid port 0 (zero)' => ['https://user:pass@local.example.com:0/foo?bar=baz#quz'];
+        yield 'Invalid port 65536 (too big)' => ['https://user:pass@local.example.com:65536/foo?bar=baz#quz'];
+
+        yield from [
+            'Malformed URI'             => ['http://invalid:%20https://example.com'],
+            'Colon in non-IPv6 host'    => ['https://user:pass@local:example.com:3001/foo?bar=baz#quz'],
+            'Wrong bracket in the IPv6' => ['https://user:pass@fe80[::200:5aee:feaa:20a2]:3001/foo?bar=baz#quz'],
+            // percent encoding is allowed in URI but not in web urls particularly with idn encoding for dns.
+            // no validation for correct percent encoding either
+            // 'Percent in the host' => ["https://user:pass@local%example.com:3001/foo?bar=baz#quz"],
+            'Bracket in the host' => ['https://user:pass@[local.example.com]:3001/foo?bar=baz#quz'],
+        ];
+    }
+
+    #[DataProvider('invalidUriProvider')]
+    #[Test]
+    public function invalidUriRaisesAnException(string $invalidUri): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        new Uri($invalidUri);
     }
 }
