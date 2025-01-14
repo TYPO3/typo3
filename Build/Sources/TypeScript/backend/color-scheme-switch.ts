@@ -61,18 +61,17 @@ export class ColorSchemeSwitchElement extends LitElement {
   }
 
   protected render(): TemplateResult | symbol {
-    const isDark = this.getRealColorScheme() === 'dark';
     return html`
       <div class="btn-group">
         <button
             type="button"
-            class="btn ${isDark ? 'btn-primary' : 'btn-default'}"
-            aria-pressed=${isDark ? 'true' : 'false'}
+            class="btn btn-default"
             title=${this.label}
             @click=${(e: Event) => this.toggle(e)}
         >
           <typo3-backend-icon identifier=${this.getIcon(this.activeColorScheme ?? 'auto')} size="small"></typo3-backend-icon>
           ${this.getLabel(this.getRealColorScheme())}
+          <typo3-backend-icon identifier="actions-exchange" size="small" style="margin-left: auto;"></typo3-backend-icon>
         </button>
 
         <button
