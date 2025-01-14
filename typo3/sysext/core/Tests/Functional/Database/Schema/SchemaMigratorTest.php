@@ -315,6 +315,166 @@ final class SchemaMigratorTest extends FunctionalTestCase
     #[TestWith(['emptyDefaultTableOptions' => false])]
     #[TestWith(['emptyDefaultTableOptions' => true])]
     #[Test]
+    public function createNewTableWithParsedLatin1BasedColumnsCharsetAndCollationCreatesExpectedColumnForMySQLAndMariaDB(bool $emptyDefaultTableOptions): void
+    {
+        $assertForColumns = ['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9', 'col10'];
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableWithLatin1BasedCharsetAndCollate.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $tableDetails = $this->getTableDetails();
+        self::assertCount(12, $tableDetails->getColumns());
+        foreach ($assertForColumns as $assertForColumn) {
+            self::assertTrue($tableDetails->hasColumn($assertForColumn));
+            self::assertTrue($tableDetails->getColumn($assertForColumn)->hasPlatformOption('charset'));
+            self::assertSame('latin1', $tableDetails->getColumn($assertForColumn)->getPlatformOption('charset'));
+            self::assertTrue($tableDetails->getColumn($assertForColumn)->hasPlatformOption('collation'));
+            self::assertSame('latin1_swedish_ci', $tableDetails->getColumn($assertForColumn)->getPlatformOption('collation'));
+        }
+    }
+
+    #[Group('not-mariadb')]
+    #[Group('not-mysql')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableWithParsedLatin1BasedColumnsCharsetAndCollationCreatesExpectedColumnForPostgreSQL(bool $emptyDefaultTableOptions): void
+    {
+        $assertForColumns = ['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9', 'col10'];
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableWithLatin1BasedCharsetAndCollate.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $tableDetails = $this->getTableDetails();
+        self::assertCount(12, $tableDetails->getColumns());
+        foreach ($assertForColumns as $assertForColumn) {
+            // MySQL/MariaDB collation sets are not exchangeable for PostegreSQL and requires also to be a subset of the
+            // connection/table charset and is removed in ConnectionMigrator::applyDefaultPlatformOptionsToColumns().
+            self::assertTrue($tableDetails->hasColumn($assertForColumn));
+            self::assertFalse($tableDetails->getColumn($assertForColumn)->hasPlatformOption('charset'));
+            self::assertFalse($tableDetails->getColumn($assertForColumn)->hasPlatformOption('collation'));
+        }
+    }
+
+    #[Group('not-mariadb')]
+    #[Group('not-mysql')]
+    #[Group('not-postgres')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableWithParsedLatin1BasedColumnsCharsetAndCollationCreatesExpectedColumnForSQLite(bool $emptyDefaultTableOptions): void
+    {
+        $assertForColumns = ['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9', 'col10'];
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableWithLatin1BasedCharsetAndCollate.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $tableDetails = $this->getTableDetails();
+        self::assertCount(12, $tableDetails->getColumns());
+        foreach ($assertForColumns as $assertForColumn) {
+            // SQLite does not support charset and collation for columns but columns parsed from MySQL/MariaDB like
+            // ext_tables.sql should still create tables and columns correctly. SQLite requires to have collation set
+            // to binary for CHAR/VARCHAR/TEXT/MEDIUMTEXT/LONGTEXT/JSON which is here verified.
+            // See ConnectionMigrator::applyDefaultPlatformOptionsToColumns().
+            self::assertTrue($tableDetails->hasColumn($assertForColumn));
+            self::assertFalse($tableDetails->getColumn($assertForColumn)->hasPlatformOption('charset'));
+            self::assertTrue($tableDetails->getColumn($assertForColumn)->hasPlatformOption('collation'));
+            self::assertSame('BINARY', $tableDetails->getColumn($assertForColumn)->getPlatformOption('collation'));
+        }
+    }
+
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableWithParsedAsciiBasedColumnsCharsetAndCollationCreatesExpectedColumnForMySQLAndMariaDB(bool $emptyDefaultTableOptions): void
+    {
+        $assertForColumns = ['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9', 'col10'];
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableWithAsciiBasedCharsetAndCollate.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $tableDetails = $this->getTableDetails();
+        self::assertCount(12, $tableDetails->getColumns());
+        foreach ($assertForColumns as $assertForColumn) {
+            self::assertTrue($tableDetails->hasColumn($assertForColumn));
+            self::assertTrue($tableDetails->getColumn($assertForColumn)->hasPlatformOption('charset'));
+            self::assertSame('ascii', $tableDetails->getColumn($assertForColumn)->getPlatformOption('charset'));
+            self::assertTrue($tableDetails->getColumn($assertForColumn)->hasPlatformOption('collation'));
+            self::assertSame('ascii_bin', $tableDetails->getColumn($assertForColumn)->getPlatformOption('collation'));
+        }
+    }
+
+    #[Group('not-mariadb')]
+    #[Group('not-mysql')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableWithParsedAsciiBasedColumnsCharsetAndCollationCreatesExpectedColumnForPostgreSQL(bool $emptyDefaultTableOptions): void
+    {
+        $assertForColumns = ['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9', 'col10'];
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableWithAsciiBasedCharsetAndCollate.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $tableDetails = $this->getTableDetails();
+        self::assertCount(12, $tableDetails->getColumns());
+        foreach ($assertForColumns as $assertForColumn) {
+            // MySQL/MariaDB collation sets are not exchangeable for PostegreSQL and requires also to be a subset of the
+            // connection/table charset and is removed in ConnectionMigrator::applyDefaultPlatformOptionsToColumns().
+            self::assertTrue($tableDetails->hasColumn($assertForColumn));
+            self::assertFalse($tableDetails->getColumn($assertForColumn)->hasPlatformOption('charset'));
+            self::assertFalse($tableDetails->getColumn($assertForColumn)->hasPlatformOption('collation'));
+        }
+    }
+
+    #[Group('not-mariadb')]
+    #[Group('not-mysql')]
+    #[Group('not-postgres')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
+    public function createNewTableWithParsedAsciiBasedColumnsCharsetAndCollationCreatesExpectedColumnForSQLite(bool $emptyDefaultTableOptions): void
+    {
+        $assertForColumns = ['col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7', 'col8', 'col9', 'col10'];
+        $subject = $this->createSchemaMigrator();
+        $statements = $this->createSqlReader()->getCreateTableStatementArray(file_get_contents(__DIR__ . '/../Fixtures/newTableWithAsciiBasedCharsetAndCollate.sql'));
+        $updateSuggestions = $subject->getUpdateSuggestions($statements);
+        $selectedStatements = $updateSuggestions[ConnectionPool::DEFAULT_CONNECTION_NAME]['create_table'];
+        $result = $subject->migrate($statements, $selectedStatements);
+        $this->verifyMigrationResult($result);
+        $tableDetails = $this->getTableDetails();
+        self::assertCount(12, $tableDetails->getColumns());
+        foreach ($assertForColumns as $assertForColumn) {
+            // SQLite does not support charset and collation for columns but columns parsed from MySQL/MariaDB like
+            // ext_tables.sql should still create tables and columns correctly. SQLite requires to have collation set
+            // to binary for CHAR/VARCHAR/TEXT/MEDIUMTEXT/LONGTEXT/JSON which is here verified.
+            // See ConnectionMigrator::applyDefaultPlatformOptionsToColumns().
+            self::assertTrue($tableDetails->hasColumn($assertForColumn));
+            self::assertFalse($tableDetails->getColumn($assertForColumn)->hasPlatformOption('charset'));
+            self::assertTrue($tableDetails->getColumn($assertForColumn)->hasPlatformOption('collation'));
+            self::assertSame('BINARY', $tableDetails->getColumn($assertForColumn)->getPlatformOption('collation'));
+        }
+    }
+
+    #[Group('not-postgres')]
+    #[Group('not-sqlite')]
+    #[TestWith(['emptyDefaultTableOptions' => false])]
+    #[TestWith(['emptyDefaultTableOptions' => true])]
+    #[Test]
     public function changeTableCharsetToDefaultIfConfigured(bool $emptyDefaultTableOptions): void
     {
         $subject = $this->createSchemaMigrator();

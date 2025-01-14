@@ -197,8 +197,7 @@ CREATE TABLE sys_lockedrecords (
 
 # Define table and fields since it has no TCA
 CREATE TABLE sys_refindex (
-	# @todo: Force a latin1 field to reduce primary key length, it only holds hex chars 0-9,a-f.
-	hash varchar(32) DEFAULT '' NOT NULL,
+	hash varchar(32) DEFAULT '' NOT NULL CHARACTER SET ascii COLLATE ascii_bin,
 	tablename varchar(64) DEFAULT '' NOT NULL,
 	recuid int unsigned DEFAULT 0 NOT NULL,
 	field varchar(64) DEFAULT '' NOT NULL,

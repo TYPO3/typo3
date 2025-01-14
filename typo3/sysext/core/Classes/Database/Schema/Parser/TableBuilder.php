@@ -185,6 +185,19 @@ class TableBuilder
             $column->setValues($item->dataType->getValues());
         }
 
+        $dataTypeSupportsCharsetAndCollation = (
+            $item->dataType instanceof CharDataType
+            || $item->dataType instanceof VarCharDataType
+            || $item->dataType instanceof TextDataType
+        );
+        $options = $item->dataType->getOptions();
+        if ($dataTypeSupportsCharsetAndCollation && ($options['charset'] ?? null)) {
+            $column->setPlatformOption('charset', $options['charset']);
+        }
+        if ($dataTypeSupportsCharsetAndCollation && ($options['charset'] ?? null)) {
+            $column->setPlatformOption('collation', $options['collation']);
+        }
+
         if ($item->index) {
             $this->table->addIndex([$item->columnName->getQuotedName()]);
         }
