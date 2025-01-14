@@ -5,9 +5,9 @@
     }"
 />
 
-<p class="h3 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.headline" /></p>
+<p class="dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.headline" /></p>
 
-<p class="h4 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.openDocuments.headline" /></p>
+<p class="dropdown-header"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.openDocuments.headline" /></p>
 <f:if condition="{openDocuments}">
     <f:then>
         <ul class="dropdown-list" data-open-docs="{openDocuments->f:count()}">
@@ -55,7 +55,7 @@
 
 <hr class="dropdown-divider" aria-hidden="true">
 
-<p class="h4 dropdown-headline"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.recentDocuments.headline" /></p>
+<p class="dropdown-header"><f:translate key="LLL:EXT:opendocs/Resources/Private/Language/locallang.xlf:toolbarItems.recentDocuments.headline" /></p>
 <f:if condition="{recentDocuments}">
     <f:then>
         <ul class="dropdown-list">

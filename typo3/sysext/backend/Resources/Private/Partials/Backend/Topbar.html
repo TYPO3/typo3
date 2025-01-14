@@ -50,7 +50,7 @@
                 <li {be:toolbar.attributes(class: toolbarItem) -> f:format.raw()}>
                     <be:toolbar.ifHasDropdown class="{toolbarItem}">
                         <f:then>
-                            <button type="button" class="toolbar-item-link dropdown-toggle" data-bs-target="toolbar-menu-{iterator.cycle}" data-bs-toggle="dropdown" data-bs-offset="0,0">
+                            <button type="button" class="toolbar-item-link dropdown-toggle dropdown-toggle-no-chevron" data-bs-target="toolbar-menu-{iterator.cycle}" data-bs-toggle="dropdown" data-bs-offset="0,0">
                                 {toolbarItem.item -> f:format.raw()}
                             </button>
                             <div id="toolbar-menu-{iterator.cycle}" class="dropdown-menu" role="menu">

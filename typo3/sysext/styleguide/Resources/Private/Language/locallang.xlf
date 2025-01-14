@@ -70,6 +70,9 @@
 			<trans-unit id="action.developerTools">
 				<source>Developer Tools</source>
 			</trans-unit>
+			<trans-unit id="action.dropdown">
+				<source>Dropdown</source>
+			</trans-unit>
 			<trans-unit id="action.flashMessages">
 				<source>Flash messages</source>
 			</trans-unit>
@@ -363,6 +366,41 @@
 			</trans-unit>
 			<trans-unit id="component.checkbox.section.toggle.headline">
 				<source>Toggle</source>
+			</trans-unit>
+
+			<!-- Component: Dropdown -->
+			<trans-unit id="component.dropdown.headline">
+				<source>Dropdown</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.toggles.headline">
+				<source>Toggles</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.basic.headline">
+				<source>Basic</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.states.headline">
+				<source>States</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.header.headline">
+				<source>Header</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.advancedbuttons.headline">
+				<source>Advanced Buttons</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.text.headline">
+				<source>Text</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.rows.headline">
+				<source>Rows</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.divider.headline">
+				<source>Divider</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.table.headline">
+				<source>Table</source>
+			</trans-unit>
+			<trans-unit id="component.dropdown.section.listitemswithactions.headline">
+				<source>List items with actions</source>
 			</trans-unit>
 
 			<!-- Component: Developer Tools -->

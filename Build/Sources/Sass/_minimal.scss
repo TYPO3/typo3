@@ -36,7 +36,7 @@
 // @import "../../node_modules/bootstrap/scss/forms";
 // @import "../../node_modules/bootstrap/scss/buttons";
 @import "../../node_modules/bootstrap/scss/transitions";
-@import "../../node_modules/bootstrap/scss/dropdown";
+// @import "../../node_modules/bootstrap/scss/dropdown";
 @import "../../node_modules/bootstrap/scss/button-group";
 // @import "../../node_modules/bootstrap/scss/nav";
 @import "../../node_modules/bootstrap/scss/navbar";
@@ -81,6 +81,7 @@
 @import "component/type";
 @import "component/utility";
 @import "component/order";
+@import "component/dropdown";
 @import "component/nav";
 @import "component/pagination";
 @import "component/icon";
@@ -93,7 +94,6 @@
 @import "component/buttons";
 @import "component/button-group";
 @import "component/code";
-@import "component/dropdown";
 @import "component/avatar";
 @import "component/callout";
 @import "component/statusreport";
