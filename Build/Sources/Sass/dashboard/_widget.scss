@@ -91,6 +91,9 @@
     opacity: .5;
     border-radius: 4px;
     transition: opacity .2s ease-in-out;
+    background: none;
+    border: none;
+    appearance: none;
 
     &:hover,
     &:focus {

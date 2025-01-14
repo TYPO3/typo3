@@ -473,8 +473,16 @@ function removeFormSetup(formManagerApp: FormManager): void {
       btnClass: 'btn-danger',
       name: 'createform',
       trigger: function(e: Event, modal: ModalElement) {
-        document.location = formManagerApp.getAjaxEndpoint('delete') + '&formPersistenceIdentifier=' + that.data('formPersistenceIdentifier');
-        modal.hideModal();
+        $.post(formManagerApp.getAjaxEndpoint('delete'), {
+          formPersistenceIdentifier: that.data('formPersistenceIdentifier'),
+        }, function(data) {
+          if (data.status === 'success') {
+            document.location = data.url;
+          } else {
+            Notification.error(data.title, data.message);
+          }
+          modal.hideModal();
+        });
       }
     });
 

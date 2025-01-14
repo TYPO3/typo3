@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -33,7 +34,6 @@ use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Pagination\ArrayPaginator;
 use TYPO3\CMS\Core\Pagination\SimplePagination;
-use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -54,6 +54,8 @@ use TYPO3\CMS\Form\Service\TranslationService;
  */
 class FormManagerController extends ActionController
 {
+    use AllowedMethodsTrait;
+
     protected const JS_MODULE_NAMES = ['app', 'viewModel'];
     protected const PAGINATION_MAX = 20;
 
@@ -118,6 +120,7 @@ class FormManagerController extends ActionController
      */
     protected function initializeCreateAction(): void
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
         $this->defaultViewObjectName = JsonView::class;
     }
 
@@ -185,6 +188,7 @@ class FormManagerController extends ActionController
      */
     protected function initializeDuplicateAction(): void
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
         $this->defaultViewObjectName = JsonView::class;
     }
 
@@ -273,6 +277,12 @@ class FormManagerController extends ActionController
         return $this->jsonResponse();
     }
 
+    protected function initializeDeleteAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+        $this->defaultViewObjectName = JsonView::class;
+    }
+
     /**
      * Delete a formDefinition identified by the $formPersistenceIdentifier.
      *
@@ -284,6 +294,10 @@ class FormManagerController extends ActionController
         if (!$this->formPersistenceManager->isAllowedPersistencePath($formPersistenceIdentifier, $formSettings)) {
             throw new PersistenceManagerException(sprintf('Delete "%s" is not allowed', $formPersistenceIdentifier), 1614500661);
         }
+        $response = [
+            'status' => 'success',
+            'url' => $this->uriBuilder->uriFor('index', [], 'FormManager'),
+        ];
         if (empty($this->databaseService->getReferencesByPersistenceIdentifier($formPersistenceIdentifier))) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['ext/form']['beforeFormDelete'] ?? [] as $className) {
                 $hookObj = GeneralUtility::makeInstance($className);
@@ -299,13 +313,23 @@ class FormManagerController extends ActionController
                 $formSettings['formManager']['controller'],
                 $formSettings['formManager']['translationFiles'] ?? []
             );
-            $this->addFlashMessage(
-                sprintf($controllerConfiguration['deleteAction']['errorMessage'], $formPersistenceIdentifier),
-                $controllerConfiguration['deleteAction']['errorTitle'],
-                ContextualFeedbackSeverity::ERROR,
-            );
+
+            $response = [
+                'status' => 'error',
+                'title' => $controllerConfiguration['deleteAction']['errorTitle'],
+                'message' => sprintf($controllerConfiguration['deleteAction']['errorMessage'], $formPersistenceIdentifier),
+            ];
         }
-        return $this->redirect('index');
+
+        // deleteAction uses the extbase JsonView::class.
+        // That's why we have to set the view variables in this way.
+        /** @var JsonView $view */
+        $view = $this->view;
+        $view->assign('response', $response);
+        $view->setVariablesToRender([
+            'response',
+        ]);
+        return $this->jsonResponse();
     }
 
     protected function getFormSettings(): array

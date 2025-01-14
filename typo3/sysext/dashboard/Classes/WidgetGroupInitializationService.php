@@ -51,7 +51,9 @@ class WidgetGroupInitializationService
                     'label' => $this->getLanguageService()->sL($widgetConfiguration->getTitle()),
                     'description' => $this->getLanguageService()->sL($widgetConfiguration->getDescription()),
                     'url' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'addWidget', 'widget' => $widgetIdentifier]),
-                    'requestType' => 'location',
+                    'requestType' => 'ajax',
+                    'defaultValues' => [],
+                    'saveAndClose' => true,
                 ];
             }
 

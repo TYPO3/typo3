@@ -128,7 +128,7 @@
                                                 </f:defaultCase>
                                             </f:switch>
                                             <td class="col-control">
-                                                <div class="btn-group btn-group-sm">
+                                                <f:form action="deleteIndexedItem" class="btn-group btn-group-sm">
                                                     <f:link.action
                                                         action="statisticDetails"
                                                         arguments="{pageHash:l.phash}"
@@ -137,14 +137,19 @@
                                                     >
                                                         <core:icon identifier="actions-options" />
                                                     </f:link.action>
-                                                    <a
-                                                        href="{f:uri.action(action:'deleteIndexedItem',arguments:'{itemId:l.phash,depth:depth,mode:mode}')}"
+
+                                                    <f:form.hidden name="itemId" value="{l.phash}" />
+                                                    <f:form.hidden name="depth" value="{depth}" />
+                                                    <f:form.hidden name="mode" value="{mode}" />
+
+                                                    <button
+                                                        type="submit"
                                                         title="{f:translate(key:'administration.removeEntry')}"
                                                         class="btn btn-default"
                                                     >
                                                         <core:icon identifier="actions-edit-delete" />
-                                                    </a>
-                                                </div>
+                                                    </button>
+                                                </f:form>
                                             </td>
                                         </tr>
                                     </f:for>
@@ -181,14 +186,20 @@
                     </tbody>
                 </table>
             </div>
-            <a
-                href="{f:uri.action(action:'deleteIndexedItem', arguments:'{itemId:\'ALL\', depth:depth, mode:mode}')}"
-                title="{f:translate(key:'administration.removeAllEntries')}"
-                class="btn btn-default"
-            >
-                <core:icon identifier="actions-edit-delete" />
-                <f:translate key="LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.removeAllEntries" />
-            </a>
+            <f:form action="deleteIndexedItem">
+                <f:form.hidden name="itemId" value="ALL" />
+                <f:form.hidden name="depth" value="{depth}" />
+                <f:form.hidden name="mode" value="{mode}" />
+
+                <button
+                    type="submit"
+                    title="{f:translate(key:'administration.removeAllEntries')}"
+                    class="btn btn-default"
+                >
+                    <core:icon identifier="actions-edit-delete" />
+                    <f:translate key="LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.removeAllEntries" />
+                </button>
+            </f:form>
         </f:then>
         <f:else>
             <f:be.infobox

@@ -70,7 +70,7 @@
 .widget-content-main{flex-grow:1;overflow-y:auto;padding:var(--widget-padding)}
 .widget-content-footer{padding:var(--widget-padding);padding-top:0}
 .widget-actions{color:var(--widget-title-color-state,var(--widget-title-color));position:absolute;display:flex;top:calc(var(--widget-title-font-size) * var(--widget-title-line-height)/ 2 + var(--widget-padding)/ 2);inset-inline-end:calc(var(--widget-padding)/ 2);transform:translate(0,-50%)}
-.widget-action{width:var(--widget-action-size);height:var(--widget-action-size);position:relative;color:inherit;text-align:center;opacity:.5;border-radius:4px;transition:opacity .2s ease-in-out}
+.widget-action{width:var(--widget-action-size);height:var(--widget-action-size);position:relative;color:inherit;text-align:center;opacity:.5;border-radius:4px;transition:opacity .2s ease-in-out;background:0 0;border:none;-webkit-appearance:none;-moz-appearance:none;appearance:none}
 .widget-action:focus,.widget-action:hover{opacity:1!important}
 .widget-action:focus-visible{outline:var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb,currentColor,transparent 25%)}
 .widget-action .icon{position:absolute;top:50%;inset-inline-start:50%;transform:translate(calc(-50% * var(--typo3-position-modifier)),-50%)}

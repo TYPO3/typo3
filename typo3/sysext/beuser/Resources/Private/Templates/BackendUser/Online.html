@@ -67,17 +67,21 @@
                             <td class="col-control">
                                 <f:if condition="{currentSessionId} == {session.id}">
                                     <f:else>
-                                        <f:link.action
+                                        <f:form.button
+                                            name="sessionId"
+                                            value="{session.id}"
+                                            form="form-terminate-backend-user-session"
                                             class="btn btn-default t3js-modal-trigger"
-                                            action="terminateBackendUserSession"
-                                            controller="BackendUser"
-                                            arguments="{sessionId: session.id}"
-                                            data="{severity: 'warning', title: '{f:translate(key: \'backendUser.online.endSession\')}', bs-content: '{f:translate(key: \'backendUser.online.reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}"
-                                            role="button"
+                                            title="{f:translate(key: 'resetPassword.label')}"
+                                            type="submit"
+                                            data-severity="warning"
+                                            data-title="{f:translate(key: 'backendUser.online.endSession')}"
+                                            data-bs-content="{f:translate(key: 'backendUser.online.reallyLogout')} {onlineUser.backendUser.userName}?"
+                                            data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
                                         >
                                             <core:icon identifier="actions-close" />
                                             <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:backendUser.online.endSession" />
-                                        </f:link.action>
+                                        </f:form.button>
                                     </f:else>
                                 </f:if>
                                 <a
@@ -107,6 +111,8 @@
             </tfoot>
         </table>
     </div>
+
+    <f:form id="form-terminate-backend-user-session" action="terminateBackendUserSession" controller="BackendUser" method="post"class="hidden" />
 
 </f:section>
 

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,6 +36,7 @@ use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
  */
 class UploadExtensionFileController extends AbstractController
 {
+    use AllowedMethodsTrait;
     use BlockSerializationTrait;
 
     protected string $extensionBackupPath = '';
@@ -76,6 +78,8 @@ class UploadExtensionFileController extends AbstractController
      */
     public function extractAction(bool $overwrite = false): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         if (Environment::isComposerMode()) {
             throw new ExtensionManagerException(
                 'Composer mode is active. You are not allowed to upload any extension file.',
