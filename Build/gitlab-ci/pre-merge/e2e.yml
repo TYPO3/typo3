@@ -5,7 +5,7 @@ e2e playwright composer sqlite 8.2 pre-merge:
   except:
     refs:
       - schedules
-      - main
+      - "13.4"
   artifacts:
     when: on_failure
     paths:
