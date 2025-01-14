@@ -95,7 +95,7 @@ final class ExampleViewHelper extends AbstractViewHelper
             foreach ($lines as $line) {
                 $tmp = substr($line, $indentSize) ?: '';
                 $spaces = strlen($tmp) - strlen(ltrim($tmp));
-                $codeLines[] = str_repeat('  ', $spaces) . ltrim($line);
+                $codeLines[] = str_repeat(' ', $spaces) . ltrim($line);
             }
             $code = implode(chr(10), $codeLines);
 
