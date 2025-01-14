@@ -70,6 +70,9 @@
     position: relative;
     color: $gray-600;
     text-align: center;
+    background: none;
+    border: none;
+    appearance: none;
 
     &:hover,
     &:focus {

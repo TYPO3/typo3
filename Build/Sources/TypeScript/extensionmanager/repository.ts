@@ -103,7 +103,7 @@ class Repository {
 
   private getResolveDependenciesAndInstallResult(url: string): void {
     NProgress.start();
-    new AjaxRequest(url).get().then(async (response: AjaxResponse): Promise<void> => {
+    new AjaxRequest(url).post({}).then(async (response: AjaxResponse): Promise<void> => {
       try {
         // FIXME: As of now, the endpoint doesn't set proper headers, thus we have to parse the response text
         // https://review.typo3.org/c/Packages/TYPO3.CMS/+/63438
@@ -166,6 +166,11 @@ class Repository {
           TYPO3.lang['extensionList.dependenciesResolveInstallError.message'] || 'Your installation failed while resolving dependencies.'
         );
       }
+    }, (): void => {
+      Notification.error(
+        TYPO3.lang['extensionList.dependenciesResolveInstallError.title'] || 'Install error',
+        TYPO3.lang['extensionList.dependenciesResolveInstallError.message'] || 'Your installation failed while resolving dependencies.'
+      );
     }).finally((): void => {
       NProgress.done();
     });

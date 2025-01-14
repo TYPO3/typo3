@@ -59,16 +59,20 @@
                                 <div class="btn-group" role="group">
                                     <f:if condition="{currentSessionId} == {session.id}">
                                         <f:else>
-                                            <f:link.action
+                                            <f:form.button
+                                                name="sessionId"
+                                                value="{session.id}"
+                                                form="form-terminate-backend-user-session"
                                                 class="btn btn-default t3js-modal-trigger"
-                                                action="terminateBackendUserSession"
-                                                controller="BackendUser"
-                                                arguments="{sessionId: session.id}"
-                                                data="{severity: 'warning', title: '{f:translate(key: \'endSession\')}', bs-content: '{f:translate(key: \'reallyLogout\')} {onlineUser.backendUser.userName}?', button-close-text: '{f:translate(key: \'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel\')}'}"
+                                                type="submit"
+                                                data-severity="warning"
+                                                data-title="{f:translate(key: 'endSession')}"
+                                                data-bs-content="{f:translate(key: 'reallyLogout')} {onlineUser.backendUser.userName}?"
+                                                data-button-close-text="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel')}"
                                             >
                                                 <core:icon identifier="actions-close" />
                                                 <f:translate key="endSession" />
-                                            </f:link.action>
+                                            </f:form.button>
                                         </f:else>
                                     </f:if>
                                     <a class="btn btn-default" href="#" data-dispatch-action="TYPO3.InfoWindow.showItem" data-dispatch-args-list="be_users,{onlineUser.backendUser.uid}">
@@ -93,6 +97,8 @@
             </tfoot>
         </table>
     </div>
+
+    <f:form id="form-terminate-backend-user-session" action="terminateBackendUserSession" controller="BackendUser" method="post"class="hidden" />
 
 </f:section>
 

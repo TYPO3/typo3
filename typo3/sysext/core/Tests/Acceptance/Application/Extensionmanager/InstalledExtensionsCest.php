@@ -80,7 +80,7 @@ final class InstalledExtensionsCest
 
         $I->switchToContentFrame();
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
-        $I->click('a[title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
+        $I->click('button[title="Deactivate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
 
         $I->switchToMainFrame();
         $I->waitForElementNotVisible('[data-modulemenu-identifier="system_BelogLog"]');
@@ -89,7 +89,7 @@ final class InstalledExtensionsCest
         $I->amGoingTo('install extension belog');
         $I->switchToContentFrame();
         $I->waitForElementVisible('//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
-        $I->click('a[title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
+        $I->click('button[title="Activate"]', '//*[@id="typo3-extension-list"]/tbody/tr[@id="belog"]');
 
         $I->switchToMainFrame();
         $I->waitForElementVisible('[data-modulemenu-identifier="system_BelogLog"]');

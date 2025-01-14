@@ -21,9 +21,15 @@
                                     <span>{compareData.user.username}</span> <code>[{compareData.user.uid}]</code>
                                 </div>
                                 <div>
-                                    <f:link.action action="removeFromCompareList" arguments="{uid: compareData.user.uid, redirectToCompare:1}" class="btn btn-default">
-                                        <core:icon identifier="actions-minus" size="small"/>
-                                    </f:link.action>
+                                    <f:form.button
+                                        form="form-remove-from-compare-list"
+                                        name="uid"
+                                        value="{compareData.user.uid}"
+                                        type="submit"
+                                        class="btn btn-default"
+                                    >
+                                        <core:icon identifier="actions-minus" size="small" />
+                                    </f:form.button>
                                     <backend:link.editRecord class="btn btn-default" table="be_users" uid="{compareData.user.uid}" title="edit">
                                         <core:icon identifier="actions-open" />
                                     </backend:link.editRecord>
@@ -241,6 +247,9 @@
         </table>
     </div>
 
+    <f:form action="removeFromCompareList" method="post" id="form-remove-from-compare-list" class="hidden">
+        <f:form.hidden name="redirectToCompare" value="1"/>
+    </f:form>
 </f:section>
 
 </html>

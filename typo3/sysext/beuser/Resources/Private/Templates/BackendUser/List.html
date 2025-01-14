@@ -48,9 +48,16 @@
                                 <backend:link.editRecord class="btn btn-default" table="be_users" uid="{compareUser.uid}" title="{f:translate(key:'edit')}">
                                     <core:icon identifier="actions-open" />
                                 </backend:link.editRecord>
-                                <f:link.action action="removeFromCompareList" arguments="{uid: compareUser.uid}" class="btn btn-default" title="{f:translate(key: 'remove')}">
+                                <f:form.button
+                                    form="form-remove-from-compare-list"
+                                    name="uid"
+                                    value="{compareUser.uid}"
+                                    type="submit"
+                                    class="btn btn-default"
+                                    title="{f:translate(key: 'remove')}"
+                                >
                                     <core:icon identifier="actions-minus" />
-                                </f:link.action>
+                                </f:form.button>
                             </td>
                         </tr>
                     </f:for>
@@ -61,10 +68,10 @@
             <core:icon identifier="actions-code-compare" />
             {f:translate(key: 'compareUserList', default: 'Compare user list')}
         </f:link.action>
-        <f:link.action action="removeAllFromCompareList" class="btn btn-default">
+        <f:form.button type="submit" class="btn btn-default" form="form-remove-all-from-compare-list">
             <core:icon identifier="actions-selection-delete" />
             {f:translate(key: 'clearCompareList')}
-        </f:link.action>
+        </f:form.button>
 
         <h2>{f:translate(key: 'section.allUsers', default: 'All backend users')}</h2>
     </f:if>
@@ -72,6 +79,10 @@
     <f:render partial="BackendUser/Filter" arguments="{demand: demand, backendUserGroups: backendUserGroups}" />
     <f:render partial="BackendUser/PaginatedList" arguments="{_all}" />
 
+    <f:form action="initiatePasswordReset" method="post" id="form-initiate-password-reset" class="hidden"/>
+    <f:form action="removeFromCompareList" method="post" id="form-remove-from-compare-list" class="hidden"/>
+    <f:form action="addToCompareList" method="post" id="form-add-to-compare-list" class="hidden"/>
+    <f:form action="removeAllFromCompareList" method="post" id="form-remove-all-from-compare-list" class="hidden"/>
 </f:section>
 
 </html>

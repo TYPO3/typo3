@@ -36,9 +36,20 @@
                         <tr>
                             <th></th>
                             <th>
-                                <a href="{f:uri.action(action:'deleteIndexedItem', arguments:'{itemId:\'ALL\', depth:depth, mode:mode}')}" title="{f:translate(key:'administration.removeAllEntries')}">
-                                    <core:icon identifier="actions-edit-delete" />
-                                </a>
+                                <f:form action="deleteIndexedItem">
+                                    <f:form.hidden name="itemId" value="ALL" />
+                                    <f:form.hidden name="depth" value="{depth}" />
+                                    <f:form.hidden name="mode" value="{mode}" />
+
+                                    <button
+                                        type="submit"
+                                        title="{f:translate(key:'administration.removeAllEntries')}"
+                                        class="btn btn-default"
+                                    >
+                                        <core:icon identifier="actions-edit-delete" />
+                                        <f:translate key="LLL:EXT:indexed_search/Resources/Private/Language/locallang.xlf:administration.removeAllEntries" />
+                                    </button>
+                                </f:form>
                             </th>
                             <th>
                                 <f:translate key="field.fileName" />
@@ -81,9 +92,20 @@
                                                 <f:if condition="{i.index} == 0"> {line.row.title}</f:if>
                                             </td>
                                             <td>
-                                                <a href="{f:uri.action(action:'deleteIndexedItem',arguments:'{itemId:l.phash,depth:depth,mode:mode}')}" title="{f:translate(key:'administration.removeEntry')}">
-                                                    <core:icon identifier="actions-edit-delete" />
-                                                </a>
+                                                <f:form action="deleteIndexedItem" class="btn-group btn-group-sm">
+
+                                                    <f:form.hidden name="itemId" value="{l.phash}" />
+                                                    <f:form.hidden name="depth" value="{depth}" />
+                                                    <f:form.hidden name="mode" value="{mode}" />
+
+                                                    <button
+                                                        type="submit"
+                                                        title="{f:translate(key:'administration.removeEntry')}"
+                                                        class="btn btn-default"
+                                                    >
+                                                        <core:icon identifier="actions-edit-delete" />
+                                                    </button>
+                                                </f:form>
                                             </td>
                                             <td>
                                                 <f:image src="{l.icon}" />

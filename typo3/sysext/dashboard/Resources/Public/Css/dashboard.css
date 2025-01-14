@@ -16,7 +16,7 @@
 .dashboard-tabs{display:flex;flex-wrap:wrap;align-items:center}
 .dashboard-tabs-menu{display:flex;list-style:none;margin:0;padding:0}
 .dashboard-tabs-menu .dashboard-tabs-menuitem{margin-inline-end:2px}
-.dashboard-tab{border-radius:5px 5px 0 0;display:inline-block;padding:12px;background:#bababa;color:#000}
+.dashboard-tab{border-radius:5px 5px 0 0;display:inline-block;padding:12px;background:#bababa;color:#000;border:0}
 .dashboard-tab:focus,.dashboard-tab:hover{text-decoration:none;background:#adadad;color:#000}
 .dashboard-tab--active{background:#ff8700;color:#fff}
 .dashboard-tab--active:focus,.dashboard-tab--active:hover{text-decoration:none;background:#e67a00;color:#f2f2f2}
@@ -72,7 +72,7 @@
 .widget-content-main{flex-grow:1;overflow-y:auto;padding:20px}
 .widget-content-footer{padding:20px;padding-top:0}
 .widget-actions{position:absolute;display:flex;top:calc(16px * 1.25 / 2 + 20px / 2);inset-inline-end:10px;transform:translate(0,-50%);opacity:0;transition:opacity .2s ease-in-out}
-.widget-action{width:28px;height:28px;position:relative;color:#737373;text-align:center}
+.widget-action{width:28px;height:28px;position:relative;color:#737373;text-align:center;background:0 0;border:none;-webkit-appearance:none;-moz-appearance:none;appearance:none}
 .widget-action:focus,.widget-action:hover{color:#ff8700}
 .widget-action .icon{position:absolute;top:50%;inset-inline-start:50%;transform:translate(calc(-50% * var(--typo3-position-modifier)),-50%)}
 .widget-action-move{cursor:grab}

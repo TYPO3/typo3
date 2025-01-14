@@ -16,7 +16,7 @@
 @media screen and (min-width:768px){
 .dashboard-modal-item{width:50%}
 }
-.dashboard-modal-item-block{display:flex;font-weight:inherit;align-items:center;height:100%;padding:20px;border:1px solid #cacaca;background-color:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.15);cursor:pointer}
+.dashboard-modal-item-block{display:flex;font-weight:inherit;align-items:center;text-align:start;height:100%;padding:20px;border:1px solid #cacaca;background-color:#fff;box-shadow:0 2px 2px 0 rgba(0,0,0,.15);cursor:pointer}
 .dashboard-modal-item-checkBox{position:absolute;width:0;height:0;opacity:0;cursor:pointer}
 .dashboard-modal-item-checkBox:checked~.dashboard-modal-item-block{border:1px solid #313131}
 .dashboard-modal-item-icon{margin-inline-end:20px}

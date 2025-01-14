@@ -113,8 +113,13 @@ class ExtensionManager {
                 text: TYPO3.lang['button.reimport'],
                 btnClass: 'btn-warning',
                 trigger: (): void => {
-                  window.location.href = target.href;
-                  Modal.dismiss();
+                  NProgress.start();
+                  new AjaxRequest(target.href).post({}).then((): void => {
+                    location.reload();
+                  }).finally((): void => {
+                    NProgress.done();
+                    Modal.dismiss();
+                  });
                 },
               },
             ],
@@ -189,7 +194,7 @@ class ExtensionManager {
 
   private removeExtensionFromDisk(trigger: HTMLAnchorElement): void {
     NProgress.start();
-    new AjaxRequest(trigger.href).get().then((): void => {
+    new AjaxRequest(trigger.href).post({}).then((): void => {
       location.reload();
     }).finally((): void => {
       NProgress.done();
@@ -245,9 +250,9 @@ class ExtensionManager {
           btnClass: 'btn-warning',
           trigger: (e: Event, modal: ModalElement): void => {
             NProgress.start();
-            new AjaxRequest(data.url).withQueryArguments({
+            new AjaxRequest(data.url).post({
               version: $('input:radio[name=version]:checked', modal).val(),
-            }).get().finally((): void => {
+            }).finally((): void => {
               location.reload();
             });
             modal.hideModal();

@@ -28,9 +28,15 @@
                                 <span>{compareData.group.title}</span> <code>[{compareData.group.uid}]</code>
                             </div>
                             <div>
-                                <f:link.action action="removeGroupFromCompareList" arguments="{uid: compareData.group.uid, redirectToCompare:1}" class="btn btn-default">
-                                    <core:icon identifier="actions-minus" size="small"/>
-                                </f:link.action>
+                                <f:form.button
+                                    form="form-remove-group-from-compare-list"
+                                    name="uid"
+                                    value="{compareData.group.uid}"
+                                    type="submit"
+                                    class="btn btn-default"
+                                >
+                                    <core:icon identifier="actions-minus" size="small" />
+                                </f:form.button>
                                 <backend:link.editRecord class="btn btn-default" table="be_groups" uid="{compareData.group.uid}">
                                     <core:icon identifier="actions-open" />
                                 </backend:link.editRecord>
@@ -151,6 +157,9 @@
         </table>
     </div>
 
+    <f:form action="removeGroupFromCompareList" method="post" id="form-remove-group-from-compare-list" class="hidden">
+        <f:form.hidden name="redirectToCompare" value="1"/>
+    </f:form>
 </f:section>
 
 </html>

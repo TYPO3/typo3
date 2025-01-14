@@ -24,8 +24,9 @@ class DashboardDelete {
   }
 
   public initialize(): void {
-    new RegularEvent('click', function (this: HTMLElement, e: Event): void {
+    new RegularEvent('click', function (this: HTMLButtonElement, e: Event): void {
       e.preventDefault();
+      const form = this.form;
       const modal = Modal.confirm(
         this.dataset.modalTitle,
         this.dataset.modalQuestion,
@@ -47,7 +48,7 @@ class DashboardDelete {
       modal.addEventListener('button.clicked', (e: Event): void => {
         const target = e.target as HTMLButtonElement;
         if (target.getAttribute('name') === 'delete') {
-          window.location.href = this.getAttribute('href');
+          form.requestSubmit();
         }
         Modal.dismiss();
       });

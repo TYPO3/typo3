@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -53,6 +54,8 @@ use TYPO3\CMS\Form\Type\FormDefinitionArray;
  */
 class FormEditorController extends AbstractBackendController
 {
+    use AllowedMethodsTrait;
+
     protected const JS_MODULE_NAMES = ['app', 'mediator', 'viewModel'];
 
     protected array $prototypeConfiguration;
@@ -205,6 +208,7 @@ class FormEditorController extends AbstractBackendController
      */
     public function initializeSaveFormAction(): void
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
         $this->defaultViewObjectName = JsonView::class;
     }
 

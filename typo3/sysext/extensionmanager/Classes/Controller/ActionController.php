@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
+use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Package\Exception;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesFileNotWritableException;
 use TYPO3\CMS\Core\Registry;
@@ -41,6 +43,8 @@ use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
  */
 class ActionController extends AbstractController
 {
+    use AllowedMethodsTrait;
+
     public function __construct(
         protected readonly InstallUtility $installUtility,
         protected readonly ExtensionManagementService $managementService,
@@ -52,6 +56,8 @@ class ActionController extends AbstractController
      */
     protected function toggleExtensionInstallationStateAction(string $extensionKey): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         try {
             if (Environment::isComposerMode()) {
                 throw new ExtensionManagerException(
@@ -69,15 +75,12 @@ class ActionController extends AbstractController
                     $this->installUtility->enrichExtensionWithDetails($extensionKey, false)
                 );
                 if ($this->managementService->installExtension($extension) === false) {
-                    return $this->redirect(
-                        'unresolvedDependencies',
-                        'List',
-                        null,
-                        [
+                    return (new ForwardResponse('unresolvedDependencies'))
+                        ->withControllerName('List')
+                        ->withArguments([
                             'extensionKey' => $extensionKey,
                             'returnAction' => ['controller' => 'List', 'action' => 'index'],
-                        ]
-                    );
+                        ]);
                 }
             }
         } catch (ExtensionManagerException|PackageStatesFileNotWritableException $e) {
@@ -94,6 +97,8 @@ class ActionController extends AbstractController
      */
     public function installExtensionWithoutSystemDependencyCheckAction(string $extensionKey): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         $this->managementService->setSkipDependencyCheck(true);
         return (new ForwardResponse('toggleExtensionInstallationState'))->withArguments(['extensionKey' => $extensionKey]);
     }
@@ -103,6 +108,8 @@ class ActionController extends AbstractController
      */
     protected function removeExtensionAction(string $extension): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         try {
             if (Environment::isComposerMode()) {
                 throw new ExtensionManagerException(
@@ -158,14 +165,15 @@ class ActionController extends AbstractController
      */
     protected function reloadExtensionDataAction(string $extension): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         $extension = $this->installUtility->enrichExtensionWithDetails($extension, false);
         $registryKey = PathUtility::stripPathSitePrefix($extension['packagePath']) . 'ext_tables_static+adt.sql';
 
         $this->registry->remove('extensionDataImport', $registryKey);
 
         $this->installUtility->processExtensionSetup($extension['key']);
-
-        return $this->redirect('index', 'List');
+        return new Response();
     }
 
     /**

@@ -37,9 +37,16 @@
                             <backend:link.editRecord class="btn btn-default" table="be_groups" uid="{compareGroup.uid}" title="{f:translate(key:'edit')}">
                                 <core:icon identifier="actions-open" />
                             </backend:link.editRecord>
-                            <f:link.action action="removeGroupFromCompareList" arguments="{uid: compareGroup.uid}" class="btn btn-default" title="{f:translate(key: 'remove')}">
+                            <f:form.button
+                                form="form-remove-group-from-compare-list"
+                                name="uid"
+                                value="{compareGroup.uid}"
+                                type="submit"
+                                class="btn btn-default"
+                                title="{f:translate(key: 'remove')}"
+                            >
                                 <core:icon identifier="actions-minus" />
-                            </f:link.action>
+                            </f:form.button>
                         </td>
                     </tr>
                 </f:for>
@@ -50,10 +57,10 @@
             <core:icon identifier="actions-code-compare" />
             {f:translate(key: 'compareBackendUsersGroups')}
         </f:link.action>
-        <f:link.action action="removeAllGroupsFromCompareList" class="btn btn-default">
+        <f:form.button type="submit" class="btn btn-default" form="form-remove-all-groups-from-compare-list">
             <core:icon identifier="actions-selection-delete" />
             {f:translate(key: 'clearCompareList')}
-        </f:link.action>
+        </f:form.button>
 
         <h2>{f:translate(key: 'section.allUserGroups', default: 'All backend user groups')}</h2>
     </f:if>
@@ -61,6 +68,9 @@
     <f:render partial="BackendUserGroup/Filter" arguments="{userGroupDto: userGroupDto, backendUserGroups: backendUserGroups}" />
     <f:render partial="BackendUserGroup/PaginatedList" arguments="{_all}" />
 
+    <f:form action="removeGroupFromCompareList" method="post" id="form-remove-group-from-compare-list" class="hidden"/>
+    <f:form action="addGroupToCompareList" method="post" id="form-add-group-to-compare-list" class="hidden"/>
+    <f:form action="removeAllGroupsFromCompareList" method="post" id="form-remove-all-groups-from-compare-list" class="hidden"/>
 </f:section>
 
 </html>

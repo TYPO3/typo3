@@ -37,18 +37,18 @@
                                     <div class="widget-action widget-action-move js-dashboard-move-widget">
                                         <core:icon identifier="actions-move" alternativeMarkupIdentifier="inline"/>
                                     </div>
-                                    <f:be.link
-                                        class="widget-action widget-action-remove js-dashboard-remove-widget"
-                                        route="dashboard" parameters="{action: 'removeWidget', widgetHash: widgetHash}"
-                                        data="{
-                                            modal-title: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.title\')}',
-                                            modal-question: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.message\')}',
-                                            modal-ok: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.ok\')}',
-                                            modal-cancel: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.close\')}'
-                                        }"
-                                    >
-                                        <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline"/>
-                                    </f:be.link>
+                                    <form action="{f:be.uri(route: 'dashboard', parameters: '{action: \'removeWidget\'}')}" method="post" class="form-inline">
+                                        <input type="hidden" name="widgetHash" value="{widgetHash}">
+                                        <button
+                                            class="widget-action widget-action-remove js-dashboard-remove-widget"
+                                            data-modal-title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.title')}"
+                                            data-modal-question="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.message')}"
+                                            data-modal-ok="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.ok')}"
+                                            data-modal-cancel="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.close')}"
+                                        >
+                                            <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline"/>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -122,7 +122,13 @@
                             <div class="dashboard-modal-items ">
                                 <f:for each="{groupConfiguration.widgets}" as="widgetConfiguration" key="widgetIdentifier">
                                     <div class="dashboard-modal-item">
-                                        <f:be.link class="dashboard-modal-item-block" route="dashboard" target="list_frame" parameters="{action: 'addWidget', widget: widgetIdentifier}">
+                                        <button
+                                            form="form-dashboard-widget-add"
+                                            name="widget"
+                                            value="{widgetIdentifier}"
+                                            type="submit"
+                                            class="dashboard-modal-item-block"
+                                            >
                                             <f:if condition="{widgetConfiguration.iconIdentifier}">
                                                 <div class="dashboard-modal-item-icon">
                                                     <core:icon size="medium" alternativeMarkupIdentifier="inline" identifier="{widgetConfiguration.iconIdentifier}"/>
@@ -138,7 +144,7 @@
                                                     </div>
                                                 </f:if>
                                             </div>
-                                        </f:be.link>
+                                        </button>
                                     </div>
                                 </f:for>
                             </div>
@@ -148,6 +154,7 @@
                 </f:for>
             </div>
         </div>
+        <form id="form-dashboard-widget-add" action="{f:be.uri(route: 'dashboard', parameters: '{action: \'addWidget\'}')}" method="post" target="list_frame" class="hidden"></form>
     </template>
 
     <template id="dashboardModal-add">
@@ -205,7 +212,6 @@
             </div>
         </form>
     </template>
-
 </f:section>
 
 </html>

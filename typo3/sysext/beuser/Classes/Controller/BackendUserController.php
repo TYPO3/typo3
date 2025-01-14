@@ -34,6 +34,7 @@ use TYPO3\CMS\Beuser\Domain\Repository\FileMountRepository;
 use TYPO3\CMS\Beuser\Service\UserInformationService;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -55,6 +56,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendUserController extends ActionController
 {
+    use AllowedMethodsTrait;
+
     protected ?ModuleData $moduleData = null;
     protected ModuleTemplate $moduleTemplate;
 
@@ -307,6 +310,11 @@ class BackendUserController extends ActionController
         return $this->moduleTemplate->renderResponse('BackendUser/Compare');
     }
 
+    protected function initializeInitiatePasswordResetAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+    }
+
     /**
      * Starts the password reset process for a selected user.
      */
@@ -334,7 +342,12 @@ class BackendUserController extends ActionController
                 ContextualFeedbackSeverity::OK
             );
         }
-        return new ForwardResponse('list');
+        return $this->redirect('list');
+    }
+
+    protected function initializeAddToCompareListAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
     }
 
     /**
@@ -343,7 +356,12 @@ class BackendUserController extends ActionController
     public function addToCompareListAction(int $uid): ResponseInterface
     {
         $this->addToCompareList('compareUserList', $uid);
-        return new ForwardResponse('list');
+        return $this->redirect('list');
+    }
+
+    protected function initializeRemoveFromCompareListAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
     }
 
     /**
@@ -358,6 +376,11 @@ class BackendUserController extends ActionController
         return $this->redirect('list');
     }
 
+    protected function initializeRemoveAllFromCompareListAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+    }
+
     /**
      * Removes all backend users from the compare list
      */
@@ -365,6 +388,11 @@ class BackendUserController extends ActionController
     {
         $this->cleanCompareList('compareUserList');
         return $this->redirect('list');
+    }
+
+    protected function initializeTerminateBackendUserSessionAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
     }
 
     /**
@@ -380,7 +408,7 @@ class BackendUserController extends ActionController
         if ($success) {
             $this->addFlashMessage(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:terminateSessionSuccess', 'beuser') ?? '');
         }
-        return new ForwardResponse('online');
+        return $this->redirect('online');
     }
 
     /**
@@ -475,6 +503,11 @@ class BackendUserController extends ActionController
         return $this->moduleTemplate->renderResponse('BackendUserGroup/Compare');
     }
 
+    protected function initializeAddGroupToCompareListAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+    }
+
     /**
      * Attaches one backend user group to the compare list
      */
@@ -482,6 +515,11 @@ class BackendUserController extends ActionController
     {
         $this->addToCompareList('compareGroupUidList', $uid);
         return $this->redirect('groups');
+    }
+
+    protected function initializeRemoveGroupFromCompareListAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
     }
 
     /**
@@ -494,6 +532,11 @@ class BackendUserController extends ActionController
             return $this->redirect('compareGroups');
         }
         return $this->redirect('groups');
+    }
+
+    protected function initializeRemoveAllGroupsFromCompareListAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
     }
 
     /**
