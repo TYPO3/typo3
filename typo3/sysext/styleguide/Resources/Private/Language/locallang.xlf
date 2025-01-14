@@ -367,7 +367,7 @@
 
 			<!-- Component: Developer Tools -->
 			<trans-unit id="component.developerTools.headline">
-				<source>Flash messages</source>
+				<source>Developer Tools</source>
 			</trans-unit>
 			<trans-unit id="component.developerTools.section.default.headline">
 				<source>Default</source>
