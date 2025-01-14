@@ -41,18 +41,18 @@
                                             <core:icon identifier="actions-refresh" alternativeMarkupIdentifier="inline"/>
                                         </typo3-dashboard-widget-refresh>
                                     </f:if>
-                                    <f:be.link
-                                        class="widget-action widget-action-remove js-dashboard-remove-widget"
-                                        route="dashboard" parameters="{action: 'removeWidget', widgetHash: widgetHash}"
-                                        data="{
-                                            modal-title: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.title\')}',
-                                            modal-question: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.message\')}',
-                                            modal-ok: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.ok\')}',
-                                            modal-cancel: '{f:translate(key: \'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.close\')}'
-                                        }"
-                                    >
-                                        <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline"/>
-                                    </f:be.link>
+                                    <form action="{f:be.uri(route: 'dashboard', parameters: '{action: \'removeWidget\'}')}" method="post" class="form-inline">
+                                        <input type="hidden" name="widgetHash" value="{widgetHash}">
+                                        <button
+                                            class="widget-action widget-action-remove js-dashboard-remove-widget"
+                                            data-modal-title="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.title')}"
+                                            data-modal-question="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.confirm.message')}"
+                                            data-modal-ok="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.ok')}"
+                                            data-modal-cancel="{f:translate(key: 'LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.remove.button.close')}"
+                                        >
+                                            <core:icon identifier="actions-delete" alternativeMarkupIdentifier="inline"/>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

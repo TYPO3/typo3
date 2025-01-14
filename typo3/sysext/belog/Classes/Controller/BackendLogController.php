@@ -25,6 +25,7 @@ use TYPO3\CMS\Belog\Domain\Model\LogEntry;
 use TYPO3\CMS\Belog\Domain\Repository\LogEntryRepository;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
@@ -39,6 +40,8 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
  */
 class BackendLogController extends ActionController
 {
+    use AllowedMethodsTrait;
+
     public function __construct(
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly LogEntryRepository $logEntryRepository,
@@ -122,6 +125,11 @@ class BackendLogController extends ActionController
             ->setTitle(LocalizationUtility::translate('LLL:EXT:belog/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'))
             ->assignMultiple($viewVariables)
             ->renderResponse('BackendLog/List');
+    }
+
+    public function initializeDeleteMessageAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
     }
 
     /**

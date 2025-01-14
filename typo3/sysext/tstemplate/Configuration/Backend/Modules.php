@@ -88,6 +88,7 @@ return [
             ],
             'update' => [
                 'target' => ActiveTypoScriptController::class . '::updateAction',
+                'methods' => ['POST'],
             ],
         ],
         'moduleData' => [

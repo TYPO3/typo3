@@ -96,16 +96,16 @@
                                     </td>
                                     <td class="col-control">
                                         <f:if condition="{logItem.error} == 1">
-                                            <f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-sm btn-warning">
+                                            <f:form.button class="btn btn-sm btn-warning" form="form-delete-message" type="submit" name="errorUid" value="{logItem.uid}">
                                                 <core:icon identifier="actions-delete" size="small"/>
                                                 <f:translate key="actions.deleteWarnings"/>
-                                            </f:link.action>
+                                            </f:form.button>
                                         </f:if>
                                         <f:if condition="{logItem.error} == 2">
-                                            <f:link.action action="deleteMessage" arguments="{errorUid:logItem.uid}" class="btn btn-sm btn-danger">
+                                            <f:form.button class="btn btn-sm btn-danger" form="form-delete-message" type="submit" name="errorUid" value="{logItem.uid}">
                                                 <core:icon identifier="actions-delete" size="small"/>
                                                 <f:translate key="actions.delete"/>
-                                            </f:link.action>
+                                            </f:form.button>
                                         </f:if>
                                         <f:if condition="{logItem.logData.history}">
                                             <a class="btn btn-sm btn-default" href="{be:moduleLink(route: 'record_history', arguments: '{historyEntry: logItem.logData.history}')}" title="{f:translate(key: 'showHistory')}">
@@ -121,6 +121,8 @@
                 </div>
             </f:for>
         </f:for>
+
+        <f:form action="deleteMessage" id="form-delete-message" method="post" class="hidden"/>
     </f:then>
     <f:else>
         <f:be.infobox

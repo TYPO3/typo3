@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extensionmanager\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\View\ViewInterface;
@@ -36,6 +37,8 @@ use TYPO3\CMS\Extensionmanager\Service\ExtensionManagementService;
  */
 class DownloadController extends AbstractController
 {
+    use AllowedMethodsTrait;
+
     /**
      * @var JsonView
      */
@@ -142,6 +145,8 @@ class DownloadController extends AbstractController
      */
     public function installFromTerAction(Extension $extension): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         [$result, $errorMessages] = $this->installFromTer($extension);
         $isAutomaticInstallationEnabled = (bool)$this->extensionConfiguration->get('extensionmanager', 'automaticInstallation');
         $this->view->assignMultiple([
@@ -159,6 +164,8 @@ class DownloadController extends AbstractController
      */
     public function installExtensionWithoutSystemDependencyCheckAction(Extension $extension): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         $this->managementService->setSkipDependencyCheck(true);
         return (new ForwardResponse('installFromTer'))->withArguments(['extension' => $extension]);
     }
@@ -169,6 +176,8 @@ class DownloadController extends AbstractController
      */
     public function installDistributionAction(Extension $extension): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         if (!ExtensionManagementUtility::isLoaded('impexp')) {
             return (new ForwardResponse('distributions'))->withControllerName('List');
         }
@@ -211,6 +220,8 @@ class DownloadController extends AbstractController
      */
     protected function updateExtensionAction(): ResponseInterface
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+
         $extensionKey = $this->request->getArgument('extension');
         $version = $this->request->getArgument('version');
         $extension = $this->extensionRepository->findOneByExtensionKeyAndVersion($extensionKey, $version);

@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\Dispatcher;
+use TYPO3\CMS\Core\Http\Error\MethodNotAllowedException;
 use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -74,7 +75,11 @@ class RouteDispatcher extends Dispatcher
         $targetIdentifier = $route->getOption('target');
         $target = $this->getCallableFromTarget($targetIdentifier);
         $arguments = [$request];
-        return $target(...$arguments);
+        try {
+            return $target(...$arguments);
+        } catch (MethodNotAllowedException $exception) {
+            return $exception->createResponse();
+        }
     }
 
     /**

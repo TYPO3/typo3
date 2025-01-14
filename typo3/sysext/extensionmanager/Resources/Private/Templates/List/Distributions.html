@@ -35,12 +35,16 @@
                     <f:render partial="List/Distribution" arguments="{distribution: distribution, official: 0}" />
                 </f:for>
             </div>
+
+            <f:form id="installDistributionForm" action="installDistribution" controller="Download"></f:form>
         </f:then>
         <f:else>
             <p>{f:translate(key: 'extensionList.installImpexp')}</p>
-            <f:link.action action="toggleExtensionInstallationState" controller="Action" arguments="{extensionKey: 'impexp'}" class="btn btn-default t3-button-action-installdistribution">
-                <core:icon identifier="actions-download" size="small" /><f:translate key="distribution.installImpexp">Install impexp</f:translate>
-            </f:link.action>
+            <f:form action="toggleExtensionInstallationState" controller="Action">
+                <f:form.button type="submit" name="extensionKey" value="impexp" class="btn btn-default t3-button-action-installdistribution">
+                    <core:icon identifier="actions-download" size="small" /><f:translate key="distribution.installImpexp">Install impexp</f:translate>
+                </f:form.button>
+            </f:form>
         </f:else>
     </f:if>
 

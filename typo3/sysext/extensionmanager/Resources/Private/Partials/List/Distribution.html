@@ -39,9 +39,9 @@
         </p>
     </div>
     <div class="card-footer">
-        <f:link.action action="installDistribution" controller="Download" arguments="{extension:distribution}" class="btn btn-default t3-button-action-installdistribution">
+        <f:form.button form="installDistributionForm" type="submit" name="extension" value="{distribution}" class="btn btn-default t3-button-action-installdistribution">
             <core:icon identifier="actions-system-extension-import" /> <f:translate key="extensionList.installDistribution">Install</f:translate>
-        </f:link.action>
+        </f:form.button>
         <f:link.action action="show" controller="Distribution" arguments="{extension:distribution}" class="btn btn-link">
             <f:translate key="button.details">Show Details</f:translate>
         </f:link.action>

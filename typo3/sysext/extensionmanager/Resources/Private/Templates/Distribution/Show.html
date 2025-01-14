@@ -31,13 +31,15 @@
                 <p>{extension.description}</p>
             </div>
 
+            <f:form id="installDistributionForm" action="installDistribution" controller="Download"></f:form>
+
             <ul class="distribution-detail-actions">
                 <f:if condition="{distributionActive}">
                     <f:else>
                         <li>
-                            <f:link.action action="installDistribution" controller="Download" arguments="{extension:extension}" class="btn btn-default t3-button-action-installdistribution">
+                            <f:form.button form="installDistributionForm" type="submit" name="extension" value="{extension}" class="btn btn-default t3-button-action-installdistribution">
                                 <core:icon identifier="actions-system-extension-import" /> <f:translate key="extensionList.installDistribution">Install</f:translate>
-                            </f:link.action>
+                            </f:form.button>
                         </li>
                     </f:else>
                     <f:then>

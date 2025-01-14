@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -57,6 +58,8 @@ use TYPO3\CMS\Form\Type\FormDefinitionArray;
  */
 class FormEditorController extends ActionController
 {
+    use AllowedMethodsTrait;
+
     protected const JS_MODULE_NAMES = ['app', 'mediator', 'viewModel'];
 
     public function __construct(
@@ -170,6 +173,7 @@ class FormEditorController extends ActionController
      */
     protected function initializeSaveFormAction(): void
     {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
         $this->defaultViewObjectName = JsonView::class;
     }
 

@@ -64,7 +64,7 @@ class ExtensionManagerUpdate {
     let reload = false;
 
     NProgress.start();
-    new AjaxRequest(url).get().then(async (response: AjaxResponse): Promise<void> => {
+    new AjaxRequest(url).post({}).then(async (response: AjaxResponse): Promise<void> => {
       const data = await response.resolve();
       // Something went wrong, show message
       if (data.errorMessage.length) {

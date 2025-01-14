@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -44,6 +45,8 @@ use TYPO3\CMS\IndexedSearch\Indexer;
  */
 class AdministrationController extends ActionController
 {
+    use AllowedMethodsTrait;
+
     protected int $pageUid = 0;
     protected array $indexerConfig = [];
 
@@ -300,6 +303,11 @@ class AdministrationController extends ActionController
         return $view->renderResponse('Administration/StatisticDetails');
     }
 
+    protected function initializeSaveStopwordsAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
+    }
+
     /**
      * Save stop words
      */
@@ -389,6 +397,11 @@ class AdministrationController extends ActionController
             'backendUserTitleLength' => (int)$this->getBackendUserAuthentication()->uc['titleLen'],
         ]);
         return $view->renderResponse('Administration/Statistic');
+    }
+
+    protected function initializeDeleteIndexedItemAction(): void
+    {
+        $this->assertAllowedHttpMethod($this->request, 'POST');
     }
 
     /**

@@ -19,12 +19,14 @@ class WidgetSelector {
 
   private readonly selector: string = '.js-dashboard-addWidget';
 
+  private modal: ModalElement|null = null;
+
   constructor() {
     this.initialize();
   }
 
   public initialize(): void {
-    new RegularEvent('click', function (this: HTMLElement, e: Event): void {
+    new RegularEvent('click', (e: Event, trigger: HTMLElement): void => {
       e.preventDefault();
 
       const modalContent = new DocumentFragment();
@@ -32,7 +34,7 @@ class WidgetSelector {
 
       const configuration = {
         type: Modal.types.default,
-        title: this.dataset.modalTitle,
+        title: trigger.dataset.modalTitle,
         size: Modal.sizes.medium,
         severity: SeverityEnum.notice,
         content: modalContent,
@@ -55,7 +57,14 @@ class WidgetSelector {
           modal.hideModal();
         }
       });
+      this.modal = modal;
     }).delegateTo(document, this.selector);
+
+    new RegularEvent('typo3.dashboard.addWidgetDone', (): void => {
+      this.modal?.hideModal();
+      this.modal = null;
+      location.reload();
+    }).bindTo(top.document);
 
     // Display button only if all initialized
     document.querySelectorAll(this.selector).forEach((item) => {
