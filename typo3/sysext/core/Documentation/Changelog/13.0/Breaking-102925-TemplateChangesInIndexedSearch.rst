@@ -43,7 +43,7 @@ JavaScript via :html:`<f:asset.script>`:
 
 ..  code-block:: html
 
-    <f:asset.script identifier="indexed_search_pagination" src="EXT:indexed_search/Resources/Public/JavaScript/pagination.js" />
+    <f:asset.script useNonce="true" identifier="indexed_search_pagination" src="EXT:indexed_search/Resources/Public/JavaScript/pagination.js" />
 
 
 `is:pageBrowsingResults` has been replaced with a short HTML snippet:
