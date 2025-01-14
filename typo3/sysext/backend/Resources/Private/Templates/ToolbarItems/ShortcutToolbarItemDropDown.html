@@ -1,4 +1,4 @@
-<p class="h3 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks" /></p>
+<p class="dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks" /></p>
 <f:if condition="{f:count(subject: '{shortcutMenu}')} == 0">
     <f:then>
         <f:comment>No shortcuts added yet, show a small help message how to add shortcuts</f:comment>
@@ -14,10 +14,10 @@
             </f:if>
             <f:if condition="{group.title}">
                 <f:then>
-                    <p class="h4 dropdown-headline" id="shortcut-group-{group.id}">{group.title}</p>
+                    <p class="dropdown-header" id="shortcut-group-{group.id}">{group.title}</p>
                 </f:then>
                 <f:else if="{shortcutMenu -> f:count()} > 1">
-                    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks.notGrouped" /></p>
+                    <p class="dropdown-header"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.bookmarks.notGrouped" /></p>
                 </f:else>
             </f:if>
             <ul class="dropdown-list" data-shortcutgroup="{group.id}">

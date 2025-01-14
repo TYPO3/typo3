@@ -171,31 +171,6 @@ $hr-opacity: 1;
 // Popover
 $popover-box-shadow: var(--typo3-component-box-shadow-flyout);
 
-// Dropdown
-$dropdown-padding-x: 2px;
-$dropdown-padding-y: 2px;
-$dropdown-font-size: var(--typo3-component-font-size);
-$dropdown-color: var(--typo3-component-color);
-$dropdown-bg: var(--typo3-component-bg);
-$dropdown-border-color: var(--typo3-component-border-color);
-$dropdown-border-radius: var(--typo3-component-border-radius);
-$dropdown-border-width: var(--typo3-component-border-width);
-$dropdown-inner-border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
-$dropdown-divider-bg: var(--typo3-component-border-color);
-$dropdown-divider-margin-y: var(--typo3-list-item-padding-y);
-$dropdown-box-shadow: var(--typo3-component-box-shadow);
-$dropdown-link-color: var(--typo3-component-color);
-$dropdown-link-hover-color: var(--typo3-list-item-hover-color);
-$dropdown-link-hover-bg: var(--typo3-list-item-hover-bg);
-$dropdown-link-active-color: var(--typo3-list-item-active-color);
-$dropdown-link-active-bg: var(--typo3-list-item-active-bg);
-$dropdown-link-disabled-color: var(--typo3-list-item-disabled-color);
-$dropdown-item-padding-y: var(--typo3-list-item-padding-y);
-$dropdown-item-padding-x: var(--typo3-list-item-padding-x);
-$dropdown-header-color: var(--typo3-component-color);
-$dropdown-header-padding-x: var(--typo3-list-item-padding-x);
-$dropdown-header-padding-y: var(--typo3-list-item-padding-y);
-
 // Card
 $card-cap-bg: transparent;
 

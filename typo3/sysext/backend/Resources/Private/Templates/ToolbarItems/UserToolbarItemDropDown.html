@@ -9,7 +9,7 @@
         1: '@typo3/backend/color-scheme-switch.js',
     }"
 />
-<p class="h3 dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}</p>
+<p class="dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}</p>
 <f:if condition="{modules}">
     <ul class="dropdown-list">
         <f:for each="{modules}" as="module">
@@ -36,7 +36,7 @@
 </f:if>
 <f:if condition="{f:count(subject: recentUsers)} > 0">
     <hr class="dropdown-divider" aria-hidden="true">
-    <p class="h4 dropdown-headline"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.recentlySwitchedUsers" /></p>
+    <p class="dropdown-header"><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_toolbar.xlf:toolbarItems.user.recentlySwitchedUsers" /></p>
     <ul class="modulemenu-group-container">
         <f:for each="{recentUsers}" as="user">
             <li>

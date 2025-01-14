@@ -51,6 +51,7 @@ final class ComponentsController
         'cards',
         'checkboxes',
         'developerTools',
+        'dropdown',
         'flashMessages',
         'form',
         'infobox',
@@ -90,6 +91,7 @@ final class ComponentsController
             'cards' => $this->renderCardsView($request),
             'checkboxes' => $this->renderCheckboxesView($request),
             'developerTools' => $this->renderDeveloperToolsView($request),
+            'dropdown' => $this->renderDropdownView($request),
             'flashMessages' => $this->renderFlashMessagesView($request),
             'form' => $this->renderFormView($request),
             'infobox' => $this->renderInfoboxView($request),
@@ -191,6 +193,17 @@ final class ComponentsController
             'exampleData' => DummyDumpContentProvider::getTestData(),
         ]);
         return $view->renderResponse('Backend/Components/DeveloperTools');
+    }
+
+    private function renderDropdownView(ServerRequestInterface $request): ResponseInterface
+    {
+        $view = $this->createModuleTemplate($request, 'dropdown');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'dropdown',
+            'routeIdentifier' => 'styleguide_components',
+        ]);
+        return $view->renderResponse('Backend/Components/Dropdown');
     }
 
     private function renderFlashMessagesView(ServerRequestInterface $request): ResponseInterface

@@ -1,0 +1,327 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    xmlns:co="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:asset.script identifier="styleguide-checkbox-demo" src="EXT:styleguide/Resources/Public/JavaScript/checkbox-demo.js" />
+</f:section>
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.headline" /></h1>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.toggles.headline" /></h2>
+        <f:variable name="customCode">
+            <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown button
+            </button>
+            <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown button (no chevron)
+            </button>
+            <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Dropdown Link
+            </button>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div style="display: flex; gap: .5rem; align-items: center;">
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown button
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-default dropdown-toggle dropdown-toggle-no-chevron" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown button (no chevron)
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Dropdown Link
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.basic.headline" /></h2>
+        <f:variable name="customCode">
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.states.headline" /></h2>
+        <f:variable name="customCode">
+            <ul class="dropdown-menu show">
+                <li><a class="dropdown-item" href="#">Item Link</a></li>
+                <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Item Link (disabled)</a></li>
+                <li><button class="dropdown-item" type="button">Item Button</button></li>
+                <li><button class="dropdown-item" type="button" disabled>Item Button (disabled)</button></li>
+            </ul>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <li><a class="dropdown-item" href="#">Item Link</a></li>
+                <li><a class="dropdown-item disabled" href="#" aria-disabled="true">Item Link (disabled)</a></li>
+                <li><button class="dropdown-item" type="button">Item Button</button></li>
+                <li><button class="dropdown-item" type="button" disabled>Item Button (disabled)</button></li>
+            </ul>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.advancedbuttons.headline" /></h2>
+        <f:variable name="customCode">
+            <button class="dropdown-item" type="button">
+                <span class="dropdown-item-columns">
+                    <span class="dropdown-item-column dropdown-item-column-icon">
+                        &lt;core:icon identifier="actions-dot" size="small" /&gt;
+                    </span>
+                    <span class="dropdown-item-column dropdown-item-column-title">
+                        With icon
+                    </span>
+                </span>
+            </button>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <li>
+                    <button class="dropdown-item" type="button">
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon">
+
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                No icon
+                            </span>
+                        </span>
+                    </button>
+                </li>
+                <li>
+                    <button class="dropdown-item" type="button">
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon">
+                                <core:icon identifier="actions-dot" size="small" />
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                With icon
+                            </span>
+                        </span>
+                    </button>
+                </li>
+            </ul>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.header.headline" /></h2>
+        <f:variable name="customCode">
+            <div class="dropdown-headline">Dropdown Headline</div>
+            <div class="dropdown-header">Dropdown Header</div>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <div class="dropdown-headline">Dropdown Headline</div>
+                <div class="dropdown-header">Dropdown Header</div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.text.headline" /></h2>
+        <f:variable name="customCode">
+            <p class="dropdown-item-text">
+                Dropdown text, lobortis eros. Donec libero
+                tellus, <a href="#">convallis scelerisque</a> risus id,
+                ultricies pellentesque justo. Ut sed elit ex.
+            </p>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <p class="dropdown-item-text">
+                    Dropdown text, lobortis eros. Donec libero
+                    tellus, <a href="#">convallis scelerisque</a> risus id,
+                    ultricies pellentesque justo. Ut sed elit ex.
+                </p>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.rows.headline" /></h2>
+        <f:variable name="customCode">
+            <div class="dropdown-row">
+                <div class="text-danger">
+                    &lt;core:icon identifier="actions-info-circle-alt" size="small" /&gt;
+                </div>
+                <div>
+                    Dropdown Row
+                </div>
+            </div>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <div class="dropdown-row">
+                    <div class="text-danger">
+                        <core:icon identifier="actions-info-circle-alt" size="small" />
+                    </div>
+                    <div>
+                        Dropdown Row
+                    </div>
+                </div>
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.divider.headline" /></h2>
+        <f:variable name="customCode">
+            <hr class="dropdown-divider" aria-hidden="true">
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <ul class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider" aria-hidden="true"></li>
+                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </ul>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.table.headline" /></h2>
+        <f:variable name="customCode">
+            <table class="dropdown-table">
+                <caption class="hidden">Dropdown Table</caption>
+                <tbody>
+                    <tr>
+                        <th data-type="title">
+                            Title A
+                        </th>
+                        <td data-type="value">
+                            Value A
+                        </td>
+                    </tr>
+                    <tr>
+                        <th data-type="title">
+                            Title B
+                        </th>
+                        <td data-type="value">
+                            Value B
+                        </td>
+                    </tr>
+                    <tr>
+                        <th data-type="title">
+                            Title C
+                        </th>
+                        <td data-type="value">
+                            Value C
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                {customCode}
+            </div>
+        </sg:example>
+
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.dropdown.section.listitemswithactions.headline" /></h2>
+        <f:variable name="customCode">
+            <ul class="dropdown-list">
+                <li>
+                    <a href="#" class="dropdown-item dropdown-item-title" title="...">
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon">
+                                &lt;core:icon identifier="content-coffee" size="small" /&gt;
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                Coffee
+                            </span>
+                        </span>
+                    </a>
+                    <button type="button" class="dropdown-item dropdown-item-action" title="...">
+                        &lt;core:icon identifier="actions-open" size="small" /&gt;
+                    </button>
+                    <button type="button" class="dropdown-item dropdown-item-action" title="...">
+                        &lt;core:icon identifier="actions-delete" size="small" /&gt;
+                    </button>
+                </li>
+            </ul>
+        </f:variable>
+        <sg:example codePreview="true" customCode="{customCode}" codeLanguage="html" decodeEntities="true">
+            <div class="dropdown-menu show" style="position: relative; z-index: 0; max-width: 300px;">
+                <ul class="dropdown-list">
+                    <li>
+                        <a href="#" class="dropdown-item dropdown-item-title" title="...">
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon">
+                                    <core:icon identifier="content-coffee" size="small" />
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-title">
+                                    Coffee
+                                </span>
+                            </span>
+                        </a>
+                        <button type="button" class="dropdown-item dropdown-item-action" title="...">
+                            <core:icon identifier="actions-open" size="small" />
+                        </button>
+                        <button type="button" class="dropdown-item dropdown-item-action" title="...">
+                            <core:icon identifier="actions-delete" size="small" />
+                        </button>
+                    </li>
+                    <li>
+                        <a href="#" class="dropdown-item dropdown-item-title" title="...">
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon">
+                                    <core:icon identifier="content-map" size="small" />
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-title">
+                                    Map
+                                </span>
+                            </span>
+                        </a>
+                        <button type="button" class="dropdown-item dropdown-item-action" title="...">
+                            <core:icon identifier="actions-open" size="small" />
+                        </button>
+                        <button type="button" class="dropdown-item dropdown-item-action" title="...">
+                            <core:icon identifier="actions-delete" size="small" />
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </sg:example>
+
+    </div>
+
+</f:section>
+
+</html>
