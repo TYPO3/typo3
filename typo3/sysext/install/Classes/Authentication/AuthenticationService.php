@@ -70,9 +70,9 @@ class AuthenticationService
                 $validPassword = $hashInstance->checkPassword($password, $installToolPassword);
             } catch (InvalidPasswordHashException $e) {
                 $logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-                $logger->warning(
+                $logger->error(
                     'Invalid install tool password hash specified in "BE/installToolPassword" configuration.',
-                    ['exception' => $e]
+                    ['exceptionMessage' => $e->getMessage()]
                 );
             }
         }
