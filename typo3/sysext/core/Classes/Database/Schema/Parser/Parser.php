@@ -660,10 +660,54 @@ final class Parser
                 case Lexer::T_REFERENCES:
                     $columnDefinitionItem->reference = $this->referenceDefinition();
                     break;
+                case Lexer::T_CHARACTER:
+                    switch (true) {
+                        case $columnDefinitionItem->dataType instanceof CharDataType:
+                        case $columnDefinitionItem->dataType instanceof VarCharDataType:
+                        case $columnDefinitionItem->dataType instanceof TextDataType:
+                        case $columnDefinitionItem->dataType instanceof MediumTextDataType:
+                        case $columnDefinitionItem->dataType instanceof LongTextDataType:
+                            $this->match(Lexer::T_CHARACTER);
+                            $this->match(Lexer::T_SET);
+                            $this->match(Lexer::T_STRING);
+                            $options = $columnDefinitionItem->dataType->getOptions();
+                            $options['charset'] = $this->lexer->token->value;
+                            $columnDefinitionItem->dataType->setOptions($options);
+                            break;
+                        default:
+                            $this->syntaxError(
+                                'CHARACTER SET only supported for CHAR, VARCHAR, TEXT, MEDIUMTEXT, LONGTEXT, ' .
+                                'ENUM or SET columns'
+                            );
+                    }
+                    $b = 1;
+                    break;
+                case Lexer::T_COLLATE:
+                    switch (true) {
+                        case $columnDefinitionItem->dataType instanceof CharDataType:
+                        case $columnDefinitionItem->dataType instanceof VarCharDataType:
+                        case $columnDefinitionItem->dataType instanceof TextDataType:
+                        case $columnDefinitionItem->dataType instanceof MediumTextDataType:
+                        case $columnDefinitionItem->dataType instanceof LongTextDataType:
+                            $this->match(Lexer::T_COLLATE);
+                            $this->match(Lexer::T_STRING);
+                            $options = $columnDefinitionItem->dataType->getOptions();
+                            $options['collation'] = $this->lexer->token->value;
+                            $columnDefinitionItem->dataType->setOptions($options);
+                            break;
+                        default:
+                            $this->syntaxError(
+                                'COLLATE only supported for CHAR, VARCHAR, TEXT, MEDIUMTEXT, LONGTEXT, ' .
+                                'ENUM or SET columns'
+                            );
+                    }
+                    $b = 1;
+                    break;
                 default:
                     $this->syntaxError(
                         'NOT, NULL, DEFAULT, AUTO_INCREMENT, UNIQUE, ' .
-                        'PRIMARY, COMMENT, COLUMN_FORMAT, STORAGE or REFERENCES'
+                        'PRIMARY, COMMENT, COLUMN_FORMAT, STORAGE, REFERENCES, ' .
+                        'CHARACTER SET or COLLATE'
                     );
             }
         }

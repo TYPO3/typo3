@@ -1679,10 +1679,21 @@ class ConnectionMigrator
                     $column->setPlatformOption('charset', $defaultColumCharset);
                 }
             }
-            if ($platform instanceof DoctrineSQLitePlatform
-                && ($columnType instanceof StringType || $columnType instanceof TextType || $columnType instanceof JsonType)
+            if ($platform instanceof DoctrinePostgreSQLPlatform
+                && (($columnType instanceof StringType || $columnType instanceof TextType))
             ) {
-                $column->setPlatformOption('collation', 'BINARY');
+                // Unset collation and charset in platformOptions
+                $column->setPlatformOption('collation', null);
+                $column->setPlatformOption('charset', null);
+            }
+            if ($platform instanceof DoctrineSQLitePlatform) {
+                if ($columnType instanceof StringType || $columnType instanceof TextType || $columnType instanceof JsonType) {
+                    $column->setPlatformOption('collation', 'BINARY');
+                }
+                if ($columnType instanceof StringType || $columnType instanceof TextType) {
+                    // Unset charset in platformOptions
+                    $column->setPlatformOption('charset', null);
+                }
             }
         }
     }
