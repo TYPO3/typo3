@@ -2428,10 +2428,10 @@ export function renderFormElementSelectorEditorAddition(
         Icons.states.default
       ).then(function(icon) {
         const itemTemplate = $('<li data-no-sorting>'
-          + '<a href="#"></a>'
+          + '<span class="dropdown-item"></span>'
           + '</li>');
 
-        itemTemplate
+        itemTemplate.find('span')
           .append($(icon))
           .append(' ' + getFormElementDefinition(getRootFormElement(), 'inspectorEditorFormElementSelectorNoElements'));
         formElementSelectorSplitButtonListContainer.append(itemTemplate);
