@@ -50,7 +50,11 @@ class PageModificationListener
             return;
         }
         if (!MathUtility::canBeInterpretedAsInteger($id)) {
-            $id = $dataHandler->substNEWwithIDs[$id];
+            $id = $dataHandler->substNEWwithIDs[$id] ?? null;
+            if ($id === null) {
+                // There is no uid when DataHandler insert failed. Return early if no page has been created.
+                return;
+            }
         }
         try {
             $id = (int)$id;
