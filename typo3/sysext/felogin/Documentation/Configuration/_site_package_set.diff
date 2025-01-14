@@ -5,5 +5,5 @@
      background:
        color: '#386492'
  dependencies:
-+  - typo3/typo3/felogin
++  - typo3/felogin
    - typo3/fluid-styled-content-css
