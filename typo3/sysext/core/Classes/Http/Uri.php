@@ -192,7 +192,10 @@ class Uri implements UriInterface
             $url->host = 'localhost';
         } else {
             // filter_var can not validate UTF8 encoded hosts
-            $url->host = idn_to_ascii($url->host);
+            $host = idn_to_ascii($url->host);
+            if ($host !== false) {
+                $url->host = $host;
+            }
         }
 
         return filter_var($url->__toString(), FILTER_VALIDATE_URL) !== false;
