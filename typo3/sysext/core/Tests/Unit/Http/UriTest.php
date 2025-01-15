@@ -579,6 +579,31 @@ final class UriTest extends UnitTestCase
         self::assertNotSame($chrome, $result);
     }
 
+    public static function invalidPunycodeUrlsDataProvider(): \Generator
+    {
+        yield [
+            'url' => 'https://00--foo--bar-baz.example.com/typo3',
+        ];
+
+        yield [
+            // See https://github.com/guzzle/guzzle/issues/2640
+            'url' => 'https://r3---sn-25glene6.example.com/',
+        ];
+
+        yield [
+            // See https://bugs.php.net/bug.php?id=76784
+            'url' => 'http://0---0.dk/',
+        ];
+    }
+
+    #[DataProvider('invalidPunycodeUrlsDataProvider')]
+    #[Test]
+    public function canParseValidUrlsWithInvalidPunycode($url): void
+    {
+        $uri = new Uri($url);
+        self::assertSame($url, (string)$uri);
+    }
+
     #[Test]
     public function canParseAllPropertiesWithIPv6(): void
     {
