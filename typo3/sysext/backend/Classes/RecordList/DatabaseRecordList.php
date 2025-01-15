@@ -978,7 +978,14 @@ class DatabaseRecordList
         $downloadCancelTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel');
         $downloadSettingsUrl = (string)$this->uriBuilder->buildUriFromRoute(
             'ajax_record_download_settings',
-            ['id' => $this->id, 'table' => $table, 'searchString' => $this->searchString, 'searchLevels' => $this->searchLevels]
+            [
+                'id' => $this->id,
+                'table' => $table,
+                'searchString' => $this->searchString,
+                'searchLevels' => $this->searchLevels,
+                'sortField' => $this->sortField,
+                'sortRev' => $this->sortRev,
+            ],
         );
         $downloadSettingsTitle = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_download.xlf:' . ($totalItems === 1 ? 'downloadRecordSettings' : 'downloadRecordsSettings')),
