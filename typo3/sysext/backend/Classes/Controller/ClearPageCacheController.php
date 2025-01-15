@@ -32,21 +32,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is a specific Backend controller implementation and is not part of the TYPO3's Core API.
  */
-class ClearPageCacheController
+readonly class ClearPageCacheController
 {
-    /**
-     * @var DataHandler
-     */
-    protected $dataHandler;
-
-    public function __construct()
-    {
-        $this->dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-    }
-
-    /**
-     * Clear page cache
-     */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();
@@ -57,8 +44,9 @@ class ClearPageCacheController
         $permissionClause = $this->getBackendUserAuthentication()->getPagePermsClause(Permission::PAGE_SHOW);
         $pageRow = BackendUtility::readPageAccess($pageUid, $permissionClause);
         if ($pageUid !== 0 && $this->getBackendUserAuthentication()->doesUserHaveAccess($pageRow, Permission::PAGE_SHOW)) {
-            $this->dataHandler->start([], []);
-            $this->dataHandler->clear_cacheCmd($pageUid);
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->start([], []);
+            $dataHandler->clear_cacheCmd($pageUid);
             $message = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang.xlf:clearcache.message.success');
             $success = true;
         }
