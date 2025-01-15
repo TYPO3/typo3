@@ -252,6 +252,53 @@ return [
                 ],
             ],
         ],
+        'file_2' => [
+            'label' => 'file_2 limited amount of files (1 exactly)',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'common-image-types',
+                'minitems' => 1,
+                'maxitems' => 1,
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
+                ],
+                'overrideChildTca' => [
+                    'columns' => [
+                        'crop' => [
+                            'description' => 'field description',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'file_3' => [
+            'label' => 'file_3 limited amount of files (min 2, max 4)',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'common-image-types',
+                'minitems' => 2,
+                'maxitems' => 4,
+                'appearance' => [
+                    'createNewRelationLinkTitle' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:images.addFileReference',
+                ],
+                'overrideChildTca' => [
+                    'columns' => [
+                        'crop' => [
+                            'description' => 'field description',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'inline_file_1' => [
+            'label' => 'inline_1 file childs',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_styleguide_required_file_1_child',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+            ],
+        ],
 
         'flex_1' => [
             'label' => 'flex_1 required field in flex',
@@ -389,7 +436,7 @@ return [
                 --div--;Inline,
                     inline_1, inline_2, inline_3,
                 --div--;File,
-                    file_1,
+                    file_1,file_2,file_3,inline_file_1,
                 --div--;Flex,
                     flex_1, flex_2,
                 --div--;Color,
