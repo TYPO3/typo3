@@ -44,7 +44,29 @@ final class TypeFile extends AbstractFieldGenerator implements FieldGeneratorInt
     {
         $demoImages = $this->recordFinder->findDemoFileObjects();
         $recordData = [];
+
+        // By default, insert all available images (3).
+        // Unless max/minitems are set. Required extra "min" items are filled with duplicates
+        // of the first demoImage.
+        $numberOfDemoImages = count($demoImages);
+        $itemsToInsert = $data['fieldConfig']['config']['minitems'] ?? $numberOfDemoImages;
+        $itemsLimit = $data['fieldConfig']['config']['maxitems'] ?? $numberOfDemoImages;
+        $itemsActuallyInserted = 0;
+        // Fill up demo Images with a duplicate
+        $missingNumberOfImages = $itemsToInsert - $numberOfDemoImages;
+        if ($missingNumberOfImages > 0) {
+            // Get the first demo image as boilerplate
+            $demoImageToDuplicate = reset($demoImages);
+            for ($i = 0; $i < $missingNumberOfImages; $i++) {
+                $demoImages[] = $demoImageToDuplicate;
+            }
+        }
         foreach ($demoImages as $demoImage) {
+            if ($itemsActuallyInserted >= $itemsLimit) {
+                // No more image insertion, the threshold of "max" has been reached.
+                continue;
+            }
+            $itemsActuallyInserted++;
             $newId = StringUtility::getUniqueId('NEW');
             $recordData['sys_file_reference'][$newId] = [
                 'table_local' => 'sys_file',
@@ -62,6 +84,6 @@ final class TypeFile extends AbstractFieldGenerator implements FieldGeneratorInt
             $dataHandler->start($recordData, []);
             $dataHandler->process_datamap();
         }
-        return count($demoImages);
+        return $itemsActuallyInserted;
     }
 }
