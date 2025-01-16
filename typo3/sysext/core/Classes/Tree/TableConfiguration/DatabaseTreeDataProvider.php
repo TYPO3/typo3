@@ -60,11 +60,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
 
     protected string $lookupField = '';
 
-    /**
-     * @var int[]
-     */
-    protected array $startingPoints = [0];
-
     protected array $idCache = [];
 
     /**
@@ -162,26 +157,6 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
     public function getRoot(): DatabaseTreeNode
     {
         return $this->buildRepresentationForNode($this->treeData);
-    }
-
-    /**
-     * Sets the root uids
-     *
-     * @param int[] $startingPoints
-     */
-    public function setStartingPoints(array $startingPoints): void
-    {
-        $this->startingPoints = $startingPoints;
-    }
-
-    /**
-     * Gets the root uids
-     *
-     * @return int[]
-     */
-    public function getStartingPoints(): array
-    {
-        return $this->startingPoints;
     }
 
     /**
