@@ -81,6 +81,11 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     protected array $availableItems = [];
 
     /**
+     * @var int[]
+     */
+    protected array $startingPoints = [0];
+
+    /**
      * Sets the id of the tree
      *
      * @param string $treeId
@@ -237,5 +242,21 @@ abstract class AbstractTableConfigurationTreeDataProvider extends AbstractTreeDa
     public function setAvailableItems(array $availableItems)
     {
         $this->availableItems = $availableItems;
+    }
+
+    /**
+     * @param int[] $startingPoints
+     */
+    public function setStartingPoints(array $startingPoints): void
+    {
+        $this->startingPoints = $startingPoints;
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getStartingPoints(): array
+    {
+        return $this->startingPoints;
     }
 }

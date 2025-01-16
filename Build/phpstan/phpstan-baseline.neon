@@ -367,12 +367,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Routing/Router.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\AbstractTableConfigurationTreeDataProvider\:\:getStartingPoints\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Security/CategoryPermissionsAspect.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Tree\\TableConfiguration\\AbstractTableConfigurationTreeDataProvider\:\:getTableName\(\)\.$#'
 			identifier: method.notFound
 			count: 1
