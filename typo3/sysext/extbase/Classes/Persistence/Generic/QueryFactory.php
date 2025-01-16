@@ -17,10 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
-use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 
@@ -28,21 +27,12 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  * The QueryFactory used to create queries against the storage backend
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class QueryFactory implements QueryFactoryInterface, SingletonInterface
+readonly class QueryFactory implements QueryFactoryInterface
 {
-    protected ConfigurationManagerInterface $configurationManager;
-    protected DataMapFactory $dataMapFactory;
-    private ContainerInterface $container;
-
     public function __construct(
-        ConfigurationManagerInterface $configurationManager,
-        DataMapFactory $dataMapFactory,
-        ContainerInterface $container
-    ) {
-        $this->configurationManager = $configurationManager;
-        $this->dataMapFactory = $dataMapFactory;
-        $this->container = $container;
-    }
+        protected ConfigurationManagerInterface $configurationManager,
+        protected DataMapFactory $dataMapFactory,
+    ) {}
 
     /**
      * Creates a query object working on the given class name
@@ -54,9 +44,8 @@ class QueryFactory implements QueryFactoryInterface, SingletonInterface
      */
     public function create($className): QueryInterface
     {
-        $query = $this->container->get(QueryInterface::class);
+        $query = GeneralUtility::makeInstance(QueryInterface::class);
         $query->setType($className);
-
         $querySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
 
         $dataMap = $this->dataMapFactory->buildDataMap($className);
@@ -64,8 +53,18 @@ class QueryFactory implements QueryFactoryInterface, SingletonInterface
             $querySettings->setRespectStoragePage(false);
         }
 
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        $querySettings->setStoragePageIds(GeneralUtility::intExplode(',', (string)($frameworkConfiguration['persistence']['storagePid'] ?? '')));
+        $storagePid = '0';
+        try {
+            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+            $storagePid = (string)($frameworkConfiguration['persistence']['storagePid'] ?? '0');
+        } catch (NoServerRequestGivenException) {
+            // Fallback to storagePid 0 if ConfigurationManager has not been initialized with a Request. This
+            // is a measure to specifically allow running the extbase persistence layer without a Request, which
+            // may be useful in some CLI scenarios (and can be convenient in tests) when no other code branches
+            // of extbase that have a hard dependency to the Request (e.g. controllers / view) are used.
+        }
+
+        $querySettings->setStoragePageIds(GeneralUtility::intExplode(',', $storagePid));
         $query->setQuerySettings($querySettings);
         return $query;
     }

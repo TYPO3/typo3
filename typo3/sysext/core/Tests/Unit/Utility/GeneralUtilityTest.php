@@ -599,6 +599,46 @@ final class GeneralUtilityTest extends UnitTestCase
     public static function intExplodeDataProvider(): array
     {
         return [
+            'empty string' => [
+                '',
+                false,
+                [0],
+            ],
+            'empty string, remove empty' => [
+                '',
+                true,
+                [],
+            ],
+            'single comma' => [
+                ',',
+                false,
+                [0, 0],
+            ],
+            'single comma, remove empty' => [
+                ',',
+                true,
+                [],
+            ],
+            'multi comma' => [
+                ',,',
+                false,
+                [0, 0, 0],
+            ],
+            'multi comma, remove empty' => [
+                ',,',
+                true,
+                [],
+            ],
+            'zero' => [
+                '0',
+                false,
+                [0],
+            ],
+            'zero, remove empty' => [
+                '0',
+                true,
+                [0],
+            ],
             'convertStringToInteger' => [
                 '1,foo,2',
                 false,

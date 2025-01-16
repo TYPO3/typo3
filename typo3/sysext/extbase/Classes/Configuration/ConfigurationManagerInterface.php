@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Configuration;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\SingletonInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
 
 /**
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
@@ -39,6 +40,7 @@ interface ConfigurationManagerInterface extends SingletonInterface
      * @param string|null $extensionName if specified, the configuration for the given extension will be returned.
      * @param string|null $pluginName if specified, the configuration for the given plugin will be returned.
      * @return array The configuration
+     * @throws NoServerRequestGivenException
      */
     public function getConfiguration(string $configurationType, ?string $extensionName = null, ?string $pluginName = null): array;
 
