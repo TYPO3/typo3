@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extbase\Configuration;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
 
 /**
  * Generic ConfigurationManager implementation. Uses BackendConfigurationManager
@@ -77,7 +78,15 @@ class ConfigurationManager implements ConfigurationManagerInterface
             $request = $GLOBALS['TYPO3_REQUEST'];
         }
         if ($request === null) {
-            throw new \RuntimeException('No request given. ConfigurationManager has not been initialized properly.', 1721920500);
+            // This is a *specific* exception (as opposed to a global one) to allow consumers to opt-out
+            // of a Request dependency. The extbase persistence layer is an example: It can be useful to
+            // only have a loose Request / TypoScript dependency in it, and the TS config values / toggles
+            // used within the persistence layer are not crucially important and can fall back to hard
+            // coded defaults.
+            // Note custom extensions should typically not catch this exception. The dependency to
+            // the current request is still an important dependency in most extbase places, e.g. in
+            // controller and view related code.
+            throw new NoServerRequestGivenException('No request given. ConfigurationManager has not been initialized properly.', 1721920500);
         }
         if (ApplicationType::fromRequest($request)->isFrontend()) {
             if ($configurationType === self::CONFIGURATION_TYPE_FULL_TYPOSCRIPT) {

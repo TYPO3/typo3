@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\AbstractValueObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -564,10 +565,18 @@ class Backend implements BackendInterface, SingletonInterface
         if ($uid >= 1) {
             $this->eventDispatcher->dispatch(new EntityAddedToPersistenceEvent($object));
         }
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
+
+        $updateRefIndex = true;
+        try {
+            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+            $updateRefIndex = ($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1';
+        } catch (NoServerRequestGivenException) {
+            // fallback: yes, update the reference index if configuration manager has not been initialized
+        }
+        if ($updateRefIndex) {
             $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $uid);
         }
+
         $this->session->registerObject($object, $identifier);
         if ($uid >= 1) {
             $this->eventDispatcher->dispatch(new EntityFinalizedAfterPersistenceEvent($object));
@@ -681,7 +690,7 @@ class Backend implements BackendInterface, SingletonInterface
     /**
      * Updates a given object in the storage
      */
-    protected function updateObject(DomainObjectInterface $object, array $row): bool
+    protected function updateObject(DomainObjectInterface $object, array $row): void
     {
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($object));
         $this->addCommonFieldsToRow($object, $row);
@@ -695,11 +704,16 @@ class Backend implements BackendInterface, SingletonInterface
         $this->storageBackend->updateRow($dataMap->tableName, $row);
         $this->eventDispatcher->dispatch(new EntityUpdatedInPersistenceEvent($object));
 
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
+        $updateRefIndex = true;
+        try {
+            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+            $updateRefIndex = ($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1';
+        } catch (NoServerRequestGivenException) {
+            // fallback: yes, update the reference index if configuration manager has not been initialized
+        }
+        if ($updateRefIndex) {
             $this->referenceIndex->updateRefIndexTable($dataMap->tableName, (int)$row['uid']);
         }
-        return true;
     }
 
     /**
@@ -766,8 +780,15 @@ class Backend implements BackendInterface, SingletonInterface
         $this->eventDispatcher->dispatch(new EntityRemovedFromPersistenceEvent($object));
 
         $this->removeRelatedObjects($object);
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-        if (($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1') {
+
+        $updateRefIndex = true;
+        try {
+            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+            $updateRefIndex = ($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1';
+        } catch (NoServerRequestGivenException) {
+            // fallback: yes, update the reference index if configuration manager has not been initialized
+        }
+        if ($updateRefIndex) {
             $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $object->getUid());
         }
     }
@@ -815,7 +836,17 @@ class Backend implements BackendInterface, SingletonInterface
      */
     protected function determineStoragePageIdForNewRecord(?DomainObjectInterface $object = null): int
     {
-        $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        $frameworkConfiguration = [];
+        try {
+            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
+        } catch (NoServerRequestGivenException) {
+            // Fallback to empty array if ConfigurationManager has not been initialized with a Request.
+            // This implies storagePid 0. This is a measure to specifically allow running the extbase
+            // persistence layer without a Request, which may be useful in some CLI scenarios (and can
+            // be convenient in tests) when no other code branches of extbase that have a hard dependency
+            // to the Request (e.g. controllers / view) are used.
+        }
+
         if ($object !== null) {
             if (ObjectAccess::isPropertyGettable($object, AbstractDomainObject::PROPERTY_PID)) {
                 $pid = ObjectAccess::getProperty($object, AbstractDomainObject::PROPERTY_PID);
@@ -828,7 +859,7 @@ class Backend implements BackendInterface, SingletonInterface
                 return (int)$frameworkConfiguration['persistence']['classes'][$className]['newRecordStoragePid'];
             }
         }
-        $storagePidList = GeneralUtility::intExplode(',', (string)($frameworkConfiguration['persistence']['storagePid'] ?? ''));
+        $storagePidList = GeneralUtility::intExplode(',', (string)($frameworkConfiguration['persistence']['storagePid'] ?? '0'));
         return $storagePidList[0];
     }
 
