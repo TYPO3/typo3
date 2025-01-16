@@ -562,8 +562,10 @@ class FilesControlContainer extends HTMLElement {
   }
 
   private toggleContainerControls(visible: boolean): void {
+    // Note: This toggleContainerControls() is different from inline-control-container.ts
+    // because it uses a lit component. So no ':scope >' here.
     const controlContainer = this.container.querySelectorAll(
-      ':scope > ' + Selectors.controlContainer
+      Selectors.controlContainer
     );
     controlContainer.forEach((container: HTMLElement): void => {
       const controlContainerButtons = container.querySelectorAll('button, a');
