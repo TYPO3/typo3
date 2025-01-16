@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator;
 
 use TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGeneratorInterface;
+use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
 
 /**
  * Generate data for type=select fields
@@ -36,9 +37,25 @@ final class TypeSelectRenderTypeSelectTree extends AbstractFieldGenerator implem
         ],
     ];
 
-    public function generate(array $data): int
+    public function __construct(private readonly RecordFinder $recordFinder) {}
+
+    public function generate(array $data): string
     {
-        // "Parent count" field - just use zero as string here.
-        return 0;
+        if (!isset($data['fieldConfig']['config']['minitems'])) {
+            // "Parent count" field - just use zero as string here.
+            return '0';
+        }
+
+        $numberOfItemsToSelect = $data['fieldConfig']['config']['minitems'];
+        $items = $this->recordFinder->findUidsOfStyleguideEntryPages();
+        $missingItems = count($items) - $numberOfItemsToSelect;
+        for ($i = 0; $i < $missingItems; $i++) {
+            // Use a holistic approach to use the entry page and just add an increment to it,
+            // expecting that page to add. This is not yet triggered because no minitems=2
+            // is defined.
+            $items[] = $items[0] + $i;
+        }
+
+        return implode(',', $items);
     }
 }
