@@ -107,6 +107,28 @@
         margin-top: var(--typo3-dropdown-spacer);
     }
 
+    //
+    // @TODO:
+    // Remove this once Bootstrap's JavaScript handling for dropdowns
+    // is no longer required. This is currently necessary for correct
+    // placement, as it relies on hardcoded logic in Bootstrap.
+    //
+    // Once the Popover API and Anchor Positioning API are stable and
+    // widely supported, we will transition dropdown handling to use
+    // those APIs and eliminate the JavaScript dependency.
+    //
+    // See: https://developer.mozilla.org/en-US/docs/Web/API/Popover_API
+    // See: https://developer.mozilla.org/en-US/docs/Web/CSS/anchor
+    //
+    &-end {
+        --bs-position: end;
+
+        &[data-bs-popper] {
+            right: 0;
+            left: auto;
+        }
+    }
+
     &.show {
         display: block;
     }
