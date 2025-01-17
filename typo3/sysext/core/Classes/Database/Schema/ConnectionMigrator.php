@@ -25,6 +25,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Schema\ColumnDiff;
 use Doctrine\DBAL\Schema\ForeignKeyConstraint;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Schema;
@@ -43,7 +44,6 @@ use Doctrine\DBAL\Types\TextType;
 use TYPO3\CMS\Core\Database\Connection as Typo3Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
-use TYPO3\CMS\Core\Database\Schema\ColumnDiff as Typo3ColumnDiff;
 use TYPO3\CMS\Core\Database\Schema\SchemaDiff as Typo3SchemaDiff;
 use TYPO3\CMS\Core\Database\Schema\TableDiff as Typo3TableDiff;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -710,15 +710,16 @@ class ConnectionMigrator
             if (count($changedTable->changedColumns) !== 0) {
                 // Treat each changed column with a new diff to get a dedicated suggestions
                 // just for this single column.
-                foreach ($changedTable->changedColumns as $columnName => $changedColumn) {
+                foreach ($changedTable->changedColumns as $columnName => &$changedColumn) {
                     // Field has been renamed and will be handled separately
                     if ($changedColumn->hasNameChanged()) {
                         continue;
                     }
 
-                    if ($changedColumn->getOldColumn() !== null) {
-                        $changedColumn->oldColumn = $this->buildQuotedColumn($changedColumn->oldColumn);
-                    }
+                    $changedColumn = new ColumnDiff(
+                        $this->buildQuotedColumn($changedColumn->getOldColumn()),
+                        $changedColumn->getNewColumn(),
+                    );
 
                     // Get the current SQL declaration for the column
                     $currentColumn = $changedColumn->getOldColumn();
@@ -1268,7 +1269,7 @@ class ConnectionMigrator
                 );
 
                 // Build the diff object for the column to rename
-                $columnDiff = new Typo3ColumnDiff($this->buildQuotedColumn($removedColumn), $renamedColumn);
+                $columnDiff = new ColumnDiff($this->buildQuotedColumn($removedColumn), $renamedColumn);
 
                 // Add the column with the required rename information to the changed column list
                 $schemaDiff->alteredTables[$tableIndex]->changedColumns[$columnIndex] = $columnDiff;
