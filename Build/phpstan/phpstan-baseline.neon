@@ -1039,12 +1039,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between Doctrine\\DBAL\\Schema\\Column and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between true and true will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
 			count: 5
