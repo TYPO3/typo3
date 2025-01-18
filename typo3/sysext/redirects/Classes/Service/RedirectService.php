@@ -416,8 +416,10 @@ class RedirectService
             $expressionMatcherVariables,
             $this->typoScriptCache,
         );
+        // Note, that we need the full TypoScript setup array, which is required for links created by
+        // DatabaseRecordLinkBuilder. This should be kept in mind when TSFE will be removed in v14.
         $frontendTypoScript = $this->frontendTypoScriptFactory->createSetupConfigOrFullSetup(
-            false,
+            true,
             $frontendTypoScript,
             $site,
             $pageInformation->getSysTemplateRows(),
