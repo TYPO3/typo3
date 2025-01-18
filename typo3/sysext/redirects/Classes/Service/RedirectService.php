@@ -23,6 +23,7 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\TypoScriptAspect;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\Uri;
@@ -403,6 +404,11 @@ class RedirectService implements LoggerAwareInterface
                 ->withAttribute('site', $site)
                 ->withAttribute('siteLanguage', $site->getDefaultLanguage());
         }
+
+        // Ensure template parsing by setting TypoScriptAspect::$forcedTemplateParsing (required for TypoScript setup initialization)
+        GeneralUtility::makeInstance(Context::class)
+            ->setAspect('typoscript', GeneralUtility::makeInstance(TypoScriptAspect::class, true));
+
         $controller = GeneralUtility::makeInstance(
             TypoScriptFrontendController::class,
             GeneralUtility::makeInstance(Context::class),
