@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Site\Set;
 /**
  * @internal Only to be used by internal site settings functionality
  */
-class InvalidSetException extends \RuntimeException
+final class InvalidCategoryDefinitionsException extends \RuntimeException
 {
     private readonly string $setName;
 

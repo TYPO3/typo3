@@ -85,6 +85,32 @@ class SiteSetsListCommand extends Command
             );
         }
         $table->render();
+
+        $invalidSets = $this->setRegistry->getInvalidSets();
+        if ($invalidSets !== []) {
+            $io->newLine();
+            $io->newLine();
+            $io->title('Invalid site set configurations');
+            $table = new Table($output);
+            $table->setHeaders([
+                'Set',
+                'Error',
+            ]);
+            foreach ($invalidSets as $invalidSet) {
+                $table->addRow(
+                    [
+                        $invalidSet['name'],
+                        sprintf(
+                            $this->getLanguageService()->sL($invalidSet['error']->getLabel()),
+                            $invalidSet['name'],
+                            $invalidSet['context'],
+                        ),
+                    ]
+                );
+            }
+            $table->render();
+        }
+
         return Command::SUCCESS;
     }
 

@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Site\Set;
 
+/**
+ * @internal Only to be used by internal site settings functionality
+ */
 final class InvalidSettingsException extends \RuntimeException
 {
     private readonly string $setName;

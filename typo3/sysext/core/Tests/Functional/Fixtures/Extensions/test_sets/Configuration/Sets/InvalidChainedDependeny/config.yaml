@@ -1,0 +1,5 @@
+name: typo3tests/invalid-chained-dependency
+label: Test Set with a dependency on a set with an invalid dependency
+
+dependencies:
+  - typo3tests/invalid-dependency

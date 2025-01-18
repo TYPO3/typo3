@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOrigin;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationOriginType;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
+use TYPO3\CMS\Core\Site\Set\InvalidCategoryDefinitionsException;
+use TYPO3\CMS\Core\Site\Set\InvalidSetException;
 use TYPO3\CMS\Core\Site\Set\InvalidSettingsDefinitionsException;
 use TYPO3\CMS\Core\Site\Set\InvalidSettingsException;
 use TYPO3\CMS\Core\Site\Set\SetCollector;
@@ -180,9 +182,14 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
         return $icons;
     }
 
-    public static function configureSetCollector(ContainerInterface $container, SetCollector $setCollector, ?string $path = null): SetCollector
-    {
-        $path = $path ?? static::getPackagePath();
+    public static function configureSetCollector(
+        ContainerInterface $container,
+        SetCollector $setCollector,
+        ?string $path = null,
+        ?string $packageName = null,
+    ): SetCollector {
+        $path ??= static::getPackagePath();
+        $packageName ??= static::getPackageName();
         $setPath = $path . 'Configuration/Sets';
 
         try {
@@ -200,36 +207,40 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
 
         $setProvider = $container->get(YamlSetDefinitionProvider::class);
         foreach ($finder as $fileInfo) {
+            $errorMap = [
+                InvalidSettingsDefinitionsException::class => [
+                    'error' => SetError::invalidSettingsDefinitions,
+                    'logLine' => 'Set {setName} invalidated {file} because of invalid settings.definitions.yaml: {reason}',
+                ],
+                InvalidCategoryDefinitionsException::class => [
+                    'error' => SetError::invalidCategoryDefinitions,
+                    'logLine' => 'Set {setName} invalidated {file} because of invalid category in settings.definitions.yaml: {reason}',
+                ],
+                InvalidSettingsException::class => [
+                    'error' => SetError::invalidSettings,
+                    'logLine' => 'Set {setName} invalidated {file} because of invalid settings.yaml: {reason}',
+                ],
+                InvalidSetException::class => [
+                    'error' => SetError::invalidSet,
+                    'logLine' => 'Invalid set {setName} in {file}: {reason}',
+                ],
+            ];
+
             try {
-                $setCollector->add($setProvider->get($fileInfo));
-            } catch (InvalidSettingsDefinitionsException $e) {
+                $errorContext = 'EXT:' . $packageName . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
+                $setCollector->add($setProvider->get($fileInfo, $errorContext));
+            } catch (InvalidSettingsDefinitionsException|InvalidCategoryDefinitionsException|InvalidSettingsException|InvalidSetException $e) {
+                $errorDetails = $errorMap[get_class($e)];
                 $setCollector->addError(
-                    SetError::invalidSettingsDefinitions,
+                    $errorDetails['error'],
                     $e->getSetName(),
                     $e->getMessage(),
                 );
+
                 $logger = $container->get(LogManager::class)->getLogger(self::class);
-                $logger->error('Set {setName} invalidated {file} because of invalid settings.definitions.yaml: {reason}', [
+                $logger->error($errorDetails['logLine'], [
                     'file' => $fileInfo->getPathname(),
-                    'reason' => $e->getMessage(),
                     'setName' => $e->getSetName(),
-                ]);
-            } catch (InvalidSettingsException $e) {
-                $setCollector->addError(
-                    SetError::invalidSettings,
-                    $e->getSetName(),
-                    $e->getMessage(),
-                );
-                $logger = $container->get(LogManager::class)->getLogger(self::class);
-                $logger->error('Set {setName} invalidated {file} because of invalid settings.yaml: {reason}', [
-                    'file' => $fileInfo->getPathname(),
-                    'reason' => $e->getMessage(),
-                    'setName' => $e->getSetName(),
-                ]);
-            } catch (\RuntimeException $e) {
-                $logger = $container->get(LogManager::class)->getLogger(self::class);
-                $logger->error('Invalid set in {file}: {reason}', [
-                    'file' => $fileInfo->getPathname(),
                     'reason' => $e->getMessage(),
                 ]);
             }
