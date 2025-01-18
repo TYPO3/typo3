@@ -1,0 +1,3 @@
+settings:
+  foo.bar:
+    type: string

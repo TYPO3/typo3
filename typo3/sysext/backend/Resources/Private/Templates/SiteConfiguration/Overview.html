@@ -247,6 +247,33 @@
         </div>
     </f:if>
 
+    <f:if condition="{invalidSets}">
+        <h2>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.invalidSets.title')}</h2>
+        <p>{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.invalidSets.description')}</p>
+
+        <div class="table-fit">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.invalidSets.set" /></th>
+                        <th><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration.xlf:overview.invalidSets.error" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <f:for each="{invalidSets}" as="invalidSet">
+                        <tr>
+                            <td><code>{invalidSet.name}</code></td>
+                            <td>
+                                <f:translate key="{invalidSet.error.label}" arguments="{0: invalidSet.name, 1: invalidSet.context}"/>
+                            </td>
+                        </tr>
+                    </f:for>
+                </tbody>
+            </table>
+        </div>
+
+    </f:if>
+
     <form action="{be:moduleLink(route:'site_configuration.delete')}" id="form-site-configuration-delete" method="post" class="hidden"></form>
 </f:section>
 

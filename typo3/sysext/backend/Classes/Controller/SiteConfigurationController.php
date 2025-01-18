@@ -47,6 +47,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Site\Entity\Site;
+use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\SysLog\Action\Site as SiteAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -75,6 +76,7 @@ class SiteConfigurationController
         private readonly SiteConfiguration $siteConfiguration,
         private readonly SiteWriter $siteWriter,
         private readonly NodeFactory $nodeFactory,
+        private readonly SetRegistry $setRegistry,
     ) {}
 
     /**
@@ -115,6 +117,7 @@ class SiteConfigurationController
             'unassignedSites' => $unassignedSites,
             'duplicatedRootPages' => $duplicatedRootPages,
             'duplicatedEntryPoints' => $this->getDuplicatedEntryPoints($allSites, $pages),
+            'invalidSets' => $this->setRegistry->getInvalidSets(),
         ]);
         return $view->renderResponse('SiteConfiguration/Overview');
     }

@@ -45,6 +45,18 @@
 			<trans-unit id="overview.unassignedSites.description">
 				<source>The following sites don't belong to any page anymore and can be removed.</source>
 			</trans-unit>
+			<trans-unit id="overview.invalidSets.title">
+				<source>Invalid site set configurations</source>
+			</trans-unit>
+			<trans-unit id="overview.invalidSets.description">
+				<source>The following site sets contain errors and therefore could not be loaded.</source>
+			</trans-unit>
+			<trans-unit id="overview.invalidSets.set">
+				<source>Set</source>
+			</trans-unit>
+			<trans-unit id="overview.invalidSets.error">
+				<source>Error</source>
+			</trans-unit>
 			<trans-unit id="overview.duplicatedEntryPoints">
 				<source>Duplicated Entrypoints</source>
 			</trans-unit>

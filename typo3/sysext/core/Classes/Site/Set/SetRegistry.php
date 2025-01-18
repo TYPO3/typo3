@@ -125,6 +125,21 @@ class SetRegistry
         return $this->orderedSets;
     }
 
+    protected function checkMissingDependencies(array $sets, SetDefinition $set): ?string
+    {
+        foreach ($set->dependencies as $dependencyName) {
+            $dependency = $sets[$dependencyName] ?? null;
+            if ($dependency === null) {
+                return $dependencyName;
+            }
+            $missingSubDependency = $this->checkMissingDependencies($sets, $dependency);
+            if ($missingSubDependency !== null) {
+                return $dependencyName . '[' . $missingSubDependency . ']';
+            }
+        }
+        return null;
+    }
+
     /**
      * @return array<string, SetDefinition>
      */
@@ -134,20 +149,18 @@ class SetRegistry
         $this->invalidSets = $this->setCollector->getInvalidSets();
         $sets = $this->setCollector->getSetDefinitions();
         foreach ($sets as $set) {
-            foreach ($set->dependencies as $dependencyName) {
-                if (isset($sets[$dependencyName])) {
-                    continue;
-                }
+            $missingDependency = $this->checkMissingDependencies($sets, $set);
+            if ($missingDependency !== null) {
                 $this->logger->error('Invalid set "{name}": Missing dependency "{dependency}"', [
                     'name' => $set->name,
-                    'dependency' => $dependencyName,
+                    'dependency' => $missingDependency,
                 ]);
                 $this->invalidSets[$set->name] = [
                     'error' => SetError::missingDependency,
                     'name' => $set->name,
-                    'context' => $dependencyName,
+                    'context' => $missingDependency,
                 ];
-                continue 2;
+                continue;
             }
             $tmp[$set->name] = [
                 'set' => $set,

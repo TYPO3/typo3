@@ -1,0 +1,5 @@
+settings:
+  foo.bar:
+    type: invalidtype
+    label: 'Foo Bar'
+    default: ''

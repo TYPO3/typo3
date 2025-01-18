@@ -1438,10 +1438,16 @@ Do you want to refresh it now?</source>
 				<source>Site set '%1$s' is disabled: Missing dependency '%2$s'</source>
 			</trans-unit>
 			<trans-unit id="error.siteSet.invalidSettingsDefinitions">
-				<source>Site set '%1$s' is disabled due to invalid settings definitions</source>
+				<source>Site set '%1$s' is disabled due to invalid settings definitions: %2$s</source>
+			</trans-unit>
+			<trans-unit id="error.siteSet.invalidCategoryDefinitions">
+				<source>Site set '%1$s' is disabled due to invalid category definitions: %2$s</source>
 			</trans-unit>
 			<trans-unit id="error.siteSet.invalidSettings">
-				<source>Site set '%1$s' is disabled due to invalid settings</source>
+				<source>Site set '%1$s' is disabled due to invalid settings: %2$s</source>
+			</trans-unit>
+			<trans-unit id="error.siteSet.invalidSet">
+				<source>Invalid site set '%1$s': %2$s</source>
 			</trans-unit>
 		</body>
 	</file>

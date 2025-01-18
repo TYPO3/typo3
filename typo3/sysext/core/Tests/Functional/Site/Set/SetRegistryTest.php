@@ -17,8 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Site\Set;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Site\Set\SetDefinition;
+use TYPO3\CMS\Core\Site\Set\SetError;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -101,14 +103,71 @@ final class SetRegistryTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function invalidSetsAreSkipped(): void
+    public function emptySettingsFileIsAccepted(): void
     {
         $setRegistry = $this->get(SetRegistry::class);
-        self::assertFalse($setRegistry->hasSet('typo3tests/invalid-dependency'));
+        $setDefinitions = $setRegistry->getSets('typo3tests/empty-settings');
+        $setDefinitionsNames = array_map(static fn(SetDefinition $d): string => $d->name, $setDefinitions);
 
-        $setDefinitions = $setRegistry->getSets('typo3tests/invalid-dependency');
+        self::assertContains('typo3tests/empty-settings', $setDefinitionsNames);
+        self::assertEmpty($setDefinitions[0]->settings);
+    }
+
+    public static function invalidSetsDataProvider(): \Generator
+    {
+        yield [
+            'set' => 'typo3tests/invalid-set-missing-label',
+            'error' => SetError::invalidSet,
+            'context' => 'Invalid set definition: {"name":"typo3tests\/invalid-set-missing-label"} – Missing properties: label',
+        ];
+        yield [
+            'set' => 'typo3tests/invalid-dependency',
+            'error' => SetError::missingDependency,
+            'context' => 'typo3tests/not-available',
+        ];
+        yield [
+            'set' => 'typo3tests/invalid-chained-dependency',
+            'error' => SetError::missingDependency,
+            'context' => 'typo3tests/invalid-dependency[typo3tests/not-available]',
+        ];
+        yield [
+            'set' => 'typo3tests/invalid-settings-definitions-missing-properties',
+            'error' => SetError::invalidSettingsDefinitions,
+            'context' => 'Invalid setting definition "foo.bar": {"type":"string"} – Missing properties: default, label',
+        ];
+        yield [
+            'set' => 'typo3tests/invalid-settings-definitions-invalid-type',
+            'error' => SetError::invalidSettingsDefinitions,
+            'context' => 'Invalid settings type "invalidtype" for settings definition: {"type":"invalidtype","label":"Foo Bar","default":""}',
+        ];
+        yield [
+            'set' => 'typo3tests/invalid-settings',
+            'error' => SetError::invalidSettings,
+            'context' => 'Invalid settings format. Source: EXT:typo3tests/test-sets/Configuration/Sets/InvalidSettings/settings.yaml',
+        ];
+    }
+
+    #[DataProvider('invalidSetsDataProvider')]
+    #[Test]
+    public function invalidSetsAreSkippedAndLogged(
+        string $set,
+        SetError $error,
+        string $context,
+    ): void {
+        $setRegistry = $this->get(SetRegistry::class);
+        self::assertFalse($setRegistry->hasSet($set));
+
+        $setDefinitions = $setRegistry->getSets($set);
         $setDefinitionsNames = array_map(static fn(SetDefinition $d): string => $d->name, $setDefinitions);
 
         self::assertEmpty($setDefinitionsNames);
+
+        $invalidSets = $setRegistry->getInvalidSets();
+        self::assertArrayHasKey($set, $invalidSets);
+
+        $setError = $invalidSets[$set];
+        self::assertSame($setError['error'], $error);
+        self::assertSame($setError['name'], $set);
+        self::assertSame($setError['context'], $context);
     }
 }
