@@ -80,6 +80,6 @@ var __decorate=function(e,t,o,r){var i,l=arguments.length,a=l<3?t:null===r?r=Obj
 
     .cm-scroller {
       min-height: 100%;
-      max-height: calc(100vh - 10rem);
+      max-height: calc(100dvh - 10rem);
     }
   `,__decorate([property({type:Object})],CodeMirrorElement.prototype,"mode",void 0),__decorate([property({type:Array})],CodeMirrorElement.prototype,"addons",void 0),__decorate([property({type:Array})],CodeMirrorElement.prototype,"keymaps",void 0),__decorate([property({type:Number})],CodeMirrorElement.prototype,"lineDigits",void 0),__decorate([property({type:Boolean,reflect:!0})],CodeMirrorElement.prototype,"autoheight",void 0),__decorate([property({type:Boolean})],CodeMirrorElement.prototype,"nolazyload",void 0),__decorate([property({type:Boolean})],CodeMirrorElement.prototype,"readonly",void 0),__decorate([property({type:Boolean,reflect:!0})],CodeMirrorElement.prototype,"fullscreen",void 0),__decorate([property({type:String})],CodeMirrorElement.prototype,"label",void 0),__decorate([property({type:String})],CodeMirrorElement.prototype,"placeholder",void 0),__decorate([property({type:String})],CodeMirrorElement.prototype,"panel",void 0),__decorate([state()],CodeMirrorElement.prototype,"editorTheme",void 0),__decorate([state()],CodeMirrorElement.prototype,"editorView",void 0),CodeMirrorElement=__decorate([customElement("typo3-t3editor-codemirror")],CodeMirrorElement);export{CodeMirrorElement};

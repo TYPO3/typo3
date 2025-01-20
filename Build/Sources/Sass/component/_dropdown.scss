@@ -87,7 +87,7 @@
     position: absolute;
     z-index: var(--typo3-dropdown-zindex);
     min-width: var(--typo3-dropdown-min-width);
-    max-width: calc(100vw - 20px);
+    max-width: calc(100dvw - 20px);
     padding: var(--typo3-dropdown-padding-y) var(--typo3-dropdown-padding-x);
     margin: 0;
     font-size: var(--typo3-dropdown-font-size);

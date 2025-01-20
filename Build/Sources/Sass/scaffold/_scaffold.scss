@@ -68,7 +68,7 @@ iframe {
     background-color: var(--scaffold-bg);
     color: var(--scaffold-color);
     position: relative;
-    height: 100vh;
+    height: 100dvh;
 }
 
 .scaffold-header {
@@ -103,7 +103,7 @@ iframe {
     color: var(--scaffold-modulemenu-color);
     top: var(--scaffold-header-height);
     width: auto;
-    height: calc(100vh - var(--scaffold-header-height));
+    height: calc(100dvh - var(--scaffold-header-height));
     max-width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
@@ -149,7 +149,7 @@ iframe {
             position: absolute;
             top: var(--scaffold-header-height);
             inset-inline: 0;
-            height: calc(100vh - var(--scaffold-header-height));
+            height: calc(100dvh - var(--scaffold-header-height));
             padding: 1rem .5rem;
             display: block;
             overflow: auto;
@@ -164,7 +164,7 @@ iframe {
 .scaffold-content {
     position: relative !important;
     flex: 1 0 0%;
-    height: calc(100vh - var(--scaffold-header-height));
+    height: calc(100dvh - var(--scaffold-header-height));
     display: flex;
     flex-direction: row;
     background: var(--scaffold-bg);

@@ -43,7 +43,7 @@
 .toolbar-item {
     .dropdown-menu {
         width: 350px;
-        max-height: calc(100vh - var(--scaffold-header-height) - 1rem);
+        max-height: calc(100dvh - var(--scaffold-header-height) - 1rem);
         overflow-y: auto;
 
         @include media-breakpoint-up('lg') {
@@ -52,11 +52,11 @@
 
         @include media-breakpoint-down('lg') {
             position: fixed !important;
-            width: calc(100vw - 2rem) !important;
+            width: calc(100dvw - 2rem) !important;
             top: 50% !important;
             inset-inline-start: 50% !important;
             transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%) !important;
-            max-height: calc(100vh - 2rem);
+            max-height: calc(100dvh - 2rem);
         }
     }
 

@@ -101,7 +101,7 @@ export class CodeMirrorElement extends LitElement {
 
     .cm-scroller {
       min-height: 100%;
-      max-height: calc(100vh - 10rem);
+      max-height: calc(100dvh - 10rem);
     }
   `;
 

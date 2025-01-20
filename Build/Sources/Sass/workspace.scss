@@ -146,7 +146,7 @@ $workspace-topbar-logo-width: 22px;
             left: 0;
             z-index: 100;
             width: 100%;
-            height: calc(100vh - #{$workspace-topbar-height});
+            height: calc(100dvh - #{$workspace-topbar-height});
             background-color: #fff;
         }
 
@@ -169,6 +169,6 @@ $workspace-topbar-logo-width: 22px;
 }
 
 #list iframe {
-    height: calc(100vh - #{$workspace-topbar-height}) !important;
+    height: calc(100dvh - #{$workspace-topbar-height}) !important;
     width: 100%;
 }
