@@ -191,28 +191,31 @@
     }
 }
 
-.scaffold-in-workspace #typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem .toolbar-item-link {
-    --toolbar-item-link-color-state: var(--typo3-state-primary-color);
-    --toolbar-item-link-bg-state: var(--typo3-state-primary-bg);
-    --toolbar-item-link-border-color-state: var(--typo3-state-primary-border-color);
+.scaffold-in-impersonation #typo3-cms-backend-backend-toolbaritems-usertoolbaritem,
+.scaffold-in-workspace #typo3-cms-workspaces-backend-toolbaritems-workspaceselectortoolbaritem {
+    .toolbar-item-link {
+        --toolbar-item-link-color-state: var(--typo3-state-primary-color);
+        --toolbar-item-link-bg-state: var(--typo3-state-primary-bg);
+        --toolbar-item-link-border-color-state: var(--typo3-state-primary-border-color);
 
-    &:hover {
-        --toolbar-item-link-color-state: var(--typo3-state-primary-hover-color);
-        --toolbar-item-link-bg-state: var(--typo3-state-primary-hover-bg);
-        --toolbar-item-link-border-color-state: var(--typo3-state-primary-hover-border-color);
-    }
+        &:hover {
+            --toolbar-item-link-color-state: var(--typo3-state-primary-hover-color);
+            --toolbar-item-link-bg-state: var(--typo3-state-primary-hover-bg);
+            --toolbar-item-link-border-color-state: var(--typo3-state-primary-hover-border-color);
+        }
 
-    .open &,
-    &.show,
-    &:focus {
-        --toolbar-item-link-color-state: var(--typo3-state-primary-focus-color);
-        --toolbar-item-link-state: var(--typo3-state-primary-focus-bg);
-        --toolbar-item-link-border-color-state: var(--typo3-state-primary-focus-border-color);
-    }
+        .open &,
+        &.show,
+        &:focus {
+            --toolbar-item-link-color-state: var(--typo3-state-primary-focus-color);
+            --toolbar-item-link-state: var(--typo3-state-primary-focus-bg);
+            --toolbar-item-link-border-color-state: var(--typo3-state-primary-focus-border-color);
+        }
 
-    &:focus-visible {
-        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-state-primary-bg), transparent var(--typo3-outline-transparent-mix));
-        z-index: 3;
+        &:focus-visible {
+            outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, var(--typo3-state-primary-bg), transparent var(--typo3-outline-transparent-mix));
+            z-index: 3;
+        }
     }
 }
 

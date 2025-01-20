@@ -247,6 +247,7 @@ class BackendController
         $view->assign('siteName', $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename']);
         $view->assign('toolbarItems', $this->getToolbarItems($request));
         $view->assign('isInWorkspace', $this->getBackendUser()->workspace > 0);
+        $view->assign('isImpersonated', $this->getBackendUser()->getOriginalUserIdWhenInSwitchUserMode() !== null);
     }
 
     /**
