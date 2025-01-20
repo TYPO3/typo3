@@ -878,11 +878,15 @@ class Backend implements BackendInterface, SingletonInterface
             return GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap);
         }
 
-        if (!$property) {
+        if ($property === null) {
             return null;
         }
 
-        $className = $property->getPrimaryType()->getClassName();
+        $className = $property->getPrimaryType()->getClassName() ?? null;
+
+        if ($className === null) {
+            return null;
+        }
 
         // Nullable domain model property
         if (is_subclass_of($className, DomainObjectInterface::class)) {
@@ -891,6 +895,10 @@ class Backend implements BackendInterface, SingletonInterface
 
         // Nullable DateTime property
         if ($columnMap && is_subclass_of($className, \DateTimeInterface::class)) {
+            if ($columnMap->isNullable() && $property->isNullable()) {
+                return null;
+            }
+
             $datetimeFormats = QueryHelper::getDateTimeFormats();
             $dateFormat = $columnMap->getDateTimeStorageFormat();
             if (!$dateFormat) {

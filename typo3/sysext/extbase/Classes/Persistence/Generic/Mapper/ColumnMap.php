@@ -117,6 +117,8 @@ class ColumnMap
 
     private TableColumnType $type = TableColumnType::INPUT;
 
+    public bool $isNullable = false;
+
     /**
      * Constructs a Column Map
      *
@@ -241,5 +243,15 @@ class ColumnMap
     public function getType(): TableColumnType
     {
         return $this->type;
+    }
+
+    public function setIsNullable(bool $isNullable): void
+    {
+        $this->isNullable = $isNullable;
+    }
+
+    public function isNullable(): bool
+    {
+        return $this->isNullable;
     }
 }

@@ -68,6 +68,7 @@ readonly class ColumnMapFactory
             $columnMap->setDateTimeStorageFormat($field->getPersistenceType());
         }
         $columnMap = $this->setRelations($columnMap, $field, $type, $elementType);
+        $columnMap->setIsNullable($field->isNullable());
         return $columnMap;
     }
 
