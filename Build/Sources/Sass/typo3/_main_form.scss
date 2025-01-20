@@ -37,16 +37,16 @@
     gap: .25rem;
 }
 
+.form-file-header-button {
+    @extend .form-irre-header-button;
+    flex-direction: column;
+    text-align: start;
+}
+
 .form-irre-header-body {
     width: 100%;
     font-weight: normal;
     white-space: normal;
-
-    dl,
-    dd,
-    dt {
-        margin-bottom: 0;
-    }
 }
 
 .form-irre-header-icon {
@@ -55,6 +55,7 @@
 
 .form-irre-header-thumbnail {
     padding-inline-end: .25rem;
+    width: 100%;
 }
 
 .form-irre-header-control {

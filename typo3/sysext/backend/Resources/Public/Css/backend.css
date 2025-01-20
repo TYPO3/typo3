@@ -2761,7 +2761,7 @@ pre[class*=language-]{border-radius:4px;padding:1em;overflow:auto;margin-bottom:
 .panel-heading [data-bs-toggle=collapse]{outline:0}
 .panel-heading:has([data-bs-toggle=collapse]:focus-visible){z-index:1;outline:var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb,var(--typo3-panel-border-color),transparent 25%)}
 .panel-heading .caret{--typo3-caret-color:var(--typo3-panel-header-color)}
-.panel-heading.collapsed .caret,.panel-heading:has(.collapsed) .caret,.panel-heading:has(.form-irre-header-button[aria-expanded=false]) .caret{--typo3-caret-rotation:calc(-90deg * var(--typo3-position-modifier))}
+.panel-heading.collapsed .caret,.panel-heading:has(.collapsed) .caret,.panel-heading:has(.form-irre-header-button[aria-expanded=false],[aria-expanded=false].form-file-header-button) .caret{--typo3-caret-rotation:calc(-90deg * var(--typo3-position-modifier))}
 .panel-heading-row{flex-grow:1;display:flex;align-items:center;max-width:100%;gap:.5rem}
 .panel-heading-row .panel-button{width:auto}
 .panel-heading-row-spread{flex-wrap:wrap;justify-content:space-between}
@@ -3899,11 +3899,11 @@ video{background-color:#000}
 .formengine-field-item{display:block;position:relative}
 .form-irre-header{display:flex;align-items:center;-webkit-user-select:none;-moz-user-select:none;user-select:none;gap:.25rem}
 .form-irre-header-cell{vertical-align:middle;white-space:nowrap}
-.form-irre-header-button{display:flex;text-align:start;align-items:center;align-self:stretch;background:0 0;border:0;width:100%;padding:0;gap:.25rem}
+.form-file-header-button,.form-irre-header-button{display:flex;text-align:start;align-items:center;align-self:stretch;background:0 0;border:0;width:100%;padding:0;gap:.25rem}
+.form-file-header-button{flex-direction:column;text-align:start}
 .form-irre-header-body{width:100%;font-weight:400;white-space:normal}
-.form-irre-header-body dd,.form-irre-header-body dl,.form-irre-header-body dt{margin-bottom:0}
 .form-irre-header-icon{padding-inline-end:0}
-.form-irre-header-thumbnail{padding-inline-end:.25rem}
+.form-irre-header-thumbnail{padding-inline-end:.25rem;width:100%}
 .form-irre-header-control{display:flex;align-items:center;gap:.25rem}
 textarea.formengine-textarea{resize:none}
 .sticky-form-actions{--typo3-stickyform-bg:var(--typo3-surface-base);--typo3-stickyform-border-width:var(--typo3-component-border-width);--typo3-stickyform-border-color:var(--typo3-component-border-color);--typo3-stickyform-padding-y:1rem;--typo3-stickyform-padding-x:1rem;--typo3-stickyform-spacing:1rem;position:sticky;top:0;z-index:2;display:flex;gap:var(--typo3-stickyform-spacing);padding:var(--typo3-stickyform-padding-y) var(--typo3-stickyform-padding-x);margin-inline:calc(var(--typo3-stickyform-padding-x) * -1);background:var(--typo3-stickyform-bg);margin-bottom:var(--typo3-stickyform-spacing);border-bottom:var(--typo3-stickyform-border-width) solid var(--typo3-stickyform-border-color)}

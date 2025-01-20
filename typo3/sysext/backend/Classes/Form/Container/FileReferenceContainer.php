@@ -29,8 +29,6 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Resource\Exception\InvalidUidException;
-use TYPO3\CMS\Core\Resource\Index\MetaDataRepository;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -63,7 +61,6 @@ class FileReferenceContainer extends AbstractContainer
         private readonly ResourceFactory $resourceFactory,
         private readonly ConnectionPool $connectionPool,
         private readonly UriBuilder $uriBuilder,
-        private readonly MetaDataRepository $metaDataRepository,
     ) {}
 
     public function render(): array
@@ -277,11 +274,11 @@ class FileReferenceContainer extends AbstractContainer
 
         // @todo check classes and change to dedicated file related ones if possible
         return '
-            <button class="form-irre-header-cell form-irre-header-button" ' . $ariaAttributesString . '>
-                ' . $headerImage . '
+            <button class="form-irre-header-cell form-file-header-button" ' . $ariaAttributesString . '>
                 <div class="form-irre-header-body">
                     <span id="' . $objectId . '_label">' . $recordTitle . '</span>
                 </div>
+                ' . $headerImage . '
             </button>
             <div class="form-irre-header-cell form-irre-header-control t3js-formengine-file-header-control">
                 ' . $this->renderFileReferenceHeaderControl() . '
@@ -486,53 +483,14 @@ class FileReferenceContainer extends AbstractContainer
             return $this->data['recordTitle'] ?: (string)$databaseRow['uid'];
         }
 
-        $value = '';
-
-        $recordTitle = $this->getTitleForRecord($databaseRow, $fileRecord);
-        $recordName = $this->getLabelFieldForRecord($databaseRow, $fileRecord, 'name');
-
-        $labelField = !empty($recordTitle) ? 'title' : 'name';
-
-        if (!empty($recordTitle)) {
-            $value .= $recordTitle . ' (' . $recordName . ')';
-        } else {
-            $value .= $recordName;
-        }
-
-        $title = '
-            <dt class="col">
-                ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:sys_file.' . $labelField)) . '
-            </dt>
-            <dd class="col text-truncate">
-                ' . $value . '
-            </dd>';
+        $title = '<span>' . $this->getLabelFieldForRecord($databaseRow, $fileRecord, 'name') . '</span>';
 
         // In debug mode, add the table name to the record title
         if ($this->getBackendUserAuthentication()->shallDisplayDebugInformation()) {
-            $title .= '<div class="col"><code>[' . self::FILE_REFERENCE_TABLE . ']</code></div>';
+            $title .= ' <code>[' . self::FILE_REFERENCE_TABLE . ']</code>';
         }
 
-        return '<dl class="row row-cols-auto gx-2">' . $title . '</dl>';
-    }
-
-    protected function getTitleForRecord(array $databaseRow, array $fileRecord): string
-    {
-        $fullTitle = '';
-        if (isset($databaseRow['title'])) {
-            $fullTitle = $databaseRow['title'];
-        } elseif ($fileRecord['uid'] ?? false) {
-            try {
-                $metaData = $this->metaDataRepository->findByFileUid($fileRecord['uid']);
-                $fullTitle = $metaData['title'] ?? '';
-            } catch (InvalidUidException $e) {
-            }
-        }
-
-        if ($fullTitle === '') {
-            return '';
-        }
-
-        return BackendUtility::getRecordTitlePrep($fullTitle);
+        return $title;
     }
 
     protected function getLabelFieldForRecord(array $databaseRow, array $fileRecord, string $field): string
