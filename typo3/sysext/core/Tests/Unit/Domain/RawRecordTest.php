@@ -50,7 +50,6 @@ final class RawRecordTest extends UnitTestCase
             'tt_content.text',
             'tt_content',
             'text',
-            'list',
         ];
         yield 'record type with dot' => [
             'tt_content.record.type',
