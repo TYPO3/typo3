@@ -6,7 +6,7 @@ typo3-backend-formengine-suggest-result-container {
     position: absolute;
     inset-inline-start: 0;
     z-index: var(--typo3-zindex-dropdown);
-    max-width: calc(100vw - 20px);
+    max-width: calc(100dvw - 20px);
 }
 
 typo3-backend-formengine-suggest-result-list {

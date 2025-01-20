@@ -37,8 +37,8 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: center;
-    height: 100vh;
-    width: 100vw;
+    height: 100dvh;
+    width: 100dvw;
     margin: 0 auto !important;
     pointer-events: none;
 
@@ -59,8 +59,8 @@
 .modal-content {
     display: flex;
     margin: 0 auto;
-    max-height: calc(100vh - 40px);
-    max-width: calc(100vw - 40px);
+    max-height: calc(100dvh - 40px);
+    max-width: calc(100dvw - 40px);
     flex-direction: column;
     height: var(--modal-height);
     width: var(--modal-width);
@@ -90,8 +90,8 @@
     z-index: var(--typo3-modal-backdrop-zindex);
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     background-color: var(--typo3-modal-backdrop-bg);
 
     &.fade { opacity: 0; }

@@ -33,8 +33,8 @@
 .workspace-action .active-preview-mode{display:inline-block;text-align:start}
 .workspaces{position:relative}
 .workspaces iframe{border:0}
-.preview-mode-slider iframe{position:absolute;top:0;left:0;z-index:100;width:100%;height:calc(100vh - 50px);background-color:#fff}
+.preview-mode-slider iframe{position:absolute;top:0;left:0;z-index:100;width:100%;height:calc(100dvh - 50px);background-color:#fff}
 .preview-mode-slider #live-view{border-bottom:2px solid #c83c3c;z-index:200}
 .preview-mode-vbox iframe{width:50%;height:100%;float:var(--typo3-position-start)}
 .preview-mode-hbox iframe{width:100%;height:50%}
-#list iframe{height:calc(100vh - 50px)!important;width:100%}
+#list iframe{height:calc(100dvh - 50px)!important;width:100%}

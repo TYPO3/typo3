@@ -20,6 +20,7 @@ import { ResizeEvent } from '@interactjs/actions/resize/plugin';
 
 enum Selectors {
   resizableContainerIdentifier = '.t3js-viewpage-resizeable',
+  moduleDocheaderSelector = '.t3js-module-docheader',
   moduleBodySelector = '.t3js-module-body',
   customSelector = '.t3js-preset-custom',
   customWidthSelector = '.t3js-preset-custom-width',
@@ -227,13 +228,14 @@ class ViewPage {
   private calculateContainerMaxHeight(): number {
     this.resizableContainer.hidden = true;
 
+    const docheaderHeight: number = document.querySelector(Selectors.moduleDocheaderSelector).getBoundingClientRect().height;
     const computedStyleOfModuleBody = getComputedStyle(document.querySelector(Selectors.moduleBodySelector));
     const padding = parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-top')) + parseFloat(computedStyleOfModuleBody.getPropertyValue('padding-bottom'));
     const documentHeight: number = document.body.getBoundingClientRect().height;
     const topbarHeight = (document.querySelector(Selectors.topbarContainerSelector) as HTMLElement).getBoundingClientRect().height;
 
     this.resizableContainer.hidden = false;
-    return documentHeight - padding - topbarHeight - 8;
+    return documentHeight - docheaderHeight - padding - topbarHeight - 8;
   }
 
   private calculateContainerMaxWidth(): number {

@@ -45,7 +45,7 @@ body[data-typo3-login-ready] {
 .typo3-login-inner {
     margin: 0 auto;
     width: 99.999%; // IE HOTFIX TO AVOID VISIBLE X SCROLLBARS
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
 }
