@@ -107,6 +107,31 @@ export class Typo3BackendColorPicker extends LitElement {
   }
 }
 
+interface LegacyColorPickerSettings {
+  swatches?: string[],
+  opacity?: boolean
+}
+
+
+class LegacyColorPicker {
+  /**
+   * Initialize the color picker for the given element
+   */
+  public initialize(element: HTMLInputElement, options: LegacyColorPickerSettings = {}): void {
+    if (element.parentElement instanceof Typo3BackendColorPicker) {
+      return;
+    }
+
+    const colorPicker = document.createElement('typo3-backend-color-picker');
+    colorPicker.swatches = options.swatches?.join(';') ?? '';
+    colorPicker.opacity = options.opacity ?? false;
+    element.parentNode.insertBefore(colorPicker, element);
+    colorPicker.appendChild(element);
+  }
+}
+
+export default new LegacyColorPicker();
+
 // Register the custom element
 declare global {
   interface HTMLElementTagNameMap {
