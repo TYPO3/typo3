@@ -61,7 +61,7 @@ class DateExample extends AbstractEntity
         return $this->datetimeDatetime;
     }
 
-    public function setDatetimeDatetime(\DateTime $datetimeDatetime): void
+    public function setDatetimeDatetime(?\DateTime $datetimeDatetime): void
     {
         $this->datetimeDatetime = $datetimeDatetime;
     }

@@ -57,6 +57,7 @@ final readonly class ColumnMap
         public ?string $childKeyFieldName = null,
         public ?string $childSortByFieldName = null,
         public ?string $childTableDefaultSortings = null,
+        public bool $isNullable = false,
     ) {}
 
     // Getters below could be removed but don't harm much and kept as b/w compat for now.
@@ -119,5 +120,10 @@ final readonly class ColumnMap
     public function getType(): TableColumnType
     {
         return $this->type;
+    }
+
+    public function isNullable(): bool
+    {
+        return $this->isNullable;
     }
 }

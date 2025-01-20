@@ -76,6 +76,7 @@ readonly class ColumnMapFactory
                 columnName: $columnName,
                 type: $tableColumnType,
                 dateTimeStorageFormat: $field->getPersistenceType(),
+                isNullable: $field->isNullable(),
             );
         }
 
@@ -97,6 +98,7 @@ readonly class ColumnMapFactory
                 parentKeyFieldName: !empty($columnConfiguration['MM_opposite_field']) ? 'uid_foreign' : 'uid_local',
                 childKeyFieldName: !empty($columnConfiguration['MM_opposite_field']) ? 'uid_local' : 'uid_foreign',
                 childSortByFieldName: !empty($columnConfiguration['MM_opposite_field']) ? 'sorting_foreign' : 'sorting',
+                isNullable: $field->isNullable(),
             );
         }
 
@@ -114,6 +116,7 @@ readonly class ColumnMapFactory
                 parentTableFieldName: $columnConfiguration['foreign_table_field'] ?? null,
                 childSortByFieldName: $columnConfiguration['foreign_sortby'] ?? null,
                 childTableDefaultSortings: $columnConfiguration['foreign_default_sortby'] ?? null,
+                isNullable: $field->isNullable(),
             );
         }
 
@@ -128,6 +131,7 @@ readonly class ColumnMapFactory
                 parentKeyFieldName: $columnConfiguration['foreign_field'] ?? null,
                 parentTableFieldName: $columnConfiguration['foreign_table_field'] ?? null,
                 childSortByFieldName: $columnConfiguration['foreign_sortby'] ?? null,
+                isNullable: $field->isNullable(),
             );
         }
 
@@ -147,6 +151,7 @@ readonly class ColumnMapFactory
                 columnName: $columnName,
                 type: $tableColumnType,
                 typeOfRelation: $relation,
+                isNullable: $field->isNullable(),
             );
         }
 
@@ -162,12 +167,14 @@ readonly class ColumnMapFactory
                 columnName: $columnName,
                 type: $tableColumnType,
                 typeOfRelation: Relation::HAS_MANY,
+                isNullable: $field->isNullable(),
             );
         }
 
         return new ColumnMap(
             columnName: $columnName,
             type: $tableColumnType,
+            isNullable: $field->isNullable(),
         );
     }
 }
