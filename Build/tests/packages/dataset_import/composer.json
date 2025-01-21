@@ -4,7 +4,7 @@
 	"description": "Support extension providing dataset:import command",
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"typo3/cms-core": "13.4.*@dev",
+		"typo3/cms-core": "13.4.4",
 		"typo3/testing-framework": "^9.1.2"
 	},
 	"extra": {
