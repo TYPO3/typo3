@@ -76,7 +76,7 @@ Example
     :caption: Get minimum lifetime, calculated from all cache tags
 
     $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
-    $cacheDataCollector->getLifetime();
+    $cacheDataCollector->resolveLifetime();
 
 ..  code-block:: php
     :caption: Get all cache tags
