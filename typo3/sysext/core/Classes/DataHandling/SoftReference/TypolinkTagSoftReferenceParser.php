@@ -53,7 +53,7 @@ class TypolinkTagSoftReferenceParser extends AbstractSoftReferenceParser
                             'tokenID' => $token,
                             'tokenValue' => 'file:' . ($linkDetails['file'] instanceof File ? $linkDetails['file']->getUid() : $fileIdMatch[1]),
                         ];
-                    } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?uid=(\d+)#?(\d+)?/', $matches[1], $pageAndAnchorMatches)) {
+                    } elseif ($linkDetails['type'] === LinkService::TYPE_PAGE && preg_match('/page\?[^#]*\buid=(\d+)(?:[^#]*#(\d+))?/', $matches[1], $pageAndAnchorMatches)) {
                         $token = $this->makeTokenID((string)$key);
                         $content = '{softref:' . $token . '}';
                         $elements[$key]['matchString'] = $foundValue;

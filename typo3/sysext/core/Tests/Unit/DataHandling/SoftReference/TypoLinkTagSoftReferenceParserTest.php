@@ -57,6 +57,35 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
                     ],
                 ],
             ],
+            'link to page with properties and additional query parameters' => [
+                'softrefConfiguration' => [
+                    'content' => '<p><a class="link-page" href="t3://page?uid=42&L=13&type=123" target="_top" title="Foo">Click here</a></p>',
+                    'elementKey' => 1,
+                    'matchString' => '<a class="link-page" href="t3://page?uid=42&L=13&type=123" target="_top" title="Foo">',
+                ],
+                'expectedElement' => [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'pages:42',
+                        'tokenValue' => '42',
+                    ],
+                ],
+            ],
+            'link to page with properties and additional query parameters and fragment' => [
+                'softrefConfiguration' => [
+                    'content' => '<p><a class="link-page" href="t3://page?uid=42&L=13&type=123#953" target="_top" title="Foo">Click here</a></p>',
+                    'elementKey' => 1,
+                    'matchString' => '<a class="link-page" href="t3://page?uid=42&L=13&type=123#953" target="_top" title="Foo">',
+                ],
+                'expectedElement' => [
+                    'subst' => [
+                        'type' => 'db',
+                        'recordRef' => 'pages:42',
+                        'tokenValue' => '42',
+                    ],
+                ],
+                'amountOfMatches' => 2,
+            ],
             'link to external URL without scheme' => [
                 'softrefConfiguration' => [
                     'content' => '<p><a class="link-page" href="www.example.com" target="_top" title="Foo">Click here</a></p>',
@@ -140,7 +169,7 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
 
     #[DataProvider('findRefReturnsParsedElementsDataProvider')]
     #[Test]
-    public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement): void
+    public function findRefReturnsParsedElements(array $softrefConfiguration, array $expectedElement, int $amountOfMatches = 1): void
     {
         $subject = $this->getParserByKey('typolink_tag');
         $subject->setParserKey('typolink_tag', $softrefConfiguration);
@@ -153,6 +182,7 @@ final class TypoLinkTagSoftReferenceParserTest extends AbstractSoftReferencePars
 
         $matchedElements = $result->getMatchedElements();
         self::assertTrue($result->hasMatched());
+        self::assertEquals($amountOfMatches, count($matchedElements));
 
         // Remove tokenID as this one depends on the softrefKey and doesn't need to be verified
         unset($matchedElements[$softrefConfiguration['elementKey']]['subst']['tokenID']);
