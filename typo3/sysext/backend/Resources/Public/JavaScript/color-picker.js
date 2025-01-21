@@ -10,17 +10,22 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(e,o,t,r){var c,n=arguments.length,i=n<3?o:null===r?r=Object.getOwnPropertyDescriptor(o,t):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,o,t,r);else for(var l=e.length-1;l>=0;l--)(c=e[l])&&(i=(n<3?c(i):n>3?c(o,t,i):c(o,t))||i);return n>3&&i&&Object.defineProperty(o,t,i),i};import{customElement,property,query}from"lit/decorators.js";import{css,html,LitElement}from"lit";import Alwan from"alwan";import RegularEvent from"@typo3/core/event/regular-event.js";let Typo3BackendColorPicker=class extends LitElement{constructor(){super(...arguments),this.color="",this.opacity=!1,this.swatches=""}firstUpdated(){const e=this.getInputElement();if(e){if(!e.value&&this.color?e.value=this.color:this.color=e.value,e.disabled||e.readOnly)return;const o=new Alwan(e,{position:"bottom-start",format:"hex",opacity:this.opacity,swatches:this.swatches?this.swatches.split(";"):[],preset:!1,color:this.color});o.on("color",(o=>{this.color=o.hex,e.value=this.color,e.dispatchEvent(new Event("blur"))})),["input","change"].forEach((t=>{new RegularEvent(t,(e=>{const t=e.target;this.color=t.value,o.setColor(this.color)})).bindTo(e)}))}}render(){return html`
+var __decorate=function(e,o,t,r){var n,c=arguments.length,i=c<3?o:null===r?r=Object.getOwnPropertyDescriptor(o,t):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)i=Reflect.decorate(e,o,t,r);else for(var l=e.length-1;l>=0;l--)(n=e[l])&&(i=(c<3?n(i):c>3?n(o,t,i):n(o,t))||i);return c>3&&i&&Object.defineProperty(o,t,i),i};import{customElement,property,query}from"lit/decorators.js";import{css,html,LitElement}from"lit";import Alwan from"alwan";import RegularEvent from"@typo3/core/event/regular-event.js";let Typo3BackendColorPicker=class extends LitElement{constructor(){super(...arguments),this.color="",this.opacity=!1,this.swatches=""}firstUpdated(){const e=this.getInputElement();if(e){if(!e.value&&this.color?e.value=this.color:this.color=e.value,e.disabled||e.readOnly)return;const o=new Alwan(e,{position:"bottom-start",format:"hex",opacity:this.opacity,swatches:this.swatches?this.swatches.split(";"):[],preset:!1,color:this.color});o.on("color",(o=>{this.color=o.hex,e.value=this.color,e.dispatchEvent(new Event("blur"))})),["input","change"].forEach((t=>{new RegularEvent(t,(e=>{const t=e.target;this.color=t.value,o.setColor(this.color)})).bindTo(e)}))}}render(){return html`
       <slot></slot>
       <span style="--color: ${this.color}" class="color-picker-preview"><span class="color-picker-preview-color"></span></span>
     `}getInputElement(){const e=this.slotEl.assignedNodes();for(const o of e)if(o instanceof HTMLInputElement)return o;return console.warn("No input element found in the slot."),null}};Typo3BackendColorPicker.styles=css`
+    :host {
+      display: inline-block;
+      position: relative;
+    }
+
     .color-picker-preview {
       display: block;
       position: absolute;
       width: 1.25rem;
       height: 1.25rem;
       top: 50%;
-      inset-inline-start: var(--typo3-input-padding-x);
+      inset-inline-start: var(--typo3-input-sm-padding-x);
       z-index: 10;
       transform: translate(0, -50%);
       background: var(--alwan-pattern);

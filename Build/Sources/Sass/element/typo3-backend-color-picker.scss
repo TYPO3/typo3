@@ -3,9 +3,7 @@
 // <typo3-backend-color-picker>
 //
 typo3-backend-color-picker {
-    position: relative;
-
     .form-control {
-        padding-inline-start: 2.5rem;
+        padding-inline-start: calc(1.25rem + calc(var(--typo3-input-sm-padding-x) * 2));
     }
 }

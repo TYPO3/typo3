@@ -19,13 +19,18 @@ import RegularEvent from '@typo3/core/event/regular-event';
 @customElement('typo3-backend-color-picker')
 export class Typo3BackendColorPicker extends LitElement {
   static styles = css`
+    :host {
+      display: inline-block;
+      position: relative;
+    }
+
     .color-picker-preview {
       display: block;
       position: absolute;
       width: 1.25rem;
       height: 1.25rem;
       top: 50%;
-      inset-inline-start: var(--typo3-input-padding-x);
+      inset-inline-start: var(--typo3-input-sm-padding-x);
       z-index: 10;
       transform: translate(0, -50%);
       background: var(--alwan-pattern);
