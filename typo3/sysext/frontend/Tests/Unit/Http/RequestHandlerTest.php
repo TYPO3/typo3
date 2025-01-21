@@ -103,7 +103,32 @@ final class RequestHandlerTest extends UnitTestCase
     {
         $subject = $this->getAccessibleMock(RequestHandler::class, null, [], '', false);
         $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
-        $contentObjectRendererMock->expects(self::never())->method('stdWrap');
+        $result = $subject->_call('generateHtmlTag', $htmlTagAttributes, $configuration, $contentObjectRendererMock);
+        self::assertEquals($expectedResult, $result);
+    }
+
+    /**
+     * Does test stdWrap functionality.
+     */
+    #[Test]
+    public function generateHtmlTagAppliesStdWrap(): void
+    {
+        $htmlTagAttributes = ['dir' => 'left', 'xmlns:dir' => 'left'];
+        $configuration = ['htmlTag_setParams' => 'none', 'htmlTag.' => [
+            'attributes.' => [
+                'dir' => 'left',
+                'dir.' => [
+                    'override' => 'opposite',
+                ],
+                'only-stdwrap.' => [
+                    'override' => 'true',
+                ],
+            ],
+        ]];
+        $expectedResult = '<html xmlns:dir="left" dir="wrapped" only-stdwrap="wrapped">';
+        $subject = $this->getAccessibleMock(RequestHandler::class, null, [], '', false);
+        $contentObjectRendererMock = $this->getMockBuilder(ContentObjectRenderer::class)->disableOriginalConstructor()->getMock();
+        $contentObjectRendererMock->expects(self::any())->method('stdWrap')->with(self::anything())->willReturn('wrapped');
         $result = $subject->_call('generateHtmlTag', $htmlTagAttributes, $configuration, $contentObjectRendererMock);
         self::assertEquals($expectedResult, $result);
     }
