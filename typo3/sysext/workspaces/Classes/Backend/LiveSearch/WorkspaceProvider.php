@@ -124,9 +124,10 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
             return [];
         }
 
+        $normalizedQuery = mb_strtolower($searchDemand->getQuery());
         $filteredWorkspaces = array_filter(
             $this->getAvailableWorkspaces(),
-            static fn(string $workspaceName) => str_contains(mb_strtolower($workspaceName), mb_strtolower($searchDemand->getQuery()))
+            static fn(string $workspaceName) => str_contains(mb_strtolower($workspaceName), $normalizedQuery)
         );
 
         $firstResult = $searchDemand->getOffset();
