@@ -47,6 +47,7 @@ export class FileListActionUtility {
       thumbnail: null,
       uid: dataset.filecontextUid ? parseInt(dataset.filecontextUid, 10) : null,
       metaUid: dataset.filecontextMetaUid ? parseInt(dataset.filecontextMetaUid, 10) : null,
+      url: dataset.filecontextUid ? dataset.url : null,
     };
 
     return resource;
@@ -61,6 +62,7 @@ export class FileListActionUtility {
       thumbnail: ('filelistThumbnail' in element.dataset && element.dataset.filelistThumbnail.trim() !== '') ? element.dataset.filelistThumbnail : null,
       uid: element.dataset.filelistUid ? parseInt(element.dataset.filelistUid, 10) : null,
       metaUid: element.dataset.filelistMetaUid ? parseInt(element.dataset.filelistMetaUid, 10) : null,
+      url: element.dataset.filelistUid ? element.dataset.filelistUrl : null,
     };
 
     return resource;

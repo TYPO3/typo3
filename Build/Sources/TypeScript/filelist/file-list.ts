@@ -124,7 +124,7 @@ export default class Filelist {
     new RegularEvent(FileListActionEvent.download, (event: CustomEvent): void => {
       const detail: FileListActionDetail = event.detail;
       const resource = detail.resources[0];
-      this.triggerDownload([resource.identifier], detail.url, detail.trigger);
+      this.triggerDownload([resource], detail.url, detail.trigger);
     }).bindTo(document);
 
     new RegularEvent(FileListActionEvent.updateOnlineMedia, (event: CustomEvent): void => {
@@ -295,16 +295,17 @@ export default class Filelist {
 
   private readonly downloadFilesAndFolders = (event: CustomEvent): void => {
     event.preventDefault();
+
     const target: HTMLElement = event.target as HTMLElement;
     const eventDetails: ActionEventDetails = (event.detail as ActionEventDetails);
     const configuration: DownloadConfiguration = (eventDetails.configuration as DownloadConfiguration);
 
-    const filesAndFolders: Array<string> = [];
+    const filesAndFolders: ResourceInterface[] = [];
     eventDetails.checkboxes.forEach((checkbox: HTMLInputElement) => {
       if (checkbox.checked) {
         const element = checkbox.closest(FileListActionSelector.elementSelector) as HTMLInputElement;
         const resource = FileListActionUtility.getResourceForElement(element);
-        filesAndFolders.unshift(resource.identifier);
+        filesAndFolders.unshift(resource);
       }
     });
 
@@ -315,7 +316,16 @@ export default class Filelist {
     }
   };
 
-  private triggerDownload(items: Array<string>, downloadUrl: string, button: HTMLElement | null): void {
+  private triggerDownload(items: ResourceInterface[], downloadUrl: string, button: HTMLElement | null): void {
+    if (items.length === 1) {
+      const item = items.at(0);
+      if (item.type === 'file') {
+        // We deal with a single file in the selection, download directly
+        this.invokeDownload(item.url, item.name);
+        return;
+      }
+    }
+
     // Add notification about the download being prepared
     Notification.info(lll('file_download.prepare'), '', 2);
     // Store the targets' (button) content and replace with a spinner
@@ -328,11 +338,14 @@ export default class Filelist {
         button.innerHTML = spinner;
       });
     }
+
     // Configure and start the progress bar, while preparing
     NProgress
       .configure({ parent: '#typo3-filelist', showSpinner: false })
       .start();
-    (new AjaxRequest(downloadUrl)).post({ items: items })
+
+    const itemIdentifiers = items.map((resource: ResourceInterface) => resource.identifier);
+    (new AjaxRequest(downloadUrl)).post({ items: itemIdentifiers })
       .then(async (response: AjaxResponse): Promise<void> => {
         let fileName = response.response.headers.get('Content-Disposition');
         if (!fileName) {
@@ -348,13 +361,7 @@ export default class Filelist {
         const data = await response.raw().arrayBuffer();
         const blob = new Blob([data], { type: response.raw().headers.get('Content-Type') });
         const downloadUrl = URL.createObjectURL(blob);
-        const anchorTag = document.createElement('a');
-        anchorTag.href = downloadUrl;
-        anchorTag.download = fileName;
-        document.body.appendChild(anchorTag);
-        anchorTag.click();
-        URL.revokeObjectURL(downloadUrl);
-        document.body.removeChild(anchorTag);
+        this.invokeDownload(downloadUrl, fileName);
         // Add notification about successful preparation
         Notification.success(lll('file_download.success'), '', 2);
       })
@@ -388,5 +395,15 @@ export default class Filelist {
         NProgress.done();
         window.location.reload();
       });
+  }
+
+  private invokeDownload(downloadUrl: string, fileName: string): void {
+    const anchorTag = document.createElement('a');
+    anchorTag.href = downloadUrl;
+    anchorTag.download = fileName;
+    document.body.appendChild(anchorTag);
+    anchorTag.click();
+    URL.revokeObjectURL(downloadUrl);
+    document.body.removeChild(anchorTag);
   }
 }

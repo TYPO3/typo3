@@ -492,6 +492,7 @@ class FileList
                 'data-filelist-thumbnail' => $resourceView->getThumbnailUri(),
                 'data-filelist-uid' => $resourceView->getUid(),
                 'data-filelist-meta-uid' => $resourceView->getMetaDataUid(),
+                'data-filelist-url' => $resourceView->getPublicUrl(),
                 'data-filelist-selectable' => $resourceView->isSelectable ? 'true' : 'false',
                 'data-filelist-selected' => $resourceView->isSelected ? 'true' : 'false',
                 'data-multi-record-selection-element' => 'true',
