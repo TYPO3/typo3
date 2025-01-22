@@ -127,7 +127,7 @@ class OuterWrapContainer extends AbstractContainer
 
         $descriptionColumn = !empty($this->data['processedTca']['ctrl']['descriptionColumn'])
             ? $this->data['processedTca']['ctrl']['descriptionColumn'] : null;
-        if ($descriptionColumn !== null) {
+        if ($descriptionColumn !== null && isset($this->data['databaseRow'][$descriptionColumn])) {
             $view->assign('recordDescription', $this->data['databaseRow'][$descriptionColumn]);
         }
         $readOnlyRecord = !empty($this->data['processedTca']['ctrl']['readOnly'])
