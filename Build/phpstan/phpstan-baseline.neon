@@ -3013,18 +3013,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ObjectAccessTest.php
 
 		-
-			message: '#^Cannot access property \$publicProperty on array\|object\.$#'
-			identifier: property.nonObject
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ObjectAccessTest.php
-
-		-
-			message: '#^Cannot call method getProperty\(\) on array\|object\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Reflection/ObjectAccessTest.php
-
-		-
 			message: '#^PHPDoc tag @var with type ArrayAccess is not subtype of native type ArrayObject@anonymous/extbase/Tests/Unit/Reflection/ObjectAccessTest\.php\:378\.$#'
 			identifier: varTag.nativeType
 			count: 1
