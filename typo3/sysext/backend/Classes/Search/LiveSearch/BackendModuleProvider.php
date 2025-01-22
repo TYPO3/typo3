@@ -92,9 +92,10 @@ class BackendModuleProvider implements SearchProviderInterface
      */
     private function getFilteredModules(SearchDemand $searchDemand): array
     {
+        $normalizedQuery = mb_strtolower($searchDemand->getQuery());
         $filteredModules = array_filter(
             $this->moduleProvider->getModules($this->getBackendUser(), true, false),
-            fn(ModuleInterface $module) => str_contains(mb_strtolower($this->languageService->sL($module->getTitle())), mb_strtolower($searchDemand->getQuery()))
+            fn(ModuleInterface $module) => str_contains(mb_strtolower($this->languageService->sL($module->getTitle())), $normalizedQuery)
         );
 
         $firstResult = $searchDemand->getOffset();
