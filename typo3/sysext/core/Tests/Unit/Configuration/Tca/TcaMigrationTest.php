@@ -400,10 +400,31 @@ final class TcaMigrationTest extends UnitTestCase
             'aTable' => [
             ],
             'bTable' => [
+            ],
+        ];
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($input));
+    }
+
+    #[Test]
+    public function removeMaxDBListItemsIsRemoved(): void
+    {
+        $input = [
+            'aTable' => [
+                'interface' => [
+                ],
+            ],
+            'bTable' => [
                 'interface' => [
                     'maxDBListItems' => 30,
                     'maxSingleDBListItems' => 50,
                 ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+            ],
+            'bTable' => [
             ],
         ];
         $subject = new TcaMigration();

@@ -601,36 +601,26 @@ class DatabaseRecordList
         if ($totalItems === 0) {
             return '';
         }
+
         // Setting the limits for the amount of records to be displayed in the list and single table view.
-        // Using the default value and overwriting with page TSconfig and TCA config. The limit is forced
+        // Using the default value and overwriting with page TSconfig. The limit is forced
         // to be in the range of 0 - 10000.
-        $itemsLimitSingleTableFromTca = null;
-        $itemsLimitPerTableFromTca = null;
-        // Do not use configuration of table 'pages' for page translations
-        if ($table !== 'pages' || !$this->showOnlyTranslatedRecords) {
-            $itemsLimitSingleTableFromTca = $GLOBALS['TCA'][$table]['interface']['maxSingleDBListItems'] ?? null;
-            $itemsLimitPerTableFromTca = $GLOBALS['TCA'][$table]['interface']['maxDBListItems'] ?? null;
-        }
         // default 100 for single table view
         $itemsLimitSingleTable = MathUtility::forceIntegerInRange((int)(
-            $itemsLimitSingleTableFromTca ??
-            $this->modTSconfig['itemsLimitSingleTable'] ??
-            100
+            $this->modTSconfig['itemsLimitSingleTable'] ?? 100
         ), 0, 10000);
 
         // default 20 for list view
         $itemsLimitPerTable = MathUtility::forceIntegerInRange((int)(
-            $itemsLimitPerTableFromTca ??
-            $this->modTSconfig['itemsLimitPerTable'] ??
-            20
+            $this->modTSconfig['itemsLimitPerTable'] ?? 20
         ), 0, 10000);
 
-        // Set limit depending on the view (single table vs. default)
-        $itemsPerPage = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
-
-        // Set limit defined by calling code
         if ($this->showLimit) {
+            // Set limit defined by calling code
             $itemsPerPage = $this->showLimit;
+        } else {
+            // Set limit depending on the view (single table vs. default)
+            $itemsPerPage = $this->table ? $itemsLimitSingleTable : $itemsLimitPerTable;
         }
 
         // Init

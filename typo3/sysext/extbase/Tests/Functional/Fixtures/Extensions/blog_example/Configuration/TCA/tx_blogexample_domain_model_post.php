@@ -21,10 +21,6 @@ return [
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_post.gif',
     ],
-    'interface' => [
-        'maxDBListItems' => 100,
-        'maxSingleDBListItems' => 500,
-    ],
     'types' => [
         '1' => ['showitem' => 'sys_language_uid, hidden, blog, title, date, archive_date, author, second_author, content, tags, comments, related_posts, additional_name, additional_info, additional_comments, categories'],
     ],

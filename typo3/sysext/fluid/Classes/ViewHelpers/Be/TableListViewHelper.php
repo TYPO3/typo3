@@ -89,7 +89,7 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $this->registerArgument('storagePid', 'int', 'by default, records are fetched from the storage PID configured in persistence.storagePid. With this argument, the storage PID can be overwritten');
         $this->registerArgument('levels', 'int', 'corresponds to the level selector of the TYPO3 list module. By default only records from the current storagePid are fetched', false, 0);
         $this->registerArgument('filter', 'string', 'corresponds to the "Search String" textbox of the TYPO3 list module. If not empty, only records matching the string will be fetched', false, '');
-        $this->registerArgument('recordsPerPage', 'int', 'amount of records to be displayed at once. Defaults to $TCA[$tableName][\'interface\'][\'maxSingleDBListItems\'] or (if that\'s not set) to 100', false, 0);
+        $this->registerArgument('recordsPerPage', 'int', 'amount of records to be displayed at once. Defaults to 100', false, 0);
         $this->registerArgument('sortField', 'string', 'table field to sort the results by', false, '');
         $this->registerArgument('sortDescending', 'bool', 'if TRUE records will be sorted in descending order', false, false);
         $this->registerArgument('readOnly', 'bool', 'if TRUE, the edit icons won\'t be shown. Otherwise edit icons will be shown, if the current BE user has edit rights for the specified table!', false, false);

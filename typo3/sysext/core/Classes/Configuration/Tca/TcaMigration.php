@@ -58,6 +58,7 @@ class TcaMigration
         $tca = $this->removeEnableMultiSelectFilterTextfieldConfiguration($tca);
         $tca = $this->removeExcludeFieldForTransOrigPointerField($tca);
         $tca = $this->removeShowRecordFieldListField($tca);
+        $tca = $this->removeMaxDBListItems($tca);
         $tca = $this->removeWorkspacePlaceholderShadowColumnsConfiguration($tca);
         $tca = $this->migrateLanguageFieldToTcaTypeLanguage($tca);
         $tca = $this->migrateSpecialLanguagesToTcaTypeLanguage($tca);
@@ -261,6 +262,31 @@ class TcaMigration
                 . ' inside the section \'interface\' is not evaluated anymore and should therefore be removed.';
             unset($configuration['interface']['showRecordFieldList']);
             if ($configuration['interface'] === []) {
+                unset($configuration['interface']);
+            }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Removes $TCA[$mytable]['interface']['maxDBListItems'], and 'maxSingleDBListItems' and also $TCA[$mytable]['interface']
+     * if `interface` is empty later-on.
+     */
+    protected function removeMaxDBListItems(array $tca): array
+    {
+        foreach ($tca as $table => &$configuration) {
+            if (isset($configuration['interface']['maxDBListItems'])) {
+                $this->messages[] = 'The \'' . $table . '\' TCA configuration \'maxDBListItems\''
+                    . ' inside the section \'interface\' is not evaluated anymore and should therefore be removed.';
+                unset($configuration['interface']['maxDBListItems']);
+            }
+            if (isset($configuration['interface']['maxSingleDBListItems'])) {
+                $this->messages[] = 'The \'' . $table . '\' TCA configuration \'maxSingleDBListItems\''
+                    . ' inside the section \'interface\' is not evaluated anymore and should therefore be removed.';
+                unset($configuration['interface']['maxSingleDBListItems']);
+            }
+            if (isset($configuration['interface']) && $configuration['interface'] === []) {
                 unset($configuration['interface']);
             }
         }
