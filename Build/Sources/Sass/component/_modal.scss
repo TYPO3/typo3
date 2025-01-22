@@ -255,9 +255,9 @@
     }
 
     .modal-panel-main {
-        overflow: visible;
+        @include background-checkered();
         background-color: var(--typo3-modal-bg);
-        background-image: url("../Images/cropper-background.png");
+        overflow: visible;
         display: flex;
         align-items: center;
         justify-content: center;

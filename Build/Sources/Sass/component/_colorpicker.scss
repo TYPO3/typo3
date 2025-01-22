@@ -1,7 +1,3 @@
-:root {
-    --alwan-pattern: url("data:image/svg+xml, <svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 20 20'><path fill='%23D0D0D0' d='M0 0h10v10H0Z'/><path fill='%23fff' d='M0 10h10v10H0Z'/><path fill='%23D0D0D0' d='M10 10h10v10H10Z'/><path fill='%23fff' d='M10 0h10v10H10Z'/></svg>");
-}
-
 .alwan {
     --color: rgba(var(--rgb), var(--a)); /* These properties are defined via alwan.js */
     direction: ltr;
@@ -115,16 +111,17 @@
 }
 
 .alwan__slider {
+    @include background-checkered(10);
     --hue-track: linear-gradient(90deg, #f00, #f0f, #00f, #0ff, #0f0, #ff0, #f00);
-    --alpha-track: linear-gradient(90deg, transparent, rgb(var(--rgb))), var(--alwan-pattern);
+    --alpha-track: linear-gradient(90deg, transparent, rgb(var(--rgb)));
     display: block;
     width: 100%;
     height: 15px;
-    background-color: rgba(0, 0, 0, 0);
     margin: 0;
     padding: 0;
     cursor: pointer;
     outline: 0;
+    border-radius: var(--typo3-input-border-radius);
     -webkit-appearance: none;
     appearance: none;
 }
@@ -222,10 +219,12 @@
 }
 
 .alwan__hue::-webkit-slider-runnable-track {
+    border-radius: var(--typo3-input-border-radius);
     background: var(--hue-track);
 }
 
 .alwan__hue::-moz-range-track {
+    border-radius: var(--typo3-input-border-radius);
     background: var(--hue-track);
 }
 
@@ -234,10 +233,12 @@
 }
 
 .alwan__alpha::-webkit-slider-runnable-track {
+    border-radius: var(--typo3-input-border-radius);
     background: var(--alpha-track);
 }
 
 .alwan__alpha::-moz-range-track {
+    border-radius: var(--typo3-input-border-radius);
     background: var(--alpha-track);
 }
 
@@ -384,9 +385,8 @@
 .alwan__swatch,
 .alwan__preview,
 .alwan__reference {
+    @include background-checkered(10);
     position: relative;
-    background: var(--alwan-pattern);
-    background-clip: padding-box;
     overflow: hidden;
     padding: 0;
 }
