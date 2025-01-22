@@ -124,11 +124,8 @@ class RecordListController
         }
 
         // Check if SearchBox is allowed to be shown:
-        if (!($this->modTSconfig['disableSearchBox'] ?? false)) {
-            $this->allowSearch = true;
-        } elseif ($this->modTSconfig['disableSearchBox'] ?? false) {
-            $this->allowSearch = false;
-        }
+        $this->allowSearch = !($this->modTSconfig['disableSearchBox'] ?? false);
+
         // Overwrite to show search on search request
         if (!empty($this->searchTerm)) {
             $this->allowSearch = true;
