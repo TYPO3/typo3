@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -49,8 +50,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
                 continue;
             }
 
-            $this->items[] = [
-                'uid' => $page['uid'],
+            $this->items[] = $page + [
                 'lastMod' => (int)($page['SYS_LASTCHANGED'] ?: $page['tstamp']),
                 'changefreq' => $page['sitemap_changefreq'],
                 'priority' => (float)$page['sitemap_priority'],
@@ -108,12 +108,12 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
     protected function defineUrl(array $data): array
     {
         $typoLinkConfig = [
+            'page' => new Page($data),
             'parameter' => $data['uid'],
             'forceAbsoluteUrl' => 1,
         ];
 
         $data['loc'] = $this->cObj->createUrl($typoLinkConfig);
-
         return $data;
     }
 }
