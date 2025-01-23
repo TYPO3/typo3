@@ -216,12 +216,6 @@
 			<trans-unit id="colorScheme.selector.label">
 				<source>Color scheme:</source>
 			</trans-unit>
-			<trans-unit id="colorScheme.dark.label">
-				<source>Dark mode</source>
-			</trans-unit>
-			<trans-unit id="colorScheme.light.label">
-				<source>Light mode</source>
-			</trans-unit>
 			<trans-unit id="section.colorScheme.headline">
 				<source>Color scheme</source>
 			</trans-unit>

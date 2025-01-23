@@ -40,13 +40,17 @@ export class ThemeSwitcherElement extends LitElement {
   @property({ converter: selectorConverter }) private readonly example: HTMLElement;
 
   private readonly themes: Record<ThemeIdentifier, Theme> = {
+    auto: {
+      icon: 'actions-circle-half',
+      label: 'colorScheme.auto',
+    },
     light: {
       icon: 'actions-brightness-high',
-      label: 'colorScheme.light.label',
+      label: 'colorScheme.light',
     },
     dark: {
       icon: 'actions-moon',
-      label: 'colorScheme.dark.label',
+      label: 'colorScheme.dark',
     }
   };
 
