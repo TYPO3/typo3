@@ -232,6 +232,9 @@ class PageRouter implements RouterInterface
      */
     public function generateUri($route, array $parameters = [], string $fragment = '', string $type = ''): UriInterface
     {
+        // sanitize superfluous page-id from additional parameters
+        // (even if `$parameters['id']` is different to `$pageId`, it will be removed)
+        unset($parameters['id']);
         // Resolve language
         $language = null;
         $languageOption = $parameters['_language'] ?? null;
