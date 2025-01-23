@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 
@@ -107,13 +108,7 @@ class PagesXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 
     protected function defineUrl(array $data): array
     {
-        $typoLinkConfig = [
-            'parameter' => $data['uid'],
-            'forceAbsoluteUrl' => 1,
-        ];
-
-        $data['loc'] = $this->cObj->createUrl($typoLinkConfig);
-
+        $data['loc'] = $this->request->getAttribute('site')->getRouter()->generateUri($data, [], '', RouterInterface::ABSOLUTE_URL);
         return $data;
     }
 }
