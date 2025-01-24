@@ -1,0 +1,17 @@
+"pages"
+,"uid","pid","hidden","deleted","sys_language_uid","l10n_parent","slug","title"
+,1,0,0,0,0,0,"/","Root (Default)"
+,2,0,0,0,1,1,"/","Root (Language 1)"
+,10,1,0,0,0,0,"/page-1","Page 1 (Default)"
+,11,1,0,0,1,10,"/page-1-translated","Page 1 (Language 1)"
+,20,1,0,0,0,0,"/page-2","Page 2 (Default)"
+,21,1,0,0,1,20,"/page-2-translated","Page 2 (Language 1)"
+,30,1,0,0,0,0,"/page-3","Page 3 (Default)"
+,31,1,0,0,1,30,"/page-3-translated","Page 3 (Language 1)"
+"sys_redirect"
+,"uid","pid","target_statuscode","disabled","deleted","source_host","source_path","target","is_regexp","respect_query_parameters","keep_query_parameters"
+,1,1,302,0,0,"*","/wildcard-source-host/","t3://page?uid=10",0,0,0
+,2,1,302,0,0,"www.acme.com","/default-language-source-host/","t3://page?uid=20",0,0,0
+,3,1,302,0,0,"www.acme.de","/first-language-source-host/","t3://page?uid=30",0,0,0
+,4,1,302,0,0,"*","/language-prefixed-path/","t3://page?uid=10",0,0,0
+,5,1,302,0,0,"*","/de/language-prefixed-path/","t3://page?uid=10",0,0,0
