@@ -383,7 +383,7 @@ class NewRecordController
                     ) {
                         // Create link to new page inside
                         $newPageLinks[] = $this->renderLink(
-                            htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
+                            htmlspecialchars($lang->sL($v['ctrl']['title'] ?? '')) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
                             $table,
                             $this->id
                         );
@@ -393,7 +393,7 @@ class NewRecordController
                         && $this->isTableAllowedOnPage('pages', $this->pidInfo)
                     ) {
                         $newPageLinks[] = $this->renderLink(
-                            htmlspecialchars($lang->sL($v['ctrl']['title'])) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
+                            htmlspecialchars($lang->sL($v['ctrl']['title'] ?? '')) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
                             'pages',
                             -$this->id
                         );
@@ -467,7 +467,7 @@ class NewRecordController
                     }
                     $this->tRows[$groupName]['title'] = $this->tRows[$groupName]['title'] ?? $groupTitles[$groupName] ?? $nameParts[1] ?? $title;
                     $this->tRows[$groupName]['icon'] = $this->tRows[$groupName]['icon'] ?? $iconFile[$groupName] ?? $iconFile['system'] ?? '';
-                    $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'])), $table, $this->id);
+                    $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'] ?? '')), $table, $this->id);
             }
         }
         // User sort
@@ -600,7 +600,7 @@ class NewRecordController
             return false;
         }
 
-        $ctrl = $GLOBALS['TCA'][$table]['ctrl'];
+        $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
         if (($ctrl['readOnly'] ?? false)
             || ($ctrl['hideTable'] ?? false)
             || ($ctrl['is_static'] ?? false)
