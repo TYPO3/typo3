@@ -154,6 +154,12 @@ Do you want to continue WITHOUT saving?</source>
 			<trans-unit id="labels.sorting">
 				<source>Sorting</source>
 			</trans-unit>
+			<trans-unit id="labels.sorting.asc">
+				<source>Sort ascending</source>
+			</trans-unit>
+			<trans-unit id="labels.sorting.desc">
+				<source>Sort descending</source>
+			</trans-unit>
 			<trans-unit id="labels.t3ver_state">
 				<source>Workspace status</source>
 			</trans-unit>

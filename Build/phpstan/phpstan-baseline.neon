@@ -345,7 +345,7 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array\<int\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-

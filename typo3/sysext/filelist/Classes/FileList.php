@@ -451,27 +451,48 @@ class FileList
         }
 
         $params = ['sort' => $field, 'currentPage' => 0];
-        if ($this->sort === $field) {
-            // Check reverse sorting
-            $params['reverse'] = ($this->sortRev ? '0' : '1');
-        } else {
-            $params['reverse'] = 0;
-        }
+        $paramsAsc = $params;
+        $paramsAsc['reverse'] = 0;
+        $paramsDesc = $params;
+        $paramsDesc['reverse'] = 1;
 
         $icon = $this->sort === $field
             ? $this->iconFactory->getIcon('actions-sort-amount-' . ($this->sortRev ? 'down' : 'up'), IconSize::SMALL)->render()
-            : $this->iconFactory->getIcon('actions-sort-amount', IconSize::SMALL)->render();
+            : $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render();
 
-        $attributes = [
-            'class' => 'table-sorting-button ' . ($this->sort === $field ? 'table-sorting-button-active' : ''),
-            'href' => $this->createModuleUri($params),
-        ];
-
-        return '<a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-            <span class="table-sorting-label">' . htmlspecialchars($label) . '</span>
-            <span class="table-sorting-icon">' . $icon . '</span>
-            </a>';
-
+        return '
+            <div class="dropdown dropdown-static">
+                <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    ' . htmlspecialchars($label) . ' <div class="' . ($this->sort === $field ? 'text-primary' : '') . '">' . $icon . '</div>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <a href="' . $this->createModuleUri($paramsAsc) . '" class="dropdown-item">
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon text-primary">
+                                    ' . ($this->sort === $field && !$this->sortRev ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-title">
+                                    ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc') . '
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="' . $this->createModuleUri($paramsDesc) . '" class="dropdown-item">
+                            <span class="dropdown-item-columns">
+                                <span class="dropdown-item-column dropdown-item-column-icon text-primary">
+                                    ' . ($this->sort === $field && $this->sortRev ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                                </span>
+                                <span class="dropdown-item-column dropdown-item-column-title">
+                                    ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc') . '
+                                </span>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        ';
     }
 
     /**

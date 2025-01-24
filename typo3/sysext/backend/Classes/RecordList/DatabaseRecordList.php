@@ -1304,27 +1304,18 @@ class DatabaseRecordList
      */
     public function renderListHeader($table, $currentIdList)
     {
-        $tsConfig = BackendUtility::getPagesTSconfig($this->id)['TCEFORM.'][$table . '.'] ?? null;
-        $tsConfigOfTable = is_array($tsConfig) ? $tsConfig : null;
-
         $lang = $this->getLanguageService();
+        $currentIdList = is_array($currentIdList) ? $currentIdList : [];
+
         // Init:
         $theData = [];
         // Traverse the fields:
-        foreach ($this->fieldArray as $fCol) {
-            // Calculate users permissions to edit records in the table:
-            if ($table === 'pages') {
-                $permsEdit = $this->calcPerms->editPagePermissionIsGranted();
-            } else {
-                $permsEdit = $this->calcPerms->editContentPermissionIsGranted();
-            }
-
-            $permsEdit = $permsEdit && $this->overlayEditLockPermissions($table);
-            switch ((string)$fCol) {
+        foreach ($this->fieldArray as $field) {
+            switch ((string)$field) {
                 case '_SELECTOR_':
                     if ($table !== 'pages' || !$this->showOnlyTranslatedRecords) {
                         // Add checkbox actions for all tables except the special page translations table
-                        $theData[$fCol] = $this->renderCheckboxActions();
+                        $theData[$field] = $this->renderCheckboxActions();
                     } else {
                         // Remove "_SELECTOR_", which is always the first item, from the field list
                         array_splice($this->fieldArray, 0, 1);
@@ -1336,15 +1327,15 @@ class DatabaseRecordList
                     if (!in_array('_SELECTOR_', $this->fieldArray, true)
                         || ($table === 'pages' && $this->showOnlyTranslatedRecords)
                     ) {
-                        $theData[$fCol] = '';
+                        $theData[$field] = '';
                     }
                     break;
                 case '_CONTROL_':
-                    $theData[$fCol] = '<i class="hidden">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')) . '</i>';
+                    $theData[$field] = '<i class="hidden">' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._CONTROL_')) . '</i>';
                     // In single table view, add button to edit displayed fields of marked / listed records
-                    if ($this->table && $permsEdit && is_array($currentIdList) && $this->isEditable($table)) {
+                    if ($this->table && $this->canEditTable($table) && $currentIdList !== [] && $this->isEditable($table)) {
                         $label = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editShownColumns'));
-                        $theData[$fCol] = '<button type="button"'
+                        $theData[$field] = '<button type="button"'
                             . ' class="btn btn-default t3js-record-edit-multiple"'
                             . ' title="' . $label . '"'
                             . ' aria-label="' . $label . '"'
@@ -1354,80 +1345,14 @@ class DatabaseRecordList
                             . '</button>';
                     }
                     break;
-                case '_PATH_':
-                    // Path
-                    $theData[$fCol] = '<i>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._PATH_')) . '</i>';
-                    break;
-                case '_REF_':
-                    // References
-                    $theData[$fCol] = '<i>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._REF_')) . '</i>';
-                    break;
-                case '_LOCALIZATION_':
-                    // Show language of record
-                    $theData[$fCol] = '<i>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels._LOCALIZATION_')) . '</i>';
-                    break;
                 case '_LOCALIZATION_b':
                     // Show translation options
                     if ($this->showLocalizeColumn[$table] ?? false) {
-                        $theData[$fCol] = '<i>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:Localize')) . '</i>';
+                        $theData[$field] = '<i>' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:Localize')) . '</i>';
                     }
                     break;
                 default:
-                    // Regular fields header
-                    $theData[$fCol] = '';
-
-                    // Check if $fCol is really a field and get the label and remove the colons at the end
-                    $sortLabel = BackendUtility::getItemLabel($table, $fCol);
-                    if ($sortLabel !== null) {
-                        // Field label
-                        $fieldTSConfig = [];
-                        if (isset($tsConfigOfTable[$fCol . '.'])
-                            && is_array($tsConfigOfTable[$fCol . '.'])
-                        ) {
-                            $fieldTSConfig = $tsConfigOfTable[$fCol . '.'];
-                        }
-                        $sortLabel = $lang->translateLabel(
-                            $fieldTSConfig['label.'] ?? [],
-                            $fieldTSConfig['label'] ?? $sortLabel
-                        );
-                        $sortLabel = htmlspecialchars(rtrim(trim($sortLabel), ':'));
-                    } elseif ($specialLabel = $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $fCol)) {
-                        // Special label exists for this field (Probably a management field, e.g. sorting)
-                        $sortLabel = htmlspecialchars($specialLabel);
-                    } else {
-                        // No TCA field, only output the $fCol variable with square brackets []
-                        $sortLabel = htmlspecialchars($fCol);
-                        $sortLabel = '<i>[' . rtrim(trim($sortLabel), ':') . ']</i>';
-                    }
-
-                    if ($this->table && is_array($currentIdList)) {
-                        // If the numeric clipboard pads are selected, show duplicate sorting link:
-                        if ($this->noControlPanels === false
-                            && $this->isClipboardFunctionalityEnabled($table)
-                            && $this->clipObj->current !== 'normal'
-                        ) {
-                            $theData[$fCol] .= '<a class="btn btn-default" href="' . htmlspecialchars($this->listURL() . '&duplicateField=' . $fCol)
-                                . '" title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_duplicates')) . '">'
-                                . $this->iconFactory->getIcon('actions-document-duplicates-select', IconSize::SMALL)->render() . '</a>';
-                        }
-                        // If the table can be edited, add link for editing THIS field for all
-                        // listed records:
-                        if ($this->isEditable($table) && $permsEdit && ($GLOBALS['TCA'][$table]['columns'][$fCol] ?? false)) {
-                            $iTitle = sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editThisColumn'), $sortLabel);
-                            $theData[$fCol] .= '<button type="button"'
-                                . ' class="btn btn-default t3js-record-edit-multiple"'
-                                . ' title="' . htmlspecialchars($iTitle) . '"'
-                                . ' aria-label="' . htmlspecialchars($iTitle) . '"'
-                                . ' data-return-url="' . htmlspecialchars($this->listURL()) . '"'
-                                . ' data-columns-only="' . GeneralUtility::jsonEncodeForHtmlAttribute([$fCol]) . '">'
-                                . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render()
-                                . '</button>';
-                        }
-                        if (strlen($theData[$fCol]) > 0) {
-                            $theData[$fCol] = '<div class="btn-group">' . $theData[$fCol] . '</div> ';
-                        }
-                    }
-                    $theData[$fCol] .= $this->addSortLink($sortLabel, $fCol, $table);
+                    $theData[$field] = $this->renderListTableFieldHeader($table, $field, $currentIdList);
             }
         }
 
@@ -1437,6 +1362,146 @@ class DatabaseRecordList
 
         // Create and return header table row:
         return $this->addElement($event->getColumns(), GeneralUtility::implodeAttributes($event->getHeaderAttributes(), true), 'th');
+    }
+
+    protected function renderListTableFieldHeader(string $table, string $field, array $currentIdList): string
+    {
+        $label = $this->getFieldLabel($table, $field);
+        $sortField = $field;
+
+        if (in_array($field, ['_SELECTOR_', '_CONTROL_', '_REF_', '_LOCALIZATION_', '_PATH_'])) {
+            return '<i>' . $label . '</i>';
+        }
+
+        $dropdownExtraItems = [];
+        if ($currentIdList !== []) {
+            // If the numeric clipboard pads are selected, show duplicate sorting link:
+            if ($this->table
+                && $this->noControlPanels === false
+                && $this->isClipboardFunctionalityEnabled($table)
+                && $this->clipObj->current !== 'normal'
+            ) {
+                $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_duplicates');
+                $attributes = [
+                    'class' => 'dropdown-item',
+                    'href' => $this->listURL() . '&duplicateField=' . $field,
+                    'title' => $title,
+                    'aria-label' => $title,
+                ];
+                $dropdownExtraItems[] = '
+                    <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon">
+                                ' . $this->iconFactory->getIcon('actions-document-duplicates-select', IconSize::SMALL)->render() . '
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                ' . htmlspecialchars($title) . '
+                            </span>
+                        </span>
+                    </a>
+                ';
+            }
+            // If the table can be edited, add link for editing THIS field for all listed records:
+            if ($this->isEditable($table) && $this->canEditTable($table) && ($GLOBALS['TCA'][$table]['columns'][$field] ?? false)) {
+                $title = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:editThisColumn'), $label);
+                $attributes = [
+                    'type' => 'button',
+                    'class' => 'dropdown-item t3js-record-edit-multiple',
+                    'title' => $title,
+                    'aria-label' => $title,
+                    'data-return-url' => $this->listURL(),
+                    'data-columns-only' => json_encode([$field]),
+                ];
+                $dropdownExtraItems[] = '
+                    <button ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                        <span class="dropdown-item-columns">
+                            <span class="dropdown-item-column dropdown-item-column-icon">
+                                ' . $this->iconFactory->getIcon('actions-document-open', IconSize::SMALL)->render() . '
+                            </span>
+                            <span class="dropdown-item-column dropdown-item-column-title">
+                                ' . htmlspecialchars($title) . '
+                            </span>
+                        </span>
+                    </button>
+                ';
+            }
+        }
+
+        $dropdownSortingItems = [];
+        if (!$this->disableSingleTableView) {
+            // Sort ascending
+            $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc');
+            $attributes = [
+                'class' => 'dropdown-item',
+                'href' => $this->listURL('', $table, 'sortField,sortRev,table,pointer') . '&sortField=' . $sortField . '&sortRev=0',
+                'title' => $title,
+                'aria-label' => $title,
+            ];
+            $dropdownSortingItems[] = '
+                <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon text-primary">
+                            ' . ($this->sortField === $sortField && !$this->sortRev ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            ' . htmlspecialchars($title) . '
+                        </span>
+                    </span>
+                </a>
+            ';
+
+            // Sort decending
+            $title = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc');
+            $attributes = [
+                'class' => 'dropdown-item',
+                'href' => $this->listURL('', $table, 'sortField,sortRev,table,pointer') . '&sortField=' . $sortField . '&sortRev=1',
+                'title' => $title,
+                'aria-label' => $title,
+            ];
+            $dropdownSortingItems[] = '
+                <a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon text-primary">
+                            ' . ($this->sortField === $sortField && $this->sortRev ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            ' . htmlspecialchars($title) . '
+                        </span>
+                    </span>
+                </a>
+            ';
+        }
+
+        $dropdownExtraHasItems = $dropdownExtraItems !== [];
+        $dropdownSortingHasItems = $dropdownSortingItems !== [];
+        if (!$dropdownExtraHasItems && !$dropdownSortingHasItems) {
+            return $label;
+        }
+
+        $icon = '';
+        if ($dropdownSortingHasItems) {
+            $icon = $this->sortField === $sortField
+                ? $this->iconFactory->getIcon('actions-sort-amount-' . ($this->sortRev ? 'down' : 'up'), IconSize::SMALL)->render()
+                : $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render();
+        }
+
+        return '
+            <div class="dropdown dropdown-static">
+                <button
+                    class="dropdown-toggle dropdown-toggle-link"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                >
+                    ' . htmlspecialchars($label) . ' <div class="' . ($this->sortField === $sortField ? 'text-primary' : '') . '">' . $icon . '</div>
+                </button>
+                <ul class="dropdown-menu">
+                    ' . implode('', array_map(static fn($item) => '<li>' . $item . '</li>', $dropdownSortingItems)) . '
+                    ' . ($dropdownExtraHasItems && $dropdownSortingHasItems ? '<li><hr class="dropdown-divider" aria-hidden="true"></li>' : '') . '
+                    ' . implode('', array_map(static fn($item) => '<li>' . $item . '</li>', $dropdownExtraItems)) . '
+                </ul>
+            </div>
+        ';
     }
 
     /**
@@ -2110,49 +2175,6 @@ class DatabaseRecordList
      *********************************/
 
     /**
-     * Creates a sort-by link on the input string ($code).
-     * It will automatically detect if sorting should be ascending or descending depending on $this->sortRev.
-     * Also some fields will not be possible to sort (including if single-table-view is disabled).
-     *
-     * @param string $label The string to link (text)
-     * @param string $field The fieldname represented by the title ($code)
-     * @param string $table Table name
-     * @return string Linked $code variable
-     */
-    public function addSortLink($label, $field, $table): string
-    {
-        // Certain circumstances just return string right away (no links):
-        if ($this->disableSingleTableView
-            || in_array($field, ['_SELECTOR', '_CONTROL_', '_LOCALIZATION_', '_REF_'], true)
-        ) {
-            return $label;
-        }
-
-        // If "_PATH_" (showing record path) is selected, force sorting by pid field (will at least group the records!)
-        if ($field === '_PATH_') {
-            $field = 'pid';
-        }
-
-        // Create the sort link:
-        $url = $this->listURL('', $table, 'sortField,sortRev,table,pointer')
-            . '&sortField=' . $field . '&sortRev=' . ($this->sortRev || $this->sortField != $field ? 0 : 1);
-        $icon = $this->sortField === $field
-            ? $this->iconFactory->getIcon('actions-sort-amount-' . ($this->sortRev ? 'down' : 'up'), IconSize::SMALL)->render()
-            : $this->iconFactory->getIcon('actions-sort-amount', IconSize::SMALL)->render();
-
-        // Return linked field:
-        $attributes = [
-            'class' => 'table-sorting-button ' . ($this->sortField === $field ? 'table-sorting-button-active' : ''),
-            'href' => $url,
-        ];
-
-        return '<a ' . GeneralUtility::implodeAttributes($attributes, true) . '>
-            <span class="table-sorting-label">' . $label . '</span>
-            <span class="table-sorting-icon">' . $icon . '</span>
-            </a>';
-    }
-
-    /**
      * Returns the path for a certain pid
      * The result is cached internally for the session, thus you can call
      * this function as much as you like without performance problems.
@@ -2257,6 +2279,20 @@ class DatabaseRecordList
             && $this->editable
             && ($backendUser->isAdmin() || $backendUser->check('tables_modify', $table))
             && (BackendUtility::isTableWorkspaceEnabled($table) || $backendUser->workspaceAllowsLiveEditingInTable($table));
+    }
+
+    /**
+     * Check if user can edit records in the table
+     */
+    protected function canEditTable(string $table): bool
+    {
+        if ($table === 'pages') {
+            $permsEdit = $this->calcPerms->editPagePermissionIsGranted();
+        } else {
+            $permsEdit = $this->calcPerms->editContentPermissionIsGranted();
+        }
+
+        return $permsEdit && $this->overlayEditLockPermissions($table);
     }
 
     /**
@@ -3295,6 +3331,32 @@ class DatabaseRecordList
             'data-dispatch-action' => 'TYPO3.InfoWindow.showItem',
             'data-dispatch-args-list' => $arguments,
         ], true);
+    }
+
+    protected function getFieldLabel(string $table, string $field): string
+    {
+        // Check if $field is really a field and get the label and remove the colons at the end
+        $label = BackendUtility::getItemLabel($table, $field);
+        if ($label !== null) {
+            $tsConfig = BackendUtility::getPagesTSconfig($this->id)['TCEFORM.'][$table . '.'] ?? null;
+            $tsConfigForTable = is_array($tsConfig) ? $tsConfig : null;
+            $tsConfigForField = isset($tsConfigForTable[$field . '.']) && is_array($tsConfigForTable[$field . '.'])
+                ? $tsConfigForTable[$field . '.']
+                : [];
+            $label = $this->getLanguageService()->translateLabel(
+                $tsConfigForField['label.'] ?? [],
+                $tsConfigForField['label'] ?? $label
+            );
+            $label = htmlspecialchars(rtrim(trim($label), ':'));
+        } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $field)) {
+            // Special label exists for this field (Probably a management field, e.g. sorting)
+            $label = htmlspecialchars($specialLabel);
+        } else {
+            // No TCA field, only output the $field variable with square brackets []
+            $label = '[' . rtrim(trim(htmlspecialchars($field)), ':') . ']';
+        }
+
+        return $label;
     }
 
     protected function getLanguageService(): LanguageService
