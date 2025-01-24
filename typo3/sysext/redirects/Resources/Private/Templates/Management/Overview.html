@@ -325,19 +325,74 @@
 </f:section>
 
 <f:section name="listHeaderSorting">
-    <f:if condition="{demand.orderField} === {field}">
-        <f:then>
-            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}">
-                <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/>
-            </a>
-            <core:icon identifier="status-status-sorting-{demand.orderDirection}"/>
-        </f:then>
-        <f:else>
-            <a href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}">
-                <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/>
-            </a>
-        </f:else>
-    </f:if>
+    <div class="dropdown dropdown-static">
+        <button class="dropdown-toggle dropdown-toggle-link" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_db.xlf:{label}"/>
+            <f:if condition="{demand.orderField} === {field}">
+                <f:then>
+                    <div class="text-primary">
+                        <f:if condition="{demand.orderDirection} === asc">
+                            <f:then>
+                                <core:icon identifier="actions-sort-amount-up" />
+                            </f:then>
+                            <f:else>
+                                <core:icon identifier="actions-sort-amount-down" />
+                            </f:else>
+                        </f:if>
+                    </div>
+                </f:then>
+                <f:else>
+                    <div>
+                        <core:icon identifier="empty-empty" />
+                    </div>
+                </f:else>
+            </f:if>
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <a
+                    class="dropdown-item"
+                    href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.defaultOrderDirection}')}"
+                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc')}"
+                    aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc')}"
+                >
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon text-primary">
+                            <f:if condition="{demand.orderField} === {field}">
+                                <f:if condition="{demand.orderDirection} === asc">
+                                    <core:icon identifier="actions-dot" />
+                                </f:if>
+                            </f:if>
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc')}
+                        </span>
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a
+                    class="dropdown-item"
+                    href="{f:be.uri(route:'site_redirects', parameters: '{action: \'overview\', demand: demand.parameters, orderField: field, orderDirection: demand.reverseOrderDirection}')}"
+                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc')}"
+                    aria-label="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc')}"
+                >
+                    <span class="dropdown-item-columns">
+                        <span class="dropdown-item-column dropdown-item-column-icon text-primary">
+                            <f:if condition="{demand.orderField} === {field}">
+                                <f:if condition="{demand.orderDirection} === desc">
+                                    <core:icon identifier="actions-dot" />
+                                </f:if>
+                            </f:if>
+                        </span>
+                        <span class="dropdown-item-column dropdown-item-column-title">
+                            {f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc')}
+                        </span>
+                    </span>
+                </a>
+            </li>
+        </ul>
+    </div>
 </f:section>
 
 <f:section name="filter">

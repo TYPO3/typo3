@@ -29,7 +29,7 @@ import '@typo3/backend/element/spinner-element';
 export class IconElement extends LitElement {
   static styles = IconStyles.getStyles();
 
-  @property({ type: String }) identifier: string;
+  @property({ type: String, reflect: true }) identifier: string;
   @property({ type: String, reflect: true }) size: Sizes = Sizes.default;
   @property({ type: String }) state: States = States.default;
   @property({ type: String }) overlay: string = null;

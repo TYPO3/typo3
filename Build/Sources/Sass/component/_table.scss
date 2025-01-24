@@ -138,6 +138,7 @@
     }
 
     .col-path {
+        white-space: wrap;
         min-width: 200px;
         max-width: 40ch;
         word-wrap: break-word;
@@ -177,7 +178,8 @@
     }
 
     // Column contents are cut off with an ellipsis if they get too large.
-    .col-responsive {
+    // The overflow is limited to the td cells,to avoid clipping dropdowns in the header.
+    td.col-responsive {
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -354,6 +356,8 @@
 
 //
 // Sorting
+//
+// @deprecated since 13.4 and will be removed in v15, not used in core
 //
 .table-sorting-button {
     padding: 0;

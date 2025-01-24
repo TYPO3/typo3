@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.dropdown-static {
+    position: static;
+}
+
 .dropdown-toggle {
     white-space: nowrap;
     text-decoration: none;
@@ -18,6 +22,7 @@
         width: 16px;
         margin: 0;
         vertical-align: middle;
+        opacity: .75;
     }
 
     &-no-chevron {
@@ -29,11 +34,13 @@
     // Replicate link styling
     &-link {
         display: inline-flex;
+        font-weight: inherit;
         gap: .25rem;
         border: 0;
         border-radius: 1px;
         padding: 0;
         background: none;
+        align-items: center;
         outline-offset: 1px;
 
         &:hover {
@@ -43,6 +50,19 @@
         &:focus-visible {
             outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, transparent, currentColor var(--typo3-outline-transparent-mix));
         }
+    }
+
+    > div {
+        display: flex;
+        align-items: center;
+    }
+
+    // Allow icons to consume the space needed to be displayed and move them to
+    // the end to ensure there is no unnessesary space between visible elements.
+    // See: Table Sorting
+    > div:has(> span[data-identifier="empty-empty"]),
+    > div:has(> typo3-backend-icon[identifier="empty-empty"]) {
+        order: 1;
     }
 }
 
