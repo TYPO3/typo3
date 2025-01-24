@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
@@ -188,18 +189,14 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         }
         if ($this->expandFolder) {
             try {
-                $this->selectedFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
-            } catch (FolderDoesNotExistException $e) {
+                $selectedFolder = $this->resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
+                if ($selectedFolder->checkActionPermission('read') && !$selectedFolder->getStorage()->isFallbackStorage()) {
+                    $this->selectedFolder = $selectedFolder;
+                }
+            } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException) {
+                // Outdated module session data: Last used folder has been removed meanwhile, or
+                // access to last used folder has been removed. Do not set a preselected folder.
             }
-        }
-        if ($this->selectedFolder?->checkActionPermission('read') === false) {
-            $this->selectedFolder = null;
-        }
-        if ($this->selectedFolder?->getStorage()?->isFallbackStorage()) {
-            $this->selectedFolder = null;
-        }
-        if (!$this->selectedFolder) {
-            $this->selectedFolder = $this->resourceFactory->getDefaultStorage()?->getRootLevelFolder() ?? null;
         }
 
         $this->filelist = GeneralUtility::makeInstance(FileList::class, $request);
