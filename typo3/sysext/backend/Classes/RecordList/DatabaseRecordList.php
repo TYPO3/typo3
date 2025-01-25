@@ -1864,6 +1864,7 @@ class DatabaseRecordList
                     'aria-label' => $linkTitle,
                     'aria-haspopup' => 'dialog',
                     'data-button-ok-text' => $linkTitle,
+                    'data-button-close-text' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
                     'data-l10nparent' => $l10nParentField ? (string)$row[$l10nParentField] : '',
                     'data-params' => $params,
                     'data-message' => $warningText,
@@ -3286,7 +3287,9 @@ class DatabaseRecordList
             if (!(bool)trim((string)($userTsConfig['options.']['disableDelete.'][$table] ?? $userTsConfig['options.']['disableDelete'] ?? ''))) {
                 $deleteActionConfiguration = GeneralUtility::jsonEncodeForHtmlAttribute([
                     'idField' => 'uid',
-                    'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.delete'),
+                    'tableName' => $table,
+                    'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.delete'),
+                    'cancel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.cancel'),
                     'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_deleteMarked'),
                     'content' => sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_deleteMarkedWarning'), $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title'])),
                 ], true);
