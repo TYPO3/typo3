@@ -17,9 +17,6 @@ import PersistentStorage from '@typo3/backend/storage/persistent';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
 import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
-import { SeverityEnum } from '@typo3/backend/enum/severity';
-import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import { selector } from '@typo3/core/literals';
 
@@ -43,11 +40,6 @@ interface DataHandlerEventPayload {
 interface EditRecordsConfiguration extends ActionConfiguration {
   tableName: string;
   returnUrl: string;
-}
-interface DeleteRecordsConfiguration extends ActionConfiguration {
-  ok: string;
-  title: string;
-  content: string;
 }
 
 /**
@@ -78,7 +70,6 @@ class Recordlist {
 
     // multi record selection events
     new RegularEvent('multiRecordSelection:action:edit', this.onEditMultiple).bindTo(document);
-    new RegularEvent('multiRecordSelection:action:delete', this.deleteMultiple).bindTo(document);
     new RegularEvent('multiRecordSelection:action:copyMarked', (event: CustomEvent): void => {
       Recordlist.submitClipboardFormWithCommand('copyMarked', event.target as HTMLButtonElement);
     }).bindTo(document);
@@ -262,33 +253,6 @@ class Recordlist {
       top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
     }
   };
-
-  private deleteMultiple (event: CustomEvent): void {
-    event.preventDefault();
-    const eventDetails: ActionEventDetails = event.detail as ActionEventDetails;
-    const configuration: DeleteRecordsConfiguration = eventDetails.configuration;
-    Modal.advanced({
-      title: configuration.title || 'Delete',
-      content: configuration.content || 'Are you sure you want to delete those records?',
-      severity: SeverityEnum.warning,
-      buttons: [
-        {
-          text: TYPO3.lang['button.close'] || 'Close',
-          active: true,
-          btnClass: 'btn-default',
-          trigger: (e: Event, modal: ModalElement) => modal.hideModal(),
-        },
-        {
-          text: configuration.ok || TYPO3.lang['button.ok'] || 'OK',
-          btnClass: 'btn-' + Severity.getCssClass(SeverityEnum.warning),
-          trigger: (e: Event, modal: ModalElement) => {
-            modal.hideModal();
-            Recordlist.submitClipboardFormWithCommand('delete', event.target as HTMLButtonElement);
-          }
-        }
-      ]
-    });
-  }
 
   private readonly registerPaginationEvents = (): void => {
     document.querySelectorAll('.t3js-recordlist-paging').forEach((trigger: HTMLInputElement) => {
