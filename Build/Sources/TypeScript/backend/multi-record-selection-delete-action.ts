@@ -91,9 +91,9 @@ class MultiRecordSelectionDeleteAction {
               if (result.hasErrors) {
                 throw result.messages;
               } else if (returnUrl !== '') {
-                window.location.href = returnUrl;
+                (event.target as HTMLElement).ownerDocument.location.href = returnUrl;
               } else {
-                modal.ownerDocument.location.reload();
+                (event.target as HTMLElement).ownerDocument.location.reload();
               }
             } catch {
               Notification.error('Could not delete records');
