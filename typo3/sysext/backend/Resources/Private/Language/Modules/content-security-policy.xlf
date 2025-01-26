@@ -19,6 +19,9 @@
 			<trans-unit id="module.introtext">
 				<source>A list of the existing Content Security Policy Mutations can be viewed in the %s module.</source>
 			</trans-unit>
+			<trans-unit id="module.introtextLowlevelMissing">
+				<source>If you install the core EXT:lowlevel extension, you can see a list of the existing Content Security Policy Mutations in the %s module.</source>
+			</trans-unit>
 			<trans-unit id="module.introtext.moduleName">
 				<source>Configuration</source>
 			</trans-unit>

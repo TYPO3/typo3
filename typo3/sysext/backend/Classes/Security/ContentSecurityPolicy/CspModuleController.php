@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ScopeRepository;
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 /**
  * Content-Security-Policy backend module view, loading the CSP lit-element and providing the current context.
@@ -62,6 +63,7 @@ class CspModuleController
             'configurationStatus' => $this->getConfigurationStatus(),
             'scopes' => array_map(strval(...), $this->scopeRepository->findAll()),
             'controlUri' => $this->uriBuilder->buildUriFromRoutePath('/ajax/security/csp/control'),
+            'extLowlevelAvailable' => ExtensionManagementUtility::isLoaded('lowlevel'),
         ]);
         return $view->renderResponse('Security/CspModule');
     }
