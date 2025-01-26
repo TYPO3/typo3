@@ -17,17 +17,23 @@
 <f:section name="Content">
     <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.headline" /></h1>
     <p>
-        <f:variable name="moduleLink">
-            <f:be.link route="system_config" parameters="{tree: 'contentSecurityPolicyMutations'}"><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.introtext.moduleName" /></f:be.link>
-        </f:variable>
-        <f:sanitize.html>
-            <f:translate
-                key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.introtext"
-                arguments="{
-                    0: '{moduleLink}'
-                }"
-            />
-        </f:sanitize.html>
+        <f:if condition="{extLowlevelAvailable}">
+            <f:then>
+                <f:variable name="moduleLink">
+                    <f:be.link route="system_config" parameters="{tree: 'contentSecurityPolicyMutations'}"><f:translate key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.introtext.moduleName" /></f:be.link>
+                </f:variable>
+                <f:sanitize.html>
+                    <f:translate
+                        key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.introtext"
+                        arguments="{0: '{moduleLink}'}" />
+                </f:sanitize.html>
+            </f:then>
+            <f:else>
+                <f:translate
+                    key="LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.introtextLowlevelMissing"
+                    arguments="{0: '{f:translate(key:\'LLL:EXT:backend/Resources/Private/Language/Modules/content-security-policy.xlf:module.introtext.moduleName\')}'}" />
+            </f:else>
+        </f:if>
     </p>
 
     <f:if condition="{configurationStatus.featureDisabled.backend} || {configurationStatus.featureDisabled.frontend}">
