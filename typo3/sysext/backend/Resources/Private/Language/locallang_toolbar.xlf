@@ -25,7 +25,7 @@
 				<source>Bookmarks</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.bookmarks.description">
-				<source>This is the bookmarks menu. You do not have any bookmarks added yet. You can add one by clicking the bookmark icon %s, which you can find on all pages in the backend.</source>
+				<source>This is the bookmarks menu. You haven't added any bookmarks yet. To add one, click the share icon %s, available on all pages throughout the backend.</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.bookmarks.field.group">
 				<source>Group</source>
