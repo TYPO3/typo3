@@ -18,38 +18,18 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Messaging\Renderer;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\Renderer\BootstrapRenderer;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class BootstrapRendererTest extends UnitTestCase
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $iconMock = $this->createMock(Icon::class);
-        $iconMock->method('render')->willReturn('');
-
-        $iconFactoryMock = $this->createMock(IconFactory::class);
-        $iconFactoryMock->method('getIcon')->with(self::anything())->willReturn($iconMock);
-        GeneralUtility::addInstance(IconFactory::class, $iconFactoryMock);
-    }
-
-    protected function tearDown(): void
-    {
-        GeneralUtility::purgeInstances();
-        parent::tearDown();
-    }
-
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessage(): void
     {
-        $subject = new BootstrapRenderer();
+        $subject = new BootstrapRenderer($this->createMock(IconFactory::class));
         $flashMessage = new FlashMessage(
             'messageBody',
             'messageTitle',
@@ -66,7 +46,7 @@ final class BootstrapRendererTest extends UnitTestCase
     #[Test]
     public function renderCreatesCorrectOutputForFlashMessageWithoutTitle(): void
     {
-        $subject = new BootstrapRenderer();
+        $subject = new BootstrapRenderer($this->createMock(IconFactory::class));
         $flashMessage = new FlashMessage(
             'messageBody',
             '',

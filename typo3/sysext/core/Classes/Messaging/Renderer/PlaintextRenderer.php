@@ -38,7 +38,7 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
  *
  * Multiple messages are separated by a new line (LF).
  */
-class PlaintextRenderer implements FlashMessageRendererInterface
+readonly class PlaintextRenderer implements FlashMessageRendererInterface
 {
     /**
      * Render method
@@ -49,7 +49,6 @@ class PlaintextRenderer implements FlashMessageRendererInterface
     public function render(array $flashMessages): string
     {
         $messages = [];
-
         foreach ($flashMessages as $flashMessage) {
             $message = $flashMessage->getMessage();
             if ($flashMessage->getTitle() !== '') {

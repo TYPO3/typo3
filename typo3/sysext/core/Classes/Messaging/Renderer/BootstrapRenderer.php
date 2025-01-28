@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Messaging\Renderer;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A class representing a bootstrap flash messages.
@@ -29,64 +29,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * The created output contains all classes which are required for
  * the TYPO3 backend. Any kind of message contains also a nice icon.
  */
-class BootstrapRenderer implements FlashMessageRendererInterface
+#[Autoconfigure(public: true)]
+readonly class BootstrapRenderer implements FlashMessageRendererInterface
 {
-    protected IconFactory $iconFactory;
-
-    public function __construct(?IconFactory $iconFactory = null)
-    {
-        $this->iconFactory = $iconFactory ?? GeneralUtility::makeInstance(IconFactory::class);
-    }
+    public function __construct(
+        private IconFactory $iconFactory,
+    ) {}
 
     /**
-     * Render method
+     * Gets the message rendered as clean and secure markup
      *
      * @param FlashMessage[] $flashMessages
      * @return string Representation of the flash message
      */
     public function render(array $flashMessages): string
     {
-        return $this->getMessageAsMarkup($flashMessages);
-    }
-
-    /**
-     * Gets the message severity class name
-     *
-     *
-     * @return string The message severity class name
-     */
-    protected function getClass(FlashMessage $flashMessage): string
-    {
-        return 'alert-' . $flashMessage->getSeverity()->getCssClass();
-    }
-
-    /**
-     * Gets the message severity icon name
-     *
-     *
-     * @return string The message severity icon name
-     */
-    protected function getIconName(FlashMessage $flashMessage): string
-    {
-        return $flashMessage->getSeverity()->getIconIdentifier();
-    }
-
-    /**
-     * Gets the message rendered as clean and secure markup
-     *
-     * @param FlashMessage[] $flashMessages
-     */
-    protected function getMessageAsMarkup(array $flashMessages): string
-    {
         $markup = [];
         $markup[] = '<div class="typo3-messages">';
         foreach ($flashMessages as $flashMessage) {
             $messageTitle = $flashMessage->getTitle();
-            $markup[] = '<div class="alert ' . htmlspecialchars($this->getClass($flashMessage)) . '">';
+            $markup[] = '<div class="alert alert-' . htmlspecialchars($flashMessage->getSeverity()->getCssClass()) . '">';
             $markup[] = '  <div class="alert-inner">';
             $markup[] = '    <div class="alert-icon">';
             $markup[] = '      <span class="icon-emphasized">';
-            $markup[] =            $this->iconFactory->getIcon($this->getIconName($flashMessage), IconSize::SMALL)->render();
+            $markup[] =            $this->iconFactory->getIcon($flashMessage->getSeverity()->getIconIdentifier(), IconSize::SMALL)->render();
             $markup[] = '      </span>';
             $markup[] = '    </div>';
             $markup[] = '    <div class="alert-content">';

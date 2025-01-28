@@ -21,59 +21,27 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 
 /**
  * A class representing a html flash message as unordered markup list.
- * It is used in frontend context per default.
+ * It is used in frontend context by default.
  * The created output contains css classes which can be used to style
  * the output individual. Any message contains the message and an
  * optional title which is rendered as <h4> tag if it is set in
  * the FlashMessage object.
  */
-class ListRenderer implements FlashMessageRendererInterface
+readonly class ListRenderer implements FlashMessageRendererInterface
 {
     /**
-     * Render method
+     * Gets the message rendered as clean and secure markup
      *
      * @param FlashMessage[] $flashMessages
      * @return string Representation of the flash message
      */
     public function render(array $flashMessages): string
     {
-        return $this->getMessageAsMarkup($flashMessages);
-    }
-
-    /**
-     * Gets the message severity class name
-     *
-     *
-     * @return string The message severity class name
-     */
-    protected function getClass(FlashMessage $flashMessage): string
-    {
-        return 'alert-' . $flashMessage->getSeverity()->getCssClass();
-    }
-
-    /**
-     * Gets the message severity icon name
-     *
-     *
-     * @return string The message severity icon name
-     */
-    protected function getIconName(FlashMessage $flashMessage): string
-    {
-        return $flashMessage->getSeverity()->getIconIdentifier();
-    }
-
-    /**
-     * Gets the message rendered as clean and secure markup
-     *
-     * @param FlashMessage[] $flashMessages
-     */
-    protected function getMessageAsMarkup(array $flashMessages): string
-    {
         $markup = [];
         $markup[] = '<ul class="typo3-messages">';
         foreach ($flashMessages as $flashMessage) {
             $messageTitle = $flashMessage->getTitle();
-            $markup[] = '<li class="alert ' . htmlspecialchars($this->getClass($flashMessage)) . '">';
+            $markup[] = '<li class="alert alert-' . htmlspecialchars($flashMessage->getSeverity()->getCssClass()) . '">';
             if ($messageTitle !== '') {
                 $markup[] = '<h4 class="alert-title">' . htmlspecialchars($messageTitle) . '</h4>';
             }
