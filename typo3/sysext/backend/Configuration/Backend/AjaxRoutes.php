@@ -272,12 +272,6 @@ return [
         'target' => Controller\MfaAjaxController::class . '::handleRequest',
     ],
 
-    // Render flash messages
-    'flashmessages_render' => [
-        'path' => '/flashmessages/render',
-        'target' => \TYPO3\CMS\Backend\Controller\FlashMessageController::class . '::getQueuedFlashMessagesAction',
-    ],
-
     // Load context menu for
     'contextmenu' => [
         'path' => '/context-menu',
