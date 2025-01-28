@@ -36,7 +36,6 @@ return [
             'label' => 'LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:minimalTableTitleField',
             'config' => [
                 'type' => 'input',
-                'width' => 200,
                 'eval' => 'trim',
                 'required' => true,
             ],
