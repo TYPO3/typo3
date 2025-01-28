@@ -908,6 +908,11 @@ class DatabaseRecordList
             return null;
         }
 
+        if ($table === 'tt_content') {
+            // No button with tt_content table, content elements should be managed using page module.
+            return null;
+        }
+
         $tag = 'a';
         $iconIdentifier = 'actions-plus';
         $label = sprintf(
@@ -918,16 +923,7 @@ class DatabaseRecordList
             'data-recordlist-action' => 'new',
         ];
 
-        if ($table === 'tt_content') {
-            $tag = 'typo3-backend-new-content-element-wizard-button';
-            $attributes['url'] = (string)$this->uriBuilder->buildUriFromRoute(
-                'new_content_element_wizard',
-                [
-                    'id' => $this->id,
-                    'returnUrl' => $this->listURL(),
-                ]
-            );
-        } elseif ($table === 'pages') {
+        if ($table === 'pages') {
             $iconIdentifier = 'actions-page-new';
             $attributes['data-new'] = 'page';
             $attributes['href'] = (string)$this->uriBuilder->buildUriFromRoute(

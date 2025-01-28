@@ -290,8 +290,9 @@ class RecordListController
         $queryParams = $request->getQueryParams();
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $lang = $this->getLanguageService();
-        // New record on pages that are not locked by editlock
-        if (!($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
+        if ($table !== 'tt_content' && !($this->modTSconfig['noCreateRecordsLink'] ?? false) && $this->editLockPermissions()) {
+            // New record button if: table is not tt_content - tt_content should be managed in page module, link is
+            // not disabled via TSconfig, page is not 'edit locked'
             $newRecordButton = $buttonBar->makeLinkButton()
                 ->setHref((string)$this->uriBuilder->buildUriFromRoute('db_new', ['id' => $this->id, 'returnUrl' => $listUrl]))
                 ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordGeneral'))
