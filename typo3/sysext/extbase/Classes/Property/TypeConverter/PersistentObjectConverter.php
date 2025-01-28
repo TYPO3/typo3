@@ -225,8 +225,18 @@ class PersistentObjectConverter extends ObjectConverter
      */
     protected function fetchObjectFromPersistence($identity, string $targetType): object
     {
-        if (ctype_digit((string)$identity)) {
-            $object = $this->persistenceManager->getObjectByIdentifier($identity, $targetType);
+        // @todo - Ideally, this underscore notation should not be passed here.
+        // Consumers of this method should rather earlier resolve to the proper uid
+        // via '$value->getUid' like 'renderHiddenIdentityField' does, for example.
+        // @see #105319
+        if (str_contains((string)$identity, '_')) {
+            $localizedUidParts = explode('_', (string)$identity);
+            $uidIdentity = $localizedUidParts[0];
+        } else {
+            $uidIdentity = (string)$identity;
+        }
+        if (ctype_digit($uidIdentity)) {
+            $object = $this->persistenceManager->getObjectByIdentifier($uidIdentity, $targetType);
         } else {
             throw new InvalidSourceException('The identity property "' . $identity . '" is no UID.', 1297931020);
         }
