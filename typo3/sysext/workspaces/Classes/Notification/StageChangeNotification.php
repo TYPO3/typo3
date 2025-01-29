@@ -18,8 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Notification;
 
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Mailer\Exception\TransportException;
 use Symfony\Component\Mime\Address;
@@ -41,14 +40,13 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
  * @internal This is a concrete implementation of sending out emails, and not part of the public TYPO3 Core API
  */
 #[Autoconfigure(public: true)]
-class StageChangeNotification implements LoggerAwareInterface
+readonly class StageChangeNotification
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly StagesService $stagesService,
-        private readonly PreviewUriBuilder $previewUriBuilder,
-        private readonly MailerInterface $mailer
+        private StagesService $stagesService,
+        private PreviewUriBuilder $previewUriBuilder,
+        private MailerInterface $mailer,
+        private LoggerInterface $logger,
     ) {}
 
     /**

@@ -33,8 +33,12 @@ use TYPO3\CMS\Workspaces\Service\StagesService;
 /**
  * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
-class BackendUtilityHook
+readonly class BackendUtilityHook
 {
+    public function __construct(
+        private PreviewUriBuilder $previewUriBuilder,
+    ) {}
+
     /**
      * Hooks into the PagePreviewUri and redirects to the workspace preview
      * only if we're in a workspace and if the frontend-preview is disabled.
@@ -45,8 +49,7 @@ class BackendUtilityHook
         if ($this->getBackendUser()->workspace === 0) {
             return;
         }
-        $uri = GeneralUtility::makeInstance(PreviewUriBuilder::class)
-            ->buildUriForWorkspaceSplitPreview($event->getPageId());
+        $uri = $this->previewUriBuilder->buildUriForWorkspaceSplitPreview($event->getPageId());
         $queryString = $uri->getQuery();
         if ($event->getAdditionalQueryParameters() !== []) {
             if ($queryString !== '') {

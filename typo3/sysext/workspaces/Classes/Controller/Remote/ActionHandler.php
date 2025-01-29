@@ -36,12 +36,13 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[Autoconfigure(public: true)]
-class ActionHandler
+readonly class ActionHandler
 {
     public function __construct(
-        protected readonly StagesService $stagesService,
-        protected readonly WorkspaceService $workspaceService,
-        protected readonly BackendViewFactory $backendViewFactory,
+        protected StagesService $stagesService,
+        protected WorkspaceService $workspaceService,
+        protected BackendViewFactory $backendViewFactory,
+        private PreviewUriBuilder $previewUriBuilder,
     ) {}
 
     /**
@@ -50,9 +51,9 @@ class ActionHandler
      * @param int $uid The ID of the record to be linked
      * @return string the full domain including the protocol http:// or https://, but without the trailing '/'
      */
-    public function generateWorkspacePreviewLink($uid)
+    public function generateWorkspacePreviewLink($uid): string
     {
-        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForPage((int)$uid, 0);
+        return $this->previewUriBuilder->buildUriForPage((int)$uid, 0);
     }
 
     /**
@@ -61,9 +62,9 @@ class ActionHandler
      * @param int $uid
      * @return array
      */
-    public function generateWorkspacePreviewLinksForAllLanguages($uid)
+    public function generateWorkspacePreviewLinksForAllLanguages($uid): array
     {
-        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUrisForAllLanguagesOfPage((int)$uid);
+        return $this->previewUriBuilder->buildUrisForAllLanguagesOfPage((int)$uid);
     }
 
     /**
@@ -107,9 +108,9 @@ class ActionHandler
      * @param string $uid
      * @return string
      */
-    public function viewSingleRecord($table, $uid)
+    public function viewSingleRecord($table, $uid): string
     {
-        return GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, (int)$uid);
+        return $this->previewUriBuilder->buildUriForElement($table, (int)$uid);
     }
 
     /**

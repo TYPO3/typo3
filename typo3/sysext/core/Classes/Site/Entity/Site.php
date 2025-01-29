@@ -271,6 +271,9 @@ class Site implements SiteInterface
         if (isset($this->languages[$languageId])) {
             return $this->languages[$languageId];
         }
+        // @todo: Turn this into a specific exception to avoid catching \InvalidArgumentException
+        //        since there is no hasLanguageById() or similar and some core places already
+        //        call this method and try-catch global \InvalidArgumentException, which is bad practice.
         throw new \InvalidArgumentException(
             'Language ' . $languageId . ' does not exist on site ' . $this->identifier . '.',
             1522960188

@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Service;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
@@ -43,10 +41,8 @@ use TYPO3\CMS\Workspaces\Service\Dependency\CollectionService;
  * @internal
  */
 #[Autoconfigure(public: true)]
-class GridDataService implements LoggerAwareInterface
+class GridDataService
 {
-    use LoggerAwareTrait;
-
     public const GridColumn_Collection = 'Workspaces_Collection';
     public const GridColumn_CollectionLevel = 'Workspaces_CollectionLevel';
     public const GridColumn_CollectionParent = 'Workspaces_CollectionParent';
@@ -79,6 +75,7 @@ class GridDataService implements LoggerAwareInterface
         private readonly ModuleProvider $moduleProvider,
         private readonly WorkspacePublishGate $workspacePublishGate,
         private readonly IntegrityService $integrityService,
+        private readonly PreviewUriBuilder $previewUriBuilder,
     ) {}
 
     /**
@@ -157,7 +154,7 @@ class GridDataService implements LoggerAwareInterface
                     // The page ID for a translated page is considered here
                     $pageId = (int)(!empty($record['l10n_parent']) ? $record['l10n_parent'] : ($record['t3ver_oid'] ?: $record['uid']));
                 }
-                $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
+                $viewUrl = $this->previewUriBuilder->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
                 $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
                 $iconWorkspace = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
                 [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
