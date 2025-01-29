@@ -51,18 +51,19 @@ use TYPO3\CMS\Redirects\Event\BeforeRedirectMatchDomainEvent;
  *
  * @internal due to some possible refactorings
  */
-class RedirectService
+readonly class RedirectService
 {
     public function __construct(
-        private readonly RedirectCacheService $redirectCacheService,
-        private readonly LinkService $linkService,
-        private readonly SiteFinder $siteFinder,
-        private readonly EventDispatcherInterface $eventDispatcher,
-        private readonly PageInformationFactory $pageInformationFactory,
-        private readonly FrontendTypoScriptFactory $frontendTypoScriptFactory,
+        private RedirectCacheService $redirectCacheService,
+        private LinkService $linkService,
+        private SiteFinder $siteFinder,
+        private EventDispatcherInterface $eventDispatcher,
+        private PageInformationFactory $pageInformationFactory,
+        private FrontendTypoScriptFactory $frontendTypoScriptFactory,
         #[Autowire(service: 'cache.typoscript')]
-        private readonly PhpFrontend $typoScriptCache,
-        private readonly LoggerInterface $logger,
+        private PhpFrontend $typoScriptCache,
+        private LoggerInterface $logger,
+        private TypoLinkCodecService $typoLinkCodecService,
     ) {}
 
     /**
@@ -264,7 +265,7 @@ class RedirectService
         $uri = $request->getUri();
         $queryParams = $request->getQueryParams();
         $this->logger->debug('Found a redirect to process', ['redirect' => $matchedRedirect]);
-        $linkParameterParts = GeneralUtility::makeInstance(TypoLinkCodecService::class)->decode((string)$matchedRedirect['target']);
+        $linkParameterParts = $this->typoLinkCodecService->decode((string)$matchedRedirect['target']);
         $redirectTarget = $linkParameterParts['url'];
         $linkDetails = $this->resolveLinkDetailsFromLinkTarget($redirectTarget);
         $this->logger->debug('Resolved link details for redirect', ['details' => $linkDetails]);

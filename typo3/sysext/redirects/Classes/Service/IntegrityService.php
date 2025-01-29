@@ -20,37 +20,20 @@ namespace TYPO3\CMS\Redirects\Service;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
  * Checks for redirects that conflict with existing pages
  */
-class IntegrityService
+readonly class IntegrityService
 {
-    /**
-     * @var RedirectService
-     */
-    private $redirectService;
-
-    /**
-     * @var SiteFinder
-     */
-    private $siteFinder;
-
-    public function __construct(?RedirectService $redirectService = null, ?SiteFinder $siteFinder = null)
-    {
-        $this->siteFinder = $siteFinder ?? GeneralUtility::makeInstance(SiteFinder::class);
-        $this->redirectService = $redirectService ?? GeneralUtility::makeInstance(
-            RedirectService::class,
-            GeneralUtility::makeInstance(RedirectCacheService::class),
-            GeneralUtility::makeInstance(LinkService::class),
-            $this->siteFinder
-        );
-    }
+    public function __construct(
+        private RedirectService $redirectService,
+        private SiteFinder $siteFinder,
+        private ConnectionPool $connectionPool,
+    ) {}
 
     /**
      * Resolves all conflicting redirects
@@ -83,8 +66,7 @@ class IntegrityService
 
     public function setIntegrityStatus(array $redirect): void
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_redirect');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_redirect');
         $queryBuilder
             ->update('sys_redirect')
             ->where(
@@ -126,7 +108,7 @@ class IntegrityService
             $pageUrls[] = rtrim((string)$siteLanguage->getBase(), '/') . '/';
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('pages')
             ->select('slug', $this->getPagesLanguageFieldName())
             ->from('pages');
@@ -171,7 +153,7 @@ class IntegrityService
     {
         $pageUrls = [[]];
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
+        $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('pages')
             ->select('uid', 'slug', $this->getPagesLanguageFieldName())
             ->from('pages');
