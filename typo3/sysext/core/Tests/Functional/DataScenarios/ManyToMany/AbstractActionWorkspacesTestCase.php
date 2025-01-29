@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\ManyToMany;
 
 abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
 {
-    protected const VALUE_CategoryIdLast = 31;
+    protected const VALUE_SurfIdLast = 31;
     protected const VALUE_WorkspaceId = 1;
 
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefaultWorkspaces.csv';
@@ -31,19 +31,19 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $newTableIds = $this->actionService->createNewRecord(
             self::TABLE_Content,
             self::VALUE_PageId,
-            ['header' => 'Testing #1', 'categories' => self::VALUE_CategoryIdSecond]
+            ['header' => 'Surfing #1', self::FIELD_Surfing => self::VALUE_SurfIdSecond]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function createCategoryAndAddRelation(): void
+    public function createSurfAndAddRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecord(
-            self::TABLE_Category,
+            self::TABLE_Surf,
             0,
-            ['title' => 'Testing #1', 'items' => 'tt_content_' . self::VALUE_ContentIdFirst]
+            ['title' => 'Surfing #1', self::FIELD_Relations => 'tt_content_' . self::VALUE_ContentIdFirst]
         );
-        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][0];
     }
 
     public function createContentAndCreateRelation(): void
@@ -51,62 +51,62 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
             [
-                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1'],
-                self::TABLE_Content => ['header' => 'Testing #1', 'categories' => '__previousUid'],
+                self::TABLE_Surf => ['pid' => 0, 'title' => 'Surfing #1'],
+                self::TABLE_Content => ['header' => 'Surfing #1', self::FIELD_Surfing => '__previousUid'],
             ]
         );
-        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][0];
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
     }
 
-    public function createCategoryAndCreateRelation(): void
+    public function createSurfAndCreateRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
             [
-                self::TABLE_Content => ['header' => 'Testing #1'],
-                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'],
+                self::TABLE_Content => ['header' => 'Surfing #1'],
+                self::TABLE_Surf => ['pid' => 0, 'title' => 'Surfing #1', self::FIELD_Relations => 'tt_content___previousUid'],
             ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
-        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][0];
     }
 
-    public function createContentWithCategoryAndAddRelation(): void
+    public function createContentWithSurfAndAddRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
             [
-                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1'],
-                self::TABLE_Content => ['header' => 'Testing #1'],
+                self::TABLE_Surf => ['pid' => 0, 'title' => 'Surfing #1'],
+                self::TABLE_Content => ['header' => 'Surfing #1'],
             ]
         );
-        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][0];
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
 
         $this->actionService->modifyRecord(
             self::TABLE_Content,
             $this->recordIds['newContentId'],
-            ['categories' => $this->recordIds['newCategoryId']]
+            [self::FIELD_Surfing => $this->recordIds['newSurfId']]
         );
     }
 
-    public function createCategoryWithContentAndAddRelation(): void
+    public function createSurfWithContentAndAddRelation(): void
     {
         $newTableIds = $this->actionService->createNewRecords(
             self::VALUE_PageId,
             [
-                self::TABLE_Content => ['header' => 'Testing #1'],
-                self::TABLE_Category => ['pid' => 0, 'title' => 'Testing #1', 'items' => 'tt_content___previousUid'],
+                self::TABLE_Content => ['header' => 'Surfing #1'],
+                self::TABLE_Surf => ['pid' => 0, 'title' => 'Surfing #1', self::FIELD_Relations => 'tt_content___previousUid'],
             ]
         );
         $this->recordIds['newContentId'] = $newTableIds[self::TABLE_Content][0];
-        $this->recordIds['newCategoryId'] = $newTableIds[self::TABLE_Category][0];
+        $this->recordIds['newSurfId'] = $newTableIds[self::TABLE_Surf][0];
 
         $this->actionService->modifyRecord(
-            self::TABLE_Category,
-            $this->recordIds['newCategoryId'],
-            ['items' => 'tt_content_' . $this->recordIds['newContentId']]
+            self::TABLE_Surf,
+            $this->recordIds['newSurfId'],
+            [self::FIELD_Relations => 'tt_content_' . $this->recordIds['newContentId']]
         );
     }
 }
