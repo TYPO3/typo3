@@ -729,6 +729,70 @@ class EnvironmentController extends AbstractController
     }
 
     /**
+     * Converting png to webp
+     */
+    public function imageProcessingPngToWebpAction(): ResponseInterface
+    {
+        if (!$this->isImageMagickEnabledAndConfigured()) {
+            return new JsonResponse([
+                'success' => true,
+                'status' => [$this->imageMagickDisabledMessage()],
+            ]);
+        }
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $imageService = $this->initializeGraphicalFunctions();
+        $inputFile = $imageBasePath . 'TestInput/Transparent.png';
+        $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read-webp');
+        $imResult = $imageService->resize($inputFile, 'webp', '300', '', '', [], true);
+        if ($imResult !== null) {
+            $result = [
+                'fileExists' => $imResult->isFile(),
+                'outputFile' => $imResult->getRealPath(),
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Convert-webp-transparent.webp',
+                'command' => $imageService->IM_commands,
+            ];
+        } else {
+            $result = [
+                'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageService->IM_commands,
+            ];
+        }
+        return $this->getImageTestResponse($result);
+    }
+
+    /**
+     * Converting png to avif
+     */
+    public function imageProcessingPngToAvifAction(): ResponseInterface
+    {
+        if (!$this->isImageMagickEnabledAndConfigured()) {
+            return new JsonResponse([
+                'success' => true,
+                'status' => [$this->imageMagickDisabledMessage()],
+            ]);
+        }
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $imageService = $this->initializeGraphicalFunctions();
+        $inputFile = $imageBasePath . 'TestInput/Transparent.png';
+        $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('read-avif');
+        $imResult = $imageService->resize($inputFile, 'avif', '300', '', '', [], true);
+        if ($imResult !== null) {
+            $result = [
+                'fileExists' => $imResult->isFile(),
+                'outputFile' => $imResult->getRealPath(),
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Convert-avif-transparent.avif',
+                'command' => $imageService->IM_commands,
+            ];
+        } else {
+            $result = [
+                'status' => [$this->avifImageGenerationFailedMessage()],
+                'command' => $imageService->IM_commands,
+            ];
+        }
+        return $this->getImageTestResponse($result);
+    }
+
+    /**
      * Combine images with gif mask
      */
     public function imageProcessingCombineGifMaskAction(): ResponseInterface
