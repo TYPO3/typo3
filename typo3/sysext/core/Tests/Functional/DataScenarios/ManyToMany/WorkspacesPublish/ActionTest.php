@@ -39,48 +39,48 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function addCategoryRelation(): void
+    public function addSurfRelation(): void
     {
-        parent::addCategoryRelation();
+        parent::addSurfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addSurfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B', 'Category A.A'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A', 'Surf B', 'Surf A.A'));
     }
 
     #[Test]
-    public function deleteCategoryRelation(): void
+    public function deleteSurfRelation(): void
     {
-        parent::deleteCategoryRelation();
+        parent::deleteSurfRelation();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteSurfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A'));
         self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C', 'Category A.A'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C', 'Surf A.A'));
     }
 
     #[Test]
-    public function changeCategoryRelationSorting(): void
+    public function changeSurfRelationSorting(): void
     {
-        parent::changeCategoryRelationSorting();
+        parent::changeSurfRelationSorting();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeCategoryRelationSorting.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeSurfRelationSorting.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A', 'Surf B'));
     }
 
     #[Test]
@@ -93,26 +93,26 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Surfing #1'));
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B'));
     }
 
     #[Test]
-    public function createCategoryAndAddRelation(): void
+    public function createSurfAndAddRelation(): void
     {
-        parent::createCategoryAndAddRelation();
-        $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNAddRelation.csv');
+        parent::createSurfAndAddRelation();
+        $this->actionService->publishRecord(self::TABLE_Surf, $this->recordIds['newSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfNAddRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surfing #1'));
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surfing #1'));
     }
 
     #[Test]
@@ -120,7 +120,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     {
         parent::createContentAndCreateRelation();
         $this->actionService->publishRecords([
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelation.csv');
@@ -128,58 +128,58 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Surfing #1'));
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surfing #1'));
     }
 
     #[Test]
-    public function createCategoryAndCreateRelation(): void
+    public function createSurfAndCreateRelation(): void
     {
-        parent::createCategoryAndCreateRelation();
+        parent::createSurfAndCreateRelation();
         $this->actionService->publishRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
         ]);
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNCreateRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfNCreateRelation.csv');
     }
 
     #[Test]
-    public function createContentWithCategoryAndAddRelation(): void
+    public function createContentWithSurfAndAddRelation(): void
     {
-        parent::createContentWithCategoryAndAddRelation();
+        parent::createContentWithSurfAndAddRelation();
         $this->actionService->publishRecords([
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWCategoryNAddRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWSurfNAddRelation.csv');
     }
 
     #[Test]
-    public function createCategoryWithContentAndAddRelation(): void
+    public function createSurfWithContentAndAddRelation(): void
     {
-        parent::createCategoryWithContentAndAddRelation();
+        parent::createSurfWithContentAndAddRelation();
         $this->actionService->publishRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryWContentNAddRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfWContentNAddRelation.csv');
     }
 
     #[Test]
-    public function modifyCategoryOfRelation(): void
+    public function modifySurfOfRelation(): void
     {
-        parent::modifyCategoryOfRelation();
-        $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyCategoryOfRelation.csv');
+        parent::modifySurfOfRelation();
+        $this->actionService->publishRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifySurfOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surfing #1', 'Surf B'));
     }
 
     #[Test]
@@ -192,7 +192,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Surfing #1'));
     }
 
     #[Test]
@@ -201,17 +201,17 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::modifyBothsOfRelation();
         $this->actionService->publishRecords([
             self::TABLE_Content => [self::VALUE_ContentIdFirst],
-            self::TABLE_Category => [self::VALUE_CategoryIdFirst],
+            self::TABLE_Surf => [self::VALUE_SurfIdFirst],
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothsOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Testing #1', 'Category B'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surfing #1', 'Surf B'));
         self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Surfing #1'));
     }
 
     #[Test]
@@ -224,21 +224,21 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Surfing #1'));
     }
 
     #[Test]
-    public function deleteCategoryOfRelation(): void
+    public function deleteSurfOfRelation(): void
     {
-        parent::deleteCategoryOfRelation();
-        $this->actionService->publishRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryOfRelation.csv');
+        parent::deleteSurfOfRelation();
+        $this->actionService->publishRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteSurfOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureDoesNotHaveRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A'));
     }
 
     #[Test]
@@ -251,8 +251,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentId'])->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
@@ -265,38 +265,38 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
-    public function copyCategoryOfRelation(): void
+    public function copySurfOfRelation(): void
     {
-        parent::copyCategoryOfRelation();
-        $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryOfRelation.csv');
+        parent::copySurfOfRelation();
+        $this->actionService->publishRecord(self::TABLE_Surf, $this->recordIds['newSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copySurfOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category A (copy 1)'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A', 'Surf A (copy 1)'));
     }
 
     #[Test]
-    public function copyCategoryToLanguageOfRelation(): void
+    public function copySurfToLanguageOfRelation(): void
     {
-        parent::copyCategoryToLanguageOfRelation();
-        $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryToLanguageOfRelation.csv');
+        parent::copySurfToLanguageOfRelation();
+        $this->actionService->publishRecord(self::TABLE_Surf, $this->recordIds['newSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copySurfToLanguageOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A'));
-        // [Translate to Dansk:] Category A is not connected, thus it is not shown
-        // ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', '[Translate to Dansk:] Category A'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A'));
+        // [Translate to Dansk:] Surf A is not connected, thus it is not shown
+        // ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A', '[Translate to Dansk:] Surf A'));
 
     }
 
@@ -310,8 +310,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
@@ -324,8 +324,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
@@ -338,55 +338,55 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
-    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    public function localizeContentOfRelationAndAddSurfWithLanguageSynchronization(): void
     {
-        parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
+        parent::localizeContentOfRelationAndAddSurfWithLanguageSynchronization();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddSurfWSynchronization.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
-    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    public function localizeContentChainOfRelationAndAddSurfWithLanguageSynchronization(): void
     {
-        parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
+        parent::localizeContentChainOfRelationAndAddSurfWithLanguageSynchronization();
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->actionService->publishRecord(self::TABLE_Content, $this->recordIds['localizedContentIdSecond']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddSurfWSynchronization.csv');
 
         // @todo: should we check for LanguageId_Second?
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
-    public function localizeCategoryOfRelation(): void
+    public function localizeSurfOfRelation(): void
     {
         // Create and publish translated page first
         $translatedPageResult = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
         $this->actionService->publishRecord(self::TABLE_Page, $translatedPageResult[self::TABLE_Page][self::VALUE_PageId]);
-        parent::localizeCategoryOfRelation();
-        $this->actionService->publishRecord(self::TABLE_Category, $this->recordIds['localizedCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeCategoryOfRelation.csv');
+        parent::localizeSurfOfRelation();
+        $this->actionService->publishRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeSurfOfRelation.csv');
 
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('[Translate to Dansk:] Category A', 'Category B'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdFirst)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('[Translate to Dansk:] Surf A', 'Surf B'));
     }
 
     #[Test]
@@ -399,8 +399,8 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageIdTarget));
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 
     #[Test]
@@ -420,10 +420,10 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdFirst'])->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category A', 'Category B'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdFirst'])->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf A', 'Surf B'));
         self::assertThat($responseSections, (new StructureHasRecordConstraint())
-            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'])->setRecordField('categories')
-            ->setTable(self::TABLE_Category)->setField('title')->setValues('Category B', 'Category C'));
+            ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'])->setRecordField(self::FIELD_Surfing)
+            ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
 }

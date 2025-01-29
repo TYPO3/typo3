@@ -33,27 +33,27 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function addCategoryRelation(): void
+    public function addSurfRelation(): void
     {
-        parent::addCategoryRelation();
+        parent::addSurfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/addCategoryRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addSurfRelation.csv');
     }
 
     #[Test]
-    public function deleteCategoryRelation(): void
+    public function deleteSurfRelation(): void
     {
-        parent::deleteCategoryRelation();
+        parent::deleteSurfRelation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteSurfRelation.csv');
     }
 
     #[Test]
-    public function changeCategoryRelationSorting(): void
+    public function changeSurfRelationSorting(): void
     {
-        parent::changeCategoryRelationSorting();
+        parent::changeSurfRelationSorting();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeCategoryRelationSorting.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeSurfRelationSorting.csv');
     }
 
     #[Test]
@@ -65,11 +65,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function createCategoryAndAddRelation(): void
+    public function createSurfAndAddRelation(): void
     {
-        parent::createCategoryAndAddRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNAddRelation.csv');
+        parent::createSurfAndAddRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['newSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfNAddRelation.csv');
     }
 
     #[Test]
@@ -77,51 +77,51 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     {
         parent::createContentAndCreateRelation();
         $this->actionService->clearWorkspaceRecords([
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelation.csv');
     }
 
     #[Test]
-    public function createCategoryAndCreateRelation(): void
+    public function createSurfAndCreateRelation(): void
     {
-        parent::createCategoryAndCreateRelation();
+        parent::createSurfAndCreateRelation();
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryNCreateRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfNCreateRelation.csv');
     }
 
     #[Test]
-    public function createContentWithCategoryAndAddRelation(): void
+    public function createContentWithSurfAndAddRelation(): void
     {
-        parent::createContentWithCategoryAndAddRelation();
+        parent::createContentWithSurfAndAddRelation();
         $this->actionService->clearWorkspaceRecords([
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWCategoryNAddRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWSurfNAddRelation.csv');
     }
 
     #[Test]
-    public function createCategoryWithContentAndAddRelation(): void
+    public function createSurfWithContentAndAddRelation(): void
     {
-        parent::createCategoryWithContentAndAddRelation();
+        parent::createSurfWithContentAndAddRelation();
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Category => [$this->recordIds['newCategoryId']],
+            self::TABLE_Surf => [$this->recordIds['newSurfId']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createCategoryWContentNAddRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfWContentNAddRelation.csv');
     }
 
     #[Test]
-    public function modifyCategoryOfRelation(): void
+    public function modifySurfOfRelation(): void
     {
-        parent::modifyCategoryOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyCategoryOfRelation.csv');
+        parent::modifySurfOfRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifySurfOfRelation.csv');
     }
 
     #[Test]
@@ -138,7 +138,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::modifyBothsOfRelation();
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [self::VALUE_ContentIdFirst],
-            self::TABLE_Category => [self::VALUE_CategoryIdFirst],
+            self::TABLE_Surf => [self::VALUE_SurfIdFirst],
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothsOfRelation.csv');
     }
@@ -152,11 +152,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function deleteCategoryOfRelation(): void
+    public function deleteSurfOfRelation(): void
     {
-        parent::deleteCategoryOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryOfRelation.csv');
+        parent::deleteSurfOfRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteSurfOfRelation.csv');
     }
 
     #[Test]
@@ -176,22 +176,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function copyCategoryOfRelation(): void
+    public function copySurfOfRelation(): void
     {
-        parent::copyCategoryOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Category, $this->recordIds['newCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryOfRelation.csv');
+        parent::copySurfOfRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['newSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copySurfOfRelation.csv');
     }
 
     /**
-     * @todo: this is a faulty test, because the category should be discarded
+     * @todo: this is a faulty test, because the Surf should be discarded
      */
     #[Test]
-    public function copyCategoryToLanguageOfRelation(): void
+    public function copySurfToLanguageOfRelation(): void
     {
-        parent::copyCategoryToLanguageOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyCategoryToLanguageOfRelation.csv');
+        parent::copySurfToLanguageOfRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copySurfToLanguageOfRelation.csv');
     }
 
     #[Test]
@@ -219,34 +219,34 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function localizeContentOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    public function localizeContentOfRelationAndAddSurfWithLanguageSynchronization(): void
     {
-        parent::localizeContentOfRelationAndAddCategoryWithLanguageSynchronization();
+        parent::localizeContentOfRelationAndAddSurfWithLanguageSynchronization();
         // @todo: even if we discard this record, it is still showing up in the result
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         // @todo: do we need to discard the references manually?
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddCategoryWSynchronization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddSurfWSynchronization.csv');
     }
 
     #[Test]
-    public function localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization(): void
+    public function localizeContentChainOfRelationAndAddSurfWithLanguageSynchronization(): void
     {
-        parent::localizeContentChainOfRelationAndAddCategoryWithLanguageSynchronization();
+        parent::localizeContentChainOfRelationAndAddSurfWithLanguageSynchronization();
         // @todo: even if we discard this record, it is still showing up in the result
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentIdSecond']);
         // @todo: do we need to discard the references manually?
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddCategoryWSynchronization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddSurfWSynchronization.csv');
     }
 
     #[Test]
-    public function localizeCategoryOfRelation(): void
+    public function localizeSurfOfRelation(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        parent::localizeCategoryOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Category, $this->recordIds['localizedCategoryId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeCategoryOfRelation.csv');
+        parent::localizeSurfOfRelation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeSurfOfRelation.csv');
     }
 
     #[Test]

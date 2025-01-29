@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="EXT:core/Tests/Functional/Fixtures/Extensions/test_mm/Resources/Private/Language/locallang_db.xlf" date="2025-01-22T00:00:00Z">
+		<header/>
+		<body>
+			<trans-unit id="tx_test_mm_surf">
+				<source>Surfing</source>
+			</trans-unit>
+
+			<trans-unit id="tx_test_mm_surf.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_test_mm_surf.base">
+				<source>Base</source>
+			</trans-unit>
+			<trans-unit id="tx_test_mm_surf.base.0">
+				<source>Select a base</source>
+			</trans-unit>
+			<trans-unit id="tx_test_mm_surf.relations">
+				<source>Relations</source>
+			</trans-unit>
+
+			<trans-unit id="tt_content.surfing">
+				<source>Surfing</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>
