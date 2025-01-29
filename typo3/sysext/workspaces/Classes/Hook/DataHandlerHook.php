@@ -21,7 +21,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
@@ -168,8 +167,6 @@ class DataHandlerHook
         $this->notificationEmailInfo = [];
         // Reset remapped IDs
         $this->remappedIds = [];
-
-        $this->flushWorkspaceCacheEntriesByWorkspaceId((int)$dataHandler->BE_USER->workspace);
     }
 
     protected function sendStageChangeNotification(
@@ -1194,17 +1191,6 @@ class DataHandlerHook
             $backendUser->workspace = $savedWorkspace;
             $context->setAspect('workspace', $savedWorkspaceContext);
         }
-    }
-
-    /**
-     * Flushes the workspace cache for current workspace and for the virtual "all workspaces" too.
-     *
-     * @param int $workspaceId The workspace to be flushed in cache
-     */
-    protected function flushWorkspaceCacheEntriesByWorkspaceId(int $workspaceId): void
-    {
-        $workspacesCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('workspaces_cache');
-        $workspacesCache->flushByTag((string)$workspaceId);
     }
 
     /*******************************
