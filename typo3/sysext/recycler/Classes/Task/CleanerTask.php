@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
 /**
- * A task that should be run regularly that deletes deleted
+ * A task that should be run regularly that permanently removes soft-deleted
  * datasets from the DB.
  * @internal This class is a specific scheduler task implementation and is not part of the Public TYPO3 API.
  */
@@ -31,12 +31,12 @@ class CleanerTask extends AbstractTask
     /**
      * @var int The time period, after which the rows are deleted
      */
-    protected $period = 0;
+    protected int $period = 0;
 
     /**
      * @var array The tables to clean
      */
-    protected $tcaTables = [];
+    protected array $tcaTables = [];
 
     /**
      * The main method of the task. Iterates through
@@ -153,20 +153,16 @@ class CleanerTask extends AbstractTask
 
     /**
      * Sets the TCA-tables which are cleaned
-     *
-     * @param array $tcaTables
      */
-    public function setTcaTables($tcaTables = [])
+    public function setTcaTables(array $tcaTables): void
     {
         $this->tcaTables = $tcaTables;
     }
 
     /**
      * Returns the TCA-tables which are cleaned
-     *
-     * @return array
      */
-    public function getTcaTables()
+    public function getTcaTables(): array
     {
         return $this->tcaTables;
     }

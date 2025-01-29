@@ -32,11 +32,12 @@ use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Recycler\Domain\Model\DeletedRecords;
-use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Controller class for the 'recycler' extension. Handles the AJAX requests.
@@ -57,7 +58,8 @@ class RecyclerAjaxController
         protected readonly FrontendInterface $runtimeCache,
         protected readonly IconFactory $iconFactory,
         protected readonly ConnectionPool $connectionPool,
-        protected readonly RecordHistory $recordHistory
+        protected readonly RecordHistory $recordHistory,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -126,7 +128,7 @@ class RecyclerAjaxController
                 }
 
                 $model = GeneralUtility::makeInstance(DeletedRecords::class);
-                $affectedRecords = $model->undeleteData($this->conf['records'], $this->conf['recursive']);
+                $affectedRecords = $model->undeleteData($this->conf['records'], (bool)$this->conf['recursive']);
                 $messageKey = 'flashmessage.undo.' . ($affectedRecords !== false ? 'success' : 'failure') . '.' . ((int)$affectedRecords === 1 ? 'singular' : 'plural');
                 $content = [
                     'success' => true,
@@ -167,9 +169,11 @@ class RecyclerAjaxController
         $lang = $this->getLanguageService();
 
         foreach ($deletedRowsArray as $table => $rows) {
+            $schema = $this->tcaSchemaFactory->get($table);
+            $titleString = $schema->getRawConfiguration()['title'] ?? null;
             $groupedRecords[$table]['information'] = [
                 'table' => $table,
-                'title' => isset($GLOBALS['TCA'][$table]['ctrl']['title']) ? $lang->sL($GLOBALS['TCA'][$table]['ctrl']['title']) : BackendUtility::getNoRecordTitle(),
+                'title' => $titleString !== null ? $lang->sL($titleString) : BackendUtility::getNoRecordTitle(),
             ];
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
@@ -177,13 +181,21 @@ class RecyclerAjaxController
                 $ownerUid = (int)(is_array($ownerInformation) && $ownerInformation['usertype'] === 'BE' ? $ownerInformation['userid'] : 0);
                 $deleteUserUid = $this->recordHistory->getUserIdFromDeleteActionForRecord($table, (int)$row['uid']);
 
+                $creationDate = '';
+                if ($schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
+                    $creationDate = BackendUtility::datetime($row[$schema->getCapability(TcaSchemaCapability::CreatedAt)->getFieldName()]);
+                }
+                $lastUpdateDate = '';
+                if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+                    $lastUpdateDate = BackendUtility::datetime($row[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()]);
+                }
                 $groupedRecords[$table]['records'][] = [
                     'uid' => $row['uid'],
                     'pid' => $row['pid'],
                     'icon' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
                     'pageTitle' => $pageTitle,
-                    'crdate' => isset($GLOBALS['TCA'][$table]['ctrl']['crdate']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['crdate']]) : '',
-                    'tstamp' => isset($GLOBALS['TCA'][$table]['ctrl']['tstamp']) ? BackendUtility::datetime($row[$GLOBALS['TCA'][$table]['ctrl']['tstamp']]) : '',
+                    'crdate' => $creationDate,
+                    'tstamp' => $lastUpdateDate,
                     'backendUserUid' => $ownerUid,
                     'backendUser' => $this->getBackendUserInformation($ownerUid),
                     'title' => BackendUtility::getRecordTitle($table, $row),
@@ -332,8 +344,8 @@ class RecyclerAjaxController
         $lang = $this->getLanguageService();
         $tables = [];
 
-        foreach (RecyclerUtility::getModifyableTables() as $tableName) {
-            $deletedField = RecyclerUtility::getDeletedField($tableName);
+        foreach ($this->getModifyableTables() as $tableName) {
+            $deletedField = $this->getDeletedField($tableName);
             if ($deletedField) {
                 // Determine whether the table has deleted records:
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
@@ -374,6 +386,36 @@ class RecyclerAjaxController
             $lang->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:label_allrecordtypes'),
         ]);
         return $jsonArray;
+    }
+
+    /**
+     * Gets the name of the field with the information whether a record is deleted.
+     *
+     * @param string $tableName Name of the table to get the deleted field for
+     * @return string Name of the field with the information whether a record is deleted
+     */
+    protected function getDeletedField(string $tableName): string
+    {
+        $tcaForTable = $GLOBALS['TCA'][$tableName] ?? false;
+        if ($tcaForTable && !empty($tcaForTable['ctrl']['delete'])) {
+            return $tcaForTable['ctrl']['delete'];
+        }
+        return '';
+    }
+
+    /**
+     * Returns the modifiable tables of the current user
+     */
+    protected function getModifyableTables(): array
+    {
+        if ($this->getBackendUser()->isAdmin()) {
+            $tables = array_keys($GLOBALS['TCA']);
+        } else {
+            $tables = explode(',', $this->getBackendUser()->groupData['tables_modify']);
+            // Only find those that are in use
+            $tables = array_intersect($tables, array_keys($GLOBALS['TCA']));
+        }
+        return $tables;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

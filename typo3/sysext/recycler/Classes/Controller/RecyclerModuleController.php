@@ -38,21 +38,13 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class RecyclerModuleController
+readonly class RecyclerModuleController
 {
-    protected IconFactory $iconFactory;
-    protected PageRenderer $pageRenderer;
-    protected ModuleTemplateFactory $moduleTemplateFactory;
-
     public function __construct(
-        IconFactory $iconFactory,
-        PageRenderer $pageRenderer,
-        ModuleTemplateFactory $moduleTemplateFactory
-    ) {
-        $this->iconFactory = $iconFactory;
-        $this->pageRenderer = $pageRenderer;
-        $this->moduleTemplateFactory = $moduleTemplateFactory;
-    }
+        protected IconFactory $iconFactory,
+        protected PageRenderer $pageRenderer,
+        protected ModuleTemplateFactory $moduleTemplateFactory
+    ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
     {

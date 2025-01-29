@@ -4153,18 +4153,6 @@ parameters:
 			path: ../../typo3/sysext/reactions/Classes/Http/Middleware/ReactionResolver.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/recycler/Classes/Domain/Model/DeletedRecords.php
-
-		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/recycler/Classes/Task/CleanerFieldProvider.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between int and false will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
