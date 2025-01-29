@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Workspaces\Dependency;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -325,8 +327,10 @@ class ElementEntity
             $this->record = [];
 
             $fieldNames = ['uid', 'pid', 't3ver_wsid', 't3ver_state', 't3ver_oid'];
-            if (!empty($GLOBALS['TCA'][$this->getTable()]['ctrl']['delete'])) {
-                $fieldNames[] = $GLOBALS['TCA'][$this->getTable()]['ctrl']['delete'];
+            $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+            $schema = $schemaFactory->get($this->getTable());
+            if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                $fieldNames[] = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
             }
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)

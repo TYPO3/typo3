@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Workspaces\Dependency;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -127,7 +128,8 @@ readonly class ElementEntityProcessor
      */
     public function createNewDependentElementCallback(array $callerArguments, array $targetArgument, ElementEntity $caller, string $eventName): void
     {
-        if (!BackendUtility::isTableWorkspaceEnabled($caller->getTable())) {
+        $schema = $this->tcaSchemaFactory->get($caller->getTable());
+        if (!$schema->isWorkspaceAware()) {
             $caller->setInvalid(true);
             return;
         }
@@ -147,7 +149,7 @@ readonly class ElementEntityProcessor
         }
         $workspace = (int)$targetArgument['workspace'];
 
-        $deleteFieldName = $GLOBALS['TCA'][$caller->getTable()]['ctrl']['delete'] ?? null;
+        $deleteFieldName = $schema->hasCapability(TcaSchemaCapability::SoftDelete) ? $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() : null;
         // If version is on live workspace, but an "offline" ID is set, mark the record as invalid.
         // This happens if a change has been discarded (clearWSID) - it will be removed from the command map.
         if (

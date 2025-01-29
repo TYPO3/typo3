@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
@@ -37,6 +38,9 @@ readonly class BackendUtilityHook
 {
     public function __construct(
         private PreviewUriBuilder $previewUriBuilder,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private FlashMessageService $flashMessageService,
+        private StagesService $stagesService,
     ) {}
 
     /**
@@ -74,7 +78,7 @@ readonly class BackendUtilityHook
     public function displayEditingStagedElementInformation(ModifyEditFormUserAccessEvent $event): void
     {
         $tableName = $event->getTableName();
-        if ($this->getBackendUser()->workspace === 0 || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
+        if ($this->getBackendUser()->workspace === 0 || !$this->tcaSchemaFactory->get($tableName)->isWorkspaceAware()) {
             return;
         }
 
@@ -83,14 +87,13 @@ readonly class BackendUtilityHook
             return;
         }
 
-        $stages = GeneralUtility::makeInstance(StagesService::class);
-        $stageName = $stages->getStageTitle((int)$record['t3ver_stage']);
-        $editingName = $stages->getStageTitle(StagesService::STAGE_EDIT_ID);
+        $stageName = $this->stagesService->getStageTitle((int)$record['t3ver_stage']);
+        $editingName = $this->stagesService->getStageTitle(StagesService::STAGE_EDIT_ID);
         $message = ($languageService = $this->getLanguageService()) !== null
             ? $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:info.elementAlreadyModified')
             : 'Element is in workspace stage "%s", modifications will send it back to "%s".';
 
-        GeneralUtility::makeInstance(FlashMessageService::class)
+        $this->flashMessageService
             ->getMessageQueueByIdentifier()
             ->enqueue(
                 GeneralUtility::makeInstance(FlashMessage::class, sprintf($message, $stageName, $editingName), '', ContextualFeedbackSeverity::INFO, true)

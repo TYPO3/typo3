@@ -29,6 +29,9 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -42,12 +45,13 @@ class WorkspaceVersionRecordsCommand extends Command
 {
     /**
      * List of all workspaces
-     * @var array
      */
-    protected $allWorkspaces = [0 => 'Live Workspace'];
+    protected array $allWorkspaces = [0 => 'Live Workspace'];
 
-    public function __construct(private readonly ConnectionPool $connectionPool)
-    {
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly TcaSchemaFactory $tcaSchemaFactory
+    ) {
         parent::__construct();
     }
 
@@ -273,39 +277,45 @@ class WorkspaceVersionRecordsCommand extends Command
         if (!$isInsideVersionedPage) {
             // Traverse tables of records that belongs to page
             $tableNames = $this->getAllVersionableTables();
-            foreach ($tableNames as $tableName) {
-                if ($tableName !== 'pages') {
-                    // Select all records belonging to page:
-                    $queryBuilder = $this->connectionPool
-                        ->getQueryBuilderForTable($tableName);
+            foreach ($tableNames as $tableName => $schema) {
+                if ($tableName === 'pages') {
+                    continue;
+                }
+                // Select all records belonging to page:
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
 
-                    $queryBuilder->getRestrictions()->removeAll();
+                $queryBuilder->getRestrictions()->removeAll();
 
-                    $result = $queryBuilder
-                        ->select('uid')
-                        ->from($tableName)
-                        ->where(
-                            $queryBuilder->expr()->eq(
-                                'pid',
-                                $queryBuilder->createNamedParameter($rootID, Connection::PARAM_INT)
-                            )
+                $result = $queryBuilder
+                    ->select('uid')
+                    ->from($tableName)
+                    ->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($rootID, Connection::PARAM_INT)
                         )
-                        ->executeQuery();
-                    while ($rowSub = $result->fetchAssociative()) {
-                        // Add any versions of those records
-                        $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid' . (($GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? false) ? ',' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] : ''), null, true);
-                        if (is_array($versions)) {
-                            foreach ($versions as $verRec) {
-                                if (!($verRec['_CURRENT_VERSION'] ?? false)) {
-                                    // Register version
-                                    $this->foundRecords['all_versioned_records'][$tableName][$verRec['uid']] = $verRec['uid'];
-                                    $workspaceId = (int)$verRec['t3ver_wsid'];
-                                    if ($workspaceId === 0) {
-                                        $this->foundRecords['versions_in_live'][$tableName][$verRec['uid']] = $verRec['uid'];
-                                    }
-                                    if (!isset($this->allWorkspaces[$workspaceId])) {
-                                        $this->foundRecords['invalid_workspace'][$tableName][$verRec['uid']] = $verRec['uid'];
-                                    }
+                    )
+                    ->executeQuery();
+                while ($rowSub = $result->fetchAssociative()) {
+                    // Add any versions of those records
+                    $versions = BackendUtility::selectVersionsOfRecord(
+                        $tableName,
+                        $rowSub['uid'],
+                        'uid,t3ver_wsid' . (($schema->hasCapability(TcaSchemaCapability::SoftDelete)) ? ',' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() : ''),
+                        null,
+                        true
+                    );
+                    if (is_array($versions)) {
+                        foreach ($versions as $verRec) {
+                            if (!($verRec['_CURRENT_VERSION'] ?? false)) {
+                                // Register version
+                                $this->foundRecords['all_versioned_records'][$tableName][$verRec['uid']] = $verRec['uid'];
+                                $workspaceId = (int)$verRec['t3ver_wsid'];
+                                if ($workspaceId === 0) {
+                                    $this->foundRecords['versions_in_live'][$tableName][$verRec['uid']] = $verRec['uid'];
+                                }
+                                if (!isset($this->allWorkspaces[$workspaceId])) {
+                                    $this->foundRecords['invalid_workspace'][$tableName][$verRec['uid']] = $verRec['uid'];
                                 }
                             }
                         }
@@ -466,13 +476,15 @@ class WorkspaceVersionRecordsCommand extends Command
 
     /**
      * Returns all TCA tables where workspaces is enabled
+     *
+     * @return TcaSchema[]
      */
     protected function getAllVersionableTables(): array
     {
         $tables = [];
-        foreach ($GLOBALS['TCA'] as $tableName => $config) {
-            if (BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                $tables[] = $tableName;
+        foreach ($this->tcaSchemaFactory->all() as $schema) {
+            if ($schema->isWorkspaceAware()) {
+                $tables[$schema->getName()] = $schema;
             }
         }
         return $tables;

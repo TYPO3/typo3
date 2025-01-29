@@ -128,7 +128,7 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
             $input
         );
 
-        (new PageTreeItemsHighlighter(new WorkspaceService()))($afterPageTreeItemsPreparedEvent);
+        (new PageTreeItemsHighlighter($this->get(WorkspaceService::class)))($afterPageTreeItemsPreparedEvent);
 
         $expected = $input;
         $expected[1]['statusInformation'] = [

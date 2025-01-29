@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -56,6 +58,7 @@ readonly class PreviewUriBuilder
         private UriBuilder $uriBuilder,
         private ConnectionPool $connectionPool,
         private TranslationConfigurationProvider $translationConfigurationProvider,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -154,8 +157,9 @@ readonly class PreviewUriBuilder
             'previewWS' => $versionRecord['t3ver_wsid'],
         ];
         // Add language parameter if record is a localization
-        if (BackendUtility::isTableLocalizable($table)) {
-            $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($schema->isLanguageAware()) {
+            $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             if ($versionRecord[$languageField] > 0) {
                 $linkParameters['_language'] = $versionRecord[$languageField];
             }
@@ -300,18 +304,20 @@ readonly class PreviewUriBuilder
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
-        $result = $queryBuilder->select('sys_language_uid')
+        $languageDetails = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
+        $result = $queryBuilder
+            ->select($languageDetails->getLanguageField()->getName())
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                    $languageDetails->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                 )
             )
             ->executeQuery();
 
         while ($row = $result->fetchAssociative()) {
-            $languageId = (int)$row['sys_language_uid'];
+            $languageId = (int)$row[$languageDetails->getLanguageField()->getName()];
             // Only add links to active languages the user has access to
             if (isset($systemLanguages[$languageId]) && $this->getBackendUser()->checkLanguageAccess($languageId)) {
                 $languageOptions[$languageId] = $systemLanguages[$languageId]['title'];

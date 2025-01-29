@@ -29,11 +29,13 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
+use TYPO3\CMS\Workspaces\Service\HistoryService;
 use TYPO3\CMS\Workspaces\Service\IntegrityService;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
@@ -118,7 +120,7 @@ final class RemoteServerTest extends UnitTestCase
         $subject = new RemoteServer(
             $this->createMock(GridDataService::class),
             new StagesService(),
-            new WorkspaceService(),
+            new WorkspaceService($this->createMock(TcaSchemaFactory::class)),
             new NoopEventDispatcher(),
             $this->createMock(FlexFormValueFormatter::class),
             new DiffUtility(),
@@ -127,7 +129,9 @@ final class RemoteServerTest extends UnitTestCase
             new ConnectionPool(),
             $this->createMock(SearchableSchemaFieldsCollector::class),
             $this->createMock(VisibleSchemaFieldsCollector::class),
-            new IntegrityService()
+            new IntegrityService($this->createMock(TcaSchemaFactory::class)),
+            $this->createMock(TcaSchemaFactory::class),
+            $this->createMock(HistoryService::class),
         );
         $subjectReflection = new \ReflectionObject($subject);
         $result = $subjectReflection->getMethod('prepareFileReferenceDifferences')

@@ -19,6 +19,8 @@ namespace TYPO3\CMS\Workspaces\Service;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 
@@ -46,8 +48,12 @@ readonly class IntegrityService
         self::STATUS_Error => 'error',
     ];
 
+    public function __construct(
+        private TcaSchemaFactory $tcaSchemaFactory
+    ) {}
+
     /**
-     * Get integrity issues of multiple elements.
+     * Sets the affected elements.
      *
      * @param CombinedRecord[] $affectedElements
      */
@@ -80,32 +86,38 @@ readonly class IntegrityService
     {
         $languageService = $this->getLanguageService();
         $table = $element->getTable();
-        if (BackendUtility::isTableLocalizable($table)) {
-            $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
-            $languageParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
-            $versionRow = $element->getVersionRecord()->getRow();
-            // If element is a localization:
-            if ($versionRow[$languageField] > 0) {
-                // Get localization parent from live workspace
-                $languageParentRecord = BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
-                // If localization parent is a new version....
-                if (is_array($languageParentRecord) && VersionState::tryFrom($languageParentRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
-                    $title = BackendUtility::getRecordTitle($table, $versionRow);
-                    // Add warning for current versionized record:
-                    $existingIssues = $this->addIssue(
-                        $existingIssues,
-                        $element->getLiveRecord()->getIdentifier(),
-                        self::STATUS_Warning,
-                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.dependsOnDefaultLanguageRecord'), $title)
-                    );
-                    // Add info for related localization parent record:
-                    $existingIssues = $this->addIssue(
-                        $existingIssues,
-                        $table . ':' . $languageParentRecord['uid'],
-                        self::STATUS_Info,
-                        sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.isDefaultLanguageRecord'), $title)
-                    );
-                }
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return [];
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isLanguageAware()) {
+            return [];
+        }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageField = $languageCapability->getLanguageField()->getName();
+        $languageParentField = $languageCapability->getTranslationOriginPointerField()->getName();
+        $versionRow = $element->getVersionRecord()->getRow();
+        // If element is a localization:
+        if ($versionRow[$languageField] > 0) {
+            // Get localization parent from live workspace
+            $languageParentRecord = BackendUtility::getRecord($table, $versionRow[$languageParentField], 'uid,t3ver_state');
+            // If localization parent is a new version....
+            if (is_array($languageParentRecord) && VersionState::tryFrom($languageParentRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
+                $title = BackendUtility::getRecordTitle($table, $versionRow);
+                // Add warning for current versionized record:
+                $existingIssues = $this->addIssue(
+                    $existingIssues,
+                    $element->getLiveRecord()->getIdentifier(),
+                    self::STATUS_Warning,
+                    sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.dependsOnDefaultLanguageRecord'), $title)
+                );
+                // Add info for related localization parent record:
+                $existingIssues = $this->addIssue(
+                    $existingIssues,
+                    $table . ':' . $languageParentRecord['uid'],
+                    self::STATUS_Info,
+                    sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.isDefaultLanguageRecord'), $title)
+                );
             }
         }
         return $existingIssues;

@@ -22,7 +22,9 @@ use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -37,6 +39,7 @@ readonly class HistoryService implements SingletonInterface
         private DiffUtility $diffUtility,
         private FlexFormValueFormatter $flexFormValueFormatter,
         private RecordHistory $recordHistory,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -111,29 +114,30 @@ readonly class HistoryService implements SingletonInterface
         $differences = [];
         $tableName = $entry['tablename'];
         if (is_array($entry['newRecord'] ?? false)) {
+            $schema = $this->tcaSchemaFactory->get($tableName);
             $fields = array_keys($entry['newRecord']);
 
             /** @var array<int, string> $fields */
             foreach ($fields as $field) {
-                $tcaType = $GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type'] ?? '';
-                if (!empty($GLOBALS['TCA'][$tableName]['columns'][$field]['config']['type']) && $tcaType !== 'passthrough') {
-                    // Create diff-result:
-                    if ($tcaType === 'flex') {
-                        $colConfig = $GLOBALS['TCA'][$tableName]['columns'][$field]['config'] ?? [];
-                        $old = $this->flexFormValueFormatter->format($tableName, $field, $entry['oldRecord'][$field], $entry['recuid'], $colConfig);
-                        $new = $this->flexFormValueFormatter->format($tableName, $field, $entry['newRecord'][$field], $entry['recuid'], $colConfig);
-                        $fieldDifferences = $this->diffUtility->diff(strip_tags($old), strip_tags($new), DiffGranularity::CHARACTER);
-                    } else {
-                        $old = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true);
-                        $new = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true);
-                        $fieldDifferences = $this->diffUtility->diff(strip_tags($old), strip_tags($new));
-                    }
-                    if (!empty($fieldDifferences)) {
-                        $differences[] = [
-                            'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, (string)$field)),
-                            'html' => trim($fieldDifferences),
-                        ];
-                    }
+                $fieldInformation = $schema->getField($field);
+                if ($fieldInformation->isType(TableColumnType::PASSTHROUGH)) {
+                    continue;
+                }
+                // Create diff-result:
+                if ($fieldInformation->isType(TableColumnType::FLEX)) {
+                    $old = $this->flexFormValueFormatter->format($tableName, $field, $entry['oldRecord'][$field], $entry['recuid'], $fieldInformation->getConfiguration());
+                    $new = $this->flexFormValueFormatter->format($tableName, $field, $entry['newRecord'][$field], $entry['recuid'], $fieldInformation->getConfiguration());
+                    $fieldDifferences = $this->diffUtility->diff(strip_tags($old), strip_tags($new), DiffGranularity::CHARACTER);
+                } else {
+                    $old = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['oldRecord'][$field], 0, true);
+                    $new = (string)BackendUtility::getProcessedValue($tableName, $field, $entry['newRecord'][$field], 0, true);
+                    $fieldDifferences = $this->diffUtility->diff(strip_tags($old), strip_tags($new));
+                }
+                if (!empty($fieldDifferences)) {
+                    $differences[] = [
+                        'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, (string)$field)),
+                        'html' => trim($fieldDifferences),
+                    ];
                 }
             }
         }

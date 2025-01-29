@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
@@ -47,6 +48,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
         private UriBuilder $uriBuilder,
         private IconFactory $iconFactory,
         private LanguageServiceFactory $languageServiceFactory,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {
         $this->languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
     }
@@ -59,7 +61,8 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
     public function find(SearchDemand $searchDemand): array
     {
         $icon = $this->iconFactory->getIcon('mimetypes-x-sys_workspace', IconSize::SMALL);
-        $typeLabel = $this->languageService->sL($GLOBALS['TCA']['sys_workspace']['ctrl']['title']);
+        $schema = $this->tcaSchemaFactory->get('sys_workspace');
+        $typeLabel = $this->languageService->sL($schema->getRawConfiguration()['title'] ?? '');
         $workspaces = $this->getFilteredWorkspaces($searchDemand);
         $items = [];
 
@@ -101,7 +104,8 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
 
     public function getFilterLabel(): string
     {
-        return $this->languageService->sL($GLOBALS['TCA']['sys_workspace']['ctrl']['title']);
+        $schema = $this->tcaSchemaFactory->get('sys_workspace');
+        return $this->languageService->sL($schema->getRawConfiguration()['title'] ?? '');
     }
 
     private function getAvailableWorkspaces(): array

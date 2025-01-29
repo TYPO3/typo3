@@ -25,6 +25,9 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
@@ -76,6 +79,7 @@ class GridDataService
         private readonly WorkspacePublishGate $workspacePublishGate,
         private readonly IntegrityService $integrityService,
         private readonly PreviewUriBuilder $previewUriBuilder,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -132,7 +136,8 @@ class GridDataService
         $integrityIssues = [];
         foreach ($versions as $table => $records) {
             $table = (string)$table;
-            $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
+            $schema = $this->tcaSchemaFactory->get($table);
+            $hiddenField = $schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) ? $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName() : null;
             $isRecordTypeAllowedToModify = $backendUser->check('tables_modify', $table);
 
             foreach ($records as $record) {
@@ -197,7 +202,7 @@ class GridDataService
                 $versionArray['stage'] = $versionRecord['t3ver_stage'];
                 $versionArray['icon_Workspace'] = $iconWorkspace->getIdentifier();
                 $versionArray['icon_Workspace_Overlay'] = $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '';
-                $languageValue = $this->getLanguageValue($table, $versionRecord);
+                $languageValue = $this->getLanguageValue($schema, $versionRecord);
                 $versionArray['languageValue'] = $languageValue;
                 $versionArray['language'] = [
                     'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), IconSize::SMALL)->getIdentifier(),
@@ -498,35 +503,15 @@ class GridDataService
     }
 
     /**
-     * Gets the field name of the enable-columns as defined in $TCA.
-     *
-     * @param string $table Name of the table
-     * @param string $type Type to be fetches (e.g. 'disabled', 'starttime', 'endtime', 'fe_group)
-     * @return string|null The accordant field name or NULL if not defined
-     */
-    protected function getTcaEnableColumnsFieldName(string $table, string $type): ?string
-    {
-        $fieldName = null;
-
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type])) {
-            $fieldName = $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'][$type];
-        }
-
-        return $fieldName;
-    }
-
-    /**
      * Gets the language value (system language uid) of a given database record
      *
-     * @param string $table Name of the table
      * @param array $record Database record
-     * @return int
      */
-    protected function getLanguageValue(string $table, array $record): int
+    protected function getLanguageValue(TcaSchema $schema, array $record): int
     {
         $languageValue = 0;
-        if (BackendUtility::isTableLocalizable($table)) {
-            $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+        if ($schema->isLanguageAware()) {
+            $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             if (!empty($record[$languageField])) {
                 $languageValue = (int)$record[$languageField];
             }

@@ -26,13 +26,16 @@ use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
@@ -70,6 +73,8 @@ readonly class RemoteServer
         protected SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
         protected VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
         private IntegrityService $integrityService,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private HistoryService $historyService,
     ) {}
 
     /**
@@ -85,11 +90,8 @@ readonly class RemoteServer
 
     /**
      * Get List of workspace changes
-     *
-     * @param \stdClass $parameter
-     * @return array $data
      */
-    public function getWorkspaceInfos($parameter, ServerRequestInterface $request)
+    public function getWorkspaceInfos(\stdClass $parameter, ServerRequestInterface $request): array
     {
         // To avoid too much work we use -1 to indicate that every page is relevant
         $pageId = $parameter->id > 0 ? $parameter->id : -1;
@@ -114,47 +116,47 @@ readonly class RemoteServer
 
     /**
      * Fetch further information to current selected workspace record.
-     *
-     * @param \stdClass $parameter
-     * @return array $data
      */
-    public function getRowDetails($parameter)
+    public function getRowDetails(\stdClass $parameter): array
     {
+        $table = $parameter->table;
+        $schema = $this->tcaSchemaFactory->get($table);
         $diffReturnArray = [];
         $liveReturnArray = [];
-        $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
-        $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
+        $liveRecord = (array)BackendUtility::getRecord($table, $parameter->t3ver_oid);
+        $versionRecord = (array)BackendUtility::getRecord($table, $parameter->uid);
         $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
-        $iconWorkspace = $this->iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL);
+        $iconWorkspace = $this->iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
         $fieldsOfRecords = array_keys($liveRecord);
         $isNewOrDeletePlaceholder = $versionState === VersionState::NEW_PLACEHOLDER || $versionState === VersionState::DELETE_PLACEHOLDER;
-        $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($parameter->table, $liveRecord)) : [];
+        $suitableFields = ($isNewOrDeletePlaceholder && ($parameter->filterFields ?? false)) ? array_flip($this->getSuitableFields($table, $liveRecord)) : [];
         foreach ($fieldsOfRecords as $fieldName) {
-            if (
-                empty($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'])
-            ) {
+            if (!$schema->hasField($fieldName)) {
                 continue;
             }
             // Disable internal fields
-            if (($GLOBALS['TCA'][$parameter->table]['ctrl']['transOrigDiffSourceField'] ?? '') === $fieldName) {
+            if ($schema->isLanguageAware() && $schema->getCapability(TcaSchemaCapability::Language)->getDiffSourceField()?->getName() === $fieldName) {
                 continue;
             }
-            if (($GLOBALS['TCA'][$parameter->table]['ctrl']['origUid'] ?? '') === $fieldName) {
+            if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField) && $schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName() === $fieldName) {
                 continue;
             }
+
             // Get the field's label. If not available, use the field name
-            $fieldTitle = $this->getLanguageService()->sL(BackendUtility::getItemLabel($parameter->table, $fieldName));
+            $fieldTitle = $this->getLanguageService()->sL(BackendUtility::getItemLabel($table, $fieldName));
             if (empty($fieldTitle)) {
                 $fieldTitle = $fieldName;
             }
+            $fieldTypeInformation = $schema->getField($fieldName);
             // Gets the TCA configuration for the current field
-            $configuration = $GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['config'];
+            $configuration = $fieldTypeInformation->getConfiguration();
             // check for exclude fields
-            $isFieldExcluded = (bool)($GLOBALS['TCA'][$parameter->table]['columns'][$fieldName]['exclude'] ?? false);
-            if ($this->getBackendUser()->isAdmin() || !$isFieldExcluded || GeneralUtility::inList($this->getBackendUser()->groupData['non_exclude_fields'], $parameter->table . ':' . $fieldName)) {
+            $isFieldExcluded = $fieldTypeInformation->supportsAccessControl();
+            if ($this->getBackendUser()->isAdmin() || !$isFieldExcluded || GeneralUtility::inList($this->getBackendUser()->groupData['non_exclude_fields'], $table . ':' . $fieldName)) {
+                $granularity = $fieldTypeInformation->isType(TableColumnType::FLEX) ? DiffGranularity::CHARACTER : DiffGranularity::WORD;
                 // call diff class only if there is a difference
-                if ($configuration['type'] === 'file') {
+                if ($fieldTypeInformation->isType(TableColumnType::FILE)) {
                     $useThumbnails = false;
                     if (!empty($configuration['allowed']) && !empty($GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'])) {
                         $fileExtensions = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_CONF_VARS']['GFX']['imagefile_ext'], true);
@@ -164,13 +166,13 @@ readonly class RemoteServer
                     }
 
                     $liveFileReferences = (array)BackendUtility::resolveFileReferences(
-                        $parameter->table,
+                        $table,
                         $fieldName,
                         $liveRecord,
                         0
                     );
                     $versionFileReferences = (array)BackendUtility::resolveFileReferences(
-                        $parameter->table,
+                        $table,
                         $fieldName,
                         $versionRecord,
                         $this->getCurrentWorkspace()
@@ -197,14 +199,13 @@ readonly class RemoteServer
                     ];
                 } elseif ($isNewOrDeletePlaceholder && isset($suitableFields[$fieldName])) {
                     // If this is a new or delete placeholder, add diff view for all appropriate fields
-                    $newOrDeleteRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
+                    $newOrDeleteRecord[$fieldName] = $this->formatValue($table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
 
                     // Don't add empty fields
                     if ($newOrDeleteRecord[$fieldName] === '') {
                         continue;
                     }
 
-                    $granularity = ($configuration['type'] ?? '') === 'flex' ? DiffGranularity::CHARACTER : DiffGranularity::WORD;
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
@@ -221,11 +222,9 @@ readonly class RemoteServer
                     ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human-readable values before diff
-                    $liveRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
-                    $versionRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$versionRecord[$fieldName], $versionRecord['uid'], $configuration);
-                    $fieldDifferences = ($configuration['type'] ?? '') === 'flex'
-                        ? $this->diffUtility->diff(strip_tags($liveRecord[$fieldName]), strip_tags($versionRecord[$fieldName]), DiffGranularity::CHARACTER)
-                        : $this->diffUtility->diff(strip_tags($liveRecord[$fieldName]), strip_tags($versionRecord[$fieldName]));
+                    $liveRecord[$fieldName] = $this->formatValue($table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
+                    $versionRecord[$fieldName] = $this->formatValue($table, $fieldName, (string)$versionRecord[$fieldName], $versionRecord['uid'], $configuration);
+                    $fieldDifferences = $this->diffUtility->diff(strip_tags($liveRecord[$fieldName]), strip_tags($versionRecord[$fieldName]), $granularity);
                     $diffReturnArray[] = [
                         'field' => $fieldName,
                         'label' => $fieldTitle,
@@ -244,10 +243,9 @@ readonly class RemoteServer
             new ModifyVersionDifferencesEvent($diffReturnArray, $liveReturnArray, $parameter)
         );
 
-        $historyService = GeneralUtility::makeInstance(HistoryService::class);
-        $history = $historyService->getHistory($parameter->table, $parameter->t3ver_oid);
-        $stageChanges = $historyService->getStageChanges($parameter->table, (int)$parameter->t3ver_oid);
-        $stageChangesFromSysLog = $this->getStageChangesFromSysLog($parameter->table, (int)$parameter->t3ver_oid);
+        $history = $this->historyService->getHistory($table, $parameter->t3ver_oid);
+        $stageChanges = $this->historyService->getStageChanges($table, (int)$parameter->t3ver_oid);
+        $stageChangesFromSysLog = $this->getStageChangesFromSysLog($table, (int)$parameter->t3ver_oid);
         $commentsForRecord = $this->getCommentsForRecord($stageChanges, $stageChangesFromSysLog);
 
         if ($this->stagesService->isPrevStageAllowedForUser($parameter->stage)) {
@@ -281,7 +279,7 @@ readonly class RemoteServer
                     'stage_position' => (int)$stagePosition['position'],
                     'stage_count' => (int)$stagePosition['count'],
                     'parent' => [
-                        'table' => htmlspecialchars($parameter->table),
+                        'table' => htmlspecialchars($table),
                         'uid' => (int)$parameter->uid,
                     ],
                     'history' => [
@@ -306,10 +304,8 @@ readonly class RemoteServer
      *
      * @param FileReference[] $liveFileReferences
      * @param FileReference[] $versionFileReferences
-     * @param bool|false $useThumbnails
-     * @return array|null
      */
-    protected function prepareFileReferenceDifferences(array $liveFileReferences, array $versionFileReferences, $useThumbnails = false)
+    protected function prepareFileReferenceDifferences(array $liveFileReferences, array $versionFileReferences, bool $useThumbnails): ?array
     {
         $randomValue = StringUtility::getUniqueId('file');
 
@@ -497,7 +493,7 @@ readonly class RemoteServer
     {
         $language = null;
         if (isset($parameters->language) && MathUtility::canBeInterpretedAsInteger($parameters->language)) {
-            $language = $parameters->language;
+            $language = (int)$parameters->language;
         }
         return $language;
     }

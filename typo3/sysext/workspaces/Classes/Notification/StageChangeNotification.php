@@ -27,6 +27,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Mail\FluidEmail;
 use TYPO3\CMS\Core\Mail\MailerInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\View\TemplatePaths;
 use TYPO3\CMS\Workspaces\Preview\PreviewUriBuilder;
@@ -47,6 +49,7 @@ readonly class StageChangeNotification
         private PreviewUriBuilder $previewUriBuilder,
         private MailerInterface $mailer,
         private LoggerInterface $logger,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -71,9 +74,14 @@ readonly class StageChangeNotification
 
         $previewLink = '';
         try {
-            $languageId = $elementRecord[$GLOBALS['TCA'][$elementTable]['ctrl']['languageField'] ?? ''] ?? 0;
+            $schema = $this->tcaSchemaFactory->get($elementTable);
+            if ($schema->isLanguageAware()) {
+                $languageId = $elementRecord[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0;
+            } else {
+                $languageId = 0;
+            }
             $previewLink = $this->previewUriBuilder->buildUriForPage($pageUid, $languageId);
-        } catch (UnableToLinkToPageException $e) {
+        } catch (UnableToLinkToPageException) {
             // Generating a preview for a page that is a "delete placeholder"
             // in workspaces fails. No preview link in this case.
         }
