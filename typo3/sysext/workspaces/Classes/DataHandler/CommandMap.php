@@ -47,7 +47,6 @@ class CommandMap
     protected array $commandMap = [];
     protected int $workspace;
     protected array $scopes = [];
-    protected ?ElementEntityProcessor $elementEntityProcessor;
 
     public function __construct(array $commandMap, int $workspace)
     {
@@ -94,11 +93,7 @@ class CommandMap
      */
     protected function getElementEntityProcessor(): ElementEntityProcessor
     {
-        if (!isset($this->elementEntityProcessor)) {
-            $this->elementEntityProcessor = GeneralUtility::makeInstance(ElementEntityProcessor::class);
-            $this->elementEntityProcessor->setWorkspace($this->getWorkspace());
-        }
-        return $this->elementEntityProcessor;
+        return GeneralUtility::makeInstance(ElementEntityProcessor::class);
     }
 
     /**
@@ -415,7 +410,13 @@ class CommandMap
         $dependency->setWorkspace($this->getWorkspace());
         $dependency->setOuterMostParentsRequireReferences(true);
         if ($this->getScopeData($scope, self::KEY_ElementConstructCallback)) {
-            $dependency->setEventCallback(ElementEntity::EVENT_Construct, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementConstructCallback)));
+            $dependency->setEventCallback(
+                ElementEntity::EVENT_Construct,
+                $this->getDependencyCallback(
+                    $this->getScopeData($scope, self::KEY_ElementConstructCallback),
+                    ['workspace' => $this->getWorkspace()]
+                )
+            );
         }
         if ($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)) {
             $dependency->setEventCallback(ElementEntity::EVENT_CreateChildReference, $this->getDependencyCallback($this->getScopeData($scope, self::KEY_ElementCreateChildReferenceCallback)));

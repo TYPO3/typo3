@@ -34,7 +34,6 @@ use TYPO3\CMS\Workspaces\Service\GridDataService;
  */
 class CollectionService implements SingletonInterface
 {
-    protected ?ElementEntityProcessor $elementEntityProcessor;
     protected ?DependencyResolver $dependencyResolver = null;
     protected array $dataArray;
     protected array $nestedDataArray;
@@ -48,7 +47,7 @@ class CollectionService implements SingletonInterface
 
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_Construct,
-                $this->getDependencyCallback('createNewDependentElementCallback')
+                $this->getDependencyCallback('createNewDependentElementCallback', ['workspace' => $this->getBackendUser()->workspace])
             );
 
             $this->dependencyResolver->setEventCallback(
@@ -83,11 +82,7 @@ class CollectionService implements SingletonInterface
      */
     protected function getElementEntityProcessor(): ElementEntityProcessor
     {
-        if (!isset($this->elementEntityProcessor)) {
-            $this->elementEntityProcessor = GeneralUtility::makeInstance(ElementEntityProcessor::class);
-            $this->elementEntityProcessor->setWorkspace($this->getBackendUser()->workspace);
-        }
-        return $this->elementEntityProcessor;
+        return GeneralUtility::makeInstance(ElementEntityProcessor::class);
     }
 
     /**

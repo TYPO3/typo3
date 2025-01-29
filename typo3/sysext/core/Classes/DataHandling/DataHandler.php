@@ -8712,7 +8712,7 @@ class DataHandler
      * @return string|bool string Inline subtype (field|mm|list), boolean: FALSE
      * @internal should only be used from within DataHandler
      */
-    public function getRelationFieldType($conf): bool|string
+    protected function getRelationFieldType($conf): bool|string
     {
         if (
             empty($conf['foreign_table'])

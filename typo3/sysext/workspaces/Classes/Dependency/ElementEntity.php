@@ -131,7 +131,7 @@ class ElementEntity
      */
     public function __toString(): string
     {
-        return self::getIdentifier($this->table, $this->id);
+        return $this->table . ':' . $this->id;
     }
 
     /**
@@ -314,14 +314,6 @@ class ElementEntity
             }
         }
         return $this->nestedChildren;
-    }
-
-    /**
-     * Converts the object for string representation.
-     */
-    public static function getIdentifier(string $table, int $id): string
-    {
-        return $table . ':' . $id;
     }
 
     /**
