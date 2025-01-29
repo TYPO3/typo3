@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Recycler\Domain\Model;
 
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -28,7 +29,6 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Recycler\Utility\RecyclerUtility;
 
 /**
  * Model class for the 'recycler' extension.
@@ -38,38 +38,18 @@ class DeletedRecords
 {
     /**
      * Array with all deleted rows
-     *
-     * @var array
      */
-    protected $deletedRows = [];
+    protected array $deletedRows = [];
 
     /**
      * String with the global limit
-     *
-     * @var string
      */
-    protected $limit = '';
+    protected string $limit = '';
 
     /**
-     * Array with all available FE tables
-     *
-     * @var array
+     * Array with all available tables
      */
-    protected $table = [];
-
-    /**
-     * Array with all label fields from different tables
-     *
-     * @var array
-     */
-    public $label;
-
-    /**
-     * Array with all title fields from different tables
-     *
-     * @var array
-     */
-    public $title;
+    protected array $table = [];
 
     /************************************************************
      * GET DATA FUNCTIONS
@@ -85,19 +65,18 @@ class DeletedRecords
      * @param int $depth How many levels recursive
      * @param string $limit MySQL LIMIT
      * @param string $filter Filter text
-     * @return DeletedRecords
      */
-    public function loadData($id, $table, $depth, $limit = '', $filter = '')
+    public function loadData($id, $table, $depth, $limit = '', $filter = ''): self
     {
         // set the limit
         $this->limit = trim($limit);
         if ($table) {
-            if (in_array($table, RecyclerUtility::getModifyableTables(), true)) {
+            if (in_array($table, $this->getModifyableTables(), true)) {
                 $this->table[] = $table;
                 $this->setData($id, $table, $depth, $filter);
             }
         } else {
-            foreach (RecyclerUtility::getModifyableTables() as $tableKey) {
+            foreach ($this->getModifyableTables() as $tableKey) {
                 // only go into this table if the limit allows it
                 if ($this->limit !== '') {
                     $parts = GeneralUtility::intExplode(',', $this->limit, true);
@@ -122,7 +101,7 @@ class DeletedRecords
      * @param string $filter Filter text
      * @return int
      */
-    public function getTotalCount($id, $table, $depth, $filter)
+    public function getTotalCount($id, $table, $depth, $filter): int
     {
         $deletedRecords = $this->loadData($id, $table, $depth, '', $filter)->getDeletedRows();
         $countTotal = 0;
@@ -142,7 +121,7 @@ class DeletedRecords
      */
     protected function setData($id, $table, $depth, $filter)
     {
-        $deletedField = RecyclerUtility::getDeletedField($table);
+        $deletedField = $this->getDeletedField($table);
         if (!$deletedField) {
             return;
         }
@@ -243,8 +222,6 @@ class DeletedRecords
                 $this->checkRecordAccess($table, $recordsToCheck);
             }
         }
-        $this->label[$table] = $tcaCtrl['label'] ?? '';
-        $this->title[$table] = $tcaCtrl['title'] ?? '';
     }
 
     /**
@@ -306,7 +283,7 @@ class DeletedRecords
      * @param string $table Name of the table
      * @param array $rows Record row
      */
-    protected function checkRecordAccess($table, array $rows)
+    protected function checkRecordAccess(string $table, array $rows)
     {
         $deleteField = '';
         if ($table === 'pages') {
@@ -320,7 +297,7 @@ class DeletedRecords
         }
 
         foreach ($rows as $row) {
-            if (RecyclerUtility::checkAccess($table, $row)) {
+            if ($this->checkAccess($table, $row)) {
                 $this->setDeletedRows($table, $row);
             }
         }
@@ -337,9 +314,8 @@ class DeletedRecords
      * Delete element from any table
      *
      * @param array|null $recordsArray Representation of the records
-     * @return bool
      */
-    public function deleteData($recordsArray)
+    public function deleteData(?array $recordsArray): bool
     {
         if (is_array($recordsArray)) {
             $tce = GeneralUtility::makeInstance(DataHandler::class);
@@ -365,64 +341,58 @@ class DeletedRecords
      * @param bool $recursive Whether to recursively undelete
      * @return bool|int
      */
-    public function undeleteData($recordsArray, $recursive = false)
+    public function undeleteData(array $recordsArray, bool $recursive = false)
     {
         $result = false;
         $affectedRecords = 0;
         $depth = 999;
-        if (is_array($recordsArray)) {
-            $this->deletedRows = [];
-            $cmd = [];
-            foreach ($recordsArray as $record) {
-                [$table, $uid] = explode(':', $record);
-                $uid = (int)$uid;
-                // get all parent pages and cover them
-                $pid = RecyclerUtility::getPidOfUid($uid, $table);
-                if ($pid > 0) {
-                    $parentUidsToRecover = $this->getDeletedParentPages($pid);
-                    $count = count($parentUidsToRecover);
-                    for ($i = 0; $i < $count; ++$i) {
-                        $parentUid = $parentUidsToRecover[$i];
-                        $cmd['pages'][$parentUid]['undelete'] = 1;
-                        $affectedRecords++;
-                    }
-                    if (isset($cmd['pages'])) {
-                        // reverse the page list to recover it from top to bottom
-                        $cmd['pages'] = array_reverse($cmd['pages'], true);
-                    }
+        $this->deletedRows = [];
+        $cmd = [];
+        foreach ($recordsArray as $record) {
+            [$table, $uid] = explode(':', $record);
+            $uid = (int)$uid;
+            // get all parent pages and cover them
+            $pid = $this->getPidOfUid($uid, $table);
+            if ($pid > 0) {
+                $parentUidsToRecover = $this->getDeletedParentPages($pid);
+                $count = count($parentUidsToRecover);
+                for ($i = 0; $i < $count; ++$i) {
+                    $parentUid = $parentUidsToRecover[$i];
+                    $cmd['pages'][$parentUid]['undelete'] = 1;
+                    $affectedRecords++;
                 }
-                $cmd[$table][$uid]['undelete'] = 1;
-                $affectedRecords++;
-                if ($table === 'pages' && $recursive) {
-                    $this->loadData($uid, '', $depth, '');
-                    $childRecords = $this->getDeletedRows();
-                    if (!empty($childRecords)) {
-                        foreach ($childRecords as $childTable => $childRows) {
-                            foreach ($childRows as $childRow) {
-                                $cmd[$childTable][$childRow['uid']]['undelete'] = 1;
-                            }
+                if (isset($cmd['pages'])) {
+                    // reverse the page list to recover it from top to bottom
+                    $cmd['pages'] = array_reverse($cmd['pages'], true);
+                }
+            }
+            $cmd[$table][$uid]['undelete'] = 1;
+            $affectedRecords++;
+            if ($table === 'pages' && $recursive) {
+                $this->loadData($uid, '', $depth, '');
+                $childRecords = $this->getDeletedRows();
+                if (!empty($childRecords)) {
+                    foreach ($childRecords as $childTable => $childRows) {
+                        foreach ($childRows as $childRow) {
+                            $cmd[$childTable][$childRow['uid']]['undelete'] = 1;
                         }
                     }
                 }
             }
-            if ($cmd) {
-                $tce = GeneralUtility::makeInstance(DataHandler::class);
-                $tce->start([], $cmd);
-                $tce->process_cmdmap();
-                $result = $affectedRecords;
-            }
+        }
+        if ($cmd) {
+            $tce = GeneralUtility::makeInstance(DataHandler::class);
+            $tce->start([], $cmd);
+            $tce->process_cmdmap();
+            $result = $affectedRecords;
         }
         return $result;
     }
 
     /**
      * Returns deleted parent pages
-     *
-     * @param int $uid
-     * @param array $pages
-     * @return array
      */
-    protected function getDeletedParentPages($uid, &$pages = [])
+    protected function getDeletedParentPages(int $uid, array &$pages = []): array
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()
@@ -452,10 +422,9 @@ class DeletedRecords
     /**
      * Set deleted rows
      *
-     * @param string $table Tablename
      * @param array $row Deleted record row
      */
-    public function setDeletedRows($table, array $row)
+    public function setDeletedRows(string $table, array $row): void
     {
         $this->deletedRows[$table][] = $row;
     }
@@ -465,20 +434,16 @@ class DeletedRecords
      ************************************************************/
     /**
      * Get deleted Rows
-     *
-     * @return array Array with all deleted rows from TCA
      */
-    public function getDeletedRows()
+    public function getDeletedRows(): array
     {
         return $this->deletedRows;
     }
 
     /**
-     * Get table
-     *
-     * @return array Array with table from TCA
+     * Get tables
      */
-    public function getTable()
+    public function getTable(): array
     {
         return $this->table;
     }
@@ -530,6 +495,65 @@ class DeletedRecords
     }
 
     /**
+     * Get pid of uid
+     */
+    protected function getPidOfUid(int $uid, string $table): int
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+
+        $pid = $queryBuilder
+            ->select('pid')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)))
+            ->executeQuery()
+            ->fetchOne();
+
+        return (int)$pid;
+    }
+    /**
+     * Checks the page access rights (Code for access check mostly taken from FormEngine)
+     * as well as the table access rights of the user.
+     *
+     * @param string $table The table to check access for
+     * @param array $row Record array
+     * @return bool Returns TRUE is the user has access, or FALSE if not
+     */
+    protected function checkAccess(string $table, array $row): bool
+    {
+        $backendUser = $this->getBackendUser();
+
+        if ($backendUser->isAdmin()) {
+            return true;
+        }
+
+        if (!$backendUser->check('tables_modify', $table)) {
+            return false;
+        }
+
+        // Checking if the user has permissions? (Only working as a precaution, because the final permission check is always down in TCE. But it's good to notify the user on beforehand...)
+        // First, resetting flags.
+        $hasAccess = false;
+        $calcPRec = $row;
+        BackendUtility::workspaceOL($table, $calcPRec, $backendUser->workspace);
+        if (is_array($calcPRec)) {
+            if ($table === 'pages') {
+                $calculatedPermissions = new Permission($backendUser->calcPerms($calcPRec));
+                $hasAccess = $calculatedPermissions->editPagePermissionIsGranted();
+            } else {
+                $calculatedPermissions = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid'])));
+                // Fetching pid-record first.
+                $hasAccess = $calculatedPermissions->editContentPermissionIsGranted();
+            }
+            // Check internals regarding access:
+            if ($hasAccess) {
+                $hasAccess = $backendUser->recordEditAccessInternals($table, $calcPRec);
+            }
+        }
+        return $hasAccess;
+    }
+
+    /**
      * Gets an instance of the memory cache.
      */
     protected function getCache(): FrontendInterface
@@ -540,5 +564,35 @@ class DeletedRecords
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    /**
+     * Gets the name of the field with the information whether a record is deleted.
+     *
+     * @param string $tableName Name of the table to get the deleted field for
+     * @return string Name of the field with the information whether a record is deleted
+     */
+    protected function getDeletedField(string $tableName): string
+    {
+        $tcaForTable = $GLOBALS['TCA'][$tableName] ?? false;
+        if ($tcaForTable && !empty($tcaForTable['ctrl']['delete'])) {
+            return $tcaForTable['ctrl']['delete'];
+        }
+        return '';
+    }
+
+    /**
+     * Returns the modifiable tables of the current user
+     */
+    protected function getModifyableTables(): array
+    {
+        if ($this->getBackendUser()->isAdmin()) {
+            $tables = array_keys($GLOBALS['TCA']);
+        } else {
+            $tables = explode(',', $this->getBackendUser()->groupData['tables_modify']);
+            // Only find those that are in use
+            $tables = array_intersect($tables, array_keys($GLOBALS['TCA']));
+        }
+        return $tables;
     }
 }

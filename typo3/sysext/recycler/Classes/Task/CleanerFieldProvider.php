@@ -69,15 +69,9 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 
     /**
      * Gets the select-box from the TCA-fields
-     *
-     * @param array $selectedTables
-     * @return string
      */
-    protected function getTcaSelectHtml($selectedTables = [])
+    protected function getTcaSelectHtml(array $selectedTables): string
     {
-        if (!is_array($selectedTables)) {
-            $selectedTables = [];
-        }
         $tcaSelectHtml = '<select name="tx_scheduler[RecyclerCleanerTCA][]" multiple="multiple" class="form-select" size="10">';
 
         $options = [];
@@ -114,10 +108,10 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
     /**
      * Validates the selected Tables
      *
-     * @param array $tca The given TCA-tables as array
+     * @param array $tca The given TCA-tables as array(or mixed, incoming data)
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function validateAdditionalFieldTca($tca)
+    protected function validateAdditionalFieldTca(mixed $tca): bool
     {
         return $this->checkTcaIsNotEmpty($tca) && $this->checkTcaIsValid($tca);
     }
@@ -125,10 +119,10 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
     /**
      * Checks if the array is empty
      *
-     * @param array $tca The given TCA-tables as array
+     * @param mixed $tca The given TCA-tables as array (or mixed, incoming data)
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function checkTcaIsNotEmpty($tca)
+    protected function checkTcaIsNotEmpty(mixed $tca): bool
     {
         if (is_array($tca) && !empty($tca)) {
             $validTca = true;
