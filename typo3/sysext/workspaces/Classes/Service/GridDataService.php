@@ -26,8 +26,6 @@ use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -57,11 +55,6 @@ class GridDataService implements LoggerAwareInterface
     public const GridColumn_CollectionChildren = 'Workspaces_CollectionChildren';
 
     /**
-     * Id of the current active workspace.
-     */
-    protected int $currentWorkspace = 0;
-
-    /**
      * Version record information (filtered, sorted and limited)
      */
     protected array $dataArray = [];
@@ -76,7 +69,6 @@ class GridDataService implements LoggerAwareInterface
      */
     protected string $sortDir = '';
 
-    protected ?FrontendInterface $workspacesCache;
     protected ?IntegrityService $integrityService;
 
     public function __construct(
@@ -90,9 +82,10 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Generates grid list array from given versions.
      *
-     * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
+     * @param array $versions All records uids etc. First key is table name, second key incremental integer.
+     *                        Records are associative arrays with uid and t3ver_oid fields. The pid of the online
+     *                        record is found as "livepid" the pid of the offline record is found in "wspid"
      * @param \stdClass $parameter Parameters as submitted by JavaScript component
-     * @param int $currentWorkspace The current workspace
      * @return array Version record information (filtered, sorted and limited)
      */
     public function generateGridListFromVersions(array $versions, \stdClass $parameter, int $currentWorkspace): array
@@ -103,7 +96,6 @@ class GridDataService implements LoggerAwareInterface
         $limit = isset($parameter->limit) ? (int)$parameter->limit : 30;
         $this->sort = $parameter->sort ?? 't3ver_oid';
         $this->sortDir = $parameter->dir ?? 'ASC';
-        $this->currentWorkspace = $currentWorkspace;
         $this->generateDataArray($versions, $filterTxt);
         return [
             // Only count parent records for pagination
@@ -127,119 +119,114 @@ class GridDataService implements LoggerAwareInterface
         $swapStage = ($workspaceAccess['publish_access'] ?? 0) & WorkspaceService::PUBLISH_ACCESS_ONLY_IN_PUBLISH_STAGE ? StagesService::STAGE_PUBLISH_ID : StagesService::STAGE_EDIT_ID;
 
         $isAllowedToPublish = $this->workspacePublishGate->isGranted($backendUser, $backendUser->workspace);
-        $this->initializeWorkspacesCachingFramework();
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        // check for dataArray in cache
-        if ($this->getDataArrayFromCache($versions, $filterTxt) === false) {
-            $stagesObj = GeneralUtility::makeInstance(StagesService::class);
-            $defaultGridColumns = [
-                self::GridColumn_Collection => 0,
-                self::GridColumn_CollectionLevel => 0,
-                self::GridColumn_CollectionParent => '',
-                self::GridColumn_CollectionCurrent => '',
-                self::GridColumn_CollectionChildren => 0,
-            ];
-            foreach ($versions as $table => $records) {
-                $table = (string)$table;
-                $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
-                $isRecordTypeAllowedToModify = $backendUser->check('tables_modify', $table);
+        $stagesObj = GeneralUtility::makeInstance(StagesService::class);
+        $defaultGridColumns = [
+            self::GridColumn_Collection => 0,
+            self::GridColumn_CollectionLevel => 0,
+            self::GridColumn_CollectionParent => '',
+            self::GridColumn_CollectionCurrent => '',
+            self::GridColumn_CollectionChildren => 0,
+        ];
+        foreach ($versions as $table => $records) {
+            $table = (string)$table;
+            $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
+            $isRecordTypeAllowedToModify = $backendUser->check('tables_modify', $table);
 
-                foreach ($records as $record) {
-                    $origRecord = (array)BackendUtility::getRecord($table, $record['t3ver_oid']);
-                    $versionRecord = (array)BackendUtility::getRecord($table, $record['uid']);
-                    $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
-                    $hasDiff = $this->versionIsModified($combinedRecord);
-                    $this->getIntegrityService()->checkElement($combinedRecord);
+            foreach ($records as $record) {
+                $origRecord = (array)BackendUtility::getRecord($table, $record['t3ver_oid']);
+                $versionRecord = (array)BackendUtility::getRecord($table, $record['uid']);
+                $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
+                $hasDiff = $this->versionIsModified($combinedRecord);
+                $this->getIntegrityService()->checkElement($combinedRecord);
 
-                    if ($hiddenField !== null) {
-                        $recordState = $this->workspaceState($versionRecord['t3ver_state'], (bool)$origRecord[$hiddenField], (bool)$versionRecord[$hiddenField], $hasDiff);
-                    } else {
-                        $recordState = $this->workspaceState($versionRecord['t3ver_state'], $hasDiff);
-                    }
+                if ($hiddenField !== null) {
+                    $recordState = $this->workspaceState($versionRecord['t3ver_state'], (bool)$origRecord[$hiddenField], (bool)$versionRecord[$hiddenField], $hasDiff);
+                } else {
+                    $recordState = $this->workspaceState($versionRecord['t3ver_state'], $hasDiff);
+                }
 
-                    $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
-                    $pageId = (int)($record['pid'] ?? null);
-                    if ($table === 'pages') {
-                        // The page ID for a translated page is considered here
-                        $pageId = (int)(!empty($record['l10n_parent']) ? $record['l10n_parent'] : ($record['t3ver_oid'] ?: $record['uid']));
-                    }
-                    $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
-                    $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
-                    $iconWorkspace = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
-                    [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
-                    $calculatedT3verOid = $record['t3ver_oid'];
-                    if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
-                        // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
-                        // live counterpart, but the publish methods later need a live uid to publish to. We thus
-                        // use the uid as t3ver_oid here to be transparent on javascript side.
-                        $calculatedT3verOid = $record['uid'];
-                    }
+                $isDeletedPage = $table === 'pages' && $recordState === 'deleted';
+                $pageId = (int)($record['pid'] ?? null);
+                if ($table === 'pages') {
+                    // The page ID for a translated page is considered here
+                    $pageId = (int)(!empty($record['l10n_parent']) ? $record['l10n_parent'] : ($record['t3ver_oid'] ?: $record['uid']));
+                }
+                $viewUrl = GeneralUtility::makeInstance(PreviewUriBuilder::class)->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
+                $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
+                $iconWorkspace = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
+                [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
+                $calculatedT3verOid = $record['t3ver_oid'];
+                if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
+                    // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
+                    // live counterpart, but the publish methods later need a live uid to publish to. We thus
+                    // use the uid as t3ver_oid here to be transparent on javascript side.
+                    $calculatedT3verOid = $record['uid'];
+                }
 
-                    $versionArray = [];
-                    $versionArray['table'] = $table;
-                    $versionArray['id'] = $table . ':' . $record['uid'];
-                    $versionArray['uid'] = $record['uid'];
-                    $versionArray = array_merge($versionArray, $defaultGridColumns);
-                    $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
-                    $versionArray['label_Workspace_crop'] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($workspaceRecordLabel, (int)$backendUser->uc['titleLen']));
-                    $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle((int)$versionRecord['t3ver_stage']));
-                    $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
-                    $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle((int)$tempStage['uid']));
-                    $versionArray['value_nextStage'] = (int)$tempStage['uid'];
-                    $tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
-                    $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle((int)($tempStage['uid'] ?? 0)));
-                    $versionArray['value_prevStage'] = (int)($tempStage['uid'] ?? 0);
-                    $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
-                    $versionArray['path_Workspace'] = htmlspecialchars($pathWorkspace);
-                    $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
-                    $versionArray['workspace_Title'] = htmlspecialchars($this->workspaceService->getWorkspaceTitle((int)$versionRecord['t3ver_wsid']));
-                    $versionArray['workspace_Tstamp'] = 0;
-                    $versionArray['lastChangedFormatted'] = '';
-                    if (array_key_exists('tstamp', $versionRecord)) {
-                        // @todo: Avoid hard coded access to 'tstamp' and use table TCA 'ctrl' 'tstamp' value instead, if set.
-                        $versionArray['workspace_Tstamp'] = (int)$versionRecord['tstamp'];
-                        $versionArray['lastChangedFormatted'] = BackendUtility::datetime((int)$versionRecord['tstamp']);
-                    }
-                    $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
-                    $versionArray['t3ver_oid'] = $calculatedT3verOid;
-                    $versionArray['livepid'] = $record['livepid'];
-                    $versionArray['stage'] = $versionRecord['t3ver_stage'];
-                    $versionArray['icon_Workspace'] = $iconWorkspace->getIdentifier();
-                    $versionArray['icon_Workspace_Overlay'] = $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '';
-                    $languageValue = $this->getLanguageValue($table, $versionRecord);
-                    $versionArray['languageValue'] = $languageValue;
-                    $versionArray['language'] = [
-                        'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
-                        'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
-                        'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
-                    ];
-                    $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
-                    $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
-                    if ($isAllowedToPublish && $swapStage !== StagesService::STAGE_EDIT_ID && (int)$versionRecord['t3ver_stage'] === $swapStage) {
-                        $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
-                    } elseif ($isAllowedToPublish && $swapStage === StagesService::STAGE_EDIT_ID) {
-                        $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify;
-                    } else {
-                        $versionArray['allowedAction_publish'] = false;
-                    }
-                    $versionArray['allowedAction_delete'] = $isRecordTypeAllowedToModify;
-                    // preview and editing of a deleted page won't work ;)
-                    $versionArray['allowedAction_view'] = !$isDeletedPage && $viewUrl;
-                    $versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
-                    $versionArray['allowedAction_versionPageOpen'] = $this->isPageModuleAllowed() && !$isDeletedPage;
-                    $versionArray['state_Workspace'] = $recordState;
-                    $versionArray['hasChanges'] = $recordState !== 'unchanged';
-                    $versionArray['urlToPage'] = (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', [
-                        'workspace' => $backendUser->workspace,
-                        'id' => $record['pid'] ?? 0,
-                    ]);
-                    // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
-                    $versionArray['expanded'] = false;
+                $versionArray = [];
+                $versionArray['table'] = $table;
+                $versionArray['id'] = $table . ':' . $record['uid'];
+                $versionArray['uid'] = $record['uid'];
+                $versionArray = array_merge($versionArray, $defaultGridColumns);
+                $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
+                $versionArray['label_Workspace_crop'] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($workspaceRecordLabel, (int)$backendUser->uc['titleLen']));
+                $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle((int)$versionRecord['t3ver_stage']));
+                $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
+                $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle((int)$tempStage['uid']));
+                $versionArray['value_nextStage'] = (int)$tempStage['uid'];
+                $tempStage = $stagesObj->getPrevStage($versionRecord['t3ver_stage']);
+                $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle((int)($tempStage['uid'] ?? 0)));
+                $versionArray['value_prevStage'] = (int)($tempStage['uid'] ?? 0);
+                $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
+                $versionArray['path_Workspace'] = htmlspecialchars($pathWorkspace);
+                $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
+                $versionArray['workspace_Title'] = htmlspecialchars($this->workspaceService->getWorkspaceTitle((int)$versionRecord['t3ver_wsid']));
+                $versionArray['workspace_Tstamp'] = 0;
+                $versionArray['lastChangedFormatted'] = '';
+                if (array_key_exists('tstamp', $versionRecord)) {
+                    // @todo: Avoid hard coded access to 'tstamp' and use table TCA 'ctrl' 'tstamp' value instead, if set.
+                    $versionArray['workspace_Tstamp'] = (int)$versionRecord['tstamp'];
+                    $versionArray['lastChangedFormatted'] = BackendUtility::datetime((int)$versionRecord['tstamp']);
+                }
+                $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
+                $versionArray['t3ver_oid'] = $calculatedT3verOid;
+                $versionArray['livepid'] = $record['livepid'];
+                $versionArray['stage'] = $versionRecord['t3ver_stage'];
+                $versionArray['icon_Workspace'] = $iconWorkspace->getIdentifier();
+                $versionArray['icon_Workspace_Overlay'] = $iconWorkspace->getOverlayIcon()?->getIdentifier() ?? '';
+                $languageValue = $this->getLanguageValue($table, $versionRecord);
+                $versionArray['languageValue'] = $languageValue;
+                $versionArray['language'] = [
+                    'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
+                    'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
+                    'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
+                ];
+                $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
+                $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
+                if ($isAllowedToPublish && $swapStage !== StagesService::STAGE_EDIT_ID && (int)$versionRecord['t3ver_stage'] === $swapStage) {
+                    $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
+                } elseif ($isAllowedToPublish && $swapStage === StagesService::STAGE_EDIT_ID) {
+                    $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify;
+                } else {
+                    $versionArray['allowedAction_publish'] = false;
+                }
+                $versionArray['allowedAction_delete'] = $isRecordTypeAllowedToModify;
+                // preview and editing of a deleted page won't work ;)
+                $versionArray['allowedAction_view'] = !$isDeletedPage && $viewUrl;
+                $versionArray['allowedAction_edit'] = $isRecordTypeAllowedToModify && !$isDeletedPage;
+                $versionArray['allowedAction_versionPageOpen'] = $this->isPageModuleAllowed() && !$isDeletedPage;
+                $versionArray['state_Workspace'] = $recordState;
+                $versionArray['hasChanges'] = $recordState !== 'unchanged';
+                $versionArray['urlToPage'] = (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', [
+                    'workspace' => $backendUser->workspace,
+                    'id' => $record['pid'] ?? 0,
+                ]);
+                // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
+                $versionArray['expanded'] = false;
 
-                    if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
-                        $versionIdentifier = $versionArray['id'];
-                        $this->dataArray[$versionIdentifier] = $versionArray;
-                    }
+                if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
+                    $this->dataArray[(string)$versionArray['id']] = $versionArray;
                 }
             }
 
@@ -257,7 +244,6 @@ class GridDataService implements LoggerAwareInterface
                     'messages' => htmlspecialchars(implode('<br>', $messages)),
                 ];
             }
-            $this->setDataArrayIntoCache($versions, $filterTxt);
         }
 
         // Trigger a PSR-14 event
@@ -318,74 +304,6 @@ class GridDataService implements LoggerAwareInterface
         $this->eventDispatcher->dispatch($event);
         $this->dataArray = $event->getData();
         return $event->getDataArrayPart();
-    }
-
-    /**
-     * Initializes the workspace cache
-     */
-    protected function initializeWorkspacesCachingFramework(): void
-    {
-        $this->workspacesCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('workspaces_cache');
-    }
-
-    /**
-     * Puts the generated dataArray into the workspace cache.
-     *
-     * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
-     * @param string $filterTxt The given filter text from the grid.
-     */
-    protected function setDataArrayIntoCache(array $versions, string $filterTxt): void
-    {
-        $hash = $this->calculateHash($versions, $filterTxt);
-        $this->workspacesCache->set(
-            $hash,
-            $this->dataArray,
-            [
-                (string)$this->currentWorkspace,
-                'user_' . $this->getBackendUser()->user['uid'],
-            ]
-        );
-    }
-
-    /**
-     * Checks if a cache entry is given for given versions and filter text and tries to load the data array from cache.
-     *
-     * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
-     * @param string $filterTxt The given filter text from the grid.
-     * @return bool TRUE if cache entry was successfully fetched from cache and content put to $this->dataArray
-     */
-    protected function getDataArrayFromCache(array $versions, string $filterTxt): bool
-    {
-        $cacheEntry = false;
-        $hash = $this->calculateHash($versions, $filterTxt);
-        $content = $this->workspacesCache->get($hash);
-        if (is_array($content)) {
-            $this->dataArray = $content;
-            $cacheEntry = true;
-        }
-        return $cacheEntry;
-    }
-
-    /**
-     * Calculates the hash value of the used workspace, the user id, the versions array, the filter text, the sorting attribute, the workspace selected in grid and the sorting direction.
-     *
-     * @param array $versions All records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oid fields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
-     * @param string $filterTxt The given filter text from the grid.
-     */
-    protected function calculateHash(array $versions, string $filterTxt): string
-    {
-        $backendUser = $this->getBackendUser();
-        $hashArray = [
-            $backendUser->workspace,
-            $backendUser->user['uid'],
-            $versions,
-            $filterTxt,
-            $this->sort,
-            $this->sortDir,
-            $this->currentWorkspace,
-        ];
-        $hash = md5(serialize($hashArray));
-        return $hash;
     }
 
     /**
