@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Controller\Remote\RemoteServer;
 use TYPO3\CMS\Workspaces\Service\GridDataService;
+use TYPO3\CMS\Workspaces\Service\IntegrityService;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -126,6 +127,7 @@ final class RemoteServerTest extends UnitTestCase
             new ConnectionPool(),
             $this->createMock(SearchableSchemaFieldsCollector::class),
             $this->createMock(VisibleSchemaFieldsCollector::class),
+            new IntegrityService()
         );
         $subjectReflection = new \ReflectionObject($subject);
         $result = $subjectReflection->getMethod('prepareFileReferenceDifferences')

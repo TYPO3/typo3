@@ -73,13 +73,12 @@ class GridDataService implements LoggerAwareInterface
      */
     protected string $sortDir = '';
 
-    protected ?IntegrityService $integrityService;
-
     public function __construct(
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly WorkspaceService $workspaceService,
         private readonly ModuleProvider $moduleProvider,
         private readonly WorkspacePublishGate $workspacePublishGate,
+        private readonly IntegrityService $integrityService,
     ) {}
 
     /**
@@ -133,6 +132,7 @@ class GridDataService implements LoggerAwareInterface
             self::GridColumn_CollectionCurrent => '',
             self::GridColumn_CollectionChildren => 0,
         ];
+        $integrityIssues = [];
         foreach ($versions as $table => $records) {
             $table = (string)$table;
             $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
@@ -143,7 +143,7 @@ class GridDataService implements LoggerAwareInterface
                 $versionRecord = (array)BackendUtility::getRecord($table, $record['uid']);
                 $combinedRecord = CombinedRecord::createFromArrays($table, $origRecord, $versionRecord);
                 $hasDiff = $this->versionIsModified($combinedRecord);
-                $this->getIntegrityService()->checkElement($combinedRecord);
+                $integrityIssues = $this->integrityService->checkElement($combinedRecord, $integrityIssues);
 
                 if ($hiddenField !== null) {
                     $recordState = $this->workspaceState($versionRecord['t3ver_state'], (bool)$origRecord[$hiddenField], (bool)$versionRecord[$hiddenField], $hasDiff);
@@ -239,9 +239,9 @@ class GridDataService implements LoggerAwareInterface
             // Enrich elements after everything has been processed:
             foreach ($this->dataArray as &$element) {
                 $identifier = $element['table'] . ':' . $element['t3ver_oid'];
-                $messages = $this->getIntegrityService()->getIssueMessages($identifier);
+                $messages = $this->integrityService->getIssueMessages($integrityIssues, $identifier);
                 $element['integrity'] = [
-                    'status' => $this->getIntegrityService()->getStatusRepresentation($identifier),
+                    'status' => $this->integrityService->getStatusRepresentation($integrityIssues, $identifier),
                     'messages' => htmlspecialchars(implode('<br>', $messages)),
                 ];
             }
@@ -663,17 +663,6 @@ class GridDataService implements LoggerAwareInterface
     protected function getSystemLanguages(int $pageId): array
     {
         return GeneralUtility::makeInstance(TranslationConfigurationProvider::class)->getSystemLanguages($pageId);
-    }
-
-    /**
-     * Gets an instance of the integrity service.
-     */
-    protected function getIntegrityService(): IntegrityService
-    {
-        if (!isset($this->integrityService)) {
-            $this->integrityService = GeneralUtility::makeInstance(IntegrityService::class);
-        }
-        return $this->integrityService;
     }
 
     protected function getDependencyCollectionService(): CollectionService

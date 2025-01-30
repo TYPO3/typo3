@@ -69,21 +69,18 @@ readonly class RemoteServer
         protected ConnectionPool $connectionPool,
         protected SearchableSchemaFieldsCollector $searchableSchemaFieldsCollector,
         protected VisibleSchemaFieldsCollector $visibleSchemaFieldsCollector,
+        private IntegrityService $integrityService,
     ) {}
 
     /**
      * Checks integrity of elements before performing actions on them.
-     *
-     * @return array
      */
-    public function checkIntegrity(\stdClass $parameters)
+    public function checkIntegrity(\stdClass $parameters): array
     {
-        $integrity = $this->createIntegrityService($this->getAffectedElements($parameters));
-        $integrity->check();
-        $response = [
-            'result' => $integrity->getStatusRepresentation(),
+        $issues = $this->integrityService->check($this->getAffectedElements($parameters));
+        return [
+            'result' => $this->integrityService->getStatusRepresentation($issues),
         ];
-        return $response;
     }
 
     /**
@@ -458,24 +455,12 @@ readonly class RemoteServer
     }
 
     /**
-     * Creates a new instance of the integrity service for the
-     * given set of affected elements.
-     *
-     * @param CombinedRecord[] $affectedElements
-     * @see getAffectedElements
-     */
-    protected function createIntegrityService(array $affectedElements): IntegrityService
-    {
-        $integrityService = GeneralUtility::makeInstance(IntegrityService::class);
-        $integrityService->setAffectedElements($affectedElements);
-        return $integrityService;
-    }
-
-    /**
      * Gets affected elements on publishing/swapping actions.
      * Affected elements have a dependency, e.g. translation overlay
      * and the default origin record - thus, the default record would be
      * affected if the translation overlay shall be published.
+     *
+     * @return CombinedRecord[]
      */
     protected function getAffectedElements(\stdClass $parameters): array
     {

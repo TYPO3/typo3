@@ -25,34 +25,21 @@ use TYPO3\CMS\Workspaces\Domain\Model\CombinedRecord;
 /**
  * @internal
  */
-class IntegrityService
+readonly class IntegrityService
 {
-    /**
-     * Success status - everything is fine
-     *
-     * @var int
-     */
-    public const STATUS_Success = 100;
-    /**
-     * Info status - nothing is wrong, but a notice is shown
-     *
-     * @var int
-     */
-    public const STATUS_Info = 101;
-    /**
-     * Warning status - user interaction might be required
-     *
-     * @var int
-     */
-    public const STATUS_Warning = 102;
-    /**
-     * Error status - user interaction is required
-     *
-     * @var int
-     */
-    public const STATUS_Error = 103;
+    // Success status - everything is fine
+    protected const STATUS_Success = 100;
 
-    protected array $statusRepresentation = [
+    // Info status - nothing is wrong, but a notice is shown
+    protected const STATUS_Info = 101;
+
+    // Warning status - user interaction might be required
+    protected const STATUS_Warning = 102;
+
+    // Error status - user interaction is required
+    protected const STATUS_Error = 103;
+
+    protected const STATUS_Representation = [
         self::STATUS_Success => 'success',
         self::STATUS_Info => 'info',
         self::STATUS_Warning => 'warning',
@@ -60,60 +47,38 @@ class IntegrityService
     ];
 
     /**
-     * @var CombinedRecord[]
-     */
-    protected array $affectedElements = [];
-
-    /**
-     * Array storing all issues that have been checked and
-     * found during runtime in this object. The array keys
-     * are identifiers of table and the version-id.
-     *
-     * 'tx_table:123' => [
-     *   [
-     *     'status' => 102,
-     *     'message' => 'Element cannot be...',
-     *   ]
-     * ]
-     */
-    protected array $issues = [];
-
-    /**
-     * Sets the affected elements.
+     * Get integrity issues of multiple elements.
      *
      * @param CombinedRecord[] $affectedElements
      */
-    public function setAffectedElements(array $affectedElements): void
+    public function check(array $affectedElements): array
     {
-        $this->affectedElements = $affectedElements;
-    }
-
-    /**
-     * Checks integrity of affected records.
-     */
-    public function check(): void
-    {
-        foreach ($this->affectedElements as $affectedElement) {
-            $this->checkElement($affectedElement);
+        $issues = [];
+        foreach ($affectedElements as $affectedElement) {
+            $issues = $this->checkElement($affectedElement, $issues);
         }
+        return $issues;
     }
 
     /**
-     * Checks a single element.
+     * Get integrity of a single element.
+     *
+     * Check workspace localization integrity of a single element.
+     * If current record is a localization and its localization parent is new in this
+     * workspace, then both (localization and localization parent) should be published.
+     *
+     * The method returns an array of below shape, array keys are identifiers of table and version-id.
+     *
+     * 'tx_table:123' => [
+     *    [
+     *      'status' => 102,
+     *      'message' => 'Element cannot be...',
+     *    ],
+     * ],
      */
-    public function checkElement(CombinedRecord $element): void
+    public function checkElement(CombinedRecord $element, array $existingIssues): array
     {
-        $this->checkLocalization($element);
-    }
-
-    /**
-     * Check workspace localization integrity of a single elements.
-     * If current record is a localization and its localization parent
-     * is new in this workspace,
-     * then both (localization and localization parent) should be published.
-     */
-    protected function checkLocalization(CombinedRecord $element): void
-    {
+        $languageService = $this->getLanguageService();
         $table = $element->getTable();
         if (BackendUtility::isTableLocalizable($table)) {
             $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'];
@@ -126,15 +91,16 @@ class IntegrityService
                 // If localization parent is a new version....
                 if (is_array($languageParentRecord) && VersionState::tryFrom($languageParentRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                     $title = BackendUtility::getRecordTitle($table, $versionRow);
-                    $languageService = $this->getLanguageService();
                     // Add warning for current versionized record:
-                    $this->addIssue(
+                    $existingIssues = $this->addIssue(
+                        $existingIssues,
                         $element->getLiveRecord()->getIdentifier(),
                         self::STATUS_Warning,
                         sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.dependsOnDefaultLanguageRecord'), $title)
                     );
                     // Add info for related localization parent record:
-                    $this->addIssue(
+                    $existingIssues = $this->addIssue(
+                        $existingIssues,
                         $table . ':' . $languageParentRecord['uid'],
                         self::STATUS_Info,
                         sprintf($languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:integrity.isDefaultLanguageRecord'), $title)
@@ -142,6 +108,7 @@ class IntegrityService
                 }
             }
         }
+        return $existingIssues;
     }
 
     /**
@@ -150,19 +117,19 @@ class IntegrityService
      *
      * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getStatus(?string $identifier = null): int
+    public function getStatus(array $issues, ?string $identifier = null): int
     {
         $status = self::STATUS_Success;
         if ($identifier === null) {
-            foreach ($this->issues as $idenfieriferIssues) {
-                foreach ($idenfieriferIssues as $issue) {
+            foreach ($issues as $identifierIssues) {
+                foreach ($identifierIssues as $issue) {
                     if ($status < $issue['status']) {
                         $status = $issue['status'];
                     }
                 }
             }
         } else {
-            foreach ($this->getIssues($identifier) as $issue) {
+            foreach ($this->getIssues($issues, $identifier) as $issue) {
                 if ($status < $issue['status']) {
                     $status = $issue['status'];
                 }
@@ -178,9 +145,9 @@ class IntegrityService
      * @param string|null $identifier Record identifier (table:id) for look-ups
      * @return string One out of success, info, warning, error
      */
-    public function getStatusRepresentation(?string $identifier = null): string
+    public function getStatusRepresentation(array $issues, ?string $identifier = null): string
     {
-        return $this->statusRepresentation[$this->getStatus($identifier)];
+        return self::STATUS_Representation[$this->getStatus($issues, $identifier)];
     }
 
     /**
@@ -188,13 +155,13 @@ class IntegrityService
      *
      * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getIssues(?string $identifier = null): array
+    public function getIssues(array $issues, ?string $identifier = null): array
     {
         if ($identifier === null) {
-            return $this->issues;
+            return $issues;
         }
-        if (isset($this->issues[$identifier])) {
-            return $this->issues[$identifier];
+        if (isset($issues[$identifier])) {
+            return $issues[$identifier];
         }
         return [];
     }
@@ -204,17 +171,17 @@ class IntegrityService
      *
      * @param string|null $identifier Record identifier (table:id) for look-ups
      */
-    public function getIssueMessages(?string $identifier = null): array
+    public function getIssueMessages(array $issues, ?string $identifier = null): array
     {
         $messages = [];
         if ($identifier === null) {
-            foreach ($this->issues as $idenfieriferIssues) {
-                foreach ($idenfieriferIssues as $issue) {
+            foreach ($issues as $identifierIssues) {
+                foreach ($identifierIssues as $issue) {
                     $messages[] = $issue['message'];
                 }
             }
         } else {
-            foreach ($this->getIssues($identifier) as $issue) {
+            foreach ($this->getIssues($issues, $identifier) as $issue) {
                 $messages[] = $issue['message'];
             }
         }
@@ -222,21 +189,22 @@ class IntegrityService
     }
 
     /**
-     * Adds an issue.
+     * Adds an issue to array of existing issues.
      *
      * @param string $identifier Record identifier (table:id)
      * @param int $status Status code (see constants)
      * @param string $message Message/description of the issue
      */
-    protected function addIssue(string $identifier, int $status, string $message): void
+    protected function addIssue(array $existingIssues, string $identifier, int $status, string $message): array
     {
-        if (!isset($this->issues[$identifier])) {
-            $this->issues[$identifier] = [];
+        if (!isset($existingIssues[$identifier])) {
+            $existingIssues[$identifier] = [];
         }
-        $this->issues[$identifier][] = [
+        $existingIssues[$identifier][] = [
             'status' => $status,
             'message' => $message,
         ];
+        return $existingIssues;
     }
 
     protected function getLanguageService(): LanguageService
