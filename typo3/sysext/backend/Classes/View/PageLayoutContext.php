@@ -80,7 +80,7 @@ class PageLayoutContext
         protected readonly ServerRequestInterface $request
     ) {
         $this->pageId = (int)($pageRecord['uid'] ?? 0);
-        $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $this);
+        $this->contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
         $this->siteLanguages = $this->site->getAvailableLanguages($this->getBackendUser(), true, $this->pageId);
         $this->siteLanguage = $this->site->getDefaultLanguage();
         $this->recordIdentityMap = GeneralUtility::makeInstance(RecordIdentityMap::class);
@@ -225,8 +225,8 @@ class PageLayoutContext
     public function getLanguageModeLabelClass(): string
     {
         $languageId = $this->siteLanguage->getLanguageId();
-        $contentRecordsPerColumn = $this->contentFetcher->getFlatContentRecords($languageId);
-        $translationData = $this->contentFetcher->getTranslationData($contentRecordsPerColumn, $languageId);
+        $contentRecordsPerColumn = $this->contentFetcher->getFlatContentRecords($this, $languageId);
+        $translationData = $this->contentFetcher->getTranslationData($this, $contentRecordsPerColumn, $languageId);
         return $translationData['mode'] === 'mixed' ? 'danger' : 'info';
     }
 
@@ -242,9 +242,9 @@ class PageLayoutContext
 
     public function getLanguageModeIdentifier(): string
     {
-        $contentRecordsPerColumn = $this->contentFetcher->getContentRecordsPerColumn(null, $this->siteLanguage->getLanguageId());
+        $contentRecordsPerColumn = $this->contentFetcher->getContentRecordsPerColumn($this, null, $this->siteLanguage->getLanguageId());
         $contentRecords = empty($contentRecordsPerColumn) ? [] : array_merge(...$contentRecordsPerColumn);
-        $translationData = $this->contentFetcher->getTranslationData($contentRecords, $this->siteLanguage->getLanguageId());
+        $translationData = $this->contentFetcher->getTranslationData($this, $contentRecords, $this->siteLanguage->getLanguageId());
         return $translationData['mode'] ?? '';
     }
 

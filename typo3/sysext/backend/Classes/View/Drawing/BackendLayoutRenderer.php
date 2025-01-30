@@ -55,7 +55,7 @@ class BackendLayoutRenderer
     public function getGridForPageLayoutContext(PageLayoutContext $context): Grid
     {
         $recordIdentityMap = $context->getRecordIdentityMap();
-        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
+        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
         $grid = GeneralUtility::makeInstance(Grid::class, $context);
         if ($context->getDrawingConfiguration()->isLanguageComparisonMode()) {
             $languageId = $context->getSiteLanguage()->getLanguageId();
@@ -70,7 +70,7 @@ class BackendLayoutRenderer
                 $columnObject = GeneralUtility::makeInstance(GridColumn::class, $context, $column);
                 $rowObject->addColumn($columnObject);
                 if (isset($column['colPos'])) {
-                    $records = $contentFetcher->getContentRecordsPerColumn((int)$column['colPos'], $languageId);
+                    $records = $contentFetcher->getContentRecordsPerColumn($context, (int)$column['colPos'], $languageId);
                     foreach ($records as $contentRecord) {
                         // @todo: ideally we hand in the record object into the GridColumnItem in the future - For now
                         //        we just call record factory to create the record and store it in the identity map.
@@ -143,9 +143,9 @@ class BackendLayoutRenderer
 
     protected function renderUnused(ServerRequestInterface $request, PageLayoutContext $pageLayoutContext): string
     {
-        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $pageLayoutContext);
+        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
         $view = $this->createView($request, $pageLayoutContext);
-        $unusedRecords = $contentFetcher->getUnusedRecords();
+        $unusedRecords = $contentFetcher->getUnusedRecords($pageLayoutContext);
 
         if (empty($unusedRecords)) {
             return '';
@@ -182,7 +182,7 @@ class BackendLayoutRenderer
      */
     protected function getLanguageColumnsForPageLayoutContext(PageLayoutContext $context): iterable
     {
-        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
+        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
         $languageColumns = [];
         foreach ($context->getLanguagesToShow() as $siteLanguage) {
             $localizedLanguageId = $siteLanguage->getLanguageId();
@@ -198,7 +198,8 @@ class BackendLayoutRenderer
                 $localizedContext = $context;
             }
             $translationInfo = $contentFetcher->getTranslationData(
-                $contentFetcher->getFlatContentRecords($localizedLanguageId),
+                $context,
+                $contentFetcher->getFlatContentRecords($context, $localizedLanguageId),
                 $localizedContext->getSiteLanguage()->getLanguageId()
             );
             $languageColumnObject = GeneralUtility::makeInstance(
@@ -214,12 +215,13 @@ class BackendLayoutRenderer
 
     protected function getLanguageColumnsWithDefLangBindingForPageLayoutContext(PageLayoutContext $context): iterable
     {
-        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class, $context);
+        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
         $languageColumns = [];
 
         // default language
         $translationInfo = $contentFetcher->getTranslationData(
-            $contentFetcher->getFlatContentRecords(0),
+            $context,
+            $contentFetcher->getFlatContentRecords($context, 0),
             0
         );
 
@@ -241,11 +243,12 @@ class BackendLayoutRenderer
             }
 
             $translationInfo = $contentFetcher->getTranslationData(
-                $contentFetcher->getFlatContentRecords($localizedLanguageId),
+                $context,
+                $contentFetcher->getFlatContentRecords($context, $localizedLanguageId),
                 $localizedContext->getSiteLanguage()->getLanguageId()
             );
 
-            $translatedRows = $contentFetcher->getFlatContentRecords($localizedLanguageId);
+            $translatedRows = $contentFetcher->getFlatContentRecords($context, $localizedLanguageId);
 
             foreach ($defaultLanguageColumnObject->getGrid()->getRows() as $rows) {
                 foreach ($rows->getColumns() as $column) {
