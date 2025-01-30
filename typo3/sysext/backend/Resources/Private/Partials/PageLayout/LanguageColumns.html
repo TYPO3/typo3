@@ -25,8 +25,13 @@
                             <span class="badge badge-{languageColumn.context.languageModeLabelClass}">{languageColumn.context.languageMode}</span>
                         </f:if>
                         <f:if condition="{languageColumn.translationData.hasElementsWithWorkspaceDeletePlaceholders}">
-                            <span class="badge badge-warning">
-                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageContainsWorkspaceDeletePlaceholderRecords"/>
+                            <span class="badge badge-warning"
+                                data-bs-content="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:languageContainsWorkspaceDeletePlaceholderRecords')}"
+                                data-bs-toggle="popover"
+                                data-bs-placement="auto"
+                                data-bs-trigger="hover focus"
+                            >
+                                !
                             </span>
                         </f:if>
                     </td>
