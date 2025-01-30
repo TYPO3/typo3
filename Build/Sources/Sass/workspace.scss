@@ -4,171 +4,130 @@
 //
 
 //
-// Variables
-//
-$workspace-topbar-height: 50px;
-$workspace-topbar-color: #fff;
-$workspace-topbar-line-height: 26px;
-$workspace-topbar-bg: #333;
-$workspace-topbar-logo-height: 22px;
-$workspace-topbar-logo-width: 22px;
-
-//
 // General Styling
 //
-.module {
+[data-module-name="workspace_previewcontrols"] {
+    --typo3-workspace-topbar-color: var(--typo3-text-color-base);
+    --typo3-workspace-topbar-bg: var(--typo3-surface-container-high);
+    --typo3-workspace-topbar-line-height: 26px;
+    --typo3-workspace-topbar-logo-width: 22px;
+    --typo3-workspace-topbar-logo-height: 22px;
+    --typo3-workspace-topbar-padding-x: 1rem;
+    --typo3-workspace-topbar-min-height: 50px;
+    --typo3-workspace-topbar-gap: 1.5rem;
     overflow: hidden;
-}
-
-.module-body {
     padding: 0;
-    font-size: 11px;
-}
 
-#typo3-topbar {
-    color: $workspace-topbar-color;
-    background-color: $workspace-topbar-bg;
-    min-height: $workspace-topbar-height;
-    padding-left: 1em;
-    padding-right: 1em;
-
-    &:after {
-        clear: both;
-        display: table;
-        content: '';
+    .module-body {
+        display: grid;
+        height: 100dvh;
+        padding: 0;
+        margin: 0;
+        grid-template-rows: auto 1fr;
     }
 }
 
-.typo3-topbar-container {
+.typo3-workspace-topbar {
+    color: var(--typo3-workspace-topbar-color);
+    background-color: var(--typo3-workspace-topbar-bg);
+    min-height: var(--typo3-workspace-topbar-min-height);
+    padding-left: var(--typo3-workspace-topbar-padding-x);
+    padding-right: var(--typo3-workspace-topbar-padding-x);
+
+    &-container {
+        display: flex;
+        position: relative;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        height: 100%;
+        gap: calc(var(--typo3-workspace-topbar-gap) / 4) var(--typo3-workspace-topbar-gap);
+        padding-top: calc((var(--typo3-workspace-topbar-min-height) - var(--typo3-workspace-topbar-line-height)) / 2);
+        padding-bottom: calc((var(--typo3-workspace-topbar-min-height) - var(--typo3-workspace-topbar-line-height)) / 2);
+    }
+}
+
+.typo3-workspace-topbar-site {
+    display: flex;
+    line-height: var(--typo3-workspace-topbar-line-height);
     position: relative;
-    height: 100%;
-}
+    gap: .5rem;
+    align-items: center;
 
-.typo3-topbar-site,
-.typo3-topbar-tabs,
-.typo3-topbar-workspace-actions,
-.workspace-action {
-    margin-top: calc((#{$workspace-topbar-height} - #{$workspace-topbar-line-height}) / 2);
-    margin-bottom: calc((#{$workspace-topbar-height} - #{$workspace-topbar-line-height}) / 2);
-}
-
-.typo3-topbar-site {
-    line-height: $workspace-topbar-line-height;
-    float: var(--typo3-position-start);
-    font-size: 12px;
-    position: relative;
-    margin-inline-end: 2em;
-}
-
-.typo3-topbar-site-logo {
-    padding-top: 1px;
-    padding-inline-end: .25em;
-    display: inline-block;
-    vertical-align: top;
-
-    img {
-        display: block;
-        height: $workspace-topbar-logo-height;
-        width: $workspace-topbar-logo-width;
-    }
-}
-
-.typo3-topbar-site-name {
-    vertical-align: top;
-}
-
-.typo3-topbar-workspace-actions {
-    clear: none;
-    float: var(--typo3-position-start);
-
-    .workspace-action {
-        margin-top: 0;
-        margin-bottom: 0;
-        float: var(--typo3-position-start);
-        margin-inline-end: 2em;
-    }
-}
-
-@media (max-width: 920px) {
-    .typo3-topbar-workspace-actions {
-        clear: inline-start;
-        margin-top: 0;
-
-        .workspace-action {
-            display: block;
-            float: none;
-            margin-inline-end: 0;
-            height: auto;
-            margin-bottom: .75em;
-
-            &:after {
-                content: '';
-                display: table;
-            }
-        }
-
-        .dropdown-menu-right {
-            inset-inline: 0 auto;
-        }
-    }
-}
-
-.workspace-action {
-    height: $workspace-topbar-height - ceil($workspace-topbar-height - $workspace-topbar-line-height);
-    display: block;
-    line-height: $workspace-topbar-line-height;
-
-    &:after {
-        content: '';
-        clear: both;
-        display: table;
-    }
-
-    .active-preview-mode {
+    &-logo {
         display: inline-block;
-        text-align: start;
+
+        img {
+            display: block;
+            height: var(--typo3-workspace-topbar-logo-height);
+            width: var(--typo3-workspace-topbar-logo-width);
+        }
     }
 }
 
-.workspaces {
+.typo3-workspace-topbar-slider {
+    display: flex;
+    gap: .5rem;
+    white-space: nowrap;
+    align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+
+    span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+}
+
+.typo3-workspace-topbar-actions {
+    display: flex;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: calc(var(--typo3-workspace-topbar-gap) / 4) var(--typo3-workspace-topbar-gap);
+    align-items: center;
+}
+
+.typo3-workspace-topbar-action {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    gap: .5rem;
+}
+
+.typo3-workspace-preview {
     position: relative;
 
     iframe {
         border: 0;
+        background-color: #fff;
+        width: 100%;
+        height: 100%;
     }
-}
 
-.preview-mode- {
-    &slider {
+    &-slider {
         iframe {
             position: absolute;
             top: 0;
             left: 0;
-            z-index: 100;
-            width: 100%;
-            height: calc(100dvh - #{$workspace-topbar-height});
-            background-color: #fff;
+            height: 100%;
         }
 
-        #live-view {
+        .typo3-workspace-view-workspace {
+            z-index: 1;
+        }
+
+        .typo3-workspace-view-live {
+            z-index: 2;
             border-bottom: 2px solid #c83c3c;
-            z-index: 200;
         }
     }
 
-    &vbox iframe {
-        width: 50%;
-        height: 100%;
-        float: var(--typo3-position-start);
+    &-vbox {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
     }
 
-    &hbox iframe {
-        width: 100%;
-        height: 50%;
+    &-hbox {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
     }
-}
-
-#list iframe {
-    height: calc(100dvh - #{$workspace-topbar-height}) !important;
-    width: 100%;
 }

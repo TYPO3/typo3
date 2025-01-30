@@ -7,28 +7,28 @@
 
 <f:section name="Content">
 
-    <div id="typo3-topbar">
-        <div class="typo3-topbar-container" role="navigation" id="typo3-top-container">
-            <div class="typo3-topbar-site">
-                <a class="typo3-topbar-site-logo" href="{logoLink}" target="_blank" rel="noreferrer">
+    <div class="typo3-workspace-topbar t3js-workspace-topbar">
+        <div class="typo3-workspace-topbar-container" role="navigation">
+            <div class="typo3-workspace-topbar-site">
+                <a class="typo3-workspace-topbar-site-logo" href="{logoLink}" target="_blank" rel="noreferrer">
                     <img src="{f:uri.resource(path: 'EXT:backend/Resources/Public/Images/typo3_logo_orange.svg')}" width="22" height="22" title="TYPO3 Content Management System" alt="" >
                 </a>
-                <span class="typo3-topbar-site-name">{activeWorkspace}</span>
+                <span class="typo3-workspace-topbar-site-name">{activeWorkspace}</span>
             </div>
-            <div class="typo3-topbar-workspace-actions">
-                <f:if condition="{liveUrl}">
-                    <div class="workspace-action">
-                        <div class="form-range">
-                            <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.version.published" /></span>
-                            <input type="range" class="form-range-input" id="workspace-stage-slider" min="0" max="100" value="100" step="1" style="width: 150px;">
-                            <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.version.staged" /></span>
-                        </div>
+            <f:if condition="{liveUrl}">
+                <div class="typo3-workspace-topbar-slider t3js-stage-slider-container">
+                    <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.version.published" /></span>
+                    <div class="form-range form-range-sm" style="width: 150px;">
+                        <input type="range" class="form-range-input t3js-stage-slider" min="0" max="100" value="100" step="1">
                     </div>
-                </f:if>
-                <div class="workspace-action t3js-stage-buttons">
+                    <span><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:window.version.staged" /></span>
+                </div>
+            </f:if>
+            <div class="typo3-workspace-topbar-actions">
+                <div class="typo3-workspace-topbar-action typo3-workspace-topbar-action-buttons t3js-stage-buttons">
                     <f:render partial="Preview/StageButtons" arguments="{_all}"/>
                 </div>
-                <div class="workspace-action t3js-preview-mode">
+                <div class="typo3-workspace-topbar-action typo3-workspace-topbar-action-mode t3js-preview-mode">
                     <f:if condition="{liveUrl}">
                         <f:then>
                             <div class="btn-group">
@@ -39,7 +39,7 @@
                                     aria-haspopup="true"
                                     aria-expanded="false"
                                 >
-                                    <span class="t3js-active-preview-mode active-preview-mode" data-active-preview-mode="{firstPreviewMode}"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{firstPreviewMode -> f:format.case(mode: 'capital')}" /></span>
+                                    <span class="t3js-active-preview-mode" data-active-preview-mode="{firstPreviewMode}"><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:preview.mode{firstPreviewMode -> f:format.case(mode: 'capital')}" /></span>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-right">
                                     <f:for each="{splitPreviewModes}" as="mode">
@@ -61,17 +61,11 @@
         </div>
     </div>
 
-    <div role="tabpanel" class="workspace-panel">
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane active workspaces preview-mode-slider" id="visual">
-                <div class="t3js-workspace-preview">
-                    <f:if condition="{liveUrl}">
-                        <iframe src="{liveUrl}" style="height: 0px;" id="live-view" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.livePreview')}"></iframe>
-                    </f:if>
-                    <iframe src="{wsUrl}" id="workspace-view" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.workspacePreview', arguments: {0: activeWorkspace})}"></iframe>
-                </div>
-            </div>
-        </div>
+    <div class="typo3-workspace-preview typo3-workspace-preview-{firstPreviewMode} t3js-workspace-preview">
+        <f:if condition="{liveUrl}">
+            <iframe class="typo3-workspace-view-live t3js-workspace-view-live" src="{liveUrl}" style="height: 0px;" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.livePreview')}"></iframe>
+        </f:if>
+        <iframe class="typo3-workspace-view-workspace t3js-workspace-view-workspace" src="{wsUrl}" id="workspace-view" title="{f:translate(key: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:iframe.workspacePreview', arguments: {0: activeWorkspace})}"></iframe>
     </div>
 
 </f:section>
