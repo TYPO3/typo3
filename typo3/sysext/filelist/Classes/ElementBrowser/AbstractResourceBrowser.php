@@ -28,6 +28,7 @@ use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDownButton;
 use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
+use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -102,25 +103,19 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
         $this->filelist->thumbs = ($GLOBALS['TYPO3_CONF_VARS']['GFX']['thumbnails'] ?? false) && $this->displayThumbs;
     }
 
+    /**
+     * Last selected folder is stored in user module session. Sanitize it
+     * to set $this->selectedFolder or keep it null.
+     */
     protected function initSelectedFolder(): void
     {
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-
-        // Select folder
         if ($this->expandFolder) {
             try {
                 $this->selectedFolder = $resourceFactory->getFolderObjectFromCombinedIdentifier($this->expandFolder);
-            } catch (FolderDoesNotExistException $e) {
-            }
-        }
-
-        if (!$this->selectedFolder) {
-            $allStorages = $this->getBackendUser()->getFileStorages();
-            $defaultStorage = $resourceFactory->getDefaultStorage();
-            if ($defaultStorage && array_key_exists($defaultStorage->getUid(), $allStorages)) {
-                $this->selectedFolder = $defaultStorage->getRootLevelFolder();
-            } else {
-                $this->selectedFolder = reset($allStorages)->getRootLevelFolder();
+            } catch (FolderDoesNotExistException|InsufficientFolderAccessPermissionsException) {
+                // Outdated module session data: Last used folder has been removed meanwhile, or
+                // access to last used folder has been removed. Do not set a preselected folder.
             }
         }
     }
