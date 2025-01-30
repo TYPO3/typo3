@@ -272,7 +272,7 @@ final class PageRecordProvider implements SearchProviderInterface
     protected function extractSearchableFieldsFromTable(): array
     {
         // Get the list of fields to search in from the TCA, if any
-        return $this->searchableSchemaFieldsCollector->getUniqueFieldList('pages', [], $this->getBackendUser()->isAdmin());
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList('pages', [], true);
     }
 
     protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array

@@ -340,7 +340,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     protected function extractSearchableFieldsFromTable(string $tableName): array
     {
         // Get the list of fields to search in from the TCA, if any
-        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($tableName, [], $this->getBackendUser()->isAdmin());
+        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($tableName, [], true);
     }
 
     /**
