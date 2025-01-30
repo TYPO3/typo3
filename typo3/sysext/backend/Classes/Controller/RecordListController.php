@@ -338,7 +338,7 @@ class RecordListController
         if (($this->pagePermissions->createPagePermissionIsGranted() || $this->pagePermissions->editContentPermissionIsGranted()) && $this->editLockPermissions()) {
             $elFromTable = $clipboard->elFromTable();
             if (!empty($elFromTable)) {
-                $confirmMessage = $clipboard->confirmMsgText('pages', $this->pageInfo, 'into', $elFromTable);
+                $confirmMessage = $clipboard->confirmMsgText('pages', $this->pageInfo, 'into');
                 $pasteButton = $buttonBar->makeLinkButton()
                     ->setHref($clipboard->pasteUrl('', $this->id))
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_paste'))

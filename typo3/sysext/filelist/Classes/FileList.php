@@ -1325,8 +1325,7 @@ class FileList
             return null;
         }
 
-        $elementsToConfirm = [];
-        foreach ($elementFromTable as $key => $element) {
+        foreach ($elementFromTable as $element) {
             $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
             if ($clipBoardElement instanceof Folder
                 && $clipBoardElement->getStorage()->isWithinFolder($clipBoardElement, $resourceView->resource)
@@ -1334,7 +1333,6 @@ class FileList
                 // In case folder is already present in the target folder, return actions without paste button
                 return null;
             }
-            $elementsToConfirm[$key] = $clipBoardElement->getName();
         }
 
         $pasteTitle = $this->getLanguageService()->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_pasteInto');
@@ -1343,7 +1341,7 @@ class FileList
         $button->setHref($this->clipObj->pasteUrl('_FILE', $resourceView->getIdentifier()));
         $button->setDataAttributes([
             'title' => $pasteTitle,
-            'bs-content' => $this->clipObj->confirmMsgText('_FILE', $resourceView->getName(), 'into', $elementsToConfirm),
+            'bs-content' => $this->clipObj->confirmMsgText('_FILE', $resourceView->getName(), 'into'),
         ]);
         $button->setIcon($this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL));
 

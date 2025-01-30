@@ -652,8 +652,7 @@ class FileListController implements LoggerAwareInterface
             $elFromTable = $this->filelist->clipObj->elFromTable('_FILE');
             if (!empty($elFromTable)) {
                 $addPasteButton = true;
-                $elToConfirm = [];
-                foreach ($elFromTable as $key => $element) {
+                foreach ($elFromTable as $element) {
                     $clipBoardElement = $this->resourceFactory->retrieveFileOrFolderObject($element);
                     if ($clipBoardElement instanceof Folder && $clipBoardElement->getStorage()->isWithinFolder(
                         $clipBoardElement,
@@ -662,11 +661,10 @@ class FileListController implements LoggerAwareInterface
                     ) {
                         $addPasteButton = false;
                     }
-                    $elToConfirm[$key] = $clipBoardElement->getName();
                 }
                 if ($addPasteButton) {
                     $confirmText = $this->filelist->clipObj
-                        ->confirmMsgText('_FILE', $this->folderObject->getReadablePath(), 'into', $elToConfirm);
+                        ->confirmMsgText('_FILE', $this->folderObject->getReadablePath(), 'into');
                     $pastButtonTitle = $lang->sL('LLL:EXT:filelist/Resources/Private/Language/locallang_mod_file_list.xlf:clip_paste');
                     $pasteButton = $buttonBar->makeLinkButton()
                         ->setHref($this->filelist->clipObj

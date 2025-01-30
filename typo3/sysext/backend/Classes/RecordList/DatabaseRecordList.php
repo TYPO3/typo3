@@ -1975,7 +1975,6 @@ class DatabaseRecordList
         }
 
         // Now, looking for selected elements from the current table:
-        $elFromTable = $this->clipObj->elFromTable($table);
         if (!$isEditable
             || empty($GLOBALS['TCA'][$table]['ctrl']['sortby'])
             || $this->clipObj->elFromTable($table) === []
@@ -1986,7 +1985,7 @@ class DatabaseRecordList
             $this->addDividerToCellGroup($cells);
             $pasteAfterUrl = $this->clipObj->pasteUrl($table, -$row['uid']);
             $pasteAfterTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteAfter');
-            $pasteAfterContent = $this->clipObj->confirmMsgText($table, $row, 'after', $elFromTable);
+            $pasteAfterContent = $this->clipObj->confirmMsgText($table, $row, 'after');
             $clipboardCells['pasteAfter'] = '
                 <button type="button" class="btn btn-default t3js-modal-trigger" data-severity="warning" aria-haspopup="dialog" title="' . htmlspecialchars($pasteAfterTitle) . '" aria-label="' . htmlspecialchars($pasteAfterTitle) . '" data-uri="' . htmlspecialchars($pasteAfterUrl) . '" data-bs-content="' . htmlspecialchars($pasteAfterContent) . '">
                     ' . $this->iconFactory->getIcon('actions-document-paste-after', IconSize::SMALL)->render() . '
@@ -2000,7 +1999,7 @@ class DatabaseRecordList
             $this->addDividerToCellGroup($cells);
             $pasteIntoUrl = $this->clipObj->pasteUrl('', $row['uid']);
             $pasteIntoTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_pasteInto');
-            $pasteIntoContent = $this->clipObj->confirmMsgText($table, $row, 'into', $elFromTable);
+            $pasteIntoContent = $this->clipObj->confirmMsgText($table, $row, 'into');
             $clipboardCells['pasteInto'] = '
                 <button type="button" class="btn btn-default t3js-modal-trigger" aria-haspopup="dialog" data-severity="warning" title="' . htmlspecialchars($pasteIntoTitle) . '" aria-label="' . htmlspecialchars($pasteIntoTitle) . '" data-uri="' . htmlspecialchars($pasteIntoUrl) . '" data-bs-content="' . htmlspecialchars($pasteIntoContent) . '">
                     ' . $this->iconFactory->getIcon('actions-document-paste-into', IconSize::SMALL)->render() . '

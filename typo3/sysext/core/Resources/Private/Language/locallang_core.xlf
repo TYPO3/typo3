@@ -920,9 +920,6 @@ Do you want to refresh it now?</source>
 			<trans-unit id="mess.move_into">
 				<source>Move "%s" into "%s"?</source>
 			</trans-unit>
-			<trans-unit id="mess.move_into_colPos">
-				<source>Move "%1$s" into column "%3$s" on page "%2$s"?</source>
-			</trans-unit>
 			<trans-unit id="mess.move_before">
 				<source>Move "%s" to before "%s"?</source>
 			</trans-unit>
@@ -931,9 +928,6 @@ Do you want to refresh it now?</source>
 			</trans-unit>
 			<trans-unit id="mess.copy_into">
 				<source>Copy "%s" into "%s"?</source>
-			</trans-unit>
-			<trans-unit id="mess.copy_into_colPos">
-				<source>Copy "%1$s" into column "%3$s" on page "%2$s"?</source>
 			</trans-unit>
 			<trans-unit id="mess.copy_after">
 				<source>Copy "%s" to after "%s"?</source>

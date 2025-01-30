@@ -556,25 +556,23 @@ class Clipboard
      * @param string $table Table name
      * @param array|string $reference For records its an array, for files its a string (path)
      * @param string $type Type-code
-     * @param array $selectedElements Array of selected elements
-     * @param string $columnLabel Name of the content column
      * @return string the text for a confirm message
      */
     public function confirmMsgText(
         string $table,
         $reference,
         string $type,
-        array $selectedElements,
-        string $columnLabel = ''
     ): string {
         if (!$this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             return '';
         }
 
+        $selectedElements = $this->elFromTable($table);
+
         $labelKey = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.'
             . ($this->currentMode() === 'copy' ? 'copy' : 'move')
             . ($this->current === 'normal' ? '' : 'cb') . '_' . $type;
-        $confirmationMessage = $this->getLanguageService()->sL($labelKey . ($columnLabel ? '_colPos' : ''));
+        $confirmationMessage = $this->getLanguageService()->sL($labelKey);
 
         if ($table === '_FILE' && is_string($reference)) {
             $recordTitle = PathUtility::basename($reference);
@@ -595,19 +593,11 @@ class Clipboard
                 $selectedRecordTitle = (string)count($selectedElements);
             }
         }
-        // @TODO
-        // This can get removed as soon as the "_colPos" label is translated
-        // into all available locallang languages.
-        if (!$confirmationMessage && $columnLabel) {
-            $recordTitle .= ' | ' . $columnLabel;
-            $confirmationMessage = $this->getLanguageService()->sL($labelKey);
-        }
 
         return sprintf(
             $confirmationMessage,
             GeneralUtility::fixed_lgd_cs($selectedRecordTitle, 30),
-            GeneralUtility::fixed_lgd_cs($recordTitle, 30),
-            GeneralUtility::fixed_lgd_cs($columnLabel, 30)
+            GeneralUtility::fixed_lgd_cs($recordTitle, 30)
         );
     }
 
