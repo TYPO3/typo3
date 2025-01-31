@@ -11,8 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { CSSResultArray, html, HTMLTemplateResult, render, TemplateResult } from 'lit';
+import { CSSResultArray, html, HTMLTemplateResult, render, nothing, TemplateResult } from 'lit';
 import { ClassInfo } from 'lit/directives/class-map';
+import { until } from 'lit/directives/until';
 
 interface LitNonceWindow extends Window {
   litNonce?: string;
@@ -87,3 +88,19 @@ export const styleTag = (strings: string[]|TemplateStringsArray|CSSResultArray, 
   }
   return html`<style>${strings}</style>`;
 };
+
+/**
+ * Delays rendering a renderable by `timeout` milliseconds
+ *
+ * @example
+ *
+ * ```
+ *   return html`${delay(80, () => html`Loading…`)}`
+ * ```
+ *
+ * @internal
+ */
+export const delay = <T>(timeout: number, result: () => T, fallback = () => nothing) => until(
+  new Promise<T>((resolve) => window.setTimeout(() => resolve(result()), timeout)),
+  fallback()
+);

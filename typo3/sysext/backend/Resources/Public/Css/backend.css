@@ -3386,9 +3386,10 @@ typo3-backend-form-selecttree-toolbar{display:block}
 .card-notice{--typo3-card-color:var(--typo3-surface-container-notice-text);--typo3-card-bg:var(--typo3-surface-container-notice)}
 .card-default{--typo3-card-color:var(--typo3-surface-container-default-text);--typo3-card-bg:var(--typo3-surface-container-default)}
 .context-menu{font-size:var(--typo3-component-font-size);line-height:var(--typo3-component-line-height);padding:2px;position:absolute;z-index:1000;color:var(--typo3-component-color);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);background-color:var(--typo3-component-bg);box-shadow:var(--typo3-component-box-shadow-flyout);border-radius:var(--typo3-component-border-radius);max-height:calc(100% - 20px);max-width:calc(100% - 20px);margin:0;overflow-y:auto;top:0;inset-inline-start:0}
+.context-menu-overlay{z-index:1000;background-color:transparent;opacity:.1;position:fixed;inset:0}
 .context-menu-group{position:relative;display:flex;flex-direction:column;gap:1px;list-style:none;padding:0;margin:0;min-width:150px}
 .context-menu-divider{padding:0;height:0;margin-top:var(--typo3-list-item-padding-y);margin-bottom:var(--typo3-list-item-padding-y);border-top:var(--typo3-component-border-width) solid var(--typo3-component-border-color)!important;outline:0}
-.context-menu-item{position:relative;display:flex;border-radius:calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));gap:.5em;padding:var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);cursor:pointer;text-decoration:none}
+.context-menu-item{position:relative;display:flex;width:100%;border-radius:calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));gap:.5em;padding:var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);cursor:pointer;text-decoration:none;background-color:transparent;text-align:start;border:none}
 .context-menu-item:focus,.context-menu-item:hover{z-index:1;outline-offset:-1px}
 .context-menu-item:hover{color:var(--typo3-component-hover-color);background-color:var(--typo3-component-hover-bg);outline:1px solid var(--typo3-component-hover-border-color)}
 .context-menu-item:focus{color:var(--typo3-component-focus-color);background-color:var(--typo3-component-focus-bg);outline:1px solid var(--typo3-component-focus-border-color)}

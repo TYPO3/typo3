@@ -14,32 +14,44 @@
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ContextMenuActions from './context-menu-actions';
-import DebounceEvent from '@typo3/core/event/debounce-event';
-import RegularEvent from '@typo3/core/event/regular-event';
-import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/spinner-element';
+import { customElement, queryAll, state } from 'lit/decorators';
+import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { delay } from '@typo3/core/lit-helper';
+import { styleMap } from 'lit/directives/style-map';
+import { unsafeHTML } from 'lit/directives/unsafe-html';
+import { Task, initialState } from '@lit/task';
+import Notification from '@typo3/backend/notification';
 
-interface MousePosition {
-  X: number;
-  Y: number;
-}
-
-interface ActiveRecord {
-  uid: number|string;
-  table: string;
-}
-
-interface MenuItem {
+interface RawMenuItemInterface {
+  identifier: string;
   type: string;
   icon: string;
   label: string;
   additionalAttributes?: Record<string, string>;
-  childItems?: MenuItems;
+  childItems?: RawMenuItemInterface[];
   callbackAction?: string;
 }
 
-interface MenuItems {
-  [key: string]: MenuItem;
+interface MenuItemInterface extends RawMenuItemInterface {
+  childItems: MenuItemInterface[];
+  // Calculated Internal
+  __contextMenuIdentifier: string;
+  __contextMenuParentIdentifier: string;
+  __expanded: boolean;
+}
+
+enum ContextMenuEvent {
+  open = 'typo3:contextmenu:open',
+  close = 'typo3:contextmenu:close',
+}
+
+interface ContextMenuEventDetail {
+  table: string;
+  uid: number | string;
+  context: string;
+  eventSource: HTMLElement;
+  originalEvent: PointerEvent;
 }
 
 /**
@@ -47,59 +59,13 @@ interface MenuItems {
  * Container used to load the context menu via AJAX to render the result in a layer next to the mouse cursor
  */
 class ContextMenu {
-  private mousePos: MousePosition = { X: null, Y: null };
-  private record: ActiveRecord = { uid: null, table: null };
-  private readonly eventSources: HTMLElement[] = [];
-
   constructor() {
     document.addEventListener('click', (event: PointerEvent) => {
       this.handleTriggerEvent(event);
     });
-
     document.addEventListener('contextmenu', (event: PointerEvent) => {
       this.handleTriggerEvent(event);
     });
-  }
-
-  /**
-   * @param {MenuItem} item
-   * @returns {string}
-   */
-  private static drawActionItem(item: MenuItem): HTMLElement {
-
-    const menuitem = document.createElement('li');
-    menuitem.role = 'menuitem';
-    menuitem.classList.add('context-menu-item');
-    menuitem.dataset.callbackAction = item.callbackAction;
-    menuitem.tabIndex = -1;
-    const attributes: Record<string, string> = item.additionalAttributes || {};
-    for (const attribute of Object.entries(attributes)) {
-      const [qualifiedName, value] = attribute;
-      menuitem.setAttribute(qualifiedName, value);
-    }
-
-    const icon = document.createElement('span');
-    icon.classList.add('context-menu-item-icon');
-    icon.innerHTML = item.icon;
-
-    const label = document.createElement('span');
-    label.classList.add('context-menu-item-label');
-    label.innerHTML = item.label;
-
-    menuitem.append(icon);
-    menuitem.append(label);
-
-    return menuitem;
-  }
-
-  private static within(element: HTMLElement, x: number, y: number): boolean {
-    const clientRect = element.getBoundingClientRect();
-    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const isInXBoundary = x >= clientRect.left + scrollLeft && x <= clientRect.left + scrollLeft + clientRect.width;
-    const isInYBoundary = y >= clientRect.top + scrollTop && y <= clientRect.top + scrollTop + clientRect.height;
-
-    return isInXBoundary && isInYBoundary;
   }
 
   /**
@@ -115,94 +81,28 @@ class ContextMenu {
    */
   public show(
     table: string,
-    uid: number|string,
+    uid: number | string,
     context: string,
     unusedParam1: string,
     unusedParam2: string,
     eventSource: HTMLElement = null,
     originalEvent: PointerEvent = null
   ): void {
-    this.hideAll();
-    this.initializeContextMenuContainer();
-
-    this.record = { table: table, uid: uid };
-    const focusableSource = eventSource.matches('a, button, [tabindex]:not([tabindex="-1"])')
-      ? eventSource
-      : eventSource.closest('a, button, [tabindex]:not([tabindex="-1"])') as HTMLElement;
-    if (this.eventSources.includes(focusableSource) === false) {
-      this.eventSources.push(focusableSource);
-    }
-
-    const parameters = new URLSearchParams();
-    if (typeof table !== 'undefined') {
-      parameters.set('table', table);
-    }
-    if (typeof uid !== 'undefined') {
-      parameters.set('uid', uid.toString());
-    }
-    if (typeof context !== 'undefined') {
-      parameters.set('context', context);
-    }
-
-    let position: MousePosition = null;
-    if (originalEvent !== null) {
-      this.storeMousePosition(originalEvent);
-      position = this.mousePos;
-    }
-    this.fetch(parameters.toString(), position);
-  }
-
-  /**
-   * Manipulates the DOM to add the divs needed for context menu at the bottom of the <body>-tag
-   */
-  private initializeContextMenuContainer(): void {
-    if (document.querySelector('#contentMenu0') !== null) {
-      return;
-    }
-    const contextMenu1 = document.createElement('div');
-    contextMenu1.classList.add('context-menu');
-    contextMenu1.id = 'contentMenu0';
-    contextMenu1.style.display = 'none';
-    document.querySelector('body').append(contextMenu1);
-
-    const contextMenu2 = document.createElement('div');
-    contextMenu2.classList.add('context-menu');
-    contextMenu2.id = 'contentMenu1';
-    contextMenu2.style.display = 'none';
-    contextMenu2.dataset.parent = '#contentMenu0'
-    document.querySelector('body').append(contextMenu2);
-
-    document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
-      // Explicitly update cursor position if element is entered to avoid timing issues
-      new RegularEvent('mouseenter', (event: MouseEvent): void => {
-        this.storeMousePosition(event);
-      }).bindTo(contextMenu);
-
-      new DebounceEvent('mouseleave', (event: MouseEvent) => {
-        const target: HTMLElement = event.target as HTMLElement;
-        const childMenu: HTMLElement | null = document.querySelector(selector`[data-parent="#${target.id}"]`);
-
-        const hideThisMenu =
-          !ContextMenu.within(target, this.mousePos.X, this.mousePos.Y) // cursor it outside triggered context menu
-          && (childMenu === null || childMenu.offsetParent === null); // child menu, if any, is not visible
-
-        if (hideThisMenu) {
-          this.hide(target);
-
-          // close parent menu (if any), if cursor is outside its boundaries
-          let parent: HTMLElement | null;
-          if (typeof target.dataset.parent !== 'undefined' && (parent = document.querySelector(target.dataset.parent)) !== null) {
-            if (!ContextMenu.within(parent, this.mousePos.X, this.mousePos.Y)) {
-              this.hide(document.querySelector(target.dataset.parent));
-            }
-          }
-        }
-      }, 500).bindTo(contextMenu);
+    const contextMenuEvent = new CustomEvent<ContextMenuEventDetail>(ContextMenuEvent.open, {
+      detail: {
+        table: table,
+        uid: uid,
+        context: context,
+        eventSource: eventSource,
+        originalEvent: originalEvent,
+      },
+      bubbles: true,
+      composed: true
     });
+    top.document.dispatchEvent(contextMenuEvent);
   }
 
-  private handleTriggerEvent(event: PointerEvent): void
-  {
+  private handleTriggerEvent(event: PointerEvent): void {
     if (!(event.target instanceof Element)) {
       return;
     }
@@ -212,15 +112,9 @@ class ContextMenu {
       this.handleContextMenuEvent(event, contextTarget);
       return;
     }
-
-    const contextMenu = event.target.closest('.context-menu');
-    if (!contextMenu) {
-      this.hideAll();
-    }
   }
 
-  private handleContextMenuEvent(event: PointerEvent, element: HTMLElement): void
-  {
+  private handleContextMenuEvent(event: PointerEvent, element: HTMLElement): void {
     const contextTrigger: string = element.dataset.contextmenuTrigger;
     if (contextTrigger === 'click' || contextTrigger === event.type) {
       event.preventDefault();
@@ -235,258 +129,551 @@ class ContextMenu {
       );
     }
   }
+}
 
-  /**
-   * Make the AJAX request
-   *
-   * @param {string} parameters Parameters sent to the server
-   * @param {MousePosition} position
-   */
-  private fetch(parameters: string, position: MousePosition): void {
-    const stubMenu = this.renderStubMenu(0, position);
-    const url = TYPO3.settings.ajaxUrls.contextmenu;
-    (new AjaxRequest(url)).withQueryArguments(parameters).get().then(async (response: AjaxResponse): Promise<void> => {
-      const data: MenuItems = await response.resolve();
-      if (typeof response !== 'undefined' && Object.keys(response).length > 0) {
-        this.populateData(data, 0, position);
+export default new ContextMenu();
+
+@customElement('typo3-backend-context-menu')
+export class ContextMenuElement extends LitElement {
+  @state() open: boolean = false;
+  @state() table: string = '';
+  @state() uid: number | string = '';
+  @state() context: string = '';
+  @state() rootPositionY: number = 0;
+  @state() rootPositionX: number = 0;
+  @state() eventSource: HTMLElement | null = null;
+
+  @queryAll('.context-menu') contextMenuElements: HTMLDivElement[];
+  @queryAll('.context-menu-item') contextMenuItemElements: HTMLButtonElement[];
+  private readonly rootIdentifier: string = 'root';
+
+  private focusFirstElement: boolean = false;
+
+  private readonly fetchTask = new Task(this, {
+    autoRun: false,
+    args: () => [this.table, this.uid, this.context, this.open] as const,
+    task: async ([table, uid, context, isOpen], { signal }): Promise<MenuItemInterface[] | typeof initialState> => {
+      if (!isOpen) {
+        return initialState;
       }
-    }).catch((): void => {
-      this.hide(stubMenu);
+
+      const parameters = new URLSearchParams();
+      if (table !== '') {
+        parameters.set('table', table);
+      }
+      if (uid !== '') {
+        parameters.set('uid', uid.toString());
+      }
+      if (context !== '') {
+        parameters.set('context', context);
+      }
+      if (parameters.size === 0) {
+        return initialState;
+      }
+
+      const url = TYPO3.settings.ajaxUrls.contextmenu;
+      const response = await new AjaxRequest(url)
+        .withQueryArguments(parameters)
+        .get({ signal });
+      const data: RawMenuItemInterface[] = Object.values(await response.resolve());
+      if (data.length === 0) {
+        return initialState;
+      }
+      return this.enhanceNodes('root', data);
+    },
+    onComplete: () => {
+      this.focusFirstElement = true;
+    },
+    onError: (error: Error|AjaxResponse) => {
+      if (error instanceof AjaxResponse) {
+        Notification.error('', error.response.status + ' ' + error.response.statusText, 5);
+      } else {
+        Notification.error('', error.message);
+      }
+    },
+  })
+
+  private get nodes(): MenuItemInterface[] {
+    return this.fetchTask.value ?? [];
+  }
+
+  public connectedCallback() {
+    super.connectedCallback();
+    window.addEventListener('resize', this.hide);
+    document.addEventListener(ContextMenuEvent.open, this.show);
+    document.addEventListener(ContextMenuEvent.close, this.hide);
+  }
+
+  public disconnectedCallback() {
+    super.disconnectedCallback();
+    window.removeEventListener('resize', this.hide);
+    document.removeEventListener(ContextMenuEvent.open, this.show);
+    document.removeEventListener(ContextMenuEvent.close, this.hide);
+  }
+
+  protected updated(): void {
+    if (this.focusFirstElement) {
+      if (this.contextMenuItemElements.length > 0) {
+        const firstItemElement = Array.from(this.contextMenuItemElements).at(0);
+        firstItemElement.focus();
+      }
+      this.focusFirstElement = false;
+    }
+    this.updateContextMenuPositions();
+  }
+
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
+
+  protected render() {
+    return this.fetchTask.render({
+      initial: () => nothing,
+      pending: () => [
+        this.renderOverlay(),
+        // Delay the spinner by 80 ms to prevent flickering for fast connections.
+        delay(80, () => this.renderMenu(null, this.rootIdentifier, this.rootPositionY, this.rootPositionX)),
+      ],
+      complete: (nodes) => [
+        this.renderOverlay(),
+        this.renderMenu(nodes, this.rootIdentifier, this.rootPositionY, this.rootPositionX),
+        this.flattenMenuItems(nodes)
+          .filter(node => node.type === 'submenu')
+          .map(node => !this.isNodeExpanded(node) ? nothing : this.renderMenu(
+            node.childItems,
+            this.getNodeIdentifier(node),
+            this.rootPositionY,
+            this.rootPositionX
+          )),
+      ],
     });
   }
 
-  private renderStubMenu(level: number, position: MousePosition): HTMLElement|null {
-    const contentMenuCurrent = document.querySelector('#contentMenu' + level) as HTMLElement;
-    if (contentMenuCurrent !== null) {
-      contentMenuCurrent.replaceChildren(document.createRange().createContextualFragment('<typo3-backend-spinner size="medium"></typo3-backend-spinner>'));
-      contentMenuCurrent.style.display = null;
-      position = this.getPosition(contentMenuCurrent, position);
-      const coordinates = this.toPixel(position);
+  private readonly show = (event: CustomEvent<ContextMenuEventDetail>): void => {
+    const detail = event.detail;
+    this.open = true;
+    this.table = detail.table;
+    this.uid = detail.uid;
+    this.context = detail.context;
+    this.eventSource = detail.eventSource;
 
-      contentMenuCurrent.style.top = coordinates.top;
-      contentMenuCurrent.style.insetInlineStart = coordinates.start;
+    if (detail.originalEvent !== null) {
+      const offset = this.calculateIframeOffset(detail.originalEvent.view, window);
+      this.rootPositionY = detail.originalEvent.clientY + offset.y;
+      this.rootPositionX = detail.originalEvent.clientX + offset.x;
     }
 
-    return contentMenuCurrent;
+    this.fetchTask.run();
   }
 
-  /**
-   * Fills the context menu with content and displays it correctly
-   * depending on the mouse position
-   *
-   * @param {MenuItems} items The data that will be put in the menu
-   * @param {number} level The depth of the context menu
-   */
-  private populateData(items: MenuItems, level: number, position: MousePosition): void {
-    const contentMenuCurrent = document.querySelector('#contentMenu' + level) as HTMLElement;
-    const contentMenuParent = document.querySelector('#contentMenu' + (level - 1)) as HTMLElement;
-    if (contentMenuCurrent !== null && contentMenuParent?.offsetParent !== null) {
-      const menuGroup = document.createElement('ul');
-      menuGroup.classList.add('context-menu-group');
-      menuGroup.role = 'menu';
-      this.drawMenu(items, level).forEach((childItem) => {
-        menuGroup.appendChild(childItem);
+  private readonly hide = async (): Promise<void> => {
+    if (!this.open) {
+      return;
+    }
+    this.open = false;
+    this.fetchTask.run();
+    await this.updateComplete;
+    this.eventSource?.focus();
+  }
+
+  private renderOverlay(): TemplateResult {
+    return html`
+      <div
+        class="context-menu-overlay"
+        @click="${(event: PointerEvent) => this.handleOverlayClick(event)}"
+        @contextmenu="${(event: PointerEvent) => this.handleOverlayClick(event)}"
+      ></div>
+    `;
+  }
+
+  private renderMenu(nodes: MenuItemInterface[]|null, parentIdentifier: string, posY: number, posX: number): TemplateResult | typeof nothing {
+    const styles = {
+      top: posY + 'px',
+      insetInlineStart: posX + 'px',
+    };
+
+    // pending state
+    if (nodes === null) {
+      return html`
+        <div id="contextmenu-${parentIdentifier}" data-contextmenu-parent=${parentIdentifier} class="context-menu" style=${styleMap(styles)}>
+          <typo3-backend-spinner size="medium"></typo3-backend-spinner>
+        </div>
+      `;
+    }
+
+    if (nodes.length === 0) {
+      return nothing;
+    }
+
+    return html`
+      <div id="contextmenu-${parentIdentifier}" data-contextmenu-parent=${parentIdentifier} class="context-menu" style=${styleMap(styles)}>
+        <ul class="context-menu-group" role="menu">
+          ${nodes.map(node => html`
+            <li role="presentation">${this.renderMenuItem(node)}</li>
+          `)}
+        </ul>
+      </div>
+    `;
+  }
+
+  private renderMenuItem(node: MenuItemInterface): TemplateResult {
+    if (node.type === 'divider') {
+      return html`<hr class="context-menu-divider">`;
+    }
+
+    return html`
+      <button
+        type="button"
+        class="context-menu-item"
+        tabindex="-1"
+        role="menuitem"
+        data-contextmenu-id=${this.getNodeIdentifier(node)}
+        data-contextmenu-type=${node.type}
+        aria-posinset=${this.getNodePositionInSet(node)}
+        aria-setsize=${this.getNodeSetSize(node)}
+        aria-label=${node.label}
+        aria-popup=${(node.type === 'submenu' ? 'menu' : false) || nothing}
+        @click=${(event: PointerEvent) => { this.handleNodeClick(event, node); }}
+        @keydown=${(event: KeyboardEvent) => { this.handleNodeKeyDown(event, node); }}
+      >
+        <span class="context-menu-item-icon" role="presentation">${unsafeHTML(node.icon)}</span>
+        <span class="context-menu-item-label" role="presentation">${unsafeHTML(node.label)}</span>
+        ${node.type === 'submenu' ? html`<span class="context-menu-item-indicator"><typo3-backend-icon identifier="actions-chevron-${this.getDocumentDirection() === 'ltr' ? 'right' : 'left'}" size="small"></typo3-backend-icon></span>` : ''}
+      </button>
+    `;
+  }
+
+  private showSubmenu(node: MenuItemInterface): void {
+    node.__expanded = true;
+  }
+
+  private hideSubmenu(node: MenuItemInterface): void {
+    node.__expanded = false;
+  }
+
+  private handleNodeClick(event: PointerEvent, node: MenuItemInterface): void {
+    if (node.type === 'submenu') {
+      if (this.isNodeExpanded(node)) {
+        this.hideSubmenu(node);
+      } else {
+        this.showSubmenu(node);
+      }
+
+      return;
+    }
+
+    const dataset = this.extractDataAttributesAndConvertToDataset(node.additionalAttributes);
+    const callbackAction = node.callbackAction;
+    const { callbackModule, ...dataAttributesToPass } = dataset;
+    if (callbackModule) {
+      import(callbackModule + '.js').then(({ default: callbackModuleCallback }: { default: any }): void => {
+        callbackModuleCallback[callbackAction](this.table, this.uid, dataAttributesToPass);
       });
+    } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackAction] === 'function') {
+      (ContextMenuActions as any)[callbackAction](this.table, this.uid, dataAttributesToPass);
+    } else {
+      console.error('action: ' + callbackAction + ' not found');
+    }
 
-      contentMenuCurrent.innerHTML = '';
-      contentMenuCurrent.appendChild(menuGroup);
-      position = this.getPosition(contentMenuCurrent, position);
-      const coordinates = this.toPixel(position);
-      contentMenuCurrent.style.top = coordinates.top;
-      contentMenuCurrent.style.insetInlineStart = coordinates.start;
-      contentMenuCurrent.style.display = null;
-      (contentMenuCurrent.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
-      this.initializeEvents(contentMenuCurrent, level);
+    this.hide();
+  }
+
+  private mapIframeTarget(target: Element, event: PointerEvent): Element {
+    if (target.tagName !== 'IFRAME') {
+      return target;
+    }
+
+    const iframe = target as HTMLIFrameElement;
+    let win: Window;
+    try {
+      win = iframe.contentWindow;
+    } catch {
+      return target;
+    }
+
+    const rect = iframe.getBoundingClientRect();
+    const iframeTarget = win.document.elementFromPoint(event.clientX - rect.x, event.clientY - rect.y);
+    return iframeTarget ?? target;
+  }
+
+  private async handleOverlayClick(event: PointerEvent): Promise<void> {
+    event.preventDefault()
+    event.stopPropagation();
+    this.eventSource = null;
+    await this.hide();
+
+    let target = document.elementFromPoint(event.clientX, event.clientY);
+    if (target && target !== event.currentTarget) {
+      target = this.mapIframeTarget(target, event);
+      target.dispatchEvent(new PointerEvent(event.type, event));
+      if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {
+        (target as HTMLInputElement|HTMLTextAreaElement).focus();
+      }
     }
   }
 
-  private initializeEvents(contentMenu: HTMLElement, level: number) {
-    contentMenu.querySelectorAll('li.context-menu-item').forEach((element: HTMLElement) => {
-      // click
-      element.addEventListener('click', (event: PointerEvent): void => {
-        event.preventDefault();
-        const target = event.currentTarget as HTMLElement;
-        if (target.classList.contains('context-menu-item-submenu')) {
-          this.openSubmenu(level, target);
-          return;
-        }
-        const { callbackAction, callbackModule, ...dataAttributesToPass } = target.dataset;
-        if (target.dataset.callbackModule) {
-          import(callbackModule + '.js').then(({ default: callbackModuleCallback }: {default: any}): void => {
-            callbackModuleCallback[callbackAction](this.record.table, this.record.uid, dataAttributesToPass);
-          });
-        } else if (ContextMenuActions && typeof (ContextMenuActions as any)[callbackAction] === 'function') {
-          (ContextMenuActions as any)[callbackAction](this.record.table, this.record.uid, dataAttributesToPass);
+  private async handleNodeKeyDown(event: KeyboardEvent, node: MenuItemInterface): Promise<void> {
+    const handledKeys = [
+      'ArrowDown',
+      'ArrowUp',
+      'ArrowLeft',
+      'ArrowRight',
+      'Home',
+      'End',
+      'Enter',
+      'Space',
+      'Escape',
+      'Tab',
+    ];
+    if (!handledKeys.includes(event.code) || event.altKey || event.ctrlKey) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+
+    const nodeList = this.getParralellNodesForNavigation(node);
+    const firstNode = this.getFirstNode(nodeList);
+    const lastNode = this.getLastNode(nodeList);
+    const parentNode = this.getParentNode(node);
+    const previousNode = this.getPreviousNode(node);
+    const nextNode = this.getNextNode(node);
+
+    switch (event.code) {
+      case 'Enter':
+      case 'Space':
+        if (node.type === 'submenu') {
+          this.showSubmenu(node);
+          await this.updateComplete;
+          const firstNode = this.getFirstNode(node.childItems);
+          if (firstNode) {
+            this.getElementFromNode(firstNode)?.focus();
+          }
         } else {
-          console.error('action: ' + callbackAction + ' not found');
+          this.getElementFromNode(node)?.click()
         }
-        this.hideAll();
-      });
-      // keyboard control
-      element.addEventListener('keydown', (event: KeyboardEvent): void => {
-        event.preventDefault();
-        const target = event.target as HTMLElement;
-        switch (event.key) {
-          case 'Down': // IE/Edge specific value
-          case 'ArrowDown':
-            this.setFocusToNextItem(target);
-            break;
-          case 'Up': // IE/Edge specific value
-          case 'ArrowUp':
-            this.setFocusToPreviousItem(target);
-            break;
-          case 'Right': // IE/Edge specific value
-          case 'ArrowRight':
-            if (target.classList.contains('context-menu-item-submenu')) {
-              this.openSubmenu(level, target);
-            } else {
-              return; // allow default behaviour of right key
+        break;
+      case 'Tab':
+        this.hide();
+        break;
+      case 'Escape':
+        if (parentNode) {
+          this.hideSubmenu(parentNode);
+          await this.updateComplete;
+          this.getElementFromNode(parentNode)?.focus();
+        } else {
+          this.hide();
+        }
+        break;
+      case 'ArrowUp':
+        if (previousNode) {
+          this.getElementFromNode(previousNode)?.focus();
+        }
+        break;
+      case 'ArrowDown':
+        if (nextNode) {
+          this.getElementFromNode(nextNode)?.focus();
+        }
+        break;
+      case 'ArrowRight':
+        if (node.type === 'submenu') {
+          this.showSubmenu(node);
+          await this.updateComplete;
+          const firstNode = this.getFirstNode(node.childItems);
+          if (firstNode) {
+            this.getElementFromNode(firstNode)?.focus();
+          }
+        }
+        break;
+      case 'ArrowLeft':
+        if (parentNode) {
+          this.hideSubmenu(parentNode);
+          await this.updateComplete;
+          this.getElementFromNode(parentNode)?.focus();
+        }
+        break;
+      case 'Home':
+        this.getElementFromNode(firstNode)?.focus();
+        break;
+      case 'End':
+        this.getElementFromNode(lastNode)?.focus();
+        break;
+      default:
+        return;
+    }
+
+    return;
+  }
+
+  private getNodeIdentifier(node: MenuItemInterface): string {
+    return node.__contextMenuIdentifier;
+  }
+
+  private getNodeParentIdentifier(node: MenuItemInterface): string {
+    return node.__contextMenuParentIdentifier;
+  }
+
+  private getNodePositionInSet(node: MenuItemInterface): number {
+    const nodeSet = this.getParralellNodesForNavigation(node);
+    return nodeSet.indexOf(node) + 1;
+  }
+
+  private getNodeSetSize(node: MenuItemInterface): number {
+    return this.getParralellNodesForNavigation(node).length;
+  }
+
+  private getParentNode(node: MenuItemInterface): MenuItemInterface | null {
+    const parentNodeIdentifier = this.getNodeParentIdentifier(node);
+    return this.getNodeByIdentifier(parentNodeIdentifier);
+  }
+
+  private getNodeByIdentifier(identifier: string): MenuItemInterface | null {
+    const flattenedNodes = this.flattenMenuItems(this.nodes);
+    return flattenedNodes.find((node: MenuItemInterface) => {
+      return this.getNodeIdentifier(node) === identifier;
+    }) ?? null;
+  }
+
+  private getPreviousNode(node: MenuItemInterface): MenuItemInterface | null {
+    const nodeList = this.getParralellNodesForNavigation(node);
+    const position = nodeList.indexOf(node);
+    const nextPosition = position - 1;
+
+    if (nodeList[nextPosition]) {
+      return nodeList[nextPosition];
+    }
+
+    return this.getLastNode(nodeList);
+  }
+
+  private getNextNode(node: MenuItemInterface): MenuItemInterface | null {
+    const nodeList = this.getParralellNodesForNavigation(node);
+    const position = nodeList.indexOf(node);
+    const nextPosition = position + 1;
+
+    if (nodeList[nextPosition]) {
+      return nodeList[nextPosition];
+    }
+
+    return this.getFirstNode(nodeList);
+  }
+
+  private getFirstNode(nodes: MenuItemInterface[]): MenuItemInterface | null {
+    return nodes.at(0) ?? null;
+  }
+
+  private getLastNode(nodes: MenuItemInterface[]): MenuItemInterface | null {
+    return nodes.at(-1) ?? null
+  }
+
+  private isNodeExpanded(node: MenuItemInterface): boolean {
+    return node.__expanded === true;
+  }
+
+  private getElementFromNode(node: MenuItemInterface): HTMLElement | null {
+    return this.querySelector('[data-contextmenu-id="' + this.getNodeIdentifier(node) + '"]');
+  }
+
+  private enhanceNodes(parentIdentifier: string, nodes: RawMenuItemInterface[]): MenuItemInterface[] {
+    const enhancedNodes = nodes.reduce((nodes: MenuItemInterface[], node: RawMenuItemInterface) => {
+      const contextMenuIdentifier = parentIdentifier + '_' + node.identifier;
+      const enhancedNode: MenuItemInterface = {
+        ...node,
+        __contextMenuIdentifier: contextMenuIdentifier,
+        __contextMenuParentIdentifier: parentIdentifier,
+        __expanded: false,
+        childItems: this.enhanceNodes(contextMenuIdentifier, Object.values(node.childItems ?? {})),
+      };
+
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const that = this;
+      return [
+        ...nodes,
+        new Proxy(enhancedNode, {
+          set<K extends keyof MenuItemInterface>(target: MenuItemInterface, key: K, value: MenuItemInterface[K]) {
+            if (target[key] !== value) {
+              target[key] = value as never;
+              that.requestUpdate();
             }
-            break;
-          case 'Home':
-            this.setFocusToFirstItem(target);
-            break;
-          case 'End':
-            this.setFocusToLastItem(target);
-            break;
-          case 'Enter':
-          case 'Space':
-            target.click();
-            break;
-          case 'Esc': // IE/Edge specific value
-          case 'Escape':
-          case 'Left': // IE/Edge specific value
-          case 'ArrowLeft':
-            this.hide(target.closest('.context-menu'));
-            break;
-          case 'Tab':
-            this.hideAll();
-            break;
-          default:
-            return; // return to allow default keypress behaviour
-        }
+            return true;
+          },
+        })
+      ];
+    }, []);
+
+    return enhancedNodes;
+  }
+
+  private calculateIframeOffset(contentWindow: Window, currentWindow: Window): { x: number, y: number } {
+    let x = 0, y = 0;
+
+    if (contentWindow === currentWindow) {
+      return { x, y }
+    }
+
+    const parentOffset = this.calculateIframeOffset(contentWindow.parent, currentWindow)
+    x += parentOffset.x;
+    y += parentOffset.y;
+
+    const iframe = contentWindow.frameElement;
+    if (iframe) {
+      const rect = iframe.getBoundingClientRect();
+      x += rect.x
+      y += rect.y
+    }
+
+    return { x, y }
+  }
+
+  private extractDataAttributesAndConvertToDataset(attributes: Record<string, unknown>): Record<string, string> {
+    const camelCase = (key: string) =>
+      key
+        .replace(/^data-/, '')
+        .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+
+    return Object.fromEntries(
+      Object.entries(attributes)
+        .filter(([key]) => key.startsWith('data-'))
+        .map(([key, value]) => [camelCase(key), String(value)])
+    );
+  };
+
+  private updateContextMenuPositions(): void {
+    if (this.contextMenuElements.length > 0) {
+      const firstMenuElement = this.contextMenuElements[0];
+      this.updateContextMenuPosition(firstMenuElement, this.rootPositionY, this.rootPositionX);
+
+      const subMenuElements = [...this.contextMenuElements].slice(1);
+      const documentDirection = this.getDocumentDirection();
+      subMenuElements.forEach((element) => {
+        const parentNode = this.getNodeByIdentifier(element.dataset.contextmenuParent);
+        const parentElement = this.getElementFromNode(parentNode);
+        const parentRect = parentElement.getBoundingClientRect();
+        const top = parentRect.top - 7;
+        const start = documentDirection === 'ltr' ? parentRect.right : parentRect.left;
+        this.updateContextMenuPosition(element, top, start);
       });
-    });
-  }
-
-  private setFocusToPreviousItem(currentItem: HTMLElement): void {
-    let previousItem = this.getItemBackward(currentItem.previousElementSibling);
-    if (!previousItem) {
-      previousItem = this.getLastItem(currentItem);
-    }
-    previousItem.focus();
-  }
-
-  private setFocusToNextItem(currentItem: HTMLElement): void {
-    let nextItem = this.getItemForward(currentItem.nextElementSibling);
-    if (!nextItem) {
-      nextItem = this.getFirstItem(currentItem);
-    }
-    nextItem.focus();
-  }
-
-  private setFocusToFirstItem(currentItem: HTMLElement): void {
-    const firstItem = this.getFirstItem(currentItem);
-    if (firstItem) {
-      firstItem.focus();
     }
   }
 
-  private setFocusToLastItem(currentItem: HTMLElement): void {
-    const lastItem = this.getLastItem(currentItem);
-    if (lastItem) {
-      lastItem.focus();
-    }
-  }
-
-  /**
-   * Returns passed element if it is a menu item, if not checks the previous elements until one is found.
-   */
-  private getItemBackward(element: Element): HTMLElement | null {
-    while (element &&
-      (!element.classList.contains('context-menu-item') || (element.getAttribute('tabindex') !== '-1'))) {
-      element = element.previousElementSibling;
-    }
-    return <HTMLElement>element;
-  }
-
-  /**
-   * Returns passed element if it is a menu item, if not checks the previous elements until one is found.
-   */
-  private getItemForward(item: Element): HTMLElement | null {
-    while (item &&
-      (!item.classList.contains('context-menu-item') || (item.getAttribute('tabindex') !== '-1'))) {
-      item = item.nextElementSibling;
-    }
-    return <HTMLElement>item;
-  }
-
-  private getFirstItem(item: Element): HTMLElement | null {
-    return this.getItemForward(item.parentElement.firstElementChild);
-  }
-
-  private getLastItem(item: Element): HTMLElement | null {
-    return this.getItemBackward(item.parentElement.lastElementChild);
-  }
-
-  private openSubmenu(level: number, item: HTMLElement): void {
-    if (this.eventSources.includes(item) === false) {
-      this.eventSources.push(item);
-    }
-
-    const contentMenu = document.querySelector('#contentMenu' + (level + 1)) as HTMLElement|null;
-    contentMenu.innerHTML = '';
-    contentMenu.appendChild(item.nextElementSibling.querySelector('.context-menu-group').cloneNode(true));
-    contentMenu.style.display = null;
-
-    const position = this.toPixel(this.getPosition(contentMenu));
-    contentMenu.style.top = position.top;
-    contentMenu.style.insetInlineStart = position.start;
-    (contentMenu.querySelector('.context-menu-item[tabindex="-1"]') as HTMLElement).focus();
-
-    this.initializeEvents(contentMenu, level);
-  }
-
-  private toPixel(position: MousePosition): { start: string; top: string; } {
-    return { start: Math.round(position.X) + 'px', top: Math.round(position.Y) + 'px' };
-  }
-
-  private getPosition(element: HTMLElement, position: MousePosition = null): MousePosition {
-
+  private updateContextMenuPosition(element: HTMLDivElement, startPositionY: number, startPositionX: number): void {
     const space = 10;
     const offset = 5;
-    const direction = document.querySelector('html').dir === 'rtl' ? 'rtl' : 'ltr';
-    const origin: HTMLElement|undefined|null = this.eventSources?.[this.eventSources.length - 1];
-
+    const direction = this.getDocumentDirection();
     const dimensions = {
       width: element.offsetWidth,
       height: element.offsetHeight
     };
-
     const windowDimentions = {
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: document.documentElement.clientWidth,
+      height: document.documentElement.clientHeight,
     };
 
     let
-      start : number = 0,
-      top : number = 0;
+      start: number = 0,
+      top: number = 0;
 
-    if (position !== null) {
-      top = position.Y;
-      start = direction === 'ltr' ? position.X : windowDimentions.width - position.X;
-    } else if (origin !== undefined && origin !== null) {
-      const boundingRect = origin.getBoundingClientRect();
-      top = boundingRect.y;
-      start = direction === 'ltr' ? boundingRect.x + boundingRect.width : windowDimentions.width - boundingRect.x;
-      if (origin.classList.contains('context-menu-item-submenu')) {
-        top -= 3 + offset;
-      }
-    } else {
-      top = this.mousePos.Y;
-      start = direction === 'ltr' ? this.mousePos.X : windowDimentions.width - this.mousePos.X;
-    }
-
+    top = startPositionY;
+    start = direction === 'ltr' ? startPositionX : windowDimentions.width - startPositionX;
     const canPlaceBelow = (top + dimensions.height + space + offset < windowDimentions.height);
     const canPlaceStart = (start + dimensions.width + space + offset < windowDimentions.width);
 
@@ -504,87 +691,38 @@ class ContextMenu {
       start += offset;
     }
 
-    return { X: start, Y: top };
+    element.style.top = Math.round(top) + 'px';
+    element.style.insetInlineStart = Math.round(start) + 'px';
   }
 
-  /**
-   * fills the context menu with content and displays it correctly
-   * depending on the mouse position
-   *
-   * @param {MenuItems} items The data that will be put in the menu
-   * @param {number} level The depth of the context menu
-   */
-  private drawMenu(items: MenuItems, level: number): Array<HTMLElement> {
-
-    const elements: Array<HTMLElement> = [];
-    for (const item of Object.values(items)) {
-      if (item.type === 'item') {
-        elements.push(ContextMenu.drawActionItem(item));
-      } else if (item.type === 'divider') {
-        const separator = document.createElement('li');
-        separator.role = 'separator';
-        separator.classList.add('context-menu-divider');
-        elements.push(separator);
-      } else if (item.type === 'submenu' || item.childItems) {
-        const submenuItem = document.createElement('li');
-        submenuItem.role = 'menuitem';
-        submenuItem.ariaHasPopup = 'true';
-        submenuItem.classList.add('context-menu-item', 'context-menu-item-submenu');
-        submenuItem.tabIndex = -1;
-        const submenuIcon = document.createElement('span');
-        submenuIcon.classList.add('context-menu-item-icon');
-        submenuIcon.innerHTML = item.icon;
-        submenuItem.appendChild(submenuIcon);
-        const submenuLabel = document.createElement('span');
-        submenuLabel.classList.add('context-menu-item-label');
-        submenuLabel.innerHTML = item.label;
-        submenuItem.appendChild(submenuLabel);
-        const submenuIndicator = document.createElement('span');
-        submenuIndicator.classList.add('context-menu-item-indicator');
-        submenuIndicator.innerHTML = '<typo3-backend-icon identifier="actions-chevron-' + (document.querySelector('html').dir === 'rtl' ? 'left' : 'right') + '" size="small"></typo3-backend-icon>';
-        submenuItem.appendChild(submenuIndicator);
-        elements.push(submenuItem);
-        const submenu = document.createElement('div');
-        submenu.classList.add('context-menu', 'contentMenu' + (level + 1));
-        submenu.style.display = 'none';
-        const submenuList = document.createElement('ul');
-        submenuList.role = 'menu';
-        submenuList.classList.add('context-menu-group');
-        this.drawMenu(item.childItems, 1).forEach((childItem) => {
-          submenuList.appendChild(childItem);
-        })
-        submenu.appendChild(submenuList);
-        elements.push(submenu);
+  private flattenMenuItems(nodes: MenuItemInterface[]): MenuItemInterface[] {
+    const items: MenuItemInterface[] = [];
+    for (const node of nodes) {
+      items.push(node);
+      if (node.childItems) {
+        items.push(...this.flattenMenuItems(node.childItems));
       }
     }
-    return elements;
+
+    return items;
   }
 
-  private storeMousePosition(event: MouseEvent): void {
-    this.mousePos = { X: event.pageX, Y: event.pageY };
-  }
-
-  private hide(element: HTMLElement|null): void {
-    if (element === null) {
-      return;
+  private getParralellNodesForNavigation(node: MenuItemInterface): MenuItemInterface[] {
+    const parentNode = this.getParentNode(node);
+    if (parentNode) {
+      return parentNode.childItems.filter(node => node.type !== 'divider')
     }
 
-    element.style.top = null;
-    element.style.insetInlineStart = null;
-    element.style.display = 'none';
-    const source = this.eventSources.pop();
-    if (source) {
-      source.focus()
-    }
+    return this.nodes.filter(node => node.type !== 'divider');
   }
 
-  /**
-   * Hides all context menus
-   */
-  private hideAll(): void {
-    this.hide(document.querySelector('#contentMenu0'));
-    this.hide(document.querySelector('#contentMenu1'));
+  private getDocumentDirection(): string {
+    return document.querySelector('html').dir === 'rtl' ? 'rtl' : 'ltr';
   }
 }
 
-export default new ContextMenu();
+declare global {
+  interface HTMLElementTagNameMap {
+    'typo3-backend-context-menu': ContextMenuElement;
+  }
+}

@@ -33,8 +33,8 @@ final class ImportCest extends AbstractCest
     private string $inModuleTabsBody = '#ImportExportController .tab-content';
     private string $inTabImport = '#import-import';
     private string $inFlashMessages = '.typo3-messages';
-    private string $contextMenuMore = '#contentMenu0 li.context-menu-item-submenu';
-    private string $contextMenuImport = '#contentMenu1 li.context-menu-item[data-callback-action=importT3d]';
+    private string $contextMenuMore = 'button[data-contextmenu-id="root_more"]';
+    private string $contextMenuImport = 'button[data-contextmenu-id="root_more_importT3d"]';
     private string $tabUpload = 'button[data-bs-target="#import-upload"]';
     private string $tabMessages = 'button[data-bs-target="#import-errors"]';
     private string $inputUploadFile = 'input[type=file]';
@@ -67,6 +67,7 @@ final class ImportCest extends AbstractCest
         $pageInPageTreeIcon = '//*[text()=\'' . $pageInPageTreeTitle . '\']/../../*[contains(@class, \'node-icon\')]';
 
         $I->click($pageInPageTreeIcon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->see($pageInPageTreeTitle, $this->inModuleHeader);
@@ -83,6 +84,7 @@ final class ImportCest extends AbstractCest
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/404_page_and_records.xml';
 
         $I->click($page1Icon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
@@ -127,6 +129,7 @@ final class ImportCest extends AbstractCest
         $I->switchToMainFrame();
 
         $I->click($page1Icon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
@@ -165,6 +168,7 @@ final class ImportCest extends AbstractCest
         $fixtureFilePath = 'Acceptance/Application/Impexp/Fixtures/404_page_and_records.xml';
 
         $I->click($page1Icon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
@@ -206,6 +210,7 @@ final class ImportCest extends AbstractCest
         $I->switchToMainFrame();
 
         $I->click($page1Icon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
@@ -249,6 +254,7 @@ final class ImportCest extends AbstractCest
         $I->switchToMainFrame();
 
         $I->click($page1Icon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuImport]);
         $I->switchToContentFrame();
         $I->waitForElementVisible($this->tabUpload);
