@@ -72,6 +72,10 @@ class ContextMenu
         $prevItemWasDivider = false;
 
         foreach ($items as $key => $item) {
+            // Assign the key as the identifier for each item.
+            // This is needed for the JavaScript to render a single node
+            $items[$key]['identifier'] = $key;
+
             if ($item['type'] === 'item') {
                 $canRender = true;
                 $prevItemWasDivider = false;

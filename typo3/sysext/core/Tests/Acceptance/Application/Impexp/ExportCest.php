@@ -26,8 +26,8 @@ use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
  */
 final class ExportCest extends AbstractCest
 {
-    private string $contextMenuExport = '[data-callback-action=exportT3d]';
-    private string $contextMenuMore = 'li.context-menu-item-submenu';
+    private string $contextMenuMore = 'button[data-contextmenu-id="root_more"]';
+    private string $contextMenuExport = 'button[data-contextmenu-id="root_more_exportT3d"]';
     private string $inModuleHeader = '.module-docheader';
     private string $inModuleTabs = '#ImportExportController .nav-tabs';
     private string $inModuleTabsBody = '#ImportExportController .tab-content';
@@ -48,6 +48,7 @@ final class ExportCest extends AbstractCest
         $selectedPageIcon = '//*[text()=\'' . $selectedPageTitle . '\']/../../*[contains(@class, \'node-icon\')]';
 
         $I->click($selectedPageIcon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($selectedPageTitle);
@@ -99,7 +100,9 @@ final class ExportCest extends AbstractCest
         $I->waitForText($recordPageTitle);
         $I->waitForElementNotVisible('#nprogress');
         $I->click($recordIcon, $recordTable);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
+        $I->switchToContentFrame();
         $I->waitForElementVisible($this->inTabConfiguration, 5);
         $I->see($rootPageTitle, $this->inModuleHeader);
         $I->dontSee($recordPageTitle, $this->inModuleHeader);
@@ -126,6 +129,7 @@ final class ExportCest extends AbstractCest
         $pageTree->openPath(['styleguide TCA demo']);
 
         $I->click($pageIcon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($exportPageTitle);
@@ -175,6 +179,7 @@ final class ExportCest extends AbstractCest
         $pageTree->openPath(['styleguide TCA demo']);
 
         $I->click($pageIcon);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
         $I->switchToContentFrame();
         $I->waitForText($exportPageTitle);
@@ -246,7 +251,9 @@ final class ExportCest extends AbstractCest
         $I->waitForElementNotVisible('#nprogress');
         $I->waitForText($rootPageTitle);
         $I->click($sysLanguageIcon, $sysLanguageTable);
+        $I->switchToMainFrame();
         $this->selectInContextMenu($I, [$this->contextMenuMore, $this->contextMenuExport]);
+        $I->switchToContentFrame();
 
         $I->waitForElementVisible($tabExport, 5);
         $I->canSee('No tree exported - only tables on the page.', $this->inModuleTabsBody);

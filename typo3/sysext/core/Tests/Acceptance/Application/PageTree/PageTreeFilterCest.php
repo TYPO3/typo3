@@ -95,8 +95,8 @@ final class PageTreeFilterCest
         $I->waitForText('inline mn', 5);
         $I->waitForElementClickable('//*[text()=\'inline mn\']');
         $I->clickWithRightButton('//*[text()=\'inline mn\']');
-        $I->waitForElement('[data-callback-action="deleteRecord"]');
-        $I->click('[data-callback-action="deleteRecord"]', '#contentMenu0');
+        $I->waitForElement('typo3-backend-context-menu button[data-contextmenu-id="root_delete"]');
+        $I->click('typo3-backend-context-menu button[data-contextmenu-id="root_delete"]');
 
         // don't use $modalDialog->clickButtonInDialog due to too low timeout
         $modalDialog->canSeeDialog();

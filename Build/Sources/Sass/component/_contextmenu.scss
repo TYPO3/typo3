@@ -19,6 +19,14 @@
     top: 0;
     inset-inline-start: 0;
 
+    &-overlay {
+        z-index: 1000;
+        background-color: transparent;
+        opacity: .1;
+        position: fixed;
+        inset: 0;
+    }
+
     &-group {
         position: relative;
         display: flex;
@@ -42,11 +50,15 @@
     &-item {
         position: relative;
         display: flex;
+        width: 100%;
         border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
         gap: .5em;
         padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
         cursor: pointer;
         text-decoration: none;
+        background-color: transparent;
+        text-align: start;
+        border: none;
 
         &:hover,
         &:focus {

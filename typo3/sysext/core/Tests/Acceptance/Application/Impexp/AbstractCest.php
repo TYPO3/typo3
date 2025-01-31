@@ -26,10 +26,9 @@ abstract class AbstractCest
 {
     protected function selectInContextMenu(ApplicationTester $I, array $path): void
     {
-        foreach ($path as $depth => $selector) {
-            $contextMenuId = sprintf('#contentMenu%d', $depth);
-            $I->waitForElementVisible($contextMenuId, 5);
-            $I->click($selector, $contextMenuId);
+        foreach ($path as $selector) {
+            $I->waitForElementVisible('typo3-backend-context-menu ' . $selector, 5);
+            $I->click($selector, 'typo3-backend-context-menu');
         }
     }
 
