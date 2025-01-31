@@ -918,7 +918,7 @@ class DataHandler
                         $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', -1, ['reason' => $this->BE_USER->errorMsg]);
                     } else {
                         // Here we fetch the PID of the record that we point to...
-                        $tempdata = $this->recordInfo($table, $id);
+                        $tempdata = BackendUtility::getRecord($table, $id, '*', '', false);
                         $theRealPid = $tempdata['pid'] ?? null;
                         // Use the new id of the versionized record we're trying to write to:
                         // (This record is a child record of a parent and has already been versionized.)
@@ -1165,7 +1165,7 @@ class DataHandler
             $fieldArray[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = $sortingInfo['sortNumber'];
         } else {
             // Here we fetch the PID of the record that we point to
-            $record = $this->recordInfo($table, abs($pid));
+            $record = BackendUtility::getRecord($table, abs($pid), '*', '', false);
             // Ensure that the "pid" is not a translated page ID, but the default page ID
             $fieldArray['pid'] = $this->getDefaultLanguagePageId($record['pid']);
         }
@@ -1203,7 +1203,7 @@ class DataHandler
         } else {
             $id = (int)$id;
             // We must use the current values as basis for this!
-            $currentRecord = ($checkValueRecord = $this->recordInfo($table, $id));
+            $currentRecord = ($checkValueRecord = BackendUtility::getRecord($table, $id, '*', '', false));
         }
 
         // Get original language record if available:
@@ -1217,7 +1217,7 @@ class DataHandler
                 if ((int)($currentRecord[$languageCapability->getLanguageField()->getName()] ?? 0) > 0
                     && (int)($currentRecord[$languageCapability->getTranslationOriginPointerField()->getName()] ?? 0) > 0
                 ) {
-                    $originalLanguageRecord = $this->recordInfo($table, $currentRecord[$languageCapability->getTranslationOriginPointerField()->getName()]);
+                    $originalLanguageRecord = BackendUtility::getRecord($table, $currentRecord[$languageCapability->getTranslationOriginPointerField()->getName()], '*', '', false);
                     BackendUtility::workspaceOL($table, $originalLanguageRecord);
                     $originalLanguage_diffStorage = json_decode(
                         (string)($currentRecord[$languageCapability->getDiffSourceField()->getName()] ?? ''),
@@ -1382,7 +1382,7 @@ class DataHandler
         $curValue = null;
         if ((int)$id !== 0) {
             // Get current value:
-            $curValueRec = $this->recordInfo($table, (int)$id);
+            $curValueRec = BackendUtility::getRecord($table, (int)$id, '*', '', false);
             // isset() won't work here, since values can be NULL
             if ($curValueRec !== null && array_key_exists($field, $curValueRec)) {
                 $curValue = $curValueRec[$field];
@@ -4564,7 +4564,7 @@ class DataHandler
             if ($defaultLanguagePageUid !== (int)$uid) {
                 // If the default language page has been moved, localized pages need to be moved to
                 // that pid and sorting, too.
-                $originalTranslationRecord = $this->recordInfo($table, $defaultLanguagePageUid);
+                $originalTranslationRecord = BackendUtility::getRecord($table, $defaultLanguagePageUid, '*', '', false);
                 $updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = $originalTranslationRecord[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()];
                 $destPid = $originalTranslationRecord['pid'];
             }
@@ -6598,7 +6598,7 @@ class DataHandler
                             case 'flex':
                                 if ($value === 'FlexForm_reference') {
                                     // This will fetch the new row for the element
-                                    $origRecordRow = $this->recordInfo($table, $theUidToUpdate);
+                                    $origRecordRow = BackendUtility::getRecord($table, $theUidToUpdate, '*', '', false);
                                     if (is_array($origRecordRow)) {
                                         BackendUtility::workspaceOL($table, $origRecordRow);
                                         // Get current data structure and value array:
@@ -7013,7 +7013,7 @@ class DataHandler
         if (!MathUtility::canBeInterpretedAsInteger($uid) && !empty($this->substNEWwithIDs[$uid])) {
             $uid = $this->substNEWwithIDs[$uid];
         }
-        $record = $this->recordInfo($table, $uid);
+        $record = BackendUtility::getRecord($table, $uid, '*', '', false);
         if (!$table || !$uid || !$field || !is_array($record)) {
             return;
         }
@@ -7614,7 +7614,9 @@ class DataHandler
      */
     public function getRecordProperties($table, $id, $noWSOL = false)
     {
-        $row = $table === 'pages' && !$id ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0] : $this->recordInfo($table, $id);
+        $row = $table === 'pages' && !$id
+            ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0]
+            : BackendUtility::getRecord($table, $id, '*', '', false);
         if (!$noWSOL) {
             BackendUtility::workspaceOL($table, $row);
         }
@@ -7633,7 +7635,7 @@ class DataHandler
     {
         if ($this->tcaSchemaFactory->has($table)) {
             $liveUid = ($row['t3ver_oid'] ?? null) ?: ($row['uid'] ?? null);
-            $fullRow = $this->recordInfo($table, $liveUid);
+            $fullRow = BackendUtility::getRecord($table, $liveUid, '*', '', false);
             return [
                 'header' => BackendUtility::getRecordTitle($table, $fullRow ?: $row),
                 'pid' => $row['pid'] ?? null,
@@ -8585,7 +8587,7 @@ class DataHandler
         if (!$this->tcaSchemaFactory->has($table)) {
             return;
         }
-        $curData = $this->recordInfo($table, $uid);
+        $curData = BackendUtility::getRecord($table, $uid, '*', '', false);
         $newData = [];
         foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
             if ($field->isType(TableColumnType::INPUT, TableColumnType::EMAIL) && (string)$curData[$field->getName()] !== '') {
@@ -8613,7 +8615,7 @@ class DataHandler
      */
     protected function fixUniqueInSite(string $table, int $uid): bool
     {
-        $curData = $this->recordInfo($table, $uid);
+        $curData = BackendUtility::getRecord($table, $uid, '*', '', false);
         $workspaceId = $this->BE_USER->workspace;
         $newData = [];
         foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
@@ -8669,7 +8671,7 @@ class DataHandler
         if (!isset($schema->getRawConfiguration()['copyAfterDuplFields'])) {
             return [];
         }
-        if (($prevData = $this->recordInfo($table, $prevUid)) === null) {
+        if (($prevData = BackendUtility::getRecord($table, $prevUid, '*', '', false)) === null) {
             return [];
         }
 
@@ -9349,7 +9351,7 @@ class DataHandler
     {
         $languageCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
         $localizationParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
-        $row = $this->recordInfo('pages', $pageId);
+        $row = BackendUtility::getRecord('pages', $pageId, '*', '', false);
         $localizationParent = (int)($row[$localizationParentFieldName] ?? 0);
         if ($localizationParent > 0) {
             return $localizationParent;
