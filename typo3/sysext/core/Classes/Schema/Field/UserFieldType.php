@@ -31,4 +31,10 @@ final readonly class UserFieldType extends AbstractFieldType
     {
         return $this->configuration['renderType'] ?? '';
     }
+
+    public function isSearchable(): false
+    {
+        return false;
+    }
+
 }

@@ -58,6 +58,11 @@ final readonly class FileFieldType extends AbstractFieldType implements Relation
         return $this->relations;
     }
 
+    public function isSearchable(): false
+    {
+        return false;
+    }
+
     public function getRelationshipType(): RelationshipType
     {
         return RelationshipType::fromTcaConfiguration($this->configuration);

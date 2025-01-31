@@ -33,6 +33,7 @@ interface FieldTypeInterface
     public function supportsAccessControl(): bool;
     public function isRequired(): bool;
     public function isNullable(): bool;
+    public function isSearchable(): bool;
     public function getDisplayConditions(): array|string;
     public function getDefaultValue(): mixed;
     public function getTranslationBehaviour(): FieldTranslationBehaviour;

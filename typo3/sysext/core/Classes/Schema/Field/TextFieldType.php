@@ -27,6 +27,11 @@ final readonly class TextFieldType extends AbstractFieldType
         return 'text';
     }
 
+    public function isSearchable(): true
+    {
+        return true;
+    }
+
     public function isRichText(): bool
     {
         return $this->configuration['enableRichtext'] ?? false;

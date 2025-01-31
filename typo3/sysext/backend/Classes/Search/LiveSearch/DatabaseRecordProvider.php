@@ -40,6 +40,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
+use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -333,52 +335,33 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     }
 
     /**
-     * Get all fields from given table where we can search for.
-     *
-     * @return string[]
-     */
-    protected function extractSearchableFieldsFromTable(string $tableName): array
-    {
-        // Get the list of fields to search in from the TCA, if any
-        return $this->searchableSchemaFieldsCollector->getUniqueFieldList($tableName, [], true);
-    }
-
-    /**
      * @return CompositeExpression[]
      */
     protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder, string $tableName): array
     {
-        $fieldsToSearchWithin = $this->extractSearchableFieldsFromTable($tableName);
-        if ($fieldsToSearchWithin === []) {
-            return [];
-        }
-
+        $fieldsToSearchWithin = $this->searchableSchemaFieldsCollector->getFields($tableName);
         $constraints = [];
 
         // If the search string is a simple integer, assemble an equality comparison
         if (MathUtility::canBeInterpretedAsInteger($queryString)) {
-            foreach ($fieldsToSearchWithin as $fieldName) {
-                if ($fieldName !== 'uid'
-                    && $fieldName !== 'pid'
-                    && !isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])
-                ) {
-                    continue;
-                }
-                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
-                $fieldType = $fieldConfig['type'] ?? '';
-
-                // Assemble the search condition only if the field is an integer, or is uid or pid
-                if ($fieldName === 'uid'
-                    || $fieldName === 'pid'
-                    || ($fieldType === 'number' && ($fieldConfig['format'] ?? 'integer') === 'integer')
-                    || ($fieldType === 'datetime' && !in_array($fieldConfig['dbType'] ?? '', QueryHelper::getDateTimeTypes(), true))
-                ) {
+            // Add uid and pid constraint
+            $constraints[] = $queryBuilder->expr()->eq(
+                'uid',
+                $queryBuilder->createNamedParameter($queryString, Connection::PARAM_INT)
+            );
+            $constraints[] = $queryBuilder->expr()->eq(
+                'pid',
+                $queryBuilder->createNamedParameter($queryString, Connection::PARAM_INT)
+            );
+            foreach ($fieldsToSearchWithin as $fieldName => $field) {
+                // Assemble the search condition only if the field is an integer
+                if ($field instanceof NumberFieldType || $field instanceof DateTimeFieldType) {
                     $constraints[] = $queryBuilder->expr()->eq(
                         $fieldName,
                         $queryBuilder->createNamedParameter($queryString, Connection::PARAM_INT)
                     );
-                } elseif ($this->fieldTypeIsSearchable($fieldType)) {
-                    // Otherwise and if the field makes sense to be searched, assemble a like condition
+                } else {
+                    // Otherwise assemble a like condition
                     $constraints[] = $queryBuilder->expr()->like(
                         $fieldName,
                         $queryBuilder->createNamedParameter(
@@ -389,12 +372,23 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             }
         } else {
             $like = '%' . $queryBuilder->escapeLikeWildcards($queryString) . '%';
-            foreach ($fieldsToSearchWithin as $fieldName) {
-                if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
-                    continue;
-                }
-                $fieldConfig = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? [];
-                $fieldType = $fieldConfig['type'] ?? '';
+            // Add uid and pid constraints
+            $constraints[] = $queryBuilder->expr()->and(
+                $queryBuilder->expr()->comparison(
+                    'LOWER(' . $queryBuilder->quoteIdentifier('uid') . ')',
+                    'LIKE',
+                    $queryBuilder->createNamedParameter(mb_strtolower($like))
+                )
+            );
+            $constraints[] = $queryBuilder->expr()->and(
+                $queryBuilder->expr()->comparison(
+                    'LOWER(' . $queryBuilder->quoteIdentifier('pid') . ')',
+                    'LIKE',
+                    $queryBuilder->createNamedParameter(mb_strtolower($like))
+                )
+            );
+            foreach ($fieldsToSearchWithin as $fieldName => $field) {
+                $fieldConfig = $field->getConfiguration();
 
                 // Check whether search should be case-sensitive or not
                 $searchConstraint = $queryBuilder->expr()->and(
@@ -422,31 +416,12 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                         );
                     }
                 }
-                // Assemble the search condition only if the field makes sense to be searched
-                if ($this->fieldTypeIsSearchable($fieldType) && $searchConstraint->count() !== 0) {
-                    $constraints[] = $searchConstraint;
-                }
+
+                $constraints[] = $searchConstraint;
             }
         }
 
         return $constraints;
-    }
-
-    protected function fieldTypeIsSearchable(string $fieldType): bool
-    {
-        $searchableFieldTypes = [
-            'input',
-            'text',
-            'json',
-            'flex',
-            'email',
-            'link',
-            'color',
-            'slug',
-            'uuid',
-        ];
-
-        return in_array($fieldType, $searchableFieldTypes, true);
     }
 
     /**

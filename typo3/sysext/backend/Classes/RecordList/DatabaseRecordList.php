@@ -2575,9 +2575,7 @@ class DatabaseRecordList
             $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
             foreach ($searchableFields as $field) {
                 $fieldConfig = $field->getConfiguration();
-                if (($field instanceof NumberFieldType && $field->getFormat() === 'integer')
-                    || ($field instanceof DateTimeFieldType && !$field->getPersistenceType())
-                ) {
+                if ($field instanceof NumberFieldType || $field instanceof DateTimeFieldType) {
                     if (!isset($fieldConfig['search']['pidonly'])
                         || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
                     ) {
@@ -2586,7 +2584,7 @@ class DatabaseRecordList
                             $expressionBuilder->eq($tablePidField, $currentPid)
                         );
                     }
-                } elseif ($this->isTextFieldType($field->getType())) {
+                } else {
                     $constraints[] = $expressionBuilder->like(
                         $field->getName(),
                         $queryBuilder->quote('%' . $this->searchString . '%')
@@ -2619,9 +2617,7 @@ class DatabaseRecordList
                         );
                     }
                 }
-                if ($this->isTextFieldType($field->getType()) && $searchConstraint->count() !== 0) {
-                    $constraints[] = $searchConstraint;
-                }
+                $constraints[] = $searchConstraint;
             }
         }
         // If no search field conditions have been built ensure no results are returned
@@ -3368,22 +3364,5 @@ class DatabaseRecordList
         if (!($cells['secondary']['divider'] ?? false)) {
             $this->addActionToCellGroup($cells, '<hr class="dropdown-divider">', 'divider');
         }
-    }
-
-    protected function isTextFieldType(string $fieldType): bool
-    {
-        $textFieldTypes = [
-            'input',
-            'text',
-            'json',
-            'flex',
-            'email',
-            'link',
-            'slug',
-            'color',
-            'uuid',
-        ];
-
-        return in_array($fieldType, $textFieldTypes, true);
     }
 }

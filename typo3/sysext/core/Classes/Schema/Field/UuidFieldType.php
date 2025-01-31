@@ -27,6 +27,11 @@ final readonly class UuidFieldType extends AbstractFieldType
         return 'uuid';
     }
 
+    public function isSearchable(): true
+    {
+        return true;
+    }
+
     public function getVersion(): int
     {
         return in_array($this->configuration['version'] ?? 0, [4, 6, 7], true) ? $this->configuration['version'] : 4;

@@ -27,6 +27,11 @@ final readonly class SlugFieldType extends AbstractFieldType
         return 'slug';
     }
 
+    public function isSearchable(): true
+    {
+        return true;
+    }
+
     public function getGeneratorOption(string $optionName): array|string|bool|null
     {
         return $this->configuration['generatorOptions'][$optionName] ?? null;

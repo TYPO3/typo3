@@ -26,4 +26,10 @@ final readonly class ImageManipulationFieldType extends AbstractFieldType
     {
         return 'imageManipulation';
     }
+
+    public function isSearchable(): false
+    {
+        return false;
+    }
+
 }

@@ -31,6 +31,11 @@ final readonly class StaticSelectFieldType extends AbstractFieldType
         return 'select';
     }
 
+    public function isSearchable(): false
+    {
+        return false;
+    }
+
     /**
      * @return SelectItem[]
      */

@@ -44,4 +44,10 @@ final readonly class GroupFieldType extends AbstractFieldType implements Relatio
     {
         return RelationshipType::fromTcaConfiguration($this->configuration);
     }
+
+    public function isSearchable(): false
+    {
+        return false;
+    }
+
 }
