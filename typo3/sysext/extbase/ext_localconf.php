@@ -13,7 +13,6 @@ config.tx_extbase {
     }
     persistence {
         enableAutomaticCacheClearing = 1
-        updateReferenceIndex = 0
     }
 }
 ');

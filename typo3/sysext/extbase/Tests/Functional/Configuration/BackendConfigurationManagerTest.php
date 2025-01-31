@@ -46,7 +46,6 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             'persistence' => [
                 'storagePid' => '123',
                 'enableAutomaticCacheClearing' => '1',
-                'updateReferenceIndex' => '0',
             ],
             'controllerConfiguration' => [],
             'mvc' => [
@@ -78,7 +77,6 @@ final class BackendConfigurationManagerTest extends FunctionalTestCase
             'persistence' => [
                 'storagePid' => '456',
                 'enableAutomaticCacheClearing' => '1',
-                'updateReferenceIndex' => '0',
             ],
             'controllerConfiguration' => [],
             'mvc' => [

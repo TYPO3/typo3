@@ -566,17 +566,7 @@ class Backend implements BackendInterface, SingletonInterface
             $this->eventDispatcher->dispatch(new EntityAddedToPersistenceEvent($object));
         }
 
-        $updateRefIndex = true;
-        try {
-            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-            $updateRefIndex = ($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1';
-        } catch (NoServerRequestGivenException) {
-            // fallback: yes, update the reference index if configuration manager has not been initialized
-        }
-        if ($updateRefIndex) {
-            $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $uid);
-        }
-
+        $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $uid);
         $this->session->registerObject($object, $identifier);
         if ($uid >= 1) {
             $this->eventDispatcher->dispatch(new EntityFinalizedAfterPersistenceEvent($object));
@@ -703,17 +693,7 @@ class Backend implements BackendInterface, SingletonInterface
         }
         $this->storageBackend->updateRow($dataMap->tableName, $row);
         $this->eventDispatcher->dispatch(new EntityUpdatedInPersistenceEvent($object));
-
-        $updateRefIndex = true;
-        try {
-            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-            $updateRefIndex = ($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1';
-        } catch (NoServerRequestGivenException) {
-            // fallback: yes, update the reference index if configuration manager has not been initialized
-        }
-        if ($updateRefIndex) {
-            $this->referenceIndex->updateRefIndexTable($dataMap->tableName, (int)$row['uid']);
-        }
+        $this->referenceIndex->updateRefIndexTable($dataMap->tableName, (int)$row['uid']);
     }
 
     /**
@@ -780,17 +760,7 @@ class Backend implements BackendInterface, SingletonInterface
         $this->eventDispatcher->dispatch(new EntityRemovedFromPersistenceEvent($object));
 
         $this->removeRelatedObjects($object);
-
-        $updateRefIndex = true;
-        try {
-            $frameworkConfiguration = $this->configurationManager->getConfiguration(ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK);
-            $updateRefIndex = ($frameworkConfiguration['persistence']['updateReferenceIndex'] ?? '') === '1';
-        } catch (NoServerRequestGivenException) {
-            // fallback: yes, update the reference index if configuration manager has not been initialized
-        }
-        if ($updateRefIndex) {
-            $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $object->getUid());
-        }
+        $this->referenceIndex->updateRefIndexTable($dataMap->tableName, $object->getUid());
     }
 
     /**
