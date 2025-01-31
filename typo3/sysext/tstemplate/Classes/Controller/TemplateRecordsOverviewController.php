@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Site\Entity\Site;
@@ -92,6 +93,8 @@ class TemplateRecordsOverviewController extends AbstractTemplateModuleController
         $result = $queryBuilder
             ->select('uid', 'pid', 'title', 'root', 'hidden', 'starttime', 'endtime')
             ->from('sys_template')
+            // sys_template shouldn't exist pid 0, they'll be ignored in FE anyway. Ignore them.
+            ->where($queryBuilder->expr()->gt('pid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)))
             ->orderBy('sys_template.pid')
             ->addOrderBy('sys_template.sorting')
             ->executeQuery();
