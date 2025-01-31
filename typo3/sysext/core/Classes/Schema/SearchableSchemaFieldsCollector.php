@@ -30,22 +30,37 @@ readonly class SearchableSchemaFieldsCollector
 {
     public function __construct(private TcaSchemaFactory $schemaFactory) {}
 
-    public function getFields(string $schemaName): FieldCollection
+    public function getFields(string $schemaName, array $searchFields = []): FieldCollection
     {
         if (!$this->schemaFactory->has($schemaName)) {
             return new FieldCollection();
         }
         $schema = $this->schemaFactory->get($schemaName);
-        $searchFields = (string)($schema->getRawConfiguration()['searchFields'] ?? '');
-        return $searchFields !== '' ? $schema->getFields(...GeneralUtility::trimExplode(',', $searchFields, true)) : new FieldCollection();
+        $searchableFields = [];
+        foreach ($schema->getFields() as $field) {
+            if ($field->isSearchable()) {
+                $searchableFields[$field->getName()] = $field;
+            }
+        }
+        $searchFields = $searchFields !== [] ? $searchFields : GeneralUtility::trimExplode(',', (string)($schema->getRawConfiguration()['searchFields'] ?? ''), true);
+        if ($searchFields === []) {
+            // No searchFields defined, return all possible fields based on isSearchable() return value
+            return new FieldCollection($searchableFields);
+        }
+        $searchableFieldnames = array_keys($searchableFields);
+        // Filter given searchFields for actually searchable fields, based on isSearchable() return value
+        return new FieldCollection(array_filter(
+            iterator_to_array($schema->getFields(...$searchFields)->getIterator()),
+            static fn(FieldTypeInterface $field): bool => in_array($field->getName(), $searchableFieldnames, true)
+        ));
     }
 
     /**
      * @return string[]
      */
-    public function getFieldNames(string $schemaName): array
+    public function getFieldNames(string $schemaName, array $searchFields = []): array
     {
-        return array_map(static fn(FieldTypeInterface $field) => $field->getName(), iterator_to_array($this->getFields($schemaName)));
+        return array_map(static fn(FieldTypeInterface $field) => $field->getName(), iterator_to_array($this->getFields($schemaName, $searchFields)));
     }
 
     /**
@@ -58,6 +73,7 @@ readonly class SearchableSchemaFieldsCollector
             $existingFieldList[] = 'uid';
             $existingFieldList[] = 'pid';
         }
+        // @todo should existing fields also be validated?
         return array_unique(array_merge($existingFieldList, $this->getFieldNames($schemaName)));
     }
 }

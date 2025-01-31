@@ -26,4 +26,9 @@ final readonly class InputFieldType extends AbstractFieldType
     {
         return 'input';
     }
+
+    public function isSearchable(): true
+    {
+        return true;
+    }
 }

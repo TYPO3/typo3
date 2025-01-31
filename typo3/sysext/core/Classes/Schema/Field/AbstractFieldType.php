@@ -67,6 +67,8 @@ abstract readonly class AbstractFieldType implements FieldTypeInterface
         return (bool)($this->configuration['nullable'] ?? false);
     }
 
+    abstract public function isSearchable(): bool;
+
     public function getDefaultValue(): mixed
     {
         return $this->configuration['default'] ?? null;

@@ -451,6 +451,7 @@ readonly class RemoteServer
      */
     protected function getSuitableFields(string $table, array $row): array
     {
+        // @todo Usage of searchableSchemaFieldsCollector seems like a misuse here, or at least it's unexpected
         return $this->searchableSchemaFieldsCollector->getUniqueFieldList(
             $table,
             $this->visibleSchemaFieldsCollector->getFieldNames($table, $row),

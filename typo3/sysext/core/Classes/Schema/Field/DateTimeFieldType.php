@@ -34,6 +34,11 @@ final readonly class DateTimeFieldType extends AbstractFieldType
         return $this->configuration['format'];
     }
 
+    public function isSearchable(): bool
+    {
+        return !$this->getPersistenceType();
+    }
+
     public function getPersistenceType(): ?string
     {
         return in_array($this->configuration['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $this->configuration['dbType'] : null;

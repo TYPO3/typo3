@@ -26,4 +26,9 @@ final readonly class PassthroughFieldType extends AbstractFieldType
     {
         return 'passthrough';
     }
+
+    public function isSearchable(): false
+    {
+        return false;
+    }
 }

@@ -35,6 +35,11 @@ final readonly class CategoryFieldType extends AbstractFieldType implements Rela
         return 'category';
     }
 
+    public function isSearchable(): false
+    {
+        return false;
+    }
+
     public function getTreeConfiguration(): array
     {
         return $this->configuration['treeConfig'] ?? [];

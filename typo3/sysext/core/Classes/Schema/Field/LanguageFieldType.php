@@ -26,4 +26,10 @@ final readonly class LanguageFieldType extends AbstractFieldType
     {
         return 'language';
     }
+
+    public function isSearchable(): false
+    {
+        return false;
+    }
+
 }

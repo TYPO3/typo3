@@ -26,4 +26,10 @@ final readonly class JsonFieldType extends AbstractFieldType
     {
         return 'json';
     }
+
+    public function isSearchable(): true
+    {
+        return true;
+    }
+
 }

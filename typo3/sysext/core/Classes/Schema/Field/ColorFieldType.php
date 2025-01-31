@@ -26,4 +26,9 @@ final readonly class ColorFieldType extends AbstractFieldType
     {
         return 'color';
     }
+
+    public function isSearchable(): true
+    {
+        return true;
+    }
 }
