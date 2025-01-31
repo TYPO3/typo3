@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -32,12 +31,10 @@ final class FileExtensionFilterTest extends UnitTestCase
     #[Test]
     public function areInlineChildrenFilteredWithInvalidParameters(): void
     {
-        $dataHandlerMock = $this->createMock(DataHandler::class);
-        $dataHandlerMock->expects(self::never())->method('deleteAction');
         $resourceFactoryMock = $this->createMock(ResourceFactory::class);
         $resourceFactoryMock->expects(self::never())->method('getFileReferenceObject');
         GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
-        (new FileExtensionFilter())->filter([0, '', null, false], '', '', $dataHandlerMock);
+        (new FileExtensionFilter())->filter([0, '', null, false], '', '');
     }
 
     public static function extensionFilterIgnoresCaseInAllowedExtensionCheckDataProvider(): array
@@ -69,10 +66,10 @@ final class FileExtensionFilterTest extends UnitTestCase
         string $disallowedExtensions,
         bool $isAllowed
     ): void {
-        $filter = $this->getAccessibleMock(FileExtensionFilter::class, null);
+        $filter = new FileExtensionFilter();
         $filter->setAllowedFileExtensions($allowedExtensions);
         $filter->setDisallowedFileExtensions($disallowedExtensions);
-        $result = $filter->_call('isAllowed', $fileExtension);
+        $result = $filter->isAllowed($fileExtension);
         self::assertEquals($isAllowed, $result);
     }
 }
