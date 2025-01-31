@@ -84,7 +84,7 @@ class BackendUtility
      * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return array|null Returns the row if found, otherwise NULL
      */
-    public static function getRecord($table, $uid, $fields = '*', $where = '', $useDeleteClause = true): ?array
+    public static function getRecord(string $table, $uid, $fields = '*', $where = '', $useDeleteClause = true): ?array
     {
         if (empty($GLOBALS['TCA'][$table])
             || !MathUtility::canBeInterpretedAsInteger($uid)
@@ -98,7 +98,7 @@ class BackendUtility
             return null;
         }
         $uid = (int)$uid;
-        $queryBuilder = static::getQueryBuilderForTable($table);
+        $queryBuilder = self::getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
         if ($useDeleteClause) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -214,11 +214,10 @@ class BackendUtility
      * @return string WHERE clause part
      * @internal should only be used from within TYPO3 Core, but DefaultRestrictionHandler is recommended as alternative
      */
-    public static function BEenableFields($table, $inv = false)
+    public static function BEenableFields(string $table, $inv = false): string
     {
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
-        $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($table)
+        $expressionBuilder = self::getConnectionForTable($table)
             ->getExpressionBuilder();
         $query = $expressionBuilder->and();
         $invQuery = $expressionBuilder->or();
@@ -276,15 +275,14 @@ class BackendUtility
      * @param string $andWhereClause Optional additional WHERE clause (default: '')
      * @return mixed Multidimensional array with selected records, empty array if none exists and FALSE if table is not localizable
      */
-    public static function getRecordLocalization($table, $uid, $language, $andWhereClause = '')
+    public static function getRecordLocalization(string $table, $uid, $language, $andWhereClause = '')
     {
         $recordLocalization = false;
 
         if (self::isTableLocalizable($table)) {
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($table);
+            $queryBuilder = self::getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
@@ -422,7 +420,7 @@ class BackendUtility
             /** @var Statement $statement */
             $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
             if (!$statement) {
-                $queryBuilder = static::getQueryBuilderForTable('pages');
+                $queryBuilder = self::getQueryBuilderForTable('pages');
                 $queryBuilder->getRestrictions()
                              ->removeAll()
                              ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -491,7 +489,7 @@ class BackendUtility
         if ($pageUid === 0) {
             return [];
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = self::getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, self::getBackendUserAuthentication()->workspace));
@@ -596,7 +594,7 @@ class BackendUtility
      * @param string $table The table to check
      * @return bool Whether a table is localizable
      */
-    public static function isTableLocalizable($table)
+    public static function isTableLocalizable(string $table): bool
     {
         $isLocalizable = false;
         if (isset($GLOBALS['TCA'][$table]['ctrl']) && is_array($GLOBALS['TCA'][$table]['ctrl'])) {
@@ -842,7 +840,7 @@ class BackendUtility
      * @param string $where Additional where clause
      * @return array Array of sorted records
      */
-    protected static function getRecordsSortedByTitle(array $fields, $table, $titleField, $where = '')
+    protected static function getRecordsSortedByTitle(array $fields, string $table, $titleField, $where = ''): array
     {
         $fieldsIndex = array_flip($fields);
         // Make sure the titleField is amongst the fields when getting sorted
@@ -850,7 +848,7 @@ class BackendUtility
 
         $result = [];
 
-        $queryBuilder = static::getQueryBuilderForTable($table);
+        $queryBuilder = self::getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -2312,7 +2310,7 @@ class BackendUtility
      * @param int $pid Record pid
      * @internal
      */
-    public static function lockRecords($table = '', $uid = 0, $pid = 0)
+    public static function lockRecords(string $table = '', $uid = 0, $pid = 0): void
     {
         $beUser = static::getBackendUserAuthentication();
         if (isset($beUser->user['uid'])) {
@@ -2327,15 +2325,13 @@ class BackendUtility
                     'username' => $beUser->user['username'],
                     'record_pid' => $pid,
                 ];
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable('sys_lockedrecords')
+                self::getConnectionForTable('sys_lockedrecords')
                     ->insert(
                         'sys_lockedrecords',
                         $fieldsValues
                     );
             } else {
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable('sys_lockedrecords')
+                self::getConnectionForTable('sys_lockedrecords')
                     ->delete(
                         'sys_lockedrecords',
                         ['userid' => (int)$userId]
@@ -2366,7 +2362,7 @@ class BackendUtility
         } else {
             $lockedRecords = [];
 
-            $queryBuilder = static::getQueryBuilderForTable('sys_lockedrecords');
+            $queryBuilder = self::getQueryBuilderForTable('sys_lockedrecords');
             $result = $queryBuilder
                 ->select('*')
                 ->from('sys_lockedrecords')
@@ -2590,7 +2586,7 @@ class BackendUtility
     {
         if ($count === null && MathUtility::canBeInterpretedAsInteger($ref)) {
             // MathUtility::canBeInterpretedAsInteger($ref) and no method type hint for b/w compat.
-            $queryBuilder = static::getQueryBuilderForTable('sys_refindex');
+            $queryBuilder = self::getQueryBuilderForTable('sys_refindex');
             $queryBuilder->count('*')->from('sys_refindex')
                 ->where(
                     $queryBuilder->expr()->eq('ref_table', $queryBuilder->createNamedParameter($table)),
@@ -2615,13 +2611,13 @@ class BackendUtility
      * @param string $msg Message with %s, eg. "This record has %s translation(s) which will be deleted, too!
      * @return string Output string (or int count value if no msg string specified)
      */
-    public static function translationCount($table, $ref, $msg = '')
+    public static function translationCount(string $table, $ref, $msg = ''): string
     {
         $count = 0;
         if (($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null)
             && ($GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null)
         ) {
-            $queryBuilder = static::getQueryBuilderForTable($table);
+            $queryBuilder = self::getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
@@ -2667,13 +2663,13 @@ class BackendUtility
      * @internal should only be used from within TYPO3 Core
      */
     public static function selectVersionsOfRecord(
-        $table,
+        string $table,
         $uid,
         $fields = '*',
         $workspace = 0,
         $includeDeletedRecords = false,
         $row = null
-    ) {
+    ): ?array {
         if (!static::isTableWorkspaceEnabled($table)) {
             return null;
         }
@@ -2692,7 +2688,7 @@ class BackendUtility
             }
         }
 
-        $queryBuilder = static::getQueryBuilderForTable($table);
+        $queryBuilder = self::getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
 
         // build fields to select
@@ -2828,49 +2824,50 @@ class BackendUtility
      * @param string $fields Field list to select
      * @return array|bool If found, return record, otherwise false
      */
-    public static function getWorkspaceVersionOfRecord($workspace, $table, $uid, $fields = '*')
+    public static function getWorkspaceVersionOfRecord($workspace, string $table, $uid, $fields = '*')
     {
-        if (ExtensionManagementUtility::isLoaded('workspaces')) {
-            if ($workspace !== 0 && self::isTableWorkspaceEnabled($table)) {
-                // Select workspace version of record:
-                $queryBuilder = static::getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()
-                    ->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+            return false;
+        }
+        if ($workspace !== 0 && self::isTableWorkspaceEnabled($table)) {
+            // Select workspace version of record:
+            $queryBuilder = self::getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()
+                ->removeAll()
+                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-                // build fields to select
-                $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields));
+            // build fields to select
+            $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields));
 
-                $row = $queryBuilder
-                    ->from($table)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            't3ver_wsid',
-                            $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->or(
-                            // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                            $queryBuilder->expr()->and(
-                                $queryBuilder->expr()->eq(
-                                    'uid',
-                                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                                ),
-                                $queryBuilder->expr()->eq(
-                                    't3ver_state',
-                                    $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
-                                )
+            $row = $queryBuilder
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->or(
+                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                        $queryBuilder->expr()->and(
+                            $queryBuilder->expr()->eq(
+                                'uid',
+                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                             ),
                             $queryBuilder->expr()->eq(
-                                't3ver_oid',
-                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                                't3ver_state',
+                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                             )
+                        ),
+                        $queryBuilder->expr()->eq(
+                            't3ver_oid',
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         )
                     )
-                    ->executeQuery()
-                    ->fetchAssociative();
+                )
+                ->executeQuery()
+                ->fetchAssociative();
 
-                return $row;
-            }
+            return $row;
         }
         return false;
     }
@@ -2895,7 +2892,7 @@ class BackendUtility
         $connection = self::getConnectionForTable($table);
         $maxChunk = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
         foreach (array_chunk($liveRecordIds, (int)floor($maxChunk / 2)) as $liveRecordIdChunk) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder = self::getQueryBuilderForTable($table);
             $doOverlaysForRecordsStatement = $queryBuilder
                 ->select('t3ver_oid', 'uid')
                 ->from($table)
@@ -2990,7 +2987,7 @@ class BackendUtility
      * @param string $table Name of the table to be checked
      * @return bool
      */
-    public static function isTableWorkspaceEnabled($table)
+    public static function isTableWorkspaceEnabled(string $table): bool
     {
         return !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']);
     }
@@ -3115,7 +3112,7 @@ class BackendUtility
         if (!is_array($tableTca) || $tableTca === []) {
             return $row;
         }
-        $platform = static::getConnectionForTable($table)->getDatabasePlatform();
+        $platform = self::getConnectionForTable($table)->getDatabasePlatform();
         foreach ($row as $field => $value) {
             // @todo Only handle specific TCA type=json
             if (($tableTca['columns'][$field]['config']['type'] ?? '') === 'json') {
@@ -3125,28 +3122,17 @@ class BackendUtility
         return $row;
     }
 
-    /**
-     * @param string $table
-     * @return Connection
-     */
-    protected static function getConnectionForTable($table)
+    protected static function getConnectionForTable(string $table): Connection
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
     }
 
-    /**
-     * @param string $table
-     * @return QueryBuilder
-     */
-    protected static function getQueryBuilderForTable($table)
+    protected static function getQueryBuilderForTable(string $table): QueryBuilder
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
     }
 
-    /**
-     * @return LoggerInterface
-     */
-    protected static function getLogger()
+    protected static function getLogger(): LoggerInterface
     {
         return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
     }
