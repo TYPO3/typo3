@@ -278,7 +278,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($this->shallSetSessionCookie()) {
             $this->setSessionCookie();
         }
-        // Hook for alternative ways of filling the $this->user array (is used by the "timtaw" extension)
+        // Hook for alternative ways of filling the $this->user array
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauth.php']['postUserLookUp'] ?? [] as $funcName) {
             $_params = [
                 'pObj' => $this,
