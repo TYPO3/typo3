@@ -3332,15 +3332,20 @@ class DataHandler
      */
     protected function checkValue_file_processDBdata($valueArray, $tcaFieldConf, $id, $table): mixed
     {
-        $valueArray = GeneralUtility::makeInstance(FileExtensionFilter::class)->filter(
+        $filteredValueArray = GeneralUtility::makeInstance(FileExtensionFilter::class)->filter(
             $valueArray,
             (string)($tcaFieldConf['allowed'] ?? ''),
             (string)($tcaFieldConf['disallowed'] ?? ''),
-            $this
         );
-
+        $notAllowedReferences = array_diff($valueArray, $filteredValueArray);
+        foreach ($notAllowedReferences as $reference) {
+            // Remove not allowed sys_file_reference rows for this record
+            $parts = GeneralUtility::revExplode('_', (string)$reference, 2);
+            $fileReferenceUid = (int)$parts[count($parts) - 1];
+            $this->deleteAction('sys_file_reference', $fileReferenceUid);
+        }
         $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->start(implode(',', $valueArray), $tcaFieldConf['foreign_table'], '', 0, $table, $tcaFieldConf);
+        $dbAnalysis->start(implode(',', $filteredValueArray), $tcaFieldConf['foreign_table'], '', 0, $table, $tcaFieldConf);
         $dbAnalysis->writeForeignField($tcaFieldConf, $id);
         return $dbAnalysis->countItems(false);
     }
@@ -5160,7 +5165,7 @@ class DataHandler
      * @param int $id Record UID
      * @internal should only be used from within DataHandler
      */
-    public function deleteAction($table, $id): void
+    protected function deleteAction($table, $id): void
     {
         $recordToDelete = BackendUtility::getRecord($table, $id);
 
