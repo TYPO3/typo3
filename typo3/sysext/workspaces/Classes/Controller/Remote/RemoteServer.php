@@ -24,20 +24,17 @@ use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Log\LogDataTrait;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
-use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -58,8 +55,6 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 #[Autoconfigure(public: true)]
 readonly class RemoteServer
 {
-    use LogDataTrait;
-
     public function __construct(
         protected GridDataService $gridDataService,
         protected StagesService $stagesService,
@@ -245,8 +240,7 @@ readonly class RemoteServer
 
         $history = $this->historyService->getHistory($table, $parameter->t3ver_oid);
         $stageChanges = $this->historyService->getStageChanges($table, (int)$parameter->t3ver_oid);
-        $stageChangesFromSysLog = $this->getStageChangesFromSysLog($table, (int)$parameter->t3ver_oid);
-        $commentsForRecord = $this->getCommentsForRecord($stageChanges, $stageChangesFromSysLog);
+        $commentsForRecord = $this->getCommentsForRecord($stageChanges);
 
         if ($this->stagesService->isPrevStageAllowedForUser($parameter->stage)) {
             $prevStage = $this->stagesService->getPrevStage($parameter->stage);
@@ -367,13 +361,10 @@ readonly class RemoteServer
 
     /**
      * Prepares all comments of the stage change history entries for returning the JSON structure
-     *
-     * @param array $additionalChangesFromLog this is not in use since 2022 anymore, and can be removed in TYPO3 v13.0 the latest.
      */
-    protected function getCommentsForRecord(array $historyEntries, array $additionalChangesFromLog): array
+    protected function getCommentsForRecord(array $historyEntries): array
     {
         $allStageChanges = [];
-
         foreach ($historyEntries as $entry) {
             $preparedEntry = [];
             $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
@@ -386,58 +377,7 @@ readonly class RemoteServer
             $preparedEntry['user_avatar'] = $beUserRecord ? $this->avatar->render($beUserRecord) : '';
             $allStageChanges[] = $preparedEntry;
         }
-
-        // see if there are more
-        foreach ($additionalChangesFromLog as $sysLogRow) {
-            $sysLogEntry = [];
-            $data = $this->unserializeLogData($sysLogRow['log_data'] ?? '');
-            $beUserRecord = BackendUtility::getRecord('be_users', $sysLogRow['userid']);
-            $sysLogEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle((int)$data['stage']));
-            $sysLogEntry['previous_stage_title'] = '';
-            $sysLogEntry['user_uid'] = (int)$sysLogRow['userid'];
-            $sysLogEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
-            $sysLogEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($sysLogRow['tstamp']));
-            $sysLogEntry['user_comment'] = nl2br(htmlspecialchars($data['comment']));
-            $sysLogEntry['user_avatar'] = $this->avatar->render($beUserRecord);
-            $allStageChanges[] = $sysLogEntry;
-        }
-
-        // There might be "old" sys_log entries, so they need to be checked as well
         return $allStageChanges;
-    }
-
-    /**
-     * Find all stage changes from sys_log that do not have a historyId. Can safely be removed in future TYPO3
-     * versions as this fallback layer only makes sense in TYPO3 v11 when old records want to have a history.
-     */
-    protected function getStageChangesFromSysLog(string $table, int $uid): array
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
-
-        return $queryBuilder
-            ->select('log_data', 'tstamp', 'userid')
-            ->from('sys_log')
-            ->where(
-                $queryBuilder->expr()->eq(
-                    'action',
-                    $queryBuilder->createNamedParameter(DatabaseAction::UPDATE, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'details_nr',
-                    $queryBuilder->createNamedParameter(30, Connection::PARAM_INT)
-                ),
-                $queryBuilder->expr()->eq(
-                    'tablename',
-                    $queryBuilder->createNamedParameter($table)
-                ),
-                $queryBuilder->expr()->eq(
-                    'recuid',
-                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                )
-            )
-            ->orderBy('tstamp', 'DESC')
-            ->executeQuery()
-            ->fetchAllAssociative();
     }
 
     protected function getBackendUser(): BackendUserAuthentication
