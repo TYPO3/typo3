@@ -1100,7 +1100,7 @@ final class DataHandlerTest extends UnitTestCase
             ->expects(self::once())
             ->method('log')
             ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled', -1, [], 0);
-        $dataHandlerMock->deletePages(0);
+        $dataHandlerMock->deleteEl('pages', 0);
     }
 
     #[Test]
@@ -1124,7 +1124,7 @@ final class DataHandlerTest extends UnitTestCase
         $mockDataHandler->expects(self::once())->method('getRelationFieldType')->willReturn('field');
         $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->willReturn($mockRelationHandler);
         $mockDataHandler->expects(self::never())->method('deleteAction');
-        $mockDataHandler->deleteRecord_procBasedOnFieldType($table, 42, 'bar', $conf);
+        $mockDataHandler->_call('deleteRecord_procBasedOnFieldType', $table, 42, 'bar', $conf);
     }
 
     public static function checkValue_checkReturnsExpectedValuesDataProvider(): array
