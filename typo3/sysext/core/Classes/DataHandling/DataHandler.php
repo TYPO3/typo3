@@ -5163,7 +5163,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $id Record UID
-     * @internal should only be used from within DataHandler
      */
     protected function deleteAction($table, $id): void
     {
@@ -5303,9 +5302,8 @@ class DataHandler
      * @param int $uid Record UID
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @internal should only be used from within DataHandler
      */
-    public function deleteRecord(string $table, int $uid, bool $noRecordCheck = false, bool $forceHardDelete = false): void
+    protected function deleteRecord(string $table, int $uid, bool $noRecordCheck = false, bool $forceHardDelete = false): void
     {
         $currentUserWorkspace = $this->BE_USER->workspace;
         if (!$this->tcaSchemaFactory->has($table) || !$uid) {
@@ -5429,9 +5427,8 @@ class DataHandler
      * @param bool $force If TRUE, pages are not checked for permission.
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      * @param bool $deleteRecordsOnPage If false, records on the page will not be deleted (edge case while swapping workspaces)
-     * @internal should only be used from within DataHandler
      */
-    public function deletePages(int $uid, bool $force = false, bool $forceHardDelete = false, bool $deleteRecordsOnPage = true): void
+    protected function deletePages(int $uid, bool $force = false, bool $forceHardDelete = false, bool $deleteRecordsOnPage = true): void
     {
         if ($uid === 0) {
             $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'Deleting all pages starting from the root-page is disabled', -1, [], 0);
@@ -5638,9 +5635,8 @@ class DataHandler
      * @param string $table Record Table
      * @param int $uid Record UID
      * @see deleteRecord()
-     * @internal should only be used from within DataHandler
      */
-    public function deleteRecord_procFields($table, $uid): void
+    protected function deleteRecord_procFields($table, $uid): void
     {
         $row = BackendUtility::getRecord($table, $uid, '*', '', false);
         if (empty($row)) {
@@ -5662,9 +5658,8 @@ class DataHandler
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
      * @see deleteRecord()
-     * @internal should only be used from within DataHandler
      */
-    public function deleteRecord_procBasedOnFieldType($table, $uid, $value, $conf): void
+    protected function deleteRecord_procBasedOnFieldType($table, $uid, $value, $conf): void
     {
         if (!isset($conf['type'])) {
             return;
