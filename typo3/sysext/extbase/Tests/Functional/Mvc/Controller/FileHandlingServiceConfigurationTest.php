@@ -45,8 +45,8 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
     }
 
     /**
-     * This test ensures, that validation of a property with a required file upload does not fail, when the property
-     * already contains a file reference and no uploaded file is given
+     * This test ensures, that validation of a property with a required file upload does not fail, when
+     * no uploaded file is given
      */
     #[Test]
     public function validateFileOperationsHasNoErrorForNonRequiredEmptyFileReferencePropertyAndNoUpload(): void
@@ -103,6 +103,64 @@ final class FileHandlingServiceConfigurationTest extends FunctionalTestCase
 
         $validationResult = $fileHandlingServiceConfiguration->validateFileOperations($argument);
         self::assertEquals(1708596527, $validationResult->forProperty('file')->getFirstError()->getCode());
+    }
+
+    /**
+     * This test ensures, that validation does not fail, when the extbase argument is null, a file upload is not
+     * required and no no upload is given
+     */
+    #[Test]
+    public function validateFileOperationsHasNoErrorWithEmptyArgumentForNonRequiredEmptyFileReferencePropertyAndNoUpload(): void
+    {
+        $fileHandlingServiceConfiguration = new FileHandlingServiceConfiguration();
+        $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
+        $argument->setValue(null);
+
+        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validator = $validationResolver->createValidator(ConjunctionValidator::class);
+        $argument->setValidator($validator);
+
+        $fileUploadConfiguration = new FileUploadConfiguration('file');
+        $fileUploadConfiguration->initializeWithConfiguration([
+            'validation' => [
+                'required' => false,
+                'maxFiles' => 1,
+            ],
+            'uploadFolder' => '1:/user_upload/folder_for_file/',
+        ]);
+        $fileHandlingServiceConfiguration->addFileUploadConfiguration($fileUploadConfiguration);
+
+        $validationResult = $fileHandlingServiceConfiguration->validateFileOperations($argument);
+        self::assertFalse($validationResult->hasErrors());
+    }
+
+    /**
+     * This test ensures, that validation does fail, when the extbase argument is null, a file upload is required
+     * and no no upload is given
+     */
+    #[Test]
+    public function validateFileOperationsHasNoErrorWithEmptyArgumentForRequiredEmptyFileReferencePropertyAndNoUpload(): void
+    {
+        $fileHandlingServiceConfiguration = new FileHandlingServiceConfiguration();
+        $argument = new Argument('FileReferenceSingle', FileReferencePropertySingle::class);
+        $argument->setValue(null);
+
+        $validationResolver = GeneralUtility::makeInstance(ValidatorResolver::class);
+        $validator = $validationResolver->createValidator(ConjunctionValidator::class);
+        $argument->setValidator($validator);
+
+        $fileUploadConfiguration = new FileUploadConfiguration('file');
+        $fileUploadConfiguration->initializeWithConfiguration([
+            'validation' => [
+                'required' => true,
+                'maxFiles' => 1,
+            ],
+            'uploadFolder' => '1:/user_upload/folder_for_file/',
+        ]);
+        $fileHandlingServiceConfiguration->addFileUploadConfiguration($fileUploadConfiguration);
+
+        $validationResult = $fileHandlingServiceConfiguration->validateFileOperations($argument);
+        self::assertTrue($validationResult->hasErrors());
     }
 
     /**

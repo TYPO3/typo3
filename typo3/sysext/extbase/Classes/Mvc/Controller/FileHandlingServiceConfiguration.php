@@ -137,7 +137,10 @@ class FileHandlingServiceConfiguration
                 $configuration->getPropertyName()
             );
             $fileDeletionCount = $this->getFileUploadDeletionCountForProperty($configuration->getPropertyName());
-            $currentPropertyValue = ObjectAccess::getPropertyPath($value, $configuration->getPropertyName());
+            $currentPropertyValue = null;
+            if ($value) {
+                $currentPropertyValue = ObjectAccess::getPropertyPath($value, $configuration->getPropertyName());
+            }
             $validationResult = $this->getValidationResultsForProperty(
                 $configuration,
                 $configuration->getPropertyName(),
