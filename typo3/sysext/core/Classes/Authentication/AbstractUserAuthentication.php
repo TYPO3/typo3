@@ -240,7 +240,19 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
     public function initializeUserSessionManager(?UserSessionManager $userSessionManager = null): void
     {
         $this->userSessionManager = $userSessionManager ?? UserSessionManager::create($this->loginType);
-        $this->userSession = $this->userSessionManager->createAnonymousSession();
+        $this->createAnonymousSession();
+    }
+
+    /**
+     * Creates an anonymous user session.
+     * This method should be avoided, as it is only a workaround due to the ugly setup of this class
+     * and the authentication / logout behavior.
+     */
+    public function createAnonymousSession(): void
+    {
+        if (!empty($this->userSessionManager)) {
+            $this->userSession = $this->userSessionManager->createAnonymousSession();
+        }
     }
 
     /**
@@ -800,7 +812,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
                 // Delete any user set...
                 $this->logoff();
                 $userRecord = false;
-                $this->userSession = $this->userSessionManager->createAnonymousSession();
+                $this->createAnonymousSession();
             }
         }
         return is_array($userRecord) ? $userRecord : null;
@@ -848,7 +860,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         if ($this->userSession) {
             $this->userSessionManager->removeSession($this->userSession);
         }
-        $this->userSession = $this->userSessionManager->createAnonymousSession();
+        $this->createAnonymousSession();
         $this->user = null;
         if ($this->isCookieSet()) {
             $this->removeCookie();
