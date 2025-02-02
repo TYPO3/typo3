@@ -15,3 +15,4 @@ Technical details
     HowPagesAreIndexed/Index
     ExternalMedia/Index
     AccessRestrictedPages/Index
+    Events/Index
