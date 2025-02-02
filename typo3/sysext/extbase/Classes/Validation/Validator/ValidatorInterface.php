@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Error\Result;
 
 /**
@@ -41,4 +42,14 @@ interface ValidatorInterface
      * Returns the options of this validator which can be specified by setOptions().
      */
     public function getOptions(): array;
+
+    /**
+     * Sets the request object to the validator.
+     */
+    public function setRequest(?ServerRequestInterface $request): void;
+
+    /**
+     * Returns the request object of the validator.
+     */
+    public function getRequest(): ?ServerRequestInterface;
 }

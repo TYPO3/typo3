@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Validation\Validator;
 
+use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Validation\Exception\InvalidValidationOptionsException;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 
@@ -34,6 +35,7 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 
     protected array $options = [];
     protected \SplObjectStorage $validators;
+    protected ?ServerRequestInterface $request = null;
 
     /**
      * @todo: Properties {@see self::$validators} and {@see self::$validatedInstancesContainer} are not properly
@@ -55,6 +57,16 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
     public function addValidator(ValidatorInterface $validator): void
     {
         $this->validators->attach($validator);
+    }
+
+    public function getRequest(): ?ServerRequestInterface
+    {
+        return $this->request;
+    }
+
+    public function setRequest(?ServerRequestInterface $request): void
+    {
+        $this->request = $request;
     }
 
     /**

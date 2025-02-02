@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
-use TYPO3\CMS\Extbase\Validation\Validator\AbstractValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
@@ -47,8 +46,6 @@ class ValidatorResolver implements SingletonInterface
      * the ValidatorInterface or NULL if no validator could be resolved.
      *
      * @param string $validatorType Either one of the built-in data types or fully qualified validator class name
-     * @param array $validatorOptions Options to be passed to the validator
-     * @param ServerRequestInterface $request PSR-7 request object
      */
     public function createValidator(
         string $validatorType,
@@ -60,14 +57,7 @@ class ValidatorResolver implements SingletonInterface
             /** @var ValidatorInterface $validator */
             $validator = GeneralUtility::makeInstance($validatorObjectName);
             $validator->setOptions($validatorOptions);
-
-            /**
-             * @todo Remove condition in TYPO3 v14 when ValidatorInterface is changed
-             */
-            if ($validator instanceof AbstractValidator) {
-                $validator->setRequest($request);
-            }
-
+            $validator->setRequest($request);
             return $validator;
         } catch (NoSuchValidatorException $e) {
             GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__)->debug($e->getMessage());

@@ -63,9 +63,6 @@ abstract class AbstractValidator implements ValidatorInterface
         $this->initializeTranslationOptions($options);
     }
 
-    /**
-     * @todo: Add to ValidatorInterface in TYPO3 v14
-     */
     public function setRequest(?ServerRequestInterface $request): void
     {
         $this->request = $request;
@@ -128,9 +125,6 @@ abstract class AbstractValidator implements ValidatorInterface
         return $this->options;
     }
 
-    /**
-     * @todo: Add to ValidatorInterface in TYPO3 v14
-     */
     public function getRequest(): ?ServerRequestInterface
     {
         return $this->request;

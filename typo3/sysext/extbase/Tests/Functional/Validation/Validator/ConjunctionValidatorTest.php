@@ -43,17 +43,17 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction = new ConjunctionValidator();
         $validatorConjunction->setOptions([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validatorObject->expects(self::once())->method('validate')->willReturn(new Result());
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $secondValidatorObject->expects(self::once())->method('validate')->willReturn($errors);
         $thirdValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $thirdValidatorObject->expects(self::once())->method('validate')->willReturn(new Result());
         $validatorConjunction->addValidator($validatorObject);
@@ -68,11 +68,11 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction = new ConjunctionValidator();
         $validatorConjunction->setOptions([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validatorObject->method('validate')->willReturn(new Result());
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $secondValidatorObject->method('validate')->willReturn(new Result());
         $validatorConjunction->addValidator($validatorObject);
@@ -86,7 +86,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction = new ConjunctionValidator();
         $validatorConjunction->setOptions([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
@@ -101,10 +101,10 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction = new ConjunctionValidator();
         $validatorConjunction->setOptions([]);
         $validator1 = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validator2 = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validatorConjunction->addValidator($validator1);
         $validatorConjunction->addValidator($validator2);
@@ -121,7 +121,7 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction = new ConjunctionValidator();
         $validatorConjunction->setOptions([]);
         $validator = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validatorConjunction->removeValidator($validator);
     }
@@ -132,10 +132,10 @@ final class ConjunctionValidatorTest extends FunctionalTestCase
         $validatorConjunction = new ConjunctionValidator();
         $validatorConjunction->setOptions([]);
         $validator1 = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validator2 = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         self::assertCount(0, $validatorConjunction);
         $validatorConjunction->addValidator($validator1);

@@ -32,13 +32,13 @@ final class DisjunctionValidatorTest extends UnitTestCase
         $validatorDisjunction = new DisjunctionValidator();
         $validatorDisjunction->setOptions([]);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validatorObject->method('validate')->willReturn(new Result());
         $errors = new Result();
         $errors->addError(new Error('Error', 123));
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $secondValidatorObject->method('validate')->willReturn($errors);
         $validatorDisjunction->addValidator($validatorObject);
@@ -56,13 +56,13 @@ final class DisjunctionValidatorTest extends UnitTestCase
         $errors1 = new Result();
         $errors1->addError($error1);
         $validatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $validatorObject->method('validate')->willReturn($errors1);
         $errors2 = new Result();
         $errors2->addError($error2);
         $secondValidatorObject = $this->getMockBuilder(ValidatorInterface::class)
-            ->onlyMethods(['validate', 'getOptions', 'setOptions'])
+            ->onlyMethods(['validate', 'getOptions', 'setOptions', 'getRequest', 'setRequest'])
             ->getMock();
         $secondValidatorObject->method('validate')->willReturn($errors2);
         $validatorDisjunction->addValidator($validatorObject);
