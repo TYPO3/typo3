@@ -1,0 +1,8 @@
+mod.linkvalidator {
+  linktypesConfig {
+    external {
+      httpAgentUrl = https://example.org
+      httpAgentEmail = noreply@example.org
+    }
+  }
+}
