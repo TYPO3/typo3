@@ -36,12 +36,13 @@ but also PSR-17 (https://www.php-fig.org/psr/psr-17/),
 the PSR-17 factories should be used. Both the :php:`$responseFactory` as
 well as the :php:`$streamFactory` are available in all extbase controllers.
 The :php:`$responseFactory` can be used to create a blank response object
-whose content and headers can be set freely. The content can therfore be
+whose content and headers can be set freely. The content can therefore be
 set using the :php:`$streamFactory`.
 
 Example:
 
 .. code-block:: php
+   use Psr\Http\Message\ResponseInterface;
 
    public function listAction(): ResponseInterface
    {
@@ -54,12 +55,13 @@ Example:
    }
 
 This example only shows the most common use case. It causes html with a :html:`Content-Type: text/html` header and
-http code `200 Ok` returned as the response to the client.
+http code `200 Ok` to be returned as the response to the client.
 
 .. tip::
 
-   Using the factory is a clean architectural solution but it's a lot of new code when migration from returning nothing at all.
-   To ease the migration path, method :php:`htmlResponse(string $html = null)` has been introduced which allows for a quite small change.
+   Using the factory is a clean architectural solution but it's a lot of new code for a migration
+   from returning nothing at all. To ease the migration path the method :php:`htmlResponse(string $html = null)` 
+   has been introduced which makes a quite small change possible.
    When called without an argument, said method renders the current view.
 
    .. code-block:: php
