@@ -1,0 +1,19 @@
+mod.linkvalidator {
+  searchFields {
+    pages = url,canonical_link
+    tt_content = bodytext,header_link,records
+  }
+  linktypes = db,file,external
+  checkhidden = 0
+  mail {
+    fromname = TYPO3 LinkValidator
+    fromemail = no_reply@mydomain.com
+    replytoname =
+    replytoemail =
+    subject = TYPO3 LinkValidator report
+  }
+  external {
+    httpAgentUrl = https://example.com/info.html
+    httpAgentEmail = info@example.com
+  }
+}
