@@ -59,12 +59,100 @@ final class CKEditor5MigratorTest extends UnitTestCase
                 ],
             ],
 
-            // Remove Plugins
-            'Remove plugins mapping' => [
+            // Extra Plugins. Configured as array
+            'Extra plugins mapping (array)' => [
                 [
                     'editor' => [
                         'config' => [
-                            'removePlugins' => ['image'],
+                            'extraPlugins' => ['image', 'whitespace'],
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'items' => [],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                            'importModules' => [
+                                [
+                                    'module' => '@ckeditor/ckeditor5-image',
+                                    'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
+                                ],
+                                [
+                                    'module' => '@typo3/rte-ckeditor/plugin/whitespace.js',
+                                    'exports' => [ 'Whitespace' ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // Extra Plugins. Configured as string
+            'Extra plugins mapping (string)' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'extraPlugins' => 'image,whitespace',
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'toolbar' => [
+                                'items' => [],
+                                'removeItems' => [],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                            'importModules' => [
+                                [
+                                    'module' => '@ckeditor/ckeditor5-image',
+                                    'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
+                                ],
+                                [
+                                    'module' => '@typo3/rte-ckeditor/plugin/whitespace.js',
+                                    'exports' => [ 'Whitespace' ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // Remove Plugins. Configured as array
+            'Remove plugins mapping (array)' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => ['image', 'whitespace'],
                         ],
                     ],
                 ],
@@ -76,10 +164,58 @@ final class CKEditor5MigratorTest extends UnitTestCase
                                     'module' => '@ckeditor/ckeditor5-image',
                                     'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
                                 ],
+                                [
+                                    'module' => '@typo3/rte-ckeditor/plugin/whitespace.js',
+                                    'exports' => [ 'Whitespace' ],
+                                ],
                             ],
                             'toolbar' => [
                                 'items' => [],
-                                'removeItems' => [],
+                                'removeItems' => [ 'softhyphen' ],
+                                'shouldNotGroupWhenFull' => true,
+                            ],
+                            'alignment' => [
+                                'options' => [
+                                    ['name' => 'left', 'className' => 'text-start'],
+                                    ['name' => 'center', 'className' => 'text-center'],
+                                    ['name' => 'right', 'className' => 'text-end'],
+                                    ['name' => 'justify', 'className' => 'text-justify'],
+                                ],
+                            ],
+                            'wordCount' => [
+                                'displayCharacters' => true,
+                                'displayWords' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+
+            // Remove Plugins. Configured as string
+            'Remove plugins mapping (string)' => [
+                [
+                    'editor' => [
+                        'config' => [
+                            'removePlugins' => 'image, whitespace',
+                        ],
+                    ],
+                ],
+                [
+                    'editor' => [
+                        'config' => [
+                            'removeImportModules' => [
+                                [
+                                    'module' => '@ckeditor/ckeditor5-image',
+                                    'exports' => [ 'Image', 'ImageCaption', 'ImageStyle', 'ImageToolbar', 'ImageUpload', 'PictureEditing' ],
+                                ],
+                                [
+                                    'module' => '@typo3/rte-ckeditor/plugin/whitespace.js',
+                                    'exports' => [ 'Whitespace' ],
+                                ],
+                            ],
+                            'toolbar' => [
+                                'items' => [],
+                                'removeItems' => [ 'softhyphen' ],
                                 'shouldNotGroupWhenFull' => true,
                             ],
                             'alignment' => [

@@ -285,6 +285,14 @@ class CKEditor5Migrator
             return;
         }
 
+        if (is_string($this->configuration['editor']['config']['extraPlugins'])) {
+            $this->configuration['editor']['config']['extraPlugins'] = GeneralUtility::trimExplode(
+                ',',
+                $this->configuration['editor']['config']['extraPlugins'],
+                true
+            );
+        }
+
         foreach ($this->configuration['editor']['config']['extraPlugins'] as $entry) {
             $moduleToBeLoaded = self::PLUGIN_MAP[$entry] ?? null;
             if ($moduleToBeLoaded === null) {
@@ -299,6 +307,14 @@ class CKEditor5Migrator
     {
         if (!isset($this->configuration['editor']['config']['removePlugins'])) {
             return;
+        }
+
+        if (is_string($this->configuration['editor']['config']['removePlugins'])) {
+            $this->configuration['editor']['config']['removePlugins'] = GeneralUtility::trimExplode(
+                ',',
+                $this->configuration['editor']['config']['removePlugins'],
+                true
+            );
         }
 
         foreach ($this->configuration['editor']['config']['removePlugins'] as $key => $entry) {
