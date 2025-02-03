@@ -73,6 +73,10 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
                 '<f:link.typolink parameter="1">This is a testlink</f:link.typolink>',
                 '<a href="/en/">This is a testlink</a>',
             ],
+            'link: default with additional parameters' => [
+                '<f:link.typolink parameter="1" additionalParams="&foo=bar">This is a testlink</f:link.typolink>',
+                '<a href="/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d">This is a testlink</a>',
+            ],
             'link: with add query string' => [
                 '<f:link.typolink parameter="1" addQueryString="untrusted">This is a testlink</f:link.typolink>',
                 '<a href="/en/?foo=bar&amp;temp=test&amp;cHash=286759dfcd3f566fa21091a0d77e9831">This is a testlink</a>',
@@ -80,6 +84,19 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
             'link: with add query string and exclude' => [
                 '<f:link.typolink parameter="1" addQueryString="untrusted" addQueryStringExclude="temp">This is a testlink</f:link.typolink>',
                 '<a href="/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d">This is a testlink</a>',
+            ],
+            't3://page link: default' => [
+                '<f:link.typolink parameter="t3://page?uid=1&foo=bar">This is a testlink</f:link.typolink>',
+                '<a href="/en/?foo=bar&amp;cHash=afa4b37588ab917af3cfe2cd4464029d">This is a testlink</a>',
+            ],
+            't3://page link: default with additional parameters' => [
+                '<f:link.typolink parameter="t3://page?uid=1&foo=bar" additionalParams="&bar=foo">This is a testlink</f:link.typolink>',
+                '<a href="/en/?bar=foo&amp;foo=bar&amp;cHash=ff6d36ab0e75db69a8e6bf5271602dcb">This is a testlink</a>',
+            ],
+            // parameter `foo=bar` defined via t3-urn takes precedence over `foo=additional` in `additionalParams`
+            't3://page link: default with additional parameters - t3-urn parameters take precedence' => [
+                '<f:link.typolink parameter="t3://page?uid=1&foo=bar" additionalParams="&bar=foo&foo=additional">This is a testlink</f:link.typolink>',
+                '<a href="/en/?bar=foo&amp;foo=bar&amp;cHash=ff6d36ab0e75db69a8e6bf5271602dcb">This is a testlink</a>',
             ],
             't3://url link: default' => [
                 '<f:link.typolink parameter="t3://url?url=https://example.org?param=1&other=dude">This is a testlink</f:link.typolink>',
@@ -97,6 +114,11 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
                 '<f:link.typolink parameter="mailto:foo@typo3.org">This is a testlink</f:link.typolink>',
                 '<a href="mailto:foo@typo3.org">This is a testlink</a>',
             ],
+            // `additionalParams` are ignored for email links
+            'mailto: link: default with additional parameters' => [
+                '<f:link.typolink parameter="mailto:foo@typo3.org" additionalParams="&foo=bar">This is a testlink</f:link.typolink>',
+                '<a href="mailto:foo@typo3.org">This is a testlink</a>',
+            ],
             'mailto: link: with add query string' => [
                 '<f:link.typolink parameter="mailto:foo@typo3.org" addQueryString="untrusted">This is a testlink</f:link.typolink>',
                 '<a href="mailto:foo@typo3.org">This is a testlink</a>',
@@ -108,6 +130,11 @@ final class TypolinkViewHelperTest extends FunctionalTestCase
             'http://: link: default' => [
                 '<f:link.typolink parameter="http://typo3.org/foo/?foo=bar">This is a testlink</f:link.typolink>',
                 '<a href="http://typo3.org/foo/?foo=bar">This is a testlink</a>',
+            ],
+            // `additionalParams` are ignored for external URL links
+            'http://: link: default with additional parameters' => [
+                '<f:link.typolink parameter="http://typo3.org/" additionalParams="&foo=bar">This is a testlink</f:link.typolink>',
+                '<a href="http://typo3.org/">This is a testlink</a>',
             ],
             'http://: link: with add query string' => [
                 '<f:link.typolink parameter="http://typo3.org/foo/?foo=bar" addQueryString="untrusted">This is a testlink</f:link.typolink>',
