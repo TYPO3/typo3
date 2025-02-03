@@ -124,41 +124,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function deleteContent(): void
-    {
-        parent::deleteContent();
-        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
-
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
-    }
-
-    #[Test]
-    public function deleteLocalizedContentAndDeleteContent(): void
-    {
-        // This test does not rely on a translated page, because it only tests the act of publishing.
-        // The actual content of frontend response does not matter much, and it would increase the scope
-        // of the test, when a translated page is also published here.
-        parent::deleteLocalizedContentAndDeleteContent();
-        $this->actionService->publishRecords(
-            [
-                self::TABLE_Content => [self::VALUE_ContentIdThird, self::VALUE_ContentIdThirdLocalized],
-            ]
-        );
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
-
-        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
-    }
-
-    #[Test]
     public function copyContent(): void
     {
         parent::copyContent();
@@ -644,32 +609,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function deletePage(): void
-    {
-        parent::deletePage();
-        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)
-        );
-        self::assertEquals(404, $response->getStatusCode());
-    }
-
-    #[Test]
-    public function deleteContentAndPage(): void
-    {
-        parent::deleteContentAndPage();
-        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)
-        );
-        self::assertEquals(404, $response->getStatusCode());
-    }
-
-    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -876,5 +815,66 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::createPlaceholdersAndDeleteDraftParentPage();
         $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_ParentPageId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/createPlaceholdersAndDeleteDraftParentPage.csv');
+    }
+
+    #[Test]
+    public function deleteContent(): void
+    {
+        parent::deleteContent();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+    }
+
+    #[Test]
+    public function deletePage(): void
+    {
+        parent::deletePage();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)
+        );
+        self::assertEquals(404, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function deleteContentAndPage(): void
+    {
+        parent::deleteContentAndPage();
+        $this->actionService->publishRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)
+        );
+        self::assertEquals(404, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function deleteLocalizedContentAndDeleteContent(): void
+    {
+        // This test does not rely on a translated page, because it only tests the act of publishing.
+        // The actual content of frontend response does not matter much, and it would increase the scope
+        // of the test, when a translated page is also published here.
+        parent::deleteLocalizedContentAndDeleteContent();
+        $this->actionService->publishRecords(
+            [
+                self::TABLE_Content => [self::VALUE_ContentIdThird, self::VALUE_ContentIdThirdLocalized],
+            ]
+        );
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3'));
     }
 }

@@ -45,12 +45,6 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->recordIds['localizedContentId'] = $localizedContentId[self::TABLE_Content][$this->recordIds['newContentId']];
     }
 
-    public function changeContentSortingAndDeleteMovedRecord(): void
-    {
-        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
-        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-    }
-
     public function changeContentSortingAndDeleteLiveRecord(): void
     {
         $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
@@ -59,12 +53,6 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         // Switch back to draft workspace
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
-    }
-
-    public function deleteContentAndPage(): void
-    {
-        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
-        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
     }
 
     public function movePageToDifferentPageAndCreatePageAfterMovedPage(): void
@@ -236,13 +224,63 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
         $this->actionService->createNewRecord(self::TABLE_Page, self::VALUE_ParentPageId, ['title' => 'Testing #1']);
-
         // Switch to live workspace
         $this->setWorkspaceId(0);
-
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_ParentPageId);
-
         // Switch back to draft workspace
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
+    }
+
+    public function deleteContentAndPage(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+    }
+
+    public function deleteModifiedContentByLiveUid(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+    }
+
+    public function deleteModifiedContentByDraftUid(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, ['header' => 'Testing #1']);
+        $this->actionService->deleteRecord(self::TABLE_Content, 321);
+    }
+
+    public function deleteMovedContentByLiveUid(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+    }
+
+    public function deleteMovedContentByDraftUid(): void
+    {
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, -self::VALUE_ContentIdSecond);
+        $this->actionService->deleteRecord(self::TABLE_Content, 321);
+    }
+
+    public function deleteNewContentByDraftUid(): void
+    {
+        // This is identically with 'discard' since the newly created CE in WS is simply discarded again
+        // @todo: This test should be extended to localize the new CE first, and then delete default-lang CE
+        //        to be in sync with the other delete tests.
+        $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
+        $this->actionService->deleteRecord(self::TABLE_Content, 321);
+    }
+
+    public function deleteDeletedContentByLiveUid(): void
+    {
+        // This is identically with 'discard' since the newly created CE in WS is simply discarded again
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+    }
+
+    public function deleteDeletedContentByDraftUid(): void
+    {
+        // This is identically with 'discard' since the newly created CE in WS is simply discarded again
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->actionService->deleteRecord(self::TABLE_Content, 321);
     }
 }
