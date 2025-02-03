@@ -159,6 +159,7 @@ class SlugHelper
         $slugParts = [];
 
         $replaceConfiguration = $this->configuration['generatorOptions']['replacements'] ?? [];
+        $regexReplaceConfiguration = $this->configuration['generatorOptions']['regexReplacements'] ?? [];
         foreach ($this->configuration['generatorOptions']['fields'] ?? [] as $fieldNameParts) {
             if (is_string($fieldNameParts)) {
                 $fieldNameParts = GeneralUtility::trimExplode(',', $fieldNameParts);
@@ -166,6 +167,16 @@ class SlugHelper
             foreach ($fieldNameParts as $fieldName) {
                 if (!empty($recordData[$fieldName])) {
                     $pieceOfSlug = (string)$recordData[$fieldName];
+                    foreach ($regexReplaceConfiguration as $pattern => $replacement) {
+                        $replacedPieceOfSlug = @preg_replace(
+                            $pattern,
+                            $replacement,
+                            $pieceOfSlug
+                        );
+                        if (is_string($replacedPieceOfSlug)) {
+                            $pieceOfSlug = $replacedPieceOfSlug;
+                        }
+                    }
                     $pieceOfSlug = str_replace(
                         array_keys($replaceConfiguration),
                         array_values($replaceConfiguration),
@@ -268,7 +279,7 @@ class SlugHelper
             $siteOfCurrentRecord = $siteFinder->getSiteByPageId($pageId);
         } catch (SiteNotFoundException $e) {
             // Not within a site, so nothing to do
-            // TODO: Rather than silently ignoring this misconfiguration,
+            // @todo: Rather than silently ignoring this misconfiguration,
             // a warning should be thrown here, or maybe even let the
             // exception bubble up and catch it in places that uses this API
             return true;

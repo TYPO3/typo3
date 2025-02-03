@@ -445,6 +445,92 @@ final class SlugHelperTest extends UnitTestCase
                     ],
                 ],
             ],
+            'title with slash and regex replace' => [
+                'Some Job in city1/city2 (m/w)',
+                '/parent-page/some-job-in-city1-city2',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'replacements' => [
+                            '/' => '-',
+                        ],
+                        'regexReplacements' => [
+                            '/\(.*\)/' => '',
+                        ],
+                    ],
+                ],
+            ],
+            'title with slash and regex replace using delim @' => [
+                'Some Job in city1/city2 (m/w)',
+                '/parent-page/some-job-in-city1-city2',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'regexReplacements' => [
+                            '@\(.*\)@' => '',
+                            '@/@' => '-',
+                        ],
+                    ],
+                ],
+            ],
+            'title with case insensitive regex replace' => [
+                'Product Cow',
+                '/parent-page/product-pig',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'regexReplacements' => [
+                            '/cow/i' => 'pig',
+                        ],
+                    ],
+                ],
+            ],
+            'regexp replaces multiple occurrences' => [
+                'Product Cow Tool - Cow specific tool products',
+                '/parent-page/product-pig-tool-pig-specific-tool-products',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'regexReplacements' => [
+                            '/cow/i' => 'pig',
+                        ],
+                    ],
+                ],
+            ],
+            'invalid regexp pattern ignores the replacement but does not emit errors' => [
+                'Product Cow',
+                '/parent-page/product-cow',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'regexReplacements' => [
+                            // invalid regexp pattern on purpose
+                            'cow/i' => 'pig',
+                        ],
+                    ],
+                ],
+            ],
+            'early invalid regexp pattern still executes subsequent regexp replacements' => [
+                'Product Cow - Enhances Persons capabilities',
+                '/parent-page/product-cow-enhances-animals-capabilities',
+                [
+                    'generatorOptions' => [
+                        'fields' => ['title'],
+                        'prefixParentPageSlug' => true,
+                        'regexReplacements' => [
+                            // invalid regexp pattern on purpose
+                            'cow/i' => 'pig',
+                            '/persons/i' => 'animals',
+                        ],
+                    ],
+                ],
+            ],
+
             'title with invalid characters' => [
                 'Products - Cows',
                 '/parent-page/products-cows',
