@@ -45,7 +45,8 @@ class Cache extends AbstractInlineModule {
           // Install Tool, instead show a notification that something went wrong.
           Notification.error(
             'Clearing caches failed',
-            'Clearing caches went wrong on the server side. Check the system for broken extensions or missing database tables and try again.',
+            'Clearing caches went wrong on the server side. Check the system for broken extensions or missing database tables and try again.'
+            + ' Also ensure you are properly authenticated and the server does not report specific PHP parse errors or JavaScript errors are listed in the browser console.',
           );
         },
       )
