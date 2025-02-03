@@ -138,40 +138,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function deleteContent(): void
-    {
-        parent::deleteContent();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
-        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
-    }
-
-    #[Test]
-    public function deleteLocalizedContentAndDeleteContent(): void
-    {
-        parent::deleteLocalizedContentAndDeleteContent();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3', 'Regular Element #1'));
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
-    }
-
-    #[Test]
     public function copyContent(): void
     {
         parent::copyContent();
@@ -428,24 +394,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     {
         parent::changeContentSortingAfterSelf();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAfterSelf.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
-        self::assertThat($responseSections, (new HasRecordConstraint())
-            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1', 'Regular Element #2'));
-    }
-
-    /**
-     * @todo: Publish and PublishAll for this are missing - TF throws an exception on publish due to deleted state
-     */
-    #[Test]
-    public function changeContentSortingAndDeleteMovedRecord(): void
-    {
-        parent::changeContentSortingAndDeleteMovedRecord();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingNDeleteMovedRecord.csv');
 
         $response = $this->executeFrontendSubRequest(
             (new InternalRequest())->withPageId(self::VALUE_PageId),
@@ -812,32 +760,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
-    }
-
-    #[Test]
-    public function deletePage(): void
-    {
-        parent::deletePage();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        self::assertEquals(404, $response->getStatusCode());
-    }
-
-    #[Test]
-    public function deleteContentAndPage(): void
-    {
-        parent::deleteContentAndPage();
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
-
-        $response = $this->executeFrontendSubRequest(
-            (new InternalRequest())->withPageId(self::VALUE_PageId),
-            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
-        );
-        self::assertEquals(404, $response->getStatusCode());
     }
 
     #[Test]
@@ -1238,5 +1160,120 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #3'));
+    }
+
+    #[Test]
+    public function deleteContent(): void
+    {
+        parent::deleteContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #1'));
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #2'));
+    }
+
+    #[Test]
+    public function deletePage(): void
+    {
+        parent::deletePage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        self::assertEquals(404, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function deleteContentAndPage(): void
+    {
+        parent::deleteContentAndPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        self::assertEquals(404, $response->getStatusCode());
+    }
+
+    #[Test]
+    public function deleteLocalizedContentAndDeleteContent(): void
+    {
+        parent::deleteLocalizedContentAndDeleteContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Regular Element #3', '[Translate to Dansk:] Regular Element #3', 'Regular Element #1'));
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Regular Element #2'));
+    }
+
+    #[Test]
+    public function deleteModifiedContentByLiveUid(): void
+    {
+        parent::deleteModifiedContentByLiveUid();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteModifiedContentByLiveUid.csv');
+    }
+
+    #[Test]
+    public function deleteModifiedContentByDraftUid(): void
+    {
+        parent::deleteModifiedContentByDraftUid();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteModifiedContentByDraftUid.csv');
+    }
+
+    #[Test]
+    public function deleteMovedContentByLiveUid(): void
+    {
+        // @todo: This is odd. We are moving/resorting a CE / Page / whatever around in workspaces, which creates move
+        //        overlays. Fine. When then such a moved record is deleted (eg. waste-bin icon in page module), then
+        //        *currently*, the move overlays are removed from DB, so the records are not deleted, but simplify re-appear
+        //        at their old position. This is at least confusing to the editor, and it would be much better to turn the
+        //        move overlays into delete placeholders instead, probably by removing the move overlays, and then creating
+        //        new delete placeholders at the current live pid/sorting position a-new. Note "changed in workspaces"
+        //        overlays does the same: Those are simply changed into delete placeholders.
+        parent::deleteMovedContentByLiveUid();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteMovedContentByLiveUid.csv');
+    }
+
+    #[Test]
+    public function deleteMovedContentByDraftUid(): void
+    {
+        // @todo: Same as with deleteMovedContentByLiveUid().
+        parent::deleteMovedContentByDraftUid();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteMovedContentByDraftUid.csv');
+    }
+
+    #[Test]
+    public function deleteNewContentByDraftUid(): void
+    {
+        parent::deleteNewContentByDraftUid();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteNewContentByDraftUid.csv');
+    }
+
+    #[Test]
+    public function deleteDeletedContentByLiveUid(): void
+    {
+        parent::deleteDeletedContentByLiveUid();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteDeletedContentByLiveUid.csv');
+    }
+
+    #[Test]
+    public function deleteDeletedContentByDraftUid(): void
+    {
+        parent::deleteDeletedContentByDraftUid();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteDeletedContentByDraftUid.csv');
     }
 }

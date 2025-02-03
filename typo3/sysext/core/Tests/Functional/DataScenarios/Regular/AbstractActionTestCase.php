@@ -101,17 +101,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['hidden' => '1']);
     }
 
-    public function deleteContent(): void
-    {
-        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
-    }
-
-    public function deleteLocalizedContentAndDeleteContent(): void
-    {
-        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
-        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
-    }
-
     public function copyContent(): void
     {
         $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, self::VALUE_PageId);
@@ -392,11 +381,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
     }
 
-    public function deletePage(): void
-    {
-        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
-    }
-
     public function copyPage(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Page, self::VALUE_PageId, self::VALUE_PageIdTarget);
@@ -443,5 +427,21 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageIdTarget, self::VALUE_PageIdWebsite);
         $this->actionService->moveRecord(self::TABLE_Page, self::VALUE_PageId, -self::VALUE_PageIdTarget);
+    }
+
+    public function deleteContent(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+    }
+
+    public function deletePage(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+    }
+
+    public function deleteLocalizedContentAndDeleteContent(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
     }
 }

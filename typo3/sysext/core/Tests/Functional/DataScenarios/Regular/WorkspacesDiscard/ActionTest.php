@@ -92,22 +92,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function deleteContent(): void
-    {
-        parent::deleteContent();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
-    }
-
-    #[Test]
-    public function deleteLocalizedContentAndDeleteContent(): void
-    {
-        parent::deleteLocalizedContentAndDeleteContent();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
-    }
-
-    #[Test]
     public function copyContent(): void
     {
         parent::copyContent();
@@ -193,16 +177,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::changeContentSortingAfterSelf();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingAfterSelf.csv');
-    }
-
-    #[Test]
-    public function changeContentSortingAndDeleteMovedRecord(): void
-    {
-        parent::changeContentSortingAndDeleteMovedRecord();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        // Note the deleted=1 records are NOT discarded. This is ok since deleted=1 means "not seen in backend",
-        // so it is also ignored by the discard operation.
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeContentSortingNDeleteMovedRecord.csv');
     }
 
     #[Test]
@@ -399,22 +373,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function deletePage(): void
-    {
-        parent::deletePage();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
-    }
-
-    #[Test]
-    public function deleteContentAndPage(): void
-    {
-        parent::deleteContentAndPage();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
-    }
-
-    #[Test]
     public function copyPage(): void
     {
         parent::copyPage();
@@ -579,5 +537,53 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->setWorkspaceId(self::VALUE_WorkspaceId);
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deletingDefaultLanguageElementDiscardsConnectedLocalizedElementChain.csv');
+    }
+
+    #[Test]
+    public function deleteContent(): void
+    {
+        parent::deleteContent();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContent.csv');
+    }
+
+    #[Test]
+    public function deleteLocalizedContentAndDeleteContent(): void
+    {
+        parent::deleteLocalizedContentAndDeleteContent();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteLocalizedContentNDeleteContent.csv');
+    }
+
+    #[Test]
+    public function deleteContentAndPage(): void
+    {
+        parent::deleteContentAndPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentAndPage.csv');
+    }
+
+    #[Test]
+    public function deletePage(): void
+    {
+        parent::deletePage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deletePage.csv');
+    }
+
+    #[Test]
+    public function deleteMovedContentByLiveUid(): void
+    {
+        parent::deleteMovedContentByLiveUid();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteMovedContentByLiveUid.csv');
+    }
+
+    #[Test]
+    public function deleteMovedContentByDraftUid(): void
+    {
+        parent::deleteMovedContentByDraftUid();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteMovedContentByDraftUid.csv');
     }
 }

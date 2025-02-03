@@ -24,6 +24,7 @@
 ,301,89,384,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",,,,
 ,302,89,448,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",,,,
 ,320,89,512,0,0,0,0,2,2,0,298,"Regular Element #2",,,,
+# @todo: When something is first moved and then removed in workspaces move overlays should not just vanish but turned into delete overlays
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 ,"02aa95a647ed365ffeeac881bd1af449","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
