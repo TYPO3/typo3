@@ -1,19 +1,23 @@
-.. include:: /Includes.rst.txt
+:navigation-title: API
 
-.. _api:
+..  include:: /Includes.rst.txt
+..  _api:
+..  _linkvalidatorapi-AbstractLinktype:
+..  _linkvalidatorapi-LabelledLinktypeInterface:
+..  _linkvalidatorapi-LinktypeInterface:
 
-===
-API
-===
+=====================================
+Public API of the TYPO3 linkvalidator
+=====================================
 
-The following classes, interfaces and events are frequently used by developers
+The following classes and interfaces are frequently used by developers
 of third party extensions. For the complete API have a look into the code.
 
-.. toctree::
-    :titlesonly:
+*   :php:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype`
+*   :php:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface`
+*   :php:`\TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface`
 
-    AbstractLinktype
-    LinktypeInterface
-    LabelledLinktypeInterface
-    BeforeRecordIsAnalyzedEvent <https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Events/Events/Linkvalidator/BeforeRecordIsAnalyzedEvent.html>
-    ModifyValidatorTaskEmailEvent <https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ApiOverview/Events/Events/Linkvalidator/ModifyValidatorTaskEmailEvent.html>
+The following events can be listened to:
+
+*    `BeforeRecordIsAnalyzedEvent <https://docs.typo3.org/permalink/t3coreapi:beforerecordisanalyzedevent>`_
+*    `ModifyValidatorTaskEmailEvent <https://docs.typo3.org/permalink/t3coreapi:modifyvalidatortaskemailevent>`_

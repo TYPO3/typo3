@@ -16,24 +16,4 @@ return [
         'targetFileName' => 'CodeSnippets/Examples/ActivateCustomLinktypeTsConfig.rst.txt',
         'language' => 'typoscript',
     ],
-
-    // API
-    [
-        'action' => 'createPhpClassDocs',
-        'class' => \TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype::class,
-        'targetFileName' => 'CodeSnippets/Api/AbstractLinktype.rst.txt',
-        'withCode' => false,
-    ],
-    [
-        'action' => 'createPhpClassDocs',
-        'class' => \TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface::class,
-        'targetFileName' => 'CodeSnippets/Api/LinktypeInterface.rst.txt',
-        'withCode' => false,
-    ],
-    [
-        'action' => 'createPhpClassDocs',
-        'class' => \TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface::class,
-        'targetFileName' => 'CodeSnippets/Api/LabelledLinktypeInterface.rst.txt',
-        'withCode' => false,
-    ],
 ];

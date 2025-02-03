@@ -1,44 +1,54 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Custom linktypes
 
-.. _linktype-implementation:
+..  include:: /Includes.rst.txt
+..  _linktype-implementation:
 
-================
-Custom linktypes
-================
+==========================================================
+Implementation of a custom linktype for the link validator
+==========================================================
 
 The LinkValidator uses so called "linktypes" to check for different types of
 links, for example internal or external links.
 
 All "linktypes" have to implement the
-:ref:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface <linkvalidatorapi-LinktypeInterface>`.
+:php:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface`.
 
-Classes implementing the :php:`LinktypeInterface` are automatically
+Classes implementing the :php-short:`\TYPO3\CMS\Linkvalidator\Linktype\LinktypeInterface` are automatically
 registered, if :ref:`autoconfigure <t3coreapi:dependency-injection-autoconfigure>`
-is enabled in :file:`Services.yaml`.
+is enabled in :file:`packages/my_extension/Configuration/Services.yaml`.
 
 Alternatively, one can manually tag a custom link type with the
 :yaml:`linkvalidator.linktype` tag:
 
-.. code-block:: yaml
+..  code-block:: yaml
+    :caption: packages/my_extension/Configuration/Services.yaml
 
-    Vendor\Extension\Linktype\MyCustomLinktype:
-      tags:
-        - name: linkvalidator.linktype
+    # Other definitions
+
+     Vendor\Extension\Linktype\MyCustomLinktype:
+       tags:
+         - name: linkvalidator.linktype
 
 Due to the autoconfiguration, the identifier has to be provided by the
 class directly, using the method :php:`getIdentifier()`.
 
-When extending :ref:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype <linkvalidatorapi-AbstractLinktype>`
-it is sufficient to set the :php:`$identifier` class property.
+When extending :php:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype`
+it is sufficient to set the `$identifier` class property.
 
 For custom naming of a linktype, the additional interface
-:ref:`\TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface <linkvalidatorapi-LabelledLinktypeInterface>`.
-can be implemented, which is also part of the default `AbstractLinktype` implementation.
-The method `getReadableName()` is used to return the custom localized name of
-a linktype.
+:php:`\TYPO3\CMS\Linkvalidator\Linktype\LabelledLinktypeInterface`.
+can be implemented, which is also part of the default
+:php-short:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype` implementation.
+
+The method :php:`LabelledLinktypeInterface->getReadableName()` is used to
+return the custom localized name of a linktype.
+
+..  _linktype-implementation-example:
 
 Example
 =======
+
+..  _linktype-implementation-example-add-link-type:
 
 Add new linktype
 ----------------
@@ -46,19 +56,19 @@ Add new linktype
 You can find the following example in the extension
 `t3docs/examples <https://github.com/TYPO3-Documentation/t3docs-examples>`__.
 
-Extend :ref:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype <linkvalidatorapi-AbstractLinktype>` to create
+Extend :php:`\TYPO3\CMS\Linkvalidator\Linktype\AbstractLinktype` to create
 a custom linktype:
 
-.. include:: /CodeSnippets/Examples/ExampleLinkType.rst.txt
+..  include:: /CodeSnippets/Examples/ExampleLinkType.rst.txt
 
 Activate the new linktype in the page tsconfig:
 
-.. include:: /CodeSnippets/Examples/ActivateCustomLinktypeTsConfig.rst.txt
+..  include:: /CodeSnippets/Examples/ActivateCustomLinktypeTsConfig.rst.txt
 
 The extension that provides the linktype must have a
 :file:`Configuration/Services.yaml` file that contains either:
 
-.. code-block:: yaml
+..  code-block:: yaml
     :caption: EXT:examples/Configuration/Services.yaml
 
     services:
@@ -67,7 +77,7 @@ The extension that provides the linktype must have a
 
 Or if autoconfiguration is not desired for some reason:
 
-.. code-block:: yaml
+..  code-block:: yaml
     :caption: EXT:examples/Configuration/Services.yaml
 
     services:
@@ -75,7 +85,7 @@ Or if autoconfiguration is not desired for some reason:
           tags:
              -  name: linkvalidator.linktype
 
-.. _linktype-implementation-override-external:
+..  _linktype-implementation-override-external:
 
 Override the ExternalLinktype class
 -----------------------------------
@@ -139,16 +149,3 @@ passed to the linktype, for example:
     :caption: EXT:my_extension/Configuration/page.tsconfig
 
     mod.linkvalidator.linktypesConfig.custom_external < mod.linkvalidator.linktypesConfig.external
-
-Migration from TYPO3 11 LTS and below
-=====================================
-
-Remove :php:`$GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['linkvalidator']['checkLinks']`
-from your :file:`ext_localconf.php` file.
-
-If :yaml:`autoconfigure` is not enabled in your :file:`Configuration/Services.(yaml|php)`,
-add the tag :yaml:`linkvalidator.linktype` manually to your `linktype` service.
-
-Additionally, make sure to either implement
-:php:`public function getIdentifier(): string` or, in case your `linktype` extends
-:php:`AbstractLinktype`, to set the `$identifier` class property.
