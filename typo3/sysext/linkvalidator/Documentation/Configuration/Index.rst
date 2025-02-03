@@ -318,6 +318,16 @@ You must prefix them with `mod.linkvalidator`, for example
         Additional HTTP request header 'Range' to be passed when crawling URLs.
         Use a string to specify the range (in bytes).
 
+    ..  confval:: external.allowRedirects
+        :name: tsconfig-linktypesConfig-external-allowredirects
+        :type: boolean
+        :Path: mod.linkvalidator.linktypesConfig.external.allowRedirects
+        :Default: `0`
+
+        ..  versionadded:: 14.0
+
+        If enabled, HTTP redirects with external links are reported as problems.
+
     ..  confval:: external.timeout
         :name: tsconfig-linktypesConfig-external-timeout
         :type: integer
