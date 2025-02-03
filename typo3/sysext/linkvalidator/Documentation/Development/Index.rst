@@ -1,10 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Development
 
-.. _development:
+..  include:: /Includes.rst.txt
+..  _development:
 
-===========
-Development
-===========
+========================================
+Linkvalidator information for developers
+========================================
 
 ..  card-grid::
     :columns: 1
@@ -13,7 +14,7 @@ Development
     :class: pb-4
     :card-height: 100
 
-    ..  card:: :ref:`Implementation of a custom linktype <linktype-implementation>`
+    ..  card:: :ref:`Custom linktypes <linktype-implementation>`
 
         The LinkValidator uses so called `linktypes` to check for different
         types of links. Learn how to implement a custom linktype within
@@ -23,7 +24,7 @@ Development
 
         Overview of important classes and interfaces in the public API.
 
-.. toctree::
+..  toctree::
     :hidden:
     :titlesonly:
 
