@@ -82,14 +82,15 @@ class ResetPasswordController
      * Validate the email address.
      *
      * Restricted to POST method in Configuration/Backend/Routes.php
-     *
-     * @param ServerRequestInterface $request
      */
     public function initiatePasswordResetAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->initialize($request);
         $this->initializeForgetPasswordView($request);
         $emailAddress = $request->getParsedBody()['email'] ?? '';
+        if (!is_string($emailAddress)) {
+            $emailAddress = '';
+        }
         $this->view->assign('email', $emailAddress);
         if (!GeneralUtility::validEmail($emailAddress)) {
             $this->view->assign('invalidEmail', true);
@@ -124,8 +125,6 @@ class ResetPasswordController
      * Updates the password in the database.
      *
      * Restricted to POST method in Configuration/Backend/Routes.php
-     *
-     * @param ServerRequestInterface $request
      */
     public function passwordResetFinishAction(ServerRequestInterface $request): ResponseInterface
     {
