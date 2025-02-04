@@ -36,23 +36,12 @@ readonly class SearchableSchemaFieldsCollector
             return new FieldCollection();
         }
         $schema = $this->schemaFactory->get($schemaName);
-        $searchableFields = [];
-        foreach ($schema->getFields() as $field) {
-            if ($field->isSearchable()) {
-                $searchableFields[$field->getName()] = $field;
-            }
-        }
         $searchFields = $searchFields !== [] ? $searchFields : GeneralUtility::trimExplode(',', (string)($schema->getRawConfiguration()['searchFields'] ?? ''), true);
-        if ($searchFields === []) {
-            // No searchFields defined, return all possible fields based on isSearchable() return value
-            return new FieldCollection($searchableFields);
-        }
-        $searchableFieldnames = array_keys($searchableFields);
-        // Filter given searchFields for actually searchable fields, based on isSearchable() return value
-        return new FieldCollection(array_filter(
-            iterator_to_array($schema->getFields(...$searchFields)->getIterator()),
-            static fn(FieldTypeInterface $field): bool => in_array($field->getName(), $searchableFieldnames, true)
-        ));
+        return $searchFields === []
+            // No searchFields defined, return all searchable fields
+            ? $schema->getFields(static fn(FieldTypeInterface $field): bool => $field->isSearchable())
+            // Return given searchFields by filtering whether they are actually searchable
+            : $schema->getFields(static fn(FieldTypeInterface $field): bool => in_array($field->getName(), $searchFields, true) && $field->isSearchable());
     }
 
     /**
