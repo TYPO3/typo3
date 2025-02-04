@@ -93,6 +93,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
     }
 
+    public function deleteParentContentWithoutCascadingDelete(): void
+    {
+        $GLOBALS['TCA']['tx_testirreforeignfield_hotel']['columns']['offers']['config']['behaviour']['enableCascadingDelete'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+    }
+
     public function copyParentContent(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);
