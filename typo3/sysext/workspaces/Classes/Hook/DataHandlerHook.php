@@ -107,16 +107,13 @@ class DataHandlerHook
         if ($command !== 'version') {
             return;
         }
-        $commandIsProcessed = true;
         $action = (string)$value['action'];
         $comment = $value['comment'] ?? '';
         $notificationAlternativeRecipients = $value['notificationAlternativeRecipients'] ?? [];
         switch ($action) {
-            case 'new':
-                $dataHandler->versionizeRecord($table, $id, $value['label']);
-                break;
             case 'swap':
             case 'publish':
+                $commandIsProcessed = true;
                 $this->version_swap(
                     $table,
                     $id,
@@ -126,11 +123,8 @@ class DataHandlerHook
                     $notificationAlternativeRecipients
                 );
                 break;
-            case 'clearWSID':
-            case 'flush':
-                $dataHandler->discard($table, (int)$id);
-                break;
             case 'setStage':
+                $commandIsProcessed = true;
                 $elementIds = GeneralUtility::intExplode(',', (string)$id, true);
                 foreach ($elementIds as $elementId) {
                     $this->version_setStage(
