@@ -1,3 +1,7 @@
+.ck.ck-content * {
+    user-select: auto !important;
+}
+
 .ck.ck-linktext {
     max-width: 300px;
     overflow: hidden;
