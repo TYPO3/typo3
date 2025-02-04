@@ -3360,8 +3360,8 @@ class DataHandler
             (string)($tcaFieldConf['allowed'] ?? ''),
             (string)($tcaFieldConf['disallowed'] ?? ''),
         );
-        $notAllowedReferences = array_diff($valueArray, $filteredValueArray);
-        foreach ($notAllowedReferences as $reference) {
+        $disallowedReferences = array_diff($valueArray, $filteredValueArray);
+        foreach ($disallowedReferences as $reference) {
             // Remove not allowed sys_file_reference rows for this record
             $parts = GeneralUtility::revExplode('_', (string)$reference, 2);
             $fileReferenceUid = (int)$parts[count($parts) - 1];
@@ -3516,10 +3516,18 @@ class DataHandler
                                 $this->inlineLocalizeSynchronize($table, (int)$id, $value);
                                 break;
                             case 'delete':
-                                $this->deleteAction($table, (int)$id);
+                                $this->deleteAction((string)$table, (int)$id);
                                 break;
                             case 'undelete':
                                 $this->undeleteRecord((string)$table, (int)$id);
+                                break;
+                            case 'version':
+                                $action = $value['action'] ?? null;
+                                if ($action === 'new') {
+                                    $this->versionizeRecord($table, $id, $value['label'] ?? null);
+                                } elseif ($value['action'] === 'clearWSID' || $value['action'] === 'flush') {
+                                    $this->discard((string)$table, (int)$id);
+                                }
                                 break;
                         }
                     }
@@ -5955,9 +5963,8 @@ class DataHandler
      * @param string $table Database table name
      * @param int|null $uid Uid of live or versioned record to be discarded, or null if $record is given
      * @param array|null $record Record row that should be discarded. Used instead of $uid within recursion.
-     * @internal should only be used from within DataHandler
      */
-    public function discard(string $table, ?int $uid, ?array $record = null): void
+    protected function discard(string $table, ?int $uid, ?array $record = null): void
     {
         if ($uid === null && $record === null) {
             throw new \RuntimeException('Either record $uid or $record row must be given', 1600373491);
