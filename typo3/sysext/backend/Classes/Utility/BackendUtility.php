@@ -2696,54 +2696,48 @@ class BackendUtility
      * @param string $table Table name to select from
      * @param int $uid Record uid for which to find workspace version.
      * @param string $fields Field list to select
-     * @return array|bool If found, return record, otherwise false
+     * @return array|false If found, return record, otherwise false
      */
-    public static function getWorkspaceVersionOfRecord($workspace, string $table, $uid, $fields = '*')
+    public static function getWorkspaceVersionOfRecord($workspace, string $table, $uid, $fields = '*'): array|false
     {
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+        if ($workspace === 0
+            || !ExtensionManagementUtility::isLoaded('workspaces')
+            || !self::isTableWorkspaceEnabled($table)
+        ) {
             return false;
         }
-        if ($workspace !== 0 && self::isTableWorkspaceEnabled($table)) {
-            // Select workspace version of record:
-            $queryBuilder = self::getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            // build fields to select
-            $queryBuilder->select(...GeneralUtility::trimExplode(',', $fields));
-
-            $row = $queryBuilder
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->or(
-                        // t3ver_state=1 does not contain a t3ver_oid, and returns itself
-                        $queryBuilder->expr()->and(
-                            $queryBuilder->expr()->eq(
-                                'uid',
-                                $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                            ),
-                            $queryBuilder->expr()->eq(
-                                't3ver_state',
-                                $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
-                            )
+        $queryBuilder = self::getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        return $queryBuilder
+            ->select(...GeneralUtility::trimExplode(',', $fields))
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    't3ver_wsid',
+                    $queryBuilder->createNamedParameter($workspace, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->or(
+                    // t3ver_state=1 does not contain a t3ver_oid, and returns itself
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->eq(
+                            'uid',
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                         ),
                         $queryBuilder->expr()->eq(
-                            't3ver_oid',
-                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                            't3ver_state',
+                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
                         )
+                    ),
+                    $queryBuilder->expr()->eq(
+                        't3ver_oid',
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
                     )
                 )
-                ->executeQuery()
-                ->fetchAssociative();
-
-            return $row;
-        }
-        return false;
+            )
+            ->executeQuery()
+            ->fetchAssociative();
     }
 
     /**
