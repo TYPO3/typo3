@@ -78,6 +78,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function deleteParentContentWithoutCascadingDelete(): void
+    {
+        parent::deleteParentContentWithoutCascadingDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentWithoutCascadingDelete.csv');
+    }
+
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();

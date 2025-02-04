@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Crypto\Random;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
@@ -1095,30 +1094,6 @@ final class DataHandlerTest extends UnitTestCase
             ->method('log')
             ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled', -1, [], 0);
         $dataHandlerMock->deleteEl('pages', 0);
-    }
-
-    #[Test]
-    public function deleteRecord_procBasedOnFieldTypeRespectsEnableCascadingDelete(): void
-    {
-        $table = StringUtility::getUniqueId('foo_');
-        $conf = [
-            'type' => 'inline',
-            'foreign_table' => StringUtility::getUniqueId('foreign_foo_'),
-            'behaviour' => [
-                'enableCascadingDelete' => 0,
-            ],
-        ];
-
-        $mockRelationHandler = $this->createMock(RelationHandler::class);
-        $mockRelationHandler->itemArray = [
-            '1' => ['table' => StringUtility::getUniqueId('bar_'), 'id' => 67],
-        ];
-
-        $mockDataHandler = $this->getAccessibleMock(DataHandler::class, ['getRelationFieldType', 'deleteAction', 'createRelationHandlerInstance'], [], '', false);
-        $mockDataHandler->expects(self::once())->method('getRelationFieldType')->willReturn('field');
-        $mockDataHandler->expects(self::once())->method('createRelationHandlerInstance')->willReturn($mockRelationHandler);
-        $mockDataHandler->expects(self::never())->method('deleteAction');
-        $mockDataHandler->_call('deleteRecord_procBasedOnFieldType', $table, 42, 'bar', $conf);
     }
 
     public static function checkValue_checkReturnsExpectedValuesDataProvider(): array

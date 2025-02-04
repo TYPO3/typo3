@@ -88,6 +88,16 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function deleteParentContentWithoutCascadingDelete(): void
+    {
+        // @todo: TCA 'enableCascadingDelete' = false is *not* honored in workspaces. There
+        //        are follow-up issues with discard and publish, their tests should be added
+        //        when fixing this.
+        parent::deleteParentContentWithoutCascadingDelete();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentWithoutCascadingDelete.csv');
+    }
+
+    #[Test]
     public function copyParentContent(): void
     {
         parent::copyParentContent();
