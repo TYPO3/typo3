@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Schema;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\TextFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -88,6 +89,16 @@ final class TcaSchemaTest extends FunctionalTestCase
         /** @var TextFieldType $regularBodyTextField */
         $regularBodyTextField = $contentSchema->getFields()['bodytext'];
         self::assertFalse($regularBodyTextField->isRichText());
+    }
+
+    #[Test]
+    public function tcaSchemaReturnsFieldsByFilterCallback(): void
+    {
+        $factory = $this->get(TcaSchemaFactory::class);
+        $mainSchema = $factory->get('pages');
+        $fields = $mainSchema->getFields(static fn(FieldTypeInterface $field): bool => $field->getName() === 'title');
+        self::assertCount(1, $fields);
+        self::assertEquals('input', $fields['title']->getType());
     }
 
     #[Test]
