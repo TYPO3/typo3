@@ -183,7 +183,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
         }
         if ($platform instanceof DoctrinePostgreSQLPlatform) {
             // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
-            return $this->comparison($fieldName, 'ILIKE', $value);
+            return $this->comparison($this->castText($fieldName), 'ILIKE', $value);
         }
         // Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
         //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.
@@ -208,7 +208,7 @@ class ExpressionBuilder extends DoctrineExpressionBuilder
         }
         if ($platform instanceof DoctrinePostgreSQLPlatform) {
             // Use ILIKE to mimic case-insensitive search like most people are trained from MySQL/MariaDB.
-            return $this->comparison($fieldName, 'NOT ILIKE', $value);
+            return $this->comparison($this->castText($fieldName), 'NOT ILIKE', $value);
         }
         // Note: SQLite does not properly work with non-ascii letters as search word for case-insensitive
         //       matching, UPPER() and LOWER() have the same issue, it only works with ascii letters.

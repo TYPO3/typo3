@@ -20,6 +20,7 @@ namespace TYPO3\CMS\IndexedSearch\Tests\Functional\Utility;
 use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -30,23 +31,17 @@ final class LikeWildcardTest extends FunctionalTestCase
 {
     #[DataProvider('getLikeQueryPartDataProvider')]
     #[Test]
-    public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, LikeWildcard $subject, string $expected): void
+    public function getLikeQueryPart(string $tableName, string $fieldName, string $likeValue, LikeWildcard $subject, array $expected): void
     {
         $connection = $this->get(ConnectionPool::class)->getConnectionForTable($tableName);
         $databasePlatform = $connection->getDatabasePlatform();
-        if ($databasePlatform instanceof DoctrinePostgreSQLPlatform) {
-            $expected = str_replace('LIKE', 'ILIKE', $expected);
+        $expectedToUse = null;
+        foreach ($expected as $expectedPlatform => $expectedForPlatform) {
+            if ($databasePlatform instanceof $expectedPlatform) {
+                $expectedToUse = $expectedForPlatform;
+            }
         }
-        // MySQL has support for backslash escape sequences, the expected results needs to take
-        // the additional quoting into account.
-        if ($databasePlatform instanceof DoctrineMariaDBPlatform || $databasePlatform instanceof DoctrineMySQLPlatform) {
-            $expected = addcslashes($expected, '\\');
-        }
-        $expected = $connection->quoteIdentifier($fieldName) . ' ' . $expected;
-        if (!($databasePlatform instanceof DoctrinePostgreSQLPlatform)) {
-            $expected .= ' ESCAPE ' . $connection->quote('\\');
-        }
-        self::assertSame($expected, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));
+        self::assertSame($expectedToUse, $subject->getLikeQueryPart($tableName, $fieldName, $likeValue));
     }
 
     /**
@@ -62,53 +57,88 @@ final class LikeWildcardTest extends FunctionalTestCase
     {
         return [
             'no placeholders and no wildcard mode' => [
-                'tt_content',
-                'body',
-                'searchstring',
-                LikeWildcard::NONE,
-                "LIKE 'searchstring'",
+                'tableName' => 'tt_content',
+                'fieldName' => 'body',
+                'likeValue' => 'searchstring',
+                'subject' => LikeWildcard::NONE,
+                'expected' => [
+                    DoctrinePostgreSQLPlatform::class => '(("body")::text) ILIKE \'searchstring\'',
+                    DoctrineMariaDBPlatform::class => '`body` LIKE \'searchstring\' ESCAPE \'\\\\\'',
+                    DoctrineMySQLPlatform::class => '`body` LIKE \'searchstring\' ESCAPE \'\\\\\'',
+                    DoctrineSQLitePlatform::class => '"body" LIKE \'searchstring\' ESCAPE \'\\\'',
+                ],
             ],
             'no placeholders and left wildcard mode' => [
-                'tt_content',
-                'body',
-                'searchstring',
-                LikeWildcard::LEFT,
-                "LIKE '%searchstring'",
+                'tableName' => 'tt_content',
+                'fieldName' => 'body',
+                'likeValue' => 'searchstring',
+                'subject' => LikeWildcard::LEFT,
+                'expected' => [
+                    DoctrinePostgreSQLPlatform::class => '(("body")::text) ILIKE \'%searchstring\'',
+                    DoctrineMariaDBPlatform::class => '`body` LIKE \'%searchstring\' ESCAPE \'\\\\\'',
+                    DoctrineMySQLPlatform::class => '`body` LIKE \'%searchstring\' ESCAPE \'\\\\\'',
+                    DoctrineSQLitePlatform::class => '"body" LIKE \'%searchstring\' ESCAPE \'\\\'',
+                ],
             ],
             'no placeholders and right wildcard mode' => [
-                'tt_content',
-                'body',
-                'searchstring',
-                LikeWildcard::RIGHT,
-                "LIKE 'searchstring%'",
+                'tableName' => 'tt_content',
+                'fieldName' => 'body',
+                'likeValue' => 'searchstring',
+                'subject' => LikeWildcard::RIGHT,
+                'expected' => [
+                    DoctrinePostgreSQLPlatform::class => '(("body")::text) ILIKE \'searchstring%\'',
+                    DoctrineMariaDBPlatform::class => '`body` LIKE \'searchstring%\' ESCAPE \'\\\\\'',
+                    DoctrineMySQLPlatform::class => '`body` LIKE \'searchstring%\' ESCAPE \'\\\\\'',
+                    DoctrineSQLitePlatform::class => '"body" LIKE \'searchstring%\' ESCAPE \'\\\'',
+                ],
             ],
             'no placeholders and both wildcards mode' => [
-                'tt_content',
-                'body',
-                'searchstring',
-                LikeWildcard::BOTH,
-                "LIKE '%searchstring%'",
+                'tableName' => 'tt_content',
+                'fieldName' => 'body',
+                'likeValue' => 'searchstring',
+                'subject' => LikeWildcard::BOTH,
+                'expected' => [
+                    DoctrinePostgreSQLPlatform::class => '(("body")::text) ILIKE \'%searchstring%\'',
+                    DoctrineMariaDBPlatform::class => '`body` LIKE \'%searchstring%\' ESCAPE \'\\\\\'',
+                    DoctrineMySQLPlatform::class => '`body` LIKE \'%searchstring%\' ESCAPE \'\\\\\'',
+                    DoctrineSQLitePlatform::class => '"body" LIKE \'%searchstring%\' ESCAPE \'\\\'',
+                ],
             ],
             'underscore placeholder and left wildcard mode' => [
-                'tt_content',
-                'body',
-                'search_string',
-                LikeWildcard::LEFT,
-                "LIKE '%search\\_string'",
+                'tableName' => 'tt_content',
+                'fieldName' => 'body',
+                'likeValue' => 'search_string',
+                'subject' => LikeWildcard::LEFT,
+                'expected' => [
+                    DoctrinePostgreSQLPlatform::class => '(("body")::text) ILIKE \'%search\_string\'',
+                    DoctrineMariaDBPlatform::class => '`body` LIKE \'%search\\\\_string\' ESCAPE \'\\\\\'',
+                    DoctrineMySQLPlatform::class => '`body` LIKE \'%search\\\\_string\' ESCAPE \'\\\\\'',
+                    DoctrineSQLitePlatform::class => '"body" LIKE \'%search\_string\' ESCAPE \'\\\'',
+                ],
             ],
             'percent placeholder and right wildcard mode' => [
-                'tt_content',
-                'body',
-                'search%string',
-                LikeWildcard::RIGHT,
-                "LIKE 'search\\%string%'",
+                'tableName' => 'tt_content',
+                'fieldName' => 'body',
+                'likeValue' => 'search%string',
+                'subject' => LikeWildcard::RIGHT,
+                'expected' => [
+                    DoctrinePostgreSQLPlatform::class => '(("body")::text) ILIKE \'search\%string%\'',
+                    DoctrineMariaDBPlatform::class => '`body` LIKE \'search\\\\%string%\' ESCAPE \'\\\\\'',
+                    DoctrineMySQLPlatform::class => '`body` LIKE \'search\\\\%string%\' ESCAPE \'\\\\\'',
+                    DoctrineSQLitePlatform::class => '"body" LIKE \'search\%string%\' ESCAPE \'\\\'',
+                ],
             ],
             'percent and underscore placeholder and both wildcards mode' => [
-                'tt_content',
-                'body',
-                '_search%string_',
-                LikeWildcard::RIGHT,
-                "LIKE '\\_search\\%string\\_%'",
+                'tableName' => 'tt_content',
+                'fieldName' => 'body',
+                'likeValue' => '_search%string_',
+                'subject' => LikeWildcard::RIGHT,
+                'expected' => [
+                    DoctrinePostgreSQLPlatform::class => '(("body")::text) ILIKE \'\_search\%string\_%\'',
+                    DoctrineMariaDBPlatform::class => '`body` LIKE \'\\\\_search\\\\%string\\\\_%\' ESCAPE \'\\\\\'',
+                    DoctrineMySQLPlatform::class => '`body` LIKE \'\\\\_search\\\\%string\\\\_%\' ESCAPE \'\\\\\'',
+                    DoctrineSQLitePlatform::class => '"body" LIKE \'\_search\%string\_%\' ESCAPE \'\\\'',
+                ],
             ],
         ];
     }

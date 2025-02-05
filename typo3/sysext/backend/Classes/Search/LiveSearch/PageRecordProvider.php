@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Search\LiveSearch;
 
 use Doctrine\DBAL\ArrayParameterType;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -272,6 +273,8 @@ final class PageRecordProvider implements SearchProviderInterface
      */
     protected function buildConstraintsForTable(string $queryString, QueryBuilder $queryBuilder): array
     {
+        $platform = $queryBuilder->getConnection()->getDatabasePlatform();
+        $isPostgres = $platform instanceof DoctrinePostgreSQLPlatform;
         $fieldsToSearchWithin = $this->searchableSchemaFieldsCollector->getFields('pages');
         $constraints = [];
 
@@ -305,46 +308,40 @@ final class PageRecordProvider implements SearchProviderInterface
             }
         } else {
             $like = '%' . $queryBuilder->escapeLikeWildcards($queryString) . '%';
-            // Add uid and pid constraints
-            $constraints[] = $queryBuilder->expr()->and(
-                $queryBuilder->expr()->comparison(
-                    'LOWER(' . $queryBuilder->quoteIdentifier('uid') . ')',
-                    'LIKE',
-                    $queryBuilder->createNamedParameter(mb_strtolower($like))
-                )
-            );
-            $constraints[] = $queryBuilder->expr()->and(
-                $queryBuilder->expr()->comparison(
-                    'LOWER(' . $queryBuilder->quoteIdentifier('pid') . ')',
-                    'LIKE',
-                    $queryBuilder->createNamedParameter(mb_strtolower($like))
-                )
-            );
             foreach ($fieldsToSearchWithin as $fieldName => $field) {
                 $fieldConfig = $field->getConfiguration();
 
-                // Check whether search should be case-sensitive or not
-                $searchConstraint = $queryBuilder->expr()->and(
-                    $queryBuilder->expr()->comparison(
-                        'LOWER(' . $queryBuilder->quoteIdentifier($fieldName) . ')',
-                        'LIKE',
-                        $queryBuilder->createNamedParameter(mb_strtolower($like))
-                    )
+                // Enforce case-insensitive comparison by lower-casing field and value, unrelated to charset/collation
+                // on MySQL/MariaDB, for example if column collation is `utf8mb4_bin` - which would be case-sensitive.
+                $preparedFieldName = $isPostgres
+                    ? $queryBuilder->castFieldToTextType($fieldName)
+                    : $queryBuilder->quoteIdentifier($fieldName);
+                $searchConstraint = $queryBuilder->expr()->comparison(
+                    'LOWER(' . $preparedFieldName . ')',
+                    'LIKE',
+                    $queryBuilder->createNamedParameter(mb_strtolower($like))
                 );
 
                 if (is_array($fieldConfig['search'] ?? false)) {
                     if (in_array('case', $fieldConfig['search'], true)) {
-                        // Replace case insensitive default constraint
-                        $searchConstraint = $queryBuilder->expr()->and(
-                            $queryBuilder->expr()->like(
-                                $fieldName,
-                                $queryBuilder->createNamedParameter($like)
-                            )
+                        // Replace case insensitive default constraint with semi case-sensitive constraint
+                        // @todo This is not really ensured, without a suiting collation on the field (`*_bin`) AND also
+                        //       converting the like-value to the same binary collation, MySQL/MariaDB is not searching
+                        //       case-sensitive. ExpressionBuilder->like() and notLike() has been adjusted to use same
+                        //       case-insensitive search for PostgreSQL to adopt the same behaviour for the most cases.
+                        //       Making this here obsolete and interchangeable with the general enforcement above.
+                        // @todo TCA Field search option `case` cannot be enforced easily, which needs deeper analysis
+                        //       to find a possible way to do so - or deprecate the option at all.
+                        // https://docs.typo3.org/m/typo3/reference-tca/11.5/en-us/ColumnsConfig/CommonProperties/Search.html#confval-case
+                        $searchConstraint = $queryBuilder->expr()->like(
+                            $fieldName,
+                            $queryBuilder->createNamedParameter($like)
                         );
                     }
                     // Apply additional condition, if any
                     if ($fieldConfig['search']['andWhere'] ?? false) {
-                        $searchConstraint = $searchConstraint->with(
+                        $searchConstraint = $queryBuilder->expr()->and(
+                            $searchConstraint,
                             QueryHelper::stripLogicalOperatorPrefix(QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $fieldConfig['search']['andWhere']))
                         );
                     }
