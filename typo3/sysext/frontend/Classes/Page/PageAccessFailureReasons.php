@@ -29,6 +29,9 @@ final class PageAccessFailureReasons
     public const ROOTLINE_BROKEN = 'page.rootline';
     public const INVALID_EXTERNAL_URL = 'page.invalid_external_url';
 
+    // Site configuration issues
+    public const INVALID_SITE_SETS = 'site.sets.invalid';
+
     // Page configuration issues
     public const RENDERING_INSTRUCTIONS_NOT_FOUND = 'rendering_instructions';
     public const RENDERING_INSTRUCTIONS_NOT_CONFIGURED = 'rendering_instructions.type';

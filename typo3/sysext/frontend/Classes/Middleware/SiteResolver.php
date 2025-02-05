@@ -21,10 +21,14 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Routing\SiteRouteResult;
+use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
+use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 
 /**
  * Identifies if a site is configured for the request, based on "id" and "L" GET/POST parameters, or the requested
@@ -35,7 +39,11 @@ use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
  */
 class SiteResolver implements MiddlewareInterface
 {
-    public function __construct(protected readonly SiteMatcher $matcher) {}
+    public function __construct(
+        protected readonly SiteMatcher $matcher,
+        protected readonly LoggerInterface $logger,
+        protected readonly ErrorController $errorController,
+    ) {}
 
     /**
      * Resolve the site/language information by checking the page ID or the URL.
@@ -44,7 +52,26 @@ class SiteResolver implements MiddlewareInterface
     {
         /** @var SiteRouteResult $routeResult */
         $routeResult = $this->matcher->matchRequest($request);
-        $request = $request->withAttribute('site', $routeResult->getSite());
+
+        $site = $routeResult->getSite();
+        if ($site instanceof Site && $site->invalidSets !== []) {
+            $invalidSets = implode(', ', array_keys($site->invalidSets));
+            $this->logger->error('Site {identifier} depends on unavailable sets: {invalidSets}', [
+                'identifier' => $site->getIdentifier(),
+                'invalidSets' => $invalidSets,
+            ]);
+            return $this->errorController->internalErrorAction(
+                $request,
+                sprintf(
+                    'Site %s depends on unavailable sets: %s',
+                    $site->getIdentifier(),
+                    $invalidSets,
+                ),
+                ['code' => PageAccessFailureReasons::INVALID_SITE_SETS]
+            );
+        }
+
+        $request = $request->withAttribute('site', $site);
         $request = $request->withAttribute('language', $routeResult->getLanguage());
         $request = $request->withAttribute('routing', $routeResult);
         if ($routeResult->getLanguage() instanceof SiteLanguage) {

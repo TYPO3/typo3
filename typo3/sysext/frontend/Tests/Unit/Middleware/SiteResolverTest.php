@@ -23,6 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Configuration\Features;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Routing\SiteMatcher;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Controller\ErrorController;
 use TYPO3\CMS\Frontend\Middleware\SiteResolver;
 use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -110,7 +112,11 @@ final class SiteResolverTest extends UnitTestCase
         ]));
         $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(
+            new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
+            $this->createMock(LoggerInterface::class),
+            $this->createMock(ErrorController::class),
+        );
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -164,7 +170,11 @@ final class SiteResolverTest extends UnitTestCase
 
         $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(
+            new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
+            $this->createMock(LoggerInterface::class),
+            $this->createMock(ErrorController::class),
+        );
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -255,7 +265,11 @@ final class SiteResolverTest extends UnitTestCase
 
         $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(
+            new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
+            $this->createMock(LoggerInterface::class),
+            $this->createMock(ErrorController::class),
+        );
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
@@ -366,7 +380,11 @@ final class SiteResolverTest extends UnitTestCase
 
         $featuresMock = $this->createFeaturesMock();
         $requestContextFactory = new RequestContextFactory(new BackendEntryPointResolver());
-        $subject = new SiteResolver(new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory));
+        $subject = new SiteResolver(
+            new SiteMatcher($featuresMock, $siteFinder, $requestContextFactory),
+            $this->createMock(LoggerInterface::class),
+            $this->createMock(ErrorController::class),
+        );
 
         $request = new ServerRequest($incomingUrl, 'GET');
         $response = $subject->process($request, $this->siteFoundRequestHandler);
