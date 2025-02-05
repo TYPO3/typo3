@@ -610,7 +610,9 @@ class DataHandlerHook
             $dataHandler->log($table, (int)$id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', -1, ['workspace' => $workspaceId]);
             return;
         }
-        if (!($dataHandler->doesRecordExist($table, $swapWith, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $swapWith))) {
+        if ($dataHandler->recordInfoWithPermissionCheck($table, $swapWith, Permission::PAGE_SHOW) === false
+            || !$dataHandler->checkRecordUpdateAccess($table, $swapWith)
+        ) {
             $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
             return;
         }
@@ -923,7 +925,9 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', -1, ['workspace' => $workspaceId]);
             return;
         }
-        if (!($dataHandler->doesRecordExist($table, $id, Permission::PAGE_SHOW) && $dataHandler->checkRecordUpdateAccess($table, $id))) {
+        if ($dataHandler->recordInfoWithPermissionCheck($table, $id, Permission::PAGE_SHOW) === false
+            || !$dataHandler->checkRecordUpdateAccess($table, $id)
+        ) {
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
             return;
         }
