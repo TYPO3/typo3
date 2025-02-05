@@ -5033,7 +5033,7 @@ class DataHandler
             $whereClause = BackendUtility::isTableWorkspaceEnabled($table) ? 'AND t3ver_oid=0' : '';
             $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], $whereClause);
             if (empty($parentRecordLocalization)) {
-                $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::MESSAGE, 'Localization for parent record {table}:{uid} cannot be fetched', -1, ['table' => $table, 'uid' => (int)$id], $this->eventPid($table, $id, $parentRecord['pid']));
+                $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::MESSAGE, 'Localization for parent record {table}:{uid} cannot be fetched', -1, ['table' => $table, 'uid' => (int)$id], $table === 'pages' ? $id : $parentRecord['pid']);
                 return;
             }
             $parentRecord = $parentRecordLocalization[0];
@@ -7606,30 +7606,13 @@ class DataHandler
             return [
                 'header' => BackendUtility::getRecordTitle($table, $fullRow ?: $row),
                 'pid' => $row['pid'] ?? null,
-                'event_pid' => $this->eventPid($table, (int)$liveUid, $row['pid'] ?? null),
+                'event_pid' => $table === 'pages' ? (int)$liveUid : ($row['pid'] ?? null),
                 't3ver_state' => $this->tcaSchemaFactory->get($table)->isWorkspaceAware() ? ($row['t3ver_state'] ?? '') : '',
             ];
         }
         return null;
     }
 
-    /**
-     * @param string $table
-     * @param int $uid
-     * @param int $pid
-     * @return int
-     * @internal should only be used from within DataHandler
-     */
-    public function eventPid($table, $uid, $pid)
-    {
-        return $table === 'pages' ? $uid : $pid;
-    }
-
-    /*********************************************
-     *
-     * Storing data to Database Layer
-     *
-     ********************************************/
     /**
      * Update database record
      * Does not check permissions but expects them to be verified on beforehand

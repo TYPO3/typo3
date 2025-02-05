@@ -176,12 +176,11 @@ class DataHandlerHook
                 $dataHandler->BE_USER->user
             );
             $this->messageBus->dispatch($message);
-
             if ($dataHandler->enableLogging) {
                 [$elementTable, $elementUid] = reset($groupedNotificationInformation['elements']);
                 $propertyArray = $dataHandler->getRecordProperties($elementTable, $elementUid);
                 $pid = $propertyArray['pid'];
-                $dataHandler->log($elementTable, $elementUid, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "{recipients}"', -1, ['recipients' => implode('", "', array_column($emails, 'email'))], $dataHandler->eventPid($elementTable, $elementUid, $pid));
+                $dataHandler->log($elementTable, $elementUid, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "{recipients}"', -1, ['recipients' => implode('", "', array_column($emails, 'email'))], $elementTable === 'pages' ? $elementUid : $pid);
             }
         }
     }
@@ -513,7 +512,7 @@ class DataHandlerHook
                 if ($dataHandler->enableLogging) {
                     $propertyArray = $dataHandler->getRecordProperties($table, $id);
                     $pid = $propertyArray['pid'];
-                    $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' =>  $stageId, 'comment' => mb_substr($comment, 0, 100)], $dataHandler->eventPid($table, $id, $pid));
+                    $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' =>  $stageId, 'comment' => mb_substr($comment, 0, 100)], $table === 'pages' ? $id : $pid);
                 }
                 // Write the stage change to history
                 $historyStore = $this->getRecordHistoryStore($workspaceId, $dataHandler->BE_USER);
@@ -720,7 +719,7 @@ class DataHandlerHook
                 $dataHandler->BE_USER->workspace = $currentUserWorkspace;
             }
             $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', -1, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $dataHandler->eventPid($table, $id, $swapVersion['pid']));
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', -1, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $table === 'pages' ? $id : $swapVersion['pid']);
 
             // Set log entry for live record:
             $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
@@ -749,7 +748,7 @@ class DataHandlerHook
             if ($dataHandler->enableLogging) {
                 $propArr = $dataHandler->getRecordProperties($table, $id);
                 $pid = $propArr['pid'];
-                $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $dataHandler->eventPid($table, $id, $pid));
+                $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', -1, [], $table === 'pages' ? $id : $pid);
             }
             // Write the stage change to the history
             $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
@@ -955,7 +954,7 @@ class DataHandlerHook
         }
 
         if ($dataHandler->enableLogging) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {uid} (new record)', -1, ['table' => $table, 'uid' => $id], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, 0, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {uid} (new record)', -1, ['table' => $table, 'uid' => $id], $table === 'pages' ? $id : $newRecordInWorkspace['pid']);
         }
         $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
 
@@ -969,7 +968,7 @@ class DataHandlerHook
         $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
-        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' => $stageId, 'comment' => substr($comment, 0, 100)], $dataHandler->eventPid($table, $id, $newRecordInWorkspace['pid']));
+        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', -1, ['stage' => $stageId, 'comment' => substr($comment, 0, 100)], $table === 'pages' ? $id : $newRecordInWorkspace['pid']);
         // Write the stage change to the history (usually this is done in updateDB in DataHandler, but we do a manual SQL change)
         $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
         $historyStore->changeStageForRecord($table, $id, ['current' => (int)$newRecordInWorkspace['t3ver_stage'], 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
