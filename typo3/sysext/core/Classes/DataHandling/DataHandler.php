@@ -4469,7 +4469,7 @@ class DataHandler
             // Edit rights for the record...
             $mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
         } else {
-            $mayMoveAccess = $this->doesRecordExist($table, $uid, Permission::PAGE_DELETE);
+            $mayMoveAccess = is_array($this->recordInfoWithPermissionCheck($table, $uid, Permission::PAGE_DELETE));
         }
         // Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new),
         // unless the pages are moved on the same pid, then edit-rights are checked
@@ -4832,7 +4832,7 @@ class DataHandler
         $languageFieldName = $languageCapability->getLanguageField()->getName();
         $translationOriginPointerFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
 
-        if (!$this->doesRecordExist($table, $uid, Permission::PAGE_SHOW)) {
+        if ($this->recordInfoWithPermissionCheck($table, $uid, Permission::PAGE_SHOW) === false) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} without permission', -1, ['table' => $table, 'uid' => (int)$uid]);
             return false;
         }
@@ -5356,7 +5356,7 @@ class DataHandler
         } else {
             $perms = Permission::CONTENT_EDIT;
         }
-        if (!$noRecordCheck && !$this->doesRecordExist($table, $uid, $perms)) {
+        if (!$noRecordCheck && $this->recordInfoWithPermissionCheck($table, $uid, $perms) === false) {
             return;
         }
 
@@ -5594,12 +5594,12 @@ class DataHandler
         // Because it is currently only deleting the translation
         $defaultLanguagePageId = $this->getDefaultLanguagePageId($uid);
         if ($defaultLanguagePageId !== $uid) {
-            if ($this->doesRecordExist('pages', (int)$defaultLanguagePageId, Permission::PAGE_DELETE)) {
+            if (is_array($this->recordInfoWithPermissionCheck('pages', $defaultLanguagePageId, Permission::PAGE_DELETE))) {
                 $isTranslatedPage = true;
             } else {
                 return 'Attempt to delete page without permissions';
             }
-        } elseif (!$this->doesRecordExist('pages', $uid, Permission::PAGE_DELETE)) {
+        } elseif ($this->recordInfoWithPermissionCheck('pages', $uid, Permission::PAGE_DELETE) === false) {
             return 'Attempt to delete page without permissions';
         }
 
@@ -5642,7 +5642,7 @@ class DataHandler
         } else {
             $perms = Permission::CONTENT_EDIT;
         }
-        return $this->doesRecordExist($table, $id, $perms) ? false : 'No permission to delete record';
+        return is_array($this->recordInfoWithPermissionCheck($table, $id, $perms)) ? false : 'No permission to delete record';
     }
 
     /**
@@ -7190,7 +7190,7 @@ class DataHandler
             } else {
                 $perms = Permission::CONTENT_EDIT;
             }
-            if ($this->doesRecordExist($table, $id, $perms)) {
+            if (is_array($this->recordInfoWithPermissionCheck($table, $id, $perms))) {
                 $res = 1;
             }
             // Cache the result
@@ -7228,7 +7228,7 @@ class DataHandler
         } else {
             $perms = Permission::CONTENT_EDIT;
         }
-        $pageExists = (bool)$this->doesRecordExist('pages', $pid, $perms);
+        $pageExists = is_array($this->recordInfoWithPermissionCheck('pages', $pid, $perms));
         // If either admin and root-level or if page record exists and 1) if 'pages' you may create new ones 2) if page-content, new content items may be inserted on the $pid page
         if ($pageExists || $pid === 0 && ($this->admin || BackendUtility::isRootLevelRestrictionIgnored($insertTable))) {
             // Check permissions
@@ -7278,29 +7278,12 @@ class DataHandler
     }
 
     /**
-     * Checks if record can be selected based on given permission criteria
-     *
-     * @param string $table Record table name
-     * @param int $id Record UID
-     * @param int $perms Permission restrictions to observe: integer that will be bitwise AND'ed.
-     * @return bool Returns TRUE if the record given by $table, $id and $perms can be selected
-     *
-     * @throws \RuntimeException
-     * @internal should only be used from within DataHandler
-     */
-    public function doesRecordExist($table, $id, int $perms): bool
-    {
-        return $this->recordInfoWithPermissionCheck($table, $id, $perms, 'uid, pid') !== false;
-    }
-
-    /**
      * Looks up a page based on permissions.
      *
      * @param int $id Page id
      * @param int $perms Permission integer
      * @param array $columns Columns to select
      * @internal
-     * @see doesRecordExist()
      */
     protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid']): array|false
     {
@@ -7332,7 +7315,7 @@ class DataHandler
     /**
      * Checks if a whole branch of pages exists.
      *
-     * Tests the branch under $pid like doesRecordExist(), but it doesn't test the page with $pid as uid - use doesRecordExist() for this purpose.
+     * Tests the branch under $pid. It doesn't test the page with $pid as uid.
      *
      * @param int $pid Page ID to select subpages from.
      * @param int $permissions Perms integer to check each page record for.
@@ -7515,22 +7498,19 @@ class DataHandler
      * @param string $table Record table name
      * @param int $id Record UID
      * @param int $perms Permission restrictions to observe: An integer that will be bitwise AND'ed.
-     * @param string $fieldList - fields - default is '*'
-     * @throws \RuntimeException
      * @return array<string,mixed>|false Row if exists and accessible, false otherwise
+     * @internal should only be used from within DataHandler
      */
-    protected function recordInfoWithPermissionCheck(string $table, int $id, int $perms, string $fieldList = '*')
+    public function recordInfoWithPermissionCheck(string $table, int $id, int $perms): array|false
     {
         if ($this->bypassAccessCheckForRecords) {
-            $columns = GeneralUtility::trimExplode(',', $fieldList, true);
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
-            $record = $queryBuilder->select(...$columns)
+            return $queryBuilder->select('*')
                 ->from($table)
                 ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
                 ->executeQuery()
                 ->fetchAssociative();
-            return $record ?: false;
         }
         if (!$perms) {
             throw new \RuntimeException('Internal ERROR: no permissions to check for non-admin user', 1270853920);
@@ -7538,31 +7518,30 @@ class DataHandler
         // For all tables: Check if record exists:
         $isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
         if ($this->tcaSchemaFactory->has($table) && $id > 0 && ($this->admin || $isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id))) {
-            $columns = GeneralUtility::trimExplode(',', $fieldList, true);
-            if ($table !== 'pages') {
-                // Find record without checking page
-                // @todo: This should probably check for editlock
-                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-                $output = $queryBuilder
-                    ->select(...$columns)
-                    ->from($table)
-                    ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
-                    ->executeQuery()
-                    ->fetchAssociative();
-                // If record found, check page as well:
-                if (is_array($output)) {
-                    // Looking up the page for record:
-                    $pageRec = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
-                    // Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
-                    $isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
-                    if (is_array($pageRec) || !$output['pid'] && ($this->admin || $isRootLevelRestrictionIgnored)) {
-                        return $output;
-                    }
-                }
-                return false;
+            if ($table === 'pages') {
+                return $this->doesRecordExist_pageLookUp($id, $perms, ['*']);
             }
-            return $this->doesRecordExist_pageLookUp($id, $perms, $columns);
+            // Find record without checking page
+            // @todo: This should probably check for editlock
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $output = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
+                ->executeQuery()
+                ->fetchAssociative();
+            // If record found, check page as well:
+            if (is_array($output)) {
+                // Looking up the page for record:
+                $pageRec = $this->doesRecordExist_pageLookUp($output['pid'], $perms);
+                // Return TRUE if either a page was found OR if the PID is zero AND the user is ADMIN (in which case the record is at root-level):
+                $isRootLevelRestrictionIgnored = BackendUtility::isRootLevelRestrictionIgnored($table);
+                if (is_array($pageRec) || !$output['pid'] && ($this->admin || $isRootLevelRestrictionIgnored)) {
+                    return $output;
+                }
+            }
+            return false;
         }
         return false;
     }
