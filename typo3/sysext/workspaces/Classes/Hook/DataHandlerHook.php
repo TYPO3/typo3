@@ -46,7 +46,6 @@ use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\DataHandler\CommandMap;
 use TYPO3\CMS\Workspaces\Event\AfterRecordPublishedEvent;
 use TYPO3\CMS\Workspaces\Messages\StageChangeMessage;
-use TYPO3\CMS\Workspaces\Notification\StageChangeNotification;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
@@ -149,15 +148,9 @@ class DataHandlerHook
      *
      * @param DataHandler $dataHandler reference to the main DataHandler object
      */
-    public function processCmdmap_afterFinish(DataHandler $dataHandler)
+    public function processCmdmap_afterFinish(DataHandler $dataHandler): void
     {
-        $emailNotificationService = GeneralUtility::makeInstance(StageChangeNotification::class);
-        $this->sendStageChangeNotification(
-            $this->notificationEmailInfo,
-            $emailNotificationService,
-            $dataHandler
-        );
-
+        $this->sendStageChangeNotification($this->notificationEmailInfo, $dataHandler);
         // Reset notification array
         $this->notificationEmailInfo = [];
         // Reset remapped IDs
@@ -166,11 +159,8 @@ class DataHandlerHook
         $this->flushWorkspaceCacheEntriesByWorkspaceId((int)$dataHandler->BE_USER->workspace);
     }
 
-    protected function sendStageChangeNotification(
-        array $accumulatedNotificationInformation,
-        StageChangeNotification $notificationService,
-        DataHandler $dataHandler
-    ): void {
+    protected function sendStageChangeNotification(array $accumulatedNotificationInformation, DataHandler $dataHandler): void
+    {
         foreach ($accumulatedNotificationInformation as $groupedNotificationInformation) {
             $emails = (array)$groupedNotificationInformation['recipients'];
             if (empty($emails)) {
