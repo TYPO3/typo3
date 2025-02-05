@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Expression\ExpressionBu
 
 use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -604,14 +603,8 @@ final class LikeTest extends FunctionalTestCase
         ];
     }
 
-    #[Group('not-postgres')]
     #[DataProvider('likeOnIntegerFieldDataSets')]
     #[Test]
-    /**
-     * @todo PostgreSQL is picky when using LIKE or ILIKE on a field or value not being a compatible text-type,
-     *       requiring explicitly type casting. MySQL, MariaDB and SQLite are more forgiving and supports LIKE
-     *       comparisons on these fields or values. Excluded for PostgresSQL until a solution is implemented.
-     */
     public function likeOnIntegerFieldReturnsExpectedDataSet(string $searchWord, bool $caseSensitive, array $expectedRows): void
     {
         if ($caseSensitive === true) {
@@ -670,14 +663,8 @@ final class LikeTest extends FunctionalTestCase
         ];
     }
 
-    #[Group('not-postgres')]
     #[DataProvider('notLikeOnIntegerFieldDataSets')]
     #[Test]
-    /**
-     * @todo PostgreSQL is picky when using LIKE or ILIKE on a field or value not being a compatible text-type,
-     *       requiring explicitly type casting. MySQL, MariaDB and SQLite are more forgiving and supports LIKE
-     *       comparisons on these fields or values. Excluded for PostgresSQL until a solution is implemented.
-     */
     public function notLikeOnIntegerFieldReturnsExpectedDataSet(string $searchWord, bool $caseSensitive, array $expectedRows): void
     {
         if ($caseSensitive === true) {
