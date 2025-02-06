@@ -23,6 +23,7 @@ use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Core\Settings\CategoryDefinition;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * @internal
@@ -52,7 +53,7 @@ class YamlSetDefinitionProvider
 
     public function get(\SplFileInfo $fileInfo, string $errorContext): SetDefinition
     {
-        $filename = $fileInfo->getPathname();
+        $filename = GeneralUtility::fixWindowsFilePath($fileInfo->getPathname());
         // No placeholders or imports processed on purpose
         // Use dependencies for shared sets
         try {
