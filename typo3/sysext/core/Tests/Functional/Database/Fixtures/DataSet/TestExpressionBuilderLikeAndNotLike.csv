@@ -1,7 +1,0 @@
-"tx_expressionbuildertest",,,,
-,"uid","pid","aField","aCsvField"
-,1,0,"likecasing","Fächer, Überraschungen sind Äußerungen"
-,2,0,"likecasing","Kleingeschriebenes überlebt halt ältere"
-,3,0,"likeescape","underscore_escape_can_be_matched,second_value"
-,4,0,"likeescape","not_underscore_value"
-,5,0,"likeescape","Some value with a % in it"
