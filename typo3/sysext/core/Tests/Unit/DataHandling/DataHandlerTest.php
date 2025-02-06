@@ -830,7 +830,7 @@ final class DataHandlerTest extends UnitTestCase
         );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = StringUtility::getUniqueId('details');
-        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', -1, ['foo', 'bar']);
+        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', null, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
         self::assertStringEndsWith($expected, $subject->errorLog[0]);
     }
@@ -856,7 +856,7 @@ final class DataHandlerTest extends UnitTestCase
         );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
-        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, -1, ['table' => 'tx_sometable', 0 => 'some random value']);
+        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, null, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
         $expected = 'An error occurred on tx_sometable:{uid} when localizing';
         self::assertStringEndsWith($expected, $subject->errorLog[0]);
@@ -1063,7 +1063,7 @@ final class DataHandlerTest extends UnitTestCase
         $dataHandlerMock
             ->expects(self::once())
             ->method('log')
-            ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled', -1, [], 0);
+            ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled', null, [], 0);
         $dataHandlerMock->deleteEl('pages', 0);
     }
 

@@ -94,7 +94,7 @@ final class FailedLoginAttemptNotification
                 SystemLogType::LOGIN,
                 SystemLogLoginAction::SEND_FAILURE_WARNING_EMAIL,
                 SystemLogErrorClassification::MESSAGE,
-                3,
+                null,
                 'Failure warning (%s failures within %s seconds) sent by email to %s',
                 [count($loginFailures), $this->warningPeriod, $this->notificationRecipientEmailAddress]
             );

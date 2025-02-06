@@ -36,11 +36,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @internal This class is a specific Backend controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class LogoutController
+readonly class LogoutController
 {
     public function __construct(
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly FormProtectionFactory $formProtectionFactory
+        protected UriBuilder $uriBuilder,
+        protected FormProtectionFactory $formProtectionFactory
     ) {}
 
     /**
@@ -72,7 +72,7 @@ class LogoutController
             return;
         }
         // Logout written to log
-        $this->getBackendUser()->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, 1, 'User %s logged out from TYPO3 Backend', [$this->getBackendUser()->user['username']]);
+        $this->getBackendUser()->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, null, 'User %s logged out from TYPO3 Backend', [$this->getBackendUser()->user['username']]);
         /** @var BackendFormProtection $backendFormProtection */
         $backendFormProtection = $this->formProtectionFactory->createFromRequest($request);
         $backendFormProtection->removeSessionTokenFromRegistry();

@@ -221,7 +221,7 @@ final class SchedulerModuleController
                         SystemLogType::EXTENSION,
                         SystemLogDatabaseAction::DELETE,
                         SystemLogErrorClassification::MESSAGE,
-                        0,
+                        null,
                         'Scheduler task "%s" (UID: %s, Class: "%s") was deleted',
                         [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
                     );
@@ -686,7 +686,7 @@ final class SchedulerModuleController
             SystemLogType::EXTENSION,
             SystemLogDatabaseAction::INSERT,
             SystemLogErrorClassification::MESSAGE,
-            0,
+            null,
             'Scheduler task "%s" (UID: %s, Class: "%s") was added',
             [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
         );
@@ -706,7 +706,7 @@ final class SchedulerModuleController
             SystemLogType::EXTENSION,
             SystemLogDatabaseAction::UPDATE,
             SystemLogErrorClassification::MESSAGE,
-            0,
+            null,
             'Scheduler task "%s" (UID: %s, Class: "%s") was updated',
             [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
         );

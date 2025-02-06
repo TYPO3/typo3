@@ -96,7 +96,7 @@ class CreateSiteConfiguration
                     $pageId,
                     $basePrefix . $entryPoint
                 );
-                $backendUser->writelog(Type::SITE, SiteAction::CREATE, SystemLogErrorClassification::MESSAGE, 0, 'Site configuration \'%s\' was automatically created for new root page (%s).', [$siteIdentifier, $pageId], 'site');
+                $backendUser->writelog(Type::SITE, SiteAction::CREATE, SystemLogErrorClassification::MESSAGE, null, 'Site configuration \'%s\' was automatically created for new root page (%s).', [$siteIdentifier, $pageId], 'site');
                 $this->updateSlugForPage($pageId);
             } catch (SiteConfigurationWriteException $e) {
                 $flashMessage = GeneralUtility::makeInstance(FlashMessage::class, $e->getMessage(), '', ContextualFeedbackSeverity::WARNING, true);

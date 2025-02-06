@@ -340,7 +340,7 @@ class SetupModuleController
             // If something in the uc-array of the user has changed, we save the array...
             if ($save_before != $save_after) {
                 $backendUser->writeUC();
-                $backendUser->writelog(SystemLogType::SETTING, SystemLogSettingAction::CHANGE, SystemLogErrorClassification::MESSAGE, 1, 'Personal settings changed', []);
+                $backendUser->writelog(SystemLogType::SETTING, SystemLogSettingAction::CHANGE, SystemLogErrorClassification::MESSAGE, null, 'Personal settings changed', []);
                 $this->setupIsUpdated = true;
             }
             // Persist data if something has changed:

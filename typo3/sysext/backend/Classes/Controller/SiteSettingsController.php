@@ -211,7 +211,7 @@ readonly class SiteSettingsController
                 Type::SITE,
                 SettingAction::CHANGE,
                 SystemLogErrorClassification::MESSAGE,
-                0,
+                null,
                 'Site settings changed for \'%s\': %s',
                 [$site->getIdentifier(), json_encode($changes)],
                 'site'

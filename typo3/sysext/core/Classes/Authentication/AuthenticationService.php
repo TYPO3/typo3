@@ -61,7 +61,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
         }
         if ((string)$this->login['uident_text'] === '') {
             // Failed Login attempt (no password given)
-            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, 'Login-attempt from ###IP### for username \'%s\' with an empty password!', [
+            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, null, 'Login-attempt from ###IP### for username \'%s\' with an empty password!', [
                 $this->login['uname'],
             ]);
             $this->logger->warning('Login-attempt from {ip}, for username "{username}" with an empty password!', [
@@ -74,7 +74,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
         $user = $this->fetchUserRecord($this->login['uname']);
         if (!is_array($user)) {
             // Failed login attempt (no username found)
-            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 2, 'Login-attempt from ###IP###, username \'%s\' not found!', [$this->login['uname']]);
+            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, null, 'Login-attempt from ###IP###, username \'%s\' not found!', [$this->login['uname']]);
             $this->logger->info('Login-attempt from username "{username}" not found!', [
                 'username' => $this->login['uname'],
                 'REMOTE_ADDR' => $this->authInfo['REMOTE_ADDR'],
@@ -130,7 +130,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
             // the failed login but still return '100' to proceed with other services that may follow.
             $message = 'Login-attempt from ###IP###, username \'%s\', no suitable hash method found!';
             $this->writeLogMessage($message, $submittedUsername);
-            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 1, $message, [$submittedUsername]);
+            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, null, $message, [$submittedUsername]);
             // Not responsible, check other services
             return 100;
         }
@@ -155,7 +155,7 @@ class AuthenticationService extends AbstractAuthenticationService implements Mim
             // Failed login attempt - wrong password
             $message = 'Login-attempt from ###IP###, username \'%s\', password not accepted!';
             $this->writeLogMessage($message, $submittedUsername);
-            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, 1, $message, [$submittedUsername]);
+            $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::ATTEMPT, SystemLogErrorClassification::SECURITY_NOTICE, null, $message, [$submittedUsername]);
             // Responsible, authentication failed, do NOT check other services
             return 0;
         }

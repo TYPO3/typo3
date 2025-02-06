@@ -279,7 +279,7 @@ class ExtendedFileUtility extends BasicFileUtility
         if (!is_object($this->getBackendUser())) {
             return;
         }
-        $this->getBackendUser()->writelog(SystemLogType::FILE, $action, $severity, 0, $message, $context);
+        $this->getBackendUser()->writelog(SystemLogType::FILE, $action, $severity, null, $message, $context);
     }
 
     /**
