@@ -67,6 +67,7 @@ class MethodCallArgumentValueMatcher extends AbstractCoreMatcher
 
             $matchCandidate = [$this->matcherDefinitions[$node->class->toString() . '::' . $node->name->name]];
         } elseif ($node instanceof MethodCall
+                && isset($node->name->name)
                 && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [

@@ -80,7 +80,7 @@ class InterfaceMethodChangedMatcher extends AbstractCoreMatcher
 
         // Match method call (not static) with number of arguments
         if ($node instanceof MethodCall
-            && array_key_exists($node->name->name, $this->matcherDefinitions)
+            && isset($node->name->name) && array_key_exists($node->name->name, $this->matcherDefinitions)
         ) {
             $methodName = $node->name->name;
             $numberOfUsedArguments = 0;
