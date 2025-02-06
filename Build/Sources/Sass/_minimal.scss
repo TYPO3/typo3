@@ -20,7 +20,33 @@
 @import "../../node_modules/bootstrap/scss/variables";
 @import "../../node_modules/bootstrap/scss/variables-dark";
 @import "../../node_modules/bootstrap/scss/maps";
-@import "../../node_modules/bootstrap/scss/mixins";
+
+// Mixins
+@import "../../node_modules/bootstrap/scss/vendor/rfs";
+@import "../../node_modules/bootstrap/scss/mixins/deprecate";
+@import "../../node_modules/bootstrap/scss/mixins/breakpoints";
+@import "../../node_modules/bootstrap/scss/mixins/color-mode";
+// @import "../../node_modules/bootstrap/scss/mixins/color-scheme";
+@import "../../node_modules/bootstrap/scss/mixins/image";
+@import "../../node_modules/bootstrap/scss/mixins/resize";
+// @import "../../node_modules/bootstrap/scss/mixins/visually-hidden";
+@import "../../node_modules/bootstrap/scss/mixins/reset-text";
+@import "../../node_modules/bootstrap/scss/mixins/text-truncate";
+@import "../../node_modules/bootstrap/scss/mixins/utilities";
+@import "../../node_modules/bootstrap/scss/mixins/backdrop";
+// @import "../../node_modules/bootstrap/scss/mixins/buttons";
+// @import "../../node_modules/bootstrap/scss/mixins/caret";
+@import "../../node_modules/bootstrap/scss/mixins/pagination";
+@import "../../node_modules/bootstrap/scss/mixins/lists";
+@import "../../node_modules/bootstrap/scss/mixins/forms";
+// @import "../../node_modules/bootstrap/scss/mixins/table-variants";
+@import "../../node_modules/bootstrap/scss/mixins/border-radius";
+@import "../../node_modules/bootstrap/scss/mixins/box-shadow";
+@import "../../node_modules/bootstrap/scss/mixins/gradients";
+@import "../../node_modules/bootstrap/scss/mixins/transition";
+@import "../../node_modules/bootstrap/scss/mixins/clearfix";
+@import "../../node_modules/bootstrap/scss/mixins/container";
+@import "../../node_modules/bootstrap/scss/mixins/grid";
 @import "mixins/background";
 @import "mixins/collection";
 @import "mixins/container";
@@ -59,7 +85,18 @@
 // @import "../../node_modules/bootstrap/scss/placeholders";
 
 // Helpers
-@import "../../node_modules/bootstrap/scss/helpers";
+@import "../../node_modules/bootstrap/scss/helpers/clearfix";
+@import "../../node_modules/bootstrap/scss/helpers/color-bg";
+@import "../../node_modules/bootstrap/scss/helpers/colored-links";
+@import "../../node_modules/bootstrap/scss/helpers/focus-ring";
+@import "../../node_modules/bootstrap/scss/helpers/icon-link";
+@import "../../node_modules/bootstrap/scss/helpers/ratio";
+@import "../../node_modules/bootstrap/scss/helpers/position";
+@import "../../node_modules/bootstrap/scss/helpers/stacks";
+// @import "../../node_modules/bootstrap/scss/helpers/visually-hidden";
+@import "../../node_modules/bootstrap/scss/helpers/stretched-link";
+@import "../../node_modules/bootstrap/scss/helpers/text-truncation";
+@import "../../node_modules/bootstrap/scss/helpers/vr";
 
 // extend bootstrap 5 utilities
 @import "utilities/resets";
