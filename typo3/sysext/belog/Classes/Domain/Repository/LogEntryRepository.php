@@ -33,8 +33,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Sys log entry repository
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class LogEntryRepository
+readonly class LogEntryRepository
 {
+    public function __construct(
+        private GroupResolver $groupResolver,
+    ) {}
+
     public function findByUid($uid): ?LogEntry
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
@@ -152,8 +156,7 @@ class LogEntryRepository
         // Constraint for a group
         if (str_starts_with($userOrGroup, 'gr-')) {
             $groupId = (int)substr($userOrGroup, 3);
-            $groupResolver = GeneralUtility::makeInstance(GroupResolver::class);
-            $userIds = $groupResolver->findAllUsersInGroups([$groupId], 'be_groups', 'be_users');
+            $userIds = $this->groupResolver->findAllUsersInGroups([$groupId], 'be_groups', 'be_users');
             if (!empty($userIds)) {
                 $userIds = array_column($userIds, 'uid');
                 $userIds = array_map(intval(...), $userIds);
