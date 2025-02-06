@@ -50,6 +50,7 @@ class MethodCallMatcher extends AbstractCoreMatcher
         if (!$this->isFileIgnored($node)
             && !$this->isLineIgnored($node)
             && $node instanceof MethodCall
+            && isset($node->name->name)
             && array_key_exists($node->name->name, $this->flatMatcherDefinitions)
         ) {
             $match = [
