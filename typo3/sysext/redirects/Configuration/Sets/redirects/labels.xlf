@@ -24,7 +24,10 @@
 			</trans-unit>
 
 			<trans-unit id="settings.redirects.redirectTTL">
-				<source>Time To Live in days for redirect records to be created - `0` disables TTL, no expiration</source>
+				<source>Time To Live in days for redirect records to be created</source>
+			</trans-unit>
+			<trans-unit id="settings.description.redirects.redirectTTL">
+				<source>The value `0` disables expiration.</source>
 			</trans-unit>
 
 			<trans-unit id="settings.redirects.httpStatusCode">

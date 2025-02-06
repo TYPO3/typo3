@@ -3576,11 +3576,15 @@ typo3-backend-live-search-result-item-action>:first-child .livesearch-result-ite
 .settings-item-actions>.dropdown>button:focus{background:color-mix(in srgb,var(--typo3-component-focus-bg),var(--typo3-component-focus-border-color) 20%);color:var(--typo3-component-focus-color)}
 .settings-item-actions>.dropdown>button:after{display:none}
 .settings-item-title{margin-bottom:calc(var(--typo3-spacing)/ 2)}
-.settings-item-label{font-weight:700}
+.settings-item-label{font-weight:700;margin-bottom:calc(var(--typo3-spacing) * .25)}
 .settings-item-description{color:color-mix(in srgb,var(--settings-color),var(--settings-bg) 25%)}
 .settings-item-key{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:var(--typo3-font-family-code);color:var(--settings-highlight)}
 .settings-item-message{margin-top:calc(var(--typo3-spacing)/ 2)}
 .settings-item-message:empty{display:none}
+:is(.settings-item-description,.settings-category-description) :is(p,dl,ol,ul,blockquote,pre){margin-bottom:calc(var(--typo3-spacing) * .25)}
+:is(.settings-item-description,.settings-category-description) :is(ol,ul){padding-left:0;padding-right:0;padding-inline-start:calc(var(--typo3-spacing) * .25 + 1rem)}
+:is(.settings-item-description,.settings-category-description) blockquote{padding:calc(var(--typo3-spacing) * .25);padding-inline-start:calc(var(--typo3-spacing) * .5);border-inline-start:.25rem solid color-mix(in srgb,var(--typo3-text-color-base),transparent 75%);margin-bottom:calc(var(--typo3-spacing) * .25)}
+:is(.settings-item-description,.settings-category-description) code{padding:.2em .4em;white-space:break-spaces;background:light-dark(var(--token-color-neutral-7),var(--token-color-neutral-90));border-radius:var(--typo3-component-border-radius)}
 .example{color:var(--typo3-component-color);background-color:var(--typo3-surface-base);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-component-border-radius);padding:var(--typo3-spacing);margin-bottom:var(--typo3-spacing)}
 .example+:not(.example){margin-top:var(--typo3-component-spacing)}
 .example>:last-child{margin-bottom:0}

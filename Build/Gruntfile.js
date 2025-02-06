@@ -526,7 +526,9 @@ module.exports = function (grunt) {
           'autosize.js': 'autosize/dist/autosize.esm.js',
           'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
           'css-tree.js': 'css-tree/dist/csstree.esm.js',
+          'dompurify.js': 'dompurify/dist/purify.es.mjs',
           'luxon.js': 'luxon/build/es6/luxon.js',
+          'marked.js': 'marked/lib/marked.esm.js',
           'sortablejs.js': 'sortablejs/modular/sortable.complete.esm.js',
         }
       }
@@ -567,9 +569,11 @@ module.exports = function (grunt) {
           '<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js': ['<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js'],
           '<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js': ['<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js': ['<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/dompurify.js': ['<%= paths.core %>Public/JavaScript/Contrib/dompurify.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
+          '<%= paths.core %>Public/JavaScript/Contrib/marked.js': ['<%= paths.core %>Public/JavaScript/Contrib/marked.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js': ['<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js']

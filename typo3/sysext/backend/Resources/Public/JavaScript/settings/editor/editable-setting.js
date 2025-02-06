@@ -10,7 +10,7 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var __decorate=function(t,e,i,n){var o,s=arguments.length,a=s<3?e:null===n?n=Object.getOwnPropertyDescriptor(e,i):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,n);else for(var r=t.length-1;r>=0;r--)(o=t[r])&&(a=(s<3?o(a):s>3?o(e,i,a):o(e,i))||a);return s>3&&a&&Object.defineProperty(e,i,a),a};import{html,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import{until}from"lit/directives/until.js";import"@typo3/backend/element/spinner-element.js";import"@typo3/backend/element/icon-element.js";import{copyToClipboard}from"@typo3/backend/copy-to-clipboard.js";import Notification from"@typo3/backend/notification.js";import{lll}from"@typo3/core/lit-helper.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";let EditableSettingElement=class extends LitElement{constructor(){super(...arguments),this.debug=!1,this.hasChange=!1,this.typeElement=null}createRenderRoot(){return this}render(){const{value:t,systemDefault:e,definition:i}=this.setting;return html`
+var __decorate=function(t,e,i,n){var o,s=arguments.length,a=s<3?e:null===n?n=Object.getOwnPropertyDescriptor(e,i):n;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,n);else for(var r=t.length-1;r>=0;r--)(o=t[r])&&(a=(s<3?o(a):s>3?o(e,i,a):o(e,i))||a);return s>3&&a&&Object.defineProperty(e,i,a),a};import{html,LitElement,nothing}from"lit";import{customElement,property,state}from"lit/decorators.js";import{until}from"lit/directives/until.js";import"@typo3/backend/element/spinner-element.js";import"@typo3/backend/element/icon-element.js";import{copyToClipboard}from"@typo3/backend/copy-to-clipboard.js";import Notification from"@typo3/backend/notification.js";import{lll}from"@typo3/core/lit-helper.js";import{markdown}from"@typo3/core/directive/markdown.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";let EditableSettingElement=class extends LitElement{constructor(){super(...arguments),this.debug=!1,this.hasChange=!1,this.typeElement=null}createRenderRoot(){return this}render(){const{value:t,systemDefault:e,definition:i}=this.setting;return html`
       <div
         class=${`settings-item settings-item-${i.type} ${this.hasChange?"has-change":""}`}
         tabindex="0"
@@ -20,8 +20,8 @@ var __decorate=function(t,e,i,n){var o,s=arguments.length,a=s<3?e:null===n?n=Obj
         <div class="settings-item-indicator"></div>
         <div class="settings-item-title">
           <label for=${`setting-${i.key}`} class="settings-item-label">${i.label}</label>
-          <div class="settings-item-description">${i.description}</div>
-          <div class="settings-item-key">${i.key}</div>
+          <div class="settings-item-description">${markdown(i.description??"","minimal")}</div>
+          ${this.debug?html`<div class="settings-item-key">${i.key}</div>`:nothing}
         </div>
         <div class="settings-item-control">
           ${until(this.renderField(),html`<typo3-backend-spinner></typo3-backend-spinner>`)}

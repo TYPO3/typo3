@@ -33,13 +33,13 @@
 				<source>Default settings for browser-native image lazy loading</source>
 			</trans-unit>
 			<trans-unit id="settings.description.styles.content.image.lazyLoading">
-				<source>Can be "lazy" (browsers could choose to load images later), "eager" (load images right away) or "auto" (browser will determine whether the image should be lazy loaded or not)</source>
+				<source>Can be `lazy` (browsers could choose to load images later), `eager` (load images right away) or `auto` (browser will determine whether the image should be lazy loaded or not)</source>
 			</trans-unit>
 			<trans-unit id="settings.styles.content.image.imageDecoding">
 				<source>Default settings for an image decoding hint to the browser</source>
 			</trans-unit>
 			<trans-unit id="settings.description.styles.content.image.imageDecoding">
-				<source>Can be "sync" (synchronously for atomic presentation with other content), "async" (asynchronously to avoid delaying presentation of other content), "auto" (no preference in decoding mode) or an empty value to omit the usage of the decoding attribute (same as "auto")</source>
+				<source>Can be `sync` (synchronously for atomic presentation with other content), `async` (asynchronously to avoid delaying presentation of other content), `auto` (no preference in decoding mode) or an empty value to omit the usage of the decoding attribute (same as `auto`)</source>
 			</trans-unit>
 			<trans-unit id="settings.styles.content.textmedia.maxW">
 				<source>Max Image/Media Width</source>
@@ -63,7 +63,7 @@
 				<source>Advanced, Row space</source>
 			</trans-unit>
 			<trans-unit id="settings.description.styles.content.textmedia.rowSpacing">
-				<source>Vertical distance after each media elements row in content elements of type ""Text &amp; Media". If you change this manually in your CSS, you need to adjust this setting accordingly</source>
+				<source>Vertical distance after each media elements row in content elements of type "Text &amp; Media". If you change this manually in your CSS, you need to adjust this setting accordingly</source>
 			</trans-unit>
 			<trans-unit id="settings.styles.content.textmedia.textMargin">
 				<source>Advanced, Margin to text</source>
@@ -123,7 +123,7 @@
 				<source>Lightbox rel="" attribute</source>
 			</trans-unit>
 			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.lightboxRelAttribute">
-				<source>Which rel="" attribute to use for lightbox links (only applicable if lightbox rendering is enabled)</source>
+				<source>Which `rel=""` attribute to use for lightbox links (only applicable if lightbox rendering is enabled)</source>
 			</trans-unit>
 			<trans-unit id="settings.styles.content.links.extTarget">
 				<source>Target for external links</source>
@@ -132,7 +132,11 @@
 				<source>Parts to keep when building links</source>
 			</trans-unit>
 			<trans-unit id="settings.description.styles.content.links.keep">
-				<source>Comma separated list of the link parts to show when building the link-text: scheme,path,query. Example: "" (empty) =&gt; www.example.com, "scheme,path" =&gt; http://www.example.com</source>
+				<source>Comma separated list of the link parts to show when building the link-text: scheme,path,query.
+
+Example:
+ - ` ` (empty) =&gt; `www.example.com`
+ - `scheme,path` =&gt; `http://www.example.com`</source>
 			</trans-unit>
 			<trans-unit id="settings.styles.templates.templateRootPath">
 				<source>Path of Fluid Templates for all defined content elements</source>

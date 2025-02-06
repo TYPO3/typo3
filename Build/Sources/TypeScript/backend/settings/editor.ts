@@ -20,6 +20,7 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { copyToClipboard } from '@typo3/backend/copy-to-clipboard';
 import { lll } from '@typo3/core/lit-helper';
+import { markdown } from '@typo3/core/directive/markdown';
 import '@typo3/backend/settings/editor/editable-setting';
 import '@typo3/backend/element/icon-element';
 
@@ -147,7 +148,9 @@ export class SettingsEditorElement extends LitElement {
       <div class="settings-category-list" data-key=${category.key}>
         <div class="settings-category" data-key=${category.key} ?hidden=${category.__hidden}>
           ${this.renderHeadline(Math.min(level + 1, 6), `category-headline-${category.key}`, html`${category.label}`)}
-          ${category.description ? html`<p>${category.description}</p>` : nothing}
+          <div class="settings-category-description">
+            ${category.description ? markdown(category.description, 'minimal') : nothing}
+          </div>
         </div>
         ${category.settings.map((setting): TemplateResult => html`
           <typo3-backend-editable-setting

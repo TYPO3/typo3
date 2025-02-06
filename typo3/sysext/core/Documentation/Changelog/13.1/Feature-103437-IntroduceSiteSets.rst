@@ -69,13 +69,15 @@ and `tags` and types like `int`, `bool`, `string`, `stringlist`, `text` or
 `color`. These definitions are placed in :file:`settings.definitions.yaml`
 next to the site set file :file:`config.yaml`.
 
+The description can make use of markdown syntax for richtext formatting.
+
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Sets/MySet/settings.definitions.yaml
 
     settings:
       foo.bar.baz:
         label: 'My example baz setting'
-        description: 'Configure baz to be used in bar'
+        description: 'Configure `baz` to be used in `bar`.'
         type: int
         default: 5
 
