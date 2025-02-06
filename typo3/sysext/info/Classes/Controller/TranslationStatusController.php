@@ -161,7 +161,7 @@ class TranslationStatusController extends InfoModuleController
                 $icon = BackendUtility::wrapClickMenuOnIcon($icon, 'pages', $data['row']['uid']);
             }
 
-            $tCells[] = '<td class="col-nowrap' . (!empty($data['row']['_CSSCLASS']) ? ' ' . $data['row']['_CSSCLASS'] : '') . '">'
+            $tCells[] = '<td class="col-nowrap">'
                 . '<div class="treeline-container">'
                 . (!empty($data['depthData']) ? $data['depthData'] : '')
                 . ($data['HTML'] ?? '')

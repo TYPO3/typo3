@@ -2808,8 +2808,6 @@ class BackendUtility
                 $wsAlt['_ORIG_uid'] = $wsAlt['uid'];
                 $wsAlt['uid'] = $row['uid'];
             }
-            // Backend css class:
-            $wsAlt['_CSSCLASS'] = 'ver-element';
             // Changing input record to the workspace version alternative:
             $row = $wsAlt;
         }

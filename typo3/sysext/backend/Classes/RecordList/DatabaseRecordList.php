@@ -1164,11 +1164,6 @@ class DatabaseRecordList
         ) {
             $tagAttributes['class'][] = 'active';
         }
-        // Overriding with versions background color if any:
-        if (!empty($row['_CSSCLASS'])) {
-            $tagAttributes['class'] = [$row['_CSSCLASS']];
-        }
-
         $tagAttributes['class'][] = 't3js-entity';
 
         // Preparing and getting the data-array
