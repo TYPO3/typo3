@@ -81,4 +81,17 @@ class InterfaceMethodChangedMatcherFixture
      * @param $arg3
      */
     protected function like5($arg1, $arg2, $arg3): void {}
+
+    /**
+     * No match: Protected, no error thrown
+     *
+     * @param $arg1
+     * @param $arg2
+     * @param $arg3
+     */
+    protected function concatenatedCall($arg1, $arg2, $arg3): void
+    {
+        $dynamic = '1';
+        $this->{'like' . $dynamic}($arg1, $arg2, $arg3);
+    }
 }
