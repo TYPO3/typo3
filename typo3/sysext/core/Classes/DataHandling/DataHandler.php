@@ -7699,11 +7699,10 @@ class DataHandler
      * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
      * @param bool $newVersion Set to TRUE if new version is created.
      * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
-     * @param bool $dontSetNewIdIndex If TRUE, the ->substNEWwithIDs array is not updated. Only useful in very rare circumstances!
      * @return int|null Returns ID on success.
      * @internal should only be used from within DataHandler
      */
-    public function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0, $dontSetNewIdIndex = false)
+    public function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0): ?int
     {
         if (!is_array($fieldArray) || !$this->tcaSchemaFactory->has($table) || !isset($fieldArray['pid'])) {
             return null;
@@ -7738,10 +7737,8 @@ class DataHandler
         // the NEW_id now holds the 'NEW....' -id
         $NEW_id = $id;
         $id = $this->postProcessDatabaseInsert($connection, $table, $suggestedUid);
-        if (!$dontSetNewIdIndex) {
-            $this->substNEWwithIDs[$NEW_id] = $id;
-            $this->substNEWwithIDs_table[$NEW_id] = $table;
-        }
+        $this->substNEWwithIDs[$NEW_id] = $id;
+        $this->substNEWwithIDs_table[$NEW_id] = $table;
         $newRow = [];
         if ($this->enableLogging) {
             $newRow = $fieldArray;
