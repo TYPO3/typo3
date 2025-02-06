@@ -1,0 +1,18 @@
+"tx_expressionbuildertest",,,,
+,"uid","pid","aField","aCsvField"
+# casting test (case insensitive)
+,1,0,"likecasing","Fächer, Überraschungen sind Äußerungen"
+,2,0,"likecasing","Kleingeschriebenes überlebt halt ältere"
+# escaping test
+,3,0,"likeescape","underscore_escape_can_be_matched,second_value"
+,4,0,"likeescape","not_underscore_value"
+,5,0,"likeescape","Some value with a % in it"
+# casing test (case sensitive)
+,6,0,"casesensitive","Some text with to some in different casing."
+,7,0,"casesensitive","Another text with only lowercased some in it."
+,8,0,"casesensitive","Another text with only one uppercased SOME in it."
+,9,0,"casesensitive","Text with mixed case SoMe in it."
+# caseing test (case sensitive) german umlauts
+,10,0,"casesensitive-umlaut","ÜBERRASCHUNG: Für manche ist es jede Überraschung ein Schock."
+,11,0,"casesensitive-umlaut","Stay tuned, ÜBERRASCHUNG steht in den Starlöchern."
+,12,0,"casesensitive-umlaut","Ein Lottogewinn ist schon eine starke Überraschung."
