@@ -93,7 +93,9 @@
 				<source>Redirect Mode</source>
 			</trans-unit>
 			<trans-unit id="settings.description.felogin.redirectMode">
-				<source>Comma separated list of redirect modes. Possible values: groupLogin, userLogin, login, getpost, referer, refererDomains, loginError, logout. Warning: redirects only work if neither the plugin nor the page it is displayed on are set to `hide at login`.</source>
+				<source>Comma separated list of redirect modes.\
+Possible values: groupLogin, userLogin, login, getpost, referer, refererDomains, loginError, logout.\
+Warning: redirects only work if neither the plugin nor the page it is displayed on are set to `hide at login`.</source>
 			</trans-unit>
 			<trans-unit id="settings.felogin.redirectFirstMethod">
 				<source>Use First Supported Mode from Selection</source>

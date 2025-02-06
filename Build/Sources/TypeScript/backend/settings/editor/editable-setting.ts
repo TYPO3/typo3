@@ -19,6 +19,7 @@ import '@typo3/backend/element/icon-element';
 import { copyToClipboard } from '@typo3/backend/copy-to-clipboard';
 import Notification from '@typo3/backend/notification';
 import { lll } from '@typo3/core/lit-helper';
+import { markdown } from '@typo3/core/directive/markdown';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { BaseElement } from '@typo3/backend/settings/type/base';
 
@@ -76,8 +77,8 @@ export class EditableSettingElement extends LitElement {
         <div class="settings-item-indicator"></div>
         <div class="settings-item-title">
           <label for=${`setting-${definition.key}`} class="settings-item-label">${definition.label}</label>
-          <div class="settings-item-description">${definition.description}</div>
-          <div class="settings-item-key">${definition.key}</div>
+          <div class="settings-item-description">${markdown(definition.description ?? '', 'minimal')}</div>
+          ${this.debug ? html`<div class="settings-item-key">${definition.key}</div>` : nothing}
         </div>
         <div class="settings-item-control">
           ${until(this.renderField(), html`<typo3-backend-spinner></typo3-backend-spinner>`)}
