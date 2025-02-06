@@ -704,18 +704,11 @@ class DataHandler
         return $this->checkModifyAccessListHookObjects;
     }
 
-    /*********************************************
-     *
-     * PROCESSING DATA
-     *
-     *********************************************/
     /**
      * Processing the data-array
      * Call this function to process the data-array set by start()
-     *
-     * @return bool|void
      */
-    public function process_datamap()
+    public function process_datamap(): void
     {
         $this->controlActiveElements();
 
@@ -726,7 +719,7 @@ class DataHandler
         // Editing frozen:
         if ($this->BE_USER->workspace !== 0 && ($this->BE_USER->workspaceRec['freeze'] ?? false)) {
             $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen');
-            return false;
+            return;
         }
         // First prepare user defined objects (if any) for hooks which extend this function:
         $hookObjectsArr = [];

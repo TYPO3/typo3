@@ -115,11 +115,8 @@ final class DatetimeLegacyTest extends FunctionalTestCase
             ],
             [],
         );
-        $res = $dataHandler->process_datamap();
+        $dataHandler->process_datamap();
         date_default_timezone_set($oldTimezone);
-
-        self::assertNotFalse($res);
-
         $this->assertCSVDataSet(__DIR__ . '/DataSet/Datetime/Legacy/' . $resultSet . '.csv');
     }
 }

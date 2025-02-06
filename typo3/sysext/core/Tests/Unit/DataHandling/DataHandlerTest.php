@@ -676,35 +676,6 @@ final class DataHandlerTest extends UnitTestCase
         self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
     }
 
-    #[Test]
-    public function processDatamapForFrozenNonZeroWorkspaceReturnsFalse(): void
-    {
-        $constructorArguments = [
-            new NoopEventDispatcher(),
-            $this->createMock(CacheManager::class),
-            $this->createMock(FrontendInterface::class),
-            $this->createMock(ConnectionPool::class),
-            $this->createMock(LoggerInterface::class),
-            new PagePermissionAssembler(),
-            $this->tcaSchemaFactory,
-            new PageDoktypeRegistry($this->tcaSchemaFactory),
-            $this->createMock(FlexFormTools::class),
-            new PasswordHashFactory(),
-            new Random(),
-            new TypoLinkCodecService(new NoopEventDispatcher()),
-            new OpcodeCacheService(),
-            $this->createMock(FlashMessageService::class),
-        ];
-        $subject = $this->getMockBuilder(DataHandler::class)
-            ->onlyMethods([])
-            ->setConstructorArgs($constructorArguments)
-            ->getMock();
-        $this->backendUserMock->workspace = 1;
-        $this->backendUserMock->workspaceRec = ['freeze' => true];
-        $subject->BE_USER = $this->backendUserMock;
-        self::assertFalse($subject->process_datamap());
-    }
-
     public static function checkValue_flex_procInData_travDSDataProvider(): iterable
     {
         yield 'Flat structure' => [
