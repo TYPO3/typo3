@@ -816,7 +816,7 @@ class ExtensionManagementUtility
         }
 
         $relativeInformation = GeneralUtility::trimExplode(':', $position, true, 2);
-        self::addTcaSelectItem($table, $typeField, $selectItem, $relativeInformation[0] ?? '', $relativeInformation[1] ?? '');
+        self::addTcaSelectItem($table, $typeField, $selectItem, $relativeInformation[1] ?? '', $relativeInformation[0] ?? '');
 
         $showItemList = trim($showItemList, ', ');
         // Add the extended tab if not already added manually at the very end.

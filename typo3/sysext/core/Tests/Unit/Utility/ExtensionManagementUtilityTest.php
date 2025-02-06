@@ -1300,6 +1300,70 @@ final class ExtensionManagementUtilityTest extends UnitTestCase
         self::assertEquals($expectedItemList, $GLOBALS['TCA'][$table]['types']['examplekey']['showitem']);
     }
 
+    public static function addRecordTypeSetsCorrectPositionDataProvider(): iterable
+    {
+        yield 'no position given' => [
+            '',
+            [
+                ['label' => 'foo', 'value' => 'foo'],
+                ['label' => 'bar', 'value' => 'bar'],
+                ['label' => 'baz', 'value' => 'baz'],
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+            ],
+        ];
+        yield 'before field' => [
+            'before:foo',
+            [
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+                ['label' => 'foo', 'value' => 'foo'],
+                ['label' => 'bar', 'value' => 'bar'],
+                ['label' => 'baz', 'value' => 'baz'],
+            ],
+        ];
+        yield 'after field' => [
+            'after:foo',
+            [
+                ['label' => 'foo', 'value' => 'foo'],
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+                ['label' => 'bar', 'value' => 'bar'],
+                ['label' => 'baz', 'value' => 'baz'],
+            ],
+        ];
+        yield 'replace field' => [
+            'replace:bar',
+            [
+                ['label' => 'foo', 'value' => 'foo'],
+                ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'],
+                ['label' => 'baz', 'value' => 'baz'],
+            ],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('addRecordTypeSetsCorrectPositionDataProvider')]
+    public function addRecordTypeSetsCorrectPosition(string $position, array $expectedItemList): void
+    {
+        $table = 'tx_testtable';
+        $GLOBALS['TCA'][$table]['ctrl']['type'] = 'aTypeField';
+        $GLOBALS['TCA'][$table]['columns'] = [
+            'aTypeField' => [
+                'label' => 'my type',
+                'config' => [
+                    'type' => 'select',
+                    'renderType' => 'selectSingle',
+                    'items' => [
+                        ['label' => 'foo', 'value' => 'foo'],
+                        ['label' => 'bar', 'value' => 'bar'],
+                        ['label' => 'baz', 'value' => 'baz'],
+                    ],
+                ],
+            ],
+        ];
+        $item = ['label' => 'myLabel', 'value' => 'myValue', 'icon' => 'apps-pagetree-folder-contains', 'group' => 'custom', 'description' => 'foobar'];
+        ExtensionManagementUtility::addRecordType($item, '', [], $position, $table);
+        self::assertEquals($expectedItemList, $GLOBALS['TCA'][$table]['columns']['aTypeField']['config']['items']);
+    }
+
     ///////////////////////////////
     // Tests concerning addPlugin
     ///////////////////////////////
