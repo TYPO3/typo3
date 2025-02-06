@@ -94,11 +94,6 @@ class LogEntry
     protected string $level = '';
 
     /**
-     * Details number
-     */
-    protected int $detailsNumber = 0;
-
-    /**
      * IP address of client
      */
     protected string $ip = '';
@@ -200,11 +195,6 @@ class LogEntry
         return $this->level;
     }
 
-    public function getDetailsNumber(): int
-    {
-        return $this->detailsNumber;
-    }
-
     public function getIp(): string
     {
         return $this->ip;
@@ -262,7 +252,6 @@ class LogEntry
         $obj->error = $row['error'] ?? $obj->error;
         $obj->type = $row['type'] ?? $obj->type;
         $obj->details = $row['details'] ?? $obj->details;
-        $obj->detailsNumber = $row['details_nr'] ?? $obj->detailsNumber;
         $obj->ip = $row['IP'] ?? $obj->ip;
         $obj->logData = $row['log_data'] ?? $obj->logData;
         $obj->eventPid = $row['event_pid'] ?? $obj->eventPid;

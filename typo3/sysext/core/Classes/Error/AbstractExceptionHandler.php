@@ -178,7 +178,6 @@ abstract class AbstractExceptionHandler implements ExceptionHandlerInterface, Si
                 'action' => SystemLogGenericAction::UNDEFINED,
                 'error' => SystemLogErrorClassification::SYSTEM_ERROR,
                 'level' => SystemLogType::toLevel(SystemLogType::ERROR),
-                'details_nr' => 0,
                 'details' => str_replace('%', '%%', $logMessage),
                 'log_data' => empty($data) ? '' : json_encode($data),
                 'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),

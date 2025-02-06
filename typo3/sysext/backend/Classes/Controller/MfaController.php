@@ -212,7 +212,7 @@ class MfaController extends AbstractMfaController
         $this->logger->debug($message, $data);
         if ($user->writeStdLog) {
             // Write to sys_log if enabled
-            $user->writelog(SystemLogType::LOGIN, $action, $error, 1, $message, $data);
+            $user->writelog(SystemLogType::LOGIN, $action, $error, null, $message, $data);
         }
     }
 

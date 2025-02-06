@@ -33,11 +33,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Sys log entry repository
  * @internal This class is a TYPO3 Backend implementation and is not considered part of the Public TYPO3 API.
  */
-class LogEntryRepository
+readonly class LogEntryRepository
 {
+    public function __construct(
+        private ConnectionPool $connectionPool,
+    ) {}
+
     public function findByUid($uid): ?LogEntry
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
         $row = $queryBuilder
             ->select('*')
             ->from('sys_log')
@@ -48,16 +52,6 @@ class LogEntryRepository
         return $row ? LogEntry::createFromDatabaseRecord($row) : null;
     }
 
-    protected function createQuery(): QueryBuilder
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_log');
-        $queryBuilder
-            ->select('*')
-            ->from('sys_log')
-            ->orderBy('uid', 'DESC');
-        return $queryBuilder;
-    }
-
     /**
      * Finds all log entries that match all given constraints.
      *
@@ -65,13 +59,15 @@ class LogEntryRepository
      */
     public function findByConstraint(Constraint $constraint): array
     {
-        $query = $this->createQuery();
+        $query = $this->connectionPool->getQueryBuilderForTable('sys_log');
+        $query->select('*')
+            ->from('sys_log')
+            ->orderBy('uid', 'DESC');
         $queryConstraints = $this->createQueryConstraints($query, $constraint);
         $stmt = $query
             ->where(...$queryConstraints)
             ->setMaxResults($constraint->getNumber())
             ->executeQuery();
-
         $result = [];
         while ($row = $stmt->fetchAssociative()) {
             $result[] = LogEntry::createFromDatabaseRecord($row);
@@ -114,10 +110,8 @@ class LogEntryRepository
      * Adds constraints for the page(s) to the query; this could be one single page or a whole subtree beneath a given
      * page.
      */
-    protected function addPageTreeConstraintsToQuery(
-        Constraint $constraint,
-        QueryBuilder $query,
-    ): ?string {
+    protected function addPageTreeConstraintsToQuery(Constraint $constraint, QueryBuilder $query): ?string
+    {
         $pageIds = [];
         // Check if we should get a whole tree of pages and not only a single page
         if ($constraint->getDepth() > 0) {
@@ -140,10 +134,8 @@ class LogEntryRepository
     /**
      * Adds users and groups to the query constraints.
      */
-    protected function addUsersAndGroupsToQueryConstraints(
-        Constraint $constraint,
-        QueryBuilder $query
-    ): array {
+    protected function addUsersAndGroupsToQueryConstraints(Constraint $constraint, QueryBuilder $query): array
+    {
         $userOrGroup = $constraint->getUserOrGroup();
         if ($userOrGroup === '') {
             return [];
@@ -175,33 +167,21 @@ class LogEntryRepository
      */
     public function deleteByMessageDetails(LogEntry $logEntry): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_log');
-        $constraints = [];
-        $constraints[] = $queryBuilder->expr()->eq('details', $queryBuilder->createNamedParameter($logEntry->getDetails()));
-        // If the detailsNo is 11 or 12 we got messages that are heavily using placeholders. In this case
-        // we need to compare both the message and the actual log data to not remove too many log entries.
-        if (in_array($logEntry->getDetailsNumber(), [11, 12], true)) {
-            $constraints[] = $queryBuilder->expr()->eq('log_data', $queryBuilder->createNamedParameter($logEntry->getLogDataRaw()));
-        }
-        return (int)$queryBuilder->delete('sys_log')
-            ->where(...$constraints)
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_log');
+        return $queryBuilder->delete('sys_log')
+            ->where($queryBuilder->expr()->eq('details', $queryBuilder->createNamedParameter($logEntry->getDetails())))
             ->executeStatement();
     }
 
     public function getUsedChannels(): array
     {
-        $conn = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_log');
-
-        $channels = $conn->createQueryBuilder()
+        $channels = $this->connectionPool->getQueryBuilderForTable('sys_log')
             ->select('channel')
             ->distinct()
             ->from('sys_log')
             ->orderBy('channel')
             ->executeQuery()
             ->fetchFirstColumn();
-
         return array_combine($channels, $channels);
     }
 
@@ -217,19 +197,13 @@ class LogEntryRepository
             LogLevel::INFO,
             LogLevel::DEBUG,
         ];
-
-        $conn = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable('sys_log');
-
-        $levels = $conn->createQueryBuilder()
+        $levels = $this->connectionPool->getQueryBuilderForTable('sys_log')
             ->select('level')
             ->distinct()
             ->from('sys_log')
             ->executeQuery()
             ->fetchFirstColumn();
-
         $levelsUsed = array_intersect($allLevels, $levels);
-
         return array_combine($levelsUsed, $levelsUsed);
     }
 }

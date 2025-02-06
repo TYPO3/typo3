@@ -1691,7 +1691,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ['workspace_id' => $this->user['workspace_id']],
                 ['uid' => (int)$this->user['uid']]
             );
-            $this->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, 0, 'User changed workspace to "{workspace}"', ['workspace' => $this->workspace]);
+            $this->writelog(SystemLogType::EXTENSION, SystemLogGenericAction::UNDEFINED, SystemLogErrorClassification::MESSAGE, null, 'User changed workspace to "{workspace}"', ['workspace' => $this->workspace]);
         }
     }
 
@@ -1759,13 +1759,12 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Writes an entry in the logfile/table
-     * Documentation in "TYPO3 Core API"
      *
      * @param int $type Denotes which module that has submitted the entry. See "TYPO3 Core API". Use "4" for extensions.
      * @param int $action Denotes which specific operation that wrote the entry. Use "0" when no sub-categorizing applies
      * @param int $error Flag. 0 = message, 1 = error (user problem), 2 = System Error (which should not happen), 3 = security notice (admin)
-     * @param int $details_nr The message number. Specific for each $type and $action. This will make it possible to translate errormessages to other languages
-     * @param string $details Default text that follows the message (in english!). Possibly translated by identification through type/action/details_nr
+     * @param null $_ unused
+     * @param string $details Default text that follows the message (in english!). Possibly translated by identification through type/action
      * @param array $data Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed with the details-text
      * @param string $tablename Table name. Special field used by tce_main.php.
      * @param int|string $recuid Record UID. Special field used by tce_main.php.
@@ -1775,22 +1774,19 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param int $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
      * @return int Log entry ID.
      */
-    public function writelog($type, $action, $error, $details_nr, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0)
+    public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0)
     {
         if (!$userId && !empty($this->user['uid'])) {
             $userId = $this->user['uid'];
         }
-
         if ($backuserid = $this->getOriginalUserIdWhenInSwitchUserMode()) {
             if (empty($data)) {
                 $data = [];
             }
             $data['originalUser'] = $backuserid;
         }
-
         // @todo Remove this once this method is properly typed.
         $type = (int)$type;
-
         $fields = [
             'userid' => (int)$userId,
             'type' => $type,
@@ -1798,7 +1794,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             'level' => Type::toLevel($type),
             'action' => (int)$action,
             'error' => (int)$error,
-            'details_nr' => (int)$details_nr,
             'details' => $details,
             'log_data' => empty($data) ? '' : json_encode($data),
             'tablename' => $tablename,
@@ -1809,7 +1804,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             'NEWid' => $NEWid,
             'workspace' => $this->workspace,
         ];
-
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
         $connection->insert(
             'sys_log',
@@ -1819,7 +1813,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 Connection::PARAM_INT,
                 Connection::PARAM_STR,
                 Connection::PARAM_STR,
-                Connection::PARAM_INT,
                 Connection::PARAM_INT,
                 Connection::PARAM_INT,
                 Connection::PARAM_STR,
@@ -1833,7 +1826,6 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 Connection::PARAM_STR,
             ]
         );
-
         return (int)$connection->lastInsertId();
     }
 

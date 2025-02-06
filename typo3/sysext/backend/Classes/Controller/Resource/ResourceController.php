@@ -38,10 +38,10 @@ use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
  * @internal
  */
 #[AsController]
-final class ResourceController
+final readonly class ResourceController
 {
     public function __construct(
-        private readonly ResourceFactory $resourceFactory,
+        private ResourceFactory $resourceFactory,
     ) {}
 
     public function renameResourceAction(ServerRequestInterface $request): ResponseInterface
@@ -105,7 +105,7 @@ final class ResourceController
             )
         );
         // Next to the flash message, also log the action to be consistent with the use in ExtendedFileUtiltiy
-        $this->getBackendUser()->writelog(SystemLogType::FILE, SystemLogFileAction::RENAME, $success ? SystemLogErrorClassification::MESSAGE : SystemLogErrorClassification::USER_ERROR, 0, $message, []);
+        $this->getBackendUser()->writelog(SystemLogType::FILE, SystemLogFileAction::RENAME, $success ? SystemLogErrorClassification::MESSAGE : SystemLogErrorClassification::USER_ERROR, null, $message, []);
         return [
             'success' => $success,
             'status' => $flashMessageQueue,

@@ -124,7 +124,7 @@ class FilePermissionAspect implements DataHandlerCheckModifyAccessListHookInterf
             0,
             SystemLogErrorClassification::USER_ERROR,
             $message,
-            1,
+            null,
             [$table]
         );
     }

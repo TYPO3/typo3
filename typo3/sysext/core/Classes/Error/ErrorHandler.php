@@ -259,7 +259,6 @@ class ErrorHandler implements ErrorHandlerInterface, LoggerAwareInterface
                     'action' => SystemLogGenericAction::UNDEFINED,
                     'error' => SystemLogErrorClassification::SYSTEM_ERROR,
                     'level' => $logLevel,
-                    'details_nr' => 0,
                     'details' => str_replace('%', '%%', $logMessage),
                     'log_data' => empty($data) ? '' : json_encode($data),
                     'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
