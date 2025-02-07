@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -344,78 +345,69 @@ class RecyclerAjaxController
         $lang = $this->getLanguageService();
         $tables = [];
 
-        foreach ($this->getModifyableTables() as $tableName) {
-            $deletedField = $this->getDeletedField($tableName);
-            if ($deletedField) {
-                // Determine whether the table has deleted records:
-                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-                $queryBuilder->getRestrictions()->removeAll();
+        foreach ($this->getRelevantSchemata() as $tableName => $schema) {
+            $deletedField = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
+            // Determine whether the table has deleted records
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll();
 
-                $deletedCount = $queryBuilder->count('uid')
-                    ->from($tableName)
-                    ->where(
-                        $queryBuilder->expr()->neq(
-                            $deletedField,
-                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                        )
+            $deletedCount = $queryBuilder->count('uid')
+                ->from($tableName)
+                ->where(
+                    $queryBuilder->expr()->neq(
+                        $deletedField,
+                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                     )
-                    ->executeQuery()
-                    ->fetchOne();
+                )
+                ->executeQuery()
+                ->fetchOne();
 
-                if ($deletedCount) {
-                    /* @var DeletedRecords $deletedDataObject */
-                    $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
-                    $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
-                    if (isset($deletedData[$tableName])) {
-                        if ($deletedRecordsInTable = count($deletedData[$tableName])) {
-                            $deletedRecordsTotal += $deletedRecordsInTable;
-                            $tables[] = [
-                                $tableName,
-                                $deletedRecordsInTable,
-                                $lang->sL($GLOBALS['TCA'][$tableName]['ctrl']['title'] ?? $tableName),
-                            ];
-                        }
-                    }
-                }
+            if (!$deletedCount) {
+                continue;
+            }
+            /* @var DeletedRecords $deletedDataObject */
+            $deletedDataObject = GeneralUtility::makeInstance(DeletedRecords::class);
+            $deletedData = $deletedDataObject->loadData($startUid, $tableName, $depth)->getDeletedRows();
+            if (isset($deletedData[$tableName]) && $deletedRecordsInTable = count($deletedData[$tableName])) {
+                $deletedRecordsTotal += $deletedRecordsInTable;
+                $tables[] = [
+                    $tableName,
+                    $deletedRecordsInTable,
+                    $lang->sL($schema->getRawConfiguration()['title'] ?? $tableName),
+                ];
             }
         }
-        $jsonArray = $tables;
-        array_unshift($jsonArray, [
+
+        array_unshift($tables, [
             '',
             $deletedRecordsTotal,
             $lang->sL('LLL:EXT:recycler/Resources/Private/Language/locallang.xlf:label_allrecordtypes'),
         ]);
-        return $jsonArray;
-    }
-
-    /**
-     * Gets the name of the field with the information whether a record is deleted.
-     *
-     * @param string $tableName Name of the table to get the deleted field for
-     * @return string Name of the field with the information whether a record is deleted
-     */
-    protected function getDeletedField(string $tableName): string
-    {
-        $tcaForTable = $GLOBALS['TCA'][$tableName] ?? false;
-        if ($tcaForTable && !empty($tcaForTable['ctrl']['delete'])) {
-            return $tcaForTable['ctrl']['delete'];
-        }
-        return '';
-    }
-
-    /**
-     * Returns the modifiable tables of the current user
-     */
-    protected function getModifyableTables(): array
-    {
-        if ($this->getBackendUser()->isAdmin()) {
-            $tables = array_keys($GLOBALS['TCA']);
-        } else {
-            $tables = explode(',', $this->getBackendUser()->groupData['tables_modify']);
-            // Only find those that are in use
-            $tables = array_intersect($tables, array_keys($GLOBALS['TCA']));
-        }
         return $tables;
+    }
+
+    /**
+     * Returns the modifiable tables of the current user, which have a SoftDelete field.
+     *
+     * @return TcaSchema[]
+     */
+    protected function getRelevantSchemata(): array
+    {
+        $schemata = [];
+        $tables = explode(',', $this->getBackendUser()->groupData['tables_modify']);
+        foreach ($this->tcaSchemaFactory->all() as $name => $schema) {
+            if (!$schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                continue;
+            }
+            if ($this->getBackendUser()->isAdmin()) {
+                $schemata[$name] = $schema;
+                continue;
+            }
+            if (in_array($name, $tables, true)) {
+                $schemata[$name] = $schema;
+            }
+        }
+        return $schemata;
     }
 
     protected function getBackendUser(): BackendUserAuthentication

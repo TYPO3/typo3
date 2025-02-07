@@ -15,9 +15,10 @@
 
 namespace TYPO3\CMS\Recycler\Domain\Model;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -26,6 +27,10 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -34,6 +39,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * Model class for the 'recycler' extension.
  * @internal This class is a specific domain model implementation and is not part of the Public TYPO3 API.
  */
+#[Autoconfigure(public: true)]
 class DeletedRecords
 {
     /**
@@ -51,11 +57,12 @@ class DeletedRecords
      */
     protected array $table = [];
 
-    /************************************************************
-     * GET DATA FUNCTIONS
-     *
-     *
-     ************************************************************/
+    public function __construct(
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        #[Autowire(service: 'cache.runtime')]
+        protected readonly FrontendInterface $runtimeCache,
+    ) {}
+
     /**
      * Load all deleted rows from $table
      * If table is not set, it iterates the TCA tables
@@ -66,17 +73,18 @@ class DeletedRecords
      * @param string $limit MySQL LIMIT
      * @param string $filter Filter text
      */
-    public function loadData($id, $table, $depth, $limit = '', $filter = ''): self
+    public function loadData($id, string $table, $depth, $limit = '', $filter = ''): self
     {
         // set the limit
         $this->limit = trim($limit);
         if ($table) {
-            if (in_array($table, $this->getModifyableTables(), true)) {
+            $schemata = $this->getRelevantSchemata();
+            if (array_key_exists($table, $schemata)) {
                 $this->table[] = $table;
-                $this->setData($id, $table, $depth, $filter);
+                $this->setData($id, $schemata[$table], $depth, $filter);
             }
         } else {
-            foreach ($this->getModifyableTables() as $tableKey) {
+            foreach ($this->getRelevantSchemata() as $tableKey => $schema) {
                 // only go into this table if the limit allows it
                 if ($this->limit !== '') {
                     $parts = GeneralUtility::intExplode(',', $this->limit, true);
@@ -86,7 +94,7 @@ class DeletedRecords
                     }
                 }
                 $this->table[] = $tableKey;
-                $this->setData($id, $tableKey, $depth, $filter);
+                $this->setData($id, $schema, $depth, $filter);
             }
         }
         return $this;
@@ -115,30 +123,28 @@ class DeletedRecords
      * Set all deleted rows
      *
      * @param int $id UID from record
-     * @param string $table Tablename from record
      * @param int $depth How many levels recursive
      * @param string $filter Filter text
      */
-    protected function setData($id, $table, $depth, $filter)
+    protected function setData($id, TcaSchema $schema, $depth, $filter): void
     {
-        $deletedField = $this->getDeletedField($table);
+        $deletedField = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
         if (!$deletedField) {
             return;
         }
 
         $id = (int)$id;
-        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
         $firstResult = 0;
         $maxResults = 0;
 
         // get the limit
         if (!empty($this->limit)) {
             // count the number of deleted records for this pid
-            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $depth, $filter);
+            $queryBuilder = $this->getFilteredQueryBuilder($schema, $id, $depth, $filter);
 
             $deletedCount = (int)$queryBuilder
                 ->count('*')
-                ->from($table)
+                ->from($schema->getName())
                 ->andWhere(
                     $queryBuilder->expr()->neq(
                         $deletedField,
@@ -195,7 +201,7 @@ class DeletedRecords
         }
         // query for actual deleted records
         if ($allowQuery) {
-            $queryBuilder = $this->getFilteredQueryBuilder($table, $id, $depth, $filter);
+            $queryBuilder = $this->getFilteredQueryBuilder($schema, $id, $depth, $filter);
             if ($firstResult) {
                 $queryBuilder->setFirstResult($firstResult);
             }
@@ -203,23 +209,24 @@ class DeletedRecords
                 $queryBuilder->setMaxResults($maxResults);
             }
             $queryBuilder = $queryBuilder->select('*')
-                ->from($table)
+                ->from($schema->getName())
                 ->andWhere(
                     $queryBuilder->expr()->eq(
                         $deletedField,
                         $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
                     )
                 );
-            if ($GLOBALS['TCA'][$table]['ctrl']['tstamp'] ?? false) {
+
+            if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
                 $queryBuilder = $queryBuilder
-                    ->orderBy($GLOBALS['TCA'][$table]['ctrl']['tstamp'], 'desc')
+                    ->orderBy($schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName(), 'desc')
                     ->addOrderBy('uid');
             } else {
                 $queryBuilder = $queryBuilder->orderBy('uid');
             }
             $recordsToCheck = $queryBuilder->executeQuery()->fetchAllAssociative();
             if ($recordsToCheck !== []) {
-                $this->checkRecordAccess($table, $recordsToCheck);
+                $this->checkRecordAccess($schema->getName(), $recordsToCheck);
             }
         }
     }
@@ -227,8 +234,9 @@ class DeletedRecords
     /**
      * Helper method for setData() to create a QueryBuilder that filters the records by default.
      */
-    protected function getFilteredQueryBuilder(string $table, int $pid, int $depth, string $filter): QueryBuilder
+    protected function getFilteredQueryBuilder(TcaSchema $schema, int $pid, int $depth, string $filter): QueryBuilder
     {
+        $table = $schema->getName();
         $pidList = $this->getTreeList($pid, $depth);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
@@ -237,8 +245,10 @@ class DeletedRecords
         // create the filter WHERE-clause
         $filterConstraint = null;
         if (trim($filter) !== '') {
+            /** @var LabelCapability $labelCapability */
+            $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
             $filterConstraint = $queryBuilder->expr()->comparison(
-                $queryBuilder->castFieldToTextType($GLOBALS['TCA'][$table]['ctrl']['label']),
+                $queryBuilder->castFieldToTextType($labelCapability->getPrimaryField()->getName()),
                 'LIKE',
                 $queryBuilder->createNamedParameter(
                     '%' . $queryBuilder->escapeLikeWildcards($filter) . '%'
@@ -283,7 +293,7 @@ class DeletedRecords
      * @param string $table Name of the table
      * @param array $rows Record row
      */
-    protected function checkRecordAccess(string $table, array $rows)
+    protected function checkRecordAccess(string $table, array $rows): void
     {
         $deleteField = '';
         if ($table === 'pages') {
@@ -341,7 +351,7 @@ class DeletedRecords
      * @param bool $recursive Whether to recursively undelete
      * @return bool|int
      */
-    public function undeleteData(array $recordsArray, bool $recursive = false)
+    public function undeleteData(array $recordsArray, bool $recursive = false): bool|int
     {
         $result = false;
         $affectedRecords = 0;
@@ -397,18 +407,21 @@ class DeletedRecords
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+
+        $deletedField = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
+
         $record = $queryBuilder
             ->select('uid', 'pid')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq($GLOBALS['TCA']['pages']['ctrl']['delete'], 1)
+                $queryBuilder->expr()->eq($deletedField, 1)
             )
             ->executeQuery()
             ->fetchAssociative();
         if ($record) {
             $pages[] = $record['uid'];
-            if ((int)$record['pid'] !== 0) {
+            if ((int)$record['pid'] > 0) {
                 $this->getDeletedParentPages($record['pid'], $pages);
             }
         }
@@ -416,61 +429,36 @@ class DeletedRecords
         return $pages;
     }
 
-    /************************************************************
-     * SETTER FUNCTIONS
-     ************************************************************/
     /**
-     * Set deleted rows
-     *
      * @param array $row Deleted record row
      */
-    public function setDeletedRows(string $table, array $row): void
+    protected function setDeletedRows(string $table, array $row): void
     {
         $this->deletedRows[$table][] = $row;
     }
 
-    /************************************************************
-     * GETTER FUNCTIONS
-     ************************************************************/
-    /**
-     * Get deleted Rows
-     */
     public function getDeletedRows(): array
     {
         return $this->deletedRows;
     }
 
-    /**
-     * Get tables
-     */
-    public function getTable(): array
+    protected function getTreeList(int $id, int $depth): array
     {
-        return $this->table;
-    }
-
-    /**
-     * Get tree list
-     */
-    protected function getTreeList(int $id, int $depth, int $begin = 0): array
-    {
-        $cache = $this->getCache();
-        $identifier = md5($id . '_' . $depth . '_' . $begin);
-        $pageTree = $cache->get($identifier);
+        $identifier = md5($id . '_' . $depth);
+        $pageTree = $this->runtimeCache->get($identifier);
         if ($pageTree === false) {
-            $pageTree = $this->resolveTree($id, $depth, $begin, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-            $cache->set($identifier, $pageTree);
+            $pageTree = $this->resolveTree($id, $depth, $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
+            $pageTree = array_merge([$id], $pageTree);
+            $this->runtimeCache->set($identifier, $pageTree);
         }
 
         return $pageTree;
     }
 
-    protected function resolveTree(int $id, int $depth, int $begin = 0, string $permsClause = ''): array
+    protected function resolveTree(int $id, int $depth, string $permsClause): array
     {
         $id = abs($id);
         $theList = [];
-        if ($begin === 0) {
-            $theList[] = $id;
-        }
         if ($depth > 0) {
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()
@@ -483,11 +471,9 @@ class DeletedRecords
                 )
                 ->executeQuery();
             while ($row = $statement->fetchAssociative()) {
-                if ($begin <= 0) {
-                    $theList[] = $row['uid'];
-                }
+                $theList[] = $row['uid'];
                 if ($depth > 1) {
-                    $theList = array_merge($theList, $this->resolveTree($row['uid'], $depth - 1, $begin - 1, $permsClause));
+                    $theList = array_merge($theList, $this->resolveTree($row['uid'], $depth - 1, $permsClause));
                 }
             }
         }
@@ -553,46 +539,33 @@ class DeletedRecords
         return $hasAccess;
     }
 
-    /**
-     * Gets an instance of the memory cache.
-     */
-    protected function getCache(): FrontendInterface
-    {
-        return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-    }
-
     protected function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
     /**
-     * Gets the name of the field with the information whether a record is deleted.
+     * Returns the modifiable tables of the current user, which have a SoftDelete field.
      *
-     * @param string $tableName Name of the table to get the deleted field for
-     * @return string Name of the field with the information whether a record is deleted
+     * @return TcaSchema[]
      */
-    protected function getDeletedField(string $tableName): string
+    protected function getRelevantSchemata(): array
     {
-        $tcaForTable = $GLOBALS['TCA'][$tableName] ?? false;
-        if ($tcaForTable && !empty($tcaForTable['ctrl']['delete'])) {
-            return $tcaForTable['ctrl']['delete'];
+        $schemata = [];
+        $tables = explode(',', $this->getBackendUser()->groupData['tables_modify']);
+        foreach ($this->tcaSchemaFactory->all() as $name => $schema) {
+            if (!$schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                continue;
+            }
+            if ($this->getBackendUser()->isAdmin()) {
+                $schemata[$name] = $schema;
+                continue;
+            }
+            if (in_array($name, $tables, true)) {
+                $schemata[$name] = $schema;
+            }
         }
-        return '';
+        return $schemata;
     }
 
-    /**
-     * Returns the modifiable tables of the current user
-     */
-    protected function getModifyableTables(): array
-    {
-        if ($this->getBackendUser()->isAdmin()) {
-            $tables = array_keys($GLOBALS['TCA']);
-        } else {
-            $tables = explode(',', $this->getBackendUser()->groupData['tables_modify']);
-            // Only find those that are in use
-            $tables = array_intersect($tables, array_keys($GLOBALS['TCA']));
-        }
-        return $tables;
-    }
 }

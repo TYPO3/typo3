@@ -18,6 +18,9 @@ namespace TYPO3\CMS\Recycler\Task;
 use Doctrine\DBAL\Exception as DBALException;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -48,8 +51,17 @@ class CleanerTask extends AbstractTask
     {
         $success = true;
         $tables = $this->getTcaTables();
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         foreach ($tables as $table) {
-            if (!$this->cleanTable($table)) {
+            if (!$schemaFactory->has($table)) {
+                $success = false;
+                continue;
+            }
+            $schema = $schemaFactory->get($table);
+            if (!$schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                continue;
+            }
+            if (!$this->cleanTable($schema)) {
                 $success = false;
             }
         }
@@ -59,38 +71,34 @@ class CleanerTask extends AbstractTask
 
     /**
      * Executes the delete-query for the given table
-     *
-     * @param string $tableName
-     * @return bool
      */
-    protected function cleanTable($tableName)
+    protected function cleanTable(TcaSchema $schema): bool
     {
-        if (isset($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($schema->getName());
+        $queryBuilder->getRestrictions()->removeAll();
+        $deleteField = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
 
-            $constraints = [
-                $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA'][$tableName]['ctrl']['delete'],
-                    $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
-                )
-                ,
-            ];
+        $constraints = [
+            $queryBuilder->expr()->eq(
+                $deleteField,
+                $queryBuilder->createNamedParameter(1, Connection::PARAM_INT)
+            ),
+        ];
 
-            if ($GLOBALS['TCA'][$tableName]['ctrl']['tstamp'] ?? null) {
-                $dateBefore = $this->getPeriodAsTimestamp();
-                $constraints[] = $queryBuilder->expr()->lt(
-                    $GLOBALS['TCA'][$tableName]['ctrl']['tstamp'],
-                    $queryBuilder->createNamedParameter($dateBefore, Connection::PARAM_INT)
-                );
-            }
-            try {
-                $queryBuilder->delete($tableName)
-                    ->where(...$constraints)
-                    ->executeStatement();
-            } catch (DBALException $e) {
-                return false;
-            }
+        if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+            $dateBefore = $this->getPeriodAsTimestamp();
+            $constraints[] = $queryBuilder->expr()->lt(
+                $schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName(),
+                $queryBuilder->createNamedParameter($dateBefore, Connection::PARAM_INT)
+            );
+        }
+        try {
+            $queryBuilder
+                ->delete($schema->getName())
+                ->where(...$constraints)
+                ->executeStatement();
+        } catch (DBALException) {
+            return false;
         }
         return true;
     }
@@ -102,9 +110,7 @@ class CleanerTask extends AbstractTask
      */
     public function getAdditionalInformation()
     {
-        $message = '';
-
-        $message .= sprintf(
+        $message = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskDescriptionTables'),
             implode(', ', $this->getTcaTables())
         );
@@ -120,21 +126,17 @@ class CleanerTask extends AbstractTask
     }
 
     /**
-     * Sets the period after which a row is deleted
-     *
-     * @param int $period
+     * Sets the period after which a row is hard-deleted
      */
-    public function setPeriod($period)
+    public function setPeriod(int $period): void
     {
-        $this->period = (int)$period;
+        $this->period = $period;
     }
 
     /**
-     * Returns the period after which a row is deleted
-     *
-     * @return int
+     * Returns the period after which a row is hard-deleted
      */
-    public function getPeriod()
+    public function getPeriod(): int
     {
         return $this->period;
     }
@@ -142,7 +144,7 @@ class CleanerTask extends AbstractTask
     /**
      * @return int
      */
-    public function getPeriodAsTimestamp()
+    public function getPeriodAsTimestamp(): int
     {
         $timeStamp = strtotime('-' . $this->getPeriod() . ' days');
         if ($timeStamp === false) {

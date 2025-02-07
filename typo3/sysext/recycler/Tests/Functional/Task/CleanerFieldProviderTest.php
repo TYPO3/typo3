@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Recycler\Task\CleanerFieldProvider;
 use TYPO3\CMS\Recycler\Task\CleanerTask;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -51,7 +52,7 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
             'RecyclerCleanerPeriod' => $period,
             'RecyclerCleanerTCA' => ['pages'],
         ];
-        $subject = new CleanerFieldProvider();
+        $subject = GeneralUtility::makeInstance(CleanerFieldProvider::class);
         $subject->validateAdditionalFields($submittedData, $this->get(SchedulerModuleController::class));
         self::assertFalse($this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->isEmpty());
     }
@@ -75,7 +76,7 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
             'RecyclerCleanerPeriod' => 14,
             'RecyclerCleanerTCA' => $table,
         ];
-        $subject = new CleanerFieldProvider();
+        $subject = GeneralUtility::makeInstance(CleanerFieldProvider::class);
         $subject->validateAdditionalFields($submittedData, $this->get(SchedulerModuleController::class));
         self::assertFalse($this->get(FlashMessageService::class)->getMessageQueueByIdentifier()->isEmpty());
     }
@@ -88,7 +89,7 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
             'RecyclerCleanerTCA' => ['pages'],
         ];
         $GLOBALS['TCA']['pages'] = ['foo' => 'bar'];
-        $subject = new CleanerFieldProvider();
+        $subject = GeneralUtility::makeInstance(CleanerFieldProvider::class);
         self::assertTrue($subject->validateAdditionalFields($submittedData, $this->get(SchedulerModuleController::class)));
     }
 
@@ -100,7 +101,7 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
             'RecyclerCleanerTCA' => ['pages'],
         ];
         $task = new CleanerTask();
-        $subject = new CleanerFieldProvider();
+        $subject = GeneralUtility::makeInstance(CleanerFieldProvider::class);
         $subject->saveAdditionalFields($submittedData, $task);
         self::assertSame(14, $task->getPeriod());
         self::assertSame(['pages'], $task->getTcaTables());
