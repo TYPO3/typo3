@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -93,6 +94,7 @@ class LinkValidatorController
         protected readonly LinkAnalyzer $linkAnalyzer,
         protected readonly LinktypeRegistry $linktypeRegistry,
         protected readonly TranslationConfigurationProvider $translationConfigurationProvider,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function __invoke(ServerRequestInterface $request): ResponseInterface
@@ -298,6 +300,9 @@ class LinkValidatorController
                 $this->searchFields
             );
             foreach ($brokenLinks as $row) {
+                if (!$this->tcaSchemaFactory->has($row['table_name'])) {
+                    continue;
+                }
                 $items[] = $this->generateTableRow($row);
             }
         }
@@ -336,27 +341,26 @@ class LinkValidatorController
      */
     protected function generateTableRow(array $row): array
     {
-        $fieldLabel = $row['field'];
         $table = $row['table_name'];
+        $elementType = $row['element_type'] ?? null;
+        $schema = $this->tcaSchemaFactory->get($table);
         $languageService = $this->getLanguageService();
         $linkType = $this->linktypeRegistry->getLinktype($row['link_type'] ?? '');
 
         // Try to resolve the field label from TCA
-        if ($GLOBALS['TCA'][$table]['types'][$row['element_type']]['columnsOverrides'][$row['field']]['label'] ?? false) {
-            $fieldLabel = $languageService->sL($GLOBALS['TCA'][$table]['types'][$row['element_type']]['columnsOverrides'][$row['field']]['label']);
-        } elseif ($GLOBALS['TCA'][$table]['columns'][$row['field']]['label'] ?? false) {
-            $fieldLabel = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$row['field']]['label']);
+        if ($schema->hasSubSchema($elementType)) {
+            $fieldLabel = $schema->getSubSchema($elementType)->getField($row['field'])->getLabel();
+        } else {
+            $fieldLabel = $schema->getField($row['field'])->getLabel();
         }
         // Crop colon from end if present
-        if (str_ends_with($fieldLabel, ':')) {
-            $fieldLabel = substr($fieldLabel, 0, -1);
-        }
+        $fieldLabel = rtrim((string)($fieldLabel ?: $row['field']), ':');
 
         $result = [
             'uid' => $row['uid'],
             'recordUid' => $row['record_uid'],
             'recordTable' => $table,
-            'recordTableTitle' => $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? ''),
+            'recordTableTitle' => $languageService->sL($schema->getRawConfiguration()['title'] ?? ''),
             // @todo: Remove this assignment (and template use) when linkvalidator stops rendering broken
             //        links registered to records that are meanwhile deleted=1 or in a different workspace.
             'recordTableIconDefault' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),

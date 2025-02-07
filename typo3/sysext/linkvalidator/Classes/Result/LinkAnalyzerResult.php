@@ -24,6 +24,8 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Linkvalidator\LinkAnalyzer;
@@ -54,7 +56,9 @@ class LinkAnalyzerResult
         private readonly LinkAnalyzer $linkAnalyzer,
         private readonly BrokenLinkRepository $brokenLinkRepository,
         private readonly ConnectionPool $connectionPool,
-        private readonly PagesRepository $pagesRepository
+        private readonly PagesRepository $pagesRepository,
+        private readonly SiteFinder $siteFinder,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -191,20 +195,25 @@ class LinkAnalyzerResult
     protected function processBrokenLinks(): self
     {
         foreach ($this->brokenLinks as &$brokenLink) {
-            $fullRecord = BackendUtility::getRecord($brokenLink['table_name'], $brokenLink['record_uid']);
+            $tableName = (string)($brokenLink['table_name'] ?? '');
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            $fullRecord = BackendUtility::getRecord($tableName, $brokenLink['record_uid']);
 
             if ($fullRecord !== null) {
                 $brokenLink['full_record'] = $fullRecord;
-                $brokenLink['record_title'] = BackendUtility::getRecordTitle($brokenLink['table_name'], $fullRecord);
+                $brokenLink['record_title'] = BackendUtility::getRecordTitle($tableName, $fullRecord);
             }
 
-            $brokenLink['real_pid'] = ((int)($brokenLink['language'] ?? 0) > 0 && (string)($brokenLink['table_name'] ?? '') !== 'pages')
+            $brokenLink['real_pid'] = ((int)($brokenLink['language'] ?? 0) > 0 && $tableName !== 'pages')
                 ? $this->getLocalizedPageId((int)$brokenLink['record_pid'], (int)$brokenLink['language'])
                 : $brokenLink['record_pid'];
             $pageRecord = BackendUtility::getRecord('pages', $brokenLink['real_pid']);
 
             try {
-                $site = GeneralUtility::makeInstance(SiteFinder::class)->getSiteByPageId((int)$brokenLink['real_pid']);
+                $site = $this->siteFinder->getSiteByPageId((int)$brokenLink['real_pid']);
                 $languageCode = $site->getLanguageById((int)$brokenLink['language'])->getLocale()->getLanguageCode();
             } catch (SiteNotFoundException | \InvalidArgumentException $e) {
                 $languageCode = 'default';
@@ -213,9 +222,9 @@ class LinkAnalyzerResult
                 $brokenLink['page_record'] = $pageRecord;
             }
 
-            $brokenLink['record_type'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$brokenLink['table_name']]['ctrl']['title'] ?? '');
+            $brokenLink['record_type'] = $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '');
             $brokenLink['target'] = (((string)($brokenLink['link_type'] ?? '') === 'db') ? 'id:' : '') . $brokenLink['url'];
-            $brokenLink['language_code'] = (string)$languageCode;
+            $brokenLink['language_code'] = $languageCode;
         }
 
         return $this;
@@ -228,7 +237,7 @@ class LinkAnalyzerResult
     {
         $identifier = $parentId . '-' . $languageId;
 
-        if ((bool)($this->localizedPages[$identifier] ?? false)) {
+        if ($this->localizedPages[$identifier] ?? false) {
             return $this->localizedPages[$identifier];
         }
 
@@ -238,16 +247,17 @@ class LinkAnalyzerResult
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
+        $languageCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
         $localizedPageId = (int)$queryBuilder
             ->select('uid')
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                    $languageCapability->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter($parentId, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                    $languageCapability->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter($languageId, Connection::PARAM_INT)
                 )
             )
