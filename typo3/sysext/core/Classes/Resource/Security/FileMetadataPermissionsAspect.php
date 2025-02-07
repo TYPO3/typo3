@@ -15,22 +15,25 @@
 
 namespace TYPO3\CMS\Core\Resource\Security;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Form\Event\ModifyEditFormUserAccessEvent;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * We do not have AOP in TYPO3 for now, thus the aspect which
- * deals with file metadata data security is an assembly of hooks to
- * check permissions on files belonging to file meta data records
+ * Dealing with file metadata data security is an assembly of hooks to
+ * check permissions on files belonging to file metadata records
  */
-class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListHookInterface, SingletonInterface
+#[Autoconfigure(public: true)]
+readonly class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListHookInterface
 {
+    public function __construct(
+        private ResourceFactory $resourceFactory,
+    ) {}
+
     /**
      * This hook is called before any write operation by DataHandler
      *
@@ -58,60 +61,55 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
      * Hook that determines whether a user has access to modify a table.
      * We "abuse" it here to actually check if access is allowed to sys_file_metadata.
      *
-     *
      * @param bool $accessAllowed Whether the user has access to modify a table
      * @param string $table The name of the table to be modified
-     * @throws \UnexpectedValueException
      */
     public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent): void
     {
-        if ($table === 'sys_file_metadata') {
-            foreach (($parent->cmdmap['sys_file_metadata'] ?? []) as $id => $command) {
-                $fileMetadataRecord = (array)BackendUtility::getRecord('sys_file_metadata', (int)$id);
-                $accessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
-                if (!$accessAllowed) {
-                    // If for any item in the array, access is not allowed, we deny the whole operation
-                    break;
-                }
+        if ($table !== 'sys_file_metadata') {
+            return;
+        }
+        foreach (($parent->cmdmap['sys_file_metadata'] ?? []) as $id => $command) {
+            $fileMetadataRecord = (array)BackendUtility::getRecord('sys_file_metadata', (int)$id);
+            $accessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
+            if (!$accessAllowed) {
+                // If for any item in the array, access is not allowed, we deny the whole operation
+                break;
             }
-
-            if (isset($parent->datamap[$table])) {
-                foreach ($parent->datamap[$table] as $id => $data) {
-                    $recordAccessAllowed = false;
-
-                    if (!str_contains((string)$id, 'NEW')) {
-                        $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', (int)$id);
-                        if ($fileMetadataRecord !== null) {
-                            if ($parent->isImporting && empty($fileMetadataRecord['file'])) {
-                                // When importing the record was added with an empty file relation as first step
-                                $recordAccessAllowed = true;
-                            } else {
-                                $recordAccessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
-                            }
-                        }
-                    } else {
-                        // For new records record access is allowed
-                        $recordAccessAllowed = true;
-                    }
-
-                    if (isset($data['file'])) {
-                        if ($parent->isImporting && empty($data['file'])) {
-                            // When importing the record will be created with an empty file relation as first step
-                            $dataAccessAllowed = true;
-                        } elseif (empty($data['file'])) {
-                            $dataAccessAllowed = false;
+        }
+        if (isset($parent->datamap[$table])) {
+            foreach ($parent->datamap[$table] as $id => $data) {
+                $recordAccessAllowed = false;
+                if (!str_contains((string)$id, 'NEW')) {
+                    $fileMetadataRecord = BackendUtility::getRecord('sys_file_metadata', (int)$id);
+                    if ($fileMetadataRecord !== null) {
+                        if ($parent->isImporting && empty($fileMetadataRecord['file'])) {
+                            // When importing the record was added with an empty file relation as first step
+                            $recordAccessAllowed = true;
                         } else {
-                            $dataAccessAllowed = $this->checkFileWriteAccessForFileMetaData($data);
+                            $recordAccessAllowed = $this->checkFileWriteAccessForFileMetaData($fileMetadataRecord);
                         }
-                    } else {
+                    }
+                } else {
+                    // For new records record access is allowed
+                    $recordAccessAllowed = true;
+                }
+                if (isset($data['file'])) {
+                    if ($parent->isImporting && empty($data['file'])) {
+                        // When importing the record will be created with an empty file relation as first step
                         $dataAccessAllowed = true;
+                    } elseif (empty($data['file'])) {
+                        $dataAccessAllowed = false;
+                    } else {
+                        $dataAccessAllowed = $this->checkFileWriteAccessForFileMetaData($data);
                     }
-
-                    if (!$recordAccessAllowed || !$dataAccessAllowed) {
-                        // If for any item in the array, access is not allowed, we deny the whole operation
-                        $accessAllowed = false;
-                        break;
-                    }
+                } else {
+                    $dataAccessAllowed = true;
+                }
+                if (!$recordAccessAllowed || !$dataAccessAllowed) {
+                    // If for any item in the array, access is not allowed, we deny the whole operation
+                    $accessAllowed = false;
+                    break;
                 }
             }
         }
@@ -123,13 +121,9 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
     #[AsEventListener('evaluate-file-meta-data-edit-form-access')]
     public function isAllowedToShowEditForm(ModifyEditFormUserAccessEvent $event): void
     {
-        if (!$event->doesUserHaveAccess()
-            || $event->getTableName() !== 'sys_file_metadata'
-            || $event->getCommand() !== 'edit'
-        ) {
+        if (!$event->doesUserHaveAccess() || $event->getTableName() !== 'sys_file_metadata' || $event->getCommand() !== 'edit') {
             return;
         }
-
         $this->checkFileWriteAccessForFileMetaData(
             (array)BackendUtility::getRecord('sys_file_metadata', (int)($event->getDatabaseRow()['uid'] ?? 0))
         ) ? $event->allowUserAccess() : $event->denyUserAccess();
@@ -137,22 +131,18 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
 
     /**
      * Checks write access to the file belonging to a metadata entry
-     *
-     * @param array $fileMetadataRecord
-     * @return bool
      */
-    protected function checkFileWriteAccessForFileMetaData($fileMetadataRecord)
+    protected function checkFileWriteAccessForFileMetaData(array $fileMetadataRecord): bool
     {
-        $accessAllowed = false;
-        if (is_array($fileMetadataRecord) && !empty($fileMetadataRecord['file'])) {
-            $file = $fileMetadataRecord['file'];
-            // The file relation could be written as sys_file_[uid], strip this off before checking the rights
-            if (str_contains($file, 'sys_file_')) {
-                $file = substr($file, strlen('sys_file_'));
-            }
-            $fileObject = GeneralUtility::makeInstance(ResourceFactory::class)->getFileObject((int)$file);
-            $accessAllowed = $fileObject->checkActionPermission('editMeta');
+        if (empty($fileMetadataRecord['file'])) {
+            return false;
         }
-        return $accessAllowed;
+        $file = $fileMetadataRecord['file'];
+        if (str_contains($file, 'sys_file_')) {
+            // The file relation could be written as sys_file_[uid], strip this off before checking access rights
+            $file = substr($file, strlen('sys_file_'));
+        }
+        $fileObject = $this->resourceFactory->getFileObject((int)$file);
+        return $fileObject->checkActionPermission('editMeta');
     }
 }

@@ -1591,12 +1591,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Search/Result/DriverFilteredSearchResult.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Security/FileMetadataPermissionsAspect.php
-
-		-
 			message: '#^Call to function is_scalar\(\) with int\|string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1

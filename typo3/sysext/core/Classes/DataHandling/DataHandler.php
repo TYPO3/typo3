@@ -456,8 +456,6 @@ class DataHandler
      */
     protected bool $disableDeleteClause = false;
 
-    protected ?array $checkModifyAccessListHookObjects = null;
-
     /**
      * The outermost instance of \TYPO3\CMS\Core\DataHandling\DataHandler:
      * This object instantiates itself on versioning and localization ...
@@ -650,11 +648,6 @@ class DataHandler
         return $cleanFieldArray;
     }
 
-    /*********************************************
-     *
-     * HOOKS
-     *
-     *********************************************/
     /**
      * Hook: processDatamap_afterDatabaseOperations
      * (calls $hookObj->processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $this);)
@@ -669,9 +662,8 @@ class DataHandler
      * @param array $fieldArray (reference) The field array of a record
      * @internal should only be used from within DataHandler
      */
-    public function hook_processDatamap_afterDatabaseOperations(&$hookObjectsArr, &$status, &$table, &$id, &$fieldArray): void
+    public function hook_processDatamap_afterDatabaseOperations($hookObjectsArr, &$status, &$table, &$id, &$fieldArray): void
     {
-        // Process hook directly:
         if (!isset($this->remapStackRecords[$table][$id])) {
             foreach ($hookObjectsArr as $hookObj) {
                 if (method_exists($hookObj, 'processDatamap_afterDatabaseOperations')) {
@@ -685,28 +677,6 @@ class DataHandler
                 'hookObjectsArr' => $hookObjectsArr,
             ];
         }
-    }
-
-    /**
-     * Gets the 'checkModifyAccessList' hook objects.
-     * The first call initializes the accordant objects.
-     *
-     * @return array The 'checkModifyAccessList' hook objects (if any)
-     * @throws \UnexpectedValueException
-     */
-    protected function getCheckModifyAccessListHookObjects(): array
-    {
-        if ($this->checkModifyAccessListHookObjects === null) {
-            $this->checkModifyAccessListHookObjects = [];
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] ?? [] as $className) {
-                $hookObject = GeneralUtility::makeInstance($className);
-                if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {
-                    throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerCheckModifyAccessListHookInterface::class, 1251892472);
-                }
-                $this->checkModifyAccessListHookObjects[] = $hookObject;
-            }
-        }
-        return $this->checkModifyAccessListHookObjects;
     }
 
     /**
@@ -7106,20 +7076,20 @@ class DataHandler
     }
 
     /**
-     * Checking group modify_table access list
-     *
-     * @return bool Returns TRUE if the user has general access to modify the $table
+     * Check user/group for modify table permission of a given table.
      */
     protected function checkModifyAccessList(string $table): bool
     {
-        $adminOnly = $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessAdminOnly);
-        $res = $this->admin || (!$adminOnly && isset($this->BE_USER->groupData['tables_modify']) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table));
-        foreach ($this->getCheckModifyAccessListHookObjects() as $hookObject) {
-            // Hook 'checkModifyAccessList': Post-processing of the state of access
-            /** @var DataHandlerCheckModifyAccessListHookInterface $hookObject */
-            $hookObject->checkModifyAccessList($res, $table, $this);
+        $isTableAdminOnly = $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessAdminOnly);
+        $isAccessAllowed = $this->admin || (!$isTableAdminOnly && isset($this->BE_USER->groupData['tables_modify']) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table));
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'] ?? [] as $className) {
+            $hookObject = GeneralUtility::makeInstance($className);
+            if (!$hookObject instanceof DataHandlerCheckModifyAccessListHookInterface) {
+                throw new \UnexpectedValueException($className . ' must implement interface ' . DataHandlerCheckModifyAccessListHookInterface::class, 1251892472);
+            }
+            $hookObject->checkModifyAccessList($isAccessAllowed, $table, $this);
         }
-        return $res;
+        return $isAccessAllowed;
     }
 
     /**

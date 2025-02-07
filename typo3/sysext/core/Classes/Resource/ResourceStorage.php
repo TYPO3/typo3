@@ -720,10 +720,8 @@ class ResourceStorage implements ResourceStorageInterface
      * related UI elements should thus be shown (move icon, edit icon, etc.)
      *
      * @param string $action action, can be read, write, delete, editMeta
-     * @param FileInterface $file
-     * @return bool
      */
-    public function checkFileActionPermission($action, FileInterface $file)
+    public function checkFileActionPermission($action, FileInterface $file): bool
     {
         $isProcessedFile = $file instanceof ProcessedFile;
         // Check 1: Allow editing meta data of a file if it is in mount boundaries of a writable file mount

@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Security;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\DataHandlerCheckModifyAccessListHookInterface;
@@ -37,14 +38,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  * + denies any write access to `sys_file_metadata`, referencing a file on legacy storage,
  *   or not part of the file-mounts of the corresponding user
  */
-class FilePermissionAspect implements DataHandlerCheckModifyAccessListHookInterface
+#[Autoconfigure(public: true)]
+readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListHookInterface
 {
-    protected ResourceFactory $resourceFactory;
-
-    public function __construct(?ResourceFactory $resourceFactory = null)
-    {
-        $this->resourceFactory = $resourceFactory ?? GeneralUtility::makeInstance(ResourceFactory::class);
-    }
+    public function __construct(
+        private ResourceFactory $resourceFactory,
+    ) {}
 
     /**
      * Denies write access to `sys_file` in general, unless it is an internal process.
@@ -136,7 +135,6 @@ class FilePermissionAspect implements DataHandlerCheckModifyAccessListHookInterf
     /**
      * @param non-empty-string $fileAction
      * @param BackendUserAuthentication|mixed $backendUser
-     * @return bool
      */
     protected function usesDisallowedFileMount(File $file, string $fileAction, mixed $backendUser): bool
     {
