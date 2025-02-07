@@ -1004,11 +1004,11 @@ class DataHandler
                             // Setting state for version (so it can know it is currently a new version...)
                             $fieldArray['t3ver_state'] = VersionState::NEW_PLACEHOLDER->value;
                             $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-                            $this->insertDB($table, $id, $fieldArray, true, (int)($incomingFieldArray['uid'] ?? 0));
+                            $this->insertDB($table, $id, $fieldArray, (int)($incomingFieldArray['uid'] ?? 0));
                             // Hold auto-versioned ids of placeholders
                             $this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $this->substNEWwithIDs[$id];
                         } else {
-                            $this->insertDB($table, $id, $fieldArray, false, (int)($incomingFieldArray['uid'] ?? 0));
+                            $this->insertDB($table, $id, $fieldArray, (int)($incomingFieldArray['uid'] ?? 0));
                         }
                     } else {
                         if ($table === 'pages') {
@@ -3971,7 +3971,7 @@ class DataHandler
             $fieldArray[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
         }
         // Finally, insert record:
-        $this->insertDB($table, $id, $fieldArray, $schema->isWorkspaceAware());
+        $this->insertDB($table, $id, $fieldArray);
         // Resets dontProcessTransformations to the previous state.
         $this->dontProcessTransformations = $backupDontProcessTransformations;
         // Return new id:
@@ -7578,12 +7578,11 @@ class DataHandler
      * @param string $table Record table name
      * @param string $id "NEW...." uid string
      * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
-     * @param bool $newVersion Set to TRUE if new version is created.
      * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
      * @return int|null Returns ID on success.
      * @internal should only be used from within DataHandler
      */
-    protected function insertDB($table, $id, $fieldArray, $newVersion = false, $suggestedUid = 0): ?int
+    protected function insertDB($table, $id, $fieldArray, $suggestedUid = 0): ?int
     {
         if (!is_array($fieldArray) || !$this->tcaSchemaFactory->has($table) || !isset($fieldArray['pid'])) {
             return null;
@@ -7620,27 +7619,17 @@ class DataHandler
         $id = $this->postProcessDatabaseInsert($connection, $table, $suggestedUid);
         $this->substNEWwithIDs[$NEW_id] = $id;
         $this->substNEWwithIDs_table[$NEW_id] = $table;
-        $newRow = [];
-        if ($this->enableLogging) {
-            $newRow = $fieldArray;
-            $newRow['uid'] = $id;
-        }
+        $newRow = $fieldArray;
+        $newRow['uid'] = $id;
         // Update reference index:
         $this->updateRefIndex($table, $id);
         // Store in history
         $this->getRecordHistoryStore()->addRecord($table, $id, $newRow, $this->correlationId);
-        if ($newVersion) {
-            if ($this->enableLogging) {
-                $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', null, ['table' => $table, 'uid' => $fieldArray['t3ver_oid'], 'offlineUid' => $id], $propArr['event_pid'], $NEW_id);
-            }
+        if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware() && (int)($newRow['t3ver_wsid'] ?? 0) >= 0) {
+            $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', null, ['table' => $table, 'uid' => $newRow['uid'], 'offlineUid' => $id], $table === 'pages' ? $newRow['uid'] : $newRow['pid'], $NEW_id);
         } else {
-            if ($this->enableLogging) {
-                $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                $page_propArr = $this->getRecordProperties('pages', $propArr['pid']);
-                $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was inserted on page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'pageTitle' => $page_propArr['header'], 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
-            }
-            // Clear cache for relevant pages:
+            $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was inserted on page {pid}', null, ['table' => $table, 'uid' => $id, 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
+            // Clear cache of relevant pages
             $this->registerRecordIdForPageCacheClearing($table, $id);
         }
         return $id;
