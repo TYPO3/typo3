@@ -51,7 +51,6 @@ class FilePermissionAspect implements DataHandlerCheckModifyAccessListHookInterf
      *
      * @param bool &$accessAllowed
      * @param string $table
-     * @param DataHandler $parent
      */
     public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent): void
     {
