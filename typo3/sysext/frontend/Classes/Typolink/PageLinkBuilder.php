@@ -39,6 +39,8 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Routing\RouterInterface;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
@@ -460,8 +462,9 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
 
         $page = $this->resolveShortcutPage($page, $pageRepository, $disableGroupAccessCheck);
 
-        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null;
-        $languageParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null;
+        $languageCapability = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages')->getCapability(TcaSchemaCapability::Language);
+        $languageField = $languageCapability->getLanguageField()->getName();
+        $languageParentField = $languageCapability->getTranslationOriginPointerField()->getName();
         $language = (int)($page[$languageField] ?? 0);
 
         // The page that should be linked is actually a default-language page, nothing to do here.

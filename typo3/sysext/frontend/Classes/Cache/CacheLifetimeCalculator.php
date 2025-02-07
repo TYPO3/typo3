@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForPageEvent;
 use TYPO3\CMS\Frontend\Event\ModifyCacheLifetimeForRowEvent;
@@ -47,7 +49,8 @@ class CacheLifetimeCalculator
         #[Autowire(service: 'cache.runtime')]
         protected readonly FrontendInterface $runtimeCache,
         protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly ConnectionPool $connectionPool
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -63,11 +66,14 @@ class CacheLifetimeCalculator
 
         $cacheTimeout = $defaultCacheTimoutInSeconds ?: self::defaultCacheTimeout;
 
-        // If the record has a starttime or endtime, we have to adjust the cache timeout
-        foreach (['starttime', 'endtime'] as $field) {
-            if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
-                $timeField = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
-
+        if ($this->tcaSchemaFactory->has($tableName)) {
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            // If the record has a starttime or endtime, we have to adjust the cache timeout
+            foreach ([TcaSchemaCapability::RestrictionStartTime, TcaSchemaCapability::RestrictionEndTime] as $capability) {
+                if (!$schema->hasCapability($capability)) {
+                    continue;
+                }
+                $timeField = $schema->getCapability($capability)->getFieldName();
                 if (array_key_exists($timeField, $record) && $record[$timeField] > 0 && ((int)$record[$timeField] - $GLOBALS['ACCESS_TIME']) > 0) {
                     $cacheTimeout = min($cacheTimeout, (int)$record[$timeField] - $GLOBALS['ACCESS_TIME']);
                 }
@@ -204,30 +210,36 @@ class CacheLifetimeCalculator
             ->removeByType(EndTimeRestriction::class);
         $timeFields = [];
         $timeConditions = $queryBuilder->expr()->or();
-        foreach (['starttime', 'endtime'] as $field) {
-            if (isset($GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field])) {
-                $timeFields[$field] = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'][$field];
+        if ($this->tcaSchemaFactory->has($tableName)) {
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            // If the record has a starttime or endtime, we have to adjust the cache timeout
+            foreach ([TcaSchemaCapability::RestrictionStartTime, TcaSchemaCapability::RestrictionEndTime] as $capability) {
+                if (!$schema->hasCapability($capability)) {
+                    continue;
+                }
+                $timeField = $schema->getCapability($capability)->getFieldName();
                 $queryBuilder->addSelectLiteral(
                     'MIN('
                     . 'CASE WHEN '
                     . $queryBuilder->expr()->lte(
-                        $timeFields[$field],
+                        $timeField,
                         $queryBuilder->createNamedParameter($currentTimestamp, Connection::PARAM_INT)
                     )
-                    . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeFields[$field]) . ' END'
-                    . ') AS ' . $queryBuilder->quoteIdentifier($timeFields[$field])
+                    . ' THEN NULL ELSE ' . $queryBuilder->quoteIdentifier($timeField) . ' END'
+                    . ') AS ' . $queryBuilder->quoteIdentifier($timeField)
                 );
                 $timeConditions = $timeConditions->with(
                     $queryBuilder->expr()->gt(
-                        $timeFields[$field],
+                        $timeField,
                         $queryBuilder->createNamedParameter($currentTimestamp, Connection::PARAM_INT)
                     )
                 );
+                $timeFields[] = $timeField;
             }
         }
 
         // if starttime or endtime are defined, evaluate them
-        if (!empty($timeFields)) {
+        if ($timeFields !== []) {
             // find the timestamp, when the current page's content changes the next time
             $row = $queryBuilder
                 ->from($tableName)

@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
 use TYPO3\CMS\Core\Log\Logger;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -191,13 +192,14 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     #[Test]
     public function getQuery(string $table, array $conf, string $expected): void
     {
-        $GLOBALS['TCA'] = [
+        $tca = [
             'pages' => [
                 'ctrl' => [
                     'enablecolumns' => [
                         'disabled' => 'hidden',
                     ],
                 ],
+                'columns' => [],
             ],
             'tt_content' => [
                 'ctrl' => [
@@ -206,9 +208,12 @@ final class ContentObjectRendererTest extends FunctionalTestCase
                     ],
                     'versioningWS' => true,
                 ],
+                'columns' => [],
             ],
         ];
 
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($tca, true);
         $typoScriptFrontendController = GeneralUtility::makeInstance(TypoScriptFrontendController::class);
         $subject = new ContentObjectRenderer($typoScriptFrontendController);
         $request = $this->getPreparedRequest();

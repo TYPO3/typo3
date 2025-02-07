@@ -29,6 +29,8 @@ use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
 use TYPO3\CMS\Core\Error\Http\StatusException;
 use TYPO3\CMS\Core\Exception\Page\RootLineException;
 use TYPO3\CMS\Core\Page\PageLayoutResolver;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -70,6 +72,7 @@ final readonly class PageInformationFactory
         private ErrorController $errorController,
         private SysTemplateRepository $sysTemplateRepository,
         private PageLayoutResolver $pageLayoutResolver,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -153,12 +156,13 @@ final readonly class PageInformationFactory
             //        subtle differences: getPage($id), getPage($id, true) and getPage_noCheck($id).
             // PageRepository->getPage() did not return a page. This can have
             // different reasons. We want to error out with different status codes.
-            $hiddenField = $GLOBALS['TCA']['pages']['ctrl']['enablecolumns']['disabled'] ?? '';
+            $schema = $this->tcaSchemaFactory->get('pages');
             $includeHiddenPages = $this->context->getPropertyFromAspect('visibility', 'includeHiddenPages') || $this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false);
-            if (!empty($hiddenField) && !$includeHiddenPages) {
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) && !$includeHiddenPages) {
                 // Page is hidden, user has no access. 404. This is deliberately done in default language
                 // since language overlays should not be rendered when default language is hidden.
                 $rawPageRecord = $pageRepository->getPage_noCheck($id);
+                $hiddenField = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
                 if ($rawPageRecord === [] || $rawPageRecord[$hiddenField]) {
                     $response = $this->errorController->pageNotFoundAction(
                         $request,

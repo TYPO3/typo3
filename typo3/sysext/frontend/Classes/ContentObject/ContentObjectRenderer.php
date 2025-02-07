@@ -60,6 +60,9 @@ use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\FolderInterface;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Text\TextCropper;
 use TYPO3\CMS\Core\TimeTracker\TimeTracker;
@@ -5000,16 +5003,14 @@ class ContentObjectRenderer implements LoggerAwareInterface
             'orderBy' => null,
         ];
 
-        $isInWorkspace = GeneralUtility::makeInstance(Context::class)->getPropertyFromAspect('workspace', 'isOffline');
-        $considerMovePointers = (
-            $isInWorkspace && $table !== 'pages'
-            && !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS'])
-        );
+        $context = GeneralUtility::makeInstance(Context::class);
+        $isInWorkspace = $context->getPropertyFromAspect('workspace', 'isOffline');
 
         if (trim($conf['uidInList'] ?? '')) {
             $listArr = GeneralUtility::intExplode(',', str_replace('this', (string)$contentPid, $conf['uidInList']));
 
             // If moved records shall be considered, select via t3ver_oid
+            $considerMovePointers = $isInWorkspace && $table !== 'pages' && $this->getTcaSchema($table)?->isWorkspaceAware();
             if ($considerMovePointers) {
                 $constraints[] = (string)$expressionBuilder->or(
                     $expressionBuilder->in($table . '.uid', $listArr),
@@ -5064,7 +5065,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
 
         // Check if the default language should be fetched (= doing overlays), or if only the records of a language should be fetched
         // but only do this for TCA tables that have languages enabled
-        $languageConstraint = $this->getLanguageRestriction($expressionBuilder, $table, $conf, GeneralUtility::makeInstance(Context::class));
+        $languageConstraint = $this->getLanguageRestriction($expressionBuilder, $table, $conf, $context);
         if ($languageConstraint !== null) {
             $constraints[] = $languageConstraint;
         }
@@ -5121,13 +5122,19 @@ class ContentObjectRenderer implements LoggerAwareInterface
     protected function getLanguageRestriction(ExpressionBuilder $expressionBuilder, string $table, array $conf, Context $context)
     {
         $languageField = '';
-        $localizationParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? null;
+        $localizationParentField = '';
+        $languageCapability = null;
+        $schema = $this->getTcaSchema($table);
+        if ($schema?->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $localizationParentField = $languageCapability->getTranslationOriginPointerField()->getName();
+        }
         // Check if the table is translatable, and set the language field by default from the TCA information
         if (!empty($conf['languageField']) || !isset($conf['languageField'])) {
-            if (isset($conf['languageField']) && !empty($GLOBALS['TCA'][$table]['columns'][$conf['languageField']])) {
+            if (isset($conf['languageField']) && $schema?->hasField($conf['languageField'])) {
                 $languageField = $conf['languageField'];
-            } elseif (!empty($GLOBALS['TCA'][$table]['ctrl']['languageField']) && !empty($localizationParentField)) {
-                $languageField = $table . '.' . $GLOBALS['TCA'][$table]['ctrl']['languageField'];
+            } elseif ($languageCapability) {
+                $languageField = $table . '.' . $languageCapability->getLanguageField()->getName();
             }
         }
 
@@ -5186,21 +5193,27 @@ class ContentObjectRenderer implements LoggerAwareInterface
         $matchEnd = '(\\s*,|\\s*$)/';
         $necessaryFields = ['uid', 'pid'];
         $wsFields = ['t3ver_state'];
-        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false;
-        if (isset($GLOBALS['TCA'][$table]) && !preg_match($matchStart . '\\*' . $matchEnd, $selectPart) && !preg_match('/(count|max|min|avg|sum)\\([^\\)]+\\)|distinct/i', $selectPart)) {
+        $schema = $this->getTcaSchema($table);
+        if ($schema === null) {
+            return $selectPart;
+        }
+
+        if (!preg_match($matchStart . '\\*' . $matchEnd, $selectPart) && !preg_match('/(count|max|min|avg|sum)\\([^\\)]+\\)|distinct/i', $selectPart)) {
             foreach ($necessaryFields as $field) {
                 $match = $matchStart . $field . $matchEnd;
                 if (!preg_match($match, $selectPart)) {
                     $selectPart .= ', ' . $connection->quoteIdentifier($table . '.' . $field) . ' AS ' . $connection->quoteIdentifier($field);
                 }
             }
-            if (is_string($languageField)) {
+            if ($schema->isLanguageAware()) {
+                $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+                $languageField = $languageCapability->getLanguageField()->getName();
                 $match = $matchStart . $languageField . $matchEnd;
                 if (!preg_match($match, $selectPart)) {
                     $selectPart .= ', ' . $connection->quoteIdentifier($table . '.' . $languageField) . ' AS ' . $connection->quoteIdentifier($languageField);
                 }
             }
-            if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS'] ?? false) {
+            if ($schema->isWorkspaceAware()) {
                 foreach ($wsFields as $field) {
                     $match = $matchStart . $field . $matchEnd;
                     if (!preg_match($match, $selectPart)) {
@@ -5219,7 +5232,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * @return array Returns the array of remaining page UID numbers
      * @internal
      */
-    public function checkPidArray($pageIds)
+    public function checkPidArray($pageIds): array
     {
         if (!is_array($pageIds) || empty($pageIds)) {
             return [];
@@ -5411,12 +5424,18 @@ class ContentObjectRenderer implements LoggerAwareInterface
         return $this->stdWrapValue('key', $configuration);
     }
 
-    /**
-     * @return TimeTracker
-     */
-    protected function getTimeTracker()
+    protected function getTimeTracker(): TimeTracker
     {
         return GeneralUtility::makeInstance(TimeTracker::class);
+    }
+
+    protected function getTcaSchema(string $table): ?TcaSchema
+    {
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        if ($schemaFactory->has($table)) {
+            return $schemaFactory->get($table);
+        }
+        return null;
     }
 
     /**

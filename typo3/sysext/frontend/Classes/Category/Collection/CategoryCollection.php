@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -113,14 +115,18 @@ class CategoryCollection extends CoreCategoryCollection
         $context = GeneralUtility::makeInstance(Context::class);
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class, $context);
         $languageId = $context->getPropertyFromAspect('language', 'contentId', 0);
+        $table = $this->getItemTableName();
 
         // If language handling is defined for item table, add language condition
-        if (isset($GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField'])) {
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        if ($schemaFactory->has($table) && $schemaFactory->get($table)->isLanguageAware()) {
+            $schema = $schemaFactory->get($table);
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
             // Consider default or "all" language
             $languageField = sprintf(
                 '%s.%s',
-                $this->getItemTableName(),
-                $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['languageField']
+                $table,
+                $languageCapability->getLanguageField()->getName()
             );
 
             $languageConstraint = $queryBuilder->expr()->in(
@@ -132,8 +138,8 @@ class CategoryCollection extends CoreCategoryCollection
             if ($languageId > 0) {
                 $transOrigPointerField = sprintf(
                     '%s.%s',
-                    $this->getItemTableName(),
-                    $GLOBALS['TCA'][$this->getItemTableName()]['ctrl']['transOrigPointerField']
+                    $table,
+                    $languageCapability->getTranslationOriginPointerField()->getName()
                 );
 
                 $languageConstraint = $queryBuilder->expr()->or(
@@ -159,14 +165,11 @@ class CategoryCollection extends CoreCategoryCollection
 
         while ($record = $result->fetchAssociative()) {
             // Overlay the record for workspaces
-            $pageRepository->versionOL(
-                $this->getItemTableName(),
-                $record
-            );
+            $pageRepository->versionOL($table, $record);
 
             // Overlay the record for translations
             if (is_array($record)) {
-                $record = $pageRepository->getLanguageOverlay($this->getItemTableName(), $record);
+                $record = $pageRepository->getLanguageOverlay($table, $record);
             }
 
             // Record may have been unset during the overlay process

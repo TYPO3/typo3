@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\Cache;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Frontend\Cache\CacheLifetimeCalculator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -34,7 +35,7 @@ final class CacheLifetimeCalculatorTest extends FunctionalTestCase
     #[Test]
     public function getFirstTimeValueForRecordReturnCorrectData(): void
     {
-        $subject = new class ($this->get('cache.core'), $this->get(EventDispatcherInterface::class), $this->get(ConnectionPool::class)) extends CacheLifetimeCalculator {
+        $subject = new class ($this->get('cache.core'), $this->get(EventDispatcherInterface::class), $this->get(ConnectionPool::class), $this->get(TcaSchemaFactory::class)) extends CacheLifetimeCalculator {
             public function getFirstTimeValueForRecord(string $tableDef, int $currentTimestamp): int
             {
                 return parent::getFirstTimeValueForRecord($tableDef, $currentTimestamp);

@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -60,6 +61,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
         protected readonly ResourceFactory $resourceFactory,
         protected readonly FileCollectionRepository $fileCollectionRepository,
         protected readonly FileRepository $fileRepository,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -290,11 +292,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
 
         $localizedId = $element['_LOCALIZED_UID'] ?? null;
 
-        $isTableLocalizable = (
-            !empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
-            && !empty($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-        );
-        if ($isTableLocalizable && $localizedId !== null) {
+        if ($localizedId !== null && $this->tcaSchemaFactory->get($tableName)->isLanguageAware()) {
             $localizedReferences = $this->fileRepository->findByRelation($tableName, $fieldName, (int)$localizedId);
             $references = $localizedReferences;
         }

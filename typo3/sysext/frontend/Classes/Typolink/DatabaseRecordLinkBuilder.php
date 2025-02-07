@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
 use TYPO3\CMS\Core\LinkHandling\TypoLinkCodecService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\TypoScript\PageTsConfigFactory;
@@ -61,22 +63,25 @@ class DatabaseRecordLinkBuilder extends AbstractTypolinkBuilder
         } else {
             $record = $pageRepository->checkRecord($databaseTable, (int)$linkDetails['uid']);
             $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language');
-            $languageField = (string)($GLOBALS['TCA'][$databaseTable]['ctrl']['languageField'] ?? '');
-
-            if (is_array($record) && $languageField !== '') {
-                $languageIdOfRecord = $record[$languageField];
-                // If a record is already in a localized version OR if the record is set to "All Languages"
-                // we allow the generation of the link
-                if ($languageIdOfRecord === 0 && $languageAspect->doOverlays()) {
-                    $overlay = $pageRepository->getLanguageOverlay(
-                        $databaseTable,
-                        $record,
-                        $languageAspect
-                    );
-                    // If the record is not translated (overlays enabled), even though it should have been done
-                    // We avoid linking to it
-                    if (!isset($overlay['_LOCALIZED_UID'])) {
-                        $record = 0;
+            $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+            if (is_array($record) && $schemaFactory->has($databaseTable)) {
+                $schema = $schemaFactory->get($databaseTable);
+                if ($schema->isLanguageAware()) {
+                    $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+                    $languageIdOfRecord = $record[$languageField];
+                    // If a record is already in a localized version OR if the record is set to "All Languages"
+                    // we allow the generation of the link
+                    if ($languageIdOfRecord === 0 && $languageAspect->doOverlays()) {
+                        $overlay = $pageRepository->getLanguageOverlay(
+                            $databaseTable,
+                            $record,
+                            $languageAspect
+                        );
+                        // If the record is not translated (overlays enabled), even though it should have been done
+                        // We avoid linking to it
+                        if (!isset($overlay['_LOCALIZED_UID'])) {
+                            $record = 0;
+                        }
                     }
                 }
             }

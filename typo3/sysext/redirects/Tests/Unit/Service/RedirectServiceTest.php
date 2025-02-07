@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -93,6 +94,7 @@ final class RedirectServiceTest extends UnitTestCase
                 new ErrorController(),
                 new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
                 $this->createMock(PageLayoutResolver::class),
+                $this->createMock(TcaSchemaFactory::class),
             ),
             new FrontendTypoScriptFactory(
                 $this->createMock(ContainerInterface::class),
@@ -656,6 +658,7 @@ final class RedirectServiceTest extends UnitTestCase
                     new ErrorController(),
                     new SysTemplateRepository(new NoopEventDispatcher(), $this->createMock(ConnectionPool::class), new Context()),
                     $this->createMock(PageLayoutResolver::class),
+                    $this->createMock(TcaSchemaFactory::class),
                 ),
                 new FrontendTypoScriptFactory(
                     $this->createMock(ContainerInterface::class),

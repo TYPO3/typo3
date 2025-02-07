@@ -170,11 +170,9 @@ class RecordsContentObject extends AbstractContentObject
         $loadDB = GeneralUtility::makeInstance(RelationHandler::class);
         $loadDB->start($source, implode(',', $tables));
         foreach ($loadDB->tableArray as $table => $v) {
-            if (isset($GLOBALS['TCA'][$table])) {
-                $constraints = $this->getPageRepository()->getDefaultConstraints($table);
-                if ($constraints !== []) {
-                    $loadDB->additionalWhere[$table] = implode(' AND ', $constraints);
-                }
+            $constraints = $this->getPageRepository()->getDefaultConstraints($table);
+            if ($constraints !== []) {
+                $loadDB->additionalWhere[$table] = implode(' AND ', $constraints);
             }
         }
         $this->data = $loadDB->getFromDB();
