@@ -2416,6 +2416,9 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getFoldersInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = true, $recursive = false, $sort = '', $sortRev = false)
     {
+        if (!$this->isOnline()) {
+            return [];
+        }
         $filters = $useFilters == true ? $this->getFileAndFolderNameFilters() : [];
 
         $folderIdentifiers = $this->driver->getFoldersInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev);
@@ -2723,7 +2726,7 @@ class ResourceStorage implements ResourceStorageInterface
                 $folderRole = FolderInterface::ROLE_USER_MOUNT;
             }
         }
-        if ($folder instanceof Folder && $this->isProcessingFolder($folder)) {
+        if ($this->isOnline() && $folder instanceof Folder && $this->isProcessingFolder($folder)) {
             $folderRole = FolderInterface::ROLE_PROCESSING;
         }
 
