@@ -249,38 +249,50 @@ For each website you need a TypoScript record on the main page of your website (
     /**
      * Initializes backend user group presets. Currently hard-coded to editor and advanced editor.
      * When more backend user group presets are added, please refactor (maybe DTO).
+     *
+     * @return string[]
      */
-    public function createBackendUserGroups(bool $createEditor = true, bool $createAdvancedEditor = true): void
+    public function createBackendUserGroups(bool $createEditor = true, bool $createAdvancedEditor = true, bool $force = false): array
     {
+        $messages = [];
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         if ($createEditor) {
-            $connectionPool->getConnectionForTable('be_groups')->insert(
-                'be_groups',
-                [
-                    'title' => BackendUserGroupType::EDITOR->value,
-                    'description' => 'Editors have access to basic content element and modules in the backend.',
-                    'tstamp' => time(),
-                    'crdate' => time(),
-                ]
-            );
-            $editorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
-            $editorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_editor.yaml');
-            $this->applyPermissionPreset($editorPermissionPreset, 'be_groups', $editorGroupUid);
+            if (!$force && $this->countBackendGroupsByTitle($connectionPool, BackendUserGroupType::EDITOR->value) > 0) {
+                $messages[] = sprintf('Group "%s" could not be created. A backend user group of that name already exists and option --force was not set. ', BackendUserGroupType::EDITOR->value);
+            } else {
+                $connectionPool->getConnectionForTable('be_groups')->insert(
+                    'be_groups',
+                    [
+                        'title' => BackendUserGroupType::EDITOR->value,
+                        'description' => 'Editors have access to basic content element and modules in the backend.',
+                        'tstamp' => time(),
+                        'crdate' => time(),
+                    ]
+                );
+                $editorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
+                $editorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_editor.yaml');
+                $this->applyPermissionPreset($editorPermissionPreset, 'be_groups', $editorGroupUid);
+            }
         }
         if ($createAdvancedEditor) {
-            $connectionPool->getConnectionForTable('be_groups')->insert(
-                'be_groups',
-                [
-                    'title' => BackendUserGroupType::ADVANCED_EDITOR->value,
-                    'description' => 'Advanced Editors have access to all content elements and non administrative modules in the backend.',
-                    'tstamp' => time(),
-                    'crdate' => time(),
-                ]
-            );
-            $advancedEditorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
-            $advancedEditorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_advanced_editor.yaml');
-            $this->applyPermissionPreset($advancedEditorPermissionPreset, 'be_groups', $advancedEditorGroupUid);
+            if (!$force && $this->countBackendGroupsByTitle($connectionPool, BackendUserGroupType::ADVANCED_EDITOR->value) > 0) {
+                $messages[] = sprintf('Group "%s" could not be created. A backend user group of that name already exists and option --force was not set. ', BackendUserGroupType::ADVANCED_EDITOR->value);
+            } else {
+                $connectionPool->getConnectionForTable('be_groups')->insert(
+                    'be_groups',
+                    [
+                        'title' => BackendUserGroupType::ADVANCED_EDITOR->value,
+                        'description' => 'Advanced Editors have access to all content elements and non administrative modules in the backend.',
+                        'tstamp' => time(),
+                        'crdate' => time(),
+                    ]
+                );
+                $advancedEditorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
+                $advancedEditorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_advanced_editor.yaml');
+                $this->applyPermissionPreset($advancedEditorPermissionPreset, 'be_groups', $advancedEditorGroupUid);
+            }
         }
+        return $messages;
     }
 
     private function applyPermissionPreset(array $permissionPreset, string $table, int $recordId): void
@@ -347,5 +359,15 @@ For each website you need a TypoScript record on the main page of your website (
     private function makePathRelativeToProjectDirectory(string $absolutePath): string
     {
         return str_replace(Environment::getProjectPath(), '', $absolutePath);
+    }
+
+    private function countBackendGroupsByTitle(ConnectionPool $connectionPool, string $title): int
+    {
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('be_groups');
+        return (int)$queryBuilder->count('*')
+            ->from('be_groups')
+            ->where(
+                $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter($title))
+            )->executeQuery()->fetchOne();
     }
 }

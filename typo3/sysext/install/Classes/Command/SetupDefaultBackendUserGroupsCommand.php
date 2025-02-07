@@ -56,6 +56,11 @@ final class SetupDefaultBackendUserGroupsCommand extends Command
                 'Which backend user groups do you want to create? [ ' . implode(', ', $this->availableUserGroups) . ']',
                 $this->userGroupEnum->value,
                 $this->availableUserGroups
+            )->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'Force creating a new group with the same name, even if a group with that name already exists.'
             )->setHelp(
                 <<<EOT
 The command will allow you to create base backend user groups for your TYPO3 installation.
@@ -106,8 +111,14 @@ EOT
             $createAdvancedEditor = true;
             $creationNotices[] = BackendUserGroupType::ADVANCED_EDITOR->value;
         }
-        $this->setupService->createBackendUserGroups($createEditor, $createAdvancedEditor);
+        $messages = $this->setupService->createBackendUserGroups($createEditor, $createAdvancedEditor, $input->hasParameterOption('-f'));
 
+        if ($messages !== []) {
+            foreach ($messages as $message) {
+                $io->warning($message);
+            }
+            return Command::FAILURE;
+        }
         $io->success(sprintf('Backend user group(s) created: %s', implode(', ', $creationNotices)));
         return Command::SUCCESS;
     }
