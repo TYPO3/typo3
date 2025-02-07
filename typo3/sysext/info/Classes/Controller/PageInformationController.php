@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -106,21 +107,26 @@ class PageInformationController extends InfoModuleController
      */
     protected function cleanTableNames(): string
     {
-        // Get all table names:
-        $tableNames = array_flip(array_keys($GLOBALS['TCA']));
-        // Unset common names:
-        unset(
-            $tableNames['pages'],
-            $tableNames['sys_filemounts'],
-            $tableNames['be_users'],
-            $tableNames['be_groups']
-        );
+        $standardTables = [
+            'pages',
+            'sys_filemounts',
+            'be_users',
+            'be_groups',
+        ];
         $allowedTableNames = [];
         // Traverse table names and set them in allowedTableNames array IF they can be read-accessed by the user.
-        foreach (array_keys($tableNames) as $tableName) {
-            if (!($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ?? false) && $this->getBackendUser()->check('tables_select', $tableName)) {
-                $allowedTableNames[$tableName] = 'table_' . $tableName;
+        foreach ($this->tcaSchemaFactory->all() as $schemaName => $schema) {
+            // Unset common names
+            if (in_array($schemaName, $standardTables, true)) {
+                continue;
             }
+            if ($schema->getRawConfiguration()['hideTable'] ?? false) {
+                continue;
+            }
+            if (!$this->getBackendUser()->check('tables_select', $schemaName)) {
+                continue;
+            }
+            $allowedTableNames[$schemaName] = 'table_' . $schemaName;
         }
         return implode(',', $allowedTableNames);
     }
@@ -151,6 +157,7 @@ class PageInformationController extends InfoModuleController
     protected function getTable_pages(int $id, int $depth, ServerRequestInterface $request): string
     {
         $out = '';
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
         $lang = $this->getLanguageService();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
@@ -192,7 +199,7 @@ class PageInformationController extends InfoModuleController
                 $editButton = '';
                 if (
                     $editIdList
-                    && isset($GLOBALS['TCA']['pages']['columns'][$field]) && $field !== 'uid'
+                    && $pagesSchema->hasField($field)
                     && $this->getBackendUser()->check('tables_modify', 'pages')
                     && $this->getBackendUser()->check('non_exclude_fields', 'pages:' . $field)
                 ) {
@@ -219,7 +226,7 @@ class PageInformationController extends InfoModuleController
                 switch ($field) {
                     case 'title':
                         $headerCells[$field] = $editButton . '&nbsp;<strong>'
-                            . $lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label'])
+                            . $lang->sL($pagesSchema->getField($field)->getLabel())
                             . '</strong>';
                         break;
                     case 'uid':
@@ -231,17 +238,18 @@ class PageInformationController extends InfoModuleController
                     default:
                         if (str_starts_with($field, 'table_')) {
                             $f2 = substr($field, 6);
-                            if ($GLOBALS['TCA'][$f2]) {
+                            if ($this->tcaSchemaFactory->has($f2)) {
+                                $schema = $this->tcaSchemaFactory->get($f2);
                                 $headerCells[$field] = '&nbsp;' .
                                     '<span title="' .
-                                    htmlspecialchars($lang->sL($GLOBALS['TCA'][$f2]['ctrl']['title'])) .
+                                    htmlspecialchars($lang->sL($schema->getRawConfiguration()['title'] ?? $f2)) .
                                     '">' .
                                     $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render() .
                                     '</span>';
                             }
                         } else {
                             $headerCells[$field] = $editButton . '&nbsp;<strong>'
-                                . htmlspecialchars($lang->sL($GLOBALS['TCA']['pages']['columns'][$field]['label']))
+                                . htmlspecialchars($lang->sL($pagesSchema->getField($field)->getLabel()))
                                 . '</strong>';
                         }
                 }
@@ -289,8 +297,9 @@ class PageInformationController extends InfoModuleController
                 $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
             );
 
-        if (!empty($GLOBALS['TCA']['pages']['ctrl']['sortby'])) {
-            $queryBuilder->orderBy($GLOBALS['TCA']['pages']['ctrl']['sortby']);
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
+        if ($pagesSchema->hasCapability(TcaSchemaCapability::SortByField)) {
+            $queryBuilder->orderBy($pagesSchema->getCapability(TcaSchemaCapability::SortByField)->getFieldName());
         }
 
         if ($depth >= 0) {
@@ -414,7 +423,7 @@ class PageInformationController extends InfoModuleController
                 default:
                     if (str_starts_with($field, 'table_')) {
                         $f2 = substr($field, 6);
-                        if ($GLOBALS['TCA'][$f2]) {
+                        if ($this->tcaSchemaFactory->has($f2)) {
                             $c = $this->numberOfRecords($f2, (int)$row['uid']);
                             $theData[$field] = ($c ?: '');
                         }
@@ -458,7 +467,7 @@ class PageInformationController extends InfoModuleController
      */
     protected function numberOfRecords(string $table, int $pid): int
     {
-        if (!isset($GLOBALS['TCA'][$table])) {
+        if (!$this->tcaSchemaFactory->has($table)) {
             return 0;
         }
 
@@ -560,17 +569,16 @@ class PageInformationController extends InfoModuleController
             return htmlspecialchars($layoutValue);
         }
 
-        // Fetch field value from database (this is already htmlspecialchared')
+        // Fetch field value from database (this is already htmlspecialchar'ed)
         $layoutValue = $this->getPagesTableFieldValue($field, $row);
         if ($layoutValue !== '') {
             // In case getPagesTableFieldValue returns a non-empty string, the database field
-            // is filled with an invalid value (the backend layout does not longer exists).
-            $layoutValue = sprintf(
+            // is filled with an invalid value (the backend layout does no longer exist).
+            return sprintf(
                 $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.noMatchingValue'),
                 $this->getPagesTableFieldValue($field, $row)
             );
         }
-
-        return $layoutValue;
+        return '';
     }
 }
