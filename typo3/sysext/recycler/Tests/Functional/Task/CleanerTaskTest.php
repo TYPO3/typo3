@@ -60,7 +60,6 @@ final class CleanerTaskTest extends FunctionalTestCase
     public function taskFailsOnError(): void
     {
         $subject = new CleanerTask();
-        $GLOBALS['TCA']['not_existing_table']['ctrl']['delete'] = 'deleted';
         $subject->setTcaTables(['not_existing_table']);
         $result = $subject->execute();
         self::assertFalse($result);

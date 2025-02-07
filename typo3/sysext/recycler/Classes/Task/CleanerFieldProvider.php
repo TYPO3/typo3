@@ -16,7 +16,10 @@
 namespace TYPO3\CMS\Recycler\Task;
 
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
@@ -29,13 +32,25 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  */
 class CleanerFieldProvider extends AbstractAdditionalFieldProvider
 {
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
+    /**
+     * We cannot use Autoconfigure because Services.yaml excludes this provider explicitly
+     * because this file depends on typo3/cms-scheduler being present.
+     */
+    public function __construct(
+        ?TcaSchemaFactory $tcaSchemaFactory = null
+    ) {
+        $this->tcaSchemaFactory = $tcaSchemaFactory ?? GeneralUtility::makeInstance(TcaSchemaFactory::class);
+    }
+
     /**
      * Gets additional fields to render in the form to add/edit a task
      *
      * @param array $taskInfo Values of the fields from the add/edit task form
-     * @param \TYPO3\CMS\Recycler\Task\CleanerTask $task The task object being edited. NULL when adding a task!
+     * @param CleanerTask $task The task object being edited. NULL when adding a task!
      * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
-     * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
+     * @return array A two-dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
@@ -75,12 +90,13 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         $tcaSelectHtml = '<select name="tx_scheduler[RecyclerCleanerTCA][]" multiple="multiple" class="form-select" size="10">';
 
         $options = [];
-        foreach ($GLOBALS['TCA'] as $table => $tableConf) {
-            if (!empty($tableConf['ctrl']['delete'])) {
-                $selected = in_array($table, $selectedTables, true) ? ' selected="selected"' : '';
-                $tableTitle = !empty($tableConf['ctrl']['title']) ? $this->getLanguageService()->sL($tableConf['ctrl']['title']) : '';
-                $options[$tableTitle . ' ' . $table] = '<option' . $selected . ' value="' . $table . '">' . htmlspecialchars($tableTitle . ' (' . $table . ')') . '</option>';
+        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
+            if (!$schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                continue;
             }
+            $selected = in_array($table, $selectedTables, true) ? ' selected="selected"' : '';
+            $tableTitle = !empty($schema->getRawConfiguration()['title']) ? $this->getLanguageService()->sL($schema->getRawConfiguration()['title']) : '';
+            $options[$tableTitle . ' ' . $table] = '<option' . $selected . ' value="' . $table . '">' . htmlspecialchars($tableTitle . ' (' . $table . ')') . '</option>';
         }
         ksort($options);
 
@@ -143,11 +159,11 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      * @param array $tca The given TCA-tables as array
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function checkTcaIsValid(array $tca)
+    protected function checkTcaIsValid(array $tca): bool
     {
         $checkTca = false;
         foreach ($tca as $tcaTable) {
-            if (!isset($GLOBALS['TCA'][$tcaTable])) {
+            if (!$this->tcaSchemaFactory->has($tcaTable)) {
                 $checkTca = false;
                 $this->addMessage(
                     sprintf($this->getLanguageService()->sL('LLL:EXT:recycler/Resources/Private/Language/locallang_tasks.xlf:cleanerTaskErrorTCANotSet'), $tcaTable),
@@ -167,7 +183,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
      * @param int $period The given period as integer
      * @return bool TRUE if validation was ok, FALSE otherwise
      */
-    protected function validateAdditionalFieldPeriod($period)
+    protected function validateAdditionalFieldPeriod($period): bool
     {
         if (filter_var($period, FILTER_VALIDATE_INT) !== false && $period > 0) {
             $validPeriod = true;
@@ -199,7 +215,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
         }
 
         $task->setTcaTables($submittedData['RecyclerCleanerTCA']);
-        $task->setPeriod($submittedData['RecyclerCleanerPeriod']);
+        $task->setPeriod((int)$submittedData['RecyclerCleanerPeriod']);
     }
 
     protected function getLanguageService(): LanguageService
