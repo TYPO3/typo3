@@ -1164,4 +1164,9 @@ return [
             'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Core\DataHandling\DataHandler->storeLogMessages' => [
+        'restFiles' => [
+            'Breaking-106118-PropertyDataHandler-storeLogMessagesRemoved.rst',
+        ],
+    ],
 ];

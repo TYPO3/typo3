@@ -103,15 +103,6 @@ class DataHandler
 {
     use LogDataTrait;
 
-    // *********************
-    // Public variables you can configure before using the class:
-    // *********************
-    /**
-     * If TRUE, the default log-messages will be stored. This should not be necessary if the locallang-file for the
-     * log-display is properly configured. So disabling this will just save some database-space as the default messages are not saved.
-     */
-    public bool $storeLogMessages = true;
-
     /**
      * If TRUE, actions are logged to sys_log.
      */
@@ -9123,10 +9114,6 @@ class DataHandler
     {
         if (!$this->enableLogging) {
             return 0;
-        }
-        // Type value for DataHandler
-        if (!$this->storeLogMessages) {
-            $details = '';
         }
         if ($error > 0) {
             $detailMessage = $details;
