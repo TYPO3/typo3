@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Linkvalidator\QueryRestrictions;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -29,29 +32,20 @@ class EditableRestriction implements QueryRestrictionInterface
 {
     /**
      * Specify which database fields the current user is allowed to edit
-     *
-     * @var array
      */
-    protected $allowedFields = [];
+    protected array $allowedFields = [];
 
     /**
      * Specify which languages the current user is allowed to edit
-     *
-     * @var array
      */
-    protected $allowedLanguages = [];
+    protected array $allowedLanguages = [];
 
     /**
      * Explicit allow fields
-     *
-     * @var array
      */
-    protected $explicitAllowFields = [];
+    protected array $explicitAllowFields = [];
 
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
+    protected QueryBuilder $queryBuilder;
 
     /**
      * @param array<string, string> $searchFields array of 'table' => 'field1, field2'
@@ -61,25 +55,35 @@ class EditableRestriction implements QueryRestrictionInterface
     {
         $this->allowedFields = $this->getAllowedFieldsForCurrentUser($searchFields);
         $this->allowedLanguages = $this->getAllowedLanguagesForCurrentUser();
+        $tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         foreach ($searchFields as $table => $fields) {
-            if ($table !== 'pages' && ($GLOBALS['TCA'][$table]['ctrl']['type'] ?? false)) {
-                $type = $GLOBALS['TCA'][$table]['ctrl']['type'];
-                $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$type]['config'] ?? [];
-                if ($fieldConfig === []) {
-                    // $type might be "uid_local:type" for table "sys_file_reference" and then $fieldConfig will be empty
-                    // in this case we skip because we do not join with the other table and will not have this value
-                    continue;
-                }
-                // Check for items
-                if ($fieldConfig['type'] === 'select'
-                    && is_array($fieldConfig['items'] ?? false)
-                    && isset($fieldConfig['authMode'])
-                ) {
-                    $this->explicitAllowFields[$table][$type] = $this->getExplicitAllowTypesForCurrentUser(
-                        $table,
-                        $type
-                    );
-                }
+            if ($table === 'pages') {
+                continue;
+            }
+            if (!$tcaSchemaFactory->has($table)) {
+                continue;
+            }
+            $schema = $tcaSchemaFactory->get($table);
+            $typeField = $schema->getSubSchemaDivisorField();
+            if ($typeField === null) {
+                continue;
+            }
+            $fieldConfig = $typeField->getConfiguration();
+            if ($fieldConfig === []) {
+                // @todo: Benni notes... this needs to be checked within the Schema API!!!
+                // $type might be "uid_local:type" for table "sys_file_reference" and then $fieldConfig will be empty
+                // in this case we skip because we do not join with the other table and will not have this value
+                continue;
+            }
+            // Check for items
+            if ($typeField->getType() === 'select'
+                && is_array($fieldConfig['items'] ?? false)
+                && isset($fieldConfig['authMode'])
+            ) {
+                $this->explicitAllowFields[$table][$typeField->getName()] = $this->getExplicitAllowTypesForCurrentUser(
+                    $table,
+                    $typeField
+                );
             }
         }
         $this->queryBuilder = $queryBuilder;
@@ -91,7 +95,7 @@ class EditableRestriction implements QueryRestrictionInterface
     protected function getAllowedLanguagesForCurrentUser(): array
     {
         // Comma-separated list of allowed languages, e.g. "0,1". If empty, user has access to all languages.
-        $allowedLanguages = trim($GLOBALS['BE_USER']->groupData['allowed_languages'] ?? '');
+        $allowedLanguages = trim($this->getBackendUser()->groupData['allowed_languages'] ?? '');
         if ($allowedLanguages === '') {
             return [];
         }
@@ -105,16 +109,16 @@ class EditableRestriction implements QueryRestrictionInterface
      *
      * @return string[]
      */
-    protected function getExplicitAllowTypesForCurrentUser(string $table, string $typeField): array
+    protected function getExplicitAllowTypesForCurrentUser(string $table, FieldTypeInterface $typeField): array
     {
         $allowDenyFieldTypes = [];
-        $fieldConfig = $GLOBALS['TCA'][$table]['columns'][$typeField]['config'];
+        $fieldConfig = $typeField->getConfiguration();
         foreach ($fieldConfig['items'] as $iVal) {
             $itemIdentifier = (string)$iVal['value'];
             if ($itemIdentifier === '--div--') {
                 continue;
             }
-            if ($GLOBALS['BE_USER']->checkAuthMode($table, $typeField, $itemIdentifier)) {
+            if ($this->getBackendUser()->checkAuthMode($table, $typeField->getName(), $itemIdentifier)) {
                 $allowDenyFieldTypes[] = $itemIdentifier;
             }
         }
@@ -136,19 +140,27 @@ class EditableRestriction implements QueryRestrictionInterface
 
         $allowedFields = [];
 
+        $tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         foreach ($searchFields as $table => $fieldList) {
-            if (!$GLOBALS['BE_USER']->isAdmin() && !$GLOBALS['BE_USER']->check('tables_modify', $table)) {
+            if (!$this->getBackendUser()->isAdmin() && !$this->getBackendUser()->check('tables_modify', $table)) {
                 // table not allowed
                 continue;
             }
+            if (!$tcaSchemaFactory->has($table)) {
+                continue;
+            }
+            $schema = $tcaSchemaFactory->get($table);
             foreach ($fieldList as $field) {
-                $isExcludeField = $GLOBALS['TCA'][$table]['columns'][$field]['exclude'] ?? false;
-                if (!$GLOBALS['BE_USER']->isAdmin()
-                    && $isExcludeField
-                    && !$GLOBALS['BE_USER']->check('non_exclude_fields', $table . ':' . $field)) {
+                if (!$schema->hasField($field)) {
                     continue;
                 }
-                $allowedFields[$table][$field] = true;
+                $field = $schema->getField($field);
+                if (!$this->getBackendUser()->isAdmin()
+                    && $field->supportsAccessControl()
+                    && !$this->getBackendUser()->check('non_exclude_fields', $table . ':' . $field->getName())) {
+                    continue;
+                }
+                $allowedFields[$table][$field->getName()] = true;
             }
         }
         return $allowedFields;
@@ -167,7 +179,7 @@ class EditableRestriction implements QueryRestrictionInterface
                             'tx_linkvalidator_link.table_name',
                             $this->queryBuilder->quote('pages')
                         ),
-                        QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_EDIT))
+                        QueryHelper::stripLogicalOperatorPrefix($this->getBackendUser()->getPagePermsClause(Permission::PAGE_EDIT))
                     ),
                     // OR broken link is in content and content is editable
                     $expressionBuilder->and(
@@ -175,7 +187,7 @@ class EditableRestriction implements QueryRestrictionInterface
                             'tx_linkvalidator_link.table_name',
                             $this->queryBuilder->quote('pages')
                         ),
-                        QueryHelper::stripLogicalOperatorPrefix($GLOBALS['BE_USER']->getPagePermsClause(Permission::CONTENT_EDIT))
+                        QueryHelper::stripLogicalOperatorPrefix($this->getBackendUser()->getPagePermsClause(Permission::CONTENT_EDIT))
                     )
                 ),
             ];
@@ -242,5 +254,10 @@ class EditableRestriction implements QueryRestrictionInterface
         // If allowed languages is empty: all languages are allowed, so no constraint in this case
 
         return $expressionBuilder->and(...$constraints);
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }
