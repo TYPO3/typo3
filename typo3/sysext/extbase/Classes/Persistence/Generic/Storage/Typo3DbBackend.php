@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -65,6 +67,7 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         protected ReflectionService $reflectionService,
         protected EventDispatcherInterface $eventDispatcher,
         protected CacheLifetimeCalculator $cacheLifetimeCalculator,
+        protected TcaSchemaFactory $tcaSchemaFactory,
         #[Autowire(expression: 'service("features").isFeatureEnabled("frontend.cache.autoTagging")')]
         protected bool $autoTagging,
     ) {}
@@ -495,12 +498,18 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         $querySettings = $query->getQuerySettings();
         $languageAspect = $querySettings->getLanguageAspect();
         $languageUid = $languageAspect->getContentId();
-        // If current row is a translation select its parent
+        $schema = $this->tcaSchemaFactory->get($tableName);
         $languageOfCurrentRecord = 0;
-        if (($GLOBALS['TCA'][$tableName]['ctrl']['languageField'] ?? null)
-            && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] ?? false)
-        ) {
-            $languageOfCurrentRecord = $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']];
+        $languageField = null;
+        $translationParentPointerField = null;
+        // If current row is a translation select its parent
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
+            $translationParentPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
+        }
+        if ($languageField && ($row[$languageField] ?? false)) {
+            $languageOfCurrentRecord = $row[$languageField];
         }
         // Note #1: In case of ->findByUid([uid-of-translated-record]) the translated record should be fetched at all times
         // Example: you've fetched a translation directly via findByUid(11) which is a translated record, but the
@@ -511,12 +520,11 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         // and do overlays again later-on
         if ($languageOfCurrentRecord > 0
             && $fetchLocalizedRecord
-            && isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-            && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0
+            && ($row[$translationParentPointerField] ?? 0) > 0
         ) {
             $row = $pageRepository->getRawRecord(
                 $tableName,
-                (int)$row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']]
+                (int)$row[$translationParentPointerField]
             );
             $languageUid = $languageOfCurrentRecord;
         }
@@ -537,13 +545,13 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
                     // So we must set the language used for overlay to the language of the current record
                     $languageUid = $languageOfCurrentRecord;
                 }
-                if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                    && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0
+                if ($translationParentPointerField
+                    && ($row[$translationParentPointerField] ?? 0) > 0
                     && $languageOfCurrentRecord > 0
                 ) {
                     // Force overlay by faking default language record, as getRecordOverlay can only handle default language records
-                    $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
-                    $row[$GLOBALS['TCA'][$tableName]['ctrl']['languageField']] = 0;
+                    $row['uid'] = $row[$translationParentPointerField];
+                    $row[$languageField] = 0;
                 }
                 // Currently this needs to return the default record (OVERLAYS_MIXED) if no translation is found
                 //however this is a hack and should actually use the overlay functionality as given in the original LanguageAspect.
@@ -553,12 +561,12 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         } elseif (is_array($row)) {
             // If an already localized record is fetched, the "uid" of the default language is used
             // as the record is re-fetched in the DataMapper
-            if (isset($GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'])
-                && ($row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']] ?? 0) > 0
+            if ($translationParentPointerField
+                && ($row[$translationParentPointerField] ?? 0) > 0
                 && $languageOfCurrentRecord > 0
             ) {
                 $row['_LOCALIZED_UID'] = (int)$row['uid'];
-                $row['uid'] = $row[$GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField']];
+                $row['uid'] = $row[$translationParentPointerField];
             }
         }
         return $row;

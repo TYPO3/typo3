@@ -2503,12 +2503,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbBackend.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Domain\\Repository\\PageRepository and TYPO3\\CMS\\Core\\Domain\\Repository\\PageRepository will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
 			message: '#^Left side of && is always true\.$#'
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
@@ -2516,12 +2510,6 @@ parameters:
 
 		-
 			message: '#^Strict comparison using \!\=\= between int\|string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Storage/Typo3DbQueryParser.php

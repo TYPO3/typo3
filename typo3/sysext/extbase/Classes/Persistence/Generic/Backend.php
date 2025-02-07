@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
@@ -73,6 +74,7 @@ class Backend implements BackendInterface
         protected readonly DataMapFactory $dataMapFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ReferenceIndex $referenceIndex,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
@@ -603,10 +605,10 @@ class Backend implements BackendInterface
         $row = [
             $columnMap->parentKeyFieldName => (int)$parentUid,
             $columnMap->childKeyFieldName => (int)$object->getUid(),
-            $columnMap->childSortByFieldName => $sortingPosition !== null ? (int)$sortingPosition : 0,
+            $columnMap->childSortByFieldName => $sortingPosition ?? 0,
         ];
         $relationTableName = $columnMap->relationTableName;
-        if (isset($GLOBALS['TCA'][$relationTableName])) {
+        if ($this->tcaSchemaFactory->has($relationTableName)) {
             $row[AbstractDomainObject::PROPERTY_PID] = $this->determineStoragePageIdForNewRecord();
         }
         $row = array_merge($columnMap->relationTableMatchFields, $row);

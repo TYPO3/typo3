@@ -33,6 +33,9 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
@@ -70,31 +73,23 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 #[Autoconfigure(public: true, shared: false)]
 class Typo3DbQueryParser
 {
-    protected DataMapper $dataMapper;
-
     /**
      * The TYPO3 page repository. Used for language and workspace overlay
-     *
-     * @var PageRepository
      */
-    protected $pageRepository;
+    protected ?PageRepository $pageRepository = null;
 
     /**
      * Instance of the Doctrine query builder
-     *
-     * @var QueryBuilder
      */
-    protected $queryBuilder;
+    protected QueryBuilder $queryBuilder;
 
     /**
      * Maps domain model properties to their corresponding table aliases that are used in the query, e.g.:
      *
      * 'property1' => 'tableName',
      * 'property1.property2' => 'tableName1',
-     *
-     * @var array
      */
-    protected $tablePropertyMap = [];
+    protected array $tablePropertyMap = [];
 
     /**
      * Maps tablenames to their aliases to be used in where clauses etc.
@@ -102,29 +97,19 @@ class Typo3DbQueryParser
      *
      * @var array<string, string>
      */
-    protected $tableAliasMap = [];
+    protected array $tableAliasMap = [];
 
     /**
      * Stores all tables used in for SQL joins
-     *
-     * @var array
      */
-    protected $unionTableAliasCache = [];
+    protected array $unionTableAliasCache = [];
+    protected string $tableName = '';
+    protected bool $suggestDistinctQuery = false;
 
-    /**
-     * @var string
-     */
-    protected $tableName = '';
-
-    /**
-     * @var bool
-     */
-    protected $suggestDistinctQuery = false;
-
-    public function __construct(DataMapper $dataMapper)
-    {
-        $this->dataMapper = $dataMapper;
-    }
+    public function __construct(
+        protected readonly DataMapper $dataMapper,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+    ) {}
 
     /**
      * Whether using a distinct query is suggested.
@@ -138,10 +123,8 @@ class Typo3DbQueryParser
 
     /**
      * Returns a ready to be executed QueryBuilder object, based on the query
-     *
-     * @return QueryBuilder
      */
-    public function convertQueryToDoctrineQueryBuilder(QueryInterface $query)
+    public function convertQueryToDoctrineQueryBuilder(QueryInterface $query): QueryBuilder
     {
         // Reset all properties
         $this->tablePropertyMap = [];
@@ -180,7 +163,6 @@ class Typo3DbQueryParser
             $className = $source->getNodeTypeName();
             $tableName = $this->dataMapper->getDataMap($className)->tableName;
             $this->tableName = $tableName;
-
             $this->queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable($tableName);
 
@@ -271,7 +253,7 @@ class Typo3DbQueryParser
     /**
      * add TYPO3 Constraints for all tables to the queryBuilder
      */
-    protected function addTypo3Constraints(QueryInterface $query)
+    protected function addTypo3Constraints(QueryInterface $query): void
     {
         $index = 0;
         foreach ($this->tableAliasMap as $tableAlias => $tableName) {
@@ -477,17 +459,14 @@ class Typo3DbQueryParser
     protected function getParameterType(mixed $value): ParameterType
     {
         $parameterType = gettype($value);
-        switch ($parameterType) {
-            case 'integer':
-                return Connection::PARAM_INT;
-            case 'string':
-                return Connection::PARAM_STR;
-            default:
-                throw new \InvalidArgumentException(
-                    'Unsupported parameter type encountered. Expected integer or string, ' . $parameterType . ' given.',
-                    1494878863
-                );
-        }
+        return match ($parameterType) {
+            'integer' => Connection::PARAM_INT,
+            'string' => Connection::PARAM_STR,
+            default => throw new \InvalidArgumentException(
+                'Unsupported parameter type encountered. Expected integer or string, ' . $parameterType . ' given.',
+                1494878863
+            ),
+        };
     }
 
     /**
@@ -511,9 +490,7 @@ class Typo3DbQueryParser
             $plainValue = $this->dataMapper->getPlainValue($value);
         }
         $parameterType = $forceType ?? $this->getParameterType($plainValue);
-        $placeholder = $this->queryBuilder->createNamedParameter($plainValue, $parameterType);
-
-        return $placeholder;
+        return $this->queryBuilder->createNamedParameter($plainValue, $parameterType);
     }
 
     protected function parseOperand(DynamicOperandInterface $operand, SourceInterface $source): string
@@ -548,9 +525,9 @@ class Typo3DbQueryParser
     /**
      * Add a constraint to ensure that the record type of the returned tuples is matching the data type of the repository.
      *
-     * @param string $className The class name
+     * @param string|null $className The class name
      */
-    protected function addRecordTypeConstraint($className)
+    protected function addRecordTypeConstraint(?string $className): void
     {
         if ($className !== null) {
             $dataMap = $this->dataMapper->getDataMap($className);
@@ -620,13 +597,9 @@ class Typo3DbQueryParser
      * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
      * @param string $tableName The table name to add the additional where clause for
      * @param string $tableAlias The table alias used in the query.
-     * @return array
      */
-    protected function getAdditionalWhereClause(QuerySettingsInterface $querySettings, $tableName, $tableAlias = null)
+    protected function getAdditionalWhereClause(QuerySettingsInterface $querySettings, string $tableName, string $tableAlias): array
     {
-        $tableAlias = (string)$tableAlias;
-        // todo: $tableAlias must not be null
-
         $whereClause = [];
         if ($querySettings->getRespectSysLanguage()) {
             $systemLanguageStatement = $this->getLanguageStatement($tableName, $tableAlias, $querySettings);
@@ -641,7 +614,7 @@ class Typo3DbQueryParser
                 $whereClause[] = $pageIdStatement;
             }
         }
-        if (!empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS'])) {
+        if ($this->tcaSchemaFactory->has($tableName) && $this->tcaSchemaFactory->get($tableName)->isWorkspaceAware()) {
             // Always prevent workspace records from being returned (except for newly created records)
             $whereClause[] = $this->queryBuilder->expr()->eq($tableAlias . '.t3ver_oid', 0);
         }
@@ -651,14 +624,10 @@ class Typo3DbQueryParser
 
     /**
      * Adds enableFields and deletedClause to the query if necessary
-     *
-     * @param string $tableName The database table name
-     * @param string $tableAlias
-     * @return string
      */
-    protected function getVisibilityConstraintStatement(QuerySettingsInterface $querySettings, $tableName, $tableAlias)
+    protected function getVisibilityConstraintStatement(QuerySettingsInterface $querySettings, string $tableName, string $tableAlias): string
     {
-        if (!is_array($GLOBALS['TCA'][$tableName]['ctrl'] ?? null)) {
+        if (!$this->tcaSchemaFactory->has($tableName)) {
             return '';
         }
 
@@ -697,8 +666,12 @@ class Typo3DbQueryParser
                 if ($constraints !== []) {
                     $statement = implode(' AND ', $constraints);
                 }
-            } elseif (!empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-                $statement = $tableAlias . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
+            } else {
+                $schema = $this->tcaSchemaFactory->has($tableName) ? $this->tcaSchemaFactory->get($tableName) : null;
+                if ($schema?->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                    $deleteField = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
+                    $statement = $tableAlias . '.' . $deleteField . '=0';
+                }
             }
         } elseif (!$ignoreEnableFields && !$includeDeleted) {
             $constraints = $this->getPageRepository()->getDefaultConstraints($tableName, [], $tableAlias);
@@ -719,7 +692,7 @@ class Typo3DbQueryParser
      * @param bool $includeDeleted A flag indicating whether deleted records should be included
      * @return string
      */
-    protected function getBackendConstraintStatement($tableName, $ignoreEnableFields, $includeDeleted)
+    protected function getBackendConstraintStatement(string $tableName, bool $ignoreEnableFields, bool $includeDeleted): string
     {
         $statement = '';
         // In case of versioning-preview, enableFields are ignored (checked in Typo3DbBackend::doLanguageAndWorkspaceOverlay)
@@ -727,8 +700,10 @@ class Typo3DbQueryParser
         if (!$ignoreEnableFields && !$isUserInWorkspace) {
             $statement .= BackendUtility::BEenableFields($tableName);
         }
-        if (!$includeDeleted && !empty($GLOBALS['TCA'][$tableName]['ctrl']['delete'])) {
-            $statement .= ' AND ' . $tableName . '.' . $GLOBALS['TCA'][$tableName]['ctrl']['delete'] . '=0';
+        $schema = $this->tcaSchemaFactory->has($tableName) ? $this->tcaSchemaFactory->get($tableName) : null;
+        if (!$includeDeleted && $schema?->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            $deleteField = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
+            $statement .= ' AND ' . $tableName . '.' . $deleteField . '=0';
         }
         return $statement;
     }
@@ -741,21 +716,25 @@ class Typo3DbQueryParser
      * @param QuerySettingsInterface $querySettings The TYPO3 CMS specific query settings
      * @return CompositeExpression|string
      */
-    protected function getLanguageStatement($tableName, $tableAlias, QuerySettingsInterface $querySettings)
+    protected function getLanguageStatement(string $tableName, string $tableAlias, QuerySettingsInterface $querySettings)
     {
-        if (empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])) {
+        if (!$this->tcaSchemaFactory->has($tableName)) {
             return '';
         }
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        if (!$schema->isLanguageAware()) {
+            return '';
+        }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
 
         // Select all entries for the current language
         // If any language is set -> get those entries which are not translated yet
         // They will be removed by \TYPO3\CMS\Core\Domain\Repository\PageRepository::getRecordOverlay if not matching overlay mode
-        $languageField = $GLOBALS['TCA'][$tableName]['ctrl']['languageField'];
+        $languageField = $languageCapability->getLanguageField()->getName();
+        $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
 
         $languageAspect = $querySettings->getLanguageAspect();
-
-        $transOrigPointerField = $GLOBALS['TCA'][$tableName]['ctrl']['transOrigPointerField'] ?? '';
-        if (!$transOrigPointerField || !$languageAspect->getContentId()) {
+        if (!$languageAspect->getContentId()) {
             return $this->queryBuilder->expr()->in(
                 $tableAlias . '.' . $languageField,
                 [$languageAspect->getContentId(), -1]
@@ -836,31 +815,31 @@ class Typo3DbQueryParser
      * @param string $tableName The database table name
      * @param string $tableAlias The table alias used in the query.
      * @param array $storagePageIds list of storage page ids
-     * @return string
      * @throws InconsistentQuerySettingsException
      */
-    protected function getPageIdStatement($tableName, $tableAlias, array $storagePageIds)
+    protected function getPageIdStatement(string $tableName, string $tableAlias, array $storagePageIds): string
     {
-        if (!is_array($GLOBALS['TCA'][$tableName]['ctrl'] ?? null)) {
+        if (!$this->tcaSchemaFactory->has($tableName)) {
             return '';
         }
 
-        $rootLevel = (int)($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] ?? 0);
-        switch ($rootLevel) {
+        /** @var RootLevelCapability $rootLevelCapability */
+        $rootLevelCapability = $this->tcaSchemaFactory->get($tableName)->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        switch ($rootLevelCapability->getRootLevelType()) {
             // Only in pid 0
-            case 1:
+            case RootLevelCapability::TYPE_ONLY_ON_ROOTLEVEL:
                 $storagePageIds = [0];
                 break;
                 // Pid 0 and pagetree
-            case -1:
-                if (empty($storagePageIds)) {
+            case RootLevelCapability::TYPE_BOTH:
+                if ($storagePageIds === []) {
                     $storagePageIds = [0];
                 } else {
                     $storagePageIds[] = 0;
                 }
                 break;
                 // Only pagetree or not set
-            case 0:
+            case RootLevelCapability::TYPE_ONLY_ON_PAGES:
                 if (empty($storagePageIds)) {
                     throw new InconsistentQuerySettingsException('Missing storage page ids.', 1365779762);
                 }
@@ -918,10 +897,10 @@ class Typo3DbQueryParser
      * The property path will be mapped to the generated alias in the tablePropertyMap.
      *
      * @param string $tableName The name of the table for which the alias should be generated.
-     * @param string $fullPropertyPath The full property path that is related to the given table.
+     * @param string|null $fullPropertyPath The full property path that is related to the given table.
      * @return string The generated table alias.
      */
-    protected function getUniqueAlias($tableName, $fullPropertyPath = null): string
+    protected function getUniqueAlias(string $tableName, ?string $fullPropertyPath = null): string
     {
         if (isset($fullPropertyPath) && isset($this->tablePropertyMap[$fullPropertyPath])) {
             return $this->tablePropertyMap[$fullPropertyPath];
@@ -1075,10 +1054,7 @@ class Typo3DbQueryParser
         return $statement;
     }
 
-    /**
-     * @return PageRepository
-     */
-    protected function getPageRepository()
+    protected function getPageRepository(): PageRepository
     {
         if (!$this->pageRepository instanceof PageRepository) {
             $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);

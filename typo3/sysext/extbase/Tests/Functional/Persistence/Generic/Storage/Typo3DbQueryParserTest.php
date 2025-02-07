@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -48,6 +49,14 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        // We need to re-set the TcaSchemaFactory state
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
+    }
 
     #[Test]
     public function convertQueryToDoctrineQueryBuilderDoesNotAddAndWhereWithEmptyConstraint(): void
@@ -251,6 +260,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     public function addGetLanguageStatementWorksForForeignLanguageWithSubselectionWithoutDeleteStatementReturned(): void
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['delete'] = null;
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);
@@ -577,6 +588,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     public function respectEnableFieldsSettingGeneratesCorrectStatementWithOnlyEndTimeInFrontendContext(): void
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -605,6 +618,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         // simulate time for backend enable fields
         $GLOBALS['SIM_ACCESS_TIME'] = 1451779200;
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -688,6 +703,8 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl'] = [
             'rootLevel' => $rootLevel,
         ];
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())
@@ -714,6 +731,9 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
             ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $registryEntryRepository = $this->get(RegistryEntryRepository::class);
         $querySettings = new Typo3QuerySettings(new Context(), $this->get(ConfigurationManagerInterface::class));
+
+        // TcaSchema defines rootLevel flag by default, so we need to disable this query part
+        $querySettings->setRespectStoragePage(false);
 
         $query = $registryEntryRepository->createQuery();
         $query->setQuerySettings($querySettings);
