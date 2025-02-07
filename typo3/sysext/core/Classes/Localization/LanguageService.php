@@ -18,7 +18,6 @@ namespace TYPO3\CMS\Core\Localization;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Main API to fetch labels from XLF (label files) based on the current system
@@ -184,19 +183,19 @@ class LanguageService
         }
         // Remove the LLL: prefix
         $restStr = substr(trim($input), 4);
-        $extensionPrefix = '';
-        // ll-file referred to is found in an extension
-        if (PathUtility::isExtensionPath(trim($restStr))) {
-            $restStr = substr(trim($restStr), 4);
-            $extensionPrefix = 'EXT:';
+        $parts = array_map(trim(...), explode(':', $restStr));
+        // Extract the language key from the combined identifier,
+        // after the last colon if a key is given, examples:
+        // LLL:EXT:example/Resources/Private/Language/locallang.xlf:mylabel => mylabel
+        // LLL:/var/www/htdocs/typo3conf/ext/example/Resources/Private/Language/locallang.xlf:mylabel => mylabel
+        // LLL:C:/htdocs/typo3conf/ext/example/Resources/Private/Language/locallang.xlf:mylabel => mylabel
+        $key = count($parts) >= 2 ? array_pop($parts) : '';
+        $filename = implode(':', $parts);
+        $labelsFromFile = $this->readLLfile($filename);
+        if (is_array($this->overrideLabels[$filename] ?? null)) {
+            $labelsFromFile = array_replace_recursive($labelsFromFile, $this->overrideLabels[$filename]);
         }
-        $parts = explode(':', trim($restStr));
-        $parts[0] = $extensionPrefix . $parts[0];
-        $labelsFromFile = $this->readLLfile($parts[0]);
-        if (is_array($this->overrideLabels[$parts[0]] ?? null)) {
-            $labelsFromFile = array_replace_recursive($labelsFromFile, $this->overrideLabels[$parts[0]]);
-        }
-        $output = $this->getLLL($parts[1] ?? '', $labelsFromFile);
+        $output = $this->getLLL($key, $labelsFromFile);
         $this->runtimeCache->set($cacheIdentifier, $output);
         return $output;
     }
