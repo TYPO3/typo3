@@ -765,13 +765,7 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 13
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
-			message: '#^Call to function is_array\(\) with array\<int\|string, array\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
+			count: 12
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-

@@ -98,14 +98,14 @@ final class DataHandlerTest extends UnitTestCase
     public function adminIsAllowedToModifyNonAdminTable(): void
     {
         $this->subject->admin = true;
-        self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
+        self::assertTrue($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     #[Test]
     public function nonAdminIsNorAllowedToModifyNonAdminTable(): void
     {
         $this->subject->admin = false;
-        self::assertFalse($this->subject->checkModifyAccessList('tt_content'));
+        self::assertFalse($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     #[Test]
@@ -113,21 +113,21 @@ final class DataHandlerTest extends UnitTestCase
     {
         $this->subject->admin = false;
         $this->backendUserMock->groupData['tables_modify'] = 'tt_content';
-        self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
+        self::assertTrue($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     #[Test]
     public function adminIsAllowedToModifyAdminTable(): void
     {
         $this->subject->admin = true;
-        self::assertTrue($this->subject->checkModifyAccessList('be_users'));
+        self::assertTrue($this->subject->_call('checkModifyAccessList', 'be_users'));
     }
 
     #[Test]
     public function nonAdminIsNotAllowedToModifyAdminTable(): void
     {
         $this->subject->admin = false;
-        self::assertFalse($this->subject->checkModifyAccessList('be_users'));
+        self::assertFalse($this->subject->_call('checkModifyAccessList', 'be_users'));
     }
 
     #[Test]
@@ -144,7 +144,7 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->admin = false;
         $this->backendUserMock->groupData['tables_modify'] = $tableName;
         $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
-        self::assertFalse($this->subject->checkModifyAccessList($tableName));
+        self::assertFalse($this->subject->_call('checkModifyAccessList', $tableName));
     }
 
     public static function checkValueForDatetimeDataProvider(): array
@@ -652,7 +652,7 @@ final class DataHandlerTest extends UnitTestCase
         $this->expectExceptionCode(1251892472);
 
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = InvalidHookFixture::class;
-        $this->subject->checkModifyAccessList('tt_content');
+        $this->subject->_call('checkModifyAccessList', 'tt_content');
     }
 
     #[Test]
@@ -666,14 +666,14 @@ final class DataHandlerTest extends UnitTestCase
         $hookMock->expects(self::once())->method('checkModifyAccessList');
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = $hookClass;
         GeneralUtility::addInstance($hookClass, $hookMock);
-        $this->subject->checkModifyAccessList('tt_content');
+        $this->subject->_call('checkModifyAccessList', 'tt_content');
     }
 
     #[Test]
     public function doesCheckModifyAccessListHookModifyAccessAllowed(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['checkModifyAccessList'][] = AllowAccessHookFixture::class;
-        self::assertTrue($this->subject->checkModifyAccessList('tt_content'));
+        self::assertTrue($this->subject->_call('checkModifyAccessList', 'tt_content'));
     }
 
     public static function checkValue_flex_procInData_travDSDataProvider(): iterable

@@ -61,10 +61,9 @@ class FileMetadataPermissionsAspect implements DataHandlerCheckModifyAccessListH
      *
      * @param bool $accessAllowed Whether the user has access to modify a table
      * @param string $table The name of the table to be modified
-     * @param DataHandler $parent The calling parent object
      * @throws \UnexpectedValueException
      */
-    public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent)
+    public function checkModifyAccessList(&$accessAllowed, $table, DataHandler $parent): void
     {
         if ($table === 'sys_file_metadata') {
             foreach (($parent->cmdmap['sys_file_metadata'] ?? []) as $id => $command) {

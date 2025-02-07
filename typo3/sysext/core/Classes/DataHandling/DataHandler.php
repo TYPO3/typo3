@@ -711,19 +711,18 @@ class DataHandler
     public function process_datamap(): void
     {
         $this->controlActiveElements();
-
-        // Keep versionized(!) relations here locally:
-        $registerDBList = [];
         $this->registerElementsToBeDeleted();
         $this->datamap = $this->unsetElementsToBeDeleted($this->datamap);
-        // Editing frozen:
+
         if ($this->BE_USER->workspace !== 0 && ($this->BE_USER->workspaceRec['freeze'] ?? false)) {
+            // Workspace is frozen
             $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen');
             return;
         }
-        // First prepare user defined objects (if any) for hooks which extend this function:
+
         $hookObjectsArr = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'] ?? [] as $className) {
+            // Instantiate hooks and call first hook method
             $hookObject = GeneralUtility::makeInstance($className);
             if (method_exists($hookObject, 'processDatamap_beforeStart')) {
                 $hookObject->processDatamap_beforeStart($this);
@@ -740,65 +739,57 @@ class DataHandler
         }
 
         $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER, $this->referenceIndexUpdater)->process();
-        // Organize tables so that the pages-table is always processed first. This is required if you want to make sure that content pointing to a new page will be created.
+        $registerDBList = [];
         $orderOfTables = [];
-        // Set pages first.
         if (isset($this->datamap['pages'])) {
+            // Handling pages table is always the first task to make sure they are done if other records are added to them.
             $orderOfTables[] = 'pages';
         }
         $orderOfTables = array_unique(array_merge($orderOfTables, array_keys($this->datamap)));
-        // Process the tables...
         foreach ($orderOfTables as $table) {
-            // Check if
-            //	   - table is set in $GLOBALS['TCA'],
-            //	   - table is NOT readOnly
-            //	   - the table is set with content in the data-array (if not, there's nothing to process...)
-            //	   - permissions for tableaccess OK
-            $modifyAccessList = $this->checkModifyAccessList($table);
-            if (!$modifyAccessList) {
+            if (!$this->checkModifyAccessList($table)) {
+                // User is not allowed to modify
                 $this->log($table, 0, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', null, ['table' => $table]);
+                continue;
             }
             if (!$this->tcaSchemaFactory->has($table)) {
+                // Table not set in TCA
                 continue;
             }
             $schema = $this->tcaSchemaFactory->get($table);
-            if ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly) || !is_array($this->datamap[$table]) || !$modifyAccessList) {
+            if ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly)) {
+                // Table is readonly
                 continue;
             }
 
             if ($this->reverseOrder) {
                 $this->datamap[$table] = array_reverse($this->datamap[$table], true);
             }
-            // For each record from the table, do:
-            // $id is the record uid, may be a string if new records...
-            // $incomingFieldArray is the array of fields
+
             foreach ($this->datamap[$table] as $id => $incomingFieldArray) {
                 if (!is_array($incomingFieldArray)) {
                     continue;
                 }
-                $theRealPid = null;
-
-                // Hook: processDatamap_preProcessFieldArray
                 foreach ($hookObjectsArr as $hookObj) {
                     if (method_exists($hookObj, 'processDatamap_preProcessFieldArray')) {
                         $hookObj->processDatamap_preProcessFieldArray($incomingFieldArray, $table, $id, $this);
-                        // in case hook invalidated `$incomingFieldArray`, skip the record completely
+                        // If a hook invalidated $incomingFieldArray, skip the record completely
                         if (!is_array($incomingFieldArray)) {
                             continue 2;
                         }
                     }
                 }
-                // ******************************
-                // Checking access to the record
-                // ******************************
+
+                $theRealPid = null;
                 $createNewVersion = false;
                 $old_pid_value = '';
-                // Is it a new record? (Then Id is a string)
                 if (!MathUtility::canBeInterpretedAsInteger($id)) {
+                    // $id is not an integer. We're creating a new record.
+                    $status = 'new';
                     // Get a fieldArray with tca default values
                     $fieldArray = $this->newFieldArray($table);
-                    // A pid must be set for new records.
                     if (isset($incomingFieldArray['pid'])) {
+                        // A pid must be set for new records.
                         $pid_value = $incomingFieldArray['pid'];
                         // Checking and finding numerical pid, it may be a string-reference to another value
                         $canProceed = true;
@@ -840,51 +831,51 @@ class DataHandler
                         && $languageField && isset($incomingFieldArray[$languageField]) && $incomingFieldArray[$languageField] > 0
                         && $transOrigPointerField && isset($incomingFieldArray[$transOrigPointerField]) && $incomingFieldArray[$transOrigPointerField] > 0
                     ) {
-                        $recordAccess = $this->checkRecordInsertAccess($table, $incomingFieldArray[$transOrigPointerField]);
+                        if (!$this->checkRecordInsertAccess($table, $incomingFieldArray[$transOrigPointerField])) {
+                            continue;
+                        }
                     } else {
-                        $recordAccess = $this->checkRecordInsertAccess($table, $theRealPid);
-                    }
-                    if ($recordAccess) {
-                        $incomingFieldArray = $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
-                        $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, true);
-                        if (!$recordAccess) {
-                            $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
-                        } elseif (!$this->bypassWorkspaceRestrictions && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
-                            // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
-                            // So, if no live records were allowed in the current workspace, we have to create a new version of this record
-                            if ($schema->isWorkspaceAware()) {
-                                $createNewVersion = true;
-                            } else {
-                                $recordAccess = false;
-                                $this->log(
-                                    $table,
-                                    0,
-                                    SystemLogDatabaseAction::VERSIONIZE,
-                                    0,
-                                    SystemLogErrorClassification::USER_ERROR,
-                                    'Attempt to insert version record "{table}:{uid}" to this workspace failed. "Live" edit permissions of records from tables without versioning required',
-                                    null,
-                                    [
-                                        'table' => $table,
-                                        'uid' => $id,
-                                    ]
-                                );
-                            }
+                        if (!$this->checkRecordInsertAccess($table, $theRealPid)) {
+                            continue;
                         }
                     }
-                    // Yes new record, change $record_status to 'insert'
-                    $status = 'new';
+                    $incomingFieldArray = $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
+                    if (!$this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, true)) {
+                        $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
+                        continue;
+                    }
+                    if (!$this->bypassWorkspaceRestrictions && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+                        // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
+                        // So, if no live records were allowed in the current workspace, we have to create a new version of this record
+                        if ($schema->isWorkspaceAware()) {
+                            $createNewVersion = true;
+                        } else {
+                            $this->log(
+                                $table,
+                                0,
+                                SystemLogDatabaseAction::VERSIONIZE,
+                                0,
+                                SystemLogErrorClassification::USER_ERROR,
+                                'Attempt to insert version record "{table}:{uid}" to this workspace failed. "Live" edit permissions of records from tables without versioning required',
+                                null,
+                                [
+                                    'table' => $table,
+                                    'uid' => $id,
+                                ]
+                            );
+                            continue;
+                        }
+                    }
                 } else {
-                    // Nope... $id is a number
+                    // $id is an integer. We're updating an existing record or creating a workspace version.
+                    $status = 'update';
                     $id = (int)$id;
                     $fieldArray = [];
 
                     $recordAccess = null;
-                    if (is_array($hookObjectsArr)) {
-                        foreach ($hookObjectsArr as $hookObj) {
-                            if (method_exists($hookObj, 'checkRecordUpdateAccess')) {
-                                $recordAccess = $hookObj->checkRecordUpdateAccess($table, $id, $incomingFieldArray, $recordAccess, $this);
-                            }
+                    foreach ($hookObjectsArr as $hookObj) {
+                        if (method_exists($hookObj, 'checkRecordUpdateAccess')) {
+                            $recordAccess = $hookObj->checkRecordUpdateAccess($table, $id, $incomingFieldArray, $recordAccess, $this);
                         }
                     }
                     if ($recordAccess !== null) {
@@ -904,82 +895,51 @@ class DataHandler
                     $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $id);
                     if (!$recordAccess) {
                         $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
-                    } else {
-                        // Here we fetch the PID of the record that we point to...
-                        $tempdata = BackendUtility::getRecord($table, $id, '*', '', false);
-                        $theRealPid = $tempdata['pid'] ?? null;
-                        // Use the new id of the versionized record we're trying to write to:
-                        // (This record is a child record of a parent and has already been versionized.)
-                        if (!empty($this->autoVersionIdMap[$table][$id])) {
-                            // For the reason that creating a new version of this record, automatically
-                            // created related child records (e.g. "IRRE"), update the accordant field:
-                            $this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
-                            // Use the new id of the copied/versionized record:
-                            $id = $this->autoVersionIdMap[$table][$id];
-                            $recordAccess = true;
-                        } elseif (!$this->bypassWorkspaceRestrictions && $tempdata && ($errorCode = $this->workspaceCannotEditRecord($table, $tempdata))) {
-                            $recordAccess = false;
-                            // Versioning is required and it must be offline version!
-                            // Check if there already is a workspace version
-                            $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
-                            if ($workspaceVersion) {
-                                $id = $workspaceVersion['uid'];
-                                $recordAccess = true;
-                            } elseif ($this->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
-                                // new version of a record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
-                                $this->pagetreeNeedsRefresh = true;
+                        continue;
+                    }
 
-                                $tce = GeneralUtility::makeInstance(self::class);
-                                $tce->enableLogging = $this->enableLogging;
-                                // Setting up command for creating a new version of the record:
-                                $cmd = [];
-                                $cmd[$table][$id]['version'] = [
-                                    'action' => 'new',
-                                    // Default is to create a version of the individual records
-                                    'label' => 'Auto-created for WS #' . $this->BE_USER->workspace,
-                                ];
-                                $tce->start([], $cmd, $this->BE_USER, $this->referenceIndexUpdater);
-                                $tce->process_cmdmap();
-                                $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
-                                // If copying was successful, share the new uids (also of related children):
-                                if (!empty($tce->copyMappingArray[$table][$id])) {
-                                    foreach ($tce->copyMappingArray as $origTable => $origIdArray) {
-                                        foreach ($origIdArray as $origId => $newId) {
-                                            $this->autoVersionIdMap[$origTable][$origId] = $newId;
-                                        }
-                                    }
-                                    // Update registerDBList, that holds the copied relations to child records:
-                                    $registerDBList = array_merge($registerDBList, $tce->registerDBList);
-                                    // For the reason that creating a new version of this record, automatically
-                                    // created related child records (e.g. "IRRE"), update the accordant field:
-                                    $this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
-                                    // Use the new id of the copied/versionized record:
-                                    $id = $this->autoVersionIdMap[$table][$id];
-                                    $recordAccess = true;
-                                } else {
-                                    $this->log(
-                                        $table,
-                                        $id,
-                                        SystemLogDatabaseAction::VERSIONIZE,
-                                        0,
-                                        SystemLogErrorClassification::USER_ERROR,
-                                        'Attempt to version record "{table}:{uid}" failed [{reason}]',
-                                        null,
-                                        [
-                                            'reason' => $errorCode,
-                                            'table' => $table,
-                                            'uid' => $id,
-                                        ]
-                                    );
-                                }
-                            } else {
+                    // Fetch pid of the record that we point to
+                    $currentRecord = BackendUtility::getRecord($table, $id, '*', '', false);
+                    $theRealPid = $currentRecord['pid'] ?? null;
+                    // Use the new id of the versioned record we're trying to write to.
+                    // This record is a child record of a parent and has already been versioned.
+                    if (!empty($this->autoVersionIdMap[$table][$id])) {
+                        // For the reason that creating a new version of this record, automatically
+                        // created related child records (e.g. "IRRE"), update the accordant field:
+                        $this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
+                        // Use the new id of the copied/versioned record:
+                        $id = $this->autoVersionIdMap[$table][$id];
+                    } elseif (!$this->bypassWorkspaceRestrictions && $currentRecord && ($errorCode = $this->workspaceCannotEditRecord($table, $currentRecord))) {
+                        // Versioning is required and it must be offline version!
+                        // Check if there already is a workspace version
+                        $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
+                        if ($workspaceVersion) {
+                            $id = $workspaceVersion['uid'];
+                        } elseif ($this->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
+                            // new version of a record created in a workspace - so always refresh page tree to indicate there is a change in the workspace
+                            $this->pagetreeNeedsRefresh = true;
+                            /** @var DataHandler $tce */
+                            $tce = GeneralUtility::makeInstance(self::class);
+                            $tce->enableLogging = $this->enableLogging;
+                            // Setting up command for creating a new version of the record:
+                            $cmd = [];
+                            $cmd[$table][$id]['version'] = [
+                                'action' => 'new',
+                                // Default is to create a version of the individual records
+                                'label' => 'Auto-created for WS #' . $this->BE_USER->workspace,
+                            ];
+                            $tce->start([], $cmd, $this->BE_USER, $this->referenceIndexUpdater);
+                            $tce->process_cmdmap();
+                            $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
+                            // If copying was successful, share the new uids (also of related children):
+                            if (empty($tce->copyMappingArray[$table][$id])) {
                                 $this->log(
                                     $table,
                                     $id,
                                     SystemLogDatabaseAction::VERSIONIZE,
                                     0,
                                     SystemLogErrorClassification::USER_ERROR,
-                                    'Attempt to version record "{table}:{uid}" failed [{reason}]. "Live" edit permissions of records from tables without versioning required',
+                                    'Attempt to version record "{table}:{uid}" failed [{reason}]',
                                     null,
                                     [
                                         'reason' => $errorCode,
@@ -987,35 +947,58 @@ class DataHandler
                                         'uid' => $id,
                                     ]
                                 );
+                                continue;
                             }
+                            foreach ($tce->copyMappingArray as $origTable => $origIdArray) {
+                                foreach ($origIdArray as $origId => $newId) {
+                                    $this->autoVersionIdMap[$origTable][$origId] = $newId;
+                                }
+                            }
+                            // Update registerDBList, that holds the copied relations to child records:
+                            $registerDBList = array_merge($registerDBList, $tce->registerDBList);
+                            // For the reason that creating a new version of this record, automatically
+                            // created related child records (e.g. "IRRE"), update the accordant field:
+                            $this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
+                            // Use the new id of the copied/versioned record:
+                            $id = $this->autoVersionIdMap[$table][$id];
+                        } else {
+                            $this->log(
+                                $table,
+                                $id,
+                                SystemLogDatabaseAction::VERSIONIZE,
+                                0,
+                                SystemLogErrorClassification::USER_ERROR,
+                                'Attempt to version record "{table}:{uid}" failed [{reason}]. "Live" edit permissions of records from tables without versioning required',
+                                null,
+                                [
+                                    'reason' => $errorCode,
+                                    'table' => $table,
+                                    'uid' => $id,
+                                ]
+                            );
+                            continue;
                         }
                     }
-                    // The default is 'update'
-                    $status = 'update';
-                }
-                // If access was granted above, proceed to create or update record:
-                if (!$recordAccess) {
-                    continue;
                 }
 
                 // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
                 [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: ($fieldArray['pid'] ?? 0));
                 if ($status === 'new') {
-                    // Apply TCAdefaults from pageTS
+                    // Apply TCA defaults from pageTS
                     $fieldArray = $this->applyDefaultsForFieldArray($table, (int)$tscPID, $fieldArray);
                     // Apply page permissions as well
                     if ($table === 'pages') {
                         $fieldArray = $this->pagePermissionAssembler->applyDefaults(
                             $fieldArray,
                             (int)$tscPID,
-                            (int)$this->userid,
+                            $this->userid,
                             (int)$this->BE_USER->firstMainGroup
                         );
                     }
                     // Ensure that the default values, that are stored in the $fieldArray (built from internal default values)
                     // Are also placed inside the incomingFieldArray, so this is checked in "fillInFieldArray" and
                     // all default values are also checked for validity
-                    // This allows to set TCAdefaults (for example) without having to use FormEngine to have the fields available first.
+                    // This allows to set TCA defaults (for example) without having to use FormEngine to have the fields available first.
                     $incomingFieldArray = array_replace_recursive($fieldArray, $incomingFieldArray);
                 }
                 // Processing of all fields in incomingFieldArray and setting them in $fieldArray
@@ -1037,7 +1020,6 @@ class DataHandler
                 if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt) && !empty($fieldArray)) {
                     $fieldArray[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
                 }
-                // Hook: processDatamap_postProcessFieldArray
                 foreach ($hookObjectsArr as $hookObj) {
                     if (method_exists($hookObj, 'processDatamap_postProcessFieldArray')) {
                         $hookObj->processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, $this);
@@ -1054,7 +1036,7 @@ class DataHandler
 
                         // This creates a version of the record, instead of adding it to the live workspace
                         if ($createNewVersion) {
-                            // new record created in a workspace - so always refresh pagetree to indicate there is a change in the workspace
+                            // new record created in a workspace - so always refresh page tree to indicate there is a change in the workspace
                             $this->pagetreeNeedsRefresh = true;
                             $fieldArray['pid'] = $theRealPid;
                             $fieldArray['t3ver_oid'] = 0;
@@ -1062,7 +1044,7 @@ class DataHandler
                             $fieldArray['t3ver_state'] = VersionState::NEW_PLACEHOLDER->value;
                             $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
                             $this->insertDB($table, $id, $fieldArray, true, (int)($incomingFieldArray['uid'] ?? 0));
-                            // Hold auto-versionized ids of placeholders
+                            // Hold auto-versioned ids of placeholders
                             $this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $this->substNEWwithIDs[$id];
                         } else {
                             $this->insertDB($table, $id, $fieldArray, false, (int)($incomingFieldArray['uid'] ?? 0));
@@ -1079,7 +1061,6 @@ class DataHandler
                         $this->updateDB($table, $id, $fieldArray);
                     }
                 }
-                // Hook: processDatamap_afterDatabaseOperations
                 // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
                 // but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
                 $this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, $status, $table, $id, $fieldArray);
@@ -1088,10 +1069,10 @@ class DataHandler
         // Process the stack of relations to remap/correct
         $this->processRemapStack();
         $this->dbAnalysisStoreExec();
-        // Hook: processDatamap_afterAllOperations
-        // Note: When this hook gets called, all operations on the submitted data have been finished.
+
         foreach ($hookObjectsArr as $hookObj) {
             if (method_exists($hookObj, 'processDatamap_afterAllOperations')) {
+                // When this hook gets called, all operations on the submitted data have been finished.
                 $hookObj->processDatamap_afterAllOperations($this);
             }
         }
@@ -3382,13 +3363,13 @@ class DataHandler
         $pasteDatamap = [];
         // Traverse command map:
         foreach ($this->cmdmap as $table => $idCommandArray) {
-            // Check if the table may be modified!
-            $modifyAccessList = $this->checkModifyAccessList($table);
-            if (!$modifyAccessList) {
+            if (!$this->checkModifyAccessList($table)) {
+                // Check if the table may be modified!
                 $this->log($table, 0, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', null, ['table' => $table]);
+                continue;
             }
             // Check basic permissions and circumstances:
-            if (!$this->tcaSchemaFactory->has($table) || $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessReadOnly) || !$modifyAccessList) {
+            if (!$this->tcaSchemaFactory->has($table) || $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessReadOnly)) {
                 continue;
             }
 
@@ -7096,24 +7077,17 @@ class DataHandler
             ->delete($table, ['uid' => $uid], [Connection::PARAM_INT]);
     }
 
-    /*****************************
-     *
-     * Access control / Checking functions
-     *
-     *****************************/
     /**
      * Checking group modify_table access list
      *
-     * @param string $table Table name
      * @return bool Returns TRUE if the user has general access to modify the $table
-     * @internal should only be used from within DataHandler
      */
-    public function checkModifyAccessList($table)
+    protected function checkModifyAccessList(string $table): bool
     {
-        $adminOnly = $this->tcaSchemaFactory->has($table) ? $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessAdminOnly) : false;
+        $adminOnly = $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::AccessAdminOnly);
         $res = $this->admin || (!$adminOnly && isset($this->BE_USER->groupData['tables_modify']) && GeneralUtility::inList($this->BE_USER->groupData['tables_modify'], $table));
-        // Hook 'checkModifyAccessList': Post-processing of the state of access
         foreach ($this->getCheckModifyAccessListHookObjects() as $hookObject) {
+            // Hook 'checkModifyAccessList': Post-processing of the state of access
             /** @var DataHandlerCheckModifyAccessListHookInterface $hookObject */
             $hookObject->checkModifyAccessList($res, $table, $this);
         }
@@ -7160,7 +7134,7 @@ class DataHandler
      * @return bool Returns TRUE if the user may update the record given by $table and $id
      * @internal should only be used from within DataHandler
      */
-    public function checkRecordUpdateAccess($table, $id)
+    public function checkRecordUpdateAccess($table, $id): bool
     {
         $res = false;
         if ($this->tcaSchemaFactory->has($table) && (int)$id > 0) {
@@ -7189,7 +7163,7 @@ class DataHandler
             // Cache the result
             $this->runtimeCache->set($cacheId, $res);
         }
-        return $res;
+        return (bool)$res;
     }
 
     /**
