@@ -61,6 +61,31 @@ final class LanguageServiceTest extends FunctionalTestCase
         self::assertEquals($expected, $subject->sL($input));
     }
 
+    #[Test]
+    public function splitLabelWithWindowsPathsTest(): void
+    {
+        $fakeFilename = 'C:/htdocs/typo3/sysext/core/Resources/Private/language.xlf';
+        $this->get('cache.runtime')->set(
+            'labels_file_' . md5($fakeFilename . 'en'),
+            [
+                'en' => [
+                    'label1' => [
+                        [
+                            'source' => 'This is label #1',
+                            'target' => 'This is label #1',
+                        ],
+                    ],
+                ],
+            ],
+        );
+        $subject = $this->get(LanguageServiceFactory::class)->create('default');
+
+        self::assertEquals(
+            'This is label #1',
+            $subject->sL('LLL:' . $fakeFilename . ':label1'),
+        );
+    }
+
     public static function splitLabelTestDataProvider(): \Generator
     {
         yield 'String without whitespace' => [
