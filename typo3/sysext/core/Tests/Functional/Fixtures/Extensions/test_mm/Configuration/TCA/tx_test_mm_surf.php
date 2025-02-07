@@ -30,6 +30,7 @@ return [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
+        'prependAtCopy' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy',
     ],
     'types' => [
         '1' => [
@@ -53,6 +54,7 @@ return [
     'columns' => [
         'title' => [
             'label' => 'LLL:EXT:test_mm/Resources/Private/Language/locallang_db.xlf:tx_test_mm_surf.title',
+            'l10n_mode' => 'prefixLangTitle',
             'config' => [
                 'type' => 'input',
                 'size' => 30,

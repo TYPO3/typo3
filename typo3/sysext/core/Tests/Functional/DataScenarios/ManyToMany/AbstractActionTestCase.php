@@ -58,10 +58,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $GLOBALS['TCA']['pages']['ctrl']['hideAtCopy'] = false;
         // Show copied tt_content records in frontend request
         $GLOBALS['TCA']['tt_content']['ctrl']['hideAtCopy'] = false;
-        // Prepend label for localized surf records
-        $GLOBALS['TCA']['tx_test_mm_surf']['columns']['title']['l10n_mode'] = 'prefixLangTitle';
-        // Prepend label for copied surf records
-        $GLOBALS['TCA']['tx_test_mm_surf']['ctrl']['prependAtCopy'] = 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.prependAtCopy';
         $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $this->importCSVDataSet(static::SCENARIO_DataSet);
