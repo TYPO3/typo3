@@ -723,12 +723,12 @@ class DatabaseIntegrityController
                 $rowArr = [];
                 $dataRow = null;
                 foreach ($dataRows as $dataRow) {
-                    $rowArr[] = $this->resultRowDisplay($dataRow, $GLOBALS['TCA'][$table], $table, $request);
+                    $rowArr[] = $this->resultRowDisplay($dataRow, $table, $request);
                 }
                 if (!empty($rowArr)) {
                     $out .= '<div class="table-fit">';
                     $out .= '<table class="table table-striped table-hover">';
-                    $out .= $this->resultRowTitles((array)$dataRow, $GLOBALS['TCA'][$table]) . implode(LF, $rowArr);
+                    $out .= $this->resultRowTitles((array)$dataRow, $table) . implode(LF, $rowArr);
                     $out .= '</table>';
                     $out .= '</div>';
                 } else {
@@ -746,7 +746,7 @@ class DatabaseIntegrityController
                         $rowArr[] = $this->csvValues(array_keys($dataRow));
                         $first = 0;
                     }
-                    $rowArr[] = $this->csvValues($dataRow, ',', '"', $GLOBALS['TCA'][$table], $table);
+                    $rowArr[] = $this->csvValues($dataRow, $table);
                 }
                 if (!empty($rowArr)) {
                     $out .= '<div class="form-group">';
@@ -787,22 +787,22 @@ class DatabaseIntegrityController
         return $cPR;
     }
 
-    protected function csvValues(array $row, string $delim = ',', string $quote = '"', array $conf = [], string $table = ''): string
+    protected function csvValues(array $row, string $table = ''): string
     {
         $valueArray = $row;
         if (($this->MOD_SETTINGS['search_result_labels'] ?? false) && $table) {
             foreach ($valueArray as $key => $val) {
-                $valueArray[$key] = $this->getProcessedValueExtra($table, $key, (string)$val, $conf, ';');
+                $valueArray[$key] = $this->getProcessedValueExtra($table, $key, (string)$val, ';');
             }
         }
 
-        return CsvUtility::csvValues($valueArray, $delim, $quote);
+        return CsvUtility::csvValues($valueArray);
     }
 
     /**
      * @param array|null $row Table columns
      */
-    protected function resultRowTitles(?array $row, array $conf): string
+    protected function resultRowTitles(?array $row, string $table): string
     {
         $languageService = $this->getLanguageService();
         $tableHeader = [];
@@ -816,7 +816,7 @@ class DatabaseIntegrityController
                 && $fieldName !== 'deleted'
             ) {
                 if ($this->MOD_SETTINGS['search_result_labels'] ?? false) {
-                    $title = $languageService->sL(($conf['columns'][$fieldName]['label'] ?? false) ?: $fieldName);
+                    $title = $languageService->sL(($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'] ?? false) ?: $fieldName);
                 } else {
                     $title = $languageService->sL($fieldName);
                 }
@@ -831,7 +831,7 @@ class DatabaseIntegrityController
         return implode(LF, $tableHeader);
     }
 
-    protected function resultRowDisplay(array $row, array $conf, string $table, ServerRequestInterface $request): string
+    protected function resultRowDisplay(array $row, string $table, ServerRequestInterface $request): string
     {
         $languageService = $this->getLanguageService();
         $out = '<tr>';
@@ -842,7 +842,7 @@ class DatabaseIntegrityController
                 && $fieldName !== 'deleted'
             ) {
                 if ($this->MOD_SETTINGS['search_result_labels'] ?? false) {
-                    $fVnew = $this->getProcessedValueExtra($table, $fieldName, (string)$fieldValue, $conf, '<br>');
+                    $fVnew = $this->getProcessedValueExtra($table, $fieldName, (string)$fieldValue, '<br>');
                 } else {
                     $fVnew = htmlspecialchars((string)$fieldValue);
                 }
@@ -899,7 +899,7 @@ class DatabaseIntegrityController
         return $out;
     }
 
-    protected function getProcessedValueExtra(string $table, string $fieldName, string $fieldValue, array $conf, string $splitString): string
+    protected function getProcessedValueExtra(string $table, string $fieldName, string $fieldValue, string $splitString): string
     {
         $out = '';
         $fields = [];
@@ -1358,11 +1358,11 @@ class DatabaseIntegrityController
         return $formattedDate && $formattedDate->format($format) === $date;
     }
 
-    protected function makeSelectorTable(array $modSettings, ServerRequestInterface $request, string $enableList = 'table,fields,query,group,order,limit'): string
+    protected function makeSelectorTable(array $modSettings, ServerRequestInterface $request): string
     {
         $languageService = $this->getLanguageService();
         $out = [];
-        $enableArr = explode(',', $enableList);
+        $enableArr = ['table', 'fields', 'query', 'group', 'order', 'limit'];
         $userTsConfig = $this->getBackendUserAuthentication()->getTSConfig();
 
         // Make output
@@ -1886,14 +1886,14 @@ class DatabaseIntegrityController
                     $altLabelField = $GLOBALS['TCA'][$from_table]['ctrl']['label_alt'] ?? '';
                     if ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] ?? false) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$labelField]['config']['items'] as $labelArray) {
-                            $labelFieldSelect[$labelArray[1]] = $languageService->sL($labelArray[0]);
+                            $labelFieldSelect[$labelArray['value']] = $languageService->sL($labelArray['label']);
                         }
                         $useSelectLabels = true;
                     }
                     $altLabelFieldSelect = [];
                     if ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] ?? false) {
                         foreach ($GLOBALS['TCA'][$from_table]['columns'][$altLabelField]['config']['items'] as $altLabelArray) {
-                            $altLabelFieldSelect[$altLabelArray[1]] = $languageService->sL($altLabelArray[0]);
+                            $altLabelFieldSelect[$altLabelArray['value']] = $languageService->sL($altLabelArray['label']);
                         }
                         $useAltSelectLabels = true;
                     }
@@ -2547,14 +2547,11 @@ class DatabaseIntegrityController
 
     protected function cleanStoreQueryConfigs(array $storeQueryConfigs, array $storeArray): array
     {
-        if (is_array($storeQueryConfigs)) {
-            foreach ($storeQueryConfigs as $k => $v) {
-                if (!isset($storeArray[$k])) {
-                    unset($storeQueryConfigs[$k]);
-                }
+        foreach ($storeQueryConfigs as $k => $v) {
+            if (!isset($storeArray[$k])) {
+                unset($storeQueryConfigs[$k]);
             }
         }
-
         return $storeQueryConfigs;
     }
 
@@ -2677,7 +2674,7 @@ class DatabaseIntegrityController
                     $lastRow = null;
                     $rowArr = [];
                     while ($row = $statement->fetchAssociative()) {
-                        $rowArr[] = $this->resultRowDisplay($row, $conf, $table, $request);
+                        $rowArr[] = $this->resultRowDisplay($row, $table, $request);
                         $lastRow = $row;
                     }
                     $markup = [];
@@ -2687,7 +2684,7 @@ class DatabaseIntegrityController
                     $markup[] = '  </div>';
                     $markup[] = '  <div class="table-fit">';
                     $markup[] = '    <table class="table table-striped table-hover">';
-                    $markup[] = $this->resultRowTitles((array)$lastRow, $conf);
+                    $markup[] = $this->resultRowTitles((array)$lastRow, $table);
                     $markup[] = implode(LF, $rowArr);
                     $markup[] = '    </table>';
                     $markup[] = '  </div>';
@@ -2765,49 +2762,45 @@ class DatabaseIntegrityController
 
         $tableStatistic = [];
         $countArr = $databaseIntegrityCheck->countRecords($id_list);
-        if (is_array($GLOBALS['TCA'])) {
-            foreach ($GLOBALS['TCA'] as $t => $value) {
-                if ($GLOBALS['TCA'][$t]['ctrl']['hideTable'] ?? false) {
-                    continue;
-                }
-                if ($t === 'pages' && $databaseIntegrityCheck->getLostPagesList() !== '') {
-                    $lostRecordCount = count(explode(',', $databaseIntegrityCheck->getLostPagesList()));
-                } else {
-                    $lostRecordCount = isset($databaseIntegrityCheck->getLRecords()[$t]) ? count($databaseIntegrityCheck->getLRecords()[$t]) : 0;
-                }
-                $recordCount = 0;
-                if ($countArr['all'][$t] ?? false) {
-                    $recordCount = (int)($countArr['non_deleted'][$t] ?? 0) . '/' . $lostRecordCount;
-                }
-                $lostRecordList = [];
-                if (is_array($databaseIntegrityCheck->getLRecords()[$t] ?? false)) {
-                    foreach ($databaseIntegrityCheck->getLRecords()[$t] as $data) {
-                        if (!GeneralUtility::inList($databaseIntegrityCheck->getLostPagesList(), $data['pid'])) {
-                            $fixLink = (string)$this->uriBuilder->buildUriFromRoute(
-                                $this->moduleName,
-                                ['SET' => ['function' => 'records'], 'fixLostRecords_table' => $t, 'fixLostRecords_uid' => $data['uid']]
-                            );
-                            $lostRecordList[] =
-                                '<div class="record">' .
-                                    '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fixLostRecord')) . '">' .
-                                        $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render() .
-                                    '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
-                                '</div>';
-                        } else {
-                            $lostRecordList[] =
-                                '<div class="record-noicon">' .
-                                    'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
-                                '</div>';
-                        }
-                    }
-                }
-                $tableStatistic[$t] = [
-                    'icon' => $this->iconFactory->getIconForRecord($t, [], IconSize::SMALL)->render(),
-                    'title' => $languageService->sL($GLOBALS['TCA'][$t]['ctrl']['title']),
-                    'count' => $recordCount,
-                    'lostRecords' => implode(LF, $lostRecordList),
-                ];
+        foreach ($GLOBALS['TCA'] as $t => $value) {
+            if ($GLOBALS['TCA'][$t]['ctrl']['hideTable'] ?? false) {
+                continue;
             }
+            if ($t === 'pages' && $databaseIntegrityCheck->getLostPagesList() !== '') {
+                $lostRecordCount = count(explode(',', $databaseIntegrityCheck->getLostPagesList()));
+            } else {
+                $lostRecordCount = isset($databaseIntegrityCheck->getLRecords()[$t]) ? count($databaseIntegrityCheck->getLRecords()[$t]) : 0;
+            }
+            $recordCount = 0;
+            if ($countArr['all'][$t] ?? false) {
+                $recordCount = (int)($countArr['non_deleted'][$t] ?? 0) . '/' . $lostRecordCount;
+            }
+            $lostRecordList = [];
+            foreach ($databaseIntegrityCheck->getLRecords()[$t] ?? [] as $data) {
+                if (!GeneralUtility::inList($databaseIntegrityCheck->getLostPagesList(), $data['pid'])) {
+                    $fixLink = (string)$this->uriBuilder->buildUriFromRoute(
+                        $this->moduleName,
+                        ['SET' => ['function' => 'records'], 'fixLostRecords_table' => $t, 'fixLostRecords_uid' => $data['uid']]
+                    );
+                    $lostRecordList[] =
+                        '<div class="record">' .
+                            '<a href="' . htmlspecialchars($fixLink) . '" title="' . htmlspecialchars($languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fixLostRecord')) . '">' .
+                                $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render() .
+                            '</a>uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
+                        '</div>';
+                } else {
+                    $lostRecordList[] =
+                        '<div class="record-noicon">' .
+                            'uid:' . $data['uid'] . ', pid:' . $data['pid'] . ', ' . htmlspecialchars(GeneralUtility::fixed_lgd_cs(strip_tags($data['title']), 20)) .
+                        '</div>';
+                }
+            }
+            $tableStatistic[$t] = [
+                'icon' => $this->iconFactory->getIconForRecord($t, [], IconSize::SMALL)->render(),
+                'title' => $languageService->sL($GLOBALS['TCA'][$t]['ctrl']['title']),
+                'count' => $recordCount,
+                'lostRecords' => implode(LF, $lostRecordList),
+            ];
         }
 
         $view->assignMultiple([
