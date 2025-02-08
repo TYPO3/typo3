@@ -2,9 +2,9 @@
 
 .. _feature-94374:
 
-====================================================================
-Feature: #94374 - Create new filemount via the folder's context menu
-====================================================================
+=====================================================================
+Feature: #94374 - Create new file mount via the folder's context menu
+=====================================================================
 
 See :issue:`94374`
 
@@ -29,7 +29,7 @@ correct storage and folder prefilled.
 Impact
 ======
 
-It is now possible to create new filemounts directly in the Filelist
+It is now possible to create new file mounts directly in the Filelist
 module, using the new "New Filemount" option in the folder's context
 menu. This option also prefills the new record with the correct storage
 and folder values.

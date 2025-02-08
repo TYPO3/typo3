@@ -120,7 +120,7 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  * As all requests have to run through the storage, the storage knows about the
  * permissions of a BE/FE user, the file permissions / limitations of the driver
  * and has some configurable capabilities.
- * Additionally, a BE user can use "filemounts" (known from previous installations)
+ * Additionally, a BE user can use "file mounts" (known from previous installations)
  * to limit his/her work-zone to only a subset (identifier and its subfolders/subfolders)
  * of the user itself.
  *
@@ -168,7 +168,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected $evaluatePermissions = false;
 
     /**
-     * User filemounts, added as an array, and used as filters
+     * User file mounts, added as an array, and used as filters
      *
      * @var array
      */
@@ -561,7 +561,7 @@ class ResourceStorage implements ResourceStorageInterface
      * User Permissions / File Mounts
      ********************************/
     /**
-     * Adds a filemount as a "filter" for users to only work on a subset of a
+     * Adds a file mount as a "filter" for users to only work on a subset of a
      * storage object
      *
      * @param string $folderIdentifier
@@ -571,10 +571,10 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function addFileMount($folderIdentifier, $additionalData = [])
     {
-        // check for the folder before we add it as a filemount
+        // check for the folder before we add it as a file mount
         if ($this->driver->folderExists($folderIdentifier) === false) {
             // if there is an error, this is important and should be handled
-            // as otherwise the user would see the whole storage without any restrictions for the filemounts
+            // as otherwise the user would see the whole storage without any restrictions for the file mounts
             throw new FolderDoesNotExistException('Folder for file mount ' . $folderIdentifier . ' does not exist.', 1334427099);
         }
         $data = $this->driver->getFolderInfoByIdentifier($folderIdentifier);
@@ -2691,7 +2691,7 @@ class ResourceStorage implements ResourceStorageInterface
      * or the first mount point of this storage for this user
      * if $respectFileMounts is set.
      *
-     * @todo: this is a bad method design, because the calling code can never fetch all filemounts nor traverse them.
+     * @todo: this is a bad method design, because the calling code can never fetch all file mounts nor traverse them.
      */
     public function getRootLevelFolder(bool $respectFileMounts = true): Folder
     {

@@ -7,14 +7,14 @@ Form/ File storages
 ===================
 
 EXT:form stores the form definitions within the file system (FAL) and thus needs
-write access to this storage. By default, the filemount ``form_definitions`` is
+write access to this storage. By default, the file mount ``form_definitions`` is
 used. It is possible to configure a different and/ or an additional
-filemount, which is then utilized for storing and reading forms.
+file mount, which is then utilized for storing and reading forms.
 
 The backend user will only see form definitions that are stored in
-filemounts where the user has at least read access. The ``form editor`` and
+file mounts where the user has at least read access. The ``form editor`` and
 the ``form plugin`` respect those access rights. In this way, you are able
-to implement ACLs. If you have configured more than one filemount and the
+to implement ACLs. If you have configured more than one file mount and the
 backend user is able to access those, the ``form manager`` will allow the
 user to choose the preferred storage in which the form will be saved.
 
@@ -31,16 +31,16 @@ because having dynamic content within an extension - which is possibly
 version-controlled - is usually not a good idea. Furthermore, there is no
 ACL system available.
 
-**File uploads** will be saved within filemounts as well. They are handled
-as FAL objects. The available filemounts for such uploads can be configured.
+**File uploads** will be saved within file mounts as well. They are handled
+as FAL objects. The available file mounts for such uploads can be configured.
 When adding/ editing a file upload element, the backend user can select the
 desired upload storage.
 
 .. note::
 
-   In principle, files in filemounts are publicly accessible. If the
+   In principle, files in file mounts are publicly accessible. If the
    uploaded files could contain sensitive data, you should suppress any
-   HTTP access to the filemount. This may, for example, be achieved by
+   HTTP access to the file mount. This may, for example, be achieved by
    creating a :file:`.htaccess` file, assuming you are using an Apache web
    server. The directive of the :file:`.htaccess` file is fairly easy:
 
@@ -58,22 +58,22 @@ desired upload storage.
          Satisfy All
       </IfModule>
 
-The following code block shows you how to configure additional filemounts
+The following code block shows you how to configure additional file mounts
 for form definitions.
 
 .. code-block:: yaml
 
    persistenceManager:
      allowedFileMounts:
-       # default filemount, no need to redeclare it again
+       # default file mount, no need to redeclare it again
        # just to show you the structure
        # 10: 1:/form_definitions/
-       # additional filemounts
+       # additional file mounts
        100: 1:/custom/forms/
        110: 2:/cloudstorage/forms/
 
 The following code block shows you how to allow an extension path as an
-additional filemount for form definitions.
+additional file mount for form definitions.
 
 .. code-block:: yaml
 
@@ -97,7 +97,7 @@ forms stored within your own extension.
    persistenceManager:
      allowDeleteFromExtensionPaths: true
 
-The following code blocks show you the default setup for filemounts that
+The following code blocks show you the default setup for file mounts that
 are used for file (and image) uploads.
 
 .. code-block:: yaml

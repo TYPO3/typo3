@@ -1156,7 +1156,7 @@ Do you want to refresh it now?</source>
 				<source>New subpage</source>
 			</trans-unit>
 			<trans-unit id="cm.newFilemount">
-				<source>New Filemount</source>
+				<source>New file mount</source>
 			</trans-unit>
 			<trans-unit id="cm.pasteinto">
 				<source>Paste into</source>

@@ -1192,7 +1192,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $this->fileStorages[$storageObject->getUid()] = $storageObject;
             }
         } else {
-            // Regular users only have storages that are defined in their filemounts
+            // Regular users only have storages that are defined in their file mounts
             // Permissions and file mounts for the storage are added in StoragePermissionAspect
             foreach ($this->getFileMountRecords() as $row) {
                 if (!str_contains($row['identifier'] ?? '', ':')) {
@@ -1343,7 +1343,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             }
         }
 
-        // Personal or Group filemounts are not accessible if file mount list is set in workspace record
+        // Personal or Group file mounts are not accessible if file mount list is set in workspace record
         if ($this->workspace <= 0 || empty($this->workspaceRec['file_mountpoints'])) {
             // If userHomePath is set, we attempt to mount it
             if ($GLOBALS['TYPO3_CONF_VARS']['BE']['userHomePath'] ?? false) {
@@ -1402,9 +1402,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Returns an array with the filemounts for the user.
-     * Each filemount is represented with an array of a "name", "path" and "type".
-     * If no filemounts an empty array is returned.
+     * Returns an array with the file mounts for the user.
+     * Each file mount is represented with an array of a "name", "path" and "type".
+     * If no file mounts an empty array is returned.
      *
      * @return \TYPO3\CMS\Core\Resource\ResourceStorage[]
      */

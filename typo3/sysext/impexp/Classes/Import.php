@@ -1611,7 +1611,7 @@ class Import extends ImportExport
         if (isset($this->fileIdMap[$fileID])) {
             return PathUtility::stripPathSitePrefix($this->fileIdMap[$fileID]);
         }
-        // Verify FileMount access to dir-prefix. Returns the best alternative relative path if any
+        // Verify file mount access to dir-prefix. Returns the best alternative relative path if any
         $dirPrefix = $this->resolveStoragePath($origDirPrefix);
         if ($dirPrefix !== null && (!$this->update || $origDirPrefix === $dirPrefix) && $this->checkOrCreateDir($dirPrefix)) {
             $fileHeaderInfo = $this->dat['header']['files'][$fileID];

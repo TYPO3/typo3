@@ -41,12 +41,12 @@ class FileMount extends AbstractEntity
     protected string $description = '';
 
     /**
-     * Identifier of the filemount
+     * Identifier of the file mount
      */
     protected string $identifier = '';
 
     /**
-     * Status of the filemount
+     * Status of the file mount
      */
     protected bool $hidden = false;
 
@@ -124,7 +124,7 @@ class FileMount extends AbstractEntity
     }
 
     /**
-     * returns the path segment of the filemount (without the storage id)
+     * returns the path segment of the file mount (without the storage id)
      */
     public function getPath(): string
     {

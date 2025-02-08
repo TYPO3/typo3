@@ -46,7 +46,7 @@ allowedFileMounts
       EXT:form stores the form definitions within the file system and thus needs
       write access to this storage. By default, the folder ``form_definitions`` is
       created and used. It is possible to configure a different and/ or an additional
-      filemount which is then utilized for storing and reading forms.
+      file mount which is then utilized for storing and reading forms.
 
 
 .. _persistencemanager.allowSaveToExtensionPaths:

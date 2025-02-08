@@ -7,13 +7,13 @@
 				<source>File Mounts</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints_edit_title">
-				<source>Edit filemount</source>
+				<source>Edit file mount</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints_add_title">
-				<source>Create new filemount</source>
+				<source>Create new file mount</source>
 			</trans-unit>
 			<trans-unit id="file_mountpoints_list_title">
-				<source>List filemounts</source>
+				<source>List file mounts</source>
 			</trans-unit>
 			<trans-unit id="db_mountpoints">
 				<source>DB Mounts</source>
@@ -394,7 +394,7 @@
 				<source>Backend usergroup</source>
 			</trans-unit>
 			<trans-unit id="sys_filemounts">
-				<source>Filemount</source>
+				<source>File mount</source>
 			</trans-unit>
 			<trans-unit id="sys_file_storage">
 				<source>File Storage</source>

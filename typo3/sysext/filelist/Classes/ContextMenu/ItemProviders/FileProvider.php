@@ -262,7 +262,7 @@ class FileProvider extends AbstractProvider
     }
 
     /**
-     * New filemounts can only be created for readable folders by admins
+     * New file mounts can only be created for readable folders by admins
      */
     protected function canCreateNewFilemount(): bool
     {
@@ -333,8 +333,8 @@ class FileProvider extends AbstractProvider
     }
 
     /**
-     * Checks if folder and record are in the same filemount
-     * Cannot copy folders between filemounts
+     * Checks if folder and record are in the same file mount
+     * Cannot copy folders between file mounts
      *
      * @param File|Folder|null $fileOrFolderInClipBoard
      */

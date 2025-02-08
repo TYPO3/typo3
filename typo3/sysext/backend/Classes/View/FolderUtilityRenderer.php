@@ -47,7 +47,7 @@ class FolderUtilityRenderer
     }
 
     /**
-     * For TBE: Makes a form for creating new folders in the filemount the user is browsing.
+     * For TBE: Makes a form for creating new folders in the file mount the user is browsing.
      * The folder creation request is sent to the tce_file.php script in the core which will handle the creation.
      *
      * @param Folder $folderObject Absolute filepath on server in which to create the new folder.
@@ -91,7 +91,7 @@ class FolderUtilityRenderer
     }
 
     /**
-     * Makes an upload form for uploading files to the filemount the user is browsing.
+     * Makes an upload form for uploading files to the file mount the user is browsing.
      * The files are uploaded to the tce_file.php script in the core which will handle the upload.
      *
      * @return string HTML for an upload form.

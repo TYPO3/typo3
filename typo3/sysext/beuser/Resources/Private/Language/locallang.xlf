@@ -356,33 +356,33 @@
 				<source>Compare backend user groups</source>
 			</trans-unit>
 
-			<!-- Filemounts -->
+			<!-- File mounts -->
 			<trans-unit id="filemounts">
-				<source>Filemounts</source>
+				<source>File mounts</source>
 			</trans-unit>
 			<trans-unit id="filemount.list.title">
-				<source>Filemounts</source>
+				<source>File Mounts</source>
 			</trans-unit>
 			<trans-unit id="filemount.confirm.deletion">
-				<source>Are you sure, that you want to delete the filemount "%s"?</source>
+				<source>Are you sure, that you want to delete the file mount "%s"?</source>
 			</trans-unit>
 			<trans-unit id="filemount.create">
-				<source>Create new filemount</source>
+				<source>Create new file mount</source>
 			</trans-unit>
 			<trans-unit id="filemount.infobox.noFilemountFound.title">
-				<source>No filemount found</source>
+				<source>No file mount found</source>
 			</trans-unit>
 			<trans-unit id="filemount.infobox.noFilemountFound.message">
-				<source>Please create a filemount and select its entry point.</source>
+				<source>Please create a file mount and select its entry point.</source>
 			</trans-unit>
 			<trans-unit id="filemount.link.openInFilelist">
 				<source>Open in file list</source>
 			</trans-unit>
 			<trans-unit id="filemount.amount.multiple">
-				<source>Filemounts</source>
+				<source>File mounts</source>
 			</trans-unit>
 			<trans-unit id="filemount.amount.singular">
-				<source>Filemount</source>
+				<source>File mount</source>
 			</trans-unit>
 
 			<!-- Password reset -->
