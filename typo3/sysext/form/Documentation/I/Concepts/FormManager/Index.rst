@@ -14,7 +14,7 @@ What does it do?
 
 The ``form manager`` can be accessed by opening the backend module 'Forms'.
 It allows the editor to administer all of the existing forms stored on the
-accessible filemounts. The central element of the ``form manager`` is a
+accessible file mounts. The central element of the ``form manager`` is a
 table view which...
 
 - lists all forms
@@ -25,7 +25,7 @@ table view which...
 The creation and duplication of forms is supported by a so-called ``form
 wizard``. The wizard guides the editor through the process and offers a
 variety of settings depending on the form configuration. Those settings
-include choosing filemounts, prototypes, and start templates.
+include choosing file mounts, prototypes, and start templates.
 
 .. figure:: ../../Images/form_manager.png
    :alt: The form manager

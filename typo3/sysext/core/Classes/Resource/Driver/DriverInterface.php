@@ -338,7 +338,7 @@ interface DriverInterface
      *
      * Hint: this also needs to return TRUE if the given identifier
      * matches the container identifier to allow access to the root
-     * folder of a filemount.
+     * folder of a file mount.
      *
      * @param non-empty-string $folderIdentifier
      * @param non-empty-string $identifier identifier to be checked against $folderIdentifier

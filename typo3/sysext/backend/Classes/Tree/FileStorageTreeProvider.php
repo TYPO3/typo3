@@ -230,7 +230,7 @@ class FileStorageTreeProvider
     }
 
     /**
-     * Fetches all "root level folders" of a storage. If a user has filemounts in this storage, they are properly resolved.
+     * Fetches all "root level folders" of a storage. If a user has file mounts in this storage, they are properly resolved.
      *
      * @return array|array[]
      */

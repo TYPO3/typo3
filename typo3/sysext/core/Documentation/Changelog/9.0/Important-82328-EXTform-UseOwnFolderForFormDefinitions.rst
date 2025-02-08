@@ -11,7 +11,7 @@ See :issue:`82328`
 Description
 ===========
 
-Change default filemount for form definitions to :file:`fileadmin/form_definitions`,
+Change default file mount for form definitions to :file:`fileadmin/form_definitions`,
 the directory is automatically created if necessary.
 
 Existing forms in :file:`fileadmin/user_upload` can be listed, duplicated and removed
