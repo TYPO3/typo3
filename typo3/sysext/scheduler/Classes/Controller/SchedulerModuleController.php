@@ -403,10 +403,13 @@ final class SchedulerModuleController
         if (empty($taskUid)) {
             throw new \RuntimeException('No valid task uid given to edit task', 1641720929);
         }
-
+        $taskRecord = null;
         try {
             $taskRecord = $this->taskRepository->findRecordByUid($taskUid);
-        } catch (\OutOfBoundsException $e) {
+        } catch (\OutOfBoundsException) {
+            // Todo: Why do we catch this global namespace exception is here, leaving all other exception unhandled?
+        }
+        if ($taskRecord === null) {
             // Task not found - removed meanwhile?
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
             return $this->renderListTasksView($view, $moduleData);
@@ -419,13 +422,16 @@ final class SchedulerModuleController
         }
 
         $task = null;
-        $isInvalidTask = false;
-        try {
-            $task = $this->taskSerializer->deserialize($taskRecord['serialized_task_object']);
-            $class = $this->taskSerializer->resolveClassName($task);
-        } catch (InvalidTaskException) {
-            $isInvalidTask = true;
-            $class = $this->taskSerializer->extractClassName($taskRecord['serialized_task_object']);
+        $class = null;
+        $isInvalidTask = true;
+        if (isset($taskRecord['serialized_task_object']) && is_string($taskRecord['serialized_task_object'])) {
+            try {
+                $task = $this->taskSerializer->deserialize($taskRecord['serialized_task_object']);
+                $class = $this->taskSerializer->resolveClassName($task);
+                $isInvalidTask = false;
+            } catch (InvalidTaskException) {
+                $class = $this->taskSerializer->extractClassName($taskRecord['serialized_task_object']);
+            }
         }
 
         if ($isInvalidTask || !isset($registeredClasses[$class]) || !(new TaskValidator())->isValid($task)) {
