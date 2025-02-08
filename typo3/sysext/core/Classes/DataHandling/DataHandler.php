@@ -691,7 +691,7 @@ class DataHandler
 
         if ($this->BE_USER->workspace !== 0 && ($this->BE_USER->workspaceRec['freeze'] ?? false)) {
             // Workspace is frozen
-            $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen');
+            $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen');
             return;
         }
 
@@ -724,7 +724,7 @@ class DataHandler
         foreach ($orderOfTables as $table) {
             if (!$this->checkModifyAccessList($table)) {
                 // User is not allowed to modify
-                $this->log($table, 0, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', null, ['table' => $table]);
+                $this->log($table, 0, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', null, ['table' => $table]);
                 continue;
             }
             if (!$this->tcaSchemaFactory->has($table)) {
@@ -816,7 +816,7 @@ class DataHandler
                     }
                     $incomingFieldArray = $this->addDefaultPermittedLanguageIfNotSet($table, $incomingFieldArray, $theRealPid);
                     if (!$this->BE_USER->recordEditAccessInternals($table, $incomingFieldArray, true)) {
-                        $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
+                        $this->log($table, 0, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
                         continue;
                     }
                     if (!$this->bypassWorkspaceRestrictions && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
@@ -829,7 +829,7 @@ class DataHandler
                                 $table,
                                 0,
                                 SystemLogDatabaseAction::VERSIONIZE,
-                                0,
+                                null,
                                 SystemLogErrorClassification::USER_ERROR,
                                 'Attempt to insert version record "{table}:{uid}" to this workspace failed. "Live" edit permissions of records from tables without versioning required',
                                 null,
@@ -861,7 +861,7 @@ class DataHandler
                     if (!$recordAccess) {
                         if ($this->enableLogging) {
                             $propArr = $this->getRecordProperties($table, $id);
-                            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record "{title}" ({table}:{uid}) without permission or non-existing page', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id], $propArr['event_pid']);
+                            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record "{title}" ({table}:{uid}) without permission or non-existing page', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id], $propArr['event_pid']);
                         }
                         continue;
                     }
@@ -869,7 +869,7 @@ class DataHandler
                     // Next check of the record permissions (internals)
                     $recordAccess = $this->BE_USER->recordEditAccessInternals($table, $id);
                     if (!$recordAccess) {
-                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'recordEditAccessInternals() check failed [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
                         continue;
                     }
 
@@ -912,7 +912,7 @@ class DataHandler
                                     $table,
                                     $id,
                                     SystemLogDatabaseAction::VERSIONIZE,
-                                    0,
+                                    null,
                                     SystemLogErrorClassification::USER_ERROR,
                                     'Attempt to version record "{table}:{uid}" failed [{reason}]',
                                     null,
@@ -941,7 +941,7 @@ class DataHandler
                                 $table,
                                 $id,
                                 SystemLogDatabaseAction::VERSIONIZE,
-                                0,
+                                null,
                                 SystemLogErrorClassification::USER_ERROR,
                                 'Attempt to version record "{table}:{uid}" failed [{reason}]. "Live" edit permissions of records from tables without versioning required',
                                 null,
@@ -1301,7 +1301,7 @@ class DataHandler
             if (!($this->admin || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
                 if ($this->enableLogging) {
                     $propArr = $this->getRecordProperties($table, $id);
-                    $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'You cannot change the "doktype" of page "{title}" to the desired value', null, ['title' => $propArr['header']], $propArr['event_pid']);
+                    $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'You cannot change the "doktype" of page "{title}" to the desired value', null, ['title' => $propArr['header']], $propArr['event_pid']);
                 }
                 return $res;
             }
@@ -1315,7 +1315,7 @@ class DataHandler
                     if ($theWrongTables !== []) {
                         if ($this->enableLogging) {
                             $propArr = $this->getRecordProperties($table, $id);
-                            $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, '"doktype" of page "{title}" could not be changed because the page contains records from disallowed tables; {disallowedTables}', null, ['title' => $propArr['header'], 'disallowedTables' => implode(', ', $theWrongTables)], $propArr['event_pid']);
+                            $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, '"doktype" of page "{title}" could not be changed because the page contains records from disallowed tables; {disallowedTables}', null, ['title' => $propArr['header'], 'disallowedTables' => implode(', ', $theWrongTables)], $propArr['event_pid']);
                         }
                         return $res;
                     }
@@ -1353,7 +1353,7 @@ class DataHandler
                     $table,
                     (int)$id,
                     SystemLogDatabaseAction::UPDATE,
-                    0,
+                    null,
                     SystemLogErrorClassification::SECURITY_NOTICE,
                     'Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated'
                 );
@@ -1716,7 +1716,7 @@ class DataHandler
 
         if ($value !== '' && !GeneralUtility::validEmail($value)) {
             // A non-empty value is given, which however is no valid email. Log this and unset the value afterwards.
-            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{email}" is not a valid e-mail address for the field "{field}" of the table "{table}"', null, ['email' => $value, 'field' => $field, 'table' => $table]);
+            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, '"{email}" is not a valid e-mail address for the field "{field}" of the table "{table}"', null, ['email' => $value, 'field' => $field, 'table' => $table]);
             $value = '';
         }
 
@@ -1824,7 +1824,7 @@ class DataHandler
                     $table,
                     (int)$id,
                     SystemLogDatabaseAction::UPDATE,
-                    0,
+                    null,
                     SystemLogErrorClassification::WARNING,
                     $message . implode('. ', $passwordPolicyValidator->getValidationErrors()),
                     null,
@@ -1956,7 +1956,7 @@ class DataHandler
             // Extract the actual link from the link definition for further evaluation
             $linkParameter = $this->typoLinkCodecService->decode($value)['url'];
             if ($linkParameter === '') {
-                $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition for the field "{field}" of the table "{table}"', null, ['link' => $value, 'field' => $field, 'table' => $table]);
+                $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link definition for the field "{field}" of the table "{table}"', null, ['link' => $value, 'field' => $field, 'table' => $table]);
                 $value = '';
             } else {
                 // Try to resolve the actual link type and compare with the allow list
@@ -1972,11 +1972,11 @@ class DataHandler
                         $message = $linkIdentifier !== ''
                             ? 'Link type "record" with identifier "{type}" is not allowed for the field "{field}" of the table "{table}"'
                             : 'Link type "{type}" is not allowed for the field "{field}" of the table "{table}"';
-                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, $message, null, ['type' => $linkIdentifier ?: $linkType, 'field' => $field, 'table' => $table]);
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, $message, null, ['type' => $linkIdentifier ?: $linkType, 'field' => $field, 'table' => $table]);
                         $value = '';
                     }
                 } catch (UnknownLinkHandlerException $e) {
-                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link for the field "{field}" of the table "{table}"', null, ['link' => $value, 'field' => $field, 'table' => $table]);
+                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, '"{link}" is not a valid link for the field "{field}" of the table "{table}"', null, ['link' => $value, 'field' => $field, 'table' => $table]);
                     $value = '';
                 }
             }
@@ -2210,7 +2210,7 @@ class DataHandler
                     $table,
                     $id,
                     SystemLogDatabaseAction::CHECK,
-                    0,
+                    null,
                     SystemLogErrorClassification::USER_ERROR,
                     'Could not activate checkbox for field "{field}". A total of {max} record(s) can have this checkbox activated. Uncheck other records first in order to activate the checkbox of this record',
                     null,
@@ -2734,7 +2734,7 @@ class DataHandler
         }
 
         if ($originalValue !== $newValue) {
-            $this->log($table, $id, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::WARNING, 'The value of the field "{field}" has been changed from "{originalValue}" to "{newValue}" as it is required to be unique', null, ['field' => $field, 'originalValue' => $originalValue, 'newValue' => $newValue], $newPid);
+            $this->log($table, $id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::WARNING, 'The value of the field "{field}" has been changed from "{originalValue}" to "{newValue}" as it is required to be unique', null, ['field' => $field, 'originalValue' => $originalValue, 'newValue' => $newValue], $newPid);
         }
 
         return $newValue;
@@ -3341,7 +3341,7 @@ class DataHandler
     {
         // Editing frozen:
         if ($this->BE_USER->workspace !== 0 && ($this->BE_USER->workspaceRec['freeze'] ?? false)) {
-            $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen');
+            $this->log('sys_workspace', $this->BE_USER->workspace, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'All editing in this workspace has been frozen');
             return false;
         }
         // Hook initialization:
@@ -3358,7 +3358,7 @@ class DataHandler
         foreach ($this->cmdmap as $table => $idCommandArray) {
             if (!$this->checkModifyAccessList($table)) {
                 // Check if the table may be modified!
-                $this->log($table, 0, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', null, ['table' => $table]);
+                $this->log($table, 0, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', null, ['table' => $table]);
                 continue;
             }
             // Check basic permissions and circumstances:
@@ -3551,7 +3551,7 @@ class DataHandler
 
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
-            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" which does not exist or you do not have permission to read', null, ['table' => $table, 'uid' => $uid]);
+            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" which does not exist or you do not have permission to read', null, ['table' => $table, 'uid' => $uid]);
             return null;
         }
 
@@ -3560,14 +3560,14 @@ class DataHandler
 
         // Check if table is allowed on destination page
         if (!$this->isTableAllowedForThisPage($tscPID, $table)) {
-            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record "{table}:{uid}" on a page ({pid}) that can\'t store record type', null, ['table' => $table, 'uid' => $uid, 'pid' => $tscPID]);
+            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record "{table}:{uid}" on a page ({pid}) that can\'t store record type', null, ['table' => $table, 'uid' => $uid, 'pid' => $tscPID]);
             return null;
         }
 
         $fullLanguageCheckNeeded = $table !== 'pages';
         // Used to check language and general editing rights
         if (!$ignoreLocalization && ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded)) {
-            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $uid, 'reason' => $this->BE_USER->errorMsg]);
+            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $uid, 'reason' => $this->BE_USER->errorMsg]);
             return null;
         }
 
@@ -3701,13 +3701,13 @@ class DataHandler
                     if (isset($newPid)) {
                         $this->copySpecificPage($thePageUid, $newPid, $copyTablesAlongWithPage);
                     } else {
-                        $this->log('pages', $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'Something went wrong during copying branch');
+                        $this->log('pages', $uid, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'Something went wrong during copying branch');
                         break;
                     }
                 }
             }
         } else {
-            $this->log('pages', $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy page {uid} without permission to this table', null, ['uid' => $uid]);
+            $this->log('pages', $uid, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy page {uid} without permission to this table', null, ['uid' => $uid]);
         }
     }
 
@@ -3865,7 +3865,7 @@ class DataHandler
                             }
                         }
                     } catch (DBALException $e) {
-                        $this->log($table, $uid, SystemLogDatabaseAction::CHECK, 0, SystemLogErrorClassification::USER_ERROR, 'An SQL error occurred: {reason}', null, ['reason' => $e->getMessage()]);
+                        $this->log($table, $uid, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'An SQL error occurred: {reason}', null, ['reason' => $e->getMessage()]);
                     }
                 }
             }
@@ -3913,7 +3913,7 @@ class DataHandler
                 $table,
                 $uid,
                 SystemLogDatabaseAction::INSERT,
-                0,
+                null,
                 SystemLogErrorClassification::USER_ERROR,
                 'Attempt to rawcopy/versionize record which either does not exist or you don\'t have permission to read'
             );
@@ -4451,17 +4451,17 @@ class DataHandler
         $mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded);
         // If moving is allowed, begin the processing:
         if (!$mayEditAccess) {
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to do so [{reason}]', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'reason' => $this->BE_USER->errorMsg], $propArr['event_pid']);
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to do so [{reason}]', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'reason' => $this->BE_USER->errorMsg], $propArr['event_pid']);
             return;
         }
 
         if (!$mayMoveAccess) {
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to do so', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to do so', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
             return;
         }
 
         if (!$mayInsertAccess) {
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to insert', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to insert', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
             return;
         }
 
@@ -4571,12 +4571,12 @@ class DataHandler
                         // Logged to old page
                         $newPropArr = $this->getRecordProperties($table, $uid);
                         $newpagePropArr = $this->getRecordProperties('pages', $destPid);
-                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, $destPid, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) to page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $newpagePropArr['header'], 'pid' => $newPropArr['pid']], $propArr['pid']);
+                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) to page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $newpagePropArr['header'], 'pid' => $newPropArr['pid']], $propArr['pid']);
                         // Logged to new page
-                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, $destPid, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) from page "{pageTitle}" ({pid}))', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
+                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) from page "{pageTitle}" ({pid}))', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
                     } else {
                         // Logged to new page
-                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, $destPid, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) on page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
+                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) on page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
                     }
                 }
                 // Clear cache after moving
@@ -4588,7 +4588,7 @@ class DataHandler
                 }
             } elseif ($this->enableLogging) {
                 $destPropArr = $this->getRecordProperties('pages', $destPid);
-                $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page "{title}" ({uid}) to inside of its own rootline (at page "{pageTitle}" ({pid}))', null, ['title' => $propArr['header'], 'uid' => $uid, 'pageTitle' => $destPropArr['header'], 'pid' => $destPid], $propArr['pid']);
+                $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page "{title}" ({uid}) to inside of its own rootline (at page "{pageTitle}" ({pid}))', null, ['title' => $propArr['header'], 'uid' => $uid, 'pageTitle' => $destPropArr['header'], 'pid' => $destPid], $propArr['pid']);
             }
         } elseif ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
             // Put after another record
@@ -4629,12 +4629,12 @@ class DataHandler
                             // Logged to old page
                             $newPropArr = $this->getRecordProperties($table, $uid);
                             $newpagePropArr = $this->getRecordProperties('pages', $destPid);
-                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) to page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $newpagePropArr['header'], 'pid' => $newPropArr['pid']], $propArr['pid']);
+                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) to page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $newpagePropArr['header'], 'pid' => $newPropArr['pid']], $propArr['pid']);
                             // Logged to old page
-                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) from page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
+                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) from page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
                         } else {
                             // Logged to old page
-                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) on page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
+                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) on page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
                         }
                     }
                     // Clear cache after moving
@@ -4646,10 +4646,10 @@ class DataHandler
                     }
                 } elseif ($this->enableLogging) {
                     $destPropArr = $this->getRecordProperties('pages', $destPid);
-                    $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page "{title}" ({uid}) to inside of its own rootline (at page "{pageTitle}" [{pid}])', null, ['title' => $propArr['header'], 'uid' => $uid, 'pageTitle' => $destPropArr['header'], 'pid' => $destPid], $propArr['pid']);
+                    $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page "{title}" ({uid}) to inside of its own rootline (at page "{pageTitle}" [{pid}])', null, ['title' => $propArr['header'], 'uid' => $uid, 'pageTitle' => $destPropArr['header'], 'pid' => $destPid], $propArr['pid']);
                 }
             } else {
-                $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) to after another record, although the table has no sorting row', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
+                $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) to after another record, although the table has no sorting row', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
             }
         }
     }
@@ -4790,7 +4790,7 @@ class DataHandler
         $schema = $this->tcaSchemaFactory->get($table);
         $this->registerNestedElementCall($table, $uid, 'localize-' . (string)$language);
         if (!$schema->isLanguageAware()) {
-            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Localization failed; "languageField" and "transOrigPointerField" must be defined for the table {table}', null, ['table' => $table]);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed; "languageField" and "transOrigPointerField" must be defined for the table {table}', null, ['table' => $table]);
             return false;
         }
 
@@ -4800,14 +4800,14 @@ class DataHandler
         $translationOriginPointerFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
 
         if ($this->recordInfoWithPermissionCheck($table, $uid, Permission::PAGE_SHOW) === false) {
-            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} without permission', null, ['table' => $table, 'uid' => (int)$uid]);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} without permission', null, ['table' => $table, 'uid' => (int)$uid]);
             return false;
         }
 
         // Getting workspace overlay if possible - this will localize versions in workspace if any
         $row = BackendUtility::getRecordWSOL($table, $uid);
         if (!is_array($row)) {
-            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} that did not exist', null, ['table' => $table, 'uid' => (int)$uid]);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} that did not exist', null, ['table' => $table, 'uid' => (int)$uid]);
             return false;
         }
 
@@ -4815,7 +4815,7 @@ class DataHandler
         // Try to fetch the site language from the pages' associated site
         $siteLanguage = $this->getSiteLanguageForPage((int)$pageId, (int)$language);
         if ($siteLanguage === null) {
-            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Language ID "{languageId}" not found for page {pageId}', null, ['languageId' => (int)$language, 'pageId' => (int)$pageId]);
+            $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Language ID "{languageId}" not found for page {pageId}', null, ['languageId' => (int)$language, 'pageId' => (int)$pageId]);
             return false;
         }
 
@@ -4828,7 +4828,7 @@ class DataHandler
                 $row[$translationOriginPointerFieldName]
             );
             if ((int)$localizationParentRecord[$languageFieldName] !== 0) {
-                $this->log($table, $localizationParentRecord['uid'], SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{originalRecordId} contained a reference to an original record that is not a default record (which is strange)', null, ['table' => $table, 'originalRecordId' => $localizationParentRecord['uid']]);
+                $this->log($table, $localizationParentRecord['uid'], SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{originalRecordId} contained a reference to an original record that is not a default record (which is strange)', null, ['table' => $table, 'originalRecordId' => $localizationParentRecord['uid']]);
                 return false;
             }
         }
@@ -4836,7 +4836,7 @@ class DataHandler
         // Default language records must never have a localization parent as they are the origin of any translation.
         if ((int)$row[$translationOriginPointerFieldName] !== 0
             && (int)$row[$languageFieldName] === 0) {
-            $this->log($table, $row['uid'], SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{uid} contained a reference to an original default record but is a default record itself (which is strange)', null, ['table' => $table, 'uid' => (int)$row['uid']]);
+            $this->log($table, $row['uid'], SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Localization failed: Source record {table}:{uid} contained a reference to an original default record but is a default record itself (which is strange)', null, ['table' => $table, 'uid' => (int)$row['uid']]);
             return false;
         }
 
@@ -4847,7 +4847,7 @@ class DataHandler
                 $table,
                 $uid,
                 SystemLogDatabaseAction::LOCALIZE,
-                0,
+                null,
                 SystemLogErrorClassification::USER_ERROR,
                 'Localization failed: There already are localizations ({localizations}) for language {language} of the "{table}" record {uid}',
                 null,
@@ -5000,7 +5000,7 @@ class DataHandler
             $whereClause = BackendUtility::isTableWorkspaceEnabled($table) ? 'AND t3ver_oid=0' : '';
             $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], $whereClause);
             if (empty($parentRecordLocalization)) {
-                $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, 0, SystemLogErrorClassification::MESSAGE, 'Localization for parent record {table}:{uid} cannot be fetched', null, ['table' => $table, 'uid' => (int)$id], $table === 'pages' ? $id : $parentRecord['pid']);
+                $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::MESSAGE, 'Localization for parent record {table}:{uid} cannot be fetched', null, ['table' => $table, 'uid' => (int)$id], $table === 'pages' ? $id : $parentRecord['pid']);
                 return;
             }
             $parentRecord = $parentRecordLocalization[0];
@@ -5293,7 +5293,7 @@ class DataHandler
     {
         $currentUserWorkspace = $this->BE_USER->workspace;
         if (!$this->tcaSchemaFactory->has($table) || !$uid) {
-            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
+            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
             return;
         }
         // Skip processing already deleted records
@@ -5314,7 +5314,7 @@ class DataHandler
         }
         $hasEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, $forceHardDelete, $fullLanguageAccessCheck);
         if (!$hasEditAccess) {
-            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions');
+            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions');
             return;
         }
         if ($table === 'pages') {
@@ -5385,7 +5385,7 @@ class DataHandler
                 $propArr = $this->getRecordProperties($table, $uid);
                 $pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
 
-                $this->log($table, $uid, $state, 0, SystemLogErrorClassification::MESSAGE, $message, null, [
+                $this->log($table, $uid, $state, null, SystemLogErrorClassification::MESSAGE, $message, null, [
                     'title' => $propArr['header'],
                     'table' => $table,
                     'uid' =>  $uid,
@@ -5393,7 +5393,7 @@ class DataHandler
                     'pid' => $propArr['pid'],
                 ], $propArr['event_pid']);
             } else {
-                $this->log($table, $uid, $state, 0, SystemLogErrorClassification::SYSTEM_ERROR, $databaseErrorMessage);
+                $this->log($table, $uid, $state, null, SystemLogErrorClassification::SYSTEM_ERROR, $databaseErrorMessage);
             }
         }
 
@@ -5418,7 +5418,7 @@ class DataHandler
     public function deletePages(int $uid, bool $force = false, bool $forceHardDelete = false, bool $deleteRecordsOnPage = true): void
     {
         if ($uid === 0) {
-            $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'Deleting all pages starting from the root-page is disabled', null, [], 0);
+            $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Deleting all pages starting from the root-page is disabled', null, [], 0);
             return;
         }
         // Getting list of pages to delete:
@@ -5441,7 +5441,7 @@ class DataHandler
                 'pages',
                 $uid,
                 SystemLogDatabaseAction::DELETE,
-                0,
+                null,
                 SystemLogErrorClassification::SYSTEM_ERROR,
                 $res,
             );
@@ -5777,7 +5777,7 @@ class DataHandler
                     $table,
                     $uid,
                     SystemLogDatabaseAction::DELETE,
-                    0,
+                    null,
                     SystemLogErrorClassification::USER_ERROR,
                     'Record "{table}:{uid}" can\'t be restored: The page "{pid}" containing it does not exist or is soft-deleted',
                     null,
@@ -5801,7 +5801,7 @@ class DataHandler
                 $table,
                 $uid,
                 SystemLogDatabaseAction::DELETE,
-                0,
+                null,
                 SystemLogErrorClassification::USER_ERROR,
                 'Record "{table}:{uid}" can\'t be restored: Insufficient user permissions',
                 null,
@@ -5834,7 +5834,7 @@ class DataHandler
                 $table,
                 $uid,
                 SystemLogDatabaseAction::INSERT,
-                0,
+                null,
                 SystemLogErrorClassification::MESSAGE,
                 'Record "{table}:{uid}" was restored on page {pid}',
                 null,
@@ -5962,20 +5962,20 @@ class DataHandler
 
         // User access checks
         if ($userWorkspace !== (int)$versionRecord['t3ver_wsid']) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: Different workspace', null, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: Different workspace', null, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
             return;
         }
         if ($errorCode = $this->workspaceCannotEditOfflineVersion($table, $versionRecord)) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: {reason}', null, ['table' => $table, 'uid' => (int)$versionRecord['uid'], 'reason' => $errorCode]);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: {reason}', null, ['table' => $table, 'uid' => (int)$versionRecord['uid'], 'reason' => $errorCode]);
             return;
         }
         if (!$this->checkRecordUpdateAccess($table, $versionRecord['uid'])) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: User has no edit access', null, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: User has no edit access', null, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
             return;
         }
         $fullLanguageAccessCheck = !($table === 'pages' && (int)$versionRecord[$this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName()] !== 0);
         if (!$this->BE_USER->recordEditAccessInternals($table, $versionRecord, false, true, $fullLanguageAccessCheck)) {
-            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: User has no delete access', null, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
+            $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: User has no delete access', null, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
             return;
         }
 
@@ -5998,7 +5998,7 @@ class DataHandler
             $table,
             (int)$versionRecord['uid'],
             SystemLogDatabaseAction::DELETE,
-            0,
+            null,
             SystemLogErrorClassification::MESSAGE,
             'Record {table}:{uid} was deleted unrecoverable from page {pid}',
             null,
@@ -6294,7 +6294,7 @@ class DataHandler
             return null;
         }
         if (!$schema->isWorkspaceAware() || $id <= 0) {
-            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Versioning is not supported for this table {table}:{uid}', null, ['table' => $table, 'uid' => (int)$id]);
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Versioning is not supported for this table {table}:{uid}', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
 
@@ -6303,18 +6303,18 @@ class DataHandler
 
         // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
-            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "{table}:{uid}"', null, ['table' => $table, 'uid' => (int)$id]);
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "{table}:{uid}"', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
 
         // Record must be online record, otherwise we would create a version of a version
         if (($row['t3ver_oid'] ?? 0) > 0) {
-            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Record "{table}:{uid}" you wanted to versionize was already a version in archive (record has an online ID)', null, ['table' => $table, 'uid' => (int)$id]);
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record "{table}:{uid}" you wanted to versionize was already a version in archive (record has an online ID)', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
 
         if ($delete && $errorCode = $this->cannotDeleteRecord($table, $id)) {
-            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, 0, SystemLogErrorClassification::USER_ERROR, 'Record {table}:{uid} cannot be deleted: {reason}', null, ['table' => $table, 'uid' => (int)$id, 'reason' => $errorCode]);
+            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record {table}:{uid} cannot be deleted: {reason}', null, ['table' => $table, 'uid' => (int)$id, 'reason' => $errorCode]);
             return null;
         }
 
@@ -7203,11 +7203,11 @@ class DataHandler
                 $this->recInsertAccessCache[$insertTable][$pid] = $res;
             } elseif ($this->enableLogging) {
                 $propArr = $this->getRecordProperties('pages', $pid);
-                $this->log($insertTable, $pid, $action, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record on page "{pageTitle}" ({pid}) where table "{table}" is not allowed', null, ['pageTitle' => $propArr['header'], 'pid' => $pid, 'table' => $insertTable], $propArr['event_pid']);
+                $this->log($insertTable, $pid, $action, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record on page "{pageTitle}" ({pid}) where table "{table}" is not allowed', null, ['pageTitle' => $propArr['header'], 'pid' => $pid, 'table' => $insertTable], $propArr['event_pid']);
             }
         } elseif ($this->enableLogging) {
             $propArr = $this->getRecordProperties('pages', $pid);
-            $this->log($insertTable, $pid, $action, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert a record on page "{pageTitle}" ({pid}) from table "{table}" without permissions or non-existing page', null, ['pageTitle' => $propArr['header'], 'pid' => $pid, 'table' => $insertTable], $propArr['event_pid']);
+            $this->log($insertTable, $pid, $action, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert a record on page "{pageTitle}" ({pid}) from table "{table}" without permissions or non-existing page', null, ['pageTitle' => $propArr['header'], 'pid' => $pid, 'table' => $insertTable], $propArr['event_pid']);
         }
         return $res;
     }
@@ -7603,7 +7603,7 @@ class DataHandler
                 try {
                     $connection->update($table, $fieldArray, ['uid' => (int)$id]);
                 } catch (DBALException $e) {
-                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', null, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $id]);
+                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', null, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $id]);
                     return;
                 }
                 $this->updateRefIndex($table, $id);
@@ -7619,9 +7619,9 @@ class DataHandler
                     $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
                     $isOfflineVersion = (bool)($newRow['t3ver_oid'] ?? 0);
                     if ($isOfflineVersion) {
-                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated (Offline version)', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated (Offline version)', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
                     } else {
-                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, $propArr['pid'], SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
+                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
                     }
                 }
                 // Clear cache for relevant pages:
@@ -7673,7 +7673,7 @@ class DataHandler
             // Execute the INSERT query:
             $connection->insert($table, $fieldArray);
         } catch (DBALException $e) {
-            $this->log($table, 0, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', null, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $id]);
+            $this->log($table, 0, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', null, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $id]);
             return null;
         }
         // Set mapping for NEW... -> real uid:
@@ -7689,9 +7689,9 @@ class DataHandler
         // Store in history
         $this->getRecordHistoryStore()->addRecord($table, $id, $newRow, $this->correlationId);
         if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware() && (int)($newRow['t3ver_wsid'] ?? 0) >= 0) {
-            $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', null, ['table' => $table, 'uid' => $newRow['uid'], 'offlineUid' => $id], $table === 'pages' ? $newRow['uid'] : $newRow['pid'], $NEW_id);
+            $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', null, ['table' => $table, 'uid' => $newRow['uid'], 'offlineUid' => $id], $table === 'pages' ? $newRow['uid'] : $newRow['pid'], $NEW_id);
         } else {
-            $this->log($table, $id, SystemLogDatabaseAction::INSERT, 0, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was inserted on page {pid}', null, ['table' => $table, 'uid' => $id, 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
+            $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was inserted on page {pid}', null, ['table' => $table, 'uid' => $id, 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
             // Clear cache of relevant pages
             $this->registerRecordIdForPageCacheClearing($table, $id);
         }
@@ -7951,7 +7951,7 @@ class DataHandler
         if ($this->enableLogging) {
             $propArr = $this->getRecordProperties($table, $uid);
             // OK, don't insert $propArr['event_pid'] here...
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, 0, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) to after a non-existing record ({target})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'target' => abs($pid)], $propArr['pid']);
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) to after a non-existing record ({target})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'target' => abs($pid)], $propArr['pid']);
         }
         // There MUST be a previous record or else this cannot work
         return false;
@@ -9167,10 +9167,10 @@ class DataHandler
      * @param string $table Table name the log entry is concerned with. Blank if NA
      * @param int $recuid Record UID. Zero if NA
      * @param int $action Action number: 0=No category, 1=new record, 2=update record, 3= delete record, 4= move record, 5= Check/evaluate
-     * @param int|string $recpid Normally 0 (zero). If set, it indicates that this log-entry is used to notify the backend of a record which is moved to another location
+     * @param null $_ unused
      * @param int $error The severity: 0 = message, 1 = error, 2 = System Error, 3 = security notice (admin), 4 warning
      * @param string $details Default error message in english
-     * @param null $_ unused
+     * @param null $__ unused
      * @param array $data Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
      * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
      * @param string $NEWid NEW id for new records
@@ -9179,7 +9179,7 @@ class DataHandler
      * @see \TYPO3\CMS\Core\SysLog\Error for all available values of argument $error
      * @internal should only be used from within TYPO3 Core
      */
-    public function log($table, $recuid, $action, $recpid, $error, $details, $_ = null, $data = [], $event_pid = -1, $NEWid = '')
+    public function log($table, $recuid, $action, $_, $error, $details, $__ = null, $data = [], $event_pid = -1, $NEWid = '')
     {
         if (!$this->enableLogging) {
             return 0;
@@ -9195,7 +9195,7 @@ class DataHandler
             }
             $this->errorLog[] = '[' . SystemLogType::DB . '.' . $action . ']: ' . $detailMessage;
         }
-        return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, null, $details, $data, $table, abs((int)$recuid), $recpid, $event_pid, $NEWid);
+        return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, null, $details, $data, $table, abs((int)$recuid), null, $event_pid, $NEWid);
     }
 
     /**

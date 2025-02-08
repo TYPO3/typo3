@@ -789,7 +789,7 @@ final class DataHandlerTest extends UnitTestCase
         $backendUser->expects(self::once())->method('writelog');
         $this->subject->enableLogging = true;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::MESSAGE, 'details');
+        $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');
     }
 
     #[Test]
@@ -799,7 +799,7 @@ final class DataHandlerTest extends UnitTestCase
         $backendUser->expects(self::never())->method('writelog');
         $this->subject->enableLogging = false;
         $this->subject->BE_USER = $backendUser;
-        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::MESSAGE, 'details');
+        $this->subject->log('', 23, Action::UNDEFINED, null, Error::MESSAGE, 'details');
     }
 
     #[Test]
@@ -810,7 +810,7 @@ final class DataHandlerTest extends UnitTestCase
         $this->subject->enableLogging = true;
         $this->subject->errorLog = [];
         $logDetailsUnique = StringUtility::getUniqueId('details');
-        $this->subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetailsUnique);
+        $this->subject->log('', 23, Action::UNDEFINED, null, Error::USER_ERROR, $logDetailsUnique);
         self::assertArrayHasKey(0, $this->subject->errorLog);
         self::assertStringEndsWith($logDetailsUnique, $this->subject->errorLog[0]);
     }
@@ -836,7 +836,7 @@ final class DataHandlerTest extends UnitTestCase
         );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = StringUtility::getUniqueId('details');
-        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', null, ['foo', 'bar']);
+        $subject->log('', 23, Action::UNDEFINED, null, Error::USER_ERROR, '%1$s' . $logDetails . '%2$s', null, ['foo', 'bar']);
         $expected = 'foo' . $logDetails . 'bar';
         self::assertStringEndsWith($expected, $subject->errorLog[0]);
     }
@@ -862,7 +862,7 @@ final class DataHandlerTest extends UnitTestCase
         );
         $subject->start([], [], $this->createMock(BackendUserAuthentication::class), $this->createMock(ReferenceIndexUpdater::class));
         $logDetails = 'An error occurred on {table}:{uid} when localizing';
-        $subject->log('', 23, Action::UNDEFINED, 42, Error::USER_ERROR, $logDetails, null, ['table' => 'tx_sometable', 0 => 'some random value']);
+        $subject->log('', 23, Action::UNDEFINED, null, Error::USER_ERROR, $logDetails, null, ['table' => 'tx_sometable', 0 => 'some random value']);
         // UID is kept as non-replaced, and other properties are not replaced.
         $expected = 'An error occurred on tx_sometable:{uid} when localizing';
         self::assertStringEndsWith($expected, $subject->errorLog[0]);

@@ -405,7 +405,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         // Active logout (eg. with "logout" button)
         if ($type === LoginType::LOGOUT) {
             if ($this->writeStdLog) {
-                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, null, 'User %s logged out', [$this->user['username']], '', 0, 0);
+                $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGOUT, SystemLogErrorClassification::MESSAGE, null, 'User %s logged out', [$this->user['username']], '', 0);
             }
             $this->logger->info('User logged out. Id: {session}', ['session' => sha1($this->userSession->getIdentifier())]);
             $this->logoff();
@@ -587,7 +587,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
             if ($activeLogin) {
                 // User logged in - write that to the log!
                 if ($this->writeStdLog) {
-                    $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGIN, SystemLogErrorClassification::MESSAGE, null, 'User %s logged in from ###IP###', [$userRecordCandidate[$this->username_column]], '', '', '');
+                    $this->writelog(SystemLogType::LOGIN, SystemLogLoginAction::LOGIN, SystemLogErrorClassification::MESSAGE, null, 'User %s logged in from ###IP###', [$userRecordCandidate[$this->username_column]], '', '');
                 }
                 $this->logger->info('User {username} logged in from {ip}', [
                     'username' => $userRecordCandidate[$this->username_column],
@@ -1194,11 +1194,10 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * @param null $_ unused
      * @param string $details Default text that follows the message
      * @param array $data Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
-     * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-     * @param int|string $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-     * @param int|string $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+     * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid) hold the reference to the record which the log-entry is about.
+     * @param int|string $recuid Special field used by tce_main.php. These ($tablename, $recuid) hold the reference to the record which the log-entry is about.
      */
-    public function writelog($type, $action, $error, $_, $details, $data, $tablename, $recuid, $recpid) {}
+    public function writelog($type, $action, $error, $_, $details, $data, $tablename, $recuid) {}
 
     /**
      * Raw initialization of the be_user with uid=$uid

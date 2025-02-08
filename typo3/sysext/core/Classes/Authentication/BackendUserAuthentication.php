@@ -1768,13 +1768,13 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param array $data Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed with the details-text
      * @param string $tablename Table name. Special field used by tce_main.php.
      * @param int|string $recuid Record UID. Special field used by tce_main.php.
-     * @param int|string $recpid Record PID. Special field used by tce_main.php. OBSOLETE
+     * @param null $__ unused
      * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
      * @param string $NEWid Special field used by tce_main.php. NEWid string of newly created records.
      * @param int $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
      * @return int Log entry ID.
      */
-    public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '', $recpid = '', $event_pid = -1, $NEWid = '', $userId = 0)
+    public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '', $__ = null, $event_pid = -1, $NEWid = '', $userId = 0)
     {
         if (!$userId && !empty($this->user['uid'])) {
             $userId = $this->user['uid'];
