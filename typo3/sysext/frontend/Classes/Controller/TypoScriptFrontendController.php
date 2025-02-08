@@ -819,7 +819,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 ($sendCacheHeadersForSharedCaches === 'auto' && $isBehindReverseProxy)
             ) {
                 $headers = [
-                    'Expires' => gmdate('D, d M Y H:i:s T', ($GLOBALS['EXEC_TIME'] + $lifetime)),
+                    'Expires' => gmdate('D, d M Y H:i:s T', (min($GLOBALS['EXEC_TIME'] + $lifetime, PHP_INT_MAX))),
                     'ETag' => '"' . md5($this->content) . '"',
                     // Do not cache for private caches, but store in shared caches
                     // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cache-Control#:~:text=Age%3A%20100-,s%2Dmaxage,-The%20s%2Dmaxage
@@ -828,7 +828,7 @@ class TypoScriptFrontendController implements LoggerAwareInterface
                 ];
             } elseif ($sendCacheHeadersToClient) {
                 $headers = [
-                    'Expires' => gmdate('D, d M Y H:i:s T', ($GLOBALS['EXEC_TIME'] + $lifetime)),
+                    'Expires' => gmdate('D, d M Y H:i:s T', (min($GLOBALS['EXEC_TIME'] + $lifetime, PHP_INT_MAX))),
                     'ETag' => '"' . md5($this->content) . '"',
                     'Cache-Control' => 'max-age=' . $lifetime,
                     'Pragma' => 'public',
