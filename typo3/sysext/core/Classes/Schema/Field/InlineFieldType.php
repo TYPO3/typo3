@@ -56,4 +56,14 @@ final readonly class InlineFieldType extends AbstractFieldType implements Relati
     {
         return (bool)($this->configuration['behaviour']['disableMovingChildrenWithParent'] ?? false) === false;
     }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
+
+    public function hasDefaultValue(): false
+    {
+        return false;
+    }
 }

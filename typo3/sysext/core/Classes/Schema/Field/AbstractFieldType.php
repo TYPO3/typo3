@@ -74,6 +74,11 @@ abstract readonly class AbstractFieldType implements FieldTypeInterface
         return $this->configuration['default'] ?? null;
     }
 
+    public function hasDefaultValue(): bool
+    {
+        return array_key_exists('default', $this->configuration);
+    }
+
     public function getConfiguration(): array
     {
         return $this->configuration;

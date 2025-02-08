@@ -32,4 +32,8 @@ final readonly class RadioFieldType extends AbstractFieldType
         return false;
     }
 
+    public function isNullable(): false
+    {
+        return false;
+    }
 }

@@ -32,4 +32,8 @@ final readonly class JsonFieldType extends AbstractFieldType
         return true;
     }
 
+    public function isNullable(): false
+    {
+        return false;
+    }
 }

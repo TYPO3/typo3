@@ -36,4 +36,19 @@ final readonly class UuidFieldType extends AbstractFieldType
     {
         return in_array($this->configuration['version'] ?? 0, [4, 6, 7], true) ? $this->configuration['version'] : 4;
     }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
+
+    public function getDefaultValue(): string
+    {
+        return '';
+    }
+
+    public function hasDefaultValue(): true
+    {
+        return true;
+    }
 }

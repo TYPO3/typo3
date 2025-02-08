@@ -46,4 +46,10 @@ final readonly class StaticSelectFieldType extends AbstractFieldType
             $this->configuration['items']
         ) : [];
     }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
+
 }

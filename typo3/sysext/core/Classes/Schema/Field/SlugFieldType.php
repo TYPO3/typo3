@@ -41,4 +41,18 @@ final readonly class SlugFieldType extends AbstractFieldType
     {
         return is_array($this->configuration['generatorOptions']) ? $this->configuration['generatorOptions'] : [];
     }
+
+    public function hasDefaultValue(): true
+    {
+        return true;
+    }
+    public function getDefaultValue(): string
+    {
+        return '';
+    }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
 }

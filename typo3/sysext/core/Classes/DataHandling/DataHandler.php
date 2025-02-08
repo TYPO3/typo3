@@ -8063,8 +8063,9 @@ class DataHandler
     }
 
     /**
-     * Returns a fieldArray with default values. Values will be picked up from the TCA array looking at the config key "default" for each column. If values are set in ->defaultValues they will overrule though.
-     * Used for new records and during copy operations for defaults
+     * Returns a fieldArray with default values. Values will be picked up from the TCA array
+     * looking at the config key "default" for each column. If values are set in ->defaultValues
+     * they will overrule though. Used for new records and during copy operations for defaults.
      *
      * @param string $table Table name for which to set default values.
      * @return array Array with default values.
@@ -8077,7 +8078,7 @@ class DataHandler
             foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
                 if (isset($this->defaultValues[$table][$field->getName()])) {
                     $fieldArray[$field->getName()] = $this->defaultValues[$table][$field->getName()];
-                } elseif ($field->getDefaultValue() !== null) {
+                } elseif ($field->hasDefaultValue() && ($field->getDefaultValue() !== null || $field->isNullable())) {
                     $fieldArray[$field->getName()] = $field->getDefaultValue();
                 }
             }

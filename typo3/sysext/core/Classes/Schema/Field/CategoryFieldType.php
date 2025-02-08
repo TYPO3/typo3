@@ -54,4 +54,9 @@ final readonly class CategoryFieldType extends AbstractFieldType implements Rela
     {
         return RelationshipType::fromTcaConfiguration($this->configuration);
     }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
 }
