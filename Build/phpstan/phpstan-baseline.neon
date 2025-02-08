@@ -4111,12 +4111,6 @@ parameters:
 			path: ../../typo3/sysext/lowlevel/Classes/Command/DeletedRecordsCommand.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
-
-		-
 			message: '#^Call to function is_array\(\) with array\<string, string\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
