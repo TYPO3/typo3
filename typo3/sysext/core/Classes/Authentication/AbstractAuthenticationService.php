@@ -104,14 +104,13 @@ class AbstractAuthenticationService implements LoggerAwareInterface
      * @param null $_ unused
      * @param string $details Default text that follows the message
      * @param array $data Data that follows the log. Might be used to carry special information. If an array the first 5 entries (0-4) will be sprintf'ed the details-text...
-     * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-     * @param int|string $recuid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
-     * @param int|string $recpid Special field used by tce_main.php. These ($tablename, $recuid, $recpid) holds the reference to the record which the log-entry is about. (Was used in attic status.php to update the interface.)
+     * @param string $tablename Special field used by tce_main.php. These ($tablename, $recuid) holds the reference to the record which the log-entry is about.
+     * @param int|string $recuid Special field used by tce_main.php. These ($tablename, $recuid) holds the reference to the record which the log-entry is about.
      */
-    public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '', $recpid = '')
+    public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '')
     {
         if ($this->writeAttemptLog) {
-            $this->pObj->writelog($type, $action, $error, null, $details, $data, $tablename, $recuid, $recpid);
+            $this->pObj->writelog($type, $action, $error, null, $details, $data, $tablename, $recuid);
         }
     }
 

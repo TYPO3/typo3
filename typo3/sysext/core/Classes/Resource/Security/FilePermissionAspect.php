@@ -119,7 +119,7 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
             $table,
             $id,
             SystemLogDatabaseAction::UPDATE,
-            0,
+            null,
             SystemLogErrorClassification::USER_ERROR,
             $message,
             null,
