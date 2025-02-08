@@ -142,10 +142,10 @@
 				<source>Unavailable Languages</source>
 			</trans-unit>
 			<trans-unit id="be_users.tabs.permissions">
-				<source>Permissions</source>
+				<source>Module Permissions</source>
 			</trans-unit>
 			<trans-unit id="be_users.tabs.mounts_and_workspaces">
-				<source>Mounts and Workspaces</source>
+				<source>Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_users.tabs.options">
 				<source>Options</source>
@@ -205,7 +205,7 @@
 				<source>Module Permissions</source>
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.mounts_and_workspaces">
-				<source>Mounts and Workspaces</source>
+				<source>Mounts</source>
 			</trans-unit>
 			<trans-unit id="be_groups.fileoper_perms">
 				<source>Fileoperation permissions</source>
