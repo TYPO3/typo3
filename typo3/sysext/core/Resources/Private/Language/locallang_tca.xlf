@@ -15,8 +15,11 @@
 			<trans-unit id="file_mountpoints_list_title">
 				<source>List file mounts</source>
 			</trans-unit>
-			<trans-unit id="db_mountpoints">
-				<source>DB Mounts</source>
+			<trans-unit id="page_tree_entry_points">
+				<source>Page Tree Entry Points</source>
+			</trans-unit>
+			<trans-unit id="page_tree_entry_points.description">
+				<source>The group also needs permissions to view the page, see module "Permissions"</source>
 			</trans-unit>
 			<trans-unit id="userMods">
 				<source>Allowed modules</source>
@@ -78,8 +81,11 @@
 			<trans-unit id="be_users.options">
 				<source>Mount from groups</source>
 			</trans-unit>
-			<trans-unit id="be_users.options_db_mounts">
-				<source>DB Mounts</source>
+			<trans-unit id="be_users.options_page_tree_entry_points">
+				<source>Page Tree Entry Points</source>
+			</trans-unit>
+			<trans-unit id="be_users.options_page_tree_entry_points.description">
+				<source>The user also needs permissions to view the page, see module "Permissions"</source>
 			</trans-unit>
 			<trans-unit id="be_users.options_file_mounts">
 				<source>File Mounts</source>

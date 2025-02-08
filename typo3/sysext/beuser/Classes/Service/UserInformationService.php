@@ -151,7 +151,7 @@ final readonly class UserInformationService
         }
         $data['tables']['all'] = array_replace($data['tables']['tables_select'], $data['tables']['tables_modify']);
 
-        // DB mounts
+        // Page Tree Entry Points / dbMounts
         $dbMounts = GeneralUtility::trimExplode(',', $user->groupData['webmounts'] ?? '', true);
         asort($dbMounts);
         foreach ($dbMounts as $mount) {

@@ -1503,7 +1503,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     {
         // Initializing workspace by evaluating and setting the workspace, possibly updating it in the user record!
         $this->setWorkspace($this->user['workspace_id']);
-        // Limiting the DB mountpoints if there any selected in the workspace record
+        // Limiting the Page Tree Entry Points if there any selected in the workspace record
         $this->initializeDbMountpointsInWorkspace();
         $allowed_languages = (string)($this->getTSConfig()['options.']['workspaces.']['allowed_languages.'][$this->workspace] ?? '');
         if ($allowed_languages !== '') {
@@ -1512,7 +1512,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     }
 
     /**
-     * Limiting the DB mountpoints if there are any selected in the workspace record
+     * Limiting the Page Tree Entry Points if there are any selected in the workspace record
      */
     protected function initializeDbMountpointsInWorkspace()
     {
@@ -1527,7 +1527,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             // as usual anyway before the page tree is rendered.
             $readPerms = '1=1';
             // Traverse mount points of the workspace, add them,
-            // but make sure they match against the users' DB mounts
+            // but make sure they match against the users' Page Tree Entry Points
 
             $workspaceWebMounts = GeneralUtility::intExplode(',', $dbMountpoints);
             $webMountsOfUser = GeneralUtility::intExplode(',', (string)($this->groupData['webmounts'] ?? ''));
@@ -1539,15 +1539,15 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 $entryPointRootLineUids[$webMountPageId] = array_map(intval(...), array_column($rootLine, 'uid'));
             }
             foreach ($entryPointRootLineUids as $webMountOfUser => $uidsOfRootLine) {
-                // Remove the DB mounts of the user if the DB mount is not in the list of
+                // Remove the Page Tree Entry Point of the user if the Page Tree Entry Point is not in the list of
                 // workspace mounts
                 foreach ($workspaceWebMounts as $webmountOfWorkspace) {
-                    // This workspace DB mount is somewhere in the rootline of the users' web mount,
+                    // This workspace's Page Tree Entry Point is somewhere in the rootline of the users' web mount,
                     // so this is "OK" to be included
                     if (in_array($webmountOfWorkspace, $uidsOfRootLine, true)) {
                         continue;
                     }
-                    // Remove the user's DB Mount (possible via array_combine, see above)
+                    // Remove the user's Page Tree Entry Points (possible via array_combine, see above)
                     unset($webMountsOfUser[$webMountOfUser]);
                 }
             }

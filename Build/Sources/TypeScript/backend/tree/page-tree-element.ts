@@ -405,7 +405,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
       <div class="node-mount-point">
         <div class="node-mount-point__icon"><typo3-backend-icon identifier="actions-info-circle" size="small"></typo3-backend-icon></div>
         <div class="node-mount-point__text">${this.mountPointPath}</div>
-        <div class="node-mount-point__icon mountpoint-close" @click="${() => this.unsetTemporaryMountPoint()}" title="${lll('labels.temporaryDBmount')}">
+        <div class="node-mount-point__icon mountpoint-close" @click="${() => this.unsetTemporaryMountPoint()}" title="${lll('labels.temporaryPageTreeEntryPoints')}">
           <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon>
         </div>
       </div>

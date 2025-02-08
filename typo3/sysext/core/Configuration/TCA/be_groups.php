@@ -35,7 +35,8 @@ return [
             ],
         ],
         'db_mountpoints' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:db_mountpoints',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:page_tree_entry_points',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:page_tree_entry_points.description',
             'config' => [
                 'type' => 'group',
                 'allowed' => 'pages',

@@ -97,7 +97,8 @@ return [
             ],
         ],
         'db_mountpoints' => [
-            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_db_mounts',
+            'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_page_tree_entry_points',
+            'description' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_page_tree_entry_points.description',
             'config' => [
                 'type' => 'group',
                 'allowed' => 'pages',
@@ -173,7 +174,7 @@ return [
             'config' => [
                 'type' => 'check',
                 'items' => [
-                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_db_mounts'],
+                    ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_page_tree_entry_points'],
                     ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.options_file_mounts'],
                 ],
                 'default' => 3,

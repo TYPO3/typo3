@@ -749,15 +749,15 @@ final class TreeControllerTest extends FunctionalTestCase
             'backendUser' => 1,
             'expectation' => ['0', '1000', '2000', '7000', '8000', '9100', '9200', '9300'],
         ];
-        yield 'editor with DB mounts can only see accessible pages' => [
+        yield 'editor with Page Tree Entry Points can only see accessible pages' => [
             'backendUser' => 9,
             'expectation' => ['0', '1000', '8110'],
         ];
-        yield 'editor with DB mounts cannot see inaccessible pages' => [
+        yield 'editor with Page Tree Entry Points cannot see inaccessible pages' => [
             'backendUser' => 8,
             'expectation' => ['0'],
         ];
-        yield 'editor without DB mounts cannot see any pages' => [
+        yield 'editor without Page Tree Entry Points cannot see any pages' => [
             'backendUser' => 7,
             'expectation' => ['0'],
         ];

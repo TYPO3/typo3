@@ -21,7 +21,7 @@ use TYPO3\CMS\Core\Type\BitSet;
 
 /**
  * A class providing constants for bitwise operations on whether backend users
- * should add / inherit the DB mounts / file mounts from
+ * should add / inherit the Page Tree Entry Points / File Mounts from
  */
 final class BackendGroupMountOption extends BitSet
 {

@@ -529,7 +529,7 @@ class BackendUtility
         }
         // Get rootline:
         $rL = self::BEgetRootLine($pid);
-        // First, find out what mount index to use (if more than one DB mount exists):
+        // First, find out what mount index to use (if more than one Page Tree Entry Point exists):
         $mountIndex = 0;
         $mountKeys = $beUser->getWebmounts();
 

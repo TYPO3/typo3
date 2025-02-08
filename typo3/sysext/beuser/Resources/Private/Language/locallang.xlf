@@ -51,8 +51,8 @@
 			<trans-unit id="allowedLanguages">
 				<source>Limit to languages</source>
 			</trans-unit>
-			<trans-unit id="dbMountPoints">
-				<source>DB mountpoints</source>
+			<trans-unit id="pageTreeEntryPoints">
+				<source>Page Tree Entry Points</source>
 			</trans-unit>
 			<trans-unit id="fileMounts">
 				<source>File mountpoints</source>
@@ -65,9 +65,6 @@
 			</trans-unit>
 			<trans-unit id="languages">
 				<source>Languages</source>
-			</trans-unit>
-			<trans-unit id="dbMounts">
-				<source>DB Mounts</source>
 			</trans-unit>
 			<trans-unit id="fileMounts">
 				<source>File Mounts</source>
