@@ -1618,4 +1618,189 @@ final class DataHandlerTest extends UnitTestCase
     {
         self::assertSame($expectation, $this->subject->_call('validateValueForRequired', $tcaFieldConfig, $input));
     }
+
+    #[Test]
+    #[DataProvider('newFieldArrayExpectedValues')]
+    public function newFieldArraySetDefaultValues(string $column, mixed $expected): void
+    {
+        $GLOBALS['TCA'] = [
+            'tx_my_testtable' => [
+                'columns' => [
+                    'slug_1' => [
+                        'config' => [
+                            'type' => 'slug',
+                        ],
+                    ],
+                    'slug_2' => [
+                        'config' => [
+                            'type' => 'slug',
+                            'default' => 'shouldnotbeset',
+                        ],
+                    ],
+                    'uuid_1' => [
+                        'config' => [
+                            'type' => 'uuid',
+                        ],
+                    ],
+                    'uuid_2' => [
+                        'config' => [
+                            'type' => 'uuid',
+                            'default' => 'nosuchconfig',
+                        ],
+                    ],
+                    'input_1' => [
+                        'config' => [
+                            'type' => 'input',
+                            'default' => 'testdefault',
+                        ],
+                    ],
+                    'input_2' => [
+                        'config' => [
+                            'type' => 'input',
+                            'default' => 5,
+                        ],
+                    ],
+                    'input_3' => [
+                        'config' => [
+                            'type' => 'input',
+                            'default' => null,
+                            'nullable' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        $defaultValues = $this->subject->_call('newFieldArray', 'tx_my_testtable');
+        self::assertArrayHasKey($column, $defaultValues);
+        self::assertEquals($expected, $defaultValues[$column]);
+    }
+
+    public static function newFieldArrayExpectedValues(): iterable
+    {
+        yield 'slug column' => [
+            'slug_1',
+            '',
+        ];
+        yield 'slug column (no such config)' => [
+            'slug_2',
+            '',
+        ];
+        yield 'uuid column' => [
+            'uuid_1',
+            '',
+        ];
+        yield 'uuid column (wrong config)' => [
+            'uuid_2',
+            '',
+        ];
+        yield 'input with default string' => [
+            'input_1',
+            'testdefault',
+        ];
+        yield 'input with default integer' => [
+            'input_2',
+            5,
+        ];
+        yield 'input with default null' => [
+            'input_3',
+            null,
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('newFieldArrayExpectedNoValues')]
+    public function newFieldArrayNoDefaultValues(string $column): void
+    {
+        $GLOBALS['TCA'] = [
+            'tx_my_testtable' => [
+                'columns' => [
+                    // invalid configurations
+                    'input_1' => [
+                        'config' => [
+                            'type' => 'input',
+                            'default' => null,
+                        ],
+                    ],
+                    'input_2' => [
+                        'config' => [
+                            'type' => 'input',
+                            'default' => null,
+                            'nullable' => false,
+                        ],
+                    ],
+                    'check_1' => [
+                        'config' => [
+                            'type' => 'check',
+                            'default' => null,
+                            'nullable' => true,
+                        ],
+                    ],
+                    'file_1' => [
+                        'config' => [
+                            'type' => 'file',
+                            'default' => 'nosuchconfig',
+                        ],
+                    ],
+                    // valid config to ensure, that an array has been build
+                    'input_3' => [
+                        'config' => [
+                            'type' => 'input',
+                            'default' => 'test',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        $defaultValues = $this->subject->_call('newFieldArray', 'tx_my_testtable');
+        self::assertEquals('test', $defaultValues['input_3']);
+        self::assertArrayNotHasKey($column, $defaultValues);
+    }
+
+    public static function newFieldArrayExpectedNoValues(): iterable
+    {
+        yield 'input default null without nullable' => [
+            'input_1',
+        ];
+        yield 'input default null with nullable false' => [
+            'input_2',
+        ];
+        yield 'check with nullable true and default true' => [
+            'check_1',
+        ];
+        yield 'file with default value' => [
+            'file_1',
+        ];
+    }
+
+    #[Test]
+    public function newFieldArrayNoTcaTable(): void
+    {
+        $defaultValues = $this->subject->_call('newFieldArray', 'tx_my_testtable');
+        self::assertEquals([], $defaultValues);
+    }
+
+    #[Test]
+    public function newFieldArrayDefaultValues(): void
+    {
+        $GLOBALS['TCA'] = [
+            'tx_my_testtable' => [
+                'columns' => [
+                    // invalid configurations
+                    'input_1' => [
+                        'config' => [
+                            'type' => 'input',
+                            'default' => null,
+                            'nullable' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $this->tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        $this->subject->defaultValues['tx_my_testtable']['input_1'] = 'foo';
+        $defaultValues = $this->subject->_call('newFieldArray', 'tx_my_testtable');
+        self::assertEquals('foo', $defaultValues['input_1']);
+    }
 }

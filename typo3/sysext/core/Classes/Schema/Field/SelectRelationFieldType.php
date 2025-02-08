@@ -51,4 +51,10 @@ final readonly class SelectRelationFieldType extends AbstractFieldType implement
     {
         return false;
     }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
+
 }

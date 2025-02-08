@@ -36,6 +36,7 @@ interface FieldTypeInterface
     public function isSearchable(): bool;
     public function getDisplayConditions(): array|string;
     public function getDefaultValue(): mixed;
+    public function hasDefaultValue(): bool;
     public function getTranslationBehaviour(): FieldTranslationBehaviour;
     public function getConfiguration(): array;
     public static function __set_state(array $state): FieldTypeInterface;

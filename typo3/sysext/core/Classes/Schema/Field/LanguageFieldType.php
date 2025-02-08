@@ -31,4 +31,14 @@ final readonly class LanguageFieldType extends AbstractFieldType
     {
         return false;
     }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
+
+    public function hasDefaultValue(): false
+    {
+        return false;
+    }
 }

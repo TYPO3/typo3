@@ -32,4 +32,13 @@ final readonly class FolderFieldType extends AbstractFieldType
         return false;
     }
 
+    public function isNullable(): false
+    {
+        return false;
+    }
+    public function hasDefaultValue(): false
+    {
+        return false;
+    }
+
 }

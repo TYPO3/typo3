@@ -67,4 +67,14 @@ final readonly class FileFieldType extends AbstractFieldType implements Relation
     {
         return RelationshipType::fromTcaConfiguration($this->configuration);
     }
+
+    public function isNullable(): false
+    {
+        return false;
+    }
+
+    public function hasDefaultValue(): false
+    {
+        return false;
+    }
 }

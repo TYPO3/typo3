@@ -38,4 +38,9 @@ final readonly class NoneFieldType extends AbstractFieldType
     {
         return FieldFormat::fromTcaConfiguration($this->configuration);
     }
+
+    public function hasDefaultValue(): false
+    {
+        return false;
+    }
 }
