@@ -27,14 +27,6 @@ The Indexed Search Engine provides two major elements to TYPO3:
     factors like where on the page the word was found or the frequency of
     the word on the page.
 
-This is an example of how the search interface on a website looks:
-
-..  figure:: ../Images/FrontendSearchResults.png
-    :alt: Frontend search results
-
-    Search results in the frontend
-
-
 ..  _features-of-the-indexer:
 
 Features of the indexer
@@ -87,14 +79,6 @@ of those can be disabled and/or preset with default values:
 -   The display of search results can be intelligently divided into
     sections based on the internal page hierarchy. Thus results are
     primarily grouped by relation, then by hit-relevance.
-
-This shows the full range of default options for "advanced search":
-
-..  figure:: ../Images/AdvancedSearchOptions.png
-    :alt: Advanced search options
-
-    All possible advanced search options
-
 
 ..  warning::
 
