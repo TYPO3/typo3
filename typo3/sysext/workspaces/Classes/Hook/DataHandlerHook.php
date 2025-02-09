@@ -673,9 +673,7 @@ class DataHandlerHook
         $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', null, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $table === 'pages' ? $id : $swapVersion['pid']);
 
         // Set log entry for live record:
-        $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
-        $label = 'Record "{header}" ({table}:{uid}) was updated. (Online version)';
-        $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, $label, null, ['header' => $propArr['header'], 'table' => $table, 'uid' => $id], $propArr['event_pid']);
+        $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was updated. (Online version)', null, ['table' => $table, 'uid' => $id], (int)$swapVersion['pid']);
         $dataHandler->setHistory($table, $id);
 
         $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
@@ -882,14 +880,9 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::SYSTEM_ERROR, 'During Publishing: SQL errors happened: {reason}', null, ['reason' => $e->getMessage()]);
         }
 
-        if ($dataHandler->enableLogging) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {uid} (new record)', null, ['table' => $table, 'uid' => $id], $table === 'pages' ? $id : $newRecordInWorkspace['pid']);
-        }
         $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
 
-        // Set log entry for record
-        $propArr = $dataHandler->getRecordPropertiesFromRow($table, $newRecordInWorkspace);
-        $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record "{table}" ({uid}) was updated. (Online version)', null, ['table' => $propArr['header'], 'uid' => $table . ':' . $id], $propArr['event_pid']);
+        $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was published.', null, ['table' => $table, 'uid' => $id], (int)$newRecordInWorkspace['pid']);
         $dataHandler->setHistory($table, $id);
 
         $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
@@ -897,7 +890,7 @@ class DataHandlerHook
         $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
-        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', null, ['stage' => $stageId, 'comment' => substr($comment, 0, 100)], $table === 'pages' ? $id : $newRecordInWorkspace['pid']);
+        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', null, ['stage' => $stageId, 'comment' => substr($comment, 0, 100)], $newRecordInWorkspace['pid']);
         // Write the stage change to the history (usually this is done in updateDB in DataHandler, but we do a manual SQL change)
         $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
         $historyStore->changeStageForRecord($table, $id, ['current' => (int)$newRecordInWorkspace['t3ver_stage'], 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);

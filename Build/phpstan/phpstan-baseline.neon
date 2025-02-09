@@ -807,7 +807,7 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 12
+			count: 11
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
