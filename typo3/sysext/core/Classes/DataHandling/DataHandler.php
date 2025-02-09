@@ -907,9 +907,11 @@ class DataHandler
                         continue;
                     }
 
-                    // Fetch pid of the record that we point to
                     $currentRecord = BackendUtility::getRecord($table, $id, '*', '', false);
-                    $theRealPid = $currentRecord['pid'] ?? null;
+                    if (empty($currentRecord) || ($currentRecord['pid'] ?? null) === null) {
+                        // Skip if there is no record. Skip if record has no pid column indicating incomplete DB.
+                        continue;
+                    }
                     // Use the new id of the versioned record we're trying to write to.
                     // This record is a child record of a parent and has already been versioned.
                     if (!empty($this->autoVersionIdMap[$table][$id])) {
@@ -918,13 +920,13 @@ class DataHandler
                         $this->getVersionizedIncomingFieldArray($table, $id, $incomingFieldArray, $registerDBList);
                         // Use the new id of the copied/versioned record:
                         $id = $this->autoVersionIdMap[$table][$id];
-                    } elseif (!$this->bypassWorkspaceRestrictions && $currentRecord && ($errorCode = $this->workspaceCannotEditRecord($table, $currentRecord))) {
+                    } elseif (!$this->bypassWorkspaceRestrictions && ($errorCode = $this->workspaceCannotEditRecord($table, $currentRecord))) {
                         // Versioning is required and it must be offline version!
                         // Check if there already is a workspace version
                         $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid,t3ver_oid');
                         if ($workspaceVersion) {
                             $id = $workspaceVersion['uid'];
-                        } elseif ($this->workspaceAllowAutoCreation($table, $id, $theRealPid)) {
+                        } elseif ($this->workspaceAllowAutoCreation($table, $id, (int)$currentRecord['pid'])) {
                             // new version of a record created in a workspace - so always refresh page tree to indicate there is a change in the workspace
                             $this->pagetreeNeedsRefresh = true;
                             /** @var DataHandler $tce */
@@ -965,7 +967,7 @@ class DataHandler
                     // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
                     [$tscPID] = BackendUtility::getTSCpid($table, $id, 0);
                     // Processing of all fields in incomingFieldArray and setting them in $fieldArray
-                    $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, 'update', $tscPID);
+                    $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, (int)$currentRecord['pid'], 'update', $tscPID);
                     // Set stage to "Editing" to make sure we restart the workflow
                     if ($schema->isWorkspaceAware()) {
                         $fieldArray['t3ver_stage'] = 0;
@@ -982,7 +984,7 @@ class DataHandler
                     }
                     // Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
                     // Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already
-                    if (is_array($fieldArray)) {
+                    if (!empty($fieldArray)) {
                         if ($table === 'pages') {
                             // Only a certain number of fields needs to be checked for updates,
                             // fields with unchanged values are already removed here.
@@ -991,7 +993,7 @@ class DataHandler
                                 $this->pagetreeNeedsRefresh = true;
                             }
                         }
-                        $this->updateDB($table, $id, $fieldArray);
+                        $this->updateDB($table, $id, $fieldArray, (int)$currentRecord['pid']);
                     }
                     // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
                     // but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
@@ -1086,10 +1088,9 @@ class DataHandler
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $status Is 'new' or 'update'
      * @param int $tscPID TSconfig PID
-     * @return array Field Array
      * @internal should only be used from within DataHandler
      */
-    public function fillInFieldArray($table, $id, array $fieldArray, array $incomingFieldArray, $realPid, $status, $tscPID)
+    public function fillInFieldArray($table, $id, array $fieldArray, array $incomingFieldArray, $realPid, $status, $tscPID): array
     {
         // Initialize:
         $schema = $this->tcaSchemaFactory->get($table);
@@ -5039,6 +5040,7 @@ class DataHandler
         $this->registerDBList[$table][$id][$field] = $value;
         // Remove child records (if synchronization requested it):
         if (is_array($removeArray) && !empty($removeArray)) {
+            /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(self::class);
             $tce->enableLogging = $this->enableLogging;
             $tce->start([], $removeArray, $this->BE_USER, $this->referenceIndexUpdater);
@@ -5058,7 +5060,7 @@ class DataHandler
         }
         // Update field referencing to child records of localized parent record:
         if (!empty($updateFields)) {
-            $this->updateDB($table, $id, $updateFields);
+            $this->updateDB($table, $id, $updateFields, (int)$parentRecord['pid']);
         }
         if (isset($parentRecord['_ORIG_uid']) && (int)$parentRecord['_ORIG_uid'] !== (int)$id) {
             // If there is a ws overlay of the record, then the relation has been attached to *this*
@@ -6532,7 +6534,10 @@ class DataHandler
                     }
                     // If any fields were changed, those fields are updated!
                     if (!empty($newData)) {
-                        $this->updateDB($table, $theUidToUpdate_saveTo, $newData);
+                        // @todo: It would be better to have the current record at hand here already, at least its pid.
+                        //        This will require changing structure of $this->registerDBList.
+                        $currentRecord = BackendUtility::getRecord($table, $theUidToUpdate_saveTo, 'pid', '', false);
+                        $this->updateDB($table, $theUidToUpdate_saveTo, $newData, (int)$currentRecord['pid']);
                     }
                 }
             }
@@ -6605,7 +6610,6 @@ class DataHandler
             if ($dbAnalysis->isPurged()) {
                 $set = true;
             }
-
             // If record has been versioned/copied in this process, handle invalid relations of the live record
             $liveId = BackendUtility::getLiveVersionIdOfRecord($table, $MM_localUid);
             $originalId = 0;
@@ -6841,7 +6845,16 @@ class DataHandler
                 if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
                     $fieldArray[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
                 }
-                $this->updateDB($table, $id, $fieldArray);
+                // @todo: It would be better if we'd receive at least the pid somehow here without fetching
+                //        the record again. OTOH, we could also reduce this overhead by getting rid of the
+                //        "parent count" fields altogether, but that's a much more intrusive change.
+                //        For now, we BU::getRecord() the current record explicitly to determine the current
+                //        pid, which is needed at least for proper log records, plus it could make cache
+                //        clearing in updateDB() more effective if used systematically.
+                $currentRecord = BackendUtility::getRecord($table, $id, '*', '', false);
+                if (!empty($currentRecord)) {
+                    $this->updateDB($table, $id, $fieldArray, (int)$currentRecord['pid']);
+                }
             } elseif (!empty($additionalData['flexFormId']) && !empty($additionalData['flexFormPath'])) {
                 // Collect data to update FlexForms
                 $flexFormId = $additionalData['flexFormId'];
@@ -6934,7 +6947,7 @@ class DataHandler
             $values = [
                 $field => $this->flexFormTools->flexArray2Xml($valueStructure),
             ];
-            $this->updateDB($table, $uid, $values);
+            $this->updateDB($table, $uid, $values, (int)$record['pid']);
         }
     }
 
@@ -7456,41 +7469,28 @@ class DataHandler
      * @param string $table Table name
      * @param int $id Uid of record
      * @param bool $noWSOL If set, no workspace overlay is performed
-     * @return array Properties of record
+     * @return array|null Properties of record
      * @internal should only be used from within DataHandler
      */
-    public function getRecordProperties($table, $id, $noWSOL = false)
+    public function getRecordProperties($table, $id, $noWSOL = false): ?array
     {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return null;
+        }
         $row = $table === 'pages' && !$id
             ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0]
             : BackendUtility::getRecord($table, $id, '*', '', false);
         if (!$noWSOL) {
             BackendUtility::workspaceOL($table, $row);
         }
-        return $this->getRecordPropertiesFromRow($table, $row);
-    }
-
-    /**
-     * Returns an array with record properties, like header and pid, based on the row
-     *
-     * @param string $table Table name
-     * @param array $row Input row
-     * @return array|null Output array
-     * @internal should only be used from within DataHandler
-     */
-    public function getRecordPropertiesFromRow($table, $row)
-    {
-        if ($this->tcaSchemaFactory->has($table)) {
-            $liveUid = ($row['t3ver_oid'] ?? null) ?: ($row['uid'] ?? null);
-            $fullRow = BackendUtility::getRecord($table, $liveUid, '*', '', false);
-            return [
-                'header' => BackendUtility::getRecordTitle($table, $fullRow ?: $row),
-                'pid' => $row['pid'] ?? null,
-                'event_pid' => $table === 'pages' ? (int)$liveUid : ($row['pid'] ?? null),
-                't3ver_state' => $this->tcaSchemaFactory->get($table)->isWorkspaceAware() ? ($row['t3ver_state'] ?? '') : '',
-            ];
-        }
-        return null;
+        $liveUid = ($row['t3ver_oid'] ?? null) ?: ($row['uid'] ?? null);
+        $fullRow = BackendUtility::getRecord($table, $liveUid, '*', '', false);
+        return [
+            'header' => BackendUtility::getRecordTitle($table, $fullRow ?: $row),
+            'pid' => $row['pid'] ?? null,
+            'event_pid' => $table === 'pages' ? (int)$liveUid : ($row['pid'] ?? null),
+            't3ver_state' => $this->tcaSchemaFactory->get($table)->isWorkspaceAware() ? ($row['t3ver_state'] ?? '') : '',
+        ];
     }
 
     /**
@@ -7498,49 +7498,39 @@ class DataHandler
      * Does not check permissions but expects them to be verified on beforehand
      *
      * @param string $table Record table name
-     * @param int $id Record uid
+     * @param int $uid Record uid
      * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done.
-     * @internal should only be used from within DataHandler
      */
-    public function updateDB($table, $id, $fieldArray): void
+    protected function updateDB($table, $uid, $fieldArray, int $recordPid): void
     {
-        if (is_array($fieldArray) && $this->tcaSchemaFactory->has($table) && (int)$id) {
-            // Do NOT update the UID field, ever!
-            unset($fieldArray['uid']);
-            if (!empty($fieldArray)) {
-                $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
-                $connection = $this->connectionPool->getConnectionForTable($table);
-                try {
-                    $connection->update($table, $fieldArray, ['uid' => (int)$id]);
-                } catch (DBALException $e) {
-                    $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', null, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $id]);
-                    return;
-                }
-                $this->updateRefIndex($table, $id);
-                // Set History data
-                $historyEntryId = 0;
-                if (isset($this->historyRecords[$table . ':' . $id])) {
-                    $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $id, $this->historyRecords[$table . ':' . $id], $this->correlationId);
-                }
-                if ($this->enableLogging) {
-                    $newRow = $fieldArray;
-                    $newRow['uid'] = $id;
-                    // Set log entry:
-                    $propArr = $this->getRecordPropertiesFromRow($table, $newRow);
-                    $isOfflineVersion = (bool)($newRow['t3ver_oid'] ?? 0);
-                    if ($isOfflineVersion) {
-                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated (Offline version)', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
-                    } else {
-                        $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record "{title}" ({table}:{uid}) was updated', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id, 'history' => $historyEntryId], $propArr['event_pid']);
-                    }
-                }
-                // Clear cache for relevant pages:
-                $this->registerRecordIdForPageCacheClearing($table, $id);
-                // Unset the pageCache for the id if table was page.
-                if ($table === 'pages') {
-                    unset($this->pageCache[$id]);
-                }
-            }
+        if (!is_array($fieldArray) || !$this->tcaSchemaFactory->has($table) || !(int)$uid) {
+            return;
+        }
+        // Never update the uid field
+        unset($fieldArray['uid']);
+        if (empty($fieldArray)) {
+            return;
+        }
+        $fieldArray = $this->insertUpdateDB_preprocessBasedOnFieldType($table, $fieldArray);
+        $connection = $this->connectionPool->getConnectionForTable($table);
+        try {
+            $connection->update($table, $fieldArray, ['uid' => (int)$uid]);
+        } catch (DBALException $e) {
+            $this->log($table, $uid, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'SQL error: "{reason}" ({table}:{uid})', null, ['reason' => $e->getMessage(), 'table' => $table, 'uid' => $uid]);
+            return;
+        }
+        $this->updateRefIndex($table, $uid);
+        // Set History data
+        $historyEntryId = 0;
+        if (isset($this->historyRecords[$table . ':' . $uid])) {
+            $historyEntryId = $this->getRecordHistoryStore()->modifyRecord($table, $uid, $this->historyRecords[$table . ':' . $uid], $this->correlationId);
+        }
+        $this->log($table, $uid, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was updated', null, ['table' => $table, 'uid' => $uid, 'history' => $historyEntryId], $recordPid);
+        // Clear cache for relevant pages:
+        $this->registerRecordIdForPageCacheClearing($table, $uid);
+        // Unset the pageCache for the id if table was page.
+        if ($table === 'pages') {
+            unset($this->pageCache[$uid]);
         }
     }
 
@@ -8107,7 +8097,7 @@ class DataHandler
      * @return array Returns $fieldArray. If the returned array is empty, then the record should not be updated!
      * @internal should only be used from within DataHandler
      */
-    public function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray)
+    public function compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray): array
     {
         $connection = $this->connectionPool->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
@@ -8117,51 +8107,49 @@ class DataHandler
             ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)))
             ->executeQuery()
             ->fetchAssociative();
+        if (!is_array($currentRecord)) {
+            return [];
+        }
         // If the current record exists (which it should...), begin comparison:
-        if (is_array($currentRecord)) {
-            $currentRecord = BackendUtility::convertDatabaseRowValuesToPhp($table, $currentRecord);
-            $tableDetails = $connection->getSchemaInformation()->introspectTable($table);
-            $columnRecordTypes = [];
-            foreach ($currentRecord as $columnName => $_) {
-                $columnRecordTypes[$columnName] = '';
-                $type = $tableDetails->getColumn($columnName)->getType();
-                if ($type instanceof IntegerType) {
-                    $columnRecordTypes[$columnName] = 'int';
-                } elseif ($type instanceof JsonType) {
-                    $columnRecordTypes[$columnName] = 'json';
+        $currentRecord = BackendUtility::convertDatabaseRowValuesToPhp($table, $currentRecord);
+        $tableDetails = $connection->getSchemaInformation()->introspectTable($table);
+        $columnRecordTypes = [];
+        foreach ($currentRecord as $columnName => $_) {
+            $columnRecordTypes[$columnName] = '';
+            $type = $tableDetails->getColumn($columnName)->getType();
+            if ($type instanceof IntegerType) {
+                $columnRecordTypes[$columnName] = 'int';
+            } elseif ($type instanceof JsonType) {
+                $columnRecordTypes[$columnName] = 'json';
+            }
+        }
+        // Unset the fields which are similar:
+        foreach ($fieldArray as $col => $val) {
+            $fieldConfiguration = [];
+            $isNullField = false;
+
+            if ($this->tcaSchemaFactory->get($table)->hasField($col)) {
+                $fieldType = $this->tcaSchemaFactory->get($table)->getField($col);
+                $fieldConfiguration = $fieldType->getConfiguration();
+                $isNullField = $fieldType->isNullable();
+            }
+
+            // Unset fields if stored and submitted values are equal - except the current field holds MM relations.
+            // In general this avoids to store superfluous data which also will be visualized in the editing history.
+            if (empty($fieldConfiguration['MM']) && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $columnRecordTypes[$col], $isNullField)) {
+                unset($fieldArray[$col]);
+            } else {
+                if (!isset($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col])) {
+                    $this->historyRecords[$table . ':' . $id]['oldRecord'][$col] = $currentRecord[$col];
+                } elseif ($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col] != $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col]) {
+                    $this->historyRecords[$table . ':' . $id]['oldRecord'][$col] = $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col];
+                }
+                if (!isset($this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col])) {
+                    $this->historyRecords[$table . ':' . $id]['newRecord'][$col] = $fieldArray[$col];
+                } elseif ($this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col] != $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col]) {
+                    $this->historyRecords[$table . ':' . $id]['newRecord'][$col] = $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col];
                 }
             }
-            // Unset the fields which are similar:
-            foreach ($fieldArray as $col => $val) {
-                $fieldConfiguration = [];
-                $isNullField = false;
-
-                if ($this->tcaSchemaFactory->get($table)->hasField($col)) {
-                    $fieldType = $this->tcaSchemaFactory->get($table)->getField($col);
-                    $fieldConfiguration = $fieldType->getConfiguration();
-                    $isNullField = $fieldType->isNullable();
-                }
-
-                // Unset fields if stored and submitted values are equal - except the current field holds MM relations.
-                // In general this avoids to store superfluous data which also will be visualized in the editing history.
-                if (empty($fieldConfiguration['MM']) && $this->isSubmittedValueEqualToStoredValue($val, $currentRecord[$col], $columnRecordTypes[$col], $isNullField)) {
-                    unset($fieldArray[$col]);
-                } else {
-                    if (!isset($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col])) {
-                        $this->historyRecords[$table . ':' . $id]['oldRecord'][$col] = $currentRecord[$col];
-                    } elseif ($this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col] != $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col]) {
-                        $this->historyRecords[$table . ':' . $id]['oldRecord'][$col] = $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col];
-                    }
-                    if (!isset($this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col])) {
-                        $this->historyRecords[$table . ':' . $id]['newRecord'][$col] = $fieldArray[$col];
-                    } elseif ($this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col] != $this->mmHistoryRecords[$table . ':' . $id]['oldRecord'][$col]) {
-                        $this->historyRecords[$table . ':' . $id]['newRecord'][$col] = $this->mmHistoryRecords[$table . ':' . $id]['newRecord'][$col];
-                    }
-                }
-            }
-        } else {
-            // If the current record does not exist this is an error anyways and we just return an empty array here.
-            $fieldArray = [];
         }
         return $fieldArray;
     }
@@ -8401,7 +8389,7 @@ class DataHandler
         }
         // IF there are changed fields, then update the database
         if (!empty($newData)) {
-            $this->updateDB($table, $uid, $newData);
+            $this->updateDB($table, $uid, $newData, (int)$curData['pid']);
         }
     }
 
@@ -8433,7 +8421,7 @@ class DataHandler
         }
         // IF there are changed fields, then update the database
         if (!empty($newData)) {
-            $this->updateDB($table, $uid, $newData);
+            $this->updateDB($table, $uid, $newData, (int)$curData['pid']);
             return true;
         }
         return false;
