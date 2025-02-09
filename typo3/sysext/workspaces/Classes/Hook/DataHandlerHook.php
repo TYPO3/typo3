@@ -72,11 +72,9 @@ class DataHandlerHook
         private readonly WorkspacePublishGate $workspacePublishGate,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
-    /****************************
-     *****  Cmdmap  Hooks  ******
-     ****************************/
     /**
      * hook that is called before any cmd of the commandmap is executed
      *
@@ -232,14 +230,11 @@ class DataHandlerHook
                     if ($record['t3ver_wsid'] > 0 && $recordVersionState === VersionState::DEFAULT_STATE) {
                         // Change normal versioned record to delete placeholder
                         // Happens when an edited record is deleted
-                        GeneralUtility::makeInstance(ConnectionPool::class)
-                            ->getConnectionForTable($table)
-                            ->update(
-                                $table,
-                                ['t3ver_state' => VersionState::DELETE_PLACEHOLDER->value],
-                                ['uid' => $id]
-                            );
-
+                        $this->connectionPool->getConnectionForTable($table)->update(
+                            $table,
+                            ['t3ver_state' => VersionState::DELETE_PLACEHOLDER->value],
+                            ['uid' => $id]
+                        );
                         // Delete localization overlays:
                         $dataHandler->deleteL10nOverlayRecords($table, $id);
                     } elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
@@ -270,11 +265,11 @@ class DataHandlerHook
             $dataHandler->versionizeRecord($table, $id, 'DELETED!', true);
             // Determine newly created versions:
             // (remove placeholders are copied and modified, thus they appear in the copyMappingArray)
-            $versionizedElements = ArrayUtility::arrayDiffKeyRecursive($dataHandler->copyMappingArray, $copyMappingArray);
+            $versionedElements = ArrayUtility::arrayDiffKeyRecursive($dataHandler->copyMappingArray, $copyMappingArray);
             // Delete localization overlays:
-            foreach ($versionizedElements as $versionizedTableName => $versionizedOriginalIds) {
-                foreach ($versionizedOriginalIds as $versionizedOriginalId => $_) {
-                    $dataHandler->deleteL10nOverlayRecords($versionizedTableName, $versionizedOriginalId);
+            foreach ($versionedElements as $versionedTableName => $versionedOriginalIds) {
+                foreach ($versionedOriginalIds as $versionedOriginalId => $_) {
+                    $dataHandler->deleteL10nOverlayRecords($versionedTableName, $versionedOriginalId);
                 }
             }
         }
@@ -297,7 +292,7 @@ class DataHandlerHook
                 $this->resetStageOfElements((int)$id);
             } elseif ($table === WorkspaceService::TABLE_WORKSPACE) {
                 $this->flushWorkspaceElements((int)$id);
-                $this->emitUpdateTopbarSignal();
+                BackendUtility::setUpdateSignal('updateTopbar');
             }
         }
     }
@@ -305,7 +300,7 @@ class DataHandlerHook
     public function processDatamap_afterAllOperations(DataHandler $dataHandler): void
     {
         if (isset($dataHandler->datamap[WorkspaceService::TABLE_WORKSPACE])) {
-            $this->emitUpdateTopbarSignal();
+            BackendUtility::setUpdateSignal('updateTopbar');
         }
     }
 
@@ -467,9 +462,6 @@ class DataHandlerHook
         }
     }
 
-    /****************************
-     *****  Stage Changes  ******
-     ****************************/
     /**
      * Setting stage of record
      *
@@ -499,16 +491,13 @@ class DataHandlerHook
             // check if the user is allowed to the current stage, so it's also allowed to send to next stage
             if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($currentStage)) {
                 // Set stage of record:
-                GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($table)
-                    ->update(
-                        $table,
-                        [
-                            't3ver_stage' => $stageId,
-                        ],
-                        ['uid' => $id]
-                    );
-
+                $this->connectionPool->getConnectionForTable($table)->update(
+                    $table,
+                    [
+                        't3ver_stage' => $stageId,
+                    ],
+                    ['uid' => $id]
+                );
                 if ($dataHandler->enableLogging) {
                     $propertyArray = $dataHandler->getRecordProperties($table, $id);
                     $pid = $propertyArray['pid'];
@@ -530,10 +519,6 @@ class DataHandlerHook
         }
     }
 
-    /*****************************
-     *****  CMD versioning  ******
-     *****************************/
-
     /**
      * Publishing / Swapping (= switching) versions of a record
      * Version from archive (future/past, called "swap version") will get the uid of the "t3ver_oid", the official element with uid = "t3ver_oid" will get the new versions old uid. PIDs are swapped also
@@ -545,31 +530,20 @@ class DataHandlerHook
      * @param string $comment Notification comment
      * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
      */
-    protected function version_swap(string $table, int $id, int $swapWith, DataHandler $dataHandler, string $comment, array $notificationAlternativeRecipients)
+    protected function version_swap(string $table, int $id, int $swapWith, DataHandler $dataHandler, string $comment, array $notificationAlternativeRecipients): void
     {
-        // Check prerequisites before start publishing
-        // Skip records that have been deleted during the current execution
         if ($dataHandler->hasDeletedRecord($table, $id)) {
+            // Skip already deleted records
             return;
         }
-
-        // First, check if we may actually edit the online record
         if (!$dataHandler->checkRecordUpdateAccess($table, $id)) {
-            $dataHandler->log(
-                $table,
-                $id,
-                DatabaseAction::PUBLISH,
-                null,
-                SystemLogErrorClassification::USER_ERROR,
-                'Error: You cannot swap versions for record {table}:{uid} you do not have access to edit',
-                null,
-                ['table' => $table, 'uid' => $id]
-            );
+            // Return early if online record editing is denied
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'Error: You cannot swap versions for record {table}:{uid} you do not have access to edit', null, ['table' => $table, 'uid' => $id]);
             return;
         }
         // Select the two versions:
         // Currently live version, contents will be removed.
-        $curVersion = BackendUtility::getRecord($table, $id, '*');
+        $curVersion = BackendUtility::getRecord($table, $id);
         // Versioned records which contents will be moved into $curVersion
         $isNewRecord = VersionState::tryFrom($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
         if ($isNewRecord && is_array($curVersion)) {
@@ -579,21 +553,12 @@ class DataHandlerHook
             //        processCmdmap_beforeStart() hook, which adds additional commands for child records - a construct we
             //        may want to avoid altogether due to its complexity. It would be easier to follow if publish here would
             //        handle that instead.
-            $this->publishNewRecord($table, $curVersion, $dataHandler, $comment, (array)$notificationAlternativeRecipients);
+            $this->publishNewRecord($table, $curVersion, $dataHandler, $comment, $notificationAlternativeRecipients);
             return;
         }
-        $swapVersion = BackendUtility::getRecord($table, $swapWith, '*');
-        if (!(is_array($curVersion) && is_array($swapVersion))) {
-            $dataHandler->log(
-                $table,
-                $id,
-                DatabaseAction::PUBLISH,
-                null,
-                SystemLogErrorClassification::SYSTEM_ERROR,
-                'Error: Either online or swap version for {table}:{uid}->{offlineUid} could not be selected',
-                null,
-                ['table' => $table, 'uid' => $id, 'offlineUid' => $swapWith]
-            );
+        $swapVersion = BackendUtility::getRecord($table, $swapWith);
+        if (!is_array($curVersion) || !is_array($swapVersion)) {
+            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Error: Either online or swap version for {table}:{uid}->{offlineUid} could not be selected', null, ['table' => $table, 'uid' => $id, 'offlineUid' => $swapWith]);
             return;
         }
         $workspaceId = (int)$swapVersion['t3ver_wsid'];
@@ -679,101 +644,68 @@ class DataHandlerHook
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);
 
         // Execute swapping:
-        $sqlErrors = [];
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         try {
-            $connection->update(
-                $table,
-                $swapVersion,
-                ['uid' => (int)$id]
-            );
+            $this->connectionPool->getConnectionForTable($table)->update($table, $swapVersion, ['uid' => $id]);
+            $this->connectionPool->getConnectionForTable($table)->update($table, $curVersion, ['uid' => $swapWith]);
         } catch (DBALException $e) {
-            $sqlErrors[] = $e->getMessage();
+            $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::SYSTEM_ERROR, 'During Swapping: SQL errors happened: {reason}', null, ['reason' => $e->getMessage()]);
+            return;
         }
 
-        if (empty($sqlErrors)) {
-            try {
-                $connection->update(
-                    $table,
-                    $curVersion,
-                    ['uid' => (int)$swapWith]
-                );
-            } catch (DBALException $e) {
-                $sqlErrors[] = $e->getMessage();
-            }
+        // Update localized elements to use the live l10n_parent now
+        $this->updateL10nOverlayRecordsOnPublish($schema, $id, $swapWith, $workspaceId, $dataHandler);
+        // Register swapped ids for later remapping:
+        $this->remappedIds[$table][$id] = $swapWith;
+        $this->remappedIds[$table][$swapWith] = $id;
+        if (VersionState::tryFrom($t3ver_state['swapVersion'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
+            // We're publishing a delete placeholder t3ver_state = 2. This means the live record should
+            // be set to deleted. We're currently in some workspace and deal with a live record here. Thus,
+            // we temporarily set backend user workspace to 0 so all operations happen as in live.
+            $currentUserWorkspace = $dataHandler->BE_USER->workspace;
+            $dataHandler->BE_USER->workspace = 0;
+            $dataHandler->deleteEl($table, $id, true);
+            $dataHandler->BE_USER->workspace = $currentUserWorkspace;
         }
+        $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
+        $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', null, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $table === 'pages' ? $id : $swapVersion['pid']);
 
-        if (!empty($sqlErrors)) {
-            $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::SYSTEM_ERROR, 'During Swapping: SQL errors happened: {reason}', null, ['reason' => implode('; ', $sqlErrors)]);
+        // Set log entry for live record:
+        $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
+        $label = 'Record "{header}" ({table}:{uid}) was updated. (Online version)';
+        $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, $label, null, ['header' => $propArr['header'], 'table' => $table, 'uid' => $id], $propArr['event_pid']);
+        $dataHandler->setHistory($table, $id);
+
+        $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
+        $notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
+        $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
+        $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
+        $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
+        if ($dataHandler->enableLogging) {
+            $propArr = $dataHandler->getRecordProperties($table, $id);
+            $pid = $propArr['pid'];
+            $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', null, [], $table === 'pages' ? $id : $pid);
+        }
+        // Write the stage change to the history
+        $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
+        $historyStore->changeStageForRecord($table, (int)$id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
+
+        // Clear cache:
+        $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
+        // If published, delete the record from the database
+        if ($table === 'pages') {
+            // Note on fifth argument false: At this point both $curVersion and $swapVersion page records are
+            // identical in DB. deleteEl() would now usually find all records assigned to our obsolete
+            // page which at the same time belong to our current version page, and would delete them.
+            // To suppress this, false tells deleteEl() to only delete the obsolete page but not its assigned records.
+            $dataHandler->deleteEl($table, $swapWith, true, true, false);
         } else {
-            // Update localized elements to use the live l10n_parent now
-            $this->updateL10nOverlayRecordsOnPublish($schema, $id, $swapWith, $workspaceId, $dataHandler);
-            // Register swapped ids for later remapping:
-            $this->remappedIds[$table][$id] = $swapWith;
-            $this->remappedIds[$table][$swapWith] = $id;
-            if (VersionState::tryFrom($t3ver_state['swapVersion'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
-                // We're publishing a delete placeholder t3ver_state = 2. This means the live record should
-                // be set to deleted. We're currently in some workspace and deal with a live record here. Thus,
-                // we temporarily set backend user workspace to 0 so all operations happen as in live.
-                $currentUserWorkspace = $dataHandler->BE_USER->workspace;
-                $dataHandler->BE_USER->workspace = 0;
-                $dataHandler->deleteEl($table, $id, true);
-                $dataHandler->BE_USER->workspace = $currentUserWorkspace;
-            }
-            $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', null, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $table === 'pages' ? $id : $swapVersion['pid']);
-
-            // Set log entry for live record:
-            $propArr = $dataHandler->getRecordPropertiesFromRow($table, $swapVersion);
-            if (($propArr['t3ver_oid'] ?? 0) > 0) {
-                $label = 'Record "{header}" ({table}:{uid}) was updated. (Offline version)';
-            } else {
-                $label = 'Record "{header}" ({table}:{uid}) was updated. (Online version)';
-            }
-            $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, $label, null, ['header' => $propArr['header'], 'table' => $table, 'uid' => $id], $propArr['event_pid']);
-            $dataHandler->setHistory($table, $id);
-            // Set log entry for offline record:
-            $propArr = $dataHandler->getRecordPropertiesFromRow($table, $curVersion);
-            if (($propArr['t3ver_oid'] ?? 0) > 0) {
-                $label = 'Record "{header}" ({table}:{uid}) was updated. (Offline version)';
-            } else {
-                $label = 'Record "{header}" ({table}:{uid}) was updated. (Online version)';
-            }
-            $dataHandler->log($table, $swapWith, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, $label, null, ['header' => $propArr['header'], 'table' => $table, 'uid' => $swapWith], $propArr['event_pid']);
-            $dataHandler->setHistory($table, $swapWith);
-
-            $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
-            $notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
-            $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
-            $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
-            $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
-            if ($dataHandler->enableLogging) {
-                $propArr = $dataHandler->getRecordProperties($table, $id);
-                $pid = $propArr['pid'];
-                $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', null, [], $table === 'pages' ? $id : $pid);
-            }
-            // Write the stage change to the history
-            $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
-            $historyStore->changeStageForRecord($table, (int)$id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
-
-            // Clear cache:
-            $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
-            // If published, delete the record from the database
-            if ($table === 'pages') {
-                // Note on fifth argument false: At this point both $curVersion and $swapVersion page records are
-                // identical in DB. deleteEl() would now usually find all records assigned to our obsolete
-                // page which at the same time belong to our current version page, and would delete them.
-                // To suppress this, false tells deleteEl() to only delete the obsolete page but not its assigned records.
-                $dataHandler->deleteEl($table, $swapWith, true, true, false);
-            } else {
-                $dataHandler->deleteEl($table, $swapWith, true, true);
-            }
-
-            // Update reference index of the live record - which could have been a workspace record in case 'new'
-            $dataHandler->updateRefIndex($table, $id, 0);
-            // The 'swapWith' record has been deleted, so we can drop any reference index the record is involved in
-            $dataHandler->registerReferenceIndexRowsForDrop($table, $swapWith, (int)$dataHandler->BE_USER->workspace);
+            $dataHandler->deleteEl($table, $swapWith, true, true);
         }
+
+        // Update reference index of the live record - which could have been a workspace record in case 'new'
+        $dataHandler->updateRefIndex($table, $id, 0);
+        // The 'swapWith' record has been deleted, so we can drop any reference index the record is involved in
+        $dataHandler->registerReferenceIndexRowsForDrop($table, $swapWith, (int)$dataHandler->BE_USER->workspace);
     }
 
     /**
@@ -786,7 +718,6 @@ class DataHandlerHook
      *
      * @param int $liveId the live version / online version of the record that was just published
      * @param int $previouslyUsedVersionId the versioned record ID (wsid>0) which is about to be deleted
-     * @param int $workspaceId the workspace ID
      */
     protected function updateL10nOverlayRecordsOnPublish(TcaSchema $schema, int $liveId, int $previouslyUsedVersionId, int $workspaceId, DataHandler $dataHandler): void
     {
@@ -798,12 +729,9 @@ class DataHandlerHook
         }
         // The database table of the published record
         $table = $schema->getName();
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
-
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
-
         $l10nParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
         $constraints = $queryBuilder->expr()->eq(
             $l10nParentFieldName,
@@ -819,7 +747,6 @@ class DataHandlerHook
                 )
             );
         }
-
         $queryBuilder
             ->select('uid', $l10nParentFieldName)
             ->from($table)
@@ -830,11 +757,9 @@ class DataHandlerHook
                     $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                 )
             );
-
         if ($translationSourceFieldName) {
             $queryBuilder->addSelect($translationSourceFieldName);
         }
-
         $statement = $queryBuilder->executeQuery();
         while ($record = $statement->fetchAssociative()) {
             $updateFields = [];
@@ -847,12 +772,10 @@ class DataHandlerHook
                 $updateFields[$translationSourceFieldName] = $liveId;
                 $dataTypes[] = Connection::PARAM_INT;
             }
-
             if (empty($updateFields)) {
                 continue;
             }
-
-            $connection->update(
+            $this->connectionPool->getConnectionForTable($table)->update(
                 $table,
                 $updateFields,
                 ['uid' => (int)$record['uid']],
@@ -938,12 +861,11 @@ class DataHandlerHook
         ];
 
         try {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-            $connection->update(
+            $this->connectionPool->getConnectionForTable($table)->update(
                 $table,
                 $updatedFields,
                 [
-                    'uid' => (int)$id,
+                    'uid' => $id,
                 ],
                 [
                     Connection::PARAM_INT,
@@ -1005,10 +927,8 @@ class DataHandlerHook
         if (!$schema->isWorkspaceAware()) {
             return;
         }
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
-        $queryBuilder = $connection->createQueryBuilder();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll();
-
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $l10nParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
         $constraints = $queryBuilder->expr()->eq(
@@ -1025,7 +945,6 @@ class DataHandlerHook
                 )
             );
         }
-
         $queryBuilder
             ->select('uid', $l10nParentFieldName)
             ->from($table)
@@ -1036,11 +955,9 @@ class DataHandlerHook
                     $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
                 )
             );
-
         if ($translationSourceFieldName) {
             $queryBuilder->addSelect($translationSourceFieldName);
         }
-
         $statement = $queryBuilder->executeQuery();
         while ($record = $statement->fetchAssociative()) {
             $dataHandler->updateRefIndex($table, $record['uid']);
@@ -1096,9 +1013,7 @@ class DataHandlerHook
             if (!$schema->isWorkspaceAware()) {
                 continue;
             }
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($tcaTable);
-
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tcaTable);
             $queryBuilder
                 ->update($tcaTable)
                 ->set('t3ver_stage', StagesService::STAGE_EDIT_ID)
@@ -1129,8 +1044,7 @@ class DataHandlerHook
             if (!$schema->isWorkspaceAware()) {
                 continue;
             }
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($tcaTable);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tcaTable);
             $queryBuilder->getRestrictions()->removeAll();
             $result = $queryBuilder
                 ->select('uid')
@@ -1155,7 +1069,6 @@ class DataHandlerHook
                 )
                 ->orderBy('uid')
                 ->executeQuery();
-
             while (($recordId = $result->fetchOne()) !== false) {
                 $command[$tcaTable][$recordId]['version']['action'] = 'flush';
             }
@@ -1179,10 +1092,6 @@ class DataHandlerHook
             $context->setAspect('workspace', $savedWorkspaceContext);
         }
     }
-
-    /*******************************
-     *****  helper functions  ******
-     *******************************/
 
     /**
      * Moves a versioned record, which is not new or deleted.
@@ -1218,26 +1127,19 @@ class DataHandlerHook
             // localization. Later, the page is moved around, moving the localization along
             // with the default language record. The localization should then NOT be switched
             // from 'to-delete' to 'moved', this would loose the 'to-delete' information.
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($table)
-                ->update(
-                    $table,
-                    [
-                        't3ver_state' => VersionState::MOVE_POINTER->value,
-                    ],
-                    [
-                        'uid' => (int)$versionedRecordUid,
-                    ]
-                );
+            $this->connectionPool->getConnectionForTable($table)->update(
+                $table,
+                [
+                    't3ver_state' => VersionState::MOVE_POINTER->value,
+                ],
+                [
+                    'uid' => (int)$versionedRecordUid,
+                ]
+            );
         }
 
         // Check for the localizations of that element and move them as well
         $dataHandler->moveL10nOverlayRecords($table, $liveUid, $destPid, $originalRecordDestinationPid);
-    }
-
-    protected function emitUpdateTopbarSignal(): void
-    {
-        BackendUtility::setUpdateSignal('updateTopbar');
     }
 
     /**
