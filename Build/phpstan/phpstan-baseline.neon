@@ -4285,28 +4285,10 @@ parameters:
 			path: ../../typo3/sysext/tstemplate/Classes/Controller/TemplateRecordsOverviewController.php
 
 		-
-			message: '#^PHPDoc tag @var with type string is not subtype of native type non\-falsy\-string\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Controller/Remote/RemoteServer.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Versioning\\VersionState\|null and 2 will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/workspaces/Classes/Controller/ReviewController.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between false and false will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntity.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Versioning\\VersionState\|null and 2 will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/workspaces/Classes/Dependency/ElementEntityProcessor.php
 
 		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
