@@ -45,7 +45,7 @@ backend module for statistics of the indexer and a frontend plugin.
     Introduction/Index
     UserManual/Index
     Installation/Index
-    Administration/Index
+    BackendModule/Index
     IndexingConfigurations/Index
     Configuration/Index
     TechnicalDetails/Index
