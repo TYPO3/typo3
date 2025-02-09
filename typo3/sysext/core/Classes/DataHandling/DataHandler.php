@@ -7688,7 +7688,7 @@ class DataHandler
         $this->updateRefIndex($table, $id);
         // Store in history
         $this->getRecordHistoryStore()->addRecord($table, $id, $newRow, $this->correlationId);
-        if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware() && (int)($newRow['t3ver_wsid'] ?? 0) >= 0) {
+        if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware() && (int)($newRow['t3ver_wsid'] ?? 0) > 0) {
             $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', null, ['table' => $table, 'uid' => $newRow['uid'], 'offlineUid' => $id], $table === 'pages' ? $newRow['uid'] : $newRow['pid'], $NEW_id);
         } else {
             $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was inserted on page {pid}', null, ['table' => $table, 'uid' => $id, 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
