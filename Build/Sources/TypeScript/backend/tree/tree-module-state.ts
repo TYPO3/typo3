@@ -111,6 +111,10 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
 
     private readonly moduleStateUpdated = async (e: CustomEvent<ModuleStateUpdateEvent>): Promise<void> => {
       const identifier = e.detail.state.identifier;
+      if (!this.tree) {
+        /* @todo store all module state updates in a stack to be consumed by a "slow" tree initialization */
+        return;
+      }
       if (identifier && identifier === e.detail.oldState.identifier && this.tree.nodes.find((node: TreeNodeInterface) => node.checked)) {
         return;
       }
