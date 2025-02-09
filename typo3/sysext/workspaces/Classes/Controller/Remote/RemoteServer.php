@@ -345,10 +345,6 @@ readonly class RemoteServer
             return null;
         }
 
-        /**
-         * @var string $identifierWithRandomValue
-         * @var FileReference $fileReference
-         */
         foreach ($candidates as $identifierWithRandomValue => $fileReference) {
             if ($useThumbnails) {
                 $thumbnailFile = $fileReference->getOriginalFile()->process(
