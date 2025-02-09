@@ -12,6 +12,7 @@ Technical details
 
     HtmlContent/Index
     UseOfHashes/Index
+    AnalysingIndexedData/Index
     HowPagesAreIndexed/Index
     ExternalMedia/Index
     AccessRestrictedPages/Index

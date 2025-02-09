@@ -49,7 +49,6 @@ backend module for statistics of the indexer and a frontend plugin.
     IndexingConfigurations/Index
     Configuration/Index
     TechnicalDetails/Index
-    AnalysingIndexedData/Index
     DatabaseTables/Index
     KnownProblems/Index
 
