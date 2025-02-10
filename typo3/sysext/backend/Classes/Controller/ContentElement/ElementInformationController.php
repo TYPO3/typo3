@@ -557,7 +557,7 @@ class ElementInformationController
             if ($row['tablename'] === 'sys_file_reference') {
                 $row = $this->transformFileReferenceToRecordReference($row);
                 if ($row === null) {
-                    return [];
+                    continue;
                 }
             }
 
