@@ -662,7 +662,7 @@ class DataHandler
      * @param array $fieldArray (reference) The field array of a record
      * @internal should only be used from within DataHandler
      */
-    public function hook_processDatamap_afterDatabaseOperations($hookObjectsArr, &$status, &$table, &$id, &$fieldArray): void
+    public function hook_processDatamap_afterDatabaseOperations($hookObjectsArr, $status, &$table, &$id, &$fieldArray): void
     {
         if (!isset($this->remapStackRecords[$table][$id])) {
             foreach ($hookObjectsArr as $hookObj) {
@@ -760,7 +760,6 @@ class DataHandler
                 $old_pid_value = '';
                 if (!MathUtility::canBeInterpretedAsInteger($id)) {
                     // $id is not an integer. We're creating a new record.
-                    $status = 'new';
                     // Get a fieldArray with tca default values
                     $fieldArray = $this->newFieldArray($table);
                     if (isset($incomingFieldArray['pid'])) {
@@ -825,25 +824,74 @@ class DataHandler
                         if ($schema->isWorkspaceAware()) {
                             $createNewVersion = true;
                         } else {
-                            $this->log(
-                                $table,
-                                0,
-                                SystemLogDatabaseAction::VERSIONIZE,
-                                null,
-                                SystemLogErrorClassification::USER_ERROR,
-                                'Attempt to insert version record "{table}:{uid}" to this workspace failed. "Live" edit permissions of records from tables without versioning required',
-                                null,
-                                [
-                                    'table' => $table,
-                                    'uid' => $id,
-                                ]
-                            );
+                            $this->log($table, 0, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert version record "{table}:{uid}" to this workspace failed. "Live" edit permissions of records from tables without versioning required', null, ['table' => $table, 'uid' => $id]);
                             continue;
                         }
                     }
+                    // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
+                    [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: ($fieldArray['pid'] ?? 0));
+                    // Apply TCA defaults from pageTS
+                    $fieldArray = $this->applyDefaultsForFieldArray($table, (int)$tscPID, $fieldArray);
+                    // Apply page permissions as well
+                    if ($table === 'pages') {
+                        $fieldArray = $this->pagePermissionAssembler->applyDefaults(
+                            $fieldArray,
+                            (int)$tscPID,
+                            $this->userid,
+                            (int)$this->BE_USER->firstMainGroup
+                        );
+                    }
+                    // Ensure that the default values, that are stored in the $fieldArray (built from internal default values)
+                    // Are also placed inside the incomingFieldArray, so this is checked in "fillInFieldArray" and
+                    // all default values are also checked for validity
+                    // This allows to set TCA defaults (for example) without having to use FormEngine to have the fields available first.
+                    $incomingFieldArray = array_replace_recursive($fieldArray, $incomingFieldArray);
+                    // Processing of all fields in incomingFieldArray and setting them in $fieldArray
+                    $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, 'new', $tscPID);
+                    // Setting system fields
+                    if ($schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
+                        $fieldArray[$schema->getCapability(TcaSchemaCapability::CreatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
+                    }
+                    // Set stage to "Editing" to make sure we restart the workflow
+                    if ($schema->isWorkspaceAware()) {
+                        $fieldArray['t3ver_stage'] = 0;
+                    }
+                    if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt) && !empty($fieldArray)) {
+                        $fieldArray[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
+                    }
+                    foreach ($hookObjectsArr as $hookObj) {
+                        if (method_exists($hookObj, 'processDatamap_postProcessFieldArray')) {
+                            $hookObj->processDatamap_postProcessFieldArray('new', $table, $id, $fieldArray, $this);
+                        }
+                    }
+                    // Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
+                    // Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already
+                    if (is_array($fieldArray)) {
+                        if ($table === 'pages') {
+                            // for new pages always a refresh is needed
+                            $this->pagetreeNeedsRefresh = true;
+                        }
+                        // This creates a version of the record, instead of adding it to the live workspace
+                        if ($createNewVersion) {
+                            // new record created in a workspace - so always refresh page tree to indicate there is a change in the workspace
+                            $this->pagetreeNeedsRefresh = true;
+                            $fieldArray['pid'] = $theRealPid;
+                            $fieldArray['t3ver_oid'] = 0;
+                            // Setting state for version (so it can know it is currently a new version...)
+                            $fieldArray['t3ver_state'] = VersionState::NEW_PLACEHOLDER->value;
+                            $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
+                            $this->insertDB($table, $id, $fieldArray, null, (int)($incomingFieldArray['uid'] ?? 0));
+                            // Hold auto-versioned ids of placeholders
+                            $this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $this->substNEWwithIDs[$id];
+                        } else {
+                            $this->insertDB($table, $id, $fieldArray, null, (int)($incomingFieldArray['uid'] ?? 0));
+                        }
+                    }
+                    // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
+                    // but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
+                    $this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, 'new', $table, $id, $fieldArray);
                 } else {
                     // $id is an integer. We're updating an existing record or creating a workspace version.
-                    $status = 'update';
                     $id = (int)$id;
                     $fieldArray = [];
 
@@ -908,20 +956,7 @@ class DataHandler
                             $this->errorLog = array_merge($this->errorLog, $tce->errorLog);
                             // If copying was successful, share the new uids (also of related children):
                             if (empty($tce->copyMappingArray[$table][$id])) {
-                                $this->log(
-                                    $table,
-                                    $id,
-                                    SystemLogDatabaseAction::VERSIONIZE,
-                                    null,
-                                    SystemLogErrorClassification::USER_ERROR,
-                                    'Attempt to version record "{table}:{uid}" failed [{reason}]',
-                                    null,
-                                    [
-                                        'reason' => $errorCode,
-                                        'table' => $table,
-                                        'uid' => $id,
-                                    ]
-                                );
+                                $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to version record "{table}:{uid}" failed [{reason}]', null, ['reason' => $errorCode, 'table' => $table, 'uid' => $id]);
                                 continue;
                             }
                             foreach ($tce->copyMappingArray as $origTable => $origIdArray) {
@@ -937,94 +972,31 @@ class DataHandler
                             // Use the new id of the copied/versioned record:
                             $id = $this->autoVersionIdMap[$table][$id];
                         } else {
-                            $this->log(
-                                $table,
-                                $id,
-                                SystemLogDatabaseAction::VERSIONIZE,
-                                null,
-                                SystemLogErrorClassification::USER_ERROR,
-                                'Attempt to version record "{table}:{uid}" failed [{reason}]. "Live" edit permissions of records from tables without versioning required',
-                                null,
-                                [
-                                    'reason' => $errorCode,
-                                    'table' => $table,
-                                    'uid' => $id,
-                                ]
-                            );
+                            $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to version record "{table}:{uid}" failed [{reason}]. "Live" edit permissions of records from tables without versioning required', null, ['reason' => $errorCode, 'table' => $table, 'uid' => $id]);
                             continue;
                         }
                     }
-                }
-
-                // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
-                [$tscPID] = BackendUtility::getTSCpid($table, $id, $old_pid_value ?: ($fieldArray['pid'] ?? 0));
-                if ($status === 'new') {
-                    // Apply TCA defaults from pageTS
-                    $fieldArray = $this->applyDefaultsForFieldArray($table, (int)$tscPID, $fieldArray);
-                    // Apply page permissions as well
-                    if ($table === 'pages') {
-                        $fieldArray = $this->pagePermissionAssembler->applyDefaults(
-                            $fieldArray,
-                            (int)$tscPID,
-                            $this->userid,
-                            (int)$this->BE_USER->firstMainGroup
-                        );
+                    // Here the "pid" is set IF NOT the old pid was a string pointing to a place in the subst-id array.
+                    [$tscPID] = BackendUtility::getTSCpid($table, $id, 0);
+                    // Processing of all fields in incomingFieldArray and setting them in $fieldArray
+                    $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, 'update', $tscPID);
+                    // Set stage to "Editing" to make sure we restart the workflow
+                    if ($schema->isWorkspaceAware()) {
+                        $fieldArray['t3ver_stage'] = 0;
                     }
-                    // Ensure that the default values, that are stored in the $fieldArray (built from internal default values)
-                    // Are also placed inside the incomingFieldArray, so this is checked in "fillInFieldArray" and
-                    // all default values are also checked for validity
-                    // This allows to set TCA defaults (for example) without having to use FormEngine to have the fields available first.
-                    $incomingFieldArray = array_replace_recursive($fieldArray, $incomingFieldArray);
-                }
-                // Processing of all fields in incomingFieldArray and setting them in $fieldArray
-                $fieldArray = $this->fillInFieldArray($table, $id, $fieldArray, $incomingFieldArray, $theRealPid, $status, $tscPID);
-                // Setting system fields
-                if ($status === 'new') {
-                    if ($schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
-                        $fieldArray[$schema->getCapability(TcaSchemaCapability::CreatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
-                    }
-                }
-                // Set stage to "Editing" to make sure we restart the workflow
-                if ($schema->isWorkspaceAware()) {
-                    $fieldArray['t3ver_stage'] = 0;
-                }
-                if ($status !== 'new') {
                     // Removing fields which are equal to the current value:
                     $fieldArray = $this->compareFieldArrayWithCurrentAndUnset($table, $id, $fieldArray);
-                }
-                if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt) && !empty($fieldArray)) {
-                    $fieldArray[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
-                }
-                foreach ($hookObjectsArr as $hookObj) {
-                    if (method_exists($hookObj, 'processDatamap_postProcessFieldArray')) {
-                        $hookObj->processDatamap_postProcessFieldArray($status, $table, $id, $fieldArray, $this);
+                    if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt) && !empty($fieldArray)) {
+                        $fieldArray[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
                     }
-                }
-                // Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
-                // Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already
-                if (is_array($fieldArray)) {
-                    if ($status === 'new') {
-                        if ($table === 'pages') {
-                            // for new pages always a refresh is needed
-                            $this->pagetreeNeedsRefresh = true;
+                    foreach ($hookObjectsArr as $hookObj) {
+                        if (method_exists($hookObj, 'processDatamap_postProcessFieldArray')) {
+                            $hookObj->processDatamap_postProcessFieldArray('update', $table, $id, $fieldArray, $this);
                         }
-
-                        // This creates a version of the record, instead of adding it to the live workspace
-                        if ($createNewVersion) {
-                            // new record created in a workspace - so always refresh page tree to indicate there is a change in the workspace
-                            $this->pagetreeNeedsRefresh = true;
-                            $fieldArray['pid'] = $theRealPid;
-                            $fieldArray['t3ver_oid'] = 0;
-                            // Setting state for version (so it can know it is currently a new version...)
-                            $fieldArray['t3ver_state'] = VersionState::NEW_PLACEHOLDER->value;
-                            $fieldArray['t3ver_wsid'] = $this->BE_USER->workspace;
-                            $this->insertDB($table, $id, $fieldArray, null, (int)($incomingFieldArray['uid'] ?? 0));
-                            // Hold auto-versioned ids of placeholders
-                            $this->autoVersionIdMap[$table][$this->substNEWwithIDs[$id]] = $this->substNEWwithIDs[$id];
-                        } else {
-                            $this->insertDB($table, $id, $fieldArray, null, (int)($incomingFieldArray['uid'] ?? 0));
-                        }
-                    } else {
+                    }
+                    // Performing insert/update. If fieldArray has been unset by some userfunction (see hook above), don't do anything
+                    // Kasper: Unsetting the fieldArray is dangerous; MM relations might be saved already
+                    if (is_array($fieldArray)) {
                         if ($table === 'pages') {
                             // Only a certain number of fields needs to be checked for updates,
                             // fields with unchanged values are already removed here.
@@ -1035,12 +1007,13 @@ class DataHandler
                         }
                         $this->updateDB($table, $id, $fieldArray);
                     }
+                    // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
+                    // but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
+                    $this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, 'update', $table, $id, $fieldArray);
                 }
-                // Note: When using the hook after INSERT operations, you will only get the temporary NEW... id passed to your hook as $id,
-                // but you can easily translate it to the real uid of the inserted record using the $this->substNEWwithIDs array.
-                $this->hook_processDatamap_afterDatabaseOperations($hookObjectsArr, $status, $table, $id, $fieldArray);
             }
         }
+
         // Process the stack of relations to remap/correct
         $this->processRemapStack();
         $this->dbAnalysisStoreExec();
@@ -9179,7 +9152,7 @@ class DataHandler
      * @see \TYPO3\CMS\Core\SysLog\Error for all available values of argument $error
      * @internal should only be used from within TYPO3 Core
      */
-    public function log($table, $recuid, $action, $_, $error, $details, $__ = null, $data = [], $event_pid = -1, $NEWid = '')
+    public function log($table, $recuid, $action, $_, $error, $details, $__ = null, array $data = [], $event_pid = -1, $NEWid = '')
     {
         if (!$this->enableLogging) {
             return 0;
@@ -9190,9 +9163,7 @@ class DataHandler
         }
         if ($error > 0) {
             $detailMessage = $details;
-            if (is_array($data)) {
-                $detailMessage = $this->formatLogDetails($detailMessage, $data);
-            }
+            $detailMessage = $this->formatLogDetails($detailMessage, $data);
             $this->errorLog[] = '[' . SystemLogType::DB . '.' . $action . ']: ' . $detailMessage;
         }
         return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, null, $details, $data, $table, abs((int)$recuid), null, $event_pid, $NEWid);
