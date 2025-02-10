@@ -181,7 +181,7 @@ class ContentFetcher
 
             $untranslatedRecordUidsWithoutWorkspaceDeletedRecords = $this->removeWorkspaceDeletedPlaceholdersUidsFromUntranslatedRecordUids(array_keys($untranslatedRecordUids), $language);
             $languageTranslationInfo['untranslatedRecordUids'] = $untranslatedRecordUidsWithoutWorkspaceDeletedRecords;
-            if ($untranslatedRecordUids !== $untranslatedRecordUidsWithoutWorkspaceDeletedRecords) {
+            if (array_keys($untranslatedRecordUids) !== $untranslatedRecordUidsWithoutWorkspaceDeletedRecords) {
                 $languageTranslationInfo['hasElementsWithWorkspaceDeletePlaceholders'] = true;
             }
 
