@@ -42,63 +42,36 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class DatabaseIntegrityCheck
 {
     /**
-     * @var bool If set, genTree() includes deleted pages. This is default.
-     */
-    protected $genTreeIncludeDeleted = true;
-
-    /**
-     * @var bool If set, genTree() includes versionized pages/records. This is default.
-     */
-    protected $genTreeIncludeVersions = true;
-
-    /**
-     * @var bool If set, genTree() includes records from pages.
-     */
-    protected $genTreeIncludeRecords = false;
-
-    /**
      * @var array Will hold id/rec pairs from genTree()
      */
-    protected $pageIdArray = [];
+    protected array $pageIdArray = [];
 
     /**
      * @var array Will hold id/rec pairs from genTree() that are not default language
      */
-    protected $pageTranslatedPageIDArray = [];
-
-    /**
-     * @var array
-     */
-    protected $recIdArray = [];
+    protected array $pageTranslatedPageIDArray = [];
 
     /**
      * @var array From the select-fields
      */
-    protected $checkSelectDBRefs = [];
+    protected array $checkSelectDBRefs = [];
 
     /**
      * @var array From the group-fields
      */
-    protected $checkGroupDBRefs = [];
+    protected array $checkGroupDBRefs = [];
 
     /**
      * @var array Statistics
      */
-    protected $recStats = [
-        'allValid' => [],
+    protected array $recStats = [
+        'all_valid' => [],
         'published_versions' => [],
         'deleted' => [],
     ];
 
-    /**
-     * @var array
-     */
-    protected $lRecords = [];
-
-    /**
-     * @var string
-     */
-    protected $lostPagesList = '';
+    protected array $lRecords = [];
+    protected string $lostPagesList = '';
 
     public function getPageTranslatedPageIDArray(): array
     {
@@ -116,9 +89,6 @@ class DatabaseIntegrityCheck
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll();
-        if (!$this->genTreeIncludeDeleted) {
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        }
         $queryBuilder->select('uid', 'title', 'doktype', 'deleted', 'hidden', 'sys_language_uid')
             ->from('pages')
             ->orderBy('sorting');
@@ -157,63 +127,10 @@ class DatabaseIntegrityCheck
 
             $this->recStats['doktype'][$row['doktype']] ??= 0;
             $this->recStats['doktype'][$row['doktype']]++;
-            // If all records should be shown, do so:
-            if ($this->genTreeIncludeRecords) {
-                foreach ($GLOBALS['TCA'] as $tableName => $cfg) {
-                    if ($tableName !== 'pages') {
-                        $this->genTree_records($newID, $tableName);
-                    }
-                }
-            }
             // Add sub pages:
             $this->genTree($newID);
             // If versions are included in the tree, add those now:
-            if ($this->genTreeIncludeVersions) {
-                $this->genTree($newID, true);
-            }
-        }
-    }
-
-    /**
-     * @param int $theID a pid (page-record id) from which to start making the tree
-     * @param string $table Table to get the records from
-     * @param bool $versions Internal variable, don't set from outside!
-     */
-    public function genTree_records($theID, $table, $versions = false): void
-    {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()->removeAll();
-        if (!$this->genTreeIncludeDeleted) {
-            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        }
-        $queryBuilder
-            ->select(...explode(',', BackendUtility::getCommonSelectFields($table)))
-            ->from($table);
-
-        // Select all records from table pointing to this page
-        if ($versions) {
-            $queryBuilder->where(
-                $queryBuilder->expr()->eq('t3ver_oid', $queryBuilder->createNamedParameter($theID, Connection::PARAM_INT))
-            );
-        } else {
-            $queryBuilder->where(
-                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($theID, Connection::PARAM_INT))
-            );
-        }
-        $queryResult = $queryBuilder->executeQuery();
-        // Traverse selected
-        while ($row = $queryResult->fetchAssociative()) {
-            $newID = $row['uid'];
-            // Register various data for this item:
-            $this->recIdArray[$table][$newID] = $row;
-            $this->recStats['all_valid'][$table][$newID] = $newID;
-            if ($row['deleted']) {
-                $this->recStats['deleted'][$table][$newID] = $newID;
-            }
-            // Select all versions of this record:
-            if ($this->genTreeIncludeVersions && BackendUtility::isTableWorkspaceEnabled($table)) {
-                $this->genTree_records($newID, $table, true);
-            }
+            $this->genTree($newID, true);
         }
     }
 
@@ -226,41 +143,31 @@ class DatabaseIntegrityCheck
     {
         $this->lostPagesList = '';
         $pageIds = GeneralUtility::intExplode(',', $pid_list);
-        if (is_array($pageIds)) {
-            foreach ($GLOBALS['TCA'] as $table => $tableConf) {
-                $pageIdsForTable = $pageIds;
-                // Remove preceding "-1," for non-versioned tables
-                if (!BackendUtility::isTableWorkspaceEnabled($table)) {
-                    $pageIdsForTable = array_combine($pageIdsForTable, $pageIdsForTable);
-                    unset($pageIdsForTable[-1]);
-                }
-                $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()->removeAll();
-                $selectFields = ['uid', 'pid'];
-                if (!empty($GLOBALS['TCA'][$table]['ctrl']['label'])) {
-                    $selectFields[] = $GLOBALS['TCA'][$table]['ctrl']['label'];
-                }
-                $queryResult = $queryBuilder->select(...$selectFields)
-                    ->from($table)
-                    ->where(
-                        $queryBuilder->expr()->notIn(
-                            'pid',
-                            $queryBuilder->createNamedParameter($pageIdsForTable, Connection::PARAM_INT_ARRAY)
-                        )
+        foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+            $pageIdsForTable = $pageIds;
+            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryResult = $queryBuilder
+                ->select('*')
+                ->from($table)
+                ->where(
+                    $queryBuilder->expr()->notIn(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pageIdsForTable, Connection::PARAM_INT_ARRAY)
                     )
-                    ->executeQuery();
-                $lostIdList = [];
-                while ($row = $queryResult->fetchAssociative()) {
-                    $this->lRecords[$table][$row['uid']] = [
-                        'uid' => $row['uid'],
-                        'pid' => $row['pid'],
-                        'title' => strip_tags(BackendUtility::getRecordTitle($table, $row)),
-                    ];
-                    $lostIdList[] = $row['uid'];
-                }
-                if ($table === 'pages') {
-                    $this->lostPagesList = implode(',', $lostIdList);
-                }
+                )
+                ->executeQuery();
+            $lostIdList = [];
+            while ($row = $queryResult->fetchAssociative()) {
+                $this->lRecords[$table][$row['uid']] = [
+                    'uid' => $row['uid'],
+                    'pid' => $row['pid'],
+                    'title' => strip_tags(BackendUtility::getRecordTitle($table, $row)),
+                ];
+                $lostIdList[] = $row['uid'];
+            }
+            if ($table === 'pages') {
+                $this->lostPagesList = implode(',', $lostIdList);
             }
         }
     }
@@ -305,11 +212,6 @@ class DatabaseIntegrityCheck
         if (!empty($pageIds)) {
             foreach ($GLOBALS['TCA'] as $table => $tableConf) {
                 $pageIdsForTable = $pageIds;
-                // Remove preceding "-1," for non-versioned tables
-                if (!BackendUtility::isTableWorkspaceEnabled($table)) {
-                    $pageIdsForTable = array_combine($pageIdsForTable, $pageIdsForTable);
-                    unset($pageIdsForTable[-1]);
-                }
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $queryBuilder->getRestrictions()->removeAll();
                 $count = $queryBuilder->count('uid')

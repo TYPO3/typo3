@@ -2743,8 +2743,7 @@ class DatabaseIntegrityController
         }
 
         // Tables and lost records
-        $id_list = '-1,0,' . implode(',', array_keys($databaseIntegrityCheck->getPageIdArray()));
-        $id_list = rtrim($id_list, ',');
+        $id_list = implode(',', array_merge([0], array_keys($databaseIntegrityCheck->getPageIdArray())));
         $databaseIntegrityCheck->lostRecords($id_list);
 
         // Fix a lost record if requested
@@ -2755,8 +2754,7 @@ class DatabaseIntegrityController
         ) {
             $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
             $databaseIntegrityCheck->genTree(0);
-            $id_list = '-1,0,' . implode(',', array_keys($databaseIntegrityCheck->getPageIdArray()));
-            $id_list = rtrim($id_list, ',');
+            $id_list = implode(',', array_merge([0], array_keys($databaseIntegrityCheck->getPageIdArray())));
             $databaseIntegrityCheck->lostRecords($id_list);
         }
 
