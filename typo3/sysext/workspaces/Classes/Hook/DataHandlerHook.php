@@ -169,12 +169,12 @@ class DataHandlerHook
                 continue;
             }
             $message = new StageChangeMessage(
-                $workspaceRec,
-                (int)$groupedNotificationInformation['shared'][1],
-                $groupedNotificationInformation['elements'],
-                $groupedNotificationInformation['shared'][2],
-                $emails,
-                $dataHandler->BE_USER->user
+                workspaceRecord: $workspaceRec,
+                stageId: (int)$groupedNotificationInformation['shared'][1],
+                affectedElements: $groupedNotificationInformation['elements'],
+                comment: $groupedNotificationInformation['shared'][2],
+                recipients: $emails,
+                currentUserRecord: $dataHandler->BE_USER->user,
             );
             $this->messageBus->dispatch($message);
             if ($dataHandler->enableLogging) {
