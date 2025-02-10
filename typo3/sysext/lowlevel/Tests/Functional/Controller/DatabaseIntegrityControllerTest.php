@@ -23,10 +23,13 @@ use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Database\Platform\PlatformHelper;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Messaging\FlashMessageRendererResolver;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -260,9 +263,16 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
     #[Test]
     public function getQueryWithIdOrDate(mixed $inputValue, mixed $inputValue1, string $expected, int $comparison = 64): void
     {
-        $GLOBALS['TCA'] = [
+        $tca = [
             'aTable' => [
-                'columns' => [],
+                'ctrl' => [],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
             ],
         ];
         $inputConf = [
@@ -274,7 +284,18 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
                 'inputValue1' => $inputValue1,
             ],
         ];
-        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [], '', false);
+        $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
+        $tcaSchemaFactory->load($tca);
+        $subject = $this->getAccessibleMock(DatabaseIntegrityController::class, null, [
+            $this->get(IconFactory::class),
+            $this->get(UriBuilder::class),
+            $this->get(ModuleTemplateFactory::class),
+            $this->get(PlatformHelper::class),
+            $tcaSchemaFactory,
+            $this->get(FlashMessageRendererResolver::class),
+            $this->get(PageDoktypeRegistry::class),
+        ]);
+        $subject->_set('table', 'aTable');
         $subject->_call('init', 'queryConfig', 'aTable');
         self::assertSame($expected, trim($subject->_call('getQuery', $inputConf), "\n\r"));
     }
@@ -350,6 +371,9 @@ final class DatabaseIntegrityControllerTest extends FunctionalTestCase
             $this->get(UriBuilder::class),
             $this->get(ModuleTemplateFactory::class),
             $this->get(PlatformHelper::class),
+            $this->get(TcaSchemaFactory::class),
+            $this->get(FlashMessageRendererResolver::class),
+            $this->get(PageDoktypeRegistry::class),
         ]);
         $subject->_call('init', 'queryConfig', $settings['queryTable']);
         $subject->_call('makeSelectorTable', $settings, $request);

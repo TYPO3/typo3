@@ -25,12 +25,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Backend\Command\ProgressListener\ReferenceIndexProgressListener;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -51,6 +52,7 @@ class MissingRelationsCommand extends Command
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly ReferenceIndex $referenceIndex,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {
         parent::__construct();
     }
@@ -241,6 +243,7 @@ If you want to get more detailed information, use the --verbose option.')
         while ($rec = $rowIterator->fetchAssociative()) {
             $isSoftReference = !empty($rec['softref_key']);
             $idx = $rec['ref_table'] . ':' . $rec['ref_uid'];
+            $schema = $this->tcaSchemaFactory->get($rec['ref_table']);
             // Get referenced record:
             if (!isset($existingRecords[$idx])) {
                 $queryBuilder = $this->connectionPool
@@ -248,10 +251,10 @@ If you want to get more detailed information, use the --verbose option.')
                 $queryBuilder->getRestrictions()->removeAll();
 
                 $selectFields = ['uid', 'pid'];
-                if (isset($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'])) {
-                    $selectFields[] = $GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete'];
+                if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+                    $selectFields[] = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
                 }
-                if (BackendUtility::isTableWorkspaceEnabled($rec['ref_table'])) {
+                if ($schema->isWorkspaceAware()) {
                     $selectFields[] = 't3ver_oid';
                     $selectFields[] = 't3ver_wsid';
                 }
@@ -284,7 +287,8 @@ If you want to get more detailed information, use the --verbose option.')
                         $offlineVersionRecords[$idx][$rec['hash']] = $infoString;
                     }
                     // reference to a deleted record
-                } elseif (isset($GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']) && $existingRecords[$idx][$GLOBALS['TCA'][$rec['ref_table']]['ctrl']['delete']]) {
+                } elseif ($schema->hasCapability(TcaSchemaCapability::SoftDelete)
+                    && $existingRecords[$idx][$schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName()]) {
                     if ($isSoftReference) {
                         $deletedRecordsInSoftReferenceRelations[] = $infoString;
                     } else {
@@ -419,7 +423,7 @@ If you want to get more detailed information, use the --verbose option.')
         if (!is_array($referenceRecord)) {
             return 'ERROR: No reference record with hash="' . $hash . '" was found!';
         }
-        if (empty($GLOBALS['TCA'][$referenceRecord['tablename']])) {
+        if (!$this->tcaSchemaFactory->has($referenceRecord['tablename'])) {
             return 'ERROR: Table "' . $referenceRecord['tablename'] . '" was not in TCA!';
         }
 

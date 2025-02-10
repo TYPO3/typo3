@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -37,7 +39,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 #[AsCommand('cleanup:deletedrecords', 'Permanently deletes all records marked as "deleted" in the database.')]
 class DeletedRecordsCommand extends Command
 {
-    public function __construct(private readonly ConnectionPool $connectionPool)
+    public function __construct(private readonly ConnectionPool $connectionPool, private readonly TcaSchemaFactory $tcaSchemaFactory)
     {
         parent::__construct();
     }
@@ -184,8 +186,8 @@ class DeletedRecordsCommand extends Command
             }
         }
 
-        $databaseTables = $this->getTablesWithFlag('delete');
-        $databaseTablesWithTstamp = $this->getTablesWithFlag('tstamp');
+        $databaseTables = $this->getTablesWithFlag(TcaSchemaCapability::SoftDelete);
+        $databaseTablesWithTstamp = $this->getTablesWithFlag(TcaSchemaCapability::UpdatedAt);
         // Traverse tables of records that belongs to page
         foreach ($databaseTables as $tableName => $deletedField) {
             // Select all records belonging to page
@@ -279,14 +281,14 @@ class DeletedRecordsCommand extends Command
     }
 
     /**
-     * Fetches all tables registered in the TCA with a $flag and that are not pages (which are handled separately).
+     * Fetches all tables registered in the TCA with a $tcaSchemaCapability and that are not pages (which are handled separately).
      */
-    protected function getTablesWithFlag(string $flag): array
+    protected function getTablesWithFlag(TcaSchemaCapability $tcaSchemaCapability): array
     {
         $tables = [];
-        foreach ($GLOBALS['TCA'] as $tableName => $configuration) {
-            if ($tableName !== 'pages' && isset($GLOBALS['TCA'][$tableName]['ctrl'][$flag])) {
-                $tables[$tableName] = $GLOBALS['TCA'][$tableName]['ctrl'][$flag];
+        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
+            if ($table !== 'pages' && $schema->hasCapability($tcaSchemaCapability)) {
+                $tables[$table] = $schema->getCapability($tcaSchemaCapability)->getFieldName();
             }
         }
         ksort($tables);

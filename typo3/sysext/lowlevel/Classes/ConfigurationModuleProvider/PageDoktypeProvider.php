@@ -18,25 +18,24 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Lowlevel\ConfigurationModuleProvider;
 
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 class PageDoktypeProvider extends AbstractProvider
 {
-    public function __construct(protected readonly PageDoktypeRegistry $doktypeRegistry) {}
+    public function __construct(
+        protected readonly PageDoktypeRegistry $doktypeRegistry,
+    ) {}
 
     public function getConfiguration(): array
     {
         $configuration = [];
-        $languageService = $this->getLanguageService();
         $allLabels = $this->prepareLabelsForAllTypes();
         $providerConfiguration = $this->doktypeRegistry->exportConfiguration();
         ksort($providerConfiguration);
         foreach ($providerConfiguration as $pageType => $typeConfiguration) {
             if (isset($allLabels[$pageType])) {
-                $configuration[$pageType] = array_merge_recursive(['name' => $languageService->sL($allLabels[$pageType])], $typeConfiguration);
-            } else {
-                $configuration[$pageType] = $typeConfiguration;
+                $typeConfiguration['name'] = $allLabels[$pageType];
             }
+            $configuration[$pageType] = $typeConfiguration;
         }
         return $configuration;
     }
@@ -44,9 +43,10 @@ class PageDoktypeProvider extends AbstractProvider
     protected function prepareLabelsForAllTypes(): array
     {
         $types = [];
-        foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $item) {
-            if (MathUtility::canBeInterpretedAsInteger($item['value'])) {
-                $types[(int)$item['value']] = $item['label'];
+        $languageService = $this->getLanguageService();
+        foreach ($this->doktypeRegistry->getAllDoktypes() as $item) {
+            if (!$item->isDivider()) {
+                $types[(int)$item->getValue()] = $languageService->sL($item->getLabel());
             }
         }
         return $types;
