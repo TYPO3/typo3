@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Http\ForwardResponse;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -172,7 +173,7 @@ class SearchController extends ActionController
     {
         // check if TypoScript is loaded
         if (!isset($this->settings['results'])) {
-            return $this->redirect('noTypoScript');
+            return new ForwardResponse('noTypoScript');
         }
 
         $searchData = $this->initialize($search);
@@ -653,7 +654,7 @@ class SearchController extends ActionController
     {
         // check if TypoScript is loaded
         if (!isset($this->settings['results'])) {
-            return $this->redirect('noTypoScript');
+            return new ForwardResponse('noTypoScript');
         }
 
         $searchData = $this->initialize($search);
