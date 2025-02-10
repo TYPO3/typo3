@@ -811,7 +811,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @return bool TRUE if user is allowed access
      * @internal should only be used from within TYPO3 Core
      */
-    public function workspaceCheckStageForCurrent($stage)
+    public function workspaceCheckStageForCurrent($stage): bool
     {
         // Always allow for admins
         if ($this->isAdmin()) {

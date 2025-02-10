@@ -894,8 +894,10 @@ class DataHandler
                     }
                     if (!$recordAccess) {
                         if ($this->enableLogging) {
-                            $propArr = $this->getRecordProperties($table, $id);
-                            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record "{title}" ({table}:{uid}) without permission or non-existing page', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $id], $propArr['event_pid']);
+                            // @todo: We accept fetching the record in question here to have a proper 'pid' for the log row. But it would
+                            //        be better to get it more centrally and feed it to the above "check" method that need it, too.
+                            $errorRecord = BackendUtility::getRecord($table, $id, 'pid', '', false);
+                            $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} without permission or non-existing page', null, ['table' => $table, 'uid' => $id], (int)$errorRecord['pid']);
                         }
                         continue;
                     }
@@ -1228,11 +1230,6 @@ class DataHandler
         return $fieldArray;
     }
 
-    /*********************************************
-     *
-     * Evaluation of input values
-     *
-     ********************************************/
     /**
      * Evaluates a value according to $table/$field settings.
      * This function is for real database fields - NOT FlexForm "pseudo" fields.
@@ -1251,45 +1248,37 @@ class DataHandler
      */
     public function checkValue($table, $field, $value, $id, $status, $realPid, $tscPID, $incomingFieldArray = []): array
     {
-        $curValueRec = null;
-        // Result array
-        $res = [];
-
-        // Processing special case of field pages.doktype
-        if ($table === 'pages' && $field === 'doktype') {
-            // If the user may not use this specific doktype, we issue a warning
-            if (!($this->admin || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
-                if ($this->enableLogging) {
-                    $propArr = $this->getRecordProperties($table, $id);
-                    $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'You cannot change the "doktype" of page "{title}" to the desired value', null, ['title' => $propArr['header']], $propArr['event_pid']);
-                }
-                return $res;
-            }
-            if ($status === 'update') {
-                // This checks 1) if we should check for disallowed tables and 2) if there are records from disallowed tables on the current page
-                $onlyAllowedTables = $this->pageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes((int)$value);
-                if ($onlyAllowedTables) {
-                    // use the real page id (default language)
-                    $recordId = $this->getDefaultLanguagePageId((int)$id);
-                    $theWrongTables = $this->doesPageHaveUnallowedTables($recordId, (int)$value);
-                    if ($theWrongTables !== []) {
-                        if ($this->enableLogging) {
-                            $propArr = $this->getRecordProperties($table, $id);
-                            $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, '"doktype" of page "{title}" could not be changed because the page contains records from disallowed tables; {disallowedTables}', null, ['title' => $propArr['header'], 'disallowedTables' => implode(', ', $theWrongTables)], $propArr['event_pid']);
-                        }
-                        return $res;
-                    }
-                }
+        $currentRecord = null;
+        $currentRecordValue = null;
+        if ((int)$id !== 0) {
+            // Int cast of $id can be 0 with NEW... records
+            // @todo: Hand over current record if there is some to avoid guesswork and DB call here
+            $currentRecord = BackendUtility::getRecord($table, (int)$id, '*', '', false);
+            // isset() won't work here, since values can be NULL
+            if ($currentRecord !== null && array_key_exists($field, $currentRecord)) {
+                $currentRecordValue = $currentRecord[$field];
             }
         }
 
-        $curValue = null;
-        if ((int)$id !== 0) {
-            // Get current value:
-            $curValueRec = BackendUtility::getRecord($table, (int)$id, '*', '', false);
-            // isset() won't work here, since values can be NULL
-            if ($curValueRec !== null && array_key_exists($field, $curValueRec)) {
-                $curValue = $curValueRec[$field];
+        if ($table === 'pages' && $field === 'doktype') {
+            // Processing special case of field pages.doktype
+            if (!($this->admin || GeneralUtility::inList($this->BE_USER->groupData['pagetypes_select'], $value))) {
+                // User is not allowed to use this specific doktype
+                $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'User lacks permissions to set pages:{uid} doktype to "{value}"', null, ['uid' => $id, 'value' => $value], $currentRecord['pid'] ?? 0);
+                return [];
+            }
+            if ($status === 'update') {
+                // Switching from one doktype to a different one. This is denied if the new doktype restricts the
+                // list of tables that can exist on them and if there are such records on the current page.
+                if ($this->pageDoktypeRegistry->doesDoktypeOnlyAllowSpecifiedRecordTypes((int)$value)) {
+                    // Use the page uid of the default language
+                    $recordId = $this->getDefaultLanguagePageId((int)$id);
+                    $existingDisallowedTables = $this->doesPageHaveUnallowedTables($recordId, (int)$value);
+                    if ($existingDisallowedTables !== []) {
+                        $this->log($table, (int)$id, SystemLogDatabaseAction::CHECK, null, SystemLogErrorClassification::USER_ERROR, 'Can not set pages:{uid} doktype to "{value}". The page contains records from tables "{disallowedTables}" that are not allowed with new doktype.', null, ['uid' => (int)$id, 'value' => $value, 'disallowedTables' => implode(', ', $existingDisallowedTables)], $recordId);
+                        return [];
+                    }
+                }
             }
         }
 
@@ -1303,12 +1292,12 @@ class DataHandler
             $isCurrentUserSystemMaintainer = $this->BE_USER->isSystemMaintainer();
             $isTargetUserInSystemMaintainerList = in_array((int)$id, $systemMaintainers, true);
             if ($field === 'admin') {
-                $isFieldChanged = (int)$curValueRec[$field] !== (int)$value;
+                $isFieldChanged = (int)$currentRecord[$field] !== (int)$value;
             } else {
-                $isFieldChanged = $curValueRec[$field] !== $value;
+                $isFieldChanged = $currentRecord[$field] !== $value;
             }
             if (!$isCurrentUserSystemMaintainer && $isTargetUserInSystemMaintainerList && $isFieldChanged) {
-                $value = $curValueRec[$field];
+                $value = $currentRecord[$field];
                 $this->log(
                     $table,
                     (int)$id,
@@ -1330,9 +1319,7 @@ class DataHandler
             $recFID = '';
         }
 
-        // Perform processing:
-        $res = $this->checkValue_SW($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $field, $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
-        return $res;
+        return $this->checkValue_SW([], $value, $tcaFieldConf, $table, $id, $currentRecordValue, $status, $realPid, $recFID, $field, $tscPID, ['incomingFieldArray' => $incomingFieldArray]);
     }
 
     /**
@@ -4340,11 +4327,6 @@ class DataHandler
         }
     }
 
-    /*********************************************
-     *
-     * Cmd: Moving, Localizing
-     *
-     ********************************************/
     /**
      * Moving single records
      *
@@ -4424,7 +4406,6 @@ class DataHandler
 
     /**
      * Moves a record without checking security of any sort.
-     * USE ONLY INTERNALLY
      *
      * @param string $table Table name to move
      * @param int $uid Record uid to move
@@ -5270,12 +5251,8 @@ class DataHandler
             return;
         }
 
-        $recordToDelete = [];
-        $recordWorkspaceId = 0;
-        if ($schema->isWorkspaceAware()) {
-            $recordToDelete = BackendUtility::getRecord($table, $uid);
-            $recordWorkspaceId = (int)($recordToDelete['t3ver_wsid'] ?? 0);
-        }
+        $recordToDelete = BackendUtility::getRecord($table, $uid);
+        $recordWorkspaceId = (int)($recordToDelete['t3ver_wsid'] ?? 0);
 
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
         [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
@@ -5300,10 +5277,9 @@ class DataHandler
                 // Delete all l10n records as well
                 $this->deletedRecords[$table][] = $uid;
                 $this->deleteL10nOverlayRecords($table, $uid);
-                $this->connectionPool->getConnectionForTable($table)
-                    ->update($table, $updateFields, ['uid' => $uid]);
+                $this->connectionPool->getConnectionForTable($table)->update($table, $updateFields, ['uid' => $uid]);
             } catch (DBALException $e) {
-                $databaseErrorMessage = $e->getMessage();
+                $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, $e->getMessage());
             }
         } else {
             // Delete the hard way...:
@@ -5312,30 +5288,13 @@ class DataHandler
                 $this->deletedRecords[$table][] = $uid;
                 $this->deleteL10nOverlayRecords($table, $uid);
             } catch (DBALException $e) {
-                $databaseErrorMessage = $e->getMessage();
+                $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, $e->getMessage());
             }
         }
-        if ($this->enableLogging) {
-            $state = SystemLogDatabaseAction::DELETE;
-            if ($databaseErrorMessage === '') {
-                if ($forceHardDelete) {
-                    $message = 'Record "{title}" ({table}:{uid}) was deleted unrecoverable from page "{pageTitle}" ({pid})';
-                } else {
-                    $message = 'Record "{title}" ({table}:{uid}) was deleted from page "{pageTitle}" ({pid})';
-                }
-                $propArr = $this->getRecordProperties($table, $uid);
-                $pagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
-
-                $this->log($table, $uid, $state, null, SystemLogErrorClassification::MESSAGE, $message, null, [
-                    'title' => $propArr['header'],
-                    'table' => $table,
-                    'uid' =>  $uid,
-                    'pageTitle' => $pagePropArr['header'],
-                    'pid' => $propArr['pid'],
-                ], $propArr['event_pid']);
-            } else {
-                $this->log($table, $uid, $state, null, SystemLogErrorClassification::SYSTEM_ERROR, $databaseErrorMessage);
-            }
+        if ($forceHardDelete) {
+            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted unrecoverable from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
+        } else {
+            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
         }
 
         // Add history entry
@@ -7051,9 +7010,17 @@ class DataHandler
      */
     public function isRecordInWebMount($table, $id)
     {
+        // @todo: Can return null if record does not exist
         if (!isset($this->isRecordInWebMount_Cache[$table . ':' . $id])) {
-            $recP = $this->getRecordProperties($table, $id);
-            $this->isRecordInWebMount_Cache[$table . ':' . $id] = $this->isInWebMount($recP['event_pid']);
+            if (!$this->tcaSchemaFactory->has($table) || (int)$id === 0) {
+                $this->isRecordInWebMount_Cache[$table . ':' . $id] = false;
+                return false;
+            }
+            $record = BackendUtility::getRecord($table, $id, '*', '', false);
+            BackendUtility::workspaceOL($table, $record);
+            $liveUid = ($record['t3ver_oid'] ?? null) ?: ($record['uid'] ?? null);
+            $eventPid = $table === 'pages' ? (int)$liveUid : ($record['pid'] ?? null);
+            $this->isRecordInWebMount_Cache[$table . ':' . $id] = $this->isInWebMount($eventPid);
         }
         return $this->isRecordInWebMount_Cache[$table . ':' . $id];
     }
@@ -7122,7 +7089,7 @@ class DataHandler
      * @return bool Returns TRUE if the user may insert a record from table $insertTable on page $pid
      * @internal should only be used from within DataHandler
      */
-    public function checkRecordInsertAccess($insertTable, $pid, $action = SystemLogDatabaseAction::INSERT)
+    public function checkRecordInsertAccess($insertTable, $pid, $action = SystemLogDatabaseAction::INSERT): bool
     {
         $pid = (int)$pid;
         if ($pid < 0) {
@@ -7132,8 +7099,6 @@ class DataHandler
         if (isset($this->recInsertAccessCache[$insertTable][$pid])) {
             return $this->recInsertAccessCache[$insertTable][$pid];
         }
-
-        $res = false;
         if ($insertTable === 'pages') {
             $perms = Permission::PAGE_NEW;
         } elseif (($insertTable === 'sys_file_reference') && array_key_exists('pages', $this->datamap)) {
@@ -7143,22 +7108,19 @@ class DataHandler
             $perms = Permission::CONTENT_EDIT;
         }
         $pageExists = is_array($this->recordInfoWithPermissionCheck('pages', $pid, $perms));
-        // If either admin and root-level or if page record exists and 1) if 'pages' you may create new ones 2) if page-content, new content items may be inserted on the $pid page
-        if ($pageExists || $pid === 0 && ($this->admin || BackendUtility::isRootLevelRestrictionIgnored($insertTable))) {
-            // Check permissions
-            if ($this->isTableAllowedForThisPage($pid, $insertTable)) {
-                $res = true;
-                // Cache the result
-                $this->recInsertAccessCache[$insertTable][$pid] = $res;
-            } elseif ($this->enableLogging) {
-                $propArr = $this->getRecordProperties('pages', $pid);
-                $this->log($insertTable, $pid, $action, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record on page "{pageTitle}" ({pid}) where table "{table}" is not allowed', null, ['pageTitle' => $propArr['header'], 'pid' => $pid, 'table' => $insertTable], $propArr['event_pid']);
-            }
-        } elseif ($this->enableLogging) {
-            $propArr = $this->getRecordProperties('pages', $pid);
-            $this->log($insertTable, $pid, $action, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert a record on page "{pageTitle}" ({pid}) from table "{table}" without permissions or non-existing page', null, ['pageTitle' => $propArr['header'], 'pid' => $pid, 'table' => $insertTable], $propArr['event_pid']);
+        if (!$pageExists && ($pid !== 0 || (!$this->admin && !BackendUtility::isRootLevelRestrictionIgnored($insertTable)))) {
+            // If page does not exist, it can still be an attempt to add to pid 0. Check this case
+            // and deny record insert by looking at admin flag and TCA root level restriction as well.
+            $this->log($insertTable, $pid, $action, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert a record of "{table}" on page:{pid} without permissions or non-existing page', null, ['pid' => $pid, 'table' => $insertTable], $pid);
+            return false;
         }
-        return $res;
+        if (!$this->isTableAllowedForThisPage($pid, $insertTable)) {
+            $this->log($insertTable, $pid, $action, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to insert record on page:{pid} where table "{table}" is not allowed', null, ['pid' => $pid, 'table' => $insertTable], $pid);
+            return false;
+        }
+        // Cache the result. Note this only caches "true" verdict.
+        $this->recInsertAccessCache[$insertTable][$pid] = true;
+        return true;
     }
 
     /**
@@ -7848,12 +7810,8 @@ class DataHandler
             }
             return ['pid' => $row['pid'], 'sortNumber' => $sortNumber];
         }
-        if ($this->enableLogging) {
-            $propArr = $this->getRecordProperties($table, $uid);
-            // OK, don't insert $propArr['event_pid'] here...
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) to after a non-existing record ({target})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'target' => abs($pid)], $propArr['pid']);
-        }
-        // There MUST be a previous record or else this cannot work
+        // There must be a previous record or else this cannot work
+        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} after a non-existing record ({target})', null, ['table' => $table, 'uid' => $uid, 'target' => abs($pid)], $pid);
         return false;
     }
 
