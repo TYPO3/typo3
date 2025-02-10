@@ -141,25 +141,13 @@ class DataHandlerHook
     }
 
     /**
-     * hook that is called AFTER all commands of the commandmap was
-     * executed
+     * Hook called after all commands of the command map were done
      *
      * @param DataHandler $dataHandler reference to the main DataHandler object
      */
     public function processCmdmap_afterFinish(DataHandler $dataHandler): void
     {
-        $this->sendStageChangeNotification($this->notificationEmailInfo, $dataHandler);
-        // Reset notification array
-        $this->notificationEmailInfo = [];
-        // Reset remapped IDs
-        $this->remappedIds = [];
-
-        $this->flushWorkspaceCacheEntriesByWorkspaceId((int)$dataHandler->BE_USER->workspace);
-    }
-
-    protected function sendStageChangeNotification(array $accumulatedNotificationInformation, DataHandler $dataHandler): void
-    {
-        foreach ($accumulatedNotificationInformation as $groupedNotificationInformation) {
+        foreach ($this->notificationEmailInfo as $groupedNotificationInformation) {
             $emails = (array)$groupedNotificationInformation['recipients'];
             if (empty($emails)) {
                 continue;
@@ -179,11 +167,20 @@ class DataHandlerHook
             $this->messageBus->dispatch($message);
             if ($dataHandler->enableLogging) {
                 [$elementTable, $elementUid] = reset($groupedNotificationInformation['elements']);
-                $propertyArray = $dataHandler->getRecordProperties($elementTable, $elementUid);
-                $pid = $propertyArray['pid'];
-                $dataHandler->log($elementTable, $elementUid, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "{recipients}"', null, ['recipients' => implode('", "', array_column($emails, 'email'))], $elementTable === 'pages' ? $elementUid : $pid);
+                // @todo: Clean up $this->notificationEmailInfo to create a better data object from it, maybe
+                //        instances of StageChangeMessage() directly. Since this is "after finish", we can
+                //        probably not add the record within $this->notificationEmailInfo since DH may have
+                //        changed it again. But we want to get the record at least only once here  and submit
+                //        it within StageChangeMessage(), so it does not have to fetch it again.
+                $record = BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
+                $dataHandler->log($elementTable, $elementUid, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "{recipients}"', null, ['recipients' => implode('", "', array_column($emails, 'email'))], (int)$record['pid']);
             }
         }
+        // Reset notification array
+        $this->notificationEmailInfo = [];
+        // Reset remapped IDs
+        $this->remappedIds = [];
+        $this->flushWorkspaceCacheEntriesByWorkspaceId((int)$dataHandler->BE_USER->workspace);
     }
 
     /**
@@ -471,54 +468,51 @@ class DataHandlerHook
      * @param string $table Table name
      * @param int $stageId Stage ID to set
      * @param string $comment Comment that goes into log
-     * @param DataHandler $dataHandler DataHandler object
      * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
      */
-    protected function version_setStage(string $table, int $id, $stageId, string $comment, DataHandler $dataHandler, array $notificationAlternativeRecipients = [])
+    protected function version_setStage(string $table, int $id, $stageId, string $comment, DataHandler $dataHandler, array $notificationAlternativeRecipients = []): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
         if (!$schema->isWorkspaceAware()) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: Table "{table}" does not support versioning', null, ['table' => $table]);
             return;
         }
-
         $record = BackendUtility::getRecord($table, $id);
         if (!is_array($record)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: No Record');
-        } elseif ($errorCode = $dataHandler->workspaceCannotEditOfflineVersion($table, $record)) {
+            return;
+        }
+        if ($errorCode = $dataHandler->workspaceCannotEditOfflineVersion($table, $record)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: {reason}', null, ['reason' => $errorCode]);
-        } elseif ($dataHandler->checkRecordUpdateAccess($table, $id)) {
-            $workspaceInfo = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
-            $workspaceId = (int)$workspaceInfo['uid'];
-            $currentStage = (int)$record['t3ver_stage'];
-            // check if the user is allowed to the current stage, so it's also allowed to send to next stage
-            if ($dataHandler->BE_USER->workspaceCheckStageForCurrent($currentStage)) {
-                // Set stage of record:
-                $this->connectionPool->getConnectionForTable($table)->update(
-                    $table,
-                    [
-                        't3ver_stage' => $stageId,
-                    ],
-                    ['uid' => $id]
-                );
-                if ($dataHandler->enableLogging) {
-                    $propertyArray = $dataHandler->getRecordProperties($table, $id);
-                    $pid = $propertyArray['pid'];
-                    $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', null, ['stage' =>  $stageId, 'comment' => mb_substr($comment, 0, 100)], $table === 'pages' ? $id : $pid);
-                }
-                // Write the stage change to history
-                $historyStore = $this->getRecordHistoryStore($workspaceId, $dataHandler->BE_USER);
-                $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => $stageId, 'comment' => $comment]);
-                if ((int)$workspaceInfo['stagechg_notification'] > 0) {
-                    $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$workspaceInfo, $stageId, $comment];
-                    $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = [$table, $id];
-                    $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['recipients'] = $notificationAlternativeRecipients;
-                }
-            } else {
-                $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'The member user tried to set a stage value "{stage}" that was not allowed', null, ['stage' => $stageId]);
-            }
-        } else {
+            return;
+        }
+        if (!$dataHandler->checkRecordUpdateAccess($table, $id)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed because you do not have edit access');
+            return;
+        }
+        $currentStage = (int)$record['t3ver_stage'];
+        if (!$dataHandler->BE_USER->workspaceCheckStageForCurrent($currentStage)) {
+            // Check if user is allowed to the current stage, so it's also allowed to send to next stage
+            $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'The member user tried to set a stage value "{stage}" that was not allowed', null, ['stage' => $stageId]);
+            return;
+        }
+        $this->connectionPool->getConnectionForTable($table)->update(
+            $table,
+            [
+                't3ver_stage' => $stageId,
+            ],
+            ['uid' => $id]
+        );
+        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record {table}:{uid} was changed to {stage}. Comment was: "{comment}"', null, ['table' => $table, 'uid' => $id, 'stage' =>  $stageId, 'comment' => mb_substr($comment, 0, 100)], $record['pid']);
+        $workspaceInfo = $dataHandler->BE_USER->checkWorkspace($record['t3ver_wsid']);
+        $workspaceId = (int)$workspaceInfo['uid'];
+        // Write the stage change to history
+        $historyStore = $this->getRecordHistoryStore($workspaceId, $dataHandler->BE_USER);
+        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => $stageId, 'comment' => $comment]);
+        if ((int)$workspaceInfo['stagechg_notification'] > 0) {
+            $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$workspaceInfo, $stageId, $comment];
+            $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = [$table, $id];
+            $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['recipients'] = $notificationAlternativeRecipients;
         }
     }
 
@@ -637,7 +631,7 @@ class DataHandlerHook
         // Modify online version to become offline:
         unset($curVersion['uid']);
         // Mark curVersion to contain the oid
-        $curVersion['t3ver_oid'] = (int)$id;
+        $curVersion['t3ver_oid'] = $id;
         $curVersion['t3ver_wsid'] = 0;
         // Increment lifecycle counter
         $curVersion['t3ver_stage'] = 0;
@@ -670,9 +664,8 @@ class DataHandlerHook
             $dataHandler->BE_USER->workspace = $currentUserWorkspace;
         }
         $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
-        $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', null, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], $table === 'pages' ? $id : $swapVersion['pid']);
-
-        // Set log entry for live record:
+        // @todo: Do we really need two logs here? One for DatabaseAction::PUBLISH and one for DatabaseAction::UPDATE?
+        $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', null, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], (int)$swapVersion['pid']);
         $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was updated. (Online version)', null, ['table' => $table, 'uid' => $id], (int)$swapVersion['pid']);
         $dataHandler->setHistory($table, $id);
 
@@ -681,14 +674,9 @@ class DataHandlerHook
         $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
         $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
-        if ($dataHandler->enableLogging) {
-            $propArr = $dataHandler->getRecordProperties($table, $id);
-            $pid = $propArr['pid'];
-            $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to ' . $stageId . '. Comment was: "' . substr($comment, 0, 100) . '"', null, [], $table === 'pages' ? $id : $pid);
-        }
         // Write the stage change to the history
         $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
-        $historyStore->changeStageForRecord($table, (int)$id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
+        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
 
         // Clear cache:
         $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
