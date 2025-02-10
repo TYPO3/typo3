@@ -1169,7 +1169,7 @@ abstract class AbstractMenuContentObject
                 if ($this->isItemState($state, $key)) {
                     // if this is the first element of type $state, we must generate the custom configuration.
                     if ($customConfiguration === null) {
-                        $customConfiguration = $typoScriptService->explodeConfigurationForOptionSplit((array)$this->mconf[$state . '.'], $splitCount);
+                        $customConfiguration = $typoScriptService->explodeConfigurationForOptionSplit((array)($this->mconf[$state . '.'] ?? []), $splitCount);
                     }
                     // Substitute normal with the custom (e.g. IFSUB)
                     if (isset($customConfiguration[$key])) {
