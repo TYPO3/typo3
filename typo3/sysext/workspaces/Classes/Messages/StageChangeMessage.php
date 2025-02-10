@@ -22,14 +22,14 @@ namespace TYPO3\CMS\Workspaces\Messages;
  *
  * @internal
  */
-final class StageChangeMessage
+final readonly class StageChangeMessage
 {
     public function __construct(
-        public readonly array $workspaceRecord,
-        public readonly int $stageId,
-        public readonly array $affectedElements,
-        public readonly string $comment,
-        public readonly array $recipients,
-        public readonly array $currentUserRecord
+        public array $workspaceRecord,
+        public int $stageId,
+        public array $affectedElements,
+        public string $comment,
+        public array $recipients,
+        public array $currentUserRecord
     ) {}
 }
