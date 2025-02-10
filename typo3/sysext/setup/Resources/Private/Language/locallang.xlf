@@ -153,6 +153,9 @@
 			<trans-unit id="backendTitleFormat.titleFirst">
 				<source>[title] · [sitename]</source>
 			</trans-unit>
+			<trans-unit id="warning.chineseSimplified">
+				<source>Chinese Simplified (legacy) - Warning: Choose Chinese Simplified below, as this is wrong due to older versions of TYPO3 and might be removed soon.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>
