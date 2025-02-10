@@ -27,6 +27,9 @@ use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -38,6 +41,7 @@ class CleanFlexFormsCommand extends Command
     public function __construct(
         private readonly ConnectionPool $connectionPool,
         private readonly FlexFormTools $flexFormTools,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {
         parent::__construct();
     }
@@ -69,17 +73,9 @@ class CleanFlexFormsCommand extends Command
 
         $numberOfAffectedRecords = 0;
         $numberOfAffectedTables = 0;
-        foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
-            if (!is_array($tableConfiguration['columns'] ?? false)) {
-                continue;
-            }
-            $flexFieldsInTable = [];
-            foreach ($tableConfiguration['columns'] as $columnName => $columnDefinition) {
-                if (($columnDefinition['config']['type'] ?? '') !== 'flex') {
-                    continue;
-                }
-                $flexFieldsInTable[] = $columnName;
-            }
+        /** @var TcaSchema $schema */
+        foreach ($this->tcaSchemaFactory->all() as $tableName => $schema) {
+            $flexFieldsInTable = $schema->getFieldsOfType(TableColumnType::FLEX);
             if (empty($flexFieldsInTable)) {
                 continue;
             }
@@ -89,8 +85,11 @@ class CleanFlexFormsCommand extends Command
             // from Backend point of view, this command follows this view.
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $orWheres = [];
-            foreach ($flexFieldsInTable as $flexFieldInTable) {
-                $orWheres[] = $queryBuilder->expr()->neq($flexFieldInTable, $queryBuilder->createNamedParameter(''));
+            $arrayFlexFieldsInTable = [];
+            foreach ($flexFieldsInTable as $field) {
+                // $flexFieldsInTable is a generator that can only be iterated once. Stash this away for re-use.
+                $arrayFlexFieldsInTable[] = $field;
+                $orWheres[] = $queryBuilder->expr()->neq($field->getName(), $queryBuilder->createNamedParameter(''));
             }
             $result = $queryBuilder
                 ->select('*')
@@ -100,28 +99,28 @@ class CleanFlexFormsCommand extends Command
                 ->executeQuery();
             while ($record = $result->fetchAssociative()) {
                 $recordHadUpdate = false;
-                foreach ($flexFieldsInTable as $flexFieldInTable) {
-                    if ((string)$record[$flexFieldInTable] === '') {
+                foreach ($arrayFlexFieldsInTable as $field) {
+                    if ((string)$record[$field->getName()] === '') {
                         // Don't handle empty or null value
                         continue;
                     }
                     // Clean XML and check against current record value.
-                    $cleanXml = $this->flexFormTools->cleanFlexFormXML($tableName, $flexFieldInTable, $record);
-                    if ($cleanXml !== $record[$flexFieldInTable]) {
+                    $cleanXml = $this->flexFormTools->cleanFlexFormXML($tableName, $field->getName(), $record);
+                    if ($cleanXml !== $record[$field->getName()]) {
                         $recordHadUpdate = true;
                         $tableHadUpdate = true;
                         if (!$isDryRun) {
                             $this->connectionPool->getConnectionForTable($tableName)->update(
                                 $tableName,
-                                [$flexFieldInTable => $cleanXml],
+                                [$field->getName() => $cleanXml],
                                 ['uid' => $record['uid']],
-                                [$flexFieldInTable => Connection::PARAM_STR]
+                                [$field->getName() => Connection::PARAM_STR]
                             );
                         }
                         $io->writeln(
                             $isDryRun
-                            ? 'Found dirty FlexForm XML in record "' . $tableName . ':' . $record['uid'] . '", field "' . $flexFieldInTable . '".'
-                            : 'Updated FlexForm XML in record "' . $tableName . ':' . $record['uid'] . '", field "' . $flexFieldInTable . '".'
+                            ? 'Found dirty FlexForm XML in record "' . $tableName . ':' . $record['uid'] . '", field "' . $field->getName() . '".'
+                            : 'Updated FlexForm XML in record "' . $tableName . ':' . $record['uid'] . '", field "' . $field->getName() . '".'
                         );
                     }
                 }

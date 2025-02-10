@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Lowlevel\Integrity;
 
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -24,6 +25,13 @@ use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\CategoryFieldType;
+use TYPO3\CMS\Core\Schema\Field\GroupFieldType;
+use TYPO3\CMS\Core\Schema\Field\SelectRelationFieldType;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -39,6 +47,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::relationsAction()
  * @see \TYPO3\CMS\Lowlevel\Controller\DatabaseIntegrityController::recordStatisticsAction()
  */
+#[Autoconfigure(public: true)]
 class DatabaseIntegrityCheck
 {
     /**
@@ -72,6 +81,10 @@ class DatabaseIntegrityCheck
 
     protected array $lRecords = [];
     protected string $lostPagesList = '';
+
+    public function __construct(
+        protected readonly TcaSchemaFactory $tcaSchemaFactory
+    ) {}
 
     public function getPageTranslatedPageIDArray(): array
     {
@@ -143,8 +156,14 @@ class DatabaseIntegrityCheck
     {
         $this->lostPagesList = '';
         $pageIds = GeneralUtility::intExplode(',', $pid_list);
-        foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+        /** @var TcaSchema $schema */
+        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
             $pageIdsForTable = $pageIds;
+            // Remove preceding "-1," for non-versioned tables
+            if (!$schema->isWorkspaceAware()) {
+                $pageIdsForTable = array_combine($pageIdsForTable, $pageIdsForTable);
+                unset($pageIdsForTable[-1]);
+            }
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
             $queryResult = $queryBuilder
@@ -180,22 +199,33 @@ class DatabaseIntegrityCheck
      * @param int $uid The uid of the record which will have the PID value set to 0 (zero)
      * @return bool TRUE if done.
      */
-    public function fixLostRecord($table, $uid): bool
+    public function fixLostRecord(string $table, $uid): bool
     {
-        if ($table && $GLOBALS['TCA'][$table] && $uid && is_array($this->lRecords[$table][$uid]) && $GLOBALS['BE_USER']->isAdmin()) {
-            $updateFields = [
-                'pid' => 0,
-            ];
-            // If possible a lost record restored is hidden as default
-            if ($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']) {
-                $updateFields[$GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled']] = 1;
-            }
-            GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getConnectionForTable($table)
-                ->update($table, $updateFields, ['uid' => (int)$uid]);
-            return true;
+        if ($table === '') {
+            return false;
         }
-        return false;
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return false;
+        }
+        if (!$GLOBALS['BE_USER']->isAdmin()) {
+            return false;
+        }
+        if (!is_array($this->lRecords[$table][$uid])) {
+            return false;
+        }
+        $updateFields = [
+            'pid' => 0,
+        ];
+        // If possible a lost record restored is hidden as default
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $disableFieldName = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
+            $updateFields[$disableFieldName] = 1;
+        }
+        GeneralUtility::makeInstance(ConnectionPool::class)
+            ->getConnectionForTable($table)
+            ->update($table, $updateFields, ['uid' => (int)$uid]);
+        return true;
     }
 
     /**
@@ -210,7 +240,8 @@ class DatabaseIntegrityCheck
         $list_n = [];
         $pageIds = GeneralUtility::intExplode(',', $pid_list);
         if (!empty($pageIds)) {
-            foreach ($GLOBALS['TCA'] as $table => $tableConf) {
+            /** @var TcaSchema $schema */
+            foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
                 $pageIdsForTable = $pageIds;
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
                 $queryBuilder->getRestrictions()->removeAll();
@@ -259,17 +290,18 @@ class DatabaseIntegrityCheck
     public function getGroupFields(): array
     {
         $result = [];
-        foreach ($GLOBALS['TCA'] as $table => $tableConf) {
-            $cols = $GLOBALS['TCA'][$table]['columns'];
-            foreach ($cols as $field => $config) {
-                $fieldType = $config['config']['type'] ?? '';
-                if ($fieldType === 'group') {
-                    $result[$table][] = $field;
+        /** @var TcaSchema $schema */
+        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
+            foreach ($schema->getFields() as $field) {
+                if ($field instanceof SelectRelationFieldType) {
+                    $result[$table][] = $field->getName();
                 }
-                if (($fieldType === 'select' || $fieldType === 'category')
-                    && ($config['config']['foreign_table'] ?? false)
-                ) {
-                    $result[$table][] = $field;
+                // @todo: this should be handled in a better way?
+                if ($field instanceof CategoryFieldType) {
+                    $result[$table][] = $field->getName();
+                }
+                if ($field instanceof GroupFieldType) {
+                    $result[$table][] = $field->getName();
                 }
             }
         }
@@ -286,9 +318,9 @@ class DatabaseIntegrityCheck
         $fkey_arrays = $this->getGroupFields();
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         foreach ($fkey_arrays as $table => $fields) {
+            $schema = $this->tcaSchemaFactory->get($table);
             $connection = $connectionPool->getConnectionForTable($table);
-            $schemaManager = $connection->createSchemaManager();
-            $tableColumns = $schemaManager->listTableColumns($table);
+            $tableColumns = $connection->createSchemaManager()->listTableColumns($table);
 
             $queryBuilder = $connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()->removeAll();
@@ -348,44 +380,38 @@ class DatabaseIntegrityCheck
 
             while ($row = $queryResult->fetchAssociative()) {
                 foreach ($fields as $field) {
-                    if (trim($row[$field] ?? '')) {
-                        $fieldConf = $GLOBALS['TCA'][$table]['columns'][$field]['config'];
-                        if ($fieldConf['type'] === 'group' && !empty($fieldConf['allowed'])) {
-                            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-                            $dbAnalysis->start(
-                                $row[$field],
-                                $fieldConf['allowed'],
-                                $fieldConf['MM'] ?? null,
-                                $row['uid'],
-                                $table,
-                                $fieldConf
-                            );
-                            foreach ($dbAnalysis->itemArray as $tempArr) {
-                                if (!isset($this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']])) {
-                                    $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] = 0;
-                                }
-                                $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] += 1;
+                    if (!isset($row[$field])) {
+                        continue;
+                    }
+                    if (!trim($row[$field])) {
+                        continue;
+                    }
+                    if (!$schema->hasField($field)) {
+                        continue;
+                    }
+                    $fieldType = $schema->getField($field);
+                    $fieldConf = $fieldType->getConfiguration();
+                    if ($fieldType->isType(TableColumnType::GROUP)) {
+                        $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                        $dbAnalysis->initializeForField($table, $fieldType, $row['uid'], $row[$field]);
+                        foreach ($dbAnalysis->itemArray as $tempArr) {
+                            if (!isset($this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']])) {
+                                $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] = 0;
                             }
+                            $this->checkGroupDBRefs[$tempArr['table']][$tempArr['id']] += 1;
                         }
-                        if (($fieldConf['foreign_table'] ?? false)
-                            && ($fieldConf['type'] === 'select' || $fieldConf['type'] === 'category')
-                        ) {
-                            $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-                            $dbAnalysis->start(
-                                $row[$field],
-                                $fieldConf['foreign_table'],
-                                $fieldConf['MM'] ?? null,
-                                $row['uid'],
-                                $table,
-                                $fieldConf
-                            );
-                            foreach ($dbAnalysis->itemArray as $tempArr) {
-                                if ($tempArr['id'] > 0) {
-                                    if (!isset($this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']])) {
-                                        $this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']] = 0;
-                                    }
-                                    $this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']] += 1;
+                    }
+                    if (($fieldConf['foreign_table'] ?? false)
+                        && $fieldType->isType(TableColumnType::SELECT, TableColumnType::CATEGORY)
+                    ) {
+                        $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
+                        $dbAnalysis->initializeForField($table, $fieldType, $row['uid'], $row[$field]);
+                        foreach ($dbAnalysis->itemArray as $tempArr) {
+                            if ($tempArr['id'] > 0) {
+                                if (!isset($this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']])) {
+                                    $this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']] = 0;
                                 }
+                                $this->checkSelectDBRefs[$fieldConf['foreign_table']][$tempArr['id']] += 1;
                             }
                         }
                     }
@@ -400,11 +426,11 @@ class DatabaseIntegrityCheck
      * @param array $theArray Table with key/value pairs being table names and arrays with uid numbers
      * @return string HTML Error message
      */
-    public function testDBRefs($theArray): string
+    public function testDBRefs(array $theArray): string
     {
         $rows = [];
         foreach ($theArray as $table => $dbArr) {
-            if ($GLOBALS['TCA'][$table]) {
+            if ($this->tcaSchemaFactory->has($table)) {
                 $ids = array_keys($dbArr);
                 if (!empty($ids)) {
                     $connection = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -441,7 +467,7 @@ class DatabaseIntegrityCheck
                     }
                 }
             } else {
-                $rows[] = 'Codeerror. Table is not a table...';
+                $rows[] = 'Codeerror. Table is not a TCA table.';
             }
         }
 
