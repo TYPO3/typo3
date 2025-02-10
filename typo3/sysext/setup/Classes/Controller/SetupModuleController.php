@@ -691,7 +691,14 @@ class SetupModuleController
             if (!$this->locales->isLanguageKeyAvailable($languageCode)) {
                 continue;
             }
-            $labelIdentifier = $officialLanguages->getLabelIdentifier($languageCode);
+            // TYPO3 + Ecosystem wrongly uses "ch" as Chinese, but it should be Chamorro (see #106125)
+            // Ideally, we should remove "ch" from the system, marked as chinese, and then "go for it".
+            // Chinese Simplified is "zh-CN"
+            if ($languageCode === 'ch') {
+                $labelIdentifier = $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:warning.chineseSimplified');
+            } else {
+                $labelIdentifier = $officialLanguages->getLabelIdentifier($languageCode);
+            }
             $localizedName = htmlspecialchars($languageService->sL($labelIdentifier) ?: $name);
             $defaultName = $defaultLanguageLabelService->sL($labelIdentifier);
             if ($defaultName === $localizedName || $defaultName === '') {
