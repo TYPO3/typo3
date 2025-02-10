@@ -159,6 +159,18 @@
 			<trans-unit id="be_users.tabs.personal_data">
 				<source>Personal Data</source>
 			</trans-unit>
+			<trans-unit id="be_users.tabs.permissionRecords">
+				<source>Record Permissions</source>
+			</trans-unit>
+			<trans-unit id="be_users.palettes.account">
+				<source>Account</source>
+			</trans-unit>
+			<trans-unit id="be_users.palettes.authentication">
+				<source>Authentication</source>
+			</trans-unit>
+			<trans-unit id="be_users.palettes.permissionLanguages">
+				<source>Language permissions</source>
+			</trans-unit>
 			<trans-unit id="be_groups.title">
 				<source>Title</source>
 			</trans-unit>
@@ -206,6 +218,18 @@
 			</trans-unit>
 			<trans-unit id="be_groups.tabs.mounts_and_workspaces">
 				<source>Mounts</source>
+			</trans-unit>
+			<trans-unit id="be_groups.palettes.authentication">
+				<source>Authentication</source>
+			</trans-unit>
+			<trans-unit id="be_groups.palettes.permissionGeneral">
+				<source>General permissions</source>
+			</trans-unit>
+			<trans-unit id="be_groups.palettes.permissionLanguages">
+				<source>Language permissions</source>
+			</trans-unit>
+			<trans-unit id="be_groups.palettes.permissionSpecific">
+				<source>Specific permissions</source>
 			</trans-unit>
 			<trans-unit id="be_groups.fileoper_perms">
 				<source>Fileoperation permissions</source>
