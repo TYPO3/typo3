@@ -4741,12 +4741,6 @@ parameters:
 			path: ../../typo3/sysext/lowlevel/Classes/Controller/DatabaseIntegrityController.php
 
 		-
-			message: '#^Call to function is_array\(\) with list\<int\> will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/lowlevel/Classes/Integrity/DatabaseIntegrityCheck.php
-
-		-
 			message: '#^Parameter \#1 \$array \(array\{0\: string, 1\?\: string\}\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 1
