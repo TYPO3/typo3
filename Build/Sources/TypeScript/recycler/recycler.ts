@@ -154,12 +154,6 @@ class Recycler {
       this.loadDeletedElements();
     }).delegateTo(document, Identifiers.paginator);
 
-    if (!TYPO3.settings.Recycler.deleteDisable) {
-      (document.querySelector(Identifiers.massDelete) as HTMLElement).style.display = 'block';
-    } else {
-      document.querySelector(Identifiers.massDelete).remove();
-    }
-
     // checkboxes in the table
     new RegularEvent('multiRecordSelection:checkbox:state:changed', this.handleCheckboxStateChanged.bind(this)).bindTo(document);
     new RegularEvent('multiRecordSelection:action:massundo', this.undoRecord.bind(this)).bindTo(document);
@@ -204,13 +198,15 @@ class Recycler {
 
     if (this.markedRecordsForMassAction.length > 0) {
       const massUndo = document.querySelector(Identifiers.massUndo) as HTMLButtonElement;
-      const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
 
       massUndo.querySelector('span.text')
         .textContent = this.createMessage(TYPO3.lang['button.undoselected'], [this.markedRecordsForMassAction.length.toString(10)]);
 
-      massDelete.querySelector('span.text')
-        .textContent = this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length.toString(10)]);
+      if (!TYPO3.settings.Recycler.deleteDisable) {
+        const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
+        massDelete.querySelector('span.text')
+          .textContent = this.createMessage(TYPO3.lang['button.deleteselected'], [this.markedRecordsForMassAction.length.toString(10)]);
+      }
     } else {
       this.resetMassActionButtons();
     }
@@ -221,11 +217,15 @@ class Recycler {
    */
   private resetMassActionButtons(): void {
     const massUndo = document.querySelector(Identifiers.massUndo) as HTMLButtonElement;
-    const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
 
     this.markedRecordsForMassAction = [];
     massUndo.querySelector('span.text').textContent = TYPO3.lang['button.undo'];
-    massDelete.querySelector('span.text').textContent = TYPO3.lang['button.delete'];
+
+    if (!TYPO3.settings.Recycler.deleteDisable) {
+      const massDelete = document.querySelector(Identifiers.massDelete) as HTMLButtonElement;
+      massDelete.querySelector('span.text').textContent = TYPO3.lang['button.delete'];
+    }
+
     document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
   }
 
