@@ -12,23 +12,18 @@ The internal notes are a useful feature for adding context and notes to
 pages. It provides a way for users to document important information
 related to specific pages.
 
-See it in action
-================
+..  contents:: Table of Contents
 
-This TYPO3 Feature Demo video from October 2024 shows the system notes usage in
-action.
-
-..  youtube:: asXXrZWkqf4
+..  _for-editors-usage:
 
 Usage
 =====
 
-..  contents:: Table of Contents
-    :depth: 2
-    :local:
+..  _for-editors-add-note:
 
 Adding a note
 -------------
+
 To add a note to a page:
 
 #.  Log in to the TYPO3 backend as a user with appropriate permissions.
@@ -38,16 +33,17 @@ To add a note to a page:
 #.  Click on :guilabel:`Create internal note for this page` .
 
     ..  figure:: /Images/sys_note_create.png
-        :alt: Creating a new sys_note note
-        :class: with-shadow
+        :alt: Screenshot demonstrating the location of the "Create internal note" button in the module header of the Page module
 
-        Button to create a new internal note
+        The button to create a system not is located on the top right of the "Page" and "List" modules
 
 #.  Create a new internal note, select the appropriate category and add
     the desired text content.
 
 #.  Save the note.
 
+
+..  _for-editors-categories:
 
 Categories
 ----------
@@ -66,14 +62,12 @@ To-Do
 Template
     Used to output a template.
 
-..  note::
-    Each category is represented by a distinct icon.
-
 ..  figure:: /Images/sys_note_backend_formular.png
     :alt: Creating a new internal note
-    :class: with-shadow
 
     Create a new internal note
+
+..  _for-editors-description:
 
 Describing the note
 -------------------
@@ -84,25 +78,17 @@ description in the :guilabel:`Message` field.
 Activate the :guilabel:`Personal` toggle in the :guilabel:`Access` tab, if the
 note should be displayed only for you.
 
-..  figure:: /Images/sys_note_personal.png
-    :alt: Personal field
-    :class: with-shadow
 
-    Using the :guilabel:`Personal` feature
+..  _for-editors-output:
 
 How does the internal note look in the backend?
 ===============================================
 
-When a backend user opens the corresponding page, they will see a box displaying
-the internal note, if at least one is available. The various colors represent
-the different categories.
+A System note is displayed on the top or bottom (depending on which option was
+activated in the record) of the modules "Page" and "List" when viewing the
+page in question:
 
-..  figure:: /Images/sys_note_adding_note.png
-    :alt: Different internal note categories
-    :class: with-shadow
+..  figure:: /Images/sys_note_output.png
+    :alt: Screenshot of a TODO note on the top of the "Page" backend module
 
-    Different internal note categories
-
-..  note::
-    After creating the note, you can see who created the note and the
-    creation date of the note.
+    If you have sufficient permissions you can edit or delete the note.

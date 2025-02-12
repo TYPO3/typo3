@@ -12,6 +12,8 @@ Internal notes allow editors to document important information related to
 specific pages, enhancing the overall usability and functionality of TYPO3
 for your organization.
 
+..  _for-integrators-configuration:
+
 Administration / configuration
 ==============================
 
@@ -21,8 +23,10 @@ read and/or write access to the :sql:`sys_note` table in TYPO3. Without the
 appropriate access permissions, editors may encounter issues when trying to
 create, view, or modify notes.
 
-Access configuration
---------------------
+..  _for-integrators-permissions:
+
+User permissions configuration
+==============================
 
 Access to the :sql:`sys_note` table can be configured through TYPO3's backend
 user access settings. Here is how you can configure the necessary permissions:
@@ -35,12 +39,13 @@ user access settings. Here is how you can configure the necessary permissions:
     :ref:`Backend user group <t3coreapi:access-users-groups-groups>`,
     if you do not have one already.
 
+    Go to tab :guilabel:`Record Permissions`.
+
 #.  Activate the :guilabel:`Internal note` checkbox for both
-    :guilabel:`Tables (listing)` and :guilabel:`Tables (modify)`.
+    :guilabel:`Read & Write` access in field :guilabel:`Table permissions`.
 
     ..  figure:: /Images/sys_note_access.png
-        :alt: Access to the sys_note table
-        :class: with-shadow
+        :alt: Screenshot of the backend user group record, tab "Record permissions", field "Table permissions"
 
         Giving access to the :sql:`sys_note` table
 
