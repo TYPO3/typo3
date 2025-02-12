@@ -4330,77 +4330,167 @@ class DataHandler
     /**
      * Moving single records
      *
-     * @param string $table Table name to move
-     * @param int $uid Record uid to move
-     * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+     * @param int $destinationPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
      * @internal should only be used from within DataHandler
      */
-    public function moveRecord($table, $uid, $destPid): void
+    public function moveRecord($table, int $uid, $destinationPid): void
     {
-        if (!$this->tcaSchemaFactory->has($table)) {
+        if (!$this->tcaSchemaFactory->has($table) || $uid <= 0) {
             return;
         }
+        $schema = $this->tcaSchemaFactory->get($table);
 
-        // In case the record to be moved turns out to be an offline version,
-        // we have to find the live version and work on that one.
-        if ($lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $uid, 'uid')) {
-            $uid = $lookForLiveVersion['uid'];
+        // Gather record facts
+        $plainRecord = BackendUtility::getRecord($table, $uid, '*', '', false);
+        if (empty($plainRecord)) {
+            return;
         }
-        // Initialize:
-        $destPid = (int)$destPid;
-        // Get this before we change the pid (for logging)
-        $propArr = $this->getRecordProperties($table, $uid);
-        $moveRec = $this->getRecordProperties($table, $uid, true);
-        // This is the actual pid of the moving to destination
-        $resolvedPid = $this->resolvePid($table, $destPid);
-        // Finding out, if the record may be moved from where it is. If the record is a non-page, then it depends on edit-permissions.
-        // If the record is a page, then there are two options: If the page is moved within itself,
-        // (same pid) it's edit-perms of the pid. If moved to another place then its both delete-perms of the pid and new-page perms on the destination.
-        if ($table !== 'pages' || $resolvedPid == $moveRec['pid']) {
-            // Edit rights for the record...
-            $mayMoveAccess = $this->checkRecordUpdateAccess($table, $uid);
+        $isTableWorkspaceAware = $schema->isWorkspaceAware();
+        $isMovingInWorkspaces = false;
+        if ($this->BE_USER->workspace > 0) {
+            $isMovingInWorkspaces = true;
+        }
+        if (!$isTableWorkspaceAware && (int)($plainRecord['t3ver_wsid'] ?? 0) > 0) {
+            // Moving record in a not workspace aware table, and the record is a workspace record. Broken record. Skip.
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Attempt to move workspace record {table}:{uid} in not workspace aware table', null, ['table' => $table, 'uid' => $uid], $plainRecord['pid']);
+            return;
+        }
+        if (!$isMovingInWorkspaces && (int)($plainRecord['t3ver_wsid'] ?? 0) > 0) {
+            // Trying to move a workspace record while user is in live. For now, we'll log and skip.
+            // @todo: This seems to be fully unhandled right now: If a live workspace record is moved, we should
+            //        consider existing workspace overlays somehow. For instance, it would *probably* be good to move
+            //        an existing workspace overlay to a different page, when the live record is moved. There are various
+            //        edge cases we need to think about when doing this: What should happen if a live record is just resorted
+            //        on the same page? What if a live record is moved that has a workspace-moved overlay already? And what
+            //        if that move-overlay is a combination of "has first been changed, then turned into a move placeholder"?
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Attempt to move workspace record {table}:{uid} and user is not in this workspace', null, ['table' => $table, 'uid' => $uid], $plainRecord['pid']);
+            return;
+        }
+        if ((int)($plainRecord['t3ver_wsid'] ?? 0) === 0 && (int)($plainRecord['t3ver_oid'] ?? 0) > 0) {
+            // Inconsistent combination: We have a live record with t3ver_oid not 0. Should not happen. This may be no
+            // hard problem and may be a result of some incomplete publish. We ignore it for now but log a warning.
+            // @todo: We may want to set such records to t3ver_oid=0 (and potentially t3ver_state=0) since they *are* live.
+            //        This is more a task of a general "repair" strategy (ext:dbdoctor), but details like this *may* be
+            //        involved at a central DH place when performing change operations to existing records?
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::WARNING, 'Moving live record {table}:{uid} while it has non zero t3ver_oid="{t3verOid}"', null, ['table' => $table, 'uid' => $uid, 't3verOid' => $plainRecord['t3ver_oid']], $plainRecord['pid']);
+        }
+        $liveRecord = null;
+        $workspaceRecord = null;
+        if ($isMovingInWorkspaces && !$isTableWorkspaceAware) {
+            // Moving a live record when user is in a workspace. Odd, but may happen. Permission checked below.
+            $liveRecord = $plainRecord;
+        } elseif ($isMovingInWorkspaces && (int)($plainRecord['t3ver_wsid'] === 0)) {
+            // We are in a workspace but got a move request for a live record uid. There may be an existing workspace overlay
+            // that should be moved instead. This is checked using BackendUtility::getWorkspaceVersionOfRecord(), which respects
+            // current user workspace. But it also returns a workspace row if the record is a "new placeholder" that has no live
+            // version. In this case, $liveRecord is kept null, but $workspaceRecord is set. Otherwise, both are set.
+            $potentialWorkspaceOverlay = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid);
+            if ($potentialWorkspaceOverlay) {
+                $workspaceRecord = $potentialWorkspaceOverlay;
+                if (VersionState::tryFrom($potentialWorkspaceOverlay['t3ver_state']) !== VersionState::NEW_PLACEHOLDER) {
+                    // A live record is requested to be moved, and we have an overlay record as well.
+                    $liveRecord = $plainRecord;
+                }
+            } else {
+                // We are in workspace requesting to move a live record that has no overlay yet.
+                // This will create "move placeholder" records down below.
+                $liveRecord = $plainRecord;
+            }
+            // Do not work on $potentialWorkspaceOverlay anymore
+            unset($potentialWorkspaceOverlay);
+        } elseif ((int)($plainRecord['t3ver_wsid'] ?? 0) > 0) {
+            // Moving workspace overlay record
+            $workspaceRecord = $plainRecord;
+            if ((int)$workspaceRecord['t3ver_oid'] > 0) {
+                // The record is an overlay of a live record, the live record needs to exist. New workspace
+                // placeholder records have no live record and t3ver_oid=0, leaving $liveRecord unset.
+                $liveRecord = BackendUtility::getRecord($table, $workspaceRecord['t3ver_oid'], '*', '', false);
+                if (empty($liveRecord)) {
+                    $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Attempt to move workspace overlay record {table}:{uid}, but live record {table}:{liveUid} not found', null, ['table' => $table, 'uid' => $uid, 'liveUid' => $workspaceRecord['t3ver_oid']], $workspaceRecord['pid']);
+                    return;
+                }
+            }
         } else {
-            $mayMoveAccess = is_array($this->recordInfoWithPermissionCheck($table, $uid, Permission::PAGE_DELETE));
+            // Moving a live record in live workspaces. There is no overlay.
+            $liveRecord = $plainRecord;
         }
-        // Finding out, if the record may be moved TO another place. Here we check insert-rights (non-pages = edit, pages = new),
-        // unless the pages are moved on the same pid, then edit-rights are checked
-        if ($table !== 'pages' || $resolvedPid != $moveRec['pid']) {
-            // Insert rights for the record...
-            $mayInsertAccess = $this->checkRecordInsertAccess($table, $resolvedPid, SystemLogDatabaseAction::MOVE);
-        } else {
-            $mayInsertAccess = $this->checkRecordUpdateAccess($table, $uid);
-        }
-        // Checking if there is anything else disallowing moving the record by checking if editing is allowed
-        $fullLanguageCheckNeeded = $table !== 'pages';
-        $mayEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded);
-        // If moving is allowed, begin the processing:
-        if (!$mayEditAccess) {
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to do so [{reason}]', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'reason' => $this->BE_USER->errorMsg], $propArr['event_pid']);
-            return;
+        // Do not work on these variables anymore
+        unset($plainRecord, $isTableWorkspaceAware, $isMovingInWorkspaces);
+        if ($liveRecord === null && $workspaceRecord === null) {
+            // If both are still null, some sanity and determination checks above are broken
+            throw new \RuntimeException('Could not determine live nor workspace record when moving', 1739389473);
         }
 
-        if (!$mayMoveAccess) {
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to do so', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
+        // At this point we have:
+        // * $liveRecord set and $workspaceRecord is null: We're moving a live record.
+        // * $liveRecord null and $workspaceRecord is set: We're moving a "new placeholder", turning it into
+        //   a "move placeholder" if all goes well.
+        // * $liveRecord set and $workspaceRecord set: We're moving an existing workspace overlay.
+
+        $sourceUid = (int)($workspaceRecord['uid'] ?? $liveRecord['uid']);
+        $sourcePid = (int)($workspaceRecord['pid'] ?? $liveRecord['pid']);
+        $destinationPid = (int)$destinationPid;
+        $targetPid = $this->resolvePid($table, $destinationPid);
+
+        if ($table === 'pages' && $targetPid !== $sourcePid) {
+            // If a page is moved to a different parent page, delete permissions are needed for the page.
+            if (!is_array($this->recordInfoWithPermissionCheck($table, (int)($liveRecord['uid'] ?? $workspaceRecord['uid']), Permission::PAGE_DELETE))) {
+                $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page {table}:{uid} without having permissions to do so', null, ['table' => $table, 'uid' => $sourceUid], $sourcePid);
+                return;
+            }
+        } elseif (!$this->checkRecordUpdateAccess($table, (int)($liveRecord['uid'] ?? $workspaceRecord['uid']))) {
+            // If a page is moved within same parent page, page edit records are needed.
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} without having permissions to do so', null, ['table' => $table, 'uid' => $sourceUid], $sourcePid);
             return;
         }
-
-        if (!$mayInsertAccess) {
-            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) without having permissions to insert', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
+        if ($table === 'pages' && $targetPid === $sourcePid) {
+            if (!$this->checkRecordUpdateAccess($table, (int)($liveRecord['uid'] ?? $workspaceRecord['uid']))) {
+                // Page is resorted within same parent but does not have update permissions.
+                $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} without having permissions to update', null, ['table' => $table, 'uid' => $sourceUid], $sourcePid);
+                return;
+            }
+        } elseif (!$this->checkRecordInsertAccess($table, $targetPid, SystemLogDatabaseAction::MOVE)) {
+            // Page or record is moved to different target, but lacks insert permissions.
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} to pid "{targetPid}" without having permissions to insert', null, ['table' => $table, 'uid' => $sourceUid, 'targetPid' => $targetPid], $targetPid);
+            return;
+        }
+        if (!$this->BE_USER->recordEditAccessInternals($table, $liveRecord ?? $workspaceRecord, false, false, $table !== 'pages')) {
+            // Checking if there is anything else disallowing moving the record by checking if editing is allowed
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $sourceUid, 'reason' => $this->BE_USER->errorMsg], $sourcePid);
             return;
         }
 
         $recordWasMoved = false;
-        // Move the record via a hook, used e.g. for versioning
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
-            $hookObj = GeneralUtility::makeInstance($className);
-            if (method_exists($hookObj, 'moveRecord')) {
-                /** @var bool $recordWasMoved */
-                $hookObj->moveRecord($table, $uid, $destPid, $propArr, $moveRec, $resolvedPid, $recordWasMoved, $this);
+        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [])) {
+            // Extensive hook argument handling for b/w compatibility
+            $propArr = [
+                'header' => 'DATAHANDLER DUMMY',
+                'pid' => $sourcePid,
+                'event_pid' => $table === 'pages'
+                    ? ((int)($workspaceRecord['t3ver_oid'] ?? null) ?: $liveRecord['uid'] ?? $workspaceRecord['uid'])
+                    : $sourcePid,
+                't3ver_state' => $workspaceRecord['t3ver_state'] ?? $liveRecord['t3ver_state'] ?? 0,
+            ];
+            $moveRec = [
+                'header' => 'DATAHANDLER DUMMY',
+                'pid' => (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
+                'event_pid' => $table === 'pages'
+                    ? (int)(($liveRecord['t3ver_oid'] ?? null) ?: ($liveRecord['uid'] ?? $workspaceRecord['uid']))
+                    : (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
+                't3ver_state' => ($liveRecord['t3ver_state'] ?? $workspaceRecord['t3ver_state'] ?? 0),
+            ];
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
+                $hookObj = GeneralUtility::makeInstance($className);
+                if (method_exists($hookObj, 'moveRecord')) {
+                    /** @var bool $recordWasMoved */
+                    $hookObj->moveRecord($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid, $propArr, $moveRec, $targetPid, $recordWasMoved, $this);
+                }
             }
         }
+
         // Move the record if a hook hasn't moved it yet
         if (!$recordWasMoved) {
-            $this->moveRecord_raw($table, $uid, $destPid);
+            $this->moveRecord_raw($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid);
         }
     }
 
@@ -4410,7 +4500,6 @@ class DataHandler
      * @param string $table Table name to move
      * @param int $uid Record uid to move
      * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-     * @see moveRecord()
      * @internal should only be used from within DataHandler
      */
     public function moveRecord_raw($table, $uid, $destPid): void
@@ -4627,7 +4716,7 @@ class DataHandler
         // Moving records to a positive destination will insert each
         // record at the beginning, thus the order is reversed here:
         foreach (array_reverse($dbAnalysis->itemArray) as $item) {
-            $this->moveRecord($item['table'], $item['id'], $destPid);
+            $this->moveRecord($item['table'], (int)$item['id'], $destPid);
         }
     }
 
@@ -4685,9 +4774,9 @@ class DataHandler
             foreach ($l10nRecords as $record) {
                 $localizedDestPid = (int)($localizedDestPids[$record[$languageField]] ?? 0);
                 if ($localizedDestPid < 0) {
-                    $this->moveRecord($table, $record['uid'], $localizedDestPid);
+                    $this->moveRecord($table, (int)$record['uid'], $localizedDestPid);
                 } else {
-                    $this->moveRecord($table, $record['uid'], $destPid);
+                    $this->moveRecord($table, (int)$record['uid'], $destPid);
                 }
             }
         }

@@ -456,7 +456,7 @@ class DataHandlerHook
             if ($versionState->indicatesPlaceholder()) {
                 continue;
             }
-            $dataHandler->moveRecord($item['table'], $item['id'], $resolvedPageId);
+            $dataHandler->moveRecord($item['table'], (int)$item['id'], $resolvedPageId);
         }
     }
 

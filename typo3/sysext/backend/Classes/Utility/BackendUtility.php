@@ -2707,6 +2707,8 @@ class BackendUtility
         $queryBuilder = self::getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
+            // Workspace records aren't soft-delete aware: deleted=1 & t3ver_wsid>0 should not exist.
+            // It should be fine to add the restriction to not accidentally catch invalid records.
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         return $queryBuilder
             ->select(...GeneralUtility::trimExplode(',', $fields))
@@ -2781,6 +2783,7 @@ class BackendUtility
      * @param int|string $uid Record UID of draft, offline version
      * @param string $fields Field list, default is *
      * @return array|null If found, the record, otherwise NULL
+     * @todo: Warning. If uid is a 'new placeholder' record in workspaces, this row is returned.
      */
     public static function getLiveVersionOfRecord($table, $uid, $fields = '*')
     {
@@ -2798,6 +2801,7 @@ class BackendUtility
      * @param int|string $uid Uid of the offline/draft record
      * @return int|null The id of the live version of the record (or NULL if nothing was found)
      * @internal should only be used from within TYPO3 Core
+     * @todo: Warning. If uid is a 'new placeholder' record in workspaces, this is considered the 'live' uid!
      */
     public static function getLiveVersionIdOfRecord($table, $uid)
     {
