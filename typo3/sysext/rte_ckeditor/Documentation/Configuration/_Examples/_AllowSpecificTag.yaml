@@ -1,6 +1,12 @@
-# Allow the <iframe> tag with all attributes, all classes and all styles:
+# Allow the <iframe> tag with all attributes, all classes and all styles,
+# as well as demonstrating class restrictions to the <i> tag
 editor:
   config:
     htmlSupport:
       allow:
         - { name: 'iframe', attributes: true, classes: true, styles: true }
+        # multiple definitions for the same tag name are possible
+        - { name: 'i', classes: [ 'fa-brands', 'fa-typo3' ] }
+        # allows any repetitive class name, that starts with `fa-`
+        # (the regular expression has to be defined in `pattern`)
+        - { name: 'i', classes: { pattern: '^((fa-[^\h]+)(\h+|$))+' } }
