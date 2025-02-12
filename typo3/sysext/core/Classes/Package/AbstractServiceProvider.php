@@ -227,8 +227,8 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             ];
 
             try {
-                $errorContext = 'EXT:' . $packageName . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
-                $setCollector->add($setProvider->get($fileInfo, $errorContext));
+                $virtualSetPath = 'EXT:' . $packageName . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
+                $setCollector->add($setProvider->get($fileInfo, $virtualSetPath));
             } catch (InvalidSettingsDefinitionsException|InvalidCategoryDefinitionsException|InvalidSettingsException|InvalidSetException $e) {
                 $errorDetails = $errorMap[get_class($e)];
                 $setCollector->addError(
