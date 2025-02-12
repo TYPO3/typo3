@@ -22,6 +22,8 @@ import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interfa
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 interface IconIdentifier {
   collapse: string;
@@ -36,16 +38,22 @@ interface RecordlistIdentifier {
   editMultiple: string;
   icons: IconIdentifier;
 }
-interface DataHandlerEventPayload {
-  action: string;
-  component: string;
-  table: string;
-  uid: number;
+interface DataHandlerEventData {
+  payload: {
+    hasErrors: boolean;
+    action: string;
+    component: string;
+    table: string;
+    uid: number;
+  }
 }
 interface EditRecordsConfiguration extends ActionConfiguration {
   tableName: string;
   columnsOnly: Array<string>;
   returnUrl: string;
+}
+type RecordListLoadTableResponse = {
+  tables: Record<string, string>;
 }
 
 /**
@@ -363,49 +371,68 @@ class Recordlist {
     });
   };
 
-  private handleDataHandlerResult(e: CustomEvent): void {
+  private handleDataHandlerResult(e: CustomEvent<DataHandlerEventData>): void {
     const payload = e.detail.payload;
     if (payload.hasErrors) {
       return;
     }
 
     if (payload.action === 'delete') {
-      this.deleteRow(payload);
+      // Reload all tables on the current page as a DataHandler delete operation may delete dependant records from a
+      // different table
+      // @todo: once DataHandler can return a reliable result set of "work done", reload all tables affected only
+      const tablesOnPage = Array.from(document.querySelectorAll('table[data-table]')).map((table: HTMLTableElement) => table.dataset.table);
+      this.reloadTables(tablesOnPage);
     }
   }
 
-  private readonly deleteRow = (payload: DataHandlerEventPayload): void => {
-    const tableElement = document.querySelector(`table[data-table="${payload.table}"]`) as HTMLTableElement;
-    const panel = tableElement.closest('.recordlist') as HTMLElement;
-    const panelHeading = panel.querySelector('.recordlist-heading') as HTMLElement;
-    const rowElement = tableElement.querySelector(`tr[data-uid="${payload.uid}"]`) as HTMLElement;
-    const translatedRowElements = tableElement.querySelectorAll<HTMLElement>(`[data-l10nparent="${payload.uid}"]`);
-
-    translatedRowElements.forEach((translatedRowElement: HTMLTableRowElement): void => {
-      new RegularEvent('transitionend', (): void => {
-        translatedRowElement.remove();
-      }).bindTo(translatedRowElement);
-      translatedRowElement.classList.add('record-deleted');
-    });
-
-    new RegularEvent('transitionend', (): void => {
-      rowElement.remove();
-
-      if (tableElement.querySelectorAll('tbody tr').length === 0) {
-        panel.remove();
+  private reloadTables(tables: string[]): void {
+    for (const table of tables) {
+      const tableElement = document.querySelector(`table[data-table="${table}"]`);
+      if (tableElement instanceof HTMLTableElement) {
+        const panel = tableElement.closest('.recordlist') as HTMLElement;
+        panel.classList.add('ui-block-overlay');
       }
-    }).bindTo(rowElement);
-    rowElement.classList.add('record-deleted');
-
-    if (rowElement.dataset.l10nparent === '0' || rowElement.dataset.l10nparent === '') {
-      const count = parseInt(panelHeading.querySelector('.t3js-table-total-items').textContent, 10);
-      panelHeading.querySelector('.t3js-table-total-items').textContent = (count - 1).toString();
     }
 
-    if (payload.table === 'pages') {
-      top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-    }
-  };
+    const currentUrl = new URL(window.location.href);
+    const queryArguments = {
+      id: currentUrl.searchParams.get('id'),
+      pointer: currentUrl.searchParams.get('pointer'),
+      searchTerm: currentUrl.searchParams.get('searchTerm'),
+      search_levels: currentUrl.searchParams.get('search_levels'),
+      sortField: currentUrl.searchParams.get('sortField'),
+      sortRev: currentUrl.searchParams.get('sortRev'),
+      table: currentUrl.searchParams.get('table'),
+      tables: tables
+    };
+    const request = new AjaxRequest(TYPO3.settings.ajaxUrls.record_list_table)
+      .withQueryArguments(Object.fromEntries(Object.entries(queryArguments).filter(([, v]) => v !== null)))
+      .get();
+    request.then(async (response: AjaxResponse): Promise<void> => {
+      const data: RecordListLoadTableResponse = await response.resolve();
+      for (const [table, markup] of Object.entries(data.tables)) {
+        const tableElement = document.querySelector(`table[data-table="${table}"]`);
+        if (tableElement instanceof HTMLTableElement) {
+          const panel = tableElement.closest('.recordlist') as HTMLElement;
+          panel.replaceWith(document.createRange().createContextualFragment(markup));
+        }
+      }
+
+      if ('pages' in data.tables) {
+        top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
+      }
+    }).finally((): void => {
+      // Remove remaining loading overlays again (e.g. when requested table was not in response)
+      for (const table of tables) {
+        const tableElement = document.querySelector(`table[data-table="${table}"]`);
+        if (tableElement instanceof HTMLTableElement) {
+          const panel = tableElement.closest('.recordlist') as HTMLElement;
+          panel.classList.remove('ui-block-overlay');
+        }
+      }
+    });
+  }
 
   private readonly registerPaginationEvents = (): void => {
     document.querySelectorAll('.t3js-recordlist-paging').forEach((trigger: HTMLInputElement) => {

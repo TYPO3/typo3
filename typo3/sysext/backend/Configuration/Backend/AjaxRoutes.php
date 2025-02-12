@@ -356,6 +356,12 @@ return [
         'target' => Controller\Page\LocalizationController::class . '::getUsedLanguagesInPage',
     ],
 
+    // Load record list table
+    'record_list_table' => [
+        'path' => '/recordlist/get-table',
+        'target' => Controller\RecordListController::class . '::getTableAction',
+    ],
+
     // Get summary of records to localize
     'records_localize_summary' => [
         'path' => '/records/localize/summary',

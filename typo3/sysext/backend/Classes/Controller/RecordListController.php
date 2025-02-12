@@ -42,6 +42,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -112,14 +113,7 @@ class RecordListController
         $this->pageInfo = is_array($pageinfo) ? $pageinfo : [];
         $this->pagePermissions = new Permission($backendUser->calcPerms($pageinfo));
 
-        // Check if Clipboard is allowed to be shown:
-        if (($this->modTSconfig['enableClipBoard'] ?? '') === 'activated') {
-            $this->allowClipboard = false;
-        } elseif (($this->modTSconfig['enableClipBoard'] ?? '') === 'selectable') {
-            $this->allowClipboard = true;
-        } elseif (($this->modTSconfig['enableClipBoard'] ?? '') === 'deactivated') {
-            $this->allowClipboard = false;
-        }
+        $this->allowClipboard = $this->isClipboardAllowed($this->modTSconfig);
 
         // Check if SearchBox is allowed to be shown:
         $this->allowSearch = !($this->modTSconfig['disableSearchBox'] ?? false);
@@ -132,31 +126,7 @@ class RecordListController
 
         // Get search levels from request or fall back to default, set in TSconifg
         $search_levels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? $this->modTSconfig['searchLevel.']['default'] ?? 0);
-
-        $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
-        $dbList->setRequest($request);
-        $dbList->setModuleData($this->moduleData);
-        $dbList->calcPerms = $this->pagePermissions;
-        $dbList->returnUrl = $this->returnUrl;
-        $dbList->showClipboardActions = true;
-        $dbList->disableSingleTableView = $this->modTSconfig['disableSingleTableView'] ?? false;
-        $dbList->listOnlyInSingleTableMode = $this->modTSconfig['listOnlyInSingleTableView'] ?? false;
-        $dbList->hideTables = $this->modTSconfig['hideTables'] ?? '';
-        $dbList->hideTranslations = (string)($this->modTSconfig['hideTranslations'] ?? '');
-        $dbList->tableTSconfigOverTCA = $this->modTSconfig['table.'] ?? [];
-        $dbList->allowedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['allowedNewTables'] ?? '', true);
-        $dbList->deniedNewTables = GeneralUtility::trimExplode(',', $this->modTSconfig['deniedNewTables'] ?? '', true);
-        $dbList->pageRow = $this->pageInfo;
-        $dbList->modTSconfig = $this->modTSconfig;
-        $dbList->setLanguagesAllowedForUser($siteLanguages);
-        $clickTitleMode = trim($this->modTSconfig['clickTitleMode'] ?? '');
-        $dbList->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
-        if (isset($this->modTSconfig['tableDisplayOrder.'])) {
-            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
-            $dbList->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($this->modTSconfig['tableDisplayOrder.']));
-        }
-        $clipboard = $this->initializeClipboard($request, (bool)$this->moduleData->get('clipBoard'));
-        $dbList->clipObj = $clipboard;
+        $dbList = $this->initializeDatabaseRecordList($request);
         $additionalRecordListEvent = $this->eventDispatcher->dispatch(new RenderAdditionalContentToRecordListEvent($request));
 
         $view = $this->moduleTemplateFactory->create($request);
@@ -165,7 +135,7 @@ class RecordListController
         if ($access || ($this->id === 0 && $search_levels !== 0 && $this->searchTerm !== '')) {
             // If there is access to the page or root page is used for searching, then perform actions and render table list.
             if ($cmd === 'delete' && $request->getMethod() === 'POST') {
-                $this->deleteRecords($request, $clipboard);
+                $this->deleteRecords($request, $dbList->clipObj);
             }
             $dbList->start($this->id, $this->table, $pointer, $this->searchTerm, $search_levels);
             $tableListHtml = $dbList->generateList();
@@ -191,7 +161,7 @@ class RecordListController
             $searchBoxHtml = $this->renderSearchBox($request, $dbList, $this->searchTerm, $search_levels);
         }
         $clipboardHtml = '';
-        if ($this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
+        if ($this->moduleData->get('clipBoard') && ($tableListHtml || $dbList->clipObj->hasElements())) {
             $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
@@ -202,7 +172,7 @@ class RecordListController
         if ($pageinfo) {
             $view->getDocHeaderComponent()->setMetaInformation($pageinfo);
         }
-        $this->getDocHeaderButtons($view, $clipboard, $request, $this->table, $dbList->listURL(), []);
+        $this->getDocHeaderButtons($view, $dbList->clipObj, $request, $this->table, $dbList->listURL(), []);
         $view->assignMultiple([
             'pageId' => $this->id,
             'pageTitle' => $title,
@@ -216,6 +186,92 @@ class RecordListController
             'additionalContentBottom' => $additionalRecordListEvent->getAdditionalContentBelow(),
         ]);
         return $view->renderResponse('RecordList');
+    }
+
+    public function getTableAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $backendUser = $this->getBackendUserAuthentication();
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+
+        BackendUtility::lockRecords();
+        $perms_clause = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
+        $id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
+        $singleTable = (string)($parsedBody['table'] ?? $queryParams['table'] ?? '');
+        if ($singleTable === '') {
+            $tables = array_unique((array)($parsedBody['tables'] ?? $queryParams['tables'] ?? []));
+        } else {
+            $tables = [$singleTable];
+        }
+        $pointer = max(0, (int)($parsedBody['pointer'] ?? $queryParams['pointer'] ?? 0));
+        $searchTerm = trim((string)($parsedBody['searchTerm'] ?? $queryParams['searchTerm'] ?? ''));
+
+        // Loading module configuration, clean up settings, current page and page access
+        $modTSconfig = BackendUtility::getPagesTSconfig($id)['mod.']['web_list.'] ?? [];
+        $pageInfo = BackendUtility::readPageAccess($id, $perms_clause);
+        $access = is_array($pageInfo);
+        $searchLevels = (int)($parsedBody['search_levels'] ?? $queryParams['search_levels'] ?? $modTSconfig['searchLevel.']['default'] ?? 0);
+
+        $tableMarkup = [];
+        if ($tables !== [] && ($access || ($id === 0 && $searchLevels !== 0 && $searchTerm !== ''))) {
+            foreach ($tables as $table) {
+                $originalTable = $table;
+                $dbList = $this->initializeDatabaseRecordList($request);
+                $dbList->forcedListRouteName = 'web_list';
+                if ($table === 'pages_translated') {
+                    $table = 'pages';
+                    $dbList->showOnlyTranslatedRecords(true);
+                }
+
+                // If there is access to the page or root page is used for searching, then perform actions and render table list.
+                $dbList->start($id, $singleTable, $pointer, $searchTerm, $searchLevels);
+                $tableMarkup[$originalTable] = $dbList->getTable($table);
+            }
+        }
+
+        return new JsonResponse(['tables' => $tableMarkup]);
+    }
+
+    protected function initializeDatabaseRecordList(ServerRequestInterface $request): DatabaseRecordList
+    {
+        $backendUser = $this->getBackendUserAuthentication();
+        $parsedBody = $request->getParsedBody();
+        $queryParams = $request->getQueryParams();
+        // The fallback to `uc` is needed with AJAX as there is no module context
+        $moduleData = $request->getAttribute('moduleData') ?? new ModuleData('web_list', $backendUser->uc['moduleData']['web_list'] ?? []);
+
+        $permissions = $backendUser->getPagePermsClause(Permission::PAGE_SHOW);
+        $id = (int)($parsedBody['id'] ?? $queryParams['id'] ?? 0);
+        $pageInfo = BackendUtility::readPageAccess($id, $permissions);
+        $modTSconfig = BackendUtility::getPagesTSconfig($id)['mod.']['web_list.'] ?? [];
+        $siteLanguages = $request->getAttribute('site')->getAvailableLanguages($backendUser, false, $this->id);
+        $pagePermissions = new Permission($backendUser->calcPerms($pageInfo));
+
+        $dbList = GeneralUtility::makeInstance(DatabaseRecordList::class);
+        $dbList->setRequest($request);
+        $dbList->setModuleData($moduleData);
+        $dbList->calcPerms = $pagePermissions;
+        $dbList->showClipboardActions = true; // @todo: why is this hardcoded? Check potential use of $this->isClipboardAllowed($modTSconfig)
+        $dbList->disableSingleTableView = $modTSconfig['disableSingleTableView'] ?? false;
+        $dbList->listOnlyInSingleTableMode = $modTSconfig['listOnlyInSingleTableView'] ?? false;
+        $dbList->hideTables = $modTSconfig['hideTables'] ?? '';
+        $dbList->hideTranslations = (string)($modTSconfig['hideTranslations'] ?? '');
+        $dbList->tableTSconfigOverTCA = $modTSconfig['table.'] ?? [];
+        $dbList->allowedNewTables = GeneralUtility::trimExplode(',', $modTSconfig['allowedNewTables'] ?? '', true);
+        $dbList->deniedNewTables = GeneralUtility::trimExplode(',', $modTSconfig['deniedNewTables'] ?? '', true);
+        $dbList->pageRow = $pageInfo;
+        $dbList->modTSconfig = $modTSconfig;
+        $dbList->setLanguagesAllowedForUser($siteLanguages);
+        $clickTitleMode = trim($modTSconfig['clickTitleMode'] ?? '');
+        $dbList->clickTitleMode = $clickTitleMode === '' ? 'edit' : $clickTitleMode;
+        if (isset($modTSconfig['tableDisplayOrder.'])) {
+            $typoScriptService = GeneralUtility::makeInstance(TypoScriptService::class);
+            $dbList->setTableDisplayOrder($typoScriptService->convertTypoScriptArrayToPlainArray($modTSconfig['tableDisplayOrder.']));
+        }
+        $clipboard = $this->initializeClipboard($request, (bool)$moduleData->get('clipBoard'));
+        $dbList->clipObj = $clipboard;
+
+        return $dbList;
     }
 
     /**
@@ -641,6 +697,14 @@ class RecordListController
             && $this->pagePermissions->editPagePermissionIsGranted()
             && $backendUser->checkLanguageAccess(0)
             && $backendUser->check('tables_modify', 'pages');
+    }
+
+    protected function isClipboardAllowed(array $tsConfig): bool
+    {
+        return match ($tsConfig['enableClipBoard'] ?? null) {
+            'activated', 'deactivated' => false,
+            default => true,
+        };
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication
