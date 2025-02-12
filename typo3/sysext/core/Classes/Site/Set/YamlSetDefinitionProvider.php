@@ -51,18 +51,19 @@ class YamlSetDefinitionProvider
         $this->sets[$set->name] = $set;
     }
 
-    public function get(\SplFileInfo $fileInfo, string $errorContext): SetDefinition
+    public function get(\SplFileInfo $fileInfo, ?string $virtualSetPath = null): SetDefinition
     {
         $filename = GeneralUtility::fixWindowsFilePath($fileInfo->getPathname());
+        $path = dirname($filename);
+        $virtualSetPath ??= $path . '/';
         // No placeholders or imports processed on purpose
         // Use dependencies for shared sets
         try {
             $set = Yaml::parseFile($filename);
         } catch (ParseException $e) {
-            $source = $errorContext . basename($filename);
+            $source = $virtualSetPath . basename($filename);
             throw new InvalidSetException('Failed to parse set definition from "' . $source . '": ' . $e->getMessage(), 1711024370, $e);
         }
-        $path = dirname($filename);
         $setName = $set['name'] ?? '';
 
         $settingsDefinitionsFile = $path . '/settings.definitions.yaml';
@@ -70,7 +71,7 @@ class YamlSetDefinitionProvider
             try {
                 $settingsDefinitions = Yaml::parseFile($settingsDefinitionsFile);
             } catch (ParseException $e) {
-                $source = $errorContext . basename($settingsDefinitionsFile);
+                $source = $virtualSetPath . basename($settingsDefinitionsFile);
                 throw new InvalidSettingsDefinitionsException(
                     'Invalid settings definition. Source: ' . $source,
                     1711024374,
@@ -79,7 +80,7 @@ class YamlSetDefinitionProvider
                 );
             }
             if (!is_array($settingsDefinitions['settings'] ?? null)) {
-                $source = $errorContext . basename($settingsDefinitionsFile);
+                $source = $virtualSetPath . basename($settingsDefinitionsFile);
                 throw new InvalidSettingsDefinitionsException(
                     'Missing "settings" key in settings definitions. Source: ' . $source,
                     1711024378,
@@ -96,25 +97,24 @@ class YamlSetDefinitionProvider
             try {
                 $settings = Yaml::parseFile($settingsFile);
             } catch (ParseException $e) {
-                $source = $errorContext . basename($settingsFile);
+                $source = $virtualSetPath . basename($settingsFile);
                 throw new InvalidSettingsException('Invalid settings format. Source: ' . $source, 1711024380, $e, $setName);
             }
             $settings ??= [];
             if (!is_array($settings)) {
-                $source = $errorContext . basename($settingsFile);
+                $source = $virtualSetPath . basename($settingsFile);
                 throw new InvalidSettingsException('Invalid settings format. Source: ' . $source, 1711024382, null, $setName);
             }
             $set['settings'] = $settings;
         }
 
         if (($set['labels'] ?? '') === '') {
-            $labelsFile = $path . '/labels.xlf';
-            if (is_file($labelsFile)) {
-                $set['labels'] = $labelsFile;
+            if (is_file($path . '/labels.xlf')) {
+                $set['labels'] = $virtualSetPath . 'labels.xlf';
             }
         }
 
-        return $this->createDefinition($set, $path);
+        return $this->createDefinition($set, $virtualSetPath);
     }
 
     protected function createDefinition(array $set, string $basePath): SetDefinition
