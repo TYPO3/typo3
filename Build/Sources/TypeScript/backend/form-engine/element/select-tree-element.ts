@@ -16,19 +16,26 @@ import type { SelectTreeToolbar } from './select-tree-toolbar';
 import './select-tree';
 import './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
+import DocumentService from '@typo3/core/document-service';
 import { TreeNode } from '@typo3/backend/tree/tree-node';
 import FormEngine from '@typo3/backend/form-engine';
 import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
 
 export class SelectTreeElement {
-  private readonly recordField: HTMLInputElement = null;
-  private readonly tree: SelectTree = null;
+  private recordField: HTMLInputElement = null;
+  private tree: SelectTree = null;
 
   constructor(treeWrapperId: string, treeRecordFieldId: string, callback?: () => void, onFieldChangeItems?: OnFieldChangeItem[]) {
     if (callback instanceof Function) {
       throw new Error('Function `callback` is not supported anymore since TYPO3 v12.0');
     }
 
+    DocumentService.ready().then((): void => {
+      this.initialize(treeWrapperId, treeRecordFieldId, onFieldChangeItems);
+    });
+  }
+
+  private initialize(treeWrapperId: string, treeRecordFieldId: string, onFieldChangeItems?: OnFieldChangeItem[]): void {
     this.recordField = <HTMLInputElement>document.getElementById(treeRecordFieldId);
     const treeWrapper = <HTMLElement>document.getElementById(treeWrapperId);
     this.tree = document.createElement('typo3-backend-form-selecttree') as SelectTree;
