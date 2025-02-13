@@ -21,7 +21,7 @@ import { LitElement } from 'lit';
  */
 @customElement('typo3-backend-live-search')
 export class BackendSearch extends LitElement {
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }

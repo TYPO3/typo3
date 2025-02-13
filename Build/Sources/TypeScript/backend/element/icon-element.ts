@@ -27,7 +27,7 @@ import '@typo3/backend/element/spinner-element';
  */
 @customElement('typo3-backend-icon')
 export class IconElement extends LitElement {
-  static styles = IconStyles.getStyles();
+  static override styles = IconStyles.getStyles();
 
   @property({ type: String, reflect: true }) identifier: string;
   @property({ type: String, reflect: true }) size: Sizes = Sizes.default;
@@ -54,7 +54,7 @@ export class IconElement extends LitElement {
     args: () => [this.identifier, this.size, this.overlay, this.state, this.markup]
   });
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (this.raw) {
       return html`${unsafeHTML(this.raw)}`;
     }

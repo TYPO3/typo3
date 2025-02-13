@@ -54,11 +54,11 @@ export class ThemeSwitcherElement extends LitElement {
     }
   };
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const dropdownActiveIcon = html`<span class="text-primary"><typo3-backend-icon identifier="actions-dot" size="small"></typo3-backend-icon></span>`;
     const dropdownInactiveIcon = html`<typo3-backend-icon identifier="miscellaneous-placeholder" size="small"></typo3-backend-icon>`;
     const themeOptions = [];

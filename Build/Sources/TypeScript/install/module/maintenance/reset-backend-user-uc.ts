@@ -22,7 +22,7 @@ import MessageInterface from '@typo3/install/message-interface';
  * Module: @typo3/install/module/reset-backend-user-uc
  */
 class ResetBackendUserUc extends AbstractInlineModule {
-  public initialize($trigger: HTMLButtonElement): void {
+  public override initialize($trigger: HTMLButtonElement): void {
     this.setButtonState($trigger, false);
 
     (new AjaxRequest(Router.getUrl('resetBackendUserUc')))

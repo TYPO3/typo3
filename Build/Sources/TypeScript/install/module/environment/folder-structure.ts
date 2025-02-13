@@ -49,7 +49,7 @@ class FolderStructure extends AbstractInteractableModule {
     container.querySelector('typo3-backend-progress-bar').remove();
   }
 
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
     this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {

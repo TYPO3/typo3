@@ -42,12 +42,12 @@ export class SendToStageFormElement extends LitElement {
   @property({ type: Object })
   public TYPO3lang: typeof TYPO3.lang | null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <form>
         ${this.data.sendMailTo !== undefined && this.data.sendMailTo.length > 0 ? html`

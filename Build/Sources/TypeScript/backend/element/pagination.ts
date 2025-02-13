@@ -22,12 +22,12 @@ export class PaginationElement extends LitElement {
   @property({ type: Object })
   public paging: Record<string, number> | null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <ul class="pagination">
         <li class=${classMap({ 'page-item': true, disabled: this.paging.currentPage === 1 })}>

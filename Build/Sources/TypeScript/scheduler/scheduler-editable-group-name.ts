@@ -21,7 +21,7 @@ import Notification from '@typo3/backend/notification';
 
 @customElement('typo3-scheduler-editable-group-name')
 export class EditableGroupName extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
       --input-border-color: #bebebe;
@@ -180,7 +180,7 @@ export class EditableGroupName extends LitElement {
     }
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (this.groupName === '') {
       return nothing;
     }

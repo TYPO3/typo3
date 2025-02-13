@@ -30,7 +30,7 @@ import { FileStorageTree } from './file-storage-tree';
 @customElement('typo3-backend-component-filestorage-browser-tree')
 export class FileStorageBrowserTree extends FileStorageTree {
 
-  protected createNodeContentAction(node: TreeNodeInterface): TemplateResult {
+  protected override createNodeContentAction(node: TreeNodeInterface): TemplateResult {
     if (this.settings.actions.includes('link')) {
       return html`
         <span class="node-action" @click="${() => this.linkItem(node)}">
@@ -75,16 +75,16 @@ export class FileStorageBrowser extends LitElement {
   private activeFolder: string = '';
   private actions: Array<string> = [];
 
-  protected firstUpdated() {
+  protected override firstUpdated(): void {
     this.activeFolder = this.getAttribute('active-folder') || '';
   }
 
   // disable shadow dom for now
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     if (this.hasAttribute('tree-actions') && this.getAttribute('tree-actions').length) {
       this.actions = JSON.parse(this.getAttribute('tree-actions'));
     }

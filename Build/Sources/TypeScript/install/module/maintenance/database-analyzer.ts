@@ -67,7 +67,7 @@ type SuggestionsExecutedResponse = {
  * Module: @typo3/install/module/database-analyzer
  */
 class DatabaseAnalyzer extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {
       this.getData();

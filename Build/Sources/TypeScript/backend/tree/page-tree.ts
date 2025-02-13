@@ -42,7 +42,7 @@ export class PageTree extends Tree
     };
   }
 
-  public getDataUrl(parentNode: TreeNodeInterface|null = null): string {
+  public override getDataUrl(parentNode: TreeNodeInterface|null = null): string {
     if (parentNode === null) {
       return this.settings.dataUrl;
     }
@@ -50,7 +50,7 @@ export class PageTree extends Tree
     return this.settings.dataUrl + '&parent=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&depth=' + parentNode.depth
   }
 
-  protected createNodeToggle(node: TreeNodeInterface): TemplateResult {
+  protected override createNodeToggle(node: TreeNodeInterface): TemplateResult {
     const nodeStopIconIdentifier = this.isRTL() ? 'actions-caret-left' : 'actions-caret-right';
     return html`${node.stopPageTree && node.depth !== 0
       ? html`
@@ -62,7 +62,7 @@ export class PageTree extends Tree
     }`;
   }
 
-  protected handleNodeDragOver(event: DragEvent): boolean {
+  protected override handleNodeDragOver(event: DragEvent): boolean {
     // @todo incorporate isDropAllowed
     if (super.handleNodeDragOver(event)) {
       return true;
@@ -111,7 +111,7 @@ export class PageTree extends Tree
     return false;
   }
 
-  protected handleNodeDrop(event: DragEvent): boolean {
+  protected override handleNodeDrop(event: DragEvent): boolean {
     if (super.handleNodeDrop(event)) {
       return true;
     }

@@ -92,7 +92,7 @@ export class SettingsEditorElement extends LitElement {
   visibleCategories: Record<string, boolean> = {};
   observer: IntersectionObserver = null
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
@@ -209,7 +209,7 @@ export class SettingsEditorElement extends LitElement {
     this.searchTerm = (e.currentTarget as HTMLInputElement).value;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const categories = this.filterCategories();
     const hasVisibleCategories = categories.filter(c => !c.__hidden).length > 0;
     return html`

@@ -35,11 +35,11 @@ export class SelectTreeToolbar extends LitElement {
   private hideUncheckedState: boolean = false;
 
   // disable shadow dom for now
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="tree-toolbar btn-toolbar">
         <div class="input-group">

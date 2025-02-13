@@ -28,7 +28,7 @@ export class IframeModuleElement extends LitElement {
 
   @query('iframe', true) iframe: HTMLIFrameElement;
 
-  public attributeChangedCallback(name: string, old: string, value: string) {
+  public override attributeChangedCallback(name: string, old: string, value: string): void {
     super.attributeChangedCallback(name, old, value);
 
     if (name === 'endpoint' && value === old) {
@@ -38,20 +38,20 @@ export class IframeModuleElement extends LitElement {
     }
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     if (this.endpoint) {
       this.dispatch('typo3-iframe-load', { url: this.endpoint, title: null });
     }
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Disable shadow root as <iframe> needs to be accessible
     // via top.list_frame for legacy-code and backwards compatibility.
     return this;
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (!this.endpoint) {
       return nothing;
     }

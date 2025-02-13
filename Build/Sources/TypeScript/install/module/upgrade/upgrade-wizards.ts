@@ -150,7 +150,7 @@ class UpgradeWizards extends AbstractInteractableModule {
     container.querySelectorAll('typo3-backend-progress-bar').forEach((progressBar: ProgressBarElement): void => progressBar.remove());
   }
 
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
     Promise.all([

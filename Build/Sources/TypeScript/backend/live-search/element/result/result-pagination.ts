@@ -32,12 +32,12 @@ export type Pagination = {
 export class ResultPagination extends LitElement {
   @property({ type: Object }) pagination: Pagination|null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (this.pagination === null || this.pagination.allPageNumbers.length <= 1) {
       return nothing;
     }
@@ -83,24 +83,24 @@ export class ResultPaginationPage extends LitElement {
   @property({ type: Number }) page: number;
   @property({ type: Number }) perPage: number;
 
-  public connectedCallback() {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     this.addEventListener('click', this.dispatchPaginationEvent);
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     this.removeEventListener('click', this.dispatchPaginationEvent);
 
     super.disconnectedCallback();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): symbol {
+  protected override render(): symbol {
     return nothing;
   }
 

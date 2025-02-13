@@ -29,12 +29,12 @@ export class HistoryViewElement extends LitElement {
   @property({ type: Array })
   public historyItems: History[] = [];
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div>
         ${repeat(this.historyItems, (historyItem) => historyItem.datetime, (historyItem) => this.renderHistoryItem(historyItem))}

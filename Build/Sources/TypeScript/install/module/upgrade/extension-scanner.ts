@@ -65,7 +65,7 @@ type ExtensionScannerScanFileResponse = {
 class ExtensionScanner extends AbstractInteractableModule {
   private readonly listOfAffectedRestFileHashes: string[] = [];
 
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
     Promise.all([

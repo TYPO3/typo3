@@ -25,11 +25,11 @@ import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
  */
 @customElement('typo3-backend-dispatch-modal-button')
 export class DispatchModalButton extends LitElement {
-  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({ type: String }) url: string;
   @property({ type: String }) subject: string;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     if (!this.hasAttribute('role')) {
@@ -43,14 +43,14 @@ export class DispatchModalButton extends LitElement {
     this.addEventListener('keydown', this.triggerWizard)
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
 
     this.removeEventListener('click', this.triggerWizard);
     this.removeEventListener('keydown', this.triggerWizard)
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

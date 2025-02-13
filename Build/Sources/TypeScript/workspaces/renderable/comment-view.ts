@@ -30,12 +30,12 @@ export class CommentViewElement extends LitElement {
   @property({ type: Array })
   public comments: Comment[] = [];
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div>
         ${repeat(this.comments, (comment) => comment.tstamp, (comment) => this.renderComment(comment))}

@@ -6,12 +6,12 @@ class OffsetGroupElement extends LitElement {
   @property({ type: String }) offsetId: string | null = null;
   @property({ type: Array }) values: string[] | null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="form-multigroup-wrap">
         <div class="form-multigroup-item">

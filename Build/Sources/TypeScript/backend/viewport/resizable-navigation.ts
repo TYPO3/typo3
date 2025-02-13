@@ -45,24 +45,24 @@ export class ResizableNavigation extends LitElement {
 
   @state() resizing: boolean = false;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     const initialWidth = this.initialWidth || parseInt(Persistent.get(this.persistenceIdentifier), 10);
     this.setNavigationWidth(initialWidth);
     window.addEventListener('resize', this.fallbackNavigationSizeIfNeeded, { passive: true });
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     window.removeEventListener('resize', this.fallbackNavigationSizeIfNeeded);
   }
 
   // disable shadow dom
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected async firstUpdated() {
+  protected override async firstUpdated(): Promise<void> {
     // Give the browser a chance to paint
     await new Promise((r) => setTimeout(r, 0));
     // needed to avoid any issues related to browsers, as lit-decorators (eventOptions) do not work yet
@@ -71,7 +71,7 @@ export class ResizableNavigation extends LitElement {
     this.querySelector('.scaffold-content-navigation-drag').addEventListener('touchstart', this.startResizeNavigation, { passive: true });
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="scaffold-content-navigation-switcher">
         <button @click="${this.toggleNavigation}" class="btn btn-sm btn-default btn-borderless scaffold-content-navigation-switcher-btn scaffold-content-navigation-switcher-open" role="button" title="${lll('viewport_navigation_show')}">

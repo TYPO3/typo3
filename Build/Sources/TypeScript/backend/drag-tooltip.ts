@@ -71,7 +71,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     this.ghostImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     const capture = true, passive = true;
     // own drags (including frames)
@@ -92,7 +92,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     this.eventAbortController = new AbortController();
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     const capture = true;
     //window.removeEventListener('drag', this.updatePositionFromDragEvent, { capture: true });
@@ -136,7 +136,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     this.dragAllowed = false;
   }
 
-  protected updated(changedProperties: PropertyValues<this>) {
+  protected override updated(changedProperties: PropertyValues<this>): void {
     if (this.skipNextUpdateBroadcast) {
       this.skipNextUpdateBroadcast = false;
       return;
@@ -236,11 +236,11 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     }
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): typeof nothing | TemplateResult {
+  protected override render(): typeof nothing | TemplateResult {
     if (!this.active || !this.visible) {
       return nothing;
     }

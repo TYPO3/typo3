@@ -47,7 +47,7 @@ enum Identifiers {
  * Module: @typo3/install/module/clear-typo3temp-files
  */
 class ClearTypo3tempFiles extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getStats();
 

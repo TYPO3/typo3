@@ -18,6 +18,7 @@
         "experimentalDecorators": true,
         "useDefineForClassFields": false,
         "noImplicitAny": true,
+        "noImplicitOverride": true,
         "noImplicitThis": true,
         "noImplicitReturns": true,
         "pretty": true,

@@ -197,21 +197,21 @@ export class ContextMenuElement extends LitElement {
     return this.fetchTask.value ?? [];
   }
 
-  public connectedCallback() {
+  public override connectedCallback(): void {
     super.connectedCallback();
     window.addEventListener('resize', this.hide);
     document.addEventListener(ContextMenuEvent.open, this.show);
     document.addEventListener(ContextMenuEvent.close, this.hide);
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     window.removeEventListener('resize', this.hide);
     document.removeEventListener(ContextMenuEvent.open, this.show);
     document.removeEventListener(ContextMenuEvent.close, this.hide);
   }
 
-  protected updated(): void {
+  protected override updated(): void {
     if (this.focusFirstElement) {
       if (this.contextMenuItemElements.length > 0) {
         const firstItemElement = Array.from(this.contextMenuItemElements).at(0);
@@ -222,11 +222,11 @@ export class ContextMenuElement extends LitElement {
     this.updateContextMenuPositions();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render() {
+  protected override render() {
     return this.fetchTask.render({
       initial: () => nothing,
       pending: () => [

@@ -30,7 +30,7 @@ import Viewport from '@typo3/backend/viewport';
  */
 @customElement('typo3-sysnote-delete-button')
 export class DeleteButton extends LitElement {
-  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({ type: Number }) uid: number;
   @property({ type: String, attribute: 'return-url' }) returnUrl: string;
   @property({ type: String, attribute: 'modal-title' }) modalTitle: string;
@@ -38,7 +38,7 @@ export class DeleteButton extends LitElement {
   @property({ type: String, attribute: 'modal-button-ok' }) okButtonLabel: string;
   @property({ type: String, attribute: 'modal-button-cancel' }) cancelButtonLabel: string;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     if (!this.hasAttribute('role')) {
@@ -51,13 +51,13 @@ export class DeleteButton extends LitElement {
     this.addEventListener('click', this.showConfirmationModal);
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
 
     this.removeEventListener('click', this.showConfirmationModal);
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

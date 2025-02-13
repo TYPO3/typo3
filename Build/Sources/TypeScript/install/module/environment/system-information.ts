@@ -22,7 +22,7 @@ import type { ModalElement } from '@typo3/backend/modal';
  * Module: @typo3/install/module/system-information
  */
 class SystemInformation extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getData();
   }

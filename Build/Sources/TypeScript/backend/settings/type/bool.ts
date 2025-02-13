@@ -30,9 +30,9 @@ export class BoolTypeElement extends BaseElement<boolean> {
         return value === '1' || value === 'true';
       }
     }
-  }) value: boolean;
+  }) override value: boolean;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="form-check form-check-type-toggle">
         <input

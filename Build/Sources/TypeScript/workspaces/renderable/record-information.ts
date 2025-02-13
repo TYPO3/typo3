@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing } from 'lit';
 import type { Diff } from './diff-view';
 import { unsafeHTML } from 'lit/directives/unsafe-html';
 import '@typo3/workspaces/renderable/diff-view';
@@ -45,12 +45,12 @@ export class RecordInformationElement extends LitElement {
   @property({ type: Object })
   public TYPO3lang: typeof TYPO3.lang | null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render() {
     return html`
       <div>
         <p>${unsafeHTML(this.TYPO3lang.path.replace('{0}', this.record.path_Live))}</p>
@@ -105,7 +105,7 @@ export class RecordInformationElement extends LitElement {
     `;
   }
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     this.renderRoot.querySelector('.nav-link').classList.add('active');
     this.renderRoot.querySelector('.tab-pane').classList.add('active');
   }

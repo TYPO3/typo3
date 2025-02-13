@@ -42,7 +42,7 @@ type EnvironmentCheckResponse = ModuleLoadedResponseWithButtons & {
  * Module: @typo3/install/environment-check
  */
 class EnvironmentCheck extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
     this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js').then((): void => {

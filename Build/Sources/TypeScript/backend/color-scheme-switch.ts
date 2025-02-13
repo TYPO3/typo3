@@ -34,14 +34,14 @@ export class ColorSchemeSwitchElement extends LitElement {
 
   private mql: MediaQueryList|null = null;
 
-  public connectedCallback() {
+  public override connectedCallback(): void {
     super.connectedCallback();
     this.mql = window.matchMedia('(prefers-color-scheme: dark)');
     this.mediaQueryListener(this.mql);
     this.mql.addEventListener('change', this.mediaQueryListener);
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.mql.removeEventListener('change', this.mediaQueryListener);
     this.mql = null;
@@ -49,7 +49,7 @@ export class ColorSchemeSwitchElement extends LitElement {
 
   protected readonly mediaQueryListener = (mql: MediaQueryList|MediaQueryListEvent) => this.autoDetect = mql.matches ? 'dark' : 'light';
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
@@ -60,7 +60,7 @@ export class ColorSchemeSwitchElement extends LitElement {
     return this.activeColorScheme ?? 'light';
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     return html`
       <div class="btn-group">
         <button

@@ -36,7 +36,7 @@ export class FileStorageTree extends Tree
     };
   }
 
-  protected getNodeTitle(node: TreeNodeInterface): string {
+  protected override getNodeTitle(node: TreeNodeInterface): string {
     return decodeURIComponent(node.name);
   }
 }

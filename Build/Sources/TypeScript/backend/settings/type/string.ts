@@ -20,7 +20,7 @@ export const componentName = 'typo3-backend-settings-type-string';
 @customElement(componentName)
 export class StringTypeElement extends BaseElement<string> {
 
-  @property({ type: String }) value: string;
+  @property({ type: String }) override value: string;
 
   protected renderEnum(): TemplateResult {
     return html`
@@ -38,7 +38,7 @@ export class StringTypeElement extends BaseElement<string> {
     `;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     if (typeof this.enum === 'object') {
       return this.renderEnum();
     }

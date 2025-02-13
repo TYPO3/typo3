@@ -38,7 +38,7 @@ export class Item extends LitElement {
   private parentContainer: HTMLElement;
   private resultItemContainer: HTMLElement;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search-result-container');
     this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
 
@@ -51,18 +51,18 @@ export class Item extends LitElement {
     this.addEventListener('focus', this.onFocus);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('focus', this.onFocus);
 
     super.disconnectedCallback();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<div class="livesearch-expand-action" @click="${(e: Event): void => { e.stopPropagation(); this.focus(); }}"><typo3-backend-icon identifier="actions-chevron-right" size="small"></typo3-backend-icon></div>`;
   }
 

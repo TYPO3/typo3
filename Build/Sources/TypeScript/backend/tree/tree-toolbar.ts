@@ -27,11 +27,11 @@ export class TreeToolbar extends LitElement {
     filterTimeout: 450
   };
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected firstUpdated(): void
+  protected override firstUpdated(): void
   {
     const inputEl = this.querySelector(this.settings.searchInput) as HTMLInputElement;
     if (inputEl) {
@@ -42,7 +42,7 @@ export class TreeToolbar extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="tree-toolbar">
         <div class="tree-toolbar__menu">

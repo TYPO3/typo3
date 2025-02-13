@@ -36,7 +36,7 @@ type TcaMigrationCheckResponse = ModuleLoadedResponseWithButtons & {
  * Module: @typo3/install/module/tca-migrations-check
  */
 class TcaMigrationsCheck extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     Promise.all([
       this.loadModuleFrameAgnostic('@typo3/install/renderable/info-box.js'),

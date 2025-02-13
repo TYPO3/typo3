@@ -18,7 +18,7 @@ import AjaxDataHandler from '../ajax-data-handler';
 
 @customElement('typo3-backend-editable-page-title')
 export class EditablePageTitle extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
       --input-border-color: #bebebe;
@@ -178,7 +178,7 @@ export class EditablePageTitle extends LitElement {
     }
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (this.pageTitle === '') {
       return nothing;
     }

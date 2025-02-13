@@ -31,7 +31,7 @@ const alwaysUpdate: HasChanged = () => true;
  */
 @customElement('typo3-backend-module-router')
 export class ModuleRouter extends LitElement {
-  public static styles = css`
+  public static override styles = css`
     :host {
       width: 100%;
       min-height: 100%;
@@ -125,19 +125,19 @@ export class ModuleRouter extends LitElement {
     });
   }
 
-  public static get observedAttributes(): string[] {
+  public static override get observedAttributes(): string[] {
     return [
       ...super.observedAttributes,
       'sitename-first',
     ];
   }
 
-  public connectedCallback() {
+  public override connectedCallback(): void {
     super.connectedCallback();
     this.sitenameFirst = this.hasAttribute('sitename-first');
   }
 
-  public attributeChangedCallback(name: string, oldValue: string|null, newValue: string): void {
+  public override attributeChangedCallback(name: string, oldValue: string|null, newValue: string): void {
     super.attributeChangedCallback(name, oldValue, newValue);
     if (name === 'sitename-first') {
       this.sitenameFirst = newValue !== null;
@@ -145,14 +145,14 @@ export class ModuleRouter extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const moduleData = ModuleUtility.getFromName(this.module);
     const jsModule = moduleData.component || IFRAME_COMPONENT;
 
     return html`<slot name="${jsModule}"></slot>`;
   }
 
-  protected updated(): void {
+  protected override updated(): void {
     const moduleData = ModuleUtility.getFromName(this.module);
     const jsModule = moduleData.component || IFRAME_COMPONENT;
 

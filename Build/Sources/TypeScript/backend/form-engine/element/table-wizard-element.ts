@@ -41,7 +41,7 @@ export class TableWizardElement extends LitElement {
     return this.table[0] || [];
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     this.selectorData = this.getAttribute('selector');
@@ -50,11 +50,11 @@ export class TableWizardElement extends LitElement {
     this.readTableFromTextarea();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return this.renderTemplate();
   }
 

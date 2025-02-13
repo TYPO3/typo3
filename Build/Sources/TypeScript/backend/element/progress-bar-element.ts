@@ -31,7 +31,7 @@ import { SeverityEnum } from '@typo3/backend/enum/severity';
  */
 @customElement('typo3-backend-progress-bar')
 export class ProgressBarElement extends LitElement {
-  static styles = css`
+  static override styles = css`
     @keyframes progress-indeterminate {
       0% {
         inset-inline-start: -33%;
@@ -106,7 +106,7 @@ export class ProgressBarElement extends LitElement {
   @property({ type: Number, reflect: true }) severity: SeverityEnum = SeverityEnum.info;
   @property({ type: String, reflect: true }) label: string|undefined;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const labelIdentifier = 'progress-label-' + (Math.random() + 1).toString(36).substring(2);
     const isLabelDefined = this.label !== undefined && this.label;
     const isIndeterminate = isNaN(this.value);

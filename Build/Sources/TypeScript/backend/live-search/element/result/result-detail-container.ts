@@ -22,12 +22,12 @@ export const componentName = 'typo3-backend-live-search-result-item-detail-conta
 export class ResultDetailContainer extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (this.resultItem === null) {
       return nothing;
     }

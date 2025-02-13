@@ -60,7 +60,7 @@ export function copyToClipboard(text: string): void {
  */
 @customElement('typo3-copy-to-clipboard')
 export class CopyToClipboard extends LitElement {
-  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({ type: String }) text: string;
 
   public constructor() {
@@ -77,7 +77,7 @@ export class CopyToClipboard extends LitElement {
     });
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     if (!this.hasAttribute('role')) {
       this.setAttribute('role', 'button');
     }
@@ -86,7 +86,7 @@ export class CopyToClipboard extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { LitElement, html } from 'lit';
+import { LitElement, html, TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { classMap } from 'lit/directives/class-map';
 import { ifDefined } from 'lit/directives/if-defined';
@@ -181,11 +181,11 @@ export class ClearNotificationMessages extends LitElement {
     this.hidden = true
   }
 
-  protected createRenderRoot(): HTMLElement | DocumentFragment {
+  protected override createRenderRoot(): HTMLElement | DocumentFragment {
     return this;
   }
 
-  protected render() {
+  protected override render(): TemplateResult {
     return html`<div><button @click=${() => this.clearAll()} class="btn btn-default">
       <typo3-backend-icon identifier="actions-close" size="small"></typo3-backend-icon> ${lll('button.clearAll') || 'Clear all'}
     </button></div>`;
@@ -204,7 +204,7 @@ export class NotificationMessage extends LitElement {
 
   @state() executingAction: number = -1;
 
-  public async firstUpdated(): Promise<void> {
+  public override async firstUpdated(): Promise<void> {
     document.addEventListener('typo3-notification-clear-all', async () => {
       this.clear();
     });
@@ -251,11 +251,11 @@ export class NotificationMessage extends LitElement {
     }
   }
 
-  protected createRenderRoot(): HTMLElement | DocumentFragment {
+  protected override createRenderRoot(): HTMLElement | DocumentFragment {
     return this;
   }
 
-  protected render() {
+  protected override render(): TemplateResult {
     const className = Severity.getCssClass(this.notificationSeverity);
     let icon = '';
     switch (this.notificationSeverity) {

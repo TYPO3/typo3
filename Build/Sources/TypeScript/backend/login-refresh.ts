@@ -449,7 +449,7 @@ export class SelfFillingProgressBarElement extends LitElement {
   private readonly max = 100;
   private intervalId: number;
 
-  public connectedCallback() {
+  public override connectedCallback(): void {
     super.connectedCallback();
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -457,7 +457,7 @@ export class SelfFillingProgressBarElement extends LitElement {
     this.intervalId = setInterval(this.advanceProgressBar, 300);
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     if (this.intervalId) {
       clearInterval(this.intervalId);
@@ -465,11 +465,11 @@ export class SelfFillingProgressBarElement extends LitElement {
     }
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <typo3-backend-progress-bar value=${100 - this.current} max="100"></typo3-backend-progress-bar>
     `

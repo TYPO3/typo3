@@ -76,12 +76,12 @@ export class RecordTableElement extends LitElement {
 
   private latestPath: string | null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="table-fit mb-0">
         <table class="table table-striped">

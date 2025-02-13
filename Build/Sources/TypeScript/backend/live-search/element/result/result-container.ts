@@ -42,26 +42,26 @@ export class ResultContainer extends LitElement {
   @query('typo3-backend-live-search-result-item-container') itemContainer: ItemContainer;
   @query('typo3-backend-live-search-result-item-detail-container') resultDetailContainer: ResultDetailContainer;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     this.addEventListener('livesearch:request-actions', this.onActionsRequested);
     this.addEventListener('livesearch:invoke-action', this.onActionInvoked);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('livesearch:request-actions', this.onActionsRequested);
     this.removeEventListener('livesearch:invoke-action', this.onActionInvoked);
 
     super.disconnectedCallback();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (this.loading) {
       return html`<div class="d-flex flex-fill align-items-center justify-content-center"><typo3-backend-spinner size="large"></typo3-backend-spinner></div>`;
     }

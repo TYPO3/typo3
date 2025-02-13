@@ -38,11 +38,11 @@ export class SudoMode extends LitElement {
   @state() errorMessage: string = null;
   @query('#password') passwordElement: HTMLInputElement;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div id="sudo-mode-verification" class="modal modal-severity-notice modal-size-small" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -82,7 +82,7 @@ export class SudoMode extends LitElement {
     `;
   }
 
-  protected firstUpdated(_changedProperties: PropertyValues): void {
+  protected override firstUpdated(_changedProperties: PropertyValues): void {
     super.firstUpdated(_changedProperties);
     this.passwordElement.focus();
   }

@@ -40,11 +40,11 @@ export abstract class BaseElement<T = string> extends LitElement {
   static readonly formAssociated = true;
 
   /* @property annotation needs to be provided by extending class */
-  value: T;
+  abstract value: T;
 
   [privateInternals]?: ElementInternals;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 

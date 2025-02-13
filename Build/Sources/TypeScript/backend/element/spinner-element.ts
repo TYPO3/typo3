@@ -25,11 +25,11 @@ import { IconStyles } from '@typo3/backend/icons';
  */
 @customElement('typo3-backend-spinner')
 export class SpinnerElement extends LitElement {
-  static styles = IconStyles.getStyles();
+  static override styles = IconStyles.getStyles();
 
   @property({ type: String }) size: Sizes = Sizes.default;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <span class="icon icon-size-${this.size} icon-state-default icon-spin">
         <span class="icon-markup">

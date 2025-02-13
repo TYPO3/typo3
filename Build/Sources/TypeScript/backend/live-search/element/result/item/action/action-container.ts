@@ -24,12 +24,12 @@ export const componentName = 'typo3-backend-live-search-result-item-action-conta
 export class ActionContainer extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface|null = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<typo3-backend-live-search-result-action-list>
       ${this.resultItem.actions.map((action: ResultItemActionInterface) => this.renderActionItem(this.resultItem, action))}
     </typo3-backend-live-search-result-action-list>`;
@@ -55,7 +55,7 @@ export class ActionContainer extends LitElement {
 
 @customElement('typo3-backend-live-search-result-action-list')
 export class ActionList extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
     }
@@ -64,7 +64,7 @@ export class ActionList extends LitElement {
   private parentContainer: HTMLElement;
   private resultItemContainer: HTMLElement;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search-result-container');
     this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
 
@@ -73,14 +73,14 @@ export class ActionList extends LitElement {
     this.addEventListener('keyup', this.handleKeyUp);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('keydown', this.handleKeyDown);
     this.removeEventListener('keyup', this.handleKeyUp);
 
     super.disconnectedCallback();
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 
