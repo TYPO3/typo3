@@ -1780,28 +1780,17 @@ class DatabaseRecordList
                         $status = 'visible';
                     }
 
-                    // Build icon in enforced "hidden" states to get overlay icons
-                    $hiddenRecordIcon = $this->iconFactory->getIconForRecord($table, array_merge($row, [$hiddenField => 1]));
-                    $visibleRecordIcon = $this->iconFactory->getIconForRecord($table, array_merge($row, [$hiddenField => 0]));
-
                     $attributesString = GeneralUtility::implodeAttributes(
                         [
                             'class' => 'btn btn-default',
                             'type' => 'button',
                             'title' => $titleLabel,
                             'data-datahandler-action' => 'visibility',
-                            'data-datahandler-table' => $table,
-                            'data-datahandler-uid' => $rowUid,
-                            'data-datahandler-field' => $hiddenField,
                             'data-datahandler-status' => $status,
                             'data-datahandler-visible-label' => $visibleTitle,
                             'data-datahandler-visible-value' => $visibleValue,
-                            'data-datahandler-visible-icon' => $visibleIcon,
                             'data-datahandler-hidden-label' => $hiddenTitle,
                             'data-datahandler-hidden-value' => $hiddenValue,
-                            'data-datahandler-hidden-icon' => $hiddenIcon,
-                            'data-datahandler-record-hidden-overlay-icon' => $hiddenRecordIcon->getOverlayIcon()?->getIdentifier() ?? 'overlay-hidden',
-                            'data-datahandler-record-visible-overlay-icon' => $visibleRecordIcon->getOverlayIcon()?->getIdentifier() ?? '',
                         ],
                         true
                     );

@@ -391,6 +391,13 @@ return [
         'target' => \TYPO3\CMS\Backend\Controller\RecordListDownloadController::class . '::downloadSettingsAction',
     ],
 
+    // Toggle record visibility
+    'record_toggle_visibility' => [
+        'path' => '/record/toggle-visibility',
+        'methods' => ['POST'],
+        'target' => \TYPO3\CMS\Backend\Controller\RecordListController::class . '::toggleRecordVisibilityAction',
+    ],
+
     // Endpoint to generate a password
     'password_generate' => [
         'path' => '/password/generate',

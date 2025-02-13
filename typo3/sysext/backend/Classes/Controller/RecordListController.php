@@ -43,9 +43,12 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Error\Http\BadRequestException;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -85,6 +88,7 @@ class RecordListController
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -220,6 +224,110 @@ class RecordListController
             'additionalContentBottom' => $additionalRecordListEvent->getAdditionalContentBelow(),
         ]);
         return $view->renderResponse('RecordList');
+    }
+
+    public function toggleRecordVisibilityAction(ServerRequestInterface $request): ResponseInterface
+    {
+        $table = $request->getParsedBody()['table'] ?? null;
+        $uid = $request->getParsedBody()['uid'] ?? null;
+        $action = $request->getParsedBody()['action'] ?? null;
+
+        try {
+            if (!isset($action, $table, $uid)) {
+                throw new BadRequestException('Any of the mandatory argument "table", "uid", "action" is missing', 1729161415);
+            }
+
+            if ($action !== 'show' && $action !== 'hide') {
+                throw new BadRequestException(sprintf('Passed "action" value must be either "show" or "hide", "%s" given', $action), 1729161479);
+            }
+
+            if (!$this->tcaSchemaFactory->has($table)) {
+                throw new BadRequestException(sprintf('Cannot execute action for non-existent table "%s"', $table), 1738593519);
+            }
+
+            $schema = $this->tcaSchemaFactory->get($table);
+            if (!$schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+                throw new \InvalidArgumentException(sprintf('TCA table "%s" does not support record visibility', $table), 1729166628);
+            }
+
+            if (BackendUtility::getRecord($table, $uid, 'uid') === null) {
+                throw new BadRequestException(sprintf('A record with uid %d was not found', $uid), 1739376253);
+            }
+
+            $hiddenField = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
+
+            $dataHandlerDataMap = [
+                $table => [
+                    $uid => [
+                        $hiddenField => $action === 'show' ? 0 : 1,
+                    ],
+                ],
+            ];
+
+            /** @var DataHandler $dataHandler */
+            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+            $dataHandler->start($dataHandlerDataMap, []);
+            $dataHandler->process_datamap();
+
+            // Prints errors (= write them to the message queue)
+            $dataHandler->printLogErrorMessages();
+
+            $response = [
+                'messages' => [],
+                'hasErrors' => false,
+            ];
+
+            // Basically the same as in \TYPO3\CMS\Backend\RecordList\DatabaseRecordList->getFieldsToSelect()
+            $selectFields = [];
+            $selectFields[] = 'uid';
+            $selectFields[] = 'pid';
+            $selectFields[] = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
+
+            if ($table === 'pages') {
+                $selectFields[] = 'module';
+                $selectFields[] = 'extendToSubpages';
+                $selectFields[] = 'nav_hide';
+                $selectFields[] = 'doktype';
+                $selectFields[] = 'shortcut';
+                $selectFields[] = 'shortcut_mode';
+                $selectFields[] = 'mount_pid';
+            }
+
+            $row = BackendUtility::getRecord($table, $uid, implode(',', $selectFields));
+            if ($row !== null) {
+                // Get new record icon
+                $recordIcon = $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL);
+
+                $response['icon'] = $recordIcon->render();
+                $response['isVisible'] = (int)$row[$hiddenField] === 0;
+            }
+
+            $messages = $this->flashMessageService->getMessageQueueByIdentifier()->getAllMessagesAndFlush();
+            foreach ($messages as $message) {
+                $response['messages'][] = [
+                    'title'    => $message->getTitle(),
+                    'message'  => $message->getMessage(),
+                    'severity' => $message->getSeverity(),
+                ];
+                if ($message->getSeverity() === ContextualFeedbackSeverity::ERROR) {
+                    $response['hasErrors'] = true;
+                }
+            }
+        } catch (\Throwable $e) {
+            // @todo: having this explicit handling here sucks
+            $response = [
+                'messages' => [
+                    [
+                        'title' => 'An exception occurred',
+                        'message' => $e->getMessage(),
+                        'severity' => ContextualFeedbackSeverity::ERROR,
+                    ],
+                ],
+                'hasErrors' => true,
+            ];
+        }
+
+        return new JsonResponse($response, $response['hasErrors'] ? 400 : 200);
     }
 
     /**

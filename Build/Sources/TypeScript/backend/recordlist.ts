@@ -17,9 +17,10 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import { selector } from '@typo3/core/literals';
-import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
-import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import Notification from '@typo3/backend/notification';
+import AjaxRequest from '@typo3/core/ajax/ajax-request';
+import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 interface IconIdentifier {
   collapse: string;
@@ -210,79 +211,62 @@ class Recordlist {
   };
 
   private readonly toggleVisibility = (event: Event, target: HTMLButtonElement): void => {
-    const rowElement = target.closest('tr[data-uid]');
+    target.disabled = true;
 
-    // Show spinner
     const buttonIconElement = target.querySelector('.t3js-icon');
+    const originalIconElement = buttonIconElement.cloneNode(true);
+
     Icons.getIcon('spinner-circle', Icons.sizes.small).then((icon: string): void => {
       buttonIconElement.replaceWith(document.createRange().createContextualFragment(icon));
     });
 
+    const rowElement = target.closest('tr[data-uid]') as HTMLTableRowElement;
+    const table = rowElement.dataset.table;
+    const uid = parseInt(rowElement.dataset.uid, 10);
     const isVisible = target.dataset.datahandlerStatus === 'visible';
-    // Get Settings from element
-    const settings = {
-      table: target.dataset.datahandlerTable,
-      uid: target.dataset.datahandlerUid,
-      field: target.dataset.datahandlerField,
-      visible: isVisible,
-      overlayIcon: isVisible
-        ? target.dataset.datahandlerRecordHiddenOverlayIcon ?? 'overlay-hidden'
-        : target.dataset.datahandlerRecordVisibleOverlayIcon ?? null
-    };
+    const targetAction = isVisible ? 'hide' : 'show';
 
-    const params = {
-      data: {
-        [settings.table]: {
-          [settings.uid]: {
-            [settings.field]: settings.visible
-              ? target.dataset.datahandlerHiddenValue
-              : target.dataset.datahandlerVisibleValue
-          }
-        }
+    new AjaxRequest(TYPO3.settings.ajaxUrls.record_toggle_visibility).post({
+      table: table,
+      uid: uid,
+      action: targetAction,
+    }).then(async (response: AjaxResponse): Promise<void> => {
+      const data = await response.resolve();
+      target.setAttribute('data-datahandler-status', data.isVisible ? 'visible' : 'hidden');
+
+      const elementLabel = data.isVisible
+        ? target.dataset.datahandlerVisibleLabel
+        : target.dataset.datahandlerHiddenLabel;
+      target.setAttribute('title', elementLabel);
+      const buttonIconIdentifier = data.isVisible ? 'actions-edit-hide' : 'actions-edit-unhide';
+      Icons.getIcon(buttonIconIdentifier, Icons.sizes.small).then((icon: string): void => {
+        const buttonIconElement = target.querySelector('.t3js-icon');
+        buttonIconElement.replaceWith(document.createRange().createContextualFragment(icon));
+      });
+
+      const recordIconElement = rowElement.querySelector('.col-icon .t3js-icon');
+      recordIconElement.replaceWith(document.createRange().createContextualFragment(data.icon));
+
+      // Animate row
+      const animationEvent = new RegularEvent('animationend', (): void => {
+        rowElement.classList.remove('record-pulse');
+        animationEvent.release();
+      });
+      animationEvent.bindTo(rowElement);
+      rowElement.classList.add('record-pulse');
+
+      if (table === 'pages') {
+        top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
       }
-    };
+    }).catch(async(response: AjaxResponse): Promise<void> => {
+      target.querySelector('.t3js-icon').replaceWith(originalIconElement);
 
-    // Submit Data
-    AjaxDataHandler.process(params).then((result: ResponseInterface): void => {
-      if (!result.hasErrors) {
-        // Inverse current state
-        settings.visible = !(settings.visible);
-        target.setAttribute('data-datahandler-status', settings.visible ? 'visible' : 'hidden');
-
-        const elementLabel = settings.visible
-          ? target.dataset.datahandlerVisibleLabel
-          : target.dataset.datahandlerHiddenLabel;
-        target.setAttribute('title', elementLabel);
-
-        const elementIconIdentifier = settings.visible
-          ? target.dataset.datahandlerVisibleIcon
-          : target.dataset.datahandlerHiddenIcon;
-        const iconElement = target.querySelector('.t3js-icon');
-        Icons.getIcon(elementIconIdentifier, Icons.sizes.small).then((icon: string): void => {
-          iconElement.replaceWith(document.createRange().createContextualFragment(icon));
-        });
-
-        // Set overlay for the record icon
-        const recordIcon = rowElement.querySelector('.col-icon .t3js-icon');
-        recordIcon.querySelector('.icon-overlay')?.remove();
-        Icons.getIcon('miscellaneous-placeholder', Icons.sizes.small, settings.overlayIcon).then((icon: string): void => {
-          const iconFragment = document.createRange().createContextualFragment(icon);
-          recordIcon.append(iconFragment.querySelector('.icon-overlay'));
-        });
-
-        // Animate row
-        const animationEvent = new RegularEvent('animationend', (): void => {
-          rowElement.classList.remove('record-pulse');
-          animationEvent.release();
-        });
-        animationEvent.bindTo(rowElement);
-        rowElement.classList.add('record-pulse');
-
-        // Refresh Pagetree
-        if (settings.table === 'pages') {
-          top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-        }
+      const data = await response.resolve();
+      for (const message of data.messages) {
+        Notification.error(message.title, message.message);
       }
+    }).finally((): void => {
+      target.disabled = false;
     });
   };
 
