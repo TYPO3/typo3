@@ -22,7 +22,7 @@ export class Action extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface;
   @property({ type: Object, attribute: false }) resultItemAction: ResultItemActionInterface;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     if (!this.hasAttribute('tabindex')) {
@@ -30,12 +30,12 @@ export class Action extends LitElement {
     }
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div>
         <div class="livesearch-result-item-icon">

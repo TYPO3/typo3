@@ -22,9 +22,9 @@ export const componentName = 'typo3-backend-settings-type-color';
 @customElement(componentName)
 export class ColorTypeElement extends BaseElement {
 
-  @property({ type: String }) value: string;
+  @property({ type: String }) override value: string;
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     const inputElement = this.getInputElement();
     if (inputElement) {
       new RegularEvent('blur', (e: Event): void => {
@@ -37,7 +37,7 @@ export class ColorTypeElement extends BaseElement {
     this.value = value;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <typo3-backend-color-picker>
         <input

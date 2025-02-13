@@ -26,7 +26,7 @@ interface SelectTreeSettings extends TreeSettings {
 @customElement('typo3-backend-form-selecttree')
 export class SelectTree extends Tree
 {
-  @state() settings: SelectTreeSettings = {
+  @state() override settings: SelectTreeSettings = {
     unselectableElements: [],
     exclusiveNodesIdentifiers: '',
     validation: {},
@@ -59,7 +59,7 @@ export class SelectTree extends Tree
    * Node selection logic (triggered by different events) to select multiple
    * nodes (unlike SVG Tree itself).
    */
-  public selectNode(node: TreeNodeInterface, propagate: boolean = true): void {
+  public override selectNode(node: TreeNodeInterface, propagate: boolean = true): void {
     if (!this.isNodeSelectable(node)) {
       return;
     }
@@ -82,7 +82,7 @@ export class SelectTree extends Tree
     this.dispatchEvent(new CustomEvent('typo3:tree:node-selected', { detail: { node: node, propagate: propagate } }));
   }
 
-  public filter(searchTerm?: string|null): void {
+  public override filter(searchTerm?: string|null): void {
     const results: TreeNodeInterface[] = [];
     this.searchTerm = searchTerm;
     if (this.nodes.length) {
@@ -135,14 +135,14 @@ export class SelectTree extends Tree
    * In some cases (e.g. selecting a parent) it should not be possible to select
    * element (as it's own parent).
    */
-  protected isNodeSelectable(node: TreeNodeInterface): boolean {
+  protected override isNodeSelectable(node: TreeNodeInterface): boolean {
     return !this.settings.readOnlyMode && this.settings.unselectableElements.indexOf(node.identifier) === -1;
   }
 
   /**
    * Add checkbox before the icon
    */
-  protected createNodeContent(node: TreeNodeInterface): TemplateResult {
+  protected override createNodeContent(node: TreeNodeInterface): TemplateResult {
     return html`
       ${this.renderCheckbox(node)}
       ${super.createNodeContent(node)}

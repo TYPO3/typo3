@@ -37,7 +37,7 @@ interface Configuration {
 @customElement('typo3-backend-component-page-browser-tree')
 export class PageBrowserTree extends PageTree {
 
-  protected getNodeClasses(node: TreeNodeInterface): string[] {
+  protected override getNodeClasses(node: TreeNodeInterface): string[] {
     const classList = super.getNodeClasses(node);
 
     if (!this.settings.actions.includes('link')) {
@@ -51,7 +51,7 @@ export class PageBrowserTree extends PageTree {
     return classList;
   }
 
-  protected createNodeContentAction(node: TreeNodeInterface): TemplateResult {
+  protected override createNodeContentAction(node: TreeNodeInterface): TemplateResult {
     if (this.settings.actions.includes('link')) {
       return this.isLinkable(node)
         ? html`
@@ -116,23 +116,23 @@ export class PageBrowser extends LitElement {
   private actions: Array<string> = [];
   private configuration: Configuration = null;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     document.addEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     document.removeEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
     super.disconnectedCallback();
   }
 
-  protected firstUpdated() {
+  protected override firstUpdated(): void {
     this.activePageId = parseInt(this.getAttribute('active-page'), 10);
     this.actions = JSON.parse(this.getAttribute('tree-actions') ?? '[]');
   }
 
   // disable shadow dom for now
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
@@ -157,7 +157,7 @@ export class PageBrowser extends LitElement {
       });
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="tree">
       ${until(this.renderTree(), '')}

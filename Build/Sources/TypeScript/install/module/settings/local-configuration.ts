@@ -43,7 +43,7 @@ type LocalConfigurationWrittenResponse = {
 class LocalConfiguration extends AbstractInteractableModule {
   private searchInput: HTMLInputElement;
 
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getContent();
 

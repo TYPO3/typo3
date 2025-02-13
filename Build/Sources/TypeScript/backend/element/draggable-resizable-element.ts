@@ -132,7 +132,7 @@ export class DraggableResizableElement extends LitElement {
     setTimeout(() => this.reverting = false, 500);
   }
 
-  public connectedCallback() {
+  public override connectedCallback(): void {
     super.connectedCallback();
     if (!(this.container instanceof HTMLElement)) {
       this.container = this.parentElement;
@@ -145,7 +145,7 @@ export class DraggableResizableElement extends LitElement {
       this.documentRef.addEventListener(name, this.handleFinish.bind(this), true));
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.pointerEventNames.pointerDown.forEach((name: string): void =>
       this.documentRef.removeEventListener(name, this.handleStart.bind(this), true));
@@ -155,7 +155,7 @@ export class DraggableResizableElement extends LitElement {
       this.documentRef.removeEventListener(name, this.handleFinish.bind(this), true));
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div id="t3js-cropper-focus-area" class="cropper-focus-area ui-draggable ui-draggable-handle ui-resizable">
         <div class="ui-resizable-handle ui-resizable-n" data-resize="n"></div>
@@ -170,12 +170,12 @@ export class DraggableResizableElement extends LitElement {
     `;
   }
 
-  protected update(changedProperties: PropertyValues) {
+  protected override update(changedProperties: PropertyValues): void {
     super.update(changedProperties);
     Object.assign(this.style, this.getOffsetStyles(this.offset));
   }
 
-  protected createRenderRoot(): HTMLElement | DocumentFragment {
+  protected override createRenderRoot(): HTMLElement | DocumentFragment {
     return this;
   }
 

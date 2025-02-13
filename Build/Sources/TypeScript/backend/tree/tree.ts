@@ -31,7 +31,7 @@ interface TreeNodeStatus {
   expanded: boolean
 }
 
-interface DataTransferStringItem {
+export interface DataTransferStringItem {
   type: DataTransferTypes,
   data: string,
 }
@@ -562,11 +562,11 @@ export class Tree extends LitElement {
     return enhancedNodes;
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const loader = this.loading
       ? html`
         <div class="nodes-loader">
@@ -672,7 +672,7 @@ export class Tree extends LitElement {
       `;
   }
 
-  protected async firstUpdated(): Promise<void> {
+  protected override async firstUpdated(): Promise<void> {
     const resizeObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => {
       for (const entry of entries) {
         if (entry.target === this.root) {

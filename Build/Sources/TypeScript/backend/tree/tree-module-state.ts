@@ -24,12 +24,12 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
     protected abstract tree: Tree;
     protected abstract moduleStateType: string;
 
-    public connectedCallback() {
+    public override connectedCallback(): void {
       super.connectedCallback();
       document.addEventListener('typo3:module-state-storage:update:' + this.moduleStateType, this.moduleStateUpdated);
     }
 
-    public disconnectedCallback() {
+    public override disconnectedCallback(): void {
       super.disconnectedCallback();
       document.removeEventListener('typo3:module-state-storage:update:' + this.moduleStateType, this.moduleStateUpdated);
     }

@@ -21,7 +21,7 @@ enum Selectors {
 @customElement('typo3-dashboard-widget-refresh')
 export class WidgetRefresh extends LitElement {
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     if (!this.hasAttribute('role')) {
@@ -35,14 +35,14 @@ export class WidgetRefresh extends LitElement {
     this.addEventListener('keydown', this.onKeyDown);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('click', this.onRefresh);
     this.removeEventListener('keydown', this.onKeyDown);
 
     super.disconnectedCallback();
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

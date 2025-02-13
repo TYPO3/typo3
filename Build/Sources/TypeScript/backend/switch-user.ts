@@ -32,7 +32,7 @@ enum Modes {
  */
 @customElement('typo3-backend-switch-user')
 export class SwitchUser extends LitElement {
-  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
 
   @property({ type: String }) targetUser: string;
   @property({ type: Modes }) mode: Modes = Modes.switch;
@@ -59,7 +59,7 @@ export class SwitchUser extends LitElement {
     });
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     if (!this.hasAttribute('role')) {
       this.setAttribute('role', 'button');
     }
@@ -68,7 +68,7 @@ export class SwitchUser extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

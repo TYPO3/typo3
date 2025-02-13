@@ -21,24 +21,24 @@ import { ResultItemInterface } from './result-item';
 export class ResultContainer extends LitElement {
   @property({ type: Object }) results: ResultItemInterface[]|null = null;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     this.addEventListener('keydown', this.handleKeyDown);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('keydown', this.handleKeyDown);
 
     super.disconnectedCallback();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     let content;
     if (this.results !== null) {
       if (this.results.length === 0) {
@@ -99,13 +99,13 @@ export class ResultContainer extends LitElement {
 
 @customElement('typo3-backend-formengine-suggest-result-list')
 export class ResultList extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
     }
   `;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 }

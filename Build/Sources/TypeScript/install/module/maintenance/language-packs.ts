@@ -68,7 +68,7 @@ class LanguagePacks extends AbstractInteractableModule {
     return count !== 1 && additionalCount !== 1 ? word + suffix : word;
   }
 
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
     Promise.all([

@@ -20,9 +20,9 @@ export const componentName = 'typo3-backend-settings-type-number';
 @customElement(componentName)
 export class NumberTypeElement extends BaseElement<number> {
 
-  @property({ type: Number }) value: number;
+  @property({ type: Number }) override value: number;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <input
         type="number"

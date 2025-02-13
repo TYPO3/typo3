@@ -31,7 +31,7 @@ export class ResultItem extends LitElement {
   @property({ type: String }) label: string;
   @property({ type: String }) path: string;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
 
     this.addEventListener('blur', this.onBlur);
@@ -39,7 +39,7 @@ export class ResultItem extends LitElement {
     this.addEventListener('keyup', this.onKeyUp);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('blur', this.onBlur);
     this.removeEventListener('click', this.onClick);
     this.removeEventListener('keyup', this.onKeyUp);
@@ -47,12 +47,12 @@ export class ResultItem extends LitElement {
     super.disconnectedCallback();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="formengine-suggest-result-item-icon">
         <typo3-backend-icon title="${this.icon.title}" identifier="${this.icon.identifier}" overlay="${this.icon.overlay}" size="small"></typo3-backend-icon>

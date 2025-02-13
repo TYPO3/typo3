@@ -51,7 +51,7 @@ enum SelectorActions {
  */
 @customElement('typo3-backend-column-selector-button')
 export class ColumnSelectorButton extends LitElement {
-  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
 
   @property({ type: String, attribute: 'data-url' }) modalUrl: string;
   @property({ type: String, attribute: 'data-target' }) modalTarget: string;
@@ -148,7 +148,7 @@ export class ColumnSelectorButton extends LitElement {
     });
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     if (!this.hasAttribute('role')) {
       this.setAttribute('role', 'button');
     }
@@ -157,7 +157,7 @@ export class ColumnSelectorButton extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

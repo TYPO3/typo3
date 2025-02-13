@@ -17,7 +17,7 @@ import Modal from '@typo3/backend/modal';
 
 @customElement('typo3-mfa-totp-url-info-button')
 export class MfaTotpUrlButton extends LitElement {
-  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
 
   @property({ type: String, attribute: 'data-url' }) modalUrl: string;
   @property({ type: String, attribute: 'data-title' }) modalTitle: string;
@@ -38,7 +38,7 @@ export class MfaTotpUrlButton extends LitElement {
     });
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     if (!this.hasAttribute('role')) {
       this.setAttribute('role', 'button');
     }
@@ -47,7 +47,7 @@ export class MfaTotpUrlButton extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

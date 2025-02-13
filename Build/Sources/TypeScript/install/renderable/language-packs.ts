@@ -63,12 +63,12 @@ export class LanguageMatrixElement extends LitElement {
   @state()
   private addLanguagesActive: boolean = false;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  public render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div>
         <h2>Active languages</h2>
@@ -181,12 +181,12 @@ export class LanguageMatrixElement extends LitElement {
 export class ExtensionMatrixElement extends LitElement {
   @property({ type: Object }) data: LanguagePacksGetDataResponse | null = null;
 
-  public createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  public render(): TemplateResult {
+  protected override render(): TemplateResult {
     if (this.data.extensions.length === 0) {
       return html`
         <typo3-install-infobox

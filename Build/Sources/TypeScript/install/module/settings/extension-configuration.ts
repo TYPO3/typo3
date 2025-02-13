@@ -43,7 +43,7 @@ type ExtensionConfigurationWrittenResponse = {
  * Module: @typo3/install/module/extension-configuration
  */
 class ExtensionConfiguration extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getContent();
 

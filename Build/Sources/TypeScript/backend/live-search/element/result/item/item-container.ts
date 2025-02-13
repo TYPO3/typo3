@@ -29,22 +29,22 @@ export const componentName = 'typo3-backend-live-search-result-item-container';
 export class ItemContainer extends LitElement {
   @property({ type: Object, attribute: false }) results: ResultItemInterface[]|null = null;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     this.addEventListener('scroll', this.onScroll);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('scroll', this.onScroll);
     super.disconnectedCallback();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const groupedResults: GroupedResultItems = {};
     const filteredResults = this.results.filter((result: ResultItemInterface): boolean => result !== null);
     if (filteredResults.length !== this.results.length) {
@@ -130,7 +130,7 @@ export class ItemContainer extends LitElement {
 
 @customElement('typo3-backend-live-search-result-list')
 export class ResultList extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: block;
     }
@@ -139,7 +139,7 @@ export class ResultList extends LitElement {
   private parentContainer: HTMLElement;
   private resultItemDetailContainer: HTMLElement;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search-result-container');
     this.resultItemDetailContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-detail-container');
 
@@ -148,13 +148,13 @@ export class ResultList extends LitElement {
     this.addEventListener('keyup', this.handleKeyUp);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     this.removeEventListener('keydown', this.handleKeyDown);
     this.removeEventListener('keyup', this.handleKeyUp);
     super.disconnectedCallback();
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

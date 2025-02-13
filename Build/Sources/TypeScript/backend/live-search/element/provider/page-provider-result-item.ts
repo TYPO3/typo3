@@ -22,12 +22,12 @@ export default class PageProviderResultItem extends LitElement {
   @property({ type: String, attribute: false }) typeLabel: string;
   @property({ type: Object, attribute: false }) extraData: { [key: string]: any };
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="livesearch-result-item-icon">
         <typo3-backend-icon title="${this.icon.title}" identifier="${this.icon.identifier}" overlay="${this.icon.overlay}" size="small"></typo3-backend-icon>

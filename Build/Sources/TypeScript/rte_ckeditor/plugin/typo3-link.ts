@@ -62,10 +62,10 @@ export class Typo3TextView extends UI.View {
  * Inspired by @ckeditor/ckeditor5-link/src/linkcommand.js
  */
 export class Typo3LinkCommand extends Core.Command {
-  public value: string | undefined;
+  public override value: string | undefined;
   public attrs: Record<string, string> = {};
 
-  public refresh() {
+  public override refresh(): void {
     const model = this.editor.model;
     const selection = model.document.selection;
     const selectedElement = selection.getSelectedElement() || Utils.first(selection.getSelectedBlocks());
@@ -104,7 +104,7 @@ export class Typo3LinkCommand extends Core.Command {
     this.attrs = attrs;
   }
 
-  public execute(href: string, linkAttr: Typo3LinkDict = {}): void {
+  public override execute(href: string, linkAttr: Typo3LinkDict = {}): void {
     const model = this.editor.model;
     const selection = model.document.selection;
 
@@ -240,7 +240,7 @@ export class Typo3LinkCommand extends Core.Command {
  * Inspired by @ckeditor/ckeditor5-link/src/unlinkcommand.js
  */
 export class Typo3UnlinkCommand extends Core.Command {
-  public refresh() {
+  public override refresh(): void {
     const model = this.editor.model;
     const selection = model.document.selection;
     const selectedElement = selection.getSelectedElement();
@@ -252,7 +252,7 @@ export class Typo3UnlinkCommand extends Core.Command {
     }
   }
 
-  public execute(): void {
+  public override execute(): void {
     const model = this.editor.model;
     const selection = model.document.selection;
 
@@ -357,7 +357,7 @@ export class Typo3LinkEditing extends Core.Plugin {
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 export class Typo3LinkActionsView extends LinkActionsView {
-  _createPreviewButton() {
+  override _createPreviewButton(): Typo3TextView {
     const textView = new Typo3TextView(this.locale);
     const t = this.t;
 

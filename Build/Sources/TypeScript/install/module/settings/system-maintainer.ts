@@ -46,7 +46,7 @@ type SystemMaintainersWrittenResponse = {
  * Module: @typo3/install/module/system-maintainer
  */
 class SystemMaintainer extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
 
     this.loadModuleFrameAgnostic('select-pure').then((): void => {

@@ -37,7 +37,7 @@ type PresetsWrittenResponse = {
  * Module: @typo3/install/module/presets
  */
 class Presets extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getContent();
 

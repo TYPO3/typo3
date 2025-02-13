@@ -55,11 +55,11 @@ export class AlertElement extends LitElement {
     return icons[severity] || 'actions-info';
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
 
     return html`
       <div

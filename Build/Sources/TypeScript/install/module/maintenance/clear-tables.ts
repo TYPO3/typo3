@@ -48,7 +48,7 @@ enum Identifiers {
  * Module: @typo3/install/module/clear-tables
  */
 class ClearTables extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getStats();
 

@@ -97,7 +97,7 @@ export class CspReports extends LitElement {
 
   private peripheralEvent: RegularEvent;
 
-  connectedCallback() {
+  public override connectedCallback(): void {
     super.connectedCallback();
     this.fetchReports();
     this.peripheralEvent = new RegularEvent('click', (evt: Event, target: HTMLElement) => {
@@ -109,16 +109,16 @@ export class CspReports extends LitElement {
     this.peripheralEvent.delegateTo(document, '[data-csp-reports-handler]');
   }
 
-  disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.peripheralEvent?.release();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="infolist-container infolist-overlay">
         <div class="infolist">

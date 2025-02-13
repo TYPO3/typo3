@@ -33,7 +33,7 @@ enum Selectors {
  */
 @customElement('typo3-recordlist-record-download-button')
 export class RecordDownloadButton extends LitElement {
-  static styles = [css`:host { cursor: pointer; appearance: button; }`];
+  static override styles = [css`:host { cursor: pointer; appearance: button; }`];
   @property({ type: String }) url: string;
   @property({ type: String }) subject: string;
   @property({ type: String }) ok: string;
@@ -53,7 +53,7 @@ export class RecordDownloadButton extends LitElement {
     });
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     if (!this.hasAttribute('role')) {
       this.setAttribute('role', 'button');
     }
@@ -62,7 +62,7 @@ export class RecordDownloadButton extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`<slot></slot>`;
   }
 

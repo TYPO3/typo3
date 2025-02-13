@@ -27,6 +27,7 @@ import { ModuleUtility } from '@typo3/backend/module';
 import { FileListDragDropDetail, FileListDragDropEvent } from '@typo3/filelist/file-list-dragdrop';
 import { Resource, ResourceInterface } from '@typo3/backend/resource/resource';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
+import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';
 
@@ -41,9 +42,13 @@ interface DragDropTargetPosition {
  */
 @customElement('typo3-backend-navigation-component-filestorage-tree')
 export class EditableFileStorageTree extends FileStorageTree {
-  protected allowNodeDrag: boolean = true;
+  protected override allowNodeDrag: boolean = true;
 
-  protected handleNodeMove(node: TreeNodeInterface, target: TreeNodeInterface, position: TreeNodePositionEnum) {
+  protected override handleNodeMove(
+    node: TreeNodeInterface,
+    target: TreeNodeInterface,
+    position: TreeNodePositionEnum
+  ): void {
     if (!this.isDropAllowed(target, node)) {
       return;
     }
@@ -68,7 +73,7 @@ export class EditableFileStorageTree extends FileStorageTree {
     this.initiateDropAction(fileOperationCollection);
   }
 
-  protected createDataTransferItemsFromNode(node: TreeNodeInterface) {
+  protected override createDataTransferItemsFromNode(node: TreeNodeInterface): DataTransferStringItem[] {
     return [
       {
         type: DataTransferTypes.treenode,
@@ -83,7 +88,7 @@ export class EditableFileStorageTree extends FileStorageTree {
     ];
   }
 
-  protected handleNodeDragOver(event: DragEvent): boolean {
+  protected override handleNodeDragOver(event: DragEvent): boolean {
     // @todo incorporate isDropAllowed
     if (super.handleNodeDragOver(event)) {
       return true;
@@ -133,11 +138,11 @@ export class EditableFileStorageTree extends FileStorageTree {
     return false;
   }
 
-  protected getTooltipDescription(node: TreeNodeInterface): string {
+  protected override getTooltipDescription(node: TreeNodeInterface): string {
     return decodeURIComponent(node.identifier);
   }
 
-  protected handleNodeDrop(event: DragEvent): boolean {
+  protected override handleNodeDrop(event: DragEvent): boolean {
     if (super.handleNodeDrop(event)) {
       return true;
     }
@@ -264,24 +269,24 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
 
   protected override moduleStateType: string = 'media';
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     document.addEventListener('typo3:filestoragetree:refresh', this.refresh);
     document.addEventListener('typo3:filestoragetree:selectFirstNode', this.selectFirstNode);
   }
 
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     document.removeEventListener('typo3:filestoragetree:refresh', this.refresh);
     document.removeEventListener('typo3:filestoragetree:selectFirstNode', this.selectFirstNode);
     super.disconnectedCallback();
   }
 
   // disable shadow dom for now
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const treeSetup = {
       dataUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_data,
       rootlineUrl: top.TYPO3.settings.ajaxUrls.filestorage_tree_rootline,
@@ -307,7 +312,7 @@ export class FileStorageTreeNavigationComponent extends TreeModuleState(LitEleme
     `;
   }
 
-  protected firstUpdated() {
+  protected override firstUpdated(): void {
     this.toolbar.tree = this.tree;
   }
 

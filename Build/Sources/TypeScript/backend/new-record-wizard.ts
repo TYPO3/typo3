@@ -138,7 +138,7 @@ interface Message {
  */
 @customElement('typo3-backend-new-record-wizard')
 export class NewRecordWizard extends LitElement {
-  static styles: CSSResult[] = [
+  static override styles: CSSResult[] = [
     css`
       :host {
         display: block;
@@ -343,11 +343,7 @@ export class NewRecordWizard extends LitElement {
   @property({ type: Array, attribute: false }) messages: Message[] = [];
   @property({ type: Boolean, attribute: false }) toggleMenu: boolean = false;
 
-  public constructor() {
-    super();
-  }
-
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     // Load shared css file
     const link = document.createElement('link');
     link.setAttribute('rel', 'stylesheet');
@@ -402,7 +398,7 @@ export class NewRecordWizard extends LitElement {
     this.selectAvailableCategory();
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="element">
         ${this.renderFilter()}

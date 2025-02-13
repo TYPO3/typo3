@@ -69,18 +69,18 @@ export class CKEditor5Element extends LitElement {
 
   private readonly styleSheets: Map<CSSStyleSheet, true> = new Map();
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     this.prefixAndLoadContentsCss();
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     document.adoptedStyleSheets = document.adoptedStyleSheets.filter(styleSheet => !this.styleSheets.has(styleSheet));
     this.styleSheets.clear();
   }
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     if (this.target[0] instanceof HTMLTextAreaElement) {
       this.initCKEditor();
     } else {
@@ -169,7 +169,7 @@ export class CKEditor5Element extends LitElement {
       });
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <slot name="textarea"></slot>
       <slot></slot>

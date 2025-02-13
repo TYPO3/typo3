@@ -121,12 +121,12 @@ export class ModalElement extends LitElement {
     }
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     this.bootstrapModal = new BootstrapModal(this.renderRoot.querySelector(Identifiers.modal), {});
     this.bootstrapModal.show();
     if (this.callback) {
@@ -134,13 +134,13 @@ export class ModalElement extends LitElement {
     }
   }
 
-  protected updated(changedProperties: PropertyValues) {
+  protected override updated(changedProperties: PropertyValues): void {
     if (changedProperties.has('templateResultContent')) {
       this.dispatchEvent(new CustomEvent('modal-updated', { bubbles: true }));
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const styles: StyleInfo = {
       zIndex: this.zindex.toString()
     };

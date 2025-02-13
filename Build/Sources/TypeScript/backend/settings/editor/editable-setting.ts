@@ -61,11 +61,11 @@ export class EditableSettingElement extends LitElement {
 
   typeElement: BaseElement<unknown> = null;
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     const { value, systemDefault, definition } = this.setting;
     return html`
       <div

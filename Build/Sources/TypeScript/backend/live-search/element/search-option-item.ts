@@ -26,18 +26,18 @@ export class SearchOptionItem extends LitElement {
 
   private parentContainer: HTMLElement;
 
-  public connectedCallback() {
+  public override connectedCallback(): void {
     this.parentContainer = this.closest('typo3-backend-live-search');
 
     super.connectedCallback();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // Avoid shadow DOM for Bootstrap CSS to be applied
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class="form-check">
         <input type="checkbox" class="form-check-input" name="${this.optionName}[]" value="${this.optionId}" id="${this.optionId}" checked=${ifDefined(this.active ? 'checked' : undefined)} @input="${this.handleInput}">

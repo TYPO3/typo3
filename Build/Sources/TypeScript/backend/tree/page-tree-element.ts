@@ -29,6 +29,7 @@ import Severity from '../severity';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
 import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
+import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
 
 /**
  * This module defines the Custom Element for rendering the navigation component for an editable page tree
@@ -77,9 +78,9 @@ interface NodeNewOptions extends NodePositionOptions {
  */
 @customElement('typo3-backend-navigation-component-pagetree-tree')
 export class EditablePageTree extends PageTree {
-  protected allowNodeEdit: boolean = true;
-  protected allowNodeDrag: boolean = true;
-  protected allowNodeSorting: boolean = true;
+  protected override allowNodeEdit: boolean = true;
+  protected override allowNodeDrag: boolean = true;
+  protected override allowNodeSorting: boolean = true;
 
   public sendChangeCommand(data: NodeChangeCommandDataInterface): void {
     let params: string = '';
@@ -136,7 +137,7 @@ export class EditablePageTree extends PageTree {
     throw new Error('unused');
   }
 
-  protected async handleNodeEdit(node: TreeNodeInterface, newName: string): Promise<void> {
+  protected override async handleNodeEdit(node: TreeNodeInterface, newName: string): Promise<void> {
     node.__loading = true;
 
     if (node.identifier.startsWith('NEW')) {
@@ -162,7 +163,7 @@ export class EditablePageTree extends PageTree {
     node.__loading = false;
   }
 
-  protected createDataTransferItemsFromNode(node: TreeNodeInterface) {
+  protected override createDataTransferItemsFromNode(node: TreeNodeInterface): DataTransferStringItem[] {
     return [
       {
         type: DataTransferTypes.treenode,
@@ -183,13 +184,13 @@ export class EditablePageTree extends PageTree {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  protected async handleNodeAdd(node: TreeNodeInterface, target: TreeNodeInterface, position: TreeNodePositionEnum): Promise<void> {
+  protected override async handleNodeAdd(node: TreeNodeInterface, target: TreeNodeInterface, position: TreeNodePositionEnum): Promise<void> {
     this.updateComplete.then(() => {
       this.editNode(node);
     });
   }
 
-  protected handleNodeDelete(node: TreeNodeInterface): void {
+  protected override handleNodeDelete(node: TreeNodeInterface): void {
     const options: NodeDeleteOptions = {
       node: node,
       command: TreeNodeCommandEnum.DELETE
@@ -225,7 +226,11 @@ export class EditablePageTree extends PageTree {
     }
   }
 
-  protected handleNodeMove(node: TreeNodeInterface, target: TreeNodeInterface, position: TreeNodePositionEnum) {
+  protected override handleNodeMove(
+    node: TreeNodeInterface,
+    target: TreeNodeInterface,
+    position: TreeNodePositionEnum
+  ): void {
     const options: NodePositionOptions = {
       node: node,
       target: target,
@@ -313,14 +318,14 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
 
   private configuration: Configuration = null;
 
-  connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     document.addEventListener('typo3:pagetree:refresh', this.refresh);
     document.addEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
     document.addEventListener('typo3:pagetree:selectFirstNode', this.selectFirstNode);
   }
 
-  disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     document.removeEventListener('typo3:pagetree:refresh', this.refresh);
     document.removeEventListener('typo3:pagetree:mountPoint', this.setMountPoint);
     document.removeEventListener('typo3:pagetree:selectFirstNode', this.selectFirstNode);
@@ -328,11 +333,11 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
   }
 
   // disable shadow dom for now
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div id="typo3-pagetree" class="tree">
       ${until(this.renderTree(), '')}
@@ -466,9 +471,10 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
 
 @customElement('typo3-backend-navigation-component-pagetree-toolbar')
 class PageTreeToolbar extends TreeToolbar {
-  @property({ type: EditablePageTree }) tree: EditablePageTree = null;
+  @property({ type: EditablePageTree })
+  override tree: EditablePageTree = null;
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     /* eslint-disable @stylistic/indent */
     return html`
       <div class="tree-toolbar">

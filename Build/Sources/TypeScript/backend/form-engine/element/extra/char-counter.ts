@@ -23,23 +23,23 @@ export class CharCounter extends LitElement {
   private targetElement: HTMLInputElement|HTMLTextAreaElement = null;
   private readonly threshold = 15;
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     super.connectedCallback();
     this.registerCallbacks();
 
     this.hidden = true;
   }
 
-  public disconnectedCallback() {
+  public override disconnectedCallback(): void {
     super.disconnectedCallback();
     this.removeCallbacks();
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected updated(changedProperties: Map<string, any>) {
+  protected override updated(changedProperties: Map<string, any>): void {
     if (changedProperties.has('target')) {
       this.removeCallbacks();
       this.targetElement = document.querySelector(this.target);
@@ -47,7 +47,7 @@ export class CharCounter extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <span class="form-hint form-hint--${this.determineCounterClass()}">
         ${lll(('FormEngine.remainingCharacters')).replace('{0}', this.remainingCharacters.toString(10))}

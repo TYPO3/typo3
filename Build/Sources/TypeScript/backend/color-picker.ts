@@ -18,7 +18,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 
 @customElement('typo3-backend-color-picker')
 export class Typo3BackendColorPicker extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       display: inline-block;
       position: relative;
@@ -53,7 +53,7 @@ export class Typo3BackendColorPicker extends LitElement {
   // Use a reference to the input slot element
   @query('slot') slotEl!: HTMLSlotElement;
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     const inputElement = this.getInputElement();
     if (inputElement) {
       if (!inputElement.value && this.color) {
@@ -93,7 +93,7 @@ export class Typo3BackendColorPicker extends LitElement {
     }
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <slot></slot>
       <span style="--color: ${this.color}" class="color-picker-preview"><span class="color-picker-preview-color"></span></span>

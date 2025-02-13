@@ -27,7 +27,7 @@ export type Stage = string;
  */
 @customElement('typo3-backend-progress-tracker')
 export class ProgressTrackerElement extends LitElement {
-  static styles = css`
+  static override styles = css`
     :host {
       --progress-stage-active: 0;
       --progress-stages-columns: 1;
@@ -180,7 +180,7 @@ export class ProgressTrackerElement extends LitElement {
   @property({ attribute: 'stages', type: Array }) stages: Stage[] = [];
   @property({ attribute: 'active', type: Number, reflect: true }) activeStage: number = 0;
 
-  protected render(): TemplateResult | symbol {
+  protected override render(): TemplateResult | symbol {
     if (this.stages.length < 2) {
       return nothing;
     }

@@ -34,7 +34,7 @@ type FeaturesWrittenResponse = {
  * Module: @typo3/install/module/features
  */
 class Features extends AbstractInteractableModule {
-  public initialize(currentModal: ModalElement): void {
+  public override initialize(currentModal: ModalElement): void {
     super.initialize(currentModal);
     this.getContent();
 

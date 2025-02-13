@@ -38,12 +38,12 @@ export class InfoBox extends LitElement {
     return infobox;
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     let content: TemplateResult | symbol = nothing;
     if (this.content) {
       content = html`<div class="callout-body">${this.content}</div>`;

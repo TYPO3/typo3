@@ -60,23 +60,23 @@ export class GridEditor extends LitElement {
     return securityUtility.stripHtml(input);
   }
 
-  public connectedCallback(): void {
+  public override connectedCallback(): void {
     this.field = document.querySelector('input[name="' + this.fieldName + '"]');
 
     this.addVisibilityObserver(this);
     super.connectedCallback();
   }
 
-  protected firstUpdated(): void {
+  protected override firstUpdated(): void {
     this.writeConfig(this.export2LayoutRecord());
   }
 
-  protected createRenderRoot(): HTMLElement | ShadowRoot {
+  protected override createRenderRoot(): HTMLElement | ShadowRoot {
     // @todo Switch to Shadow DOM once Bootstrap CSS style can be applied correctly
     return this;
   }
 
-  protected render(): TemplateResult {
+  protected override render(): TemplateResult {
     return html`
       <div class=${classMap({ 'grideditor': true, 'grideditor-readonly': this.readOnly })}>
         ${!this.readOnly ? this.renderControls('top', false) : nothing}

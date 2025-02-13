@@ -18,7 +18,7 @@ import Icons from '../icons';
  * Action used when an operation execution time is unknown.
  */
 class DeferredAction extends AbstractAction {
-  protected callback: () => Promise<void>;
+  protected override callback: () => Promise<void>;
 
   public async execute(el: HTMLAnchorElement|HTMLButtonElement): Promise<void> {
     el.dataset.actionLabel = el.innerText;
