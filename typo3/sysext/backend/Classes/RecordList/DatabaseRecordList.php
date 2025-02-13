@@ -1851,11 +1851,9 @@ class DatabaseRecordList
                 );
 
                 $warningText = sprintf($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:' . $actionName . 'Warning'), trim($recordInfo)) . $refCountMsg;
-                $params = 'cmd[' . $table . '][' . $row['uid'] . '][delete]=1';
                 $icon = $this->iconFactory->getIcon('actions-edit-' . $actionName, IconSize::SMALL)->render();
                 $linkTitle = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:' . $actionName);
                 $titleText = $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_alt_doc.xlf:label.confirm.delete_record.title');
-                $l10nParentField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
 
                 $deleteActionAttributes = GeneralUtility::implodeAttributes([
                     'type' => 'button',
@@ -1865,8 +1863,6 @@ class DatabaseRecordList
                     'aria-haspopup' => 'dialog',
                     'data-button-ok-text' => $linkTitle,
                     'data-button-close-text' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
-                    'data-l10nparent' => $l10nParentField ? (string)$row[$l10nParentField] : '',
-                    'data-params' => $params,
                     'data-message' => $warningText,
                     'data-title' => $titleText,
                 ], true, true);
