@@ -62,6 +62,9 @@ final class IconForResourceViewHelper extends AbstractViewHelper
     public function render(): string
     {
         $resource = $this->arguments['resource'];
+        if (!($resource instanceof ResourceInterface)) {
+            return '';
+        }
         $size = $this->arguments['size'];
         $overlay = $this->arguments['overlay'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
