@@ -34,8 +34,8 @@ enum Identifiers {
   recyclerTable = '#itemsInRecycler',
   paginator = '#recycler-index nav',
   reloadAction = 'a[data-action=reload]',
-  undo = 'a[data-action=undo]',
-  delete = 'a[data-action=delete]',
+  undo = 'button[data-action=undo]',
+  delete = 'button[data-action=delete]',
   massUndo = 'button[data-multi-record-selection-action=massundo]',
   massDelete = 'button[data-multi-record-selection-action=massdelete]',
 }
