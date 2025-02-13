@@ -89,7 +89,7 @@ readonly class ImageProcessingInstructions
      * when scaled. They could contain a "c" for cropping information or "m" for "Ensure that even though $w and $h are given, one containing an $m that we keep the aspect ratio."
      * "m" really allows to say $w="50c" that this might in a result with [0]=100 because $w would follow $h in order to keep aspect ratio.
      * Obviously this only works properly if both m and c are working
-     * - $options contain "maxW" (never go beyond this width, even if scaling larger as this), same with "maxH" and "minW" and "minH"
+     * - $options contain "maxW" (never go beyond this width, even if scaling larger as this), same with "maxH" and "minW" and "minH" (note these get streamlined to maxWidth, maxHeight, minWidth, minHeight)
      *
      * The return values are a bit tricky to understand, so I added a few tests:
      * - AFAICS "0" and "1" are always used as "these are the target width / height" which my image
@@ -115,7 +115,7 @@ readonly class ImageProcessingInstructions
      * @param int<0, max> $incomingHeight the height of an original image for example, can be "0" if there is no original image
      * @param int<0, max>|string $width "required" width that is requested, can be "" or "0" or a number of a magic "m" or "c" appended
      * @param int<0, max>|string $height "required" height that is requested, can be "" or "0" or a number of a magic "m" or "c" appended
-     * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH"
+     * @param array $options Options: Keys are like "maxW", "maxH", "minW", "minH" (streamlined to "maxWidth", "maxHeight", "minWidth", "minHeight")
      */
     public static function fromCropScaleValues(int $incomingWidth, int $incomingHeight, int|string $width, int|string $height, array $options): self
     {
@@ -145,12 +145,12 @@ readonly class ImageProcessingInstructions
 
         if ($useWidthOrHeightAsMaximumLimits) {
             if (str_contains((string)$width, 'm')) {
-                $options['maxWidth'] = min((int)$width, $options['maxWidth'] ?? PHP_INT_MAX);
+                $options['maxWidth'] = min((int)$width, (int)($options['maxWidth'] ?? PHP_INT_MAX));
                 // width: auto
                 $width = 0;
             }
             if (str_contains((string)$height, 'm')) {
-                $options['maxHeight'] = min((int)$height, $options['maxHeight'] ?? PHP_INT_MAX);
+                $options['maxHeight'] = min((int)$height, (int)($options['maxHeight'] ?? PHP_INT_MAX));
                 // height: auto
                 $height = 0;
             }
@@ -168,43 +168,46 @@ readonly class ImageProcessingInstructions
         $width = (int)$width;
         $height = (int)$height;
 
+        // Rounding in extreme formats like 1920x10 to 64x??? can yield a 0 height/width, which should be at least 1 pixel.
+        // Because of this, the following checks use a max(1, $maybeZero) assignment.
         if ($width > 0 && $height === 0) {
-            $height = (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth()));
+            $height = max(1, (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth())));
         }
         if ($height > 0 && $width === 0) {
-            $width = (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight()));
+            $width = max(1, (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight())));
         }
 
-        // If there are max-values...
+        // If there are max/min-values...
         if (!empty($options['maxWidth'])) {
             if ($width > $options['maxWidth'] || ($width === 0 && $cropArea->getWidth() > $options['maxWidth'])) {
-                $width = $options['maxWidth'];
-                $height = (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth()));
+                $width = (int)$options['maxWidth'];
+                $height = max(1, (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth())));
             }
         }
         if (!empty($options['maxHeight'])) {
             if ($height > $options['maxHeight'] || ($height === 0 && $cropArea->getHeight() > $options['maxHeight'])) {
-                $height = $options['maxHeight'];
-                $width = (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight()));
+                $height = (int)$options['maxHeight'];
+                $width = max(1, (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight())));
             }
         }
 
         if (!empty($options['minWidth'])) {
             if ($width < $options['minWidth'] || ($width === 0 && $cropArea->getWidth() < $options['minWidth'])) {
-                $width = $options['minWidth'];
-                $height = (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth()));
+                $width = (int)$options['minWidth'];
+                $height = max(1, (int)round($cropArea->getHeight() * ($width / $cropArea->getWidth())));
             }
         }
         if (!empty($options['minHeight'])) {
             if ($height < $options['minHeight'] || ($height === 0 && $cropArea->getHeight() < $options['minHeight'])) {
                 $height = $options['minHeight'];
-                $width = (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight()));
+                $width = max(1, (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight())));
             }
         }
 
         if ($width === 0 && $height === 0) {
             $width = (int)round($cropArea->getWidth());
             $height = (int)round($cropArea->getHeight());
+            // This here may return "0", which should continue to throw a LogicException. Probably.
         }
         if ($width === 0 || $height === 0) {
             throw new \LogicException('Image processing instructions did not resolve into coherent positive width and height values. This is a bug. Please report.', 1709806820);
