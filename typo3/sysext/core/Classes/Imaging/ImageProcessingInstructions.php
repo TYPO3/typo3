@@ -210,7 +210,15 @@ readonly class ImageProcessingInstructions
             // This here may return "0", which should continue to throw a LogicException. Probably.
         }
         if ($width === 0 || $height === 0) {
-            throw new \LogicException('Image processing instructions did not resolve into coherent positive width and height values. This is a bug. Please report.', 1709806820);
+            $extraDetails = [];
+            $extraDetails[] = 'incomingWidth: ' . $incomingWidth;
+            $extraDetails[] = 'incomingHeight: ' . $incomingHeight;
+            $extraDetails[] = 'width: ' . $width;
+            $extraDetails[] = 'height: ' . $height;
+            $extraDetails[] = 'options: ' . json_encode($options, JSON_PRETTY_PRINT);
+            $extraDetails[] = 'cropArea: ' . json_encode($cropArea->asArray(), JSON_PRETTY_PRINT);
+            // Exceptions have no HTML/Text formatting.
+            throw new \LogicException('Image processing instructions did not resolve into coherent positive width and height values. This is a bug. Please report. Extra details: ' . implode(', ', $extraDetails), 1709806820);
         }
 
         if (!($GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] ?? false)) {
