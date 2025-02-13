@@ -3172,7 +3172,7 @@ class DatabaseRecordList
         $languageUid = (int)($row[$GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? null] ?? 0);
         $languageInformation = $this->translateTools->getSystemLanguages($pageId);
         $title = htmlspecialchars($languageInformation[$languageUid]['title'] ?? '');
-        $indent = $this->isLocalized($table, $row) ? '<span class="indent indent-inline-block" style="--indent-level: 1"></span> ' : '';
+        $indent = !$this->showOnlyTranslatedRecords && $this->isLocalized($table, $row) ? '<span class="indent indent-inline-block" style="--indent-level: 1"></span> ' : '';
         if ($languageInformation[$languageUid]['flagIcon'] ?? false) {
             return $indent . $this->iconFactory
                 ->getIcon($languageInformation[$languageUid]['flagIcon'], IconSize::SMALL)
