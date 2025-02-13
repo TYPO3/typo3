@@ -23,256 +23,183 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
-/**
- * Finds (and fixes) all records that have an invalid / deleted page ID
- */
-#[AsCommand('cleanup:orphanrecords', 'Find and delete records that have lost their connection with the page tree.')]
+#[AsCommand('cleanup:orphanrecords', 'Find and delete records that have lost their connection with the page tree')]
 class OrphanRecordsCommand extends Command
 {
-    public function __construct(private readonly ConnectionPool $connectionPool)
-    {
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+        private readonly TcaSchemaFactory $schemaFactory,
+    ) {
         parent::__construct();
     }
 
-    /**
-     * Configure the command by defining the name, options and arguments
-     */
-    public function configure()
+    public function configure(): void
     {
         $this
-            ->setHelp('Assumption: All actively used records on the website from TCA configured tables are located in the page tree exclusively.
-
-All records managed by TYPO3 via the TCA array configuration has to belong to a page in the page tree, either directly or indirectly as a version of another record.
-VERY TIME, CPU and MEMORY intensive operation since the full page tree is looked up!
-
-Automatic Repair of Errors:
-- Silently deleting the orphaned records. In theory they should not be used anywhere in the system, but there could be references. See below for more details on this matter.
-
-Manual repair suggestions:
-- Possibly re-connect orphaned records to page tree by setting their "pid" field to a valid page id. A lookup in the sys_refindex table can reveal if there are references to an orphaned record. If there are such references (from records that are not themselves orphans) you might consider to re-connect the record to the page tree, otherwise it should be safe to delete it.
-
- If you want to get more detailed information, use the --verbose option.')
+            ->setHelp(
+                'TYPO3 "pages" database table is a tree that represents a hierarchical structure with a set of connected nodes by their "uid" und "pid" values.'
+                . "\n" . 'All TCA records must be connected to a valid "pid".'
+                . "\n"
+                . "\n" . 'This command finds and deletes all "pages" rows that do not have a proper tree connection to "pid" "0".'
+                . "\n" . 'It also finds and deletes TCA record rows having a "pid" set to invalid "pages" "uid"s.'
+                . "\n"
+                . "\n" . 'The command can be called using "typo3 cleanup:orphanrecords -v --dry-run" to *find* affected records allowing manual inspection.'
+            )
             ->addOption(
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
-                'If this option is set, the records will not actually be deleted, but just the output which records would be deleted are shown'
+                'If this option is set, the records will not be deleted. The command outputs a list of broken records'
             );
     }
 
-    /**
-     * Executes the command to find records not attached to the pagetree
-     * and permanently delete these records
-     */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // Make sure the _cli_ user is loaded
-        Bootstrap::initializeBackendAuthentication();
-
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
 
-        if ($io->isVerbose()) {
-            $io->section('Searching the database now for orphaned records.');
-        }
+        $isVerbose = $io->isVerbose();
+        $isDryRun = $input->hasOption('dry-run') && (bool)$input->getOption('dry-run') !== false;
 
-        $dryRun = $input->hasOption('dry-run') && (bool)$input->getOption('dry-run') !== false;
+        // Get list of valid pages uids
+        $pageStatus = $this->getConnectedAndOrphanPages();
+        $connectedPageUids = $pageStatus['connectedPageUids'];
 
-        // find all records that should be deleted
-        $allRecords = $this->findAllConnectedRecordsInPage(0, 10000);
-
-        // Find orphans
-        $orphans = [];
-        foreach (array_keys($GLOBALS['TCA']) as $tableName) {
-            $idList = [0];
-            if (is_array($allRecords[$tableName] ?? false) && !empty($allRecords[$tableName])) {
-                $idList = $allRecords[$tableName];
+        // Loop all TCA tables
+        $tcaTableNames = $this->schemaFactory->all()->getNames();
+        sort($tcaTableNames);
+        $orphanRecords = [];
+        foreach ($tcaTableNames as $tableName) {
+            if ($tableName === 'pages') {
+                continue;
             }
-            // Select all records that are NOT connected
-            $queryBuilder = $this->connectionPool
-                ->getQueryBuilderForTable($tableName);
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
             $queryBuilder->getRestrictions()->removeAll();
-            $queryBuilder
-                ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->notIn(
-                        'uid',
-                        // do not use named parameter here as the list can get too long
-                        array_map('intval', $idList)
-                    )
-                );
-
-            $countQueryBuilder = clone $queryBuilder;
-            $rowCount = $countQueryBuilder->count('uid')->executeQuery()->fetchOne();
-            if ($rowCount) {
-                $queryBuilder->select('uid')->orderBy('uid');
-                $result = $queryBuilder->executeQuery();
-
-                $orphans[$tableName] = [];
-                while ($orphanRecord = $result->fetchAssociative()) {
-                    $orphans[$tableName][$orphanRecord['uid']] = $orphanRecord['uid'];
-                }
-
-                if (count($orphans[$tableName])) {
-                    $io->note('Found ' . count($orphans[$tableName]) . ' orphan records in table "' . $tableName . '" with following ids: ' . implode(', ', $orphans[$tableName]));
+            $tableResult = $queryBuilder->select('uid', 'pid')->from($tableName)->orderBy('uid')->executeQuery();
+            while ($tableRow = $tableResult->fetchAssociative()) {
+                if (!array_key_exists((int)$tableRow['pid'], $connectedPageUids)) {
+                    $orphanRecords[$tableName][] = $tableRow;
                 }
             }
         }
 
-        if (count($orphans)) {
-            $io->section('Deletion process starting now.' . ($dryRun ? ' (Not deleting now, just a dry run)' : ''));
+        // We have a list of potential orphan records now. Refresh the list of valid
+        // pages in case the pages list changed during this run meanwhile.
+        $pageStatus = $this->getConnectedAndOrphanPages();
+        $connectedPageUids = $pageStatus['connectedPageUids'];
+        $orphanPageUids = $pageStatus['orphanPageUids'];
 
-            // Actually permanently delete them
-            $this->deleteRecords($orphans, $dryRun, $io);
-
-            $io->success('All done!');
-        } else {
-            $io->success('No orphan records found.');
+        // Delete or output list of orphan pages
+        $removedPages = 0;
+        foreach ($orphanPageUids as $pageUid) {
+            $removedPages++;
+            if ($isDryRun) {
+                if ($isVerbose) {
+                    $io->warning('Found orphan pages:' . $pageUid);
+                }
+            } else {
+                $this->connectionPool->getConnectionForTable('pages')->delete(
+                    'pages',
+                    ['uid' => (int)$pageUid],
+                    [Connection::PARAM_INT]
+                );
+                if ($isVerbose) {
+                    $io->warning('Removed orphan pages:' . $pageUid);
+                }
+            }
         }
-        return Command::SUCCESS;
-    }
 
-    /**
-     * Recursive traversal of page tree to fetch all records marked as "deleted",
-     * via option $GLOBALS[TCA][$tableName][ctrl][delete]
-     * This also takes deleted versioned records into account.
-     *
-     * @param int $pageId the uid of the pages record (can also be 0)
-     * @param int $depth The current depth of levels to go down
-     * @param array $allRecords the records that are already marked as deleted (used when going recursive)
-     *
-     * @return array the modified $deletedRecords array
-     */
-    protected function findAllConnectedRecordsInPage(int $pageId, int $depth, array $allRecords = []): array
-    {
-        // Register page
-        if ($pageId > 0) {
-            $allRecords['pages'][$pageId] = $pageId;
-        }
-        // Traverse tables of records that belongs to page
-        foreach (array_keys($GLOBALS['TCA']) as $tableName) {
-            /** @var string $tableName */
-            if ($tableName !== 'pages') {
-                // Select all records belonging to page:
-                $queryBuilder = $this->connectionPool
-                    ->getQueryBuilderForTable($tableName);
-
-                $queryBuilder->getRestrictions()->removeAll();
-
-                $result = $queryBuilder
-                    ->select('uid')
-                    ->from($tableName)
-                    ->where(
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                        )
-                    )
-                    ->executeQuery();
-
-                while ($rowSub = $result->fetchAssociative()) {
-                    $allRecords[$tableName][$rowSub['uid']] = $rowSub['uid'];
-                    // Add any versions of those records:
-                    $versions = BackendUtility::selectVersionsOfRecord($tableName, $rowSub['uid'], 'uid,t3ver_wsid', null, true);
-                    if (is_array($versions)) {
-                        foreach ($versions as $verRec) {
-                            if (!($verRec['_CURRENT_VERSION'] ?? false)) {
-                                $allRecords[$tableName][$verRec['uid']] = $verRec['uid'];
-                            }
+        // Delete or output list of orphan records
+        $removedRecords = 0;
+        foreach ($orphanRecords as $tableName => $tableRows) {
+            foreach ($tableRows as $tableRow) {
+                if (!array_key_exists((int)$tableRow['pid'], $connectedPageUids)) {
+                    $removedRecords++;
+                    if ($isDryRun) {
+                        if ($isVerbose) {
+                            $io->warning('Found orphan ' . $tableName . ':' . $tableRow['uid']);
+                        }
+                    } else {
+                        $this->connectionPool->getConnectionForTable($tableName)->delete(
+                            $tableName,
+                            ['uid' => (int)$tableRow['uid']],
+                            [Connection::PARAM_INT]
+                        );
+                        if ($isVerbose) {
+                            $io->warning('Removed orphan ' . $tableName . ':' . $tableRow['uid']);
                         }
                     }
                 }
             }
         }
-        // Find subpages to root ID and traverse (only when rootID is not a version or is a branch-version):
-        if ($depth > 0) {
-            $depth--;
-            $queryBuilder = $this->connectionPool
-                ->getQueryBuilderForTable('pages');
 
-            $queryBuilder->getRestrictions()->removeAll();
-
-            $result = $queryBuilder
-                ->select('uid')
-                ->from('pages')
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
-                    )
-                )
-                ->orderBy('sorting')
-                ->executeQuery();
-
-            while ($row = $result->fetchAssociative()) {
-                $allRecords = $this->findAllConnectedRecordsInPage((int)$row['uid'], $depth, $allRecords);
+        // Output summary
+        $numberOfRemovedRecords = $removedPages + $removedRecords;
+        if ($numberOfRemovedRecords > 0) {
+            if ($isDryRun) {
+                $io->warning('Found ' . $numberOfRemovedRecords . ' orphan records without proper page tree connection.');
+            } else {
+                $io->success('Removed ' . $numberOfRemovedRecords . ' orphan records without proper page tree connection.');
             }
+        } else {
+            $io->success('No orphan records found.');
         }
 
-        // Add any versions of pages
-        if ($pageId > 0) {
-            $versions = BackendUtility::selectVersionsOfRecord('pages', $pageId, 'uid,t3ver_oid,t3ver_wsid', null, true);
-            if (is_array($versions)) {
-                foreach ($versions as $verRec) {
-                    if (!($verRec['_CURRENT_VERSION'] ?? false)) {
-                        $allRecords = $this->findAllConnectedRecordsInPage((int)$verRec['uid'], $depth, $allRecords);
-                    }
-                }
-            }
-        }
-        return $allRecords;
+        return Command::SUCCESS;
     }
 
     /**
-     * Deletes records via DataHandler
-     *
-     * @param array $orphanedRecords two level array with tables and uids
-     * @param bool $dryRun check if the records should NOT be deleted (use --dry-run to avoid)
+     * A straight solution that gets a list of *all* pages and returns a list
+     * of page uids that *are* connected in a tree and a list of "remaining"
+     * page uids that are not.
+     * Note this finds "loops" as invalid: If a chain of pages is connected
+     * to each other and none has a pid that leads to "0", they are found
+     * as "orphan".
      */
-    protected function deleteRecords(array $orphanedRecords, bool $dryRun, SymfonyStyle $io): void
+    private function getConnectedAndOrphanPages(): array
     {
-        // Putting "pages" table in the bottom
-        if (isset($orphanedRecords['pages'])) {
-            $_pages = $orphanedRecords['pages'];
-            unset($orphanedRecords['pages']);
-            // To delete sub pages first assuming they are accumulated from top of page tree.
-            $orphanedRecords['pages'] = array_reverse($_pages);
-        }
-
-        // set up the data handler instance
-        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-        $dataHandler->start([], []);
-
-        // Loop through all tables and their records
-        foreach ($orphanedRecords as $table => $list) {
-            if ($io->isVerbose()) {
-                $io->writeln('Flushing ' . count($list) . ' orphaned records from table "' . $table . '"');
+        $connectedPageUids = [];
+        // uid 0 is "valid"
+        $connectedPageUids[0] = true;
+        $unknownPageUidPidPairs = [];
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        $queryBuilder->getRestrictions()->removeAll();
+        $pagesResult = $queryBuilder->select('uid', 'pid')->from('pages')->orderBy('uid')->executeQuery();
+        while ($pageRow = $pagesResult->fetchAssociative()) {
+            if ((int)$pageRow['pid'] === 0) {
+                // Pages with pid 0 are good and sorted out already.
+                $connectedPageUids[(int)$pageRow['uid']] = true;
+            } else {
+                $unknownPageUidPidPairs[(int)$pageRow['uid']] = (int)$pageRow['pid'];
             }
-            foreach ($list as $uid) {
-                if ($io->isVeryVerbose()) {
-                    $io->writeln('Flushing record "' . $table . ':' . $uid . '"');
-                }
-                if (!$dryRun) {
-                    // Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they
-                    // should also be included in the set of deleted pages of course (no un-deleted record can exist
-                    // under a deleted page...)
-                    $dataHandler->deleteEl($table, (int)$uid, true, true);
-                    // Return errors if any:
-                    if (!empty($dataHandler->errorLog)) {
-                        $errorMessage = array_merge(['DataHandler reported an error'], $dataHandler->errorLog);
-                        $io->error($errorMessage);
-                    } elseif (!$io->isQuiet()) {
-                        $io->writeln('Permanently deleted orphaned record "' . $table . ':' . $uid . '".');
+        }
+        $unknownUidPidPairsCount = count($unknownPageUidPidPairs);
+        if ($unknownUidPidPairsCount > 0) {
+            while (true) {
+                // If there are currently "unknown status" rows, have a loop that reduces the
+                // "unknown" list until it does not change anymore or is empty: Each run looks
+                // if "pid" is in "connected" list and adds itself as valid "uid" if so.
+                foreach ($unknownPageUidPidPairs as $uid => $pid) {
+                    if (array_key_exists($pid, $connectedPageUids)) {
+                        $connectedPageUids[$uid] = true;
+                        unset($unknownPageUidPidPairs[$uid]);
                     }
                 }
+                $unknownUidPidPairsCountAfter = count($unknownPageUidPidPairs);
+                if ($unknownUidPidPairsCountAfter === 0 || $unknownUidPidPairsCountAfter === $unknownUidPidPairsCount) {
+                    break;
+                }
+                $unknownUidPidPairsCount = $unknownUidPidPairsCountAfter;
             }
         }
+        $orphanPageUids = array_keys($unknownPageUidPidPairs);
+        return [
+            'connectedPageUids' => $connectedPageUids,
+            'orphanPageUids' => $orphanPageUids,
+        ];
     }
 }
