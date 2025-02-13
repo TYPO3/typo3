@@ -62,6 +62,34 @@ final class ImageProcessingInstructionsTest extends UnitTestCase
         ];
 
         $result = new ImageProcessingInstructions(
+            width: 64,
+            height: 1,
+        );
+        yield 'Get image scale with a maximum width+height of 64px (standard preview image) with extreme WIDTH proportions' => [
+            1920,
+            10,
+            '',
+            '',
+            ['maxWidth' => 64, 'maxHeight' => 64],
+            true,
+            $result,
+        ];
+
+        $result = new ImageProcessingInstructions(
+            width: 1,
+            height: 64,
+        );
+        yield 'Get image scale with a maximum width+height of 64px (standard preview image) with extreme HEIGHT proportions' => [
+            10,
+            1920,
+            '',
+            '',
+            ['maxWidth' => 64, 'maxHeight' => 64],
+            true,
+            $result,
+        ];
+
+        $result = new ImageProcessingInstructions(
             width: 200,
             height: 160,
         );
