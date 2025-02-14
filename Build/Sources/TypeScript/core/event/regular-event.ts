@@ -41,8 +41,8 @@ class RegularEvent implements EventInterface {
     }
     this.boundElement = element;
     element.addEventListener(this.eventName, (e: Event): void => {
-      for (let targetElement: Node = <Element>e.target; targetElement && targetElement !== this.boundElement; targetElement = targetElement.parentNode) {
-        if ((<HTMLElement>targetElement).matches(selector)) {
+      for (let targetElement = <HTMLElement>e.target; targetElement && targetElement !== this.boundElement; targetElement = targetElement.parentElement) {
+        if (targetElement.matches(selector)) {
           this.callback.call(targetElement, e, targetElement);
           break;
         }

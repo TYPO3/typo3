@@ -96,8 +96,8 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       let error: Error;
       try {
         await aPromise;
-      } catch (e) {
-        error = e;
+      } catch (e: unknown) {
+        error = e as Error;
       }
       const b = await bPromise;
 
@@ -140,8 +140,8 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       let error: Error;
       try {
         await dedupe.get('foo', boolTask, abortControllerB.signal);
-      } catch (e) {
-        error = e;
+      } catch (e: unknown) {
+        error = e as Error;
       }
 
       expect(a).to.be.true;
