@@ -82,11 +82,17 @@ class ElementBrowser {
     const isInModalFrame = typeof window.frames !== 'undefined'
       && typeof window.frames.frameElement !== 'undefined'
       && window.frames.frameElement.classList.contains('t3js-modal-iframe');
-    const otherModalFrames = Array.from(top.frames || []).filter((item: Window) =>
-      typeof item.frameElement !== 'undefined'
-      && item.frameElement.classList.contains('t3js-modal-iframe')
-      && item.frameElement !== window.frames.frameElement
-    );
+    const otherModalFrames = Array.from(top.frames || []).filter((item: Window) => {
+      try {
+        return typeof item.frameElement !== 'undefined'
+          && item.frameElement.classList.contains('t3js-modal-iframe')
+          && item.frameElement !== window.frames.frameElement
+      } catch {
+        // browser extensions might inject their own frames, resulting in
+        // `DOMException: Permission denied to access property "document" on cross-origin object`
+        return false;
+      }
+    });
 
     if (this.opener === null) {
       // in case the current modal frame was triggered by another modal frame
