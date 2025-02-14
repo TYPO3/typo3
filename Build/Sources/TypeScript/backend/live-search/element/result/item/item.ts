@@ -35,13 +35,7 @@ export interface ResultItemActionInterface {
 export class Item extends LitElement {
   @property({ type: Object, attribute: false }) resultItem: ResultItemInterface;
 
-  private parentContainer: HTMLElement;
-  private resultItemContainer: HTMLElement;
-
   public override connectedCallback(): void {
-    this.parentContainer = this.closest('typo3-backend-live-search-result-container');
-    this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
-
     super.connectedCallback();
 
     if (!this.hasAttribute('tabindex')) {

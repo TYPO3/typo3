@@ -125,14 +125,6 @@ class BackendLogin {
     document.querySelector(this.options.errorNoCookies)?.classList.remove('hidden');
   }
 
-  /**
-   * Hides cookie warning and shows input fields
-   */
-  private hideCookieWarning(): void {
-    document.querySelector(this.options.formFields)?.classList.remove('hidden');
-    document.querySelector(this.options.errorNoCookies)?.classList.add('hidden');
-  }
-
   private checkLoginRefresh(): void {
     const loginRefresh = document.querySelector(this.options.loginForm + ' input[name="loginRefresh"]');
     if (loginRefresh instanceof HTMLInputElement && loginRefresh.value) {

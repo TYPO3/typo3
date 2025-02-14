@@ -41,10 +41,7 @@ declare global {
  */
 class ElementBrowser {
   private opener: Window = null;
-  private formFieldName: string = '';
   private fieldReference: string = '';
-  private targetDoc: Window;
-  private elRef: Element;
   private readonly rte: RTESettings = {
     parameters: '',
     configuration: '',
@@ -56,23 +53,11 @@ class ElementBrowser {
   constructor() {
     DocumentService.ready().then((): void => {
       const data = document.body.dataset;
-      this.formFieldName = data.formFieldName;
       this.fieldReference = data.fieldReference;
       this.rte.parameters = data.rteParameters;
       this.rte.configuration = data.rteConfiguration;
       this.irre.objectId = data.irreObjectId;
     });
-  }
-
-  public setReferences(): boolean {
-    if (this.getParent() && this.getParent().content && this.getParent().content.document.editform
-      && this.getParent().content.document.editform[this.formFieldName]) {
-      this.targetDoc = this.getParent().content.document;
-      this.elRef = this.targetDoc.editform[this.formFieldName];
-      return true;
-    } else {
-      return false;
-    }
   }
 
   /**

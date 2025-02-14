@@ -34,8 +34,6 @@ namespace TYPO3 {
     private readonly adminPanel: HTMLFormElement;
     private readonly modules: AdminPanelModule[];
     private readonly popups: AdminPanelPopup[];
-    private readonly panels: AdminPanelPanel[];
-    private readonly contentSettings: AdminPanelContentSetting[];
     private readonly trigger: HTMLElement;
 
     constructor() {
@@ -49,18 +47,18 @@ namespace TYPO3 {
       this.popups = this.querySelectorAll(AdminPanelSelectors.popupTriggerRole).map(
         (popupTrigger: HTMLElement) => new AdminPanelPopup(this, popupTrigger),
       );
-      this.panels = this.querySelectorAll(AdminPanelSelectors.panelTriggerRole).map(
+      this.querySelectorAll(AdminPanelSelectors.panelTriggerRole).forEach(
         (panelTrigger: HTMLElement) => {
           const panelParent = panelTrigger.closest(AdminPanelSelectors.panelParentClass);
-          return new AdminPanelPanel(panelParent, panelTrigger);
+          new AdminPanelPanel(panelParent, panelTrigger);
         },
       );
-      this.contentSettings = this.querySelectorAll(AdminPanelSelectors.contentSettingsTriggerRole).map(
+      this.querySelectorAll(AdminPanelSelectors.contentSettingsTriggerRole).forEach(
         (contentSettingTrigger: HTMLElement) => {
           const contentSettingElement = contentSettingTrigger
             .closest(AdminPanelSelectors.contentParentClass)
             .querySelector(AdminPanelSelectors.contentSettingsParentClass);
-          return new AdminPanelContentSetting(contentSettingElement, contentSettingTrigger);
+          new AdminPanelContentSetting(contentSettingElement, contentSettingTrigger);
         },
       );
       this.trigger = document.querySelector(AdminPanelSelectors.triggerRole) as HTMLElement;
