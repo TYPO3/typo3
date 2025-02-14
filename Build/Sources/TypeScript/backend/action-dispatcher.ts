@@ -19,7 +19,7 @@ import moduleMenuApp from '@typo3/backend/module-menu';
 import documentService from '@typo3/core/document-service';
 import Utility from '@typo3/backend/utility';
 
-declare type ActionDispatchArgument = string | HTMLElement | Event;
+declare type ActionDispatchArgument = unknown;
 
 /**
  * Module: @typo3/backend/action-dispatcher

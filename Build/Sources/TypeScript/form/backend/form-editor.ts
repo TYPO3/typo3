@@ -676,7 +676,10 @@ export class FormEditor {
     try {
       this.bootstrap();
       this.isRunning = true;
-    } catch(error) {
+    } catch(error: unknown) {
+      if (!(error instanceof Error)) {
+        throw error;
+      }
       Notification.error(
         TYPO3.lang['formEditor.error.headline'],
         TYPO3.lang['formEditor.error.message']
