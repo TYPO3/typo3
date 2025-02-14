@@ -37,7 +37,7 @@ export interface JavaScriptItemPayload {
 }
 
 export interface JavaScriptItem {
-  type: string;
+  type: 'globalAssignment' | 'javaScriptModuleInstruction';
   payload: JavaScriptItemPayload;
 }
 
@@ -148,11 +148,11 @@ export class JavaScriptItemProcessor {
     items.forEach((item) => this.invoke(item.type, item.payload));
   }
 
-  private invoke(name: string, data: any) {
-    if (!this.invokableNames.includes(name) || typeof (this as any)[name] !== 'function') {
+  private invoke(name: 'globalAssignment' | 'javaScriptModuleInstruction', data: any) {
+    if (!this.invokableNames.includes(name) || typeof this[name] !== 'function') {
       throw new Error('Unknown handler name "' + name + '"');
     }
-    (this as any)[name].call(this, data);
+    this[name].call(this, data);
   }
 
   /**

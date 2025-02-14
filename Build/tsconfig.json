@@ -21,6 +21,7 @@
         "noImplicitOverride": true,
         "noImplicitThis": true,
         "noImplicitReturns": true,
+        "noUnusedLocals": true,
         "pretty": true,
         "baseUrl": "Sources/TypeScript",
         "paths": {

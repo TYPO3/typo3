@@ -40,7 +40,6 @@ class FlexFormContainerContainer {
   private readonly parentContainer: FlexFormSectionContainer;
   private readonly container: HTMLElement;
   private readonly containerContent: HTMLElement;
-  private readonly parentId: string;
   private readonly containerId: string;
   private readonly toggleKeyInLocalStorage: string;
 
@@ -52,7 +51,6 @@ class FlexFormContainerContainer {
     this.parentContainer = parentContainer;
     this.container = container;
     this.containerContent = container.querySelector(Selectors.sectionContentContainerSelector);
-    this.parentId = container.dataset.parent;
     this.containerId = container.dataset.flexformContainerId;
     this.toggleKeyInLocalStorage = `formengine-flex-${parentContainer.getSectionContainer().id}-${this.containerId}-collapse`
 

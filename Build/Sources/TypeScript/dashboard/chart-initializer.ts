@@ -41,8 +41,6 @@ import RegularEvent from '@typo3/core/event/regular-event';
 
 class ChartInitializer {
   private readonly selector: string = '.dashboard-item';
-  private readonly lightColor: string = '#1a1a1a';
-  private readonly darkColor: string = '#e6e6e6';
 
   constructor() {
     this.initialize();

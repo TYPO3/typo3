@@ -32,7 +32,6 @@ enum Selectors {
 }
 
 class FlexFormSectionContainer {
-  private readonly sectionContainerId: string;
   private container: HTMLElement;
   private sectionContainer: HTMLElement;
   private allowRestructure: boolean = false;
@@ -42,8 +41,6 @@ class FlexFormSectionContainer {
    * @param {string} elementId
    */
   constructor(elementId: string) {
-    this.sectionContainerId = elementId;
-
     DocumentService.ready().then((document: Document): void => {
       this.container = <HTMLElement>document.getElementById(elementId);
       this.sectionContainer = this.container.querySelector(this.container.dataset.section) as HTMLElement;

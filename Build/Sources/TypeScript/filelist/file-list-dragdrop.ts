@@ -29,11 +29,9 @@ export enum FileListDragDropEvent {
 }
 
 class FileListDragDrop {
-  private readonly rootDocument: Document;
   private readonly previewSize: number = 32;
 
   constructor() {
-    this.rootDocument = top.document;
     const selector = FileListActionSelector.elementSelector + '[draggable="true"]';
 
     new RegularEvent('dragstart', (event: DragEvent, target: HTMLElement): void => {

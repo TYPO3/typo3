@@ -24,7 +24,6 @@ enum Selectors {
  */
 class SelectBoxFilter {
   private readonly selectElement: HTMLSelectElement = null;
-  private filterText: string = '';
   private availableOptions: NodeListOf<HTMLOptionElement> = null;
 
   constructor(selectElement: HTMLSelectElement) {
@@ -68,7 +67,6 @@ class SelectBoxFilter {
    * @param {string} filterText
    */
   private filter(filterText: string): void {
-    this.filterText = filterText;
     if (this.availableOptions === null) {
       this.availableOptions = this.selectElement.querySelectorAll('option');
     }
