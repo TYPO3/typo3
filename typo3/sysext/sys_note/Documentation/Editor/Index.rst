@@ -92,3 +92,36 @@ page in question:
     :alt: Screenshot of a TODO note on the top of the "Page" backend module
 
     If you have sufficient permissions you can edit or delete the note.
+
+..  _for-editors-dashboard:
+
+System notes dashboard
+======================
+
+..  versionadded:: 13.3
+
+..  note::
+    This only works if :composer:`typo3/cms-dashboard` is installed and you
+    have the necessary permissions.
+
+There are multiple widgets available in the dashboard that show either all
+system notes or just those in a certain category. Only notes on pages for which
+you have access are shown.
+
+..  figure:: /Images/dashboard.png
+    :alt: Screenshot of the widget "All System Notes" in the Dashboard of a TYPO3 backend
+
+    Click the button to go to the page with the note in the backend.
+
+If such a widget is not displayed in your dashboard, click the
+"+ Add widget to dashboard" button on the buttom right of the module and add
+the desired dashboard:
+
+..  figure:: /Images/dashboard-add-widget.png
+    :alt: Screenshot of the "Add widget to dashboard" dialogue in tab "System notes"
+
+    Choose "All System Notes" or just the notes of a certain category
+
+If you cannot find this type of widget in the dialogue or the widget does not
+show any messages talk to your administrator as your user permissions might
+be insufficient.

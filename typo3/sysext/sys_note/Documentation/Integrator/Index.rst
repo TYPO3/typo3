@@ -58,3 +58,26 @@ notes to pages within your TYPO3 installation.
 
 Remember to regularly review and update access permissions as needed to
 maintain security and compliance with your organization's requirements.
+
+..  _permissions-dashboard:
+
+Permissions to use the system note dashboard widgets
+====================================================
+
+If :composer:`typo3/cms-dashboard` is installed and your editors are using
+the dashboard, it is recommended to grant them access to the special
+system note widgets.
+
+In module :guilabel:`System > Backend Users > Backend user groups` edit the user
+group in question. In tab :guilabel:`Module Permissions`, field
+"Allowed dashboard widgets" allow the dashboard widgets related to the
+system notes.
+
+..  note::
+    The backend user must have access to the :ref:`sys_note <for-integrators-permissions>`
+    table and `view permissions <https://docs.typo3.org/permalink/t3coreapi:page-permissions>`_
+    to the page where the record is located.
+
+    The page must also be within the `DB Mounts <https://docs.typo3.org/permalink/t3coreapi:access-lists-db-mounts>`_
+    of the user.
+
