@@ -172,7 +172,7 @@ class WorkspacesMenu {
       } else if (currentModule === 'workspaces_admin') {
         // Reload the workspace module and override the workspace id
         ModuleMenu.App.showModule(currentModule, 'workspace=' + workspaceId);
-      } else if (currentModule.startsWith('web_')) {
+      } else if (currentModule?.startsWith('web_')) {
         // when in web module reload, otherwise send the user to the page module
         ModuleMenu.App.reloadFrames();
       } else if (data.pageModule) {
