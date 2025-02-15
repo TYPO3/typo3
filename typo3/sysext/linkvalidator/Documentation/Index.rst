@@ -1,4 +1,4 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
 ..  _start:
 
@@ -7,23 +7,23 @@ TYPO3 Link Validator
 ====================
 
 :Extension key:
-   linkvalidator
+    linkvalidator
 
 :Package name:
-   typo3/cms-linkvalidator
+    typo3/cms-linkvalidator
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   TYPO3 contributors
+    TYPO3 contributors
 
 :License:
-   This document is published under the
-   `Open Content License <https://www.openhub.net/licenses/opl>`__.
+    This document is published under the
+    `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
    |today|
@@ -41,21 +41,21 @@ send status mails when broken links are detected.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction/Index
-   Editors/Index
-   Installation/Index
-   Configuration/Index
-   Development/Index
-   LargeSites/Index
-   KnownProblems/Index
+    Introduction/Index
+    Editors/Index
+    Installation/Index
+    Configuration/Index
+    Development/Index
+    LargeSites/Index
+    KnownProblems/Index
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
+    Sitemap

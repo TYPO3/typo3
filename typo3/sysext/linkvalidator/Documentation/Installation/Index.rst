@@ -1,6 +1,6 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _installation:
+..  _installation:
 
 ============
 Installation
@@ -10,6 +10,8 @@ This extension is part of the TYPO3 Core, but not installed by default.
 
 ..  contents:: Table of contents
     :local:
+
+..  _installation-composer:
 
 Installation with Composer
 ==========================
@@ -35,8 +37,10 @@ the extension:
 
 The given version depends on the version of the TYPO3 Core you are using.
 
-Installation without Composer
-=============================
+..  _installation-classic:
+
+Classic installation without Composer
+=====================================
 
 In an installation without Composer, the extension is already shipped but might
 not be activated yet. Activate it as follows:
@@ -50,6 +54,8 @@ not be activated yet. Activate it as follows:
     :alt: Extension manager showing LinkValidator extension
 
     Extension manager showing LinkValidator extension
+
+..  _installation-next:
 
 Next step
 =========

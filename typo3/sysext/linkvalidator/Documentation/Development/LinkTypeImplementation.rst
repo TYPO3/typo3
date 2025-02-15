@@ -20,14 +20,8 @@ is enabled in :file:`packages/my_extension/Configuration/Services.yaml`.
 Alternatively, one can manually tag a custom link type with the
 :yaml:`linkvalidator.linktype` tag:
 
-..  code-block:: yaml
+..  literalinclude:: _Services.yaml
     :caption: packages/my_extension/Configuration/Services.yaml
-
-    # Other definitions
-
-     Vendor\Extension\Linktype\MyCustomLinktype:
-       tags:
-         - name: linkvalidator.linktype
 
 Due to the autoconfiguration, the identifier has to be provided by the
 class directly, using the method :php:`getIdentifier()`.
@@ -68,22 +62,13 @@ Activate the new linktype in the page tsconfig:
 The extension that provides the linktype must have a
 :file:`Configuration/Services.yaml` file that contains either:
 
-..  code-block:: yaml
-    :caption: EXT:examples/Configuration/Services.yaml
-
-    services:
-       _defaults:
-          autoconfigure: true
+..  literalinclude:: _Services-Autoconfigure.yaml
+    :caption: packages/my_extension/Configuration/Services.yaml
 
 Or if autoconfiguration is not desired for some reason:
 
-..  code-block:: yaml
-    :caption: EXT:examples/Configuration/Services.yaml
-
-    services:
-       T3docs\Examples\LinkValidator\LinkType\ExampleLinkType:
-          tags:
-             -  name: linkvalidator.linktype
+..  literalinclude:: _Services-Linktype.yaml
+    :caption: packages/my_extension/Configuration/Services.yaml
 
 ..  _linktype-implementation-override-external:
 
@@ -95,49 +80,14 @@ A new custom class should replace
 existing functionality from :php:`ExternalLinktype`, but will be registered with
 the identifier "custom_external":
 
-..  code-block:: php
-    :caption: EXT:my_extension/Classes/Linktype/ExternalLinktype.php
-
-    namespace MyVendor\NyExtension\Linktype\ExternalLinktype;
-
-    use TYPO3\CMS\Linkvalidator\Linktype\ExternalLinktype as LinkvalidatorExternalLinkType;
-
-    // This class inherits from ExternalLinktype,
-    // so it is only necessary to override some methods.
-    class ExternalLinktype extends LinkvalidatorExternalLinkType
-    {
-        // This class must use a different identifier because "external" is already used.
-        protected string $identifier = 'custom_external';
-
-        public function checkLink(
-            string $origUrl,
-            array $softRefEntry,
-            LinkAnalyzer $reference
-        ): bool {
-            // do additional stuff here or after parent::checkLink
-            // ...
-            return parent::checkLink($origUrl, $softRefEntry, $reference);
-        }
-
-        public function fetchType(array $value, string $type, string $key): string
-        {
-            preg_match_all(
-                '/((?:http|https))(?::\\/\\/)(?:[^\\s<>]+)/i',
-                (string)$value['tokenValue'],
-                $urls,
-                PREG_PATTERN_ORDER
-            );
-            if (!empty($urls[0][0])) {
-                $type = $this->getIdentifier();
-            }
-            return $type;
-        }
-    }
+..  literalinclude:: _ExternalLinktype.php.inc
+    :language: php
+    :caption: packages/my_extension/Classes/Linktype/ExternalLinktype.php
 
 Use the new linktype:
 
 ..  code-block:: typoscript
-    :caption: EXT:my_extension/Configuration/page.tsconfig
+    :caption: packages/my_extension/Configuration/page.tsconfig
 
     mod.linkvalidator.linktypes = db,file,custom_external
 
@@ -146,6 +96,6 @@ Since the identifier changes, the configuration should be copied to
 passed to the linktype, for example:
 
 ..  code-block:: typoscript
-    :caption: EXT:my_extension/Configuration/page.tsconfig
+    :caption: packages/my_extension/Configuration/page.tsconfig
 
     mod.linkvalidator.linktypesConfig.custom_external < mod.linkvalidator.linktypesConfig.external
