@@ -1,0 +1,4 @@
+services:
+  MyVendor\MyExtension\LinkValidator\LinkType\ExampleLinkType:
+    tags:
+      -  name: linkvalidator.linktype

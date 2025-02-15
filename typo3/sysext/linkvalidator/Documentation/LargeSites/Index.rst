@@ -1,11 +1,10 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Large sites
 
+..  include:: /Includes.rst.txt
+..  _large-sites:
 
-
-.. _large-sites:
-
-Hint for large sites
---------------------
+Hints for large sites
+=====================
 
 If you have a website with many hundreds of pages, checking all links
 will take some time and might lead to a time out. It will also need
