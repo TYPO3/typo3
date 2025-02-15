@@ -1,17 +1,16 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Overview
 
+..  include:: /Includes.rst.txt
+..  _overview:
 
+==============================================
+Overview of the system extension EXT:scheduler
+==============================================
 
-.. _overview:
-
-Overview
---------
-
-
-.. _why-a-scheduling-tool:
+..  _why-a-scheduling-tool:
 
 Why a scheduling tool?
-^^^^^^^^^^^^^^^^^^^^^^
+======================
 
 When running and maintaining a complex system like TYPO3, there are a
 number of tasks that need to be automated or executed in the small
@@ -24,11 +23,10 @@ simple way to keep an overview of and manage these tasks inside TYPO3.
 
 The Scheduler aims to address this issue.
 
-
-.. _tasks-management:
+..  _tasks-management:
 
 Tasks management
-^^^^^^^^^^^^^^^^
+================
 
 Scripts can be developed as Scheduler tasks by extending a base class
 provided by the Scheduler. They can then be registered with the
@@ -41,11 +39,10 @@ they late, did something wrong happen during last execution, etc. It
 is also possible to manually start the execution of tasks from the BE
 module.
 
-
-.. _tasks-execution:
+..  _tasks-execution:
 
 Tasks execution
-^^^^^^^^^^^^^^^
+===============
 
 The Scheduler provides a command-line tool to be run by TYPO3's
 command-line dispatcher. Only this script needs to be registered in
@@ -63,11 +60,10 @@ more time to run than the frequency it is set up for. In such a case a
 new run may be started which is not always desirable. It is possible
 to deny such parallel (or multiple) executions.
 
-
-.. _follow-up:
+..  _follow-up:
 
 Follow-up
-^^^^^^^^^
+=========
 
 Whenever a task starts or ends a message is written to TYPO'3 system
 log (viewable in SYSTEM > Log). A message is also
@@ -82,27 +78,28 @@ table and will be displayed in the BE module.
 There's no default output to the command-line as scheduled tasks are
 designed to run in the background.
 
-
-.. _glossary:
+..  _glossary:
 
 Glossary
-^^^^^^^^
+========
 
 A few terms need to be defined more precisely:
 
-- **Task** : this word is used quite generally throughout this document,
-  sometimes to cover different meanings. A task is really a piece of
-  code that does a precise task and can be registered with the Scheduler
-  in order to execute that piece of code at a precise time, recurrently
-  or not.
+Task
+    This word is used quite generally throughout this document,
+    sometimes to cover different meanings. A task is really a piece of
+    code that does a precise task and can be registered with the Scheduler
+    in order to execute that piece of code at a precise time, recurrently
+    or not.
 
-- **Task class** : this is the type of task. The "IP Anonymization" task is one
-  particular task class. Its function is to anonymize IP addresses to enforce
-  the privacy of the persisted data. The "Optimize MySQL database tables"
-  executes "OPTIMIZE TABLE" statements on the selected database tables.
+Task class
+    this is the type of task. The "IP Anonymization" task is one
+    particular task class. Its function is to anonymize IP addresses to enforce
+    the privacy of the persisted data. The "Optimize MySQL database tables"
+    executes "OPTIMIZE TABLE" statements on the selected database tables.
 
-- **Registered task** : an instance of a task class that has been
-  registered with the Scheduler. A given task class may be registered
-  several times, for example if it needs to be executed with different
-  parameters.
-
+Registered task
+    An instance of a task class that has been
+    registered with the Scheduler. A given task class may be registered
+    several times, for example if it needs to be executed with different
+    parameters.

@@ -1,10 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Cron Job Set up
 
-.. _cron-job:
+..  include:: /Includes.rst.txt
+..  _cron-job:
 
-=======================
-Setting up the cron job
-=======================
+==================================================
+Setting up the cron job to run the scheduler tasks
+==================================================
 
 Tasks registered with the Scheduler can be run manually from the backend
 module. However this is of limited use. To really benefit from the
@@ -12,8 +13,7 @@ Scheduler, it must be set up on the server to run regularly. The
 following chapters describe how to set this up on Unix or Unix-like
 system (including Mac OS X) and on Windows.
 
-
-.. _frequency:
+..  _frequency:
 
 Choosing a frequency
 ====================
@@ -34,7 +34,7 @@ at 08:10, 08:20, 08:30, etc. So the tasks that should run at 08:15
 will actually run 5 minutes late.
 
 
-.. _unix-mac:
+..  _unix-mac:
 
 On Unix and Mac OS X
 ====================
@@ -43,23 +43,23 @@ On such systems the Scheduler must be set up as a cron job. There are
 several ways to achieve this, although the simplest is probably to add
 it to some user's crontab. Edit that user's crontab using:
 
-.. code-block:: bash
+..  code-block:: bash
 
    crontab -e
 
 and add a line like
 
-.. tabs::
+..  tabs::
 
-   .. group-tab:: Composer-based installation
+   ..  group-tab:: Composer-based installation
 
-      .. code-block:: bash
+      ..  code-block:: bash
 
          */15 * * * * /usr/local/bin/php /home/user/www/vendor/bin/typo3 scheduler:run
 
-   .. group-tab:: Legacy installation
+   ..  group-tab:: Legacy installation
 
-      .. code-block:: bash
+      ..  code-block:: bash
 
          */15 * * * * /usr/local/bin/php /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run
 
@@ -67,26 +67,26 @@ Save the modified crontab. Obviously, the paths have to be adapted to
 your system. The above command will call up the Scheduler every 15
 minutes.
 
-.. seealso::
+..  seealso::
 
-   See :ref:`scheduler-shell-script` for more information about
-   calling the scheduler from the command line.
+    See :ref:`scheduler-shell-script` for more information about
+    calling the scheduler from the command line.
 
 If you are editing system crontabs (for example :file:`/etc/crontab`
 and :file:`/etc/cron.d/*` ), there will be one additional parameter
 to enter, i.e. the user with which the job should run. Example:
 
-.. tabs::
+..  tabs::
 
-   .. group-tab:: Composer-based installation
+   ..  group-tab:: Composer-based installation
 
-      .. code-block:: bash
+      ..  code-block:: bash
 
          */15 * * * * www /usr/local/bin/php /home/user/www/vendor/bin/typo3 scheduler:run
 
-   .. group-tab:: Legacy installation
+   ..  group-tab:: Classic installation
 
-      .. code-block:: bash
+      ..  code-block:: bash
 
          */15 * * * * www /usr/local/bin/php /home/user/www/typo3/sysext/core/bin/typo3 scheduler:run
 
@@ -96,8 +96,7 @@ If you are not familiar with cron syntax, refer to some Unix
 administration book or start with the Wikipedia page about it
 (https://en.wikipedia.org/wiki/Cron).
 
-
-.. _windows:
+..  _windows:
 
 On Windows
 ==========
@@ -111,17 +110,17 @@ scheduled tasks.
 Assuming you want to run the TYPO3 Scheduler every 15 minutes, use the
 following command line to create a new task:
 
-.. tabs::
+..  tabs::
 
-   .. group-tab:: Composer-based installation
+   ..  group-tab:: Composer-based installation
 
-      .. code-block:: bash
+      ..  code-block:: bash
 
          schtasks /create /sc minute /mo 15 /tn "T3scheduler" /tr "c:\winstaller\php\php.exe c:\winstaller\htdocs\quickstart\vendor\bin\typo3 scheduler:run"
 
-   .. group-tab:: Legacy installation
+   ..  group-tab:: Classic installation
 
-      .. code-block:: bash
+      ..  code-block:: bash
 
          schtasks /create /sc minute /mo 15 /tn "T3scheduler" /tr "c:\winstaller\php\php.exe c:\winstaller\htdocs\quickstart\typo3/sysext/core/bin/typo3 scheduler:run"
 

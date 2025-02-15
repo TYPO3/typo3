@@ -1,20 +1,19 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Task development
 
+..  include:: /Includes.rst.txt
+..  _creating-tasks:
 
-
-.. _creating-tasks:
-
-Creating a new task
-^^^^^^^^^^^^^^^^^^^
+================================
+Creating a custom scheduler task
+================================
 
 The preferred method for creating a scheduler task is as a symfony command.
 :ref:`Read about how to create and use symfony commands in TYPO3 here. <t3coreapi:symfony-console-commands>`
 
-
-.. _serialized-objects:
+..  _serialized-objects:
 
 Working with serialized objects
-"""""""""""""""""""""""""""""""
+===============================
 
 When a task is registered with the Scheduler the corresponding object
 instance is serialized and stored in the database (see Appendix A for
@@ -36,14 +35,9 @@ business logic in a separate class, so that the task class itself
 changes as little as possible. The :code:`execute()` should be as
 simple as possible. Consider the following:
 
-::
-
-	class MyTask extends \TYPO3\CMS\Scheduler\Task\AbstractTask {
-		public function execute() {
-			$businessLogic = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\Vendor\Extension\BusinessLogic::class);
-			$businessLogic->run(arg1, arg2, …);
-		}
-	}
+..  literalinclude:: _MyTask.php.inc
+    :language: php
+    :caption: packages/my_extension/Classes/MyTask.php
 
 In such a setup the :code:`execute()` is kept to the strict minimum
 and the operations themselves are handled by a separate class.
@@ -52,14 +46,12 @@ Also remember that the constructor is **not** called when
 unserializing an object. If some operations need to be run upon
 unserialization, implement a :code:`__wakeup()` method instead.
 
-
-.. _save-task-state:
+..  _save-task-state:
 
 Saving a task's state
-"""""""""""""""""""""
+=====================
 
 The task's state is saved automatically at the **start** of its
 execution. If you need to save a task's state at some point **during**
 its execution, you can simply call the task's own :code:`save()`
 method.
-
