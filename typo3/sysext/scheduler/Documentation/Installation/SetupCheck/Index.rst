@@ -1,19 +1,20 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Setup Check
 
+..  include:: /Includes.rst.txt
+..  _setup-check:
 
-.. _setup-check:
-
-Checking the setup
-^^^^^^^^^^^^^^^^^^
+=============================================
+Checking the setup of the scheduler extension
+=============================================
 
 After installing the Scheduler, go to its BE module and call up the
 "Setup check" screen which runs a couple of basic checks on your
 installation. It will probably look something like this:
 
-.. figure:: ../../Images/SetupCheck.png
-   :alt: Setup check screen
+..  figure:: ../../Images/SetupCheck.png
+    :alt: Setup check screen
 
-   Checking the setup of the Scheduler
+    Checking the setup of the Scheduler
 
 The first message shows a warning that the Scheduler has never run
 yet or an information about the last run.

@@ -1,11 +1,10 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
+..  _deleting-a-task:
 
-
-.. _deleting-a-task:
-
+===============
 Deleting a task
-^^^^^^^^^^^^^^^
+===============
 
 When choosing to delete a task, a pop-up window will appear requesting
 confirmation. If confirmed, the deletion is final. There is no

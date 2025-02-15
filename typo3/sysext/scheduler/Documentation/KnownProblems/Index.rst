@@ -1,11 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
+..  _known-problems:
 
-
-
-.. _known-problems:
-
+==============
 Known problems
---------------
+==============
 
 The main problem currently is that a running task cannot be killed,
 because no relation exists to the (cron) process that is running the

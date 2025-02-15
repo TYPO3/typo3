@@ -1,10 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Stopping a Task
 
+..  include:: /Includes.rst.txt
+..  _stopping-a-task:
 
-.. _stopping-a-task:
-
-Stopping a task
-^^^^^^^^^^^^^^^
+===============================================
+Stopping a task in the Scheduler backend module
+===============================================
 
 As was explained above, a task is marked as being executed while it is
 running. If the process running the task crashes or is killed for some
@@ -13,11 +14,10 @@ cleaned up automatically according to the maximum lifetime parameter
 (also described previously), but this may be inconvenient in some
 circumstances.
 
-.. figure:: ../../Images/StoppingATask.png
-   :alt: Stopping a task
+..  figure:: ../../Images/StoppingATask.png
+    :alt: Stopping a task
 
-   Stopping a running task from the main screen
-
+    Stopping a running task from the main screen
 
 In such cases it is possible to use the "stop" button to
 clean up marked executions for the given task. This will make it
