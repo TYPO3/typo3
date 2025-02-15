@@ -1,13 +1,12 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
 
-.. _known-problems:
+..  _known-problems:
 
 ==============
 Known problems
 ==============
 
-
-.. _usagePitfallsExternalLinks:
+..  _usagePitfallsExternalLinks:
 
 Problems with external links
 ============================
@@ -19,15 +18,14 @@ The extension currently provides no functionality to limit such requests.
 
 There are (at least) 2 possible counter-measures:
 
-#. Turn off external link checking entirely
-   by removing `external` from Page TSconfig :ref:`linktypes`
+#.  Turn off external link checking entirely
+    by removing `external` from Page TSconfig :ref:`linktypes`
 
-#. :ref:`linktype-implementation-override-external`
-   (in your own extension), to check only specific URLs or exclude specific
-   URLs or handle only specific error types as errors.
+#.  :ref:`linktype-implementation-override-external`
+    (in your own extension), to check only specific URLs or exclude specific
+    URLs or handle only specific error types as errors.
 
-
-.. _usagePitfallsFalsePositives:
+..  _usagePitfallsFalsePositives:
 
 Falsely reported broken links
 =============================

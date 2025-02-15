@@ -1,11 +1,9 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
+..  _configuration:
 
-.. highlight:: typoscript
-
-.. _configuration:
-
+=============
 Configuration
--------------
+=============
 
 You can find the standard configuration in
 :file:`EXT:linkvalidator/Configuration/page.tsconfig`.
@@ -22,7 +20,7 @@ your needs.
    different LinkHandler configuration, they must be checked individually.
 
 Minimal configuration
-^^^^^^^^^^^^^^^^^^^^^
+=====================
 
 It is recommended to at least fill out `httpAgentUrl` and `httpAgentEmail`.
 The latter is only required if :php:`$GLOBALS['TYPO3_CONF_VARS']['MAIL']['defaultMailFromAddress']`
@@ -34,10 +32,10 @@ is not set.
     mod.linkvalidator.linktypesConfig.external.httpAgentEmail =
 
 
-.. _reference:
+..  _reference:
 
 Reference
-^^^^^^^^^
+=========
 
 You can set the following options in the TSconfig for a page (for example the
 root page) and override them in user or groups TSconfig. You must
@@ -45,10 +43,10 @@ prefix them with mod.linkvalidator, for example
 :typoscript:`mod.linkvalidator.searchFields.pages = canonical_link`.
 
 
-.. _searchfields-key:
+..  _searchfields-key:
 
 searchFields.[key]
-""""""""""""""""""
+------------------
 
 .. container:: table-row
 
@@ -103,10 +101,10 @@ searchFields.[key]
 
 
 
-.. _linktypes:
+..  _linktypes:
 
 linktypes
-"""""""""
+---------
 
 .. container:: table-row
 
@@ -137,11 +135,11 @@ linktypes
          db,file,external
 
 
-.. _linktypes-config:
-.. _linktypes-config-external:
+..  _linktypes-config:
+..  _linktypes-config-external:
 
 linktypesConfig.external.httpAgentName
-""""""""""""""""""""""""""""""""""""""
+--------------------------------------
 
 .. container:: table-row
 
@@ -163,7 +161,7 @@ linktypesConfig.external.httpAgentName
 
 
 linktypesConfig.external.httpAgentUrl
-"""""""""""""""""""""""""""""""""""""
+-------------------------------------
 
 .. container:: table-row
 
@@ -182,7 +180,7 @@ linktypesConfig.external.httpAgentUrl
 
 
 linktypesConfig.external.httpAgentEmail
-"""""""""""""""""""""""""""""""""""""""
+---------------------------------------
 
 .. container:: table-row
 
@@ -201,10 +199,10 @@ linktypesConfig.external.httpAgentEmail
 
 
 
-.. _checkhidden:
+..  _checkhidden:
 
 checkhidden
-"""""""""""
+-----------
 
 .. container:: table-row
 
@@ -223,10 +221,10 @@ checkhidden
 
 
 
-.. _showchecklinktab:
+..  _showchecklinktab:
 
 showCheckLinkTab
-""""""""""""""""
+----------------
 
 .. container:: table-row
 
@@ -265,10 +263,10 @@ showCheckLinkTab
 
 
 
-.. _actionAfterEditRecord:
+..  _actionAfterEditRecord:
 
 actionAfterEditRecord
-"""""""""""""""""""""
+---------------------
 
 .. container:: table-row
 
@@ -296,10 +294,10 @@ actionAfterEditRecord
          * **setNeedsRecheck**: The entries in the list are marked as needing a recheck
 
 
-.. _mail-fromname:
+..  _mail-fromname:
 
 mail.fromname
-"""""""""""""
+-------------
 
 .. container:: table-row
 
@@ -319,10 +317,10 @@ mail.fromname
 
 
 
-.. _mail-fromemail:
+..  _mail-fromemail:
 
 mail.fromemail
-""""""""""""""
+--------------
 
 .. container:: table-row
 
@@ -342,10 +340,10 @@ mail.fromemail
 
 
 
-.. _mail-replytoname:
+..  _mail-replytoname:
 
 mail.replytoname
-""""""""""""""""
+----------------
 
 .. container:: table-row
 
@@ -360,10 +358,10 @@ mail.replytoname
 
 
 
-.. _mail-replytoemail:
+..  _mail-replytoemail:
 
 mail.replytoemail
-"""""""""""""""""
+-----------------
 
 .. container:: table-row
 
@@ -378,10 +376,10 @@ mail.replytoemail
 
 
 
-.. _mail-subject:
+..  _mail-subject:
 
 mail.subject
-""""""""""""
+------------
 
 .. container:: table-row
 
@@ -407,7 +405,7 @@ mail.subject
 
 
 linktypesConfig.external.headers
-""""""""""""""""""""""""""""""""
+--------------------------------
 
 .. container:: table-row
 
@@ -425,7 +423,7 @@ linktypesConfig.external.headers
 
 
 linktypesConfig.external.method
-"""""""""""""""""""""""""""""""
+-------------------------------
 
 .. container:: table-row
 
@@ -454,7 +452,7 @@ linktypesConfig.external.method
 
 
 linktypesConfig.external.range
-""""""""""""""""""""""""""""""
+------------------------------
 
 .. container:: table-row
 
@@ -472,7 +470,7 @@ linktypesConfig.external.range
          0-4048
 
 linktypesConfig.external.timeout
-""""""""""""""""""""""""""""""""
+--------------------------------
 
 .. container:: table-row
 
@@ -504,10 +502,10 @@ linktypesConfig.external.timeout
 
 
 
-.. _configuration-example:
+..  _configuration-example:
 
 Example
-^^^^^^^
+=======
 
 ::
 
