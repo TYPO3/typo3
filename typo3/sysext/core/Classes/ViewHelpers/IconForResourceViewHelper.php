@@ -66,6 +66,9 @@ final class IconForResourceViewHelper extends AbstractViewHelper
     public static function renderStatic(array $arguments, \Closure $renderChildrenClosure, RenderingContextInterface $renderingContext): string
     {
         $resource = $arguments['resource'];
+        if (!($resource instanceof ResourceInterface)) {
+            return '';
+        }
         $size = $arguments['size'];
         $overlay = $arguments['overlay'];
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
