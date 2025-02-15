@@ -1,45 +1,53 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Run the scheduler
 
+..  include:: /Includes.rst.txt
+..  _scheduler-shell-script:
 
-
-.. _scheduler-shell-script:
-
-==========================
-The scheduler shell script
-==========================
+==========================================
+Running the scheduler: typo3 scheduler:run
+==========================================
 
 The scheduler provides a PHP shell script designed to be run using
 TYPO3's command-line dispatcher. To try and run that script a first
 time, type the following command.
 
-On a Composer based system::
+..  tabs::
 
-   bin/typo3 scheduler:run
+    ..  group-tab:: Composer-based installation
 
+        ..  code-block:: bash
 
-On a system without Composer (adapt the path to TYPO3
-to match your system)::
+            vendor/bin/typo3 scheduler:run
 
-   typo3/sysext/core/bin/typo3 scheduler:run
+    ..  group-tab:: Classic installation
 
-You might have to add the full path to the PHP interpreter
-in front of the command if PHP is not on the search path::
+        ..  code-block:: bash
 
-   /usr/local/bin/php typo3/sysext/core/bin/typo3 scheduler:run
+            typo3/sysext/core/bin/typo3 scheduler:run
 
-
-In the following examples, we will use the path to `typo3` for systems
-with Composer.
+See also `TYPO3 Explained: Run a command from the command
+line <https://docs.typo3.org/permalink/t3coreapi:symfony-console-commands-cli>`_.
 
 Show help
 =========
 
-In order to show help::
+In order to show help:
 
-   bin/typo3 scheduler:run --help
+..  tabs::
 
+    ..  group-tab:: Composer-based installation
 
-.. _scheduler-shell-script-options:
+        ..  code-block:: bash
+
+            vendor/bin/typo3 scheduler:run --help
+
+    ..  group-tab:: Classic installation
+
+        ..  code-block:: bash
+
+            typo3/sysext/core/bin/typo3 scheduler:run --help
+
+..  _scheduler-shell-script-options:
 
 Providing options to the shell script
 =====================================
@@ -47,41 +55,84 @@ Providing options to the shell script
 The shell scripts accepts a number of options which can be provided in any
 order.
 
+..  _scheduler-shell-script-options-i:
+
 `--task (-i)`
 -------------
 
-To run a specific scheduler task you need to provide the uid of the task::
+To run a specific scheduler task you need to provide the uid of the task:
 
-   bin/typo3 scheduler:run --task=8
+..  tabs::
 
-or::
+    ..  group-tab:: Composer-based installation
 
-   bin/typo3 scheduler:run -i 8
+        ..  code-block:: bash
 
-The example will trigger the task with uid 8.
+            # Run task with uid 42
+            vendor/bin/typo3 scheduler:run --task=42
 
-.. versionadded:: 10.3
+            # Run tasks with uid 3 and 14
+            vendor/bin/typo3 scheduler:run --task=3 --task=14
 
-    It is possible to run several tasks::
+    ..  group-tab:: Classic installation
 
-        bin/typo3 scheduler:run --task=8 --task=2
+        ..  code-block:: bash
 
-    The tasks will be executed in the order in which they are provided.
+            # Run task with uid 42
+            typo3/sysext/core/bin/typo3 scheduler:run --task=42
+
+            # Run tasks with uid 3 and 14
+            typo3/sysext/core/bin/typo3 scheduler:run --task=3 --task=14
+
+The tasks will be executed in the order in which the parameters are provided.
+
+..  _scheduler-shell-script-options-f:
 
 `-f`
 ----
 
 To run a task even if it is disabled (or not scheduled to be run yet),
-you need to provide the force option::
+you need to provide the force option:
 
-   bin/typo3 scheduler:run --task=8 -f
+..  tabs::
 
-This will also run the task with uid 8 if it is disabled.
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            # Run task with uid 42, even if disabled
+            vendor/bin/typo3 scheduler:run --task=42 -f
+
+    ..  group-tab:: Classic installation
+
+        ..  code-block:: bash
+
+            # Run task with uid 42, even if disabled
+            typo3/sysext/core/bin/typo3 scheduler:run --task=42 -f
+
+This will also run the task with uid 42 if it is disabled.
+
+..  _scheduler-shell-script-options-v:
 
 `-v`
 ----
 
 A single -v flag will output errors only. Two -vv flags will also output additional
-information::
+information:
 
-    bin/typo3 scheduler:run --task=8 -v
+..  tabs::
+
+    ..  group-tab:: Composer-based installation
+
+        ..  code-block:: bash
+
+            # Run task with uid 42, with detailed stack traces
+            vendor/bin/typo3 scheduler:run --task=42 -vv
+
+    ..  group-tab:: Classic installation
+
+        ..  code-block:: bash
+
+            # Run task with uid 42, with detailed stack traces
+            typo3/sysext/core/bin/typo3 scheduler:run --task=42 -vv
+

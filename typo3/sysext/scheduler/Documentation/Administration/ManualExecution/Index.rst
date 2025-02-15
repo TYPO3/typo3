@@ -1,11 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Manual Execution
 
+..  include:: /Includes.rst.txt
+..  _manually-executing-a-task:
 
-
-.. _manually-executing-a-task:
-
-Manually executing a task
-^^^^^^^^^^^^^^^^^^^^^^^^^
+===========================================================
+Manually executing a task from the Scheduler backend module
+===========================================================
 
 As mentioned above, it is possible to manually execute one or more
 registered tasks from the BE module. When the selected tasks have

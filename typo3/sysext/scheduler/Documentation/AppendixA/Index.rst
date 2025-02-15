@@ -1,11 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Technical Background
 
+..  include:: /Includes.rst.txt
+..  _technical-background:
 
-
-.. _technical-background:
-
-Appendix A – Technical Background
----------------------------------
+===============================================
+Technical background of the scheduler extension
+===============================================
 
 This section aims to give some more in-depth information about what
 happens behind the scene in the Scheduler.
@@ -32,5 +32,3 @@ several executions are running at the same time, the array will
 contain several timestamps. Thus the "serialized\_executions" field
 actually contains an array of integers and not serialized instances of
 :code:`TYPO3\CMS\Scheduler\Execution` objects.
-
-

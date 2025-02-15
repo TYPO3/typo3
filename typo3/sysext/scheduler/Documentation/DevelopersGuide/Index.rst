@@ -1,22 +1,20 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Development
 
+..  include:: /Includes.rst.txt
+..  _developer-guide:
 
-
-.. _developer-guide:
-
-Developer's Guide
------------------
+==========================
+Scheduler task development
+==========================
 
 The Scheduler makes it very easy to create a new task class.
 Furthermore the tasks packaged with this extension provide
 a good basis to learn by example.
 
+..  toctree::
+    :maxdepth: 5
+    :titlesonly:
+    :glob:
 
-.. toctree::
-   :maxdepth: 5
-   :titlesonly:
-   :glob:
-
-   CreatingTasks/Index
-   SchedulerApi/Index
-
+    CreatingTasks/Index
+    SchedulerApi/Index
