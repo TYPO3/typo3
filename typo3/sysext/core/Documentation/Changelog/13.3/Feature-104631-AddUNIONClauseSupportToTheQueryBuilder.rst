@@ -94,11 +94,11 @@ Example: Compose a :sql:`UNION` clause query
 ..  code-block:: php
     :caption: Custom service class using a UNION query to retrieve data.
 
+    use Doctrine\DBAL\Query\UnionType;
     use TYPO3\CMS\Core\Database\Connection;
     use TYPO3\CMS\Core\Database\ConnectionPool;
-    use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 
-    final readonly MyService {
+    final readonly class MyService {
       public function __construct(
         private ConnectionPool $connectionPool,
       ) {}
@@ -110,18 +110,27 @@ Example: Compose a :sql:`UNION` clause query
         $connection = $this->connectionPool->getConnectionForTable('pages');
         $unionQueryBuilder = $connection->createQueryBuilder();
         $firstPartQueryBuilder = $connection->createQueryBuilder();
-        $firstPartQueryBuilder->getRestrictions()->removeAll();
         $secondPartQueryBuilder = $connection->createQueryBuilder();
+        // removing automatic TYPO3 restriction for the sake of the example
+        // to match the PLAIN SQL example when executed. Not removing them
+        // will generate corresponding restriction SQL code for each part.
+        $firstPartQueryBuilder->getRestrictions()->removeAll();
         $secondPartQueryBuilder->getRestrictions()->removeAll();
         $expr = $unionQueryBuilder->expr();
 
         $firstPartQueryBuilder
+          // The query parts **must** have the same column counts, and these
+          // columns **must** have compatible types
           ->select('uid', 'pid', 'title')
           ->from('pages')
           ->where(
             $expr->eq(
               'pages.uid',
-              $unionQueryBuilder->createNamedParameter($pageIdOne),
+              // !!! Ensure to use most outer / top / main QueryBuilder
+              //   instance for creating parameters and the complete
+              //   query can be executed in the end.
+              $unionQueryBuilder->createNamedParameter($pageIdOne, Connection::PARAM_INT),
+            )
           );
         $secondPartQueryBuilder
           ->select('uid', 'pid', 'title')
@@ -129,15 +138,19 @@ Example: Compose a :sql:`UNION` clause query
           ->where(
             $expr->eq(
               'pages.uid',
-              $unionQueryBuilder->createNamedParameter($pageIdOne),
+              // !!! Ensure to use most outer / top / main QueryBuilder instance
+              $unionQueryBuilder->createNamedParameter($pageIdTwo, Connection::PARAM_INT),
+            )
           );
 
-          return $unionQueryBuilder
-            ->union($firstPartQueryBuilder)
-            ->addUnion($secondPartQueryBuilder, UnionType::DISTINCT)
-            ->orderBy('uid', 'ASC')
-            ->executeQuery()
-            ->fetchAllAssociative();
+        // Set first and second union part to the main (union)
+        // QueryBuilder and return the retrieved rows.
+        return $unionQueryBuilder
+          ->union($firstPartQueryBuilder)
+          ->addUnion($secondPartQueryBuilder, UnionType::DISTINCT)
+          ->orderBy('uid', 'ASC')
+          ->executeQuery()
+          ->fetchAllAssociative();
       }
     }
 
