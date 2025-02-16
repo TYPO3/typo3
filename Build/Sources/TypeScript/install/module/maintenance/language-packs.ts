@@ -12,15 +12,15 @@
  */
 
 import 'bootstrap';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { FlashMessage } from '../../renderable/flash-message';
 import { InfoBox } from '../../renderable/info-box';
 import '../../renderable/language-packs';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
-import MessageInterface from '@typo3/install/message-interface';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type MessageInterface from '@typo3/install/message-interface';
 import type { ModalElement } from '@typo3/backend/modal';
 import type {
   ActivateLanguageEvent,

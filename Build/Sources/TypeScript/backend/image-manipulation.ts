@@ -11,18 +11,18 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { unsafeHTML } from 'lit/directives/unsafe-html';
 import { styleMap } from 'lit/directives/style-map';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import Cropper from 'cropperjs';
-import { default as Modal, ModalElement } from './modal';
+import { default as Modal, type ModalElement } from './modal';
 import '@typo3/backend/element/spinner-element';
 import { renderNodes } from '@typo3/core/lit-helper';
-import { DraggableResizableElement, Offset } from '@typo3/backend/element/draggable-resizable-element';
+import { type DraggableResizableElement, Offset } from '@typo3/backend/element/draggable-resizable-element';
 import type { DraggableResizableEvent, PointerEventNames } from '@typo3/backend/element/draggable-resizable-element';
 import type { EventInterface } from '@typo3/core/event/event-interface';
 

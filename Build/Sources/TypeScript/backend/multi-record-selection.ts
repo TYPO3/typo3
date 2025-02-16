@@ -14,8 +14,8 @@
 import Notification from '@typo3/backend/notification';
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
-import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import { selector } from '@typo3/core/literals';
+import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 
 export enum MultiRecordSelectionSelectors {
   actionsSelector = '.t3js-multi-record-selection-actions',

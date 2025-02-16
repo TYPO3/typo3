@@ -13,9 +13,9 @@
 
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
-import { FileListActionEvent, FileListActionDetail } from '@typo3/filelist/file-list-actions';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
+import { FileListActionEvent, type FileListActionDetail } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
 
 class CreateFolder {

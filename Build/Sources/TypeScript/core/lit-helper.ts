@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { CSSResultArray, html, HTMLTemplateResult, render, nothing, TemplateResult } from 'lit';
-import { ClassInfo } from 'lit/directives/class-map';
+import { type CSSResultArray, html, type HTMLTemplateResult, render, nothing, type TemplateResult } from 'lit';
+import type { ClassInfo } from 'lit/directives/class-map';
 import { until } from 'lit/directives/until';
 
 interface LitNonceWindow extends Window {

@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import NProgress from 'nprogress';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { html } from 'lit';
 
 export default class Workspaces {

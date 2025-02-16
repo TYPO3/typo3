@@ -98,15 +98,6 @@ declare namespace TYPO3 {
       export const token: string;
     }
   }
-  export namespace CMS {
-    export namespace Backend {
-      // @todo transform to proper interface, once FormEngine.js is migrated to TypeScript
-      export interface OnFieldChangeItem {
-        name: string;
-        data: {[key: string]: string|number|boolean|null}
-      }
-    }
-  }
 }
 
 declare namespace TBE_EDITOR {

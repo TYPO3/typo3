@@ -12,11 +12,11 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Icons from '../icons';
 import PersistentStorage from '../storage/persistent';
 import Viewport from '../viewport';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 /**
  * Explicit selectors to avoid nesting queries

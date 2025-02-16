@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { ResultItemActionInterface, ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
-import { TemplateResult } from 'lit';
+import type { ResultItemActionInterface, ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
+import type { TemplateResult } from 'lit';
 
 type RendererCallback = (resultItem: ResultItemInterface) => TemplateResult;
 type InvokeCallback = (resultItem: ResultItemInterface, action: ResultItemActionInterface) => void;

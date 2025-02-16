@@ -12,7 +12,7 @@
  */
 
 import { customElement, property, query } from 'lit/decorators';
-import { css, html, LitElement, TemplateResult } from 'lit';
+import { css, html, LitElement, type TemplateResult } from 'lit';
 import Alwan from 'alwan';
 import RegularEvent from '@typo3/core/event/regular-event';
 

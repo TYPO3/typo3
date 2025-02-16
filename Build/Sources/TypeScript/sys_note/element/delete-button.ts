@@ -12,13 +12,13 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { css, html, LitElement, TemplateResult } from 'lit';
+import { css, html, LitElement, type TemplateResult } from 'lit';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
-import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 import Viewport from '@typo3/backend/viewport';
+import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 
 /**
  * Module: @typo3/sys-note/delete-button

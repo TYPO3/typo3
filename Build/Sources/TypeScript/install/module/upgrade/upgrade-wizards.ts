@@ -12,8 +12,7 @@
  */
 
 import 'bootstrap';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import SecurityUtility from '@typo3/core/security-utility';
@@ -21,10 +20,11 @@ import { FlashMessage } from '../../renderable/flash-message';
 import { InfoBox } from '../../renderable/info-box';
 import Severity from '../../renderable/severity';
 import Router from '../../router';
-import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ModalElement } from '@typo3/backend/modal';
-import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
+import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
+import type MessageInterface from '@typo3/install/message-interface';
 
 enum Identifiers {
   outputWizardsContainer = '.t3js-upgradeWizards-wizards-output',

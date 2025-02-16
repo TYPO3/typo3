@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
 
 @customElement('typo3-backend-live-search-result-item-page-provider')

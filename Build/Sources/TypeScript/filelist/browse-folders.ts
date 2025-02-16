@@ -13,10 +13,10 @@
 
 import ElementBrowser from '@typo3/backend/element-browser';
 import RegularEvent from '@typo3/core/event/regular-event';
-import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
+import type { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import { FileListActionEvent, type FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
 
 /**
  * Module: @typo3/backend/browse-folders

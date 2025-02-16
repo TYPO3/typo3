@@ -14,7 +14,7 @@
 import { SeverityEnum } from './enum/severity';
 import $ from 'jquery';
 import { Carousel } from 'bootstrap';
-import { default as Modal, ModalElement } from './modal';
+import { default as Modal, type ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
 import { topLevelModuleImport } from './utility/top-level-module-import';

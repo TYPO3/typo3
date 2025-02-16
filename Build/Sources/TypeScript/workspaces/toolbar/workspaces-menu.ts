@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ModuleMenu from '@typo3/backend/module-menu';
 import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum Identifiers {
   scaffoldSelector = '.t3js-scaffold',

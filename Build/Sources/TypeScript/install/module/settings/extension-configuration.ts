@@ -12,22 +12,22 @@
  */
 
 import 'bootstrap';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
 import '../../renderable/wrap-group';
 import '../../renderable/offset-group';
-import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
 import ModuleMenu from '@typo3/backend/module-menu';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
-import MessageInterface from '@typo3/install/message-interface';
+import type MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Collapse } from 'bootstrap';
 import DebounceEvent from '@typo3/core/event/debounce-event';
-import type { ModalElement } from '@typo3/backend/modal';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { ModalElement } from '@typo3/backend/modal';
 
 enum Identifiers {
   formListener = '.t3js-extensionConfiguration-form',

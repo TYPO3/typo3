@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 
 export type SendToStageResultData = {
   sendMailTo?: SendToStageRecipient[],

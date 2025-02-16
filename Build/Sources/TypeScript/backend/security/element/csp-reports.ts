@@ -12,12 +12,12 @@
  */
 
 import { customElement, property, state } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { classMap } from 'lit/directives/class-map';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { lll } from '@typo3/core/lit-helper';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum CspReportAttribute {
   fixable= 'fixable',

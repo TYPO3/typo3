@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { lll } from '@typo3/core/lit-helper';
 import '@typo3/backend/element/icon-element';
 

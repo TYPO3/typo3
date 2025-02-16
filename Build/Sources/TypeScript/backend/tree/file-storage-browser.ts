@@ -11,17 +11,16 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, query } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
-import '@typo3/backend/tree/tree-toolbar';
-import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
+import { type TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import ElementBrowser from '@typo3/backend/element-browser';
 import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
 import { FileStorageTree } from './file-storage-tree';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 /**
  * Extension of the Tree, allowing to show additional actions on the right hand of the tree to directly link

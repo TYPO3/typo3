@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult, nothing } from 'lit';
+import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { Task } from '@lit/task';
 import { customElement, property } from 'lit/decorators';
 import { unsafeHTML } from 'lit/directives/unsafe-html';

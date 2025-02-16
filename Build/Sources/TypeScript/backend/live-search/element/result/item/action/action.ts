@@ -13,9 +13,9 @@
 
 import { customElement, property } from 'lit/decorators';
 import { ifDefined } from 'lit/directives/if-defined';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import '@typo3/backend/element/icon-element';
-import { ResultItemActionInterface, ResultItemInterface } from '../item';
+import type { ResultItemActionInterface, ResultItemInterface } from '../item';
 
 @customElement('typo3-backend-live-search-result-item-action')
 export class Action extends LitElement {

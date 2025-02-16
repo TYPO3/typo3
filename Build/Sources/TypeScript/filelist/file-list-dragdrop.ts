@@ -12,7 +12,7 @@
  */
 
 import RegularEvent from '@typo3/core/event/regular-event';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import { FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';

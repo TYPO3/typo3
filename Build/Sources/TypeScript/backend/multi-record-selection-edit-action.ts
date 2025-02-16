@@ -13,8 +13,8 @@
 
 import RegularEvent from '@typo3/core/event/regular-event';
 import {
-  ActionConfiguration,
-  ActionEventDetails,
+  type ActionConfiguration,
+  type ActionEventDetails,
   MultiRecordSelectionAction
 } from '@typo3/backend/multi-record-selection-action';
 

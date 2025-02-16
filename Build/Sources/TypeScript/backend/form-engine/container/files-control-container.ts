@@ -11,21 +11,21 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { MessageUtility } from '../../utility/message-utility';
 import { AjaxDispatcher } from './../inline-relation/ajax-dispatcher';
-import { InlineResponseInterface } from './../inline-relation/inline-response-interface';
 import NProgress from 'nprogress';
 import Sortable from 'sortablejs';
 import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import Icons from '../../icons';
 import InfoWindow from '../../info-window';
-import Modal, { ModalElement } from '../../modal';
+import Modal, { type ModalElement } from '../../modal';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
 import { selector } from '@typo3/core/literals';
+import type AjaxRequest from '@typo3/core/ajax/ajax-request';
+import type { InlineResponseInterface } from './../inline-relation/inline-response-interface';
 
 enum Selectors {
   toggleSelector = '[data-bs-toggle="formengine-file"]',

@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, LitElement, TemplateResult, nothing } from 'lit';
+import { html, css, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import '@typo3/backend/element/icon-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 import Notification from '@typo3/backend/notification';
 
 @customElement('typo3-scheduler-editable-group-name')

@@ -12,7 +12,7 @@
  */
 
 import { SeverityEnum } from '@typo3/backend/enum/severity';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Modal from '@typo3/backend/modal';
 import DocumentService from '@typo3/core/document-service';

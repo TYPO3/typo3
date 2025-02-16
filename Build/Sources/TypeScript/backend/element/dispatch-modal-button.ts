@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, css, LitElement, TemplateResult } from 'lit';
+import { html, css, LitElement, type TemplateResult } from 'lit';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';

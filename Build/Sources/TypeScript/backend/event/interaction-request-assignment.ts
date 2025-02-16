@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InteractionRequest from './interaction-request';
+import type InteractionRequest from './interaction-request';
 
 export interface PromiseControls<T> {
   resolve: (v?: T) => void;

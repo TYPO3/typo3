@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import DocumentService from '@typo3/core/document-service';
 import { html } from 'lit';
 import '@typo3/backend/element/icon-element';
@@ -20,7 +20,7 @@ import '@typo3/backend/input/clearable';
 import '@typo3/workspaces/renderable/record-table';
 import '@typo3/backend/element/pagination';
 import Workspaces from './workspaces';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import Persistent from '@typo3/backend/storage/persistent';
 import Utility from '@typo3/backend/utility';
 import windowManager from '@typo3/backend/window-manager';

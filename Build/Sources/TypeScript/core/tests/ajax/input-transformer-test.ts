@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { GenericKeyValue, InputTransformer } from '@typo3/core/ajax/input-transformer.js';
+import { InputTransformer, type GenericKeyValue } from '@typo3/core/ajax/input-transformer.js';
 import { expect } from '@open-wc/testing';
 import type { } from 'mocha';
 

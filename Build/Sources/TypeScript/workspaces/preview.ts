@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import DocumentService from '@typo3/core/document-service';
 import Modal from '@typo3/backend/modal';

@@ -13,17 +13,17 @@
 
 import 'bootstrap';
 import { Collapse } from 'bootstrap';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
-import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
-import MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
-import type { ModalElement } from '@typo3/backend/modal';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { ModalElement } from '@typo3/backend/modal';
+import type MessageInterface from '@typo3/install/message-interface';
 
 enum Identifiers {
   item = '.t3js-localConfiguration-item',

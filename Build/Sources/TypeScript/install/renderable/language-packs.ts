@@ -12,7 +12,7 @@
  */
 
 import { customElement, property, state } from 'lit/decorators';
-import { LitElement, TemplateResult, html, nothing } from 'lit';
+import { LitElement, type TemplateResult, html, nothing } from 'lit';
 import { classMap } from 'lit/directives/class-map';
 
 type Language = {

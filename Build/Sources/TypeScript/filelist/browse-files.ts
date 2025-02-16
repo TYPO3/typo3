@@ -16,12 +16,12 @@ import ElementBrowser from '@typo3/backend/element-browser';
 import NProgress from 'nprogress';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Icons from '@typo3/backend/icons';
-import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
+import type { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import { FileListActionEvent, type FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import InfoWindow from '@typo3/backend/info-window';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
 
 class BrowseFiles {
   constructor() {

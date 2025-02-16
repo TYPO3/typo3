@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
-import { TreeNodeInterface } from './tree-node';
 import { lll } from '@typo3/core/lit-helper';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
 import { Tree } from './tree';
+import type { TreeNodeInterface } from './tree-node';
 
 @customElement('typo3-backend-tree-toolbar')
 export class TreeToolbar extends LitElement {

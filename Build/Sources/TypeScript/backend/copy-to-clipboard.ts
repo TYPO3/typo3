@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, TemplateResult, LitElement } from 'lit';
+import { html, css, type TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import Notification from '@typo3/backend/notification';
 import { lll } from '@typo3/core/lit-helper';

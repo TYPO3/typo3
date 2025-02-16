@@ -18,13 +18,13 @@ import DocumentService from '@typo3/core/document-service';
  * and triggers a modal window. which then calls the AjaxDataHandler
  * to execute the action to paste the current clipboard contents.
  */
-import ResponseInterface from '../ajax-data-handler/response-interface';
 import DataHandler from '../ajax-data-handler';
-import { default as Modal, ModalElement, Button } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement, type Button } from '@typo3/backend/modal';
 import Severity from '../severity';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '../enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type ResponseInterface from '../ajax-data-handler/response-interface';
 
 type PasteOptions = {
   itemOnClipboardUid: number;

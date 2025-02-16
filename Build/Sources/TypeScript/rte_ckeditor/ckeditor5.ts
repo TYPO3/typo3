@@ -1,4 +1,4 @@
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property, queryAssignedElements } from 'lit/decorators';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
@@ -9,7 +9,7 @@ import type { WordCount, WordCountConfig } from '@ckeditor/ckeditor5-word-count'
 import type { SourceEditing } from '@ckeditor/ckeditor5-source-editing';
 import type { GeneralHtmlSupportConfig } from '@ckeditor/ckeditor5-html-support';
 import type { TypingConfig } from '@ckeditor/ckeditor5-typing';
-import { EventInfo } from '@ckeditor/ckeditor5-utils';
+import type { EventInfo } from '@ckeditor/ckeditor5-utils';
 
 type PluginModuleDescriptor = {
   module: string,

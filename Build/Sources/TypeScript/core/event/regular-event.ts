@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
 */
 
-import { EventInterface, Listener } from './event-interface';
+import type { EventInterface, Listener } from './event-interface';
 
 class RegularEvent implements EventInterface {
   protected eventName: string;

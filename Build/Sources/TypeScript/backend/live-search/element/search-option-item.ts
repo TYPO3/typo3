@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import { ifDefined } from 'lit/directives/if-defined';
 import type { InvokeOptionEventData } from '@typo3/backend/toolbar/live-search';

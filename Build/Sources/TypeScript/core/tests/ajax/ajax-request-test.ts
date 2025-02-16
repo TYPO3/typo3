@@ -12,9 +12,9 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request.js';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response.js';
 import { expect } from '@open-wc/testing';
-import { stub, SinonStub } from 'sinon';
+import { stub, type SinonStub } from 'sinon';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { } from 'mocha';
 
 describe('@typo3/core/ajax/ajax-request', (): void => {

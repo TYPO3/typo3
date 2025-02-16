@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import NotificationService from '@typo3/backend/notification';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
-import { AbstractAction } from '@typo3/backend/action-button/abstract-action';
+import type { AbstractAction } from '@typo3/backend/action-button/abstract-action';
 
 type Correlation = {
   correlationIdSlugUpdate: string;

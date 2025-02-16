@@ -13,14 +13,14 @@
 
 import { html } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule } from './module/abstract-interactable-module';
-import { AbstractInlineModule } from './module/abstract-inline-module';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AbstractInteractableModule } from './module/abstract-interactable-module';
+import type { AbstractInlineModule } from './module/abstract-inline-module';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { InfoBox } from './renderable/info-box';
 import Severity from './renderable/severity';
 import '@typo3/backend/element/spinner-element';
-import MessageInterface from '@typo3/install/message-interface';
+import type MessageInterface from '@typo3/install/message-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import '@typo3/backend/element/progress-bar-element';
 

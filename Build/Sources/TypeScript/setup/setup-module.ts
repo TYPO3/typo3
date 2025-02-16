@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { ModalResponseEvent } from '@typo3/backend/modal-interface';
+import type { ModalResponseEvent } from '@typo3/backend/modal-interface';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import Client from '@typo3/backend/storage/client';
 import RegularEvent from '@typo3/core/event/regular-event';

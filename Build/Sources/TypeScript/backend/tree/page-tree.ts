@@ -12,12 +12,12 @@
  */
 
 import { Tree } from '@typo3/backend/tree/tree';
-import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
-import { TemplateResult, html } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
-import { ContentElementDragDropData } from '@typo3/backend/layout-module/drag-drop';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
+import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
+import type { ContentElementDragDropData } from '@typo3/backend/layout-module/drag-drop';
 
 /**
  * A Tree based on for pages, which has a AJAX-based loading of the tree

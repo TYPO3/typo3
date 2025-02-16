@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import MessageInterface from './message-interface';
+import type MessageInterface from './message-interface';
 
 export default interface ResponseInterface {
   redirect: string;

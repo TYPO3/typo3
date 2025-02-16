@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, TemplateResult } from 'lit';
-import { Tree, TreeSettings } from '@typo3/backend/tree/tree';
-import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
+import { html, type TemplateResult } from 'lit';
+import { Tree, type TreeSettings } from '@typo3/backend/tree/tree';
 import { customElement, state } from 'lit/decorators';
+import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 interface SelectTreeSettings extends TreeSettings {
   exclusiveNodesIdentifiers: '';

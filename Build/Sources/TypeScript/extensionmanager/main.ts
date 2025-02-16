@@ -14,14 +14,14 @@
 import DocumentService from '@typo3/core/document-service';
 import BrowserSession from '@typo3/backend/storage/browser-session';
 import NProgress from 'nprogress';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import SecurityUtility from '@typo3/core/security-utility';
 import ExtensionManagerRepository from './repository';
 import ExtensionManagerUpdate from './update';
 import ExtensionManagerUploadForm from './upload-form';
 import '@typo3/backend/input/clearable';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import RegularEvent from '@typo3/core/event/regular-event';

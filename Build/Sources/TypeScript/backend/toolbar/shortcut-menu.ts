@@ -11,7 +11,6 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from '../icons';
 import Modal from '../modal';
@@ -21,6 +20,7 @@ import SecurityUtility from '@typo3/core/security-utility';
 import '@typo3/backend/element/spinner-element';
 import { Sizes } from '../enum/icon-types';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-shortcuttoolbaritem',

@@ -17,7 +17,7 @@ import FormEngine from '@typo3/backend/form-engine';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { selector } from '@typo3/core/literals';
 
 class FormEngineSuggest {

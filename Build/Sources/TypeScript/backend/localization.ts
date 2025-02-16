@@ -13,12 +13,12 @@
 
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from './icons';
-import Modal, { ModalElement } from './modal';
-import MultiStepWizard, { MultiStepWizardSettings } from './multi-step-wizard';
+import Modal, { type ModalElement } from './modal';
+import MultiStepWizard, { type MultiStepWizardSettings } from './multi-step-wizard';
 import '@typo3/backend/element/icon-element';
 
 type LanguageRecord = {

@@ -1,7 +1,7 @@
 import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
-import { html, TemplateResult } from 'lit';
-import { ResultItemActionInterface, ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
+import { html, type TemplateResult } from 'lit';
 import windowManager from '@typo3/backend/window-manager';
+import type { ResultItemActionInterface, ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
 
 export function registerRenderer(type: string) {
   LiveSearchConfigurator.addRenderer(

@@ -11,23 +11,23 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { LitElement, html, css, TemplateResult } from 'lit';
+import { LitElement, html, css, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import {
   EditorView,
-  ViewUpdate,
   lineNumbers,
   highlightSpecialChars,
   drawSelection,
   keymap,
-  KeyBinding,
-  placeholder
+  placeholder,
+  type ViewUpdate,
+  type KeyBinding
 } from '@codemirror/view';
-import { Extension, EditorState, Compartment } from '@codemirror/state';
+import { EditorState, Compartment, type Extension } from '@codemirror/state';
 import { syntaxHighlighting, defaultHighlightStyle } from '@codemirror/language';
 import { defaultKeymap, indentWithTab } from '@codemirror/commands';
 import { oneDark } from '@codemirror/theme-one-dark';
-import { executeJavaScriptModuleInstruction, loadModule, resolveSubjectRef, JavaScriptItemPayload } from '@typo3/core/java-script-item-processor';
+import { executeJavaScriptModuleInstruction, loadModule, resolveSubjectRef, type JavaScriptItemPayload } from '@typo3/core/java-script-item-processor';
 import '@typo3/backend/element/spinner-element';
 
 /**

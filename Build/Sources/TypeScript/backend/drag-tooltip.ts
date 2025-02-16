@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';

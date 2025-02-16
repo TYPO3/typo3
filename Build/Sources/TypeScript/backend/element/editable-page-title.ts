@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, LitElement, TemplateResult, nothing } from 'lit';
+import { html, css, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import '@typo3/backend/element/icon-element';
 import AjaxDataHandler from '../ajax-data-handler';

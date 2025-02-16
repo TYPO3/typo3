@@ -13,14 +13,14 @@
 
 import 'bootstrap';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import type { ModalElement } from '@typo3/backend/modal';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxQueue from '../../ajax/ajax-queue';
 import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 
 enum Identifiers {

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { BroadcastMessage, BroadcastEvent } from '@typo3/backend/broadcast-message';
+import { BroadcastMessage, type BroadcastEvent } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';
 
 enum Identifier {

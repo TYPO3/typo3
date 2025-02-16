@@ -12,10 +12,10 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { css, html, LitElement, TemplateResult } from 'lit';
+import { css, html, LitElement, type TemplateResult } from 'lit';
 import { lll } from '@typo3/core/lit-helper';
 import './result-item';
-import { ResultItemInterface } from './result-item';
+import type { ResultItemInterface } from './result-item';
 
 @customElement('typo3-backend-formengine-suggest-result-container')
 export class ResultContainer extends LitElement {

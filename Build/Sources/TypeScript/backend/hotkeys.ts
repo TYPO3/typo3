@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import HotkeyStorage, { ScopedHotkeyMap, HotkeyStruct, Options, HotkeySetup } from '@typo3/backend/hotkeys/hotkey-storage';
+import HotkeyStorage, { type ScopedHotkeyMap, type HotkeyStruct, type Options, type HotkeySetup } from '@typo3/backend/hotkeys/hotkey-storage';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 export enum ModifierKeys {

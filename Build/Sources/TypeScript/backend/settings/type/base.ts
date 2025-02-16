@@ -14,7 +14,7 @@
 
 /* eslint-disable @typescript-eslint/member-ordering */
 
-import { LitElement, PropertyDeclaration, ReactiveElement } from 'lit';
+import { LitElement, type PropertyDeclaration, type ReactiveElement } from 'lit';
 import { defaultConverter } from '@lit/reactive-element';
 import { property } from 'lit/decorators';
 

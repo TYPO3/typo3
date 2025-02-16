@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Sortable, { SortableEvent } from 'sortablejs';
+import Sortable, { type SortableEvent } from 'sortablejs';
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
 
 /**

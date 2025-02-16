@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import LinkBrowser, { LinkAttributes } from '@typo3/backend/link-browser';
+import LinkBrowser, { type LinkAttributes } from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import RegularEvent from '@typo3/core/event/regular-event';
-import { Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
-import * as Core from '@ckeditor/ckeditor5-core';
+import { type Typo3LinkDict, LINK_ALLOWED_ATTRIBUTES, addLinkPrefix } from '@typo3/rte-ckeditor/plugin/typo3-link';
+import type * as Core from '@ckeditor/ckeditor5-core';
 import type Position from '@ckeditor/ckeditor5-engine/src/model/position';
 
 /**

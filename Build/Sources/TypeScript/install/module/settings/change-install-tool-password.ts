@@ -16,10 +16,10 @@ import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
 import PasswordStrength from '../password-strength';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
-import MessageInterface from '@typo3/install/message-interface';
+import { AbstractInteractableModule, type ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type MessageInterface from '@typo3/install/message-interface';
 import type { ModalElement } from '@typo3/backend/modal';
 
 enum Identifiers {

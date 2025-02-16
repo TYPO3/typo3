@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InteractionRequest from './interaction-request';
-import { InteractionRequestAssignment, PromiseControls } from './interaction-request-assignment';
+import type InteractionRequest from './interaction-request';
+import type { InteractionRequestAssignment, PromiseControls } from './interaction-request-assignment';
 
 class InteractionRequestMap {
   private assignments: InteractionRequestAssignment[] = [];

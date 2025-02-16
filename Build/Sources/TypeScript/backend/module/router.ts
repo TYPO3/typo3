@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, HasChanged, LitElement, TemplateResult } from 'lit';
+import { html, css, LitElement, type TemplateResult, type HasChanged } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
-import { ModuleState, ModuleUtility } from '@typo3/backend/module';
+import { ModuleUtility, type ModuleState } from '@typo3/backend/module';
 
 const IFRAME_COMPONENT = '@typo3/backend/module/iframe';
 

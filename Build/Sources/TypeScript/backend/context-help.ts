@@ -11,8 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import 'bootstrap';
-import { Popover as BootstrapPopover } from 'bootstrap';
+import { type Popover as BootstrapPopover } from 'bootstrap';
 import Popover from './popover';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';

@@ -14,11 +14,11 @@
 import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import PasswordStrength from './module/password-strength';
 import { InfoBox } from './renderable/info-box';
 import '@typo3/backend/element/icon-element';
-import MessageInterface from '@typo3/install/message-interface';
+import type MessageInterface from '@typo3/install/message-interface';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/progress-bar-element';
 import type { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';

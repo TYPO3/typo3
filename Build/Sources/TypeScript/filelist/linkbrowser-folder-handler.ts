@@ -13,13 +13,13 @@
 
 import LinkBrowser from '@typo3/backend/link-browser';
 import RegularEvent from '@typo3/core/event/regular-event';
-import { FileListActionEvent, FileListActionDetail } from '@typo3/filelist/file-list-actions';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
+import { FileListActionEvent, type FileListActionDetail } from '@typo3/filelist/file-list-actions';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
 import InfoWindow from '@typo3/backend/info-window';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
-import MessageInterface from '@typo3/backend/ajax-data-handler/message-interface';
+import type MessageInterface from '@typo3/backend/ajax-data-handler/message-interface';
 
 class LinkBrowserFolderHandler {
   constructor() {

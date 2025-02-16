@@ -11,20 +11,20 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import { until } from 'lit/directives/until';
 import { lll } from '@typo3/core/lit-helper';
 import { PageTree } from '@typo3/backend/tree/page-tree';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '@typo3/backend/tree/tree-toolbar';
-import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
-import { TreeNodeInterface } from './tree-node';
 import ElementBrowser from '@typo3/backend/element-browser';
 import LinkBrowser from '@typo3/backend/link-browser';
 import '@typo3/backend/element/icon-element';
 import Persistent from '@typo3/backend/storage/persistent';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
+import type { TreeNodeInterface } from './tree-node';
 
 interface Configuration {
   [keys: string]: any;
