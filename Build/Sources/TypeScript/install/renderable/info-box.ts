@@ -13,7 +13,7 @@
 
 import Severity from './severity';
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 
 /**
  * Module: @typo3/install/module/info-box

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, TemplateResult, LitElement } from 'lit';
+import { html, css, type TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import Modal from '@typo3/backend/modal';
 

@@ -14,9 +14,9 @@
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInlineModule, ActionResponse } from '../abstract-inline-module';
-import MessageInterface from '@typo3/install/message-interface';
+import { AbstractInlineModule, type ActionResponse } from '../abstract-inline-module';
+import type MessageInterface from '@typo3/install/message-interface';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 /**
  * Module: @typo3/install/module/dump-autoload

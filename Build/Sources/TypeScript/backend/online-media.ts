@@ -13,10 +13,10 @@
 
 import DocumentService from '@typo3/core/document-service';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import Modal, { ModalElement, Types } from './modal';
+import Modal, { type ModalElement, Types } from './modal';
 import Notification from './notification';
 import Severity from './severity';
 import RegularEvent from '@typo3/core/event/regular-event';

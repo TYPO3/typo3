@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, css, TemplateResult, LitElement } from 'lit';
+import { html, css, type TemplateResult, LitElement } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 
 enum Selectors {

@@ -11,8 +11,8 @@
  * The TYPO3 project - inspiring people to share!
 */
 
-import { Listener } from './event-interface';
 import RegularEvent from './regular-event';
+import type { Listener } from './event-interface';
 
 /**
  * Debounces an event listener that is executed after the event happened.

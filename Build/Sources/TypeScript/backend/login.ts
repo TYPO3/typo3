@@ -14,7 +14,7 @@
 import 'bootstrap';
 import '@typo3/backend/input/clearable';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 interface PreflightResponse {

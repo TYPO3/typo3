@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { loadModule, JavaScriptItemPayload } from '@typo3/core/java-script-item-processor';
+import { loadModule, type JavaScriptItemPayload } from '@typo3/core/java-script-item-processor';
 import DocumentService from '@typo3/core/document-service';
 
 interface ModuleRequirements {

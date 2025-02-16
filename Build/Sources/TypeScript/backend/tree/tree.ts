@@ -11,21 +11,21 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult, nothing } from 'lit';
+import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { property, state, query } from 'lit/decorators';
 import { repeat } from 'lit/directives/repeat';
 import { styleMap } from 'lit/directives/style-map';
 import { ifDefined } from 'lit/directives/if-defined';
-import { TreeNodeInterface, TreeNodeCommandEnum, TreeNodePositionEnum, TreeNodeStatusInformation, TreeNodeLabel } from './tree-node';
+import { TreeNodeCommandEnum, TreeNodePositionEnum, type TreeNodeInterface, type TreeNodeStatusInformation, type TreeNodeLabel } from './tree-node';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '../notification';
 import { KeyTypesEnum as KeyTypes } from '../enum/key-types';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '@typo3/backend/element/icon-element';
 import ClientStorage from '@typo3/backend/storage/client';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
-import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import Severity from '@typo3/backend/severity';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 
 interface TreeNodeStatus {
   expanded: boolean

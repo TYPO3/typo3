@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxDispatcherResponse } from '@typo3/backend/form-engine/inline-relation/ajax-dispatcher';
+import type { AjaxDispatcherResponse } from '@typo3/backend/form-engine/inline-relation/ajax-dispatcher';
 
 export interface InlineResponseInterface extends AjaxDispatcherResponse{
   data: string;

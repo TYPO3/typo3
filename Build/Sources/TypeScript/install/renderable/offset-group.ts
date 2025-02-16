@@ -1,4 +1,4 @@
-import { LitElement, TemplateResult, html } from 'lit';
+import { LitElement, type TemplateResult, html } from 'lit';
 import { customElement, property } from 'lit/decorators';
 
 @customElement('typo3-install-offset-group')

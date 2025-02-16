@@ -13,11 +13,11 @@
 
 import RegularEvent from '@typo3/core/event/regular-event';
 import {
-  ActionConfiguration,
-  ActionEventDetails,
+  type ActionConfiguration,
+  type ActionEventDetails,
   MultiRecordSelectionAction
 } from '@typo3/backend/multi-record-selection-action';
-import Modal, { ModalElement } from '@typo3/backend/modal';
+import Modal, { type ModalElement } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler';

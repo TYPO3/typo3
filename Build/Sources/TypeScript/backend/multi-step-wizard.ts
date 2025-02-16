@@ -14,11 +14,11 @@
 import { SeverityEnum } from './enum/severity';
 import $ from 'jquery';
 import { Carousel } from 'bootstrap';
-import Modal, { ModalElement } from './modal';
+import Modal, { type ModalElement } from './modal';
 import Severity from './severity';
 import Icons from './icons';
 import { topLevelModuleImport } from './utility/top-level-module-import';
-import { type Stage } from '@typo3/backend/element/progress-tracker-element';
+import type { Stage } from '@typo3/backend/element/progress-tracker-element';
 
 type SlideCallback = ($slide: JQuery, settings: MultiStepWizardSettings, identifier: string) => void;
 

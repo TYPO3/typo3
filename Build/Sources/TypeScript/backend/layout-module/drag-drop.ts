@@ -18,12 +18,12 @@
 import DocumentService from '@typo3/core/document-service';
 import DataHandler from '../ajax-data-handler';
 import Icons from '../icons';
-import ResponseInterface from '../ajax-data-handler/response-interface';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
-import type { DragDropThumbnail, DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
+import type ResponseInterface from '../ajax-data-handler/response-interface';
+import type { DragDropThumbnail, DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 
 interface Parameters {
   cmd?: { [key: string]: { [key: string]: any } };

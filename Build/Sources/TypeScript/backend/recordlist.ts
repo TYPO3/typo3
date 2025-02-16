@@ -15,11 +15,11 @@ import Icons from '@typo3/backend/icons';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
-import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import { selector } from '@typo3/core/literals';
-import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 import AjaxDataHandler from '@typo3/backend/ajax-data-handler';
+import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
+import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 
 interface IconIdentifier {
   collapse: string;

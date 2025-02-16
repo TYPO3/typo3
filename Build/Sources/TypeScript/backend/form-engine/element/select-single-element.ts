@@ -13,8 +13,7 @@
 
 import RegularEvent from '@typo3/core/event/regular-event';
 import DocumentService from '@typo3/core/document-service';
-import FormEngine from '@typo3/backend/form-engine';
-import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
+import FormEngine, { type OnFieldChangeItem } from '@typo3/backend/form-engine';
 import { selector } from '@typo3/core/literals';
 
 interface SelectSingleElementOptions {

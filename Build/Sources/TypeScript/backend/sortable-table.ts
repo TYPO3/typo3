@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import Tablesort, { TablesortOptions } from 'tablesort';
+import Tablesort, { type TablesortOptions } from 'tablesort';
 import 'tablesort.dotsep';
 import 'tablesort.number';
 import { IconElement } from './element/icon-element';

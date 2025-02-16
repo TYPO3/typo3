@@ -17,9 +17,9 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Notification from '@typo3/backend/notification';
 import Viewport from '@typo3/backend/viewport';
-import { FileListDragDropDetail, FileListDragDropEvent } from '@typo3/filelist/file-list-dragdrop';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
+import { type FileListDragDropDetail, FileListDragDropEvent } from '@typo3/filelist/file-list-dragdrop';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
 
 interface Message {
   title: string;

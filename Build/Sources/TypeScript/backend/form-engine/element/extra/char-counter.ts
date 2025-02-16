@@ -12,7 +12,7 @@
  */
 
 import { customElement, property, state } from 'lit/decorators';
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { lll } from '@typo3/core/lit-helper';
 
 @customElement('typo3-backend-formengine-char-counter')

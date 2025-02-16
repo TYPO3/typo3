@@ -12,7 +12,7 @@
  */
 
 import { Tree } from '@typo3/backend/tree/tree';
-import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
+import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 /**
  * A tree for folders / storages

@@ -16,7 +16,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ContextMenuActions from './context-menu-actions';
 import '@typo3/backend/element/spinner-element';
 import { customElement, queryAll, state } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { delay } from '@typo3/core/lit-helper';
 import { styleMap } from 'lit/directives/style-map';
 import { unsafeHTML } from 'lit/directives/unsafe-html';

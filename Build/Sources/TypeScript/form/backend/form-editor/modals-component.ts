@@ -16,7 +16,7 @@
  */
 import $ from 'jquery';
 import * as Helper from '@typo3/form/backend/form-editor/helper';
-import Modal, { Button } from '@typo3/backend/modal';
+import Modal, { type Button } from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import type {
   FormEditor,

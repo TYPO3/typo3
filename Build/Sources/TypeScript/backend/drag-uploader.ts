@@ -13,12 +13,12 @@
 
 import DocumentService from '@typo3/core/document-service';
 import { DateTime } from 'luxon';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from './enum/severity';
 import { MessageUtility } from './utility/message-utility';
 import NProgress from 'nprogress';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { default as Modal, ModalElement, Sizes as ModalSizes } from './modal';
+import { default as Modal, type ModalElement, Sizes as ModalSizes } from './modal';
 import Notification from './notification';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action';
 import Md5 from '@typo3/backend/hashing/md5';

@@ -12,17 +12,17 @@
  */
 
 import { Modal as BootstrapModal } from 'bootstrap';
-import { html, nothing, LitElement, TemplateResult, PropertyValues } from 'lit';
+import { html, nothing, LitElement, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { unsafeHTML } from 'lit/directives/unsafe-html';
-import { classMap, ClassInfo } from 'lit/directives/class-map';
-import { styleMap, StyleInfo } from 'lit/directives/style-map';
+import { classMap, type ClassInfo } from 'lit/directives/class-map';
+import { styleMap, type StyleInfo } from 'lit/directives/style-map';
 import { ifDefined } from 'lit/directives/if-defined';
 import { classesArrayToClassInfo } from '@typo3/core/lit-helper';
 import RegularEvent from '@typo3/core/event/regular-event';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractAction } from './action-button/abstract-action';
-import { ModalResponseEvent } from '@typo3/backend/modal-interface';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AbstractAction } from './action-button/abstract-action';
+import type { ModalResponseEvent } from '@typo3/backend/modal-interface';
 import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Severity from './severity';

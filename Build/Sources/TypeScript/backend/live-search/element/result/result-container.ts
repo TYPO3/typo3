@@ -14,13 +14,11 @@
 import LiveSearchConfigurator from '@typo3/backend/live-search/live-search-configurator';
 import Viewport from '@typo3/backend/viewport';
 import { customElement, property, query } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { lll } from '@typo3/core/lit-helper';
-import './item/item-container';
-import './result-detail-container';
+import { type ItemContainer } from './item/item-container';
+import { type ResultDetailContainer } from './result-detail-container';
 import type { ResultItemActionInterface, ResultItemInterface } from './item/item';
-import { ItemContainer } from './item/item-container';
-import { ResultDetailContainer } from './result-detail-container';
 import type { ChooseItemEventData } from '@typo3/backend/toolbar/live-search';
 
 export interface InvokeActionEventData {

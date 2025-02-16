@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { css, html, LitElement, nothing, TemplateResult } from 'lit';
+import { css, html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { styleMap } from 'lit/directives/style-map';
 import { classMap } from 'lit/directives/class-map';

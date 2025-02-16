@@ -18,7 +18,7 @@ import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
 import Md5 from '@typo3/backend/hashing/md5';
 import { fileListOpenElementBrowser } from '@typo3/filelist/file-list';
-import { FileListActionEvent, FileListActionDetail, FileListActionUtility } from './file-list-actions';
+import { FileListActionEvent, type FileListActionDetail, FileListActionUtility } from './file-list-actions';
 
 /**
  * Module: @typo3/filelist/context-menu-actions

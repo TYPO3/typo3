@@ -12,10 +12,10 @@
  */
 
 import Modal from '@typo3/backend/modal';
-import { html, TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type ResponseInterface from '@typo3/backend/ajax-data-handler/response-interface';
 import Notification from '@typo3/backend/notification';
 import { lll } from '@typo3/core/lit-helper';
 

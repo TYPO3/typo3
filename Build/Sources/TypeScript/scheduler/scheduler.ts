@@ -16,7 +16,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import Modal from '@typo3/backend/modal';
 import Icons from '@typo3/backend/icons';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
-import { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import type { ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
 import PersistentStorage from '@typo3/backend/storage/persistent';
 import DateTimePicker from '@typo3/backend/date-time-picker';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';

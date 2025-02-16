@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, state } from 'lit/decorators';
-import Modal, { ModalElement, Styles, Sizes } from '@typo3/backend/modal';
+import Modal, { type ModalElement, Styles, Sizes } from '@typo3/backend/modal';
 import { SeverityEnum } from './enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Notification from '@typo3/backend/notification';

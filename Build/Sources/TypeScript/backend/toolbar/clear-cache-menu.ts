@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Icons from '../icons';
 import Notification from '../notification';
 import Viewport from '../viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum Identifiers {
   containerSelector = '#typo3-cms-backend-backend-toolbaritems-clearcachetoolbaritem',

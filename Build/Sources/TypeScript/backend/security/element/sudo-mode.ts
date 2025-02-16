@@ -12,11 +12,11 @@
  */
 
 import { customElement, property, query, state } from 'lit/decorators';
-import { html, LitElement, nothing, PropertyValues, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type PropertyValues, type TemplateResult } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { lll } from '@typo3/core/lit-helper';
 import Viewport from '@typo3/backend/viewport';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 interface SudoModeResponse {
   message: string;

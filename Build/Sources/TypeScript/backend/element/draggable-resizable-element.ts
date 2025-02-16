@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult, PropertyValues } from 'lit';
+import { html, LitElement, type TemplateResult, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 
 interface Position {

@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult, nothing } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property, state, query } from 'lit/decorators';
 import { repeat } from 'lit/directives/repeat';
 import { unsafeHTML } from 'lit/directives/unsafe-html';
@@ -22,10 +22,10 @@ import '@typo3/backend/element/icon-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from '@typo3/backend/storage/client';
 import { lll, delay } from '@typo3/core/lit-helper';
-import Modal, { ModalElement } from '@typo3/backend/modal';
+import Modal, { type ModalElement } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { Categories, DataCategoriesInterface, NewRecordWizardItemSelectedEventInterface } from '@typo3/backend/new-record-wizard';
+import { Categories, type DataCategoriesInterface, type NewRecordWizardItemSelectedEventInterface } from '@typo3/backend/new-record-wizard';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
 import { selector } from '@typo3/core/literals';
 import DomHelper from '@typo3/backend/utility/dom-helper';

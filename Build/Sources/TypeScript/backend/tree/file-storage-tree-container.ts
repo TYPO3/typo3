@@ -11,22 +11,22 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult } from 'lit';
+import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, query } from 'lit/decorators';
 import '@typo3/backend/element/icon-element';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import '@typo3/backend/tree/tree-toolbar';
-import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
-import { TreeNodeInterface, TreeNodePositionEnum } from '@typo3/backend/tree/tree-node';
+import { TreeNodePositionEnum, type TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 import { FileStorageTree } from '@typo3/backend/tree/file-storage-tree';
 import { TreeModuleState } from '@typo3/backend/tree/tree-module-state';
 import ContextMenu from '@typo3/backend/context-menu';
 import Notification from '@typo3/backend/notification';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import { ModuleUtility } from '@typo3/backend/module';
-import { FileListDragDropDetail, FileListDragDropEvent } from '@typo3/filelist/file-list-dragdrop';
-import { Resource, ResourceInterface } from '@typo3/backend/resource/resource';
+import { FileListDragDropEvent, type FileListDragDropDetail } from '@typo3/filelist/file-list-dragdrop';
+import { Resource, type ResourceInterface } from '@typo3/backend/resource/resource';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
+import type { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
 
 export const navigationComponentName: string = 'typo3-backend-navigation-component-filestoragetree';

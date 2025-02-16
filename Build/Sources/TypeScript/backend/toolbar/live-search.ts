@@ -24,10 +24,10 @@ import DebounceEvent from '@typo3/core/event/debounce-event';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import BrowserSession from '@typo3/backend/storage/browser-session';
-import { ResultContainer, componentName as resultContainerComponentName } from '@typo3/backend/live-search/element/result/result-container';
-import { ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
-import { Pagination, ResultPagination } from '@typo3/backend/live-search/element/result/result-pagination';
+import { componentName as resultContainerComponentName, type ResultContainer } from '@typo3/backend/live-search/element/result/result-container';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
+import type { ResultItemInterface } from '@typo3/backend/live-search/element/result/item/item';
+import type { Pagination, ResultPagination } from '@typo3/backend/live-search/element/result/result-pagination';
 
 enum Identifiers {
   toolbarItem = '.t3js-topbar-button-search',

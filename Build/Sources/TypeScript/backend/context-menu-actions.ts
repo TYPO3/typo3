@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { SeverityEnum } from './enum/severity';
 import AjaxDataHandler from './ajax-data-handler';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';

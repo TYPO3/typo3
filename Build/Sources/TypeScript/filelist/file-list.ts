@@ -15,20 +15,20 @@ import { lll } from '@typo3/core/lit-helper';
 import DocumentService from '@typo3/core/document-service';
 import Notification from '@typo3/backend/notification';
 import InfoWindow from '@typo3/backend/info-window';
-import { FileListActionEvent, FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
+import { FileListActionEvent, type FileListActionDetail, FileListActionSelector, FileListActionUtility } from '@typo3/filelist/file-list-actions';
 import NProgress from 'nprogress';
 import Icons from '@typo3/backend/icons';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
-import { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import Severity from '@typo3/backend/severity';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
 import ContextMenu from '@typo3/backend/context-menu';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
+import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/multi-record-selection-action';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
 
 type QueryParameters = Record<string, string>;
 

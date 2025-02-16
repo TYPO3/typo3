@@ -15,7 +15,7 @@
  * Module: @typo3/form/backend/form-manager/view-model
  */
 import $ from 'jquery';
-import Modal, { ModalElement } from '@typo3/backend/modal';
+import Modal, { type ModalElement } from '@typo3/backend/modal';
 import Severity from '@typo3/backend/severity';
 import MultiStepWizard from '@typo3/backend/multi-step-wizard';
 import Icons from '@typo3/backend/icons';

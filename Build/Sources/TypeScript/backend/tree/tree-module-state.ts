@@ -11,9 +11,9 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { LitElement } from 'lit';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
+import type { LitElement } from 'lit';
 import type { ModuleStateUpdateEvent } from '@typo3/backend/storage/module-state-storage';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 import type { Tree } from '@typo3/backend/tree/tree';

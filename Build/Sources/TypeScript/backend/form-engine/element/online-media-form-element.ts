@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { LitElement, TemplateResult, html } from 'lit';
+import { LitElement, type TemplateResult, html } from 'lit';
 
 /**
  * Module: @typo3/backend/form-engine/element/online-media-form-element

@@ -14,8 +14,8 @@
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { ModalElement } from '@typo3/backend/modal';
 
 /**

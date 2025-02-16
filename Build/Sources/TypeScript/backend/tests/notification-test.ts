@@ -15,9 +15,9 @@ import DeferredAction from '@typo3/backend/action-button/deferred-action.js';
 import ImmediateAction from '@typo3/backend/action-button/immediate-action.js';
 import Notification from '@typo3/backend/notification.js';
 import Icons from '@typo3/backend/icons.js';
-import type { LitElement } from 'lit';
 import { expect } from '@open-wc/testing';
-import { stub, SinonStub, useFakeTimers, SinonFakeTimers } from 'sinon';
+import { stub, useFakeTimers, type SinonStub, type SinonFakeTimers } from 'sinon';
+import type { LitElement } from 'lit';
 
 describe('@typo3/backend/notification:', () => {
   let clock: SinonFakeTimers;

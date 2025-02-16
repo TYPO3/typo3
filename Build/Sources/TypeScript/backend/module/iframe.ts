@@ -11,10 +11,10 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult, nothing } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
-import { ModuleState } from '../module';
 import { lll } from '@typo3/core/lit-helper';
+import type { ModuleState } from '../module';
 
 /**
  * Module: @typo3/backend/module/iframe

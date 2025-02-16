@@ -18,7 +18,7 @@
 import LinkBrowser from '@typo3/backend/link-browser';
 import Modal from '@typo3/backend/modal';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 interface OnFieldChangeItem {
   name: string;

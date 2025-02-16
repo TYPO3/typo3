@@ -6,7 +6,7 @@ import * as Widget from '@ckeditor/ckeditor5-widget';
 import * as Utils from '@ckeditor/ckeditor5-utils';
 import * as Link from '@ckeditor/ckeditor5-link';
 import { LinkUtils, LinkActionsView } from '@ckeditor/ckeditor5-link';
-import { default as modalObject, ModalElement } from '@typo3/backend/modal';
+import { default as modalObject, type ModalElement } from '@typo3/backend/modal';
 import type { ViewAttributeElement, ViewElement, Schema, Writer } from '@ckeditor/ckeditor5-engine';
 import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
 import type { GHSViewAttributes } from '@ckeditor/ckeditor5-html-support/src/utils';

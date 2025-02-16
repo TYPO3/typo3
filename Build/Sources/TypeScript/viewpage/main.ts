@@ -13,10 +13,10 @@
 
 import interact from 'interactjs';
 import DocumentService from '@typo3/core/document-service';
-import PersistentStorage, { UC } from '@typo3/backend/storage/persistent';
+import PersistentStorage, { type UC } from '@typo3/backend/storage/persistent';
 import RegularEvent from '@typo3/core/event/regular-event';
 import DebounceEvent from '@typo3/core/event/debounce-event';
-import { ResizeEvent } from '@interactjs/actions/resize/plugin';
+import type { ResizeEvent } from '@interactjs/actions/resize/plugin';
 
 enum Selectors {
   resizableContainerIdentifier = '.t3js-viewpage-resizeable',

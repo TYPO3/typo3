@@ -23,7 +23,7 @@ import Notification from '@typo3/backend/notification';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import RegularEvent from '@typo3/core/event/regular-event';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum Identifiers {
   searchForm = '#recycler-form',

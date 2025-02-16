@@ -12,16 +12,16 @@
  */
 
 import 'bootstrap';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
-import { AbstractInteractableModule, ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponseWithButtons } from '../abstract-interactable-module';
 import Modal from '@typo3/backend/modal';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import MessageInterface from '../../message-interface';
+import type MessageInterface from '../../message-interface';
 import { InfoBox } from '../../renderable/info-box';
 import Router from '../../router';
 import RegularEvent from '@typo3/core/event/regular-event';
 import type { ModalElement } from '@typo3/backend/modal';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum Identifiers {
   executeTrigger = '.t3js-environmentCheck-execute',

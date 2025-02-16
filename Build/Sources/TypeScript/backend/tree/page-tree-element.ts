@@ -11,23 +11,23 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, TemplateResult, nothing } from 'lit';
+import { html, LitElement, type TemplateResult, nothing } from 'lit';
 import { customElement, property, query } from 'lit/decorators';
 import { until } from 'lit/directives/until';
 import { lll } from '@typo3/core/lit-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Persistent from '@typo3/backend/storage/persistent';
 import { ModuleUtility } from '@typo3/backend/module';
 import ContextMenu from '../context-menu';
 import { PageTree } from '@typo3/backend/tree/page-tree';
-import { TreeNodeInterface, TreeNodeCommandEnum, TreeNodePositionEnum } from '@typo3/backend/tree/tree-node';
+import { TreeNodeCommandEnum, TreeNodePositionEnum, type TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 import { TreeToolbar } from '@typo3/backend/tree/tree-toolbar';
 import { TreeModuleState } from '@typo3/backend/tree/tree-module-state';
 import Modal from '../modal';
 import Severity from '../severity';
 import { ModuleStateStorage } from '@typo3/backend/storage/module-state-storage';
 import { DataTransferTypes } from '@typo3/backend/enum/data-transfer-types';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type { DragTooltipMetadata } from '@typo3/backend/drag-tooltip';
 import type { DataTransferStringItem } from '@typo3/backend/tree/tree';
 

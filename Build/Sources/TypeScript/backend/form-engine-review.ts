@@ -16,8 +16,8 @@ import DocumentService from '@typo3/core/document-service';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/element/icon-element';
 import Popover from './popover';
-import { Popover as BootstrapPopover, Tab as BootstrapTab } from 'bootstrap';
-import { PostValidationEvent } from '@typo3/backend/form-engine-validation';
+import { type Popover as BootstrapPopover, Tab as BootstrapTab } from 'bootstrap';
+import type { PostValidationEvent } from '@typo3/backend/form-engine-validation';
 import DomHelper from '@typo3/backend/utility/dom-helper';
 
 /**

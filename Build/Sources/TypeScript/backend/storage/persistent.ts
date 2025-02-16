@@ -12,7 +12,7 @@
  */
 
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 export type UC = { [key: string]: string | number | boolean | null | UC };
 

@@ -11,14 +11,14 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { ScaffoldIdentifierEnum } from './enum/viewport/scaffold-identifier';
-import { flushModuleCache, Module, ModuleSelector, ModuleState, ModuleUtility } from '@typo3/backend/module';
+import { flushModuleCache, type Module, ModuleSelector, type ModuleState, ModuleUtility } from '@typo3/backend/module';
 import PersistentStorage from './storage/persistent';
 import Viewport from './viewport';
 import ClientRequest from './event/client-request';
 import TriggerRequest from './event/trigger-request';
-import InteractionRequest from './event/interaction-request';
+import type InteractionRequest from './event/interaction-request';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { ModuleStateStorage } from './storage/module-state-storage';

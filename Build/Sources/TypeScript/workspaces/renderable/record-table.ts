@@ -12,7 +12,7 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import { classMap } from 'lit/directives/class-map';
 import { ifDefined } from 'lit/directives/if-defined';

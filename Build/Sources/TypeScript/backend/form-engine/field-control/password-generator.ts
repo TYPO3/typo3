@@ -14,8 +14,8 @@
 import DocumentService from '@typo3/core/document-service';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 interface PasswordRules {
   length: number;

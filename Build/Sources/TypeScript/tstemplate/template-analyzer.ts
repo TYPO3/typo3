@@ -14,7 +14,7 @@
 import DocumentService from '@typo3/core/document-service';
 import { default as Modal } from '@typo3/backend/modal';
 import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-import';
-import { html, TemplateResult } from 'lit';
+import { html, type TemplateResult } from 'lit';
 import { until } from 'lit/directives/until';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';

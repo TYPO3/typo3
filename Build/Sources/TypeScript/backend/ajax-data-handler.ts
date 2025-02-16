@@ -12,11 +12,11 @@
  */
 
 import { BroadcastMessage } from '@typo3/backend/broadcast-message';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import ResponseInterface from './ajax-data-handler/response-interface';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import Notification from './notification';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type ResponseInterface from './ajax-data-handler/response-interface';
 
 interface AfterProcessEventDict {
   component: string;

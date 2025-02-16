@@ -14,7 +14,7 @@
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from './storage/client';
 import { Sizes, States, MarkupIdentifiers } from './enum/icon-types';
-import { css, CSSResult } from 'lit';
+import { css, type CSSResult } from 'lit';
 import { DedupeAsyncTask } from '@typo3/core/cache/dedupe-async-task'
 
 export class IconStyles {

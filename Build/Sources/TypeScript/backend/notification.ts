@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { LitElement, html, TemplateResult } from 'lit';
+import { LitElement, html, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { classMap } from 'lit/directives/class-map';
 import { ifDefined } from 'lit/directives/if-defined';
-import { AbstractAction } from './action-button/abstract-action';
+import type { AbstractAction } from './action-button/abstract-action';
 import { SeverityEnum } from './enum/severity';
 import Severity from './severity';
 import '@typo3/backend/element/icon-element';

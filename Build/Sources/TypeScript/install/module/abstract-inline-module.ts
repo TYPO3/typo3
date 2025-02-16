@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import MessageInterface from '@typo3/install/message-interface';
+import type MessageInterface from '@typo3/install/message-interface';
 
 export type ActionResponse = {
   status: MessageInterface[],

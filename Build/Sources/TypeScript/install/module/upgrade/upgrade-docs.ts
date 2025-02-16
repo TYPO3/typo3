@@ -12,9 +12,8 @@
  */
 
 import 'bootstrap';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import '../../renderable/clearable';
-import { AbstractInteractableModule, ModuleLoadedResponse } from '../abstract-interactable-module';
+import { AbstractInteractableModule, type ModuleLoadedResponse } from '../abstract-interactable-module';
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import Router from '../../router';
@@ -22,8 +21,9 @@ import DebounceEvent from '@typo3/core/event/debounce-event';
 import '@typo3/backend/element/icon-element';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { Collapse } from 'bootstrap';
-import type { ModalElement } from '@typo3/backend/modal';
 import type { SelectPure } from 'select-pure/lib/components';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { ModalElement } from '@typo3/backend/modal';
 
 enum Identifiers {
   fulltextSearch = '.t3js-upgradeDocs-fulltext-search',

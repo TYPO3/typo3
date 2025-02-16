@@ -11,12 +11,12 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import '@typo3/backend/element/spinner-element';
 import Viewport from '@typo3/backend/viewport';
 import { Sizes } from '@typo3/backend/enum/icon-types';
 import RegularEvent from '@typo3/core/event/regular-event';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 enum Selectors {
   containerSelector = '#typo3-cms-opendocs-backend-toolbaritems-opendocstoolbaritem',

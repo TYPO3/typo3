@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import InteractionRequest from './interaction-request';
+import type InteractionRequest from './interaction-request';
 
 export interface Consumable {
   consume(interactionRequest: InteractionRequest): Promise<void> | null;

@@ -17,7 +17,7 @@ import Notification from '@typo3/backend/notification';
 import Severity from '@typo3/backend/severity';
 import SortableTable from '@typo3/backend/sortable-table';
 import '@typo3/backend/input/clearable';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import RegularEvent from '@typo3/core/event/regular-event';
 

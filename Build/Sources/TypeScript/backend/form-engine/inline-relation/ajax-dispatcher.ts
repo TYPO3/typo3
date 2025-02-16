@@ -11,11 +11,11 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { JavaScriptItemProcessor } from '@typo3/core/java-script-item-processor';
 import Notification from '../../notification';
 import Utility from '../../utility';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 
 export interface Context {
   config: object;

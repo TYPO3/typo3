@@ -12,11 +12,11 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, css, LitElement, CSSResult, TemplateResult, nothing } from 'lit';
+import { html, css, LitElement, type CSSResult, type TemplateResult, nothing } from 'lit';
 import Modal from '@typo3/backend/modal';
 import '@typo3/backend/element/icon-element';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { lll } from '@typo3/core/lit-helper';
 import Notification from '@typo3/backend/notification';
 import Viewport from '@typo3/backend/viewport';

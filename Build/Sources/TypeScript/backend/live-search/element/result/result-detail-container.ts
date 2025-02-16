@@ -12,9 +12,9 @@
  */
 
 import { customElement, property } from 'lit/decorators';
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import './item/action/action-container';
-import { ResultItemInterface } from './item/item';
+import type { ResultItemInterface } from './item/item';
 
 export const componentName = 'typo3-backend-live-search-result-item-detail-container';
 

@@ -11,13 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, nothing, TemplateResult } from 'lit';
+import { html, LitElement, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { until } from 'lit/directives/until';
 import { unsafeHTML } from 'lit/directives/unsafe-html';
 import { classMap } from 'lit/directives/class-map';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
-import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import Notification from '@typo3/backend/notification';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';

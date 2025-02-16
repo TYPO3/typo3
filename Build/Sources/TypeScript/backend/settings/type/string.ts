@@ -11,7 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, nothing, TemplateResult } from 'lit';
+import { html, nothing, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
 import { BaseElement } from './base';
 

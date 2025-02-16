@@ -1,6 +1,6 @@
-import { marked, MarkedOptions } from 'marked';
-import dompurify, { Config as DOMPurifyConfig } from 'dompurify';
-import { html, TemplateResult } from 'lit';
+import { marked, type MarkedOptions } from 'marked';
+import dompurify, { type Config as DOMPurifyConfig } from 'dompurify';
+import { html, type TemplateResult } from 'lit';
 import { until } from 'lit/directives/until';
 import { unsafeHTML } from 'lit/directives/unsafe-html';
 

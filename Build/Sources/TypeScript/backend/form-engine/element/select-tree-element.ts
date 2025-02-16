@@ -11,14 +11,11 @@
 * The TYPO3 project - inspiring people to share!
 */
 
-import type { SelectTree } from './select-tree';
-import type { SelectTreeToolbar } from './select-tree-toolbar';
-import './select-tree';
-import './select-tree-toolbar';
+import { type SelectTree } from './select-tree';
+import { type SelectTreeToolbar } from './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
-import { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
-import FormEngine from '@typo3/backend/form-engine';
-import OnFieldChangeItem = TYPO3.CMS.Backend.OnFieldChangeItem;
+import FormEngine, { type OnFieldChangeItem } from '@typo3/backend/form-engine';
+import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 export class SelectTreeElement {
   private readonly recordField: HTMLInputElement = null;

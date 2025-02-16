@@ -12,7 +12,7 @@
  */
 
 import RegularEvent from '@typo3/core/event/regular-event';
-import { ResourceInterface } from '@typo3/backend/resource/resource';
+import type { ResourceInterface } from '@typo3/backend/resource/resource';
 
 export interface FileListActionDetail {
   event: Event;

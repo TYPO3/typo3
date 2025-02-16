@@ -23,13 +23,13 @@
 import DocumentService from '@typo3/core/document-service';
 import $ from 'jquery';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
-import { default as Modal, ModalElement } from '@typo3/backend/modal';
+import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import * as MessageUtility from '@typo3/backend/utility/message-utility';
 import Severity from '@typo3/backend/severity';
 import * as BackendExceptionModule from '@typo3/backend/backend-exception';
 import InteractionRequestMap from '@typo3/backend/event/interaction-request-map';
-import InteractionRequest from '@typo3/backend/event/interaction-request';
-import TriggerRequest from '@typo3/backend/event/trigger-request';
+import type InteractionRequest from '@typo3/backend/event/interaction-request';
+import type TriggerRequest from '@typo3/backend/event/trigger-request';
 import Utility from '@typo3/backend/utility';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/form-engine/element/extra/char-counter';
@@ -37,7 +37,7 @@ import type { PromiseControls } from '@typo3/backend/event/interaction-request-a
 import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
 import RegularEvent from '@typo3/core/event/regular-event';
 
-interface OnFieldChangeItem {
+export interface OnFieldChangeItem {
   name: string;
   data: {[key: string]: string|number|boolean|null}
 }
