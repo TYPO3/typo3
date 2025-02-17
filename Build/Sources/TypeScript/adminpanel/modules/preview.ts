@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace TYPO3 {
-  export class Preview {
+((): void => {
+  class AdminPanelPreview {
     private readonly dateField: HTMLInputElement = null;
     private readonly timeField: HTMLInputElement = null;
     private readonly targetField: HTMLInputElement = null;
@@ -67,12 +66,10 @@ namespace TYPO3 {
       }
     };
   }
-}
 
-((): void => {
   window.addEventListener(
     'load',
-    () => new TYPO3.Preview(),
+    () => new AdminPanelPreview(),
     false,
   );
 })();
