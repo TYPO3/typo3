@@ -23,6 +23,12 @@ your needs.
 
 ..  contents:: Table of contents
 
+..  toctree::
+    :glob:
+    :titlesonly:
+
+    *
+
 ..  _configuration-minimal:
 
 Minimal configuration
@@ -52,10 +58,11 @@ You must prefix them with `mod.linkvalidator`, for example
 
 ..  _searchfields-key:
 
-..  confval:: searchFields.[key]
+..  confval:: searchFields.[table]
     :name: tsconfig-searchfields-key
     :type: string
-    :Path: mod.linkvalidator.linktypesConfig.searchFields.[key]
+    :Path: mod.linkvalidator.linktypesConfig.searchFields.[table]
+    :Default: See :ref:`Checked Fields <checked-fields>`
 
     Comma separated list of table fields in which to check for
     broken links. LinkValidator only checks fields that have
@@ -68,38 +75,22 @@ You must prefix them with `mod.linkvalidator`, for example
     ..  warning::
 
         Currently, LinkValidator will only detect links for fields if the
-        TCA configuration meets one of these criteria:
-
-        * at least one :ref:`softref <t3tca:tca_property_softref>`
-        * type is set to :ref:`link <t3tca:columns-link>`
-        * type is set to :ref:`email <t3tca:columns-email>`
-
-        For this reason, it is currently not possible to check for
-        `pages.media`. This will be fixed in the future.
-
-        Examples for working fields:
-
-        * `pages.canonical_link` (:php:`'type' => 'link'`)
-        * `pages.url` (:php:`'softref' => 'url'`)
-        * `sys_file_reference.link` (:php:`'type' => 'link'`)
-
-        Example for not working fields:
-
-        * `pages.media` (:php:`'type' => 'file'`)
-
+        TCA configuration meets certain criteria, see
+        :ref:`TCA requirements for link validation <checked-fields-TCA>`.
 
     ..  code-block:: typoscript
         :caption: config/sites/my-site/page.tsconfig
 
-        # Only check for "bodytext" in "tt_content":
-        tt_content = bodytext
+        mod.linkvalidator.linktypesConfig.searchFields {
+            # Usually you want to append fields:
+            tt_content := addToList(mysitepackage_carousel_morelink)
 
+            # or you can set specific columns (overwriting defaults):
+            # tt_content = bodytext
 
-    ..  code-block:: typoscript
-        :caption: Default values: EXT:linkvalidator/Configuration/page.tsconfig
-
-        pages = media,url
-        tt_content = bodytext,header_link,records
+            # Do not check canonical URL in pages
+            pages := removeFromList(canonical_link)
+        }
 
 ..  _linktypes:
 
@@ -354,5 +345,11 @@ You must prefix them with `mod.linkvalidator`, for example
 Linkvalidator configuration example
 ===================================
 
+Example configuration that checks the links provided by a custom content element
+in a site package. The TCA definition of the fields must fulfill the
+:ref:`TCA requirements for link validation <checked-fields-TCA>`.
+
 ..  literalinclude:: _example.tsconfig
     :caption: config/sites/my-site/page.tsconfig
+
+Additionally, email reports and the HTTP agent for external URLS are configured.

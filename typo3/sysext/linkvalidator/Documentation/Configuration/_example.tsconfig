@@ -1,19 +1,19 @@
 mod.linkvalidator {
   searchFields {
-    pages = url,canonical_link
-    tt_content = bodytext,header_link,records
+    tt_content := addToList(mysitepackage_carousel_morelink)
+    mysitepackage_carousel_carousel_items = text,typolink
   }
   linktypes = db,file,external
   checkhidden = 0
   mail {
     fromname = TYPO3 LinkValidator
-    fromemail = no_reply@mydomain.com
+    fromemail = no_reply@example.org
     replytoname =
     replytoemail =
     subject = TYPO3 LinkValidator report
   }
   external {
-    httpAgentUrl = https://example.com/info.html
-    httpAgentEmail = info@example.com
+    httpAgentUrl = https://example.org/info.html
+    httpAgentEmail = info@example.org
   }
 }
