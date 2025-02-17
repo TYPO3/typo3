@@ -1,0 +1,163 @@
+processing:
+  mode: default
+  # This span enumberation is used to not need to create a distinct YAML file for each tag, as they would influence each other when all put onto "span".
+  allowTags:
+    - a
+    - span
+    - span1
+    - span2
+    - span3
+    - span4
+    - span5
+    - span6
+    - span7
+    - span8
+    - span9
+    - span10
+    - span11
+    - span12
+    - span13
+    - span14
+    - span15
+    - span16
+    - span17
+    - span18
+    - span19
+
+  allowTagsOutside: [address]
+  allowAttributes: [class, id, data-custom, data-special]
+
+  # 'blockElementList' has test coverage
+  blockElementList: 'table,blockquote,ul'
+
+  HTMLparser_db:
+    noAttrib: br
+    denyTags: 'img,font'
+    tags:
+      # The following 'fixAttrib' cases have test coverage
+      font:
+        # Note, this here shall NOT apply due to denyTags above!
+        fixAttrib:
+          class:
+            default: 'btn'
+            list: 'button,btn'
+      a:
+        fixAttrib:
+          class:
+            always: 1
+            trim: 1,
+            default: 'btn'
+            list: 'button,btn'
+      span:
+        fixAttrib:
+          # @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
+          #data-custom:
+          #  always: 0
+          #  trim: 1
+          #  default: btn
+          #  casesensitiveComp: 0
+          #  list: 'button,btn'
+          #data-custom2:
+          #  always: 0,
+          #  trim: 1,
+          #  default: btn
+          #  casesensitiveComp: 0,
+          #  list: buTTon,bTn
+      span3:
+        fixAttrib:
+            data-custom3:
+              always: 0
+              trim: 1
+              default: btn
+              casesensitiveComp: 1
+              list: 'button,btn'
+      span4:
+        fixAttrib:
+            data-custom4:
+              always: 0
+              trim: 1
+              default: 'bTn'
+              casesensitiveComp: 1
+              list: 'buTTon,bTn'
+      span5:
+        fixAttrib:
+            data-custom5:
+              always: '0'
+              trim: '1'
+              casesensitiveComp: 1
+              range: '0,3'
+      span6:
+        fixAttrib:
+            data-custom6:
+              always: '0'
+              trim: '1'
+              default: 'bTn'
+              casesensitiveComp: 1
+              range: '2'
+      span7:
+        fixAttrib:
+            data-custom7:
+              always: '0'
+              set: 'setval'
+      span8:
+        fixAttrib:
+            data-custom8:
+              always: '0'
+              unset: '1'
+      span9:
+        rmTagIfNoAttrib: 1
+        fixAttrib:
+            data-custom9:
+              always: '0'
+              unset: '1'
+      span10:
+        fixAttrib:
+            data-custom10:
+              always: '0'
+              unset: '1'
+      span11:
+        fixAttrib:
+            data-custom11:
+              intval: '1'
+      span12:
+        fixAttrib:
+            data-custom12:
+              lower: '1'
+      span13:
+        fixAttrib:
+            data-custom13:
+              upper: '1'
+      span14:
+        fixAttrib:
+            data-custom14:
+              removeIfFalse: '1'
+      span15:
+        fixAttrib:
+            data-custom15:
+              removeIfEquals: 'Blank'
+              casesensitiveComp: 1
+      span16:
+        fixAttrib:
+            data-custom16:
+              removeIfEquals: 'bLaNk'
+              casesensitiveComp: 0
+      span17:
+        fixAttrib:
+            data-custom17:
+              prefixRelPathWith: 'ftps://'
+      span18:
+        fixAttrib:
+            data-custom18:
+              userFunc: 'TYPO3\CMS\Core\Tests\Unit\Html\Fixture\HtmlParserUserFuncFixture->userfuncFixAttrib'
+      # @todo - this notation is not supported (yet)
+      #span19:
+      #  fixAttrib:
+      #      data-custom19:
+      #        userFunc: ['TYPO3\CMS\Core\Tests\Unit\Html\Fixture\HtmlParserUserFuncFixture->userfuncFixAttribWithParam','anythingValue','moreParm']
+
+    removeTags: [link, meta, o:p, sdfield, style, title]
+    keepNonMatchedTags: protect
+    htmlSanitize:
+      build: default
+  typo3Testing:
+    testingKey: 'testingValue'
