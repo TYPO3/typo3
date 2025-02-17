@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace TYPO3 {
-  export class Cache {
+((): void => {
+  class AdminPanelCache {
     private readonly buttons: NodeList;
 
     constructor() {
@@ -19,12 +18,10 @@ namespace TYPO3 {
       });
     }
   }
-}
 
-((): void => {
   window.addEventListener(
     'load',
-    () => new TYPO3.Cache(),
+    () => new AdminPanelCache(),
     false,
   );
 })();

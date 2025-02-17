@@ -1,6 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-namespace
-namespace TYPO3 {
-  export const AdminPanelSelectors = {
+((): void => {
+  const AdminPanelSelectors = {
     adminPanelRole: 'form[data-typo3-role=typo3-adminPanel]',
     moduleTriggerRole: '[data-typo3-role=typo3-adminPanel-module-trigger]',
     moduleParentClass: '.typo3-adminPanel-module',
@@ -19,7 +18,7 @@ namespace TYPO3 {
     contentPaneRole: '[data-typo3-role=typo3-adminPanel-content-pane]',
   };
 
-  export const AdminPanelClasses = {
+  const AdminPanelClasses = {
     active: 'active',
     activeModule: 'typo3-adminPanel-module-active',
     activeContentSetting: 'typo3-adminPanel-content-settings-active',
@@ -30,7 +29,7 @@ namespace TYPO3 {
     zoomShow: 'typo3-adminPanel-zoom-show',
   };
 
-  export class AdminPanel {
+  class AdminPanel {
     private readonly adminPanel: HTMLFormElement;
     private readonly modules: AdminPanelModule[];
     private readonly popups: AdminPanelPopup[];
@@ -367,12 +366,10 @@ namespace TYPO3 {
       });
     }
   }
-}
 
-(function(): void {
   window.addEventListener(
     'load',
-    () => new TYPO3.AdminPanel(),
+    () => new AdminPanel(),
     false,
   );
 })();
