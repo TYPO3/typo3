@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\RteCKEditor\Tests\Functional\HtmlParser;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Configuration\Richtext;
 use TYPO3\CMS\Core\Html\RteHtmlParser;
@@ -169,6 +170,157 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
         $expected = '<p>' . strip_tags(implode(' ', $itemsRemove)) . '</p>' . "\r\n"
                      . implode("\r\n", $itemsAllowed);
         self::assertEquals($expected, $result);
+    }
+
+    /**
+     * Data provider for HtmlParserProcessingParsesFixAttribs
+     * @see TYPO3\CMS\Core\Tests\Unit\Html->fixAttribCanUseArrayAndStringNotations()
+     */
+    public static function HtmlParserProcessingParsesFixAttribsDataProvider(): array
+    {
+        return [
+            'basic text' => [
+                'content' => '<a class="none">text</a>',
+                'expectedResult' => '<a class="button">text</a>',
+            ],
+
+            'denyTags' => [
+                'content' => '<img class="allowed-button" src="/something.jpg" /><span>allowed</span><font class="no-button">forbidden</font>',
+                'expectedResult' => '<img class="allowed-button" src="/something.jpg" />allowed<font class="button">forbidden</font>',
+            ],
+
+            'inline in block element' => [
+                'content' => '<table><span>BlockElement: This is alright</span></table>',
+                'expectedResult' => '<table><span>BlockElement: This is alright</span></table>',
+            ],
+
+            'block element in inline element' => [
+                'content' => '<span><table>BlockElement: This is not good</table></span>',
+                'expectedResult' => '<table>BlockElement: This is not good</table>',
+            ],
+
+            'class may contain "btn" or "button"' => [
+                'content' => '<a class=" btn ">text</a><a class=" button ">text</a><a class="somethingElse">text</a><a>text</a>',
+                'expectedResult' => '<a class="btn">text</a><a class="button">text</a><a class="button">text</a><a class="btn">text</a>',
+            ],
+            // This span enumberation is used to not need to create a distinct YAML file for each tag, as they would influence each other when all put onto "span".
+            /* @todo BROKEN until https://review.typo3.org/c/Packages/TYPO3.CMS/+/85137 is merged
+            'data-custom, case insensitive' => [
+                'content' => '<span1 data-custom=" bTn ">text</span1>',
+                'expectedResult' => '<span1 data-custom="bTn">text</span1>',
+            ],
+            'data-custom, case insensitive in list' => [
+                'content' => '<span2 data-custom2=" bTn ">text</span>',
+                'expectedResult' => '<span2 data-custom2="bTn">text</span>',
+            ],
+             */
+            'data-custom3, case sensitive' => [
+                'content' => '<span3 data-custom3=" bTn ">text</span3>',
+                'expectedResult' => '<span3 data-custom3="button">text</span3>',
+            ],
+            'data-custom4, case sensitive in list' => [
+                'content' => '<span4 data-custom4=" btn ">text</span4>',
+                'expectedResult' => '<span4 data-custom4="buTTon">text</span4>',
+            ],
+            'data-custom5, in range' => [
+                'content' => '<span5 data-custom5=" 0 ">text</span5><span5 data-custom5=" abc ">text</span5><span5 data-custom5="2">text</span5><span5 data-custom5=" 4 ">text</span5><span5 data-custom5=" 3castmetoint ">text</span5>',
+                'expectedResult' => '<span5 data-custom5="0">text</span5><span5 data-custom5="0">text</span5><span5 data-custom5="2">text</span5><span5 data-custom5="3">text</span5><span5 data-custom5="3">text</span5>',
+            ],
+            'data-custom6, in single range' => [
+                'content' => '<span6 data-custom6=" 0 ">text</span6><span6 data-custom6=" abc ">text</span6><span6 data-custom6=" 2 ">text</span6><span6 data-custom6=" 2castmetoint">text</span6>',
+                'expectedResult' => '<span6 data-custom6="2">text</span6><span6 data-custom6="2">text</span6><span6 data-custom6="2">text</span6><span6 data-custom6="2">text</span6>',
+            ],
+            'data-custom7, set' => [
+                'content' => '<span7 data-custom7=" abc ">text</span7>',
+                'expectedResult' => '<span7 data-custom7="setval">text</span7>',
+            ],
+            'data-custom8, unset' => [
+                'content' => '<span8 data-custom8="unsetval">text</span8>',
+                'expectedResult' => '<span8>text</span8>',
+            ],
+            'data-custom9, unset + remove due to empty attrib' => [
+                'content' => '<span9 data-custom9="unsetval">text</span9>',
+                'expectedResult' => 'text',
+            ],
+            'data-custom10, unset + no remove due to one more attrib' => [
+                'content' => '<span10 data-custom10="unsetval" class="something">text</span10>',
+                'expectedResult' => '<span10 class="something">text</span10>',
+            ],
+            'data-custom11, intval' => [
+                'content' => '<span11 data-custom11="5even">text</span11>',
+                'expectedResult' => '<span11 data-custom11="5">text</span11>',
+            ],
+            'data-custom12, lower' => [
+                'content' => '<span12 data-custom12="LOWER">text</span12>',
+                'expectedResult' => '<span12 data-custom12="lower">text</span12>',
+            ],
+            'data-custom13, upper' => [
+                'content' => '<span13 data-custom13="upper">text</span13>',
+                'expectedResult' => '<span13 data-custom13="UPPER">text</span13>',
+            ],
+            'data-custom14, removal if false' => [
+                'content' => '<span14 data-custom14="">text</span14><span14 data-custom14="0">text</span14><span14 data-custom14="false">text</span14><span14 data-custom14="true">text</span14><span14 data-custom14="blank">text</span14>',
+                'expectedResult' => '<span14>text</span14><span14>text</span14><span14 data-custom14="false">text</span14><span14 data-custom14="true">text</span14><span14 data-custom14="blank">text</span14>',
+            ],
+            'data-custom15, removal if equals, case sensitive' => [
+                'content' => '<span15 data-custom15="Blank">text</span15><span15 data-custom15="_blank">text</span15>',
+                'expectedResult' => '<span15>text</span15><span15 data-custom15="_blank">text</span15>',
+            ],
+            'data-custom16, removal if equals, case insensitive' => [
+                'content' => '<span16 data-custom16="BlAnK">text</span16><span16 data-custom16="_blank">text</span16>',
+                'expectedResult' => '<span16>text</span16><span16 data-custom16="_blank">text</span16>',
+            ],
+            'data-custom17, prefixRelPathWith' => [
+                'content' => '<span17 data-custom17="anything/linked/to/something/">text</span17>',
+                'expectedResult' => '<span17 data-custom17="ftps://anything/linked/to/something/">text</span17>',
+            ],
+            'data-custom18, userfunc' => [
+                'content' => '<span18 data-custom18="anything/linked/to/something/">text</span18>',
+                'expectedResult' => '<span18 data-custom18="Called|anything/linked/to/something/">text</span18>',
+            ],
+            /* @todo - This notation does not work in YAML yet
+            'data-custom19, userfunc with custom parm' => [
+                'content' => '<span19 data-custom19=\'anything/linked/to/something/\'>text</span19>',
+                'expectedResult' => '<span19 data-custom19=\'ParamCalled|{"anythingParm":"anythingValue","0":"moreParm","attributeValue":"anything\/linked\/to\/something\/"}\'>text</span19>',
+            ],
+            */
+        ];
+    }
+
+    #[DataProvider('HtmlParserProcessingParsesFixAttribsDataProvider')]
+    #[Test]
+    public function HtmlParserProcessingParsesFixAttribsWithStringConfiguration(string $content, string $expectedResult): void
+    {
+        $preset = 'RteConfigStringFixture';
+        $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
+        $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
+
+        // This assertion ensures that the YAML was loaded.
+        self::assertEquals('testingValue', $richTextConfigurationConfigurationProc['typo3Testing.']['testingKey'], 'YAML could not be parsed for Array configuration.');
+        $subject = $this->get(RteHtmlParser::class);
+        $result = $subject->transformTextForPersistence($content, $richTextConfigurationConfigurationProc);
+        self::assertEquals(trim($expectedResult), trim($result));
+    }
+
+    #[DataProvider('HtmlParserProcessingParsesFixAttribsDataProvider')]
+    #[Test]
+    public function HtmlParserProcessingParsesFixAttribsWithArrayConfiguration(string $content, string $expectedResult): void
+    {
+        $preset = 'RteConfigArrayFixture';
+        $GLOBALS['TYPO3_CONF_VARS']['RTE']['Presets'][$preset] = 'EXT:rte_ckeditor/Tests/Functional/Fixtures/' . $preset . '.yaml';
+        $richTextConfigurationProvider = GeneralUtility::makeInstance(Richtext::class);
+        $richTextConfigurationConfiguration = $richTextConfigurationProvider
+            ->getConfiguration('any', 'any', 0, 'any', ['richtextConfiguration' => $preset]);
+        $richTextConfigurationConfigurationProc = $richTextConfigurationConfiguration['proc.'] ?? [];
+
+        // This assertion ensures that the YAML was loaded.
+        self::assertEquals('testingValue', $richTextConfigurationConfigurationProc['typo3Testing.']['testingKey'], 'YAML could not be parsed for Array configuration.');
+        $subject = $this->get(RteHtmlParser::class);
+        $result = $subject->transformTextForPersistence($content, $richTextConfigurationConfigurationProc);
+        self::assertEquals(trim($expectedResult), trim($result));
     }
 
     private function buildHtmlElement(string $tagName): string

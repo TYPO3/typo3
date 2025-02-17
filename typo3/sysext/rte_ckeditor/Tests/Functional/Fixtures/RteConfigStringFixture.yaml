@@ -1,0 +1,154 @@
+# Dummy YAML based on "Full.yml"
+# Uses EXT:rte_ckeditor/Tests/Functional/Fixtures/RteConfigStringFixtureProcessing.yaml with what's
+# relevant to testing (instead of EXT:rte_ckeditor/Configuration/RTE/Processing.yaml)
+
+imports:
+  - { resource: 'EXT:rte_ckeditor/Tests/Functional/Fixtures/RteConfigStringFixtureProcessing.yaml' }
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Base.yaml' }
+  - { resource: 'EXT:rte_ckeditor/Configuration/RTE/Editor/Plugins.yaml' }
+
+editor:
+  config:
+    style:
+      definitions:
+        # block level styles
+        - { name: 'Orange title H2', element: 'h2', classes: ['orange'] }
+        - { name: 'Orange title H3', element: 'h3', classes: ['orange'] }
+        - { name: 'Quote / Citation', element: 'blockquote' }
+        - { name: 'Code block', element: 'code'  }
+        # Inline styles
+        - { name: 'Yellow marker', element: 'span', classes: ['yellow-marker'] }
+
+    heading:
+      options:
+        - { model: 'paragraph', title: 'Paragraph' }
+        - { model: 'heading2', view: 'h2', title: 'Heading 2' }
+        - { model: 'heading3', view: 'h3', title: 'Heading 3' }
+        - { model: 'formatted', view: 'pre', title: 'Pre-Formatted Text' }
+
+    toolbar:
+      items:
+        - removeFormat
+        - undo
+        - redo
+        # grouping separator
+        - '|'
+        - findAndReplace
+        - link
+        - '|'
+        - insertTable
+        - tableColumn
+        - tableRow
+        - mergeTableCells
+        - TableProperties
+        - TableCellProperties
+        - '|'
+        - selectAll
+        - '|'
+        - sourceEditing
+        - showBlocks
+        - horizontalLine
+        # line break
+        - '-'
+        - bold
+        - italic
+        - underline
+        - strikethrough
+        - subscript
+        - superscript
+        - softhyphen
+        - '|'
+        - bulletedList
+        - numberedList
+        - blockQuote
+        - indent
+        - outdent
+        - alignment
+        - '|'
+        - specialCharacters
+        - '-'
+        - style
+        - heading
+        - fontFamily
+        - fontBackgroundColor
+        - fontColor
+        - fontSize
+        - textPartLanguage
+        - highlight
+        - highlight:greenMarker
+
+    alignment:
+      options:
+        - { name: 'left', className: 'text-start' }
+        - { name: 'center', className: 'text-center' }
+        - { name: 'right', className: 'text-end' }
+        - { name: 'justify', className: 'text-justify' }
+
+    table:
+      defaultHeadings: { rows: 1 }
+      contentToolbar:
+        - tableColumn
+        - tableRow
+        - mergeTableCells
+        - tableProperties
+        - tableCellProperties
+        - toggleTableCaption
+
+    fontColor:
+      colors:
+        - { label: 'Orange', color: '#ff8700' }
+        - { label: 'Blue', color: '#0080c9' }
+        - { label: 'Green', color: '#209d44' }
+
+    fontBackgroundColor:
+      colors:
+        - { label: 'Stage orange light', color: '#fab85c' }
+
+    fontFamily:
+      options:
+        - 'default'
+        - 'Arial, sans-serif'
+
+    fontSize:
+      options:
+        - 'default'
+        - 18
+        - 21
+
+    list:
+      properties:
+        styles: true
+        startIndex: true
+        reversed: true
+
+    language:
+      textPartLanguage: [
+        { title: 'English', languageCode: 'en' },
+        { title: 'French', languageCode: 'fr' },
+        { title: 'German', languageCode: 'de' }
+      ]
+
+    highlight:
+      options:
+        - { model: 'yellowMarker', class: 'marker-yellow', title: 'Yellow marker', type: 'marker', color: 'var(--ck-highlight-marker-yellow)' }
+        - { model: 'greenMarker', class: 'marker-green', title: 'Green marker', type: 'marker', color: 'var(--ck-highlight-marker-green)' }
+        - { model: 'redPen', class: 'pen-red', title: 'Red pen', type: 'pen', color: 'var(--ck-highlight-pen-red)' }
+
+    mention:
+      feeds:
+        -
+          marker: '@'
+          feed:
+            - '@TYPO3'
+          minimumCharacters: 1
+
+    importModules:
+      - { module: '@ckeditor/ckeditor5-word-count', exports: ['WordCount'] }
+      # Provides fontFamily, fontSize, fontColor, and fontBackgroundColor toolbar items
+      - { module: '@ckeditor/ckeditor5-font', exports: ['Font'] }
+      # Provides showBlocks toolbar item
+      - { module: '@ckeditor/ckeditor5-show-blocks', exports: ['ShowBlocks'] }
+      # Provides textPartLanguage toolbar item
+      - { module: '@ckeditor/ckeditor5-language', exports: ['TextPartLanguage'] }
+      - { module: '@ckeditor/ckeditor5-mention', exports: ['Mention'] }
+      - { module: '@ckeditor/ckeditor5-highlight', exports: ['Highlight'] }
