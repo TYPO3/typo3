@@ -47,6 +47,9 @@ use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -159,6 +162,7 @@ class FileList
     protected UriBuilder $uriBuilder;
     protected TranslationConfigurationProvider $translateTools;
     protected OnlineMediaHelperRegistry $onlineMediaHelperRegistry;
+    protected TcaSchemaFactory $tcaSchemaFactory;
 
     public function __construct(ServerRequestInterface $request)
     {
@@ -169,6 +173,7 @@ class FileList
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
         $this->translateTools = GeneralUtility::makeInstance(TranslationConfigurationProvider::class);
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         $this->itemsPerPage = MathUtility::forceIntegerInRange(
             $this->getBackendUser()->getTSConfig()['options.']['file_list.']['filesPerPage'] ?? $this->itemsPerPage,
             1
@@ -600,10 +605,14 @@ class FileList
      * @param array $metaDataRecord
      * @return array<int, array<string, mixed>> keys are the site language ids, values are the $rows
      */
-    protected function getTranslationsForMetaData($metaDataRecord)
+    protected function getTranslationsForMetaData(array $metaDataRecord): array
     {
-        $languageField = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? '';
-        $languageParentField = $GLOBALS['TCA']['sys_file_metadata']['ctrl']['transOrigPointerField'] ?? '';
+        $schema = $this->tcaSchemaFactory->get('sys_file_metadata');
+        if (!$schema->isLanguageAware()) {
+            return [];
+        }
+        /** @var LanguageAwareSchemaCapability $languageCapability */
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_file_metadata');
         $queryBuilder->getRestrictions()->removeAll();
@@ -611,11 +620,11 @@ class FileList
             ->from('sys_file_metadata')
             ->where(
                 $queryBuilder->expr()->eq(
-                    $languageParentField,
+                    $languageCapability->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter($metaDataRecord['uid'] ?? 0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
-                    $languageField,
+                    $languageCapability->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
@@ -624,7 +633,7 @@ class FileList
 
         $translations = [];
         foreach ($translationRecords as $record) {
-            $languageId = $record[$languageField];
+            $languageId = $record[$languageCapability->getLanguageField()->getName()];
             $translations[$languageId] = $record;
         }
         return $translations;
@@ -1214,7 +1223,7 @@ class FileList
         );
 
         if ($systemLanguages === []
-            || !($GLOBALS['TCA']['sys_file_metadata']['ctrl']['languageField'] ?? false)
+            || !$this->tcaSchemaFactory->get('sys_file_metadata')->isLanguageAware()
             || !$resourceView->resource->isIndexed()
             || !$resourceView->resource->checkActionPermission('editMeta')
             || !$backendUser->check('tables_modify', 'sys_file_metadata')
@@ -1473,7 +1482,10 @@ class FileList
      */
     protected function getConcreteTableName(string $fieldName): string
     {
-        return ($GLOBALS['TCA']['sys_file']['columns'][$fieldName] ?? false) ? 'sys_file' : 'sys_file_metadata';
+        if ($this->tcaSchemaFactory->get('sys_file')->hasField($fieldName)) {
+            return 'sys_file';
+        }
+        return 'sys_file_metadata';
     }
 
     protected function getPaginationLinkForDirection(ResourceCollectionPaginator $paginator, NavigationDirection $direction): ?PaginationLink

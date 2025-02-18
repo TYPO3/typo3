@@ -23,6 +23,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -31,11 +33,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Transform information of user and groups into better format
  * @internal
  */
-class UserInformationService
+final readonly class UserInformationService
 {
     public function __construct(
-        protected readonly IconFactory $iconFactory,
-        protected readonly ModuleProvider $moduleProvider,
+        protected IconFactory $iconFactory,
+        protected ModuleProvider $moduleProvider,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -141,8 +144,8 @@ class UserInformationService
         foreach (['tables_select', 'tables_modify'] as $tableField) {
             $temp = GeneralUtility::trimExplode(',', $user->groupData[$tableField] ?? '', true);
             foreach ($temp as $tableName) {
-                if (isset($GLOBALS['TCA'][$tableName]['ctrl']['title'])) {
-                    $data['tables'][$tableField][$tableName] = $GLOBALS['TCA'][$tableName]['ctrl']['title'];
+                if ($this->tcaSchemaFactory->has($tableName) && isset($this->tcaSchemaFactory->get($tableName)->getRawConfiguration()['title'])) {
+                    $data['tables'][$tableField][$tableName] = $this->tcaSchemaFactory->get($tableName)->getRawConfiguration()['title'];
                 }
             }
         }
@@ -197,7 +200,9 @@ class UserInformationService
         $filePermissions = $user->groupData['file_permissions'] ?? '';
         if ($filePermissions) {
             $items = GeneralUtility::trimExplode(',', $filePermissions, true);
-            foreach ($GLOBALS['TCA']['be_groups']['columns']['file_permissions']['config']['items'] as $availableItem) {
+            /** @var StaticSelectFieldType $fieldType */
+            $fieldType = $this->tcaSchemaFactory->get('be_groups')->getField('file_permissions');
+            foreach ($fieldType->getConfiguration()['items'] ?? [] as $availableItem) {
                 if (in_array($availableItem['value'], $items, true)) {
                     $data['fileFolderPermissions'][] = $availableItem;
                 }
@@ -214,16 +219,22 @@ class UserInformationService
             $itemParts = explode(':', $item);
             $itemTable = $itemParts[0];
             $itemField = $itemParts[1] ?? '';
-            if (!empty($itemField) && isset($GLOBALS['TCA'][$itemTable]['ctrl']['title'])) {
-                $fieldList[$itemTable]['label'] = $GLOBALS['TCA'][$itemTable]['ctrl']['title'];
-                $fieldList[$itemTable]['fields'][$itemField] = $GLOBALS['TCA'][$itemTable]['columns'][$itemField]['label'] ?? $itemField;
+            if (!empty($itemField) && $this->tcaSchemaFactory->has($itemTable)) {
+                $schema = $this->tcaSchemaFactory->get($itemTable);
+                if (isset($schema->getRawConfiguration()['title'])) {
+                    $fieldList[$itemTable]['label'] = $schema->getRawConfiguration()['title'];
+                    if ($schema->hasField($itemField)) {
+                        $fieldList[$itemTable]['fields'][$itemField] = $schema->getField($itemField)->getLabel();
+                    }
+                }
             }
         }
         $data['non_exclude_fields'] = $fieldList;
 
         // page types
-        $specialItems = $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'];
-        foreach ($specialItems as $specialItem) {
+        /** @var StaticSelectFieldType $specialItemsField */
+        $specialItemsField = $this->tcaSchemaFactory->get('pages')->getSubSchemaDivisorField();
+        foreach ($specialItemsField->getConfiguration()['items'] ?? [] as $specialItem) {
             $value = $specialItem['value'];
             if (!GeneralUtility::inList($user->groupData['pagetypes_select'] ?? '', $value)) {
                 continue;

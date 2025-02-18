@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Resource\Utility\ListUtility;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -94,6 +95,7 @@ class FileListController implements LoggerAwareInterface
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly BackendViewFactory $viewFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -544,7 +546,7 @@ class FileListController implements LoggerAwareInterface
                     'data-target' => $this->filelist->createModuleUri(),
                     'data-title' => sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
-                        $lang->sL($GLOBALS['TCA']['sys_file']['ctrl']['title'] ?? ''),
+                        $lang->sL($this->tcaSchemaFactory->get('sys_file')->getRawConfiguration()['title'] ?? ''),
                     ),
                     'data-button-ok' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
                     'data-button-close' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
