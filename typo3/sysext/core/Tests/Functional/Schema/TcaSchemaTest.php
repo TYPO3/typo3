@@ -18,6 +18,8 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Schema;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\TextFieldType;
@@ -108,5 +110,29 @@ final class TcaSchemaTest extends FunctionalTestCase
         $fileReferences = $factory->get('sys_file_reference');
         $passiveRelations = $fileReferences->getPassiveRelations();
         self::assertCount(10, $passiveRelations);
+    }
+
+    #[Test]
+    public function rootLevelCapabilityUsesProperConfiguration(): void
+    {
+        $factory = $this->get(TcaSchemaFactory::class);
+        // Both
+        $schema = $factory->get('sys_category');
+        $rootLevelRestriction = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        self::assertEquals(RootLevelCapability::TYPE_BOTH, $rootLevelRestriction->getRootLevelType());
+        self::assertTrue($rootLevelRestriction->canExistOnPages());
+        self::assertTrue($rootLevelRestriction->canExistOnRootLevel());
+        // Only pages
+        $schema = $factory->get('fe_users');
+        $rootLevelRestriction = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        self::assertEquals(RootLevelCapability::TYPE_ONLY_ON_PAGES, $rootLevelRestriction->getRootLevelType());
+        self::assertTrue($rootLevelRestriction->canExistOnPages());
+        self::assertFalse($rootLevelRestriction->canExistOnRootLevel());
+        // Only root level
+        $schema = $factory->get('be_users');
+        $rootLevelRestriction = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        self::assertEquals(RootLevelCapability::TYPE_ONLY_ON_ROOTLEVEL, $rootLevelRestriction->getRootLevelType());
+        self::assertFalse($rootLevelRestriction->canExistOnPages());
+        self::assertTrue($rootLevelRestriction->canExistOnRootLevel());
     }
 }

@@ -215,11 +215,7 @@ class DataMapFactory implements SingletonInterface
         if ($schema->getSubSchemaDivisorField() !== null) {
             $dataMap->setRecordTypeColumnName($schema->getSubSchemaDivisorField()->getName());
         }
-        if ($schema->hasCapability(TcaSchemaCapability::RestrictionRootLevel)) {
-            // @todo Evaluate if this is correct. We currently have to use canExistOnPages() to keep previous
-            //       behaviour, which is (bool)$rootlevel, so treating "-1" and "1" as TURE, and only 0 als FALSE.
-            $dataMap->setRootLevel($schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->canExistOnPages());
-        }
+        $dataMap->setRootLevel((bool)$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->getRootLevelType());
         if (isset($schema->getRawConfiguration()['is_static'])) {
             $dataMap->setIsStatic($schema->getRawConfiguration()['is_static']);
         }
