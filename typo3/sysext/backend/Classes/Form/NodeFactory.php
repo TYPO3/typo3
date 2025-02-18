@@ -163,6 +163,12 @@ class NodeFactory
         }
         $type = $data['renderType'];
 
+        if (!is_string($type)) {
+            throw new Exception(
+                '"renderType" in TCA of field "[' . ($data['tableName'] ?? 'unknown') . '][' . ($data['fieldName'] ?? 'unknown') . ']" does not contain a string. It might be an array instead of a string which could be the result of an array_merge_recursive() operation, for example on existing "fieldControl" keys (these need to have unique array key indices).',
+                1739882175
+            );
+        }
         $className = $this->nodeTypes[$type] ?? $this->nodeTypes['unknown'];
 
         if (!empty($this->nodeResolver[$type])) {
