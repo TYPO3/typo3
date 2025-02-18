@@ -72,4 +72,11 @@ class Country
     {
         return $this->flag;
     }
+
+    public function __toString(): string
+    {
+        // This helper method allows to easily use the Object in Fluid or Extbase
+        // context and pass along to `<f:translate>` / `LocalizationUtility::translate()`
+        return $this->getLocalizedNameLabel();
+    }
 }

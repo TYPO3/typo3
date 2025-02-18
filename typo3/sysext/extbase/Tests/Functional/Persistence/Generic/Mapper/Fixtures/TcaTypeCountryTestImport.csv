@@ -1,0 +1,4 @@
+tx_blogexample_domain_model_person,,,,,,
+,uid,pid,tstamp,firstname,lastname,country
+,1,0,121319,"Jean Luc","Picard","AT"
+,2,0,121319,"Jean-Baptiste Emanuel","Zorg","FR"

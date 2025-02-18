@@ -849,6 +849,7 @@ final class ColumnMapFactoryTest extends FunctionalTestCase
             ['file', TableColumnType::FILE],
             ['json', TableColumnType::JSON],
             ['uuid', TableColumnType::UUID],
+            ['country', TableColumnType::COUNTRY],
         ];
     }
 

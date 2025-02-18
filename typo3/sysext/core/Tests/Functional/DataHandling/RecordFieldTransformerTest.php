@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Collection\LazyRecordCollection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
+use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
 use TYPO3\CMS\Core\Domain\Exception\FlexFieldPropertyException;
 use TYPO3\CMS\Core\Domain\Exception\FlexFieldPropertyNotFoundException;
@@ -1047,6 +1048,78 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
         self::assertNull($resolvedRecord->get('typo3tests_contentelementb_link_nullable'));
+    }
+
+    #[Test]
+    public function canConvertCountry(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_country_nullable' => 'it',
+            'typo3tests_contentelementb_country' => 'bs',
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_country');
+        $subject = $this->get(RecordFieldTransformer::class);
+        /** @var Country $result */
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertSame('BS', $result->getAlpha2IsoCode());
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame('Bahamas', $resolvedRecord->get('typo3tests_contentelementb_country')->getName());
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_country_nullable');
+        /** @var Country $result */
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertSame('IT', $result->getAlpha2IsoCode());
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame('Italy', $resolvedRecord->get('typo3tests_contentelementb_country_nullable')->getName());
+    }
+
+    #[Test]
+    public function handlesNullFieldValueForCountry(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_country_nullable' => null,
+            'typo3tests_contentelementb_country' => null,
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_country');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        // not nullable, so it's an empty string
+        self::assertNotNull($result);
+        self::assertSame('', $result);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame('', $resolvedRecord->get('typo3tests_contentelementb_country'));
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_country_nullable');
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertNull($result);
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertNull($resolvedRecord->get('typo3tests_contentelementb_country_nullable'));
     }
 
     #[Test]

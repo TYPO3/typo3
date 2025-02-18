@@ -22,6 +22,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
+use TYPO3\CMS\Core\Country\Country;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -75,6 +77,7 @@ class DataMapper
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstantiatorInterface $instantiator,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly CountryProvider $countryProvider,
     ) {}
 
     public function setQuery(QueryInterface $query): void
@@ -293,6 +296,12 @@ class DataMapper
 
         if (is_subclass_of($targetClassName, \DateTimeInterface::class)) {
             return $this->mapDateTime($propertyValue, $columnMap->dateTimeStorageFormat, $targetClassName);
+        }
+
+        if ($targetClassName === Country::class || is_subclass_of($targetClassName, Country::class)) {
+            // @todo Check if this can be abstracted in a better way (for future TCA types)
+            // @todo does alpha2 need to be configurable? All storage currently seems to depend on alpha2 in TCA FormEngine
+            return $this->countryProvider->getByAlpha2IsoCode($propertyValue);
         }
 
         if (TypeHandlingUtility::isCoreType($targetClassName)) {
@@ -908,6 +917,11 @@ class DataMapper
             }
 
             return $input->format('U');
+        }
+
+        if ($input instanceof Country) {
+            // @todo Check if this can be abstracted in a better way (for future TCA types)
+            return $input->getAlpha2IsoCode();
         }
 
         if ($input instanceof DomainObjectInterface) {

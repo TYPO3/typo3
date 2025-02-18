@@ -1006,6 +1006,7 @@ class DatabaseIntegrityController
                     case 'color':
                     case 'json':
                     case 'uuid':
+                    case 'country':
                     default:
                         $fields['type'] = 'text';
                 }
@@ -2472,6 +2473,7 @@ class DatabaseIntegrityController
                         $this->fields[$fieldName]['type'] = 'relation';
                         break;
                     default:
+                        // includes other field types like: user, flex, passthrough, none, text, email, link, password, color, json, uuid, country
                         $this->fields[$fieldName]['type'] = 'text';
                 }
             }

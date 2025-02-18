@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\DataHandling;
 use Doctrine\DBAL\Types\Type;
 use TYPO3\CMS\Core\Collection\LazyRecordCollection;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\FlexFormFieldValues;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
@@ -80,6 +81,7 @@ readonly class RecordFieldTransformer
         protected LinkService $linkService,
         protected TypoLinkCodecService $typoLinkCodecService,
         protected ConnectionPool $connectionPool,
+        protected CountryProvider $countryProvider,
     ) {}
 
     public function transformField(
@@ -183,6 +185,12 @@ readonly class RecordFieldTransformer
             return new RecordPropertyClosure(
                 fn(): ?TypolinkParameter => $fieldValue === null && $fieldInformation->isNullable() ? null : TypolinkParameter::createFromTypolinkParts($this->typoLinkCodecService->decode((string)$fieldValue))
             );
+        }
+        if ($fieldInformation->isType(TableColumnType::COUNTRY)) {
+            if ($fieldValue === null && $fieldInformation->isNullable()) {
+                return null;
+            }
+            return $this->countryProvider->getByIsoCode((string)$fieldValue) ?? '';
         }
         return $fieldValue;
     }

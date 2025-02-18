@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
@@ -1726,6 +1727,12 @@ class BackendUtility
                     if ($languageTitle !== '') {
                         $l = $languageTitle;
                     }
+                }
+                break;
+            case 'country':
+                $country = GeneralUtility::makeInstance(CountryProvider::class)->getByIsoCode($value);
+                if ($country) {
+                    $l = $lang->sL($country->getLocalizedNameLabel());
                 }
                 break;
             case 'json':

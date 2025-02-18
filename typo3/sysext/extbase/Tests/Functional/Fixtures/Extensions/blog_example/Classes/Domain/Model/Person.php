@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
+use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -30,6 +31,8 @@ class Person extends AbstractEntity
     protected string $lastname = '';
 
     protected string $email = '';
+
+    protected ?Country $country = null;
 
     protected Enum\Salutation $salutation = Enum\Salutation::NONE;
 
@@ -148,5 +151,15 @@ class Person extends AbstractEntity
     public function removeTagSpecial(Tag $tag): void
     {
         $this->tagsSpecial->detach($tag);
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): void
+    {
+        $this->country = $country;
     }
 }

@@ -1038,6 +1038,18 @@ class DefaultTcaSchema
                             );
                         }
                         break;
+                    case 'country':
+                        $tables[$tableName]->addColumn(
+                            $this->quote($fieldName),
+                            Types::STRING,
+                            [
+                                'length' => 16, // Even though ISO2 is stored by default, custom additional items may need some (limited) storage
+                                'default' => '',
+                                'notnull' => false,
+                            ]
+                        );
+                        break;
+
                 }
             }
         }

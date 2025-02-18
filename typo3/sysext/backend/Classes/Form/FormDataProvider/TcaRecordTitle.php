@@ -180,6 +180,9 @@ class TcaRecordTitle implements FormDataProviderInterface
             case 'uuid':
                 $recordTitle = $rawValue ?? '';
                 break;
+            case 'country':
+                $recordTitle = $this->getRecordTitleForCountryType($rawValue, $result, $fieldName);
+                break;
             case 'text':
             case 'email':
             case 'link':
@@ -265,6 +268,37 @@ class TcaRecordTitle implements FormDataProviderInterface
             $title = implode(', ', $value);
         }
         return $title;
+    }
+
+    /**
+     * Return the record title for database records of type "country"
+     *
+     * @param mixed $value Current database value of this field
+     * @param array $result Incoming result array
+     * @param string $fieldName Field to handle
+     * @return string
+     */
+    protected function getRecordTitleForCountryType($value, $result, $fieldName)
+    {
+        // @todo - There probably is a better way to get all valid items
+        //         for TcaCountry?!
+        $tcaCountry = GeneralUtility::makeInstance(TcaCountry::class);
+        $processedResult = $tcaCountry->addData($result);
+        $countries = $processedResult['processedTca']['columns'][$fieldName]['config']['items'] ?? [];
+
+        // Iterate all possible countries. Fetch the one that matches our $value.
+        // Note that the 'label' option already resolved to the proper
+        // possible keys (name, localizedName, officialName, localizedOfficialName, iso2, iso3)
+        // due to the specifications store in [config] within $result.
+        foreach ($countries as $country) {
+            if ($country['value'] === $value) {
+                return $country['label'];
+            }
+        }
+
+        // Fallback if no country was resolved.
+        // @todo - Should this better return an empty value instead?
+        return $value;
     }
 
     /**

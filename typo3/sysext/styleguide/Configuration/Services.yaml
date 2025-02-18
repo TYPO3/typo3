@@ -145,3 +145,6 @@ services:
 
         # General type=flex generator
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeFlex'
+
+        # General type=country generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeCountry'

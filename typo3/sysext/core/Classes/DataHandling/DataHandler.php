@@ -1364,6 +1364,7 @@ class DataHandler
             'category' => $this->checkValueForCategory($res, (string)$value, $tcaFieldConf, (string)$table, $id, (string)$status, (string)$field),
             'check' => $this->checkValueForCheck($res, $value, $tcaFieldConf, $table, $id, $realPid, $field),
             'color' => $this->checkValueForColor((string)$value, $tcaFieldConf),
+            'country' => $this->checkValueForCountry((string)$value, $tcaFieldConf),
             'datetime' => $this->checkValueForDatetime($value, $tcaFieldConf),
             'email' => $this->checkValueForEmail((string)$value, $tcaFieldConf, $table, $id, (int)$realPid, $checkField),
             'flex' => $field ? $this->checkValueForFlex($res, $value, $tcaFieldConf, $table, $id, $curValue, $status, $realPid, $recFID, $tscPID, $field) : [],
@@ -2329,6 +2330,15 @@ class DataHandler
             unset($res['value']);
         }
         return $res;
+    }
+
+    protected function checkValueForCountry(string $value, array $tcaFieldConf): array
+    {
+        // @todo For now, countries are only stored as a SINGLE value. MM handling may need implementation here.
+        $valueArray = $this->applyFiltersToValues($tcaFieldConf, [$value]);
+        return [
+            'value' => $valueArray[0] ?? '',
+        ];
     }
 
     /**

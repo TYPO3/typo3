@@ -118,6 +118,13 @@ services:
         target: TYPO3\CMS\Core\Type\TypeInterface
         sources: string, integer, float, boolean, array
 
+  TYPO3\CMS\Extbase\Property\TypeConverter\CountryConverter:
+    tags:
+      - name: extbase.type_converter
+        priority: 10
+        target: TYPO3\CMS\Core\Country\Country
+        sources: string
+
   # Experimental FAL<->extbase converter
   TYPO3\CMS\Extbase\Property\TypeConverter\FileConverter:
     tags:

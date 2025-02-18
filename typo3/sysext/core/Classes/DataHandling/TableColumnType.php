@@ -47,4 +47,5 @@ enum TableColumnType: string
     case FILE = 'file';
     case JSON = 'json';
     case UUID = 'uuid';
+    case COUNTRY = 'country';
 }

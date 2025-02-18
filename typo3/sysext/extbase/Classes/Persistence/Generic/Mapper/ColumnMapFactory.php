@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Schema\Field\CountryFieldType;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FolderFieldType;
@@ -152,6 +153,15 @@ readonly class ColumnMapFactory
                 type: $tableColumnType,
                 typeOfRelation: $relation,
                 isNullable: $field->isNullable(),
+            );
+        }
+
+        if ($field instanceof CountryFieldType) {
+            $relation = Relation::HAS_ONE;
+            return new ColumnMap(
+                columnName: $columnName,
+                type: $tableColumnType,
+                typeOfRelation: $relation,
             );
         }
 

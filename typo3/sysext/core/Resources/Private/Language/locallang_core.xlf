@@ -1446,6 +1446,12 @@ Do you want to refresh it now?</source>
 			<trans-unit id="error.siteSet.invalidSet">
 				<source>Invalid site set '%1$s': %2$s</source>
 			</trans-unit>
+			<trans-unit id="countries.default">
+				<source>Default countries</source>
+			</trans-unit>
+			<trans-unit id="countries.prioritized">
+				<source>Prioritized countries</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

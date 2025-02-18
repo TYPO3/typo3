@@ -161,6 +161,14 @@ return [
                 ],
             ],
         ],
+        'country_1' => [
+            'label' => 'Country, eval=required',
+            'config' => [
+                'type' => 'country',
+                'labelField' => 'iso2',
+                'required' => true,
+            ],
+        ],
 
         'group_1' => [
             'label' => 'group_1 db, minitems=1, maxitems=3',
@@ -317,6 +325,61 @@ return [
                                             <required>1</required>
                                         </config>
                                     </text_1>
+
+                                    <country_1>
+                                        <label>Country Basic</label>
+                                        <config>
+                                            <type>country</type>
+                                            <labelField>iso2</labelField>
+                                            <required>1</required>
+                                        </config>
+                                    </country_1>
+                                    <country_2>
+                                        <label>Country 2</label>
+                                        <description>labelField=officialName,prioritizedCountries=AT,CH,sortByOptionLabel</description>
+                                        <config>
+                                            <type>country</type>
+                                            <labelField>officialName</labelField>
+                                            <prioritizedCountries>
+                                                <numIndex index="0">AT</numIndex>
+                                                <numIndex index="1">CH</numIndex>
+                                            </prioritizedCountries>
+                                            <default>CH</default>
+                                            <sortItems>
+                                                <label>asc</label>
+                                            </sortItems>
+                                            <required>1</required>
+                                        </config>
+                                    </country_2>
+                                    <country_3>
+                                        <label>Country 3</label>
+                                        <description>labelField=localizedOfficialName,filter</description>
+                                        <config>
+                                            <type>country</type>
+                                            <labelField>localizedOfficialName</labelField>
+                                            <filter>
+                                                <onlyCountries>
+                                                    <numIndex index="0">DE</numIndex>
+                                                    <numIndex index="1">AT</numIndex>
+                                                    <numIndex index="2">CH</numIndex>
+                                                    <numIndex index="1">FR</numIndex>
+                                                    <numIndex index="3">IT</numIndex>
+                                                    <numIndex index="4">HU</numIndex>
+                                                    <numIndex index="5">US</numIndex>
+                                                    <numIndex index="6">GR</numIndex>
+                                                    <numIndex index="7">ES</numIndex>
+                                                </onlyCountries>
+                                                <excludeCountries>
+                                                    <numIndex index="0">DE</numIndex>
+                                                    <numIndex index="1">ES</numIndex>
+                                                </excludeCountries>
+                                            </filter>
+                                            <sortItems>
+                                                <label>desc</label>
+                                            </sortItems>
+                                            <required>1</required>
+                                        </config>
+                                    </country_3>
                                 </el>
                             </ROOT>
                         </T3DataStructure>
@@ -430,7 +493,7 @@ return [
                 --div--;Rte,
                     rte_1, rte_2,
                 --div--;Select,
-                    select_1, select_2, select_3, select_4, select_5,
+                    select_1, select_2, select_3, select_4, select_5, country_1,
                 --div--;Group,
                     group_1, group_2,
                 --div--;Inline,

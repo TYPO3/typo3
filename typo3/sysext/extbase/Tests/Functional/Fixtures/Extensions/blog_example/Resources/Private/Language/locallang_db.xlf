@@ -84,6 +84,9 @@
 			<trans-unit id="tx_blogexample_domain_model_person.lastname">
 				<source>Lastname</source>
 			</trans-unit>
+			<trans-unit id="tx_blogexample_domain_model_person.country">
+				<source>Country</source>
+			</trans-unit>
 			<trans-unit id="tx_blogexample_domain_model_person.email">
 				<source>E-Mail</source>
 			</trans-unit>
