@@ -156,7 +156,7 @@ readonly class DataMapFactory
                 : null,
             isStatic: (bool)($schema?->getRawConfiguration()['is_static'] ?? false),
             // @todo We should remove DataMap in order to use TcaSchema directly
-            rootLevel: (bool)$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->getRootLevelType(),
+            rootLevel: (bool)($schema?->getCapability(TcaSchemaCapability::RestrictionRootLevel)->getRootLevelType()),
         );
     }
 
