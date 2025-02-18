@@ -148,10 +148,10 @@ final class SecurityTest extends FunctionalTestCase
             ],
             [
                 // 'removeTags' no longer scrubs this
-                'input' => '<strike>strike</strike> <u>underline</u> <center>center</center>',
+                'input' => '<strike>strike</strike> <u>underline</u> <center>center</center> <font>font</font>',
                 'expectations' => [
-                    '<strike>strike</strike> <u>underline</u> <center>center</center>',
-                    '<strike>strike</strike> <u>underline</u> <center>center</center>',
+                    '<strike>strike</strike> <u>underline</u> center font',
+                    '<strike>strike</strike> <u>underline</u> center font',
                 ],
             ],
             [
@@ -197,26 +197,26 @@ final class SecurityTest extends FunctionalTestCase
                 ],
             ],
             [
-                'input' => '<font face="a" color="b" onmouseover="alert(1);">text</font>'
+                'input' => '<span face="a" color="b" onmouseover="alert(1);">text</span> <font face="a" color="b" onmouseover="alert(1);">text</font>'
                     . '<img src="x" alt="test" onerror="alert(2)">',
                 'expectations' => [
-                    '<font face="a" color="b">text</font>'
+                    'text text'
                         . '<img src="x" alt="test">',
                     // @todo "expected" for the time being without using HTML Sanitizer
-                    '<font face="a" color="b" onmouseover="alert(1);">text</font>'
+                    'text text'
                         . '<img src="x" alt="test" onerror="alert(2)">',
                 ],
             ],
             [
                 'input' => '<p>'
-                    . '<font face="a" color="b" onmouseover="alert(1);">text</font>'
+                    . '<span face="a" color="b" onmouseover="alert(1);">text</span> <font face="a" color="b" onmouseover="alert(1);">text</font>'
                     . '<img src="x" alt="test" onerror="alert(2)">'
                     . '</p>',
                 'expectations' => [
-                    '<p><font face="a" color="b">text</font>'
+                    '<p>text text'
                         . '<img src="x" alt="test"></p>',
                     // @todo "expected" for the time being without using HTML Sanitizer
-                    '<p><font face="a" color="b" onmouseover="alert(1);">text</font>'
+                    '<p>text text'
                         . '<img src="x" alt="test" onerror="alert(2)"></p>',
                 ],
             ],

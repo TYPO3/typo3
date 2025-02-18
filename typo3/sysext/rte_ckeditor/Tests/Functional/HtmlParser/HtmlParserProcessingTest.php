@@ -35,6 +35,8 @@ final class HtmlParserProcessingTest extends FunctionalTestCase
         'sdfield',
         'style',
         'title',
+        'font',
+        'center',
     ];
 
     // Just some inserted block elements to make expectation more realistic
