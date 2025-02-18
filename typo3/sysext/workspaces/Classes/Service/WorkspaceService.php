@@ -266,9 +266,9 @@ class WorkspaceService implements SingletonInterface
     {
         // Include root level page as there might be some records with where root level
         // restriction is ignored (e.g. FAL records)
-        /** @var RootLevelCapability|null $capability */
-        $capability = $schema->hasCapability(TcaSchemaCapability::RestrictionRootLevel) ? $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel) : null;
-        if ($pageList !== '' && $capability?->shallIgnoreRootLevelRestriction()) {
+        /** @var RootLevelCapability $capability */
+        $capability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        if ($pageList !== '' && $capability->shallIgnoreRootLevelRestriction()) {
             $pageList .= ',0';
         }
         // If table is not localizable, but localized records shall
@@ -389,9 +389,9 @@ class WorkspaceService implements SingletonInterface
     ): array {
         // Include root level page as there might be some records with where root level
         // restriction is ignored (e.g. FAL records)
-        /** @var RootLevelCapability|null $capability */
-        $capability = $schema->hasCapability(TcaSchemaCapability::RestrictionRootLevel) ? $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel) : null;
-        if ($pageList !== '' && $capability?->shallIgnoreRootLevelRestriction()) {
+        /** @var RootLevelCapability $capability */
+        $capability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        if ($pageList !== '' && $capability->shallIgnoreRootLevelRestriction()) {
             $pageList .= ',0';
         }
         // If table is not localizable, but localized records shall
@@ -770,9 +770,9 @@ class WorkspaceService implements SingletonInterface
             return false;
         }
         $schema = $this->tcaSchemaFactory->get($table);
-        /** @var RootLevelCapability|null $capability */
-        $capability = $schema->hasCapability(TcaSchemaCapability::RestrictionRootLevel) ? $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel) : null;
-        if ($pageId === 0 && $capability?->shallIgnoreRootLevelRestriction()) {
+        /** @var RootLevelCapability $capability */
+        $capability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        if ($pageId === 0 && $capability->shallIgnoreRootLevelRestriction()) {
             return true;
         }
         $page = BackendUtility::getRecord('pages', $pageId, 'uid,pid,perms_userid,perms_user,perms_groupid,perms_group,perms_everybody');

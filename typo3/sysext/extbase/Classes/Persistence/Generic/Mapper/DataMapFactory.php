@@ -155,10 +155,8 @@ readonly class DataMapFactory
                 ? $schema->getSubSchemaDivisorField()->getName()
                 : null,
             isStatic: (bool)($schema?->getRawConfiguration()['is_static'] ?? false),
-            // @todo Evaluate if this is correct. We currently have to use canExistOnPages() to keep previous
-            //       behavior, which is (bool)$rootLevel, so treating "-1" and "1" as TURE, and only 0 als FALSE.
-            rootLevel: $schema?->hasCapability(TcaSchemaCapability::RestrictionRootLevel)
-                && $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->canExistOnPages(),
+            // @todo We should remove DataMap in order to use TcaSchema directly
+            rootLevel: (bool)$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->getRootLevelType(),
         );
     }
 
