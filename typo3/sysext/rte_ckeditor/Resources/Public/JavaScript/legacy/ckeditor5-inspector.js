@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export{default as CKEditorInspector}from"@ckeditor/ckeditor5-inspector";console.warn('The module "@typo3/ckeditor5-inspector.js" has been marked as deprecated. Please use "@ckeditor/ckeditor5-inspector" instead.');
+import{default as r}from"@ckeditor/ckeditor5-inspector";console.warn('The module "@typo3/ckeditor5-inspector.js" has been marked as deprecated. Please use "@ckeditor/ckeditor5-inspector" instead.');export{r as CKEditorInspector};

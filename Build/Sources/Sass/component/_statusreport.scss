@@ -126,11 +126,6 @@
     }
 }
 
-// Container queries are currently not supported by clean-css and stylelint,
-// to avoid invalid removals we are ignoring the following lines for now.
-
-/* clean-css ignore:start */
-
 .statusreport-wrapper {
     container-type: inline-size;
 }
@@ -146,5 +141,3 @@
         grid-template: 'statusreport-indicator statusreport-title' 'statusreport-indicator statusreport-body' / calc(var(--typo3-statusreport-icon-size) * 1.5) auto;
     }
 }
-
-/* clean-css ignore:end */

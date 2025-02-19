@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export default class DragDropUtility{static isCopyModifierFromEvent(t){return"copy"===t.dataTransfer.dropEffect||"move"!==t.dataTransfer.dropEffect&&(navigator.userAgent.includes("Mac")?"copy"===t.dataTransfer.effectAllowed||t.altKey:t.ctrlKey)}static updateEventAndTooltipToReflectCopyMoveIntention(t){const e=DragDropUtility.isCopyModifierFromEvent(t);t.dataTransfer.dropEffect=e?"copy":"move",top.document.dispatchEvent(new CustomEvent("typo3:drag-tooltip:metadata-update",{detail:{statusIconIdentifier:e?"actions-duplicate":"actions-move"}}))}}
+class e{static isCopyModifierFromEvent(t){return t.dataTransfer.dropEffect==="copy"?!0:t.dataTransfer.dropEffect==="move"?!1:navigator.userAgent.includes("Mac")?t.dataTransfer.effectAllowed==="copy"||t.altKey:t.ctrlKey}static updateEventAndTooltipToReflectCopyMoveIntention(t){const o=e.isCopyModifierFromEvent(t);t.dataTransfer.dropEffect=o?"copy":"move",top.document.dispatchEvent(new CustomEvent("typo3:drag-tooltip:metadata-update",{detail:{statusIconIdentifier:o?"actions-duplicate":"actions-move"}}))}}export{e as default};

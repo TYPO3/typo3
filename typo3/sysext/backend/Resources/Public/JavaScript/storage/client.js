@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import AbstractClientStorage from"@typo3/backend/storage/abstract-client-storage.js";class Client extends AbstractClientStorage{constructor(){super(),this.storage=localStorage}}export default new Client;
+import t from"@typo3/backend/storage/abstract-client-storage.js";class e extends t{constructor(){super(),this.storage=localStorage}}var r=new e;export{r as default};

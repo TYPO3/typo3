@@ -10,10 +10,6 @@
     user-select: none;
 }
 
-// Container queries are currently not supported by clean-css and stylelint,
-// to avoid invalid removals we are ignoring the following lines for now.
-
-/* clean-css ignore:start */
 .resource-tiles-container {
     container-type: inline-size;
     margin-bottom: var(--typo3-spacing);
@@ -30,8 +26,6 @@
         --typo3-resource-tiles-grid-width: 200px;
     }
 }
-
-/* clean-css ignore:end */
 
 .resource-tile {
     --typo3-resource-tile-spacing: 1rem;

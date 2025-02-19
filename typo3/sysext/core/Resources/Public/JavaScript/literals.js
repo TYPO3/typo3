@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export const selector=(e,...r)=>String.raw({raw:e},...r.map((e=>CSS.escape(e))));
+const t=(e,...r)=>String.raw({raw:e},...r.map(a=>CSS.escape(a)));export{t as selector};

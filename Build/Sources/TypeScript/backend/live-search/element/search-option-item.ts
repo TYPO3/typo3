@@ -14,7 +14,6 @@
 import { customElement, property } from 'lit/decorators';
 import { html, LitElement, type TemplateResult } from 'lit';
 import BrowserSession from '@typo3/backend/storage/browser-session';
-import { ifDefined } from 'lit/directives/if-defined';
 import type { InvokeOptionEventData } from '@typo3/backend/toolbar/live-search';
 
 @customElement('typo3-backend-live-search-option-item')
@@ -40,7 +39,7 @@ export class SearchOptionItem extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <div class="form-check">
-        <input type="checkbox" class="form-check-input" name="${this.optionName}[]" value="${this.optionId}" id="${this.optionId}" checked=${ifDefined(this.active ? 'checked' : undefined)} @input="${this.handleInput}">
+        <input type="checkbox" class="form-check-input" name="${this.optionName}[]" value="${this.optionId}" id="${this.optionId}" ?checked=${this.active} @input="${this.handleInput}">
         <label class="form-check-label" for="${this.optionId}">
           ${this.optionLabel}
         </label>

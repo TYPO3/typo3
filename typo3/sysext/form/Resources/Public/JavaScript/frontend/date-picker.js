@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-"use strict";"undefined"!=typeof $&&$((function(t){t("input[data-t3-form-datepicker]").each((function(){t(this).datepicker({dateFormat:t(this).data("format")}).on("keydown",(function(e){8!==e.keyCode&&46!==e.keyCode||(e.preventDefault(),t(this).datepicker("setDate",""))}))}))}));
+typeof $<"u"&&$(function(t){t("input[data-t3-form-datepicker]").each(function(){t(this).datepicker({dateFormat:t(this).data("format")}).on("keydown",function(e){(e.keyCode===8||e.keyCode===46)&&(e.preventDefault(),t(this).datepicker("setDate",""))})})});

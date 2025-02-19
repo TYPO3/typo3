@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import DocumentService from"@typo3/core/document-service.js";import DateTimePicker from"@typo3/backend/date-time-picker.js";DocumentService.ready().then((()=>{const e=document.querySelectorAll(".t3js-datetimepicker");e?.forEach((e=>{DateTimePicker.initialize(e)}))}));
+import i from"@typo3/core/document-service.js";import t from"@typo3/backend/date-time-picker.js";i.ready().then(()=>{document.querySelectorAll(".t3js-datetimepicker")?.forEach(e=>{t.initialize(e)})});

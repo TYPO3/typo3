@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{ScaffoldIdentifierEnum}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import Toolbar from"@typo3/backend/viewport/toolbar.js";import AjaxRequest from"@typo3/core/ajax/ajax-request.js";class Topbar{constructor(){this.Toolbar=new Toolbar}refresh(){new AjaxRequest(TYPO3.settings.ajaxUrls.topbar).get().then((async e=>{const o=await e.resolve(),r=document.querySelector(Topbar.topbarSelector);null!==r&&(r.innerHTML=o.topbar,r.dispatchEvent(new Event("t3-topbar-update")))}))}}Topbar.topbarSelector=ScaffoldIdentifierEnum.header;export default Topbar;
+import{ScaffoldIdentifierEnum as a}from"@typo3/backend/enum/viewport/scaffold-identifier.js";import n from"@typo3/backend/viewport/toolbar.js";import s from"@typo3/core/ajax/ajax-request.js";class e{static{this.topbarSelector=a.header}constructor(){this.Toolbar=new n}refresh(){new s(TYPO3.settings.ajaxUrls.topbar).get().then(async r=>{const o=await r.resolve(),t=document.querySelector(e.topbarSelector);t!==null&&(t.innerHTML=o.topbar,t.dispatchEvent(new Event("t3-topbar-update")))})}}export{e as default};

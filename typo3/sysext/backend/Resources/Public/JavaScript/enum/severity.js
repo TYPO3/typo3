@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export var SeverityEnum;!function(n){n[n.notice=-2]="notice",n[n.info=-1]="info",n[n.ok=0]="ok",n[n.warning=1]="warning",n[n.error=2]="error"}(SeverityEnum||(SeverityEnum={}));
+var a;(function(o){o[o.notice=-2]="notice",o[o.info=-1]="info",o[o.ok=0]="ok",o[o.warning=1]="warning",o[o.error=2]="error"})(a||(a={}));export{a as SeverityEnum};

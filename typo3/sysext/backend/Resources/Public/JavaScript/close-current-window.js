@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-"use strict";self.close(),window.opener.location.reload();
+self.close(),window.opener.location.reload();

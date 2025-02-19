@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export class AjaxResponse{constructor(s){this.response=s}async resolve(s){if(void 0!==this.resolvedBody)return this.resolvedBody;const e=this.response.headers.get("Content-Type")??"";return"json"===s||e.startsWith("application/json")?this.resolvedBody=await this.response.json():this.resolvedBody=await this.response.text(),this.resolvedBody}raw(){return this.response}async dereference(){const s=new Map;return this.response.headers.forEach(((e,t)=>s.set(t,e))),{status:this.response.status,headers:s,body:await this.resolve()}}}
+class o{constructor(e){this.response=e}async resolve(e){if(typeof this.resolvedBody<"u")return this.resolvedBody;const s=this.response.headers.get("Content-Type")??"";return e==="json"||s.startsWith("application/json")?this.resolvedBody=await this.response.json():this.resolvedBody=await this.response.text(),this.resolvedBody}raw(){return this.response}async dereference(){const e=new Map;return this.response.headers.forEach((s,t)=>e.set(t,s)),{status:this.response.status,headers:e,body:await this.resolve()}}}export{o as AjaxResponse};

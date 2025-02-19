@@ -16,7 +16,10 @@ return [
         'dompurify' => 'EXT:core/Resources/Public/JavaScript/Contrib/dompurify.js',
         'flatpickr' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr.js',
         'flatpickr/' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/',
-        'interactjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/interact.js',
+        'flatpickr/dist/l10n' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/dist/l10n.js',
+        // legacy, has ben renamed 'flatpickr/dist/l10n'
+        'flatpickr/locales' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/dist/l10n.js',
+        'interactjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/interactjs.js',
         'jquery' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.js',
         'jquery/' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery/',
         '@lit/reactive-element' => 'EXT:core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/reactive-element.js',
@@ -35,10 +38,15 @@ return [
         'luxon' => 'EXT:core/Resources/Public/JavaScript/Contrib/luxon.js',
         'nprogress' => 'EXT:core/Resources/Public/JavaScript/Contrib/nprogress.js',
         'marked' => 'EXT:core/Resources/Public/JavaScript/Contrib/marked.js',
+        'shortcut-buttons-flatpickr' => 'EXT:core/Resources/Public/JavaScript/Contrib/shortcut-buttons-flatpickr.js',
+        // legacy, has ben renamed 'shortcut-buttons-flatpickr'
+        'flatpickr/plugins/shortcut-buttons.min.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/shortcut-buttons-flatpickr.js',
         'sortablejs' => 'EXT:core/Resources/Public/JavaScript/Contrib/sortablejs.js',
-        'tablesort.dotsep.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.dotsep.js',
-        'tablesort.number.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.number.js',
         'tablesort' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.js',
+        // legacy, bundled into `tablesort`, kept to minimize likelihood of breaking 3rd party extensions
+        'tablesort.dotsep.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.js',
+        // legacy, bundled into `tablesort`, kept to minimize likelihood of breaking 3rd party extensions
+        'tablesort.number.js' => 'EXT:core/Resources/Public/JavaScript/Contrib/tablesort.js',
         'taboverride' => 'EXT:core/Resources/Public/JavaScript/Contrib/taboverride.js',
     ],
 ];

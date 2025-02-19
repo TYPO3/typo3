@@ -12,7 +12,7 @@
  */
 
 import flatpickr from 'flatpickr';
-import ShortcutButtonsPlugin from 'flatpickr/plugins/shortcut-buttons.min';
+import ShortcutButtonsPlugin from 'shortcut-buttons-flatpickr';
 import { DateTime } from 'luxon';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 import type { PostValidationEvent } from '@typo3/backend/form-engine-validation';
@@ -51,7 +51,7 @@ class DateTimePicker {
     }
 
     element.dataset.datepickerInitialized = '1';
-    import('flatpickr/locales').then((): void => {
+    import('flatpickr/dist/l10n').then((): void => {
       this.initializeField(element, userLocale as flatpickr.Options.LocaleKey);
     });
   }

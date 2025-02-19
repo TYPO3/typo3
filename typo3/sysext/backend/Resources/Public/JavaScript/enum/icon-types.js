@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export var Sizes;!function(e){e.default="default",e.small="small",e.medium="medium",e.large="large",e.mega="mega",e.overlay="overlay"}(Sizes||(Sizes={}));export var States;!function(e){e.default="default",e.disabled="disabled"}(States||(States={}));export var MarkupIdentifiers;!function(e){e.default="default",e.inline="inline"}(MarkupIdentifiers||(MarkupIdentifiers={}));
+var l;(function(a){a.default="default",a.small="small",a.medium="medium",a.large="large",a.mega="mega",a.overlay="overlay"})(l||(l={}));var e;(function(a){a.default="default",a.disabled="disabled"})(e||(e={}));var d;(function(a){a.default="default",a.inline="inline"})(d||(d={}));export{d as MarkupIdentifiers,l as Sizes,e as States};

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export var DataTransferTypes;!function(o){o.treenode="application/x-typo3-treenode",o.newTreenode="application/x-typo3-new-treenode+json",o.pages="application/x-typo3-record-pages+json",o.falResources="application/x-typo3-fal-resources+json",o.dragTooltip="application/x-typo3-drag-tooltip+json",o.content="application/x-typo3-content+json"}(DataTransferTypes||(DataTransferTypes={}));
+var t;(function(o){o.treenode="application/x-typo3-treenode",o.newTreenode="application/x-typo3-new-treenode+json",o.pages="application/x-typo3-record-pages+json",o.falResources="application/x-typo3-fal-resources+json",o.dragTooltip="application/x-typo3-drag-tooltip+json",o.content="application/x-typo3-content+json"})(t||(t={}));export{t as DataTransferTypes};

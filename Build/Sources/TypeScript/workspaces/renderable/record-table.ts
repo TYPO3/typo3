@@ -345,7 +345,7 @@ export class RecordTableElement extends LitElement {
       <button
         type="button"
         class="btn btn-default"
-        disabled="${condition ? nothing : ''}"
+        ?disabled=${condition ? nothing : ''}
         data-action="${condition ? action : nothing}"
         title=${ifDefined(additionalAttributes.title)}
         data-bs-target=${ifDefined(additionalAttributes['data-bs-target'])}

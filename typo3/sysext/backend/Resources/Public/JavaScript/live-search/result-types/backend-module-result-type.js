@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import LiveSearchConfigurator from"@typo3/backend/live-search/live-search-configurator.js";export function registerType(e){LiveSearchConfigurator.addInvokeHandler(e,"open_module",(e=>{TYPO3.ModuleMenu.App.showModule(e.extraData.moduleIdentifier)}))}
+import r from"@typo3/backend/live-search/live-search-configurator.js";function d(e){r.addInvokeHandler(e,"open_module",o=>{TYPO3.ModuleMenu.App.showModule(o.extraData.moduleIdentifier)})}export{d as registerType};

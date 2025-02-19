@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-"use strict";if(document.currentScript){if("window.close"===document.currentScript.dataset.action)window.close()}
+if(document.currentScript)switch(document.currentScript.dataset.action){case"window.close":window.close();break;default:}

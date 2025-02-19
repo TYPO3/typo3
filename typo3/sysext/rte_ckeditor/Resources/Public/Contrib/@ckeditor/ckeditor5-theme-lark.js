@@ -1,1 +1,1 @@
-var a="",e="";export{a as default,e as stylesheet};
+function t(n,{insertAt:e}={}){}t();
