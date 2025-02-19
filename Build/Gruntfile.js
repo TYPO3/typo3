@@ -16,8 +16,7 @@
 
 module.exports = function (grunt) {
 
-  const sass = require('sass');
-  const esModuleLexer = require('es-module-lexer');
+  const generateSourcemaps = grunt.option('sourcemaps') || false;
 
   /**
    * Grunt flag tasks
@@ -121,67 +120,34 @@ module.exports = function (grunt) {
       },
       sass: ['<%= paths.sass %>**/*.scss']
     },
-    sass: {
-      options: {
-        implementation: sass,
-        outputStyle: 'expanded',
-        precision: 8
-      },
-      backend: {
-        files: {
-          '<%= paths.backend %>Public/Css/backend.css': '<%= paths.sass %>backend.scss'
-        }
-      },
-      form: {
-        files: {
-          '<%= paths.form %>Public/Css/form.css': '<%= paths.sass %>form.scss'
-        }
-      },
-      dashboard: {
-        files: {
-          '<%= paths.dashboard %>Public/Css/dashboard.css': '<%= paths.sass %>dashboard.scss'
-        }
-      },
-      dashboard_modal: {
-        files: {
-          '<%= paths.dashboard %>Public/Css/Modal/style.css': '<%= paths.sass %>dashboard_modal.scss'
-        }
-      },
-      adminpanel: {
-        files: {
-          '<%= paths.adminpanel %>Public/Css/adminpanel.css': '<%= paths.sass %>adminpanel.scss'
-        }
-      },
-      styleguide: {
-        files: {
-          '<%= paths.styleguide %>Public/Css/styleguide-frontend.css': '<%= paths.sass %>styleguide-frontend.scss'
-        }
-      },
-      webfonts: {
-        files: {
-          '<%= paths.backend %>Public/Css/webfonts.css': '<%= paths.sass %>webfonts.scss'
-        }
-      },
-      workspaces: {
-        files: {
-          '<%= paths.workspaces %>Public/Css/preview.css': '<%= paths.sass %>workspace.scss'
-        }
-      }
-    },
     postcss: {
       options: {
-        map: false,
-        processors: [
-          require('autoprefixer')(),
-          require('postcss-clean')({
-            rebase: false,
-            format: 'keep-breaks',
-            level: {
-              1: {
-                specialComments: 0
-              }
-            }
+        map: generateSourcemaps ? { inline: true } : false,
+        syntax: require('postcss-scss'),
+        processors: () => [
+          require('@csstools/postcss-sass')({
+            sass: require('sass'),
+            outputStyle: 'expanded',
+            precision: 8
           }),
+          require('autoprefixer')(),
+          require('cssnano')({
+            preset: [
+              'default',
+            ],
+          }),
+          {
+            postcssPlugin: 'keep line breaks',
+            // Use "OnceExit" event instead of "Rule"/"AtRule" to postprocess the minification
+            // performed by postcss-normalize-whitespace (as part of cssnano)
+            OnceExit(css) {
+              css.walk(node => {
+                if (['rule', 'atrule'].includes(node.type)) {
+                  node.raws.before = "\n";
+                }
+              })
+            },
+          },
           require('postcss-banner')({
             banner: 'This file is part of the TYPO3 CMS project.\n' +
               '\n' +
@@ -195,34 +161,45 @@ module.exports = function (grunt) {
               'The TYPO3 project - inspiring people to share!',
             important: true,
             inline: false
-          })
+          }),
         ]
       },
       adminpanel: {
-        src: '<%= paths.adminpanel %>Public/Css/*.css'
+        src: '<%= paths.sass %>adminpanel.scss',
+        dest: '<%= paths.adminpanel %>Public/Css/adminpanel.css',
       },
       backend: {
-        src: '<%= paths.backend %>Public/Css/*.css'
+        src: '<%= paths.sass %>backend.scss',
+        dest: '<%= paths.backend %>Public/Css/backend.css',
       },
       dashboard: {
-        src: '<%= paths.dashboard %>Public/Css/*.css'
+        src: '<%= paths.sass %>dashboard.scss',
+        dest: '<%= paths.dashboard %>Public/Css/dashboard.css',
       },
       dashboard_modal: {
-        src: '<%= paths.dashboard %>Public/Css/Modal/*.css'
+        src: '<%= paths.sass %>dashboard_modal.scss',
+        dest: '<%= paths.dashboard %>Public/Css/Modal/style.css',
       },
       form: {
-        src: '<%= paths.form %>Public/Css/*.css'
+        src: '<%= paths.sass %>form.scss',
+        dest: '<%= paths.form %>Public/Css/form.css',
       },
       styleguide: {
-        src: '<%= paths.styleguide %>Public/Css/*.css'
+        src: '<%= paths.sass %>styleguide-frontend.scss',
+        dest: '<%= paths.styleguide %>Public/Css/styleguide-frontend.css'
+      },
+      webfonts: {
+        src: '<%= paths.sass %>webfonts.scss',
+        dest: '<%= paths.backend %>Public/Css/webfonts.css',
       },
       workspaces: {
-        src: '<%= paths.workspaces %>Public/Css/*.css'
-      }
+        src: '<%= paths.sass %>workspace.scss',
+        dest: '<%= paths.workspaces %>Public/Css/preview.css',
+      },
     },
     exec: {
-      ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json',
-      rollup: ((process.platform === 'win32') ? 'node_modules\\.bin\\rollup.cmd' : './node_modules/.bin/rollup') + ' -c rollup/config.js',
+      ts: ((process.platform === 'win32') ? 'node_modules\\.bin\\tsc.cmd' : './node_modules/.bin/tsc') + ' --project tsconfig.json' + (generateSourcemaps ? ' --inlineSources --sourceMap' : ''),
+      rollup: ((process.platform === 'win32') ? 'node_modules\\.bin\\rollup.cmd' : './node_modules/.bin/rollup') + ' -c rollup/config.js' + (generateSourcemaps ? ' --sourcemap="inline"' : ''),
       stylefix: ((process.platform === 'win32') ? 'node_modules\\.bin\\stylelint.cmd' : './node_modules/.bin/stylelint') + ' "<%= paths.sass %>**/*.scss" --fix --formatter verbose --cache --cache-location .cache/.stylelintcache --cache-strategy content',
       lintspaces: ((process.platform === 'win32') ? 'node_modules\\.bin\\lintspaces.cmd' : './node_modules/.bin/lintspaces') + ' --editorconfig ../.editorconfig "../typo3/sysext/*/Resources/Private/**/*.html"',
       'npm-install': 'npm install'
@@ -249,45 +226,37 @@ module.exports = function (grunt) {
         tasks: ['scripts', 'bell']
       }
     },
+    'process-javascript': {
+      ts: {
+        src: [
+          '<%= paths.root %>Build/JavaScript/**/*.js',
+          '!<%= paths.root %>Build/JavaScript/*/tests/**/*.js',
+        ],
+        dest: '<%= paths.sysext %>',
+        pathmap: srcpath => require('path')
+          .relative(`${grunt.config.get('paths.root')}Build/JavaScript/`, srcpath)
+          .replace(
+            /^([^\/]+)\//,
+            (match, extension) => `${extension.replace(/-/g, '_')}/Resources/Public/JavaScript/`
+          ),
+        banner: '/*\n' +
+          ' * This file is part of the TYPO3 CMS project.\n' +
+          ' *\n' +
+          ' * It is free software; you can redistribute it and/or modify it under\n' +
+          ' * the terms of the GNU General Public License, either version 2\n' +
+          ' * of the License, or any later version.\n' +
+          ' *\n' +
+          ' * For the full copyright and license information, please read the\n' +
+          ' * LICENSE.txt file that was distributed with this source code.\n' +
+          ' *\n' +
+          ' * The TYPO3 project - inspiring people to share!' +
+          '\n' +
+          ' */',
+      }
+    },
     copy: {
       options: {
         punctuation: ''
-      },
-      ts_files: {
-        options: {
-          process: (source, srcpath) => {
-            /* note: This requires grunt-task 'es-module-lexer-init' to be executed prior to this task */
-            const [imports] = esModuleLexer.parse(source, srcpath);
-
-            source = require('./util/map-import.js').mapImports(source, srcpath, imports);
-
-            // Workaround for https://github.com/microsoft/TypeScript/issues/35802
-            // > The 'this' keyword is equivalent to 'undefined' at the top level of an ES module
-            source = source.replace('__decorate=this&&this.__decorate||function', '__decorate=function');
-
-            // Remove empty import blocks from removed `{ type Foo }` imports
-            // @todo terser should be able to do this(!?)
-            source = source
-              .replace(/import ([^,]+)[ ]*,[ ]*{}[ ]*from/g, 'import $1 from')
-              .replace(/import[ ]*{[ ]*}[ ]*from/g, 'import');
-
-            try {
-              const res = require('minify-html-literals').minifyHTMLLiterals(source, { fileName: srcpath });
-              return res !== null ? res.code : source;
-            } catch (e) {
-              console.error('Failed to minify HTML template literals in ' + srcpath, e);
-              throw e;
-            }
-          }
-        },
-        files: [{
-          expand: true,
-          cwd: '<%= paths.root %>Build/JavaScript/',
-          src: ['**/*.js', '**/*.js.map', '!*/tests/**/*'],
-          dest: '<%= paths.sysext %>',
-          rename: (dest, src) => dest + src
-            .replace('/', '/Resources/Public/JavaScript/')
-        }]
       },
       core_icons: {
         files: [{
@@ -368,11 +337,21 @@ module.exports = function (grunt) {
       lit: {
         options: {
           process: (source, srcpath) => {
-            /* note: This requires grunt-task 'es-module-lexer-init' to be executed prior to this task */
-            const [imports] = esModuleLexer.parse(source, srcpath);
-            source = require('./util/map-import.js').mapImports(source, srcpath, imports);
+            const { code } = require('./lib/map-import.js').mapImports.transform(source, srcpath);
 
-            return source.replace(/\/\/# sourceMappingURL=[^ ]+/, '');
+            if (generateSourcemaps) {
+              const { readFileSync } = require('fs');
+              const { resolve, dirname } = require('path');
+              // transform into an inline sourcemap
+              return code.replace(
+                /(\/\/# sourceMappingURL=)([^ ]+)/,
+                (match, prefix, path) => `${prefix}data:application/json;charset=utf-8;base64,${
+                  Buffer.from(readFileSync(resolve(dirname(srcpath), path.trim()))).toString('base64')
+                }`
+              );
+            } else {
+              return code.replace(/\/\/# sourceMappingURL=[^ ]+/, '');
+            }
           }
         },
         files: [{
@@ -394,52 +373,6 @@ module.exports = function (grunt) {
           ],
         }]
       },
-      t3editor: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= paths.node_modules %>@codemirror',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/',
-            rename: (dest, src) => dest + src.replace('/dist/index', ''),
-            src: ['*/dist/index.js']
-          },
-          {
-            expand: true,
-            cwd: '<%= paths.node_modules %>@lezer',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/',
-            rename: (dest, src) => dest + src.replace('/dist/index.es', ''),
-            src: ['*/dist/index.es.js']
-          },
-          {
-            src: '<%= paths.node_modules %>@lezer/lr/dist/index.js',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/lr.js'
-          },
-          {
-            src: '<%= paths.node_modules %>@lezer/common/dist/index.js',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/common.js'
-          },
-          {
-            src: '<%= paths.node_modules %>@lezer/highlight/dist/index.js',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/highlight.js'
-          },
-          {
-            src: '<%= paths.node_modules %>@lezer/javascript/dist/index.js',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/javascript.js'
-          },
-          {
-            src: '<%= paths.node_modules %>crelt/index.es.js',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/crelt.js'
-          },
-          {
-            src: '<%= paths.node_modules %>style-mod/src/style-mod.js',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js'
-          },
-          {
-            src: '<%= paths.node_modules %>w3c-keyname/index.es.js',
-            dest: '<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js'
-          },
-        ]
-      }
     },
     clean: {
       lit: {
@@ -455,158 +388,103 @@ module.exports = function (grunt) {
         ]
       }
     },
-    npmcopy: {
-      options: {
-        clean: false,
-        report: false,
-        srcPrefix: 'node_modules/'
-      },
-      backend: {
-        options: {
-          destPrefix: '<%= paths.backend %>Public',
-          copyOptions: {
-            process: (source, srcpath) => source.replace(/\/\/# sourceMappingURL=[^ ]+/, '')
+    esbuild: Object.fromEntries(Object.entries({
+      core: [
+        'autosize',
+        { name: 'bootstrap', bundle: true },
+        'cropperjs',
+        { name: 'css-tree', bundle: true },
+        'dompurify',
+        { name: 'flatpickr', bundle: true },
+        { name: 'flatpickr/dist/l10n', src: 'node_modules/flatpickr/dist/esm/l10n/index.js', bundle: true },
+        'interactjs',
+        'jquery',
+        { name: 'luxon', src: 'node_modules/luxon/build/es6/luxon.js' },
+        'marked',
+        'nprogress',
+        'shortcut-buttons-flatpickr',
+        { name: 'sortablejs', src: 'node_modules/sortablejs/modular/sortable.complete.esm.js' },
+        {
+          name: 'tablesort',
+          src: 'Sources/JavaScript/tablesort.js',
+          bundle: true,
+          options: {
+            inject: [ 'Sources/JavaScript/tablesort.inject.js' ],
+          },
+        },
+        'taboverride',
+      ],
+      backend: [
+        'alwan',
+        'crelt',
+        { name: 'lodash-es', bundle: true },
+        'mark.js',
+        {
+          name: 'select-pure',
+          bundle: true,
+          options: {
+            external: [
+              'lit',
+              'lit/*',
+              'lit-html/*',
+            ]
           }
         },
-        files: {
-          'JavaScript/Contrib/alwan.js': 'alwan/dist/js/esm/alwan.min.js',
-        }
-      },
-      umdToEs6: {
-        options: {
-          destPrefix: '<%= paths.core %>Public/JavaScript/Contrib',
-          copyOptions: {
-            process: (source, srcpath) => {
-              let prefix = '';
-              if (
-                srcpath === 'node_modules/tablesort/dist/sorts/tablesort.dotsep.min.js' ||
-                srcpath === 'node_modules/tablesort/dist/sorts/tablesort.number.min.js'
-              ) {
-                prefix = 'import Tablesort from "tablesort";';
-              }
-
-              return require('./util/cjs-to-esm.js').cjsToEsm(source, prefix);
-            }
-          }
-        },
-        files: {
-          'flatpickr/plugins/shortcut-buttons.min.js': 'shortcut-buttons-flatpickr/dist/shortcut-buttons-flatpickr.min.js',
-          'interact.js': 'interactjs/dist/interact.min.js',
-          'jquery.js': 'jquery/dist/jquery.js',
-          'nprogress.js': 'nprogress/nprogress.js',
-          'tablesort.js': 'tablesort/dist/tablesort.min.js',
-          'tablesort.dotsep.js': 'tablesort/dist/sorts/tablesort.dotsep.min.js',
-          'tablesort.number.js': 'tablesort/dist/sorts/tablesort.number.min.js',
-          'taboverride.js': 'taboverride/build/output/taboverride.js',
-        }
-      },
-      all: {
-        options: {
-          destPrefix: '<%= paths.core %>Public/JavaScript/Contrib'
-        },
-        files: {
-          'autosize.js': 'autosize/dist/autosize.esm.js',
-          'cropperjs.js': 'cropperjs/dist/cropper.esm.js',
-          'css-tree.js': 'css-tree/dist/csstree.esm.js',
-          'dompurify.js': 'dompurify/dist/purify.es.mjs',
-          'luxon.js': 'luxon/build/es6/luxon.js',
-          'marked.js': 'marked/lib/marked.esm.js',
-          'sortablejs.js': 'sortablejs/modular/sortable.complete.esm.js',
-        }
-      }
-    },
-    terser: {
-      options: {
-        output: {
-          ecma: 8
-        }
-      },
-      thirdparty: {
-        files: {
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/autocomplete.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/autocomplete.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/commands.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/commands.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-css.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-css.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-html.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-html.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-javascript.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-javascript.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-json.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-json.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-php.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-php.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-sql.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-sql.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/language.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/language.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-xml.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lang-xml.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lint.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/lint.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/search.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/search.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/state.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/state.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/theme-one-dark.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/theme-one-dark.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/view.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@codemirror/view.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/common.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/common.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/css.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/css.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/highlight.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/highlight.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/html.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/html.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/javascript.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/javascript.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/json.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/json.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/lr.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/lr.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/php.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/php.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/@lezer/xml.js': ['<%= paths.backend %>Public/JavaScript/Contrib/@lezer/xml.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/crelt.js': ['<%= paths.backend %>Public/JavaScript/Contrib/crelt.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js': ['<%= paths.backend %>Public/JavaScript/Contrib/style-mod.js'],
-          '<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js': ['<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js': ['<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/dompurify.js': ['<%= paths.core %>Public/JavaScript/Contrib/dompurify.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/marked.js': ['<%= paths.core %>Public/JavaScript/Contrib/marked.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js': ['<%= paths.core %>Public/JavaScript/Contrib/sortablejs.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/taboverride.js': ['<%= paths.core %>Public/JavaScript/Contrib/taboverride.js']
-        }
-      },
-      typescript: {
-        options: {
-          output: {
-            preamble: '/*\n' +
-              ' * This file is part of the TYPO3 CMS project.\n' +
-              ' *\n' +
-              ' * It is free software; you can redistribute it and/or modify it under\n' +
-              ' * the terms of the GNU General Public License, either version 2\n' +
-              ' * of the License, or any later version.\n' +
-              ' *\n' +
-              ' * For the full copyright and license information, please read the\n' +
-              ' * LICENSE.txt file that was distributed with this source code.\n' +
-              ' *\n' +
-              ' * The TYPO3 project - inspiring people to share!' +
-              '\n' +
-              ' */',
-            comments: /^!/
-          }
-        },
-        files: [
+        'style-mod',
+        'w3c-keyname',
+        '@codemirror/autocomplete',
+        '@codemirror/commands',
+        '@codemirror/lang-css',
+        '@codemirror/lang-html',
+        '@codemirror/lang-javascript',
+        '@codemirror/lang-json',
+        '@codemirror/lang-php',
+        '@codemirror/lang-sql',
+        '@codemirror/language',
+        '@codemirror/lang-xml',
+        '@codemirror/lint',
+        '@codemirror/search',
+        '@codemirror/state',
+        '@codemirror/theme-one-dark',
+        '@codemirror/view',
+        '@lezer/common',
+        '@lezer/css',
+        '@lezer/highlight',
+        '@lezer/html',
+        '@lezer/javascript',
+        '@lezer/json',
+        '@lezer/lr',
+        '@lezer/php',
+        '@lezer/xml',
+      ],
+      dashboard: [
+        { name: 'chart.js', bundle: true },
+      ],
+    }).flatMap(
+      ([extension, modules]) => modules.map(
+        module => [
+          module?.name ?? module,
           {
-            expand: true,
-            src: [
-              '<%= paths.root %>Build/JavaScript/**/*.js',
-              '!<%= paths.root %>Build/JavaScript/*/tests/**/*',
-            ],
-            dest: '<%= paths.root %>Build',
-            cwd: '.',
+            entryPoints: [module?.src ?? module?.name ?? module],
+            format: 'esm',
+            outfile: `<%= paths.${extension} %>Public/JavaScript/Contrib/${(module?.name ?? module).replace(/\.js$/, 'js')}.js`,
+            minify: true,
+            bundle: module?.bundle ?? false,
+            sourcemap: generateSourcemaps ? 'inline' : false,
+            ...(module?.options ?? {}),
           }
         ]
-      }
-    },
+      )
+    )),
     concurrent: {
-      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
-      compile_assets: ['scripts', 'css'],
-      compile_flags: ['flags-build'],
-      minify_assets: ['terser:thirdparty'],
-      copy_static: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy-lit', 'copy:t3editor'],
-      build: ['copy:core_icons', 'copy:install_icons', 'copy:module_icons', 'copy:extension_icons', 'copy:fonts', 'copy:t3editor'],
+      eslint_ts: ['eslint', 'ts'],
+      build: ['scripts', 'css', 'thirdparty']
     },
   });
 
   // Register tasks
-  grunt.loadNpmTasks('grunt-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-npmcopy');
-  grunt.loadNpmTasks('grunt-terser');
   grunt.loadNpmTasks('@lodder/grunt-postcss');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -637,31 +515,7 @@ module.exports = function (grunt) {
    * - sass
    * - postcss
    */
-  grunt.registerTask('css', ['exec:stylefix', 'sass', 'postcss']);
-
-  /**
-   * grunt update task
-   *
-   * call "$ grunt update"
-   *
-   * this task does the following things:
-   * - copy some components to a specific destinations because they need to be included via PHP
-   */
-  grunt.registerTask('update', ['exec:rollup', 'concurrent:npmcopy']);
-
-  /**
-   * grunt compile-typescript task
-   *
-   * call "$ grunt compile-typescript"
-   *
-   * This task does the following things:
-   * - 1) Remove previously built JS files from local JavaScript directory
-   * - 2) Check all TypeScript files (*.ts) with ESLint which are located in Sources/TypeScript/<EXTKEY>/*.ts
-   * - 3) Compiles all TypeScript files (*.ts) which are located in Sources/TypeScript/<EXTKEY>/*.ts
-   */
-  grunt.registerTask('compile-typescript', ['clear-built-js', 'tsconfig', 'eslint', 'exec:ts']);
-
-  grunt.registerTask('copy-lit', ['es-module-lexer-init', 'copy:lit']);
+  grunt.registerTask('css', ['exec:stylefix', 'postcss']);
 
   /**
    * grunt scripts task
@@ -669,11 +523,13 @@ module.exports = function (grunt) {
    * call "$ grunt scripts"
    *
    * this task does the following things:
-   * - 1) Compiles TypeScript (see compile-typescript)
-   * - 2) Copy all generated JavaScript files to public folders
-   * - 3) Minify build
+   * - 1) Remove previously built JS files from local JavaScript directory
+   * - 2) Check all TypeScript files (*.ts) with ESLint which are located in Sources/TypeScript/<EXTKEY>/*.ts
+   * - 3) Compiles all TypeScript files (*.ts) which are located in Sources/TypeScript/<EXTKEY>/*.ts
+   * - 4) Process, minify and copy all generated JavaScript files to public folders
    */
-  grunt.registerTask('scripts', ['compile-typescript', 'terser:typescript', 'es-module-lexer-init', 'copy:ts_files']);
+  grunt.registerTask('scripts', ['clear-built-js', 'concurrent:eslint_ts']);
+  grunt.registerTask('ts', ['exec:ts', 'process-javascript:ts']);
 
   /**
    * grunt clear-build task
@@ -702,40 +558,104 @@ module.exports = function (grunt) {
     }
   });
 
-  /**
-   * grunt tsconfig task
-   *
-   * call "$ grunt tsconfig"
-   *
-   * this task updates the tsconfig.json file with modules paths for all sysexts
-   */
-  grunt.task.registerTask('tsconfig', function () {
-    const config = grunt.file.readJSON('tsconfig.json');
-    const typescriptPath = grunt.config.get('paths.typescript');
-    config.compilerOptions.paths = {};
-    grunt.file.expand(typescriptPath + '*/').map(dir => dir.replace(typescriptPath, '')).forEach((path) => {
-      const extname = path.match(/^([^/]+?)\//)[1].replace(/_/g, '-')
-      config.compilerOptions.paths['@typo3/' + extname + '/*'] = [path + '*'];
-    });
-
-    grunt.file.write('tsconfig.json', JSON.stringify(config, null, 4) + '\n');
-  });
-
-  /**
-   * @internal
-   */
-  grunt.task.registerTask('es-module-lexer-init', function() {
+  grunt.task.registerMultiTask('process-javascript', function () {
     const done = this.async();
+    const { src, dest, pathmap, banner } = this.data;
+    const { rollup } = require('rollup')
+    const { litnano } = require('litnano/rollup');
+    const { mapImports } = require('./lib/map-import.js');
+    const { minify } = require('rollup-plugin-esbuild');
 
-    esModuleLexer.init
-      .then(() => done(true))
-      .catch((e) => done(e));
+    const process = async (src, dest) => {
+      const input = grunt.file.expand(src);
+      if (input.length === 0) {
+        return;
+      }
+
+      const loadSource = {
+        name: 'load typescript with sourcemap',
+        load(id) {
+          const code = grunt.file.read(id);
+          const ast = this.parse(code);
+          const map = generateSourcemaps ? JSON.parse(grunt.file.read(id + '.map')) : null;
+          return { code, ast, map };
+        },
+      };
+
+      const fixDecorate = {
+        name: 'fix __decorate',
+        transform(code, file) {
+          const MagicString = require('magic-string');
+          const ms = new MagicString(code)
+          // Workaround for https://github.com/microsoft/TypeScript/issues/35802
+          // > The 'this' keyword is equivalent to 'undefined' at the top level of an ES module
+          ms.replace('__decorate = (this && this.__decorate) || function', '__decorate=function');
+          return { code: ms.toString(), map: ms.generateMap({ file, includeContent: true, hires: true }) }
+        },
+      };
+
+      const skipEmptyModules = {
+        name: 'skip empty modules',
+        generateBundle(options, bundle, isWrite) {
+          for (const [fileName, outputAsset] of Object.entries(bundle)) {
+            const ast = this.parse(outputAsset.code)
+            if (ast?.type === 'Program' && ast?.body.length === 0) {
+              delete bundle[fileName];
+            }
+          }
+        }
+      };
+
+      const modules = await rollup({
+        input,
+        external: () => true,
+        treeshake: false,
+        makeAbsoluteExternalsRelative: false,
+        plugins: [
+          loadSource,
+          fixDecorate,
+          mapImports,
+          litnano(),
+          skipEmptyModules,
+          minify({
+            sourceMap: generateSourcemaps,
+            target: 'es2023',
+            banner,
+          })
+        ],
+      })
+
+      const { output } = await modules.generate({
+        format: 'es',
+        compact: true,
+        entryFileNames: (chunk) => pathmap(chunk.facadeModuleId),
+        sourcemap: generateSourcemaps ? 'inline' : false,
+      })
+
+      for (const file of output) {
+        grunt.file.write(dest + file.fileName, file.code);
+      }
+    };
+
+    process(src, dest)
+      .then(done)
+      .catch(e => {
+        console.error(e)
+        done(false)
+      });
   });
 
-  /**
-   * @internal
-   */
-  grunt.registerTask('copy-lit', ['es-module-lexer-init', 'copy:lit']);
+  grunt.registerMultiTask('esbuild', 'Runs esbuild', async function () {
+    const done = this.async()
+    const { build } = require('esbuild');
+
+    build(this.data)
+      .then(done)
+      .catch(e => {
+        console.error(e);
+        done(false);
+      })
+  })
 
   /**
    * Outputs a "bell" character. When output, modern terminals flash shortly or produce a notification (usually configurable).
@@ -745,19 +665,20 @@ module.exports = function (grunt) {
   grunt.registerTask('bell', () => console.log('\u0007'));
 
   /**
+   * grunt thirdparty task
+   *
+   * this task executes all tasks (except rollup-ckeditor, as it is slow) that copy/process thirdparty files
+   */
+  grunt.registerTask('thirdparty', ['clean', 'copy', 'esbuild', 'flags-build', 'exec:rollup']);
+
+  /**
    * grunt default task
    *
    * call "$ grunt default"
    *
-   * this task does the following things:
-   * - execute update task
-   * - execute copy task
-   * - compile sass files
-   * - uglify js files
-   * - minifies svg files
-   * - compiles TypeScript files
+   * this task executes all tasks in with parallelization
    */
-  grunt.registerTask('default', ['clear-build', 'clean', 'update', 'concurrent:copy_static', 'concurrent:compile_flags', 'concurrent:compile_assets', 'concurrent:minify_assets']);
+  grunt.registerTask('default', ['clear-build-cache', 'concurrent:build']);
 
   /**
    * grunt build task (legacy, for those used to it). Use `grunt default` instead.

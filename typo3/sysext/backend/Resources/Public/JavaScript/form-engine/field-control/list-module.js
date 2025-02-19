@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import DocumentService from"@typo3/core/document-service.js";import FormEngine from"@typo3/backend/form-engine.js";class ListModule{constructor(e){this.controlElement=null,this.registerClickHandler=e=>{e.preventDefault(),FormEngine.preventFollowLinkIfNotSaved(this.controlElement.getAttribute("href"))},DocumentService.ready().then((()=>{this.controlElement=document.querySelector(e),this.controlElement.addEventListener("click",this.registerClickHandler)}))}}export default ListModule;
+import r from"@typo3/core/document-service.js";import o from"@typo3/backend/form-engine.js";class l{constructor(e){this.controlElement=null,this.registerClickHandler=t=>{t.preventDefault(),o.preventFollowLinkIfNotSaved(this.controlElement.getAttribute("href"))},r.ready().then(()=>{this.controlElement=document.querySelector(e),this.controlElement.addEventListener("click",this.registerClickHandler)})}}export{l as default};

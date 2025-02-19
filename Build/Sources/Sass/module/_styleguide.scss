@@ -121,12 +121,9 @@
     gap: .5em;
 }
 
-/* clean-css ignore:start */
 @container (min-width: 740px) {
     .styleguide-navigation {
         position: sticky;
         top: 0;
     }
 }
-
-/* clean-css ignore:end */

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import LinkBrowser from"@typo3/backend/link-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class RecordLinkHandler{constructor(){new RegularEvent("click",((e,r)=>{e.preventDefault();const t=r.closest("span").dataset;LinkBrowser.finalizeFunction(document.body.dataset.linkbrowserIdentifier+t.uid)})).delegateTo(document,"[data-close]")}}export default new RecordLinkHandler;
+import a from"@typo3/backend/link-browser.js";import n from"@typo3/core/event/regular-event.js";class o{constructor(){new n("click",(e,t)=>{e.preventDefault();const r=t.closest("span").dataset;a.finalizeFunction(document.body.dataset.linkbrowserIdentifier+r.uid)}).delegateTo(document,"[data-close]")}}var d=new o;export{d as default};

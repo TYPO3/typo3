@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-"use strict";document.addEventListener("click",(e=>{const t=e.target;if(!t.classList.contains("tx-indexedsearch-page-selector"))return;e.preventDefault();const n=t.dataset;document.getElementById(n.prefix+"_pointer").value=n.pointer,document.getElementById(n.prefix+"_freeIndexUid").value=n.freeIndexUid,document.forms.namedItem(n.prefix).submit()}));
+(function(){document.addEventListener("click",t=>{const n=t.target;if(!n.classList.contains("tx-indexedsearch-page-selector"))return;t.preventDefault();const e=n.dataset;document.getElementById(e.prefix+"_pointer").value=e.pointer,document.getElementById(e.prefix+"_freeIndexUid").value=e.freeIndexUid,document.forms.namedItem(e.prefix).submit()})})();

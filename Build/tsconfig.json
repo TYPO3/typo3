@@ -1,17 +1,17 @@
 {
     "compilerOptions": {
-        "target": "es2020",
+        "target": "es2023",
         "lib": [
             "es2023",
-            "esnext.collection",
             "dom",
-            "dom.iterable"
+            "dom.iterable",
+            "esnext.collection"
         ],
+        "module": "es2022",
+        "moduleResolution": "node",
         "allowSyntheticDefaultImports": true,
         "incremental": true,
         "tsBuildInfoFile": "./.cache/tsconfig.tsbuildinfo",
-        "module": "es2020",
-        "moduleResolution": "node",
         "sourceMap": false,
         "removeComments": false,
         "alwaysStrict": true,
@@ -30,86 +30,8 @@
         "pretty": true,
         "baseUrl": "Sources/TypeScript",
         "paths": {
-            "@typo3/adminpanel/*": [
-                "adminpanel/*"
-            ],
-            "@typo3/backend/*": [
-                "backend/*"
-            ],
-            "@typo3/belog/*": [
-                "belog/*"
-            ],
-            "@typo3/beuser/*": [
-                "beuser/*"
-            ],
-            "@typo3/core/*": [
-                "core/*"
-            ],
-            "@typo3/dashboard/*": [
-                "dashboard/*"
-            ],
-            "@typo3/extensionmanager/*": [
-                "extensionmanager/*"
-            ],
-            "@typo3/filelist/*": [
-                "filelist/*"
-            ],
-            "@typo3/form/*": [
-                "form/*"
-            ],
-            "@typo3/frontend/*": [
-                "frontend/*"
-            ],
-            "@typo3/impexp/*": [
-                "impexp/*"
-            ],
-            "@typo3/indexed-search/*": [
-                "indexed_search/*"
-            ],
-            "@typo3/info/*": [
-                "info/*"
-            ],
-            "@typo3/install/*": [
-                "install/*"
-            ],
-            "@typo3/linkvalidator/*": [
-                "linkvalidator/*"
-            ],
-            "@typo3/lowlevel/*": [
-                "lowlevel/*"
-            ],
-            "@typo3/opendocs/*": [
-                "opendocs/*"
-            ],
-            "@typo3/recycler/*": [
-                "recycler/*"
-            ],
-            "@typo3/redirects/*": [
-                "redirects/*"
-            ],
-            "@typo3/rte-ckeditor/*": [
-                "rte_ckeditor/*"
-            ],
-            "@typo3/scheduler/*": [
-                "scheduler/*"
-            ],
-            "@typo3/setup/*": [
-                "setup/*"
-            ],
-            "@typo3/styleguide/*": [
-                "styleguide/*"
-            ],
-            "@typo3/sys-note/*": [
-                "sys_note/*"
-            ],
-            "@typo3/tstemplate/*": [
-                "tstemplate/*"
-            ],
-            "@typo3/viewpage/*": [
-                "viewpage/*"
-            ],
-            "@typo3/workspaces/*": [
-                "workspaces/*"
+            "@typo3/*": [
+                "./*"
             ]
         },
         "outDir": "./JavaScript/",

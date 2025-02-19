@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-"use strict";document.querySelectorAll('.example input[type="checkbox"]').forEach((e=>{e.id.includes("indeterminate")&&(e.indeterminate=!0)}));
+document.querySelectorAll('.example input[type="checkbox"]').forEach(e=>{e.id.includes("indeterminate")&&(e.indeterminate=!0)});

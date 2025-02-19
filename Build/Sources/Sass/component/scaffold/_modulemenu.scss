@@ -111,7 +111,6 @@
     white-space: nowrap;
 }
 
-/* clean-css ignore:start */
 @container (min-width: 60px) {
     .modulemenu-name {
         position: static;
@@ -121,8 +120,6 @@
         height: auto;
     }
 }
-
-/* clean-css ignore:end */
 
 //
 // Indicator
@@ -161,14 +158,11 @@
     }
 }
 
-/* clean-css ignore:start */
 @container (min-width: 60px) {
     .modulemenu-indicator {
         display: block !important;
     }
 }
-
-/* clean-css ignore:end */
 
 //
 // Group

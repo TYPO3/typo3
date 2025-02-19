@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export var KeyTypesEnum;!function(E){E.TAB="Tab",E.ENTER="Enter",E.ESCAPE="Escape",E.SPACE=" ",E.END="End",E.HOME="Home",E.LEFT="ArrowLeft",E.UP="ArrowUp",E.RIGHT="ArrowRight",E.DOWN="ArrowDown",E.PAGE_UP="PageUp",E.PAGE_DOWN="PageDown"}(KeyTypesEnum||(KeyTypesEnum={}));
+var o;(function(r){r.TAB="Tab",r.ENTER="Enter",r.ESCAPE="Escape",r.SPACE=" ",r.END="End",r.HOME="Home",r.LEFT="ArrowLeft",r.UP="ArrowUp",r.RIGHT="ArrowRight",r.DOWN="ArrowDown",r.PAGE_UP="PageUp",r.PAGE_DOWN="PageDown"})(o||(o={}));export{o as KeyTypesEnum};

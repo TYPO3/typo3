@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class InteractionRequest{constructor(e,t=null){this.processed=!1,this.processedData=null,this.type=e,this.parentRequest=t}get outerMostRequest(){let e=this;for(;e.parentRequest instanceof InteractionRequest;)e=e.parentRequest;return e}isProcessed(){return this.processed}getProcessedData(){return this.processedData}setProcessedData(e=null){this.processed=!0,this.processedData=e}}export default InteractionRequest;
+class s{constructor(e,t=null){this.processed=!1,this.processedData=null,this.type=e,this.parentRequest=t}get outerMostRequest(){let e=this;for(;e.parentRequest instanceof s;)e=e.parentRequest;return e}isProcessed(){return this.processed}getProcessedData(){return this.processedData}setProcessedData(e=null){this.processed=!0,this.processedData=e}}export{s as default};

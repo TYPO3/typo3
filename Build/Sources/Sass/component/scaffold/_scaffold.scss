@@ -73,8 +73,6 @@ iframe {
     }
 }
 
-/* clean-css ignore:start */
-
 .scaffold {
     grid-template-rows: auto 1fr;
     grid-template-columns: clamp(0%, var(--scaffold-modulemenu-expanded-width), 75%) 1fr;
@@ -113,8 +111,6 @@ iframe {
         grid-column: 2 / 3;
     }
 }
-
-/* clean-css ignore:end */
 
 .scaffold-header {
     display: flex;

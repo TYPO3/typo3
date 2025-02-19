@@ -19,11 +19,6 @@ typo3-backend-security-csp-reports {
     }
 }
 
-// Container queries are currently not supported by clean-css and stylelint,
-// to avoid invalid removals we are ignoring the following lines for now.
-
-/* clean-css ignore:start */
-
 typo3-backend-security-csp-reports {
     @container (max-width: 899px) {
         .infolist-info-showrecord {
@@ -64,5 +59,3 @@ typo3-backend-security-csp-reports {
         }
     }
 }
-
-/* clean-css ignore:end */

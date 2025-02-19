@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{AbstractAction}from"@typo3/backend/action-button/abstract-action.js";class ImmediateAction extends AbstractAction{execute(){return this.executeCallback()}async executeCallback(){return Promise.resolve(this.callback())}}export default ImmediateAction;
+import{AbstractAction as e}from"@typo3/backend/action-button/abstract-action.js";class t extends e{execute(){return this.executeCallback()}async executeCallback(){return Promise.resolve(this.callback())}}export{t as default};

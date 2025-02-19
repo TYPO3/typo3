@@ -8,18 +8,17 @@
   "private": true,
   "license": "GPL-2.0+",
   "engines": {
-    "node": ">=22.0.0 <23.0.0",
+    "node": ">=22.13.0 <23.0.0",
     "npm": ">=10.0.0"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.9.0",
-    "@ckeditor/ckeditor5-dev-utils": "^42.0.1",
+    "@ckeditor/ckeditor5-dev-utils": "^46.1.0",
+    "@csstools/postcss-sass": "^5.1.1",
     "@open-wc/testing": "^4.0.0",
     "@playwright/test": "^1.43.1",
-    "@rollup/plugin-commonjs": "^25.0.7",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.5",
-    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@stylistic/eslint-plugin": "^2.6.2",
     "@types/autosize": "^4.0.1",
     "@types/bootstrap": "^5.2.6",
@@ -36,8 +35,9 @@
     "@web/dev-server-import-maps": "^0.2.0",
     "@web/test-runner": "^0.18.0",
     "@web/test-runner-playwright": "^0.11.0",
-    "autoprefixer": "^10.4.19",
-    "es-module-lexer": "^1.2.1",
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.0.6",
+    "esbuild": "^0.25.1",
     "eslint": "^9.9.0",
     "eslint-plugin-lit": "^1.14.0",
     "eslint-plugin-wc": "^2.1.0",
@@ -51,20 +51,17 @@
     "grunt-contrib-watch": "~1.1.0",
     "grunt-eslint": "^25.0.0",
     "grunt-exec": "^3.0.0",
-    "grunt-npmcopy": "^0.2.0",
-    "grunt-sass": "^3.1.0",
     "grunt-stylelint": "^0.18.0",
-    "grunt-terser": "^2.0.0",
     "lintspaces-cli": "^0.8.0",
+    "litnano": "^1.0.0",
     "mime-db": "^1.53.0",
-    "minify-html-literals": "^1.3.5",
     "pofile": "^1.1.4",
+    "postcss": "^8.5.3",
     "postcss-banner": "^4.0.1",
-    "postcss-clean": "^1.2.2",
     "postcss-scss": "^4.0.9",
-    "rollup": "^4.17.2",
+    "rollup": "^4.37.0",
+    "rollup-plugin-esbuild": "^6.2.1",
     "rollup-plugin-glob-import": "^0.5.0",
-    "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-svg": "^2.0.0",
     "sass": "^1.75.0",
     "sharp": "^0.33.4",
@@ -72,7 +69,6 @@
     "stylelint": "^14.16.1",
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^5.3.2",
-    "terser": "^5.30.3",
     "typescript": "^5.8.2"
   },
   "scripts": {
@@ -176,9 +172,6 @@
     "source-sans": "^3.46.0",
     "tablesort": "^5.3.0",
     "taboverride": "^4.0.3"
-  },
-  "overrides": {
-    "postcss": "^8.4"
   },
   "resolutions": {
     "colors": "<1.4.1"

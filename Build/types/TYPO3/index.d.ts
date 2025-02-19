@@ -110,12 +110,3 @@ interface Window {
   ModuleStateStorage: typeof import('@typo3/backend/storage/module-state-storage').ModuleStateStorage;
   list_frame: Window;
 }
-
-/**
- * Declare modules for dependencies without TypeScript declarations
- * @todo: Use chart.js and flatpickr declaration via their vanilla package name
- */
-declare module 'flatpickr/locales';
-declare module 'flatpickr/plugins/shortcut-buttons.min';
-declare module '@typo3/dashboard/contrib/chartjs';
-declare module '@typo3/backend/contrib/mark';

@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-"use strict";document.addEventListener("typo3:import-javascript-module",(t=>{t.detail.importPromise=import(t.detail.specifier)}));
+document.addEventListener("typo3:import-javascript-module",t=>{t.detail.importPromise=import(t.detail.specifier)});

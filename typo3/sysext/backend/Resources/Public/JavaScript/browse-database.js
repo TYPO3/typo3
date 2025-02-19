@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import ElementBrowser from"@typo3/backend/element-browser.js";import RegularEvent from"@typo3/core/event/regular-event.js";class BrowseDatabase{constructor(){new RegularEvent("click",((e,t)=>{e.preventDefault();const r=t.closest("span").dataset;ElementBrowser.insertElement(r.table,r.uid,r.title,"",1===parseInt(t.dataset.close||"0",10))})).delegateTo(document,"[data-close]")}}export default new BrowseDatabase;
+import s from"@typo3/backend/element-browser.js";import o from"@typo3/core/event/regular-event.js";class r{constructor(){new o("click",(a,t)=>{a.preventDefault();const e=t.closest("span").dataset;s.insertElement(e.table,e.uid,e.title,"",parseInt(t.dataset.close||"0",10)===1)}).delegateTo(document,"[data-close]")}}var l=new r;export{l as default};

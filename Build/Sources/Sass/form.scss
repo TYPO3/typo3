@@ -805,15 +805,11 @@
     }
 }
 
-/* clean-css ignore:start */
-
 @container (min-width: 500px) {
     .formeditor-element-validator:hover {
         margin-inline-end: 0;
     }
 }
-
-/* clean-css ignore:end */
 
 .formeditor-element {
     &:has(+ .formeditor-list) {

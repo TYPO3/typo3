@@ -36,7 +36,7 @@ import { Chart,
   Legend,
   Title,
   Tooltip,
-  SubTitle } from '@typo3/dashboard/contrib/chartjs';
+  SubTitle } from 'chart.js';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { DashboardWidgetContentRenderedEvent } from './dashboard';
 

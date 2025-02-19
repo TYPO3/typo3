@@ -121,9 +121,8 @@ export default {
             'lit-html/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit-html/',
             'luxon': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/luxon.js',
             'nprogress': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/nprogress.js',
+            'shortcut-buttons-flatpickr': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/shortcut-buttons-flatpickr.js',
             'sortablejs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/sortablejs.js',
-            'tablesort.dotsep.js': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/tablesort.dotsep.js',
-            'tablesort.number.js': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/tablesort.number.js',
             'tablesort': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/tablesort.js',
             'taboverride': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/taboverride.js',
 
