@@ -1360,8 +1360,8 @@ abstract class AbstractMenuContentObject
         }
         try {
             $page = $this->sys_page->resolveShortcutPage($page, $this->disableGroupAccessCheck);
-            $shortcutPage = (int)($page['_SHORTCUT_ORIGINAL_PAGE_UID'] ?? 0);
-            if ($shortcutPage) {
+            if (isset($page['_SHORTCUT_ORIGINAL_PAGE_UID'])) {
+                $shortcutPage = (int)($page['uid'] ?? 0);
                 if (in_array($shortcutPage, $this->alwaysActivePIDlist, true)) {
                     return true;
                 }
@@ -1392,8 +1392,8 @@ abstract class AbstractMenuContentObject
         }
         try {
             $page = $this->sys_page->resolveShortcutPage($page);
-            $shortcutPage = (int)($page['_SHORTCUT_ORIGINAL_PAGE_UID'] ?? 0);
-            if ($shortcutPage) {
+            if (isset($page['_SHORTCUT_ORIGINAL_PAGE_UID'])) {
+                $shortcutPage = (int)($page['uid'] ?? 0);
                 $testUid = $shortcutPage . ($MPvar ? ':' . $MPvar : '');
                 if (end($this->rL_uidRegister) === 'ITEM:' . $testUid) {
                     return true;
