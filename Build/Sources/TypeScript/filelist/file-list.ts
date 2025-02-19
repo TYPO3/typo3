@@ -89,9 +89,16 @@ export default class Filelist {
       const resource = detail.resources[0];
       const resourceElement: HTMLElement = detail.trigger.closest('[data-default-language-access]') as HTMLElement;
       if (resource.type === 'file' && resourceElement !== null) {
-        window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
-          + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
-          + '&returnUrl=' + Filelist.getReturnUrl('');
+        if (resource.metaUid > 0) {
+          window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
+            + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
+            + '&returnUrl=' + Filelist.getReturnUrl('');
+        } else {
+          window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
+            + '&edit[sys_file_metadata][0]=new'
+            + '&defVals[sys_file_metadata][file]=' + resource.uid
+            + '&returnUrl=' + Filelist.getReturnUrl('');
+        }
       }
       if (resource.type === 'folder') {
         const parameters = Filelist.parseQueryParameters(document.location);
