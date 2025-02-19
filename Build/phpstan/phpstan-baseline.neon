@@ -2773,18 +2773,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Versioning/VersionStateTest.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Dashboard\\Widgets\\WidgetInterface and TYPO3\\CMS\\Dashboard\\Widgets\\WidgetInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
-
-		-
-			message: '#^Parameter \#2 \$widgets of method TYPO3\\CMS\\Dashboard\\DashboardRepository\:\:updateWidgetConfig\(\) expects array\<string\>, array\<string, array\<string, string\>\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/dashboard/Classes/Controller/WidgetAjaxController.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Extbase\\Annotation\\IgnoreValidation\:\:__construct\(\) has InvalidArgumentException in PHPDoc @throws tag but it''s not thrown\.$#'
 			identifier: throws.unusedType
 			count: 1

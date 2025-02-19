@@ -1,4 +1,6 @@
-// Main
+//
+// Widget
+//
 .widget {
     --widget-padding: 1.25rem;
     --widget-color: var(--typo3-component-color);
@@ -15,6 +17,8 @@
     --widget-title-color: var(--widget-color);
     --widget-title-bg: var(--widget-bg);
     --widget-action-size: 28px;
+    display: flex;
+    flex-direction: column;
     height: 100%;
     border-radius: var(--widget-border-radius);
     border: var(--widget-border-width) solid var(--widget-border-color);
@@ -29,6 +33,38 @@
             opacity: .75;
         }
     }
+
+    &.widget-selected {
+        --widget-border-color: var(--typo3-state-primary-border-color);
+    }
+}
+
+.widget-loader {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.widget-header {
+    padding: var(--typo3-component-padding-y) var(--typo3-component-padding-x);
+    border-bottom: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--typo3-spacing);
+    cursor: grab;
+}
+
+.widget-title {
+    font-family: var(--typo3-header-font-family);
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1;
+    overflow: hidden;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 // Content
@@ -36,6 +72,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+    user-select: text;
 }
 
 .widget-content-title {
@@ -62,6 +99,7 @@
 }
 
 .widget-content-main {
+    flex-basis: 0;
     flex-grow: 1;
     overflow-y: auto;
     padding: var(--widget-padding);
@@ -75,11 +113,8 @@
 // Actions
 .widget-actions {
     color: var(--widget-title-color-state, var(--widget-title-color));
-    position: absolute;
     display: flex;
-    top: calc((var(--widget-title-font-size) * var(--widget-title-line-height) / 2) + (var(--widget-padding) / 2));
     inset-inline-end: calc(var(--widget-padding) / 2);
-    transform: translate(0, -50%);
 }
 
 .widget-action {
@@ -91,17 +126,18 @@
     opacity: .5;
     border-radius: 4px;
     transition: opacity .2s ease-in-out;
-    background: none;
-    border: none;
     appearance: none;
+    border: none;
+    background: transparent;
 
     &:hover,
     &:focus {
         opacity: 1 !important;
     }
 
+    &:focus,
     &:focus-visible {
-        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, currentColor, transparent 25%);
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, currentColor, transparent 25%) !important;
     }
 
     .icon {
@@ -117,24 +153,6 @@
 }
 
 // Misc
-.widget-waiting {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    line-height: 300px;
-    margin-inline-end: -50%;
-    transform: translate(calc(-50% * var(--typo3-position-modifier)), -50%);
-}
-
-.widget-error {
-    padding: var(--widget-padding);
-    position: absolute;
-    top: 50%;
-    text-align: center;
-    transform: translateY(-50%);
-    color: var(--typo3-text-color-danger);
-}
-
 .widget-chart {
     width: 100%;
     height: 100%;

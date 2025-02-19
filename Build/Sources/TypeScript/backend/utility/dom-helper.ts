@@ -51,8 +51,8 @@ export default class DomHelper {
    *
    * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/scrollIntoViewIfNeeded
    */
-  public static scrollIntoViewIfNeeded(target: Element): void {
-    if ('scrollIntoViewIfNeeded' in target && typeof target.scrollIntoViewIfNeeded === 'function') {
+  public static scrollIntoViewIfNeeded(target: Element, smooth: boolean = false): void {
+    if (!smooth && 'scrollIntoViewIfNeeded' in target && typeof target.scrollIntoViewIfNeeded === 'function') {
       target.scrollIntoViewIfNeeded(true);
     } else {
       const rect = target.getBoundingClientRect();
@@ -61,7 +61,11 @@ export default class DomHelper {
         && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
         && rect.right <= (window.innerWidth || document.documentElement.clientWidth);
       if (!isInViewport) {
-        target.scrollIntoView();
+        if (smooth) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+        } else {
+          target.scrollIntoView();
+        }
       }
     }
   }

@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 /**
  * @internal
  */
-class DashboardPreset
+class DashboardPreset implements \JsonSerializable
 {
     /**
      * @param string[] $defaultWidgets
@@ -50,6 +50,7 @@ class DashboardPreset
     {
         return $this->getLanguageService()->sL($this->title) ?: $this->title;
     }
+
     public function getDescription(): string
     {
         return $this->getLanguageService()->sL($this->description) ?: $this->description;
@@ -71,5 +72,17 @@ class DashboardPreset
     protected function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'identifier' => $this->getIdentifier(),
+            'title' => $this->getTitle(),
+            'description' => $this->getDescription(),
+            'icon' => $this->getIconIdentifier(),
+            'widgets' => $this->getDefaultWidgets(),
+            'showInWizard' => $this->isShowInWizard(),
+        ];
     }
 }

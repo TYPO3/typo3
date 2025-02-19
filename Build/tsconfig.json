@@ -3,6 +3,7 @@
         "target": "es2020",
         "lib": [
             "es2023",
+            "esnext.collection",
             "dom",
             "dom.iterable"
         ],

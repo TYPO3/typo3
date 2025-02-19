@@ -20,22 +20,12 @@ namespace TYPO3\CMS\Dashboard\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
-use TYPO3\CMS\Backend\Domain\Model\Element\ImmediateActionElement;
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Http\AllowedMethodsTrait;
-use TYPO3\CMS\Core\Http\HtmlResponse;
-use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Dashboard\Dashboard;
 use TYPO3\CMS\Dashboard\DashboardInitializationService;
-use TYPO3\CMS\Dashboard\DashboardPreset;
-use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
-use TYPO3\CMS\Dashboard\DashboardRepository;
-use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
-use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 
 /**
  * @internal
@@ -43,128 +33,23 @@ use TYPO3\CMS\Extbase\Mvc\Controller\Exception\RequiredArgumentMissingException;
 #[AsController]
 class DashboardController
 {
-    use AllowedMethodsTrait;
-
-    protected Dashboard $currentDashboard;
-
     public function __construct(
         protected readonly PageRenderer $pageRenderer,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly DashboardPresetRegistry $dashboardPresetRepository,
-        protected readonly DashboardRepository $dashboardRepository,
         protected readonly DashboardInitializationService $dashboardInitializationService,
-        protected readonly WidgetGroupInitializationService $widgetGroupInitializationService,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
     ) {}
 
-    /**
-     * Main entry method: Dispatch to other actions - those method names that end with "Action".
-     */
-    public function handleRequest(ServerRequestInterface $request): ResponseInterface
+    public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->dashboardInitializationService->initializeDashboards($request, $this->getBackendUser());
-        $this->currentDashboard = $this->dashboardInitializationService->getCurrentDashboard();
-        $action = $request->getQueryParams()['action'] ?? $request->getParsedBody()['action'] ?? 'main';
-        return $this->{$action . 'Action'}($request);
-    }
 
-    /**
-     * This action is responsible for the main view of the dashboard and is just adding all collected data to the view.
-     */
-    protected function mainAction(ServerRequestInterface $request): ResponseInterface
-    {
         $view = $this->moduleTemplateFactory->create($request);
         $this->preparePageRenderer();
         $this->addFrontendResources();
-        $view->setTitle(
-            $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
-            $this->currentDashboard->getTitle()
-        );
-        $view->assignMultiple([
-            'availableDashboards' => $this->dashboardInitializationService->getDashboardsForUser(),
-            'dashboardPresets' => $this->dashboardPresetRepository->getDashboardPresets(),
-            'widgetGroups' => $this->widgetGroupInitializationService->buildWidgetGroupsConfiguration(),
-            'currentDashboard' => $this->currentDashboard,
-            'addWidgetUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'addWidget']),
-            'addDashboardUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'addDashboard']),
-            'deleteDashboardUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'deleteDashboard']),
-            'configureDashboardUri' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'configureDashboard']),
-        ]);
+        $view->setTitle($this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'));
+        $view->getDocHeaderComponent()->disable();
+
         return $view->renderResponse('Dashboard/Main');
-    }
-
-    protected function configureDashboardAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->assertAllowedHttpMethod($request, 'POST');
-        $parameters = $request->getParsedBody();
-        $currentDashboard = $parameters['currentDashboard'] ?? '';
-        $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main'], UriBuilder::ABSOLUTE_URL);
-        if ($currentDashboard !== '' && isset($parameters['dashboard'])) {
-            $this->dashboardRepository->updateDashboardSettings($currentDashboard, $parameters['dashboard']);
-        }
-        return new RedirectResponse($route);
-    }
-
-    protected function setActiveDashboardAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->assertAllowedHttpMethod($request, 'POST');
-        $this->saveCurrentDashboard((string)($request->getParsedBody()['currentDashboard'] ?? ''));
-        $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']);
-        return new RedirectResponse($route);
-    }
-
-    protected function addDashboardAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->assertAllowedHttpMethod($request, 'POST');
-        $parameters = $request->getParsedBody();
-        $dashboardIdentifier = (string)($parameters['dashboard'] ?? '');
-        $dashboardPreset = $this->dashboardPresetRepository->getDashboardPresets()[$dashboardIdentifier] ?? null;
-        if ($dashboardPreset instanceof DashboardPreset) {
-            $dashboard = $this->dashboardRepository->create(
-                $dashboardPreset,
-                (int)$this->getBackendUser()->user['uid'],
-                $parameters['dashboard-title'] ?? ''
-            );
-            if ($dashboard !== null) {
-                $this->saveCurrentDashboard($dashboard->getIdentifier());
-            }
-        }
-        return new RedirectResponse($this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']));
-    }
-
-    protected function deleteDashboardAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->assertAllowedHttpMethod($request, 'POST');
-        $this->dashboardRepository->delete($this->currentDashboard);
-        return new RedirectResponse($this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']));
-    }
-
-    protected function addWidgetAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->assertAllowedHttpMethod($request, 'POST');
-        $widgetKey = (string)($request->getQueryParams()['widget'] ?? '');
-        if ($widgetKey === '') {
-            throw new RequiredArgumentMissingException('Argument "widget" not set.', 1624436360);
-        }
-        $widgets = $this->currentDashboard->getWidgetConfig();
-        $hash = sha1($widgetKey . '-' . time());
-        $widgets[$hash] = ['identifier' => $widgetKey];
-        $this->dashboardRepository->updateWidgetConfig($this->currentDashboard, $widgets);
-        return new HtmlResponse((string)ImmediateActionElement::dispatchCustomEvent('typo3.dashboard.addWidgetDone'));
-    }
-
-    protected function removeWidgetAction(ServerRequestInterface $request): ResponseInterface
-    {
-        $this->assertAllowedHttpMethod($request, 'POST');
-        $parameters = $request->getParsedBody();
-        $widgetHash = $parameters['widgetHash'] ?? '';
-        $widgets = $this->currentDashboard->getWidgetConfig();
-        if ($widgetHash !== '' && array_key_exists($widgetHash, $widgets)) {
-            unset($widgets[$widgetHash]);
-            $this->dashboardRepository->updateWidgetConfig($this->currentDashboard, $widgets);
-        }
-        $route = $this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'main']);
-        return new RedirectResponse($route);
     }
 
     /**
@@ -189,20 +74,9 @@ class DashboardController
      */
     protected function preparePageRenderer(): void
     {
-        $this->pageRenderer->loadJavaScriptModule('muuri');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/grid.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-content-collector.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-selector.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-refresh.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/widget-remover.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/dashboard-modal.js');
-        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/dashboard-delete.js');
+        $this->pageRenderer->loadJavaScriptModule('@typo3/dashboard/dashboard.js');
         $this->pageRenderer->addCssFile('EXT:dashboard/Resources/Public/Css/dashboard.css');
-    }
-
-    protected function saveCurrentDashboard(string $identifier): void
-    {
-        $this->getBackendUser()->pushModuleData('dashboard/current_dashboard/', $identifier);
+        $this->pageRenderer->addInlineLanguageLabelFile('EXT:dashboard/Resources/Private/Language/locallang.xlf');
     }
 
     protected function getBackendUser(): BackendUserAuthentication

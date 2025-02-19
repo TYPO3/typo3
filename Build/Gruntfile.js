@@ -382,6 +382,7 @@ module.exports = function (grunt) {
             '@lit/reactive-element/*.js',
             '@lit/reactive-element/decorators/*.js',
             '@lit/task/*.js',
+            '@lit-labs/motion/*.js',
           ],
         }]
       },
@@ -441,7 +442,8 @@ module.exports = function (grunt) {
           '<%= paths.core %>Public/JavaScript/Contrib/lit',
           '<%= paths.core %>Public/JavaScript/Contrib/lit-html',
           '<%= paths.core %>Public/JavaScript/Contrib/lit-element',
-          '<%= paths.core %>Public/JavaScript/Contrib/@lit/reactive-element',
+          '<%= paths.core %>Public/JavaScript/Contrib/@lit',
+          '<%= paths.core %>Public/JavaScript/Contrib/@lit-labs',
         ]
       }
     },
@@ -467,23 +469,6 @@ module.exports = function (grunt) {
         files: {
           'JavaScript/Contrib/alwan.js': 'alwan/dist/js/alwan.min.js',
           'JavaScript/Contrib/mark.js': 'mark.js/dist/mark.es6.min.js'
-        }
-      },
-      dashboardToEs6: {
-        options: {
-          destPrefix: '<%= paths.dashboard %>Public',
-          copyOptions: {
-            process: (source, srcpath) => {
-              if (srcpath.match(/.*\.js$/)) {
-                return require('./util/cjs-to-esm.js').cjsToEsm(source);
-              }
-
-              return source;
-            }
-          }
-        },
-        files: {
-          'JavaScript/Contrib/muuri.js': 'muuri/dist/muuri.min.js'
         }
       },
       umdToEs6: {
@@ -612,7 +597,7 @@ module.exports = function (grunt) {
       }
     },
     concurrent: {
-      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:dashboardToEs6', 'npmcopy:all'],
+      npmcopy: ['npmcopy:backend', 'npmcopy:umdToEs6', 'npmcopy:all'],
       lint: ['eslint', 'stylelint', 'exec:lintspaces'],
       compile_assets: ['scripts', 'css'],
       compile_flags: ['flags-build'],
