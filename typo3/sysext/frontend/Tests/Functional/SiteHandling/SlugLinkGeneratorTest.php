@@ -808,8 +808,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                     [
                         'title' => 'Our Blog',
                         'link' => '/authors',
-                        'active' => 0,
-                        'current' => 0,
+                        'active' => 1,
+                        'current' => 1,
                     ],
                 ],
             ],
