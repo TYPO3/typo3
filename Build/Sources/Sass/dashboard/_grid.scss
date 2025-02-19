@@ -1,105 +1,66 @@
-// Grid
+typo3-dashboard {
+    display: block;
+    width: 100%;
+}
+
+.dashboard-configuration {
+    margin: .25rem 0;
+}
+
+.dashboard-container {
+    max-width: 1600px;
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+}
+
+.dashboard-dragging-container {
+    > typo3-dashboard-widget {
+        position: fixed;
+    }
+}
+
 .dashboard-grid {
-    --dashboard-grid-gutter: 20px;
-    position: relative;
-    margin-right: calc(-.5 * var(--dashboard-grid-gutter));
-    margin-left: calc(-.5 * var(--dashboard-grid-gutter));
+    --gutter: 20px;
+    --columns: 1;
+    --row-height: 200px;
+    display: grid;
+    grid-template-columns: repeat(var(--columns), 1fr);
+    grid-gap: var(--gutter);
+    grid-auto-rows: var(--row-height);
 }
 
 // Items
 .dashboard-item {
-    --dashboard-item-height: 200px;
-    position: absolute;
-    z-index: 1;
-    padding: calc(.5 * var(--dashboard-grid-gutter));
-    width: 100%;
-    height: auto;
+    --dashboard-item-border-color: transparent;
+    --dashboard-item-border-radius: var(--typo3-component-border-radius);
+    --dashboard-item-bg: transparent;
+    --dashboard-item-active-border-color: var(--typo3-state-primary-border-color);
+    --dashboard-item-active-bg: color-mix(in srgb, transparent, var(--typo3-state-primary-bg) 10%);
+    --col-start: 1;
+    --col-span: 1;
+    --row-start: 1;
+    --row-span: 1;
+    contain: inline-size;
+    border-radius: var(--dashboard-item-border-radius);
+    background-color: var(--dashboard-item-bg);
+    grid-column: var(--col-start) / span var(--col-span);
+    grid-row: var(--row-start) / span var(--row-span);
+    outline-offset: -1px;
+    outline: 1px dashed var(--dashboard-item-border-color);
+    transition: outline .15s ease-out, background-color .15s ease-out;
 
-    @media screen and (min-width: 750px) {
-        width: 50%;
-        height: var(--dashboard-item-height);
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
     }
 
-    @media screen and (min-width: 1285px) {
-        width: 25%;
+    &-content {
+        position: relative;
+        width: 100%;
+        height: 100%;
     }
 
-    &.muuri-item-positioning {
-        z-index: 2;
-
-        .widget-remove {
-            display: none;
-        }
+    &-dragging {
+        --dashboard-item-border-color: var(--dashboard-item-active-border-color);
+        --dashboard-item-bg: var(--dashboard-item-active-bg);
     }
-
-    &.muuri-item-placeholder {
-        z-index: 2;
-        margin: 0;
-        opacity: .5;
-
-        .widget {
-            border: 1px dashed var(--token-color-neutral-60);
-        }
-
-        .widget-remove {
-            display: none;
-        }
-    }
-
-    &.muuri-item-dragging,
-    &.muuri-item-releasing {
-        z-index: 9999;
-    }
-
-    &.muuri-item-releasing {
-        .widget-remove {
-            display: none;
-        }
-    }
-
-    &.muuri-item-dragging {
-        cursor: move;
-    }
-
-    &.muuri-item-hidden {
-        z-index: 0;
-    }
-
-    &.widget-waiting {
-        line-height: var(--dashboard-item-height);
-    }
-}
-
-.dashboard-item--enableSelect {
-    user-select: auto !important;
-}
-
-.dashboard-item--h-medium {
-    @media screen and (min-width: 750px) {
-        height: calc(var(--dashboard-item-height) * 2);
-    }
-}
-
-.dashboard-item--h-large {
-    @media screen and (min-width: 750px) {
-        height: calc(var(--dashboard-item-height) * 3);
-    }
-}
-
-.dashboard-item--w-medium {
-    width: 100%;
-
-    @media screen and (min-width: 1285px) {
-        width: 50%;
-    }
-}
-
-.dashboard-item--w-large {
-    width: 100%;
-}
-
-.dashboard-item-content {
-    position: relative;
-    width: 100%;
-    height: 100%;
 }

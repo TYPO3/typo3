@@ -13,13 +13,25 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
+    gap: .5rem;
+}
+
+.dashboard-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .dashboard-tabs {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: .5rem;
+    gap: .25rem;
 }
 
 .dashboard-tabs-menu {
@@ -69,5 +81,9 @@
         --dashboard-header-tab-state-color: var(--dashboard-header-tab-active-color) !important;
         --dashboard-header-tab-state-bg: var(--dashboard-header-tab-active-bg) !important;
         border-bottom-color: var(--dashboard-header-tab-state-bg);
+    }
+
+    &:has(+ .btn-dashboard-add-tab) {
+        margin-inline-end: .25rem;
     }
 }

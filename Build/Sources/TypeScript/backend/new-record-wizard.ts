@@ -23,7 +23,7 @@ import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
-type RequestType = 'location'|'ajax'|undefined;
+type RequestType = 'location'|'ajax'|'event'|undefined;
 
 class Item {
   public visible: boolean = true;
@@ -33,10 +33,11 @@ class Item {
     public readonly label: string,
     public readonly description: string,
     public readonly icon: string,
-    public readonly url: string,
+    public readonly url: string | null,
     public readonly requestType: RequestType,
     public readonly defaultValues: Array<any>,
-    public readonly saveAndClose: boolean
+    public readonly saveAndClose: boolean,
+    public readonly event: string | null,
   ) { }
 
   public static fromData(data: DataItemInterface) {
@@ -45,10 +46,11 @@ class Item {
       data.label,
       data.description,
       data.icon,
-      data.url,
+      data.url ?? null,
       data.requestType ?? 'location',
       data.defaultValues ?? [],
       data.saveAndClose ?? false,
+      data.event ?? null
     );
   }
 
@@ -58,7 +60,7 @@ class Item {
   }
 }
 
-class Category {
+export class Category {
   public disabled: boolean = false;
 
   public constructor(
@@ -86,7 +88,7 @@ class Category {
   }
 }
 
-class Categories {
+export class Categories {
   public constructor(
     public readonly items: Category[],
   ) { }
@@ -112,10 +114,11 @@ interface DataItemInterface {
   label: string;
   description: string;
   icon: string;
-  url: string,
+  url: string | null,
   requestType: RequestType,
   defaultValues: Array<any> | undefined,
-  saveAndClose: boolean | undefined
+  saveAndClose: boolean | undefined,
+  event: string | null,
 }
 
 interface DataCategoryInterface {
@@ -124,7 +127,7 @@ interface DataCategoryInterface {
   items: DataItemInterface[];
 }
 
-interface DataCategoriesInterface {
+export interface DataCategoriesInterface {
   [key: string]: DataCategoryInterface;
 }
 
@@ -516,6 +519,17 @@ export class NewRecordWizard extends LitElement {
   }
 
   protected handleItemClick(item: Item): void {
+    if (item.requestType === 'event') {
+      const event = new CustomEvent(item.event, {
+        detail: {
+          item: item
+        }
+      });
+      this.dispatchEvent(event);
+      Modal.dismiss();
+      return;
+    }
+
     if (item.url.trim() === '') {
       return;
     }
@@ -552,6 +566,10 @@ export class NewRecordWizard extends LitElement {
       });
     }
   }
+}
+
+export interface NewRecordWizardItemSelectedEventInterface {
+  item: Item;
 }
 
 declare global {

@@ -15,7 +15,7 @@ return [
         'labels' => 'LLL:EXT:dashboard/Resources/Private/Language/locallang_mod.xlf',
         'routes' => [
             '_default' => [
-                'target' => DashboardController::class . '::handleRequest',
+                'target' => DashboardController::class . '::mainAction',
             ],
         ],
     ],

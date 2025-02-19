@@ -4,8 +4,9 @@
 }
 
 .dashboard-empty-content {
-    background-color: var(--typo3-surface-container-high);
-    border: 2px dashed var(--typo3-surface-container-highest);
+    background-color: var(--typo3-component-bg);
+    border: var(--typo3-component-border-width) dashed var(--typo3-component-border-color);
+    border-radius: var(--typo3-component-border-radius);
     padding: 2.5em;
     text-align: center;
 

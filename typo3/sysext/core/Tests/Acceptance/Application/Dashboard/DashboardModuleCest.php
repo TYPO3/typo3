@@ -29,7 +29,7 @@ final class DashboardModuleCest
     private static string $customDashboardTitle = 'My Custom Dashboard';
     private static string $dashboardActiveSelector = '.dashboard-tab--active';
     private static string $widgetTitle = 'Type of backend users';
-    private static string $widgetTitleSelector = '.widget-content-title';
+    private static string $widgetTitleSelector = '.widget-title';
 
     public function _before(ApplicationTester $I): void
     {
@@ -48,17 +48,17 @@ final class DashboardModuleCest
     public function createCustomDashboardAndWidgets(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         // Create Dashboard
-        $I->click('.js-dashboard-modal');
+        $I->click('.btn-dashboard-add-tab');
         $modalDialog->canSeeDialog();
-        $I->fillField('#dashboardModalAdd-title', self::$customDashboardTitle);
-        $I->click('label[for="dashboardKey-empty"]');
+        $I->fillField('#dashboard-form-add-title', self::$customDashboardTitle);
+        $I->click('label[for="dashboard-form-add-preset-empty"]');
         $I->click('button[name="save"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->switchToContentFrame();
         $I->see(self::$customDashboardTitle, self::$dashboardActiveSelector);
 
         // Add widget
-        $I->waitForElementVisible('.js-dashboard-addWidget');
-        $I->click('.js-dashboard-addWidget');
+        $I->waitForElementVisible('.btn-dashboard-add-widget');
+        $I->click('.btn-dashboard-add-widget');
         $modalDialog->canSeeDialog();
         $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"systemInfo\"]').click()");
         $I->executeJS("document.querySelector('" . ModalDialog::$openedModalSelector . " typo3-backend-new-record-wizard').shadowRoot.querySelector('[data-identifier=\"typeOfUsers\"]').click()");
@@ -73,15 +73,15 @@ final class DashboardModuleCest
     {
         // Delete widget
         $I->click(self::$customDashboardTitle, '.dashboard-tabs');
-        $I->waitForElementVisible('div[data-widget-key="typeOfUsers"] .widget-content-title');
-        $I->click('.js-dashboard-remove-widget');
+        $I->see('Type of backend users', self::$widgetTitleSelector);
+        $I->click('.widget-action-remove');
         $modalDialog->canSeeDialog();
         $I->click('button[name="delete"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->switchToContentFrame();
         $I->seeElement('.dashboard-empty-content');
 
         // Delete custom dashboard
-        $I->click('.js-dashboard-delete');
+        $I->click('button[title="Delete dashboard"]');
         $modalDialog->canSeeDialog();
         $I->click('button[name="delete"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->dontSee(self::$customDashboardTitle, self::$dashboardActiveSelector);

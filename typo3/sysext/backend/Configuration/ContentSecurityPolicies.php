@@ -29,8 +29,6 @@ return Map::fromEntries([
         new Mutation(MutationMode::Set, Directive::StyleSrcAttr, SourceKeyword::unsafeInline),
         // allow `data:` images
         new Mutation(MutationMode::Extend, Directive::ImgSrc, SourceScheme::data),
-        // muuri.js is creating workers from `blob:` (?!?)
-        new Mutation(MutationMode::Set, Directive::WorkerSrc, SourceKeyword::self, SourceScheme::blob),
         // `frame-src self` required for backend nav and list iframes
         new Mutation(MutationMode::Extend, Directive::FrameSrc, SourceKeyword::self),
         // deny `<base>` element which might be used for cross-origin targets

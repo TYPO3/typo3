@@ -13,6 +13,5 @@ return [
             ],
         ],
         '@typo3/dashboard/contrib/chartjs.js' => 'EXT:dashboard/Resources/Public/JavaScript/Contrib/chartjs.js',
-        'muuri' => 'EXT:dashboard/Resources/Public/JavaScript/Contrib/muuri.js',
     ],
 ];

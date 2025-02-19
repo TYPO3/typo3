@@ -110,6 +110,8 @@ export default {
             '@lit/reactive-element/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/reactive-element/',
             '@lit/task': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/task/index.js',
             '@lit/task/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit/task/',
+            '@lit-labs/motion': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit-labs/motion/index.js',
+            '@lit-labs/motion/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/@lit-labs/motion/',
             'lit': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit/index.js',
             'lit/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit/',
             'lit-element': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/lit-element/index.js',
@@ -191,7 +193,6 @@ export default {
 
             '@typo3/dashboard/': './typo3/sysext/dashboard/Resources/Public/JavaScript/',
             '@typo3/dashboard/contrib/chartjs.js': './typo3/sysext/dashboard/Resources/Public/JavaScript/Contrib/chartjs.js',
-            'muuri': './typo3/sysext/dashboard/Resources/Public/JavaScript/Contrib/muuri.js',
 
             '@typo3/extensionmanager/': './typo3/sysext/extensionmanager/Resources/Public/JavaScript/',
             '@typo3/lowlevel/': './typo3/sysext/lowlevel/Resources/Public/JavaScript/',

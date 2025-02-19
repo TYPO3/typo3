@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Dashboard;
 
-use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Localization\LanguageService;
 
 /**
@@ -28,7 +27,6 @@ class WidgetGroupInitializationService
     public function __construct(
         private readonly WidgetGroupRegistry $widgetGroupRegistry,
         private readonly WidgetRegistry $widgetRegistry,
-        private readonly UriBuilder $uriBuilder,
     ) {}
 
     /**
@@ -50,10 +48,8 @@ class WidgetGroupInitializationService
                     'icon' => $widgetConfiguration->getIconIdentifier(),
                     'label' => $this->getLanguageService()->sL($widgetConfiguration->getTitle()),
                     'description' => $this->getLanguageService()->sL($widgetConfiguration->getDescription()),
-                    'url' => (string)$this->uriBuilder->buildUriFromRoute('dashboard', ['action' => 'addWidget', 'widget' => $widgetIdentifier]),
-                    'requestType' => 'ajax',
-                    'defaultValues' => [],
-                    'saveAndClose' => true,
+                    'requestType' => 'event',
+                    'event' => 'typo3:dashboard:widget:add',
                 ];
             }
 

@@ -46,6 +46,9 @@ class DashboardRepository
         protected readonly ContainerInterface $container
     ) {}
 
+    /**
+     * @return Dashboard[]
+     */
     public function getDashboardsForUser(int $userId): array
     {
         $queryBuilder = $this->getQueryBuilder();
@@ -143,7 +146,7 @@ class DashboardRepository
     }
 
     /**
-     * @param string[] $widgets
+     * @param array<array<string, mixed>> $widgets
      */
     public function updateWidgetConfig(Dashboard $dashboard, array $widgets): void
     {

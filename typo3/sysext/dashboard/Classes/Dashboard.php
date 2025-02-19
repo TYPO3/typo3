@@ -37,8 +37,10 @@ class Dashboard
      */
     protected $widgetOptions = [];
 
+    protected ?object $widgetPositions = null;
+
     /**
-     * @param array<string,array<string,string>> $widgetConfig
+     * @param array<string,array<string,string|array>> $widgetConfig
      */
     public function __construct(
         protected readonly string $identifier,
@@ -71,6 +73,11 @@ class Dashboard
         return $this->widgets;
     }
 
+    public function getWidgetPositions(): object
+    {
+        return $this->widgetPositions ?? new \stdClass();
+    }
+
     /**
      * This will return a list of all widgets of the current dashboard object. It will only include available
      * widgets and will add the initialized object of the widget itself
@@ -78,6 +85,7 @@ class Dashboard
     public function initializeWidgets(ServerRequestInterface $request): void
     {
         $availableWidgets = $this->widgetRegistry->getAvailableWidgets();
+        $this->widgetPositions = new \stdClass();
         foreach ($this->widgetConfig as $hash => $widgetConfig) {
             $widgetConfigIdentifier = $widgetConfig['identifier'] ?? '';
             if ($widgetConfigIdentifier !== '' && array_key_exists($widgetConfigIdentifier, $availableWidgets)) {
@@ -85,7 +93,30 @@ class Dashboard
 
                 $widgetObject = $this->widgetRegistry->getAvailableWidget($request, $widgetConfigIdentifier);
                 $this->widgetOptions[$hash] = $widgetObject->getOptions();
+
+                $positions = $widgetConfig['positions'] ?? [];
+                foreach ($positions as $columnCount => $position) {
+                    if (!isset($position['height']) || !isset($position['width']) || !isset($position['x']) || !isset($position['y'])) {
+                        continue;
+                    }
+                    if (!isset($this->widgetPositions->{$columnCount})) {
+                        $this->widgetPositions->{$columnCount} = [];
+                    }
+                    $this->widgetPositions->{$columnCount}[] = [
+                        'identifier' => $hash,
+                        'height' => (int)$position['height'],
+                        'width' => (int)$position['width'],
+                        'x' => (int)$position['x'],
+                        'y' => (int)$position['y'],
+                    ];
+                }
             }
+        }
+        foreach (array_keys(get_object_vars($this->widgetPositions)) as $columnCount) {
+            usort(
+                $this->widgetPositions->{$columnCount},
+                static fn(array $a, array $b): int => $a['y'] !== $b['y'] ? $a['y'] - $b['y'] : $a['x'] - $b['x']
+            );
         }
     }
 
