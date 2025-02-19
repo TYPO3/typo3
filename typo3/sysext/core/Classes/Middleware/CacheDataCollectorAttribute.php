@@ -33,6 +33,14 @@ use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
  */
 class CacheDataCollectorAttribute implements MiddlewareInterface
 {
+    /**
+     * The maximum length of the X-TYPO3-Cache-Tags header.
+     * Prevents exceeding the maximum header size of 8kB.
+     * Some web servers (e.g. nginx or apache2) have a default
+     * limit of 8kB for the size of a single header.
+     */
+    private const MAX_CACHE_TAGS_HEADER_LENGTH = 8000;
+
     private ?CacheDataCollector $cacheDataCollector = null;
 
     /**
@@ -54,7 +62,9 @@ class CacheDataCollectorAttribute implements MiddlewareInterface
         if ($this->isDebugModeEnabled()) {
             $cacheTags = array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $this->cacheDataCollector->getCacheTags());
             sort($cacheTags);
-            $response = $response->withHeader('X-TYPO3-Cache-Tags', implode(',', $cacheTags));
+            foreach (explode(PHP_EOL, wordwrap(implode(' ', $cacheTags), self::MAX_CACHE_TAGS_HEADER_LENGTH)) as $delta => $tags) {
+                $response = $response->withHeader('X-TYPO3-Cache-Tags' . ($delta > 0 ? '-' . $delta : ''), $tags);
+            }
             $response = $response->withHeader('X-TYPO3-Cache-Lifetime', (string)$this->cacheDataCollector->resolveLifetime());
         }
         foreach ($this->cacheDataCollector->getCacheEntries() as $deferredCacheItem) {
