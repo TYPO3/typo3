@@ -66,6 +66,7 @@ class ServiceProvider extends AbstractServiceProvider
             Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
             Charset\CharsetConverter::class => self::getCharsetConverter(...),
             Charset\CharsetProvider::class => self::getCharsetProvider(...),
+            Configuration\Features::class => self::getFeatures(...),
             Configuration\Loader\YamlFileLoader::class => self::getYamlFileLoader(...),
             Configuration\SiteWriter::class => self::getSiteWriter(...),
             Command\ListCommand::class => self::getListCommand(...),
@@ -89,6 +90,7 @@ class ServiceProvider extends AbstractServiceProvider
             Http\Client\GuzzleClientFactory::class => self::getGuzzleClientFactory(...),
             Http\MiddlewareStackResolver::class => self::getMiddlewareStackResolver(...),
             Http\RequestFactory::class => self::getRequestFactory(...),
+            Http\Security\ReferrerEnforcer::class => self::getReferrerEnforcer(...),
             Imaging\IconFactory::class => self::getIconFactory(...),
             Imaging\IconRegistry::class => self::getIconRegistry(...),
             Localization\LanguageServiceFactory::class => self::getLanguageServiceFactory(...),
@@ -197,6 +199,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getCharsetProvider(ContainerInterface $container): Charset\CharsetProvider
     {
         return self::new($container, Charset\CharsetProvider::class);
+    }
+
+    public static function getFeatures(ContainerInterface $container): Configuration\Features
+    {
+        return self::new($container, Configuration\Features::class);
     }
 
     public static function getYamlFileLoader(ContainerInterface $container): Configuration\Loader\YamlFileLoader
@@ -629,6 +636,11 @@ class ServiceProvider extends AbstractServiceProvider
         return new Http\RequestFactory(
             $container->get(Http\Client\GuzzleClientFactory::class)
         );
+    }
+
+    public static function getReferrerEnforcer(ContainerInterface $container): Http\Security\ReferrerEnforcer
+    {
+        return self::new($container, Http\Security\ReferrerEnforcer::class);
     }
 
     public static function getMiddlewareStackResolver(ContainerInterface $container): Http\MiddlewareStackResolver

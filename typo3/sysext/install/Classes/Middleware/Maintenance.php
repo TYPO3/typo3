@@ -336,7 +336,7 @@ class Maintenance implements MiddlewareInterface
         if (!(new Features())->isFeatureEnabled('security.backend.enforceReferrer')) {
             return null;
         }
-        return (new ReferrerEnforcer($request))->handle([
+        return (new ReferrerEnforcer())->handle($request, [
             'flags' => ['refresh-always'],
             'subject' => 'Install Tool',
         ]);

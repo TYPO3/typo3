@@ -28,8 +28,10 @@ use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassInvokeFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherClassWithoutInvokeFixture;
 use TYPO3\CMS\Backend\Tests\Unit\Http\Fixtures\RouteDispatcherStaticClassFixture;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\FormProtection\AbstractFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
+use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -61,7 +63,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => 42]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 
@@ -88,7 +97,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 
@@ -114,7 +130,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 
@@ -138,7 +161,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 
@@ -163,7 +193,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1520756623);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 
@@ -187,7 +224,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 
@@ -211,7 +255,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 
@@ -235,7 +286,14 @@ final class RouteDispatcherTest extends UnitTestCase
         $route = new Route('not important', ['access' => 'public', 'target' => $target]);
         $request = (new ServerRequest())->withAttribute('route', $route);
 
-        $subject = new RouteDispatcher($formProtectionFactory, $accessFactoryMock, $accessStorageMock, $containerMock);
+        $subject = new RouteDispatcher(
+            $formProtectionFactory,
+            $accessFactoryMock,
+            $accessStorageMock,
+            new Features(),
+            new ReferrerEnforcer(),
+            $containerMock
+        );
         $subject->dispatch($request);
     }
 }

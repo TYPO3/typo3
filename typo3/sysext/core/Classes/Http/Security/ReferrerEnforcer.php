@@ -34,41 +34,21 @@ class ReferrerEnforcer
     private const TYPE_REFERRER_SAME_SITE = 2;
     private const TYPE_REFERRER_SAME_ORIGIN = 4;
 
-    /**
-     * @var ServerRequestInterface
-     */
-    protected $request;
-
-    /**
-     * @var string
-     */
-    protected $requestHost;
-
-    /**
-     * @var string
-     */
-    protected $requestDir;
-
-    public function __construct(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request, array $options): ?ResponseInterface
     {
-        $this->request = $request;
-        $this->requestHost = rtrim($this->resolveRequestHost($request), '/') . '/';
-        $this->requestDir = $this->resolveRequestDir($request);
-    }
-
-    public function handle(?array $options = null): ?ResponseInterface
-    {
-        $referrerType = $this->resolveReferrerType();
+        $requestHost = rtrim($this->resolveRequestHost($request), '/') . '/';
+        $requestDir = $this->resolveRequestDir($request);
+        $referrerType = $this->resolveReferrerType($request, $requestHost, $requestDir);
         // valid referrer, no more actions required
         if ($referrerType & self::TYPE_REFERRER_SAME_ORIGIN) {
             return null;
         }
         $flags = $options['flags'] ?? [];
         $expiration = $options['expiration'] ?? 5;
-        $nonce = $this->request->getAttribute('nonce');
+        $nonce = $request->getAttribute('nonce');
         // referrer is missing and route requested to refresh
         // (created HTML refresh to enforce having referrer)
-        if (($this->request->getQueryParams()['referrer-refresh'] ?? 0) <= time()
+        if (($request->getQueryParams()['referrer-refresh'] ?? 0) <= time()
             && (
                 in_array('refresh-always', $flags, true)
                 || ($referrerType & self::TYPE_REFERRER_EMPTY && in_array('refresh-empty', $flags, true))
@@ -76,7 +56,7 @@ class ReferrerEnforcer
             )
         ) {
             $refreshParameter = 'referrer-refresh=' . (time() + $expiration);
-            $refreshUri = $this->request->getUri();
+            $refreshUri = $request->getUri();
             $query = $refreshUri->getQuery();
             $refreshUri = $refreshUri->withQuery(
                 $query !== '' ? $query . '&' . $refreshParameter : $refreshParameter
@@ -120,17 +100,17 @@ class ReferrerEnforcer
         return PathUtility::getPublicResourceWebPath($target);
     }
 
-    protected function resolveReferrerType(): int
+    protected function resolveReferrerType(ServerRequestInterface $request, string $requestHost, string $requestDir): int
     {
-        $referrer = $this->request->getServerParams()['HTTP_REFERER'] ?? '';
+        $referrer = $request->getServerParams()['HTTP_REFERER'] ?? '';
         if ($referrer === '') {
             return self::TYPE_REFERRER_EMPTY;
         }
-        if (str_starts_with($referrer, $this->requestDir)) {
+        if (str_starts_with($referrer, $requestDir)) {
             // same-origin implies same-site
             return self::TYPE_REFERRER_SAME_ORIGIN | self::TYPE_REFERRER_SAME_SITE;
         }
-        if (str_starts_with($referrer, $this->requestHost)) {
+        if (str_starts_with($referrer, $requestHost)) {
             return self::TYPE_REFERRER_SAME_SITE;
         }
         return 0;

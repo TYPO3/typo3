@@ -32,12 +32,14 @@ use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
 use TYPO3\CMS\Core\Cache\Event\CacheWarmupEvent;
 use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Exception as CoreException;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\MiddlewareDispatcher;
 use TYPO3\CMS\Core\Http\MiddlewareStackResolver;
+use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
@@ -113,6 +115,8 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(FormProtectionFactory::class),
             $container->get(AccessFactory::class),
             $container->get(AccessStorage::class),
+            $container->get(Features::class),
+            $container->get(ReferrerEnforcer::class),
             $container,
         ]);
     }

@@ -44,6 +44,8 @@ class RouteDispatcher extends Dispatcher
         protected readonly FormProtectionFactory $formProtectionFactory,
         protected readonly AccessFactory $factory,
         protected readonly AccessStorage $storage,
+        protected readonly Features $features,
+        protected readonly ReferrerEnforcer $referrerEnforcer,
         ContainerInterface $container,
     ) {
         parent::__construct($container);
@@ -89,19 +91,20 @@ class RouteDispatcher extends Dispatcher
      */
     protected function enforceReferrer(ServerRequestInterface $request, Route $route): ?ResponseInterface
     {
-        $features = GeneralUtility::makeInstance(Features::class);
-        if (!$features->isFeatureEnabled('security.backend.enforceReferrer')) {
+        if (!$this->features->isFeatureEnabled('security.backend.enforceReferrer')) {
             return null;
         }
         $referrerFlags = GeneralUtility::trimExplode(',', $route->getOption('referrer') ?? '', true);
         if (!in_array('required', $referrerFlags, true)) {
             return null;
         }
-        $referrerEnforcer = GeneralUtility::makeInstance(ReferrerEnforcer::class, $request);
-        return $referrerEnforcer->handle([
-            'flags' => $referrerFlags,
-            'subject' => $route->getPath(),
-        ]);
+        return $this->referrerEnforcer->handle(
+            $request,
+            [
+                'flags' => $referrerFlags,
+                'subject' => $route->getPath(),
+            ]
+        );
     }
 
     /**

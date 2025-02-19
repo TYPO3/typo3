@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Http\NormalizedParams;
 use TYPO3\CMS\Core\Http\Security\InvalidReferrerException;
 use TYPO3\CMS\Core\Http\Security\MissingReferrerException;
 use TYPO3\CMS\Core\Http\Security\ReferrerEnforcer;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ConsumableNonce;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -48,7 +49,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login', // requestUri
                 'https://example.org/typo3/index.php', // referrer
-                null, // options
+                [], // options
                 null, // response
             ],
             [
@@ -79,7 +80,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login?query=parameter',
                 'https://example.org/typo3/index.php',
-                null,
+                [],
                 null,
             ],
             [
@@ -110,14 +111,15 @@ final class ReferrerEnforcerTest extends UnitTestCase
     }
 
     /**
-     * @param string[]|null $options
+     * @param string[] $options
      */
     #[DataProvider('validReferrerIsHandledDataProvider')]
     #[Test]
-    public function validReferrerIsHandled(string $requestUri, string $referrer, ?array $options, ?string $expectedResponse): void
+    public function validReferrerIsHandled(string $requestUri, string $referrer, array $options, ?string $expectedResponse): void
     {
-        $subject = $this->buildSubject($requestUri, $referrer);
-        $response = $subject->handle($options);
+        $subject = $this->buildSubject();
+        $request = $this->buildPreparedRequest($requestUri, $referrer);
+        $response = $subject->handle($request, $options);
 
         if ($expectedResponse === null) {
             self::assertNull($response);
@@ -132,7 +134,7 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login', // requestUri
                 'https://example.org/?eID=handler', // referrer
-                null, // options
+                [], // options
             ],
             [
                 'https://example.org/typo3/login',
@@ -147,22 +149,23 @@ final class ReferrerEnforcerTest extends UnitTestCase
             [
                 'https://example.org/typo3/login',
                 'https://other-example.site/security/',
-                null,
+                [],
             ],
         ];
     }
 
     /**
-     * @param string[]|null $options
+     * @param string[] $options
      */
     #[DataProvider('invalidReferrerIsHandledDataProvider')]
     #[Test]
-    public function invalidReferrerIsHandled(string $requestUri, string $referrer, ?array $options): void
+    public function invalidReferrerIsHandled(string $requestUri, string $referrer, array $options): void
     {
         $this->expectException(InvalidReferrerException::class);
         $this->expectExceptionCode(1588095936);
-        $subject = $this->buildSubject($requestUri, $referrer);
-        $subject->handle($options);
+        $subject = $this->buildSubject();
+        $request = $this->buildPreparedRequest($requestUri, $referrer);
+        $subject->handle($request, $options);
     }
 
     #[Test]
@@ -170,30 +173,41 @@ final class ReferrerEnforcerTest extends UnitTestCase
     {
         $this->expectException(MissingReferrerException::class);
         $this->expectExceptionCode(1588095935);
-        $subject = $this->buildSubject(
+        $subject = $this->buildSubject();
+        $request = $this->buildPreparedRequest(
             'https://example.org/typo3/login',
             ''
         );
-        $subject->handle();
+        $subject->handle($request, []);
     }
 
     #[Test]
     public function nonceIsAppliedToResponse(): void
     {
         $nonce = new ConsumableNonce();
-        $subject = $this->buildSubject(
+        $subject = $this->buildSubject();
+        $request = $this->buildPreparedRequest(
             'https://example.org/typo3/login',
             '',
             $nonce
         );
-        $response = $subject->handle(['flags' => ['refresh-always']]);
+        $response = $subject->handle($request, ['flags' => ['refresh-always']]);
         self::assertStringContainsString(
             'nonce="' . htmlspecialchars($nonce->value) . '">',
             (string)$response->getBody()
         );
     }
 
-    private function buildSubject(string $requestUri, string $referrer, ?ConsumableNonce $nonce = null): ReferrerEnforcer
+    private function buildSubject(): ReferrerEnforcer
+    {
+        $mock = $this->getMockBuilder(ReferrerEnforcer::class)
+            ->onlyMethods(['resolveAbsoluteWebPath'])
+            ->getMock();
+        $mock->method('resolveAbsoluteWebPath')->willReturnCallback(static fn(string $target): string => '/' . $target);
+        return $mock;
+    }
+
+    private function buildPreparedRequest(string $requestUri, string $referrer, ?ConsumableNonce $nonce = null): ServerRequestInterface
     {
         $requestUriInstance = new Uri($requestUri);
         $host = sprintf(
@@ -207,21 +221,15 @@ final class ReferrerEnforcerTest extends UnitTestCase
         $normalizedParams = $this->createMock(NormalizedParams::class);
         $normalizedParams->method('getRequestHost')->willReturn($host);
         $normalizedParams->method('getRequestDir')->willReturn($dir);
-        $request = $this->createMock(ServerRequestInterface::class);
-        $request->method('getAttribute')->willReturnCallback(static fn(string $name): mixed => match ($name) {
-            'normalizedParams' => $normalizedParams,
-            'nonce' => $nonce,
-            default => null,
-        });
-        $request->method('getServerParams')->willReturn(['HTTP_REFERER' => $referrer]);
-        $request->method('getUri')->willReturn($requestUriInstance);
-        $request->method('getQueryParams')->willReturn($queryParams);
-
-        $mock = $this->getMockBuilder(ReferrerEnforcer::class)
-            ->onlyMethods(['resolveAbsoluteWebPath'])
-            ->setConstructorArgs([$request])
-            ->getMock();
-        $mock->method('resolveAbsoluteWebPath')->willReturnCallback(static fn(string $target): string => '/' . $target);
-        return $mock;
+        $request = new ServerRequest(
+            $requestUriInstance,
+            null,
+            null,
+            [],
+            ['HTTP_REFERER' => $referrer]
+        );
+        return $request
+            ->withAttribute('normalizedParams', $normalizedParams)
+            ->withAttribute('nonce', $nonce);
     }
 }
