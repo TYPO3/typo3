@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Resource\Processing;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
@@ -55,13 +56,38 @@ final class LocalPreviewHelperTest extends UnitTestCase
         $localPreviewHelper->process($task);
     }
 
+    public static function processDoesNotScaleUpImagesDataProvider(): array
+    {
+        return [
+            '20x20 to 30x30 not scaled up (both dimensions below limit)' => [
+                'width' => 20,
+                'height' => 20,
+                'requestedWidth' => 30,
+                'requestedHeight' => 30,
+            ],
+            '20x200 to 30x30 not scaled up (width below limit)' => [
+                'width' => 20,
+                'height' => 200,
+                'requestedWidth' => 30,
+                'requestedHeight' => 30,
+            ],
+            '200x20 to 30x30 not scaled up (height below limit)' => [
+                'width' => 200,
+                'height' => 20,
+                'requestedWidth' => 30,
+                'requestedHeight' => 30,
+            ],
+        ];
+    }
+
+    #[DataProvider('processDoesNotScaleUpImagesDataProvider')]
     #[Test]
-    public function processDoesNotScaleUpImages(): void
+    public function processDoesNotScaleUpImages(int $width, int $height, int $requestedWidth, int $requestedHeight): void
     {
         $file = $this->createMock(File::class);
         $file->method('getProperty')->willReturnMap([
-            ['width', 20],
-            ['height', 20],
+            ['width', $width],
+            ['height', $height],
         ]);
 
         $localPreviewHelper = $this->getMockBuilder(LocalPreviewHelper::class)
@@ -71,11 +97,11 @@ final class LocalPreviewHelperTest extends UnitTestCase
 
         $task = $this->createMock(TaskInterface::class);
         $task->expects(self::once())->method('getSourceFile')->willReturn($file);
-        $task->expects(self::once())->method('getConfiguration')->willReturn(['width' => 30, 'height' => 30]);
+        $task->expects(self::once())->method('getConfiguration')->willReturn(['width' => $requestedWidth, 'height' => $requestedHeight]);
 
         self::assertNull($localPreviewHelper->process($task));
+        // Note: Functional test in @see TYPO3\CMS\Fluid\Tests\Functional\ViewHelpers\ImageViewHelperTest->noUpScaling()
     }
-
     #[Test]
     public function processGeneratesPreviewEvenIfSourceFileHasNoSize(): void
     {

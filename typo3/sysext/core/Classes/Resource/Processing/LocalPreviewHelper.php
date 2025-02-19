@@ -82,10 +82,15 @@ class LocalPreviewHelper
         $task->sanitizeConfiguration();
         $configuration = $task->getConfiguration();
 
-        // Do not scale up if the source file has a size and the target size is larger
+        // Do not scale up, if the source file has dimensions and any target dimension (width/height) is larger
+        // This is related to $TYPO3_CONF_VARS['GFX']['processor_allowUpscaling'] = false to ensure the original
+        // file can be used (instead of getting processed)
         if ($sourceFile->getProperty('width') > 0 && $sourceFile->getProperty('height') > 0
-            && $configuration['width'] > $sourceFile->getProperty('width')
-            && $configuration['height'] > $sourceFile->getProperty('height')) {
+            && (
+                $configuration['width'] > $sourceFile->getProperty('width')
+                || $configuration['height'] > $sourceFile->getProperty('height')
+            )
+        ) {
             return null;
         }
 

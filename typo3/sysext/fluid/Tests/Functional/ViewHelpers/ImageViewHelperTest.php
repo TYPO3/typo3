@@ -277,6 +277,47 @@ final class ImageViewHelperTest extends FunctionalTestCase
         self::assertEquals($expectedHeight, $height, 'height of generated image does not match expected height');
     }
 
+    public static function noUpScalingDataProvider(): \Generator
+    {
+        yield 'no upscaling (both target dimensions above actual dimensions)' => [
+            '<f:image src="fileadmin/ImageViewHelperTest.jpg"  width="800" height="800" />',
+            '@^<img src="(fileadmin/ImageViewHelperTest\.jpg)" width="400" height="300" alt="" />$@',
+            400,
+            300,
+        ];
+        yield 'no upscaling (width exceeds target dimension)' => [
+            '<f:image src="fileadmin/ImageViewHelperTest.jpg"  width="800" height="80" />',
+            '@^<img src="(fileadmin/ImageViewHelperTest\.jpg)" width="400" height="300" alt="" />$@',
+            400,
+            300,
+        ];
+        yield 'no upscaling (height exceeds target dimension)' => [
+            '<f:image src="fileadmin/ImageViewHelperTest.jpg"  width="80" height="800" />',
+            '@^<img src="(fileadmin/ImageViewHelperTest\.jpg)" width="400" height="300" alt="" />$@',
+            400,
+            300,
+        ];
+    }
+
+    #[DataProvider('noUpScalingDataProvider')]
+    #[Test]
+    public function noUpScaling(string $template, string $expected, int $expectedWidth, int $expectedHeight): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['GFX']['processor_allowUpscaling'] = false;
+        $context = $this->get(RenderingContextFactory::class)->create();
+        $context->getTemplatePaths()->setTemplateSource($template);
+        $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(1));
+        $result = (new TemplateView($context))->render();
+        echo "\n" . $result . "\n";
+        self::assertMatchesRegularExpression($expected, $result);
+
+        $matches = [];
+        preg_match($expected, $result, $matches);
+        [$width, $height] = getimagesize($this->instancePath . '/' . $matches[1]);
+        self::assertEquals($expectedWidth, $width, 'width of generated image does not match expected width');
+        self::assertEquals($expectedHeight, $height, 'height of generated image does not match expected height');
+    }
+
     public static function cropVariantDataProvider(): \Generator
     {
         yield 'crop false' => [
