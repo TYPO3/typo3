@@ -22,6 +22,9 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Cache\CacheDataCollectorInterface;
+use TYPO3\CMS\Core\Cache\CacheTag;
+use TYPO3\CMS\Core\Http\Response;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Middleware\CacheDataCollectorAttribute;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -45,4 +48,75 @@ final class CacheTagsAttributeTest extends UnitTestCase
         $middleware = new CacheDataCollectorAttribute();
         $middleware->process($requestMock, $requestHandlerMock);
     }
+
+    #[Test]
+    public function cacheTagsAreExposedWithHeader(): void
+    {
+        $request = new ServerRequest();
+        $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
+        $requestHandlerMock
+            ->expects(self::once())
+            ->method('handle')
+            ->willReturnCallback(
+                function (ServerRequestInterface $request) {
+                    $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+                    $cacheDataCollector->addCacheTags(
+                        ...array_map(
+                            fn(int $n): CacheTag => new CacheTag(
+                                sprintf('tx_meineextension_domain_model_mitglied_%d', $n)
+                            ),
+                            range(0, 100)
+                        )
+                    );
+                    return new Response();
+                }
+            );
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = true;
+        $middleware = new CacheDataCollectorAttribute();
+        $response = $middleware->process($request, $requestHandlerMock);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = false;
+
+        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags'));
+        self::assertFalse($response->hasHeader('X-TYPO3-Cache-Tags-1'));
+        self::assertTrue(strlen($response->getHeaderLine('X-TYPO3-Cache-Tags')) < 8000);
+    }
+
+    #[Test]
+    public function cacheTagsAreSplitIntoMultipleHeader(): void
+    {
+        $request = new ServerRequest();
+        $requestHandlerMock = $this->createMock(RequestHandlerInterface::class);
+        $requestHandlerMock
+            ->expects(self::once())
+            ->method('handle')
+            ->willReturnCallback(
+                function (ServerRequestInterface $request) {
+                    $cacheDataCollector = $request->getAttribute('frontend.cache.collector');
+                    $cacheDataCollector->addCacheTags(
+                        ...array_map(
+                            fn(int $n): CacheTag => new CacheTag(
+                                sprintf('tx_meineextension_domain_model_mitglied_%d', $n)
+                            ),
+                            range(0, 1000)
+                        )
+                    );
+                    return new Response();
+                }
+            );
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = true;
+        $middleware = new CacheDataCollectorAttribute();
+        $response = $middleware->process($request, $requestHandlerMock);
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['debug'] = false;
+
+        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags'));
+        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-1'));
+        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-2'));
+        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-3'));
+        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-3'));
+        self::assertTrue($response->hasHeader('X-TYPO3-Cache-Tags-5'));
+        self::assertTrue(strlen($response->getHeaderLine('X-TYPO3-Cache-Tags')) < 8000);
+    }
+
 }
