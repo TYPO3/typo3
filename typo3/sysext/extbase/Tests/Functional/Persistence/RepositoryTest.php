@@ -20,9 +20,8 @@ namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
-use TYPO3\CMS\Core\Http\ServerRequest;
-use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
+use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -33,6 +32,80 @@ final class RepositoryTest extends FunctionalTestCase
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
+
+    #[Test]
+    public function constructSetsObjectTypeFromClassName(): void
+    {
+        $subject = $this->get(PostRepository::class);
+        $reflectionClass = new \ReflectionClass($subject);
+        $reflectionProperty = $reflectionClass->getProperty('objectType');
+        $objectType = $reflectionProperty->getValue($subject);
+        self::assertSame(Post::class, $objectType);
+    }
+
+    #[Test]
+    public function createQuerySetsDefaultOrderingIfDefined(): void
+    {
+        $subject = $this->get(PostRepository::class);
+        $orderings = ['foo' => QueryInterface::ORDER_ASCENDING];
+        $subject->setDefaultOrderings($orderings);
+        $query = $subject->createQuery();
+        self::assertSame($orderings, $query->getOrderings());
+        $subject->setDefaultOrderings([]);
+        $query = $subject->createQuery();
+        self::assertSame([], $query->getOrderings());
+    }
+
+    #[Test]
+    public function createQueryReturnsQueryWithUnmodifiedDefaultQuerySettings(): void
+    {
+        $mockDefaultQuerySettings = $this->createMock(QuerySettingsInterface::class);
+        $subject = $this->get(PostRepository::class);
+        $subject->setDefaultQuerySettings($mockDefaultQuerySettings);
+        $query = $subject->createQuery();
+        $instanceQuerySettings = $query->getQuerySettings();
+        self::assertEquals($mockDefaultQuerySettings, $instanceQuerySettings);
+        self::assertNotSame($mockDefaultQuerySettings, $instanceQuerySettings);
+    }
+
+    #[Test]
+    public function addChecksObjectType(): void
+    {
+        $this->expectException(IllegalObjectTypeException::class);
+        $this->expectExceptionCode(1248363335);
+        $subject = $this->get(PostRepository::class);
+        /** @phpstan-ignore-next-line */
+        $subject->add(new \stdClass());
+    }
+
+    #[Test]
+    public function removeChecksObjectType(): void
+    {
+        $this->expectException(IllegalObjectTypeException::class);
+        $this->expectExceptionCode(1248363336);
+        $subject = $this->get(PostRepository::class);
+        /** @phpstan-ignore-next-line */
+        $subject->remove(new \stdClass());
+    }
+
+    #[Test]
+    public function updateChecksObjectType(): void
+    {
+        $this->expectException(IllegalObjectTypeException::class);
+        $this->expectExceptionCode(1249479625);
+        $subject = $this->get(PostRepository::class);
+        /** @phpstan-ignore-next-line */
+        $subject->update(new \stdClass());
+    }
+
+    #[Test]
+    public function findAllReturnsResults(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
+        $subject = $this->get(PostRepository::class);
+        $result = $subject->findAll();
+        self::assertCount(14, $result);
+    }
 
     public static function findByRespectsSingleCriteriaDataProvider(): \Generator
     {
@@ -55,10 +128,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findByRespectsSingleCriteria(array $criteria, int $expectedCount): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         self::assertCount($expectedCount, $this->get(PostRepository::class)->findBy($criteria));
     }
 
@@ -66,10 +135,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findByRespectsMultipleCriteria(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         self::assertCount(6, $this->get(PostRepository::class)->findBy(['blog' => 1, 'author' => 1]));
     }
 
@@ -77,10 +142,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findByRespectsSingleOrderBy(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         $posts = $this->get(PostRepository::class)->findBy(
             ['blog' => 1, 'author' => 1],
             ['title' => QueryInterface::ORDER_DESCENDING]
@@ -103,10 +164,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findByRespectsMultipleOrderBy(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         $posts = $this->get(PostRepository::class)->findBy(
             [],
             ['blog.uid' => QueryInterface::ORDER_ASCENDING, 'title' => QueryInterface::ORDER_DESCENDING]
@@ -181,10 +238,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findByRespectsLimit(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         $posts = $this->get(PostRepository::class)->findBy(
             ['author' => 1],
             ['uid' => QueryInterface::ORDER_DESCENDING],
@@ -214,10 +267,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findByRespectsOffset(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         $posts = $this->get(PostRepository::class)->findBy(
             ['author' => 1],
             ['uid' => QueryInterface::ORDER_DESCENDING],
@@ -261,10 +310,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findOneByRespectsSingleCriteria(array $criteria, ?int $expectedUid): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         /** @var Post|null $post */
         $post = $this->get(PostRepository::class)->findOneBy($criteria);
         self::assertSame($expectedUid, $post?->getUid());
@@ -275,10 +320,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findOneByRespectsMultipleCriteria(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         $post = $this->get(PostRepository::class)->findOneBy(['blog' => 1, 'author' => 1]);
         self::assertSame('Post4', $post?->getTitle());
     }
@@ -287,10 +328,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function findOneByRespectsOrderBy(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         $post = $this->get(PostRepository::class)->findOneBy(
             ['blog' => 1, 'author' => 1],
             ['title' => QueryInterface::ORDER_DESCENDING]
@@ -302,10 +339,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function countRespectsSingleCriteria(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         self::assertSame(
             10,
             $this->get(PostRepository::class)->count(
@@ -318,10 +351,6 @@ final class RepositoryTest extends FunctionalTestCase
     public function countRespectsMultipleCriteria(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
-        // Init ConfigurationManagerInterface stateful singleton, usually done by extbase bootstrap
-        $this->get(ConfigurationManagerInterface::class)->setRequest(
-            (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE)
-        );
         self::assertSame(
             1,
             $this->get(PostRepository::class)->count(

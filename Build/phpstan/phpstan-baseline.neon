@@ -2863,12 +2863,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Unit/Mvc/Controller/MvcPropertyMappingConfigurationServiceTest.php
 
 		-
-			message: '#^Parameter \#1 \$object of method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Backend\:\:getIdentifierByObject\(\) expects object, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/BackendTest.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Extbase\\Persistence\\PersistenceManagerInterface\:\:expects\(\)\.$#'
 			identifier: method.notFound
 			count: 4
@@ -2909,36 +2903,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 6
 			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/Generic/Typo3QuerySettingsTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Persistence\\\\RepositoryInterface'' and PHPUnit\\Framework\\MockObject\\MockObject&TYPO3\\CMS\\Extbase\\Persistence\\Repository&TYPO3\\TestingFramework\\Core\\AccessibleObjectInterface will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: '#^Parameter \#1 \$modifiedObject of method TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface\>\:\:update\(\) expects TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface, stdClass given\.$#'
-			identifier: argument.type
-			count: 3
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: '#^Parameter \#1 \$object of method TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface\>\:\:add\(\) expects TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface, stdClass given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: '#^Parameter \#1 \$object of method TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface\>\:\:remove\(\) expects TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface, stdClass given\.$#'
-			identifier: argument.type
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
-
-		-
-			message: '#^Parameter \#1 \$uid of method TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3\\CMS\\Extbase\\DomainObject\\DomainObjectInterface\>\:\:findByUid\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Unit/Persistence/RepositoryTest.php
 
 		-
 			message: '#^Parameter \#2 \$key of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:getConfigurationValue\(\) expects string, int given\.$#'

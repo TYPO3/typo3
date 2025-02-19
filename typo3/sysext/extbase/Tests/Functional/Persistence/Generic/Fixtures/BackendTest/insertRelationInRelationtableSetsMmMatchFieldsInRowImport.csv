@@ -1,0 +1,13 @@
+tx_blogexample_domain_model_blog
+,uid,pid,title,description,logo,l18n_diffsource,deleted,posts,administrator,categories,t3ver_oid,t3ver_state,t3ver_wsid,hidden
+,1,0,Blog1,"Blog1 Description",0,,0,1,0,0,0,0,0,0
+tx_blogexample_domain_model_tag
+,uid,pid,items,name,deleted
+,1,0,1,Tag1,0
+,2,0,2,Tag2,0
+tx_blogexample_domain_model_post
+,uid,pid,blog,title,deleted,tags
+,1,0,1,Post1,0,1
+tx_blogexample_domain_model_tag_mm
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,1,tx_blogexample_domain_model_post,tags,0,0

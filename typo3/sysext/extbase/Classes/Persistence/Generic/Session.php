@@ -21,6 +21,9 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
 /**
  * The persistence session - acts as a Unit of Work for Extbase persistence framework.
+ *
+ * Warning: This is a stateful-shared service!
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
 class Session

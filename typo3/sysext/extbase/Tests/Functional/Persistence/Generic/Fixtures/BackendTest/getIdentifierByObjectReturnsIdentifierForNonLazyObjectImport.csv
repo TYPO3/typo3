@@ -1,0 +1,3 @@
+tx_blogexample_domain_model_post
+,uid,pid,blog,title,deleted,tags
+,1,0,1,Post1,0,1

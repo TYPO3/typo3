@@ -18,10 +18,10 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Configuration\Exception\NoServerRequestGivenException;
@@ -40,6 +40,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapFactory;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface as StorageBackendInterface;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\PersistenceManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
@@ -50,30 +51,29 @@ use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 /**
  * A persistence backend. This backend maps objects to the relational model of the storage backend.
  * It persists all added, removed and changed objects.
+ *
+ * Warning: This is a stateful-shared service!
+ *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Backend implements BackendInterface, SingletonInterface
+#[Autoconfigure(public: true)]
+class Backend implements BackendInterface
 {
     protected PersistenceManagerInterface $persistenceManager;
     protected ObjectStorage $aggregateRootObjects;
     protected ObjectStorage $deletedEntities;
     protected ObjectStorage $changedEntities;
     protected ObjectStorage $visitedDuringPersistence;
-    protected ReferenceIndex $referenceIndex;
 
-    /**
-     * Constructs the backend
-     * @todo Refactor unit tests, so all promoted properties can be readonly
-     */
     public function __construct(
         protected readonly ConfigurationManagerInterface $configurationManager,
-        protected Session $session,
+        protected readonly Session $session,
         protected readonly ReflectionService $reflectionService,
-        protected \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend,
-        protected DataMapFactory $dataMapFactory,
-        protected readonly EventDispatcherInterface $eventDispatcher
+        protected readonly StorageBackendInterface $storageBackend,
+        protected readonly DataMapFactory $dataMapFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly ReferenceIndex $referenceIndex,
     ) {
-        $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
         $this->changedEntities = new ObjectStorage();
