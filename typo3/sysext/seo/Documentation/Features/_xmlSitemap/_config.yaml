@@ -14,3 +14,5 @@ routeEnhancers:
           pages: pages
           tx_news: tx_news
           my_other_sitemap: my_other_sitemap
+    _arguments:
+      sitemap: 'tx_seo/sitemap'
