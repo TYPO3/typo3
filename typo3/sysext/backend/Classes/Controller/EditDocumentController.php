@@ -1549,9 +1549,9 @@ class EditDocumentController
     protected function registerDeleteButtonToButtonBar(ButtonBar $buttonBar, string $position, int $group, ServerRequestInterface $request): void
     {
         if ($this->firstEl['deleteAccess']
+            && $this->isSavedRecord
             && !$this->getDisableDelete()
             && !$this->isRecordCurrentBackendUser()
-            && $this->isSavedRecord
             && $this->isSingleRecordView()
         ) {
             $returnUrl = $this->retUrl;
@@ -1896,8 +1896,8 @@ class EditDocumentController
         $disableDelete = false;
         if ($this->firstEl['table'] === 'sys_file_metadata') {
             $row = BackendUtility::getRecord('sys_file_metadata', $this->firstEl['uid'], 'sys_language_uid');
-            $languageUid = $row['sys_language_uid'];
-            if ($languageUid === 0) {
+            if ((int)($row['sys_language_uid'] ?? 0) === 0) {
+                // Always disable for default language
                 $disableDelete = true;
             }
         } else {
