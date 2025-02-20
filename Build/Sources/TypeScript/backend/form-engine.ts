@@ -35,6 +35,7 @@ import { selector } from '@typo3/core/literals';
 import '@typo3/backend/form-engine/element/extra/char-counter';
 import type { PromiseControls } from '@typo3/backend/event/interaction-request-assignment';
 import Hotkeys, { ModifierKeys } from '@typo3/backend/hotkeys';
+import RegularEvent from '@typo3/core/event/regular-event';
 
 interface OnFieldChangeItem {
   name: string;
@@ -444,54 +445,63 @@ export default (function() {
       top.TYPO3.Backend.consumerScope.attach(FormEngine);
       window.addEventListener('pagehide', () => top.TYPO3.Backend.consumerScope.detach(FormEngine), { once: true });
     }
-    $(document).on('click', '.t3js-editform-close', (e: Event) => {
+
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       FormEngine.preventExitIfNotSaved(
         FormEngine.preventExitIfNotSavedCallback
       );
-    }).on('click', '.t3js-editform-view', (e: Event) => {
+    }).delegateTo(document, '.t3js-editform-close');
+
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       FormEngine.previewAction(e, FormEngine.previewActionCallback);
-    }).on('click', '.t3js-editform-new', (e: Event) => {
+    }).delegateTo(document, '.t3js-editform-view');
+
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       FormEngine.newAction(e, FormEngine.newActionCallback);
-    }).on('click', '.t3js-editform-duplicate', (e: Event) => {
+    }).delegateTo(document, '.t3js-editform-new');
+
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       FormEngine.duplicateAction(e, FormEngine.duplicateActionCallback);
-    }).on('click', '.t3js-editform-delete-record', (e: Event) => {
+    }).delegateTo(document, '.t3js-editform-duplicate');
+
+    new RegularEvent('click', (e: Event): void => {
       e.preventDefault();
       FormEngine.deleteAction(e, FormEngine.deleteActionCallback);
-    }).on('click', '.t3js-editform-submitButton', (event: JQueryEventObject) => {
-      const $me = $(event.currentTarget),
-        name = $me.data('name') || (event.currentTarget as HTMLInputElement).name,
-        $elem = $('<input />').attr('type', 'hidden').attr('name', name).attr('value', '1');
+    }).delegateTo(document, '.t3js-editform-delete-record');
 
-      $me.parents('form').append($elem);
-    }).on('change', '.t3-form-field-eval-null-checkbox input[type="checkbox"]', (e: JQueryEventObject) => {
-      // Null checkboxes without placeholder click event handler
-      $(e.currentTarget).closest('.t3js-formengine-field-item').toggleClass('disabled');
-    }).on('change', '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]', (e: JQueryEventObject & { currentTarget: HTMLInputElement }) => {
-      FormEngine.toggleCheckboxField($(e.currentTarget));
-      FormEngine.Validation.markFieldAsChanged(e.currentTarget);
-    }).on('change', () => {
-      $('.module-docheader-bar .btn').removeClass('disabled').prop('disabled', false);
-    }).on('click', '.t3js-element-browser', function(e: Event) {
+    new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
+      target.closest('.t3js-formengine-field-item').classList.toggle('disabled');
+    }).delegateTo(document, '.t3-form-field-eval-null-checkbox input[type="checkbox"]');
+
+    new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
+      FormEngine.toggleCheckboxField($(target));
+      FormEngine.Validation.markFieldAsChanged(target);
+    }).delegateTo(document, '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]');
+
+    new RegularEvent('click', (e: Event, target: HTMLElement): void => {
       e.preventDefault();
       e.stopPropagation();
 
-      const $me = $(e.currentTarget);
-      const mode = $me.data('mode');
-      const params = $me.data('params');
-      const entryPoint = $me.data('entryPoint');
+      const mode = target.dataset.mode;
+      const params = target.dataset.params;
+      const entryPoint = target.dataset.entryPoint;
 
       FormEngine.openPopupWindow(mode, params, entryPoint);
-    }).on('click', '[data-formengine-field-change-event="click"]', (evt: Event) => {
-      const items = JSON.parse((evt.currentTarget as HTMLElement).dataset.formengineFieldChangeItems);
+    }).delegateTo(document, '.t3js-element-browser');
+
+    new RegularEvent('click', (evt: Event, target: HTMLElement): void => {
+      const items = JSON.parse(target.dataset.formengineFieldChangeItems);
       FormEngine.processOnFieldChange(items, evt);
-    }).on('change', '[data-formengine-field-change-event="change"]', (evt: Event) => {
-      const items = JSON.parse((evt.currentTarget as HTMLElement).dataset.formengineFieldChangeItems);
+    }).delegateTo(document, '[data-formengine-field-change-event="click"]');
+
+    new RegularEvent('change', (evt: Event, target: HTMLElement): void => {
+      const items = JSON.parse(target.dataset.formengineFieldChangeItems);
       FormEngine.processOnFieldChange(items, evt);
-    });
+    }).delegateTo(document, '[data-formengine-field-change-event="change"]');
 
     FormEngine.formElement.addEventListener('submit', function (e: SubmitEvent) {
       const form = e.target as HTMLFormElement;
