@@ -478,7 +478,7 @@ export default (function() {
     }).delegateTo(document, '.t3-form-field-eval-null-checkbox input[type="checkbox"]');
 
     new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
-      FormEngine.toggleCheckboxField($(target));
+      FormEngine.toggleCheckboxField(target);
       FormEngine.Validation.markFieldAsChanged(target);
     }).delegateTo(document, '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]');
 
@@ -697,7 +697,7 @@ export default (function() {
    */
   FormEngine.initializeNullWithPlaceholderCheckboxes = function(): void {
     document.querySelectorAll('.t3js-form-field-eval-null-placeholder-checkbox').forEach((el: HTMLElement) => {
-      FormEngine.toggleCheckboxField($(el).find('input[type="checkbox"]'), false);
+      FormEngine.toggleCheckboxField(el.querySelector('input[type="checkbox"]'), false);
     });
   };
 
@@ -705,17 +705,20 @@ export default (function() {
    * Set initial state of both div's (one containing actual field, other containing placeholder field)
    * depending on whether checkbox is checked or not
    */
-  FormEngine.toggleCheckboxField = function($checkbox: JQuery, triggerFocusWhenChecked: boolean = true): void {
-    const $item = $checkbox.closest('.t3js-formengine-field-item');
-    if ($checkbox.prop('checked')) {
-      $item.find('.t3js-formengine-placeholder-placeholder').hide();
-      $item.find('.t3js-formengine-placeholder-formfield').show();
+  FormEngine.toggleCheckboxField = function(checkbox: HTMLInputElement, triggerFocusWhenChecked: boolean = true): void {
+    const item = checkbox.closest('.t3js-formengine-field-item');
+    const placeholder = item.querySelector('.t3js-formengine-placeholder-placeholder') as HTMLElement;
+    const formFieldWrapper = item.querySelector('.t3js-formengine-placeholder-formfield') as HTMLElement;
+
+    if (checkbox.checked) {
+      placeholder.hidden = true;
+      formFieldWrapper.hidden = false;
       if (triggerFocusWhenChecked) {
-        $item.find('.t3js-formengine-placeholder-formfield').find(':input').trigger('focus');
+        (formFieldWrapper.querySelector('input,select,textarea') as HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement)?.focus();
       }
     } else {
-      $item.find('.t3js-formengine-placeholder-placeholder').show();
-      $item.find('.t3js-formengine-placeholder-formfield').hide();
+      placeholder.hidden = false;
+      formFieldWrapper.hidden = true;
     }
   };
 
