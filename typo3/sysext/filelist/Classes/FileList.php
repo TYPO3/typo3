@@ -1163,6 +1163,7 @@ class FileList
             'data-filelist-delete-url' => $this->uriBuilder->buildUriFromRoute('tce_file'),
             'data-filelist-delete-type' => $deleteType,
             'data-filelist-delete-check' => $this->getBackendUser()->jsConfirmation(JsConfirmation::DELETE) ? '1' : '0',
+            'data-redirect-url' => $this->createModuleUri(),
         ]);
 
         return $button;
