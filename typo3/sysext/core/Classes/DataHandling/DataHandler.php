@@ -5353,20 +5353,84 @@ class DataHandler
             $this->discard($table, null, $recordToDelete);
             return;
         }
+        if (!is_array($recordToDelete)) {
+            return;
+        }
 
-        // Record asked to be deleted was found:
-        if (is_array($recordToDelete)) {
-            $recordWasDeleted = false;
-            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
-                    /** @var bool $recordWasDeleted */
-                    $hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
-                }
+        $recordWasDeleted = false;
+        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
+            $hookObj = GeneralUtility::makeInstance($className);
+            if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
+                $hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
+                /** @var bool $recordWasDeleted */
             }
-            // Delete the record if a hook hasn't deleted it yet
-            if (!$recordWasDeleted) {
-                $this->deleteEl($table, $id);
+        }
+        if ($recordWasDeleted) {
+            return;
+        }
+
+        $relevantUid = $id;
+        $relevantRecord = $recordToDelete;
+        // For Live version, try if there is a workspace version because if so, rather "delete" that instead
+        // Look, if record is an offline version, then delete directly:
+        if ((int)($relevantRecord['t3ver_oid'] ?? 0) === 0) {
+            if ($wsVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $relevantUid)) {
+                $relevantRecord = $wsVersion;
+                $relevantUid = $relevantRecord['uid'];
+            }
+        }
+        $recordVersionState = VersionState::tryFrom($relevantRecord['t3ver_state'] ?? 0);
+        // Look, if record is an offline version, then delete directly:
+        if ((int)($relevantRecord['t3ver_oid'] ?? 0) > 0) {
+            if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
+                // In Live workspace, delete any. In other workspaces there must be match.
+                if ($this->BE_USER->workspace == 0 || (int)$relevantRecord['t3ver_wsid'] == $this->BE_USER->workspace) {
+                    $liveRec = BackendUtility::getLiveVersionOfRecord($table, $relevantUid, 'uid,t3ver_state');
+                    $liveRecordVersionState = VersionState::tryFrom($liveRec['t3ver_state'] ?? 0);
+                    if ($relevantRecord['t3ver_wsid'] > 0 && $recordVersionState === VersionState::DEFAULT_STATE) {
+                        // Change normal versioned record to delete placeholder
+                        // Happens when an edited record is deleted
+                        $this->connectionPool->getConnectionForTable($table)->update(
+                            $table,
+                            ['t3ver_state' => VersionState::DELETE_PLACEHOLDER->value],
+                            ['uid' => $relevantUid]
+                        );
+                        // Delete localization overlays:
+                        $this->deleteL10nOverlayRecords($table, $relevantUid);
+                    } elseif ($relevantRecord['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
+                        // Delete those in WS 0 + if their live records state was not "Placeholder".
+                        $this->deleteEl($table, $relevantUid);
+                    } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
+                        $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, (int)$relevantUid);
+                        $this->deleteEl($table, (int)$relevantUid);
+                        if (is_array($placeholderRecord)) {
+                            $this->softOrHardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
+                        }
+                    }
+                } else {
+                    $this->log($table, (int)$relevantUid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Tried to delete record from another workspace');
+                }
+            } else {
+                $this->log($table, (int)$relevantUid, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Versioning not enabled for record with an online ID (t3ver_oid) given');
+            }
+        } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
+            // If it is a new versioned record, delete it directly.
+            $this->deleteEl($table, $relevantUid);
+        } elseif ($this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+            // Look, if record is "online" then delete directly.
+            $this->deleteEl($table, $relevantUid);
+        } else {
+            // Otherwise, try to delete by versioning:
+            $copyMappingArray = $this->copyMappingArray;
+            $this->versionizeRecord($table, $relevantUid, 'DELETED!', true);
+            // Determine newly created versions:
+            // (remove placeholders are copied and modified, thus they appear in the copyMappingArray)
+            $versionedElements = ArrayUtility::arrayDiffKeyRecursive($this->copyMappingArray, $copyMappingArray);
+            // Delete localization overlays:
+            foreach ($versionedElements as $versionedTableName => $versionedOriginalIds) {
+                foreach ($versionedOriginalIds as $versionedOriginalId => $_) {
+                    $this->deleteL10nOverlayRecords($versionedTableName, $versionedOriginalId);
+                }
             }
         }
     }
@@ -5791,7 +5855,6 @@ class DataHandler
      *
      * @param string $table Record Table
      * @param int $uid Record UID
-     * @see deleteRecord()
      * @internal should only be used from within DataHandler
      */
     public function deleteRecord_procFields($table, $uid): void
@@ -5815,7 +5878,6 @@ class DataHandler
      * @param int $uid Record UID
      * @param string $value Record field value
      * @param array $conf TCA configuration of current field
-     * @see deleteRecord()
      * @internal should only be used from within DataHandler
      */
     public function deleteRecord_procBasedOnFieldType($table, $uid, $value, $conf): void
@@ -7215,6 +7277,25 @@ class DataHandler
         unset($registerDBList[$table][$id]);
         if (empty($registerDBList[$table])) {
             unset($registerDBList[$table]);
+        }
+    }
+
+    /**
+     * Straight db based record deletion:
+     * Either set deleted = 1 for soft-delete enabled tables, or remove row from table.
+     */
+    protected function softOrHardDeleteSingleRecord(string $table, int $uid): void
+    {
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            $this->connectionPool->getConnectionForTable($table)->update(
+                $table,
+                [$schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() => 1],
+                ['uid' => $uid],
+                [Connection::PARAM_INT]
+            );
+        } else {
+            $this->hardDeleteSingleRecord($table, $uid);
         }
     }
 
