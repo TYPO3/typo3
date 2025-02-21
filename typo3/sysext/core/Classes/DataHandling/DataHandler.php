@@ -4515,11 +4515,6 @@ class DataHandler
                     if ((int)$targetPid !== (int)$propArr['pid']) {
                         $this->moveRecord_processFields($targetPid, $table, $relevantUid);
                     }
-                } elseif ($this->isRecordCopied($table, $relevantUid) && (int)$this->copyMappingArray[$table][$relevantUid] === (int)$versionedRecord['uid']) {
-                    // If the record has been versioned before (e.g. cascaded parent-child structure), create only the move-placeholders
-                    if ((int)$targetPid !== (int)$propArr['pid']) {
-                        $this->moveRecord_processFields($targetPid, $table, $relevantUid);
-                    }
                 }
             }
             // Check workspace permissions:
