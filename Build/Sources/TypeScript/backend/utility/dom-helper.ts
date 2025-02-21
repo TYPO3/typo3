@@ -36,9 +36,10 @@ export default class DomHelper {
    */
   public static nextAll(target: Element): Element[] {
     const nextSiblings = [];
-    let nextSibling = null;
-    while ((nextSibling = target.nextElementSibling) !== null) {
-      nextSiblings.push(nextSibling);
+    let node = target.nextElementSibling;
+    while (node !== null) {
+      nextSiblings.push(node);
+      node = node.nextElementSibling;
     }
 
     return nextSiblings;
