@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -75,18 +77,14 @@ class Clipboard
 
     public int $numberOfPads = 3;
 
-    protected IconFactory $iconFactory;
-    protected UriBuilder $uriBuilder;
-    protected ResourceFactory $resourceFactory;
-
     protected ?ServerRequestInterface $request = null;
 
-    public function __construct(IconFactory $iconFactory, UriBuilder $uriBuilder, ResourceFactory $resourceFactory)
-    {
-        $this->iconFactory = $iconFactory;
-        $this->uriBuilder = $uriBuilder;
-        $this->resourceFactory = $resourceFactory;
-    }
+    public function __construct(
+        protected readonly IconFactory $iconFactory,
+        protected readonly UriBuilder $uriBuilder,
+        protected readonly ResourceFactory $resourceFactory,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+    ) {}
 
     /*****************************************
      *
@@ -383,27 +381,33 @@ class Clipboard
      */
     protected function getLocalizations(string $table, array $parentRecord, bool $isRequestedTable): array
     {
-        if (!BackendUtility::isTableLocalizable($table)) {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return [];
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isLanguageAware()) {
             return [];
         }
 
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+
         $records = [];
-        $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()
             ->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
         $queryBuilder
             ->select('*')
             ->from($table)
             ->where(
                 $queryBuilder->expr()->eq(
-                    $tcaCtrl['transOrigPointerField'],
+                    $languageCapability->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter((int)$parentRecord['uid'], Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->neq(
-                    $tcaCtrl['languageField'],
+                    $languageCapability->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->gt(
@@ -411,13 +415,7 @@ class Clipboard
                     $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
                 )
             )
-            ->orderBy($tcaCtrl['languageField']);
-
-        if (BackendUtility::isTableWorkspaceEnabled($table)) {
-            $queryBuilder->getRestrictions()->add(
-                GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace)
-            );
-        }
+            ->orderBy($languageCapability->getLanguageField()->getName());
 
         foreach ($queryBuilder->executeQuery()->fetchAllAssociative() as $record) {
             $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs(BackendUtility::getRecordTitle($table, $record), (int)$this->getBackendUser()->uc['titleLen']));
@@ -700,7 +698,7 @@ class Clipboard
             }
             [$table, $uid] = explode('|', $reference);
             if ($table !== '_FILE') {
-                if ((!$matchTable || $table === $matchTable) && ($GLOBALS['TCA'][$table] ?? false)) {
+                if ((!$matchTable || $table === $matchTable) && $this->tcaSchemaFactory->has($table)) {
                     $elements[$reference] = $padIdentifier === 'normal' ? $value : $uid;
                 }
             } elseif ($table === $matchTable) {

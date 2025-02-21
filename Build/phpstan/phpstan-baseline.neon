@@ -289,12 +289,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Form/Wizard/SuggestWizardDefaultReceiver.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/History/RecordHistory.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Backend\\LinkHandler\\PageLinkHandler\:\:getUrlParameters\(\) should return array\<string\> but returns array\<string, array\|int\|string\>\.$#'
 			identifier: return.type
 			count: 1

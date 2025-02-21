@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -61,11 +62,13 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 'ctrl' => [
                     'adminOnly' => true,
                 ],
+                'columns' => [],
             ],
             'aTable' => [
                 'ctrl' => [
                     'title' => 'aTitle',
                 ],
+                'columns' => [],
             ],
         ];
         $expected = [
@@ -81,6 +84,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 ],
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
         $this->get(TcaItemsProcessorFunctions::class)->populateAvailableTables($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
@@ -119,6 +123,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 ],
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
         $this->get(TcaItemsProcessorFunctions::class)->populateAvailablePageTypes($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
@@ -167,7 +172,8 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
             $this->get(IconFactory::class),
             $this->get(IconRegistry::class),
             $moduleProviderMock,
-            $this->get(FlexFormTools::class)
+            $this->get(FlexFormTools::class),
+            $this->get(TcaSchemaFactory::class),
         );
         $subject->populateAvailableUserModules($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
@@ -187,9 +193,15 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                             'bar' => [
                                 'label' => 'barColumnTitle',
                                 'exclude' => true,
+                                'config' => [
+                                    'type' => 'input',
+                                ],
                             ],
                             'baz' => [
                                 'label' => 'bazColumnTitle',
+                                'config' => [
+                                    'type' => 'input',
+                                ],
                             ],
                         ],
                     ],
@@ -223,6 +235,9 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                             'bar' => [
                                 'label' => 'barColumnTitle',
                                 'exclude' => true,
+                                'config' => [
+                                    'type' => 'input',
+                                ],
                             ],
                         ],
                     ],
@@ -253,6 +268,9 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                             'bar' => [
                                 'label' => 'barColumnTitle',
                                 'exclude' => true,
+                                'config' => [
+                                    'type' => 'input',
+                                ],
                             ],
                         ],
                     ],
@@ -273,6 +291,9 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                             'bar' => [
                                 'label' => 'barColumnTitle',
                                 'exclude' => true,
+                                'config' => [
+                                    'type' => 'input',
+                                ],
                             ],
                         ],
                     ],
@@ -288,13 +309,13 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     #[Test]
     public function populateExcludeFieldsTest(array $tca, array $expectedItems): void
     {
-        $GLOBALS['TCA'] = $tca;
         $fieldDefinition = [
             'items' => [],
         ];
         $expected = [
             'items' => $expectedItems,
         ];
+        $this->get(TcaSchemaFactory::class)->load($tca, true);
         $this->get(TcaItemsProcessorFunctions::class)->populateExcludeFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
@@ -302,17 +323,28 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     #[Test]
     public function populateExcludeFieldsWithFlexFormTest(): void
     {
-        $GLOBALS['TCA'] = [
+        $tca = [
             'fooTable' => [
                 'ctrl' => [
                     'title' => 'fooTableTitle',
                 ],
                 'columns' => [
+                    'pointerField' => [
+                        'label' => 'pointerFieldTitle',
+                        'config' => [
+                            'type' => 'select',
+                            'items' => [
+                                'value' => 'dummy',
+                                'label' => 'dummy',
+                            ],
+                        ],
+                    ],
                     'aFlexField' => [
                         'label' => 'aFlexFieldTitle',
                         'config' => [
                             'type' => 'flex',
                             'title' => 'title',
+                            'ds_pointerField' => 'pointerField',
                             'ds' => [
                                 'dummy' => '
 									<T3DataStructure>
@@ -354,6 +386,9 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
                 ],
             ],
         ];
+        // needs to be kept until FlexFormTools is using TcaSchemaFactory
+        $GLOBALS['TCA'] = $tca;
+        $this->get(TcaSchemaFactory::class)->load($tca, true);
         $this->get(TcaItemsProcessorFunctions::class)->populateExcludeFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
@@ -402,11 +437,11 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     #[Test]
     public function populateExplicitAuthValuesTest(array $tca, array $expectedItems): void
     {
-        $GLOBALS['TCA'] = $tca;
         $fieldDefinition = ['items' => []];
         $expected = [
             'items' => $expectedItems,
         ];
+        $this->get(TcaSchemaFactory::class)->load($tca, true);
         $this->get(TcaItemsProcessorFunctions::class)->populateExplicitAuthValues($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }
@@ -534,32 +569,37 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     #[Test]
     public function populateAvailableCategoryFields(array $itemsProcConfig, array $expectedItems): void
     {
-        $GLOBALS['TCA']['aTable']['columns'] = [
-            'aField' => [
-                'label' => 'aField label',
-                'config' => [
-                    'type' => 'category',
-                    'relationship' => 'manyToMany',
-                ],
+        $GLOBALS['TCA']['aTable'] = [
+            'ctrl' => [
+                'title' => 'aTable title',
             ],
-            'bField' => [
-                'label' => 'bField label',
-                'config' => [
-                    'type' => 'category',
+            'columns' => [
+                'aField' => [
+                    'label' => 'aField label',
+                    'config' => [
+                        'type' => 'category',
+                        'relationship' => 'manyToMany',
+                    ],
                 ],
-            ],
-            'cField' => [
-                'label' => 'cField label',
-                'config' => [
-                    'type' => 'category',
-                    'relationship' => 'oneToMany',
+                'bField' => [
+                    'label' => 'bField label',
+                    'config' => [
+                        'type' => 'category',
+                    ],
                 ],
-            ],
-            'dField' => [
-                'label' => 'dField label',
-                'config' => [
-                    'type' => 'category',
-                    'relationship' => 'manyToMany',
+                'cField' => [
+                    'label' => 'cField label',
+                    'config' => [
+                        'type' => 'category',
+                        'relationship' => 'oneToMany',
+                    ],
+                ],
+                'dField' => [
+                    'label' => 'dField label',
+                    'config' => [
+                        'type' => 'category',
+                        'relationship' => 'manyToMany',
+                    ],
                 ],
             ],
         ];
@@ -571,6 +611,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
         ];
         $expected = $fieldDefinition;
         $expected['items'] = $expectedItems;
+        $this->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
         $this->get(TcaItemsProcessorFunctions::class)->populateAvailableCategoryFields($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
     }

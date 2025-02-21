@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -51,7 +52,8 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         $subject = new TranslationConfigurationProvider(
             $this->createMock(FrontendInterface::class),
             $siteFinderMock,
-            $this->createMock(ConnectionPool::class)
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(TcaSchemaFactory::class),
         );
         $languages = $subject->getSystemLanguages($pageId);
         self::assertArrayHasKey(0, $languages);
@@ -65,7 +67,8 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         $subject = new TranslationConfigurationProvider(
             $this->createMock(FrontendInterface::class),
             $siteFinderMock,
-            $this->createMock(ConnectionPool::class)
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(TcaSchemaFactory::class),
         );
         $languages = $subject->getSystemLanguages(0);
         self::assertCount(3, $languages);
@@ -79,7 +82,8 @@ final class TranslationConfigurationProviderTest extends UnitTestCase
         $subject = new TranslationConfigurationProvider(
             $this->createMock(FrontendInterface::class),
             $siteFinderMock,
-            $this->createMock(ConnectionPool::class)
+            $this->createMock(ConnectionPool::class),
+            $this->createMock(TcaSchemaFactory::class),
         );
         $languages = $subject->getSystemLanguages(0);
         self::assertEquals('Deutsch [Site: dummy1], German [Site: dummy2]', $languages[1]['title']);
