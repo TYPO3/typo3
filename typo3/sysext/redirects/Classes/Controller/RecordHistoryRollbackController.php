@@ -22,9 +22,9 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Backend\History\RecordHistory;
 use TYPO3\CMS\Backend\History\RecordHistoryRollback;
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\Model\CorrelationId;
 use TYPO3\CMS\Core\Http\JsonResponse;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Redirects\Service\SlugService;
@@ -33,19 +33,16 @@ use TYPO3\CMS\Redirects\Service\SlugService;
  * @internal
  */
 #[AsController]
-class RecordHistoryRollbackController
+readonly class RecordHistoryRollbackController
 {
-    protected ?LanguageService $languageService = null;
-    protected LanguageServiceFactory $languageServiceFactory;
-
-    public function __construct(LanguageServiceFactory $languageServiceFactory)
-    {
-        $this->languageServiceFactory = $languageServiceFactory;
-    }
+    public function __construct(
+        private LanguageServiceFactory $languageServiceFactory,
+        private RecordHistoryRollback $recordHistoryRollback,
+    ) {}
 
     public function revertCorrelation(ServerRequestInterface $request): ResponseInterface
     {
-        $this->languageService = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
+        $languageService = $this->languageServiceFactory->createFromUserPreferences($this->getBackendUser());
         $revertedCorrelationTypes = [];
         $correlationIds = $request->getQueryParams()['correlation_ids'] ?? [];
         /** @var CorrelationId[] $correlationIds */
@@ -65,20 +62,20 @@ class RecordHistoryRollbackController
         }
         $result = [
             'status' => 'error',
-            'title' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:redirects_error_title'),
-            'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:redirects_error_message'),
+            'title' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:redirects_error_title'),
+            'message' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:redirects_error_message'),
         ];
         if (in_array('redirect', $revertedCorrelationTypes, true)) {
             $result = [
                 'status' => 'ok',
-                'title' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_redirects_success_title'),
-                'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_redirects_success_message'),
+                'title' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_redirects_success_title'),
+                'message' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_redirects_success_message'),
             ];
             if (in_array('slug', $revertedCorrelationTypes, true)) {
                 $result = [
                     'status' => 'ok',
-                    'title' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_update_success_title'),
-                    'message' => $this->languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_update_success_message'),
+                    'title' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_update_success_title'),
+                    'message' => $languageService->sL('LLL:EXT:redirects/Resources/Private/Language/locallang_slug_service.xlf:revert_update_success_message'),
                 ];
             }
         }
@@ -87,12 +84,16 @@ class RecordHistoryRollbackController
 
     protected function rollBackCorrelation(CorrelationId $correlationId): void
     {
-        $recordHistoryRollback = GeneralUtility::makeInstance(RecordHistoryRollback::class);
         foreach (GeneralUtility::makeInstance(RecordHistory::class)->findEventsForCorrelation((string)$correlationId) as $recordHistoryEntry) {
             $element = $recordHistoryEntry['tablename'] . ':' . $recordHistoryEntry['recuid'];
             $tempRecordHistory = GeneralUtility::makeInstance(RecordHistory::class, $element);
             $tempRecordHistory->setLastHistoryEntryNumber((int)$recordHistoryEntry['uid']);
-            $recordHistoryRollback->performRollback('ALL', $tempRecordHistory->getDiff($tempRecordHistory->getChangeLog()));
+            $this->recordHistoryRollback->performRollback('ALL', $tempRecordHistory->getDiff($tempRecordHistory->getChangeLog()));
         }
+    }
+
+    private function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
     }
 }

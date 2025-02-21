@@ -31,16 +31,16 @@ use TYPO3\CMS\Core\Page\PageRenderer;
  * A factory class creating backend related ModuleTemplate view objects.
  */
 #[Autoconfigure(public: true, shared: false)]
-final class ModuleTemplateFactory
+final readonly class ModuleTemplateFactory
 {
     public function __construct(
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly IconFactory $iconFactory,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleProvider $moduleProvider,
-        protected readonly FlashMessageService $flashMessageService,
-        protected readonly ExtensionConfiguration $extensionConfiguration,
-        protected readonly BackendViewFactory $viewFactory,
+        private PageRenderer $pageRenderer,
+        private IconFactory $iconFactory,
+        private UriBuilder $uriBuilder,
+        private ModuleProvider $moduleProvider,
+        private FlashMessageService $flashMessageService,
+        private ExtensionConfiguration $extensionConfiguration,
+        private BackendViewFactory $viewFactory,
     ) {}
 
     public function create(ServerRequestInterface $request): ModuleTemplate

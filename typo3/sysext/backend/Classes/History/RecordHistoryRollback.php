@@ -27,17 +27,11 @@ use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 #[Autoconfigure(public: true)]
-class RecordHistoryRollback
+readonly class RecordHistoryRollback
 {
-    /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
-    }
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher,
+    ) {}
 
     /**
      * Perform rollback via DataHandler
