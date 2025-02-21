@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Tests\Functional\DataScenarios\IrreForeignFieldNonWs\Abstract
  *        In the end, all these cases below need a review and thoughts.
  *        For now, we're skipping "WorkspaceDiscard", "WorkspacePublish" and "WorkspacePublishAll" tests, since
  *        "WorkspaceModify" already show enough inconsistencies.
+ *        Note sys_workspace "live_edit" is relevant here as well, along with TCA ctrl "versioningWS_alwaysAllowLiveEdit".
  */
 final class ActionTest extends AbstractActionWorkspacesTestCase
 {

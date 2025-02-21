@@ -3837,7 +3837,7 @@ class DataHandler
      * @return int|null Returns the new ID of the record (if applicable)
      * @internal should only be used from within DataHandler
      */
-    public function copyRecord_raw($table, $uid, $pid, $overrideArray = [], array $workspaceOptions = [])
+    public function copyRecord_raw($table, $uid, $pid, $overrideArray = [], array $workspaceOptions = []): ?int
     {
         $uid = (int)$uid;
         // Stop any actions if the record is marked to be deleted:
@@ -3906,7 +3906,8 @@ class DataHandler
         if ($theNewSQLID) {
             $this->dbAnalysisStoreExec();
             $this->dbAnalysisStore = [];
-            return $this->copyMappingArray[$table][$uid] = $theNewSQLID;
+            $this->copyMappingArray[$table][$uid] = $theNewSQLID;
+            return $theNewSQLID;
         }
         return null;
     }
@@ -3921,7 +3922,7 @@ class DataHandler
      * @return int|null Returns the new ID of the record (if applicable)
      * @internal should only be used from within DataHandler
      */
-    public function insertNewCopyVersion($table, $fieldArray, $realPid)
+    public function insertNewCopyVersion($table, $fieldArray, $realPid): ?int
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $id = StringUtility::getUniqueId('NEW');
@@ -4345,9 +4346,11 @@ class DataHandler
     }
 
     /**
-     * Moving single records
+     * Move a single record.
      *
-     * @param int $destinationPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
+     * @param int $destinationPid Position to move to. If >=0, then it points to a page uid on which to insert the
+     *                            record as the first element. If <0, then it points to an uid from its own table
+     *                            after which the record should be moved to.
      * @internal should only be used from within DataHandler
      */
     public function moveRecord($table, $uid, $destinationPid): void
@@ -4442,8 +4445,9 @@ class DataHandler
         // At this point we have:
         // * $liveRecord set and $workspaceRecord is null: We're moving a live record.
         // * $liveRecord null and $workspaceRecord is set: We're moving a "new placeholder", turning it into
-        //   a "move placeholder" if all goes well.
-        // * $liveRecord set and $workspaceRecord set: We're moving an existing workspace overlay.
+        //   a "move placeholder" if all goes well. The table is workspace aware.
+        // * $liveRecord set and $workspaceRecord set: We're moving an existing workspace overlay. The table
+        //   is workspace aware.
 
         $sourceUid = (int)($workspaceRecord['uid'] ?? $liveRecord['uid']);
         $sourcePid = (int)($workspaceRecord['pid'] ?? $liveRecord['pid']);
@@ -4480,92 +4484,113 @@ class DataHandler
 
         $recordWasMoved = false;
 
-        // Extensive hook argument handling for b/w compatibility
-        $recordTitle = BackendUtility::getRecordTitle($table, $workspaceRecord ?? $liveRecord);
-        $propArr = [
-            'header' => $recordTitle,
-            'pid' => $sourcePid,
-            'event_pid' => $table === 'pages'
-                ? ((int)($workspaceRecord['t3ver_oid'] ?? null) ?: $liveRecord['uid'] ?? $workspaceRecord['uid'])
-                : $sourcePid,
-            't3ver_state' => $workspaceRecord['t3ver_state'] ?? $liveRecord['t3ver_state'] ?? 0,
-        ];
-        $moveRec = [
-            'header' => $recordTitle,
-            'pid' => (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
-            'event_pid' => $table === 'pages'
-                ? (int)(($liveRecord['t3ver_oid'] ?? null) ?: ($liveRecord['uid'] ?? $workspaceRecord['uid']))
-                : (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
-            't3ver_state' => ($liveRecord['t3ver_state'] ?? $workspaceRecord['t3ver_state'] ?? 0),
-        ];
-
-        if ($this->BE_USER->workspace !== 0) {
-            // Care about moving records that are *not* in the live workspace
-            $relevantUid = $liveRecord['uid'] ?? $workspaceRecord['uid'];
-            $schema = $this->tcaSchemaFactory->get($table);
-            $recordWasMoved = true;
-            $moveRecVersionState = VersionState::tryFrom($moveRec['t3ver_state']);
-            // Get workspace version of the source record, if any:
-            $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $relevantUid, 'uid,t3ver_oid');
-            if ($schema->isWorkspaceAware()) {
-                // Create version of record first, if it does not exist
-                if (empty($versionedRecord['uid'])) {
-                    $this->versionizeRecord($table, $relevantUid, 'MovePointer');
-                    $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $relevantUid, 'uid,t3ver_oid');
-                    if ((int)$targetPid !== (int)$propArr['pid']) {
-                        $this->moveRecord_processFields($targetPid, $table, $relevantUid);
-                    }
-                }
-            }
-            // Check workspace permissions:
-            $workspaceAccessBlocked = [];
-            // Element was in "New/Deleted/Moved" so it can be moved...
-            $recIsNewVersion = $moveRecVersionState === VersionState::NEW_PLACEHOLDER || $moveRecVersionState->indicatesPlaceholder();
-            $recordMustNotBeVersionized = $this->BE_USER->workspaceAllowsLiveEditingInTable($table);
-            $canMoveRecord = $recIsNewVersion || $schema->isWorkspaceAware();
-            // Workspace source check:
-            if (!$recIsNewVersion) {
-                $errorCode = $this->workspaceCannotEditRecord($table, $versionedRecord['uid'] ?: $relevantUid);
-                if ($errorCode) {
-                    $workspaceAccessBlocked['src1'] = 'Record could not be edited in workspace: ' . $errorCode . ' ';
-                } elseif (!$canMoveRecord && !$recordMustNotBeVersionized) {
-                    $workspaceAccessBlocked['src2'] = 'Could not remove record from table "' . $table . '" from its page "' . $moveRec['pid'] . '" ';
-                }
-            }
-            // Workspace destination check:
-            // All records can be inserted if $recordMustNotBeVersionized is true.
-            // Only new versions can be inserted if $recordMustNotBeVersionized is FALSE.
-            if (!($recordMustNotBeVersionized || $canMoveRecord)) {
-                $workspaceAccessBlocked['dest1'] = 'Could not insert record from table "' . $table . '" in destination PID "' . $targetPid . '" ';
-            }
-            if (empty($workspaceAccessBlocked)) {
-                $versionedRecordUid = (int)$versionedRecord['uid'];
-                // custom moving not needed, just behave like in live workspace (also for newly versioned records)
-                if (!$versionedRecordUid || !$schema->isWorkspaceAware() || $recIsNewVersion) {
-                    $recordWasMoved = false;
-                } else {
-                    // If the move operation is done on a versioned record, which is
-                    // NOT new/deleted placeholder, then mark the versioned record as "moved"
-                    $this->moveRecord_moveVersionedRecord($table, $relevantUid, (int)$destinationPid, $versionedRecordUid);
-                }
-            } else {
-                $this->log($table, $versionedRecord['uid'] ?: $relevantUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Move attempt failed due to workspace restrictions: {reason}', null, ['reason' => implode(' // ', $workspaceAccessBlocked)]);
-            }
-        }
-
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [])) {
+            // Extensive hook argument handling for b/w compatibility
+            $recordTitle = BackendUtility::getRecordTitle($table, $workspaceRecord ?? $liveRecord);
+            $propArr = [
+                'header' => $recordTitle,
+                'pid' => $sourcePid,
+                'event_pid' => $table === 'pages'
+                    ? ((int)($workspaceRecord['t3ver_oid'] ?? null) ?: $liveRecord['uid'] ?? $workspaceRecord['uid'])
+                    : $sourcePid,
+                't3ver_state' => $workspaceRecord['t3ver_state'] ?? $liveRecord['t3ver_state'] ?? 0,
+            ];
+            $moveRec = [
+                'header' => $recordTitle,
+                'pid' => (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
+                'event_pid' => $table === 'pages'
+                    ? (int)(($liveRecord['t3ver_oid'] ?? null) ?: ($liveRecord['uid'] ?? $workspaceRecord['uid']))
+                    : (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
+                't3ver_state' => ($liveRecord['t3ver_state'] ?? $workspaceRecord['t3ver_state'] ?? 0),
+            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
                 $hookObj = GeneralUtility::makeInstance($className);
                 if (method_exists($hookObj, 'moveRecord')) {
-                    /** @var bool $recordWasMoved */
                     $hookObj->moveRecord($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid, $propArr, $moveRec, $targetPid, $recordWasMoved, $this);
+                    /** @var bool $recordWasMoved */
                 }
             }
         }
+        if ($recordWasMoved) {
+            // Return if a hook handled move
+            return;
+        }
 
-        // Move the record if a hook hasn't moved it yet
-        if (!$recordWasMoved) {
+        if ($this->BE_USER->workspace === 0) {
+            // Moving in live
             $this->moveRecord_raw($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid);
+            return;
+        }
+
+        if (!$schema->isWorkspaceAware()) {
+            // Moving a not workspace aware record while in workspaces.
+            // Can happen when moving a workspace aware parent record with children not being workspace aware.
+            // @todo: See DataScenarios/IrreForeignFieldNonWs/WorkspacesModify/ActionTest.php for a rough overview on what is broken in this case.
+            if (!$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+                // Deny if user, table TCA or sys_workspace record do not allow live editing this table.
+                // @todo: This means the parent record *is* moved (gets a move placeholder), while children are not.
+                //        This is fine when only resorting parent on the same page. Its problematic when parent is moved
+                //        to a different page since the child stays on the old page. It is also unclear what happens when
+                //        the parent is later published (should children *then* be moved to recreate integrity?). At
+                //        the moment, the workspace BE module crashes when doing this.
+                $this->log($table, (int)$liveRecord['uid'], SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move {table}:{uid} in workspace but the table is not workspace aware and live editing is denied', null, ['table' => $table, 'uid' => (int)$liveRecord['uid']]);
+                return;
+            }
+            // Move that live child record to its new destination.
+            // @todo: This is probably not a good idea since this may break live when inline children are
+            //        moved to a different page while the live parent record is on the "old" page. It is
+            //        not an issue with inline children when parent is only resorted on the same page.
+            $this->moveRecord_raw($table, $liveRecord['uid'], $destinationPid);
+            return;
+        }
+
+        // Moving a workspace aware record in workspaces
+        if ($workspaceRecord === null) {
+            // Create version of record first, if it does not exist
+            // @todo: This strategy is odd. A "dummy" record is created in correct workspace, but it is a
+            //        DEFAULT_STATE one, not a MOVE_POINTER. This is then later updated to a move placeholder.
+            //        This is complex and risky, we can for instance end up with a dangling record when a
+            //        permission check fails down below. Next issue is that versionizeRecord() does
+            //        a lot of stuff that we checked above already, but we can't change versionizeRecord()
+            //        much since it is also used as entry method in process_cmdmap().
+            //        In the end, we should refactor this to fully prepare the workspace record and insert it once.
+            $sourceUid = $this->versionizeRecord($table, $liveRecord['uid'], 'MovePointer');
+            if (!$sourceUid) {
+                // If versionizeRecord() could not create, it usually logs.
+                return;
+            }
+            $workspaceRecord = BackendUtility::getRecord($table, $sourceUid);
+        }
+        if ($workspaceRecord === null) {
+            throw new \RuntimeException('Table ' . $table . ' is workspace aware, but could not create workspace overlay', 1740217183);
+        }
+        if ($errorCode = $this->workspaceCannotEditRecord($table, $workspaceRecord)) {
+            $this->log($table, (int)$sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move {table}:{uid} failed with insufficient permissions: {errorCode}', null, ['table' => $table, 'uid' => $sourceUid, 'errorCode' => $errorCode]);
+            return;
+        }
+        $this->moveRecord_raw($table, $sourceUid, $destinationPid);
+        if (VersionState::tryFrom((int)($workspaceRecord['t3ver_state'])) !== VersionState::NEW_PLACEHOLDER) {
+            // Late changes after moveRecord_raw() moved stuff.
+            // This is a "changed", "deleted" or "already moved" record.
+            if (VersionState::tryFrom($workspaceRecord['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
+                // Update the state of this record to a move placeholder. This is allowed if the
+                // record is a 'changed' (t3ver_state=0) record: Changing a record and moving it
+                // around later, should switch it from 'changed' to 'moved'. Deleted placeholders
+                // however are an 'end-state', they should not be switched to a move placeholder.
+                // Scenario: For a live page that has a localization, the localization is first
+                // marked as to-delete in workspace, creating a delete placeholder for that
+                // localization. Later, the page is moved around, moving the localization along
+                // with the default language record. The localization should then NOT be switched
+                // from 'to-delete' to 'moved', this would lose the 'to-delete' information.
+                $this->connectionPool->getConnectionForTable($table)->update(
+                    $table,
+                    ['t3ver_state' => VersionState::MOVE_POINTER->value],
+                    ['uid' => (int)$sourceUid]
+                );
+            }
+            // Check for the localizations of that element and move them as well
+            // @todo: Why is this not done with "new"? Fishy. Called at different place or no test coverage?
+            $this->moveL10nOverlayRecords($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid, $destinationPid);
         }
     }
 
@@ -4790,121 +4815,6 @@ class DataHandler
         foreach (array_reverse($dbAnalysis->itemArray) as $item) {
             $this->moveRecord($item['table'], (int)$item['id'], $destPid);
         }
-    }
-
-    /**
-     * Processes fields of a moved record and follows references.
-     * This is the *workspace* version of moveRecord_procFields() that
-     * has been merged from the workspace hook into DataHandler.
-     *
-     * @param int $resolvedPageId Resolved real destination page id
-     * @param string $table Name of parent table
-     * @param int $uid UID of the parent record
-     */
-    private function moveRecord_processFields($resolvedPageId, string $table, $uid)
-    {
-        $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $uid);
-        if (empty($versionedRecord)) {
-            return;
-        }
-        $schema = $this->tcaSchemaFactory->get($table);
-        foreach ($versionedRecord as $field => $fieldValue) {
-            if (!$schema->hasField($field)) {
-                continue;
-            }
-            $fieldInformation = $schema->getField($field);
-            if (!$fieldInformation->isType(TableColumnType::INLINE, TableColumnType::FILE)) {
-                continue;
-            }
-            /** @var InlineFieldType|FileFieldType $fieldInformation */
-            $this->moveRecord_processFieldValue($resolvedPageId, $table, $uid, $fieldValue, $fieldInformation);
-        }
-    }
-
-    /**
-     * Processes a single field of a moved record and follows references.
-     * This is the *workspace* version of moveRecord_procFields() that
-     * has been merged from the workspace hook into DataHandler.
-     *
-     * @param int $resolvedPageId Resolved real destination page id
-     * @param string $table Name of parent table
-     * @param int $uid UID of the parent record
-     * @param string $value Value of the field of the parent record
-     */
-    private function moveRecord_processFieldValue($resolvedPageId, string $table, $uid, $value, InlineFieldType|FileFieldType $fieldInformation): void
-    {
-        if ($fieldInformation->isType(TableColumnType::INLINE) && !$fieldInformation->isMovingChildrenEnabled()) {
-            return;
-        }
-        if (!$fieldInformation->getRelationshipType()->isSingularRelationship()) {
-            return;
-        }
-        $configuration = $fieldInformation->getConfiguration();
-        $foreignTable = $configuration['foreign_table'];
-        $foreignTableSchema = $this->tcaSchemaFactory->get($foreignTable);
-        if (!$foreignTableSchema->isWorkspaceAware()) {
-            return;
-        }
-        if ($table === 'pages') {
-            // If the inline elements are related to a page record,
-            // make sure they reside at that page and not at its parent
-            $resolvedPageId = $uid;
-        }
-        $dbAnalysis = GeneralUtility::makeInstance(RelationHandler::class);
-        $dbAnalysis->start($value, $foreignTable, '', $uid, $table, $configuration);
-        // Moving records to a positive destination will insert each
-        // record at the beginning, thus the order is reversed here:
-        foreach ($dbAnalysis->itemArray as $item) {
-            $versionedRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $item['table'], $item['id'], 'uid,t3ver_state');
-            if (empty($versionedRecord)) {
-                continue;
-            }
-            $versionState = VersionState::tryFrom($versionedRecord['t3ver_state'] ?? 0);
-            if ($versionState->indicatesPlaceholder()) {
-                continue;
-            }
-            $this->moveRecord($item['table'], (int)$item['id'], $resolvedPageId);
-        }
-    }
-
-    /**
-     * Moves a versioned record, which is not new or deleted.
-     * This is critical for a versioned record to be marked as MOVED (t3ver_state=4)
-     *
-     * @param string $table Table name to move
-     * @param int $liveUid Record uid to move (online record)
-     * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-     * @param int $versionedRecordUid UID of offline version of online record
-     */
-    private function moveRecord_moveVersionedRecord(string $table, int $liveUid, int $destPid, int $versionedRecordUid): void
-    {
-        // If a record gets moved after a record that already has a versioned record
-        // then the versioned record needs to be placed after the existing one
-        $originalRecordDestinationPid = $destPid;
-        $movedTargetRecordInWorkspace = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, abs($destPid), 'uid');
-        if (is_array($movedTargetRecordInWorkspace) && $destPid < 0) {
-            $destPid = -$movedTargetRecordInWorkspace['uid'];
-        }
-        $this->moveRecord_raw($table, $versionedRecordUid, $destPid);
-        $versionedRecord = BackendUtility::getRecord($table, $versionedRecordUid, 'uid,t3ver_state');
-        if (VersionState::tryFrom($versionedRecord['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER) {
-            // Update the state of this record to a move placeholder. This is allowed if the
-            // record is a 'changed' (t3ver_state=0) record: Changing a record and moving it
-            // around later, should switch it from 'changed' to 'moved'. Deleted placeholders
-            // however are an 'end-state', they should not be switched to a move placeholder.
-            // Scenario: For a live page that has a localization, the localization is first
-            // marked as to-delete in workspace, creating a delete placeholder for that
-            // localization. Later, the page is moved around, moving the localization along
-            // with the default language record. The localization should then NOT be switched
-            // from 'to-delete' to 'moved', this would loose the 'to-delete' information.
-            $this->connectionPool->getConnectionForTable($table)->update(
-                $table,
-                ['t3ver_state' => VersionState::MOVE_POINTER->value],
-                ['uid' => (int)$versionedRecordUid]
-            );
-        }
-        // Check for the localizations of that element and move them as well
-        $this->moveL10nOverlayRecords($table, $liveUid, $destPid, $originalRecordDestinationPid);
     }
 
     /**
@@ -6485,52 +6395,59 @@ class DataHandler
     }
 
     /**
-     * Creates a new version of a record
-     * (Requires support in the table)
+     * Creates a new version of a record if the table is workspace aware.
      *
-     * @param string $table Table name
-     * @param int $id Record uid to versionize
+     * @param int $id Live record uid to create a versioned record from
      * @param string $label Version label
      * @param bool $delete If TRUE, the version is created to delete the record.
      * @return int|null Returns the id of the new version (if any)
-     * @see copyRecord()
      * @internal should only be used from within DataHandler
      */
-    public function versionizeRecord($table, $id, $label, $delete = false)
+    public function versionizeRecord($table, $id, $label, $delete = false): ?int
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $id = (int)$id;
-        // Stop any actions if the record is marked to be deleted:
-        // (this can occur if IRRE elements are versionized and child elements are removed)
         if ($this->isElementToBeDeleted($table, $id)) {
+            // Stop if the record is marked to be deleted. Can happen when IRRE elements are versioned and children are removed
             return null;
         }
         if (!$schema->isWorkspaceAware() || $id <= 0) {
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Versioning is not supported for this table {table}:{uid}', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
-
         // Fetch record with permission check
         $row = $this->recordInfoWithPermissionCheck($table, $id, Permission::PAGE_SHOW);
-
-        // This checks if the record can be selected which is all that a copy action requires.
         if ($row === false) {
+            // This checks if the record can be selected which is all that a copy action requires.
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'The record does not exist or you don\'t have correct permissions to make a new version (copy) of this record "{table}:{uid}"', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
-
-        // Record must be online record, otherwise we would create a version of a version
         if (($row['t3ver_oid'] ?? 0) > 0) {
+            // Record must be online record, otherwise we would create a version of a version
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record "{table}:{uid}" you wanted to versionize was already a version in archive (record has an online ID)', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
-
         if ($delete && $errorCode = $this->cannotDeleteRecord($table, $id)) {
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record {table}:{uid} cannot be deleted: {reason}', null, ['table' => $table, 'uid' => (int)$id, 'reason' => $errorCode]);
             return null;
         }
+        if ($this->BE_USER->workspace <= 0) {
+            // User must be in workspace at this point, we may otherwise end up with workspace related records in live.
+            // @todo: Maybe raise this to an exception?
+            return null;
+        }
 
-        // Set up the values to override when making a raw-copy:
+        // Check if the record already has a version in the current workspace of the backend user
+        $versionRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');
+        if ($versionRecord) {
+            return (int)$versionRecord['uid'];
+        }
+
+        // Create new version of the record and return the new uid
+        // The information of the label to be used for the workspace record
+        // as well as the information whether the record shall be removed
+        // must be forwarded (creating delete placeholders on a workspace are
+        // done by copying the record and override several fields).
         $overrideArray = [
             't3ver_oid' => $id,
             't3ver_wsid' => $this->BE_USER->workspace,
@@ -6540,29 +6457,11 @@ class DataHandler
         if ($schema->hasCapability(TcaSchemaCapability::EditLock)) {
             $overrideArray[$schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName()] = 0;
         }
-        // Checking if the record already has a version in the current workspace of the backend user
-        $versionRecord = ['uid' => null];
-        if ($this->BE_USER->workspace !== 0) {
-            // Look for version already in workspace:
-            $versionRecord = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $id, 'uid');
-        }
-        // Create new version of the record and return the new uid
-        if (empty($versionRecord['uid'])) {
-            // Create raw-copy and return result:
-            // The information of the label to be used for the workspace record
-            // as well as the information whether the record shall be removed
-            // must be forwarded (creating delete placeholders on a workspace are
-            // done by copying the record and override several fields).
-            $workspaceOptions = [
-                'delete' => $delete,
-                'label' => $label,
-            ];
-            return $this->copyRecord_raw($table, $id, (int)$row['pid'], $overrideArray, $workspaceOptions);
-        }
-        // Reuse the existing record and return its uid
-        // (prior to TYPO3 CMS 6.2, an error was thrown here, which
-        // did not make much sense since the information is available)
-        return $versionRecord['uid'];
+        $workspaceOptions = [
+            'delete' => $delete,
+            'label' => $label,
+        ];
+        return $this->copyRecord_raw($table, $id, (int)$row['pid'], $overrideArray, $workspaceOptions);
     }
 
     /**
@@ -9620,7 +9519,6 @@ class DataHandler
      * @param string $table Table of record
      * @param array $record array where fields are at least: pid, t3ver_wsid, t3ver_stage (if versioningWS is set)
      * @return string String error code, telling the failure state. FALSE=All ok
-     * @see workspaceCannotEditRecord()
      * @internal this method will be moved to EXT:workspaces
      */
     public function workspaceCannotEditOfflineVersion(string $table, array $record)
