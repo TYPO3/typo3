@@ -123,14 +123,14 @@ SYS:
             description: 'Locale used for certain system related functions, e.g. escaping shell commands. If problems with filenames containing special characters occur, the value of this option is probably wrong. See <a href="https://php.net/manual/en/function.setlocale.php" target="_blank" rel="noreferrer">setlocale()</a>. Available locales: '
         reverseProxyIP:
             type: list
-            description: 'List of IP addresses. If TYPO3 is behind one or more (intransparent) reverse proxies the IP addresses must be added here.'
+            description: 'List of IP addresses. If TYPO3 is behind one or more (intransparent) reverse proxies the IP addresses must be added here and <a href="#SYS-reverseProxyHeaderMultiValue">[SYS][reverseProxyHeaderMultiValue]</a> must be set to ''first'' or ''last''.'
         reverseProxyHeaderMultiValue:
             type: text
             allowedValues:
               'none': 'Do not evaluate the reverse proxy header'
               'first': 'Use the first IP address in the proxy header'
               'last': 'Use the last IP address in the proxy header'
-            description: 'Defines which values of a proxy header (eg HTTP_X_FORWARDED_FOR) to use, if more than one is found.'
+            description: 'Position of the authoritative IP address within the "X-Forwarded-For" header (e.g. "X-Forwarded-For: 1.2.3.4, 2.3.4.5, 3.4.5.6" uses "1.2.3.4" with "first" and "3.4.5.6" with "last").'
         reverseProxyPrefix:
             type: text
             description: 'Optional prefix to be added to the internal URL (SCRIPT_NAME and REQUEST_URI). Example: When proxying ext-domain.com to int-server.com/prefix this has to be set to <em>prefix</em>'
