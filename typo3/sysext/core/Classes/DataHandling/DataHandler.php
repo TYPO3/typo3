@@ -2609,11 +2609,6 @@ class DataHandler
         return array_slice($valueArray, 0, $maxitems);
     }
 
-    /*********************************************
-     *
-     * Helper functions for evaluation functions.
-     *
-     ********************************************/
     /**
      * Gets a unique value for $table/$id/$field based on $value
      *
@@ -3255,11 +3250,6 @@ class DataHandler
         return $dbAnalysis->countItems(false);
     }
 
-    /*********************************************
-     *
-     * PROCESSING COMMANDS
-     *
-     ********************************************/
     /**
      * Processing the cmd-array
      * See "TYPO3 Core API" for a description of the options.
@@ -3445,11 +3435,6 @@ class DataHandler
         }
     }
 
-    /*********************************************
-     *
-     * Cmd: Copying
-     *
-     ********************************************/
     /**
      * Copying a single record
      *
@@ -5319,11 +5304,6 @@ class DataHandler
         return !empty($localizations);
     }
 
-    /*********************************************
-     *
-     * Cmd: delete
-     *
-     ********************************************/
     /**
      * Delete a single record
      *
@@ -5433,7 +5413,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @param int $uid Record UID
-     * @internal should only be used from within DataHandler
      */
     protected function discardWorkspaceVersionsOfRecord($table, $uid): void
     {
@@ -5611,8 +5590,6 @@ class DataHandler
      * @param int $uid Page id
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      * @param bool $deleteRecordsOnPage If false, records on the page will not be deleted (edge case while swapping workspaces)
-     * @internal
-     * @see deletePages()
      */
     protected function deleteSpecificPage(int $uid, bool $forceHardDelete, bool $deleteRecordsOnPage): void
     {
@@ -5881,12 +5858,6 @@ class DataHandler
         }
     }
 
-    /*********************************************
-     *
-     * Cmd: undelete / restore
-     *
-     ********************************************/
-
     /**
      * Restore live records by setting soft-delete flag to 0.
      *
@@ -5983,24 +5954,21 @@ class DataHandler
                 $updateFields,
                 ['uid' => $uid]
             );
-
-        if ($this->enableLogging) {
-            $this->log(
-                $table,
-                $uid,
-                SystemLogDatabaseAction::INSERT,
-                null,
-                SystemLogErrorClassification::MESSAGE,
-                'Record "{table}:{uid}" was restored on page {pid}',
-                null,
-                [
-                    'table' => $table,
-                    'uid' => $uid,
-                    'pid' => $recordPid,
-                ],
-                $recordPid
-            );
-        }
+        $this->log(
+            $table,
+            $uid,
+            SystemLogDatabaseAction::INSERT,
+            null,
+            SystemLogErrorClassification::MESSAGE,
+            'Record "{table}:{uid}" was restored on page {pid}',
+            null,
+            [
+                'table' => $table,
+                'uid' => $uid,
+                'pid' => $recordPid,
+            ],
+            $recordPid
+        );
 
         // Register cache clearing of page, or parent page if a page is restored.
         $this->registerRecordIdForPageCacheClearing($table, $uid, $recordPid);
@@ -6053,12 +6021,6 @@ class DataHandler
             }
         }
     }
-
-    /*********************************************
-     *
-     * Cmd: Workspace discard & flush
-     *
-     ********************************************/
 
     /**
      * Discard a versioned record from this workspace. This deletes records from the database - no soft delete.
@@ -6422,11 +6384,6 @@ class DataHandler
         }
     }
 
-    /*********************************************
-     *
-     * Cmd: Versioning
-     *
-     ********************************************/
     /**
      * Creates a new version of a record
      * (Requires support in the table)
@@ -6667,12 +6624,6 @@ class DataHandler
     {
         return empty($config['MM_opposite_field']);
     }
-
-    /*********************************************
-     *
-     * Cmd: Helper functions
-     *
-     ********************************************/
 
     /**
      * Returns an instance of DataHandler for handling local datamaps/cmdmaps
@@ -7387,7 +7338,6 @@ class DataHandler
      * @param int $pageUid Page id for which to check, including 0 (zero) if checking for page tree root.
      * @param string $checkTable Table name to check
      * @return bool TRUE if OK
-     * @internal should only be used from within DataHandler
      */
     protected function isTableAllowedForThisPage(int $pageUid, $checkTable): bool
     {
@@ -7417,7 +7367,6 @@ class DataHandler
      * @param int $id Page id
      * @param int $perms Permission integer
      * @param array $columns Columns to select
-     * @internal
      */
     protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid']): array|false
     {
@@ -7455,7 +7404,6 @@ class DataHandler
      * @param int $permissions Perms integer to check each page record for.
      * @param array $pageIdsInBranch List of page uids, this is added to and returned in the end
      * @return array<int>|null List of page IDs in branch, if there are subpages, empty array if there are none or null if no permission
-     * @internal should only be used from within DataHandler
      */
     protected function doesBranchExist(int $pid, int $permissions, array $pageIdsInBranch = []): ?array
     {
@@ -7593,11 +7541,6 @@ class DataHandler
         return $tableList;
     }
 
-    /*****************************
-     *
-     * Information lookup
-     *
-     *****************************/
     /**
      * Returns the value of the $field from page $id
      * NOTICE; the function caches the result for faster delivery next time. You can use this function repeatedly without performance loss since it doesn't look up the same record twice!
@@ -7605,7 +7548,6 @@ class DataHandler
      * @param int $id Page uid
      * @param string $field Field name for which to return value
      * @return string|int|null Value of the field. Result is cached in $this->pageCache[$id][$field] and returned from there next time!
-     * @internal should only be used from within DataHandler
      */
     protected function pageInfo(int $id, string $field): int|string|null
     {
@@ -7762,7 +7704,6 @@ class DataHandler
      * @param array $fieldArray Array of field=>value pairs to insert. FIELDS MUST MATCH the database FIELDS. No check is done. "pid" must point to the destination of the record!
      * @param int $suggestedUid Suggested UID value for the inserted record. See the array $this->suggestedInsertUids; Admin-only feature
      * @return int|null Returns ID on success.
-     * @internal should only be used from within DataHandler
      */
     protected function insertDB($table, $id, $fieldArray, $suggestedUid = 0): ?int
     {
@@ -7894,11 +7835,6 @@ class DataHandler
         $this->referenceIndexUpdater->registerUpdateForReferencesToItem($table, $uid, $workspace, $targetWorkspace);
     }
 
-    /*********************************************
-     *
-     * Misc functions
-     *
-     ********************************************/
     /**
      * Returning sorting number for tables with a "sortby" column
      * Using when new records are created and existing records are moved around.
@@ -8240,8 +8176,6 @@ class DataHandler
     /**
      * If a "languageField" is specified for $table this function will add a
      * possible value to the incoming array if none is found in there already.
-     *
-     * @internal should only be used from within DataHandler
      */
     protected function addDefaultPermittedLanguageIfNotSet(string $table, array $incomingFieldArray, int $pageId): array
     {
@@ -8663,7 +8597,6 @@ class DataHandler
      * @param int $prevUid UID of previous record
      *
      * @return array Output array (For when the copying operation needs to get the information instead of updating the info)
-     * @internal should only be used from within DataHandler
      */
     protected function fixCopyAfterDuplFields(string $table, int $prevUid): array
     {
@@ -8750,7 +8683,6 @@ class DataHandler
      *
      * @param array $conf Config array for TCA/columns field
      * @return string|bool string Inline subtype (field|mm|list), boolean: FALSE
-     * @internal should only be used from within DataHandler
      */
     protected function getRelationFieldType($conf): bool|string
     {
@@ -8923,12 +8855,6 @@ class DataHandler
         return false;
     }
 
-    /******************************
-     *
-     * Clearing cache
-     *
-     ******************************/
-
     /**
      * Clearing the cache based on a page being updated
      * If the $table is 'pages' then cache is cleared for all pages on the same level (and subsequent?)
@@ -9000,7 +8926,6 @@ class DataHandler
      * @param int $uid UID of record for which the cache needs to be cleared
      * @param int $pid Original pid of the page of the record which the cache needs to be cleared
      * @return array Array with tagsToClear and clearCacheCommands
-     * @internal This function is internal only it may be changed/removed also in minor version numbers.
      */
     protected function prepareCacheFlush($table, $uid, $pid): array
     {
@@ -9257,11 +9182,6 @@ class DataHandler
         }
     }
 
-    /*****************************
-     *
-     * Logging
-     *
-     *****************************/
     /**
      * Logging actions from DataHandler
      *
@@ -9334,12 +9254,6 @@ class DataHandler
 
         return $affectedRecords;
     }
-
-    /*****************************
-     *
-     * Internal (do not use outside Core!)
-     *
-     *****************************/
 
     /**
      * Find out if the record is a localization. If so, get the uid of the default language page.
@@ -9484,7 +9398,6 @@ class DataHandler
      * @param int $id UID of record
      * @param int|null $recpid PID of record
      * @return bool TRUE if ok.
-     * @internal should only be used from within TYPO3 Core
      */
     protected function workspaceAllowAutoCreation(string $table, $id, $recpid): bool
     {
