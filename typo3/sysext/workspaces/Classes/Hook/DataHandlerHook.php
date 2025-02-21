@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\SysLog\Action\Database as DatabaseAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
@@ -177,87 +176,6 @@ class DataHandlerHook
         $this->notificationEmailInfo = [];
         // Reset remapped IDs
         $this->remappedIds = [];
-    }
-
-    /**
-     * hook that is called when an element shall get deleted
-     *
-     * @param string $table the table of the record
-     * @param int $id the ID of the record
-     * @param array $record The accordant database record
-     * @param bool $recordWasDeleted can be set so that other hooks or
-     * @param DataHandler $dataHandler reference to the main DataHandler object
-     */
-    public function processCmdmap_deleteAction($table, $id, array $record, &$recordWasDeleted, DataHandler $dataHandler)
-    {
-        // only process the hook if it wasn't processed
-        // by someone else before
-        if ($recordWasDeleted) {
-            return;
-        }
-        $recordWasDeleted = true;
-        // For Live version, try if there is a workspace version because if so, rather "delete" that instead
-        // Look, if record is an offline version, then delete directly:
-        if ((int)($record['t3ver_oid'] ?? 0) === 0) {
-            if ($wsVersion = BackendUtility::getWorkspaceVersionOfRecord($dataHandler->BE_USER->workspace, $table, $id)) {
-                $record = $wsVersion;
-                $id = $record['uid'];
-            }
-        }
-        $recordVersionState = VersionState::tryFrom($record['t3ver_state'] ?? 0);
-        // Look, if record is an offline version, then delete directly:
-        if ((int)($record['t3ver_oid'] ?? 0) > 0) {
-            if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
-                // In Live workspace, delete any. In other workspaces there must be match.
-                if ($dataHandler->BE_USER->workspace == 0 || (int)$record['t3ver_wsid'] == $dataHandler->BE_USER->workspace) {
-                    $liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
-                    $liveRecordVersionState = VersionState::tryFrom($liveRec['t3ver_state'] ?? 0);
-                    if ($record['t3ver_wsid'] > 0 && $recordVersionState === VersionState::DEFAULT_STATE) {
-                        // Change normal versioned record to delete placeholder
-                        // Happens when an edited record is deleted
-                        $this->connectionPool->getConnectionForTable($table)->update(
-                            $table,
-                            ['t3ver_state' => VersionState::DELETE_PLACEHOLDER->value],
-                            ['uid' => $id]
-                        );
-                        // Delete localization overlays:
-                        $dataHandler->deleteL10nOverlayRecords($table, $id);
-                    } elseif ($record['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
-                        // Delete those in WS 0 + if their live records state was not "Placeholder".
-                        $dataHandler->deleteEl($table, $id);
-                    } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
-                        $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, (int)$id);
-                        $dataHandler->deleteEl($table, (int)$id);
-                        if (is_array($placeholderRecord)) {
-                            $this->softOrHardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
-                        }
-                    }
-                } else {
-                    $dataHandler->log($table, (int)$id, DatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Tried to delete record from another workspace');
-                }
-            } else {
-                $dataHandler->log($table, (int)$id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Versioning not enabled for record with an online ID (t3ver_oid) given');
-            }
-        } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
-            // If it is a new versioned record, delete it directly.
-            $dataHandler->deleteEl($table, $id);
-        } elseif ($dataHandler->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
-            // Look, if record is "online" then delete directly.
-            $dataHandler->deleteEl($table, $id);
-        } else {
-            // Otherwise, try to delete by versioning:
-            $copyMappingArray = $dataHandler->copyMappingArray;
-            $dataHandler->versionizeRecord($table, $id, 'DELETED!', true);
-            // Determine newly created versions:
-            // (remove placeholders are copied and modified, thus they appear in the copyMappingArray)
-            $versionedElements = ArrayUtility::arrayDiffKeyRecursive($dataHandler->copyMappingArray, $copyMappingArray);
-            // Delete localization overlays:
-            foreach ($versionedElements as $versionedTableName => $versionedOriginalIds) {
-                foreach ($versionedOriginalIds as $versionedOriginalId => $_) {
-                    $dataHandler->deleteL10nOverlayRecords($versionedTableName, $versionedOriginalId);
-                }
-            }
-        }
     }
 
     /**
@@ -921,30 +839,6 @@ class DataHandlerHook
             }
         }
         return $listArr;
-    }
-
-    /**
-     * Straight db based record deletion: sets deleted = 1 for soft-delete
-     * enabled tables, or removes row from table. Used for move placeholder
-     * records sometimes.
-     */
-    protected function softOrHardDeleteSingleRecord(string $table, int $uid): void
-    {
-        $schema = $this->tcaSchemaFactory->get($table);
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($table);
-
-        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
-            $softDeleteInformation = $schema->getCapability(TcaSchemaCapability::SoftDelete);
-            $connection->update(
-                $table,
-                [$softDeleteInformation->getFieldName() => 1],
-                ['uid' => $uid],
-                [Connection::PARAM_INT]
-            );
-        } else {
-            $connection->delete($table, ['uid' => $uid]);
-        }
     }
 
     /**
