@@ -215,18 +215,7 @@ class DataHandlerHook
                 // In Live workspace, delete any. In other workspaces there must be match.
                 if ($dataHandler->BE_USER->workspace == 0 || (int)$record['t3ver_wsid'] == $dataHandler->BE_USER->workspace) {
                     $liveRec = BackendUtility::getLiveVersionOfRecord($table, $id, 'uid,t3ver_state');
-                    // Processing can be skipped if a delete placeholder shall be published
-                    // during the current request. Thus it will be deleted later on...
                     $liveRecordVersionState = VersionState::tryFrom($liveRec['t3ver_state'] ?? 0);
-                    if ($recordVersionState === VersionState::DELETE_PLACEHOLDER && !empty($liveRec['uid'])
-                        && !empty($dataHandler->cmdmap[$table][$liveRec['uid']]['version']['action'])
-                        && !empty($dataHandler->cmdmap[$table][$liveRec['uid']]['version']['swapWith'])
-                        && $dataHandler->cmdmap[$table][$liveRec['uid']]['version']['action'] === 'swap'
-                        && $dataHandler->cmdmap[$table][$liveRec['uid']]['version']['swapWith'] == $id
-                    ) {
-                        return null;
-                    }
-
                     if ($record['t3ver_wsid'] > 0 && $recordVersionState === VersionState::DEFAULT_STATE) {
                         // Change normal versioned record to delete placeholder
                         // Happens when an edited record is deleted
