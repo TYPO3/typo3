@@ -9,7 +9,7 @@
         </div>
     </div>
 </f:if>
-<div class="t3-grid-container" data-default-language-binding="{f:if(condition: context.drawingConfiguration.defaultLanguageBinding, then: '1', else: '0')}">
+<div class="t3-grid-container{f:if(condition: context.backendLayout.identifierCleaned, then: ' t3-grid-container-{context.backendLayout.identifierCleaned}')}" data-default-language-binding="{f:if(condition: context.drawingConfiguration.defaultLanguageBinding, then: '1', else: '0')}">
     <div class="t3-grid-container-inner">
         <table class="t3-page-columns t3-grid-table t3js-page-columns">
             <tr>
@@ -81,7 +81,7 @@
                                 <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
                                 <td valign="top"
                                     data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
-                                    class="t3-grid-cell t3-page-column t3js-page-column">
+                                    class="t3-grid-cell t3-page-column t3js-page-column {f:if(condition: column.identifierCleaned, then: 't3-grid-cell-{column.identifierCleaned}')}">
                                     <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
                                 </td>
                             </f:for>
@@ -89,7 +89,7 @@
                         <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
                         <f:for each="{column.items}" as="gridItem" iteration="itemIterator">
                             <tr>
-                                <td class="t3-grid-cell t3js-page-column" valign="top" data-colpos="{column.columnNumber}">
+                                <td class="t3-grid-cell t3js-page-column {f:if(condition: column.identifierCleaned, then: 't3-grid-cell-{column.identifierCleaned}')}" valign="top" data-colpos="{column.columnNumber}">
                                     <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumns.0, columnNumber: columnNumber)}" />
                                     <f:variable name="item" value="{gridItem}" />
                                     <f:render partial="PageLayout/Record" arguments="{_all}" />
@@ -97,7 +97,7 @@
                                 <f:for each="{languageColumns}" as="languageColumn">
                                     <f:if condition="{languageColumn.context.siteLanguage.languageId} > 0">
                                         <f:variable name="column" value="{be:languageColumn(languageColumn: languageColumn, columnNumber: columnNumber)}" />
-                                        <td class="t3-grid-cell t3js-page-column" valign="top" data-colpos="{column.columnNumber}">
+                                        <td class="t3-grid-cell t3js-page-column {f:if(condition: column.identifierCleaned, then: 't3-grid-cell-{column.identifierCleaned}')}" valign="top" data-colpos="{column.columnNumber}">
                                             <f:variable name="languageId" value="{languageColumn.context.siteLanguage.languageId}" />
                                             <f:if condition="{languageColumn.translationData.mode} == 'connected'">
                                                 <f:then>
