@@ -9411,57 +9411,30 @@ class DataHandler
     }
 
     /**
-     * Checking if editing of an existing record is allowed in current workspace if that is offline.
-     * Rules for editing in offline mode:
-     * - record supports versioning and is an offline version from workspace and has the current stage
-     * - or record (any) is in a branch where there is a page which is a version from the workspace
-     *   and where the stage is not preventing records
+     * Checking if editing of an existing record is allowed in current workspace.
      *
-     * @param string $table Table of record
-     * @param array|int $recData Integer (record uid) or array where fields are at least: pid, t3ver_wsid, t3ver_oid, t3ver_stage (if versioningWS is set)
-     * @return string|false String error code, telling the failure state. FALSE=All ok
+     * @return string|false Error string, else false = ok
      */
-    protected function workspaceCannotEditRecord($table, $recData): string|false
+    protected function workspaceCannotEditRecord(string $table, array $record): string|false
     {
-        // Only test if the user is in a workspace
         if ($this->BE_USER->workspace === 0) {
+            // Early skip if user is not in workspace
             return false;
         }
-        $tableSupportsVersioning = $this->tcaSchemaFactory->get($table)->isWorkspaceAware();
-        if (!is_array($recData)) {
-            $recData = BackendUtility::getRecord(
-                $table,
-                $recData,
-                'pid' . ($tableSupportsVersioning ? ',t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage' : '')
-            );
-        }
-        if (is_array($recData)) {
-            // We are testing a "version" (identified by having a t3ver_oid): it can be edited provided
-            // that workspace matches and versioning is enabled for the table.
-            $versionState = VersionState::tryFrom($recData['t3ver_state'] ?? 0);
-            if ($tableSupportsVersioning
-                && (
-                    $versionState === VersionState::NEW_PLACEHOLDER || (int)(($recData['t3ver_oid'] ?? 0) > 0)
-                )
-            ) {
-                if ((int)$recData['t3ver_wsid'] !== $this->BE_USER->workspace) {
-                    // So does workspace match?
-                    return 'Workspace ID of record didn\'t match current workspace';
-                }
-                // So is the user allowed to "use" the edit stage within the workspace?
-                return $this->BE_USER->workspaceCheckStageForCurrent(0)
-                    ? false
-                    : 'User\'s access level did not allow for editing';
+        if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware() && (int)($record['t3ver_wsid'] ?? 0) > 0) {
+            // This is a workspace record
+            if ((int)$record['t3ver_wsid'] !== $this->BE_USER->workspace) {
+                // Workspaces of record and current user do not match
+                return 'Workspace ID of record does not match current user workspace';
             }
-            // Check if we are testing a "live" record
-            if ($this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
-                // Live records are OK in the current workspace
-                return false;
-            }
-            // If not offline, output error
-            return 'Online record was not in a workspace';
+            // Is user allowed to use the edit stage within the workspace?
+            return $this->BE_USER->workspaceCheckStageForCurrent(0) ? false : 'User missing workspace editing access';
         }
-        return 'No record';
+        if ($this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+            // Live records for this table are ok in current workspace
+            return false;
+        }
+        return 'Editing live record is not allowed';
     }
 
     /**
