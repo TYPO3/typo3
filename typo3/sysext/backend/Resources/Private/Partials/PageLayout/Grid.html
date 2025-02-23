@@ -1,4 +1,4 @@
-<div class="t3-grid-container" data-default-language-binding="{f:if(condition: context.drawingConfiguration.defaultLanguageBinding, then: '1', else: '0')}">
+<div class="t3-grid-container{f:if(condition: grid.context.backendLayout.identifierCleaned, then: ' t3-grid-container-{grid.context.backendLayout.identifierCleaned}')}" data-default-language-binding="{f:if(condition: context.drawingConfiguration.defaultLanguageBinding, then: '1', else: '0')}">
     <div class="t3-grid-container-inner">
         <table class="t3-page-columns t3-grid-table t3js-page-columns">
             <f:if condition="{gridColumns}">

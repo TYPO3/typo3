@@ -64,6 +64,11 @@ class BackendLayout
         return $this->identifier;
     }
 
+    public function getIdentifierCleaned(): string
+    {
+        return strtolower((string)preg_replace('/[^a-zA-Z0-9_-]/', '', $this->identifier));
+    }
+
     public function setIdentifier(string $identifier): void
     {
         if (str_contains($identifier, '__')) {

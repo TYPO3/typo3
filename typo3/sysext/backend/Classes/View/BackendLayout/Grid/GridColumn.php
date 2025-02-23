@@ -52,6 +52,7 @@ class GridColumn extends AbstractGridObject
     protected readonly string $icon;
     protected readonly int $colSpan;
     protected readonly int $rowSpan;
+    protected readonly ?string $identifier;
     private readonly EventDispatcherInterface $eventDispatcher;
 
     /**
@@ -68,6 +69,7 @@ class GridColumn extends AbstractGridObject
         $this->icon = (string)($definition['icon'] ?? '');
         $this->colSpan = (int)($definition['colspan'] ?? 1);
         $this->rowSpan = (int)($definition['rowspan'] ?? 1);
+        $this->identifier = isset($definition['identifier']) ? (string)$definition['identifier'] : null;
         $this->eventDispatcher = GeneralUtility::makeInstance(EventDispatcherInterface::class);
     }
 
@@ -126,6 +128,16 @@ class GridColumn extends AbstractGridObject
             return 1;
         }
         return $this->rowSpan;
+    }
+
+    public function getIdentifier(): ?string
+    {
+        return $this->identifier;
+    }
+
+    public function getIdentifierCleaned(): string
+    {
+        return strtolower((string)preg_replace('/[^a-zA-Z0-9_-]/', '', (string)$this->identifier));
     }
 
     /**

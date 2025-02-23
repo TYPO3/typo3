@@ -14,9 +14,9 @@
         <f:variable name="columnIdentifier" value="columnIdentifier_column-{colpos}" />
     </f:else>
 </f:if>
-
 <f:variable name="columnClasses">
     t3js-page-column t3-grid-cell t3-page-column
+    {f:if(condition: column.identifierCleaned, then: 't3-grid-cell-{column.identifierCleaned}')}
     {f:if(condition: column.unassigned, then: 't3-grid-cell-unassigned')}
     {f:if(condition: '!{column.active} && !{column.unused}', then: 't3-grid-cell-restricted')}
     {f:if(condition: '!{column.active} && {hideRestrictedColumns} && !{column.unused}', then: 't3-grid-cell-hidden')}
