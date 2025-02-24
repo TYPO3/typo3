@@ -4316,17 +4316,24 @@ class DataHandler
     /**
      * Move a single record.
      *
-     * @param int $destinationPid Position to move to. If >=0, then it points to a page uid on which to insert the
-     *                            record as the first element. If <0, then it points to an uid from its own table
-     *                            after which the record should be moved to.
+     * @param int $destination Position to move to. If >=0, then it points to a page uid on which to insert the
+     *                         record as the first element. If <0, then it points to an uid from its own table
+     *                         after which the record should be moved to.
      * @internal should only be used from within DataHandler
      */
-    public function moveRecord($table, int $uid, $destinationPid): void
+    public function moveRecord(string $table, int $uid, $destination): void
     {
+        $destination = (int)$destination;
         if (!$this->tcaSchemaFactory->has($table) || $uid <= 0) {
             return;
         }
         $schema = $this->tcaSchemaFactory->get($table);
+
+        if ($destination < 0 && !$schema->hasCapability(TcaSchemaCapability::SortByField)) {
+            // Trying to move a record *after* another one of the same table. Stop early if the table is not sorting-aware.
+            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} after another record, but the table does not support sorting', null, ['table' => $table, 'uid' => $uid]);
+            return;
+        }
 
         // Gather record facts
         $plainRecord = BackendUtility::getRecord($table, $uid, '*', '', false);
@@ -4416,10 +4423,94 @@ class DataHandler
         // * $liveRecord set and $workspaceRecord set: We're moving an existing workspace overlay. The table
         //   is workspace aware.
 
+        // Moving a workspace aware record in workspaces
+        if ($this->BE_USER->workspace > 0 && $workspaceRecord === null && $schema->isWorkspaceAware()) {
+            // Create version of record first, if it does not exist
+            // @todo: This strategy is odd. A "dummy" record is created in correct workspace, but it is a
+            //        DEFAULT_STATE one, not a MOVE_POINTER. This is then later updated to a move placeholder.
+            //        This is complex and risky, we can for instance end up with a dangling record when a
+            //        permission check fails down below. Next issue is that versionizeRecord() does
+            //        a lot of stuff that we checked above already, but we can't change versionizeRecord()
+            //        much since it is also used as entry method in process_cmdmap().
+            //        In the end, we should refactor this to fully prepare the workspace record and insert it once.
+            $sourceUid = $this->versionizeRecord($table, $liveRecord['uid'], 'MovePointer');
+            if (!$sourceUid) {
+                // If versionizeRecord() could not create, it usually logs.
+                return;
+            }
+            $workspaceRecord = BackendUtility::getRecord($table, $sourceUid);
+            if ($workspaceRecord === null) {
+                throw new \RuntimeException('Table ' . $table . ' is workspace aware, but could not create workspace overlay', 1740217183);
+            }
+        }
+
         $sourceUid = (int)($workspaceRecord['uid'] ?? $liveRecord['uid']);
         $sourcePid = (int)($workspaceRecord['pid'] ?? $liveRecord['pid']);
-        $destinationPid = (int)$destinationPid;
-        $targetPid = $this->resolvePid($table, $destinationPid);
+
+        $targetPid = $destination;
+        if ($targetPid < 0) {
+            // If the destination is negative, the record should be moved *after* the record the negative uid
+            // points to. For the pid calculation, we then use the pid of that negative uid record.
+            $targetPid = (int)(BackendUtility::getRecord($table, abs($targetPid), 'pid', '', false)['pid']);
+        }
+
+        if ($destination >= 0) {
+            $finalDestination = $targetPid;
+        } else {
+            $finalDestination = $destination;
+        }
+        $updateFields = [];
+        $oldData = [
+            'pid' => $workspaceRecord['pid'] ?? $liveRecord['pid'],
+        ];
+        if ($table === 'pages') {
+            // If this is a translation of a page, it needs to be kept "sorting" in sync
+            $localizationParentFieldName = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
+            $pagesSortingFieldName = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
+            if ((int)($workspaceRecord[$localizationParentFieldName] ?? $liveRecord[$localizationParentFieldName]) > 0) {
+                $defaultLanguagePageUid = (int)($workspaceRecord[$localizationParentFieldName] ?? $liveRecord[$localizationParentFieldName]);
+                // In workspaces, the default language page may have been moved to a different pid than the
+                // default language page record of live workspace. In this case, localized pages need to be
+                // moved to the pid of the workspace move record.
+                $defaultLanguagePageWorkspaceOverlay = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, 'pages', $defaultLanguagePageUid, 'uid,pid,' . $pagesSortingFieldName);
+                if (is_array($defaultLanguagePageWorkspaceOverlay)) {
+                    $updateFields[$pagesSortingFieldName] = $defaultLanguagePageWorkspaceOverlay[$pagesSortingFieldName];
+                    $oldData[$pagesSortingFieldName] = $workspaceRecord[$pagesSortingFieldName] ?? $liveRecord[$pagesSortingFieldName];
+                    $finalDestination = $defaultLanguagePageWorkspaceOverlay['pid'];
+                } elseif ($defaultLanguagePageUid !== (int)$destination) {
+                    // If the default language page has been moved, localized pages need to be moved to
+                    // that pid and sorting, too.
+                    $originalTranslationRecord = BackendUtility::getRecord($table, $defaultLanguagePageUid, '*', '', false);
+                    $updateFields[$pagesSortingFieldName] = $originalTranslationRecord[$pagesSortingFieldName];
+                    $oldData[$pagesSortingFieldName] = $workspaceRecord[$pagesSortingFieldName] ?? $liveRecord[$pagesSortingFieldName];
+                    $finalDestination = $originalTranslationRecord['pid'];
+                }
+            }
+        }
+        $updateFields['pid'] = $finalDestination;
+        if ($schema->hasCapability(TcaSchemaCapability::SortByField) && !isset($updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()])) {
+            $sortNumber = $this->getSortNumber($table, $sourceUid, $finalDestination);
+            $sortByFieldName = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
+            $oldData[$sortByFieldName] = $workspaceRecord[$sortByFieldName] ?? $liveRecord[$sortByFieldName];
+            if ($finalDestination >= 0) {
+                $updateFields[$sortByFieldName] = $sortNumber;
+            } else {
+                $updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = $sortNumber['sortNumber'];
+                $updateFields['pid'] = $sortNumber['pid'];
+            }
+        }
+        if ($table === 'pages') {
+            if (!$this->destNotInsideSelf($updateFields['pid'], $sourceUid)) {
+                $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move pages:{uid} to inside of its own rootline', null, ['uid' => $sourceUid]);
+                return;
+            }
+        }
+
+        if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+            $updatedAtFieldName = $schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName();
+            $updateFields[$updatedAtFieldName] = $GLOBALS['EXEC_TIME'];
+            $oldData[$updatedAtFieldName] = $workspaceRecord[$updatedAtFieldName] ?? $liveRecord[$updatedAtFieldName];
+        }
 
         if ($table === 'pages' && $targetPid !== $sourcePid) {
             // If a page is moved to a different parent page, delete permissions are needed for the page.
@@ -4429,7 +4520,7 @@ class DataHandler
             }
         } elseif (!$this->checkRecordUpdateAccess($table, (int)($liveRecord['uid'] ?? $workspaceRecord['uid']))) {
             // If a page is moved within same parent page, page edit records are needed.
-            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} without having permissions to do so', null, ['table' => $table, 'uid' => $sourceUid], $sourcePid);
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} without having permissions to update', null, ['table' => $table, 'uid' => $sourceUid], $sourcePid);
             return;
         }
         if ($table === 'pages' && $targetPid === $sourcePid) {
@@ -4448,8 +4539,31 @@ class DataHandler
             $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $sourceUid, 'reason' => $this->BE_USER->errorMsg], $sourcePid);
             return;
         }
+        if ($this->BE_USER->workspace > 0 && !$schema->isWorkspaceAware() && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+            // Moving a not workspace aware record while in workspaces, but user, table TCA or sys_workspace record do not allow live editing this table.
+            // Can happen when moving a workspace aware parent record with children not being workspace aware.
+            // @todo: See DataScenarios/IrreForeignFieldNonWs/WorkspacesModify/ActionTest.php for a rough overview on what is broken in this case.
+            // @todo: This means the parent record *is* moved (gets a move placeholder), while children are not.
+            //        This is fine when only resorting parent on the same page. Its problematic when parent is moved
+            //        to a different page since the child stays on the old page. It is also unclear what happens when
+            //        the parent is later published (should children *then* be moved to recreate integrity?). At
+            //        the moment, the workspace BE module crashes when doing this.
+            // @todo: If allowed, moving the live record ist still probably not a good idea since this may break live when
+            //        inline children are moved to a different page while the live parent record is on the "old" page.
+            //        It is not an issue with inline children when parent is only resorted on the same page.
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move {table}:{uid} in workspace but the table is not workspace aware and live editing is denied', null, ['table' => $table, 'uid' => (int)$liveRecord['uid']]);
+            return;
+        }
 
         $recordWasMoved = false;
+        $moveRec = [
+            'header' => 'DATAHANDLER DUMMY',
+            'pid' => (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
+            'event_pid' => $table === 'pages'
+                ? (int)(($liveRecord['t3ver_oid'] ?? null) ?: ($liveRecord['uid'] ?? $workspaceRecord['uid']))
+                : (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
+            't3ver_state' => ($liveRecord['t3ver_state'] ?? $workspaceRecord['t3ver_state'] ?? 0),
+        ];
         if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [])) {
             // Extensive hook argument handling for b/w compatibility
             $propArr = [
@@ -4460,18 +4574,10 @@ class DataHandler
                     : $sourcePid,
                 't3ver_state' => $workspaceRecord['t3ver_state'] ?? $liveRecord['t3ver_state'] ?? 0,
             ];
-            $moveRec = [
-                'header' => 'DATAHANDLER DUMMY',
-                'pid' => (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
-                'event_pid' => $table === 'pages'
-                    ? (int)(($liveRecord['t3ver_oid'] ?? null) ?: ($liveRecord['uid'] ?? $workspaceRecord['uid']))
-                    : (int)($liveRecord['pid'] ?? $workspaceRecord['pid']),
-                't3ver_state' => ($liveRecord['t3ver_state'] ?? $workspaceRecord['t3ver_state'] ?? 0),
-            ];
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
-                $hookObj = GeneralUtility::makeInstance($className);
-                if (method_exists($hookObj, 'moveRecord')) {
-                    $hookObj->moveRecord($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid, $propArr, $moveRec, $targetPid, $recordWasMoved, $this);
+                $hook = GeneralUtility::makeInstance($className);
+                if (method_exists($hook, 'moveRecord')) {
+                    $hook->moveRecord($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destination, $propArr, $moveRec, $targetPid, $recordWasMoved, $this);
                     /** @var bool $recordWasMoved */
                 }
             }
@@ -4481,61 +4587,40 @@ class DataHandler
             return;
         }
 
-        if ($this->BE_USER->workspace === 0) {
-            // Moving in live
-            $this->moveRecord_raw($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid);
-            return;
+        $this->registerRecordIdForPageCacheClearing($table, $sourceUid, $table === 'pages' ? $workspaceRecord['uid'] ?? $liveRecord['uid'] : $workspaceRecord['pid'] ?? $liveRecord['pid']);
+        $this->moveRecord_procFields($table, $sourceUid, $updateFields['pid']);
+        $this->connectionPool->getConnectionForTable($table)->update($table, $updateFields, ['uid' => $sourceUid]);
+        $this->moveL10nOverlayRecords($table, $sourceUid, $updateFields['pid'], $destination);
+        if ($destination >= 0) {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
+                $hook = GeneralUtility::makeInstance($className);
+                if (method_exists($hook, 'moveRecord_firstElementPostProcess')) {
+                    $hook->moveRecord_firstElementPostProcess($table, $sourceUid, $destination, $moveRec, $updateFields, $this);
+                }
+            }
+        } else {
+            foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
+                $hook = GeneralUtility::makeInstance($className);
+                if (method_exists($hook, 'moveRecord_afterAnotherElementPostProcess')) {
+                    $hook->moveRecord_afterAnotherElementPostProcess($table, $sourceUid, $updateFields['pid'], $destination, $moveRec, $updateFields, $this);
+                }
+            }
+        }
+        $this->getRecordHistoryStore()->moveRecord($table, $sourceUid, ['oldData' => $oldData, 'newData' => $updateFields], $this->correlationId);
+        if ((int)($workspaceRecord['pid'] ?? $liveRecord['pid']) !== (int)$updateFields['pid']) {
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record {table}:{uid} to page {pid}', null, ['table' => $table, 'uid' => $sourceUid, 'pid' => $updateFields['pid']], $workspaceRecord['pid'] ?? $liveRecord['pid']);
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record {table}:{uid} from page {pid}', null, ['table' => $table, 'uid' => $sourceUid, 'pid' => $workspaceRecord['pid'] ?? $liveRecord['pid']], $updateFields['pid']);
+        } else {
+            $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record {table}:{uid} on page {pid}', null, ['table' => $table, 'uid' => $sourceUid, 'pid' => $updateFields['pid']], $updateFields['pid']);
+        }
+        $this->fixUniqueInPid($table, $sourceUid);
+        $this->fixUniqueInSite($table, $sourceUid);
+        if ($table === 'pages') {
+            $this->fixUniqueInSiteForSubpages($sourceUid);
         }
 
-        if (!$schema->isWorkspaceAware()) {
-            // Moving a not workspace aware record while in workspaces.
-            // Can happen when moving a workspace aware parent record with children not being workspace aware.
-            // @todo: See DataScenarios/IrreForeignFieldNonWs/WorkspacesModify/ActionTest.php for a rough overview on what is broken in this case.
-            if (!$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
-                // Deny if user, table TCA or sys_workspace record do not allow live editing this table.
-                // @todo: This means the parent record *is* moved (gets a move placeholder), while children are not.
-                //        This is fine when only resorting parent on the same page. Its problematic when parent is moved
-                //        to a different page since the child stays on the old page. It is also unclear what happens when
-                //        the parent is later published (should children *then* be moved to recreate integrity?). At
-                //        the moment, the workspace BE module crashes when doing this.
-                $this->log($table, (int)$liveRecord['uid'], SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move {table}:{uid} in workspace but the table is not workspace aware and live editing is denied', null, ['table' => $table, 'uid' => (int)$liveRecord['uid']]);
-                return;
-            }
-            // Move that live child record to its new destination.
-            // @todo: This is probably not a good idea since this may break live when inline children are
-            //        moved to a different page while the live parent record is on the "old" page. It is
-            //        not an issue with inline children when parent is only resorted on the same page.
-            $this->moveRecord_raw($table, $liveRecord['uid'], $destinationPid);
-            return;
-        }
-
-        // Moving a workspace aware record in workspaces
-        if ($workspaceRecord === null) {
-            // Create version of record first, if it does not exist
-            // @todo: This strategy is odd. A "dummy" record is created in correct workspace, but it is a
-            //        DEFAULT_STATE one, not a MOVE_POINTER. This is then later updated to a move placeholder.
-            //        This is complex and risky, we can for instance end up with a dangling record when a
-            //        permission check fails down below. Next issue is that versionizeRecord() does
-            //        a lot of stuff that we checked above already, but we can't change versionizeRecord()
-            //        much since it is also used as entry method in process_cmdmap().
-            //        In the end, we should refactor this to fully prepare the workspace record and insert it once.
-            $sourceUid = $this->versionizeRecord($table, $liveRecord['uid'], 'MovePointer');
-            if (!$sourceUid) {
-                // If versionizeRecord() could not create, it usually logs.
-                return;
-            }
-            $workspaceRecord = BackendUtility::getRecord($table, $sourceUid);
-        }
-        if ($workspaceRecord === null) {
-            throw new \RuntimeException('Table ' . $table . ' is workspace aware, but could not create workspace overlay', 1740217183);
-        }
-        if ($errorCode = $this->workspaceCannotEditRecord($table, $workspaceRecord)) {
-            $this->log($table, (int)$sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move {table}:{uid} failed with insufficient permissions: {errorCode}', null, ['table' => $table, 'uid' => $sourceUid, 'errorCode' => $errorCode]);
-            return;
-        }
-        $this->moveRecord_raw($table, $sourceUid, $destinationPid);
-        if (VersionState::tryFrom((int)($workspaceRecord['t3ver_state'])) !== VersionState::NEW_PLACEHOLDER) {
-            // Late changes after moveRecord_raw() moved stuff.
+        if ($this->BE_USER->workspace > 0 && $schema->isWorkspaceAware() && VersionState::tryFrom((int)($workspaceRecord['t3ver_state'])) !== VersionState::NEW_PLACEHOLDER) {
+            // Late changes after moveRecord_raw() moved stuff in workspaces.
             // This is a "changed", "deleted" or "already moved" record.
             if (VersionState::tryFrom($workspaceRecord['t3ver_state']) !== VersionState::DELETE_PLACEHOLDER) {
                 // Update the state of this record to a move placeholder. This is allowed if the
@@ -4550,183 +4635,12 @@ class DataHandler
                 $this->connectionPool->getConnectionForTable($table)->update(
                     $table,
                     ['t3ver_state' => VersionState::MOVE_POINTER->value],
-                    ['uid' => (int)$sourceUid]
+                    ['uid' => $sourceUid]
                 );
             }
             // Check for the localizations of that element and move them as well
             // @todo: Why is this not done with "new"? Fishy. Called at different place or no test coverage?
-            $this->moveL10nOverlayRecords($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destinationPid, $destinationPid);
-        }
-    }
-
-    /**
-     * Moves a record without checking security of any sort.
-     *
-     * @param string $table Table name to move
-     * @param int $uid Record uid to move
-     * @param int $destPid Position to move to: $destPid: >=0 then it points to a page-id on which to insert the record (as the first element). <0 then it points to a uid from its own table after which to insert it (works if
-     */
-    protected function moveRecord_raw($table, $uid, $destPid): void
-    {
-        $schema = $this->tcaSchemaFactory->get($table);
-        $origDestPid = $destPid;
-        // This is the actual pid of the moving to destination
-        $resolvedPid = $this->resolvePid($table, $destPid);
-        // Checking if the pid is negative, but no sorting row is defined. In that case, find the correct pid.
-        // Basically this check make the error message 4-13 meaning less... But you can always remove this check if you
-        // prefer the error instead of a no-good action (which is to move the record to its own page...)
-        if (($destPid < 0 && !$schema->hasCapability(TcaSchemaCapability::SortByField)) || $destPid >= 0) {
-            $destPid = $resolvedPid;
-        }
-        // Get this before we change the pid (for logging)
-        $propArr = $this->getRecordProperties($table, $uid);
-        $moveRec = $this->getRecordProperties($table, $uid, true);
-        // Prepare user defined objects (if any) for hooks which extend this function:
-        $hookObjectsArr = [];
-        foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
-            $hookObjectsArr[] = GeneralUtility::makeInstance($className);
-        }
-        // Timestamp field:
-        $updateFields = [];
-        if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
-            $updateFields[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
-        }
-
-        // Check if this is a translation of a page, if so then it just needs to be kept "sorting" in sync
-        // Usually called from moveL10nOverlayRecords()
-        if ($table === 'pages') {
-            $defaultLanguagePageUid = $this->getDefaultLanguagePageId((int)$uid);
-            // In workspaces, the default language page may have been moved to a different pid than the
-            // default language page record of live workspace. In this case, localized pages need to be
-            // moved to the pid of the workspace move record.
-            $defaultLanguagePageWorkspaceOverlay = BackendUtility::getWorkspaceVersionOfRecord((int)$this->BE_USER->workspace, 'pages', $defaultLanguagePageUid, 'uid');
-            if (is_array($defaultLanguagePageWorkspaceOverlay)) {
-                $defaultLanguagePageUid = (int)$defaultLanguagePageWorkspaceOverlay['uid'];
-            }
-            if ($defaultLanguagePageUid !== (int)$uid) {
-                // If the default language page has been moved, localized pages need to be moved to
-                // that pid and sorting, too.
-                $originalTranslationRecord = BackendUtility::getRecord($table, $defaultLanguagePageUid, '*', '', false);
-                $updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = $originalTranslationRecord[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()];
-                $destPid = $originalTranslationRecord['pid'];
-            }
-        }
-
-        // Insert as first element on page (where uid = $destPid)
-        if ($destPid >= 0) {
-            if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
-                // Clear cache before moving
-                [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
-                $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
-                // Setting PID
-                $updateFields['pid'] = $destPid;
-                // Table is sorted by 'sortby'
-                if ($schema->hasCapability(TcaSchemaCapability::SortByField) && !isset($updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()])) {
-                    $sortNumber = $this->getSortNumber($table, $uid, $destPid);
-                    $updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = $sortNumber;
-                }
-                // Check for child records that have also to be moved
-                $this->moveRecord_procFields($table, $uid, $destPid);
-                // Create query for update:
-                $this->connectionPool->getConnectionForTable($table)
-                    ->update($table, $updateFields, ['uid' => (int)$uid]);
-                // Check for the localizations of that element
-                $this->moveL10nOverlayRecords($table, $uid, $destPid, $destPid);
-                // Call post-processing hooks:
-                foreach ($hookObjectsArr as $hookObj) {
-                    if (method_exists($hookObj, 'moveRecord_firstElementPostProcess')) {
-                        $hookObj->moveRecord_firstElementPostProcess($table, $uid, $destPid, $moveRec, $updateFields, $this);
-                    }
-                }
-
-                $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields], $this->correlationId);
-                if ($this->enableLogging) {
-                    // Logging...
-                    $oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
-                    if ($destPid != $propArr['pid']) {
-                        // Logged to old page
-                        $newPropArr = $this->getRecordProperties($table, $uid);
-                        $newpagePropArr = $this->getRecordProperties('pages', $destPid);
-                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) to page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $newpagePropArr['header'], 'pid' => $newPropArr['pid']], $propArr['pid']);
-                        // Logged to new page
-                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) from page "{pageTitle}" ({pid}))', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
-                    } else {
-                        // Logged to new page
-                        $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) on page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
-                    }
-                }
-                // Clear cache after moving
-                $this->registerRecordIdForPageCacheClearing($table, $uid);
-                $this->fixUniqueInPid($table, $uid);
-                $this->fixUniqueInSite($table, (int)$uid);
-                if ($table === 'pages') {
-                    $this->fixUniqueInSiteForSubpages((int)$uid);
-                }
-            } elseif ($this->enableLogging) {
-                $destPropArr = $this->getRecordProperties('pages', $destPid);
-                $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page "{title}" ({uid}) to inside of its own rootline (at page "{pageTitle}" ({pid}))', null, ['title' => $propArr['header'], 'uid' => $uid, 'pageTitle' => $destPropArr['header'], 'pid' => $destPid], $propArr['pid']);
-            }
-        } elseif ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
-            // Put after another record
-            // Table is being sorted
-            // Save the position to which the original record is requested to be moved
-            $originalRecordDestinationPid = $destPid;
-            $sortInfo = $this->getSortNumber($table, $uid, $destPid);
-            // If not an array, there was an error (which is already logged)
-            if (is_array($sortInfo)) {
-                // Setting the destPid to the new pid of the record.
-                $destPid = $sortInfo['pid'];
-                if ($table !== 'pages' || $this->destNotInsideSelf($destPid, $uid)) {
-                    // clear cache before moving
-                    $this->registerRecordIdForPageCacheClearing($table, $uid);
-                    // We now update the pid and sortnumber (if not set for page translations)
-                    $updateFields['pid'] = $destPid;
-                    if (!isset($updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()])) {
-                        $updateFields[$schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = $sortInfo['sortNumber'];
-                    }
-                    // Check for child records that have also to be moved
-                    $this->moveRecord_procFields($table, $uid, $destPid);
-                    // Create query for update:
-                    $this->connectionPool->getConnectionForTable($table)
-                        ->update($table, $updateFields, ['uid' => (int)$uid]);
-                    // Check for the localizations of that element
-                    $this->moveL10nOverlayRecords($table, $uid, $destPid, $originalRecordDestinationPid);
-                    // Call post-processing hooks:
-                    foreach ($hookObjectsArr as $hookObj) {
-                        if (method_exists($hookObj, 'moveRecord_afterAnotherElementPostProcess')) {
-                            $hookObj->moveRecord_afterAnotherElementPostProcess($table, $uid, $destPid, $origDestPid, $moveRec, $updateFields, $this);
-                        }
-                    }
-                    $this->getRecordHistoryStore()->moveRecord($table, $uid, ['oldPageId' => $propArr['pid'], 'newPageId' => $destPid, 'oldData' => $propArr, 'newData' => $updateFields], $this->correlationId);
-                    if ($this->enableLogging) {
-                        // Logging...
-                        $oldpagePropArr = $this->getRecordProperties('pages', $propArr['pid']);
-                        if ($destPid != $propArr['pid']) {
-                            // Logged to old page
-                            $newPropArr = $this->getRecordProperties($table, $uid);
-                            $newpagePropArr = $this->getRecordProperties('pages', $destPid);
-                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) to page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $newpagePropArr['header'], 'pid' => $newPropArr['pid']], $propArr['pid']);
-                            // Logged to old page
-                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) from page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
-                        } else {
-                            // Logged to old page
-                            $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record "{title}" ({table}:{uid}) on page "{pageTitle}" ({pid})', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid, 'pageTitle' => $oldpagePropArr['header'], 'pid' => $propArr['pid']], $destPid);
-                        }
-                    }
-                    // Clear cache after moving
-                    $this->registerRecordIdForPageCacheClearing($table, $uid);
-                    $this->fixUniqueInPid($table, $uid);
-                    $this->fixUniqueInSite($table, (int)$uid);
-                    if ($table === 'pages') {
-                        $this->fixUniqueInSiteForSubpages((int)$uid);
-                    }
-                } elseif ($this->enableLogging) {
-                    $destPropArr = $this->getRecordProperties('pages', $destPid);
-                    $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move page "{title}" ({uid}) to inside of its own rootline (at page "{pageTitle}" [{pid}])', null, ['title' => $propArr['header'], 'uid' => $uid, 'pageTitle' => $destPropArr['header'], 'pid' => $destPid], $propArr['pid']);
-                }
-            } else {
-                $this->log($table, $uid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record "{title}" ({table}:{uid}) to after another record, although the table has no sorting row', null, ['title' => $propArr['header'], 'table' => $table, 'uid' => $uid], $propArr['event_pid']);
-            }
+            $this->moveL10nOverlayRecords($table, $liveRecord['uid'] ?? $workspaceRecord['uid'], $destination, $destination);
         }
     }
 
@@ -4745,37 +4659,19 @@ class DataHandler
             $schema = $this->tcaSchemaFactory->get($table);
             foreach ($row as $field => $value) {
                 $conf = $schema->hasField($field) ? $schema->getField($field)->getConfiguration() : [];
-                $this->moveRecord_procBasedOnFieldType($table, $uid, $destPid, $value, $conf);
+                if (($conf['behaviour']['disableMovingChildrenWithParent'] ?? false)
+                    || !in_array($this->getRelationFieldType($conf), ['list', 'field'], true)
+                ) {
+                    continue;
+                }
+                $dbAnalysis = $this->createRelationHandlerInstance();
+                $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
+                // Moving records to a positive destination will insert each
+                // record at the beginning, thus the order is reversed here:
+                foreach (array_reverse($dbAnalysis->itemArray) as $item) {
+                    $this->moveRecord($item['table'], (int)$item['id'], $table === 'pages' ? $uid : $destPid);
+                }
             }
-        }
-    }
-
-    /**
-     * Move child records depending on the field type of the parent record.
-     *
-     * @param string $table Record Table
-     * @param int $uid Record UID
-     * @param int $destPid Position to move to
-     * @param string $value Record field value
-     * @param array $conf TCA configuration of current field
-     */
-    protected function moveRecord_procBasedOnFieldType($table, $uid, $destPid, $value, $conf): void
-    {
-        if (($conf['behaviour']['disableMovingChildrenWithParent'] ?? false)
-            || !in_array($this->getRelationFieldType($conf), ['list', 'field'], true)
-        ) {
-            return;
-        }
-        if ($table === 'pages') {
-            // If the relations are related to a page record, make sure they reside at that page and not at its parent
-            $destPid = $uid;
-        }
-        $dbAnalysis = $this->createRelationHandlerInstance();
-        $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
-        // Moving records to a positive destination will insert each
-        // record at the beginning, thus the order is reversed here:
-        foreach (array_reverse($dbAnalysis->itemArray) as $item) {
-            $this->moveRecord($item['table'], (int)$item['id'], $destPid);
         }
     }
 
@@ -7596,39 +7492,6 @@ class DataHandler
     }
 
     /**
-     * Returns an array with record properties, like header and pid
-     * No check for deleted or access is done!
-     * For versionized records, pid is resolved to its live versions pid.
-     * Used for logging
-     *
-     * @param string $table Table name
-     * @param int $id Uid of record
-     * @param bool $noWSOL If set, no workspace overlay is performed
-     * @return array|null Properties of record
-     * @internal should only be used from within DataHandler
-     */
-    public function getRecordProperties($table, $id, $noWSOL = false): ?array
-    {
-        if (!$this->tcaSchemaFactory->has($table)) {
-            return null;
-        }
-        $row = $table === 'pages' && !$id
-            ? ['title' => '[root-level]', 'uid' => 0, 'pid' => 0]
-            : BackendUtility::getRecord($table, $id, '*', '', false);
-        if (!$noWSOL) {
-            BackendUtility::workspaceOL($table, $row);
-        }
-        $liveUid = ($row['t3ver_oid'] ?? null) ?: ($row['uid'] ?? null);
-        $fullRow = BackendUtility::getRecord($table, $liveUid, '*', '', false);
-        return [
-            'header' => BackendUtility::getRecordTitle($table, $fullRow ?: $row),
-            'pid' => $row['pid'] ?? null,
-            'event_pid' => $table === 'pages' ? (int)$liveUid : ($row['pid'] ?? null),
-            't3ver_state' => $this->tcaSchemaFactory->get($table)->isWorkspaceAware() ? ($row['t3ver_state'] ?? '') : '',
-        ];
-    }
-
-    /**
      * Update database record
      * Does not check permissions but expects them to be verified on beforehand
      *
@@ -7850,7 +7713,6 @@ class DataHandler
         $considerWorkspaces = $schema->isWorkspaceAware();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-
         $queryBuilder
             ->select($sortColumn, 'pid', 'uid')
             ->from($table);
@@ -7909,13 +7771,9 @@ class DataHandler
 
         // There is a previous record
         if (!empty($row)) {
-            $row += [
-                't3ver_state' => 0,
-                'uid' => 0,
-            ];
             // Look if the record UID happens to be a versioned record. If so, find its live version.
             // If this is already a moved record in workspace, this is not needed
-            if (VersionState::tryFrom($row['t3ver_state'] ?? 0) !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
+            if (VersionState::tryFrom((int)($row['t3ver_state'] ?? 0)) !== VersionState::MOVE_POINTER && $lookForLiveVersion = BackendUtility::getLiveVersionOfRecord($table, $row['uid'], $sortColumn . ',pid,uid')) {
                 $row = $lookForLiveVersion;
             } elseif ($considerWorkspaces && $this->BE_USER->workspace > 0) {
                 // In case the previous record is moved in the workspace, we need to fetch the information from this specific record
@@ -8745,19 +8603,10 @@ class DataHandler
      */
     protected function resolvePid($table, $pid): int
     {
-        $pid = (int)$pid;
-        if ($pid < 0) {
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()->removeAll();
-            $row = $queryBuilder
-                ->select('pid')
-                ->from($table)
-                ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(abs($pid), Connection::PARAM_INT)))
-                ->executeQuery()
-                ->fetchAssociative();
-            $pid = (int)$row['pid'];
+        if ($pid >= 0) {
+            return (int)$pid;
         }
-        return $pid;
+        return (int)(BackendUtility::getRecord($table, abs((int)$pid), 'pid', '', false)['pid']);
     }
 
     /**
