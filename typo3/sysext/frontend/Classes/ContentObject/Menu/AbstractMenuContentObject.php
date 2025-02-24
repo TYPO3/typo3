@@ -1059,7 +1059,7 @@ abstract class AbstractMenuContentObject
                     $recArr['next'] = $recArr['nextsection'];
                 }
             }
-            $items = explode('|', $this->conf['special.']['items']);
+            $items = explode('|', ($this->conf['special.']['items'] ?? 'index|up|next|prev'));
             $c = 0;
             foreach ($items as $v_b) {
                 $v_b = strtolower(trim($v_b));
