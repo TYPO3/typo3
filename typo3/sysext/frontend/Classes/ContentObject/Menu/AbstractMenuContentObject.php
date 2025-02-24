@@ -1078,6 +1078,7 @@ abstract class AbstractMenuContentObject
                 }
                 if (is_array($recArr[$v_b] ?? false)) {
                     $menuItems[$c] = $recArr[$v_b];
+                    $menuItems[$c]['ITEM_STATE'] = $v_b;
                     if ($this->conf['special.'][$v_b . '.']['target'] ?? false) {
                         $menuItems[$c]['target'] = $this->conf['special.'][$v_b . '.']['target'];
                     }
