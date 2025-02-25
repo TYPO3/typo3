@@ -1709,6 +1709,8 @@ class FileList
                 return $resource->getModificationTime() . 't';
             case 'crdate':
                 return $resource->getCreationTime() . 'c';
+            case 'file':
+                return (string)$resource->getUid();
             default:
                 return $resource->hasProperty($sortField) ? (string)$resource->getProperty($sortField) : '';
         }
