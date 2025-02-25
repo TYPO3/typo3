@@ -44,7 +44,7 @@ class ListController
         $id = $parsedBody['id'] ?? $queryParams['id'] ?? null;
         $table = $parameters['table'] ?? '';
         $origRow = BackendUtility::getRecord($table, $parameters['uid']);
-        $tsConfig = BackendUtility::getTCEFORM_TSconfig($table, $origRow ?? ['pid' => $parameters['pid']]);
+        $tsConfig = BackendUtility::getTCEFORM_TSconfig($table, $origRow ?? ['pid' => $parameters['pid'] ?? 0]);
 
         if (str_starts_with($parameters['params']['pid'], '###') && substr($parameters['params']['pid'], -3) === '###') {
             $keyword = substr($parameters['params']['pid'], 3, -3);
