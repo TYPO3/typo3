@@ -15,6 +15,27 @@ import DomHelper from '@typo3/backend/utility/dom-helper.js';
 import { expect } from '@open-wc/testing';
 
 describe('@typo3/backend/utility/dom-helper', () => {
+  it('parents() returns all parents matching the selector', () => {
+    const markup =
+      `<div class="dummy-matching-element">
+        <ul>
+          <li>
+            <p class="dummy-matching-element">
+              <span class="dummy-matching-element">
+                <span id="enter-here"></span>
+              </span>
+            </p>
+          </li>
+        </ul>
+      </div>`;
+    const wrapperElement = document.createElement('div');
+    wrapperElement.append(document.createRange().createContextualFragment(markup));
+
+    const parents = DomHelper.parents(wrapperElement.querySelector('#enter-here'), '.dummy-matching-element');
+    expect(parents).to.length(3);
+    expect(parents.map((el: HTMLElement) => el.tagName)).to.have.ordered.members(['SPAN', 'P', 'DIV']);
+  })
+
   it('nextAll() returns a proper list of all next elements', () => {
     const wrapperElement = document.createElement('div');
     const pElement = document.createElement('p');
@@ -25,6 +46,6 @@ describe('@typo3/backend/utility/dom-helper', () => {
 
     const nextAll = DomHelper.nextAll(pElement);
     expect(nextAll).to.length(2);
-    expect(nextAll).to.have.same.members([strongElement, ulElement]);
+    expect(nextAll).to.have.ordered.members([strongElement, ulElement]);
   })
 });
