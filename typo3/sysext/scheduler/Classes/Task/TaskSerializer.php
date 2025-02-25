@@ -46,7 +46,14 @@ class TaskSerializer
             return $task;
         } catch (\BadMethodCallException $e) {
             // This can happen, if a Task has a dependency to a class with the BlockSerializationTrait.
-            throw new InvalidTaskException($e->getMessage(), 1642938352);
+            throw new InvalidTaskException($e->getMessage(), 1642938352, $e);
+        } catch (\Throwable $e) {
+            // This is a general "catch-all" to be able to use the backend to remove invalid tasks, for example via TypeErrors of incomplete classes.
+            // This catch-all shall not catch the individual InvalidTaskExceptions, of course:
+            if ($e instanceof InvalidTaskException) {
+                throw $e;
+            }
+            throw new InvalidTaskException('The serialized task is corrupted: ' . $e->getMessage(), 1740514197, $e);
         }
     }
 
