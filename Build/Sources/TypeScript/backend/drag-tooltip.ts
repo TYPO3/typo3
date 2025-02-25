@@ -68,7 +68,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     // This only accepts drag images that are preloaded.
     // So we are creating this image early in the process.
     this.ghostImage = new Image();
-    this.ghostImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+    this.ghostImage.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
   }
 
   public override connectedCallback(): void {
