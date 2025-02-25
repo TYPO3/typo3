@@ -61,6 +61,19 @@ final class TaskSerializerTest extends UnitTestCase
         $testTaskWithNullWriter = new TestTask();
         $testTaskWithNullWriter->any = [new NullWriter()];
 
+        $testTaskWithSerializationTypeError = new TestTask();
+        $serializedTestTaskWithSerializationTypeError = serialize($testTaskWithSerializationTypeError);
+        // Doing a string replace here because due to special escape characters,
+        // we cannot do a raw copy+paste as a fixture here.
+        // The following will set the serialized data for the
+        // property 'any' from an 'array' to a 'string', which will cause
+        // a type error on unserialization.
+        $serializedTestTaskWithSerializationTypeError = str_replace(
+            's:3:"any";a:0:{}',
+            's:3:"any";s:7:"invalid";',
+            $serializedTestTaskWithSerializationTypeError
+        );
+
         return [
             'blank' => [
                 '',
@@ -77,6 +90,10 @@ final class TaskSerializerTest extends UnitTestCase
             'invalid root type' => [
                 'a:1:{i:0;O:29:"TYPO3\CMS\Testing\InvalidTask":1:{s:5:"value";s:5:"value";}}',
                 1642954501,
+            ],
+            'Provoking TypeError' => [
+                $serializedTestTaskWithSerializationTypeError,
+                1740514197,
             ],
             'TestTask with NullWriter' => [
                 serialize($testTaskWithNullWriter),
