@@ -287,6 +287,10 @@ class RedirectService
             if ($matchedRedirect['keep_query_parameters']) {
                 $url = $this->addQueryParams($queryParams, $url);
             }
+
+            if (!$url->getHost()) {
+                $url = $url->withHost($uri->getHost());
+            }
             return $url;
         }
         $site = $this->resolveSite($linkDetails, $site);
