@@ -7657,9 +7657,9 @@ class DataHandler
         // Store in history
         $this->getRecordHistoryStore()->addRecord($table, $id, $newRow, $this->correlationId);
         if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware() && (int)($newRow['t3ver_wsid'] ?? 0) > 0) {
-            $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', null, ['table' => $table, 'uid' => $newRow['uid'], 'offlineUid' => $id], $table === 'pages' ? $newRow['uid'] : $newRow['pid'], $NEW_id);
+            $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'New version created "{table}:{uid}". UID of new version is "{offlineUid}"', null, ['table' => $table, 'uid' => $newRow['uid'], 'offlineUid' => $id], $table === 'pages' ? $newRow['uid'] : $newRow['pid']);
         } else {
-            $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was inserted on page {pid}', null, ['table' => $table, 'uid' => $id, 'pid' => $newRow['pid']], $newRow['pid'], $NEW_id);
+            $this->log($table, $id, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was inserted on page {pid}', null, ['table' => $table, 'uid' => $id, 'pid' => $newRow['pid']], $newRow['pid']);
             // Clear cache of relevant pages
             $this->registerRecordIdForPageCacheClearing($table, $id);
         }
@@ -9121,13 +9121,10 @@ class DataHandler
      * @param null $__ unused
      * @param array $data Array with special information that may go into $details by '%s' marks / sprintf() when the log is shown
      * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
-     * @param string $NEWid NEW id for new records
      * @return int Log entry UID (0 if no log entry was written or logging is disabled)
-     * @see \TYPO3\CMS\Core\SysLog\Action\Database for all available values of argument $action
-     * @see \TYPO3\CMS\Core\SysLog\Error for all available values of argument $error
      * @internal should only be used from within TYPO3 Core
      */
-    public function log($table, $recuid, $action, $_, $error, $details, $__ = null, array $data = [], $event_pid = -1, $NEWid = '')
+    public function log($table, $recuid, $action, $_, $error, $details, $__ = null, array $data = [], $event_pid = -1)
     {
         if (!$this->enableLogging) {
             return 0;
@@ -9141,7 +9138,7 @@ class DataHandler
             $detailMessage = $this->formatLogDetails($detailMessage, $data);
             $this->errorLog[] = '[' . SystemLogType::DB . '.' . $action . ']: ' . $detailMessage;
         }
-        return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, null, $details, $data, $table, abs((int)$recuid), null, $event_pid, $NEWid);
+        return $this->BE_USER->writelog(SystemLogType::DB, $action, $error, null, $details, $data, $table, abs((int)$recuid), null, $event_pid);
     }
 
     /**

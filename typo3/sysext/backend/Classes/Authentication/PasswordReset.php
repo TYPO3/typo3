@@ -435,29 +435,26 @@ readonly class PasswordReset
      */
     protected function log(string $message, int $action, int $error, int $userId, array $data, $ipAddress, Context $context): void
     {
-        $fields = [
-            'userid' => $userId,
-            'type' => SystemLogType::LOGIN,
-            'channel' => SystemLogType::toChannel(SystemLogType::LOGIN),
-            'level' => SystemLogType::toLevel(SystemLogType::LOGIN),
-            'action' => $action,
-            'error' => $error,
-            'details' => $message,
-            'log_data' => json_encode($data),
-            'tablename' => 'be_users',
-            'recuid' => $userId,
-            'IP' => (string)$ipAddress,
-            'tstamp' => $context->getAspect('date')->get('timestamp'),
-            'event_pid' => 0,
-            'NEWid' => '',
-            'workspace' => 0,
-        ];
-
         $this->connectionPool
             ->getConnectionForTable('sys_log')
             ->insert(
                 'sys_log',
-                $fields,
+                [
+                    'userid' => $userId,
+                    'type' => SystemLogType::LOGIN,
+                    'channel' => SystemLogType::toChannel(SystemLogType::LOGIN),
+                    'level' => SystemLogType::toLevel(SystemLogType::LOGIN),
+                    'action' => $action,
+                    'error' => $error,
+                    'details' => $message,
+                    'log_data' => json_encode($data),
+                    'tablename' => 'be_users',
+                    'recuid' => $userId,
+                    'IP' => (string)$ipAddress,
+                    'tstamp' => $context->getAspect('date')->get('timestamp'),
+                    'event_pid' => 0,
+                    'workspace' => 0,
+                ],
                 [
                     Connection::PARAM_INT,
                     Connection::PARAM_INT,
@@ -472,8 +469,7 @@ readonly class PasswordReset
                     Connection::PARAM_STR,
                     Connection::PARAM_INT,
                     Connection::PARAM_INT,
-                    Connection::PARAM_STR,
-                    Connection::PARAM_STR,
+                    Connection::PARAM_INT,
                 ]
             );
     }

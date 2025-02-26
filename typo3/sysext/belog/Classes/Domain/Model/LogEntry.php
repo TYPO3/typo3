@@ -113,11 +113,6 @@ class LogEntry
      */
     protected int $workspaceUid = 0;
 
-    /**
-     * New ID
-     */
-    protected string|int $newId = 0;
-
     public function getUid(): int
     {
         return $this->uid;
@@ -229,16 +224,6 @@ class LogEntry
         return $this->workspaceUid;
     }
 
-    /**
-     * Get new id
-     *
-     * @return string|int
-     */
-    public function getNewId()
-    {
-        return $this->newId;
-    }
-
     public static function createFromDatabaseRecord(array $row): self
     {
         $obj = new self();
@@ -256,7 +241,6 @@ class LogEntry
         $obj->logData = $row['log_data'] ?? $obj->logData;
         $obj->eventPid = $row['event_pid'] ?? $obj->eventPid;
         $obj->workspaceUid = $row['workspace'] ?? $obj->workspaceUid;
-        $obj->newId = $row['NEWid'] ?? $obj->newId;
         $obj->channel = $row['channel'] ?? $obj->channel;
         $obj->level = $row['level'] ?? $obj->level;
         return $obj;
