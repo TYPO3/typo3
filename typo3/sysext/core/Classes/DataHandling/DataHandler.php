@@ -4647,8 +4647,8 @@ class DataHandler
         } else {
             $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::MESSAGE, 'Moved record {table}:{uid} on page {pid}', null, ['table' => $table, 'uid' => $sourceUid, 'pid' => $updateFields['pid']], $updateFields['pid']);
         }
-        $this->fixUniqueInPid($table, $sourceUid);
-        $this->fixUniqueInSite($table, $sourceUid);
+        $this->fixUniqueInPid($table, $workspaceRecord ?? $liveRecord);
+        $this->fixUniqueInSite($table, $workspaceRecord ?? $liveRecord);
         if ($table === 'pages') {
             $this->fixUniqueInSiteForSubpages($sourceUid);
         }
@@ -8386,7 +8386,7 @@ class DataHandler
             if (!$this->admin) {
                 $queryBuilder->andWhere($this->BE_USER->getPagePermsClause(Permission::PAGE_SHOW));
             }
-            if ((int)$this->BE_USER->workspace === 0) {
+            if ($this->BE_USER->workspace === 0) {
                 $queryBuilder->andWhere(
                     $queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT))
                 );
@@ -8404,7 +8404,7 @@ class DataHandler
             }
 
             // Resolve placeholders of workspace versions
-            if (!empty($pages) && (int)$this->BE_USER->workspace !== 0) {
+            if (!empty($pages) && $this->BE_USER->workspace !== 0) {
                 $pages = array_reverse(
                     $this->resolveVersionedRecords(
                         'pages',
@@ -8432,63 +8432,75 @@ class DataHandler
     /**
      * Checks if any uniqueInPid eval input fields are in the record and if so, they are re-written to be correct.
      *
-     * @param string $table Table name
-     * @param int $uid Record UID
      * @internal should only be used from within DataHandler
      */
-    public function fixUniqueInPid($table, $uid): void
+    public function fixUniqueInPid(string $table, $uidOrRow): void
     {
-        if (!$this->tcaSchemaFactory->has($table)) {
-            return;
-        }
-        $curData = BackendUtility::getRecord($table, $uid, '*', '', false);
         $newData = [];
+        $row = null;
         foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
-            if ($field->isType(TableColumnType::INPUT, TableColumnType::EMAIL) && (string)$curData[$field->getName()] !== '') {
+            if (!$field->isType(TableColumnType::INPUT, TableColumnType::EMAIL)) {
+                continue;
+            }
+            if ($row === null) {
+                if (is_array($uidOrRow)) {
+                    $row = $uidOrRow;
+                } else {
+                    $row = BackendUtility::getRecord($table, $uidOrRow, '*', '', false);
+                }
+            }
+            if ((string)$row[$field->getName()] !== '') {
                 $evalCodesArray = GeneralUtility::trimExplode(',', $field->getConfiguration()['eval'] ?? '', true);
                 if (in_array('uniqueInPid', $evalCodesArray, true)) {
-                    $newV = $this->getUnique($table, $field->getName(), $curData[$field->getName()], $uid, $curData['pid']);
-                    if ((string)$newV !== (string)$curData[$field->getName()]) {
-                        $newData[$field->getName()] = $newV;
+                    $newValue = $this->getUnique($table, $field->getName(), $row[$field->getName()], (int)$row['uid'], (int)$row['pid']);
+                    if ((string)$newValue !== (string)$row[$field->getName()]) {
+                        $newData[$field->getName()] = $newValue;
                     }
                 }
             }
         }
-        // IF there are changed fields, then update the database
         if (!empty($newData)) {
-            $this->updateDB($table, $uid, $newData, (int)$curData['pid']);
+            $this->updateDB($table, (int)$row['uid'], $newData, (int)$row['pid']);
         }
     }
 
     /**
      * Checks if any uniqueInSite eval fields are in the record and if so, they are re-written to be correct.
      *
-     * @param string $table Table name
-     * @param int $uid Record UID
      * @return bool whether the record had to be fixed or not
      */
-    protected function fixUniqueInSite(string $table, int $uid): bool
+    protected function fixUniqueInSite(string $table, int|array $uidOrRow): bool
     {
-        $curData = BackendUtility::getRecord($table, $uid, '*', '', false);
-        $workspaceId = $this->BE_USER->workspace;
         $newData = [];
+        $row = null;
         foreach ($this->tcaSchemaFactory->get($table)->getFields() as $field) {
-            if ($field->isType(TableColumnType::SLUG) && (string)$curData[$field->getName()] !== '') {
-                $conf = $field->getConfiguration();
-                $evalCodesArray = GeneralUtility::trimExplode(',', $conf['eval'] ?? '', true);
-                if (in_array('uniqueInSite', $evalCodesArray, true)) {
-                    $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field->getName(), $conf, $workspaceId);
-                    $state = RecordStateFactory::forName($table)->fromArray($curData);
-                    $newValue = $helper->buildSlugForUniqueInSite($curData[$field->getName()], $state);
-                    if ((string)$newValue !== (string)$curData[$field->getName()]) {
-                        $newData[$field->getName()] = $newValue;
-                    }
+            if (!$field->isType(TableColumnType::SLUG)) {
+                continue;
+            }
+            $conf = $field->getConfiguration();
+            $evalCodesArray = GeneralUtility::trimExplode(',', $conf['eval'] ?? '', true);
+            if (!in_array('uniqueInSite', $evalCodesArray, true)) {
+                continue;
+            }
+            if ($row === null) {
+                if (is_array($uidOrRow)) {
+                    $row = $uidOrRow;
+                } else {
+                    $row = BackendUtility::getRecord($table, $uidOrRow, '*', '', false);
                 }
             }
+            if ((string)$row[$field->getName()] === '') {
+                continue;
+            }
+            $helper = GeneralUtility::makeInstance(SlugHelper::class, $table, $field->getName(), $conf, $this->BE_USER->workspace);
+            $state = RecordStateFactory::forName($table)->fromArray($row);
+            $newValue = $helper->buildSlugForUniqueInSite($row[$field->getName()], $state);
+            if ((string)$newValue !== (string)$row[$field->getName()]) {
+                $newData[$field->getName()] = $newValue;
+            }
         }
-        // IF there are changed fields, then update the database
         if (!empty($newData)) {
-            $this->updateDB($table, $uid, $newData, (int)$curData['pid']);
+            $this->updateDB($table, $row['uid'], $newData, (int)$row['pid']);
             return true;
         }
         return false;
