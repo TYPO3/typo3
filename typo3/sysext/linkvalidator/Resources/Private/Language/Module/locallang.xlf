@@ -24,14 +24,23 @@
       <trans-unit id="filter.depth">
         <source>Depth</source>
       </trans-unit>
-      <trans-unit id="label_refresh">
+      <trans-unit id="label_refresh" x-unused-since="14.2">
         <source>Refresh display</source>
       </trans-unit>
+      <trans-unit id="filter.type">
+        <source>Type</source>
+      </trans-unit>
+      <trans-unit id="filter.type.all">
+        <source>All link types</source>
+      </trans-unit>
+      <trans-unit id="filter.btn.filter">
+        <source>Filter</source>
+      </trans-unit>
       <trans-unit id="label_update">
-        <source>Check links</source>
+        <source>Check</source>
       </trans-unit>
       <trans-unit id="list.check.headline">
-        <source>Configuration</source>
+        <source>Check of link types</source>
       </trans-unit>
       <trans-unit id="list.header">
         <source>Listing of broken links</source>
@@ -73,7 +82,7 @@
         <source>Uid</source>
       </trans-unit>
       <trans-unit id="list.tableFoot.record">
-        <source>Records</source>
+        <source>Record</source>
       </trans-unit>
       <trans-unit id="list.tableFoot.records">
         <source>Records</source>
@@ -244,7 +253,7 @@
       <trans-unit id="label_update-link-list">
         <source>Checking links, please stand by.</source>
       </trans-unit>
-      <trans-unit id="label_refresh-link-list">
+      <trans-unit id="label_refresh-link-list" x-unused-since="14.2">
         <source>Refreshing link list, please stand by.</source>
       </trans-unit>
       <trans-unit id="needs-recheck">

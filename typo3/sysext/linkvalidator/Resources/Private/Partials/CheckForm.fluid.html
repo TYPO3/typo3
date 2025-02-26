@@ -4,7 +4,7 @@
 >
 
 <form method="post" id="linkValidatorReportController">
-    <div class="form-row-md t3js-linkvalidator-settings">
+    <div class="form-row-md">
         <div class="form-group">
             <label class="form-label" for="check_search_levels"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:filter.depth" /></label>
             <select name="check_search_levels" id="check_search_levels" class="form-select">
@@ -17,10 +17,11 @@
             </select>
         </div>
         <div class="form-group">
-            <div class="form-row-md">
-                <f:for each="{optionsCheck.optionsByType}" as="optionByType">
-                    <div class="form-group" id="broken{optionByType.id}">
-                        <div class="form-check form-switch form-check-size-input">
+            <fieldset>
+                <legend class="form-label"><f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:filter.type" /></legend>
+                <div class="form-row-md mb-0">
+                    <f:for each="{optionsCheck.optionsByType}" as="optionByType">
+                        <div class="form-check form-switch form-check-size-input" id="broken{optionByType.id}">
                             <input
                                 type="checkbox"
                                 class="form-check-input options-by-type-check"
@@ -31,14 +32,12 @@
                             />
                             <label class="form-check-label" for="check-{optionByType.id}">{optionByType.label}</label>
                         </div>
-                    </div>
-                </f:for>
-                <input type="hidden" name="check_values" value="1">
-            </div>
+                    </f:for>
+                </div>
+            </fieldset>
+            <input type="hidden" name="check_values" value="1">
         </div>
-    </div>
-    <div class="form-row-md">
-        <div class="form-group">
+        <div class="form-group align-self-end">
             <input
                 type="submit"
                 class="btn btn-default t3js-linkvalidator-action-button-check"

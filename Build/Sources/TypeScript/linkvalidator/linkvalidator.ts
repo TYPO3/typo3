@@ -13,22 +13,17 @@
 
 import DocumentService from '@typo3/core/document-service';
 import Notification from '@typo3/backend/notification';
+import { ProgressBarElement } from '@typo3/backend/element/progress-bar-element';
 import RegularEvent from '@typo3/core/event/regular-event';
 import SortableTable from '@typo3/backend/sortable-table';
 
 enum Selectors {
-  // Check
-  linktypesSelectorCheck = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-check',
   actionButtonSelectorCheck = '.t3js-linkvalidator-action-button-check',
-
-  // Report
-  toggleAllLinktypesSelectorReport = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-toggle-all-report',
-  linktypesSelectorReport = '.t3js-linkvalidator-settings input[type="checkbox"].options-by-type-report',
-  actionButtonSelectorReport = '.t3js-linkvalidator-action-button-report'
+  actionButtonSelectorReport = '.t3js-linkvalidator-action-button-report',
+  reportTable = '.t3js-linkvalidator-report-table',
 }
 
 enum Identifier {
-  toggleAllLinktypesIdReport = 'options-by-type-toggle-all-report',
   brokenLinksTableIdReport = 'typo3-broken-links-table'
 }
 
@@ -36,6 +31,8 @@ enum Identifier {
  * Module: @typo3/linkvalidator/linkvalidator
  */
 class Linkvalidator {
+  private progressBar: ProgressBarElement | null = null;
+
   constructor() {
     DocumentService.ready().then((): void => {
       const linkList = document.getElementById(Identifier.brokenLinksTableIdReport);
@@ -49,51 +46,21 @@ class Linkvalidator {
     this.initializeEvents();
   }
 
-  private static allCheckBoxesAreChecked(checkBoxes: NodeListOf<HTMLInputElement>): boolean {
-    const checkboxArray = Array.from(checkBoxes);
-    return checkBoxes.length === checkboxArray.filter((checkBox: HTMLInputElement) => checkBox.checked).length;
-  }
-
-  private toggleActionButtonReport(): void {
-    document.querySelector(Selectors.actionButtonSelectorReport)?.toggleAttribute(
-      'disabled',
-      !document.querySelectorAll('input[type="checkbox"]:checked').length
-    );
-  }
-
-  /**
-   * Enables the "Toggle all" checkbox on document load if all child checkboxes are checked
-   */
-  private toggleTriggerCheckBoxReport(): void {
-    const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.linktypesSelectorReport);
-    (document.getElementById(Identifier.toggleAllLinktypesIdReport) as HTMLInputElement).checked = Linkvalidator.allCheckBoxesAreChecked(checkBoxes);
+  private getProgress(): ProgressBarElement {
+    if (!this.progressBar || !this.progressBar.isConnected) {
+      this.progressBar = document.createElement('typo3-backend-progress-bar');
+      document.querySelector(Selectors.reportTable).prepend(this.progressBar);
+    }
+    return this.progressBar;
   }
 
   private initializeEvents(): void {
-    // toggleAll (checkboxes): on change
-    new RegularEvent('change', (e: Event, currentTarget: HTMLInputElement): void => {
-      const checkBoxes: NodeListOf<HTMLInputElement> = document.querySelectorAll(Selectors.linktypesSelectorReport);
-      const checkIt = !Linkvalidator.allCheckBoxesAreChecked(checkBoxes);
-
-      checkBoxes.forEach((checkBox: HTMLInputElement): void => {
-        checkBox.checked = checkIt;
-      });
-      currentTarget.checked = checkIt;
-      this.toggleActionButtonReport();
-    }).delegateTo(document, Selectors.toggleAllLinktypesSelectorReport);
-
-    // toggle (checkbox): on change
-    new RegularEvent('change', (): void => {
-      this.toggleTriggerCheckBoxReport();
-      this.toggleActionButtonReport();
-    }).delegateTo(document, Selectors.linktypesSelectorReport);
-
     new RegularEvent('click', (e: PointerEvent, actionButton: HTMLInputElement): void => {
       Notification.success(actionButton.dataset.notificationMessage || 'Event triggered', '', 2);
     }).delegateTo(document, Selectors.actionButtonSelectorCheck);
 
-    new RegularEvent('click', (e: PointerEvent, actionButton: HTMLInputElement): void => {
-      Notification.success(actionButton.dataset.notificationMessage || 'Event triggered', '', 2);
+    new RegularEvent('click', (): void => {
+      this.getProgress().start();
     }).delegateTo(document, Selectors.actionButtonSelectorReport);
   }
 }

@@ -4,7 +4,7 @@
     data-namespace-typo3-fluid="true"
 >
 
-<div class="table-fit">
+<div class="table-fit t3js-linkvalidator-report-table">
     <table id="typo3-broken-links-table" class="table table-striped table-hover">
         <thead>
             <tr>
@@ -120,12 +120,12 @@
         <tfoot>
             <tr>
                 <td colspan="7">
-                    <f:if condition="{brokenLinkTotalCount} == 1">
+                    <f:if condition="{brokenLinks -> f:count()} == 1">
                         <f:then>
-                            {brokenLinkTotalCount} <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableFoot.record" />
+                            {brokenLinks -> f:count()} <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableFoot.record" />
                         </f:then>
                         <f:else>
-                            {brokenLinkTotalCount} <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableFoot.records" />
+                            {brokenLinks -> f:count()} <f:translate key="LLL:EXT:linkvalidator/Resources/Private/Language/Module/locallang.xlf:list.tableFoot.records" />
                         </f:else>
                     </f:if>
                 </td>
