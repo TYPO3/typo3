@@ -278,32 +278,32 @@ final class RedirectServiceTest extends FunctionalTestCase
             'regexp capture group with relative target' => [
                 'https://acme.com/relative-target-page2',
                 301,
-                '/page2',
+                '//acme.com/page2',
                 11,
             ],
             'regexp capture group with relative target - keep query params' => [
                 'https://acme.com/relative-target-keep-page2?param1=value1',
                 301,
-                '/page2?param1=value1',
+                '//acme.com/page2?param1=value1',
                 12,
             ],
             'regexp capture group with relative target - respect query param' => [
                 'https://acme.com/respect-relative-target-page2?param1=subpage',
                 301,
-                '/page2/subpage',
+                '//acme.com/page2/subpage',
                 13,
             ],
             'regexp capture group with relative target - respect query param and keep them' => [
                 'https://acme.com/respect-keep-relative-target-page2?param1=subpage',
                 301,
-                '/page2/subpage?param1=subpage',
+                '//acme.com/page2/subpage?param1=subpage',
                 14,
             ],
             // test for https://forge.typo3.org/issues/89799#note-14
             'regexp relative target redirect with unsafe regexp and without ending $' => [
                 'https://acme.com/other-relative-target-with-unsafe-capture-group-new',
                 301,
-                '/offer-new',
+                '//acme.com/offer-new',
                 15,
             ],
             // test for https://forge.typo3.org/issues/89799#note-14
@@ -573,7 +573,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 'https://acme.com/flat-samehost-1?param1=value1&cHash=e0527192caa60a6dac1e30af7cfeaf64',
                 'https://acme.com/',
                 301,
-                '/flat-samehost-1',
+                '//acme.com/flat-samehost-1',
                 1,
             ],
             'flat keep_query_parameters' => [
@@ -602,7 +602,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 'https://acme.com/flat-samehost-3?param1=value1',
                 'https://acme.com/',
                 301,
-                '/flat-samehost-3',
+                '//acme.com/flat-samehost-3',
                 3,
             ],
             'flat respect_query_parameters and keep_query_parameters' => [
@@ -631,7 +631,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 'https://acme.com/regexp-samehost-1?param1=value1',
                 'https://acme.com/',
                 301,
-                '/regexp-samehost-1',
+                '//acme.com/regexp-samehost-1',
                 5,
             ],
             'regexp keep_query_parameters' => [
@@ -667,7 +667,7 @@ final class RedirectServiceTest extends FunctionalTestCase
                 'https://acme.com/regexp-samehost-3?param1=value1',
                 'https://acme.com/',
                 301,
-                '/regexp-samehost-3',
+                '//acme.com/regexp-samehost-3',
                 7,
             ],
         ];
