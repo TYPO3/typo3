@@ -105,7 +105,6 @@ class ListSysLogCommand extends Command
                     'type',
                     'IP',
                     'event_pid',
-                    'NEWid',
                     'workspace',
                 ]);
             }

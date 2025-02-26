@@ -1753,11 +1753,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param int|string $recuid Record UID. Special field used by tce_main.php.
      * @param null $__ unused
      * @param int $event_pid The page_uid (pid) where the event occurred. Used to select log-content for specific pages.
-     * @param string $NEWid Special field used by tce_main.php. NEWid string of newly created records.
+     * @param null $___ unused
      * @param int $userId Alternative Backend User ID (used for logging login actions where this is not yet known).
      * @return int Log entry ID.
      */
-    public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '', $__ = null, $event_pid = -1, $NEWid = '', $userId = 0)
+    public function writelog($type, $action, $error, $_, $details, $data, $tablename = '', $recuid = '', $__ = null, $event_pid = -1, $___ = null, $userId = 0)
     {
         if (!$userId && !empty($this->user['uid'])) {
             $userId = $this->user['uid'];
@@ -1770,27 +1770,25 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // @todo Remove this once this method is properly typed.
         $type = (int)$type;
-        $fields = [
-            'userid' => (int)$userId,
-            'type' => $type,
-            'channel' => Type::toChannel($type),
-            'level' => Type::toLevel($type),
-            'action' => (int)$action,
-            'error' => (int)$error,
-            'details' => $details,
-            'log_data' => empty($data) ? '' : json_encode($data),
-            'tablename' => $tablename,
-            'recuid' => (int)$recuid,
-            'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
-            'tstamp' => $GLOBALS['EXEC_TIME'] ?? time(),
-            'event_pid' => (int)$event_pid,
-            'NEWid' => $NEWid,
-            'workspace' => $this->workspace,
-        ];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('sys_log');
         $connection->insert(
             'sys_log',
-            $fields,
+            [
+                'userid' => (int)$userId,
+                'type' => $type,
+                'channel' => Type::toChannel($type),
+                'level' => Type::toLevel($type),
+                'action' => (int)$action,
+                'error' => (int)$error,
+                'details' => $details,
+                'log_data' => empty($data) ? '' : json_encode($data),
+                'tablename' => $tablename,
+                'recuid' => (int)$recuid,
+                'IP' => (string)GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+                'tstamp' => $GLOBALS['EXEC_TIME'] ?? time(),
+                'event_pid' => (int)$event_pid,
+                'workspace' => $this->workspace,
+            ],
             [
                 Connection::PARAM_INT,
                 Connection::PARAM_INT,
@@ -1805,8 +1803,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 Connection::PARAM_STR,
                 Connection::PARAM_INT,
                 Connection::PARAM_INT,
-                Connection::PARAM_STR,
-                Connection::PARAM_STR,
+                Connection::PARAM_INT,
             ]
         );
         return (int)$connection->lastInsertId();

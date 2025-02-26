@@ -253,7 +253,6 @@ CREATE TABLE sys_log (
 	log_data text,
 	event_pid int(11) DEFAULT '-1' NOT NULL,
 	workspace int(11) DEFAULT '0' NOT NULL,
-	NEWid varchar(30) DEFAULT '' NOT NULL,
 	request_id varchar(13) DEFAULT '' NOT NULL,
 	time_micro float DEFAULT '0' NOT NULL,
 	component varchar(255) DEFAULT '' NOT NULL,
