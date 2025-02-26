@@ -3822,7 +3822,7 @@ typo3-backend-live-search-result-item-action>* .livesearch-result-item-title .sm
 .resource-tile-preview-content{position:absolute;top:0;left:0;height:100%;width:100%}
 .resource-tile-icon{display:flex;height:100%;width:100%;justify-content:center;align-items:center}
 .resource-tile-image{display:flex;height:100%;width:100%;justify-content:center;align-items:center}
-.resource-tile-image img{max-height:100%;max-width:100%;outline:2px solid #fff;outline-offset:0;border-radius:2px;box-shadow:0 0 4px 4px rgba(0,0,0,.05)}
+.resource-tile-image img{max-height:100%;max-width:100%;width:auto;height:auto;-o-object-fit:contain;object-fit:contain;outline:2px solid #fff;outline-offset:0;border-radius:2px;box-shadow:0 0 4px 4px rgba(0,0,0,.05)}
 .resource-tile-image-icon{position:absolute;top:calc(var(--resource-tile-spacing) * -.5);inset-inline-start:calc(var(--resource-tile-spacing) * -.5)}
 .resource-tile-nameplate{display:flex;flex-direction:column;padding:var(--resource-tile-spacing);text-align:center;font-size:var(--resource-tile-nameplate-size);width:100%}
 .resource-tile-nameplate-label{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
