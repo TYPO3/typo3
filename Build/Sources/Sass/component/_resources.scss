@@ -166,6 +166,9 @@
 .resource-tile-image img {
     max-height: 100%;
     max-width: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
     outline: 2px solid var(--typo3-resource-tile-border-color);
     outline-offset: 0;
     border-radius: 2px;
