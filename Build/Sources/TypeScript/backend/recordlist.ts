@@ -333,7 +333,7 @@ class Recordlist {
         });
 
         const tableElement = target.closest('table[data-table]') as HTMLTableElement;
-        const table = tableElement.dataset.table;
+        const table = tableElement.dataset.table === 'pages_translated' ? 'pages' : tableElement.dataset.table;
         const rowElement = target.closest('tr[data-uid]') as HTMLTableRowElement;
         const uid = parseInt(rowElement.dataset.uid, 10);
 
