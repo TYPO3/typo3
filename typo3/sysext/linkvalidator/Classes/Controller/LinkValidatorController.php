@@ -364,7 +364,7 @@ class LinkValidatorController
             // @todo: Remove this assignment (and template use) when linkvalidator stops rendering broken
             //        links registered to records that are meanwhile deleted=1 or in a different workspace.
             'recordTableIconDefault' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),
-            'recordFieldLabel' => $fieldLabel,
+            'recordFieldLabel' => $languageService->sL($fieldLabel),
             'recordTitle' => $row['headline'],
             'recordLanguageIcon' => $this->iconFactory->getIcon($this->getSystemLanguageValue($row['language'], $row['record_pid'], 'flagIcon'), IconSize::SMALL)->getIdentifier(),
             'recordLanguageTitle' => $this->getSystemLanguageValue($row['language'], $row['record_pid'], 'title'),
