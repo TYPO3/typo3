@@ -14,7 +14,7 @@ return [
         'cropperjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/cropperjs.js',
         'css-tree' => 'EXT:core/Resources/Public/JavaScript/Contrib/css-tree.js',
         'dompurify' => 'EXT:core/Resources/Public/JavaScript/Contrib/dompurify.js',
-        'flatpickr' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/flatpickr.min.js',
+        'flatpickr' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr.js',
         'flatpickr/' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/',
         'interactjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/interact.js',
         'jquery' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.js',

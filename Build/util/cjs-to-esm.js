@@ -1,28 +1,4 @@
-const provideImports = (imports) => {
-  const src = []
-  imports.forEach(module => {
-    const variableName = '__import_' + module.replace('/', '_').replace('@','').replace('-', '_')
-    src.push('import ' + variableName + ' from "' + module + '"')
-  })
-
-  src.push('let require = (name) => {');
-  src.push('  switch (name) {');
-  imports.forEach(module => {
-    const variableName = '__import_' + module.replace('/', '_').replace('@','').replace('-', '_')
-    src.push('  case "' + module + '":');
-    src.push('    return ' + variableName)
-  })
-
-  src.push('  }');
-  src.push('  throw new Error("module " + name + " missing")')
-  src.push('}');
-
-  return src.join('\n');
-}
-
-const cjsToEsm = (source, imports, prefix) => {
-  imports = imports || [];
-  prefix = prefix || ''
+const cjsToEsm = (source, prefix) => {
   source = source.replace(/\/\/# sourceMappingURL=[^ ]+/, '');
   // Using a user-defined object type to provide a `this` context
   // to prevent static analysis tools (like rollup) from complaining
@@ -36,10 +12,6 @@ const cjsToEsm = (source, imports, prefix) => {
     '  this.__default_export = module.exports;',
     '}).__default_export;'
   ];
-
-  if (imports.length > 0) {
-    code.unshift(provideImports(imports));
-  }
 
   if (prefix) {
     code.unshift(prefix);

@@ -42,7 +42,6 @@ nbproject
 /Build/bower_components/*
 /Build/node_modules/*
 /Build/JavaScript
-/Build/ckeditorLocales
 !/Build/typings/no-def*
 /Build/testing-docker/local/.env
 /Build/testing-docker/local/macos_passwd
