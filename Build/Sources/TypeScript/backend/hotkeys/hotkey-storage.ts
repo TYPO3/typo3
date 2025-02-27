@@ -40,7 +40,9 @@ export type ScopedHotkeyMap = Map<string, HotkeyMap>;
  */
 class HotkeyStorage {
   public constructor(
-    private readonly scopedHotkeyMap: ScopedHotkeyMap = new Map(),
+    private readonly scopedHotkeyMap: ScopedHotkeyMap = new Map([
+      ['all', new Map()]
+    ]),
     public activeScope: string = 'all'
   ) {
   }
