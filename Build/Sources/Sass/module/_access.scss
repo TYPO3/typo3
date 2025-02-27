@@ -22,10 +22,12 @@ td {
 // Legend
 //
 .access-legend {
+    --typo3-access-legend-guide-color: var(--typo3-text-color-base);
+    --typo3-access-legend-number-border-color: var(--typo3-text-color-base);
     margin-bottom: 18px;
 
     .number {
-        border: 1px solid #000;
+        border: 1px solid var(--typo3-access-legend-number-border-color);
         border-radius: 2px;
         width: 16px;
         height: 16px;
@@ -39,7 +41,7 @@ td {
     .edge span {
         width: 1px;
         height: 10px;
-        background: #000;
+        background: var(--typo3-access-legend-guide-color);
         display: block;
         margin-top: 8px;
         margin-inline-start: 6px;
@@ -54,7 +56,7 @@ td {
     .hr span {
         width: 20px;
         height: 1px;
-        background: #000;
+        background: var(--typo3-access-legend-guide-color);
         display: block;
         margin-top: -1px;
         margin-inline-start: -4px;
@@ -63,7 +65,7 @@ td {
     .t3-vr span {
         width: 1px;
         height: 20px;
-        background: #000;
+        background: var(--typo3-access-legend-guide-color);
         margin-top: -2px;
         margin-inline-start: 6px;
         display: block;
