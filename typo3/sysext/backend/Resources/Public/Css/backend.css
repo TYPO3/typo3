@@ -3935,12 +3935,12 @@ pre.ts-hl .ts-linenum{background-color:#eee;color:#212424}
 td.permission-column-name{white-space:nowrap}
 td.permission-column-list{white-space:nowrap;width:106px}
 td.permission-column-group{padding-inline-start:0;width:200px;white-space:nowrap}
-.access-legend{margin-bottom:18px}
-.access-legend .number{border:1px solid #000;border-radius:2px;width:16px;height:16px;display:inline-block;text-align:center;margin-inline:10px 5px;line-height:14px;font-weight:700}
-.access-legend .edge span{width:1px;height:10px;background:#000;display:block;margin-top:8px;margin-inline-start:6px}
+.access-legend{--typo3-access-legend-guide-color:var(--typo3-text-color-base);--typo3-access-legend-number-border-color:var(--typo3-text-color-base);margin-bottom:18px}
+.access-legend .number{border:1px solid var(--typo3-access-legend-number-border-color);border-radius:2px;width:16px;height:16px;display:inline-block;text-align:center;margin-inline:10px 5px;line-height:14px;font-weight:700}
+.access-legend .edge span{width:1px;height:10px;background:var(--typo3-access-legend-guide-color);display:block;margin-top:8px;margin-inline-start:6px}
 .access-legend .edge span span{width:10px;height:1px;margin-inline-start:1px}
-.access-legend .hr span{width:20px;height:1px;background:#000;display:block;margin-top:-1px;margin-inline-start:-4px}
-.access-legend .t3-vr span{width:1px;height:20px;background:#000;margin-top:-2px;margin-inline-start:6px;display:block}
+.access-legend .hr span{width:20px;height:1px;background:var(--typo3-access-legend-guide-color);display:block;margin-top:-1px;margin-inline-start:-4px}
+.access-legend .t3-vr span{width:1px;height:20px;background:var(--typo3-access-legend-guide-color);margin-top:-2px;margin-inline-start:6px;display:block}
 @media (min-width:992px){
 .beuser-comparison-table{table-layout:fixed}
 }
