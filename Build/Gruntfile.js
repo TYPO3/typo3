@@ -19,10 +19,6 @@ module.exports = function (grunt) {
   const sass = require('sass');
   const esModuleLexer = require('es-module-lexer');
 
-  grunt.registerTask('ckeditor:compile-locales', 'locale compilation for CKEditor', function() {
-    require('./Scripts/node/ckeditor-locale-compiler.js');
-  })
-
   /**
    * Grunt flag tasks
    */
@@ -436,7 +432,7 @@ module.exports = function (grunt) {
     clean: {
       lit: {
         options: {
-          'force': true
+          force: true
         },
         src: [
           '<%= paths.core %>Public/JavaScript/Contrib/lit',
@@ -457,18 +453,11 @@ module.exports = function (grunt) {
         options: {
           destPrefix: '<%= paths.backend %>Public',
           copyOptions: {
-            process: (source, srcpath) => {
-              if (srcpath.match(/.*\.js$/)) {
-                return require('./util/cjs-to-esm.js').cjsToEsm(source);
-              }
-
-              return source;
-            }
+            process: (source, srcpath) => source.replace(/\/\/# sourceMappingURL=[^ ]+/, '')
           }
         },
         files: {
-          'JavaScript/Contrib/alwan.js': 'alwan/dist/js/alwan.min.js',
-          'JavaScript/Contrib/mark.js': 'mark.js/dist/mark.es6.min.js'
+          'JavaScript/Contrib/alwan.js': 'alwan/dist/js/esm/alwan.min.js',
         }
       },
       umdToEs6: {
@@ -476,23 +465,19 @@ module.exports = function (grunt) {
           destPrefix: '<%= paths.core %>Public/JavaScript/Contrib',
           copyOptions: {
             process: (source, srcpath) => {
-              let imports = [], prefix = '';
-
-              if (srcpath === 'node_modules/tablesort/dist/sorts/tablesort.dotsep.min.js') {
+              let prefix = '';
+              if (
+                srcpath === 'node_modules/tablesort/dist/sorts/tablesort.dotsep.min.js' ||
+                srcpath === 'node_modules/tablesort/dist/sorts/tablesort.number.min.js'
+              ) {
                 prefix = 'import Tablesort from "tablesort";';
               }
 
-              if (srcpath === 'node_modules/tablesort/dist/sorts/tablesort.number.min.js') {
-                prefix = 'import Tablesort from "tablesort";';
-              }
-
-              return require('./util/cjs-to-esm.js').cjsToEsm(source, imports, prefix);
+              return require('./util/cjs-to-esm.js').cjsToEsm(source, prefix);
             }
           }
         },
         files: {
-          'flatpickr/flatpickr.min.js': 'flatpickr/dist/flatpickr.js',
-          'flatpickr/locales.js': 'flatpickr/dist/l10n/index.js',
           'flatpickr/plugins/shortcut-buttons.min.js': 'shortcut-buttons-flatpickr/dist/shortcut-buttons-flatpickr.min.js',
           'interact.js': 'interactjs/dist/interact.min.js',
           'jquery.js': 'jquery/dist/jquery.js',
@@ -555,8 +540,6 @@ module.exports = function (grunt) {
           '<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js': ['<%= paths.backend %>Public/JavaScript/Contrib/w3c-keyname.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js': ['<%= paths.core %>Public/JavaScript/Contrib/cropperjs.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/dompurify.js': ['<%= paths.core %>Public/JavaScript/Contrib/dompurify.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/flatpickr.min.js'],
-          '<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js': ['<%= paths.core %>Public/JavaScript/Contrib/flatpickr/locales.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/luxon.js': ['<%= paths.core %>Public/JavaScript/Contrib/luxon.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/marked.js': ['<%= paths.core %>Public/JavaScript/Contrib/marked.js'],
           '<%= paths.core %>Public/JavaScript/Contrib/nprogress.js': ['<%= paths.core %>Public/JavaScript/Contrib/nprogress.js'],
@@ -652,7 +635,7 @@ module.exports = function (grunt) {
    * this task does the following things:
    * - copy some components to a specific destinations because they need to be included via PHP
    */
-  grunt.registerTask('update', ['ckeditor:compile-locales', 'exec:rollup', 'concurrent:npmcopy']);
+  grunt.registerTask('update', ['exec:rollup', 'concurrent:npmcopy']);
 
   /**
    * grunt compile-typescript task

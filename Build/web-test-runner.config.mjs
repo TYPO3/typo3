@@ -102,6 +102,7 @@ export default {
             'bootstrap': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/bootstrap.js',
             'cropperjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/cropperjs.js',
             'css-tree': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/css-tree.js',
+            'flatpickr': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr.js',
             'flatpickr/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr/',
             'interactjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/interact.js',
             'jquery': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.js',
@@ -183,7 +184,7 @@ export default {
 
             '@typo3/adminpanel/': './typo3/sysext/adminpanel/Resources/Public/JavaScript/',
             '@typo3/backend/': './typo3/sysext/backend/Resources/Public/JavaScript/',
-            '@typo3/backend/contrib/mark.js': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/mark.js',
+            '@typo3/backend/contrib/mark.js': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/markjs.js',
             'alwan': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/alwan.js',
             'lodash-es': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/lodash-es.js',
             'select-pure': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/select-pure.js',

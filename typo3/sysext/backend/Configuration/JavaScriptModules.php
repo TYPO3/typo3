@@ -59,7 +59,7 @@ return [
         '@codemirror/tooltip' => 'EXT:backend/Resources/Public/JavaScript/Contrib/@codemirror/tooltip.js',
         '@codemirror/theme-one-dark' => 'EXT:backend/Resources/Public/JavaScript/Contrib/@codemirror/theme-one-dark.js',
         '@codemirror/view' => 'EXT:backend/Resources/Public/JavaScript/Contrib/@codemirror/view.js',
-        '@typo3/backend/contrib/mark.js' => 'EXT:backend/Resources/Public/JavaScript/Contrib/mark.js',
+        '@typo3/backend/contrib/mark.js' => 'EXT:backend/Resources/Public/JavaScript/Contrib/markjs.js',
         'alwan' => 'EXT:backend/Resources/Public/JavaScript/Contrib/alwan.js',
         'lodash-es' => 'EXT:backend/Resources/Public/JavaScript/Contrib/lodash-es.js',
         'select-pure' => 'EXT:backend/Resources/Public/JavaScript/Contrib/select-pure.js',

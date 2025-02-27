@@ -1,6 +1,6 @@
-const { resolve, join } = require('path')
-const { readdirSync, existsSync, readFileSync, mkdirSync, writeFileSync } = require('fs')
-const PO = require('pofile')
+import { resolve, join } from 'path';
+import { readdirSync, existsSync, readFileSync, mkdirSync, writeFileSync } from 'fs';
+import PO from 'pofile';
 
 /**
  * This script assembles full locales from all plugins found in node_modules/@ckeditor/
@@ -128,19 +128,43 @@ function getTranslations(language) {
   return translatedStrings;
 }
 
-const ckeditorNamespacePath = resolve('./node_modules/@ckeditor/');
-for (const packagePath of readdirSync(ckeditorNamespacePath)) {
-  loadPackage(`${ckeditorNamespacePath}/${packagePath}/`);
-}
-
-if (!existsSync('./ckeditorLocales/')) {
-  mkdirSync('./ckeditorLocales/');
-}
-
-const assets = getTranslationAssets('./ckeditorLocales/', Array.from(_languages));
-
-for (const asset of assets) {
-  if (asset.outputBody !== undefined) {
-    writeFileSync(asset.outputPath, asset.outputBody);
+function compileLocales() {
+  const ckeditorNamespacePath = resolve('./node_modules/@ckeditor/');
+  for (const packagePath of readdirSync(ckeditorNamespacePath)) {
+    loadPackage(`${ckeditorNamespacePath}/${packagePath}/`);
   }
+
+  const assets = getTranslationAssets('./translations/', Array.from(_languages));
+  return assets.filter(asset => asset.outputBody !== undefined).map(asset => ({
+    translationFile: asset.outputPath,
+    content: asset.outputBody
+  }));
 }
+
+/**
+ * Helper function to build rollup bundling configuration for all existing
+ * CKEditor translations
+ */
+export const translations = () => compileLocales()
+  .map(config => ({
+    ...config,
+    // Not a glob(!), just a path for the human readable output,
+    // translation content is mapped by the content provider plugin below
+    input: `@ckeditor/*/lang/${config.translationFile}`,
+    virtual: `\0virtual:${config.translationFile}`
+  }))
+  .map(({ input, virtual, translationFile, content }) => ({
+    input,
+    output: {
+      compact: true,
+      file: `../typo3/sysext/rte_ckeditor/Resources/Public/Contrib/${translationFile}`,
+      format: 'es',
+    },
+    plugins: [
+      {
+        name: 'content provider',
+        load: (id) => id === virtual ? content : null,
+        resolveId: (id) => id === input ? virtual : null,
+      }
+    ],
+  }))
