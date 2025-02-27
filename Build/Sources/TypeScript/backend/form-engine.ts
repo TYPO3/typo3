@@ -367,29 +367,25 @@ export default (function() {
 
   /**
    * Returns a jQuery object of the field DOM element of the current form, can also be used to
-   * request an alternative field like "_hr", "_list" or "_mul"
+   * request an alternative field like "_list", "_avail" or "_mul"
    *
    * @param {String} fieldName the name of the field (<input name="fieldName">)
    * @param {String} appendix optional
    * @param {Boolean} noFallback if set, then the appendix value is returned no matter if it exists or not
-   * @returns {*|HTMLElement}
    */
-  FormEngine.getFieldElement = function(fieldName: string, appendix: string, noFallback: boolean): JQuery|HTMLElement {
-    const $formEl = $(selector`form[name="${FormEngine.formName}"]:first`);
-
+  FormEngine.getFieldElement = function(fieldName: string, appendix: string, noFallback: boolean): JQuery {
     // if an appendix is set, return the field with the appendix (like _mul or _list)
     if (appendix) {
       let $fieldEl;
       switch (appendix) {
         case '_list':
-          $fieldEl = $(selector`:input[data-formengine-input-name="${fieldName}"]:not([type=hidden])`, $formEl);
+          $fieldEl = $(selector`:input[data-formengine-input-name="${fieldName}"]:not([type=hidden])`, FormEngine.formElement);
           break;
         case '_avail':
-          $fieldEl = $(selector`:input[data-relatedfieldname="${fieldName}"]`, $formEl);
+          $fieldEl = $(selector`:input[data-relatedfieldname="${fieldName}"]`, FormEngine.formElement);
           break;
         case '_mul':
-        case '_hr':
-          $fieldEl = $(selector`:input[type=hidden][data-formengine-input-name="${fieldName}"]`, $formEl);
+          $fieldEl = $(selector`:input[type=hidden][data-formengine-input-name="${fieldName}"]`, FormEngine.formElement);
           break;
         default:
           $fieldEl = null;
@@ -400,7 +396,7 @@ export default (function() {
       }
     }
 
-    return $(selector`:input[name="${fieldName}"]`, $formEl);
+    return $(FormEngine.formElement.elements.namedItem(fieldName));
   };
 
   /**
