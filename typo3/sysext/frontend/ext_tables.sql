@@ -8,7 +8,8 @@ CREATE TABLE fe_sessions (
 	ses_permanent tinyint(1) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (ses_id),
-	KEY ses_tstamp (ses_tstamp)
+	KEY ses_tstamp (ses_tstamp),
+	KEY ses_userid_ses_tstamp (ses_userid, ses_tstamp)
 );
 
 CREATE TABLE fe_users (
