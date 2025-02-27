@@ -366,38 +366,6 @@ export default (function() {
   };
 
   /**
-   * returns a jQuery object for the given form name of the current form,
-   * if the parameter "fieldName" is given, then the form element is only returned if the field name is available
-   * the latter behaviour mirrors the one of the function "setFormValue_getFObj"
-   *
-   * @param {String} fieldName the field name to check for, optional
-   * @returns {*|HTMLElement}
-   */
-  FormEngine.getFormElement = function(fieldName: string): JQuery|HTMLElement|void {
-    const $formEl = $(selector`form[name="${FormEngine.formName}"]:first`);
-    if (fieldName) {
-      const $fieldEl = FormEngine.getFieldElement(fieldName)
-        , $listFieldEl = FormEngine.getFieldElement(fieldName, '_list');
-
-      // Take the form object if it is either of type select-one or of type-multiple and it has a "_list" element
-      if ($fieldEl.length > 0 &&
-        (
-          ($fieldEl.prop('type') === 'select-one') ||
-          ($listFieldEl.length > 0 && $listFieldEl.prop('type').match(/select-(one|multiple)/))
-        )
-      ) {
-        return $formEl;
-      } else {
-        console.error('Form fields missing: form: ' + FormEngine.formName + ', field name: ' + fieldName);
-        alert('Form field is invalid');
-      }
-    } else {
-      return $formEl;
-    }
-  };
-
-
-  /**
    * Returns a jQuery object of the field DOM element of the current form, can also be used to
    * request an alternative field like "_hr", "_list" or "_mul"
    *
