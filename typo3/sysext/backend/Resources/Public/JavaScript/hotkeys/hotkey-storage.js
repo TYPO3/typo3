@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class HotkeyStorage{constructor(t=new Map,e="all"){this.scopedHotkeyMap=t,this.activeScope=e}getScopedHotkeyMap(){return this.scopedHotkeyMap}}let hotkeysStorageInstance;top.TYPO3.HotkeyStorage?hotkeysStorageInstance=top.TYPO3.HotkeyStorage:(hotkeysStorageInstance=new HotkeyStorage,top.TYPO3.HotkeyStorage=hotkeysStorageInstance);export default hotkeysStorageInstance;
+class HotkeyStorage{constructor(t=new Map([["all",new Map]]),e="all"){this.scopedHotkeyMap=t,this.activeScope=e}getScopedHotkeyMap(){return this.scopedHotkeyMap}}let hotkeysStorageInstance;top.TYPO3.HotkeyStorage?hotkeysStorageInstance=top.TYPO3.HotkeyStorage:(hotkeysStorageInstance=new HotkeyStorage,top.TYPO3.HotkeyStorage=hotkeysStorageInstance);export default hotkeysStorageInstance;
