@@ -105,6 +105,7 @@ export default {
             'd3-dispatch': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/d3-dispatch.js',
             'd3-drag': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/d3-drag.js',
             'd3-selection': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/d3-selection.js',
+            'flatpickr': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr.js',
             'flatpickr/': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/flatpickr/',
             'interactjs': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/interact.js',
             'jquery': './typo3/sysext/core/Resources/Public/JavaScript/Contrib/jquery.js',
@@ -186,7 +187,7 @@ export default {
 
             '@typo3/adminpanel/': './typo3/sysext/adminpanel/Resources/Public/JavaScript/',
             '@typo3/backend/': './typo3/sysext/backend/Resources/Public/JavaScript/',
-            '@typo3/backend/contrib/mark.js': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/mark.js',
+            '@typo3/backend/contrib/mark.js': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/markjs.js',
             'lodash-es': './typo3/sysext/backend/Resources/Public/JavaScript/Contrib/lodash-es.js',
 
             '@typo3/belog/': './typo3/sysext/belog/Resources/Public/JavaScript/',

@@ -17,7 +17,7 @@ return [
         'd3-dispatch' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-dispatch.js',
         'd3-drag' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-drag.js',
         'd3-selection' => 'EXT:core/Resources/Public/JavaScript/Contrib/d3-selection.js',
-        'flatpickr' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/flatpickr.min.js',
+        'flatpickr' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr.js',
         'flatpickr/' => 'EXT:core/Resources/Public/JavaScript/Contrib/flatpickr/',
         'interactjs' => 'EXT:core/Resources/Public/JavaScript/Contrib/interact.js',
         'jquery' => 'EXT:core/Resources/Public/JavaScript/Contrib/jquery.js',

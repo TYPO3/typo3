@@ -16,7 +16,7 @@ return [
                 'EXT:backend/Resources/Public/JavaScript/Contrib/',
             ],
         ],
-        '@typo3/backend/contrib/mark.js' => 'EXT:backend/Resources/Public/JavaScript/Contrib/mark.js',
+        '@typo3/backend/contrib/mark.js' => 'EXT:backend/Resources/Public/JavaScript/Contrib/markjs.js',
         'lodash-es' => 'EXT:backend/Resources/Public/JavaScript/Contrib/lodash-es.js',
     ],
 ];
