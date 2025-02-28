@@ -43,6 +43,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
@@ -194,6 +195,7 @@ final class PageRecordProvider implements SearchProviderInterface
 
         $items = [];
         $result = $queryBuilder->executeQuery();
+        $schema = $this->tcaSchemaFactory->get('pages');
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL('pages', $row);
             if (!is_array($row)) {
@@ -234,7 +236,7 @@ final class PageRecordProvider implements SearchProviderInterface
             $icon = $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle('pages', $row))
-                ->setTypeLabel($this->languageService->sL($GLOBALS['TCA']['pages']['ctrl']['title']))
+                ->setTypeLabel($this->languageService->sL($schema->getRawConfiguration()['title']))
                 ->setIcon($icon)
                 ->setActions(...$actions)
                 ->setExtraData([
@@ -408,10 +410,11 @@ final class PageRecordProvider implements SearchProviderInterface
         $showLink = '';
         $permissionSet = new Permission($this->getBackendUser()->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? []));
         // "View" link - Only with proper permissions
+        $schema = $this->tcaSchemaFactory->get('pages');
         if ($backendUser->isAdmin()
             || (
                 $permissionSet->showPagePermissionIsGranted()
-                && !($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false)
+                && !$schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
                 && $backendUser->check('tables_select', 'pages')
             )
         ) {

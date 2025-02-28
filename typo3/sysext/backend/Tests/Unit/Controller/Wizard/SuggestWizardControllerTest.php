@@ -23,6 +23,9 @@ use TYPO3\CMS\Backend\Controller\Wizard\SuggestWizardController;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Schema\Field\FieldCollection;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SuggestWizardControllerTest extends UnitTestCase
@@ -64,7 +67,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480609491);
-        (new SuggestWizardController($flexFormToolsMock))->searchAction($request);
+        (new SuggestWizardController($flexFormToolsMock, $this->createMock(TcaSchemaFactory::class)))->searchAction($request);
     }
 
     #[Test]
@@ -104,26 +107,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1480611208);
-        (new SuggestWizardController($flexFormToolsMock))->searchAction($request);
-    }
-
-    #[DataProvider('isTableHiddenIsProperlyRetrievedDataProvider')]
-    #[Test]
-    public function isTableHiddenIsProperlyRetrieved(bool $expected, array $array): void
-    {
-        $subject = $this->getAccessibleMock(SuggestWizardController::class, null, [], '', false);
-        self::assertEquals($expected, $subject->_call('isTableHidden', $array));
-    }
-
-    public static function isTableHiddenIsProperlyRetrievedDataProvider(): array
-    {
-        return [
-            'notSetValue' => [false, ['ctrl' => ['hideTable' => null]]],
-            'true' => [true, ['ctrl' => ['hideTable' => true]]],
-            'false' => [false, ['ctrl' => ['hideTable' => false]]],
-            'string with true' => [true, ['ctrl' => ['hideTable' => '1']]],
-            'string with false' => [false, ['ctrl' => ['hideTable' => '0']]],
-        ];
+        (new SuggestWizardController($flexFormToolsMock, $this->createMock(TcaSchemaFactory::class)))->searchAction($request);
     }
 
     #[DataProvider('currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider')]
@@ -135,11 +119,12 @@ final class SuggestWizardControllerTest extends UnitTestCase
     ): void {
         $backendUser = $this->createMock(BackendUserAuthentication::class);
         $backendUser->method('isAdmin')->willReturn($isAdmin);
+        $schema = new TcaSchema('irrelevant', new FieldCollection(), $tableConfig);
 
         $subject = $this->getAccessibleMock(SuggestWizardController::class, ['getBackendUser'], [], '', false);
         $subject->method('getBackendUser')->willReturn($backendUser);
 
-        self::assertEquals($expected, $subject->_call('currentBackendUserMayAccessTable', $tableConfig));
+        self::assertEquals($expected, $subject->_call('currentBackendUserMayAccessTable', $schema));
     }
 
     public static function currentBackendUserMayAccessTableIsEvaluatedCorrectlyDataProvider(): array
@@ -153,9 +138,7 @@ final class SuggestWizardControllerTest extends UnitTestCase
             'adminOnly set' => [
                 false,
                 [
-                    'ctrl' => [
-                        'adminOnly' => true,
-                    ],
+                    'adminOnly' => true,
                 ],
                 false,
             ],
@@ -167,29 +150,23 @@ final class SuggestWizardControllerTest extends UnitTestCase
             'adminOnly not set, rootlevel is true and security.ignoreRootLevelRestriction not set' => [
                 false,
                 [
-                    'ctrl' => [
-                        'rootLevel' => true,
-                    ],
+                    'rootLevel' => true,
                 ],
                 false,
             ],
             'adminOnly not set, rootlevel is false and security.ignoreRootLevelRestriction not set' => [
                 true,
                 [
-                    'ctrl' => [
-                        'rootLevel' => false,
-                    ],
+                    'rootLevel' => false,
                 ],
                 false,
             ],
             'adminOnly not set, rootlevel is true and security.ignoreRootLevelRestriction is false' => [
                 false,
                 [
-                    'ctrl' => [
-                        'rootLevel' => true,
-                        'security' => [
-                            'ignoreRootLevelRestriction' => false,
-                        ],
+                    'rootLevel' => true,
+                    'security' => [
+                        'ignoreRootLevelRestriction' => false,
                     ],
                 ],
                 false,
@@ -197,11 +174,9 @@ final class SuggestWizardControllerTest extends UnitTestCase
             'adminOnly not set, rootlevel is true and security.ignoreRootLevelRestriction is true' => [
                 true,
                 [
-                    'ctrl' => [
-                        'rootLevel' => true,
-                        'security' => [
-                            'ignoreRootLevelRestriction' => true,
-                        ],
+                    'rootLevel' => true,
+                    'security' => [
+                        'ignoreRootLevelRestriction' => true,
                     ],
                 ],
                 false,

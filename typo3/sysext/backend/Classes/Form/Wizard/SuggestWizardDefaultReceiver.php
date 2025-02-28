@@ -19,6 +19,7 @@ use TYPO3\CMS\Backend\Tree\Repository\PageTreeRepository;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -26,6 +27,10 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -40,54 +45,36 @@ class SuggestWizardDefaultReceiver
 {
     /**
      * The name of the table to query
-     *
-     * @var string
      */
-    protected $table = '';
+    protected string $table;
 
     /**
      * The name of the foreign table to query (records from this table will be used for displaying instead of the ones
      * from $table)
-     *
-     * @var string
      */
-    protected $mmForeignTable = '';
+    protected string $mmForeignTable = '';
 
     /**
      * Configuration for this selector from TSconfig
-     *
-     * @var array
      */
-    protected $config = [];
+    protected array $config;
 
     /**
      * The list of pages that are allowed to perform the search for records on
      *
      * @var array Array of PIDs
      */
-    protected $allowedPages = [];
+    protected array $allowedPages = [];
 
     /**
      * The maximum number of items to select.
-     *
-     * @var int
      */
-    protected $maxItems = 10;
+    protected int $maxItems = 10;
+    protected array $params = [];
 
-    /**
-     * @var array
-     */
-    protected $params = [];
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * @var QueryBuilder
-     */
-    protected $queryBuilder;
+    protected IconFactory $iconFactory;
+    protected QueryBuilder $queryBuilder;
+    protected TcaSchema $tcaSchema;
 
     /**
      * The constructor of this class
@@ -95,7 +82,7 @@ class SuggestWizardDefaultReceiver
      * @param string $table The table to query
      * @param array $config The configuration (TCA overlaid with TSconfig) to use for this selector
      */
-    public function __construct($table, $config)
+    public function __construct(string $table, array $config)
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $this->queryBuilder = $this->getQueryBuilderForTable($table);
@@ -104,6 +91,7 @@ class SuggestWizardDefaultReceiver
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
         $this->table = $table;
+        $this->tcaSchema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->table);
         $this->config = $config;
         // get a list of all the pages that should be looked on
         if (isset($config['pidList'])) {
@@ -113,7 +101,7 @@ class SuggestWizardDefaultReceiver
             $this->allowedPages = array_unique(array_merge($this->allowedPages, $availablePageIds));
         }
         if (isset($config['maxItemsInResultList'])) {
-            $this->maxItems = $config['maxItemsInResultList'];
+            $this->maxItems = (int)$config['maxItemsInResultList'];
         }
         $backendUser = $this->getBackendUser();
         $backendUser->initializeWebmountsForElementBrowser();
@@ -142,7 +130,7 @@ class SuggestWizardDefaultReceiver
      * @param int $recursionCounter The parent object
      * @return array Array of rows or FALSE if nothing found
      */
-    public function queryTable(&$params, $recursionCounter = 0)
+    public function queryTable(array &$params, int $recursionCounter = 0): array
     {
         $maxQueryResults = 50;
         $rows = [];
@@ -206,7 +194,7 @@ class SuggestWizardDefaultReceiver
      * Prepare the statement for selecting the records which will be returned to the selector. May also return some
      * other records (e.g. from a mm-table) which will be used later on to select the real records
      */
-    protected function prepareSelectStatement()
+    protected function prepareSelectStatement(): void
     {
         $expressionBuilder = $this->queryBuilder->expr();
         $searchString = $this->params['value'];
@@ -228,7 +216,7 @@ class SuggestWizardDefaultReceiver
                 );
             }
         }
-        // add an additional search condition comment
+        // append an additional search condition comment
         if (isset($this->config['searchCondition']) && $this->config['searchCondition'] !== '') {
             $this->queryBuilder->andWhere(QueryHelper::stripLogicalOperatorPrefix($this->config['searchCondition']));
         }
@@ -237,9 +225,9 @@ class SuggestWizardDefaultReceiver
     /**
      * Creates OR constraints for each split searchWord.
      *
-     * @return string|\TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression
+     * @return string|CompositeExpression
      */
-    protected function buildConstraintBlock(string $searchString)
+    protected function buildConstraintBlock($searchString)
     {
         $expressionBuilder = $this->queryBuilder->expr();
         $selectParts = $expressionBuilder->or();
@@ -249,13 +237,22 @@ class SuggestWizardDefaultReceiver
         $searchWholePhrase = !isset($this->config['searchWholePhrase']) || $this->config['searchWholePhrase'];
         $likeCondition = ($searchWholePhrase ? '%' : '') . $this->queryBuilder->escapeLikeWildcards($searchString) . '%';
         // Search in all fields given by label or label_alt
-        $selectFieldsList = ($GLOBALS['TCA'][$this->table]['ctrl']['label'] ?? '') . ',' . ($GLOBALS['TCA'][$this->table]['ctrl']['label_alt'] ?? '') . ',' . ($this->config['additionalSearchFields'] ?? '');
-        $selectFields = GeneralUtility::trimExplode(',', $selectFieldsList, true);
+        $selectFields = [];
+        if (isset($this->config['additionalSearchFields'])) {
+            $selectFields = GeneralUtility::trimExplode(',', $this->config['additionalSearchFields'], true);
+        }
+        /** @var LabelCapability $labelCapability */
+        $labelCapability = $this->tcaSchema->getCapability(TcaSchemaCapability::Label);
+        if ($labelCapability->hasPrimaryField()) {
+            $selectFields[] = $labelCapability->getPrimaryField()->getName();
+        }
+        foreach ($labelCapability->getAdditionalFields() as $field) {
+            $selectFields[] = $field->getName();
+        }
         $selectFields = array_unique($selectFields);
         foreach ($selectFields as $field) {
             $selectParts = $selectParts->with($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
         }
-
         return $selectParts;
     }
 
@@ -297,7 +294,11 @@ class SuggestWizardDefaultReceiver
     protected function prepareOrderByStatement(QueryBuilder $queryBuilder): QueryBuilder
     {
         if (empty($this->config['orderBy'])) {
-            $queryBuilder->addOrderBy($GLOBALS['TCA'][$this->table]['ctrl']['label']);
+            /** @var LabelCapability $labelCapability */
+            $labelCapability = $this->tcaSchema->getCapability(TcaSchemaCapability::Label);
+            if ($labelCapability->hasPrimaryField()) {
+                $queryBuilder->addOrderBy($labelCapability->getPrimaryField()->getName());
+            }
         } else {
             foreach (QueryHelper::parseOrderBy($this->config['orderBy']) as $orderPair) {
                 [$fieldName, $order] = $orderPair;
@@ -316,12 +317,8 @@ class SuggestWizardDefaultReceiver
 
     /**
      * Selects whether the logged in Backend User is allowed to read a specific record
-     *
-     * @param array $row
-     * @param int $uid
-     * @return bool
      */
-    protected function checkRecordAccess($row, $uid)
+    protected function checkRecordAccess(array $row, int $uid): bool
     {
         $backendUser = $this->getBackendUser();
         $retValue = true;
@@ -330,12 +327,10 @@ class SuggestWizardDefaultReceiver
             if (!BackendUtility::readPageAccess($uid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW))) {
                 $retValue = false;
             }
-        } elseif (isset($GLOBALS['TCA'][$table]['ctrl']['is_static']) && (bool)$GLOBALS['TCA'][$table]['ctrl']['is_static']) {
+        } elseif ($this->tcaSchema->getRawConfiguration()['is_static'] ?? false) {
             $retValue = true;
-        } else {
-            if (!is_array(BackendUtility::readPageAccess($row['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW)))) {
-                $retValue = false;
-            }
+        } elseif (!is_array(BackendUtility::readPageAccess($row['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW)))) {
+            $retValue = false;
         }
         return $retValue;
     }
@@ -345,7 +340,7 @@ class SuggestWizardDefaultReceiver
      *
      * @param array $row The record to get the workspace version for
      */
-    protected function makeWorkspaceOverlay(&$row)
+    protected function makeWorkspaceOverlay(array &$row): void
     {
         // Check for workspace-versions
         if ($this->getBackendUser()->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($this->table)) {
@@ -363,7 +358,7 @@ class SuggestWizardDefaultReceiver
      * @param int $uid UID of the record
      * @return string The record-path
      */
-    protected function getRecordPath(&$row, $uid)
+    protected function getRecordPath(array &$row, $uid): string
     {
         $titleLimit = max($this->config['maxPathTitleLength'] ?? 0, 0);
         if (($this->mmForeignTable ?: $this->table) === 'pages') {
@@ -383,7 +378,7 @@ class SuggestWizardDefaultReceiver
      * @param array $row The record to get the label for
      * @return string The label
      */
-    protected function getLabel($row)
+    protected function getLabel(array $row): string
     {
         return BackendUtility::getRecordTitle($this->mmForeignTable ?: $this->table, $row, true);
     }
@@ -397,10 +392,10 @@ class SuggestWizardDefaultReceiver
      * @param array $entry The entry to render
      * @return array The rendered entry (will be put into a <li> later on
      */
-    protected function renderRecord($row, $entry)
+    protected function renderRecord(array $row, array $entry): array
     {
         // Call renderlet if available (normal pages etc. usually don't have one)
-        if (($this->config['renderFunc'] ?? '') != '') {
+        if (($this->config['renderFunc'] ?? '') !== '') {
             $params = [
                 'table' => $this->table,
                 'uid' => $row['uid'],
@@ -422,11 +417,7 @@ class SuggestWizardDefaultReceiver
         return $GLOBALS['BE_USER'];
     }
 
-    /**
-     * @param string $table
-     * @return QueryBuilder
-     */
-    protected function getQueryBuilderForTable($table)
+    protected function getQueryBuilderForTable(string $table): QueryBuilder
     {
         return GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
     }
