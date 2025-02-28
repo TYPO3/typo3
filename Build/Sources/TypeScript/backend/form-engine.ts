@@ -50,7 +50,6 @@ type FormEngineType = {
   formName: string,
   formElement: HTMLFormElement,
   openedPopupWindow: Window | null,
-  legacyFieldChangedCb: () => void,
   browserUrl: string,
   doSaveFieldName: string,
 };
@@ -152,11 +151,6 @@ export default (function() {
     formName: TYPO3.settings.FormEngine.formName,
     formElement: undefined,
     openedPopupWindow: null,
-    legacyFieldChangedCb: function() {
-      if ($.isFunction(TYPO3.settings.FormEngine.legacyFieldChangedCb)) {
-        TYPO3.settings.FormEngine.legacyFieldChangedCb();
-      }
-    },
     browserUrl: '',
     doSaveFieldName: ''
   };
@@ -320,8 +314,6 @@ export default (function() {
         // set the hidden field
         FormEngine.updateHiddenFieldValueFromSelect(fieldEl, originalFieldEl);
 
-        // execute the phpcode from $FormEngine->TBE_EDITOR_fieldChanged_func
-        FormEngine.legacyFieldChangedCb();
         FormEngine.Validation.markFieldAsChanged(originalFieldEl);
         FormEngine.Validation.validateField(fieldEl);
         FormEngine.Validation.validateField(availableFieldEl);
