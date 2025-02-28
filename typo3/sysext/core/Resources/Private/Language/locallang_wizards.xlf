@@ -84,6 +84,18 @@
 			<trans-unit id="grid_editCell">
 				<source>Edit cell</source>
 			</trans-unit>
+			<trans-unit id="grid_cell_merge_right">
+				<source>Merge Right</source>
+			</trans-unit>
+			<trans-unit id="grid_cell_merge_down">
+				<source>Merge Down</source>
+			</trans-unit>
+			<trans-unit id="grid_cell_split_horizontal">
+				<source>Split Horizontally</source>
+			</trans-unit>
+			<trans-unit id="grid_cell_split_vertical">
+				<source>Split Vertically</source>
+			</trans-unit>
 			<trans-unit id="grid_name">
 				<source>Name</source>
 			</trans-unit>

@@ -8,6 +8,7 @@
     --grideditor-cell-border-radius: 4px;
     --grideditor-cell-border-color: var(--typo3-component-border-color);
     --grideditor-cell-shadow: var(--typo3-component-box-shadow-strong);
+    --grideditor-row-height: 180px;
     --grideditor-action-size: 32px;
     --grideditor-action-spacing: 2px;
     --grideditor-action-color: var(--typo3-state-default-color);
@@ -49,6 +50,8 @@
             display: grid;
             gap: 1em;
             width: 100%;
+            grid-auto-columns: 1fr;
+            grid-auto-rows: var(--grideditor-row-height);
         }
     }
 
