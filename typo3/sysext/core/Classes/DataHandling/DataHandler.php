@@ -7277,35 +7277,49 @@ class DataHandler
     /**
      * Looks up a page based on permissions.
      *
-     * @param int $id Page id
+     * @param int $uid Page uid
      * @param int $perms Permission integer
-     * @param array $columns Columns to select
      */
-    protected function doesRecordExist_pageLookUp($id, $perms, $columns = ['uid']): array|false
+    protected function doesRecordExist_pageLookUp(int $uid, int $perms): array|false
     {
+        $page = BackendUtility::getRecord('pages', $uid);
+        if (!is_array($page)) {
+            return false;
+        }
+        if ($this->admin) {
+            return $page;
+        }
+        $beUserUid = $this->BE_USER->getUserId();
+        if (!$beUserUid) {
+            return false;
+        }
         $permission = new Permission($perms);
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-        $queryBuilder
-            ->select(...$columns)
-            ->from('pages')
-            ->where($queryBuilder->expr()->eq(
-                'uid',
-                $queryBuilder->createNamedParameter($id, Connection::PARAM_INT)
-            ));
-        if (!$permission->nothingIsGranted() && !$this->admin) {
-            $queryBuilder->andWhere($this->BE_USER->getPagePermsClause($perms));
-        }
         $pagesSchema = $this->tcaSchemaFactory->get('pages');
-        if (!$this->admin && $pagesSchema->hasCapability(TcaSchemaCapability::EditLock) &&
-            ($permission->editPagePermissionIsGranted() || $permission->deletePagePermissionIsGranted() || $permission->editContentPermissionIsGranted())
-        ) {
-            $queryBuilder->andWhere($queryBuilder->expr()->eq(
-                $pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName(),
-                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-            ));
+        $editLockFieldName = null;
+        $editLockCheck = false;
+        if ($pagesSchema->hasCapability(TcaSchemaCapability::EditLock)) {
+            $editLockFieldName = $pagesSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName();
+            if ($permission->editPagePermissionIsGranted() || $permission->deletePagePermissionIsGranted() || $permission->editContentPermissionIsGranted()) {
+                $editLockCheck = true;
+            }
         }
-        return $queryBuilder->executeQuery()->fetchAssociative();
+        $groupUids = [];
+        $groupCheck = false;
+        if (!empty($this->BE_USER->userGroupsUID)) {
+            $groupUids = $this->BE_USER->userGroupsUID;
+            $groupCheck = true;
+        }
+        if ((!$editLockCheck || (int)$page[$editLockFieldName] === 0)
+            && (
+                ((int)$page['perms_everybody'] & $perms) === $perms
+                || ((int)$page['perms_userid'] === $beUserUid && ((int)$page['perms_user'] & $perms) === $perms)
+                || ($groupCheck && in_array((int)$page['perms_groupid'], $groupUids, true) && ((int)$page['perms_group'] & $perms) === $perms)
+            )
+        ) {
+            // A PHP implementation of BackendUserAuthentication->getPagePermsClause() plus the editlock check.
+            return $page;
+        }
+        return false;
     }
 
     /**
@@ -7534,7 +7548,7 @@ class DataHandler
         $isWebMountRestrictionIgnored = BackendUtility::isWebMountRestrictionIgnored($table);
         if ($this->tcaSchemaFactory->has($table) && $id > 0 && ($this->admin || $isWebMountRestrictionIgnored || $this->isRecordInWebMount($table, $id))) {
             if ($table === 'pages') {
-                return $this->doesRecordExist_pageLookUp($id, $perms, ['*']);
+                return $this->doesRecordExist_pageLookUp($id, $perms);
             }
             // Find record without checking page
             // @todo: This should probably check for editlock
