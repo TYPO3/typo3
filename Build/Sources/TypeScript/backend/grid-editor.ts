@@ -187,7 +187,7 @@ export class GridEditor extends LitElement {
                   class="t3js-grideditor-link-expand-right grideditor-action grideditor-action-expand-right"
                   data-row=${row}
                   data-col=${col}
-                  title=${TYPO3.lang.grid_editCell}>
+                  title=${TYPO3.lang.grid_cell_merge_right}>
                   <typo3-backend-icon identifier="actions-caret-right" size="small"></typo3-backend-icon>
                 </button>
               `
@@ -199,7 +199,7 @@ export class GridEditor extends LitElement {
                   class="t3js-grideditor-link-shrink-left grideditor-action grideditor-action-shrink-left"
                   data-row=${row}
                   data-col=${col}
-                  title=${TYPO3.lang.grid_editCell}>
+                  title=${TYPO3.lang.grid_cell_split_horizontal}>
                   <typo3-backend-icon identifier="actions-caret-left" size="small"></typo3-backend-icon>
                 </button>
               `
@@ -211,7 +211,7 @@ export class GridEditor extends LitElement {
                   class="t3js-grideditor-link-expand-down grideditor-action grideditor-action-expand-down"
                   data-row=${row}
                   data-col=${col}
-                  title=${TYPO3.lang.grid_editCell}>
+                  title=${TYPO3.lang.grid_cell_merge_down}>
                   <typo3-backend-icon identifier="actions-caret-down" size="small"></typo3-backend-icon>
                 </button>
               `
@@ -223,7 +223,7 @@ export class GridEditor extends LitElement {
                   class="t3js-grideditor-link-shrink-up grideditor-action grideditor-action-shrink-up"
                   data-row=${row}
                   data-col=${col}
-                  title=${TYPO3.lang.grid_editCell}>
+                  title=${TYPO3.lang.grid_cell_split_vertical}>
                   <typo3-backend-icon identifier="actions-caret-up" size="small"></typo3-backend-icon>
                 </button>
               `
@@ -719,46 +719,56 @@ export class GridEditor extends LitElement {
     const formGroup = document.createElement('div');
     formGroup.classList.add('form-group');
     const label = document.createElement('label');
+    label.classList.add('form-label');
     const input = document.createElement('input');
+    input.classList.add('form-control');
 
     const nameFormGroup = formGroup.cloneNode(true) as HTMLElement;
-    const nameLabel = label.cloneNode(true) as HTMLElement;
+    const nameLabel = label.cloneNode(true) as HTMLLabelElement;
     nameLabel.innerText = TYPO3.lang.grid_nameHelp;
+    nameLabel.htmlFor = 'grideditor-field-name';
     const nameInput = input.cloneNode(true) as HTMLInputElement;
+    nameInput.id = 'grideditor-field-name';
     nameInput.type = 'text';
-    nameInput.classList.add('t3js-grideditor-field-name', 'form-control');
+    nameInput.classList.add('t3js-grideditor-field-name');
     nameInput.name = 'name';
     nameInput.value = GridEditor.stripMarkup(cell.name) || '';
 
     nameFormGroup.append(nameLabel, nameInput);
 
     const columnFormGroup = formGroup.cloneNode(true) as HTMLElement;
-    const columnLabel = label.cloneNode(true) as HTMLElement;
+    const columnLabel = label.cloneNode(true) as HTMLLabelElement;
     columnLabel.innerText = TYPO3.lang.grid_columnHelp;
+    columnLabel.htmlFor = 'grideditor-field-colpos';
     const columnInput = input.cloneNode(true) as HTMLInputElement;
     columnInput.type = 'text';
-    columnInput.classList.add('t3js-grideditor-field-colpos', 'form-control');
+    columnInput.classList.add('t3js-grideditor-field-colpos');
+    columnInput.id = 'grideditor-field-colpos';
     columnInput.name = 'column';
     columnInput.value = colPos.toString();
 
     columnFormGroup.append(columnLabel, columnInput);
 
     const identifierFormGroup = formGroup.cloneNode(true) as HTMLElement;
-    const identifierLabel = label.cloneNode(true) as HTMLElement;
+    const identifierLabel = label.cloneNode(true) as HTMLLabelElement;
     identifierLabel.innerText = TYPO3.lang.grid_identifierHelp;
+    identifierLabel.htmlFor = 'grideditor-field-identifier';
     const identifierInput = input.cloneNode(true) as HTMLInputElement;
     nameInput.type = 'text';
-    identifierInput.classList.add('t3js-grideditor-field-identifier', 'form-control');
+    identifierInput.classList.add('t3js-grideditor-field-identifier');
+    identifierInput.id = 'grideditor-field-identifier';
     identifierInput.name = 'identifier';
     identifierInput.value = typeof(cell.identifier) === 'string' ? GridEditor.stripMarkup(cell.identifier) : '';
 
     identifierFormGroup.append(identifierLabel, identifierInput);
 
     const slideModeFormGroup = formGroup.cloneNode(true) as HTMLElement;
-    const slideModeLabel = label.cloneNode(true) as HTMLElement;
+    const slideModeLabel = label.cloneNode(true) as HTMLLabelElement;
     slideModeLabel.innerText = TYPO3.lang.grid_slideModeHelp;
+    slideModeLabel.htmlFor = 'grideditor-field-slide-mode';
     const slideModeSelect = document.createElement('select');
-    slideModeSelect.classList.add('t3js-grideditor-field-slide-mode', 'form-select', 'form-control-adapt');
+    slideModeSelect.classList.add('form-select', 't3js-grideditor-field-slide-mode');
+    slideModeSelect.id = 'grideditor-field-slide-mode';
     slideModeSelect.name = 'slideMode';
     slideModeSelect.value = GridEditor.stripMarkup(cell.slideMode?.toString()) || '';
 
