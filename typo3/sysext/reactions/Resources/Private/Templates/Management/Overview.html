@@ -20,7 +20,7 @@
         name="returnUrl"
         value="{f:be.uri(route:'system_reactions')}"
     />
-    <f:if condition="{reactionRecords -> f:count()}">
+    <f:if condition="{paginator.paginatedItems -> f:count()}">
         <f:then>
             <f:render section="filter" arguments="{_all}" />
             <f:render section="table" arguments="{_all}" />
@@ -116,7 +116,7 @@
             </tr>
             </thead>
             <tbody data-multi-record-selection-row-selection="true">
-            <f:for each="{reactionRecords}" key="reactionId" as="reaction">
+            <f:for each="{paginator.paginatedItems}" key="reactionId" as="reaction">
                 <f:variable name="reactionRecord" value="{reaction as array}"/>
                 <tr data-uid="{reaction.uid}" data-multi-record-selection-element="true">
                     <td class="col-checkbox">

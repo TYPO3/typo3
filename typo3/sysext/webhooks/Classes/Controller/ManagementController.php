@@ -60,7 +60,7 @@ class ManagementController
         $this->registerDocHeaderButtons($view, $requestUri, $demand);
 
         $webhookRecords = $this->webhookRepository->getWebhookRecords($demand);
-        $paginator = new DemandedArrayPaginator($webhookRecords, $demand->getPage(), $demand->getLimit(), $this->webhookRepository->countAll());
+        $paginator = new DemandedArrayPaginator($webhookRecords, $demand->getPage(), $demand->getLimit(), $this->webhookRepository->countAll($demand));
         $pagination = new SimplePagination($paginator);
 
         return $view->assignMultiple([
@@ -68,7 +68,6 @@ class ManagementController
             'webhookTypes' => $this->webhookTypesRegistry->getAvailableWebhookTypes(),
             'paginator' => $paginator,
             'pagination' => $pagination,
-            'webhookRecords' => $webhookRecords,
             'actions' => [
                 new Action(
                     'edit',
