@@ -87,7 +87,7 @@
                 </f:else>
             </f:if>
             <li class="page-item">
-                <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.currentPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.refresh')}" class="page-link">
+                <a href="{f:be.uri(route:'webhooks_management', parameters: '{demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: paginator.currentPageNumber}')}" title="{f:translate(key:'LLL:EXT:webhooks/Resources/Private/Language/locallang_module_webhooks.xlf:pagination.refresh')}" class="page-link">
                     <core:icon identifier="actions-refresh" />
                 </a>
             </li>

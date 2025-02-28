@@ -41,9 +41,10 @@ class ReactionRepository
             ->fetchAllAssociative());
     }
 
-    public function countAll(): int
+    public function countAll(?ReactionDemand $demand = null): int
     {
-        return (int)$this->getQueryBuilder(false)
+        $qb = $demand ? $this->getQueryBuilderForDemand($demand) : $this->getQueryBuilder();
+        return (int)$qb
             ->count('*')
             ->executeQuery()
             ->fetchOne();

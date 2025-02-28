@@ -20,7 +20,7 @@
         name="returnUrl"
         value="{f:be.uri(route:'webhooks_management')}"
     />
-    <f:if condition="{webhookRecords -> f:count()}">
+    <f:if condition="{paginator.paginatedItems -> f:count()}">
         <f:then>
             <f:render section="filter" arguments="{_all}" />
             <f:render section="table" arguments="{_all}" />
@@ -72,7 +72,7 @@
             </tr>
             </thead>
             <tbody data-multi-record-selection-row-selection="true">
-            <f:for each="{webhookRecords}" key="webhookId" as="webhook">
+            <f:for each="{paginator.paginatedItems}" key="webhookId" as="webhook">
                 <tr data-uid="{webhook.uid}" data-multi-record-selection-element="true">
                     <td class="col-checkbox">
                         <span class="form-check form-check-type-toggle">

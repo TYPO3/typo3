@@ -87,7 +87,7 @@
                 </f:else>
             </f:if>
             <li class="page-item">
-                <a href="{f:be.uri(route:'system_reactions', parameters: '{action: \'overview\', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: pagination.currentPageNumber}')}" title="{f:translate(key:'LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:pagination.refresh')}" class="page-link">
+                <a href="{f:be.uri(route:'system_reactions', parameters: '{action: \'overview\', demand: demand.parameters, orderField: demand.orderField, orderDirection: demand.orderDirection, page: paginator.currentPageNumber}')}" title="{f:translate(key:'LLL:EXT:reactions/Resources/Private/Language/locallang_module_reactions.xlf:pagination.refresh')}" class="page-link">
                     <core:icon identifier="actions-refresh" />
                 </a>
             </li>
