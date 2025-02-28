@@ -41,6 +41,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
@@ -248,6 +250,9 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
         $items = [];
         $result = $queryBuilder->executeQuery();
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        /** @var RootLevelCapability $rootLevelCapability */
+        $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
         while ($row = $result->fetchAssociative()) {
             BackendUtility::workspaceOL($tableName, $row);
             if (!is_array($row)) {
@@ -275,14 +280,14 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 'table' => $tableName,
                 'uid' => $row['uid'],
             ];
-            if (!($GLOBALS['TCA'][$tableName]['ctrl']['rootLevel'] ?? false)) {
+            if ($rootLevelCapability->canExistOnPages()) {
                 $extraData['breadcrumb'] = BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0);
             }
 
             $icon = $this->iconFactory->getIconForRecord($tableName, $row, IconSize::SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle($tableName, $row))
-                ->setTypeLabel($this->languageService->sL($GLOBALS['TCA'][$tableName]['ctrl']['title']))
+                ->setTypeLabel($this->languageService->sL($schema->getRawConfiguration()['title'] ?? $tableName))
                 ->setIcon($icon)
                 ->setActions(...$actions)
                 ->setExtraData($extraData)
@@ -297,12 +302,15 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
     protected function canAccessTable(string $tableName): bool
     {
-        if (($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'] ?? false)
-            || (
-                !$this->getBackendUser()->check('tables_select', $tableName)
-                && !$this->getBackendUser()->check('tables_modify', $tableName)
-            )
-        ) {
+        if (!$this->tcaSchemaFactory->has($tableName)) {
+            return true;
+        }
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        if ($schema->getRawConfiguration()['hideTable'] ?? false) {
+            return false;
+        }
+        if (!$this->getBackendUser()->check('tables_select', $tableName)
+            && !$this->getBackendUser()->check('tables_modify', $tableName)) {
             return false;
         }
 
@@ -311,7 +319,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
 
     protected function getAccessibleTables(BeforeSearchInDatabaseRecordProviderEvent $event): array
     {
-        return array_filter(array_keys($GLOBALS['TCA']), function (string $tableName) use ($event): bool {
+        return array_filter($this->tcaSchemaFactory->all()->getNames(), function (string $tableName) use ($event): bool {
             return $this->canAccessTable($tableName) && !$event->isTableIgnored($tableName);
         });
     }
@@ -472,11 +480,12 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         $backendUser = $this->getBackendUser();
         $showLink = '';
         $permissionSet = new Permission($this->getBackendUser()->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? []));
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
         // "View" link - Only with proper permissions
         if ($backendUser->isAdmin()
             || (
                 $permissionSet->showPagePermissionIsGranted()
-                && !($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false)
+                && !$pagesSchema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
                 && $backendUser->check('tables_select', 'pages')
             )
         ) {
@@ -499,12 +508,13 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         $editLink = '';
         $permissionSet = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($row['pid'], $this->userPermissions) ?: []));
         // "Edit" link - Only with proper edit permissions
-        if (!($GLOBALS['TCA'][$tableName]['ctrl']['readOnly'] ?? false)
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        if (!$schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
             && (
                 $backendUser->isAdmin()
                 || (
                     $permissionSet->editContentPermissionIsGranted()
-                    && !($GLOBALS['TCA'][$tableName]['ctrl']['adminOnly'] ?? false)
+                    && !$schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
                     && $backendUser->check('tables_modify', $tableName)
                     && $backendUser->recordEditAccessInternals($tableName, $row)
                 )

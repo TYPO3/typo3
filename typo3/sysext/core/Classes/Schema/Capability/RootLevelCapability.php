@@ -59,6 +59,6 @@ final readonly class RootLevelCapability implements SchemaCapabilityInterface
      */
     public function canAccessRecordsOnRootLevel(): bool
     {
-        return $this->ignoreRootLevelRestriction;
+        return !$this->rootLevelType || $this->ignoreRootLevelRestriction;
     }
 }
