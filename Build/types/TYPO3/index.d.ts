@@ -54,7 +54,6 @@ declare namespace TYPO3 {
       export const formName: string;
 
       export const doSaveFieldName: string;
-      export const legacyFieldChangedCb: () => void;
     }
     export namespace FormEngineInline {
       export const config: {
