@@ -2393,13 +2393,15 @@ class DataHandler implements LoggerAwareInterface
     /**
      * Evaluate "json" type values.
      *
-     * @param array|string $value The value to set.
+     * @param array|string|null $value The value to set.
      * @param array $tcaFieldConf Field configuration from TCA
      * @return array The result array. The processed value (if any!) is set in the "value" key.
      */
-    protected function checkValueForJson(array|string $value, array $tcaFieldConf): array
+    protected function checkValueForJson(array|string|null $value, array $tcaFieldConf): array
     {
-        if (is_string($value)) {
+        if ($value === null) {
+            $value = [];
+        } elseif (is_string($value)) {
             if ($value === '') {
                 $value = [];
             } else {
