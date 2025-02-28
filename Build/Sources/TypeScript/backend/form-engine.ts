@@ -214,11 +214,9 @@ export default (function() {
     value: string,
     label: string,
     title: string,
-    exclusiveValues?: string,
-    optionEl?: HTMLOptionElement,
+    exclusiveValues: string[] = [],
+    optionEl: HTMLOptionElement = undefined,
   ): void {
-    exclusiveValues = String(exclusiveValues);
-
     let
       fieldEl,
       $fieldEl,
@@ -261,18 +259,16 @@ export default (function() {
       }
 
       // Clear elements if exclusive values are found
-      if (exclusiveValues) {
+      if (exclusiveValues.length > 0) {
         let reenableOptions = false;
 
-        let m = new RegExp('(^|,)' + value + '($|,)');
         // the new value is exclusive => remove all existing values
-        if (exclusiveValues.match(m)) {
+        if (exclusiveValues.includes(value)) {
           $fieldEl.empty();
           reenableOptions = true;
         } else if ($fieldEl.find('option').length == 1) {
           // there is an old value, and it was exclusive => it has to be removed
-          m = new RegExp('(^|,)' + $fieldEl.find('option').prop('value') + '($|,)');
-          if (exclusiveValues.match(m)) {
+          if (exclusiveValues.includes($fieldEl.find('option').prop('value'))) {
             $fieldEl.empty();
             reenableOptions = true;
           }
@@ -573,7 +569,7 @@ export default (function() {
 
       const label = e.data.label || e.data.value;
       const title = e.data.title || label;
-      const exclusiveValues = e.data.exclusiveValues || '';
+      const exclusiveValues = Utility.trimExplode(',', e.data?.exclusiveValues ?? '');
 
       FormEngine.setSelectOptionFromExternalSource(e.data.fieldName, e.data.value, label, title, exclusiveValues);
     }
