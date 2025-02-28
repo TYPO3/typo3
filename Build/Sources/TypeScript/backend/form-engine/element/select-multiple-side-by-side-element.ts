@@ -16,6 +16,7 @@ import DocumentService from '@typo3/core/document-service';
 import FormEngine from '@typo3/backend/form-engine';
 import SelectBoxFilter from './extra/select-box-filter';
 import RegularEvent from '@typo3/core/event/regular-event';
+import Utility from '@typo3/backend/utility';
 
 class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
   private selectedOptionsElement: HTMLSelectElement = null;
@@ -50,7 +51,7 @@ class SelectMultipleSideBySideElement extends AbstractSortableSelectItems {
   private handleOptionChecked(element: HTMLSelectElement): void {
     const fieldName = element.dataset.relatedfieldname;
     if (fieldName) {
-      const exclusiveValues = element.dataset.exclusivevalues;
+      const exclusiveValues = Utility.trimExplode(',', element.dataset?.exclusivevalues ?? '');
       const selectedOptions = element.querySelectorAll('option:checked'); // Yep, :checked finds selected options
       if (selectedOptions.length > 0) {
         selectedOptions.forEach((optionElement: HTMLOptionElement): void => {
