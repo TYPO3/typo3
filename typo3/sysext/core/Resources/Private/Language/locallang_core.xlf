@@ -986,6 +986,9 @@ Do you want to refresh it now?</source>
 			<trans-unit id="labels.recordDuplicated">
 				<source>The record has been duplicated.</source>
 			</trans-unit>
+			<trans-unit id="labels.recordDuplicationFailed">
+				<source>The record could not be duplicated.</source>
+			</trans-unit>
 			<trans-unit id="rm.closeDoc">
 				<source>Close</source>
 			</trans-unit>

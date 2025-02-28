@@ -783,22 +783,30 @@ class EditDocumentController
 
             $duplicateTce->start([], $duplicateCmd);
             $duplicateTce->process_cmdmap();
-
             $duplicateMappingArray = $duplicateTce->copyMappingArray;
-            $duplicateUid = $duplicateMappingArray[$nTable][$nUid];
 
-            if ($nTable === 'pages') {
-                BackendUtility::setUpdateSignal('updatePageTree');
+            if (isset($duplicateMappingArray[$nTable][$nUid])) {
+                $duplicateUid = $duplicateMappingArray[$nTable][$nUid];
+                if ($nTable === 'pages') {
+                    BackendUtility::setUpdateSignal('updatePageTree');
+                }
+
+                $this->editconf[$nTable][$duplicateUid] = 'edit';
+                // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
+                $this->R_URL_getvars['edit'] = $this->editconf;
+                // Recompile the store* values since editconf changed...
+                $this->compileStoreData($request);
+
+                // Inform the user of the duplication
+                $view->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'));
+            } else {
+                // Inform the user about the failed duplication
+                $view->addFlashMessage(
+                    $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicationFailed'),
+                    '',
+                    ContextualFeedbackSeverity::ERROR
+                );
             }
-
-            $this->editconf[$nTable][$duplicateUid] = 'edit';
-            // Finally, set the editconf array in the "getvars" so they will be passed along in URLs as needed.
-            $this->R_URL_getvars['edit'] = $this->editconf;
-            // Recompile the store* values since editconf changed...
-            $this->compileStoreData($request);
-
-            // Inform the user of the duplication
-            $view->addFlashMessage($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.recordDuplicated'));
         }
 
         if ($this->closeDoc < self::DOCUMENT_CLOSE_MODE_DEFAULT
