@@ -132,7 +132,6 @@ final class TableListViewHelper extends AbstractBackendViewHelper
         $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/action-dispatcher.js');
         if ($enableControlPanels === true) {
             $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/multi-record-selection.js');
-            $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/multi-record-selection-edit-action.js');
             $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/multi-record-selection-delete-action.js');
             $this->getPageRenderer()->loadJavaScriptModule('@typo3/backend/context-menu.js');
         }
