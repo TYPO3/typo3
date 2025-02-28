@@ -1138,6 +1138,10 @@ final class DataHandlerTest extends UnitTestCase
             '',
             ['value' => []],
         ];
+        yield 'Converts null to array' => [
+            null,
+            ['value' => []],
+        ];
         yield 'Handles invalid JSON' => [
             '_-invalid-_',
             [],
@@ -1154,7 +1158,7 @@ final class DataHandlerTest extends UnitTestCase
 
     #[DataProvider('checkValueForJsonDataProvider')]
     #[Test]
-    public function checkValueForJson(string|array $input, array $expected): void
+    public function checkValueForJson(string|array|null $input, array $expected): void
     {
         self::assertSame(
             $expected,
