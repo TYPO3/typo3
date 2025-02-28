@@ -1933,174 +1933,184 @@ class EditDocumentController
         $backendUser = $this->getBackendUser();
         $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
+
         // Table editable and activated for languages?
-        if ($backendUser->check('tables_modify', $table)
-            && $languageField
-            && $transOrigPointerField
+        if (!$languageField
+            || !$transOrigPointerField
+            || !$backendUser->check('tables_modify', $table)
         ) {
-            if ($pid === null) {
-                $row = BackendUtility::getRecord($table, $uid, 'pid');
-                $pid = $row['pid'];
+            return;
+        }
+
+        if ($pid === null) {
+            $row = BackendUtility::getRecord($table, $uid, 'pid');
+            $pid = $row['pid'];
+        }
+        // Get all available languages for the page
+        // If editing a page, the translations of the current UID need to be fetched
+        if ($table === 'pages') {
+            $row = BackendUtility::getRecord($table, $uid, $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']);
+            // Ensure the check is always done against the default language page
+            $availableLanguages = $this->getLanguages(
+                (int)$row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid,
+                $table
+            );
+        } else {
+            $availableLanguages = $this->getLanguages((int)$pid, $table);
+        }
+        // Remove default language, if user does not have access. This is necessary, since
+        // the default language is always added when fetching the system languages (#88504).
+        if (isset($availableLanguages[0]) && !$this->getBackendUser()->checkLanguageAccess(0)) {
+            unset($availableLanguages[0]);
+        }
+        // Page available in other languages than default language?
+        if (count($availableLanguages) > 1) {
+            $rowsByLang = [];
+            $fetchFields = 'uid,' . $languageField . ',' . $transOrigPointerField;
+            // Get record in current language
+            $rowCurrent = BackendUtility::getLiveVersionOfRecord($table, $uid, $fetchFields);
+            if (!is_array($rowCurrent)) {
+                $rowCurrent = BackendUtility::getRecord($table, $uid, $fetchFields);
             }
-            // Get all available languages for the page
-            // If editing a page, the translations of the current UID need to be fetched
-            if ($table === 'pages') {
-                $row = BackendUtility::getRecord($table, $uid, $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']);
-                // Ensure the check is always done against the default language page
-                $availableLanguages = $this->getLanguages(
-                    (int)$row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid,
-                    $table
-                );
-            } else {
-                $availableLanguages = $this->getLanguages((int)$pid, $table);
-            }
-            // Remove default language, if user does not have access. This is necessary, since
-            // the default language is always added when fetching the system languages (#88504).
-            if (isset($availableLanguages[0]) && !$this->getBackendUser()->checkLanguageAccess(0)) {
-                unset($availableLanguages[0]);
-            }
-            // Page available in other languages than default language?
-            if (count($availableLanguages) > 1) {
-                $rowsByLang = [];
-                $fetchFields = 'uid,' . $languageField . ',' . $transOrigPointerField;
-                // Get record in current language
-                $rowCurrent = BackendUtility::getLiveVersionOfRecord($table, $uid, $fetchFields);
-                if (!is_array($rowCurrent)) {
-                    $rowCurrent = BackendUtility::getRecord($table, $uid, $fetchFields);
-                }
-                $currentLanguage = (int)$rowCurrent[$languageField];
-                // Disabled for records with [all] language!
-                if ($currentLanguage > -1) {
-                    // Get record in default language if needed
-                    if ($currentLanguage && $rowCurrent[$transOrigPointerField]) {
-                        $rowsByLang[0] = BackendUtility::getLiveVersionOfRecord(
+            $currentLanguage = (int)$rowCurrent[$languageField];
+            // Disabled for records with [all] language!
+            if ($currentLanguage > -1) {
+                // Get record in default language if needed
+                if ($currentLanguage && $rowCurrent[$transOrigPointerField]) {
+                    $rowsByLang[0] = BackendUtility::getLiveVersionOfRecord(
+                        $table,
+                        $rowCurrent[$transOrigPointerField],
+                        $fetchFields
+                    );
+                    if (!is_array($rowsByLang[0])) {
+                        $rowsByLang[0] = BackendUtility::getRecord(
                             $table,
                             $rowCurrent[$transOrigPointerField],
                             $fetchFields
                         );
-                        if (!is_array($rowsByLang[0])) {
-                            $rowsByLang[0] = BackendUtility::getRecord(
-                                $table,
-                                $rowCurrent[$transOrigPointerField],
-                                $fetchFields
+                    }
+                } else {
+                    $rowsByLang[$rowCurrent[$languageField]] = $rowCurrent;
+                }
+                // List of language id's that should not be added to the selector
+                $noAddOption = [];
+                if ($rowCurrent[$transOrigPointerField] || $currentLanguage === 0) {
+                    // Get record in other languages to see what's already available
+                    $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+                    $queryBuilder->getRestrictions()
+                        ->removeAll()
+                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                        ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
+                    $result = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fetchFields, true))
+                        ->from($table)
+                        ->where(
+                            $queryBuilder->expr()->eq(
+                                'pid',
+                                $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->gt(
+                                $languageField,
+                                $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                            ),
+                            $queryBuilder->expr()->eq(
+                                $transOrigPointerField,
+                                $queryBuilder->createNamedParameter($rowsByLang[0]['uid'], Connection::PARAM_INT)
+                            )
+                        )
+                        ->executeQuery();
+                    while ($row = $result->fetchAssociative()) {
+                        if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+                            $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $table, $row['uid'], 'uid,t3ver_state');
+                            if (!empty($workspaceVersion)) {
+                                $versionState = VersionState::tryFrom($workspaceVersion['t3ver_state'] ?? 0);
+                                if ($versionState === VersionState::DELETE_PLACEHOLDER) {
+                                    // If a workspace delete placeholder exists for this translation: Mark
+                                    // this language as "don't add to selector" and continue with next row,
+                                    // otherwise an edit link to a delete placeholder would be created, which
+                                    // does not make sense.
+                                    $noAddOption[] = (int)$row[$languageField];
+                                    continue;
+                                }
+                            }
+                        }
+                        $rowsByLang[$row[$languageField]] = $row;
+                    }
+                }
+                $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
+                $languageMenu->setIdentifier('_langSelector');
+                $languageMenu->setLabel(
+                    $this->getLanguageService()->sL(
+                        'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:editdocument.moduleMenu.dropdown.label'
+                    )
+                );
+                foreach ($availableLanguages as $languageId => $language) {
+                    $selectorOptionLabel = $language['title'];
+                    // Create url for creating a localized record
+                    $addOption = true;
+                    $href = '';
+                    if (!isset($rowsByLang[$languageId])) {
+                        // Translation in this language does not exist
+                        if ($this->columnsOnly[$table] ?? false) {
+                            // Don't add option since we are in a view with just a subset of fields, those views
+                            // are specific editing fields only views and are not meant for translation handling.
+                            $addOption = false;
+                        } elseif (!isset($rowsByLang[0]['uid'])) {
+                            // Don't add option since no default row to localize from exists
+                            // TODO: Actually tt_content is able to localize from another l10n_source then L=0.
+                            //       This however is currently only possible via the translation wizard.
+                            $addOption = false;
+                        } else {
+                            // Build the link to add the localization
+                            $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
+                            $href = (string)$this->uriBuilder->buildUriFromRoute(
+                                'tce_db',
+                                [
+                                    'cmd' => [
+                                        $table => [
+                                            $rowsByLang[0]['uid'] => [
+                                                'localize' => $languageId,
+                                            ],
+                                        ],
+                                    ],
+                                    'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
+                                        'record_edit',
+                                        [
+                                            'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
+                                            'returnUrl' => $this->retUrl,
+                                        ]
+                                    ),
+                                ]
                             );
                         }
                     } else {
-                        $rowsByLang[$rowCurrent[$languageField]] = $rowCurrent;
-                    }
-                    // List of language id's that should not be added to the selector
-                    $noAddOption = [];
-                    if ($rowCurrent[$transOrigPointerField] || $currentLanguage === 0) {
-                        // Get record in other languages to see what's already available
-                        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-                        $queryBuilder->getRestrictions()
-                            ->removeAll()
-                            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $backendUser->workspace));
-                        $result = $queryBuilder->select(...GeneralUtility::trimExplode(',', $fetchFields, true))
-                            ->from($table)
-                            ->where(
-                                $queryBuilder->expr()->eq(
-                                    'pid',
-                                    $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
-                                ),
-                                $queryBuilder->expr()->gt(
-                                    $languageField,
-                                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                                ),
-                                $queryBuilder->expr()->eq(
-                                    $transOrigPointerField,
-                                    $queryBuilder->createNamedParameter($rowsByLang[0]['uid'], Connection::PARAM_INT)
-                                )
-                            )
-                            ->executeQuery();
-                        while ($row = $result->fetchAssociative()) {
-                            if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
-                                $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $table, $row['uid'], 'uid,t3ver_state');
-                                if (!empty($workspaceVersion)) {
-                                    $versionState = VersionState::tryFrom($workspaceVersion['t3ver_state'] ?? 0);
-                                    if ($versionState === VersionState::DELETE_PLACEHOLDER) {
-                                        // If a workspace delete placeholder exists for this translation: Mark
-                                        // this language as "don't add to selector" and continue with next row,
-                                        // otherwise an edit link to a delete placeholder would be created, which
-                                        // does not make sense.
-                                        $noAddOption[] = (int)$row[$languageField];
-                                        continue;
-                                    }
-                                }
-                            }
-                            $rowsByLang[$row[$languageField]] = $row;
+                        $params = [
+                            'edit[' . $table . '][' . $rowsByLang[$languageId]['uid'] . ']' => 'edit',
+                            'returnUrl' => $this->retUrl,
+                        ];
+                        if ($this->columnsOnly[$table] ?? false) {
+                            $params['columnsOnly'] = [$table => $this->columnsOnly[$table]];
                         }
-                    }
-                    $languageMenu = $view->getDocHeaderComponent()->getMenuRegistry()->makeMenu();
-                    $languageMenu->setIdentifier('_langSelector');
-                    $languageMenu->setLabel(
-                        $this->getLanguageService()->sL(
-                            'LLL:EXT:backend/Resources/Private/Language/locallang.xlf:editdocument.moduleMenu.dropdown.label'
-                        )
-                    );
-                    foreach ($availableLanguages as $languageId => $language) {
-                        $selectorOptionLabel = $language['title'];
-                        // Create url for creating a localized record
-                        $addOption = true;
-                        $href = '';
-                        if (!isset($rowsByLang[$languageId])) {
-                            // Translation in this language does not exist
-                            if (!isset($rowsByLang[0]['uid'])) {
-                                // Don't add option since no default row to localize from exists
-                                // TODO: Actually tt_content is able to localize from another l10n_source then L=0.
-                                //       This however is currently only possible via the translation wizard.
-                                $addOption = false;
-                            } else {
-                                // Build the link to add the localization
-                                $selectorOptionLabel .= ' [' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.new')) . ']';
-                                $href = (string)$this->uriBuilder->buildUriFromRoute(
-                                    'tce_db',
-                                    [
-                                        'cmd' => [
-                                            $table => [
-                                                $rowsByLang[0]['uid'] => [
-                                                    'localize' => $languageId,
-                                                ],
-                                            ],
-                                        ],
-                                        'redirect' => (string)$this->uriBuilder->buildUriFromRoute(
-                                            'record_edit',
-                                            [
-                                                'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
-                                                'returnUrl' => $this->retUrl,
-                                            ]
-                                        ),
-                                    ]
-                                );
-                            }
-                        } else {
-                            $params = [
-                                'edit[' . $table . '][' . $rowsByLang[$languageId]['uid'] . ']' => 'edit',
-                                'returnUrl' => $this->retUrl,
+                        if ($table === 'pages') {
+                            // Disallow manual adjustment of the language field for pages
+                            $params['overrideVals'] = [
+                                'pages' => [
+                                    'sys_language_uid' => $languageId,
+                                ],
                             ];
-                            if ($table === 'pages') {
-                                // Disallow manual adjustment of the language field for pages
-                                $params['overrideVals'] = [
-                                    'pages' => [
-                                        'sys_language_uid' => $languageId,
-                                    ],
-                                ];
-                            }
-                            $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                         }
-                        if ($addOption && !in_array($languageId, $noAddOption, true)) {
-                            $menuItem = $languageMenu->makeMenuItem()
-                                ->setTitle($selectorOptionLabel)
-                                ->setHref($href);
-                            if ($languageId === $currentLanguage) {
-                                $menuItem->setActive(true);
-                            }
-                            $languageMenu->addMenuItem($menuItem);
-                        }
+                        $href = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);
                     }
-                    $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
+                    if ($addOption && !in_array($languageId, $noAddOption, true)) {
+                        $menuItem = $languageMenu->makeMenuItem()
+                            ->setTitle($selectorOptionLabel)
+                            ->setHref($href);
+                        if ($languageId === $currentLanguage) {
+                            $menuItem->setActive(true);
+                        }
+                        $languageMenu->addMenuItem($menuItem);
+                    }
                 }
+                $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($languageMenu);
             }
         }
     }
