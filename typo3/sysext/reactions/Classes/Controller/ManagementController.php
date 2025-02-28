@@ -58,7 +58,7 @@ class ManagementController
         $this->registerDocHeaderButtons($view, $request->getAttribute('normalizedParams')->getRequestUri(), $demand);
 
         $reactionRecords = $this->reactionRepository->getReactionRecords($demand);
-        $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $this->reactionRepository->countAll());
+        $paginator = new DemandedArrayPaginator($reactionRecords, $demand->getPage(), $demand->getLimit(), $this->reactionRepository->countAll($demand));
         $pagination = new SimplePagination($paginator);
 
         $requestUri = $request->getAttribute('normalizedParams')->getRequestUri();
@@ -69,7 +69,6 @@ class ManagementController
             'reactionTypes' => iterator_to_array($this->reactionRegistry->getAvailableReactionTypes()),
             'paginator' => $paginator,
             'pagination' => $pagination,
-            'reactionRecords' => $reactionRecords,
             'actions' => [
                 new Action(
                     'edit',

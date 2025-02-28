@@ -60,9 +60,10 @@ class WebhookRepository
         return $data;
     }
 
-    public function countAll(): int
+    public function countAll(?WebhookDemand $demand = null): int
     {
-        return (int)$this->getQueryBuilder(false)
+        $qb = $demand !== null ? $this->getQueryBuilderForDemand($demand) : $this->getQueryBuilder();
+        return (int)$qb
             ->count('*')
             ->executeQuery()
             ->fetchOne();
