@@ -2,21 +2,6 @@
 
 defined('TYPO3') or die();
 
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addTCAcolumns(
-    'tt_content',
-    [
-        'records' => [
-            'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:records',
-            'config' => [
-                'type' => 'group',
-                'allowed' => 'tt_content',
-                'size' => 5,
-                'maxitems' => 200,
-            ],
-        ],
-    ]
-);
-
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addRecordType(
     [
         'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:CType.shortcut',
