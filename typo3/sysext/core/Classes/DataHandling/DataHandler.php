@@ -1794,6 +1794,13 @@ class DataHandler
             $value = $newHashInstance->getHashedPassword($value);
         }
 
+        if (!($tcaFieldConf['nullable'] ?? false) && $value === null) {
+            // type=password columns are by default NOT NULL-able.
+            // In this case, an invalid password needs to be an empty string to not throw an SQL error
+            // on a potential optional password.
+            $value = '';
+        }
+
         return [
             'value' => $value,
         ];
