@@ -13,10 +13,10 @@
 				<source>Site identifier</source>
 			</trans-unit>
 			<trans-unit id="overview.noPages.title">
-				<source>No pages found!</source>
+				<source>No Root Pages Available</source>
 			</trans-unit>
 			<trans-unit id="overview.noPages.message">
-				<source>Please add at least one page through the Page module.</source>
+				<source>Please create at least one root page in the Page module. A root page must be a content page at the top level (not a folder or separator) or have the "Root Page" flag enabled (Page Properties → Behavior tab).</source>
 			</trans-unit>
 			<trans-unit id="overview.noSiteConfiguration">
 				<source>This site does not have a configuration, yet.</source>
