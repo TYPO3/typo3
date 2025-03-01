@@ -75,11 +75,19 @@ readonly class YamlFileLoader
     {
         $sanitizedFileName = $this->getStreamlinedFileName($fileName, $currentFileName);
         $content = $this->getFileContents($sanitizedFileName);
-        $content = Yaml::parse($content);
+        try {
+            $content = Yaml::parse($content);
+        } catch (ParseException $e) {
+            throw new YamlParseException(
+                'YAML file "' . $fileName . '" has syntax errors: ' . $e->getMessage(),
+                1740817000,
+                $e
+            );
+        }
 
         if (!is_array($content)) {
             throw new YamlParseException(
-                'YAML file "' . $fileName . '" could not be parsed into valid syntax, probably empty?',
+                'YAML file "' . $fileName . '" does not contain data.',
                 1497332874
             );
         }
