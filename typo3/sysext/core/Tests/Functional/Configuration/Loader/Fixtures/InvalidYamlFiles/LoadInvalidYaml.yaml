@@ -1,0 +1,16 @@
+base: /home/
+dependencies:
+  - my-vendor/my-site-package
+languages:
+  -
+    title: 'English
+    enabled: true
+    locale: en_US.UTF-8
+    hreflang: en-us
+    base: /
+    websiteTitle: ''
+    navigationTitle: English
+    flag: us
+    languageId: 0
+rootPageId: 1
+websiteTitle: ''

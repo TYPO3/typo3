@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use TYPO3\CMS\Core\Configuration\Loader\Exception\YamlParseException;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -44,6 +45,30 @@ final class YamlFileLoaderTest extends FunctionalTestCase
         ];
         $output = (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
         self::assertSame($expected, $output);
+    }
+
+    /**
+     * Check that an invalid YAML files triggers a YamlParseException
+     */
+    #[Test]
+    public function loadEmptyYaml(): void
+    {
+        self::expectException(YamlParseException::class);
+        $this->expectExceptionCode(1497332874);
+        $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/InvalidYamlFiles/LoadEmptyYaml.yaml';
+        (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
+    }
+
+    /**
+     * Check that an invalid YAML files triggers a YamlParseException
+     */
+    #[Test]
+    public function loadInvalidYaml(): void
+    {
+        self::expectException(YamlParseException::class);
+        $this->expectExceptionCode(1740817000);
+        $fileName = 'EXT:core/Tests/Functional/Configuration/Loader/Fixtures/InvalidYamlFiles/LoadInvalidYaml.yaml';
+        (new YamlFileLoader($this->createMock(LoggerInterface::class)))->load($fileName);
     }
 
     /**
