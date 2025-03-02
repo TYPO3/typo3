@@ -142,9 +142,6 @@ class LoginController extends ActionController
      */
     public function logoutAction(int $redirectPageLogout = 0): ResponseInterface
     {
-        if (($redirectResponse = $this->handleRedirect()) !== null) {
-            return $redirectResponse;
-        }
         $this->view->assignMultiple(
             [
                 'user' => $this->request->getAttribute('frontend.user')->user,
