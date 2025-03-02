@@ -1,0 +1,4 @@
+"be_groups"
+,"uid","pid","deleted","hidden","title","groupMods"
+,1,0,0,0,"Editor","dashboard,web_layout,page_preview,web_list,media_management,user_setup"
+,2,0,0,0,"Advanced Editor","dashboard,web_layout,page_preview,web_list,web_FormFormbuilder,web_info,web_info_overview,web_info_translations,media_management,site_redirects,user_setup,system_log"
