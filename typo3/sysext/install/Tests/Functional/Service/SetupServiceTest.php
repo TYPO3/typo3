@@ -28,20 +28,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class SetupServiceTest extends FunctionalTestCase
 {
-    protected array $coreExtensionsToLoad = ['install'];
-
-    #[Test]
-    public function createBackendUserGroupsCreatesGroups(): void
-    {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
-        $subject->createBackendUserGroups();
-        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommand.csv');
-    }
+    protected array $coreExtensionsToLoad = ['install', 'dashboard'];
 
     #[Test]
     public function multipleCreateBackendUserGroupsCreatesGroupsOnce(): void
@@ -54,7 +41,7 @@ final class SetupServiceTest extends FunctionalTestCase
         );
         $subject->createBackendUserGroups();
         $subject->createBackendUserGroups();
-        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommand.csv');
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandTwice.csv');
     }
 
     #[Test]
@@ -69,5 +56,96 @@ final class SetupServiceTest extends FunctionalTestCase
         $subject->createBackendUserGroups();
         $subject->createBackendUserGroups(true, true, true);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/ForcedCreateUserGroupsCommand.csv');
+    }
+
+    #[Test]
+    public function createEditorOnlyCreatesEditor(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups(true, false);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsOnlyEditorCommand.csv');
+    }
+
+    #[Test]
+    public function createAdvancedEditorOnlyCreatesAdvancedEditor(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups(false);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsOnlyAdvancedEditorCommand.csv');
+    }
+
+    #[Test]
+    public function createBackendUserGroupsCreatesGroupsWithCasualFields(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommand.csv');
+    }
+
+    #[Test]
+    public function createBackendUserGroupsCreatesGroupsWithTablePermissions(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandTablePermissions.csv');
+    }
+
+    #[Test]
+    public function createBackendUserGroupsCreatesGroupsWithModules(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandModules.csv');
+    }
+
+    #[Test]
+    public function createBackendUserGroupsCreatesGroupsWithAllowedContentElements(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandAllowedContentElements.csv');
+    }
+
+    #[Test]
+    public function createBackendUserGroupsCreatesGroupsWithNonExcludeFields(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandNonExcludeFields.csv');
     }
 }

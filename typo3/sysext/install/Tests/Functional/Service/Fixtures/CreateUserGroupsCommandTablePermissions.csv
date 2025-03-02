@@ -1,0 +1,4 @@
+"be_groups"
+,"uid","pid","deleted","hidden","title","tables_select","tables_modify"
+,1,0,0,0,"Editor","pages,sys_file,sys_file_collection,sys_file_metadata,sys_file_reference,sys_file_storage,backend_layout,tt_content,sys_note","pages,sys_file,sys_file_collection,sys_file_metadata,sys_file_reference,sys_file_storage,backend_layout,tt_content,sys_note"
+,2,0,0,0,"Advanced Editor","pages,sys_category,sys_file,sys_file_collection,sys_file_metadata,sys_file_reference,sys_file_storage,backend_layout,fe_groups,fe_users,tt_content,tx_impexp_presets,sys_redirect,sys_note","pages,sys_category,sys_file,sys_file_collection,sys_file_metadata,sys_file_reference,sys_file_storage,backend_layout,fe_groups,fe_users,tt_content,tx_impexp_presets,sys_redirect,sys_note"
