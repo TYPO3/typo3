@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Redirects\Hooks;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Redirects\RedirectUpdate\SlugRedirectChangeItem;
@@ -50,16 +51,14 @@ class DataHandlerSlugUpdateHook
      */
     public function processDatamap_preProcessFieldArray(array $incomingFieldArray, string $table, $id, DataHandler $dataHandler): void
     {
-        if (
-            $table !== 'pages'
+        if ($table !== 'pages'
             || empty($incomingFieldArray['slug'])
             || $this->isNestedHookInvocation($dataHandler)
             || !MathUtility::canBeInterpretedAsInteger($id)
-            || !$dataHandler->checkRecordUpdateAccess($table, $id)
+            || !$dataHandler->hasPermissionToUpdate('pages', BackendUtility::getRecord('pages', (int)$id) ?? [])
         ) {
             return;
         }
-
         $changeItem = $this->slugRedirectChangeItemFactory->create((int)$id);
         if ($changeItem === null) {
             return;

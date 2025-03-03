@@ -233,7 +233,13 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed: {reason}', null, ['reason' => $errorCode]);
             return;
         }
-        if (!$dataHandler->checkRecordUpdateAccess($table, $id)) {
+        $pageRecord = [];
+        if ($table === 'pages') {
+            $pageRecord = $record;
+        } elseif ((int)$record['pid'] > 0) {
+            $pageRecord = BackendUtility::getRecord('pages', $record['pid']) ?? [];
+        }
+        if (!$dataHandler->hasPermissionToUpdate($table, $pageRecord)) {
             $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to set stage for record failed because you do not have edit access');
             return;
         }
@@ -269,7 +275,7 @@ class DataHandlerHook
      *
      * @param string $table Table name
      * @param int $id UID of the online record to swap
-     * @param int $swapWith UID of the archived version to swap with!
+     * @param int $swapWith UID of the workspace version to swap with!
      * @param DataHandler $dataHandler DataHandler object
      * @param string $comment Notification comment
      * @param array $notificationAlternativeRecipients comma separated list of recipients to notify instead of normal be_users
@@ -280,17 +286,26 @@ class DataHandlerHook
             // Skip already deleted records
             return;
         }
-        if (!$dataHandler->checkRecordUpdateAccess($table, $id)) {
+        // Currently live version, contents will be removed.
+        $curVersion = BackendUtility::getRecord($table, $id);
+        $pageRecord = [];
+        if ($table === 'pages') {
+            $pageRecord = $curVersion;
+        } elseif ((int)$curVersion['pid'] > 0) {
+            $pageRecord = BackendUtility::getRecord('pages', $curVersion['pid']) ?? [];
+        }
+        if (!$dataHandler->hasPermissionToUpdate($table, $pageRecord)) {
             // Return early if online record editing is denied
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'Error: You cannot swap versions for record {table}:{uid} you do not have access to edit', null, ['table' => $table, 'uid' => $id]);
             return;
         }
-        // Select the two versions:
-        // Currently live version, contents will be removed.
-        $curVersion = BackendUtility::getRecord($table, $id);
         // Versioned records which contents will be moved into $curVersion
         $isNewRecord = VersionState::tryFrom($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
         if ($isNewRecord && is_array($curVersion)) {
+            if (!$dataHandler->hasPagePermission(Permission::PAGE_SHOW, $pageRecord)) {
+                $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
+                return;
+            }
             // @todo: This early return is odd. It means version_swap_processFields() and versionPublishManyToManyRelations()
             //        below are not called for new records to be published. This is "fine" for mm since mm tables have no
             //        t3ver_wsid and need no publish as such. For inline relation publishing, this is indirectly resolved by the
@@ -316,8 +331,14 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', null, ['workspace' => $workspaceId]);
             return;
         }
-        if ($dataHandler->recordInfoWithPermissionCheck($table, $swapWith, Permission::PAGE_SHOW) === false
-            || !$dataHandler->checkRecordUpdateAccess($table, $swapWith)
+        $workspaceSwapPageRecord = [];
+        if ($table === 'pages') {
+            $workspaceSwapPageRecord = $swapVersion;
+        } elseif ((int)$swapVersion['pid'] > 0) {
+            $workspaceSwapPageRecord = BackendUtility::getRecord('pages', $swapVersion['pid']) ?? [];
+        }
+        if (!$dataHandler->hasPagePermission(Permission::PAGE_SHOW, $workspaceSwapPageRecord)
+            || !$dataHandler->hasPermissionToUpdate($table, $workspaceSwapPageRecord)
         ) {
             $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
             return;
@@ -581,40 +602,26 @@ class DataHandlerHook
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'Records in workspace #{workspace} can only be published when in "Publish" stage', null, ['workspace' => $workspaceId]);
             return;
         }
-        if ($dataHandler->recordInfoWithPermissionCheck($table, $id, Permission::PAGE_SHOW) === false
-            || !$dataHandler->checkRecordUpdateAccess($table, $id)
-        ) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
-            return;
-        }
-
         // Modify versioned record to become online
-        $updatedFields = [
-            't3ver_oid' => 0,
-            't3ver_wsid' => 0,
-            't3ver_stage' => 0,
-            't3ver_state' => VersionState::DEFAULT_STATE->value,
-        ];
-
-        try {
-            $this->connectionPool->getConnectionForTable($table)->update(
-                $table,
-                $updatedFields,
-                [
-                    'uid' => $id,
-                ],
-                [
-                    Connection::PARAM_INT,
-                    Connection::PARAM_INT,
-                    Connection::PARAM_INT,
-                    Connection::PARAM_INT,
-                    Connection::PARAM_INT,
-                ]
-            );
-        } catch (DBALException $e) {
-            $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::SYSTEM_ERROR, 'During Publishing: SQL errors happened: {reason}', null, ['reason' => $e->getMessage()]);
-        }
-
+        $this->connectionPool->getConnectionForTable($table)->update(
+            $table,
+            [
+                't3ver_oid' => 0,
+                't3ver_wsid' => 0,
+                't3ver_stage' => 0,
+                't3ver_state' => VersionState::DEFAULT_STATE->value,
+            ],
+            [
+                'uid' => $id,
+            ],
+            [
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+                Connection::PARAM_INT,
+            ]
+        );
         $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
 
         $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was published.', null, ['table' => $table, 'uid' => $id], (int)$newRecordInWorkspace['pid']);
