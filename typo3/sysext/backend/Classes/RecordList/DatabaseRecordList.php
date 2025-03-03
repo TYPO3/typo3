@@ -694,7 +694,7 @@ class DatabaseRecordList
         // Header line is drawn
         $theData = [];
         if ($this->disableSingleTableView) {
-            $theData[$titleCol] = $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
+            $theData[$titleCol] = $tableTitle . ' (<span>' . $totalItems . '</span>)';
         } else {
             $icon = $this->table // @todo separate table header from contract/expand link
                 ? $this->iconFactory
@@ -705,7 +705,7 @@ class DatabaseRecordList
                     ->getIcon('actions-view-table-expand', IconSize::SMALL)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:expandView'))
                     ->render();
-            $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
+            $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span>' . $totalItems . '</span>) ' . $icon);
         }
         $tableActions = '';
         $tableHeader = $theData[$titleCol];
@@ -1857,16 +1857,27 @@ class DatabaseRecordList
 
                 $deleteActionAttributes = GeneralUtility::implodeAttributes([
                     'type' => 'button',
-                    'class' => 'btn btn-default t3js-record-delete',
+                    'class' => 'btn btn-default t3js-modal-trigger',
                     'title' => $linkTitle,
+                    'data-severity' => 'warning',
                     'aria-label' => $linkTitle,
                     'aria-haspopup' => 'dialog',
                     'data-button-ok-text' => $linkTitle,
                     'data-button-close-text' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:cancel'),
-                    'data-message' => $warningText,
+                    'data-bs-content' => $warningText,
+                    'data-uri' => (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
+                        'cmd' => [
+                            $table => [
+                                $row['uid'] => [
+                                    'delete' => true,
+                                ],
+                            ],
+                        ],
+                        'redirect' => $this->listURL(),
+                    ]),
                     'data-title' => $titleText,
                 ], true, true);
-                $deleteAction = '<button ' . $deleteActionAttributes . '>' . $icon . '</button>';
+                $deleteAction = '<button ' . $deleteActionAttributes . '>' . $icon . '</a>';
             } else {
                 $deleteAction = $this->spaceIcon;
             }
