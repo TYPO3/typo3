@@ -1451,7 +1451,7 @@ class PageRepository implements LoggerAwareInterface
      *
      * @param string $table Table name found in the $GLOBALS['TCA'] array
      * @param array $enableFieldsToIgnore Array where values (or keys) can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
-     * @return CompositeExpression[] Constraints built up by the enableField controls
+     * @return array<string, CompositeExpression|string> Constraints built up by the enableField controls
      */
     public function getDefaultConstraints(string $table, array $enableFieldsToIgnore = [], ?string $tableAlias = null): array
     {
