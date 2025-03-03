@@ -1,4 +1,4 @@
 "be_groups"
 ,"uid","pid","deleted","hidden","title","db_mountpoints","file_mountpoints","availableWidgets"
-,1,0,0,0,"Editor",1,"","seo-pagesWithoutMetaDescription"
-,2,0,0,0,"Advanced Editor",1,"","seo-pagesWithoutMetaDescription"
+,1,0,0,0,"Editor",1,1,"seo-pagesWithoutMetaDescription"
+,2,0,0,0,"Advanced Editor",1,1,"seo-pagesWithoutMetaDescription"

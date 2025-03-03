@@ -1,6 +1,8 @@
 description: All permissions required to be the Editor role.
 dbMountpoints:
   - 1
+fileMountpoints:
+  - "1:/user_upload/"
 groupMods:
   - dashboard
   - web_layout

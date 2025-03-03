@@ -148,4 +148,17 @@ final class SetupServiceTest extends FunctionalTestCase
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandNonExcludeFields.csv');
     }
+
+    #[Test]
+    public function createBackendUserGroupsCreatesFileMount(): void
+    {
+        $subject = new SetupService(
+            $this->get(ConfigurationManager::class),
+            $this->get(SiteWriter::class),
+            $this->get(YamlFileLoader::class),
+            new FailsafePackageManager(new DependencyOrderingService())
+        );
+        $subject->createBackendUserGroups();
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandFileMount.csv');
+    }
 }

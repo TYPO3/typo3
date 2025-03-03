@@ -256,6 +256,7 @@ For each website you need a TypoScript record on the main page of your website (
     {
         $messages = [];
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $this->createFileMount('1:/user_upload/', 'User Upload');
         if ($createEditor) {
             if (!$force && $this->countBackendGroupsByTitle($connectionPool, BackendUserGroupType::EDITOR->value) > 0) {
                 $messages[] = sprintf('Group "%s" could not be created. A backend user group of that name already exists and option --force was not set. ', BackendUserGroupType::EDITOR->value);
@@ -300,6 +301,16 @@ For each website you need a TypoScript record on the main page of your website (
         $mappedPermissions = [];
         if (isset($permissionPreset['dbMountpoints']) && is_array($permissionPreset['dbMountpoints'])) {
             $mappedPermissions['db_mountpoints'] = implode(',', $permissionPreset['dbMountpoints']);
+        }
+        if (isset($permissionPreset['fileMountpoints']) && is_array($permissionPreset['fileMountpoints'])) {
+            $fileMountIds = [];
+            foreach ($permissionPreset['fileMountpoints'] as $fileMountpoint) {
+                $fileMountpointId = $this->getFileMount($fileMountpoint);
+                if ($fileMountpointId > 0) {
+                    $fileMountIds[] = $fileMountpointId;
+                }
+            }
+            $mappedPermissions['file_mountpoints'] = implode(',', $fileMountIds);
         }
         if (isset($permissionPreset['groupMods']) && is_array($permissionPreset['groupMods'])) {
             $mappedPermissions['groupMods'] = implode(',', $permissionPreset['groupMods']);
@@ -369,5 +380,41 @@ For each website you need a TypoScript record on the main page of your website (
             ->where(
                 $queryBuilder->expr()->eq('title', $queryBuilder->createNamedParameter($title))
             )->executeQuery()->fetchOne();
+    }
+
+    private function createFileMount(string $identifier, string $title): int
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
+        $row = $queryBuilder->select('uid')
+            ->from('sys_filemounts')
+            ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier)))
+            ->executeQuery()
+            ->fetchAssociative();
+        if (is_array($row)) {
+            return (int)$row['uid'];
+        }
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
+        $queryBuilder->insert('sys_filemounts')->values(
+            [
+                'pid' => 0,
+                'tstamp' => time(),
+                'title' => $title,
+                'identifier' => $identifier,
+            ]
+        )->executeStatement();
+        return (int)$connectionPool->getConnectionForTable('sys_filemounts')->lastInsertId();
+    }
+
+    private function getFileMount(string $identifier): int
+    {
+        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
+        $row = $queryBuilder->select('uid')
+            ->from('sys_filemounts')
+            ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier)))
+            ->executeQuery()
+            ->fetchAssociative();
+        return (int)($row['uid'] ?? 0);
     }
 }
