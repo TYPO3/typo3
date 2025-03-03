@@ -39,6 +39,9 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,20 +54,9 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 #[AsController]
 class NewRecordController
 {
-    /**
-     * @var array
-     */
-    protected $pageinfo = [];
-
-    /**
-     * @var array
-     */
-    protected $pidInfo = [];
-
-    /**
-     * @var array
-     */
-    protected $newRecordSortList;
+    protected array $pageinfo = [];
+    protected array $pidInfo = [];
+    protected array $newRecordSortList = [];
 
     protected bool $newPagesInto = false;
     protected bool $newContentInto = false;
@@ -72,20 +64,10 @@ class NewRecordController
 
     /**
      * Determines, whether "Select Position" for new page should be shown
-     *
-     * @var bool
      */
-    protected $newPagesSelectPosition = true;
-
-    /**
-     * @var array
-     */
-    protected $allowedNewTables;
-
-    /**
-     * @var array
-     */
-    protected $deniedNewTables;
+    protected bool $newPagesSelectPosition = true;
+    protected array $allowedNewTables = [];
+    protected array $deniedNewTables = [];
 
     /**
      * @var int
@@ -95,20 +77,9 @@ class NewRecordController
      */
     public $id;
 
-    /**
-     * @var string
-     */
-    protected $returnUrl;
-
-    /**
-     * @var string
-     */
-    protected $perms_clause;
-
-    /**
-     * @var array
-     */
-    protected $tRows = [];
+    protected string $returnUrl = '';
+    protected string $perms_clause = '';
+    protected array $tRows = [];
 
     protected ModuleTemplate $view;
 
@@ -116,7 +87,8 @@ class NewRecordController
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory
     ) {}
 
     /**
@@ -212,7 +184,7 @@ class NewRecordController
         // Setting up the context sensitive menu:
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/context-menu.js');
         $this->pageRenderer->loadJavaScriptModule('@typo3/backend/new-content-element-wizard-button.js');
-        // Id a positive id is supplied, ask for the page record with permission information contained:
+        // If a positive id is supplied, ask for the page record with permission information contained:
         if ($this->id > 0) {
             $this->pageinfo = BackendUtility::readPageAccess($this->id, $this->perms_clause) ?: [];
         }
@@ -243,10 +215,12 @@ class NewRecordController
             $this->newContentInto = false;
             $this->newPagesAfter = false;
         }
+        $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
         if ($this->pageinfo['uid'] ?? false) {
-            $title = strip_tags($this->pageinfo[$GLOBALS['TCA']['pages']['ctrl']['label']]);
-        } else {
-            $title = $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'];
+            $labelCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Label);
+            if ($labelCapability->hasPrimaryField()) {
+                $title = strip_tags($this->pageinfo[$labelCapability->getPrimaryField()->getName()]);
+            }
         }
         $this->view->setTitle($title);
         // Acquiring TSconfig for this module/current page:
@@ -368,7 +342,10 @@ class NewRecordController
             'system' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:system_records'),
         ];
         $groupedLinksOnTop = [];
-        foreach ($GLOBALS['TCA'] ?? [] as $table => $v) {
+        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
+            /** @var TcaSchema $schema */
+            $ctrlTitle = $schema->getRawConfiguration()['title'] ?? '';
+
             switch ($table) {
                 // New page
                 case 'pages':
@@ -377,22 +354,18 @@ class NewRecordController
                     }
                     // New pages INSIDE this pages
                     $newPageLinks = [];
-                    if ($displayNewPagesIntoLink
-                        && $this->isTableAllowedOnPage('pages', $this->pageinfo)
-                    ) {
+                    if ($displayNewPagesIntoLink && $this->isTableAllowedOnPage($schema, $this->pageinfo)) {
                         // Create link to new page inside
                         $newPageLinks[] = $this->renderLink(
-                            htmlspecialchars($lang->sL($v['ctrl']['title'] ?? '')) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
+                            htmlspecialchars($lang->sL($ctrlTitle)) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
                             $table,
                             $this->id
                         );
                     }
                     // New pages AFTER this pages
-                    if ($displayNewPagesAfterLink
-                        && $this->isTableAllowedOnPage('pages', $this->pidInfo)
-                    ) {
+                    if ($displayNewPagesAfterLink && $this->isTableAllowedOnPage($schema, $this->pidInfo)) {
                         $newPageLinks[] = $this->renderLink(
-                            htmlspecialchars($lang->sL($v['ctrl']['title'] ?? '')) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
+                            htmlspecialchars($lang->sL($ctrlTitle)) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
                             'pages',
                             -$this->id
                         );
@@ -414,22 +387,27 @@ class NewRecordController
                     // Skip, as inserting content elements is part of the page module
                     break;
                 default:
-                    if (!$this->newContentInto || !$this->isRecordCreationAllowedForTable($table) || !$this->isTableAllowedOnPage($table, $this->pageinfo)) {
+                    if (!$this->newContentInto) {
+                        break;
+                    }
+                    if (!$this->isRecordCreationAllowedForTable($table)) {
+                        break;
+                    }
+                    if (!$this->isTableAllowedOnPage($schema, $this->pageinfo)) {
                         break;
                     }
                     $nameParts = explode('_', $table);
-                    $groupName = $v['ctrl']['groupName'] ?? null;
-                    $title = (string)($v['ctrl']['title'] ?? '');
+                    $groupName = $schema->getRawConfiguration()['groupName'] ?? null;
                     if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
                         $groupName = $groupName ?? $nameParts[1] ?? null;
                         // Try to extract extension name
                         if ($groupName) {
                             $_EXTKEY = '';
-                            $titleIsTranslatableLabel = str_starts_with($title, 'LLL:EXT:');
+                            $titleIsTranslatableLabel = str_starts_with($ctrlTitle, 'LLL:EXT:');
                             if ($titleIsTranslatableLabel) {
                                 // In case the title is a locallang reference, we can simply
                                 // extract the extension name from the given extension path.
-                                $_EXTKEY = substr($title, 8);
+                                $_EXTKEY = substr($ctrlTitle, 8);
                                 $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
                             } elseif (ExtensionManagementUtility::isLoaded($groupName)) {
                                 // In case $title is not a locallang reference, we check the groupName to
@@ -461,9 +439,9 @@ class NewRecordController
                             $groupName = 'system';
                         }
                     }
-                    $this->tRows[$groupName]['title'] = $this->tRows[$groupName]['title'] ?? $groupTitles[$groupName] ?? $nameParts[1] ?? $title;
+                    $this->tRows[$groupName]['title'] = $this->tRows[$groupName]['title'] ?? $groupTitles[$groupName] ?? $nameParts[1] ?? $ctrlTitle;
                     $this->tRows[$groupName]['icon'] = $this->tRows[$groupName]['icon'] ?? $iconFile[$groupName] ?? $iconFile['system'] ?? '';
-                    $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($v['ctrl']['title'] ?? '')), $table, $this->id);
+                    $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($ctrlTitle)), $table, $this->id);
             }
         }
         // User sort
@@ -555,22 +533,23 @@ class NewRecordController
     /**
      * Returns TRUE if the tablename $checkTable is allowed to be created on the page with record $pid_row
      *
-     * @param string $table Table name to check
+     * @param TcaSchema $schema Table schema
      * @param array $page Potential parent page
      * @return bool Returns TRUE if the tablename $table is allowed to be created on the $page
      */
-    protected function isTableAllowedOnPage(string $table, array $page): bool
+    protected function isTableAllowedOnPage(TcaSchema $schema, array $page): bool
     {
-        $rootLevelConfiguration = (int)($GLOBALS['TCA'][$table]['ctrl']['rootLevel'] ?? 0);
-        $rootLevelConstraintMatches = $rootLevelConfiguration === -1 || ($this->id xor $rootLevelConfiguration);
+        $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+
+        $rootLevelConstraintMatches = $rootLevelCapability->canExistOnRootLevel() || ($this->id && $rootLevelCapability->canExistOnPages());
         if (empty($page)) {
             return $rootLevelConstraintMatches && $this->getBackendUserAuthentication()->isAdmin();
         }
-        if (!$this->getBackendUserAuthentication()->workspaceCanCreateNewRecord($table)) {
+        if (!$this->getBackendUserAuthentication()->workspaceCanCreateNewRecord($schema->getName())) {
             return false;
         }
         // Checking doktype
-        $isAllowed = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->isRecordTypeAllowedForDoktype($table, $page['doktype']);
+        $isAllowed = GeneralUtility::makeInstance(PageDoktypeRegistry::class)->isRecordTypeAllowedForDoktype($schema->getName(), $page['doktype']);
         return $rootLevelConstraintMatches && $isAllowed;
     }
 
@@ -596,11 +575,12 @@ class NewRecordController
             return false;
         }
 
-        $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
-        if (($ctrl['readOnly'] ?? false)
-            || ($ctrl['hideTable'] ?? false)
-            || ($ctrl['is_static'] ?? false)
-            || (($ctrl['adminOnly'] ?? false) && !$this->getBackendUserAuthentication()->isAdmin())
+        $schema = $this->tcaSchemaFactory->get($table);
+
+        if ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
+            || ($schema->getRawConfiguration()['hideTable'] ?? false)
+            || ($schema->getRawConfiguration()['is_static'] ?? false)
+            || ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)  && !$this->getBackendUserAuthentication()->isAdmin())
         ) {
             return false;
         }
