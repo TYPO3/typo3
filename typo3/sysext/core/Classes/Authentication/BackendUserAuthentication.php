@@ -341,9 +341,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $checkRec = BackendUtility::getRecord(
                 'pages',
                 $id,
-                't3ver_oid,'
-                . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ','
-                . $GLOBALS['TCA']['pages']['ctrl']['languageField']
+                't3ver_oid,' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ',' . $GLOBALS['TCA']['pages']['ctrl']['languageField']
             );
         }
         if ((int)($checkRec['t3ver_oid'] ?? 0) > 0) {
@@ -642,8 +640,8 @@ class BackendUserAuthentication extends AbstractUserAuthentication
 
     /**
      * Checking if a user has editing access to a record from a $GLOBALS['TCA'] table.
-     * The checks does not take page permissions and other "environmental" things into account.
-     * It only deal with record internals; If any values in the record fields disallows it.
+     * The checks do not take page permissions and other "environmental" things into account.
+     * It only deals with record internals; If any values in the record fields disallows it.
      * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
      * It will check for workspace dependent access.
      * The function takes an ID (int) or row (array) as second argument.
