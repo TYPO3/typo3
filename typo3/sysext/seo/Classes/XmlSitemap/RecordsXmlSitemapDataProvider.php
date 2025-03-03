@@ -24,6 +24,9 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
@@ -34,9 +37,12 @@ use TYPO3\CMS\Seo\XmlSitemap\Exception\MissingConfigurationException;
  */
 class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
 {
+    private TcaSchemaFactory $tcaSchemaFactory;
+
     public function __construct(ServerRequestInterface $request, string $key, array $config = [], ?ContentObjectRenderer $cObj = null)
     {
         parent::__construct($request, $key, $config, $cObj);
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         $this->generateItems();
     }
 
@@ -46,28 +52,31 @@ class RecordsXmlSitemapDataProvider extends AbstractXmlSitemapDataProvider
     public function generateItems(): void
     {
         $table = $this->config['table'];
-
-        if (empty($table)) {
+        if (!$this->tcaSchemaFactory->has($table)) {
             throw new MissingConfigurationException(
                 'No configuration found for sitemap ' . $this->getKey(),
                 1535576053
             );
         }
+        $schema = $this->tcaSchemaFactory->get($table);
 
         $pids = !empty($this->config['pid']) ? GeneralUtility::intExplode(',', (string)$this->config['pid']) : [];
         $lastModifiedField = $this->config['lastModifiedField'] ?? 'tstamp';
         $sortField = $this->config['sortField'] ?? 'sorting';
 
-        $changeFreqField = $this->config['changeFreqField'] ?? '';
-        $priorityField = $this->config['priorityField'] ?? '';
+        $changeFreqField = $schema->hasField($this->config['changeFreqField'] ?? '') ? $this->config['changeFreqField'] : '';
+        $priorityField = $schema->hasField($this->config['priorityField'] ?? '') ? $this->config['priorityField'] : '';
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($table);
 
         $constraints = [];
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
+
+        if ($schema->isLanguageAware()) {
+            /** @var LanguageAwareSchemaCapability $languageCapability */
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
             $constraints[] = $queryBuilder->expr()->in(
-                $GLOBALS['TCA'][$table]['ctrl']['languageField'],
+                $languageCapability->getLanguageField()->getName(),
                 [
                     -1, // All languages
                     $this->getLanguageId(),  // Current language
