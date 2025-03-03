@@ -204,7 +204,6 @@ export class ColumnSelectorButton extends LitElement {
         const data = await response.resolve();
         if (data.success === true) {
           // @todo This does not jump to the anchor (#t3-table-some_table) after the reload!!!
-          // @todo Dispatch event for customized reload behavior (use `defaultPrevented` for default behavior)
           this.ownerDocument.location.href = this.modalTarget;
           this.ownerDocument.location.reload();
         } else {

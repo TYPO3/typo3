@@ -335,12 +335,6 @@ class DatabaseRecordList
     public bool $displayRecordDownload = true;
 
     /**
-     * Used to force a specific route name for use in listURL()
-     * @todo: this is a workaround to force another route in AJAX context and must vanish again
-     */
-    public ?string $forcedListRouteName = null;
-
-    /**
      * [$tablename][$uid] = number of references to this record
      *
      * @var int[][]
@@ -700,7 +694,7 @@ class DatabaseRecordList
         // Header line is drawn
         $theData = [];
         if ($this->disableSingleTableView) {
-            $theData[$titleCol] = $tableTitle . ' (<span>' . $totalItems . '</span>)';
+            $theData[$titleCol] = $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>)';
         } else {
             $icon = $this->table // @todo separate table header from contract/expand link
                 ? $this->iconFactory
@@ -711,7 +705,7 @@ class DatabaseRecordList
                     ->getIcon('actions-view-table-expand', IconSize::SMALL)
                     ->setTitle($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:expandView'))
                     ->render();
-            $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span>' . $totalItems . '</span>) ' . $icon);
+            $theData[$titleCol] = $this->linkWrapTable($table, $tableTitle . ' (<span class="t3js-table-total-items">' . $totalItems . '</span>) ' . $icon);
         }
         $tableActions = '';
         $tableHeader = $theData[$titleCol];
@@ -2874,13 +2868,6 @@ class DatabaseRecordList
         }
         if ((!$exclList || !GeneralUtility::inList($exclList, 'sortRev')) && $this->sortRev) {
             $urlParameters['sortRev'] = $this->sortRev;
-        }
-
-        if ($this->forcedListRouteName !== null) {
-            return (string)$this->uriBuilder->buildUriFromRoute(
-                $this->forcedListRouteName,
-                array_replace($urlParameters, $this->overrideUrlParameters)
-            );
         }
 
         return (string)$this->uriBuilder->buildUriFromRequest(

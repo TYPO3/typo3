@@ -10,36 +10,5 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: color-mix(in srgb, var(--typo3-surface-container-base), transparent 50%);
-}
-
-.ui-block-overlay {
-    position: relative;
-
-    &:before {
-        display: block;
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 3000;
-        width: 100%;
-        height: 100%;
-        background: color-mix(in srgb, var(--typo3-surface-container-base), transparent 50%);
-    }
-
-    &:after {
-        display: inline-block;
-        content: "";
-        position: absolute;
-        top: calc(50% - var(--icon-size-large));
-        left: calc(50% - var(--icon-size-large));
-        z-index: 3001;
-        background-color: currentColor;
-        mask-image: var(--typo3-icons-spinner);
-        width: var(--icon-size-large);
-        height: var(--icon-size-large);
-        -webkit-animation: icon-spin 2s infinite linear;
-        animation: icon-spin 2s infinite linear;
-    }
+    background: rgba(0, 0, 0, .3);
 }
