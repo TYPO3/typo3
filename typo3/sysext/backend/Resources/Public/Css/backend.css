@@ -3440,7 +3440,6 @@ typo3-backend-live-search-result-item-action>:first-child .livesearch-result-ite
 .recordlist+.recordlist{margin-top:calc(var(--typo3-spacing) * 1.5)}
 .recordlist tr{transition:opacity .5s;opacity:1}
 .recordlist tr.record-pulse{animation:record-pulse 1s ease-out 0s 1 normal none}
-.recordlist tr.record-deleted{opacity:0!important}
 .recordlist-heading{display:flex;align-items:center;flex-wrap:wrap;color:var(--typo3-recordlist-header-color);background:var(--typo3-recordlist-header-bg);padding:var(--typo3-recordlist-padding-y) var(--typo3-recordlist-padding-x);gap:var(--typo3-recordlist-padding-y) var(--typo3-recordlist-padding-x)}
 .recordlist-heading-row{flex-grow:1;display:flex;align-items:center;flex-wrap:wrap;max-width:100%;gap:var(--typo3-recordlist-padding-y) var(--typo3-recordlist-padding-x)}
 .recordlist-heading-title{font-weight:700;flex-grow:1;width:250px;max-width:100%}

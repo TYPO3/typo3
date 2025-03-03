@@ -30,12 +30,6 @@ interface RecordlistIdentifier {
   editMultiple: string;
   icons: IconIdentifier;
 }
-interface DataHandlerEventPayload {
-  action: string;
-  component: string;
-  table: string;
-  uid: number;
-}
 interface EditRecordsConfiguration extends ActionConfiguration {
   tableName: string;
   columnsOnly: Array<string>;
@@ -66,7 +60,6 @@ class Recordlist {
     DocumentService.ready().then((): void => {
       this.registerPaginationEvents();
     });
-    new RegularEvent('typo3:datahandler:process', this.handleDataHandlerResult.bind(this)).bindTo(document);
 
     // multi record selection events
     new RegularEvent('multiRecordSelection:action:edit', this.onEditMultiple).bindTo(document);
@@ -207,52 +200,6 @@ class Recordlist {
   private readonly disableButton = (event: Event, target: HTMLElement): void => {
     target.setAttribute('disabled', 'disabled');
     target.classList.add('disabled');
-  };
-
-  private handleDataHandlerResult(e: CustomEvent): void {
-    const payload = e.detail.payload;
-    if (payload.hasErrors) {
-      return;
-    }
-
-    if (payload.component === 'datahandler') {
-      // In this case the delete action was triggered by AjaxDataHandler itself, which currently has its own handling.
-      // Visual handling is about to get decoupled from data handling itself, thus the logic is duplicated for now.
-      return;
-    }
-
-    if (payload.action === 'delete') {
-      this.deleteRow(payload);
-    }
-  }
-
-  private readonly deleteRow = (payload: DataHandlerEventPayload): void => {
-    const tableElement = document.querySelector(`table[data-table="${payload.table}"]`) as HTMLTableElement;
-    const rowElement = tableElement.querySelector(`tr[data-uid="${payload.uid}"]`) as HTMLElement;
-    const panel = tableElement.closest('.panel') as HTMLElement;
-    const panelHeading = panel.querySelector('.panel-heading') as HTMLElement;
-    const translatedRowElements = tableElement.querySelectorAll<HTMLElement>(`[data-l10nparent="${payload.uid}"]`);
-
-    [rowElement, ...translatedRowElements].forEach((rowElement: HTMLElement|null): void => {
-      rowElement?.remove();
-    });
-
-    if (tableElement.querySelector('tbody tr') === null) {
-      panel.remove();
-    }
-
-    if (rowElement.dataset.l10nparent === '0' || rowElement.dataset.l10nparent === '') {
-      const count = Number(panelHeading.querySelector('.t3js-table-total-items').textContent);
-      const tableTotalItems = panelHeading.querySelector('.t3js-table-total-items');
-
-      if (tableTotalItems !== null) {
-        tableTotalItems.textContent = String(count - 1);
-      }
-    }
-
-    if (payload.table === 'pages') {
-      top.document.dispatchEvent(new CustomEvent('typo3:pagetree:refresh'));
-    }
   };
 
   private readonly registerPaginationEvents = (): void => {

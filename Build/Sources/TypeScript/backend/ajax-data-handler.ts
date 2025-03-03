@@ -15,17 +15,14 @@ import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import DocumentService from '@typo3/core/document-service';
-import { SeverityEnum } from './enum/severity';
 import ResponseInterface from './ajax-data-handler/response-interface';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import Icons from './icons';
-import Modal from './modal';
 import Notification from './notification';
 import RegularEvent from '@typo3/core/event/regular-event';
 
 enum Identifiers {
   hide = 'button[data-datahandler-action="visibility"]',
-  delete = '.t3js-record-delete',
   icon = '.t3js-icon',
 }
 
@@ -110,33 +107,6 @@ class AjaxDataHandler {
       e.preventDefault();
       this.handleVisibilityToggle(element);
     }).delegateTo(document, Identifiers.hide);
-
-    // DELETE: click events for all action icons to delete
-    new RegularEvent('click', (evt: Event, anchorElement: HTMLElement): void => {
-      evt.preventDefault();
-
-      const modal = Modal.confirm(anchorElement.dataset.title, anchorElement.dataset.message, SeverityEnum.warning, [
-        {
-          text: anchorElement.dataset.buttonCloseText || TYPO3.lang['button.cancel'] || 'Cancel',
-          active: true,
-          btnClass: 'btn-default',
-          name: 'cancel',
-        },
-        {
-          text: anchorElement.dataset.buttonOkText || TYPO3.lang['button.delete'] || 'Delete',
-          btnClass: 'btn-warning',
-          name: 'delete',
-        },
-      ]);
-      modal.addEventListener('button.clicked', (e: Event): void => {
-        if ((e.target as HTMLInputElement).getAttribute('name') === 'cancel') {
-          modal.hideModal();
-        } else if ((e.target as HTMLInputElement).getAttribute('name') === 'delete') {
-          modal.hideModal();
-          this.deleteRecord(anchorElement);
-        }
-      });
-    }).delegateTo(document, Identifiers.delete);
   }
 
   private handleVisibilityToggle(element: HTMLButtonElement): void
@@ -209,62 +179,6 @@ class AjaxDataHandler {
 
         // Refresh Pagetree
         if (settings.table === 'pages') {
-          AjaxDataHandler.refreshPageTree();
-        }
-      }
-    });
-  }
-
-  /**
-   * Delete record by given element (icon in table)
-   * don't call it directly!
-   */
-  private deleteRecord(anchorElement: HTMLElement): void {
-    const params = anchorElement.dataset.params;
-    let iconElement = anchorElement.querySelector(Identifiers.icon);
-
-    // add a spinner
-    this._showSpinnerIcon(iconElement);
-
-    const tableElement = anchorElement.closest('table[data-table]') as HTMLTableElement;
-    const table = tableElement.dataset.table;
-    const rowElement = anchorElement.closest('tr[data-uid]') as HTMLTableRowElement;
-    const uid = parseInt(rowElement.dataset.uid, 10);
-
-    // make the AJAX call to toggle the visibility
-    const eventData = { component: 'datahandler', action: 'delete', table, uid };
-    this.process(params, eventData).then((result: ResponseInterface): void => {
-      // revert to the old class
-      Icons.getIcon('actions-edit-delete', Icons.sizes.small).then((icon: string): void => {
-        iconElement = anchorElement.querySelector(Identifiers.icon);
-        iconElement.replaceWith(document.createRange().createContextualFragment(icon));
-      });
-      if (!result.hasErrors) {
-        const panel = anchorElement.closest('.recordlist');
-        const panelHeading = panel.querySelector('.recordlist-heading-title');
-        const translatedRowElements = tableElement.querySelectorAll('[data-l10nparent="' + uid + '"]');
-        translatedRowElements.forEach((translatedRowElement: HTMLTableRowElement): void => {
-          new RegularEvent('transitionend', (): void => {
-            translatedRowElement.remove();
-          }).bindTo(translatedRowElement);
-          translatedRowElement.classList.add('record-deleted');
-        });
-
-        new RegularEvent('transitionend', (): void => {
-          rowElement.remove();
-
-          if (tableElement.querySelectorAll('tbody tr').length === 0) {
-            panel.remove();
-          }
-        }).bindTo(rowElement);
-        rowElement.classList.add('record-deleted');
-
-        if (anchorElement.dataset.l10nparent === '0' || anchorElement.dataset.l10nparent === '') {
-          const count = parseInt(panelHeading.querySelector('.t3js-table-total-items').textContent, 10);
-          panelHeading.querySelector('.t3js-table-total-items').textContent = (count - 1).toString();
-        }
-
-        if (table === 'pages') {
           AjaxDataHandler.refreshPageTree();
         }
       }
