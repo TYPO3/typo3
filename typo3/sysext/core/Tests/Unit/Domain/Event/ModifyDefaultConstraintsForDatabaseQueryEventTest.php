@@ -33,7 +33,7 @@ final class ModifyDefaultConstraintsForDatabaseQueryEventTest extends UnitTestCa
         $table = 'a_table';
         $tableAlias = 'table_alias';
         $expressionBuilder = new ExpressionBuilder($this->createMock(Connection::class));
-        $constraints = [new CompositeExpression('foo')];
+        $constraints = ['foo' => new CompositeExpression('foo')];
         $enableFieldsToIgnore = ['a_field' => true];
         $context = new Context();
 

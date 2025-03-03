@@ -36,7 +36,7 @@ final class ModifyDefaultConstraintsForDatabaseQueryEvent
         private readonly string $table,
         private readonly string $tableAlias,
         private readonly ExpressionBuilder $expressionBuilder,
-        /** @var CompositeExpression[] */
+        /** @var array<string, CompositeExpression|string> */
         private array $constraints,
         /** @var array<string, bool> */
         private readonly array $enableFieldsToIgnore,
@@ -58,6 +58,9 @@ final class ModifyDefaultConstraintsForDatabaseQueryEvent
         return $this->expressionBuilder;
     }
 
+    /**
+     * @return array<string, CompositeExpression|string>
+     */
     public function getConstraints(): array
     {
         return $this->constraints;
