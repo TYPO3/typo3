@@ -1,0 +1,5 @@
+name: typo3tests/set-1-override
+label: Test Set Fixture 1 Override
+
+dependencies:
+  - typo3tests/set-1

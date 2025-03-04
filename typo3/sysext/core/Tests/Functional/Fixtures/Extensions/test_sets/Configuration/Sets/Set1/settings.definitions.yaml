@@ -1,0 +1,15 @@
+categories:
+  foo:
+    label: 'Foo'
+
+settings:
+  foo.bar:
+    type: string
+    label: 'Foo Bar'
+    default: ''
+    category: foo
+    description: |
+      Hallo Welt
+
+      > foo
+      > bar

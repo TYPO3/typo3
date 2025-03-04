@@ -40,13 +40,13 @@ class CategoryRegistry
         $categoryDefinitions = [];
         foreach ($sets as $set) {
             foreach ($set->categoryDefinitions as $definition) {
-                $categoryDefinitions[] = $definition;
+                $categoryDefinitions[$definition->key] = $definition;
             }
         }
         $settingsDefinitions = [];
         foreach ($sets as $set) {
             foreach ($set->settingsDefinitions as $definition) {
-                $settingsDefinitions[] = $definition;
+                $settingsDefinitions[$definition->key] = $definition;
             }
         }
 
