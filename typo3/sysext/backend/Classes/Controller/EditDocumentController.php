@@ -49,6 +49,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -63,6 +64,9 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientUserPermissionsException;
 use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -351,6 +355,7 @@ class EditDocumentController
         protected readonly ModuleProvider $moduleProvider,
         private readonly FormDataCompiler $formDataCompiler,
         private readonly NodeFactory $nodeFactory,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -486,15 +491,18 @@ class EditDocumentController
         $data = $queryParams['edit'] ?? [];
         $tables = array_keys($data);
         foreach ($tables as $table) {
-            if (!empty($this->columnsOnly[$table]) && isset($GLOBALS['TCA'][$table])) {
+            if (!empty($this->columnsOnly[$table]) && $this->tcaSchemaFactory->has($table)) {
+                $schema = $this->tcaSchemaFactory->get($table);
                 foreach ($this->columnsOnly[$table] as $field) {
-                    $postModifiers = $GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['postModifiers'] ?? [];
-                    if (isset($GLOBALS['TCA'][$table]['columns'][$field])
-                        && $GLOBALS['TCA'][$table]['columns'][$field]['config']['type'] === 'slug'
+                    if (!$schema->hasField($field)) {
+                        continue;
+                    }
+                    $field = $schema->getField($field);
+                    $postModifiers = $field->getConfiguration()['generatorOptions']['postModifiers'] ?? [];
+                    if ($field->isType(TableColumnType::SLUG)
                         && (!is_array($postModifiers) || $postModifiers === [])
                     ) {
-
-                        $fieldGroups = $GLOBALS['TCA'][$table]['columns'][$field]['config']['generatorOptions']['fields'] ?? [];
+                        $fieldGroups = $field->getConfiguration()['generatorOptions']['fields'] ?? [];
                         if (is_string($fieldGroups)) {
                             $fieldGroups = [$fieldGroups];
                         }
@@ -652,7 +660,7 @@ class EditDocumentController
                 $nUid = (int)end($ids);
             }
             $recordFields = 'pid,uid';
-            if (BackendUtility::isTableWorkspaceEnabled($nTable)) {
+            if ($this->tcaSchemaFactory->get($nTable)->isWorkspaceAware()) {
                 $recordFields .= ',t3ver_oid';
             }
             $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
@@ -704,9 +712,13 @@ class EditDocumentController
                     // This is the when EditDocumentController is booted in single field mode (e.g.
                     // Template module > 'info/modify' > edit 'setup' field) or in case the field is
                     // not in "showitem" or is set to readonly (e.g. "file" in sys_file_metadata).
-                    $labelArray = [$GLOBALS['TCA'][$table]['ctrl']['label'] ?? null];
-                    $labelAltArray = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'] ?? '', true);
-                    $labelFields = array_unique(array_filter(array_merge($labelArray, $labelAltArray)));
+                    $labelCapability = $this->tcaSchemaFactory->get($table)->getCapability(TcaSchemaCapability::Label);
+                    $labelFields = array_unique(array_filter(
+                        array_merge(
+                            [$labelCapability->getPrimaryField()?->getName()],
+                            array_map(static fn(FieldTypeInterface $field): string => $field->getName(), $labelCapability->getAdditionalFields())
+                        )
+                    ));
                     foreach ($labelFields as $labelField) {
                         if (!isset($row[$labelField])) {
                             $tmpRecord = BackendUtility::getRecord($table, $uid, implode(',', $labelFields));
@@ -757,7 +769,7 @@ class EditDocumentController
             }
 
             $recordFields = 'pid,uid';
-            if (BackendUtility::isTableWorkspaceEnabled($nTable)) {
+            if ($this->tcaSchemaFactory->get($nTable)->isWorkspaceAware()) {
                 $recordFields .= ',t3ver_oid';
             }
             $nRec = BackendUtility::getRecord($nTable, $nUid, $recordFields);
@@ -889,8 +901,11 @@ class EditDocumentController
         $recordArray = BackendUtility::getRecord($table, $recordId);
 
         // language handling
-        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
-        if ($languageField && !empty($recordArray[$languageField])) {
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($schema->isLanguageAware()
+            && ($languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName())
+            && !empty($recordArray[$languageField])
+        ) {
             $recordId = $this->resolvePreviewRecordId($table, $recordArray, $previewConfiguration);
             $language = $recordArray[$languageField];
             if ($language > 0) {
@@ -899,7 +914,7 @@ class EditDocumentController
         }
 
         // Always use live workspace record uid for the preview
-        if (BackendUtility::isTableWorkspaceEnabled($table) && ($recordArray['t3ver_oid'] ?? 0) > 0) {
+        if ($schema->isWorkspaceAware() && ($recordArray['t3ver_oid'] ?? 0) > 0) {
             $recordId = $recordArray['t3ver_oid'];
         }
 
@@ -927,8 +942,8 @@ class EditDocumentController
 
     protected function resolvePreviewRecordId(string $table, array $recordArray, array $previewConfiguration): int
     {
-        $l10nPointer = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
-        if ($l10nPointer
+        if (($schema = $this->tcaSchemaFactory->get($table))->hasCapability(TcaSchemaCapability::Language)
+            && ($l10nPointer = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName())
             && !empty($recordArray[$l10nPointer])
             && (
                 // not set -> default to true
@@ -1114,7 +1129,7 @@ class EditDocumentController
         $beUser = $this->getBackendUser();
         // Traverse the GPvar edit array tables
         foreach ($this->editconf as $table => $conf) {
-            if (!is_array($conf) || !($GLOBALS['TCA'][$table] ?? false)) {
+            if (!is_array($conf) || !$this->tcaSchemaFactory->has($table)) {
                 // Skip for invalid config or in case no TCA exists
                 continue;
             }
@@ -1285,22 +1300,24 @@ class EditDocumentController
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         if (!empty($this->firstEl)) {
             $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
-            $TCActrl = $GLOBALS['TCA'][$this->firstEl['table']]['ctrl'];
+            $schema = $this->tcaSchemaFactory->get($this->firstEl['table']);
+            $languageCapability = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language) : null;
 
             $this->setIsSavedRecord();
 
             $sysLanguageUid = 0;
             if (
                 $this->isSavedRecord
-                && isset($TCActrl['languageField'], $record[$TCActrl['languageField']])
+                && $schema->isLanguageAware()
+                && isset($record[($languageField = $languageCapability->getLanguageField()->getName())])
             ) {
-                $sysLanguageUid = (int)$record[$TCActrl['languageField']];
+                $sysLanguageUid = (int)$record[$languageField];
             } elseif (isset($this->defVals['sys_language_uid'])) {
                 $sysLanguageUid = (int)$this->defVals['sys_language_uid'];
             }
 
-            $l18nParent = isset($TCActrl['transOrigPointerField'], $record[$TCActrl['transOrigPointerField']])
-                ? (int)$record[$TCActrl['transOrigPointerField']]
+            $l18nParent = $schema->isLanguageAware() && isset($record[($translationOriginPointerField = $languageCapability->getTranslationOriginPointerField()->getName())])
+                ? (int)$record[$translationOriginPointerField]
                 : 0;
 
             $this->setIsPageInFreeTranslationMode($record, $sysLanguageUid);
@@ -1310,7 +1327,7 @@ class EditDocumentController
             // Show buttons when table is not read-only
             if (
                 !$this->errorC
-                && !($GLOBALS['TCA'][$this->firstEl['table']]['ctrl']['readOnly'] ?? false)
+                && !$schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
             ) {
                 $this->registerSaveButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 2);
                 $this->registerViewButtonToButtonBar($buttonBar, ButtonBar::BUTTON_POSITION_LEFT, 3);
@@ -1771,7 +1788,7 @@ class EditDocumentController
         return (int)$queryBuilder
             ->andWhere(
                 $queryBuilder->expr()->gt(
-                    $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
+                    $this->tcaSchemaFactory->get('tt_content')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
@@ -1788,7 +1805,7 @@ class EditDocumentController
         return (int)$queryBuilder
             ->andWhere(
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['tt_content']['ctrl']['transOrigPointerField'],
+                    $this->tcaSchemaFactory->get('tt_content')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             )
@@ -1801,7 +1818,6 @@ class EditDocumentController
      */
     protected function getQueryBuilderForTranslationMode(int $page, int $column, int $language): QueryBuilder
     {
-        $languageField = $GLOBALS['TCA']['tt_content']['ctrl']['languageField'];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('tt_content');
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -1816,7 +1832,7 @@ class EditDocumentController
                     $queryBuilder->createNamedParameter($page, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
-                    $languageField,
+                    $this->tcaSchemaFactory->get('tt_content')->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
                 ),
                 $queryBuilder->expr()->eq(
@@ -1943,14 +1959,18 @@ class EditDocumentController
     protected function languageSwitch(ModuleTemplate $view, string $table, int $uid, ?int $pid = null)
     {
         $backendUser = $this->getBackendUser();
-        $languageField = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
-        $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return;
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isLanguageAware()) {
+            return;
+        }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageField = $languageCapability->getLanguageField()->getName();
+        $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
 
-        // Table editable and activated for languages?
-        if (!$languageField
-            || !$transOrigPointerField
-            || !$backendUser->check('tables_modify', $table)
-        ) {
+        if (!$backendUser->check('tables_modify', $table)) {
             return;
         }
 
@@ -1961,10 +1981,10 @@ class EditDocumentController
         // Get all available languages for the page
         // If editing a page, the translations of the current UID need to be fetched
         if ($table === 'pages') {
-            $row = BackendUtility::getRecord($table, $uid, $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']);
+            $row = BackendUtility::getRecord($table, $uid, $transOrigPointerField);
             // Ensure the check is always done against the default language page
             $availableLanguages = $this->getLanguages(
-                (int)$row[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']] ?: $uid,
+                (int)$row[$transOrigPointerField] ?: $uid,
                 $table
             );
         } else {
@@ -2031,7 +2051,7 @@ class EditDocumentController
                         )
                         ->executeQuery();
                     while ($row = $result->fetchAssociative()) {
-                        if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+                        if ($backendUser->workspace !== 0 && $schema->isWorkspaceAware()) {
                             $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $table, $row['uid'], 'uid,t3ver_state');
                             if (!empty($workspaceVersion)) {
                                 $versionState = VersionState::tryFrom($workspaceVersion['t3ver_state'] ?? 0);
@@ -2139,45 +2159,45 @@ class EditDocumentController
 
         [$table, $origUid, $language] = explode(':', $justLocalized);
 
-        if ($GLOBALS['TCA'][$table]
-            && $GLOBALS['TCA'][$table]['ctrl']['languageField']
-            && $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField']
-        ) {
-            $parsedBody = $request->getParsedBody();
-            $queryParams = $request->getQueryParams();
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-                ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-            $localizedRecord = $queryBuilder->select('uid')
-                ->from($table)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA'][$table]['ctrl']['languageField'],
-                        $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'],
-                        $queryBuilder->createNamedParameter($origUid, Connection::PARAM_INT)
-                    )
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return null;
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isLanguageAware()) {
+            return null;
+        }
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()
+            ->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
+        $localizedRecord = $queryBuilder->select('uid')
+            ->from($table)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
+                    $queryBuilder->createNamedParameter($language, Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
+                    $queryBuilder->createNamedParameter($origUid, Connection::PARAM_INT)
                 )
-                ->executeQuery()
-                ->fetchAssociative();
-            $returnUrl = $parsedBody['returnUrl'] ?? $queryParams['returnUrl'] ?? '';
-            if (is_array($localizedRecord)) {
-                // Create redirect response to self to edit just created record
-                return new RedirectResponse(
-                    (string)$this->uriBuilder->buildUriFromRoute(
-                        'record_edit',
-                        [
-                            'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
-                            'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl),
-                        ]
-                    ),
-                    303
-                );
-            }
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (is_array($localizedRecord)) {
+            // Create redirect response to self to edit just created record
+            $returnUrl = $request->getParsedBody()['returnUrl'] ?? $request->getQueryParams()['returnUrl'] ?? '';
+            return new RedirectResponse(
+                (string)$this->uriBuilder->buildUriFromRoute(
+                    'record_edit',
+                    [
+                        'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
+                        'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl),
+                    ]
+                ),
+                303
+            );
         }
         return null;
     }
@@ -2214,15 +2234,18 @@ class EditDocumentController
             static fn(array $language): bool => (int)$language['uid'] !== -1
         );
         if ($table !== 'pages' && $id > 0) {
+            $schema = $this->tcaSchemaFactory->get('pages');
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
                 ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
-            $statement = $queryBuilder->select('uid', $GLOBALS['TCA']['pages']['ctrl']['languageField'])
+            $statement = $queryBuilder->select('uid', $languageField)
                 ->from('pages')
                 ->where(
                     $queryBuilder->expr()->eq(
-                        $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                        $languageCapability->getTranslationOriginPointerField()->getName(),
                         $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)
                     )
                 )
@@ -2234,7 +2257,7 @@ class EditDocumentController
                 ];
             }
             while ($row = $statement->fetchAssociative()) {
-                $languageId = (int)$row[$GLOBALS['TCA']['pages']['ctrl']['languageField']];
+                $languageId = (int)$row[$languageField];
                 if (isset($allLanguages[$languageId])) {
                     $availableLanguages[$languageId] = $allLanguages[$languageId];
                 }
@@ -2255,7 +2278,7 @@ class EditDocumentController
             return;
         }
         foreach ($this->editconf as $table => $conf) {
-            if (is_array($conf) && $GLOBALS['TCA'][$table]) {
+            if (is_array($conf) && $this->tcaSchemaFactory->has($table)) {
                 // Traverse the keys/comments of each table (keys can be a comma list of uids)
                 $newConf = [];
                 foreach ($conf as $cKey => $cmd) {
@@ -2297,14 +2320,14 @@ class EditDocumentController
      */
     protected function getRecordForEdit(string $table, int $theUid): array|bool
     {
-        $tableSupportsVersioning = BackendUtility::isTableWorkspaceEnabled($table);
+        $schema = $this->tcaSchemaFactory->get($table);
         // Fetch requested record:
-        $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid' . ($tableSupportsVersioning ? ',t3ver_oid' : ''));
+        $reqRecord = BackendUtility::getRecord($table, $theUid, 'uid,pid' . ($schema->isWorkspaceAware() ? ',t3ver_oid' : ''));
         if (is_array($reqRecord)) {
             // If workspace is OFFLINE:
             if ($this->getBackendUser()->workspace !== 0) {
                 // Check for versioning support of the table:
-                if ($tableSupportsVersioning) {
+                if ($schema->isWorkspaceAware()) {
                     // If the record is already a version of "something" pass it by.
                     if ($reqRecord['t3ver_oid'] > 0 || VersionState::tryFrom($reqRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                         // (If it turns out not to be a version of the current workspace there will be trouble, but
@@ -2446,7 +2469,8 @@ class EditDocumentController
         // @todo Therefore, the button initialization however has to take place at a later stage.
 
         $table = (string)key($queryParameters['edit']);
-        $tableTitle = $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title'] ?? '') ?: $table;
+        $schema = $this->tcaSchemaFactory->has($table) ? $this->tcaSchemaFactory->get($table) : null;
+        $tableTitle = $languageService->sL($schema?->getRawConfiguration()['title'] ?? '') ?: $table;
         $identifier = (string)key($queryParameters['edit'][$table]);
         $action = (string)($queryParameters['edit'][$table][$identifier] ?? '');
 
