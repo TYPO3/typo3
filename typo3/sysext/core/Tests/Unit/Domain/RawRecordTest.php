@@ -81,4 +81,23 @@ final class RawRecordTest extends UnitTestCase
         self::assertSame($mainType, $record->getMainType());
         self::assertSame($recordType, $record->getRecordType());
     }
+
+    #[Test]
+    public function toArrayIsFilledProperly(): void
+    {
+        $computedProperties = new ComputedProperties(124, 125);
+        $record = new RawRecord(123, 456, [], $computedProperties, 'tt_content');
+
+        self::assertSame('tt_content', $record->getFullType());
+        self::assertSame('tt_content', $record->getMainType());
+        self::assertSame([
+            'uid' => 123,
+            'pid' => 456,
+        ], $record->toArray());
+        self::assertSame([
+            'uid' => 123,
+            'pid' => 456,
+            '_computed' => $computedProperties->toArray(),
+        ], $record->toArray(true));
+    }
 }
