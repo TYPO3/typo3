@@ -45,7 +45,7 @@ interface RecordInterface extends ContainerInterface
      */
     public function getMainType(): string;
 
-    public function toArray(): array;
+    public function toArray(bool $includeSpecialProperties = false): array;
 
     public function getRawRecord(): ?RawRecord;
 

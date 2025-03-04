@@ -67,9 +67,16 @@ readonly class RawRecord implements RecordInterface
         return $this->type;
     }
 
-    public function toArray(): array
+    public function toArray(bool $includeSpecialProperties = false): array
     {
-        return $this->properties + ['uid' => $this->uid, 'pid' => $this->pid];
+        $properties = $this->properties;
+        $properties += ['uid' => $this->uid, 'pid' => $this->pid];
+        if ($includeSpecialProperties) {
+            $properties += [
+                '_computed' => $this->computedProperties->toArray(),
+            ];
+        }
+        return $properties;
     }
 
     public function has(string $id): bool

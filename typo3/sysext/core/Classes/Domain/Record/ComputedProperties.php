@@ -27,10 +27,10 @@ use TYPO3\CMS\Core\Domain\Page;
 readonly class ComputedProperties
 {
     public function __construct(
-        protected ?int $versionedUid,
-        protected ?int $localizedUid,
-        protected ?int $requestedOverlayLanguageId,
-        protected ?Page $translationSource,
+        protected ?int $versionedUid = null,
+        protected ?int $localizedUid = null,
+        protected ?int $requestedOverlayLanguageId = null,
+        protected ?Page $translationSource = null,
     ) {}
 
     public function getVersionedUid(): ?int
@@ -51,5 +51,15 @@ readonly class ComputedProperties
     public function getTranslationSource(): ?Page
     {
         return $this->translationSource;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'versionedUid' => $this->versionedUid,
+            'localizedUid' => $this->localizedUid,
+            'requestedOverlayLanguageId' => $this->requestedOverlayLanguageId,
+            'translationSource' => $this->translationSource,
+        ];
     }
 }
