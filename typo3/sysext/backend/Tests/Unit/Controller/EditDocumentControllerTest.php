@@ -20,6 +20,11 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Controller;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\EditDocumentController;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\RelationMapBuilder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class EditDocumentControllerTest extends UnitTestCase
@@ -41,6 +46,10 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $editDocumentControllerMock->_set('tcaSchemaFactory', $tcaSchemaFactory);
         $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
 
         self::assertEquals($selectedFields, array_values($editDocumentControllerMock->_get('columnsOnly')[$tableName] ?? []));
@@ -167,6 +176,12 @@ final class EditDocumentControllerTest extends UnitTestCase
                 ],
             ],
         ];
+
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+
+        $editDocumentControllerMock->_set('tcaSchemaFactory', $tcaSchemaFactory);
+
         $editDocumentControllerMock->_call('addSlugFieldsToColumnsOnly', $queryParams);
 
         self::assertEquals(['aField'], array_values($editDocumentControllerMock->_get('columnsOnly')['aTable']));
@@ -197,11 +212,31 @@ final class EditDocumentControllerTest extends UnitTestCase
     #[Test]
     public function resolvePreviewRecordIdReturnsExpectedUid(int $expected, array $previewConfiguration): void
     {
-        $recordArray = ['uid' => 2, 'l10n_parent' => 1];
+        $recordArray = ['uid' => 2, 'sys_language_uid' => 1, 'l10n_parent' => 1];
         $table = 'pages';
+        $GLOBALS['TCA'][$table]['ctrl']['languageField'] = 'sys_language_uid';
         $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] = 'l10n_parent';
+        $GLOBALS['TCA'][$table]['columns'] = [
+            'sys_language_uid' => [
+                'config' => [
+                    'type' => 'language',
+                ],
+            ],
+            'l10n_parent' => [
+                'config' => [
+                    'type' => 'group',
+                    'allowed' => 'pages',
+                    'size' => 1,
+                    'maxitems' => 1,
+                ],
+            ],
+        ];
+
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
 
         $mock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
+        $mock->_set('tcaSchemaFactory', $tcaSchemaFactory);
         $result = $mock->_call('resolvePreviewRecordId', $table, $recordArray, $previewConfiguration);
         self::assertSame($expected, $result);
     }
@@ -231,8 +266,32 @@ final class EditDocumentControllerTest extends UnitTestCase
         $recordArray = ['uid' => 2];
         $table = 'dummy_table';
 
+        $tca = [
+            $table => [
+                'ctrl' => [
+                    'transOrigPointerField' => 'l10n_parent',
+                ],
+            ],
+        ];
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($tca);
+
         $mock = $this->getAccessibleMock(EditDocumentController::class, null, [], '', false);
+        $mock->_set('tcaSchemaFactory', $tcaSchemaFactory);
         $result = $mock->_call('resolvePreviewRecordId', $table, $recordArray, $previewConfiguration);
         self::assertSame($expected, $result);
+    }
+
+    private function getTcaSchemaFactory(): TcaSchemaFactory
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $tcaSchemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        return $tcaSchemaFactory;
     }
 }
