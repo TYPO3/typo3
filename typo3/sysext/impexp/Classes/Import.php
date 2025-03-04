@@ -561,7 +561,7 @@ class Import extends ImportExport
                 $fileId = md5($fileRecord['storage'] . ':' . $fileRecord['identifier_hash']);
                 if (isset($this->dat['files_fal'][$fileId]['content'])) {
                     $fileInfo = &$this->dat['files_fal'][$fileId];
-                    if (GeneralUtility::writeFile($temporaryFilePath, $fileInfo['content'])) {
+                    if (GeneralUtility::writeFile($temporaryFilePath, $fileInfo['content'], true)) {
                         clearstatcache();
                         $temporaryFile = $temporaryFilePath;
                     } else {
@@ -1672,7 +1672,7 @@ class Import extends ImportExport
                     }
                     // If substitutions has been made, write the content to the file again:
                     if ($tokenSubstituted) {
-                        GeneralUtility::writeFile($newName, $tokenizedContent);
+                        GeneralUtility::writeFile($newName, $tokenizedContent, true);
                     }
                 }
                 return PathUtility::stripPathSitePrefix($newName);
@@ -1715,7 +1715,7 @@ class Import extends ImportExport
             $this->addError('ERROR: File ID "' . $fileID . '" could not be found');
             return false;
         }
-        GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content']);
+        GeneralUtility::writeFile($fileName, $this->dat['files'][$fileID]['content'], true);
         $this->fileIdMap[$fileID] = $fileName;
         if (hash_equals(md5((string)file_get_contents($fileName)), $this->dat['files'][$fileID]['content_md5'])) {
             return true;

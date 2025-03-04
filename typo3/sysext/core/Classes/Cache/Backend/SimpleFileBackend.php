@@ -231,11 +231,10 @@ class SimpleFileBackend extends AbstractBackend implements PhpCapableBackendInte
             throw new \InvalidArgumentException('The specified entry identifier must not be empty.', 1334756736);
         }
         $temporaryCacheEntryPathAndFilename = $this->cacheDirectory . 'tmp/' . StringUtility::getUniqueId() . '.temp';
-        $result = @file_put_contents($temporaryCacheEntryPathAndFilename, $data);
+        $result = GeneralUtility::writeFile($temporaryCacheEntryPathAndFilename, $data, true);
         if ($result === false) {
             throw new Exception('The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.', 1334756737);
         }
-        GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
         $cacheEntryPathAndFilename = $this->cacheDirectory . $entryIdentifier . $this->cacheEntryFileExtension;
         $result = @rename($temporaryCacheEntryPathAndFilename, $cacheEntryPathAndFilename);
         if ($result === false) {

@@ -1186,7 +1186,7 @@ class Export extends ImportExport
         }
 
         $temporaryFileName = GeneralUtility::tempnam('export');
-        GeneralUtility::writeFile($temporaryFileName, $fileContent);
+        GeneralUtility::writeFile($temporaryFileName, $fileContent, true);
         $file = $saveFolder->addFile($temporaryFileName, $fileName, DuplicationBehavior::REPLACE);
 
         if ($this->saveFilesOutsideExportFile) {

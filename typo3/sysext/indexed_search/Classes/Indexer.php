@@ -499,7 +499,7 @@ class Indexer
             if ((string)$content !== '') {
                 // Create temporary file:
                 $tmpFile = GeneralUtility::tempnam('EXTERNAL_URL');
-                GeneralUtility::writeFile($tmpFile, $content);
+                GeneralUtility::writeFile($tmpFile, $content, true);
                 // Index that file:
                 $this->indexRegularDocument($externalUrl, true, $tmpFile, 'html');
                 // Using "TRUE" for second parameter to force indexing of external URLs (mtime doesn't make sense, does it?)

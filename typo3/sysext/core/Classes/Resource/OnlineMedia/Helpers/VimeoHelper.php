@@ -50,8 +50,7 @@ class VimeoHelper extends AbstractOEmbedHelper
             if (!empty($oEmbedData['thumbnail_url'])) {
                 $previewImage = GeneralUtility::getUrl($oEmbedData['thumbnail_url']);
                 if ($previewImage !== false) {
-                    file_put_contents($temporaryFileName, $previewImage);
-                    GeneralUtility::fixPermissions($temporaryFileName);
+                    GeneralUtility::writeFile($temporaryFileName, $previewImage, true);
                 }
             }
         }

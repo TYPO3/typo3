@@ -80,7 +80,7 @@ class ResourceCompressor
             // check whether .htaccess exists
             $htaccessPath = Environment::getPublicPath() . '/' . $this->targetDirectory . '.htaccess';
             if (!file_exists($htaccessPath)) {
-                GeneralUtility::writeFile($htaccessPath, $this->htaccessTemplate);
+                GeneralUtility::writeFile($htaccessPath, $this->htaccessTemplate, true);
             }
         }
         // decide whether we should create gzipped versions or not
@@ -293,7 +293,7 @@ class ResourceCompressor
             if ($type === 'css') {
                 $concatenated = $this->cssFixStatements($concatenated);
             }
-            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $targetFile, $concatenated);
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $targetFile, $concatenated, true);
         }
         return $targetFile;
     }
@@ -557,10 +557,10 @@ class ResourceCompressor
     protected function writeFileAndCompressed($filename, $contents)
     {
         // write uncompressed file
-        GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $contents);
+        GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $contents, true);
         if ($this->createGzipped) {
             // create compressed version
-            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename . $this->gzipFileExtension, (string)gzencode($contents, $this->gzipCompressionLevel));
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename . $this->gzipFileExtension, (string)gzencode($contents, $this->gzipCompressionLevel), true);
         }
     }
 
@@ -594,7 +594,7 @@ class ResourceCompressor
         if (!file_exists(Environment::getPublicPath() . '/' . $filename)
             || !hash_equals(md5((string)file_get_contents(Environment::getPublicPath() . '/' . $filename)), md5($externalContent))
         ) {
-            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $externalContent);
+            GeneralUtility::writeFile(Environment::getPublicPath() . '/' . $filename, $externalContent, true);
         }
         return $filename;
     }

@@ -38,7 +38,7 @@ class BackendLocker
 
     public function lockBackend(string $redirectUriFromFileContent): void
     {
-        GeneralUtility::writeFile($this->getAbsolutePathToLockFile(), $redirectUriFromFileContent);
+        GeneralUtility::writeFile($this->getAbsolutePathToLockFile(), $redirectUriFromFileContent, true);
     }
 
     public function unlock(): void

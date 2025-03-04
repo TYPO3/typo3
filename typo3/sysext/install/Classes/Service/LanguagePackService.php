@@ -309,6 +309,5 @@ class LanguagePackService
         if ($zipService->verify($file)) {
             $zipService->extract($file, $path);
         }
-        GeneralUtility::fixPermissions($path, true);
     }
 }

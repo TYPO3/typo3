@@ -270,11 +270,11 @@ class FileSessionHandler implements \SessionHandlerInterface
 	Require all denied
 </IfModule>
 			';
-            GeneralUtility::writeFile($sessionSavePath . '/.htaccess', $htaccessContent);
+            GeneralUtility::writeFile($sessionSavePath . '/.htaccess', $htaccessContent, true);
             $indexContent = '<!DOCTYPE html>';
             $indexContent .= '<html><head><title></title><meta http-equiv=Refresh Content="0; Url=../../"/>';
             $indexContent .= '</head></html>';
-            GeneralUtility::writeFile($sessionSavePath . '/index.html', $indexContent);
+            GeneralUtility::writeFile($sessionSavePath . '/index.html', $indexContent, true);
         }
     }
 }

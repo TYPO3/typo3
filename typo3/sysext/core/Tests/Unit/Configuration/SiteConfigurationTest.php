@@ -84,7 +84,7 @@ final class SiteConfigurationTest extends UnitTestCase
         ];
         $yamlFileContents = Yaml::dump($configuration, 99, 2);
         GeneralUtility::mkdir($this->fixturePath . '/home');
-        GeneralUtility::writeFile($this->fixturePath . '/home/config.yaml', $yamlFileContents);
+        GeneralUtility::writeFile($this->fixturePath . '/home/config.yaml', $yamlFileContents, true);
         $sites = $this->siteConfiguration->resolveAllExistingSites();
         self::assertCount(1, $sites);
         $currentSite = current($sites);

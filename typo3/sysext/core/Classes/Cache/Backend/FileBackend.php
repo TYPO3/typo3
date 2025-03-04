@@ -142,8 +142,7 @@ class FileBackend extends SimpleFileBackend implements FreezableBackendInterface
         $lifetime = (int)($lifetime ?? $this->defaultLifetime);
         $expiryTime = $lifetime === 0 ? 0 : (int)($GLOBALS['EXEC_TIME'] + $lifetime);
         $metaData = str_pad((string)$expiryTime, self::EXPIRYTIME_LENGTH) . implode(' ', $tags) . str_pad((string)strlen($data), self::DATASIZE_DIGITS);
-        $result = file_put_contents($temporaryCacheEntryPathAndFilename, $data . $metaData);
-        GeneralUtility::fixPermissions($temporaryCacheEntryPathAndFilename);
+        $result = GeneralUtility::writeFile($temporaryCacheEntryPathAndFilename, $data . $metaData, true);
         if ($result === false) {
             throw new Exception('The temporary cache file "' . $temporaryCacheEntryPathAndFilename . '" could not be written.', 1204026251);
         }

@@ -91,7 +91,7 @@ class SiteWriter
             }
         }
         $yamlFileContents = Yaml::dump($settings, 99, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE | Yaml::DUMP_OBJECT_AS_MAP);
-        if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
+        if (!GeneralUtility::writeFile($fileName, $yamlFileContents, true)) {
             throw new SiteConfigurationWriteException('Unable to write site settings in sites/' . $siteIdentifier . '/' . self::SETTINGS_FILE_NAME, 1590487411);
         }
     }
@@ -134,7 +134,7 @@ class SiteWriter
         $event = $this->eventDispatcher->dispatch(new SiteConfigurationBeforeWriteEvent($siteIdentifier, $newConfiguration));
         $newConfiguration = $this->sortConfiguration($event->getConfiguration());
         $yamlFileContents = Yaml::dump($newConfiguration, 99, 2);
-        if (!GeneralUtility::writeFile($fileName, $yamlFileContents)) {
+        if (!GeneralUtility::writeFile($fileName, $yamlFileContents, true)) {
             throw new SiteConfigurationWriteException('Unable to write site configuration in sites/' . $siteIdentifier . '/' . self::CONFIG_FILE_NAME, 1590487011);
         }
         $this->eventDispatcher->dispatch(new SiteConfigurationChangedEvent($siteIdentifier));

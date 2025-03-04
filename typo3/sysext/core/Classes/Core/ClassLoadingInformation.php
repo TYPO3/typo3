@@ -94,11 +94,11 @@ class ClassLoadingInformation
 
         $generator = new ClassLoadingInformationGenerator();
         $classInfoFiles = $generator->buildAutoloadInformationFiles(self::isTestingContext(), Environment::getPublicPath() . '/', $activeExtensionPackages);
-        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile']);
-        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File']);
+        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSMAP_FILENAME, $classInfoFiles['classMapFile'], true);
+        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_PSR4_FILENAME, $classInfoFiles['psr-4File'], true);
 
         $classAliasMapFile = $generator->buildClassAliasMapFile($activeExtensionPackages);
-        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile);
+        GeneralUtility::writeFile(self::getClassLoadingInformationDirectory() . self::AUTOLOAD_CLASSALIASMAP_FILENAME, $classAliasMapFile, true);
     }
 
     /**

@@ -107,7 +107,7 @@ class SvgImageProcessor implements ProcessorInterface
         );
         // Save the output as a new processed file.
         $temporaryFilename = $this->getFilenameForSvgCropScaleMask($task);
-        GeneralUtility::writeFile($temporaryFilename, $processedSvg->saveXML());
+        GeneralUtility::writeFile($temporaryFilename, $processedSvg->saveXML(), true);
 
         $task->setExecuted(true);
         $imageInformation = GeneralUtility::makeInstance(ImageInfo::class, $temporaryFilename);
