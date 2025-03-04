@@ -128,7 +128,6 @@ class FileHandlingUtility implements LoggerAwareInterface
             $this->logger->error('Extracting the extension archive failed', ['exception' => $e]);
             throw new ExtensionManagerException('Extracting the extension archive failed: ' . $e->getMessage(), 1565777179, $e);
         }
-        GeneralUtility::fixPermissions($extensionDir, true);
     }
 
     /**

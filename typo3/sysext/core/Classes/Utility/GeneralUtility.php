@@ -1639,7 +1639,7 @@ class GeneralUtility
             // Checking dir-name again (sub-dir might have been created)
             if (@is_dir($dirName)) {
                 if ($filepath === $dirName . $fI['basename']) {
-                    static::writeFile($filepath, $content);
+                    static::writeFile($filepath, $content, true);
                     if (!@is_file($filepath)) {
                         $errorMessage = 'The file was not written to the disk. Please, check that you have write permissions to the ' . $prefixLabel . ' directory.';
                     }

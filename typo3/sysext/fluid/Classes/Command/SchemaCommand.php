@@ -107,7 +107,7 @@ final class SchemaCommand extends Command
             $fileName = str_replace('http://typo3.org/ns/', '', $xmlNamespace);
             $fileName = str_replace('/', '_', $fileName);
             $fileName = preg_replace('#[^0-9a-zA-Z_]#', '', $fileName);
-            GeneralUtility::writeFile($temporaryPath . 'schema_' . $fileName . '.xsd', $schema->asXml());
+            GeneralUtility::writeFile($temporaryPath . 'schema_' . $fileName . '.xsd', $schema->asXml(), true);
         }
 
         if ($errors !== []) {

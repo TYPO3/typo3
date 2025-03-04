@@ -229,7 +229,7 @@ class FileWriter extends AbstractWriter
             }
         }
         // create the log file
-        GeneralUtility::writeFile($this->logFile, '');
+        GeneralUtility::writeFile($this->logFile, '', true);
     }
 
     /**
@@ -254,7 +254,7 @@ class FileWriter extends AbstractWriter
 	Require all denied
 </IfModule>
 END;
-            GeneralUtility::writeFile($htaccessFile, $htaccessContent);
+            GeneralUtility::writeFile($htaccessFile, $htaccessContent, true);
         }
     }
 

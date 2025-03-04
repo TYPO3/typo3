@@ -199,9 +199,10 @@ class ServerResponseCheck implements CheckInterface
             if (!is_dir($filePath)) {
                 GeneralUtility::mkdir_deep($filePath);
             }
-            file_put_contents(
+            GeneralUtility::writeFile(
                 $filePath . $fileDeclaration->getFileName(),
-                $fileDeclaration->buildContent()
+                $fileDeclaration->buildContent(),
+                true
             );
         }
     }

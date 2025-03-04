@@ -423,7 +423,8 @@ class ConfigurationManager
     {
         return GeneralUtility::writeFile(
             $this->getAdditionalConfigurationFileLocation(),
-            "<?php\n" . implode("\n", $additionalConfigurationLines) . "\n"
+            "<?php\n" . implode("\n", $additionalConfigurationLines) . "\n",
+            true
         );
     }
 
