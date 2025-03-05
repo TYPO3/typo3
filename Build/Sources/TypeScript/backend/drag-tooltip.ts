@@ -250,7 +250,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     }
 
     return html`
-      <div class="dragging-tooltip" style="top: ${this.posY + 18}px; left: ${this.posX + 18}px;">
+      <div class="dragging-tooltip" style="top: ${this.posY + 18 + 'px'}; left: ${this.posX + 18 + 'px'};">
         <div class="dragging-tooltip-control">
           <typo3-backend-icon identifier="${this.dragAllowed ? (this.statusIconIdentifier ?? 'actions-question') : 'actions-ban'}" size="small">
           </typo3-backend-icon>
