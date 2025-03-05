@@ -265,7 +265,13 @@ module.exports = function (grunt) {
             // > The 'this' keyword is equivalent to 'undefined' at the top level of an ES module
             source = source.replace('__decorate=this&&this.__decorate||function', '__decorate=function');
 
-            return source;
+            try {
+              const res = require('minify-html-literals').minifyHTMLLiterals(source, { fileName: srcpath });
+              return res !== null ? res.code : source;
+            } catch (e) {
+              console.error('Failed to minify HTML template literals in ' + srcpath, e);
+              return source;
+            }
           }
         },
         files: [{

@@ -645,7 +645,7 @@ export class Tree extends LitElement {
             aria-posinset="${this.getNodePositionInSet(node)}"
             data-id="${this.getNodeIdentifier(node)}"
             data-tree-id="${this.getNodeTreeIdentifier(node)}"
-            style="top: ${node.__y}px; height: ${this.nodeHeight}px;"
+            style="top: ${node.__y + 'px'}; height: ${this.nodeHeight + 'px'};"
             tabindex="${this.getNodeTabindex(node)}"
 
             @dragover="${(event: DragEvent) => { this.handleNodeDragOver(event); }}"
