@@ -22,22 +22,21 @@ This provider can be used by 3rd party extensions to set the page title.
     :caption: my_extension/Classes/Controller/ItemController.php
 
     use MyVendor\MyExtension\Domain\Model\Item;
+    use Psr\Http\Message\ResponseInterface;
     use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
     use TYPO3\CMS\Seo\PageTitle\RecordTitleProvider;
-    use Psr\Http\Message\ResponseInterface;
 
     final class ItemController extends ActionController
     {
         public function __construct(
             private readonly RecordTitleProvider $recordTitleProvider
         ) {
-            parent::__construct();
         }
 
         public function showAction(Item $item): ResponseInterface
         {
             $this->recordTitleProvider->setTitle($item->getTitle());
-            $this-view->assign('item', $item);
+            $this->view->assign('item', $item);
             return $this->htmlResponse();
         }
     }
