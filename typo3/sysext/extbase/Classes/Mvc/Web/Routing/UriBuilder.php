@@ -535,6 +535,10 @@ class UriBuilder
             // @deprecated since TYPO3 v12, will be removed in TYPO3 v13. Remove together with other extbase feature toggle related code.
             //             Remove "&& !$this->configurationManager->isFeatureEnabled('enableNamespacedArgumentsForBackend')" from if()
             $prefixedControllerArguments = $controllerArguments;
+            // Backend UriBuilder needs the route, which usually maps to the "route" parameter, which can be
+            // found in "Configuration/Backend/Modules.php" as the main key - that is the actual base route
+            // for the backend module, which in Extbase-speak is called a "pluginName"
+            $prefixedControllerArguments['route'] = $pluginName;
         } else {
             $pluginNamespace = $this->extensionService->getPluginNamespace($extensionName, $pluginName);
             $prefixedControllerArguments = [$pluginNamespace => $controllerArguments];
