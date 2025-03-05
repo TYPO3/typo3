@@ -34,9 +34,9 @@
     "@types/nprogress": "^0.2.0",
     "@types/requirejs": "^2.1.32",
     "@types/sortablejs": "^1.15.7",
-    "@typescript-eslint/eslint-plugin": "^8.17.0",
-    "@typescript-eslint/parser": "^8.17.0",
-    "@typescript-eslint/typescript-estree": "^8.17.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.0",
+    "@typescript-eslint/parser": "^8.26.0",
+    "@typescript-eslint/typescript-estree": "^8.26.0",
     "@web/dev-server-esbuild": "^1.0.1",
     "@web/dev-server-import-maps": "^0.2.0",
     "@web/test-runner": "^0.18.0",
@@ -77,7 +77,7 @@
     "stylelint-order": "^5.0.0",
     "stylelint-scss": "^5.3.2",
     "terser": "^5.30.4",
-    "typescript": "^5.7.2"
+    "typescript": "^5.8.2"
   },
   "scripts": {
     "build": "./node_modules/.bin/grunt",
