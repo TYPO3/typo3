@@ -2281,18 +2281,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Annotation/IgnoreValidation.php
 
 		-
-			message: '#^Call to function is_callable\(\) with callable\(\)\: mixed will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/ActionController.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Mvc/Controller/ActionController.php
-
-		-
 			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2

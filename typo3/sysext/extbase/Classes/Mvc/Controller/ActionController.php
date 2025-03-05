@@ -328,9 +328,7 @@ abstract class ActionController implements ControllerInterface
                 $argument->getDataType(),
                 $this->request
             );
-            if ($validator !== null) {
-                $argument->setValidator($validator);
-            }
+            $argument->setValidator($validator);
         }
     }
 
@@ -352,7 +350,7 @@ abstract class ActionController implements ControllerInterface
         $this->fileHandlingService->initializeFileUploadConfigurationsFromRequest($request, $this->arguments);
         $this->initializeAction();
         $actionInitializationMethodName = 'initialize' . ucfirst($this->actionMethodName);
-        /** @var callable $callable */
+        /** @var callable|null $callable */
         $callable = [$this, $actionInitializationMethodName];
         if (is_callable($callable)) {
             $callable();
