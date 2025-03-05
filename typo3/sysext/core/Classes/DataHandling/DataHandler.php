@@ -3851,20 +3851,9 @@ class DataHandler
         if (!$this->tcaSchemaFactory->has($table) || !$uid || $this->isRecordCopied($table, $uid)) {
             return null;
         }
-
-        // Fetch record with permission check
-        $row = $this->recordInfoWithPermissionCheck($table, $uid, Permission::PAGE_SHOW);
-
-        // This checks if the record can be selected which is all that a copy action requires.
-        if ($row === false) {
-            $this->log(
-                $table,
-                $uid,
-                SystemLogDatabaseAction::INSERT,
-                null,
-                SystemLogErrorClassification::USER_ERROR,
-                'Attempt to rawcopy/versionize record which either does not exist or you don\'t have permission to read'
-            );
+        $row = BackendUtility::getRecord($table, $uid);
+        if (!is_array($row)) {
+            $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to create workspace version of a not existing record');
             return null;
         }
 
