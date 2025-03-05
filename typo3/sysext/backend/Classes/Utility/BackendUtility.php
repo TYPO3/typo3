@@ -2746,7 +2746,8 @@ class BackendUtility
      * and "ORIG_pid" will contain the live pid.
      *
      * @param string $table Table name
-     * @param array|null $row Record by reference. At least "uid", "pid", "t3ver_oid" and "t3ver_state" must be set. Keys not prefixed with '_' are used as field names in SQL.
+     * @param array|null $row Record by reference. At least "uid", "pid", "t3ver_oid" and "t3ver_state" must be set.
+     *                        Keys not prefixed with '_' are used as field names in SQL.
      * @param int $wsid Workspace ID, if not specified will use static::getBackendUserAuthentication()->workspace
      * @param bool $unsetMovePointers If TRUE the function does not return a "pointer" row for moved records in a workspace
      */
@@ -2780,18 +2781,12 @@ class BackendUtility
             $wsid,
             $table,
             $row['uid'],
-            implode(',', static::purgeComputedPropertyNames(array_keys($row)))
+            implode(',', static::purgeComputedPropertyNames(array_keys($row + ['t3ver_state' => null])))
         );
 
         // If version was found, swap the default record with that one.
         if (is_array($wsAlt)) {
-            // If t3ver_state is not found, then find it... (but we like best if it is here...)
-            if (!isset($wsAlt['t3ver_state'])) {
-                $stateRec = self::getRecord($table, $wsAlt['uid'], 't3ver_state');
-                $versionState = VersionState::tryFrom($stateRec['t3ver_state'] ?? 0);
-            } else {
-                $versionState = VersionState::tryFrom($wsAlt['t3ver_state']);
-            }
+            $versionState = VersionState::tryFrom($wsAlt['t3ver_state'] ?? 0);
             // Check if this is in move-state
             if ($versionState === VersionState::MOVE_POINTER) {
                 // @todo Same problem as frontend in versionOL(). See TODO point there and todo above.
