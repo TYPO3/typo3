@@ -107,7 +107,7 @@ final class UriBuilderTest extends UnitTestCase
     #[Test]
     public function uriForPrefixesArgumentsWithExtensionAndPluginNameAndSetsControllerArgument(): void
     {
-        $expectedArguments = ['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController'];
+        $expectedArguments = ['foo' => 'bar', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'route' => 'SomePlugin'];
         $GLOBALS['TSFE'] = null;
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -123,7 +123,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $arguments = ['foo' => 'bar', 'additionalParam' => 'additionalValue'];
         $controllerArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid']];
-        $expectedArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'additionalParam' => 'additionalValue'];
+        $expectedArguments = ['foo' => 'overruled', 'baz' => ['extbase' => 'fluid'], 'controller' => 'SomeController', 'additionalParam' => 'additionalValue', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $mockExtensionService = $this->createMock(ExtensionService::class);
@@ -137,7 +137,7 @@ final class UriBuilderTest extends UnitTestCase
     #[Test]
     public function uriForOnlySetsActionArgumentIfSpecified(): void
     {
-        $expectedArguments = ['controller' => 'SomeController'];
+        $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePlugin'];
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $mockExtensionService = $this->createMock(ExtensionService::class);
@@ -152,7 +152,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects(self::once())->method('getControllerName')->willReturn('SomeControllerFromRequest');
-        $expectedArguments = ['controller' => 'SomeControllerFromRequest'];
+        $expectedArguments = ['controller' => 'SomeControllerFromRequest', 'route' => 'SomePlugin'];
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $mockExtensionService = $this->createMock(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
@@ -166,7 +166,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects(self::once())->method('getControllerExtensionName')->willReturn('SomeExtensionNameFromRequest');
-        $expectedArguments = ['controller' => 'SomeController'];
+        $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePlugin'];
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $mockExtensionService = $this->createMock(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
@@ -194,7 +194,7 @@ final class UriBuilderTest extends UnitTestCase
     {
         $mockRequest = $this->createMock(Request::class);
         $mockRequest->expects(self::once())->method('getPluginName')->willReturn('SomePluginNameFromRequest');
-        $expectedArguments = ['controller' => 'SomeController'];
+        $expectedArguments = ['controller' => 'SomeController', 'route' => 'SomePluginNameFromRequest'];
         $mockRequest->method('getAttribute')->with('applicationType')->willReturn(SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $mockExtensionService = $this->createMock(ExtensionService::class);
         $subject = $this->getAccessibleMock(UriBuilder::class, ['build'], [$mockExtensionService]);
