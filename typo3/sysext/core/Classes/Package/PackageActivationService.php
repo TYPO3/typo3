@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
@@ -44,15 +45,12 @@ class PackageActivationService
 {
     public function __construct(
         private Registry $registry,
-        private SqlReader $sqlReader,
-        private SchemaMigrator $schemaMigrator,
         private PackageManager $packageManager,
         private CacheManager $cacheManager,
         private BootService $bootService,
         private OpcodeCacheService $opcodeCacheService,
         private EventDispatcherInterface $eventDispatcher,
         private ExtensionConfiguration $extensionConfiguration,
-        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function activate(array $extensionKeys, ?object $emitter = null): void
@@ -66,21 +64,23 @@ class PackageActivationService
         $this->cacheManager->flushCaches();
         // Load a new container as we are reloading ext_localconf.php files
         $container = $this->bootService->getContainer(false);
-        $backup = $this->bootService->makeCurrent($container);
+        $backupContainer = $this->bootService->makeCurrent($container);
+        $backupTca = $GLOBALS['TCA'];
         // Reload cache files and Typo3LoadedExtensions
         $this->opcodeCacheService->clearAllActive();
         $container->get(ExtLocalconfFactory::class)->loadUncached();
         $tcaFactory = $container->get(TcaFactory::class);
         $GLOBALS['TCA'] = $tcaFactory->create();
         $container->get(ExtTablesFactory::class)->loadUncached();
-        $this->tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $container->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $this->updateDatabase();
         $eventDispatcher = $container->get(EventDispatcherInterface::class);
         foreach ($packages as $extensionKey => $package) {
             $eventDispatcher->dispatch(new PackageInitializationEvent($extensionKey, $package, $container, $emitter));
         }
-        // Reset to the original container instance
-        $this->bootService->makeCurrent(null, $backup);
+        // Reset to the original container instance and original TCA
+        $GLOBALS['TCA'] = $backupTca;
+        $this->bootService->makeCurrent(null, $backupContainer);
     }
 
     public function reloadExtensionData(array $extensionKeys, ?object $emitter = null): void
@@ -102,10 +102,18 @@ class PackageActivationService
 
     public function updateDatabase(): void
     {
+        // The following will fetch the currently active container
+        // Either the one initialized during boot (used in the extension:setup command)
+        // or the one set by the BootService
+        // Do NOT replace this with DI injection of those services in this class,
+        // as this would only ever get the services initialized during boot.
+        $container = GeneralUtility::getContainer();
+        $sqlReader = $container->get(SqlReader::class);
+        $schemaMigrator = $container->get(SchemaMigrator::class);
         $sqlStatements = [];
-        $sqlStatements[] = $this->sqlReader->getTablesDefinitionString();
-        $sqlStatements = $this->sqlReader->getCreateTableStatementArray(implode(LF . LF, array_filter($sqlStatements)));
-        $updateStatements = $this->schemaMigrator->getUpdateSuggestions($sqlStatements);
+        $sqlStatements[] = $sqlReader->getTablesDefinitionString();
+        $sqlStatements = $sqlReader->getCreateTableStatementArray(implode(LF . LF, array_filter($sqlStatements)));
+        $updateStatements = $schemaMigrator->getUpdateSuggestions($sqlStatements);
         $updateStatements = array_merge_recursive(...array_values($updateStatements));
         $selectedStatements = [];
         foreach (['add', 'change', 'create_table', 'change_table'] as $action) {
@@ -118,6 +126,6 @@ class PackageActivationService
                 $statements
             );
         }
-        $this->schemaMigrator->migrate($sqlStatements, $selectedStatements);
+        $schemaMigrator->migrate($sqlStatements, $selectedStatements);
     }
 }
