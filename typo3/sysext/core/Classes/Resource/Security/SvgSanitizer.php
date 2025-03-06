@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource\Security;
 
+use enshrined\svgSanitize\data\XPath;
+use enshrined\svgSanitize\ElementReference\Resolver;
 use enshrined\svgSanitize\Sanitizer;
 
 class SvgSanitizer
@@ -53,5 +55,32 @@ class SvgSanitizer
         libxml_clear_errors();
         libxml_use_internal_errors($previousXmlErrorHandling);
         return $sanitizedString;
+    }
+
+    public function sanitizeNode(
+        \DOMNode $node,
+    ): \DOMNode {
+        $svgSanitizer = new class () extends Sanitizer {
+            public function sanitizeDocument(\DOMDocument $document): void
+            {
+                $this->xmlDocument = $document;
+                $this->setUpBefore();
+                // Pre-process all identified elements
+                $xPath = new XPath($this->xmlDocument);
+                $this->elementReferenceResolver = new Resolver($xPath, $this->useNestingLimit);
+                $this->elementReferenceResolver->collect();
+                $elementsToRemove = $this->elementReferenceResolver->getElementsToRemove();
+                // Start the cleaning process
+                $this->startClean($this->xmlDocument->childNodes, $elementsToRemove);
+                $this->resetAfter();
+            }
+        };
+
+        $svg = new \DOMDocument();
+        $svg->appendChild($svg->importNode($node, true));
+
+        $svgSanitizer->removeRemoteReferences(true);
+        $svgSanitizer->sanitizeDocument($svg);
+        return $node->ownerDocument->importNode($svg->documentElement, true);
     }
 }
