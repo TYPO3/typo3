@@ -143,52 +143,57 @@ class Scheduler implements SingletonInterface
         // Set a scheduler object for the task again,
         // as it was removed during the save operation
         $task->setScheduler();
-        $result = true;
-        // Task is already running and multiple executions are not allowed
-        if (!$task->areMultipleExecutionsAllowed() && $this->schedulerTaskRepository->isTaskMarkedAsRunning($task)) {
-            // Log multiple execution error
+
+        // Reserve an id for the upcoming execution
+        $executionID = $this->schedulerTaskRepository->addExecutionToTask($task);
+        // Make sure we're the only one executing a single-execution-only task
+        if (!$task->areMultipleExecutionsAllowed() && $executionID > 0) {
+            $this->schedulerTaskRepository->removeExecutionOfTask($task, $executionID, null);
             $this->logger->info('Task is already running and multiple executions are not allowed, skipping! Class: {class}, UID: {uid}', [
                 'class' => get_class($task),
                 'uid' => $task->getTaskUid(),
             ]);
-            $result = false;
-        } else {
-            // Log scheduler invocation
-            $this->logger->info('Start execution. Class: {class}, UID: {uid}', [
-                'class' => get_class($task),
-                'uid' => $task->getTaskUid(),
-            ]);
-            // Register execution
-            $executionID = $this->schedulerTaskRepository->addExecutionToTask($task);
-            $failureString = '';
-            $e = null;
-            try {
-                // Execute task
-                $successfullyExecuted = $task->execute();
-                if (!$successfullyExecuted) {
-                    throw new FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
-                }
-            } catch (\Throwable $e) {
-                // Log failed execution
-                $this->logger->error('Task failed to execute successfully. Class: {taskClass}, UID: {taskId}, Code: {code}, "{message}" in {exceptionFile} at line {exceptionLine}', [
-                    'taskClass' => get_class($task),
-                    'taskId' => $task->getTaskUid(),
-                    'exception' => $e,
-                    'exceptionFile' => $e->getFile(),
-                    'exceptionLine' => $e->getLine(),
-                    'code' => $e->getCode(),
-                    'message' => $e->getMessage(),
-                ]);
-                // Store exception, so that it can be saved to database
-                // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
-                $failureString = serialize([
-                    'code' => $e->getCode(),
-                    'message' => $e->getMessage(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'traceString' => $e->getTraceAsString(),
-                ]);
+            return false;
+        }
+
+        // Log scheduler invocation
+        $this->logger->info('Start execution. Class: {class}, UID: {uid}', [
+            'class' => get_class($task),
+            'uid' => $task->getTaskUid(),
+        ]);
+
+        $failureString = '';
+        try {
+            // Execute task
+            $successfullyExecuted = $task->execute();
+            if (!$successfullyExecuted) {
+                throw new FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
             }
+            return true;
+        } catch (\Throwable $e) {
+            // Log failed execution
+            $this->logger->error('Task failed to execute successfully. Class: {taskClass}, UID: {taskId}, Code: {code}, "{message}" in {exceptionFile} at line {exceptionLine}', [
+                'taskClass' => get_class($task),
+                'taskId' => $task->getTaskUid(),
+                'exception' => $e,
+                'exceptionFile' => $e->getFile(),
+                'exceptionLine' => $e->getLine(),
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+            ]);
+            // Store exception, so that it can be saved to database
+            // Do not serialize the complete exception or the trace, this can lead to huge strings > 50MB
+            $failureString = serialize([
+                'code' => $e->getCode(),
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'traceString' => $e->getTraceAsString(),
+            ]);
+            // Now that the result of the task execution has been handled,
+            // throw the exception again, if any
+            throw $e;
+        } finally {
             // Un-register execution
             $this->schedulerTaskRepository->removeExecutionOfTask($task, $executionID, $failureString);
             // Log completion of execution
@@ -196,13 +201,7 @@ class Scheduler implements SingletonInterface
                 'class' => get_class($task),
                 'uid' => $task->getTaskUid(),
             ]);
-            // Now that the result of the task execution has been handled,
-            // throw the exception again, if any
-            if ($e !== null) {
-                throw $e;
-            }
         }
-        return $result;
     }
 
     /**
