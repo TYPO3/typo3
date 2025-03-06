@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Unit\Context;
 
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\SecurityAspect;
 use TYPO3\CMS\Core\Security\NoncePool;
@@ -45,13 +44,5 @@ final class SecurityAspectTest extends UnitTestCase
     {
         $aspect = new SecurityAspect();
         self::assertInstanceOf(NoncePool::class, $aspect->getSigningSecretResolver()->findByType('nonce'));
-    }
-
-    #[Test]
-    #[DoesNotPerformAssertions]
-    public function noncePoolIsFunctional(): void
-    {
-        $aspect = new SecurityAspect();
-        $aspect->getNoncePool();
     }
 }

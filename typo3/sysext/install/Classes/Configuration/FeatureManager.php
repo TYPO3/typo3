@@ -50,7 +50,6 @@ class FeatureManager
     {
         $features = [];
         foreach ($this->featureRegistry as $featureClass) {
-            /** @var FeatureInterface $featureInstance */
             $featureInstance = GeneralUtility::makeInstance($featureClass);
             if (!($featureInstance instanceof FeatureInterface)) {
                 throw new Exception(
@@ -79,7 +78,6 @@ class FeatureManager
             $featureName = $feature->getName();
             $presets = $feature->getPresetsOrderedByPriority();
             foreach ($presets as $preset) {
-                /** @var PresetInterface $preset */
                 $presetName = $preset->getName();
                 if (!empty($postValues[$featureName]['enable'])
                     && $postValues[$featureName]['enable'] === $presetName
@@ -113,7 +111,6 @@ class FeatureManager
                     break;
                 }
 
-                /** @var PresetInterface $preset */
                 if ($preset->isAvailable()) {
                     $localConfigurationValuesToSet = array_merge(
                         $localConfigurationValuesToSet,
