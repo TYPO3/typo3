@@ -259,6 +259,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function createLocalizedContentWithLocalizationExclude(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['header']['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
         $newContentIdDefault = StringUtility::getUniqueId('NEW');
         $newContentIdLocalized = StringUtility::getUniqueId('NEW');
         $dataMap = [
