@@ -45,11 +45,4 @@ final class SecurityAspectTest extends UnitTestCase
         $aspect = new SecurityAspect();
         self::assertInstanceOf(NoncePool::class, $aspect->getSigningSecretResolver()->findByType('nonce'));
     }
-
-    #[Test]
-    public function noncePoolIsFunctional(): void
-    {
-        $aspect = new SecurityAspect();
-        self::assertInstanceOf(NoncePool::class, $aspect->getNoncePool());
-    }
 }

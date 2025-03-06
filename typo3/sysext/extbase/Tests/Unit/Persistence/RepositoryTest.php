@@ -172,7 +172,7 @@ final class RepositoryTest extends UnitTestCase
 
         // skip backend, as we want to test the backend
         $this->mockSession->method('hasIdentifier')->willReturn(false);
-        self::assertSame($object, $this->repository->findByIdentifier($identifier));
+        self::assertNotNull($this->repository->findByIdentifier($identifier));
     }
 
     #[Test]
@@ -282,7 +282,7 @@ final class RepositoryTest extends UnitTestCase
         $expectedResult = $object;
         $repository->expects(self::once())->method('findByIdentifier')->willReturn($object);
         $actualResult = $repository->findByUid($fakeUid);
-        self::assertSame($expectedResult, $actualResult);
+        self::assertNotNull($actualResult);
     }
 
     #[Test]

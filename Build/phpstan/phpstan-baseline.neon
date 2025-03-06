@@ -373,12 +373,6 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Middleware/BackendModuleValidator.php
 
 		-
-			message: '#^PHPDoc tag @var with type string is not subtype of native type mixed\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Preview/StandardPreviewRendererResolver.php
-
-		-
 			message: '#^Call to function is_array\(\) with array\<int\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
@@ -509,12 +503,6 @@ parameters:
 			identifier: empty.variable
 			count: 1
 			path: ../../typo3/sysext/backend/Classes/Tree/View/AbstractContentPagePositionMap.php
-
-		-
-			message: '#^PHPDoc tag @var with type array is not subtype of native type mixed\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/View/AbstractTreeView.php
 
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
@@ -3091,12 +3079,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Console/CommandRegistryTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Security\\\\NoncePool'' and TYPO3\\CMS\\Core\\Security\\NoncePool will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Context/SecurityAspectTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsString\(\) with string will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -4033,12 +4015,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Reflection/ClassSchema.php
 
 		-
-			message: '#^PHPDoc tag @var with type class\-string\<mixed\> is not subtype of native type mixed\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Reflection/ClassSchema.php
-
-		-
 			message: '#^Call to function is_array\(\) with object will always evaluate to false\.$#'
 			identifier: function.impossibleType
 			count: 1
@@ -4849,12 +4825,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/ImageViewHelper.php
 
 		-
-			message: '#^PHPDoc tag @var with type array\|null is not subtype of native type mixed\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Link/ActionViewHelper.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between mixed and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1
@@ -4871,12 +4841,6 @@ parameters:
 			identifier: offsetAccess.notFound
 			count: 1
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Transform/HtmlViewHelper.php
-
-		-
-			message: '#^PHPDoc tag @var with type array\|null is not subtype of native type mixed\.$#'
-			identifier: varTag.nativeType
-			count: 2
-			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Uri/ActionViewHelper.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between mixed and null will always evaluate to true\.$#'
@@ -6269,18 +6233,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Configuration/AbstractFeature.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Install\\Configuration\\FeatureInterface and TYPO3\\CMS\\Install\\Configuration\\FeatureInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Configuration/FeatureManager.php
-
-		-
-			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Install\\Configuration\\PresetInterface is not subtype of native type mixed\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Configuration/FeatureManager.php
 
 		-
 			message: '#^Parameter \#1 \$im of method TYPO3\\CMS\\Core\\Imaging\\GraphicalFunctions\:\:makeBox\(\) expects resource, \(GdImage\|false\) given\.$#'

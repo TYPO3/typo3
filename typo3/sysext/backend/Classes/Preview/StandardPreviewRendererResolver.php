@@ -69,8 +69,7 @@ class StandardPreviewRendererResolver
             $previewRendererClassName = $tca['ctrl']['previewRenderer'] ?? null;
         }
 
-        if (!empty($previewRendererClassName)) {
-            /** @var string $previewRendererClassName */
+        if (is_string($previewRendererClassName) && $previewRendererClassName !== '') {
             if (!is_a($previewRendererClassName, PreviewRendererInterface::class, true)) {
                 throw new \UnexpectedValueException(
                     sprintf(
