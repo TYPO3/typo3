@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\Event\AfterSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\Event\BeforeSectionMarkupGeneratedEvent;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -149,7 +150,7 @@ class GridColumn extends AbstractGridObject
     {
         $uids = [];
         foreach ($this->items as $columnItem) {
-            $uids[] = (int)$columnItem->getRecord()['uid'];
+            $uids[] = $columnItem->getRecord()->getUid();
         }
         return $uids;
     }
@@ -257,7 +258,7 @@ class GridColumn extends AbstractGridObject
     /**
      * Get the raw records for the current column
      *
-     * @return array<int, array<string, mixed>>
+     * @return RecordInterface[]
      */
     protected function getRecords(): array
     {
@@ -268,7 +269,7 @@ class GridColumn extends AbstractGridObject
         $records = [];
         foreach ($this->items as $item) {
             $record = $item->getRecord();
-            $records[(int)$record['uid']] = $record;
+            $records[$record->getUid()] = $record;
         }
         return $records;
     }

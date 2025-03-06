@@ -72,14 +72,13 @@ class BackendLayoutRenderer
                 if (isset($column['colPos'])) {
                     $records = $contentFetcher->getContentRecordsPerColumn($context, (int)$column['colPos'], $languageId);
                     foreach ($records as $contentRecord) {
-                        // @todo: ideally we hand in the record object into the GridColumnItem in the future - For now
-                        //        we just call record factory to create the record and store it in the identity map.
                         try {
-                            $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord, null, $recordIdentityMap);
+                            // By calling record factory to create the record, it is also stored in the identity map.
+                            $contentRecord = $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord, null, $recordIdentityMap);
+                            $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
+                            $columnObject->addItem($columnItem);
                         } catch (UndefinedSchemaException) {
                         }
-                        $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $context, $columnObject, $contentRecord);
-                        $columnObject->addItem($columnItem);
                     }
                 }
             }
@@ -168,6 +167,7 @@ class BackendLayoutRenderer
         $unusedRow->addColumn($unusedColumn);
 
         foreach ($unusedRecords as $unusedRecord) {
+            $unusedRecord = $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $unusedRecord, null, $pageLayoutContext->getRecordIdentityMap());
             $item = GeneralUtility::makeInstance(GridColumnItem::class, $pageLayoutContext, $unusedColumn, $unusedRecord);
             $unusedColumn->addItem($item);
         }
@@ -220,7 +220,8 @@ class BackendLayoutRenderer
                         foreach ($column->getItems() as $item) {
                             // check if translation exists
                             foreach ($translatedRows as $translation) {
-                                if ($translation['l18n_parent'] === $item->getRecord()['uid']) {
+                                if ($translation['l18n_parent'] === $item->getRecord()->getUid()) {
+                                    $translation = $this->recordFactory->createResolvedRecordFromDatabaseRow('tt_content', $translation, null, $context->getRecordIdentityMap());
                                     $translatedItem = GeneralUtility::makeInstance(GridColumnItem::class, $localizedContext, $column, $translation);
                                     $item->addTranslation($localizedLanguageId, $translatedItem);
                                 }

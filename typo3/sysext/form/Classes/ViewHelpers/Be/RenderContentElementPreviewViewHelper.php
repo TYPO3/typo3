@@ -25,6 +25,7 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
 use TYPO3\CMS\Backend\View\Drawing\DrawingConfiguration;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Backend\View\PageViewMode;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
@@ -71,6 +72,7 @@ final class RenderContentElementPreviewViewHelper extends AbstractViewHelper
                 $request
             );
             $gridColumn = GeneralUtility::makeInstance(GridColumn::class, $pageLayoutContext, []);
+            $contentRecord = GeneralUtility::makeInstance(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $contentRecord, null, $pageLayoutContext->getRecordIdentityMap());
             $columnItem = GeneralUtility::makeInstance(GridColumnItem::class, $pageLayoutContext, $gridColumn, $contentRecord);
             return $columnItem->getPreview();
         }

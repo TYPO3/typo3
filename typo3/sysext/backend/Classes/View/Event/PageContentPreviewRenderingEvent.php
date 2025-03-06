@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\View\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 
 /**
  * Use this Event to have a custom preview for a content type in the Page Module
@@ -30,7 +31,7 @@ final class PageContentPreviewRenderingEvent implements StoppableEventInterface
     public function __construct(
         private readonly string $table,
         private readonly string $recordType,
-        private array $record,
+        private RecordInterface $record,
         private readonly PageLayoutContext $context
     ) {}
 
@@ -44,12 +45,12 @@ final class PageContentPreviewRenderingEvent implements StoppableEventInterface
         return $this->recordType;
     }
 
-    public function getRecord(): array
+    public function getRecord(): RecordInterface
     {
         return $this->record;
     }
 
-    public function setRecord(array $record): void
+    public function setRecord(RecordInterface $record): void
     {
         $this->record = $record;
     }

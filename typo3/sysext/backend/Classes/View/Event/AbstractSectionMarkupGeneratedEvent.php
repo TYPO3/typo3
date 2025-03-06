@@ -19,11 +19,13 @@ namespace TYPO3\CMS\Backend\View\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Backend\View\PageLayoutContext;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 
 abstract class AbstractSectionMarkupGeneratedEvent implements StoppableEventInterface
 {
     private array $columnConfig;
     private PageLayoutContext $pageLayoutContext;
+    /** @var RecordInterface[] */
     private array $records;
 
     private string $content = '';
@@ -46,6 +48,9 @@ abstract class AbstractSectionMarkupGeneratedEvent implements StoppableEventInte
         return $this->pageLayoutContext;
     }
 
+    /**
+     * @return RecordInterface[]
+     */
     public function getRecords(): array
     {
         return $this->records;

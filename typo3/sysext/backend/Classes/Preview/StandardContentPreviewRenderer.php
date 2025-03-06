@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
@@ -57,31 +58,32 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     public function renderPageModulePreviewHeader(GridColumnItem $item): string
     {
         $record = $item->getRecord();
+        $row = $record->getRawRecord()?->toArray() ?? [];
         $itemLabels = $item->getContext()->getItemLabels();
         $table = $item->getTable();
         $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($table);
         $outHeader = '';
 
-        $headerLayout = (string)($record['header_layout'] ?? '');
+        $headerLayout = (string)($row['header_layout'] ?? '');
         if ($headerLayout === '100') {
             $headerLayoutHiddenLabel = $this->getLanguageService()->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:header_layout.I.6');
             $outHeader .= '<div class="element-preview-header-status">' . htmlspecialchars($headerLayoutHiddenLabel) . '</div>';
         }
 
-        $date = (string)($record['date'] ?? '');
+        $date = (string)($row['date'] ?? '');
         if ($date !== '0' && $date !== '') {
-            $dateLabel = $itemLabels['date'] . ' ' . BackendUtility::date($record['date']);
+            $dateLabel = $itemLabels['date'] . ' ' . BackendUtility::date($row['date']);
             $outHeader .= '<div class="element-preview-header-date">' . htmlspecialchars($dateLabel) . ' </div>';
         }
 
         if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-            $label = $record[$schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName()] ?? '';
+            $label = $row[$schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName()] ?? '';
             if ($label !== '') {
-                $outHeader .= '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($label), $record, $table) . '</div>';
+                $outHeader .= '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($label), $record) . '</div>';
             }
         }
 
-        $subHeader = (string)($record['subheader'] ?? '');
+        $subHeader = (string)($row['subheader'] ?? '');
         if ($subHeader !== '') {
             $outHeader .= '<div class="element-preview-header-subheader">' . $this->linkEditContent($this->renderText($subHeader), $record) . '</div>';
         }
@@ -93,8 +95,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     {
         $languageService = $this->getLanguageService();
         $table = $item->getTable();
-        $record = $item->getRecord();
-        $recordObj = GeneralUtility::makeInstance(RecordFactory::class)->createResolvedRecordFromDatabaseRow($table, $record);
+        $recordObj = $item->getRecord();
         $recordType = $recordObj->getRecordType();
         $out = '';
 
@@ -119,7 +120,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                 break;
             case 'uploads':
                 if ($recordObj->has('media') && ($media = $recordObj->get('media'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $record);
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $recordObj);
                 }
                 break;
             case 'shortcut':
@@ -128,17 +129,18 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                     $shortcutRecords = $records instanceof \Traversable ? $records : [$records];
                     foreach ($shortcutRecords as $shortcutRecord) {
                         $shortcutTableName = $shortcutRecord->getMainType();
+                        $row = $shortcutRecord->getRawRecord()?->toArray() ?? [];
                         if ($recordObj instanceof Record) {
                             $shortcutRecord = $this->translateShortcutRecord($recordObj, $shortcutRecord, $shortcutTableName);
                         }
-                        $icon = $this->getIconFactory()->getIconForRecord($shortcutTableName, $shortcutRecord->toArray(), IconSize::SMALL)->render();
+                        $icon = $this->getIconFactory()->getIconForRecord($shortcutTableName, $row, IconSize::SMALL)->render();
                         $icon = BackendUtility::wrapClickMenuOnIcon(
                             $icon,
                             $shortcutTableName,
                             $shortcutRecord->getUid(),
                             '1'
                         );
-                        $shortcutContent .= '<li class="list-group-item">' . $icon . ' ' . htmlspecialchars(BackendUtility::getRecordTitle($shortcutTableName, $shortcutRecord->toArray())) . '</li>';
+                        $shortcutContent .= '<li class="list-group-item">' . $icon . ' ' . htmlspecialchars(BackendUtility::getRecordTitle($shortcutTableName, $row)) . '</li>';
                     }
                     $out .= $shortcutContent ? '<ul class="list-group">' . $shortcutContent . '</ul>' : '';
                 }
@@ -154,23 +156,24 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             case 'menu_sitemap':
             case 'menu_sitemap_pages':
             case 'menu_subpages':
-                if ($recordType !== 'menu_sitemap' && (($record['pages'] ?? false) || ($record['selected_categories'] ?? false))) {
+                $row = $recordObj->getRawRecord()?->toArray() ?? [];
+                if ($recordType !== 'menu_sitemap' && (($row['pages'] ?? false) || ($row['selected_categories'] ?? false))) {
                     // Show pages/categories if menu type is not "Sitemap"
-                    $out .= $this->linkEditContent($this->generateListForMenuContentTypes($record, $recordType), $record);
+                    $out .= $this->linkEditContent($this->generateListForMenuContentTypes($row, $recordType), $recordObj);
                 }
                 break;
             default:
                 if ($recordObj->has('bodytext') && ($bodytext = $recordObj->get('bodytext'))) {
-                    $out .= $this->linkEditContent($this->renderText($bodytext), $record);
+                    $out .= $this->linkEditContent($this->renderText($bodytext), $recordObj);
                 }
                 if ($recordObj->has('image') && ($image = $recordObj->get('image'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($image), $record);
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($image), $recordObj);
                 }
                 if ($recordObj->has('media') && ($media = $recordObj->get('media'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $record);
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($media), $recordObj);
                 }
                 if ($recordObj->has('assets') && ($assets = $recordObj->get('assets'))) {
-                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($assets), $record);
+                    $out .= $this->linkEditContent($this->getThumbCodeUnlinked($assets), $recordObj);
                 }
         }
 
@@ -183,7 +186,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     public function renderPageModulePreviewFooter(GridColumnItem $item): string
     {
         $info = [];
-        $record = $item->getRecord();
+        $row = $item->getRecord()->getRawRecord()?->toArray() ?? [];
         $table = $item->getTable();
         $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($table);
         $fieldList = [];
@@ -210,8 +213,8 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $this->getProcessedValue($item, $fieldList, $info);
 
         if ($schema->hasCapability(TcaSchemaCapability::InternalDescription) &&
-            !empty($record[$schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName()])) {
-            $info[] = htmlspecialchars($record[$schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName()]);
+            !empty($row[$schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName()])) {
+            $info[] = htmlspecialchars($row[$schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName()]);
         }
 
         if ($info !== []) {
@@ -249,7 +252,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
     protected function getProcessedValue(GridColumnItem $item, string|array $fieldList, array &$info): void
     {
         $itemLabels = $item->getContext()->getItemLabels();
-        $record = $item->getRecord();
+        $record = $item->getRecord()->getRawRecord()?->toArray() ?? [];
         $table = $item->getTable();
         $fieldArr = is_array($fieldList) ? $fieldList : explode(',', $fieldList);
         foreach ($fieldArr as $field) {
@@ -362,29 +365,29 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
      * button
      *
      * @param string $linkText String to link. Must be prepared for HTML output.
-     * @param array $row The row.
+     * @param RecordInterface $record The record.
      * @return string If the whole thing was editable and $linkText is not empty $linkText is returned with link
      *                around. Otherwise just $linkText.
      */
-    protected function linkEditContent(string $linkText, array $row, string $table = 'tt_content'): string
+    protected function linkEditContent(string $linkText, RecordInterface $record): string
     {
         if (empty($linkText)) {
             return $linkText;
         }
-
+        $table = $record->getMainType();
         $backendUser = $this->getBackendUser();
         if ($backendUser->check('tables_modify', $table)
-            && $backendUser->recordEditAccessInternals($table, $row)
-            && (new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? [])))->editContentPermissionIsGranted()
+            && $backendUser->recordEditAccessInternals($table, $record)
+            && (new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $record->getPid()) ?? [])))->editContentPermissionIsGranted()
         ) {
             $urlParameters = [
                 'edit' => [
                     $table => [
-                        $row['uid'] => 'edit',
+                        $record->getUid() => 'edit',
                     ],
                 ],
                 'module' => 'web_layout',
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $table . '-' . $row['uid'],
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $table . '-' . $record->getUid(),
             ];
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
             $url = (string)$uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

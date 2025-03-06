@@ -23,6 +23,8 @@ use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Domain\RawRecord;
+use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
@@ -42,9 +44,9 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
     public function resolveStandardContentPreviewRenderer(): void
     {
         $table = 'tt_content';
-        $row = [
+        $record = new RawRecord(1, 1, [
             'CType' => 'text',
-        ];
+        ], new ComputedProperties(), $table . '.text');
 
         $tcaSchemaFactory = $this->createTcaSchemaFactory();
         $tcaSchemaFactory->rebuild($this->getDefaultTca());
@@ -52,7 +54,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
 
         self::assertEquals(
             StandardContentPreviewRenderer::class,
-            get_class($subject->resolveRendererFor($table, $row, 0))
+            get_class($subject->resolveRendererFor($record))
         );
     }
 
@@ -62,9 +64,10 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         $customPreviewRenderer = $this->getMockBuilder(PreviewRendererInterface::class)->getMock();
 
         $table = 'tt_content';
-        $row = [
+        $record = new RawRecord(1, 1, [
             'CType' => 'my_plugin_pi1',
-        ];
+        ], new ComputedProperties(), $table . '.my_plugin_pi1');
+
         $tcaSchemaFactory = $this->createTcaSchemaFactory();
         $tca = $this->getDefaultTca();
         $tca[$table]['types']['my_plugin_pi1']['previewRenderer'] = get_class($customPreviewRenderer);
@@ -73,7 +76,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
 
         self::assertEquals(
             get_class($customPreviewRenderer),
-            get_class($subject->resolveRendererFor($table, $row, 0))
+            get_class($subject->resolveRendererFor($record))
         );
     }
 
@@ -83,9 +86,9 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         $customPreviewRenderer = $this->getMockBuilder(PreviewRendererInterface::class)->getMock();
 
         $table = 'tt_content';
-        $row = [
+        $record = new RawRecord(1, 1, [
             'CType' => 'my_plugin_pi1',
-        ];
+        ], new ComputedProperties(), $table . '.my_plugin_pi1');
 
         $tcaSchemaFactory = $this->createTcaSchemaFactory();
         $tca = $this->getDefaultTca();
@@ -95,7 +98,7 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
 
         self::assertEquals(
             StandardContentPreviewRenderer::class,
-            get_class($subject->resolveRendererFor($table, $row, 0))
+            get_class($subject->resolveRendererFor($record))
         );
     }
 
@@ -120,14 +123,14 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         $subject = new StandardPreviewRendererResolver($tcaSchemaFactory);
 
         $table = 'pages';
-        $row = [
+        $record = new RawRecord(1, 1, [
             'CType' => PageRepository::DOKTYPE_DEFAULT,
-        ];
+        ], new ComputedProperties(), $table . '.' . PageRepository::DOKTYPE_DEFAULT);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1477520356);
 
-        $subject->resolveRendererFor($table, $row, 0);
+        $subject->resolveRendererFor($record);
     }
 
     private function createTcaSchemaFactory(): TcaSchemaFactory

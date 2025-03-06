@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Form\Hooks;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem;
+use TYPO3\CMS\Core\Domain\FlexFormFieldValues;
 use TYPO3\CMS\Core\Error\Exception;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
@@ -54,20 +55,22 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
 
     public function renderPageModulePreviewContent(GridColumnItem $item): string
     {
-        $row = $item->getRecord();
-        $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $row) . '<br />';
-        $flexFormData = $row['pi_flexform'] ?? [];
-        if (is_string($flexFormData)) {
-            $flexFormData = $this->flexFormService->convertFlexFormContentToArray($flexFormData);
-        }
-        if (!is_array($flexFormData)) {
+        $record = $item->getRecord();
+        $itemContent = $this->linkEditContent('<strong>' . htmlspecialchars($item->getContext()->getContentTypeLabels()['form_formframework']) . '</strong>', $record) . '<br />';
+        $flexFormData = null;
+        if ($record->has('pi_flexform')
+            && (
+                ($flexFormData = $record->get('pi_flexform')) instanceof FlexFormFieldValues === false
+                || !$flexFormData->has('sDEF/settings.persistenceIdentifier')
+            )
+        ) {
             $this->logger?->warning(
-                'Type "{type}" of field "pi_flexform" for record-uid "{uid}" is not valid. Must be either empty or set to one of: "string", "array".',
-                ['type' => get_debug_type($flexFormData), 'uid' => $row['uid'] ?? 'UNKNOWN']
+                'Type "{type}" of field "pi_flexform" for record-uid "{uid}" is not valid.',
+                ['type' => get_debug_type($flexFormData), 'uid' => $record->getUid()]
             );
-            $flexFormData = [];
+            $flexFormData = null;
         }
-        $persistenceIdentifier = $flexFormData['settings']['persistenceIdentifier'] ?? '';
+        $persistenceIdentifier = $flexFormData->get('sDEF/settings.persistenceIdentifier');
         $languageService = $this->getLanguageService();
         if (!empty($persistenceIdentifier)) {
             try {
@@ -131,7 +134,7 @@ class FormPagePreviewRenderer extends StandardContentPreviewRenderer
         } else {
             $formLabel = $languageService->sL(self::L10N_PREFIX . 'tt_content.preview.noPersistenceIdentifier');
         }
-        $itemContent .= $this->linkEditContent(htmlspecialchars($formLabel), $row) . '<br />';
+        $itemContent .= $this->linkEditContent(htmlspecialchars($formLabel), $record) . '<br />';
         return $itemContent;
     }
 

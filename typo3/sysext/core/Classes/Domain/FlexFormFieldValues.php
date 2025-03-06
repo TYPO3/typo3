@@ -114,9 +114,17 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
         // Not implemented
     }
 
-    public function toArray(): array
+    /**
+     * Getter to be used in fluid for accessing field values
+     */
+    public function getSheets(): array
     {
         return $this->sheets;
+    }
+
+    public function toArray(): array
+    {
+        return $this->getSheets();
     }
 
     protected function hasMultipleSheets(): bool

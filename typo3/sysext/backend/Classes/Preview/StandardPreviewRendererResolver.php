@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Preview;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -39,14 +40,14 @@ class StandardPreviewRendererResolver
     ) {}
 
     /**
-     * @param string $table The name of the table the returned PreviewRenderer must work with
-     * @param array $row A record from $table which will be previewed - allows returning a different PreviewRenderer based on record attributes
-     * @param int $pageUid The UID of the page on which the preview will be rendered - allows returning a different PreviewRenderer based on for example pageTSconfig
+     * @param RecordInterface $record A record from $table which will be previewed - allows returning a different PreviewRenderer based on record attributes
      * @throws \UnexpectedValueException
      * @throws \RuntimeException
      */
-    public function resolveRendererFor(string $table, array $row, int $pageUid): PreviewRendererInterface
+    public function resolveRendererFor(RecordInterface $record): PreviewRendererInterface
     {
+        $table = $record->getMainType();
+        $row = $record->getRawRecord()?->toArray() ?? [];
         $schema = $this->tcaSchemaFactory->get($table);
         $previewRendererClassName = null;
         if ($schema->supportsSubSchema()) {
@@ -66,7 +67,7 @@ class StandardPreviewRendererResolver
             }
             if ($schema->hasSubSchema($tcaTypeOfRow)) {
                 // Outdated subschemas may still be present in the database fields, this must not block backend rendering and utilize fallback.
-                $subSchema = $schema->getSubSchema($tcaTypeOfRow);
+                $subSchema = $schema->getSubSchema($record->getRecordType());
                 if (is_string($subSchema->getRawConfiguration()['previewRenderer'] ?? false) && $subSchema->getRawConfiguration()['previewRenderer'] !== '') {
                     // A type-specific preview renderer was configured for the TCA type
                     $previewRendererClassName = $subSchema->getRawConfiguration()['previewRenderer'];
