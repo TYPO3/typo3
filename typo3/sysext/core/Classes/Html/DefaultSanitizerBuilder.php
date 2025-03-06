@@ -17,11 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Html;
 
+use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\HtmlSanitizer\Behavior;
+use TYPO3\HtmlSanitizer\Behavior\NodeInterface;
 use TYPO3\HtmlSanitizer\Builder\CommonBuilder;
+use TYPO3\HtmlSanitizer\Context;
 use TYPO3\HtmlSanitizer\Sanitizer;
 use TYPO3\HtmlSanitizer\Visitor\CommonVisitor;
 
@@ -66,7 +69,30 @@ class DefaultSanitizerBuilder extends CommonBuilder implements SingletonInterfac
     protected function createBehavior(): Behavior
     {
         if (!isset($this->behavior)) {
-            $this->behavior = parent::createBehavior()->withName('default');
+            $this->behavior = parent::createBehavior()
+                ->withName('default')
+                ->withNodes(new Behavior\NodeHandler(
+                    new Behavior\Tag('svg'),
+                    new Behavior\Handler\ClosureHandler(
+                        static function (NodeInterface $node, ?\DOMNode $domNode, Context $context): ?\DOMNode {
+                            if ($domNode === null) {
+                                return null;
+                            }
+
+                            $newNode = GeneralUtility::makeInstance(SvgSanitizer::class)
+                                ->sanitizeNode($domNode);
+
+                            // purge empty svg nodes
+                            if ($newNode->childNodes->length === 0) {
+                                return null;
+                            }
+
+                            $fragment = $domNode->ownerDocument->createDocumentFragment();
+                            $fragment->append($newNode);
+                            return $fragment;
+                        }
+                    )
+                ));
         }
         return $this->behavior;
     }
