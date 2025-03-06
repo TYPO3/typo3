@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
+use Doctrine\DBAL\Result;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -310,9 +311,9 @@ abstract class AbstractTreeView
      * @param int $uid item id for which to select subitems (parent id)
      * @param int $depth Max depth (recursivity limit)
      * @param string $depthData HTML-code prefix for recursive calls.
-     * @return int The count of items on the level
+     * @return int<0, max> The count of items on the level
      */
-    public function getTree($uid, $depth = 999, $depthData = '')
+    public function getTree(int $uid, int $depth = 999, string $depthData = ''): int
     {
         // Buffer for id hierarchy is reset:
         $this->buffer_idH = [];
@@ -326,7 +327,7 @@ abstract class AbstractTreeView
         $idH = [];
         // Traverse the records:
         while ($crazyRecursionLimiter > 0 && ($row = $this->getDataNext($res))) {
-            if (!is_array($row) || !$this->getBackendUser()->isInWebMount($this->table === 'pages' ? $row : $row['pid'])) {
+            if (!$this->getBackendUser()->isInWebMount($this->table === 'pages' ? $row : $row['pid'])) {
                 // Current record is not within web mount => skip it
                 continue;
             }
@@ -422,13 +423,8 @@ abstract class AbstractTreeView
     /**
      * Getting the tree data: Selecting/Initializing data pointer to items for a certain parent id.
      * For tables: This will make a database query to select all children to "parent"
-     * For arrays: This will return key to the ->dataLookup array
-     *
-     * @param int $parentId parent item id
-     *
-     * @return mixed Data handle (Tables: An sql-resource, arrays: A parentId integer. -1 is returned if there were NO subLevel.)
      */
-    protected function getDataInit($parentId)
+    protected function getDataInit(int $parentId): Result
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
         $queryBuilder->getRestrictions()
@@ -457,12 +453,9 @@ abstract class AbstractTreeView
     /**
      * Getting the tree data: next entry
      *
-     * @param mixed $res Data handle
-     *
-     * @return array|bool item data array OR FALSE if end of elements.
      * @see getDataInit()
      */
-    protected function getDataNext(&$res)
+    protected function getDataNext(Result $res): array|false
     {
         while ($row = $res->fetchAssociative()) {
             BackendUtility::workspaceOL($this->table, $row, $this->getBackendUser()->workspace, true);
