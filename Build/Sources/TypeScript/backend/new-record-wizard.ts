@@ -163,11 +163,13 @@ export class NewRecordWizard extends LitElement {
         gap: calc(var(--typo3-spacing) * 2);
       }
 
+      /* clean-css ignore:start */
       @container (min-width: 500px) {
         .main {
             flex-direction: row;
         }
       }
+      /* clean-css ignore:end */
 
       .main > * {
         flex-grow: 1;
@@ -178,6 +180,7 @@ export class NewRecordWizard extends LitElement {
         flex-shrink: 0;
       }
 
+      /* clean-css ignore:start */
       @container (min-width: 500px) {
         .navigation {
             flex-grow: 0;
@@ -190,6 +193,7 @@ export class NewRecordWizard extends LitElement {
             display: none !important;
         }
       }
+      /* clean-css ignore:end */
 
       .navigation-list {
         display: none;
@@ -204,6 +208,7 @@ export class NewRecordWizard extends LitElement {
         display: flex;
       }
 
+      /* clean-css ignore:start */
       @container (max-width: 499px) {
         .navigation-list {
           z-index: 1;
@@ -221,6 +226,7 @@ export class NewRecordWizard extends LitElement {
             display: flex;
         }
       }
+      /* clean-css ignore:end */
 
       .navigation-item {
         cursor: pointer;
@@ -236,11 +242,13 @@ export class NewRecordWizard extends LitElement {
         padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
       }
 
+      /* clean-css ignore:start */
       @container (max-width: 499px) {
         .navigation-item {
           border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
         }
       }
+      /* clean-css ignore:end */
 
       .navigation-item:hover {
         color: var(--typo3-component-hover-color);
@@ -287,11 +295,13 @@ export class NewRecordWizard extends LitElement {
         gap: var(--typo3-spacing);
       }
 
+      /* clean-css ignore:start */
       @container (min-width: 500px) {
         .item-list {
           grid-template-columns: repeat(2, 1fr);
         }
       }
+      /* clean-css ignore:end */
 
       .item {
         cursor: pointer;
