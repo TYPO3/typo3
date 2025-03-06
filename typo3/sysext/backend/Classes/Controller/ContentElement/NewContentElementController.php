@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,7 +62,8 @@ class NewContentElementController
         protected readonly UriBuilder $uriBuilder,
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly DependencyOrderingService $dependencyOrderingService,
+        protected DependencyOrderingService $dependencyOrderingService,
+        protected TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -139,7 +141,7 @@ class NewContentElementController
                 $defaultValues = (array)($wizardItem['defaultValues'] ?? []);
                 if (!$positionSelection) {
                     // In case no position has to be selected, we can just add the target
-                    if (($wizardItem['saveAndClose'] ?? false)) {
+                    if ($wizardItem['saveAndClose'] ?? false) {
                         // Go to DataHandler directly instead of FormEngine
                         $item['url'] = (string)$this->uriBuilder->buildUriFromRoute('tce_db', [
                             'data' => [
@@ -242,7 +244,7 @@ class NewContentElementController
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'after');
             $wizards[$groupKey] = $this->prepareDependencyOrdering($wizards[$groupKey], 'contentElementAfter');
         }
-        $orderedWizards = $this->orderWizards($wizards, $this->dependencyOrderingService);
+        $orderedWizards = $this->orderWizards($wizards);
         foreach ($orderedWizards as $groupKey => $wizardGroup) {
             $groupKey = rtrim($groupKey, '.');
             $groupItems = [];
@@ -272,10 +274,11 @@ class NewContentElementController
 
     protected function loadAvailableWizards(): array
     {
-        $typeField = (string)($GLOBALS['TCA']['tt_content']['ctrl']['type'] ?? '');
-        $fieldConfig = $GLOBALS['TCA']['tt_content']['columns'][$typeField] ?? [];
-        $items = $fieldConfig['config']['items'] ?? [];
-        $itemGroups = $fieldConfig['config']['itemGroups'] ?? [];
+        $schema = $this->tcaSchemaFactory->get('tt_content');
+        $typeField = $schema->getRawConfiguration()['type'] ?? '';
+        $fieldConfig = $schema->hasField($typeField) ? $schema->getField($typeField)->getConfiguration() : [];
+        $items = $fieldConfig['items'] ?? [];
+        $itemGroups = $fieldConfig['itemGroups'] ?? [];
         $groupedWizardItems = [];
         // Auto-set positional information based on TCA itemGroups sorting.
         $lastGroup = null;
@@ -305,7 +308,7 @@ class NewContentElementController
                     'CType' => $recordType,
                 ],
             ];
-            $wizardEntry = array_replace_recursive($wizardEntry, $GLOBALS['TCA']['tt_content']['types'][$recordType]['creationOptions'] ?? []);
+            $wizardEntry = array_replace_recursive($wizardEntry, $schema->getSubSchema($recordType)->getRawConfiguration()['creationOptions'] ?? []);
             $groupedWizardItems[$groupIdentifier . '.']['elements.'][$recordType . '.'] = $wizardEntry;
         }
         return $groupedWizardItems;
@@ -353,7 +356,7 @@ class NewContentElementController
      * Due to this, the two system cannot be combined.
      * As soon as system 2 defines at least one "before" or "after" it takes over.
      */
-    protected function orderWizards(array $wizards, DependencyOrderingService $dependencyOrderingService): array
+    protected function orderWizards(array $wizards): array
     {
         // First round: Order by TCA defined sorting.
         $hasAtLeastOnePositionalArgument = false;
@@ -375,7 +378,7 @@ class NewContentElementController
         }
         // No order defined by pageTS. Use TCA sorting.
         if (!$hasAtLeastOnePositionalArgument) {
-            return $dependencyOrderingService->orderByDependencies($wizards);
+            return $this->dependencyOrderingService->orderByDependencies($wizards);
         }
         // Override order by pageTsConfig.
         foreach ($wizards as $group => $wizard) {
@@ -390,7 +393,7 @@ class NewContentElementController
                 unset($wizards[$group]['pageTsAfter']);
             }
         }
-        return $dependencyOrderingService->orderByDependencies($wizards);
+        return $this->dependencyOrderingService->orderByDependencies($wizards);
     }
 
     /**
@@ -517,23 +520,24 @@ class NewContentElementController
      */
     protected function removeInvalidWizardItems(array $wizardItems): array
     {
+        $schema = $this->tcaSchemaFactory->get('tt_content');
         $removeItems = [];
         $keepItems = [];
         // Get TCEFORM from TSconfig of current page
         $TCEFORM_TSconfig = BackendUtility::getTCEFORM_TSconfig('tt_content', ['pid' => $this->id]);
+        $backendUser = $this->getBackendUser();
         // Traverse wizard items:
         foreach ($wizardItems as $key => $cfg) {
             if (!is_array($cfg['defaultValues'] ?? false)) {
                 continue;
             }
             // If defaultValues are defined, check access by traversing all fields with default values:
-            $backendUser = $this->getBackendUser();
             foreach ($cfg['defaultValues'] as $fieldName => $value) {
-                if (!is_array($GLOBALS['TCA']['tt_content']['columns'][$fieldName] ?? false)) {
+                if (!$schema->hasField($fieldName)) {
                     continue;
                 }
                 // Get information about if the field value is OK:
-                $config = $GLOBALS['TCA']['tt_content']['columns'][$fieldName]['config'] ?? [];
+                $config = $schema->getField($fieldName)->getConfiguration();
                 $userNotAllowedToAccess = ($config['type'] ?? '') === 'select' && ($config['authMode'] ?? false)
                     && !$backendUser->checkAuthMode('tt_content', $fieldName, $value);
                 // Check removeItems

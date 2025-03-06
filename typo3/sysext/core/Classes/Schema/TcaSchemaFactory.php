@@ -239,7 +239,7 @@ class TcaSchemaFactory
             throw new \InvalidArgumentException('Subschema "' . $subSchemaName . '" not found.', 1715269835);
         }
         $subSchemaConfig = $tcaForTable['types'][$subSchemaName];
-        $showItemArray = GeneralUtility::trimExplode(',', $subSchemaConfig['showitem']);
+        $showItemArray = GeneralUtility::trimExplode(',', $subSchemaConfig['showitem'] ?? '', true);
         foreach ($showItemArray as $aShowItemFieldString) {
             [$fieldName, $fieldLabel, $paletteName] = GeneralUtility::trimExplode(';', $aShowItemFieldString . ';;;');
             if ($fieldName === '--div--') {
