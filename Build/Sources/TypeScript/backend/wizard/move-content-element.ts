@@ -75,14 +75,14 @@ export class MoveContentElement {
 
         Notification.success(
           lll(isCopyAction ? 'moveElement.notification.elementCopied.title' : 'moveElement.notification.elementMoved.title'),
-          lll(isCopyAction ? 'moveElement.notification.elementCopied.title' : 'moveElement.notification.elementMoved.message').replace('%s', recordTitle),
+          lll(isCopyAction ? 'moveElement.notification.elementCopied.message' : 'moveElement.notification.elementMoved.message', recordTitle),
           10,
           [
             {
               label: lll('moveElement.notification.elementPasted.action.dismiss'),
             },
             {
-              label: lll('moveElement.notification.elementPasted.action.open').replace('%s', targetPage),
+              label: lll('moveElement.notification.elementPasted.action.open', targetPage),
               action: new ImmediateAction((): void => {
                 returnUrl.searchParams.set('id', pageUid);
                 Viewport.ContentContainer.setUrl(returnUrl.toString());

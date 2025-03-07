@@ -51,14 +51,14 @@ export class MovePage {
 
         Notification.success(
           lll(isCopyAction ? 'movePage.notification.pageCopied.title' : 'movePage.notification.pageMoved.title'),
-          lll(isCopyAction ? 'movePage.notification.pageCopied.title' : 'movePage.notification.pageMoved.message').replace('%s', recordTitle),
+          lll(isCopyAction ? 'movePage.notification.pageCopied.message' : 'movePage.notification.pageMoved.message', recordTitle),
           10,
           [
             {
               label: lll('movePage.notification.pagePasted.action.dismiss'),
             },
             {
-              label: lll('movePage.notification.pagePasted.action.open').replace('%s', recordTitle),
+              label: lll('movePage.notification.pagePasted.action.open', recordTitle),
               action: new ImmediateAction((): void => {
                 ModuleMenu.App.showModule('web_list', 'id=' + url.searchParams.get('uid'));
               })
