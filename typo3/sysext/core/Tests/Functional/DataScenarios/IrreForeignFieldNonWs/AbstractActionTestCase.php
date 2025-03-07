@@ -179,9 +179,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function copyParentContentToLanguageWithAllChildrenWithLocalizationExclude(): void
     {
+        // l10n_mode=exclude actually currently has no relevance in the DataHandler operation as it
+        // only acts as display condition, meaning that the default records value is just copied into
+        // the translation and kept in sync. The field is not shown in e.g. FormEngine.
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
         $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['l10n_mode'] = 'exclude';
         $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $newTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
@@ -198,9 +202,13 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
      */
     public function localizeParentContentWithAllChildrenWithLocalizationExclude(): void
     {
+        // l10n_mode=exclude actually currently has no relevance in the DataHandler operation as it
+        // only acts as display condition, meaning that the default records value is just copied into
+        // the translation and kept in sync. The field is not shown in e.g. FormEngine.
         $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_PageHotel]['l10n_mode'] = 'exclude';
         $GLOBALS['TCA'][self::TABLE_Hotel]['columns'][self::FIELD_HotelOffer]['l10n_mode'] = 'exclude';
         $GLOBALS['TCA'][self::TABLE_Offer]['columns'][self::FIELD_OfferPrice]['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
