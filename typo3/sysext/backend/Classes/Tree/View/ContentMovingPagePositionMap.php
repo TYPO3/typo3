@@ -59,6 +59,7 @@ class ContentMovingPagePositionMap extends AbstractContentPagePositionMap
             $attributes = [
                 'data-action' => 'paste',
                 'data-position' => '-' . $row['uid'],
+                'data-colpos' => $colPos,
             ];
         } else {
             $attributes = [

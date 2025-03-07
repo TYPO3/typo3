@@ -8,7 +8,7 @@
 
 <f:section name="Content">
     <h2>
-        <f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_content_elements.xlf:headline" arguments="{0: recordTitle, 1: record.uid}" />
+        <f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_content_elements.xlf:headline.{f:if(condition: makeCopyChecked, then: 'copy', else: 'move')}" arguments="{0: recordTitle, 1: record.uid}" />
     </h2>
     <p><f:translate key="LLL:EXT:backend/Resources/Private/Language/Wizards/move_content_elements.xlf:currentPath" /> {pageInfo._thePathFull}</p>
     <input type="hidden" name="elementRecordTitle" id="elementRecordTitle" value="{recordTitle}" />

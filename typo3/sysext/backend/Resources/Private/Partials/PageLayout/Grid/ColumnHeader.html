@@ -30,6 +30,6 @@
 <f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
     <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}">
         <f:render partial="PageLayout/ActionControls" arguments="{column: column, allowEditContent: allowEditContent, url: column.newContentUrl}" />
-        <div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available"></div>
+        <div class="t3-page-ce-dropzone t3js-page-ce-dropzone-available" hidden></div>
     </div>
 </f:if>

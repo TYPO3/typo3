@@ -32,6 +32,14 @@ export class MoveContentElement {
 
   private registerEvents(container: HTMLElement): void {
     new RegularEvent('change', async (e: Event): Promise<void> => {
+      const recordTitle = (document.querySelector('#elementRecordTitle') as HTMLInputElement).value;
+      const url = new URL(window.location.href);
+      const uid = url.searchParams.get('uid');
+      const headline = document.querySelector('h2') as HTMLHeadingElement;
+      if (headline) {
+        headline.innerText = lll('headline.' + ((e.target as HTMLInputElement).checked ? 'copy' : 'move'), recordTitle, uid);
+      }
+
       const buttonLabel = (e.target as HTMLInputElement).checked
         ? lll('copyElementToHere')
         : lll('moveElementToHere');
@@ -44,9 +52,10 @@ export class MoveContentElement {
     new RegularEvent('click', async (e: Event, actionElement: HTMLElement): Promise<void> => {
       const modeCheckbox = (document.querySelector('#makeCopy') as HTMLInputElement);
       const recordTitle = (document.querySelector('#elementRecordTitle') as HTMLInputElement).value;
-      const targetPage = (document.querySelector('#pageRecordTitle') as HTMLInputElement).value;
+      const targetPageTitle = (document.querySelector('#pageRecordTitle') as HTMLInputElement).value;
       const pageUid = (document.querySelector('#pageUid') as HTMLInputElement).value;
       const url = new URL(window.location.href);
+      const uid = url.searchParams.get('uid');
       const returnUrl = new URL(url.searchParams.get('returnUrl'), window.origin);
 
       const isCopyAction = modeCheckbox.checked;
@@ -54,7 +63,7 @@ export class MoveContentElement {
       const parameters: { cmd: object, data?: object } = {
         cmd: {
           tt_content: {
-            [url.searchParams.get('uid')]: {
+            [uid]: {
               [action]: actionElement.dataset.position
             }
           }
@@ -64,7 +73,7 @@ export class MoveContentElement {
       if (actionElement.dataset.colpos !== undefined) {
         parameters.data = {
           tt_content: {
-            [url.searchParams.get('uid')]: {
+            [uid]: {
               colPos: actionElement.dataset.colpos
             }
           }
@@ -82,7 +91,7 @@ export class MoveContentElement {
               label: lll('moveElement.notification.elementPasted.action.dismiss'),
             },
             {
-              label: lll('moveElement.notification.elementPasted.action.open', targetPage),
+              label: lll('moveElement.notification.elementPasted.action.open', targetPageTitle),
               action: new ImmediateAction((): void => {
                 returnUrl.searchParams.set('id', pageUid);
                 Viewport.ContentContainer.setUrl(returnUrl.toString());

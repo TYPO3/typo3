@@ -371,7 +371,8 @@
     position: fixed;
     left: 0;
     top: 0;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr;
     align-items: center;
     gap: .5rem;
     padding: var(--typo3-component-padding-y) var(--typo3-component-padding-x);
@@ -389,17 +390,29 @@
     display: flex;
     flex-grow: 1;
     align-items: center;
-    gap: .25rem;
+    gap: .5rem;
     overflow: hidden;
 }
 
 .dragging-tooltip-content-label {
     display: flex;
+    gap: .15rem;
     flex-direction: column;
 }
 
 .dragging-tooltip-content-description {
     opacity: .75;
+}
+
+.dragging-tooltip-thumbnails {
+    display: flex;
+    gap: .15rem;
+
+    img,
+    svg {
+        display: block;
+        border-radius: .15rem;
+    }
 }
 
 //

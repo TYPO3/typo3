@@ -18,6 +18,7 @@ import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 import type { ContentElementDragDropData } from '@typo3/backend/layout-module/drag-drop';
+import DragDropUtility from '@typo3/backend/utility/drag-drop-utility';
 
 /**
  * A Tree based on for pages, which has a AJAX-based loading of the tree
@@ -103,8 +104,12 @@ export class PageTree extends Tree
         this.openNodeTimeout.timeout = null;
       }
 
-      // allow drop
+      // Allow drop
       event.preventDefault();
+
+      // Adjust allowed drop effect
+      DragDropUtility.updateEventAndTooltipToReflectCopyMoveIntention(event);
+
       return true;
     }
 
@@ -130,6 +135,9 @@ export class PageTree extends Tree
       const moveElementUrl = new URL(parsedData.moveElementUrl, window.origin);
       moveElementUrl.searchParams.set('expandPage', node.identifier);
       moveElementUrl.searchParams.set('originalPid', node.identifier);
+      if (DragDropUtility.isCopyModifierFromEvent(event)) {
+        moveElementUrl.searchParams.set('makeCopy', '1');
+      }
 
       Modal.advanced({
         content: moveElementUrl.toString(),
