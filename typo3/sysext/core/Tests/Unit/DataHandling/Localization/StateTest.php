@@ -18,27 +18,46 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Localization;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
+use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\RelationMapBuilder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StateTest extends UnitTestCase
 {
     public const TABLE_NAME = 'tx_test_table';
 
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
     protected function setUp(): void
     {
         parent::setUp();
-        $GLOBALS['TCA'] = [];
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $this->tcaSchemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder(),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
     }
 
     #[DataProvider('stateObjectCanBeCreatedDataProvider')]
+    #[DoesNotPerformAssertions]
     #[Test]
     public function stateObjectCanBeCreated(string $tableName, array $states): void
     {
-        $subject = new State($tableName, $states);
+        $this->tcaSchemaFactory->load([self::TABLE_NAME => []], true);
+        // We need two instances for the calls in ->sanitize() and ->enrich()
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
 
-        self::assertInstanceOf(State::class, $subject);
+        new State($tableName, $states);
     }
 
     public static function stateObjectCanBeCreatedDataProvider(): array
@@ -61,17 +80,33 @@ final class StateTest extends UnitTestCase
         array $states,
         array $expected
     ): void {
-        $GLOBALS['TCA'] = $this->provideTableConfiguration(
-            'first_field',
-            'second_field'
-        );
-
-        $subject = new State(static::TABLE_NAME, $states);
-
-        self::assertSame(
-            $expected,
-            $subject->toArray()
-        );
+        $this->tcaSchemaFactory->load([
+            'tx_test_table' => [
+                'columns' => [
+                    'first_field' => [
+                        'config' => [
+                            'type' => 'input',
+                            'behaviour' => [
+                                'allowLanguageSynchronization' => true,
+                            ],
+                        ],
+                    ],
+                    'second_field' => [
+                        'config' => [
+                            'type' => 'input',
+                            'behaviour' => [
+                                'allowLanguageSynchronization' => true,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ], true);
+        // We need two instances for the calls in ->sanitize() and ->enrich()
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
+        $subject = new State('tx_test_table', $states);
+        self::assertSame($expected, $subject->toArray());
     }
 
     public static function statesAreEnrichedAndSanitizedOnObjectCreationDataProvider(): array
@@ -152,22 +187,6 @@ final class StateTest extends UnitTestCase
                     'first_field' => 'parent',
                     'second_field' => 'parent',
                 ],
-            ],
-        ];
-    }
-
-    /**
-     * @param string[] ...$fieldNames
-     */
-    private function provideTableConfiguration(string ...$fieldNames): array
-    {
-        $columnsConfiguration = [];
-        foreach ($fieldNames as $fieldName) {
-            $columnsConfiguration[$fieldName]['config']['behaviour']['allowLanguageSynchronization'] = true;
-        }
-        return [
-            static::TABLE_NAME => [
-                'columns' => $columnsConfiguration,
             ],
         ];
     }

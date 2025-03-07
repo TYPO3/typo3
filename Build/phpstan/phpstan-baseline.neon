@@ -2239,12 +2239,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/DataHandlerTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\DataHandling\\\\Localization\\\\State'' and TYPO3\\CMS\\Core\\DataHandling\\Localization\\State will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/DataHandling/Localization/StateTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Database\\\\Query\\\\QueryBuilder'' and TYPO3\\CMS\\Core\\Database\\Query\\QueryBuilder will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
