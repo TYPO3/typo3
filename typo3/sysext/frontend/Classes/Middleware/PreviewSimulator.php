@@ -90,6 +90,10 @@ class PreviewSimulator implements MiddlewareInterface
         return $handler->handle($request);
     }
 
+    /**
+     * Evaluate if the "extendToSubpages" flag was set on any of the previous ancestor pages,
+     * but be sure to not check for the current page itself.
+     */
     protected function checkIfRootlineRequiresPreview(int $pageId): bool
     {
         $rootlineUtility = GeneralUtility::makeInstance(RootlineUtility::class, $pageId, '', $this->context);
@@ -99,25 +103,20 @@ class PreviewSimulator implements MiddlewareInterface
         $hidden = false;
         try {
             $rootLine = $rootlineUtility->get();
-            $pageInfo = $pageRepository->getPage_noCheck($pageId);
-            // Only check rootline if the current page has not set extendToSubpages itself
-            // @see \TYPO3\CMS\Backend\Routing\PreviewUriBuilder::class
-            if (!(bool)($pageInfo['extendToSubpages'] ?? false)) {
-                // remove the current page from the rootline
-                array_shift($rootLine);
-                foreach ($rootLine as $page) {
-                    // Skip root node and pages which do not define extendToSubpages
-                    if ((int)($page['uid'] ?? 0) === 0 || !(bool)($page['extendToSubpages'] ?? false)) {
-                        continue;
-                    }
-                    $groupRestricted = (bool)(string)($page['fe_group'] ?? '');
-                    $timeRestricted = (int)($page['starttime'] ?? 0) || (int)($page['endtime'] ?? 0);
-                    $hidden = (int)($page['hidden'] ?? 0);
-                    // Stop as soon as a page in the rootline has extendToSubpages set
-                    break;
-                }
-            }
 
+            // Remove the current page from the rootline
+            array_shift($rootLine);
+            foreach ($rootLine as $page) {
+                // Skip root node and pages which do not define extendToSubpages
+                if ((int)($page['uid'] ?? 0) === 0 || !(bool)($page['extendToSubpages'] ?? false)) {
+                    continue;
+                }
+                $groupRestricted = (bool)(string)($page['fe_group'] ?? '');
+                $timeRestricted = (int)($page['starttime'] ?? 0) || (int)($page['endtime'] ?? 0);
+                $hidden = (int)($page['hidden'] ?? 0);
+                // Stop as soon as a page in the rootline has extendToSubpages set
+                break;
+            }
         } catch (\Exception) {
             // if the rootline cannot be resolved (404 because of delete placeholder in workspaces for example)
             // we do not want to fail here but rather continue handling the request to trigger the TSFE 404 handling
