@@ -199,7 +199,7 @@ readonly class ImageProcessingInstructions
         }
         if (!empty($options['minHeight'])) {
             if ($height < $options['minHeight'] || ($height === 0 && $cropArea->getHeight() < $options['minHeight'])) {
-                $height = $options['minHeight'];
+                $height = (int)$options['minHeight'];
                 $width = max(1, (int)round($cropArea->getWidth() * ($height / $cropArea->getHeight())));
             }
         }
