@@ -20,12 +20,33 @@ namespace TYPO3\CMS\Core\Tests\Unit\DataHandling\Localization;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\DataHandling\Localization\State;
+use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\RelationMapBuilder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StateTest extends UnitTestCase
 {
     private const TABLE_NAME = 'tx_test_table';
+
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $this->tcaSchemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+    }
 
     public static function stateObjectCanBeCreatedDataProvider(): array
     {
@@ -46,6 +67,10 @@ final class StateTest extends UnitTestCase
     #[DoesNotPerformAssertions]
     public function stateObjectCanBeCreated(string $tableName, array $states): void
     {
+        $this->tcaSchemaFactory->load([self::TABLE_NAME => []], true);
+        // We need two instances for the calls in ->sanitize() and ->enrich()
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         new State($tableName, $states);
     }
 
@@ -135,11 +160,12 @@ final class StateTest extends UnitTestCase
     #[Test]
     public function statesAreEnrichedAndSanitizedOnObjectCreation(array $states, array $expected): void
     {
-        $GLOBALS['TCA'] = [
+        $this->tcaSchemaFactory->load([
             'tx_test_table' => [
                 'columns' => [
                     'first_field' => [
                         'config' => [
+                            'type' => 'input',
                             'behaviour' => [
                                 'allowLanguageSynchronization' => true,
                             ],
@@ -147,6 +173,7 @@ final class StateTest extends UnitTestCase
                     ],
                     'second_field' => [
                         'config' => [
+                            'type' => 'input',
                             'behaviour' => [
                                 'allowLanguageSynchronization' => true,
                             ],
@@ -154,7 +181,10 @@ final class StateTest extends UnitTestCase
                     ],
                 ],
             ],
-        ];
+        ], true);
+        // We need two instances for the calls in ->sanitize() and ->enrich()
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->tcaSchemaFactory);
         $subject = new State('tx_test_table', $states);
         self::assertSame($expected, $subject->toArray());
     }
