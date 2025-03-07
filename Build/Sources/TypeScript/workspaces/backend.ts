@@ -29,6 +29,7 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import { selector } from '@typo3/core/literals';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
+import { PaginationElement } from '@typo3/backend/element/pagination';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -504,10 +505,13 @@ class Backend extends Workspaces {
       return;
     }
 
-    const pagination = document.createElement('typo3-backend-pagination');
-    pagination.paging = this.paging;
+    let pagination = paginationContainer.querySelector('typo3-backend-pagination') as PaginationElement | null;
+    if (pagination === null) {
+      pagination = document.createElement('typo3-backend-pagination');
+      paginationContainer.append(pagination);
+    }
 
-    paginationContainer.append(pagination);
+    pagination.paging = { ...this.paging };
   }
 
   /**

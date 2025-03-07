@@ -297,12 +297,13 @@ class GridDataService implements LoggerAwareInterface
      */
     protected function getDataArray(int $start, int $limit): array
     {
-        $dataArrayCount = count($this->dataArray);
-        $start = $this->calculateStartWithCollections($start);
-        $end = ($start + $limit < $dataArrayCount ? $start + $limit : $dataArrayCount);
-
         // Ensure that there are numerical indexes
         $this->dataArray = array_values($this->dataArray);
+
+        $dataArrayCount = count($this->dataArray);
+        $start = $this->calculateStartWithCollections($start);
+        $end = min($start + $limit, $dataArrayCount);
+
         // Fill the data array part
         $dataArrayPart = $this->fillDataArrayPart($start, $end);
 
