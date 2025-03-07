@@ -17,6 +17,7 @@
     --pagemodule-element-border-color: color-mix(in srgb, var(--pagemodule-element-bg), currentColor 15%);
     --pagemodule-element-warning-bg: var(--typo3-surface-container-warning);
     --pagemodule-element-hidden-bg: var(--pagemodule-grid-cell-bg);
+    --pagemodule-action-height: 28.5px;
     --pagemodule-dropzone-bg: var(--typo3-surface-container-warning);
     --pagemodule-dropzone-possible-bg: var(--typo3-surface-container-success);
 }
@@ -171,6 +172,10 @@
     gap: .5rem;
     padding: var(--pagemodule-element-spacing);
 
+    &[draggable="true"] {
+        cursor: grab;
+    }
+
     &-left {
         display: flex;
         column-gap: .25rem;
@@ -220,6 +225,7 @@
 }
 
 .t3-page-ce-actions {
+    height: var(--pagemodule-action-height);
     text-align: center;
     z-index: 2;
 }
@@ -230,18 +236,16 @@
 .t3-page-ce-dropzone {
     position: relative;
     top: 0;
-    z-index: 297;
+    border: 1px dashed color-mix(in srgb, var(--pagemodule-dropzone-bg), currentColor 10%);
     border-radius: var(--pagemodule-element-border-radius);
     background-color: var(--pagemodule-dropzone-bg);
+    height: var(--pagemodule-action-height);
 
     &.active {
-        border: 1px dashed color-mix(in srgb, var(--pagemodule-dropzone-bg), currentColor 10%);
-        height: 28.5px; // @todo refactor later
         width: 100%;
 
         &.t3-page-ce-dropzone-possible {
             --pagemodule-dropzone-bg: var(--pagemodule-dropzone-possible-bg);
-            z-index: 298;
         }
     }
 }
@@ -333,14 +337,5 @@
                 width: calc(var(--preview-thumbnails-size) / 2);
             }
         }
-    }
-}
-
-//
-// Dragging
-//
-.t3-page-ce-dragitem {
-    .t3-page-ce-header-draggable:hover {
-        cursor: move;
     }
 }

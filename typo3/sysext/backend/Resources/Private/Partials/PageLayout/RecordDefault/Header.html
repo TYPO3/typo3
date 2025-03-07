@@ -1,4 +1,4 @@
-<div class="t3-page-ce-header {f:if(condition: '{allowEditContent} && {item.dragAndDropAllowed}', then: 't3-page-ce-header-draggable t3js-page-ce-draghandle')}">
+<div class="t3-page-ce-header t3js-page-ce-header" {f:if(condition: '{allowEditContent} && {item.dragAndDropAllowed}', then: 'draggable="true"')}>
     <div class="t3-page-ce-header-left">
         {item.icons -> f:format.raw()}
         <f:if condition="{item.siteLanguage.flagIdentifier}">

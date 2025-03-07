@@ -3,8 +3,11 @@
 	<file source-language="en" datatype="plaintext" original="EXT:core/Resources/Private/Language/Wizards/move_page.xlf" date="2024-03-08T20:22:34Z" product-name="backend">
 		<header/>
 		<body>
-			<trans-unit id="headline">
-				<source>Move element "%1$s" [%2$d]</source>
+			<trans-unit id="headline.move">
+				<source>Move element "%s" [%d]</source>
+			</trans-unit>
+			<trans-unit id="headline.copy">
+				<source>Copy element "%s" [%d]</source>
 			</trans-unit>
 			<trans-unit id="currentPath">
 				<source>Current path</source>
