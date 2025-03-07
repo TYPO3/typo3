@@ -308,7 +308,6 @@ final class ImageViewHelperTest extends FunctionalTestCase
         $context->getTemplatePaths()->setTemplateSource($template);
         $context->getVariableProvider()->add('fileReference', $this->get(ResourceFactory::class)->getFileReferenceObject(1));
         $result = (new TemplateView($context))->render();
-        echo "\n" . $result . "\n";
         self::assertMatchesRegularExpression($expected, $result);
 
         $matches = [];
