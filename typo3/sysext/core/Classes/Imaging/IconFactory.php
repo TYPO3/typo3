@@ -443,9 +443,4 @@ readonly class IconFactory
         }
         return $icon;
     }
-
-    /**
-     * @internal Remove in v14. May have been used during testing in TYPO3 <v14.
-     */
-    public function clearIconCache(): void {}
 }
