@@ -216,7 +216,12 @@ export default class Filelist {
 
   private static getReturnUrl(returnUrl: string): string {
     if (returnUrl === '') {
-      returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
+      const form = top.list_frame.document.forms.namedItem('fileListForm');
+      if (form !== null) {
+        returnUrl = form.action;
+      } else {
+        returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
+      }
     }
     return encodeURIComponent(returnUrl);
   }
