@@ -17,7 +17,7 @@
         <caption class="hidden">System overview</caption>
         <f:for each="{systemInformation}" as="info">
             <tr>
-                <th data-type="title">
+                <th data-type="title" scope="row">
                     <f:if condition="{info.iconIdentifier}">
                         <f:then>
                             <core:icon identifier="{info.iconIdentifier}" size="small" alternativeMarkupIdentifier="inline" />
