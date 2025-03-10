@@ -20,6 +20,12 @@ namespace TYPO3\CMS\IndexedSearch\ViewHelpers\Format;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
+ * ViewHelper to iterate an array and returns a formatted representation.
+ *
+ * ```
+ *   <is:format.groupList groups="{data.grList}" />
+ * ```
+ *
  * @internal
  */
 final class GroupListViewHelper extends AbstractViewHelper

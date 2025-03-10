@@ -26,40 +26,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * ViewHelper for the backend which generates an :html:`<img>` tag with the special URI to render thumbnails deferred.
+ * ViewHelper for the backend which generates an `<img>` tag with the special URI to render thumbnails deferred.
  *
- * Examples
- * ========
- *
- * Default
- * -------
- *
- * ::
- *
+ * ```
  *    <be:thumbnail image="{file.resource}" width="{thumbnail.width}" height="{thumbnail.height}" />
+ * ```
  *
- * Output::
- *
- *    <img src="https://www.example.com/typo3/image/process?token=XYZ&id=1160"
- *         width="64"
- *         height="64"
- *         alt="alt set in image record"
- *         title="title set in image record"/>
- *
- * Inline notation
- * ---------------
- *
- * ::
- *
- *    {be:thumbnail(image: file.resource, maxWidth: thumbnail.width, maxHeight: thumbnail.height)}
- *
- * Output::
- *
- *    <img src="https://www.example.com/typo3/image/process?token=XYZ&id=1160"
- *         width="64"
- *         height="64"
- *         alt="alt set in image record"
- *         title="title set in image record"/>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-thumbnail
  */
 final class ThumbnailViewHelper extends AbstractTagBasedViewHelper
 {

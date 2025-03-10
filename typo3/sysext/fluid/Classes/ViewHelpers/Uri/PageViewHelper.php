@@ -34,43 +34,13 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * A ViewHelper for creating URIs to TYPO3 pages.
+ * ViewHelper for creating URIs to TYPO3 pages.
  *
- * Examples
- * ========
+ * ```
+ *   <f:uri.page pageUid="42" additionalParams="{foo: 'bar'}">page link</f:uri.page>
+ * ```
  *
- * URI to the current page
- * -----------------------
- *
- * ::
- *
- *    <f:uri.page>page link</f:uri.page>
- *
- * ``/page/path/name.html``
- *
- * Depending on current page, routing and page path configuration.
- *
- * Query parameters
- * ----------------
- *
- * ::
- *
- *    <f:uri.page pageUid="1" additionalParams="{foo: 'bar'}" />
- *
- * ``/page/path/name.html?foo=bar``
- *
- * Depending on current page, routing and page path configuration.
- *
- * Query parameters for extensions
- * -------------------------------
- *
- * ::
- *
- *    <f:uri.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}" />
- *
- * ``/page/path/name.html?extension_key[foo]=bar``
- *
- * Depending on current page, routing and page path configuration.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-uri-page
  */
 final class PageViewHelper extends AbstractViewHelper
 {

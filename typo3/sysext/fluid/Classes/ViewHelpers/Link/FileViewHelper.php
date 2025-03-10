@@ -29,40 +29,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * A ViewHelper for creating links to a file (FAL).
+ * ViewHelper for creating links to a file (FAL).
  *
- * Examples
- * ========
+ * ```
+ *   <f:link.file file="{file}" target="_blank" download="true" filename="some-file.pdf">See file</f:link.file>
+ * ```
  *
- * Link to a file
- * --------------
- *
- * ::
- *
- *    <f:link.file file="{file}" target="_blank">See file</f:link.file>
- *
- * Output of a public file::
- *
- *    <a href="https://example.com/fileadmin/path/to/file.jpg" target="_blank">See file</a>
- *
- * Output of a non-public file::
- *
- *    <a href="https://example.com/index.php?eID=dumpFile&t=f&f=123&token=79bce812" target="_blank">See file</a>
- *
- * Link to download a file
- * -----------------------
- *
- * ::
- *
- *    <f:link.file file="{file}" download="true" filename="alternative-name.jpg">Download file</f:link.file>
- *
- * Output of a public file::
- *
- *    <a href="https://example.com/fileadmin/path/to/file.jpg" download="alternative-name.jpg">Download file</a>
- *
- * Output of a non-public file::
- *
- *    <a href="https://example.com/index.php?eID=dumpFile&t=f&f=123&dl=1&fn=alternative-name.jpg&token=79bce812">Download file</a>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-link-file
  */
 final class FileViewHelper extends AbstractTagBasedViewHelper
 {

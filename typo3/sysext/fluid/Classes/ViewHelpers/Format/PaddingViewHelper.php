@@ -21,42 +21,14 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Formats a string using PHPs :php:`str_pad` function.
- * See https://www.php.net/manual/en/function.str-pad.
+ * ViewHelper to format a string to specific lengths, by using PHPs `str_pad` function.
  *
- * Examples
- * ========
+ * ```
+ *   <f:format.padding padLength="10" padString="!" padType="right">TYPO3</f:format.padding>
+ * ```
  *
- * Defaults
- * --------
- *
- * ::
- *
- *    <f:format.padding padLength="10">TYPO3</f:format.padding>
- *
- * Output::
- *
- *     TYPO3␠␠␠␠␠
- *
- * ``TYPO3␠␠␠␠␠``
- *
- * Specify padding string
- * ----------------------
- *
- * ::
- *
- *    <f:format.padding padLength="10" padString="-=">TYPO3</f:format.padding>
- *
- * ``TYPO3-=-=-``
- *
- * Specify padding type
- * --------------------
- *
- * ::
- *
- *    <f:format.padding padLength="10" padString="-" padType="both">TYPO3</f:format.padding>
- *
- * ``--TYPO3---``
+ * @see https://www.php.net/manual/en/function.str-pad
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-padding
  */
 final class PaddingViewHelper extends AbstractViewHelper
 {

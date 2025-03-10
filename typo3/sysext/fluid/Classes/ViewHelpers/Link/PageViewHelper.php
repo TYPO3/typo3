@@ -34,49 +34,13 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * A ViewHelper for creating links to TYPO3 pages.
+ * ViewHelper for creating links to TYPO3 pages.
  *
- * Examples
- * ========
+ * ```
+ *   <f:link.page pageUid="42" additionalParams="{foo: 'bar'}">page link</f:link.page>
+ * ```
  *
- * Link to the current page
- * ------------------------
- *
- * ::
- *
- *    <f:link.page>page link</f:link.page>
- *
- * Output::
- *
- *    <a href="/page/path/name.html">page link</a>
- *
- * Depending on current page, routing and page path configuration.
- *
- * Query parameters
- * ----------------
- *
- * ::
- *
- *    <f:link.page pageUid="1" additionalParams="{foo: 'bar'}">page link</f:link.page>
- *
- * Output::
- *
- *    <a href="/page/path/name.html?foo=bar">page link</a>
- *
- * Depending on current page, routing and page path configuration.
- *
- * Query parameters for extensions
- * -------------------------------
- *
- * ::
- *
- *    <f:link.page pageUid="1" additionalParams="{extension_key: {foo: 'bar'}}">page link</f:link.page>
- *
- * Output::
- *
- *    <a href="/page/path/name.html?extension_key[foo]=bar">page link</a>
- *
- * Depending on current page, routing and page path configuration.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-link-page
  */
 final class PageViewHelper extends AbstractTagBasedViewHelper
 {

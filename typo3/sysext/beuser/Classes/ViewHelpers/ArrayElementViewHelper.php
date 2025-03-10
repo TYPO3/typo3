@@ -21,7 +21,16 @@ use TYPO3\CMS\Beuser\Exception;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Get a value from an array by given key.
+ * ViewHelper to get a value from an array by given key.
+ *
+ * ```
+ *   <f:render
+ *       partial="Permission/Ownername"
+ *       arguments="{
+ *           username: '{beuser:arrayElement(array:beUsers, key:data.row.perms_userid, subKey:\'username\')}'
+ *       }"
+ *   />
+ * ```
  *
  * @internal
  */

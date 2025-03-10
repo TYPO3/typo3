@@ -23,8 +23,15 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * Check if the given provider for the current user has the requested state set
+ * ViewHelper to check if the given provider for the current user has the requested state set.
  *
+ * ```
+ *   <be:mfa.ifHasState state="active" provider="{provider}">
+ *       ...
+ *   </be:mfa.ifHasState>
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-mfa-ifhasstate
  * @internal
  */
 final class IfHasStateViewHelper extends AbstractConditionViewHelper

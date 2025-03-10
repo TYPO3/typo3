@@ -18,47 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 /**
- * ViewHelper which creates a simple checkbox :html:`<input type="checkbox">`.
+ * ViewHelper which renders a simple checkbox `<input type="checkbox">`.
  *
- * Examples
- * ========
+ * ```
+ *   <f:form.checkbox property="interests" value="TYPO3" multiple="1" />
+ *   <f:form.checkbox name="interest" value="TYPO3" checked="{object.interest} == 'TYPO3'" />
+ * ```
  *
- * Simple one
- * ----------
- *
- * ::
- *
- *    <f:form.checkbox name="myCheckBox" value="someValue" />
- *
- * Output::
- *
- *    <input type="checkbox" name="myCheckBox" value="someValue" />
- *
- * Preselect
- * ---------
- *
- * ::
- *
- *    <f:form.checkbox name="myCheckBox" value="someValue" checked="{object.value} == 5" />
- *
- * Output::
- *
- *    <input type="checkbox" name="myCheckBox" value="someValue" checked="checked" />
- *
- * Depending on bound ``object`` to surrounding :ref:`f:form <typo3-fluid-form>`.
- *
- * Bind to object property
- * -----------------------
- *
- * ::
- *
- *    <f:form.checkbox property="interests" value="TYPO3" multiple="1" />
- *
- * Output::
- *
- *    <input type="checkbox" name="user[interests][]" value="TYPO3" checked="checked" />
- *
- * Depending on property ``interests``.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-checkbox
  */
 final class CheckboxViewHelper extends AbstractFormFieldViewHelper
 {

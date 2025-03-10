@@ -22,8 +22,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Builds an attribute string for use in rendered toolbar items
+ * ViewHelper to build a "class" attribute string for use in rendered toolbar items.
  *
+ * ```
+ *  <be:toolbar.attributes class="{someToolbarItemInterfaceInstance}" />
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-toolbar-attributes
  * @internal
  */
 final class AttributesViewHelper extends AbstractViewHelper

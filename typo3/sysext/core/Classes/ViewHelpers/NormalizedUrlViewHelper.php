@@ -22,27 +22,14 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Normalizes a path that uses EXT: syntax or an absolute URL to an absolute web path
+ * ViewHelper to normalize a path that uses EXT: syntax or an absolute URL to an absolute web path.
  *
- * Examples
- * ========
- *
- * Url::
- *
+ * ```
  *    <core:normalizedUrl pathOrUrl="https://foo.bar/img.jpg" />
- *
- * Output::
- *
- *     https://foo.bar/img.jpg
- *
- * Path::
- *
  *    <core:normalizedUrl pathOrUrl="EXT:core/Resources/Public/Images/typo3_black.svg" />
+ * ```
  *
- * Output::
- *
- *     /typo3/sysext/core/Resources/Public/Images/typo3_black.svg
- *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-core-normalizedurl
  * @internal
  */
 final class NormalizedUrlViewHelper extends AbstractViewHelper

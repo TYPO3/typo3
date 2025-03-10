@@ -27,46 +27,19 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * Render a given media file with the correct html tag.
+ * ViewHelper to render a given media file (audio/video/images) with the correct HTML tag.
  *
- * It asks the :php:`RendererRegistry` for the correct Renderer class and if not found it falls
- * back to the :php:`ImageViewHelper` as that is the "Renderer" class for images in Fluid context.
+ * It utilizes the `RendererRegistry` to determine the correct Renderer class. When no
+ * renderer can be resolved, it will fall back to use the default `ImageViewHelper`
+ * for regular images.
  *
- * Examples
- * ========
+ * ```
+ *   <f:media file="{file}" width="400" height="375" />
+ * ```
  *
- * Image Object
- * ------------
- *
- * ::
- *
- *    <f:media file="{file}" width="400" height="375" />
- *
- * Output::
- *
- *    <img alt="alt set in image record" src="fileadmin/_processed_/323223424.png" width="396" height="375" />
- *
- * MP4 Video Object
- * ----------------
- *
- * ::
- *
- *    <f:media file="{file}" width="400" height="375" />
- *
- * Output::
- *
- *    <video width="400" height="375" controls><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
- *
- * MP4 Video Object with loop and autoplay option set
- * --------------------------------------------------
- *
- * ::
- *
- *    <f:media file="{file}" width="400" height="375" additionalConfig="{loop: '1', autoplay: '1'}" />
- *
- * Output::
- *
- *    <video width="400" height="375" controls loop><source src="fileadmin/user_upload/my-video.mp4" type="video/mp4"></video>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-media
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-image
+ * @see RendererRegistry
  */
 final class MediaViewHelper extends AbstractTagBasedViewHelper
 {

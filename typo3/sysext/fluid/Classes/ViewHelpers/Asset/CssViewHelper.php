@@ -25,27 +25,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 /**
  * ViewHelper to add CSS to the TYPO3 AssetCollector. Either a file or inline CSS can be added.
  *
- * Examples
- * ========
- *
- * ::
- *
- *    <f:asset.css identifier="identifier123" href="EXT:my_ext/Resources/Public/Css/foo.css" />
+ * ```
+ *    <f:asset.css identifier="identifier123" href="EXT:my_ext/Resources/Public/Css/foo.css" inline="0" />
  *    <f:asset.css identifier="identifier123">
  *       .foo { color: black; }
  *    </f:asset.css>
+ * ```
  *
- * Details
- * =======
- *
- * In the AssetCollector, the "identifier" attribute is used as a unique identifier. Thus, if assets are added multiple
- * times using the same identifier, the asset will only be served once (the last added overrides previous assets).
- *
- * Some available attributes are defaults but do not make sense for this ViewHelper. Relevant attributes specific
- * for this ViewHelper are: as, crossorigin, disabled, href, hreflang, importance, integrity, media, referrerpolicy,
- * sizes, type, nonce.
- *
- * Using the "inline" argument, the file content of the referenced file is added as inline style.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-asset-css
  */
 final class CssViewHelper extends AbstractTagBasedViewHelper
 {

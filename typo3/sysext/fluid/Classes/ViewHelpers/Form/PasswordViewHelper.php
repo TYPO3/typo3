@@ -18,18 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 /**
- * ViewHelper which creates a simple Password Text Box :html:`<input type="password">`.
+ * ViewHelper which renders a simple password text box `<input type="password">`.
  *
- * Examples
- * ========
+ * ```
+ *   <f:form.password name="myPassword" />
+ * ```
  *
- * Example::
- *
- *    <f:form.password name="myPassword" />
- *
- * Output::
- *
- *    <input type="password" name="myPassword" value="" />
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-password
  */
 final class PasswordViewHelper extends AbstractFormFieldViewHelper
 {

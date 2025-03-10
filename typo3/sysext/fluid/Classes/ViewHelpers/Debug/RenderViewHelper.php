@@ -21,13 +21,17 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Debuggable version of :ref:`f:render <typo3-fluid-render>` - performs the
- * same rendering operation but wraps the output with HTML that can be
- * inspected with the admin panel in frontend.
+ * ViewHelper for a debuggable version of `<f:render>`.
+ * Performs the same rendering operation, but wraps the output with HTML that can be
+ * inspected with the admin panel in the frontend.
  *
- * Replaces ``f:render`` when the admin panel decides (see
- * :php:`ViewHelperResolver` class). Also possible to use explicitly by using
- * ``f:debug.render`` instead of the normal ``f:render`` statement.
+ * ```
+ *   <f:debug.render partial="Partials/SomePartial" arguments="{_all}" />
+ * ```
+ *
+ * @see \TYPO3\CMS\Fluid\Core\ViewHelper\ViewHelperResolver
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-render
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-debug-render
  */
 final class RenderViewHelper extends AbstractViewHelper
 {

@@ -21,6 +21,12 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
+ * ViewHelper to display the flag badges of a record (description/keyword/title)
+ *
+ * ```
+ *   <is:format.flagValue flags="{word.flags}" />
+ * ```
+ *
  * @internal
  */
 final class FlagValueViewHelper extends AbstractViewHelper

@@ -23,7 +23,11 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Get username from backend user id
+ * ViewHelper to get a username from a backend user id.
+ *
+ * ```
+ *   <belog:username uid="{logItem.backendUserUid}" />
+ * ```
  *
  * @internal
  */

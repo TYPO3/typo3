@@ -22,8 +22,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Runs two strings through 'FineDiff' on word level.
+ * ViewHelper to runs two strings through 'FineDiff' on word level.
  *
+ * ```
+ *   <backend:typoScript.fineDiff from="{someTextChunkBefore}" to="{someTextChunkAfter}" />
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-typoscript-finediff
  * @internal This experimental ViewHelper is not part of TYPO3 Core API and may change or vanish any time.
  */
 final class FineDiffViewHelper extends AbstractViewHelper

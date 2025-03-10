@@ -18,33 +18,16 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 
 /**
- * Applies :php:`html_entity_decode()` to a value.
- * See https://www.php.net/html_entity_decode.
+ * ViewHelper to apply `html_entity_decode()` to a value,
+ * transforming HTML entity representations back into HTML special characters
+ * (like `&quot;` to `"`).
  *
- * Examples
- * ========
+ * ```
+ *   <f:format.htmlentitiesDecode>{textWithEntities}</f:format.htmlentitiesDecode>
+ * ```
  *
- * Default notation
- * ----------------
- *
- * ::
- *
- *    <f:format.htmlentitiesDecode>{text}</f:format.htmlentitiesDecode>
- *
- * Text containing the following escaped signs: ``&amp;`` ``&quot;`` ``&#039;`` ``&lt;`` ``&gt;``, will be processed by :php:`html_entity_decode()`.
- * These will result in: ``&`` ``"`` ``'`` ``<`` ``>``.
- *
- * Inline notation
- * ---------------
- *
- * ::
- *
- *    {text -> f:format.htmlentitiesDecode(encoding: 'ISO-8859-1')}
- *
- * Text containing the following escaped signs: ``&amp;`` ``&quot;`` ``&#039;`` ``&lt;`` ``&gt;``, will be processed by :php:`html_entity_decode()`.
- * These will result in: ``&`` ``"`` ``'`` ``<`` ``>``.
- *
- * But encoded as ISO-8859-1.
+ * @see https://www.php.net/html_entity_decode
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-htmlentitiesdecode
  */
 final class HtmlentitiesDecodeViewHelper extends AbstractEncodingViewHelper
 {

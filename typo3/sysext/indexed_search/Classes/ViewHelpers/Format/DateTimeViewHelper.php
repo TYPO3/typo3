@@ -21,6 +21,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
+ * ViewHelper to wrap a `BackendUtility::datetime()` call in Fluid
+ *
+ * ```
+ *   <is:format.dateTime>{data.item_mtime}</is:format.dateTime>
+ * ```
+ *
  * @internal
  */
 final class DateTimeViewHelper extends AbstractViewHelper

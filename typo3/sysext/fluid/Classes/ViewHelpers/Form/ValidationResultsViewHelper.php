@@ -24,52 +24,35 @@ use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Validation results ViewHelper
+ * ViewHelper which renders form validation results.
  *
- * Examples
- * ========
+ * ```
+ *   <f:form.validationResults>
+ *     <f:if condition="{validationResults.flattenedErrors}">
+ *       <ul>
+ *         <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
+ *           <li>{propertyPath}
+ *             <ul>
+ *               <f:for each="{errors}" as="error">
+ *                 <li>{error.code}: {error}</li>
+ *               </f:for>
+ *             </ul>
+ *           </li>
+ *         </f:for>
+ *       </ul>
+ *     </f:if>
+ *   </f:form.validationResults>
  *
- * Output error messages as a list::
+ *   <f:form.validationResults for="someProperty">
+ *     <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
+ *       <f:for each="{errors}" as="error">
+ *           <p data-property-path="{propertyPath}">{error.code}: {error}</p>
+ *       </f:for>
+ *     </f:for>
+ *   </f:form.validationResults>
+ * ```
  *
- *    <f:form.validationResults>
- *       <f:if condition="{validationResults.flattenedErrors}">
- *          <ul class="errors">
- *             <f:for each="{validationResults.flattenedErrors}" as="errors" key="propertyPath">
- *                <li>{propertyPath}
- *                   <ul>
- *                      <f:for each="{errors}" as="error">
- *                         <li>{error.code}: {error}</li>
- *                      </f:for>
- *                   </ul>
- *                </li>
- *             </f:for>
- *          </ul>
- *       </f:if>
- *    </f:form.validationResults>
- *
- * Output::
- *
- *    <ul class="errors">
- *       <li>1234567890: Validation errors for argument "newBlog"</li>
- *    </ul>
- *
- * Output error messages for a single property::
- *
- *    <f:form.validationResults for="someProperty">
- *       <f:if condition="{validationResults.flattenedErrors}">
- *          <ul class="errors">
- *             <f:for each="{validationResults.errors}" as="error">
- *                <li>{error.code}: {error}</li>
- *             </f:for>
- *          </ul>
- *       </f:if>
- *    </f:form.validationResults>
- *
- * Output::
- *
- *    <ul class="errors">
- *      <li>1234567890: Some error message</li>
- *    </ul>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-validationresults
  */
 final class ValidationResultsViewHelper extends AbstractViewHelper
 {

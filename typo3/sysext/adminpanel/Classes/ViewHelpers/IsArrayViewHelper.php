@@ -20,7 +20,11 @@ namespace TYPO3\CMS\Adminpanel\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Checks whether the given value is an array
+ * ViewHelper to checks whether the given value is an array.
+ *
+ * ```
+ *   <adm:isArray value="{someVar}" />
+ * ```
  *
  * @internal
  */

@@ -21,6 +21,16 @@ use TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumn;
 use TYPO3\CMS\Backend\View\BackendLayout\Grid\LanguageColumn;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
+/**
+ * ViewHelper to render a language column in a backend table module.
+ *
+ * ```
+ *   <be:languageColumn languageColumn="{someColumn}" columnNumber="{colPos}" />
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-languagecolumn
+ * @internal Not part of the TYPO3 API
+ */
 final class LanguageColumnViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void

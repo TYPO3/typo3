@@ -23,7 +23,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Fluid\ViewHelpers\Be\AbstractBackendViewHelper;
 
 /**
- * Views sprite icon for a record (object)
+ * ViewHelper to display a sprite icon for a record (object).
+ *
+ * ```
+ *   <beuser:spriteIconForRecord table="be_groups" object="{backendUserGroup}" />
+ * ```
  *
  * @internal
  */

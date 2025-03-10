@@ -21,18 +21,17 @@ use TYPO3\CMS\Core\Core\RequestId;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * This ViewHelper resolves the `nonce` attribute from the global server request object,
- * or from the `PolicyProvider` service as a fall-back value.
+ * ViewHelper to retrieve (and consume) a `nonce` attribute from
+ * the global server request object pool, or from the `PolicyProvider`
+ * service as a fall-back value.
  *
- * Examples
- * ========
+ * ```
+ *   <script nonce="{f:security.nonce()}">const inline = 'script';</script>
+ * ```
  *
- * Basic usage
- * -----------
- *
- * ::
- *
- *    <script nonce="{f:security.nonce()}">const inline = 'script';</script>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-security-nonce
+ * @see https://docs.typo3.org/permalink/t3coreapi:content-security-policy
+ * @see \TYPO3\CMS\Core\Security\ContentSecurityPolicy\PolicyProvider
  */
 final class NonceViewHelper extends AbstractViewHelper
 {

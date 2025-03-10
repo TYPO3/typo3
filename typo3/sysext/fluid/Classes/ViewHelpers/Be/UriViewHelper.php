@@ -21,22 +21,13 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * A ViewHelper for creating URIs to modules.
+ * ViewHelper for creating URIs to backend modules.
  *
- * Examples
- * ========
+ * ```
+ *   <f:be.uri route="web_ts" parameters="{id: 92}" />
+ * ```
  *
- * URI to the web_ts module on page 92::
- *
- *    <f:be.uri route="web_ts" parameters="{id: 92}"/>
- *
- * ``/typo3/module/web/ts?token=b6e9c9f&id=92``
- *
- * Inline notation::
- *
- *    {f:be.uri(route: 'web_ts', parameters: '{id: 92}')}
- *
- * ``/typo3/module/web/ts?token=b6e9c9f&id=92``
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-uri
  */
 final class UriViewHelper extends AbstractBackendViewHelper
 {

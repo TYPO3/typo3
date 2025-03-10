@@ -20,7 +20,11 @@ namespace TYPO3\CMS\Extensionmanager\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Returns a string meant to be used as css class stating whether an extension is available or installed.
+ * ViewHelper to returns a string meant to be used as CSS class, stating whether an extension is available or installed.
+ *
+ * ```
+ *   <tr class="{em:installationStateCssClass(needle:extension.extensionKey, haystack:availableAndInstalled)}">
+ * ```
  *
  * @internal
  */

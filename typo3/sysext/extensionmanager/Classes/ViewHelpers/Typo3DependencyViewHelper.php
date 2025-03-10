@@ -22,7 +22,11 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Shows the version numbers of the TYPO3 dependency, if any.
+ * ViewHelper to shows the version numbers of the TYPO3 dependency, if any.
+ *
+ * ```
+ *   <em:typo3Dependency extension="{distribution}" />
+ * ```
  *
  * @internal
  */

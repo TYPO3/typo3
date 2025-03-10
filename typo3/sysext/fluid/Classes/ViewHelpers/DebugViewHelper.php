@@ -21,35 +21,24 @@ use TYPO3\CMS\Extbase\Utility\DebuggerUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * This ViewHelper generates a HTML dump of the tagged variable.
+ * ViewHelper to generate an HTML readable dump of variables or objects.
+ * The output can be navigated like a nested tree. The output will be put
+ * at the beginning of the HTML response, unless the `inline` attribute is set,
+ * so that the output will be placed at the specific place where it is placed
+ * inside a Fluid template.
  *
- * Examples
- * ========
+ * ```
+ *   <f:debug title="My Title"
+ *         maxDepth="5"
+ *         blacklistedClassNames="{0:'ACME\BlogExample\Domain\Model\Administrator'}"
+ *         blacklistedPropertyNames="{0:'posts'}"
+ *         plainText="true"
+ *         ansiColors="false"
+ *         inline="true">{blogs}
+ *   </f:debug>
+ * ```
  *
- * Simple
- * ------
- *
- * ::
- *
- *    <f:debug>{myVariable}</f:debug>
- *
- * [A HTML dump of myVariable value]
- *
- * All Features
- * ------------
- *
- * ::
- *
- *    <f:debug title="My Title" maxDepth="5"
- *        blacklistedClassNames="{0:'ACME\BlogExample\Domain\Model\Administrator'}"
- *        blacklistedPropertyNames="{0:'posts'}"
- *        plainText="true" ansiColors="false"
- *        inline="true"
-*     >
- *        {blogs}
- *    </f:debug>
- *
- * [A HTML view of the var_dump]
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-debug
  */
 final class DebugViewHelper extends AbstractViewHelper
 {

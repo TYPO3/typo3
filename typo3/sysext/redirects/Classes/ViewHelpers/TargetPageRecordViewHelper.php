@@ -25,8 +25,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * The target of a redirect can contain a t3://page link.
- * This ViewHelper checks for such a case and returns the Page ID
+ * ViewHelper to check for t3://page links within a redirect,
+ * returning the page id.
+ *
+ * ```
+ *   <rd:targetPageRecord target="{redirect.target}" />
+ * ```
  *
  * @internal
  */

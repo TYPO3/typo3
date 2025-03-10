@@ -24,18 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ViewHelper for rendering a code example
+ * ViewHelper for rendering a code example.
  *
- * Examples
- * ========
- *
- * Simple:
- *
- *    <sg:code language="html">your code</sg:code>
- *
- * All options:
- *
+ * ```
  *    <sg:code language="html" decodeEntities="true" disableOuterWrap="true">your code</sg:code>
+ * ```
  *
  * @internal
  */

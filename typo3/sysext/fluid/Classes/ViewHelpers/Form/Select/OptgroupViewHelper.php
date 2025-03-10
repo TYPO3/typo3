@@ -20,8 +20,22 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form\Select;
 use TYPO3\CMS\Fluid\ViewHelpers\Form\AbstractFormFieldViewHelper;
 
 /**
- * Adds custom :html:`<optgroup>` tags inside an :ref:`<f:form.select> <typo3-fluid-form-select>`,
- * supports further child :ref:`<f:form.select.option> <typo3-fluid-form-select-option>` tags.
+ * ViewHelper for adding custom `<optgroup>` tags inside a `<f:form.select>`,
+ * supports further child `<f:form.select.option>` tags.
+ *
+ * ```
+ *   <f:form.select name="mySelect">
+ *     <f:form.select.option value="1">Option one</f:form.select.option>
+ *     <f:form.select.optgroup>
+ *       <f:form.select.option value="3">Grouped option one</f:form.select.option>
+ *       <f:form.select.option value="4">Grouped option two</f:form.select.option>
+ *     </f:form.select.optgroup>
+ *   </f:form.select>>
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-select-optgroup
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-select-option
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-select
  */
 final class OptgroupViewHelper extends AbstractFormFieldViewHelper
 {

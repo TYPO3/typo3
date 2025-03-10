@@ -23,33 +23,21 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * This ViewHelper checks if a feature flag is enabled
+ * ViewHelper to check if a feature flag is enabled, implemented as
+ * a condition like an "if" construct.
  *
- * Examples
- * ========
+ * ```
+ *   <f:feature name="myFeatureFlag">
+ *        <f:then>
+ *           Flag is enabled
+ *        </f:then>
+ *        <f:else>
+ *           Flag is undefined or not enabled
+ *        </f:else>
+ *   </f:feature>
+ * ```
  *
- * Basic usage
- * -----------
- *
- * ::
- *
- *    <f:feature name="myFeatureFlag">
- *       This is being shown if the flag is enabled
- *    </f:feature>
- *
- * feature / then / else
- * ---------------------
- *
- * ::
- *
- *    <f:feature name="myFeatureFlag">
- *       <f:then>
- *          Flag is enabled
- *       </f:then>
- *       <f:else>
- *          Flag is undefined or not enabled
- *       </f:else>
- *    </f:feature>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-feature
  */
 final class FeatureViewHelper extends AbstractConditionViewHelper
 {

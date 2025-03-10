@@ -25,33 +25,19 @@ use TYPO3\HtmlSanitizer\Sanitizer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Passes a given content through `typo3/html-sanitizer` to mitigate potential
- * cross-site scripting occurrences. Given `default` build corresponds to class
- * `TYPO3\CMS\Core\Html\DefaultSanitizerBuilder` declaring allowed HTML tags,
+ * ViewHelper to pass a given content through `typo3/html-sanitizer` to mitigate potential
+ * cross-site scripting occurrences. The `build` option by default uses the class
+ * `TYPO3\CMS\Core\Html\DefaultSanitizerBuilder`, which declares allowed HTML tags,
  * attributes and their values.
  *
- * Examples
- * ========
+ * ```
+ *   <f:sanitize.html>
+ *       <img src="/img.png" class="image" onmouseover="alert(document.location)">
+ *   </f:sanitize.html>
+ * ```
  *
- * Default parameters
- * ------------------
- *
- * ::
- *
- *    <f:sanitize.html>
- *      <img src="/img.png" class="image" onmouseover="alert(document.location)">
- *    </f:sanitize.html>
- *
- * Output::
- *
- *    <img src="/img.png" class="image">
- *
- * Inline notation
- * ---------------
- *
- * ::
- *
- *    {richTextFieldContent -> f:sanitize.html(build: 'default')}
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-sanitize-html
+ * @see \TYPO3\CMS\Core\Html\DefaultSanitizerBuilder
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {

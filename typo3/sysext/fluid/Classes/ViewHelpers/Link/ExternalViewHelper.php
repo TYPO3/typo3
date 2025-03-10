@@ -20,32 +20,13 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Link;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * A ViewHelper for creating links to external targets.
+ * ViewHelper for creating links to external targets.
  *
- * Examples
- * ========
+ * ```
+ *   <f:link.external uri="https://www.typo3.org" target="_blank">external link</f:link.external>
+ * ```
  *
- * Default
- * -------
- *
- * ::
- *
- *    <f:link.external uri="https://www.typo3.org" target="_blank">external link</f:link.external>
- *
- * Output::
- *
- *    <a href="https://www.typo3.org" target="_blank">external link</a>
- *
- * Custom default scheme
- * ---------------------
- *
- * ::
- *
- *    <f:link.external uri="typo3.org" defaultScheme="ftp">external ftp link</f:link.external>
- *
- * Output::
- *
- *    <a href="ftp://typo3.org">external ftp link</a>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-link-external
  */
 final class ExternalViewHelper extends AbstractTagBasedViewHelper
 {
