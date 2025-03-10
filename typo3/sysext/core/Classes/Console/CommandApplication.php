@@ -107,7 +107,7 @@ class CommandApplication implements ApplicationInterface
         Bootstrap::initializeBackendUser(CommandLineUserAuthentication::class);
         $GLOBALS['LANG'] = $this->languageServiceFactory->createFromUserPreferences($GLOBALS['BE_USER']);
         // Make sure output is not buffered, so command-line output and interaction can take place
-        ob_clean();
+        ob_end_clean();
 
         $exitCode = $this->application->run($input, $output);
         // exit codes > 255 are not handled in UNIX
