@@ -79,6 +79,7 @@ class Bootstrap
             ClassLoadingInformation::registerClassLoadingInformation();
         }
 
+        // @todo Remove output buffering in TYPO3 v14
         static::startOutputBuffering();
 
         $configurationManager = static::createConfigurationManager();
