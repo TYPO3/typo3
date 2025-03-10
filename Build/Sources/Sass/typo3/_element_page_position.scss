@@ -4,7 +4,8 @@
 :root {
     --page-position-grid-spacing: 1rem;
     --page-position-cell-spacing: 1rem;
-    --page-position-target-bg: #fff;
+    --page-position-target-bg: color-mix(in srgb, var(--module-bg), currentColor 3%);
+    --page-position-meta-bg: color-mix(in srgb, var(--module-bg), transparent 30%);
     --page-position-target-border-radius: 4px;
 }
 
@@ -54,7 +55,7 @@
             font-size: .75rem;
             line-height: 1.2em;
             padding: calc(var(--page-position-cell-spacing) / 2) var(--page-position-cell-spacing);
-            background-color: rgba(0, 0, 0, .05);
+            background-color: var(--page-position-meta-bg);
             border-end-start-radius: var(--page-position-target-border-radius);
             border-end-end-radius: var(--page-position-target-border-radius);
         }
