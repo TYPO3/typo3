@@ -23,7 +23,11 @@ use TYPO3\CMS\Adminpanel\ModuleApi\ModuleDataStorageCollection;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Render submodule content
+ * ViewHelper to render submodule content.
+ *
+ * ```
+ *   <adm:subModuleRender data="{someData}" module="{someModule}" />
+ * ```
  *
  * @internal
  */

@@ -18,19 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 /**
- * A ViewHelper which generates an :html:`<input type="file">` HTML element.
- * Make sure to set ``enctype="multipart/form-data"`` on the form!
+ * ViewHelper which renders an `<input type="file">` file upload HTML form element.
+ * Make sure to set the `enctype="multipart/form-data"` attribute on the surrounding form!
  *
- * Examples
- * ========
+ * ```
+ *   <f:form.upload name="file" />
+ * ```
  *
- * Example::
- *
- *    <f:form.upload name="file" />
- *
- * Output::
- *
- *    <input type="file" name="file" />
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-upload
  */
 final class UploadViewHelper extends AbstractFormFieldViewHelper
 {

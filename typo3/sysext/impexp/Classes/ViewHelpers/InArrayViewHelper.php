@@ -21,7 +21,16 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * Check if a value exists in an array.
+ * ViewHelper to check if a value exists in an array.
+ *
+ * ```
+ *   <option value="{optionValue}"
+ *     {impexp:inArray(needle:optionValue, haystack:inData.pagetree.tables, then:'selected="selected"')}>
+ *     {optionLabel}
+ *   </option>
+ * ```
+ *
+ * @internal
  */
 class InArrayViewHelper extends AbstractConditionViewHelper
 {

@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Beuser\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Checks whether the given value is an array
+ * ViewHelper to checks whether the given value is an array.
  *
  * @internal
  */

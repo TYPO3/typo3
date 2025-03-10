@@ -26,6 +26,16 @@ use TYPO3\CMS\Core\Resource\Security\SvgSanitizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
+/**
+ * ViewHelper to display the login logo.
+ *
+ * ```
+ *   <backend:loginLogo />
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-loginlogo
+ * @internal
+ */
 final class LoginLogoViewHelper extends AbstractViewHelper
 {
     /**

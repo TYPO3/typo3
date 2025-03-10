@@ -18,18 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 /**
- * ViewHelper which creates a text field :html:`<input type="text">`.
+ * ViewHelper which renders a text field `<input type="text">`.
  *
- * Examples
- * ========
+ * ```
+ *   <f:form.textfield name="myTextBox" value="default value" />
+ *   <f:form.textfield property="ownerMail" required="true" type="email" />
+ * ```
  *
- * Example::
- *
- *    <f:form.textfield name="myTextBox" value="default value" />
- *
- * Output::
- *
- *    <input type="text" name="myTextBox" value="default value" />
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-textfield
  */
 final class TextfieldViewHelper extends AbstractFormFieldViewHelper
 {

@@ -23,12 +23,11 @@ use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ViewHelper for rendering color schemes
+ * ViewHelper for rendering color schemes.
  *
- * Examples
- * ========
- *
+ * ```
  *    <sg:colorScheme>your code</sg:colorScheme>
+ * ```
  *
  * @internal
  */

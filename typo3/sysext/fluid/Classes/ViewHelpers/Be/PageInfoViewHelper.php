@@ -25,20 +25,15 @@ use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * ViewHelper which return page info icon as known from TYPO3 backend modules.
+ * ViewHelper which returns the page info icon as known from TYPO3 backend modules.
  *
- * .. note::
- *    This ViewHelper is experimental!
+ * ```
+ *   <f:be.pageInfo />
+ * ```
  *
- * Examples
- * ========
+ * **Note:** This ViewHelper is experimental!
  *
- * Default::
- *
- *    <f:be.pageInfo />
- *
- * Page info icon with context menu
- *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-pageinfo
  * @todo: Candidate to deprecate? The page info is typically displayed in doc header, done by ModuleTemplate in controllers.
  */
 final class PageInfoViewHelper extends AbstractBackendViewHelper

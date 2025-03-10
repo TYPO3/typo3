@@ -20,60 +20,16 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Format;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Formats a given float to a currency representation.
+ * ViewHelper which formats a given float to a currency representation.
  *
- * Examples
- * ========
+ * ```
+ *   <f:format.currency decimalSeparator="." thousandsSeparator="," decimals="2"
+ *         currencySign="$" prependCurrency="true" separateCurrency="false">
+ *     54321
+ *   </f:format.currency>
+ * ```
  *
- * Defaults
- * --------
- *
- * ::
- *
- *    <f:format.currency>123.456</f:format.currency>
- *
- * Output::
- *
- *     123,46
- *
- * All parameters
- * --------------
- *
- * ::
- *
- *    <f:format.currency decimalSeparator="." thousandsSeparator="," decimals="2"
- *        currencySign="$" prependCurrency="true" separateCurrency="false"
- *    >
- *        54321
- *    </f:format.currency>
- *
- * Output::
- *
- *     $54,321.00
- *
- * Inline notation
- * ---------------
- *
- * ::
- *
- *    {someNumber -> f:format.currency(thousandsSeparator: ',', currencySign: 'EUR')}
- *
- * Output::
- *
- *    54,321,00 EUR
- *
- * Depending on the value of ``{someNumber}``.
- *
- * Use dash for decimals without value
- * -----------------------------------
- *
- * ::
- *
- *    <f:format.currency useDash="true">123.00</f:format.currency>
- *
- * Output::
- *
- *     123,-
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-currency
  */
 final class CurrencyViewHelper extends AbstractViewHelper
 {

@@ -27,49 +27,14 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Email link ViewHelper.
- * Generates an email link incorporating TYPO3s `spamProtectEmailAddresses`_ TypoScript setting.
+ * ViewHelper to generate an email link (`mailto:`), respecting TYPO3s `spamProtectEmailAddresses` TypoScript setting.
  *
- * .. _spamProtectEmailAddresses: https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Setup/Config/Index.html#spamprotectemailaddresses
+ * ```
+ *   <f:link.email email="foo@example.com" subject="Website contact" cc="fooSupervisor@example.com" />
+ * ```
  *
- * Examples
- * ========
- *
- * Basic email link
- * ----------------
- *
- * ::
- *
- *    <f:link.email email="foo@bar.tld" />
- *
- * Output::
- *
- *    <a href="#" data-mailto-token="ocknvq,hqqBdct0vnf" data-mailto-vector="1">foo(at)bar.tld</a>
- *
- * Depending on `spamProtectEmailAddresses`_ setting.
- *
- * Email link with custom linktext
- * -------------------------------
- *
- * ::
- *
- *    <f:link.email email="foo@bar.tld">some custom content</f:link.email>
- *
- * Output::
- *
- *
- * Email link with custom subject and prefilled cc
- * -----------------------------------------------
- *
- * ::
- *
- *    <f:link.email email="foo@bar.tld" subject="Check out this website" cc="foo@example.com"">some custom content</f:link.email>
- *
- * Output::
- *
- *    <a href="mailto:foo@bar.tld?subject=Check%20out%20this%20website&amp;cc=foo%40example.com">some custom content</a>
- *
- * Depending on `spamProtectEmailAddresses`_ setting.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-link-email
+ * @see https://docs.typo3.org/permalink/t3tsref:confval-config-spamprotectemailaddresses
  */
 final class EmailViewHelper extends AbstractTagBasedViewHelper
 {

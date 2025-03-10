@@ -22,30 +22,15 @@ use TYPO3\CMS\Frontend\Html\HtmlWorker;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Transforms HTML and substitutes internal link scheme aspects.
+ * ViewHelper to transform HTML and substitute internal link scheme aspects.
  *
- * Examples
- * ========
+ * ```
+ *   <f:transform.html selector="a.href" onFailure="removeEnclosure">
+ *       <a href="t3://page?uid=1" class="home">Home</a>
+ *   </f:transform.html>
+ * ```
  *
- * Default parameters
- * ------------------
- *
- * ::
- *
- *    <f:transform.html selector="a.href" onFailure="removeEnclosure">
- *      <a href="t3://page?uid=1" class="home">Home</a>
- *    </f:transform.html>
- *
- * Output::
- *
- *     <a href="https://example.com/home" class="home">Home</a>
- *
- * Inline notation
- * ---------------
- *
- * ::
- *
- *    {content -> f:transform.html(selector:'a.href', onFailure:'removeEnclosure')}
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-transform-html
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {

@@ -30,40 +30,25 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 /**
  * ViewHelper which renders a record list as known from the TYPO3 list module.
  *
- * .. note::
- *    This feature is experimental!
+ * ```
+ *   <f:be.tableList tableName="fe_users"
+ *         fieldList="{0: 'name', 1: 'email'}"
+ *         storagePid="1"
+ *         levels="2"
+ *         filter="foo"
+ *         recordsPerPage="10"
+ *         sortField="name"
+ *         sortDescending="true"
+ *         readOnly="true"
+ *         enableClickMenu="false"
+ *         enableControlPanels="true"
+ *         clickTitleMode="info"
+ *   />
+ * ```
  *
- * Examples
- * ========
+ * **Note:** This feature is experimental!
  *
- * Minimal::
- *
- *    <f:be.tableList tableName="fe_users" />
- *
- * List of all "Website user" records stored in the configured storage PID.
- * Records will be editable, if the current backend user has got edit rights for the table ``fe_users``.
- *
- * Only the title column (username) will be shown.
- *
- * Context menu is active.
- *
- * Full::
- *
- *    <f:be.tableList tableName="fe_users" fieldList="{0: 'name', 1: 'email'}"
- *        storagePid="1"
- *        levels="2"
- *        filter="foo"
- *        recordsPerPage="10"
- *        sortField="name"
- *        sortDescending="true"
- *        readOnly="true"
- *        enableClickMenu="false"
- *        enableControlPanels="true"
- *        clickTitleMode="info"
- *        />
- *
- * List of "Website user" records with a text property of ``foo`` stored on PID ``1`` and two levels down.
- * Clicking on a username will open the TYPO3 info popup for the respective record
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-tablelist
  */
 final class TableListViewHelper extends AbstractBackendViewHelper
 {

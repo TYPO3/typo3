@@ -23,69 +23,16 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Use this ViewHelper to crop the text between its opening and closing tags.
+ * ViewHelper which can crop (shorten) a text.
+ * Whitespace within the `<f:format.crop>` element will be counted as characters.
  *
- * Whitespace within the f:format.crop element will be considered as characters.
+ * ```
+ *   <f:format.crop maxCharacters="10" append="&hellip;[more]">
+ *     This is some very long text
+ *   </f:format.crop>
+ * ```
  *
- * Examples
- * ========
- *
- * Defaults
- * --------
- *
- * ::
- *
- *    <f:format.crop maxCharacters="10">
- *    This is some very long text
- *    </f:format.crop>
- *
- * ``This is...``
- *
- * The third word "some" does not fit in the 10 character limit, because respectWordBoundaries
- * is true by default.
- *
- * Custom suffix
- * -------------
- *
- * ::
- *
- *    <f:format.crop maxCharacters="17" append="&nbsp;[more]">
- *    This is some very long text
- *    </f:format.crop>
- *
- * ``This is some&nbsp;[more]``
- *
- * Don't respect word boundaries
- * -----------------------------
- *
- * ::
- *
- *    <f:format.crop maxCharacters="10" respectWordBoundaries="false">
- *    This is some very long text
- *    </f:format.crop>
- *
- * ``This is s...``
- *
- * Don't respect HTML tags
- * -----------------------
- *
- * ::
- *
- *    <f:format.crop maxCharacters="28" respectWordBoundaries="false" respectHtml="false">
- *    This is some text with <strong>HTML</strong> tags
- *    </f:format.crop>
- *
- * ``This is some text with <stro``
- *
- * Inline notation
- * ---------------
- *
- * ::
- *
- *    {someLongText -> f:format.crop(maxCharacters: 10)}
- *
- * ``someLongText cropped after 10 characters…``
- * Depending on the value of ``{someLongText}``.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-crop
  */
 final class CropViewHelper extends AbstractViewHelper
 {

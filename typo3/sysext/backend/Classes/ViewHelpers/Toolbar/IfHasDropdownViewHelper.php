@@ -22,8 +22,16 @@ use TYPO3Fluid\Fluid\Core\Rendering\RenderingContextInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractConditionViewHelper;
 
 /**
- * Checks whether a toolbar item provides a dropdown menu
+ * ViewHelper condition to checks whether a toolbar item provides a dropdown menu.
  *
+ * ```
+ *  <be:toolbar.ifHasDropdown class="{toolbarItem}">
+ *      <f:then>...</f:then>
+ *      <f:else>...</f:else>
+ *  </be:toolbar.ifHasDropdown>
+ * ```
+ *
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-toolbar-ifhasdropdown
  * @internal
  */
 class IfHasDropdownViewHelper extends AbstractConditionViewHelper

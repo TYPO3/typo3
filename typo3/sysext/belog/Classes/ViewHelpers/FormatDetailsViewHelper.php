@@ -23,7 +23,11 @@ use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Create detail string from log entry
+ * ViewHelper to create detail string from a log entry.
+ *
+ * ```
+ *   <belog:formatDetails logEntry="{logItem}" />
+ * ```
  *
  * @internal
  */

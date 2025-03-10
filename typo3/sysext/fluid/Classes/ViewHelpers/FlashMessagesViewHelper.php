@@ -28,78 +28,25 @@ use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * ViewHelper which renders the flash messages (if there are any) as an unsorted list.
+ * ViewHelper which renders the flash messages (output messages / message bubbles, which can also
+ * be queued from a preceding request). No output occurs if no flash messages are
+ * queued. Output is done with a hard-coded HTML definition, but the raw contents can be
+ * extracted via the `as` attribute, and rendered with custom formatting.
  *
- * In case you need custom Flash Message HTML output, please write your own ViewHelper for the moment.
+ * ```
+ *   <f:flashMessages />
  *
- * Examples
- * ========
+ *   <f:flashMessages as="flashMessages">
+ *        <dl class="messages">
+ *           <f:for each="{flashMessages}" as="flashMessage">
+ *              <dt>{flashMessage.code}</dt>
+ *              <dd>{flashMessage.message}</dd>
+ *           </f:for>
+ *        </dl>
+ *   </f:flashMessages>
+ * ```
  *
- * Simple
- * ------
- *
- * ::
- *
- *    <f:flashMessages />
- *
- * A list of flash messages.
- *
- * TYPO3 core style
- * ----------------
- *
- * ::
- *
- *    <f:flashMessages />
- *
- * Output::
- *
- *    <div class="typo3-messages">
- *       <div class="alert alert-info">
- *          <div class="alert-inner">
- *             <div class="alert-icon">
- *                <span class="icon-emphasized">
- *                   <span class="t3js-icon icon icon-size-small icon-state-default icon-actions-info" data-identifier="actions-info">
- *                      <span class="icon-markup">
- *                         <svg class="icon-color"><use xlink:href="/typo3/sysext/core/Resources/Public/Icons/T3Icons/sprites/actions.svg#actions-info"></use></svg>
- *                      </span>
- *                   </span>
- *                </span>
- *             </div>
- *             <div class="alert-content">
- *                <div class="alert-title">Info - Title for Info message</div>
- *                <p class="alert-message">Message text here.</p>
- *             </div>
- *          </div>
- *       </div>
- *    </div>
- *
- * Output flash messages as a description list
- * -------------------------------------------
- *
- * ::
- *
- *    <f:flashMessages as="flashMessages">
- *       <dl class="messages">
- *          <f:for each="{flashMessages}" as="flashMessage">
- *             <dt>{flashMessage.code}</dt>
- *             <dd>{flashMessage.message}</dd>
- *          </f:for>
- *       </dl>
- *    </f:flashMessages>
- *
- * Output::
- *
- *    <dl class="messages">
- *       <dt>1013</dt>
- *       <dd>Some Warning Message.</dd>
- *   </dl>
- *
- * Using a specific queue
- * ----------------------
- *
- * ::
- *
- *    <f:flashMessages queueIdentifier="myQueue" />
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-flashmessages
  */
 final class FlashMessagesViewHelper extends AbstractViewHelper
 {

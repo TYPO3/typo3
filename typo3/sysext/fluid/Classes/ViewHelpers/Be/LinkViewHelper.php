@@ -22,16 +22,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * A ViewHelper for creating URIs to modules.
+ * ViewHelper for creating URIs to backend modules.
  *
- * Examples
- * ========
+ * ```
+ *   <f:be.link route="web_ts" parameters="{id: 92}">Go to web_ts</f:be.link>
+ * ```
  *
- * URI to the web_ts module on page 92::
- *
- *    <f:be.link route="web_ts" parameters="{id: 92}">Go to web_ts</f:be.link>
- *
- * ``<a href="/typo3/module/web/ts?token=b6e9c9f&id=92">Go to web_ts</a>``
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-link
  */
 final class LinkViewHelper extends AbstractTagBasedViewHelper
 {

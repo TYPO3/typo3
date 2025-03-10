@@ -23,6 +23,15 @@ use TYPO3\CMS\Extbase\Utility\LocalizationUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
+/**
+ * ViewHelper to display relevancy / rating information about a search result record
+ *
+ * ```
+ *   <is:searchResult.rating firstRow="{firstRow}" sortOrder="{searchParams.sortOrder}" row="{row}" />
+ * ```
+ *
+ * @internal
+ */
 class RatingViewHelper extends AbstractViewHelper
 {
     public function initializeArguments(): void

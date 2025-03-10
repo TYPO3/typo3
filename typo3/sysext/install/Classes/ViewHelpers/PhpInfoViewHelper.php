@@ -20,7 +20,11 @@ namespace TYPO3\CMS\Install\ViewHelpers;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Utility ViewHelper for phpinfo()
+ * ViewHelper to show phpinfo() output.
+ *
+ * ```
+ *   <i:phpinfo />
+ * ```
  *
  * @internal
  */

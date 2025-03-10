@@ -20,7 +20,11 @@ namespace TYPO3\CMS\Install\ViewHelpers\Format;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Remove all spaces in a string
+ * ViewHelper to remove all spaces in a string.
+ *
+ * ```
+ *   <i:format.noSpace value="category-{extensionKey}-{categoryName}" />
+ * ```
  *
  * @internal
  */

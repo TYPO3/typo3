@@ -26,7 +26,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Displays 'SwitchUser' button to change current backend user to target backend user.
+ * ViewHelper to displays a 'SwitchUser' button to change the current backend user to the target backend user.
+ *
+ * ```
+ *   <beuser:SwitchUser class="btn btn-default" backendUser="{backendUser}" />
+ * ```
  *
  * @internal
  */

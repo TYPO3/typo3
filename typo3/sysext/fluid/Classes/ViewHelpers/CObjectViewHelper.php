@@ -29,10 +29,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * This ViewHelper renders CObjects from the global TypoScript configuration.
+ * ViewHelper to render CObjects (objects containing rendering definitions for records/elements),
+ * using the global TypoScript configuration.
  *
- * .. note::
- *    You have to ensure proper escaping (htmlspecialchars/intval/etc.) on your own!
+ * ```
+ *   <f:cObject typoscriptObjectPath="lib.someLibObject" />
+ * ```
+ *
+ * **Note:** You have to ensure proper escaping (`htmlspecialchars`/`intval`/etc.) on your own!
  *
  * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-cobject
  */

@@ -28,12 +28,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 /**
  * ViewHelper to register backend module resources like CSS and JavaScript using the PageRenderer.
  *
- * Examples
- * ========
- *
- * All options::
- *
- *    <f:be.pageRenderer
+ * ```
+ *   <f:be.pageRenderer
  *        pageTitle="foo"
  *        includeCssFiles="{0: 'EXT:my_ext/Resources/Public/Css/Stylesheet.css'}"
  *        includeJsFiles="{0: 'EXT:my_ext/Resources/Public/JavaScript/Library1.js', 1: 'EXT:my_ext/Resources/Public/JavaScript/Library2.js'}"
@@ -41,9 +37,8 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
  *        includeJavaScriptModules="{0: '@my-vendor/my-ext/my-module.js'}"
  *        addInlineSettings="{'some.setting.key': 'some.setting.value'}"
  *    />
- *
- * This will load the specified css, js files and JavaScript modules, adds a custom js
- * inline setting, and adds a resolved label to be used in js.
+ * ```
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-pagerenderer
  */
 final class PageRendererViewHelper extends AbstractViewHelper
 {

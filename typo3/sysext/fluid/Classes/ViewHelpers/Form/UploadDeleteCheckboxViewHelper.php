@@ -30,18 +30,13 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
 /**
- * ViewHelper which creates a checkbox field, that is used for file upload deletion in Extbase.
+ * ViewHelper which renders a checkbox field used for file upload deletion in Extbase forms.
  *
- * Examples
- * ========
+ * ```
+ *   <f:form.uploadDeleteCheckbox id="file" property="file" fileReference="{myModel.file}" />
+ * ```
  *
- * Example::
- *
- *    <f:form.uploadDeleteCheckbox id="file" property="file" fileReference="{myModel.file}" />
- *
- * Output::
- *
- *    <input type="checkbox" id="file" name="tx_extension_plugin[@delete][item][hash]" value="signed-json-string">
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-uploaddeletecheckbox
  */
 final class UploadDeleteCheckboxViewHelper extends AbstractTagBasedViewHelper
 {

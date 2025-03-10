@@ -25,93 +25,25 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Renders a string by passing it to a TYPO3 `parseFunc`_.
- * You can either specify a path to the TypoScript setting or set the `parseFunc`_ options directly.
- * By default :typoscript:`lib.parseFunc_RTE` is used to parse the string.
+ * ViewHelper to render a string which can contain HTML markup
+ * by passing it to a TYPO3 `parseFunc`. This can sanitize
+ * unwanted HTML tags and attributes, and keep wanted HTML syntax and
+ * take care of link substitution and other parsing.
+ * Either specify a path to the TypoScript setting or set the `parseFunc` options directly.
+ * By default, `lib.parseFunc_RTE` is used to parse the string.
  *
- * The view helper must not be used in backend context, as it triggers frontend logic.
- * Instead, use :html:`<f:sanitize.html />` to secure a given HTML string or :html:`<f:transform.html />`
- * to parse links in HTML.
+ * ```
+ *   <f:format.html parseFuncTSPath="lib.myCustomParseFunc">
+ *       {$project} is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).
+ *   </f:format.html>
+ * ```
  *
- * Examples
- * ========
+ * **Note:** The ViewHelper must not be used in backend context, as it triggers frontend logic.
+ * Instead, use `<f:sanitize.html>` within backend context to secure a given HTML string
+ * or `<f:transform.html>` to parse links in HTML.
  *
- * Default parameters
- * ------------------
- *
- * ::
- *
- *    <f:format.html>{$myConstant.project} is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
- *
- * Output::
- *
- *    <p class="bodytext">TYPO3 is a cool <strong>CMS</strong> (<a href="https://www.typo3.org" target="_blank">TYPO3</a>).</p>
- *
- * Depending on TYPO3 constants.
- *
- * Custom parseFunc
- * ----------------
- *
- * ::
- *
- *    <f:format.html parseFuncTSPath="lib.parseFunc">TYPO3 is a cool <b>CMS</b> (<a href="https://www.typo3.org">TYPO3</a>).</f:format.html>
- *
- * Output::
- *
- *    TYPO3 is a cool <strong>CMS</strong> (<a href="https://www.typo3.org" target="_blank">TYPO3</a>).
- *
- * Data argument
- * --------------
- *
- * If you work with TypoScript :typoscript:`field` property, you should add the current record as `data`
- * to the ViewHelper to allow processing the `field` and `dataWrap` properties correctly.
- *
- * ::
- *
- *    <f:format.html data="{newsRecord}" parseFuncTSPath="lib.news">News title: </f:format.html>
- *
- * After "dataWrap = |<strong>{FIELD:title}</strong>" you may have this Output::
- *
- *    News title: <strong>TYPO3, greatest CMS ever</strong>
- *
- * Current argument
- * -----------------
- *
- * Use the `current` argument to set the current value of the content object.
- *
- * ::
- *
- *    <f:format.html current="{strContent}" parseFuncTSPath="lib.info">I'm gone</f:format.html>
- *
- * After `setContentToCurrent = 1` you may have this output::
- *
- *    Thanks Kasper for this great CMS
- *
- * CurrentValueKey argument
- * -------------------------
- *
- * Use the `currentValueKey` argument to define a value of data object as the current value.
- *
- * ::
- *
- *    <f:format.html data="{contentRecord}" currentValueKey="header" parseFuncTSPath="lib.content">Content: </f:format.html>
- *
- * After `dataWrap = |{CURRENT:1}` you may have this Output::
- *
- *    Content: How to install TYPO3 in under 2 minutes ;-)
- *
- * Inline notation
- * ---------------
- *
- * ::
- *
- *    {someText -> f:format.html(parseFuncTSPath: 'lib.parseFunc')}
- *
- * Output::
- *
- *    TYPO3 is a cool <strong>CMS</strong> (<a href="https://www.typo3.org" target="_blank">TYPO3</a>).
- *
- * .. _parseFunc: https://docs.typo3.org/m/typo3/reference-typoscript/main/en-us/Functions/Parsefunc.html
+ * @see https://docs.typo3.org/permalink/t3tsref:parsefunc
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-format-html
  */
 final class HtmlViewHelper extends AbstractViewHelper
 {

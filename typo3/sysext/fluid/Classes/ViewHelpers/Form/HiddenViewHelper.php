@@ -18,21 +18,13 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 /**
- * Renders an :html:`<input type="hidden" ...>` tag.
+ * ViewHelper which renders an `<input type="hidden" ...>` tag.
  *
- * Examples
- * ========
+ * ```
+ *   <f:form.hidden name="myHiddenValue" value="42" />
+ * ```
  *
- * Example::
- *
- *    <f:form.hidden name="myHiddenValue" value="42" />
- *
- * Output::
- *
- *    <input type="hidden" name="myHiddenValue" value="42" />
- *
- * You can also use the "property" attribute if you have bound an object to the form.
- * See :ref:`<f:form> <typo3-fluid-form>` for more documentation.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-form-hidden
  */
 final class HiddenViewHelper extends AbstractFormFieldViewHelper
 {

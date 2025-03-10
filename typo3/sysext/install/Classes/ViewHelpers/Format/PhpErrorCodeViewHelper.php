@@ -20,7 +20,11 @@ namespace TYPO3\CMS\Install\ViewHelpers\Format;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Transform PHP error code to readable text
+ * ViewHelper to transform a PHP error code to readable text
+ *
+ * ```
+ *   <i:format.phpErrorCode phpErrorCode="{someErrorCodeIntegerValue}" />
+ * ```
  *
  * @internal
  */

@@ -27,68 +27,13 @@ use TYPO3Fluid\Fluid\Core\Variables\StandardVariableProvider;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * A ViewHelper to create links from fields supported by the link wizard
+ * ViewHelper to create links from fields supported by the link wizard
  *
- * Example
- * =======
+ * ```
+ *   <f:link.typolink parameter="123" additionalParams="&u=b" language="2" />
+ * ```
  *
- * ``{link}`` contains: ``t3://page?uid=2&arg1=val1#9 _blank some-css-class "Title containing Whitespace"``.
- *
- * Or a legacy version from older TYPO3 versions:
- * ``{link}`` contains: ``9 _blank - "testtitle with whitespace" &X=y``.
- *
- * Minimal usage
- * -------------
- *
- * ::
- *
- *    <f:link.typolink parameter="{link}">
- *       Linktext
- *    </f:link.typolink>
- *
- * Output::
- *
- *    <a href="/page/path/name.html?X=y" title="testtitle with whitespace" target="_blank">
- *       Linktext
- *    </a>
- *
- * Depending on current page, routing and page path configuration.
- *
- * TextWrap usage
- * --------------
- *
- * ::
- *
- *    <f:link.typolink parameter="123" textWrap="<span>|</span>"/>
- *
- * Output::
- *
- *    <a href="/some/page">
- *       <span>Page title of some page wrapped in span</span>
- *    </a>
- *
- * Depending on current page, routing and page path configuration.
- *
- * Full parameter usage
- * --------------------
- *
- * ::
- *
- *    <f:link.typolink parameter="{link}" additionalParams="&u=b"
- *        target="_blank"
- *        class="ico-class" title="some title"
- *        additionalAttributes="{type:'button'}"
- *    >
- *       Linktext
- *    </f:link.typolink>
- *
- * Output::
- *
- *    <a href="/page/path/name.html?X=y&u=b" title="some title" target="_blank" class="ico-class" type="button">
- *        Linktext
- *    </a>
- *
- * Depending on routing and page path configuration.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-link-typolink
  */
 final class TypolinkViewHelper extends AbstractViewHelper
 {

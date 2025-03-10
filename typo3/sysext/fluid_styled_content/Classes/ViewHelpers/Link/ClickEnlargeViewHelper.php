@@ -24,17 +24,11 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * A ViewHelper for creating a link for an image popup.
+ * ViewHelper for creating a link for an image popup.
  *
- * = Example =
- *
- * <code title="enlarge image on click">
- * <ce:link.clickEnlarge image="{image}" configuration="{settings.images.popup}"><img src=""></ce:link.clickEnlarge>
- * </code>
- *
- * <output>
- * <a href="url" onclick="javascript" target="thePicture"><img src=""></a>
- * </output>
+ * ```
+ *   <ce:link.clickEnlarge image="{image}" configuration="{settings.images.popup}"><img src=""></ce:link.clickEnlarge>
+ * ```
  *
  * @internal this is not part of TYPO3 Core API.
  */

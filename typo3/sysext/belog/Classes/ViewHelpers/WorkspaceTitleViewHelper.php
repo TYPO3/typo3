@@ -25,7 +25,11 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Get workspace title from workspace id
+ * ViewHelper to get workspace title from a workspace id.
+ *
+ * ```
+ *   belog:workspaceTitle uid="{logItem.workspaceUid}" />
+ * ```
  *
  * @internal
  */

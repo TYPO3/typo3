@@ -25,26 +25,14 @@ use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 /**
  * ViewHelper to add JavaScript to the TYPO3 AssetCollector. Either a file or inline JavaScript can be added.
  *
- * Examples
- * ========
- *
- * ::
- *
- *    <f:asset.script identifier="identifier123" src="EXT:my_ext/Resources/Public/JavaScript/foo.js" />
+ * ```
+ *    <f:asset.script identifier="identifier123" src="EXT:my_ext/Resources/Public/JavaScript/foo.js" inline="0" />
  *    <f:asset.script identifier="identifier123">
  *       alert('hello world');
  *    </f:asset.script>
+ * ```
  *
- * Details
- * =======
- *
- * In the AssetCollector, the "identifier" attribute is used as a unique identifier. Thus, if assets are added multiple
- * times using the same identifier, the asset will only be served once (the last added overrides previous assets).
- *
- * Some available attributes are defaults but do not make sense for this ViewHelper. Relevant attributes specific
- * for this ViewHelper are: async, crossorigin, defer, integrity, nomodule, nonce, referrerpolicy, src, type.
- *
- * Using the "inline" argument, the file content of the referenced file is added as inline script.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-asset-script
  */
 final class ScriptViewHelper extends AbstractTagBasedViewHelper
 {

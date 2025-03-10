@@ -24,22 +24,15 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Create internal link within backend.
+ * ViewHelper to create internal links within the backend.
  *
- * Examples
- * ========
+ * ```
+ *  <form action="{be:moduleLink(route:'pages_new', arguments:'{id:pageUid}')}" method="post">
+ *     <!-- form content -->
+ *  </form>
+ * ```
  *
- * Default::
- *
- *     <form action="{be:moduleLink(route:'pages_new', arguments:'{id:pageUid}')}" method="post">
- *         <!-- form content -->
- *     </form>
- *
- * Output::
- *
- *     <form action="/pages/new" method="post">
- *         <!-- form content -->
- *     </form>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-backend-modulelink
  */
 final class ModuleLinkViewHelper extends AbstractViewHelper
 {

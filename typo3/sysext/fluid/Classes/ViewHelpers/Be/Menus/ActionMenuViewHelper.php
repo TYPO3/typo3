@@ -24,33 +24,23 @@ use TYPO3Fluid\Fluid\Core\Parser\SyntaxTree\ViewHelperNode;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * ViewHelper which returns a select box, that can be used to switch between
- * multiple actions and controllers and looks similar to TYPO3s funcMenu.
+ * ViewHelper which returns a select box that can be used to switch between
+ * multiple actions and controllers and looks similar to TYPO3s "funcMenu".
  *
- * .. note::
- *    This ViewHelper is experimental!
+ * ```
+ *  <f:be.menus.actionMenu>
+ *      <f:be.menus.actionMenuItem label="First Menu" controller="Default" action="index" />
+ *      <f:be.menus.actionMenuItemGroup label="Information">
+ *          <f:be.menus.actionMenuItem label="PHP Information" controller="Information" action="listPhpInfo" />
+ *          <f:be.menus.actionMenuItem label="{f:translate(key:'documentation')}" controller="Information" action="documentation" />
+ *          ...
+ *      </f:be.menus.actionMenuItemGroup>
+ *  </f:be.menus.actionMenu>
+ * ```
  *
- * Examples
- * ========
+ * **Note:** This ViewHelper is experimental and tailored to be used only in extbase context.
  *
- * Simple::
- *
- *    <f:be.menus.actionMenu>
- *       <f:be.menus.actionMenuItem label="Overview" controller="Blog" action="index" />
- *       <f:be.menus.actionMenuItem label="Create new Blog" controller="Blog" action="new" />
- *       <f:be.menus.actionMenuItem label="List Posts" controller="Post" action="index" arguments="{blog: blog}" />
- *    </f:be.menus.actionMenu>
- *
- * Select box with the options "Overview", "Create new Blog" and "List Posts".
- *
- * Localized::
- *
- *    <f:be.menus.actionMenu>
- *       <f:be.menus.actionMenuItem label="{f:translate(key:'overview')}" controller="Blog" action="index" />
- *       <f:be.menus.actionMenuItem label="{f:translate(key:'create_blog')}" controller="Blog" action="new" />
- *    </f:be.menus.actionMenu>
- *
- * Localized select box.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-be-menus-actionmenu
  */
 final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
 {

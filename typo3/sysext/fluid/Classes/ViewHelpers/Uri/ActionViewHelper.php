@@ -29,18 +29,14 @@ use TYPO3\CMS\Frontend\Typolink\UnableToLinkException;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * A ViewHelper for creating URIs to extbase actions. Tailored for extbase plugins, uses extbase Request and extbase UriBuilder.
+ * ViewHelper for creating URIs to Extbase actions (within Controllers).
+ * Tailored for Extbase plugins, uses Extbase Request and Extbase UriBuilder.
  *
- * Examples
- * ========
+ * ```
+ *   <f:uri.action action="show" arguments="{blog: blog.uid}">action link</f:uri.action>
+ * ```
  *
- * URI to the show-action of the current controller::
- *
- *    <f:uri.action action="show" />
- *
- * ``/page/path/name.html?tx_myextension_plugin[action]=show&tx_myextension_plugin[controller]=Standard&cHash=xyz``
- *
- * Depending on current page, routing and page path configuration.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-uri-action
  */
 final class ActionViewHelper extends AbstractViewHelper
 {

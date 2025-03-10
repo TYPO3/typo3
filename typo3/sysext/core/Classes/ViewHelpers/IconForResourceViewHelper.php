@@ -24,22 +24,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Displays icon for a FAL resource (file or folder means a :php:`TYPO3\CMS\Core\Resource\ResourceInterface`).
+ * ViewHelper to displays an icon for a FAL resource (file or folder means a `TYPO3\CMS\Core\Resource\ResourceInterface`).
  *
- * Examples
- * ========
- *
- * Default::
- *
+ * ```
  *    <core:iconForResource resource="{file.resource}" />
+ * ```
  *
- * Output::
- *
- *     <span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-text-html" data-identifier="mimetypes-text-html">
- *         <span class="icon-markup">
- *             <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-text-html.svg" width="16" height="16">
- *         </span>
- *     </span>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-core-iconforresource
+ * @see \TYPO3\CMS\Core\Resource\ResourceInterface
  */
 final class IconForResourceViewHelper extends AbstractViewHelper
 {

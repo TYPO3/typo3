@@ -26,10 +26,12 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Render permission icon group (user / group / others) of the "Access" module.
+ * ViewHelper to render a permission icon group (user / group / others) of the "Access" module,
+ * using native PHP instead of Fluid for performance reasons.
  *
- * Most of that could be done in fluid directly, but this ViewHelper
- * is much better performance wise.
+ * ```
+ *   <beuser:permissions permission="{data.row.perms_user}" scope="user" pageId="{data.row.uid}" />
+ * ```
  *
  * @internal
  */

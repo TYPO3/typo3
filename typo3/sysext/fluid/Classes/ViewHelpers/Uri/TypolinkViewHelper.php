@@ -25,38 +25,13 @@ use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * A ViewHelper to create uris from fields supported by the link wizard.
+ * ViewHelper to create URIs from fields supported by the link wizard.
  *
- * Example
- * =======
+ * ```
+ *   <f:uri.typolink parameter="123" textWrap="<span>|</span>" />
+ * ```
  *
- * ``{link}`` contains ``19 - - - &X=y``
- *
- * Please note that due to the nature of typolink you have to provide a full
- * set of parameters.
- * If you use the parameter only, then target, class and title will be discarded.
- *
- * Minimal usage
- * -------------
- *
- * ::
- *
- *    <f:uri.typolink parameter="{link}" />
- *
- * ``/page/path/name.html?X=y``
- *
- * Depending on routing and page path configuration.
- *
- * Full parameter usage
- * --------------------
- *
- * ::
- *
- *    <f:uri.typolink parameter="{link}" additionalParams="&u=b" />
- *
- * ``/page/path/name.html?X=y&u=b``
- *
- * Depending on routing and page path configuration.
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-fluid-uri-typolink
  */
 final class TypolinkViewHelper extends AbstractViewHelper
 {

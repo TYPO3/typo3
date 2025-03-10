@@ -23,22 +23,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Displays icon for record.
+ * ViewHelper to display an icon for a record.
  *
- * Examples
- * ========
- *
- * Default::
- *
+ * ```
  *    <core:iconForRecord table="tt_content" row="{record}" />
+ * ```
  *
- * Output::
- *
- *     <span class="t3js-icon icon icon-size-small icon-state-default icon-mimetypes-x-content-text" data-identifier="mimetypes-x-content-text" aria-hidden="true">
- *         <span class="icon-markup">
- *             <img src="/typo3/sysext/core/Resources/Public/Icons/T3Icons/mimetypes/mimetypes-x-content-text.svg" width="16" height="16">
- *         </span>
- *     </span>
+ * @see https://docs.typo3.org/permalink/t3viewhelper:typo3-core-iconforrecord
  */
 final class IconForRecordViewHelper extends AbstractViewHelper
 {

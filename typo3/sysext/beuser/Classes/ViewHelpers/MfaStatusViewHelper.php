@@ -24,7 +24,11 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
- * Render MFA status information
+ * ViewHelper to render MFA status information.
+ *
+ * ```
+ *   <beuser:mfaStatus userUid="{backendUser.uid}" />
+ * ```
  *
  * @internal
  */

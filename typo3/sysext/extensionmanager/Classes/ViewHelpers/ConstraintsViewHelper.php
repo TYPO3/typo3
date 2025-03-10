@@ -23,7 +23,13 @@ use TYPO3\CMS\Extensionmanager\Domain\Model\Extension;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
- * Returns the grouped constraints of an extension
+ * ViewHelper to return the grouped constraints of an extension.
+ *
+ * ```
+ *   <f:for each="{em:constraints(extension: currentVersion)}" key="type" as="constraintGroup">
+ *       ...
+ *   </f:for>
+ * ```
  *
  * @internal
  */
