@@ -190,6 +190,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
     ): SetCollector {
         $path ??= static::getPackagePath();
         $packageName ??= static::getPackageName();
+        $extensionKey = $container->get(PackageManager::class)->getPackage($packageName)->getPackageKey();
         $setPath = $path . 'Configuration/Sets';
 
         try {
@@ -227,7 +228,7 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             ];
 
             try {
-                $virtualSetPath = 'EXT:' . $packageName . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
+                $virtualSetPath = 'EXT:' . $extensionKey . '/Configuration/Sets/' . basename(dirname($fileInfo->getPathname())) . '/';
                 $setCollector->add($setProvider->get($fileInfo, $virtualSetPath));
             } catch (InvalidSettingsDefinitionsException|InvalidCategoryDefinitionsException|InvalidSettingsException|InvalidSetException $e) {
                 $errorDetails = $errorMap[get_class($e)];
