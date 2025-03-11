@@ -143,7 +143,7 @@ final class SetRegistryTest extends FunctionalTestCase
         yield [
             'set' => 'typo3tests/invalid-settings',
             'error' => SetError::invalidSettings,
-            'context' => 'Invalid settings format. Source: EXT:typo3tests/test-sets/Configuration/Sets/InvalidSettings/settings.yaml',
+            'context' => 'Invalid settings format. Source: EXT:test_sets/Configuration/Sets/InvalidSettings/settings.yaml',
         ];
     }
 
@@ -166,8 +166,8 @@ final class SetRegistryTest extends FunctionalTestCase
         self::assertArrayHasKey($set, $invalidSets);
 
         $setError = $invalidSets[$set];
-        self::assertSame($setError['error'], $error);
-        self::assertSame($setError['name'], $set);
-        self::assertSame($setError['context'], $context);
+        self::assertSame($error, $setError['error']);
+        self::assertSame($set, $setError['name']);
+        self::assertSame($context, $setError['context']);
     }
 }

@@ -232,14 +232,19 @@ final class TsConfigTreeBuilder
             $pageTsConfig = [];
             $sets = $this->setRegistry->getSets(...$rootSite->getSets());
             foreach ($sets as $set) {
-                if ($set->pagets !== null && file_exists($set->pagets)) {
-                    $content = @file_get_contents($set->pagets);
-                    if (!empty($content)) {
-                        $pageTsConfig['pageTsConfig-set-' . str_replace('/', '-', $set->name)] = [
-                            'filename' => GeneralUtility::getFileAbsFileName($set->pagets),
-                            'content' => $content,
-                        ];
-                    }
+                if ($set->pagets === null) {
+                    continue;
+                }
+                $filename = GeneralUtility::getFileAbsFileName($set->pagets);
+                if (!file_exists($filename)) {
+                    continue;
+                }
+                $content = @file_get_contents($filename);
+                if (!empty($content)) {
+                    $pageTsConfig['pageTsConfig-set-' . str_replace('/', '-', $set->name)] = [
+                        'filename' => $filename,
+                        'content' => $content,
+                    ];
                 }
             }
 

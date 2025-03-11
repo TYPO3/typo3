@@ -178,7 +178,7 @@ class YamlSetDefinitionProvider
             'categoryDefinitions' => $categoryDefinitions,
         ];
         $setData['typoscript'] ??= $basePath;
-        $setData['pagets'] ??= $basePath . '/page.tsconfig';
+        $setData['pagets'] ??= $basePath . 'page.tsconfig';
         try {
             return new SetDefinition(...$setData);
         } catch (\Error $e) {

@@ -51,7 +51,8 @@ trait SiteBasedTestTrait
         string $identifier,
         array $site = [],
         array $languages = [],
-        array $errorHandling = []
+        array $errorHandling = [],
+        array $dependencies = [],
     ): void {
         $configuration = $site;
         if (!empty($languages)) {
@@ -59,6 +60,9 @@ trait SiteBasedTestTrait
         }
         if (!empty($errorHandling)) {
             $configuration['errorHandling'] = $errorHandling;
+        }
+        if (!empty($dependencies)) {
+            $configuration['dependencies'] = $dependencies;
         }
         $siteWriter = $this->get(SiteWriter::class);
         try {

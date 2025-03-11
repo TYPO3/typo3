@@ -1,0 +1,2 @@
+loadedFromSiteSetRelativeIncludeTarget10 = loadedFromSiteSetRelativeIncludeTarget10
+@import './include-target-10-sub.tsconfig'

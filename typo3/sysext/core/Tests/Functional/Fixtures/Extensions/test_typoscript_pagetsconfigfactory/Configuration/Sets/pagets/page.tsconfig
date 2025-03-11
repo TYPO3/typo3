@@ -1,0 +1,7 @@
+loadedFromSiteSetPageTsConfig = loadedFromSiteSetPageTsConfig
+@import './tsconfig/include-target-20.tsconfig'
+@import './tsconfig/include-target-21'
+@import './tsconfig/include-target-22.tsconfig'
+@import './tsconfig/include-target-23.typoscript'
+# Not loaded: Path traversal not allowed.
+@import './tsconfig/../tsconfig/include-target-24.tsconfig'
