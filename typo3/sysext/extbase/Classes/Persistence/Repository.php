@@ -299,6 +299,9 @@ class Repository implements RepositoryInterface, SingletonInterface
         $query = $this->createQuery();
         $constraints = [];
         foreach ($criteria as $propertyName => $propertyValue) {
+            if (!is_string($propertyName)) {
+                throw new \RuntimeException('Repository::findBy() expects an array with string keys as first argument', 1741806517);
+            }
             $constraints[] = $query->equals($propertyName, $propertyValue);
         }
 

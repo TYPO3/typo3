@@ -211,6 +211,16 @@ final class RepositoryTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function findByThrowsExceptionIfNonStringGiven(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionCode(1741806517);
+        $this->get(PostRepository::class)->findBy(
+            ['author', 1],
+        );
+    }
+
+    #[Test]
     public function findByRespectsOffset(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RepositoryTestImport.csv');
