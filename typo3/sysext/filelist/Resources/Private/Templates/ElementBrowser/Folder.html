@@ -23,17 +23,19 @@
     </f:if>
     <f:flashMessages queueIdentifier="core.template.flashMessages"/>
 
-    <div
-        data-filelist-element="true"
-        data-filelist-type="folder"
-        data-filelist-identifier="{selectedFolder.combinedIdentifier}"
-    >
-        <button title="{selectedFolder.storage.name}" class="btn btn-default" data-filelist-action="primary">
-            <core:iconForResource resource="{selectedFolder}" />
-            <f:variable name="folderLabel" value="{f:if(condition: '{selectedFolder.name} !== \'\'', then: '{selectedFolder.name}', else: '{selectedFolder.storage.name}')}" />
-            <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkTo" arguments="{0: '/{folderLabel}'}">{selectedFolder.storage.name}: {selectedFolder.identifier}</f:translate>
-        </button>
-    </div>
+    <f:if condition="{selectedFolder}">
+        <div
+            data-filelist-element="true"
+            data-filelist-type="folder"
+            data-filelist-identifier="{selectedFolder.combinedIdentifier}"
+        >
+            <button title="{selectedFolder.storage.name}" class="btn btn-default" data-filelist-action="primary">
+                <core:iconForResource resource="{selectedFolder}" />
+                <f:variable name="folderLabel" value="{f:if(condition: '{selectedFolder.name} !== \'\'', then: '{selectedFolder.name}', else: '{selectedFolder.storage.name}')}" />
+                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:linkTo" arguments="{0: '/{folderLabel}'}">{selectedFolder.storage.name}: {selectedFolder.identifier}</f:translate>
+            </button>
+        </div>
+    </f:if>
 
     <f:format.raw>{content}</f:format.raw>
 </f:section>
