@@ -135,6 +135,7 @@ readonly class SiteSettingsController
         );
         $hasSettings = count($categories) > 0;
 
+        $this->addDocHeaderBreadcrumb($view, $site);
         $this->addDocHeaderCloseAndSaveButtons($view, $site, $returnUrl ?? $overviewUrl, $hasSettings);
         if ($hasSettings) {
             $this->addDocHeaderExportButton($view, $site);
@@ -261,6 +262,12 @@ readonly class SiteSettingsController
         return new JsonResponse([
             'yaml' => $yamlContents,
         ]);
+    }
+
+    protected function addDocHeaderBreadcrumb(ModuleTemplate $moduleTempalte, Site $site): void
+    {
+        $record = BackendUtility::getRecord('pages', $site->getRootPageId());
+        $moduleTempalte->getDocHeaderComponent()->setMetaInformation($record);
     }
 
     protected function addDocHeaderCloseAndSaveButtons(ModuleTemplate $moduleTemplate, Site $site, string $closeUrl, bool $saveEnabled): void

@@ -31,7 +31,7 @@ export class Typo3BackendColorPicker extends LitElement {
       height: 1.25rem;
       top: 50%;
       inset-inline-start: var(--typo3-input-sm-padding-x);
-      z-index: 10;
+      z-index: 1;
       transform: translate(0, -50%);
       background: var(--alwan-pattern);
       border-radius: 3px !important;

@@ -10,61 +10,77 @@
     --settings-indicator-bg: transparent;
     --settings-item-color: var(--settings-color);
     --settings-item-bg: var(--settings-bg);
+    --settings-search-height: 80px;
+    --settings-nav-height-correction: 100px;
+    --settings-nav-item-padding-x: var(--typo3-list-item-padding-x);
+    --settings-nav-item-padding-y: var(--typo3-list-item-padding-y);
 }
 
 .settings-container {
     container-type: inline-size;
-    margin-top: 1.5rem;
 }
 
 .settings {
-    display: flex;
-    align-items: flex-start;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: 1fr;
     color: var(--settings-color);
     box-shadow: var(--settings-box-shadow);
+    border: var(--settings-border-width) solid var(--settings-border-color);
+    background-color: var(--settings-bg);
+    gap: var(--settings-border-width);
+    padding: var(--settings-border-width);
+    border-radius: var(--settings-border-radius);
 
-    &-navigation,
-    &-body {
-        padding: var(--settings-padding);
-    }
+    &-search {
+        position: sticky;
+        top: calc(var(--module-body-padding-y) * -1);
+        z-index: 2;
+        height: var(--settings-search-height);
+        display: flex;
+        align-items: center;
+        border-start-start-radius: calc(var(--settings-border-radius) - var(--settings-border-width));
+        border-start-end-radius: calc(var(--settings-border-radius) - var(--settings-border-width));
+        background-color: color-mix(in srgb, var(--settings-bg), currentColor 1%);
+        padding-inline: calc(var(--settings-padding) - .3rem);
 
-    &-body {
-        background: var(--settings-bg);
-        border: var(--settings-border-width) solid var(--settings-border-color);
-        border-radius: var(--settings-border-radius);
+        &:has(+ :not([hidden])) {
+            border-bottom: var(--settings-border-width) solid var(--settings-border-color);
+        }
     }
 
     &-navigation {
-        border-inline-start: var(--settings-border-width) solid var(--settings-border-color);
-        border-inline-end: var(--settings-border-width) solid var(--settings-border-color);
-        border-top: var(--settings-border-width) solid var(--settings-border-color);
-        border-bottom: 0;
-        flex: 1 1 auto;
+        display: none;
+        position: relative;
+    }
+
+    &-navigation-inner {
+        padding: calc(var(--settings-padding) - .3rem);
+    }
+
+    &-body-inner {
+        padding: var(--settings-padding);
     }
 }
 
 @container (min-width: 780px) {
     .settings {
-        flex-wrap: nowrap;
-        box-shadow: none;
+        grid-template-columns: 300px 1fr;
 
-        &-body {
-            flex: 1 1 auto;
-            border-inline-start: var(--settings-border-width) solid var(--settings-border-color);
-            border-start-start-radius: 0;
-            box-shadow: var(--settings-box-shadow);
+        &-search {
+            grid-column: span 2;
         }
 
         &-navigation {
-            box-shadow: var(--settings-box-shadow);
-            flex: 0 0 300px;
-            position: sticky;
-            top: 0;
-            border-inline-end: 0;
-            border-inline-start: var(--settings-border-width) solid var(--settings-border-color);
-            border-top: var(--settings-border-width) solid var(--settings-border-color);
-            border-bottom: var(--settings-border-width) solid var(--settings-border-color);
+            display: flex;
+            flex-direction: column;
+
+            &-inner {
+                position: sticky;
+                top: calc(var(--settings-search-height) - var(--module-body-padding-y));
+                overflow-y: auto;
+                scrollbar-gutter: stable;
+                flex-grow: 1;
+            }
         }
     }
 }
@@ -75,9 +91,22 @@
         margin: 0;
         padding: 0;
 
+        li {
+            margin-top: 1px;
+        }
+
         ul {
             padding-inline-start: 1rem;
         }
+    }
+
+    > ul:first-child > li:first-child {
+        margin-top: 0;
+    }
+
+    [identifier="actions-chevron-left"],
+    [identifier="actions-chevron-right"] {
+        opacity: .5;
     }
 }
 
@@ -85,17 +114,22 @@
     color: var(--typo3-component-color);
     position: relative;
     display: flex;
+    width: 100%;
+    background-color: transparent;
     border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
     gap: .5em;
-    padding: var(--typo3-list-item-padding-y) var(--typo3-list-item-padding-x);
+    padding: var(--settings-nav-item-padding-y) var(--settings-nav-item-padding-x);
     cursor: pointer;
     text-decoration: none;
+    border: none;
+    text-align: start;
 
     &.active,
     &:hover,
     &:focus {
         z-index: 1;
         outline-offset: -1px;
+        text-decoration: none;
     }
 
     &:hover {
@@ -104,8 +138,11 @@
         outline: 1px solid var(--typo3-component-hover-border-color);
     }
 
-    &.active,
-    &:focus {
+    &:focus-visible {
+        outline: 1px solid var(--typo3-component-focus-border-color);
+    }
+
+    &.active {
         color: var(--typo3-component-focus-color);
         background-color: var(--typo3-component-focus-bg);
         outline: 1px solid var(--typo3-component-focus-border-color);
@@ -125,8 +162,23 @@
 }
 
 .settings-category {
-    max-width: 600px;
     text-wrap: balance;
+    z-index: 10;
+
+    &-headline {
+        display: flex;
+        align-items: center;
+        gap: .5em;
+
+        > typo3-backend-icon {
+            color: var(--typo3-text-color-primary);
+        }
+    }
+
+    &-headline,
+    &-description {
+        max-width: 600px;
+    }
 
     &-list + &-list {
         margin-top: calc(var(--typo3-spacing) * 2);
@@ -135,9 +187,10 @@
 
 .settings-item {
     position: relative;
+    contain: inline-size;
     color: var(--settings-item-color);
     background: var(--settings-item-bg);
-    border-radius: calc(var(--settings-border-radius) / 2);
+    border-radius: var(--settings-border-radius);
     padding-block: var(--typo3-component-padding-y);
     padding-inline-start: calc(var(--typo3-component-padding-x) + 4px);
     padding-inline-end: calc(var(--typo3-component-padding-x) + 3rem);
@@ -166,21 +219,22 @@
     &-indicator {
         position: absolute;
         background: var(--settings-indicator-bg);
-        inset-inline-start: 1px;
-        inset-block-start: 1px;
-        inset-block-end: 1px;
-        width: 4px;
-        border-radius: 0;
+        inset-inline-start: var(--settings-border-width);
+        inset-block-start: var(--settings-border-width);
+        inset-block-end: var(--settings-border-width);
+        border-start-start-radius: calc(var(--settings-border-radius) - var(--settings-border-width));
+        border-end-start-radius: calc(var(--settings-border-radius) - var(--settings-border-width));
+        width: .3rem;
     }
 
     &[data-status="modified"],
     &[data-status="modified"] * {
-        --settings-indicator-bg: #{$info};
+        --settings-indicator-bg: var(--typo3-state-info-bg);
     }
 
     &[data-status="error"],
     &[data-status="error"] * {
-        --settings-indicator-bg: #{$danger};
+        --settings-indicator-bg: var(--typo3-state-danger-bg);
     }
 
     &-actions {

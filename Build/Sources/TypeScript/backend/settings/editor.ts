@@ -11,12 +11,13 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-import { html, LitElement, type TemplateResult, nothing } from 'lit';
+import { html, LitElement, type TemplateResult, nothing, type PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
 import { live } from 'lit/directives/live.js';
 import '@typo3/backend/element/spinner-element';
 import '@typo3/backend/element/icon-element';
 import Notification from '@typo3/backend/notification';
+import DomHelper from '@typo3/backend/utility/dom-helper';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { copyToClipboard } from '@typo3/backend/copy-to-clipboard';
 import { lll } from '@typo3/core/lit-helper';
@@ -90,13 +91,30 @@ export class SettingsEditorElement extends LitElement {
   @state() activeCategory: string = '';
 
   visibleCategories: Record<string, boolean> = {};
-  observer: IntersectionObserver = null
+  observer: IntersectionObserver = null;
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
+  protected adjustNavigationSize() {
+    const scrollableParent = DomHelper.scrollableParent(this);
+    const container = this.querySelector('.settings-navigation-inner') as HTMLElement;
+    if (container) {
+      const scrollableParentRect = scrollableParent.getBoundingClientRect();
+      const searchRect = this.querySelector('.settings-search').getBoundingClientRect();
+      const navigationRect = this.querySelector('.settings-navigation').getBoundingClientRect();
+      container.style.maxHeight = `${scrollableParentRect.bottom - Math.max(0, scrollableParentRect.bottom - navigationRect.bottom) - searchRect.bottom}px`;
+    }
+  }
+
   protected override firstUpdated(): void {
+    const scrollableParent = DomHelper.scrollableParent(this);
+
+    scrollableParent.addEventListener('scroll', () => {
+      this.adjustNavigationSize();
+    });
+
     this.observer = new IntersectionObserver(
       (entries) => {
         entries.forEach(entry => {
@@ -112,28 +130,50 @@ export class SettingsEditorElement extends LitElement {
       {
         root: document.querySelector('.module'),
         threshold: 0.1,
-        rootMargin: `-${getComputedStyle(document.querySelector('.module-docheader')).getPropertyValue('min-height')} 0px 0px 0px`
+        rootMargin: `-${getComputedStyle(document.querySelector('.settings-navigation-inner')).getPropertyValue('top')} 0px 0px 0px`
       }
-    )
+    );
   }
 
-  protected override updated(): void {
+  protected override updated(changedProperties: PropertyValues<this>): void {
     [...this.renderRoot.querySelectorAll('.settings-category')].map(entry => this.observer?.observe(entry));
+    this.adjustNavigationSize();
+
+    if (changedProperties.has('activeCategory')) {
+      const container = this.querySelector('.settings-navigation-inner');
+      const activeElement = this.querySelector('.settings-navigation-item.active') as HTMLElement;
+      if (container && activeElement) {
+        const currentScrollPosition = container.scrollTop;
+        const containerHeight = container.getBoundingClientRect().height;
+        const nodeHeight = activeElement.getBoundingClientRect().height;
+        const nodeFitsTop = activeElement.offsetTop >= currentScrollPosition;
+        const nodeFitsBottom = activeElement.offsetTop + nodeHeight <= currentScrollPosition + containerHeight;
+        if (!nodeFitsTop) {
+          this.querySelector('.settings-navigation-inner').scrollTo({ top: Math.max(0, activeElement.offsetTop - nodeHeight), behavior: 'auto' });
+        } else if (!nodeFitsBottom) {
+          this.querySelector('.settings-navigation-inner').scrollTo({ top: Math.max(0, activeElement.offsetTop + nodeHeight), behavior: 'auto' });
+        }
+      }
+    }
   }
 
   protected renderCategoryTree(categories: FilteredCategory[], level: number): TemplateResult {
+    const fallbackIcon = DomHelper.isRTL() ? 'actions-chevron-left' : 'actions-chevron-right';
+
     return html`
       <ul data-level=${level}>
         ${categories.map(category => html`
           <li ?hidden=${category.__hidden}>
-            <a href=${`#category-headline-${category.key}`}
-              @click=${() => this.activeCategory = category.key}
-              class="settings-navigation-item ${this.activeCategory === category.key ? 'active' : ''}">
-              <span class="settings-navigation-item-icon">
-                <typo3-backend-icon identifier=${category.icon ? category.icon : 'actions-dot'} size="small"></typo3-backend-icon>
-              </span>
+            <button
+              type="button"
+              @click=${(event: PointerEvent) => { event.preventDefault(); this.selectCategory(category)}}
+              class="settings-navigation-item ${this.activeCategory === category.key ? 'active' : ''}"
+            >
+                <span class="settings-navigation-item-icon">
+                  <typo3-backend-icon identifier=${category.icon ? category.icon : fallbackIcon} size="small"></typo3-backend-icon>
+                </span>
               <span class="settings-navigation-item-label">${category.label}</span>
-            </a>
+            </button>
             ${category.categories.length === 0 ? nothing : html`
               ${this.renderCategoryTree(category.categories, level + 1)}
             `}
@@ -147,7 +187,7 @@ export class SettingsEditorElement extends LitElement {
     return categories.map(category => html`
       <div class="settings-category-list" data-key=${category.key}>
         <div class="settings-category" data-key=${category.key} ?hidden=${category.__hidden}>
-          ${this.renderHeadline(Math.min(level + 1, 6), `category-headline-${category.key}`, html`${category.label}`)}
+          ${this.renderHeadline(Math.min(level + 1, 6), `category-headline-${category.key}`, category.icon, html`${category.label}`)}
           <div class="settings-category-description">
             ${category.description ? markdown(category.description, 'minimal') : nothing}
           </div>
@@ -167,23 +207,37 @@ export class SettingsEditorElement extends LitElement {
     `);
   }
 
-  protected renderHeadline(level: number, id: string, content: TemplateResult): TemplateResult {
+  protected renderHeadline(level: number, id: string, icon: string, content: TemplateResult): TemplateResult {
     switch (level) {
       case 1:
-        return html`<h1 id=${id}>${content}</h1>`;
+        return html`<h1 class="settings-category-headline" id=${id}>${icon ? html`<typo3-backend-icon identifier=${icon}></typo3-backend-icon>` : nothing}${content}</h1>`;
       case 2:
-        return html`<h2 id=${id}>${content}</h2>`;
+        return html`<h2 class="settings-category-headline" id=${id}>${icon ? html`<typo3-backend-icon identifier=${icon}></typo3-backend-icon>` : nothing}${content}</h2>`;
       case 3:
-        return html`<h3 id=${id}>${content}</h3>`;
+        return html`<h3 class="settings-category-headline" id=${id}>${icon ? html`<typo3-backend-icon identifier=${icon}></typo3-backend-icon>` : nothing}${content}</h3>`;
       case 4:
-        return html`<h4 id=${id}>${content}</h4>`;
+        return html`<h4 class="settings-category-headline" id=${id}>${icon ? html`<typo3-backend-icon identifier=${icon}></typo3-backend-icon>` : nothing}${content}</h4>`;
       case 5:
-        return html`<h5 id=${id}>${content}</h5>`;
+        return html`<h5 class="settings-category-headline" id=${id}>${icon ? html`<typo3-backend-icon identifier=${icon}></typo3-backend-icon>` : nothing}${content}</h5>`;
       case 6:
-        return html`<h6 id=${id}>${content}</h6>`;
+        return html`<h6 class="settings-category-headline" id=${id}>${icon ? html`<typo3-backend-icon identifier=${icon}></typo3-backend-icon>` : nothing}${content}</h6>`;
       default:
         throw new Error(`Invalid header level: ${level}`);
     }
+  }
+
+  protected selectCategory(category: FilteredCategory): void {
+    const targetSelector = `#category-headline-${category.key}`;
+    const target = (this.renderRoot.querySelector(targetSelector.replaceAll('.', '\\.')) as HTMLElement);
+    const scrollableParent = DomHelper.scrollableParent(this);
+    const searchOffset = (this.renderRoot.querySelector('.settings-search') as HTMLElement).offsetHeight;
+    const bodyOffset = parseInt(window.getComputedStyle(this.renderRoot.querySelector('.settings-body-inner') as HTMLElement).paddingTop, 10);
+    const topPosition = target.offsetTop - searchOffset - bodyOffset;
+    scrollableParent.scrollTo({
+      top: topPosition,
+      behavior: 'smooth'
+    });
+    this.activeCategory = category.key
   }
 
   protected async onSubmit(e: SubmitEvent): Promise<void> {
@@ -224,22 +278,38 @@ export class SettingsEditorElement extends LitElement {
           <input type="hidden" name=${name} value=${value}>
         `)}
 
-        <div class="settings-search form-group">
-          <label for="settings-search" class="visually-hidden">
-            ${lll('edit.searchTermVisuallyHiddenLabel')}
-          </label>
-          <input
-            type="search"
-            id="settings-search"
-            class="form-control"
-            placeholder=${lll('edit.searchTermPlaceholder')}
-            .value=${live(this.searchTerm)}
-            @change=${(e: Event) => this.onSearch(e)}
-            @input=${(e: Event) => this.onSearch(e)}>
+        <div class="settings">
+          <div class="settings-search">
+            <label for="settings-search" class="visually-hidden">
+              ${lll('edit.searchTermVisuallyHiddenLabel')}
+            </label>
+            <input
+              type="search"
+              id="settings-search"
+              class="form-control"
+              placeholder=${lll('edit.searchTermPlaceholder')}
+              .value=${live(this.searchTerm)}
+              @change=${(e: Event) => this.onSearch(e)}
+              @input=${(e: Event) => this.onSearch(e)}>
+          </div>
+
+          <div class="settings-navigation" ?hidden=${!hasVisibleCategories}>
+            <div
+              class="settings-navigation-inner"
+              @transitionend="${() => this.adjustNavigationSize()}"
+            >
+              ${this.renderCategoryTree(categories ?? [], 1)}
+            </div>
+          </div>
+          <div class="settings-body" ?hidden=${!hasVisibleCategories}>
+            <div class="settings-body-inner">
+              ${this.renderSettings(categories ?? [], 1)}
+            </div>
+          </div>
         </div>
 
         ${hasVisibleCategories ? nothing : html`
-          <div class="callout callout-info">
+          <div class="callout callout-info mt-3">
             <div class="callout-icon">
               <span class="icon-emphasized">
                 <typo3-backend-icon identifier="actions-info" size="small"></typo3-backend-icon>
@@ -258,15 +328,6 @@ export class SettingsEditorElement extends LitElement {
             </div>
           </div>
         `}
-
-        <div class="settings" ?hidden=${!hasVisibleCategories}>
-          <div class="settings-navigation">
-            ${this.renderCategoryTree(categories ?? [], 1)}
-          </div>
-          <div class="settings-body">
-            ${this.renderSettings(categories ?? [], 1)}
-          </div>
-        </div>
       </form>
     `;
   }
