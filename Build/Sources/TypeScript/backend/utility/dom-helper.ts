@@ -32,6 +32,25 @@ export default class DomHelper {
   }
 
   /**
+   * Get the next scrollable parent element
+   */
+  public static scrollableParent(element: Element) {
+    let parent = element.parentElement;
+
+    while (parent) {
+      const style = window.getComputedStyle(parent);
+      const overflowY = style.overflowY;
+
+      if (overflowY === 'auto' || overflowY === 'scroll') {
+        return parent;
+      }
+      parent = parent.parentElement;
+    }
+
+    return document.documentElement;
+  }
+
+  /**
    * Get all next siblings the passed `target` element inside `el`
    */
   public static nextAll(target: Element): Element[] {
@@ -43,6 +62,16 @@ export default class DomHelper {
     }
 
     return nextSiblings;
+  }
+
+  /**
+   * Detects if the document is rtl
+   */
+  public static isRTL() {
+    const rootElementStyle = window.getComputedStyle(document.documentElement);
+    const direction = rootElementStyle.getPropertyValue('direction');
+
+    return direction === 'rtl';
   }
 
   /**
