@@ -2371,6 +2371,12 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/ObjectStorage.php
 
 		-
+			message: '#^Call to function is_string\(\) with non\-empty\-string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../typo3/sysext/extbase/Classes/Persistence/Repository.php
+
+		-
 			message: '#^Dead catch \- TYPO3\\CMS\\Extbase\\Property\\Exception\\TargetNotFoundException is never thrown in the try block\.$#'
 			identifier: catch.neverThrown
 			count: 1
@@ -2519,6 +2525,12 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/OperatorTest.php
+
+		-
+			message: '#^Parameter \#1 \$criteria of method TYPO3\\CMS\\Extbase\\Persistence\\Repository\<TYPO3Tests\\BlogExample\\Domain\\Model\\Post\>\:\:findBy\(\) expects array\<non\-empty\-string, mixed\>, array\{''author'', 1\} given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Persistence/RepositoryTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3Tests\\\\TypeConverterTest\\\\Domain\\\\Model\\\\Cat'' and TYPO3Tests\\TypeConverterTest\\Domain\\Model\\Cat will always evaluate to true\.$#'
