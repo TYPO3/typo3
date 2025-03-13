@@ -24,22 +24,29 @@ class ThrottleEvent extends RegularEvent {
   }
 
   private throttle(callback: Listener, limit: number): Listener {
-    let wait: boolean = false;
+    let eventData: unknown[] | null = null;
+    let intervalId: number | null = null;
 
     return function (this: Node, ...args: unknown[]): void {
-      if (wait) {
+      eventData = args;
+      if (intervalId !== null) {
+        // Bail out, a previous call to dispatch invoked an interval
+        // that will pick up eventData once the timeout occured.
         return;
       }
-
-      callback.apply(this, args);
-      wait = true;
-
-      setTimeout((): void => {
-        wait = false;
-
-        // Wait time is over, execute callback again to have final state
-        callback.apply(this, args);
-      }, limit);
+      const dispatch = () => {
+        if (eventData === null) {
+          // No event since the last immediate dispatch, start a new fresh interval-phase
+          clearInterval(intervalId);
+          intervalId = null;
+          return;
+        }
+        callback.apply(this, eventData);
+        eventData = null;
+      };
+      // immediate dispatch, no need to wait as no timer is active
+      dispatch();
+      intervalId = setInterval(dispatch, limit);
     };
   }
 }
