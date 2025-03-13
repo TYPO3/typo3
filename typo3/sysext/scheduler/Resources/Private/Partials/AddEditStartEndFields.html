@@ -4,8 +4,6 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:variable name="dateFormat">Y-m-d\TH:i:sp</f:variable>
-
 <div class="row">
     <div class="form-group col-sm-6" id="task_start_col">
         <label class="form-label" for="tceforms-datetimefield-task_start_row"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.start"/></label>
@@ -15,7 +13,7 @@
                     <div class="input-group" id="tceforms-datetimefield-task_start_row-wrapper">
                         <input
                             name="tx_scheduler[start]"
-                            value="{f:format.date(format: dateFormat, date: currentData.start)}"
+                            value="{currentData.start}"
                             class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                             data-date-type="datetime"
                             data-date-offset="0"
@@ -36,10 +34,9 @@
             <div class="form-wizards-wrap">
                 <div class="form-wizards-element">
                     <div class="input-group" id="tceforms-datetimefield-task_end_row-wrapper">
-                        <f:variable name="formattedEnd"><f:if condition="{currentData.end}"><f:then>{f:format.date(format: dateFormat, date: currentData.end)}</f:then><f:else></f:else></f:if></f:variable>
                         <input
                             name="tx_scheduler[end]"
-                            value="{formattedEnd}"
+                            value="{currentData.end}"
                             class="form-control form-control-clearable t3js-datetimepicker t3js-clearable"
                             data-date-type="datetime"
                             data-date-offset="0"
