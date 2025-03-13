@@ -337,8 +337,8 @@ final class SchedulerModuleController
             'disable' => (bool)($parsedBody['disable'] ?? false),
             'task_group' => $selectedTaskGroup,
             'type' => (int)($parsedBody['type'] ?? AbstractTask::TYPE_RECURRING),
-            'start' => $parsedBody['start'] ?? $this->context->getAspect('date')->get('timestamp'),
-            'end' => $parsedBody['end'] ?? 0,
+            'start' => $parsedBody['start'] ?? $this->formatTimestampForDatePicker($this->context->getAspect('date')->get('timestamp')),
+            'end' => $parsedBody['end'] ?? '',
             'frequency' => $parsedBody['frequency'] ?? '',
             'multiple' => (bool)($parsedBody['multiple'] ?? false),
             'description' => $parsedBody['description'] ?? '',
@@ -451,9 +451,9 @@ final class SchedulerModuleController
             'disable' => (bool)($parsedBody['disable'] ?? $task->isDisabled()),
             'task_group' => (int)($parsedBody['task_group'] ?? $task->getTaskGroup()),
             'type' => $taskType,
-            'start' => $parsedBody['start'] ?? $taskExecution->getStart(),
-            // End for single execution tasks is always 0
-            'end' => $parsedBody['end'] ?? ($taskType === AbstractTask::TYPE_RECURRING ? $taskExecution->getEnd() : 0),
+            'start' => $parsedBody['start'] ?? $this->formatTimestampForDatePicker($taskExecution->getStart()),
+            // End for single execution tasks is always empty
+            'end' => $parsedBody['end'] ?? ($taskType === AbstractTask::TYPE_RECURRING ? $this->formatTimestampForDatePicker($taskExecution->getEnd()) : ''),
             // Find current frequency field value depending on task type and interval vs. cron command
             'frequency' => $parsedBody['frequency'] ?? ($taskType === AbstractTask::TYPE_RECURRING ? ($taskExecution->getInterval() ?: $taskExecution->getCronCmd()) : ''),
             'multiple' => !($taskType === AbstractTask::TYPE_SINGLE) && (bool)($parsedBody['multiple'] ?? $taskExecution->getMultiple()),
@@ -754,6 +754,9 @@ final class SchedulerModuleController
      */
     protected function getTimestampFromDateString(string $input): int
     {
+        if ($input === '') {
+            return 0;
+        }
         if (MathUtility::canBeInterpretedAsInteger($input)) {
             // Already looks like a timestamp
             return (int)$input;
@@ -761,13 +764,22 @@ final class SchedulerModuleController
         try {
             // Convert from ISO 8601 dates
             $value = (new \DateTime($input))->getTimestamp();
-            if ($value !== 0) {
-                $value -= (int)date('Z', $value);
-            }
+            $value -= (int)date('Z', $value);
         } catch (\Exception $e) {
             throw new InvalidDateException($e->getMessage(), 1641717510);
         }
         return $value;
+    }
+
+    protected function formatTimestampForDatePicker(int $timestamp): string
+    {
+        if ($timestamp === 0) {
+            return '';
+        }
+        // Apply Fake UTC-0 as in FormEngine DatetimeElement.php
+        $adjustedValue = $timestamp + (int)date('Z', (int)$timestamp);
+        // output date as an ISO-8601 date
+        return gmdate('Y-m-d\TH:i:s\Z', $adjustedValue);
     }
 
     /**
