@@ -308,7 +308,9 @@ class NewContentElementController
                     'CType' => $recordType,
                 ],
             ];
-            $wizardEntry = array_replace_recursive($wizardEntry, $schema->getSubSchema($recordType)->getRawConfiguration()['creationOptions'] ?? []);
+            if ($schema->hasSubSchema($recordType)) {
+                $wizardEntry = array_replace_recursive($wizardEntry, $schema->getSubSchema($recordType)->getRawConfiguration()['creationOptions'] ?? []);
+            }
             $groupedWizardItems[$groupIdentifier . '.']['elements.'][$recordType . '.'] = $wizardEntry;
         }
         return $groupedWizardItems;
