@@ -560,6 +560,7 @@ abstract class AbstractMenuContentObject
                     continue;
                 }
                 $languageAspect = LanguageAspectFactory::createFromSiteLanguage($languages[$sUid]);
+                $fallbackChain = $languageAspect->getFallbackChain();
                 $pageRepository = $this->buildPageRepository($languageAspect);
                 $lRecs = $pageRepository->getPageOverlay($currentPageWithNoOverlay, $languageAspect);
                 // getPageOverlay() might return the original record again, if so this is emptied
@@ -569,6 +570,7 @@ abstract class AbstractMenuContentObject
                 }
             } else {
                 $lRecs = [];
+                $fallbackChain = [];
             }
             // Checking if the "disabled" state should be set.
             $pageTranslationVisibility = new PageTranslationVisibility((int)($currentPageWithNoOverlay['l18n_cfg'] ?? 0));
@@ -576,6 +578,7 @@ abstract class AbstractMenuContentObject
                 && empty($lRecs) || $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage()
                 && (!$sUid || empty($lRecs))
                 || !($this->conf['special.']['normalWhenNoLanguage'] ?? false) && $sUid && empty($lRecs)
+                && !in_array(0, $fallbackChain, true)
             ) {
                 $iState = $currentLanguageId === $sUid ? 'USERDEF2' : 'USERDEF1';
             } else {

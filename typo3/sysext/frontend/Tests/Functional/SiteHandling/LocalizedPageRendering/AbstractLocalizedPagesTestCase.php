@@ -104,7 +104,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         self::assertSame($expectation, $json);
     }
 
-    protected function createLanguageMenu(string $url): array
+    protected function createLanguageMenu(string $url, array $keepNames = ['title', 'link']): array
     {
         $this->setUpFrontendRootPage(
             1000,
@@ -117,7 +117,7 @@ abstract class AbstractLocalizedPagesTestCase extends AbstractTestCase
         );
 
         $json = json_decode((string)$response->getBody(), true);
-        $json = $this->filterMenu($json);
+        $json = $this->filterMenu($json, $keepNames);
 
         return $json;
     }

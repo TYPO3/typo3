@@ -39,6 +39,8 @@ use PHPUnit\Framework\Attributes\Test;
  *   Calling "headquarter" page in EN renders page in EN
  *   Calling "headquarter" page in DE returns a 404 response because no fallback chain is configured
  *   Calling "headquarter" page in DE-CH renders page in EN
+ *
+ *   Language menu on home page marks DE-CH as available as the page is rendered in EN
  */
 final class ScenarioBTest extends AbstractLocalizedPagesTestCase
 {
@@ -137,5 +139,34 @@ final class ScenarioBTest extends AbstractLocalizedPagesTestCase
     public function pageMenuIsRendered(string $url, array $expectedMenu): void
     {
         $this->assertMenu($url, $expectedMenu);
+    }
+
+    public static function languageMenuDataProvider(): array
+    {
+        return [
+            'home page in DE-CH where page translation does not exist' => [
+                'url' => 'https://acme.com/de-ch/hello',
+                'expectedMenu' => [
+                    ['title' => 'English', 'active' => 0, 'available' => 1],
+                    ['title' => 'German', 'active' => 0, 'available' => 0],
+                    ['title' => 'Swiss German', 'active' => 1, 'available' => 1],
+                ],
+            ],
+            'about page in DE-CH where page translation exists' => [
+                'url' => 'https://acme.com/de-ch/about-us',
+                'expectedMenu' => [
+                    ['title' => 'English', 'active' => 0, 'available' => 1],
+                    ['title' => 'German', 'active' => 0, 'available' => 0],
+                    ['title' => 'Swiss German', 'active' => 1, 'available' => 1],
+                ],
+            ],
+        ];
+    }
+
+    #[DataProvider('languageMenuDataProvider')]
+    #[Test]
+    public function languageMenuMarksLanguagesFallingBackToDefaultLanguageAsAvailable(string $url, array $expectedMenu): void
+    {
+        self::assertSame($expectedMenu, $this->createLanguageMenu($url, ['title', 'active', 'available']));
     }
 }
