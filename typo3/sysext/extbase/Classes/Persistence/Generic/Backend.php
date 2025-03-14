@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -77,6 +79,7 @@ class Backend implements BackendInterface
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly ReferenceIndex $referenceIndex,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly Features $features,
     ) {
         $this->aggregateRootObjects = new ObjectStorage();
         $this->deletedEntities = new ObjectStorage();
@@ -860,6 +863,17 @@ class Backend implements BackendInterface
             return GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap);
         }
 
+        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling') &&
+            $columnMap?->type === TableColumnType::DATETIME
+        ) {
+            return QueryHelper::transformDateTimeToDatabaseValue(
+                null,
+                $columnMap->isNullable,
+                $columnMap->dateTimeFormat ?? 'datetime',
+                $columnMap->dateTimeStorageFormat
+            );
+        }
+
         if ($property === null) {
             return null;
         }
@@ -874,7 +888,8 @@ class Backend implements BackendInterface
         if (is_subclass_of($className, DomainObjectInterface::class)) {
             return 0;
         }
-        // Nullable DateTime property
+        // Nullable DateTime property (superseded by extbase.consistentDateTimeHandling above)
+        // @todo remove in TYPO3 v15 when extbase.consistentDateTimeHandling will be enforced
         if ($columnMap && is_subclass_of($className, \DateTimeInterface::class)) {
             if ($columnMap->isNullable() && $property->isNullable()) {
                 return null;

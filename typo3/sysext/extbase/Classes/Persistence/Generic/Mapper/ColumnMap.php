@@ -29,7 +29,8 @@ final readonly class ColumnMap
     /**
      * @param string $columnName Name of the DB column
      * @param TableColumnType $type TCA column type like "input", "inline"
-     * @param string|null $dateTimeStorageFormat Alternative DataTime format instead of using unix timestamps. Allowed: "date", "datetime", "time"
+     * @param string|null $dateTimeFormat DataTime format (TCA "format" property). Allowed: "date", "datetime", "time", "timesec"
+     * @param string|null $dateTimeStorageFormat Alternative DataTime format instead of using unix timestamps (TCA "dbType" property). Allowed: "date", "datetime", "time"
      * @param Relation|null $typeOfRelation Extbase "Relation" enum if any
      * @param string|null $childTableName TCA "foreign_table" if any, @todo: Does not consider group "allowed" for multi table relations
      * @param string|null $relationTableName TCA "MM" if any
@@ -47,6 +48,7 @@ final readonly class ColumnMap
     public function __construct(
         public string $columnName,
         public TableColumnType $type,
+        public ?string $dateTimeFormat = null,
         public ?string $dateTimeStorageFormat = null,
         public ?Relation $typeOfRelation = Relation::NONE,
         public ?string $childTableName = null,
@@ -110,6 +112,11 @@ final readonly class ColumnMap
     public function getChildKeyFieldName(): ?string
     {
         return $this->childKeyFieldName;
+    }
+
+    public function getDateTimeFormat(): ?string
+    {
+        return $this->dateTimeFormat;
     }
 
     public function getDateTimeStorageFormat(): ?string

@@ -192,6 +192,17 @@ SYS:
               frontend.cache.autoTagging:
                 type: bool
                 description: 'If on, frontend caches are automatically tagged to identify used records, and affected caches will be evicted when changing records.'
+              extbase.consistentDateTimeHandling:
+                type: bool
+                description: |
+                  If on, the Extbase DataMapper (and Query…) will handle transformation of <code>type=datetime</code> fields like FormEngine and DataHandler do.<br>
+                  It will:<br>
+                  <ul>
+                  <li>Map date and datetime with named timezone instead of offset
+                  <li>Interpret integer based time fields as seconds without timezone offset
+                  <li>Interpret 00:00:00 as non empty time value for nullable time properties
+                  <li>Construct time properties based on 1970-01-01
+                  </ul>
               redirects.hitCount:
                 type: bool
                 description: 'If on, and if extension "redirects" is loaded, each performed redirect is counted and last hit time is logged to the database.'

@@ -83,6 +83,7 @@ return [
         'fileCreateMask' => '0664',
         'folderCreateMask' => '2775',
         'features' => [
+            'extbase.consistentDateTimeHandling' => true,
             'frontend.cache.autoTagging' => false,
             'redirects.hitCount' => false,
             'security.backend.htmlSanitizeRte' => false,
