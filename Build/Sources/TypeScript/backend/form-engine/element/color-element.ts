@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import { selector } from '@typo3/core/literals';
@@ -32,12 +33,13 @@ import '@typo3/backend/color-picker';
 class ColorElement extends HTMLElement {
   private element: HTMLInputElement = null;
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
     const recordFieldId = this.getAttribute('recordFieldId');
     if (recordFieldId === null) {
       return;
     }
 
+    await DocumentService.ready();
     this.element = this.querySelector<HTMLInputElement>(selector`#${recordFieldId}`);
     if (!this.element) {
       return;

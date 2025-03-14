@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import { SeverityEnum } from './enum/severity';
 import 'bootstrap';
 import { default as Modal, type ModalElement } from '@typo3/backend/modal';
@@ -60,7 +61,8 @@ export class GridEditor extends LitElement {
     return securityUtility.stripHtml(input);
   }
 
-  public override connectedCallback(): void {
+  public override async connectedCallback(): Promise<void> {
+    await DocumentService.ready();
     this.field = document.querySelector('input[name="' + this.fieldName + '"]');
 
     this.addVisibilityObserver(this);

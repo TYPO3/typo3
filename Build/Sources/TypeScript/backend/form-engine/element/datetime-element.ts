@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import RegularEvent from '@typo3/core/event/regular-event';
 
@@ -30,7 +31,8 @@ import RegularEvent from '@typo3/core/event/regular-event';
 class DatetimeElement extends HTMLElement {
   private element: HTMLInputElement = null;
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
+    await DocumentService.ready();
     this.element = document.getElementById((this.getAttribute('recordFieldId') || '' as string)) as HTMLInputElement;
 
     if (!this.element) {

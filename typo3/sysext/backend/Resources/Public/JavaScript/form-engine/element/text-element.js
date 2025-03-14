@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import{Resizable}from"@typo3/backend/form-engine/element/modifier/resizable.js";import{Tabbable}from"@typo3/backend/form-engine/element/modifier/tabbable.js";class TextElement extends HTMLElement{constructor(){super(...arguments),this.element=null}connectedCallback(){this.element=document.getElementById(this.getAttribute("recordFieldId")||""),this.element&&(Resizable.enable(this.element),Tabbable.enable(this.element))}}window.customElements.define("typo3-formengine-element-text",TextElement);
+import DocumentService from"@typo3/core/document-service.js";import{Resizable}from"@typo3/backend/form-engine/element/modifier/resizable.js";import{Tabbable}from"@typo3/backend/form-engine/element/modifier/tabbable.js";class TextElement extends HTMLElement{constructor(){super(...arguments),this.element=null}async connectedCallback(){await DocumentService.ready(),this.element=document.getElementById(this.getAttribute("recordFieldId")||""),this.element&&(Resizable.enable(this.element),Tabbable.enable(this.element))}}window.customElements.define("typo3-formengine-element-text",TextElement);
