@@ -258,7 +258,7 @@ class PageSlugCandidateProvider
             }
 
             $mountedPage = null;
-            if ($mountPageInformation) {
+            if (is_array($mountPageInformation)) {
                 // Add the MPvar to the row, so it can be used later-on in the PageRouter / PageArguments
                 $row['MPvar'] = $mountPageInformation['MPvar'];
                 $mountedPage = $pageRepository->getPage_noCheck($mountPageInformation['mount_pid_rec']['uid']);
@@ -296,7 +296,7 @@ class PageSlugCandidateProvider
             }
 
             // Add possible sub-pages prepended with the MountPoint page slug
-            if ($mountPageInformation) {
+            if (is_array($mountPageInformation)) {
                 /** @var array $mountedPage */
                 $siteOfMountedPage = $siteFinder->getSiteByPageId((int)$mountedPage['uid']);
                 $morePageCandidates = $this->findPageCandidatesOfMountPoint(
