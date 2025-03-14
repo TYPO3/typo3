@@ -11,10 +11,11 @@
 * The TYPO3 project - inspiring people to share!
 */
 
+import DocumentService from '@typo3/core/document-service';
+import { selector } from '@typo3/core/literals';
 import { type SelectTree } from './select-tree';
 import { type SelectTreeToolbar } from './select-tree-toolbar';
 import '@typo3/backend/element/icon-element';
-import { selector } from '@typo3/core/literals';
 import type { TreeNodeInterface } from '@typo3/backend/tree/tree-node';
 
 /**
@@ -35,7 +36,8 @@ class CategoryElement extends HTMLElement{
   private treeWrapper: HTMLElement = null;
   private tree: SelectTree = null;
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
+    await DocumentService.ready();
     this.recordField = <HTMLInputElement>this.querySelector(selector`#${this.getAttribute('recordFieldId') || '' as string}`);
     this.treeWrapper = <HTMLElement>this.querySelector(selector`#${this.getAttribute('treeWrapperId') || '' as string}`);
 

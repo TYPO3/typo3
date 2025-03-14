@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { selector } from '@typo3/core/literals';
 import { MultiRecordSelectionSelectors } from '@typo3/backend/multi-record-selection';
@@ -29,7 +30,7 @@ enum Permissions {
  * @example
  * <typo3-formengine-element-tablepermission selectStateFieldName="<field>" modifyStateFieldName="<field>">
  *   ...
- * </typo3-formengine-element-tablepermissions>
+ * </typo3-formengine-element-tablepermission>
  *
  * This is based on W3C custom elements ("web components") specification, see
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
@@ -38,7 +39,8 @@ class TablePermissionElement extends HTMLElement {
   private selectStateField: HTMLInputElement = null;
   private modifyStateField: HTMLInputElement = null;
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
+    await DocumentService.ready();
     this.selectStateField = <HTMLInputElement>this.querySelector(selector`input[name=${this.getAttribute('selectStateFieldName') || '' as string}]`);
     this.modifyStateField = <HTMLInputElement>this.querySelector(selector`input[name=${this.getAttribute('modifyStateFieldName') || '' as string}]`);
 
