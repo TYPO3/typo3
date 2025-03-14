@@ -22,6 +22,7 @@ import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import Icons from '../../icons';
 import InfoWindow from '../../info-window';
 import Modal, { ModalElement } from '../../modal';
+import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
@@ -87,8 +88,9 @@ class FilesControlContainer extends HTMLElement {
   private requestQueue: RequestQueue = {};
   private progressQueue: ProgressQueue = {};
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
     const identifier = this.getAttribute('identifier') || '' as string;
+    await DocumentService.ready();
     this.container = <HTMLElement>this.querySelector(selector`[id="${identifier}"]`);
 
     if (this.container !== null) {

@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import { customElement, property } from 'lit/decorators';
 import { css, html, LitElement, TemplateResult } from 'lit';
 import './action';
@@ -63,7 +64,8 @@ export class ActionList extends LitElement {
   private parentContainer: HTMLElement;
   private resultItemContainer: HTMLElement;
 
-  public connectedCallback(): void {
+  public override async connectedCallback(): Promise<void> {
+    await DocumentService.ready();
     this.parentContainer = this.closest('typo3-backend-live-search-result-container');
     this.resultItemContainer = this.parentContainer.querySelector('typo3-backend-live-search-result-item-container');
 

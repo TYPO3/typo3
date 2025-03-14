@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import { Resizable } from './modifier/resizable';
 import { Tabbable } from './modifier/tabbable';
 
@@ -30,7 +31,8 @@ import { Tabbable } from './modifier/tabbable';
 class TextElement extends HTMLElement {
   private element: HTMLTextAreaElement = null;
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
+    await DocumentService.ready();
     this.element = document.getElementById((this.getAttribute('recordFieldId') || '' as string)) as HTMLTextAreaElement;
 
     if (!this.element) {

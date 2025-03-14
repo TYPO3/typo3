@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import { selector } from '@typo3/core/literals';
 
 /**
@@ -31,12 +32,13 @@ class PasswordElement extends HTMLElement {
   private passwordPolicyInfo: HTMLElement|null = null;
   private passwordPolicySet: boolean = false;
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
     const recordFieldId = this.getAttribute('recordFieldId');
     if (recordFieldId === null) {
       return;
     }
 
+    await DocumentService.ready();
     this.element = this.querySelector<HTMLInputElement>(selector`#${recordFieldId}`);
     if (!this.element) {
       return;

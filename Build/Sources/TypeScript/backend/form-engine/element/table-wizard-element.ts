@@ -68,6 +68,7 @@ export class TableWizardElement extends LitElement {
   }
 
   private readTableFromTextarea(): void {
+    // Note: We do not wait for `DocumentService.ready()` here, as the <textarea> is placed as a previous sibling before this element in DOM
     const textarea: HTMLTextAreaElement = document.querySelector(this.selectorData);
     const table: string[][] = [];
 

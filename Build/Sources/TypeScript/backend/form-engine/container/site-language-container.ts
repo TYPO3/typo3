@@ -20,6 +20,7 @@ import FormEngine from '@typo3/backend/form-engine';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import { default as Modal, ModalElement } from '@typo3/backend/modal';
 import Notification from '../../notification';
+import DocumentService from '@typo3/core/document-service';
 import RegularEvent from '@typo3/core/event/regular-event';
 import Severity from '../../severity';
 import Utility from '../../utility';
@@ -157,8 +158,9 @@ class SiteLanguageContainer extends HTMLElement {
     }
   }
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
     const identifier = this.getAttribute('identifier') || '' as string;
+    await DocumentService.ready();
     this.container = <HTMLElement>this.querySelector(selector`#${identifier}`);
 
     if (this.container !== null) {

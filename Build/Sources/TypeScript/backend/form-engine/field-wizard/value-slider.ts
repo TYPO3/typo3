@@ -11,6 +11,7 @@
  * The TYPO3 project - inspiring people to share!
  */
 
+import DocumentService from '@typo3/core/document-service';
 import ThrottleEvent from '@typo3/core/event/throttle-event';
 
 enum Format {
@@ -32,7 +33,8 @@ enum Format {
 export class ValueSlider extends HTMLElement {
   private valueSlider: HTMLInputElement = null;
 
-  public connectedCallback(): void {
+  public async connectedCallback(): Promise<void> {
+    await DocumentService.ready();
     this.valueSlider = this.querySelector('input') as HTMLInputElement;
     if (this.valueSlider !== null) {
       new ThrottleEvent('input', this.handleRangeChange, 25).bindTo(this.valueSlider);
