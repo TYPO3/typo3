@@ -51,7 +51,7 @@ class DateExample extends AbstractEntity
         return $this->datetimeInt;
     }
 
-    public function setDatetimeInt(\DateTime $datetimeInt): void
+    public function setDatetimeInt(?\DateTime $datetimeInt): void
     {
         $this->datetimeInt = $datetimeInt;
     }

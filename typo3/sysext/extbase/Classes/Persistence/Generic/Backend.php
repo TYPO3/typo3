@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
@@ -71,7 +73,8 @@ class Backend implements BackendInterface, SingletonInterface
         protected readonly ReflectionService $reflectionService,
         protected \TYPO3\CMS\Extbase\Persistence\Generic\Storage\BackendInterface $storageBackend,
         protected DataMapFactory $dataMapFactory,
-        protected readonly EventDispatcherInterface $eventDispatcher
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly Features $features,
     ) {
         $this->referenceIndex = GeneralUtility::makeInstance(ReferenceIndex::class);
         $this->aggregateRootObjects = new ObjectStorage();
@@ -910,6 +913,17 @@ class Backend implements BackendInterface, SingletonInterface
             return GeneralUtility::makeInstance(DataMapper::class)->getPlainValue($input, $columnMap);
         }
 
+        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling') &&
+            $columnMap?->getType() === TableColumnType::DATETIME
+        ) {
+            return QueryHelper::transformDateTimeToDatabaseValue(
+                null,
+                $columnMap->isNullable(),
+                $columnMap->getDateTimeFormat() ?? 'datetime',
+                $columnMap->getDateTimeStorageFormat()
+            );
+        }
+
         if ($property === null) {
             return null;
         }
@@ -925,7 +939,8 @@ class Backend implements BackendInterface, SingletonInterface
             return 0;
         }
 
-        // Nullable DateTime property
+        // Nullable DateTime property (superseded by extbase.consistentDateTimeHandling above)
+        // @todo remove in TYPO3 v15 when extbase.consistentDateTimeHandling will be enforced
         if ($columnMap && is_subclass_of($className, \DateTimeInterface::class)) {
             if ($columnMap->isNullable() && $property->isNullable()) {
                 return null;

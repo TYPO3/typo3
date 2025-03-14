@@ -65,6 +65,7 @@ readonly class ColumnMapFactory
         // @todo Why type "input" - shouldn't we better throw an exception here?
         $columnMap->setType(TableColumnType::tryFrom($field->getType()) ?? TableColumnType::INPUT);
         if ($field instanceof DateTimeFieldType) {
+            $columnMap->setDateTimeFormat($field->getFormat());
             $columnMap->setDateTimeStorageFormat($field->getPersistenceType());
         }
         $columnMap = $this->setRelations($columnMap, $field, $type, $elementType);

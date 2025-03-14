@@ -20,10 +20,13 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Mapper;
 use Doctrine\Instantiator\InstantiatorInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
@@ -75,6 +78,7 @@ class DataMapper
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InstantiatorInterface $instantiator,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly Features $features,
     ) {}
 
     public function setQuery(QueryInterface $query): void
@@ -297,7 +301,9 @@ class DataMapper
         if (is_subclass_of($targetClassName, \DateTimeInterface::class)) {
             return $this->mapDateTime(
                 $propertyValue,
+                $columnMap->getDateTimeFormat(),
                 $columnMap->getDateTimeStorageFormat(),
+                $columnMap->isNullable(),
                 $targetClassName
             );
         }
@@ -329,14 +335,38 @@ class DataMapper
      * Creates a DateTime from a unix timestamp or date/datetime/time value.
      * If the input is empty, NULL is returned.
      *
-     * @param int|string $value Unix timestamp or date/datetime/time value
+     * @param int|string $value Unix timestamp or date/datetime value or seconds for time/timesec
+     * @param string|null $format Output format (date/datetime/time/timesec)
      * @param string|null $storageFormat Storage format for native date/datetime/time fields
      * @param string $targetType The object class name to be created
-     * @return \DateTimeInterface
-     * @todo Use \TYPO3\CMS\Core\Domain\DateTimeFactory
+     * @return \DateTimeInterface|null
      */
-    protected function mapDateTime($value, $storageFormat = null, $targetType = \DateTime::class)
-    {
+    protected function mapDateTime(
+        $value,
+        $format = null,
+        $storageFormat = null,
+        $isNullable = true,
+        $targetType = \DateTime::class
+    ) {
+        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling')) {
+            $dateTime = DateTimeFactory::createFomDatabaseValueAndTCAConfig(
+                $value,
+                // Reconstruct TCA from our ColumnMap
+                [
+                    'type' => 'datetime',
+                    'format' => $format,
+                    'dbType' => $storageFormat,
+                    'nullable' => $isNullable,
+                ]
+            );
+
+            return $dateTime === null ? null : match ($targetType) {
+                \DateTimeImmutable::class => $dateTime,
+                \DateTime::class => \DateTime::createFromImmutable($dateTime),
+                default => GeneralUtility::makeInstance($targetType, $dateTime->format('Y-m-d H:i:s.v e')),
+            };
+        }
+
         $dateTimeTypes = QueryHelper::getDateTimeTypes();
 
         // Invalid values are converted to NULL
@@ -884,6 +914,17 @@ class DataMapper
      */
     public function getPlainValue(mixed $input, ?ColumnMap $columnMap = null): int|string
     {
+        if ($this->features->isFeatureEnabled('extbase.consistentDateTimeHandling')) {
+            if ($input instanceof \DateTimeInterface || ($input === null && $columnMap?->getType() === TableColumnType::DATETIME)) {
+                return QueryHelper::transformDateTimeToDatabaseValue(
+                    $input,
+                    $columnMap?->isNullable() ?? false,
+                    $columnMap?->getDateTimeFormat() ?? 'datetime',
+                    $columnMap?->getDateTimeStorageFormat()
+                ) ?? 'NULL';
+            }
+        }
+
         if ($input === null) {
             return 'NULL';
         }

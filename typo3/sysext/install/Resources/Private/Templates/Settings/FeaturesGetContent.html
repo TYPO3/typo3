@@ -29,7 +29,7 @@
                                 {f:if(condition: '!{isWritable}', then: 'disabled')}
                             />
                             <label class="form-check-label" for="t3-install-tool-features-{feature.name}">
-                                {feature.description}<br>
+                                <p>{feature.description -> f:sanitize.html()}</p>
                                 <strong>Default setting: {f:if(condition: '{feature.default} == 1', then: 'Enabled', else: 'Disabled')}</strong>
                             </label>
                         </div>

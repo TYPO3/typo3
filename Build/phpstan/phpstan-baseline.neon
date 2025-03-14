@@ -2815,12 +2815,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMapper\:\:mapDateTime\(\) should return DateTimeInterface but returns null\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Mapper\\DataMap and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1

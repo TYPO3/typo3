@@ -21,6 +21,7 @@ use Doctrine\Instantiator\InstantiatorInterface;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Schema\Field\SelectRelationFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
@@ -73,6 +74,7 @@ final class DataMapperTest extends UnitTestCase
             $this->createMock(EventDispatcherInterface::class),
             $this->createMock(InstantiatorInterface::class),
             $this->createMock(TcaSchemaFactory::class),
+            $this->createMock(Features::class),
         );
     }
 
