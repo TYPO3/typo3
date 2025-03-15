@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Frontend\Tests\Functional\ContentObject;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\Frontend\InternalRequest;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
+use TYPO3Fluid\Fluid\View\Exception\InvalidTemplateResourceException;
 
 final class PageViewContentObjectTest extends FunctionalTestCase
 {
@@ -66,6 +68,20 @@ final class PageViewContentObjectTest extends FunctionalTestCase
         self::assertStringContainsString('page-layout-identifier-Standard', (string)$response->getBody());
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID)->withLanguageId(1));
         self::assertStringContainsString('Vous êtes à la page Fluid Root Page FR', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function invalidPathThrowsException(): void
+    {
+        $this->setUpFrontendRootPage(
+            self::ROOT_PAGE_ID,
+            [
+                'EXT:frontend/Tests/Functional/Fixtures/Extensions/test_fluidpagerendering/Configuration/TypoScript/invalidPath.typoscript',
+            ]
+        );
+        self::expectException(InvalidTemplateResourceException::class);
+        self::expectExceptionMessage(sprintf('PAGEVIEW TypoScript object: Failed to resolve the expected template file "Pages/Standard.html" for layout "Standard". See also: %s. The following paths were checked: EXT:test_fluidpagerendering/Resources/Private/Templates/Pages/Pages/Standard.html', (new Typo3Information())->getDocsLink('t3tsref:cobj-pageview')));
+        $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::ROOT_PAGE_ID));
     }
 
     public static function reservedVariableNameDataProvider(): array
