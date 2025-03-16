@@ -73,7 +73,10 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         $options = ['minimum' => '2018-03-18', 'maximum' => ''];
         $validator = new DateRangeValidator();
         $validator->setOptions($options);
-        self::assertTrue($validator->validate($input)->hasErrors());
+        $result = $validator->validate($input);
+        $firstError = $result->getFirstError();
+        self::assertEquals(1521293687, $firstError->getCode());
+        self::assertTrue($result->hasErrors());
     }
 
     #[Test]
@@ -123,6 +126,9 @@ final class DateRangeValidatorTest extends FunctionalTestCase
         $options = ['maximum' => '2018-03-18'];
         $validator = new DateRangeValidator();
         $validator->setOptions($options);
-        self::assertTrue($validator->validate($input)->hasErrors());
+        $result = $validator->validate($input);
+        $firstError = $result->getFirstError();
+        self::assertEquals(1521293686, $firstError->getCode());
+        self::assertTrue($result->hasErrors());
     }
 }

@@ -63,11 +63,11 @@ final class DateRangeValidator extends AbstractValidator
         if ($minimum instanceof \DateTime && $value < $minimum) {
             $this->addError(
                 $this->translateErrorMessage(
-                    'validation.error.1521293686',
+                    'validation.error.1521293687',
                     'form',
                     [$minimum->format($format)]
                 ),
-                1521293686,
+                1521293687,
                 [$minimum->format($format)]
             );
         }
@@ -75,11 +75,11 @@ final class DateRangeValidator extends AbstractValidator
         if ($maximum instanceof \DateTime && $value > $maximum) {
             $this->addError(
                 $this->translateErrorMessage(
-                    'validation.error.1521293687',
+                    'validation.error.1521293686',
                     'form',
                     [$maximum->format($format)]
                 ),
-                1521293687,
+                1521293686,
                 [$maximum->format($format)]
             );
         }
