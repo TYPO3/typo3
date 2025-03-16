@@ -17,11 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Redirects\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Http\Uri;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Redirects\Event\AfterPageUrlsForSiteForRedirectIntegrityHaveBeenCollectedEvent;
 use TYPO3\CMS\Redirects\Utility\RedirectConflict;
 
 /**
@@ -33,6 +37,8 @@ readonly class IntegrityService
         private RedirectService $redirectService,
         private SiteFinder $siteFinder,
         private ConnectionPool $connectionPool,
+        private EventDispatcherInterface $eventDispatcher,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -100,6 +106,8 @@ readonly class IntegrityService
      */
     private function getAllPageUrlsForSite(Site $site): array
     {
+        $schema = $this->tcaSchemaFactory->get('pages');
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $pageUrls = [];
 
         // language bases - redirects would be nasty, but should be checked also. We do not need to add site base
@@ -110,13 +118,19 @@ readonly class IntegrityService
 
         $queryBuilder = $this->connectionPool
             ->getQueryBuilderForTable('pages')
-            ->select('slug', $this->getPagesLanguageFieldName())
+            ->select('slug', $languageCapability->getLanguageField()->getName())
             ->from('pages');
 
         $queryBuilder->where(
             $queryBuilder->expr()->or(
-                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($site->getRootPageId(), Connection::PARAM_INT)),
-                $queryBuilder->expr()->eq($this->getPagesLanguageParentFieldName(), $queryBuilder->createNamedParameter($site->getRootPageId(), Connection::PARAM_INT)),
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($site->getRootPageId(), Connection::PARAM_INT)
+                ),
+                $queryBuilder->expr()->eq(
+                    $languageCapability->getTranslationOriginPointerField()->getName(),
+                    $queryBuilder->createNamedParameter($site->getRootPageId(), Connection::PARAM_INT)
+                ),
             )
         );
         $result = $queryBuilder->executeQuery();
@@ -125,78 +139,26 @@ readonly class IntegrityService
             // @todo Considering only page slug is not complete, as it does not match redirects with file extension,
             //       for ex. if PageTypeSuffix routeEnhancer are used and redirects are created based on that.
             $slug = ltrim(($row['slug'] ?? ''), '/');
-            $lang = (int)($row[$this->getPagesLanguageFieldName()] ?? 0);
+            $language = $row[$languageCapability->getLanguageField()->getName()];
             try {
-                $siteLanguage = $site->getLanguageById($lang);
+                $siteLanguage = $site->getLanguageById($language);
             } catch (\InvalidArgumentException) {
                 // skip invalid languages which might occur due to previous changes in site configuration
                 continue;
             }
 
             // empty slug root pages has been already handled with language bases above, thus skip them here.
-            if (empty($slug)) {
+            if ($slug === '') {
                 continue;
             }
 
             $pageUrls[] = rtrim((string)$siteLanguage->getBase(), '/') . '/' . $slug;
         }
 
-        $subPageUrls = $this->getSlugsOfSubPages($site->getRootPageId(), $site);
-        $pageUrls = array_merge($pageUrls, $subPageUrls);
+        $pageUrls = $this->eventDispatcher->dispatch(
+            new AfterPageUrlsForSiteForRedirectIntegrityHaveBeenCollectedEvent($site, $pageUrls)
+        )->getPageUrls();
+
         return array_unique($pageUrls);
-    }
-
-    /**
-     * Resolves the subtree of a page and returns its slugs for language $languageId.
-     */
-    private function getSlugsOfSubPages(int $pageId, Site $site): array
-    {
-        $pageUrls = [[]];
-
-        $queryBuilder = $this->connectionPool
-            ->getQueryBuilderForTable('pages')
-            ->select('uid', 'slug', $this->getPagesLanguageFieldName())
-            ->from('pages');
-
-        $queryBuilder->where(
-            $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT)),
-        );
-        $result = $queryBuilder->executeQuery();
-
-        while ($row = $result->fetchAssociative()) {
-            // @todo Considering only page slug is not complete, as it does not matches redirects with file extension,
-            //       for ex. if PageTypeSuffix routeEnhancer are used and redirects are created based on that.
-            $slug = ltrim($row['slug'] ?? '', '/');
-            $lang = (int)($row[$this->getPagesLanguageFieldName()] ?? 0);
-            try {
-                $siteLanguage = $site->getLanguageById($lang);
-            } catch (\InvalidArgumentException) {
-                // skip invalid languages which might occur due to previous changes in site configuration
-                continue;
-            }
-
-            // empty slugs should to occur here, but to be sure we skip them here, as they were already handled.
-            if (empty($slug)) {
-                continue;
-            }
-
-            $pageUrls[] = [rtrim((string)$siteLanguage->getBase(), '/') . '/' . $slug];
-
-            // only traverse for pages of default language (as even translated pages contain pid of parent in default language)
-            if ($lang === 0) {
-                $pageUrls[] = $this->getSlugsOfSubPages((int)$row['uid'], $site);
-            }
-        }
-        return array_merge(...$pageUrls);
-    }
-
-    private function getPagesLanguageFieldName(): string
-    {
-        return $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? 'sys_language_uid';
-    }
-
-    private function getPagesLanguageParentFieldName(): string
-    {
-        return $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? 'l10n_parent';
     }
 }
