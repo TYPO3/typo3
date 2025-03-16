@@ -31,11 +31,13 @@ class ExternalUrlLinkBuilder extends AbstractTypolinkBuilder
         // like `/path/some-file.png` to be handled as external URL, and that's
         // why the URL is forced to contain a fully qualified domain name as well
         $url = $this->forceAbsoluteUrl($url, $conf);
+        $fallbackTarget = str_starts_with($url, '/') && !str_starts_with($url, '//') ? 'target' : 'extTarget';
+
         $linkText = $this->encodeFallbackLinkTextIfLinkTextIsEmpty($linkText, $url);
         return (new LinkResult(LinkService::TYPE_URL, (string)$url))
             ->withLinkConfiguration($conf)
             ->withTarget(
-                $target ?: $this->resolveTargetAttribute($conf, 'extTarget'),
+                $target ?: $this->resolveTargetAttribute($conf, $fallbackTarget),
             )
             ->withLinkText($linkText);
     }
