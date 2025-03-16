@@ -126,6 +126,15 @@ final class EmailLoginNotification implements LoggerAwareInterface
                 'recipientList' => $recipients,
                 'exception' => $e,
             ]);
+        } catch (\Exception $e) {
+            // Catch all other exceptions, otherwise a failed email login notification will keep
+            // a user from logging in. See https://forge.typo3.org/issues/103546
+            $this->logger->error('Could not send notification email to "{recipient}" due to a PHP exception', [
+                'recipient' => $recipient,
+                'userId' => $user->user['uid'] ?? 0,
+                'recipientList' => $recipients,
+                'exception' => $e,
+            ]);
         }
     }
 }
