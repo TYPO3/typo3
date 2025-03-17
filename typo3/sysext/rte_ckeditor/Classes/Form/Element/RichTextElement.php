@@ -313,6 +313,7 @@ class RichTextElement extends AbstractFormElement
         // Of course this can be overridden by the editor configuration below
         $configuration = [
             'customConfig' => '',
+            'label' => $this->data['parameterArray']['fieldConf']['label'] ?? '',
         ];
 
         if ($this->data['parameterArray']['fieldConf']['config']['readOnly'] ?? false) {
