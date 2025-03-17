@@ -124,6 +124,12 @@ editor:
         startIndex: true
         reversed: true
 
+    indentBlock:
+      classes:
+        - 'ps-2'
+        - 'ps-3'
+        - 'ps-4'
+
     language:
       textPartLanguage: [
         { title: 'English', languageCode: 'en' },
