@@ -30,7 +30,7 @@ class Typo3Information
     public const URL_LICENSE = 'https://typo3.org/project/licenses/';
     public const URL_EXCEPTION = 'https://typo3.org/go/exception/CMS/';
     public const URL_DONATE = 'https://typo3.org/community/contribute/donate/';
-    public const URL_OPCACHE = 'https://docs.typo3.org/m/typo3/tutorial-getting-started/main/en-us/Troubleshooting/PHP.html#opcode-cache-messages';
+    private const URL_DOCS = 'https://docs.typo3.org/permalink/%s@%s';
 
     protected LanguageService $languageService;
 
@@ -116,5 +116,20 @@ class Typo3Information
                 '</a> '
             )
             . $this->languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_login.xlf:keep.notice');
+    }
+
+    /**
+     * Returns a permalink to https://docs.typo3.org/ with appended version information of the currently used TYPO3
+     * version.
+     * For example, specifying an identifier like 't3coreapi:troubleshooting-php-troubleshooting-opcode' will return
+     * 'https://docs.typo3.org/permalink/t3coreapi:troubleshooting-php-troubleshooting-opcode@14.0'
+     */
+    public function getDocsLink(string $identifier): string
+    {
+        if (str_contains($identifier, '@')) {
+            throw new \InvalidArgumentException('The identifier must not contain the "@" character.', 1728643940);
+        }
+
+        return sprintf(self::URL_DOCS, $identifier, (new Typo3Version())->getBranch());
     }
 }

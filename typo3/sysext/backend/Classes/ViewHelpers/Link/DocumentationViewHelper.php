@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\ViewHelpers\Link;
 
-use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
 
 /**
@@ -51,8 +51,6 @@ final class DocumentationViewHelper extends AbstractTagBasedViewHelper
 {
     protected $tagName = 'a';
 
-    protected string $urlPattern = 'https://docs.typo3.org/permalink/%s@%s';
-
     public function initializeArguments(): void
     {
         parent::initializeArguments();
@@ -64,10 +62,9 @@ final class DocumentationViewHelper extends AbstractTagBasedViewHelper
      */
     public function render(): string
     {
-        if (str_contains($this->arguments['identifier'], '@')) {
-            throw new \InvalidArgumentException('The identifier must not contain the "@" character.', 1728643940);
-        }
-        $this->tag->addAttribute('href', sprintf($this->urlPattern, $this->arguments['identifier'], (new Typo3Version())->getBranch()));
+        // Note: This ViewHelper cannot use DI, because it is used in the Install-Tool context where constructor-based DI does not work.
+        //       Typo3Information is a simple DO so we do not need to utilize makeInstance() here.
+        $this->tag->addAttribute('href', (new Typo3Information())->getDocsLink($this->arguments['identifier']));
         $this->tag->addAttribute('target', '_blank');
         $this->tag->addAttribute('rel', 'noreferrer');
         $this->tag->setContent($this->renderChildren());
