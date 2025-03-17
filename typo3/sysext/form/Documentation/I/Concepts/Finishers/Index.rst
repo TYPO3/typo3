@@ -545,9 +545,9 @@ following to the backend yaml setup:
                   25:
                      identifier: 'CustomFinisher'
                      editors:
-                        __inheritances:
-                           10: 'mixins.formElementMixins.BaseCollectionEditorsMixin'
                         100:
+                          identifier: header
+                          templateName: Inspector-CollectionElementHeaderEditor
                           label: "Custom Finisher"
                         # custom field (input, required)
                         110:
@@ -567,7 +567,9 @@ following to the backend yaml setup:
                           propertyValidators:
                             10: 'NotEmpty'
                             20: 'FormElementIdentifierWithinCurlyBracesInclusive'
-
+                        9999:
+                          identifier: removeButton
+                          templateName: Inspector-RemoveElementEditor
           finishersDefinition:
             CustomFinisher:
               formEditor:
