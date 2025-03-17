@@ -36,7 +36,7 @@ const defaultPlugins: PluginModuleDescriptor[] = [
   { module: '@ckeditor/ckeditor5-essentials', exports: ['Essentials'] },
   { module: '@ckeditor/ckeditor5-find-and-replace', exports: ['FindAndReplace'] },
   { module: '@ckeditor/ckeditor5-heading', exports: ['Heading'] },
-  { module: '@ckeditor/ckeditor5-indent', exports: ['Indent'] },
+  { module: '@ckeditor/ckeditor5-indent', exports: ['Indent', 'IndentBlock'] },
   { module: '@ckeditor/ckeditor5-link', exports: ['Link'] },
   { module: '@ckeditor/ckeditor5-list', exports: ['List'] },
   { module: '@ckeditor/ckeditor5-paragraph', exports: ['Paragraph'] },
