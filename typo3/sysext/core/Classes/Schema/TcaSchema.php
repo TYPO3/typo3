@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\LanguageFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
+use TYPO3\CMS\Core\Schema\Field\SystemInternalFieldType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -201,7 +202,15 @@ readonly class TcaSchema implements SchemaInterface
         if (isset($this->schemaConfiguration['label_alt'])) {
             $additionalFieldNames = GeneralUtility::trimExplode(',', $this->schemaConfiguration['label_alt'], true);
             foreach ($additionalFieldNames as $additionalFieldName) {
-                $additionalLabelFields[] = $this->fields[$additionalFieldName];
+                if (isset($this->fields[$additionalFieldName])) {
+                    $additionalLabelFields[] = $this->fields[$additionalFieldName];
+                } elseif (in_array($additionalFieldName, ['uid', 'pid'])
+                    || $additionalFieldName === ($this->schemaConfiguration['sortby'] ?? '')
+                    || $additionalFieldName === ($this->schemaConfiguration['crdate'] ?? '')
+                    || $additionalFieldName === ($this->schemaConfiguration['tstamp'] ?? '')
+                ) {
+                    $additionalLabelFields[] = new SystemInternalFieldType($additionalFieldName, []);
+                }
             }
         }
         $labelConfiguration = [];
@@ -214,7 +223,7 @@ readonly class TcaSchema implements SchemaInterface
             $labelConfiguration['formatterOptions'] = $this->schemaConfiguration['formattedLabel_userFunc_options'] ?? [];
         }
         return new Capability\LabelCapability(
-            $this->fields[$this->schemaConfiguration['label']],
+            $this->schemaConfiguration['label'] ?? false ? $this->fields[$this->schemaConfiguration['label']] : null,
             $additionalLabelFields,
             (bool)($this->schemaConfiguration['label_alt_force'] ?? false),
             $labelConfiguration
