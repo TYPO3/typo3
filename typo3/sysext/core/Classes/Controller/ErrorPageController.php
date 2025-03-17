@@ -54,7 +54,7 @@ readonly class ErrorPageController
             'donationUrl' => Typo3Information::URL_DONATE,
             'errorCode' => $errorCode,
             'requestId' => GeneralUtility::makeInstance(RequestId::class),
-            'copyrightYear' => GeneralUtility::makeInstance(Typo3Information::class)->getCopyrightYear(),
+            'copyrightYear' => $this->typo3Information->getCopyrightYear(),
         ]);
         return $view->render('ErrorPage/Error');
     }
