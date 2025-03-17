@@ -82,12 +82,7 @@ class MultiRecordSelection {
       return;
     }
     checkbox.checked = check;
-    // Dispatch the standard "change" event, which might be used by form components, e.g. FormEngine
-    checkbox.dispatchEvent(new CustomEvent('change', { bubbles: true }));
-    // Dispatch custom event, which might be used by components to keep track of external state changes
-    checkbox.dispatchEvent(new CustomEvent('multiRecordSelection:checkbox:state:changed',{
-      detail: { identifier: MultiRecordSelection.getIdentifier(checkbox) }, bubbles: true, cancelable: false
-    }));
+    checkbox.dispatchEvent(new Event('change', { bubbles: true }));
   }
 
   /**
