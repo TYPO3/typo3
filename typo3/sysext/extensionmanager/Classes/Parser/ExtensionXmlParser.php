@@ -82,7 +82,6 @@ class ExtensionXmlParser implements \SplSubject
     {
         /** @var \XMLParser $parser */
         $parser = xml_parser_create();
-        xml_set_object($parser, $this);
 
         // keep original character case of XML document
         xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, 0);
@@ -90,7 +89,7 @@ class ExtensionXmlParser implements \SplSubject
         xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'utf-8');
         xml_set_element_handler($parser, [$this, 'startElement'], [$this, 'endElement']);
         xml_set_character_data_handler($parser, [$this, 'characterData']);
-        if (!($fp = fopen($file, 'r'))) {
+        if (!($fp = @fopen($file, 'r'))) {
             throw $this->createUnableToOpenFileResourceException($file);
         }
         while ($data = fread($fp, 4096)) {
