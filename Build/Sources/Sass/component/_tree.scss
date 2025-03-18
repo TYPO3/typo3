@@ -480,7 +480,6 @@ typo3-backend-form-selecttree-toolbar {
 
     &__menu {
         padding-inline-end: 32px;
-        display: flex;
         min-height: var(--module-docheader-bar-height);
     }
 
@@ -495,7 +494,7 @@ typo3-backend-form-selecttree-toolbar {
         padding: 0 .25rem;
         border: 1px solid transparent;
         background: 0 0;
-        font-size: 11px;
+        font-size: var(--typo3-font-size-small);
         justify-content: center;
         align-items: center;
         height: var(--module-docheader-bar-height);

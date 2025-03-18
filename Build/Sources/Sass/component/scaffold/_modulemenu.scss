@@ -10,11 +10,24 @@
     --modulemenu-padding-x: .5rem;
     --modulemenu-padding-y: .75rem;
     --modulemenu-group-spacer: .5rem;
+    --modulemenu-icon-size: 32px;
+    --modulemenu-icon-border-radius: 4px;
+    --modulemenu-action-bg-state: initial;
+    --modulemenu-action-color-state: initial;
+    --modulemenu-action-border-color-state: initial;
+    --modulemenu-action-bg: transparent;
+    --modulemenu-action-color: inherit;
+    --modulemenu-action-border-width: 1px;
+    --modulemenu-action-border-color: transparent;
+    --modulemenu-action-min-width: 42px;
+    --modulemenu-action-padding: 4px;
+    --modulemenu-action-border-radius: 5px;
     margin: 0;
     padding: var(--modulemenu-padding-y) var(--modulemenu-padding-x);
     list-style: none;
 
     > ul {
+        min-width: var(--modulemenu-action-min-width);
         display: grid;
         gap: var(--modulemenu-group-spacer);
     }
@@ -24,21 +37,16 @@
 // Action
 //
 .modulemenu-action {
-    --modulemenu-action-bg-state: initial;
-    --modulemenu-action-color-state: initial;
-    --modulemenu-action-border-color-state: initial;
-    --modulemenu-action-bg: transparent;
-    --modulemenu-action-color: inherit;
-    --modulemenu-action-border-color: transparent;
+    container-type: inline-size;
     display: flex;
-    min-width: 40px;
-    padding: 4px;
+    min-width: var(--modulemenu-action-min-width);
+    padding: var(--modulemenu-action-padding);
     align-items: center;
     overflow: hidden;
-    border-radius: 5px;
+    border-radius: var(--modulemenu-action-border-radius);
     text-align: start;
     color: var(--modulemenu-action-color-state, var(--modulemenu-action-color));
-    border: 1px solid var(--modulemenu-action-border-color-state, var(--modulemenu-action-border-color));
+    border: var(--modulemenu-action-border-width) solid var(--modulemenu-action-border-color-state, var(--modulemenu-action-border-color));
     background-color: var(--modulemenu-action-bg-state, var(--modulemenu-action-bg));
     outline-offset: 0;
     transition: var(--typo3-transition-color);
@@ -80,9 +88,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 4px;
+    width: var(--modulemenu-icon-size);
+    height: var(--modulemenu-icon-size);
+    border-radius: var(--modulemenu-icon-border-radius);
     flex-shrink: 0;
     overflow: hidden;
 }
@@ -91,25 +99,30 @@
 // Name
 //
 .modulemenu-name {
-    overflow: hidden;
     flex-grow: 1;
     margin-inline-start: 1em;
-    white-space: nowrap;
     text-overflow: ellipsis;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
 }
 
-.modulemenu {
+/* clean-css ignore:start */
+@container (min-width: 60px) {
     .modulemenu-name {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
+        position: static;
+        margin: 0;
+        margin-inline-start: 1em;
+        width: auto;
+        height: auto;
     }
 }
+
+/* clean-css ignore:end */
 
 //
 // Indicator
@@ -148,6 +161,15 @@
     }
 }
 
+/* clean-css ignore:start */
+@container (min-width: 60px) {
+    .modulemenu-indicator {
+        display: block !important;
+    }
+}
+
+/* clean-css ignore:end */
+
 //
 // Group
 //
@@ -157,10 +179,6 @@
     list-style: none;
     padding: 0;
     margin: 0;
-
-    > li {
-        width: auto !important;
-    }
 }
 
 .modulemenu-group-spacer {
@@ -182,27 +200,5 @@ button[aria-expanded="true"]:not(:disabled) {
         &:after {
             transform: rotate(45deg);
         }
-    }
-}
-
-//
-// Scaffold
-//
-.scaffold-modulemenu-expanded {
-    .modulemenu-action {
-        margin-inline-start: 0;
-        width: 100%;
-    }
-
-    .modulemenu-indicator {
-        display: block !important;
-    }
-
-    .modulemenu-name {
-        position: static;
-        margin: 0;
-        margin-inline-start: 1em;
-        width: auto;
-        height: auto;
     }
 }

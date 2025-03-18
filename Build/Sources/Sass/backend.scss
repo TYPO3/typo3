@@ -10,24 +10,16 @@
 @import "minimal";
 
 //
-// select-pure
-//
-@import "libs/selectpure";
-
-//
 // Image Manipulation Wizard base styles
 //
 @import "cropper/cropper";
 
 //
-// Sortable.js
+// External Libs
 //
+@import "libs/selectpure";
 @import "libs/sortable";
-
-//
-// NProgress
-//
-@import "nprogress/nprogress";
+@import "libs/nprogress";
 
 //
 // Components

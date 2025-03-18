@@ -12,14 +12,6 @@
     --settings-item-bg: var(--settings-bg);
 }
 
-.module[data-module-name="site_settings"] {
-    .module-body {
-        width: 100%;
-        max-width: 1320px;
-        margin: 0 auto;
-    }
-}
-
 .settings-container {
     container-type: inline-size;
     margin-top: 1.5rem;
@@ -69,7 +61,7 @@
             box-shadow: var(--settings-box-shadow);
             flex: 0 0 300px;
             position: sticky;
-            top: calc(var(--module-body-padding-y) + var(--module-docheader-height));
+            top: 0;
             border-inline-end: 0;
             border-inline-start: var(--settings-border-width) solid var(--settings-border-color);
             border-top: var(--settings-border-width) solid var(--settings-border-color);

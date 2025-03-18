@@ -10,7 +10,6 @@
 :root {
     --module-bg: var(--typo3-surface-base);
     --module-color: var(--typo3-text-color-base);
-    --module-docheader-zindex: 300;
     --module-docheader-padding-y: .5rem;
     --module-docheader-padding-x: 1.5rem;
     --module-docheader-padding: var(--module-docheader-padding-y) var(--module-docheader-padding-x);
@@ -32,15 +31,20 @@
 // Template
 //
 .module {
+    display: grid;
+    grid-template-areas:
+        "moduleDocHeader"
+        "moduleBody";
+    grid-template-rows: auto 1fr;
     position: relative;
     height: 100%;
     width: 100%;
     background-color: var(--module-bg);
     color: var(--module-color);
-    // Use overflow-y: auto to ensure ckeditor dropdowns
-    // do not conflict with height: 100% on <body>
-    overflow-y: auto;
-    scroll-padding-top: calc(var(--module-docheader-height) + .75rem);
+
+    body > & {
+        height: 100dvh;
+    }
 }
 
 //
@@ -62,24 +66,14 @@
 // Docheader
 //
 .module-docheader {
-    position: sticky;
-    width: 100%;
-    top: 0;
-    inset-inline-start: 0;
+    grid-area: moduleDocHeader;
     display: flex;
     flex-direction: column;
     min-height: var(--module-docheader-height);
-    z-index: var(--module-docheader-zindex);
     background-color: var(--module-docheader-bg);
     border-bottom: 1px solid var(--module-docheader-border-color);
     padding: var(--module-docheader-padding);
     gap: var(--module-docheader-spacing);
-
-    @include transition(transform .3s ease-in-out);
-
-    &-folded {
-        transform: translateY(var(--module-docheader-scroll-offset));
-    }
 
     .module-docheader-bar {
         display: flex;
@@ -115,7 +109,10 @@
 // Body
 //
 .module-body {
+    grid-area: moduleBody;
+    position: relative;
     padding: var(--module-body-padding);
+    overflow: auto;
 
     > .container {
         padding-left: 0;

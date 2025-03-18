@@ -7,73 +7,75 @@
 
 <f:section name="Content">
 
-    <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.title"/></h1>
+    <div class="container">
+        <h1><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.title"/></h1>
 
-    <f:if condition="{sites -> f:count()} == 0">
-        <f:be.infobox
-            title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.title')}"
-            state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
-        >
-            <p>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.message')}</p>
-            <p>
-                <be:link.documentation identifier="t3coreapi:site-sets" class="btn btn-default">
-                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.button-documentation-label"/>
-                </be:link.documentation>
-            </p>
-        </f:be.infobox>
-    </f:if>
+        <f:if condition="{sites -> f:count()} == 0">
+            <f:be.infobox
+                title="{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.title')}"
+                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+            >
+                <p>{f:translate(key:'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.message')}</p>
+                <p>
+                    <be:link.documentation identifier="t3coreapi:site-sets" class="btn btn-default">
+                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.noSiteSettingsExists.button-documentation-label"/>
+                    </be:link.documentation>
+                </p>
+            </f:be.infobox>
+        </f:if>
 
-    <div class="card-container">
-        <f:for each="{sites}" as="c">
-            <div class="card card-size-small {f:if(condition: '{c.site.invalidSets -> f:count()} > 0', then: 'card-danger')}">
-                <div class="card-header">
-                    <div class="card-header-body">
-                        <h2 class="card-title">{c.siteTitle}</h2>
-                        <span class="card-subtitle">{c.site.identifier} [pid: {c.site.rootPageId}]</span>
+        <div class="card-container">
+            <f:for each="{sites}" as="c">
+                <div class="card card-size-small {f:if(condition: '{c.site.invalidSets -> f:count()} > 0', then: 'card-danger')}">
+                    <div class="card-header">
+                        <div class="card-header-body">
+                            <h2 class="card-title">{c.siteTitle}</h2>
+                            <span class="card-subtitle">{c.site.identifier} [pid: {c.site.rootPageId}]</span>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <details open name="details-{c.site.identifier}">
-                        <summary><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.setSummary" arguments="{0: '{c.site.sets -> f:count()}'}"/></summary>
-                        <p>
-                            <f:for each="{c.site.sets}" as="set" iteration="i">
-                                <code>{set}</code><f:if condition="{i.isLast}"><f:else><br></f:else></f:if>
-                            </f:for>
-                        </p>
-                        <f:render partial="SiteManagement/InvalidSets" arguments="{site: c.site}"/>
-                    </details>
-
-                    <f:if condition="{c.localSettings.map -> f:count()} > 0">
+                    <div class="card-body">
                         <details open name="details-{c.site.identifier}">
-                            <summary><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.customSettingsSummary" arguments="{0: '{c.localSettings.map -> f:count()}'}"/></summary>
+                            <summary><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.setSummary" arguments="{0: '{c.site.sets -> f:count()}'}"/></summary>
                             <p>
-                                <f:for each="{c.localSettings.map}" as="setting" key="key" iteration="i">
-                                    <code>{key}: <strong>{setting -> f:format.json()}</strong></code><br>
+                                <f:for each="{c.site.sets}" as="set" iteration="i">
+                                    <code>{set}</code><f:if condition="{i.isLast}"><f:else><br></f:else></f:if>
                                 </f:for>
                             </p>
+                            <f:render partial="SiteManagement/InvalidSets" arguments="{site: c.site}"/>
                         </details>
+
+                        <f:if condition="{c.localSettings.map -> f:count()} > 0">
+                            <details open name="details-{c.site.identifier}">
+                                <summary><f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.customSettingsSummary" arguments="{0: '{c.localSettings.map -> f:count()}'}"/></summary>
+                                <p>
+                                    <f:for each="{c.localSettings.map}" as="setting" key="key" iteration="i">
+                                        <code>{key}: <strong>{setting -> f:format.json()}</strong></code><br>
+                                    </f:for>
+                                </p>
+                            </details>
+                        </f:if>
+                    </div>
+                    <f:if condition="{c.hasSettingsDefinitions}">
+                        <f:then>
+                            <div class="card-footer">
+                                <p>
+                                    <f:be.link route="site_settings.edit" parameters="{site: c.site.identifier}" class="btn btn-default">
+                                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.editSettings"/>
+                                    </f:be.link>
+                                </p>
+                            </div>
+                        </f:then>
+                        <f:else>
+                            <div class="card-footer text-body-secondary">
+                                <p>
+                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.message.notEditable"/>
+                                </p>
+                            </div>
+                        </f:else>
                     </f:if>
                 </div>
-                <f:if condition="{c.hasSettingsDefinitions}">
-                    <f:then>
-                        <div class="card-footer">
-                            <p>
-                                <f:be.link route="site_settings.edit" parameters="{site: c.site.identifier}" class="btn btn-default">
-                                    <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.editSettings"/>
-                                </f:be.link>
-                            </p>
-                        </div>
-                    </f:then>
-                    <f:else>
-                        <div class="card-footer text-body-secondary">
-                            <p>
-                                <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:overview.message.notEditable"/>
-                            </p>
-                        </div>
-                    </f:else>
-                </f:if>
-            </div>
-        </f:for>
+            </f:for>
+        </div>
     </div>
 </f:section>
 </html>

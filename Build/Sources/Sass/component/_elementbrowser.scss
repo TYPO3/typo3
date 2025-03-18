@@ -45,8 +45,8 @@
     display: flex;
     flex-flow: nowrap column;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    height: 100dvh;
+    contain: strict;
 
     h3 {
         font-size: 1.2em;
@@ -106,7 +106,7 @@
 
 .element-browser-main {
     color: var(--typo3-text-color-base);
-    background-color: (--typo3-surface-base);
+    background-color: var(--typo3-surface-base);
     position: relative;
     overflow: hidden;
     display: flex;

@@ -15,12 +15,10 @@
     --typo3-workspace-topbar-padding-x: 1rem;
     --typo3-workspace-topbar-min-height: 50px;
     --typo3-workspace-topbar-gap: 1.5rem;
-    overflow: hidden;
     padding: 0;
 
     .module-body {
         display: grid;
-        height: 100dvh;
         padding: 0;
         margin: 0;
         grid-template-rows: auto 1fr;
