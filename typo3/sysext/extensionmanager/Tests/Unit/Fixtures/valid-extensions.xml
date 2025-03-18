@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extensions>
+    <extension extensionkey="news">
+        <downloadcounter>9001</downloadcounter>
+        <version version="1.0.0">
+            <title>News</title>
+            <description>It's news.</description>
+            <state>stable</state>
+            <reviewstate>0</reviewstate>
+            <category>plugin</category>
+            <distributionImage/>
+            <distributionImageWelcome/>
+            <downloadcounter>9001</downloadcounter>
+            <lastuploaddate>1215424196</lastuploaddate>
+            <uploadcomment>New news, extra extra. Read all about it.</uploadcomment>
+            <dependencies>a:3:{i:0;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:5:"typo3";s:12:"versionRange";s:9:"4.1-0.0.0";}i:1;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"php";s:12:"versionRange";s:9:"5.1-0.0.0";}i:2;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"cms";s:12:"versionRange";s:0:"";}}</dependencies>
+            <composerinfo/>
+            <authorname>Best Georg</authorname>
+            <authoremail>support@example.com</authoremail>
+            <authorcompany>The Georg Company</authorcompany>
+            <ownerusername>supergeorg</ownerusername>
+            <t3xfilemd5>8b2bcd42d41f54564b150d3d1ed33030</t3xfilemd5>
+            <documentation_link>https://docs.typo3.org/typo3cms/extensions/news</documentation_link>
+        </version>
+        <version version="0.1.0">
+            <title>News</title>
+            <description>It's news.</description>
+            <state>beta</state>
+            <reviewstate>0</reviewstate>
+            <category>plugin</category>
+            <distributionImage/>
+            <distributionImageWelcome/>
+            <downloadcounter>1</downloadcounter>
+            <lastuploaddate>1215424196</lastuploaddate>
+            <uploadcomment>New news, extra extra. Read all about it.</uploadcomment>
+            <dependencies>a:3:{i:0;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:5:"typo3";s:12:"versionRange";s:9:"4.1-0.0.0";}i:1;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"php";s:12:"versionRange";s:9:"5.1-0.0.0";}i:2;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"cms";s:12:"versionRange";s:0:"";}}</dependencies>
+            <composerinfo/>
+            <authorname>Best Georg</authorname>
+            <authoremail>support@example.com</authoremail>
+            <authorcompany>The Georg Company</authorcompany>
+            <ownerusername>supergeorg</ownerusername>
+            <t3xfilemd5>8b2bcd42d41f54564b150d3d1ed33030</t3xfilemd5>
+            <documentation_link>https://docs.typo3.org/typo3cms/extensions/news</documentation_link>
+        </version>
+    </extension>
+    <extension extensionkey="fake-news">
+        <downloadcounter>123123123</downloadcounter>
+        <version version="1.0.0">
+            <title>Fake News</title>
+            <description>It's fake news.</description>
+            <state>stable</state>
+            <reviewstate>0</reviewstate>
+            <category>plugin</category>
+            <distributionImage/>
+            <distributionImageWelcome/>
+            <downloadcounter>123123124</downloadcounter>
+            <lastuploaddate>1215424196</lastuploaddate>
+            <uploadcomment>Be kind.</uploadcomment>
+            <dependencies>a:3:{i:0;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:5:"typo3";s:12:"versionRange";s:9:"4.1-0.0.0";}i:1;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"php";s:12:"versionRange";s:9:"5.1-0.0.0";}i:2;a:3:{s:4:"kind";s:7:"depends";s:12:"extensionKey";s:3:"cms";s:12:"versionRange";s:0:"";}}</dependencies>
+            <composerinfo/>
+            <authorname>Mirror Universe Georg</authorname>
+            <authoremail>support@example.com</authoremail>
+            <authorcompany>Starship Fakeprice</authorcompany>
+            <ownerusername>anyone</ownerusername>
+            <t3xfilemd5>8b2bcd42d41f54564b150d3d1ed33030</t3xfilemd5>
+            <documentation_link>https://docs.typo3.org/typo3cms/extensions/news</documentation_link>
+        </version>
+    </extension>
+</extensions>
