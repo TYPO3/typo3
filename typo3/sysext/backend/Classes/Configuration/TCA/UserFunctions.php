@@ -97,7 +97,7 @@ class UserFunctions
     {
         $locales = [];
         foreach (Locales::getAllSystemLocales() as $locale) {
-            $locales[] = [$locale, $locale];
+            $locales[] = ['label' => $locale, 'value' => $locale];
         }
         return $locales;
     }

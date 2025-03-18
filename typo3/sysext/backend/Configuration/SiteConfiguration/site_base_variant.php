@@ -30,8 +30,8 @@ return [
                 'eval' => 'trim',
                 'valuePicker' => [
                     'items' => [
-                        [ 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_base_variant.condition.applicationContext', 'applicationContext == "Production"'],
-                        [ 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_base_variant.condition.environmentVariable', 'getenv("mycontext") == "production"'],
+                        [ 'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_base_variant.condition.applicationContext', 'value' => 'applicationContext == "Production"'],
+                        [ 'label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_base_variant.condition.environmentVariable', 'value' => 'getenv("mycontext") == "production"'],
                     ],
                 ],
                 'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_base_variant.condition.placeholder',

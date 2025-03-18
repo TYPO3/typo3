@@ -256,7 +256,7 @@ return [
                 'max' => 80,
                 'valuePicker' => [
                     'items' => [
-                        [ 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', '_blank' ],
+                        [ 'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', 'value' => '_blank' ],
                     ],
                 ],
                 'eval' => 'trim',

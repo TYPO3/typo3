@@ -192,10 +192,10 @@ return [
                 'eval' => 'trim',
                 'valuePicker' => [
                     'items' => [
-                        [ 'spring', 'Spring'],
-                        [ 'summer', 'Summer'],
-                        [ 'autumn', 'Autumn'],
-                        [ 'winter', 'Winter'],
+                        [ 'value' => 'spring', 'label' => 'Spring'],
+                        [ 'value' => 'summer', 'label' => 'Summer'],
+                        [ 'value' => 'autumn', 'label' => 'Autumn'],
+                        [ 'value' => 'winter', 'label' => 'Winter'],
                     ],
                 ],
             ],
@@ -210,10 +210,10 @@ return [
                 'valuePicker' => [
                     'mode' => 'append',
                     'items' => [
-                        [ 'spring', 'Spring'],
-                        [ 'summer', 'Summer'],
-                        [ 'autumn', 'Autumn'],
-                        [ 'winter', 'Winter'],
+                        [ 'label' => 'Spring', 'value' => 'spring'],
+                        [ 'label' => 'Summer', 'value' => 'summer'],
+                        [ 'label' => 'Autumn', 'value' => 'autumn'],
+                        [ 'label' => 'Winter', 'value' => 'winter'],
                     ],
                 ],
             ],
@@ -228,10 +228,10 @@ return [
                 'valuePicker' => [
                     'mode' => 'prepend',
                     'items' => [
-                        [ 'spring', 'Spring'],
-                        [ 'summer', 'Summer'],
-                        [ 'autumn', 'Autumn'],
-                        [ 'winter', 'Winter'],
+                        [ 'label' => 'spring', 'value' => 'Spring'],
+                        [ 'label' => 'summer', 'value' => 'Summer'],
+                        [ 'label' => 'autumn', 'value' => 'Autumn'],
+                        [ 'label' => 'winter', 'value' => 'Winter'],
                     ],
                 ],
             ],
@@ -696,9 +696,9 @@ return [
                 'size' => 10,
                 'valuePicker' => [
                     'items' => [
-                        [ 'blue', '#0000FF'],
-                        [ 'red', '#FF0000'],
-                        [ 'typo3 orange', '#FF8700'],
+                        [ 'label' => 'blue', 'value' => '#0000FF'],
+                        [ 'label' => 'red', 'value' => '#FF0000'],
+                        [ 'label' => 'typo3 orange', 'value' => '#FF8700'],
                     ],
                 ],
             ],
@@ -849,7 +849,7 @@ return [
                 'type' => 'email',
                 'valuePicker' => [
                     'items' => [
-                        ['Example email', 'info@example.org'],
+                        ['label' => 'Example email', 'value' => 'info@example.org'],
                     ],
                 ],
             ],
@@ -997,9 +997,9 @@ return [
                 'rows' => '5',
                 'valuePicker' => [
                     'items' => [
-                        ['Option 1', 'Dummy Text for Option 1'],
-                        ['Option 2', 'Dummy Text for Option 2'],
-                        ['Option 3', 'Dummy Text for Option 3'],
+                        ['label' => 'Option 1', 'value' => 'Dummy Text for Option 1'],
+                        ['label' => 'Option 2', 'value' => 'Dummy Text for Option 2'],
+                        ['label' => 'Option 3', 'value' => 'Dummy Text for Option 3'],
                     ],
                 ],
             ],
@@ -1658,12 +1658,12 @@ backend_layout {
                                                     <valuePicker>
                                                         <items>
                                                             <numIndex index="0">
-                                                                <numIndex index="0">Foo</numIndex>
-                                                                <numIndex index="1">foo</numIndex>
+                                                                <label>Foo</label>
+                                                                <value>foo</value>
                                                             </numIndex>
                                                             <numIndex index="1">
-                                                                <numIndex index="0">Bar</numIndex>
-                                                                <numIndex index="1">bar</numIndex>
+                                                                <label>Bar</label>
+                                                                <value>bar</value>
                                                             </numIndex>
                                                         </items>
                                                     </valuePicker>

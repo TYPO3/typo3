@@ -63,8 +63,8 @@ return [
                 // items will be extended by local sys_domain records using dataprovider TYPO3\CMS\Redirects\FormDataProvider\ValuePickerItemDataProvider
                 'valuePicker' => [
                     'items' => [
-                        [   'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host_global_text',
-                            '*',
+                        [   'label' => 'LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:source_host_global_text',
+                            'value' => '*',
                         ],
                     ],
                 ],

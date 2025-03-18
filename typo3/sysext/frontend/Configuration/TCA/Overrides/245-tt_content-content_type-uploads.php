@@ -75,7 +75,7 @@ defined('TYPO3') or die();
                 'eval' => 'trim',
                 'valuePicker' => [
                     'items' => [
-                        [ 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', '_blank' ],
+                        [ 'label' => 'LLL:EXT:frontend/Resources/Private/Language/locallang_ttc.xlf:target.I.1', 'value' => '_blank' ],
                     ],
                 ],
                 'default' => '',

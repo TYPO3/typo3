@@ -85,6 +85,7 @@ class TcaMigration
         $tca = $this->removeFalRelatedOptionsFromTypeInline($tca);
         $tca = $this->removePassContentFromTypeNone($tca);
         $tca = $this->migrateItemsToAssociativeArray($tca);
+        $tca = $this->migrateItemsOfValuePickerToAssociativeArray($tca);
         $tca = $this->removeMmInsertFields($tca);
         $tca = $this->removeMmHasUidField($tca);
         $tca = $this->migrateT3EditorToCodeEditor($tca);
@@ -1429,6 +1430,58 @@ class TcaMigration
                         $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
                             . 'the legacy way of defining \'items\'. Please switch to associated array keys: '
                             . 'label, value, icon, group, description.';
+                    }
+                }
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Converts the item list of valuePicker to an associated array.
+     *
+     * // From:
+     * [
+     *     0 => 'A label',
+     *     1 => 'value',
+     * ]
+     *
+     * // To:
+     * [
+     *     'label' => 'A label',
+     *     'value' => 'value',
+     * ]
+     */
+    protected function migrateItemsOfValuePickerToAssociativeArray(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'] ?? false)) {
+                continue;
+            }
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (is_array($fieldConfig['config']['valuePicker']['items'] ?? false)) {
+                    $hasLegacyItemConfiguration = false;
+                    $items = $fieldConfig['config']['valuePicker']['items'];
+                    foreach ($items as $key => $item) {
+                        if (!is_array($item)) {
+                            continue;
+                        }
+                        if (array_key_exists(0, $item)) {
+                            $hasLegacyItemConfiguration = true;
+                            $items[$key]['label'] = $item[0];
+                            unset($items[$key][0]);
+                        }
+                        if (array_key_exists(1, $item)) {
+                            $hasLegacyItemConfiguration = true;
+                            $items[$key]['value'] = $item[1];
+                            unset($items[$key][1]);
+                        }
+                    }
+                    if ($hasLegacyItemConfiguration) {
+                        $tca[$table]['columns'][$fieldName]['config']['valuePicker']['items'] = $items;
+                        $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' uses '
+                            . 'the legacy way of defining \'items\' for the \'valuePicker\'. Please switch to associated array keys: '
+                            . 'label, value.';
                     }
                 }
             }

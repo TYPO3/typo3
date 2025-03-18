@@ -2629,7 +2629,7 @@ final class TcaMigrationTest extends UnitTestCase
                                 'eval' => 'trim',
                                 'valuePicker' => [
                                     'items' => [
-                                        [ 'typo3 orange', '#FF8700'],
+                                        [ 'label' => 'typo3 orange', 'value' => '#FF8700'],
                                     ],
                                 ],
                             ],
@@ -2648,7 +2648,7 @@ final class TcaMigrationTest extends UnitTestCase
                                 'size' => 20,
                                 'valuePicker' => [
                                     'items' => [
-                                        ['typo3 orange', '#FF8700'],
+                                        ['label' => 'typo3 orange', 'value' => '#FF8700'],
                                     ],
                                 ],
                             ],
@@ -3425,6 +3425,59 @@ final class TcaMigrationTest extends UnitTestCase
                                 [
                                     'foo',
                                     'bar',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
+
+    #[Test]
+    public function valuePickerItemsAreMigratedToAssociatedArray(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'valuePicker' => [
+                                'items' => [
+                                    [
+                                        'foo',
+                                        'bar',
+                                    ],
+                                    [
+                                        'lorem',
+                                        'ipsum',
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'select',
+                            'valuePicker' => [
+                                'items' => [
+                                    [
+                                        'label' => 'foo',
+                                        'value' => 'bar',
+                                    ],
+                                    [
+                                        'label' => 'lorem',
+                                        'value' => 'ipsum',
+                                    ],
                                 ],
                             ],
                         ],

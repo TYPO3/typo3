@@ -50,8 +50,8 @@ class ValuePickerItemDataProvider implements FormDataProviderInterface
             foreach ($domains as $domain) {
                 $result['processedTca']['columns']['source_host']['config']['valuePicker']['items'][] =
                     [
-                        $domain,
-                        $domain,
+                        'label' => $domain,
+                        'value' => $domain,
                     ];
             }
         }

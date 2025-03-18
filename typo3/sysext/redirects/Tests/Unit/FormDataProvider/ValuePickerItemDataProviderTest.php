@@ -66,8 +66,8 @@ final class ValuePickerItemDataProviderTest extends UnitTestCase
         $actualResult = $valuePickerItemDataProvider->addData($this->sysRedirectResultSet);
         $expected = $this->sysRedirectResultSet;
         $expected['processedTca']['columns']['source_host']['config']['valuePicker']['items'] = [
-            ['bar.test', 'bar.test'],
-            ['foo.test', 'foo.test'],
+            ['label' => 'bar.test', 'value' => 'bar.test'],
+            ['label' => 'foo.test', 'value' => 'foo.test'],
         ];
         self::assertSame($expected, $actualResult);
     }

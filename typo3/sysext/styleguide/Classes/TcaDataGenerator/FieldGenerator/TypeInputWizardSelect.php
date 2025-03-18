@@ -41,6 +41,6 @@ final class TypeInputWizardSelect extends AbstractFieldGenerator implements Fiel
         $values = $data['fieldConfig']['config']['valuePicker']['items'];
         array_shift($values);
         $keyValue = array_shift($values);
-        return $keyValue[1];
+        return $keyValue['value'];
     }
 }

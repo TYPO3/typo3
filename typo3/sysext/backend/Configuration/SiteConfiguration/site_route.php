@@ -23,7 +23,7 @@ return [
                 'placeholder' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route.placeholder',
                 'valuePicker' => [
                     'items' => [
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route.example1', 'robots.txt'],
+                        ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.route.example1', 'value' => 'robots.txt'],
                     ],
                 ],
             ],
@@ -49,7 +49,7 @@ return [
                 'required' => true,
                 'valuePicker' => [
                     'items' => [
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText.example1', 'User-agent: *
+                        ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.staticText.example1', 'value' => 'User-agent: *
 Disallow: /typo3/
 Disallow: /typo3_src/
 Disallow: /fileadmin/user_upload/_temp_/importexport
@@ -76,7 +76,7 @@ Disallow: /fileadmin/user_upload/_temp_/importexport
                 'required' => true,
                 'valuePicker' => [
                     'items' => [
-                        ['LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.asset.example', 'EXT:backend/Resources/Public/Icons/favicon.ico'],
+                        ['label' => 'LLL:EXT:backend/Resources/Private/Language/locallang_siteconfiguration_tca.xlf:site_route.asset.example', 'value' => 'EXT:backend/Resources/Public/Icons/favicon.ico'],
                     ],
                 ],
             ],

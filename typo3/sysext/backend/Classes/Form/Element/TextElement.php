@@ -206,7 +206,7 @@ class TextElement extends AbstractFormElement
             $valuePickerHtml[] = '<select ' . GeneralUtility::implodeAttributes($valuePickerAttributes, true) . '>';
             $valuePickerHtml[] = '<option></option>';
             foreach ($config['valuePicker']['items'] as $item) {
-                $valuePickerHtml[] = '<option value="' . htmlspecialchars($item[1]) . '">' . htmlspecialchars($languageService->sL($item[0])) . '</option>';
+                $valuePickerHtml[] = '<option value="' . htmlspecialchars($item['value']) . '">' . htmlspecialchars($languageService->sL($item['label'])) . '</option>';
             }
             $valuePickerHtml[] = '</select>';
             $valuePickerHtml[] = '</typo3-formengine-valuepicker>';
