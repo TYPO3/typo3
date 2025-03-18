@@ -78,7 +78,7 @@ class Execution
      */
     public function setStart($start)
     {
-        $this->start = $start;
+        $this->start = (int)$start;
     }
 
     /**
@@ -88,7 +88,7 @@ class Execution
      */
     public function getStart()
     {
-        return $this->start;
+        return (int)$this->start;
     }
 
     /**
@@ -98,7 +98,7 @@ class Execution
      */
     public function setEnd($end)
     {
-        $this->end = $end;
+        $this->end = (int)$end;
     }
 
     /**
@@ -108,7 +108,7 @@ class Execution
      */
     public function getEnd()
     {
-        return $this->end;
+        return (int)$this->end;
     }
 
     /**
@@ -118,7 +118,7 @@ class Execution
      */
     public function setInterval($interval)
     {
-        $this->interval = $interval;
+        $this->interval = (int)$interval;
     }
 
     /**
@@ -128,7 +128,7 @@ class Execution
      */
     public function getInterval()
     {
-        return $this->interval;
+        return (int)$this->interval;
     }
 
     /**
@@ -138,7 +138,7 @@ class Execution
      */
     public function setMultiple($multiple)
     {
-        $this->multiple = $multiple;
+        $this->multiple = (bool)$multiple;
     }
 
     /**
@@ -148,7 +148,7 @@ class Execution
      */
     public function getMultiple()
     {
-        return $this->multiple;
+        return (bool)$this->multiple;
     }
 
     /**
@@ -185,7 +185,7 @@ class Execution
      */
     public function setIsNewSingleExecution($isNewSingleExecution)
     {
-        $this->isNewSingleExecution = $isNewSingleExecution;
+        $this->isNewSingleExecution = (bool)$isNewSingleExecution;
     }
 
     /**
@@ -195,7 +195,7 @@ class Execution
      */
     public function getIsNewSingleExecution()
     {
-        return $this->isNewSingleExecution;
+        return (bool)$this->isNewSingleExecution;
     }
 
     /**********************************
@@ -211,28 +211,28 @@ class Execution
     {
         if ($this->getIsNewSingleExecution()) {
             $this->setIsNewSingleExecution(false);
-            return $this->start;
+            return $this->getStart();
         }
         if (!$this->isEnded()) {
             // If the schedule has not yet run out, find out the next date
             if (!$this->isStarted()) {
                 // If the schedule hasn't started yet, next date is start date
-                $date = $this->start;
+                $date = $this->getStart();
             } else {
                 // If the schedule has already started, calculate next date
                 if ($this->cronCmd) {
                     // If it uses cron-like syntax, calculate next date
                     $date = $this->getNextCronExecution();
-                } elseif ($this->interval == 0) {
+                } elseif ($this->getInterval() == 0) {
                     // If not and there's no interval either, it's a singe execution: use start date
-                    $date = $this->start;
+                    $date = $this->getStart();
                 } else {
                     // Otherwise calculate date based on interval
                     $now = time();
-                    $date = $now + $this->interval - ($now - $this->start) % $this->interval;
+                    $date = $now + $this->getInterval() - ($now - $this->getStart()) % $this->getInterval();
                 }
                 // If date is in the future, throw an exception
-                if (!empty($this->end) && $date > $this->end) {
+                if (!empty($this->getEnd()) && $date > $this->getEnd()) {
                     throw new \OutOfBoundsException('Next execution date is past end date.', 1250715528);
                 }
             }
@@ -252,7 +252,7 @@ class Execution
     {
         $cronCmd = GeneralUtility::makeInstance(CronCommand::class, $this->getCronCmd());
         $cronCmd->calculateNextValue();
-        return $cronCmd->getTimestamp();
+        return (int)$cronCmd->getTimestamp();
     }
 
     /**
@@ -262,7 +262,7 @@ class Execution
      */
     public function isStarted()
     {
-        return $this->start < time();
+        return $this->getStart() < time();
     }
 
     /**
@@ -272,12 +272,12 @@ class Execution
      */
     public function isEnded()
     {
-        if (empty($this->end)) {
+        if ($this->getEnd() === 0) {
             // If no end is defined, the schedule never ends
             $result = false;
         } else {
             // Otherwise check if end is in the past
-            $result = $this->end < time();
+            $result = $this->getEnd() < time();
         }
         return $result;
     }
