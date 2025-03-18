@@ -24,6 +24,7 @@
     --typo3-form-control-disabled-border-color: var(--typo3-input-disabled-border-color);
     --typo3-form-control-disabled-opacity: var(--typo3-input-disabled-opacity);
     --typo3-form-control-min-height: calc(var(--typo3-form-control-padding-y) * 2 + var(--typo3-form-control-font-size) * var(--typo3-form-control-line-height) + var(--typo3-form-control-border-width) * 2);
+    --typo3-form-control-icon-size: 16px;
     display: block;
     width: 100%;
     padding: var(--typo3-form-control-padding-y) var(--typo3-form-control-padding-x);
@@ -40,6 +41,16 @@
     outline-offset: 0;
     min-height: var(--typo3-form-control-min-height);
     min-width: 120px;
+
+    &[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+        height: var(--typo3-form-control-icon-size);
+        width: var(--typo3-form-control-icon-size);
+        background-color: currentColor;
+        mask-image: var(--typo3-icons-close);
+        align-self: center;
+        margin: 0;
+    }
 
     &[type="file"] {
         overflow: hidden; // prevent pseudo element button overlap

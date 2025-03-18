@@ -125,7 +125,7 @@
 @container (min-width: 740px) {
     .styleguide-navigation {
         position: sticky;
-        top: calc(var(--module-body-padding-y) + var(--module-docheader-height));
+        top: 0;
     }
 }
 

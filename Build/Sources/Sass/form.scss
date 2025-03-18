@@ -59,14 +59,6 @@
 //
 // Module
 //
-.web_FormFormbuilder_FormEditor {
-    .module-body {
-        position: relative;
-        height: calc(100% - var(--module-docheader-height));
-        overflow: hidden;
-    }
-}
-
 .formeditor-loader,
 .formeditor-module {
     position: absolute;

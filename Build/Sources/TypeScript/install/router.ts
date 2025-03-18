@@ -345,9 +345,7 @@ class Router {
 
   public login(): void {
     const outputContainer: HTMLElement = document.querySelector('.t3js-login-output');
-    const progressBar = document.createElement('typo3-backend-progress-bar');
-
-    outputContainer.replaceChildren(progressBar);
+    outputContainer.innerHTML = '';
     (new AjaxRequest(this.getUrl()))
       .post({
         install: {

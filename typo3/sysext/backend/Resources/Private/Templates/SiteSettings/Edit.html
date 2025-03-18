@@ -4,37 +4,40 @@
 
     <f:be.pageRenderer includeJavaScriptModules="{0: '@typo3/backend/settings/editor.js'}"/>
 
-    <h1>
-        <f:translate
-            key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.headline"
-            arguments="{0: siteTitle}"
-        />
-        <br>
-        <small class="text-muted">{site.identifier} <code>[pid: {rootPageId}]</code></small>
-    </h1>
+    <div class="container">
+        <h1>
+            <f:translate
+                key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.headline"
+                arguments="{0: siteTitle}"
+            />
+            <br>
+            <small class="text-muted">{site.identifier} <code>[pid: {rootPageId}]</code></small>
+        </h1>
 
-    <f:render partial="SiteManagement/InvalidSets" arguments="{site: site, renderMode: 'infobox'}"/>
+        <f:render partial="SiteManagement/InvalidSets" arguments="{site: site, renderMode: 'infobox'}"/>
 
-    <f:if condition="{categories -> f:count()} == 0">
-        <f:then>
-            <f:be.infobox
-                state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
-                title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.noSettings.title')}"
-            >
-                <f:translate
-                    key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.noSettings.message"
-                    arguments="{0: site.identifier}"
-                />
-            </f:be.infobox>
-        </f:then>
-        <f:else>
-            <typo3-backend-settings-editor
-                action-url="{actionUrl}"
-                dump-url="{dumpUrl}"
-                categories="{categories -> f:format.json()}"
-                custom-form-data="{f:format.json(value: {formToken: formToken, returnUrl: returnUrl})}"
-                {f:if(condition: debug, then: 'debug')}
-            ></typo3-backend-settings-editor>
-        </f:else>
-    </f:if>
+        <f:if condition="{categories -> f:count()} == 0">
+            <f:then>
+                <f:be.infobox
+                    state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}"
+                    title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.noSettings.title')}"
+                >
+                    <f:translate
+                        key="LLL:EXT:backend/Resources/Private/Language/locallang_sitesettings.xlf:edit.noSettings.message"
+                        arguments="{0: site.identifier}"
+                    />
+                </f:be.infobox>
+            </f:then>
+            <f:else>
+                <typo3-backend-settings-editor
+                    action-url="{actionUrl}"
+                    dump-url="{dumpUrl}"
+                    categories="{categories -> f:format.json()}"
+                    custom-form-data="{f:format.json(value: {formToken: formToken, returnUrl: returnUrl})}"
+                    {f:if(condition: debug, then: 'debug')}
+                ></typo3-backend-settings-editor>
+            </f:else>
+        </f:if>
+    </div>
+
 </f:section>

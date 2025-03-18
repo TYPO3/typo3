@@ -105,17 +105,13 @@
 @import "../../node_modules/bootstrap/scss/utilities/api";
 
 //
-// Scaffold
-//
-@import "scaffold/scaffold";
-@import "scaffold/topbar";
-@import "scaffold/toolbar";
-@import "scaffold/modulemenu";
-
-//
 // Components
 //
 @import "component/root";
+@import "component/scaffold/scaffold";
+@import "component/scaffold/topbar";
+@import "component/scaffold/toolbar";
+@import "component/scaffold/modulemenu";
 @import "component/type";
 @import "component/utility";
 @import "component/order";
