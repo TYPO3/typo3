@@ -2588,11 +2588,11 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .form-wizards-wrap>.form-wizards-item-aside+.form-wizards-item-aside{grid-column:3/4}
 .form-wizards-wrap>.form-wizards-item-bottom .btn{text-align:left;white-space:wrap}
 .form-wizard-icon-list{color:var(--typo3-component-color);background:var(--typo3-component-bg);border:var(--typo3-component-border-width) solid var(--typo3-component-border-color);border-radius:var(--typo3-input-border-radius);margin-top:.25rem;padding:calc(var(--typo3-spacing)/ 4);display:flex;flex-wrap:wrap;gap:2px}
-.form-wizard-icon-list-item a{display:flex;height:100%;color:var(--typo3-component-color);border-radius:calc(var(--typo3-component-border-radius)/ 2);padding:calc(var(--typo3-spacing)/ 2);align-items:center;justify-content:center;outline-offset:-1px}
-.form-wizard-icon-list-item a:hover{color:var(--typo3-list-item-hover-color);background-color:var(--typo3-list-item-hover-bg);outline:1px solid var(--typo3-list-item-hover-border-color)}
-.form-wizard-icon-list-item a:focus{color:var(--typo3-list-item-focus-color);background-color:var(--typo3-list-item-focus-bg);outline:1px solid var(--typo3-list-item-focus-border-color)}
-.form-wizard-icon-list-item a.active,.form-wizard-icon-list-item a:active{color:var(--typo3-list-item-active-color);background-color:var(--typo3-list-item-active-bg);outline:1px solid var(--typo3-list-item-active-border-color)}
-.form-wizard-icon-list-item a,.form-wizard-icon-list-item a>span[title]{display:block;line-height:1}
+.form-wizard-icon-list-item a,.form-wizard-icon-list-item button{display:flex;height:100%;color:var(--typo3-component-color);background-color:var(--typo3-component-bg);border-radius:calc(var(--typo3-component-border-radius)/ 2);padding:calc(var(--typo3-spacing)/ 2);align-items:center;justify-content:center;outline-offset:-1px;border:none;line-height:1}
+.form-wizard-icon-list-item a>span[title],.form-wizard-icon-list-item button>span[title]{display:block}
+.form-wizard-icon-list-item a:hover,.form-wizard-icon-list-item button:hover{color:var(--typo3-list-item-hover-color);background-color:var(--typo3-list-item-hover-bg);outline:1px solid var(--typo3-list-item-hover-border-color)}
+.form-wizard-icon-list-item a:focus,.form-wizard-icon-list-item button:focus{color:var(--typo3-list-item-focus-color);background-color:var(--typo3-list-item-focus-bg);outline:1px solid var(--typo3-list-item-focus-border-color)}
+.form-wizard-icon-list-item a.active,.form-wizard-icon-list-item a:active,.form-wizard-icon-list-item button.active,.form-wizard-icon-list-item button:active{color:var(--typo3-list-item-active-color);background-color:var(--typo3-list-item-active-bg);outline:1px solid var(--typo3-list-item-active-border-color)}
 .form-wizard-icon-list-item img{display:block;min-width:16px;max-width:128px;max-height:128px}
 .form-control-clearable{padding-inline-end:2.3em}
 .form-control-clearable-wrapper{flex-grow:1;position:relative;border:0;padding:0}
