@@ -55,6 +55,7 @@ services:
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInput'
 
         # Specific type=datetime generator
+        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeNullableRange'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatDate'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeRequiredFormatDate'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeDatetimeFormatTime'

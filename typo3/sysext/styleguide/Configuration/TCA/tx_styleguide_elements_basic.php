@@ -491,13 +491,10 @@ return [
         ],
         'inputdatetime_31' => [
             'label' => 'inputdatetime_31',
-            'description' => 'default=0, range.lower=1627208536 nullable=true',
+            'description' => 'default=0, nullable=true',
             'config' => [
                 'type' => 'datetime',
                 'default' => 0,
-                'range' => [
-                    'lower' => 1627208536,
-                ],
                 'nullable' => true,
             ],
         ],
@@ -518,6 +515,17 @@ return [
                 'type' => 'datetime',
                 'format' => 'timesec',
                 'dbType' => 'time',
+                'nullable' => true,
+            ],
+        ],
+        'inputdatetime_35' => [
+            'label' => 'inputdatetime_35',
+            'description' => 'range.lower=1627208536 nullable=true',
+            'config' => [
+                'type' => 'datetime',
+                'range' => [
+                    'lower' => 1627208536,
+                ],
                 'nullable' => true,
             ],
         ],
@@ -1928,7 +1936,7 @@ backend_layout {
                     inputdatetime_11, inputdatetime_34, inputdatetime_12, inputdatetime_13,
                     inputdatetime_21, inputdatetime_22, inputdatetime_23, inputdatetime_24, inputdatetime_25,
                     inputdatetime_26, inputdatetime_27, inputdatetime_28, inputdatetime_29, inputdatetime_30,
-                    inputdatetime_31, inputdatetime_32, inputdatetime_33,
+                    inputdatetime_31, inputdatetime_32, inputdatetime_33, inputdatetime_35,
                 --div--;link,
                     link_1,link_2,link_3,link_4,link_5,
                 --div--;password,

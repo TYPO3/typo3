@@ -2051,10 +2051,11 @@ class DataHandler
 
         // Skip range validation, if the default value equals 0 and the input value is 0, "0" or an empty string.
         // This is needed for timestamp date fields with ['range']['lower'] set.
-        $skipRangeValidation =
-            isset($tcaFieldConf['default'], $value)
-            && (int)$tcaFieldConf['default'] === 0
-            && ($value === '' || $value === '0' || $value === 0);
+        $isNullable = $tcaFieldConf['nullable'] ?? $isNativeDateTimeField;
+        $skipRangeValidation = (
+            (isset($tcaFieldConf['default'], $value) && (int)$tcaFieldConf['default'] === 0 && ($value === '' || $value === '0' || $value === 0)) ||
+            $isNullable && $value === ''
+        );
 
         // Checking range of value:
         if (!$skipRangeValidation && is_array($tcaFieldConf['range'] ?? null)) {

@@ -534,7 +534,7 @@ class DefaultTcaSchema
                                 $this->quote($fieldName),
                                 Types::BIGINT,
                                 [
-                                    'default' => 0,
+                                    'default' => ($fieldConfig['config']['nullable'] ?? false) ? null : 0,
                                     'notnull' => !($fieldConfig['config']['nullable'] ?? false),
                                     'unsigned' => false,
                                 ]
