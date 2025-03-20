@@ -1658,4 +1658,11 @@ return [
             'Breaking-105377-DeprecatedFunctionalityRemoved.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::isWebMountRestrictionIgnored' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+        ],
+    ],
 ];

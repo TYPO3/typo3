@@ -2864,9 +2864,14 @@ class BackendUtility
      *
      * @param string $table Name of the table
      * @return bool
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public static function isWebMountRestrictionIgnored($table)
     {
+        trigger_error(
+            'BackendUtility::isWebMountRestrictionIgnored() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with Schema->hasCapability(TcaSchemaCapability::RestrictionWebMount)',
+            E_USER_DEPRECATED
+        );
         return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreWebMountRestriction']);
     }
 
