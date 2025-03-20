@@ -145,8 +145,7 @@ export default class FormEngineValidation {
       case 'datetime':
       case 'time':
       case 'timesec':
-        // if value is '0' (string), it's supposed to be empty
-        if (value === '' || value === '0') {
+        if (value === '') {
           return '';
         }
         const isoDt = DateTime.fromISO(String(value), { zone: 'utc' });

@@ -103,17 +103,33 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'label' => 'inputdatetime_11',
                 'inputValue' => '',
                 'expectedValue' => '',
-                'expectedInternalValue' => '0',
-                'expectedValueAfterSave' => '0', // Due to casting in FormEngine (string)int:0 => "0"
+                'expectedInternalValue' => '',
+                'expectedValueAfterSave' => '',
                 'comment' => 'inputdatetime_11 eval=datetime range.lower=1627208536 Check range validation is ignored on empty value',
             ],
             [
+                'label' => 'inputdatetime_23',
+                'inputValue' => '1970-01-01 00:00',
+                'expectedValue' => '1970-01-01 00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00+00:00',
+                'comment' => 'inputdatetime_23 format=datetime nullable=true Change unix epoch time is not considered empty',
+            ],
+            [
                 'label' => 'inputdatetime_31',
+                'inputValue' => '1970-01-01 00:00',
+                'expectedValue' => '1970-01-01 00:00',
+                'expectedInternalValue' => '1970-01-01T00:00:00Z',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00+00:00',
+                'comment' => 'inputdatetime_31 nullable=true default=0 Change unix epoch time is not considered empty',
+            ],
+            [
+                'label' => 'inputdatetime_35',
                 'inputValue' => '2022-03-31 05:23',
                 'expectedValue' => '2022-03-31 05:23',
                 'expectedInternalValue' => '2022-03-31T05:23:00Z',
                 'expectedValueAfterSave' => '2022-03-31T05:23:00+00:00',
-                'comment' => 'inputdatetime_31 eval=datetime range.lower=1627208536 Check range validation',
+                'comment' => 'inputdatetime_35 eval=datetime range.lower=1627208536 Check range validation',
             ],
         ];
     }

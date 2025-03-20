@@ -84,12 +84,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'result': ''
     },
     {
-      'description': 'works for type date with 0 value',
-      'type': 'date',
-      'value': '0',
-      'result': ''
-    },
-    {
       'description': 'works for type datetime with iso date',
       'type': 'datetime',
       'value': '2016-12-02T11:16:06Z',
@@ -108,12 +102,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'result': ''
     },
     {
-      'description': 'works for type datetime with 0 value',
-      'type': 'datetime',
-      'value': '0',
-      'result': ''
-    },
-    {
       'description': 'works for type time with iso date',
       'type': 'time',
       'value': '2016-12-02T11:16:06Z',
@@ -126,12 +114,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'result': ''
     },
     {
-      'description': 'works for type time with 0 value',
-      'type': 'time',
-      'value': '0',
-      'result': ''
-    },
-    {
       'description': 'works for type timesec with iso date',
       'type': 'timesec',
       'value': '2016-12-02T11:16:06Z',
@@ -141,12 +123,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
       'description': 'works for type timesec with empty value',
       'type': 'timesec',
       'value': '',
-      'result': ''
-    },
-    {
-      'description': 'works for type timesec with 0 value',
-      'type': 'timesec',
-      'value': '0',
       'result': ''
     },
   ];
