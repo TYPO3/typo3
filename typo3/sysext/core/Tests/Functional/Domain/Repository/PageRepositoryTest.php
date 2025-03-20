@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -393,6 +394,7 @@ final class PageRepositoryTest extends FunctionalTestCase
                 'versioningWS' => true,
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $subject = new PageRepository(new Context());
 
@@ -421,6 +423,7 @@ final class PageRepositoryTest extends FunctionalTestCase
                 'versioningWS' => true,
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(13));
@@ -451,6 +454,7 @@ final class PageRepositoryTest extends FunctionalTestCase
                 'versioningWS' => true,
             ],
         ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(2));
@@ -594,6 +598,7 @@ final class PageRepositoryTest extends FunctionalTestCase
 
         $table = StringUtility::getUniqueId('aTable');
         $GLOBALS['TCA'][$table] = ['ctrl' => []];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $defaultConstraints = (new PageRepository(new Context()))->getDefaultConstraints($table);
 

@@ -588,6 +588,11 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     public function respectEnableFieldsSettingGeneratesCorrectStatementWithOnlyEndTimeInFrontendContext(): void
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['enablecolumns']['endtime'] = 'endtime_column';
+        $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['columns']['endtime_column'] = [
+            'config' => [
+                'type' => 'datetime',
+            ],
+        ];
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
         $tcaSchemaFactory->load($GLOBALS['TCA'], true);
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);

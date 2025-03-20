@@ -192,6 +192,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
     #[Test]
     public function getQuery(string $table, array $conf, string $expected): void
     {
+        $backedupTca = $GLOBALS['TCA'];
         $tca = [
             'pages' => [
                 'ctrl' => [
@@ -199,7 +200,13 @@ final class ContentObjectRendererTest extends FunctionalTestCase
                         'disabled' => 'hidden',
                     ],
                 ],
-                'columns' => [],
+                'columns' => [
+                    'hidden' => [
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                ],
             ],
             'tt_content' => [
                 'ctrl' => [
@@ -208,7 +215,13 @@ final class ContentObjectRendererTest extends FunctionalTestCase
                     ],
                     'versioningWS' => true,
                 ],
-                'columns' => [],
+                'columns' => [
+                    'hidden' => [
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                ],
             ],
         ];
 
@@ -234,6 +247,7 @@ final class ContentObjectRendererTest extends FunctionalTestCase
         $quoteChar = $identifierQuoteCharacter;
         $expected = str_replace(['[', ']'], [$quoteChar, $quoteChar], $expected);
         self::assertEquals($expected, $selectValue);
+        $tcaSchemaFactory->load($backedupTca, true);
     }
 
     #[Test]

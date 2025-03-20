@@ -48,6 +48,8 @@ use TYPO3\CMS\Core\Domain\Event\BeforeRecordLanguageOverlayEvent;
 use TYPO3\CMS\Core\Domain\Event\ModifyDefaultConstraintsForDatabaseQueryEvent;
 use TYPO3\CMS\Core\Domain\Page;
 use TYPO3\CMS\Core\Error\Http\ShortcutTargetPageNotFoundException;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\PageTranslationVisibility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -112,14 +114,16 @@ class PageRepository implements LoggerAwareInterface
     public const SHORTCUT_MODE_PARENT_PAGE = 3;
 
     protected Context $context;
+    protected TcaSchemaFactory $tcaSchemaFactory;
 
     /**
      * PageRepository constructor to set the base context, this will effectively remove the necessity for
      * setting properties from the outside.
      */
-    public function __construct(?Context $context = null)
+    public function __construct(?Context $context = null, ?TcaSchemaFactory $tcaSchemaFactory = null)
     {
         $this->context = $context ?? GeneralUtility::makeInstance(Context::class);
+        $this->tcaSchemaFactory = $tcaSchemaFactory ?? GeneralUtility::makeInstance(TcaSchemaFactory::class);
         $this->init();
     }
 
@@ -348,10 +352,13 @@ class PageRepository implements LoggerAwareInterface
      */
     public function getLanguageOverlay(string $table, array $originalRow, ?LanguageAspect $languageAspect = null): ?array
     {
+        $schema = $this->tcaSchemaFactory->get($table);
         // table is not localizable, so return directly
-        if (!isset($GLOBALS['TCA'][$table]['ctrl']['languageField'])) {
+        if (!$schema->isLanguageAware()) {
             return $originalRow;
         }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageField = $languageCapability->getLanguageField()->getName();
 
         try {
             /** @var LanguageAspect $languageAspect */
@@ -578,11 +585,14 @@ class PageRepository implements LoggerAwareInterface
             return [];
         }
 
+        $schema = $this->tcaSchemaFactory->get('pages');
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+
         $languageUids = array_merge([$languageAspect->getId()], $this->getLanguageFallbackChain($languageAspect));
         // Remove default language ("0")
         $languageUids = array_filter($languageUids);
-        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
-        $transOrigPointerField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
+        $languageField = $languageCapability->getLanguageField()->getName();
+        $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->setRestrictions(GeneralUtility::makeInstance(FrontendRestrictionContainer::class, $this->context));
@@ -652,7 +662,7 @@ class PageRepository implements LoggerAwareInterface
      * The record receives a language overlay and a workspace overlay of the language overlay.
      *
      * @param string $table Table name
-     * @param array $row Record to overlay. Must contain uid, pid and $table]['ctrl']['languageField']
+     * @param array $row Record to overlay. Must contain uid, pid and language field.
      * @return array|null Returns the input record, possibly overlaid with a translation. But if overlays are not mixed ("fallback to default language") then it will return NULL if no translation is found.
      */
     protected function getRecordOverlay(string $table, array $row, LanguageAspect $languageAspect): ?array
@@ -662,9 +672,17 @@ class PageRepository implements LoggerAwareInterface
             return $row;
         }
 
-        $tableControl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
-        $languageField = $tableControl['languageField'] ?? '';
-        $transOrigPointerField = $tableControl['transOrigPointerField'] ?? '';
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return $row;
+        }
+
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isLanguageAware()) {
+            return $row;
+        }
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageField = $languageCapability->getLanguageField()->getName();
+        $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
 
         // Only try overlays for tables with localization support
         if (empty($languageField)) {
@@ -687,7 +705,7 @@ class PageRepository implements LoggerAwareInterface
         if ($recordUid <= 0) {
             return $row;
         }
-        if ($incomingRecordPid <= 0 && !in_array($tableControl['rootLevel'] ?? false, [true, 1, -1], true)) {
+        if ($incomingRecordPid <= 0 && !in_array($schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->getRootLevelType(), [true, 1, -1], true)) {
             return $row;
         }
         // When default language is displayed, we never want to return a record carrying
@@ -720,7 +738,7 @@ class PageRepository implements LoggerAwareInterface
                 // does this for us, PLUS we need to ensure to get a possible LIVE record first (that's why
                 // the "orderBy" query is there, so the LIVE record is found first), as there might only be a
                 // versioned record (e.g. new version) or both (common for modifying, moving etc).
-                if ($this->hasTableWorkspaceSupport($table)) {
+                if ($schema->isWorkspaceAware()) {
                     $queryBuilder->orderBy('t3ver_wsid', 'ASC');
                 }
             }
@@ -732,7 +750,7 @@ class PageRepository implements LoggerAwareInterface
             // the found (live) language record again, see the versionOL() call a few lines below.
             // This means, we need to modify the $pid value for moved records, as they might be on a different
             // page and use the PID of the LIVE version.
-            if (isset($row['_ORIG_pid']) && $this->hasTableWorkspaceSupport($table) && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
+            if (isset($row['_ORIG_pid']) && $schema->isWorkspaceAware() && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::MOVE_POINTER) {
                 $pid = $row['_ORIG_pid'];
             }
             $olrow = $queryBuilder->select('*')
@@ -891,6 +909,8 @@ class PageRepository implements LoggerAwareInterface
             $this->where_groupAccess = '';
         }
 
+        $schema = $this->tcaSchemaFactory->get('pages');
+
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
@@ -904,7 +924,7 @@ class PageRepository implements LoggerAwareInterface
                     $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
                 ),
                 $queryBuilder->expr()->eq(
-                    $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                    $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
                     $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 ),
                 $this->where_hid_del,
@@ -1354,7 +1374,7 @@ class PageRepository implements LoggerAwareInterface
      */
     public function checkRecord(string $table, int $uid, bool $checkPage = false): ?array
     {
-        if (!is_array($GLOBALS['TCA'][$table])) {
+        if (!$this->tcaSchemaFactory->has($table)) {
             return null;
         }
         if ($uid <= 0) {
@@ -1411,7 +1431,7 @@ class PageRepository implements LoggerAwareInterface
         if ($uid <= 0) {
             return null;
         }
-        if (!is_array($GLOBALS['TCA'][$table])) {
+        if (!$this->tcaSchemaFactory->has($table)) {
             return null;
         }
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
@@ -1446,10 +1466,7 @@ class PageRepository implements LoggerAwareInterface
      * to values that should de-select them according to the current time, preview
      * settings or user login.
      *
-     * Is using the $GLOBALS['TCA'] arrays "ctrl" part where the key "enablecolumns"
-     * determines for each table which of these features applies to that table.
-     *
-     * @param string $table Table name found in the $GLOBALS['TCA'] array
+     * @param string $table Table name
      * @param array $enableFieldsToIgnore Array where values (or keys) can be "disabled", "starttime", "endtime", "fe_group" (keys from "enablefields" in TCA) and if set they will make sure that part of the clause is not added. Thus disables the specific part of the clause. For previewing etc.
      * @return array<string, CompositeExpression|string> Constraints built up by the enableField controls
      */
@@ -1461,10 +1478,10 @@ class PageRepository implements LoggerAwareInterface
                 $enableFieldsToIgnore[$key] = true;
             }
         }
-        $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? null;
-        if (!is_array($ctrl)) {
+        if (!$this->tcaSchemaFactory->has($table)) {
             return [];
         }
+        $schema = $this->tcaSchemaFactory->get($table);
         $tableAlias ??= $table;
 
         // If set, any hidden-fields in records are ignored, falling back to the default property from the visibility aspect
@@ -1485,11 +1502,11 @@ class PageRepository implements LoggerAwareInterface
 
         $constraints = [];
         // Delete field check
-        if ($ctrl['delete'] ?? false) {
-            $constraints['deleted'] = $expressionBuilder->eq($tableAlias . '.' . $ctrl['delete'], 0);
+        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            $constraints['deleted'] = $expressionBuilder->eq($tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName(), 0);
         }
 
-        if ($this->hasTableWorkspaceSupport($table)) {
+        if ($schema->isWorkspaceAware()) {
             // This should work exactly as WorkspaceRestriction and WorkspaceRestriction should be used instead
             if ((int)$this->context->getPropertyFromAspect('workspace', 'id') === 0) {
                 // Filter out placeholder records (new/deleted items)
@@ -1521,38 +1538,35 @@ class PageRepository implements LoggerAwareInterface
         }
 
         // Enable fields
-        if (is_array($ctrl['enablecolumns'] ?? false)) {
-            // In case of versioning-preview, enableFields are ignored (checked in versionOL())
-            if ((int)$this->context->getPropertyFromAspect('workspace', 'id') === 0 || !$this->hasTableWorkspaceSupport($table)) {
-
-                if (($ctrl['enablecolumns']['disabled'] ?? false) && !$enableFieldsToIgnore['disabled']) {
-                    $constraints['disabled'] = $expressionBuilder->eq(
-                        $tableAlias . '.' . $ctrl['enablecolumns']['disabled'],
-                        0
-                    );
-                }
-                if (($ctrl['enablecolumns']['starttime'] ?? false) && !($enableFieldsToIgnore['starttime'] ?? false)) {
-                    $constraints['starttime'] = $expressionBuilder->lte(
-                        $tableAlias . '.' . $ctrl['enablecolumns']['starttime'],
+        // In case of versioning-preview, enableFields are ignored (checked in versionOL())
+        if ((int)$this->context->getPropertyFromAspect('workspace', 'id') === 0 || !$schema->isWorkspaceAware()) {
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) && !$enableFieldsToIgnore['disabled']) {
+                $constraints['disabled'] = $expressionBuilder->eq(
+                    $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName(),
+                    0
+                );
+            }
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime) && !($enableFieldsToIgnore['starttime'] ?? false)) {
+                $constraints['starttime'] = $expressionBuilder->lte(
+                    $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName(),
+                    $this->context->getPropertyFromAspect('date', 'accessTime', 0)
+                );
+            }
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime) && !($enableFieldsToIgnore['endtime'] ?? false)) {
+                $field = $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
+                $constraints['endtime'] = $expressionBuilder->or(
+                    $expressionBuilder->eq($field, 0),
+                    $expressionBuilder->gt(
+                        $field,
                         $this->context->getPropertyFromAspect('date', 'accessTime', 0)
-                    );
-                }
-                if (($ctrl['enablecolumns']['endtime'] ?? false) && !($enableFieldsToIgnore['endtime'] ?? false)) {
-                    $field = $tableAlias . '.' . $ctrl['enablecolumns']['endtime'];
-                    $constraints['endtime'] = $expressionBuilder->or(
-                        $expressionBuilder->eq($field, 0),
-                        $expressionBuilder->gt(
-                            $field,
-                            $this->context->getPropertyFromAspect('date', 'accessTime', 0)
-                        )
-                    );
-                }
-                if (($ctrl['enablecolumns']['fe_group'] ?? false) && !($enableFieldsToIgnore['fe_group'] ?? false)) {
-                    $field = $tableAlias . '.' . $ctrl['enablecolumns']['fe_group'];
-                    $constraints['fe_group'] = QueryHelper::stripLogicalOperatorPrefix(
-                        $this->getMultipleGroupsWhereClause($field, $table)
-                    );
-                }
+                    )
+                );
+            }
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup) && !($enableFieldsToIgnore['fe_group'] ?? false)) {
+                $field = $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)->getFieldName();
+                $constraints['fe_group'] = QueryHelper::stripLogicalOperatorPrefix(
+                    $this->getMultipleGroupsWhereClause($field, $table)
+                );
             }
         }
 
@@ -1721,7 +1735,8 @@ class PageRepository implements LoggerAwareInterface
         if ($workspace === 0) {
             return false;
         }
-        if (!$this->hasTableWorkspaceSupport($table)) {
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->isWorkspaceAware()) {
             return false;
         }
         // Select workspace version of record, only testing for deleted.
@@ -2109,10 +2124,5 @@ class PageRepository implements LoggerAwareInterface
     protected function getRuntimeCache(): FrontendInterface
     {
         return GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
-    }
-
-    protected function hasTableWorkspaceSupport(string $tableName): bool
-    {
-        return !empty($GLOBALS['TCA'][$tableName]['ctrl']['versioningWS']);
     }
 }
