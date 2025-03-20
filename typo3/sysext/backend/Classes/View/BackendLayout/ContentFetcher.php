@@ -263,7 +263,7 @@ class ContentFetcher
         $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('tt_content');
         $sortBy = $schema->hasCapability(TcaSchemaCapability::SortByField) ? (string)$schema->getCapability(TcaSchemaCapability::SortByField) : '';
         if ($sortBy === '' && $schema->hasCapability(TcaSchemaCapability::DefaultSorting)) {
-            $sortBy = (string)$schema->getCapability(TcaSchemaCapability::DefaultSorting);
+            $sortBy = (string)$schema->getCapability(TcaSchemaCapability::DefaultSorting)->getValue();
         }
         foreach (QueryHelper::parseOrderBy($sortBy) as $orderBy) {
             $queryBuilder->addOrderBy($orderBy[0], $orderBy[1]);

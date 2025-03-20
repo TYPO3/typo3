@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
@@ -153,6 +154,9 @@ final class BackendUtilityTest extends UnitTestCase
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock->expects(self::once())->method('sL')->willReturn('testLabel');
         $GLOBALS['LANG'] = $languageServiceMock;
+        $tcaFactoryMock = $this->getMockBuilder(TcaSchemaFactory::class)->disableOriginalConstructor()->getMock();
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $tcaFactoryMock);
+
         self::assertSame('testLabel', BackendUtility::getProcessedValue('tt_content', 'multimedia', '1,2'));
     }
 
@@ -344,7 +348,7 @@ final class BackendUtilityTest extends UnitTestCase
         $languageServiceMock->expects(self::any())->method('sL')->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceMock;
 
-        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
+        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->disableOriginalConstructor()->getMock();
         $relationHandlerMock->expects(self::once())->method('initializeForField');
         $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
         $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
@@ -413,7 +417,7 @@ final class BackendUtilityTest extends UnitTestCase
         $languageServiceMock->method('sL')->willReturnArgument(0);
         $GLOBALS['LANG'] = $languageServiceMock;
 
-        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
+        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->disableOriginalConstructor()->getMock();
         $relationHandlerMock->expects(self::once())->method('initializeForField');
         $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
         $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
@@ -443,7 +447,7 @@ final class BackendUtilityTest extends UnitTestCase
     #[Test]
     public function getProcessedValueForSelectWithMMRelation(): void
     {
-        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->getMock();
+        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->disableOriginalConstructor()->getMock();
         $relationHandlerMock->expects(self::once())->method('initializeForField');
         $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
         $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
