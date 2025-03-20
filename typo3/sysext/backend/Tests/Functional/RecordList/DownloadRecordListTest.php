@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\RecordList\DownloadRecordList;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class DownloadRecordListTest extends FunctionalTestCase
@@ -51,7 +52,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'admin',
             'crdate',
         ];
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
         $contentRows = $subject->getRecords('be_users', $recordList->setFields['be_users'], $this->user);
         $result = array_merge([$headerRow], $contentRows);
@@ -86,7 +87,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'title',
             'sys_language_uid',
         ];
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($recordList->setFields['pages']);
         // Get records with raw values
         $contentRows = $subject->getRecords('pages', $recordList->setFields['pages'], $this->user, false, true);
@@ -175,7 +176,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'admin',
             'crdate',
         ];
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($recordList->setFields['be_users']);
         $contentRows = $subject->getRecords('be_users', $recordList->setFields['be_users'], $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
@@ -216,7 +217,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'columns' => 'username, email',
         ];
         $columnsToRender = $recordList->getColumnsToRender('be_users', false, '10');
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
@@ -250,7 +251,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'columns' => 'username, email',
         ];
         $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset INVALID');
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
@@ -291,7 +292,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'columns' => ['username, email'], // Array, but STRING is required
         ];
         $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset INVALID');
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
@@ -317,7 +318,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'columns' => 'username, email',
         ];
         $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset 1');
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
@@ -343,7 +344,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'fields' => 'username, email', // Wrong key, should be "columns"
         ];
         $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset 1');
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
@@ -383,7 +384,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
             'columns' => 'username, email, some, invalid',
         ];
         $columnsToRender = $recordList->getColumnsToRender('be_users', false, md5('Preset 1' . 'usernameemailsomeinvalid'));
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);
@@ -415,7 +416,7 @@ final class DownloadRecordListTest extends FunctionalTestCase
         ];
         // "uid" is not in list of setFields columns, and should thus not be returned.
         $columnsToRender = $recordList->getColumnsToRender('be_users', false, 'Preset 1');
-        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class));
+        $subject = new DownloadRecordList($recordList, $this->get(TranslationConfigurationProvider::class), $this->get(TcaSchemaFactory::class));
         $headerRow = $subject->getHeaderRow($columnsToRender);
         $contentRows = $subject->getRecords('be_users', $columnsToRender, $this->user, false, true);
         $result = array_merge([$headerRow], $contentRows);

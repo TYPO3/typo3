@@ -17,6 +17,7 @@ namespace TYPO3\CMS\Backend\RecordList;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,17 +30,13 @@ class ElementBrowserRecordList extends DatabaseRecordList
 {
     /**
      * Table name of the field pointing to this element browser
-     *
-     * @var string
      */
-    protected $relatingTable;
+    protected string $relatingTable;
 
     /**
      * Field name of the field pointing to this element browser
-     *
-     * @var string
      */
-    protected $relatingField;
+    protected string $relatingField;
 
     /**
      * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
@@ -57,7 +54,7 @@ class ElementBrowserRecordList extends DatabaseRecordList
         } else {
             $code = BackendUtility::getRecordTitlePrep($code);
         }
-        $title = BackendUtility::getRecordTitle($table, $row, false, true);
+        $title = BackendUtility::getRecordTitle($table, $row);
 
         $ATag = '<a href="#" data-close="0" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:addToList')) . '">';
         $ATag_alt = '<a href="#" data-close="1" title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_browse_links.xlf:addToList')) . '">';
@@ -79,31 +76,37 @@ class ElementBrowserRecordList extends DatabaseRecordList
     protected function isRowListingConditionFulfilled($table, $row)
     {
         $returnValue = true;
-        if ($this->relatingField && $this->relatingTable) {
-            $tcaFieldConfig = $GLOBALS['TCA'][$this->relatingTable]['columns'][$this->relatingField]['config'] ?? [];
-            if (is_array($tcaFieldConfig['filter'] ?? false)) {
-                foreach ($tcaFieldConfig['filter'] as $filter) {
-                    if (!$filter['userFunc']) {
-                        continue;
-                    }
-                    $parameters = $filter['parameters'] ?? [];
-                    $parameters['values'] = [$table . '_' . $row['uid']];
-                    $parameters['tcaFieldConfig'] = $tcaFieldConfig;
-                    $valueArray = GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
-                    if (empty($valueArray)) {
-                        $returnValue = false;
-                    }
-                }
+        if (!$this->relatingField) {
+            return true;
+        }
+        if (!$this->relatingTable) {
+            return true;
+        }
+        $schema = $this->tcaSchemaFactory->get($this->relatingTable);
+        $field = $schema->getField($this->relatingField);
+        $tcaFieldConfig = $field->getConfiguration();
+        foreach ($tcaFieldConfig['filter'] ?? [] as $filter) {
+            if (!$filter['userFunc']) {
+                continue;
             }
-            if (($tcaFieldConfig['type'] ?? '') === 'file') {
-                $valueArray = GeneralUtility::makeInstance(FileExtensionFilter::class)->filter(
-                    [$table . '_' . $row['uid']],
-                    (string)($tcaFieldConfig['allowed'] ?? ''),
-                    (string)($tcaFieldConfig['disallowed'] ?? ''),
-                );
-                if (empty($valueArray)) {
-                    $returnValue = false;
-                }
+            $parameters = $filter['parameters'] ?? [];
+            $parameters['values'] = [$table . '_' . $row['uid']];
+            $parameters['tcaFieldConfig'] = $tcaFieldConfig;
+            $valueArray = GeneralUtility::callUserFunction($filter['userFunc'], $parameters, $this);
+            if (empty($valueArray)) {
+                $returnValue = false;
+            }
+        }
+        if ($field->isType(TableColumnType::FILE)) {
+            /** @var FileExtensionFilter $fileExtensionFilter */
+            $fileExtensionFilter = GeneralUtility::makeInstance(FileExtensionFilter::class);
+            $valueArray = $fileExtensionFilter->filter(
+                [$table . '_' . $row['uid']],
+                (string)($tcaFieldConfig['allowed'] ?? ''),
+                (string)($tcaFieldConfig['disallowed'] ?? ''),
+            );
+            if ($valueArray === []) {
+                $returnValue = false;
             }
         }
         return $returnValue;
@@ -115,12 +118,12 @@ class ElementBrowserRecordList extends DatabaseRecordList
      * @param string $tableName Table name
      * @param string $fieldName Field name
      */
-    public function setRelatingTableAndField($tableName, $fieldName)
+    public function setRelatingTableAndField(string $tableName, string $fieldName): void
     {
-        // Check validity of the input data and load TCA
-        if (isset($GLOBALS['TCA'][$tableName])) {
+        // Check validity of the input data
+        if ($this->tcaSchemaFactory->has($tableName)) {
             $this->relatingTable = $tableName;
-            if ($fieldName && isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName])) {
+            if ($this->tcaSchemaFactory->get($tableName)->hasField($fieldName)) {
                 $this->relatingField = $fieldName;
             }
         }

@@ -43,6 +43,9 @@ class QueryHelper
      */
     public static function parseOrderBy(string $input): array
     {
+        if ($input === '') {
+            return [];
+        }
         $input = preg_replace('/^(?:ORDER[[:space:]]*BY[[:space:]]*)+/i', '', trim($input)) ?: '';
         $orderExpressions = GeneralUtility::trimExplode(',', $input, true);
 
@@ -71,6 +74,9 @@ class QueryHelper
      */
     public static function parseTableList(string $input): array
     {
+        if ($input === '') {
+            return [];
+        }
         $input = preg_replace('/^(?:FROM[[:space:]]+)+/i', '', trim($input)) ?: '';
         $tableExpressions = GeneralUtility::trimExplode(',', $input, true);
 
@@ -101,6 +107,9 @@ class QueryHelper
      */
     public static function parseGroupBy(string $input): array
     {
+        if ($input === '') {
+            return [];
+        }
         $input = preg_replace('/^(?:GROUP[[:space:]]*BY[[:space:]]*)+/i', '', trim($input)) ?: '';
 
         return GeneralUtility::trimExplode(',', $input, true);

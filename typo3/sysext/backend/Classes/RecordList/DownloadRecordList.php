@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Backend\RecordList;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
  * Fetches all records like in the list module but returns them as array in order to allow
@@ -32,14 +34,11 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
  */
 class DownloadRecordList
 {
-    protected DatabaseRecordList $recordList;
-    protected TranslationConfigurationProvider $translationConfigurationProvider;
-
-    public function __construct(DatabaseRecordList $recordList, TranslationConfigurationProvider $translationConfigurationProvider)
-    {
-        $this->recordList = $recordList;
-        $this->translationConfigurationProvider = $translationConfigurationProvider;
-    }
+    public function __construct(
+        protected DatabaseRecordList $recordList,
+        protected TranslationConfigurationProvider $translationConfigurationProvider,
+        protected TcaSchemaFactory $tcaSchemaFactory
+    ) {}
 
     /**
      * Add header line with field names.
@@ -74,8 +73,9 @@ class DownloadRecordList
         // Creating the list of fields to include in the SQL query
         $selectFields = $this->recordList->getFieldsToSelect($table, $columnsToRender);
         $queryResult = $this->recordList->getQueryBuilder($table, $selectFields)->executeQuery();
-        $l10nEnabled = BackendUtility::isTableLocalizable($table);
+        $schema = $this->tcaSchemaFactory->get($table);
         $result = [];
+        $languageField = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : null;
         // Render items
         while ($row = $queryResult->fetchAssociative()) {
             // In offline workspace, look for alternative record
@@ -83,8 +83,8 @@ class DownloadRecordList
             if (!is_array($row)) {
                 continue;
             }
-            $result[] = $this->prepareRow($table, $row, $columnsToRender, $this->recordList->id, $rawValues);
-            if (!$l10nEnabled) {
+            $result[] = $this->prepareRow($table, $row, $columnsToRender, $rawValues);
+            if (!$schema->isLanguageAware()) {
                 continue;
             }
             if ($hideTranslations) {
@@ -92,7 +92,7 @@ class DownloadRecordList
             }
             // Guard clause so we can quickly return if a record is localized to "all languages"
             // It should only be possible to localize a record off default (uid 0)
-            if ((int)$row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] === -1) {
+            if ((int)$row[$languageField] === -1) {
                 continue;
             }
             $translationsRaw = $this->translationConfigurationProvider->translationInfo($table, $row['uid'], 0, $row, $selectFields);
@@ -100,7 +100,7 @@ class DownloadRecordList
                 // In offline workspace, look for alternative record
                 BackendUtility::workspaceOL($table, $translationRow, $backendUser->workspace, true);
                 if (is_array($translationRow) && $backendUser->checkLanguageAccess($languageId)) {
-                    $result[] = $this->prepareRow($table, $translationRow, $columnsToRender, $this->recordList->id, $rawValues);
+                    $result[] = $this->prepareRow($table, $translationRow, $columnsToRender, $rawValues);
                 }
             }
         }
@@ -112,17 +112,18 @@ class DownloadRecordList
      * to have the same output.
      *
      * @param string $table Table name
-     * @param mixed[] $row Current record
+     * @param array $row Current record
      * @param string[] $columnsToRender the columns to be displayed / downloaded
-     * @param int $pageId used for the legacy hook
      * @param bool $rawValues Whether the field values should not be processed
      * @return array the prepared row
      */
-    protected function prepareRow(string $table, array $row, array $columnsToRender, int $pageId, bool $rawValues): array
+    protected function prepareRow(string $table, array $row, array $columnsToRender, bool $rawValues): array
     {
+        $schema = $this->tcaSchemaFactory->get($table);
+        $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName() ?? '';
         foreach ($columnsToRender as $columnName) {
             if (!$rawValues) {
-                if ($columnName === $GLOBALS['TCA'][$table]['ctrl']['label']) {
+                if ($columnName === $labelFieldName) {
                     $row[$columnName] = BackendUtility::getRecordTitle($table, $row);
                 } elseif ($columnName !== 'pid') {
                     $row[$columnName] = BackendUtility::getProcessedValueExtra($table, $columnName, $row[$columnName], 0, $row['uid'], false, 0, $row);

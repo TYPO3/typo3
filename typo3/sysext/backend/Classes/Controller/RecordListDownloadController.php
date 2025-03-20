@@ -33,6 +33,7 @@ use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\CsvUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -151,7 +152,8 @@ class RecordListDownloadController
         $downloader = GeneralUtility::makeInstance(
             DownloadRecordList::class,
             $recordList,
-            GeneralUtility::makeInstance(TranslationConfigurationProvider::class)
+            GeneralUtility::makeInstance(TranslationConfigurationProvider::class),
+            GeneralUtility::makeInstance(TcaSchemaFactory::class),
         );
 
         // Fetch and process the header row and the records
