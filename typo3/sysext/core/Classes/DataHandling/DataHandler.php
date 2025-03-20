@@ -7386,7 +7386,9 @@ class DataHandler
         if ($this->bypassAccessCheckForRecords || $this->admin) {
             return true;
         }
-        if (!BackendUtility::isWebMountRestrictionIgnored('pages') && !$this->BE_USER->isInWebMount($page)) {
+
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
+        if (!$pagesSchema->hasCapability(TcaSchemaCapability::RestrictionWebMount) && !$this->BE_USER->isInWebMount($page)) {
             return false;
         }
         $beUserUid = $this->BE_USER->getUserId();
@@ -7394,7 +7396,7 @@ class DataHandler
             return false;
         }
         $permission = new Permission($perms);
-        $pagesSchema = $this->tcaSchemaFactory->get('pages');
+
         $editLockFieldName = null;
         $editLockCheck = false;
         if ($pagesSchema->hasCapability(TcaSchemaCapability::EditLock)) {
