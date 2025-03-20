@@ -92,7 +92,7 @@ class MetaDataRepository implements SingletonInterface
      * Retrieves metadata for file
      *
      * @param int $uid
-     * @return array
+     * @return array<string, string> $metaData
      * @throws InvalidUidException
      */
     public function findByFileUid($uid)
