@@ -23,7 +23,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\PlainDataResolver;
 use TYPO3\CMS\Core\DataHandling\ReferenceIndexUpdater;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -138,6 +140,13 @@ class RelationHandler
      */
     public array $results = [];
 
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
+    public function __construct()
+    {
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+    }
+
     /**
      * Gets the current workspace id.
      */
@@ -208,9 +217,14 @@ class RelationHandler
         }
 
         $this->registerNonTableValues = (bool)($fieldConfiguration['allowNonIdValues'] ?? false);
+        $foreignTable = $fieldConfiguration['allowed'] ?? $fieldConfiguration['foreign_table'] ?? '';
+        // type=file uses allowed AND foreign_table
+        if ($fieldConfiguration['type'] === 'file') {
+            $foreignTable = $fieldConfiguration['foreign_table'];
+        }
         $this->start(
             is_array($currentValue) ? implode(',', $currentValue) : (string)$currentValue,
-            $fieldConfiguration['allowed'] ?? $fieldConfiguration['foreign_table'] ?? '',
+            $foreignTable,
             $manyToManyConfiguration,
             $recordUid,
             $tableName,
@@ -250,30 +264,38 @@ class RelationHandler
             // Only add the current table name if there is more than one allowed
             // field. We must be sure this has been done at least once before accessing
             // the "columns" part of TCA for a table.
-            $mmOppositeAllowed = (string)($GLOBALS['TCA'][$mmOppositeTable]['columns'][$conf['MM_opposite_field'] ?? '']['config']['allowed'] ?? '');
-            if ($mmOppositeAllowed !== '') {
-                $mmOppositeAllowedTables = explode(',', $mmOppositeAllowed);
-                if ($mmOppositeAllowed === '*' || count($mmOppositeAllowedTables) > 1) {
-                    $this->MM_isMultiTableRelationship = $mmOppositeAllowedTables[0];
+            if ($this->tcaSchemaFactory->has($mmOppositeTable)) {
+                $oppositeSchema = $this->tcaSchemaFactory->get($mmOppositeTable);
+                $mmOppositeAllowed = $oppositeSchema->hasField($conf['MM_opposite_field']) ? ($oppositeSchema->getField($conf['MM_opposite_field'])->getConfiguration()['allowed'] ?? '') : '';
+                if ($mmOppositeAllowed !== '') {
+                    $mmOppositeAllowedTables = explode(',', $mmOppositeAllowed);
+                    if ($mmOppositeAllowed === '*' || count($mmOppositeAllowedTables) > 1) {
+                        $this->MM_isMultiTableRelationship = $mmOppositeAllowedTables[0];
+                    }
                 }
             }
         }
         // SECTION:	normal MM relations
         // If the table list is "*" then all tables are used in the list:
         if (trim($tablelist) === '*') {
-            $tablelist = implode(',', array_keys($GLOBALS['TCA']));
+            $tables = $this->tcaSchemaFactory->all()->getNames();
+        } else {
+            $tables = GeneralUtility::trimExplode(',', $tablelist, true);
         }
         // The tables are traversed and internal arrays are initialized:
-        foreach (GeneralUtility::trimExplode(',', $tablelist, true) as $tableName) {
+        foreach ($tables as $tableName) {
             // @todo: Loop could be restricted in MM local when MM_oppositeUsage is used.
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
             $this->tableArray[$tableName] = [];
-            $deleteField = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? false;
-            if ($this->checkIfDeleted && $deleteField) {
+            if ($this->checkIfDeleted && $schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
                 if (!isset($this->additionalWhere[$tableName])) {
                     $this->additionalWhere[$tableName] = '';
                 }
                 // @todo: Omit ' AND ' and QueryHelper::stripLogicalOperatorPrefix() in consumers
-                $this->additionalWhere[$tableName] .= ' AND ' . $tableName . '.' . $deleteField . '=0';
+                $this->additionalWhere[$tableName] .= ' AND ' . $tableName . '.' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() . '=0';
             }
         }
         if ($this->tableArray !== []) {
@@ -823,6 +845,10 @@ class RelationHandler
         if ($useDeleteClause) {
             $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         }
+        if (!$this->tcaSchemaFactory->has($foreign_table)) {
+            return;
+        }
+        $schema = $this->tcaSchemaFactory->get($foreign_table);
 
         // Search for $uid in foreign_field, and if we have symmetric relations, do this also on symmetric_field
         if (!empty($conf['symmetric_field'])) {
@@ -860,7 +886,7 @@ class RelationHandler
             );
         }
         // Select children from the live(!) workspace only
-        if (BackendUtility::isTableWorkspaceEnabled($foreign_table)) {
+        if ($schema->isWorkspaceAware()) {
             $queryBuilder->getRestrictions()->add(
                 GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getWorkspaceId())
             );
@@ -888,12 +914,12 @@ class RelationHandler
         } elseif (!empty($conf['foreign_default_sortby'])) {
             // Specific default sortby for data handled by this field
             $sortby = $conf['foreign_default_sortby'];
-        } elseif (!empty($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'])) {
+        } elseif ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
             // Manual sortby for all table records
-            $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
-        } elseif (!empty($GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'])) {
+            $sortby = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
+        } elseif ($schema->hasCapability(TcaSchemaCapability::DefaultSorting)) {
             // Default sortby for all table records
-            $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['default_sortby'];
+            $sortby = (string)$schema->getCapability(TcaSchemaCapability::DefaultSorting)->getValue();
         }
         if (!empty($sortby)) {
             foreach (QueryHelper::parseOrderBy($sortby) as $orderPair) {
@@ -954,20 +980,23 @@ class RelationHandler
         $symmetric_field = $conf['symmetric_field'] ?? '';
         $foreign_table_field = $conf['foreign_table_field'];
         $foreign_match_fields = $conf['foreign_match_fields'];
+        if (!$this->tcaSchemaFactory->has($foreign_table)) {
+            return;
+        }
+        $schema = $this->tcaSchemaFactory->get($foreign_table);
         // If there are table items and we have a proper $parentUid
         if (MathUtility::canBeInterpretedAsInteger($parentUid) && !empty($this->tableArray)) {
             // If updateToUid is not a positive integer, set it to '0', so it will be ignored
             if (!(MathUtility::canBeInterpretedAsInteger($updateToUid) && $updateToUid > 0)) {
                 $updateToUid = 0;
             }
-            $considerWorkspaces = BackendUtility::isTableWorkspaceEnabled($foreign_table);
             $fields = 'uid,pid,' . $foreign_field;
             // Consider the symmetric field if defined:
             if ($symmetric_field) {
                 $fields .= ',' . $symmetric_field;
             }
             // Consider workspaces if defined and currently used:
-            if ($considerWorkspaces) {
+            if ($schema->isWorkspaceAware()) {
                 $fields .= ',t3ver_wsid,t3ver_state,t3ver_oid';
             }
             // Update all items
@@ -976,7 +1005,7 @@ class RelationHandler
                 $table = $val['table'];
                 $row = [];
                 // Fetch the current (not overwritten) relation record if we should handle symmetric relations
-                if ($symmetric_field || $considerWorkspaces) {
+                if ($symmetric_field || $schema->isWorkspaceAware()) {
                     $row = BackendUtility::getRecord($table, $uid, $fields, '', true);
                     if (empty($row)) {
                         continue;
@@ -1005,9 +1034,9 @@ class RelationHandler
                     $sortby = '';
                     if ($conf['foreign_sortby'] ?? false) {
                         $sortby = $conf['foreign_sortby'];
-                    } elseif ($GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'] ?? false) {
+                    } elseif ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
                         // manual sortby for all table records
-                        $sortby = $GLOBALS['TCA'][$foreign_table]['ctrl']['sortby'];
+                        $sortby = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
                     }
                     // Apply sorting on the symmetric side
                     // (it depends on who created the relation, so what uid is in the symmetric_field):
@@ -1038,8 +1067,8 @@ class RelationHandler
                 // Update accordant fields in the database:
                 if (!empty($updateValues)) {
                     // Update tstamp if any foreign field value has changed
-                    if (!empty($GLOBALS['TCA'][$table]['ctrl']['tstamp'])) {
-                        $updateValues[$GLOBALS['TCA'][$table]['ctrl']['tstamp']] = $GLOBALS['EXEC_TIME'];
+                    if ($schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+                        $updateValues[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
                     }
                     $this->getConnectionForTableName($table)
                         ->update(
@@ -1177,7 +1206,14 @@ class RelationHandler
 
         $hasBeenConverted = false;
         foreach ($this->tableArray as $tableName => $ids) {
-            if (empty($ids) || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
+            if (empty($ids)) {
+                continue;
+            }
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            if ($schema->isWorkspaceAware()) {
                 continue;
             }
 
@@ -1489,11 +1525,12 @@ class RelationHandler
         }
 
         $fieldName = $this->MM_oppositeUsage[$tableName][0];
-        if (empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'])) {
+        $schema = $this->tcaSchemaFactory->get($tableName);
+        if (!$schema->hasField($fieldName)) {
             return $referenceValues;
         }
 
-        $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'];
+        $configuration = $schema->getField($fieldName)->getConfiguration();
         if (!empty($configuration['MM_match_fields'])) {
             // @todo: In the end, MM_match_fields does not make sense. The 'tablename' and 'fieldname' restriction
             //        in addition to uid_local and uid_foreign used when multiple 'foreign' tables and/or multiple fields

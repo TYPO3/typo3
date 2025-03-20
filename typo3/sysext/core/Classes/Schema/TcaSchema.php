@@ -150,8 +150,9 @@ readonly class TcaSchema implements SchemaInterface
      *          : ($capability is TcaSchemaCapability::AccessReadOnly ? Capability\ScalarCapability
      *          : ($capability is TcaSchemaCapability::AccessAdminOnly ? Capability\ScalarCapability
      *          : ($capability is TcaSchemaCapability::PrependLabelTextAtCopy ? Capability\ScalarCapability
+     *          : ($capability is TcaSchemaCapability::DefaultSorting ? Capability\ScalarCapability
      *          : ($capability is TcaSchemaCapability::Label ? Capability\LabelCapability
-     *          : Capability\SystemInternalFieldCapability))))))))))))
+     *          : Capability\SystemInternalFieldCapability)))))))))))))
      */
     public function getCapability(TcaSchemaCapability $capability): Capability\SchemaCapabilityInterface
     {
