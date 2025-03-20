@@ -61,7 +61,7 @@ abstract class AbstractTreeView
      *
      * @see init()
      */
-    public string $orderByFields = '';
+    public string $orderByFields = 'sorting';
 
     /**
      * Default set of fields selected from the tree table.
@@ -87,74 +87,50 @@ abstract class AbstractTreeView
         'extendToSubpages',
         'nav_hide',
         't3ver_wsid',
+        'crdate',
+        'tstamp',
+        'sorting',
+        'deleted',
+        'perms_userid',
+        'perms_groupid',
+        'perms_user',
+        'perms_group',
+        'perms_everybody',
+        'editlock',
+        'l18n_cfg',
     ];
 
     /**
-     * List of other fields which are ALLOWED to set (here, based on the "pages" table!)
-     *
-     * @see addField()
+     * If true, HTML code is also accumulated in ->tree array during rendering of the tree
      */
-    protected string $defaultList = 'uid,pid,tstamp,sorting,deleted,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,crdate';
-
-    /**
-     * If 1, HTML code is also accumulated in ->tree array during rendering of the tree
-     *
-     * @var int
-     */
-    public $makeHTML = 1;
+    public bool $makeHTML = true;
 
     // *********
     // Internal
     // *********
     // For record trees:
     // one-dim array of the uid's selected.
-    /**
-     * @var array
-     */
-    public $ids = [];
+    protected array $ids = [];
 
     // The hierarchy of element uids
-    /**
-     * @var array
-     */
-    public $ids_hierarchy = [];
+    protected array $ids_hierarchy = [];
 
     // The hierarchy of versioned element uids
-    /**
-     * @var array
-     */
-    public $orig_ids_hierarchy = [];
+    public array $orig_ids_hierarchy = [];
 
     // Temporary, internal array
-    /**
-     * @var array
-     */
-    public $buffer_idH = [];
+    public array $buffer_idH = [];
 
     // For both types
     // Tree is accumulated in this variable
-    /**
-     * @var array
-     */
-    public $tree = [];
+    public array $tree = [];
 
     /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->init();
-    }
-
-    /**
-     * Initialize the tree class. Needs to be overwritten
-     *
      * @param string $clause Record WHERE clause
      * @param string $orderByFields Record ORDER BY field
      */
     public function init($clause = '', $orderByFields = '')
     {
-        // Setting clause
         if ($clause) {
             $this->clause = $clause;
         }
@@ -167,11 +143,11 @@ abstract class AbstractTreeView
      * Adds a fieldname to the internal array ->fieldArray
      *
      * @param string $field Field name to
-     * @param bool $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must either be found as key in $GLOBALS['TCA'][$table]['columns'] or in the list ->defaultList
+     * @param bool $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must be found as key in $GLOBALS['TCA'][$table]['columns']
      */
-    public function addField($field, $noCheck = false)
+    public function addField(string $field, bool $noCheck = false): void
     {
-        if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field] ?? null) || GeneralUtility::inList($this->defaultList, $field)) {
+        if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field] ?? null)) {
             $this->fieldArray[] = $field;
         }
     }
@@ -179,7 +155,7 @@ abstract class AbstractTreeView
     /**
      * Resets the tree, recs, ids, ids_hierarchy and orig_ids_hierarchy internal variables. Use it if you need it.
      */
-    public function reset()
+    protected function reset(): void
     {
         $this->tree = [];
         $this->ids = [];
@@ -206,33 +182,22 @@ abstract class AbstractTreeView
     protected function PMicon($row, $a, $c, $nextCount, $isOpen)
     {
         if ($nextCount) {
-            return $this->PM_ATagWrap($row['uid'], $isOpen);
+            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+
+            // Wrap the plus/minus icon in a link
+            $anchor = $row['uid'] ? '#' . $row['uid'] : '';
+            $name = $row['uid'] ? ' name="' . $row['uid'] . '"' : '';
+            $aUrl = $anchor;
+            if ($isOpen) {
+                $class = 'treelist-control-open';
+                $icon = $iconFactory->getIcon('actions-chevron-down', IconSize::SMALL);
+            } else {
+                $class = 'treelist-control-collapsed';
+                $icon = $iconFactory->getIcon('actions-chevron-right', IconSize::SMALL);
+            }
+            return '<a class="treelist-control ' . $class . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
         }
         return '';
-    }
-
-    /**
-     * Wrap the plus/minus icon in a link
-     *
-     * @param string $bMark If set, the link will have an anchor point (=$bMark) and a name attribute (=$bMark)
-     * @param bool $isOpen
-     * @return string Link-wrapped input string
-     */
-    protected function PM_ATagWrap($bMark = '', $isOpen = false)
-    {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-
-        $anchor = $bMark ? '#' . $bMark : '';
-        $name = $bMark ? ' name="' . $bMark . '"' : '';
-        $aUrl = $anchor;
-        if ($isOpen) {
-            $class = 'treelist-control-open';
-            $icon = $iconFactory->getIcon('actions-chevron-down', IconSize::SMALL);
-        } else {
-            $class = 'treelist-control-collapsed';
-            $icon = $iconFactory->getIcon('actions-chevron-right', IconSize::SMALL);
-        }
-        return '<a class="treelist-control ' . $class . '" href="' . htmlspecialchars($aUrl) . '"' . $name . '>' . $icon->render(AbstractSvgIconProvider::MARKUP_IDENTIFIER_INLINE) . '</a>';
     }
 
     /*******************************************
@@ -276,20 +241,6 @@ abstract class AbstractTreeView
     }
 
     /**
-     * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
-     * Do NOT htmlspecialchar the string from this function - has already been done.
-     *
-     * @param array $row The input row array (where the key "title" is used for the title)
-     * @param int $titleLen Title length (30)
-     * @return string The title.
-     */
-    protected function getTitleStr($row, $titleLen = 30)
-    {
-        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$titleLen));
-        return trim($title) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : $title;
-    }
-
-    /**
      * Returns the value for the image "title" attribute
      *
      * @param array $row The input row array (where the key "title" is used for the title)
@@ -318,7 +269,6 @@ abstract class AbstractTreeView
         // Buffer for id hierarchy is reset:
         $this->buffer_idH = [];
         // Init vars
-        $depth = (int)$depth;
         $HTML = '';
         $a = 0;
         $res = $this->getDataInit($uid);
@@ -346,7 +296,7 @@ abstract class AbstractTreeView
             // Accumulate the id of the element in the internal arrays
             $this->ids[] = ($idH[$row['uid']]['uid'] = $row['uid']);
             $this->ids_hierarchy[$depth][] = $row['uid'];
-            $this->orig_ids_hierarchy[$depth][] = (isset($row['_ORIG_uid']) && !empty($row['_ORIG_uid'])) ? $row['_ORIG_uid'] : $row['uid'];
+            $this->orig_ids_hierarchy[$depth][] = (!empty($row['_ORIG_uid'])) ? $row['_ORIG_uid'] : $row['uid'];
 
             // Make a recursive call to the next level
             $nextLevelDepthData = $depthData . '<span class="treeline-icon treeline-icon-' . ($a === $c ? 'clear' : 'line') . '"></span>';
@@ -359,7 +309,7 @@ abstract class AbstractTreeView
                 // Set "did expand" flag
                 $isOpen = true;
             } else {
-                $nextCount = $this->getCount($newID);
+                $nextCount = $this->getCount((int)$newID);
                 // Clear "did expand" flag
                 $isOpen = false;
             }
@@ -395,9 +345,8 @@ abstract class AbstractTreeView
      * Returns the number of records having the parent id, $uid
      *
      * @param int $uid Id to count subitems for
-     * @return int
      */
-    protected function getCount($uid)
+    protected function getCount(int $uid): int
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
         $queryBuilder->getRestrictions()

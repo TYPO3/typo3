@@ -60,9 +60,6 @@
 			<trans-unit id="insertNewRecordHere">
 				<source>Insert new record here</source>
 			</trans-unit>
-			<trans-unit id="movePageToHere">
-				<source>Move page to this position</source>
-			</trans-unit>
 			<trans-unit id="moveElementToHere">
 				<source>Move element to this position</source>
 			</trans-unit>

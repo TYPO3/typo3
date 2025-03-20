@@ -37,22 +37,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PagePositionMap
 {
-    // EXTERNAL, static:
-    /**
-     * @var string
-     */
-    public $moveOrCopy = 'move';
-
-    /**
-     * @var int
-     */
-    public $dontPrintPageInsertIcons = 0;
-
     // How deep the position page tree will go.
-    /**
-     * @var int
-     */
-    public $depth = 2;
+    protected int $depth = 2;
 
     // INTERNAL, dynamic:
     // Request uri
@@ -60,40 +46,11 @@ class PagePositionMap
      * @var string
      */
     public $R_URI = '';
+    protected array $checkNewPageCache = [];
+    protected IconFactory $iconFactory;
 
-    // tt_content element uid to move.
-    /**
-     * @var int
-     */
-    public $moveUid;
-
-    /**
-     * @var array
-     */
-    public $checkNewPageCache = [];
-
-    /**
-     * Page tree implementation class name
-     *
-     * @var string
-     */
-    protected $pageTreeClassName = PageTreeView::class;
-
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * Constructor allowing to set pageTreeImplementation
-     *
-     * @param string|null $pageTreeClassName
-     */
-    public function __construct(?string $pageTreeClassName = null)
+    public function __construct()
     {
-        if ($pageTreeClassName !== null) {
-            $this->pageTreeClassName = $pageTreeClassName;
-        }
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
     }
 
@@ -113,15 +70,9 @@ class PagePositionMap
      */
     public function positionTree($id, $pageinfo, $perms_clause, $R_URI, ServerRequestInterface $request)
     {
-        // Make page tree object
-        if ($this->pageTreeClassName === NewRecordPageTreeView::class) {
-            $pageTree = GeneralUtility::makeInstance($this->pageTreeClassName, (int)$id);
-        } else {
-            $pageTree = GeneralUtility::makeInstance($this->pageTreeClassName);
-        }
-        /** @var PageTreeView $pageTree */
+        $pageTree = GeneralUtility::makeInstance(PageTreeView::class);
+        $pageTree->setCurrentPageId((int)$id);
         $pageTree->init(' AND ' . $perms_clause);
-        $pageTree->addField('pid');
         // Initialize variables:
         $this->R_URI = $R_URI;
         // Create page tree, in $this->depth levels.
@@ -144,7 +95,7 @@ class PagePositionMap
                 // If current page, subpage?
                 if ($prev_dat['row']['uid'] == $id) {
                     // 1) It must be allowed to create a new page and 2) If there are subpages there is no need to render a subpage icon here - it'll be done over the subpages...
-                    if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
+                    if ($this->checkNewPageInPid($id) && !($prev_dat['invertedDepth'] > $pageTree->tree[$cc]['invertedDepth'])) {
                         end($lines);
                         $margin = 'style="margin-left: ' . (($dat['invertedDepth'] - 1) * 16 + 9) . 'px;"';
                         $lines[] = '<ul class="treelist" ' . $margin . '><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span></li></ul>';
@@ -156,7 +107,7 @@ class PagePositionMap
                 } elseif ($prev_dat['invertedDepth'] < $pageTree->tree[$cc]['invertedDepth']) {
                     // If going up
                     // First of all the previous level should have an icon:
-                    if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($prev_dat['row']['pid'])) {
+                    if ($this->checkNewPageInPid($prev_dat['row']['pid'])) {
                         $prevPid = -$prev_dat['row']['uid'];
                         end($lines);
                         $lines[] = '<li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink((int)$prevPid, $prev_dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span></li>';
@@ -175,7 +126,7 @@ class PagePositionMap
                 $prevPid = $dat['row']['pid'];
             }
             // print arrow on the same level
-            if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
+            if ($this->checkNewPageInPid($dat['row']['pid'])) {
                 $lines[] = '<span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($prevPid, $dat['row']['pid'])) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span>';
             }
             // The line with the icon and title:
@@ -185,27 +136,24 @@ class PagePositionMap
                 ->render();
 
             $lines[] = '<span class="text-nowrap">' . $icon . ' ' .
-                $this->linkPageTitle(
-                    $this->boldTitle(
-                        htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])),
-                        $dat,
-                        $id
-                    ),
-                    $dat['row'],
-                    $request
-                ) . '</span>';
+                $this->boldTitle(
+                    htmlspecialchars(GeneralUtility::fixed_lgd_cs($dat['row']['title'], (int)$this->getBackendUser()->uc['titleLen'])),
+                    $dat,
+                    $id
+                )
+                 . '</span>';
         }
         // If the current page was the last in the tree:
         $prev_dat = end($pageTree->tree);
         if ($prev_dat['row']['uid'] == $id) {
-            if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($id)) {
+            if ($this->checkNewPageInPid($id)) {
                 $lines[] = '<ul class="treelist" style="margin-left: 25px"><li><span class="text-nowrap"><a href="' . htmlspecialchars($this->getActionLink($id, $id)) . '" title="' . $this->insertlabel() . '">' . $this->iconFactory->getIcon('actions-arrow-left-alt', IconSize::SMALL)->render() . '</a></span></li></ul>';
             }
         }
         for ($a = $latestInvDepth; $a <= $this->depth; $a++) {
             $dat = $saveLatestUid[$a];
             $prevPid = -$dat['row']['uid'];
-            if (!$this->dontPrintPageInsertIcons && $this->checkNewPageInPid($dat['row']['pid'])) {
+            if ($this->checkNewPageInPid($dat['row']['pid'])) {
                 if ($latestInvDepth < $dat['invertedDepth']) {
                     $lines[] = '</ul>';
                 }
@@ -235,7 +183,7 @@ class PagePositionMap
      * @param int $id The current id.
      * @return string The title string.
      */
-    public function boldTitle($t_code, $dat, $id)
+    protected function boldTitle($t_code, $dat, $id): string
     {
         if ($dat['row']['uid'] == $id) {
             $t_code = '<strong>' . $t_code . '</strong>';
@@ -253,11 +201,11 @@ class PagePositionMap
      * @param int $newPagePID New page id.
      * @return string Onclick attribute content
      */
-    public function getActionLink($pid, $newPagePID): string
+    protected function getActionLink($pid, $newPagePID): string
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
         $TSconfig = BackendUtility::getPagesTSconfig($newPagePID)['mod.']['newPageWizard.'] ?? [];
-        if (isset($TSconfig['override']) && !empty($TSconfig['override'])) {
+        if (!empty($TSconfig['override'])) {
             $url = $uriBuilder->buildUriFromRoute(
                 $TSconfig['override'],
                 [
@@ -292,25 +240,12 @@ class PagePositionMap
     }
 
     /**
-     * Wrapping page title.
-     *
-     * @param string $str Page title.
-     * @param array $rec Page record (?)
-     * @return string Wrapped title.
-     */
-    public function linkPageTitle($str, $rec, ServerRequestInterface $request)
-    {
-        return $str;
-    }
-
-    /**
      * Checks if the user has permission to created pages inside of the $pid page.
      * Uses caching so only one regular lookup is made - hence you can call the function multiple times without worrying about performance.
      *
      * @param int $pid Page id for which to test.
-     * @return bool
      */
-    public function checkNewPageInPid($pid)
+    protected function checkNewPageInPid(int $pid): bool
     {
         if (!isset($this->checkNewPageCache[$pid])) {
             $pidInfo = BackendUtility::getRecord('pages', $pid);

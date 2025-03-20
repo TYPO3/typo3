@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tree\View;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * Generate a page-tree, non-browsable.
  *
@@ -26,6 +24,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class PageTreeView extends AbstractTreeView
 {
+    protected ?int $currentPageId = null;
+
     /**
      * Init function
      * REMEMBER to feed a $clause which will filter out non-readable pages!
@@ -35,17 +35,21 @@ class PageTreeView extends AbstractTreeView
      */
     public function init($clause = '', $orderByFields = '')
     {
-        parent::init(' AND deleted=0 AND sys_language_uid=0 ' . $clause, $orderByFields ?: 'sorting');
+        parent::init(' AND deleted=0 AND sys_language_uid=0 ' . $clause, $orderByFields);
     }
 
     /**
-     * Returns TRUE/FALSE if the next level for $id should be expanded - and all levels should, so we always return 1.
+     * Returns TRUE/FALSE if the next level for $id should be expanded - and all levels should, so we always return true.
+     * Here the branch is expanded if the current id matches the global id for the listing/new
      *
-     * @param int $id ID (uid) to test for (see extending classes where this is checked against session data)
+     * @param int $id ID (uid) to test for
      * @return bool
      */
     public function expandNext($id)
     {
+        if ($this->currentPageId !== null) {
+            return (int)$id === $this->currentPageId;
+        }
         return true;
     }
 
@@ -57,35 +61,17 @@ class PageTreeView extends AbstractTreeView
      * @param int $a The current entry number
      * @param int $c The total number of entries. If equal to $a, a 'bottom' element is returned.
      * @param int $nextCount The number of sub-elements to the current element.
-     * @param bool $isExpand The element was expanded to render subelements if this flag is set.
+     * @param bool $isOpen The element was expanded to render subelements if this flag is set.
      * @return string Image tag with the plus/minus icon.
      * @see AbstractTreeView::PMicon()
      */
-    protected function PMicon($row, $a, $c, $nextCount, $isExpand)
+    protected function PMicon($row, $a, $c, $nextCount, $isOpen)
     {
         return '<span class="treeline-icon treeline-icon-join' . ($a == $c ? 'bottom' : '') . '"></span>';
     }
 
-    /**
-     * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
-     * Do NOT htmlspecialchar the string from this function - has already been done.
-     *
-     * @param array $row The input row array (where the key "title" is used for the title)
-     * @param int $titleLen Title length (30)
-     * @return string The title.
-     */
-    protected function getTitleStr($row, $titleLen = 30)
+    public function setCurrentPageId(int $currentPageId): void
     {
-        $lang = $this->getLanguageService();
-        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$titleLen));
-        if (isset($row['nav_title']) && trim($row['nav_title']) !== '') {
-            $title = '<span title="'
-                        . htmlspecialchars($lang->sL('LLL:EXT:frontend/Resources/Private/Language/locallang_tca.xlf:pages.nav_title'))
-                        . ' ' . htmlspecialchars(trim($row['nav_title'])) . '">' . $title
-                        . '</span>';
-        }
-        return trim($row['title']) === ''
-            ? '<em>[' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>'
-            : $title;
+        $this->currentPageId = $currentPageId;
     }
 }

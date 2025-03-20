@@ -447,16 +447,6 @@ class PermissionController
     {
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init();
-        $tree->addField('perms_user', true);
-        $tree->addField('perms_group', true);
-        $tree->addField('perms_everybody', true);
-        $tree->addField('perms_userid', true);
-        $tree->addField('perms_groupid', true);
-        $tree->addField('hidden');
-        $tree->addField('fe_group');
-        $tree->addField('starttime');
-        $tree->addField('endtime');
-        $tree->addField('editlock');
 
         // Create the tree from $this->id
         if ($this->id) {
@@ -490,8 +480,7 @@ class PermissionController
         // Initialize tree object:
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init();
-        $tree->addField('perms_userid', true);
-        $tree->makeHTML = 0;
+        $tree->makeHTML = false;
         // Make tree:
         $tree->getTree($this->id, self::RECURSIVE_LEVELS);
         $options = [

@@ -25,8 +25,8 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Backend\Tree\View\NewRecordPageTreeView;
 use TYPO3\CMS\Backend\Tree\View\PagePositionMap;
+use TYPO3\CMS\Backend\Tree\View\PageTreeView;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -72,7 +72,7 @@ class NewRecordController
     /**
      * @var int
      *
-     * @see NewRecordPageTreeView::expandNext()
+     * @see PageTreeView::expandNext()
      * @internal
      */
     public $id;
@@ -139,10 +139,10 @@ class NewRecordController
                 'returnNewPageId' => 1,
                 'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id]),
             ];
-            $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
+            $url = $this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             return new RedirectResponse($url);
         }
-        $positionMap = GeneralUtility::makeInstance(PagePositionMap::class, NewRecordPageTreeView::class);
+        $positionMap = GeneralUtility::makeInstance(PagePositionMap::class);
         $content = $positionMap->positionTree(
             $this->id,
             $this->pageinfo,

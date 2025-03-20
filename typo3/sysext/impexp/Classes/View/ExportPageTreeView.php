@@ -32,21 +32,14 @@ class ExportPageTreeView extends AbstractTreeView
 {
     /**
      * If set, then ALL items will be expanded, regardless of stored settings.
-     * @var bool
      */
-    protected $expandAll = false;
+    protected bool $expandAll = false;
 
     /**
      * Points to the current mountpoint key
      * @var int
      */
     public $bank = 0;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->init();
-    }
 
     /**
      * Init function
@@ -57,7 +50,7 @@ class ExportPageTreeView extends AbstractTreeView
      */
     public function init($clause = '', $orderByFields = '')
     {
-        parent::init(' AND deleted=0 AND sys_language_uid=0 ' . $clause, $orderByFields ?: 'sorting');
+        parent::init(' AND deleted=0 AND sys_language_uid=0 ' . $clause, $orderByFields);
     }
 
     /**
@@ -104,17 +97,17 @@ class ExportPageTreeView extends AbstractTreeView
     protected function buildTree(int $pid, int $levels, bool $checkSub): void
     {
         $this->reset();
+        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         // Root page
         if ($pid > 0) {
             $rootRecord = BackendUtility::getRecordWSOL('pages', $pid);
-            $rootHtml = $this->getPageIcon($rootRecord);
+            $rootHtml = $iconFactory->getIconForRecord('pages', $rootRecord, IconSize::SMALL)->render();
         } else {
             $rootRecord = [
                 'title' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['sitename'],
                 'uid' => 0,
             ];
-            $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
             $rootHtml = $iconFactory->getIcon('apps-pagetree-root', IconSize::SMALL)->render();
         }
 
@@ -206,13 +199,16 @@ class ExportPageTreeView extends AbstractTreeView
     }
 
     /**
-     * Get page icon for the row.
+     * Returns the title for the input record. If blank, a "no title" label (localized) will be returned.
+     * Do NOT htmlspecialchar the string from this function - has already been done.
      *
-     * @return string Icon image tag.
+     * @param array $row The input row array (where the key "title" is used for the title)
+     * @param int $titleLen Title length (30)
+     * @return string The title.
      */
-    protected function getPageIcon(array $row): string
+    protected function getTitleStr($row, $titleLen)
     {
-        $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        return $iconFactory->getIconForRecord($this->table, $row, IconSize::SMALL)->render();
+        $title = htmlspecialchars(GeneralUtility::fixed_lgd_cs($row['title'], (int)$titleLen));
+        return trim($title) === '' ? '<em>[' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.no_title')) . ']</em>' : $title;
     }
 }

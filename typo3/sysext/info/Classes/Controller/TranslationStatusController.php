@@ -86,7 +86,6 @@ class TranslationStatusController extends InfoModuleController
         $treeStartingRecord = BackendUtility::getRecordWSOL('pages', $treeStartingPoint);
         $tree = GeneralUtility::makeInstance(PageTreeView::class);
         $tree->init('AND ' . $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW));
-        $tree->addField('l18n_cfg');
         $tree->tree[] = [
             'row' => $treeStartingRecord,
         ];

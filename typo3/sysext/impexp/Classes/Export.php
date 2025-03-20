@@ -151,6 +151,7 @@ class Export extends ImportExport
             if ($this->levels === self::LEVELS_RECORDS_ON_THIS_PAGE) {
                 $this->addRecordsForPid($this->pid, $this->tables);
             } else {
+                /** @var ExportPageTreeView $pageTreeView */
                 $pageTreeView = GeneralUtility::makeInstance(ExportPageTreeView::class);
                 $initClause = $this->getExcludePagesClause();
                 if ($this->excludeDisabledRecords) {
