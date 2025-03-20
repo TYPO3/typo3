@@ -303,7 +303,7 @@ AddDefaultCharset utf-8
 	# IMPORTANT: This rule has to be the very first RewriteCond in order to work!
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteCond %{REQUEST_FILENAME} !-d
-	RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|gz)$ %{ENV:CWD}$1.$3 [L]
+	RewriteRule ^(.+)\.(\d+)\.(php|js|css|png|jpg|gif|svg|avif|webp|gz)$ %{ENV:CWD}$1.$3 [L]
 
 	# Access block for folders
 	RewriteRule _(?:recycler|temp)_/ - [F]
