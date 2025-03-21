@@ -35,7 +35,7 @@ class PageLinkHandler implements LinkHandlingInterface
      */
     public function asString(array $parameters): string
     {
-        $urn = $this->baseUrn . '?uid=' . $parameters['pageuid'];
+        $urn = $this->baseUrn . (isset($parameters['pageuid']) ? '?uid=' . $parameters['pageuid'] : '');
         $urn = rtrim($urn, ':');
         // Page type is set and not empty (= "0" in this case means it is not empty)
         if (isset($parameters['pagetype']) && strlen((string)$parameters['pagetype']) > 0) {
