@@ -92,4 +92,16 @@ class RecyclerGarbageCollectionTask extends AbstractTask
             }
         }
     }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'numberOfDays' => $this->numberOfDays,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->numberOfDays = (int)($parameters['numberOfDays'] ?? 0);
+    }
 }

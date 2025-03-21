@@ -281,4 +281,32 @@ class Execution
         }
         return $result;
     }
+
+    public static function createFromDetails(array $details): self
+    {
+        $obj = new self();
+        $obj->setStart((int)$details['start']);
+        $obj->setEnd((int)$details['end']);
+        $obj->setInterval((int)$details['interval']);
+        $obj->setMultiple((bool)$details['multiple']);
+        $obj->setCronCmd((string)$details['cronCmd']);
+        $obj->setIsNewSingleExecution((bool)$details['isNewSingleExecution']);
+        return $obj;
+    }
+
+    public function toArray(): array
+    {
+        // The type cast is necessary as long as the DB migration (upgrade wizard) exists,
+        // Because this way, the serialization (from unserialize()) kicks in
+        // and cleans the values right away.
+        // @todo We can then strong-type-hint in TYPO3 v16.0.
+        return [
+            'start' => (int)$this->start,
+            'end' => (int)$this->end,
+            'interval' => (int)$this->interval,
+            'multiple' => (bool)$this->multiple,
+            'cronCmd' => (string)$this->cronCmd,
+            'isNewSingleExecution' => (bool)$this->isNewSingleExecution,
+        ];
+    }
 }

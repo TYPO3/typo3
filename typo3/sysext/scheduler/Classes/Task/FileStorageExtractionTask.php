@@ -77,4 +77,16 @@ class FileStorageExtractionTask extends AbstractTask
     {
         return GeneralUtility::makeInstance(Indexer::class, $storage);
     }
+    public function getTaskParameters(): array
+    {
+        return [
+            'storageUid' => $this->storageUid,
+            'maxFileCount' => $this->maxFileCount,
+        ];
+    }
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->storageUid = (int)($parameters['storageUid'] ?? -1);
+        $this->maxFileCount = (int)($parameters['maxFileCount'] ?? 100);
+    }
 }

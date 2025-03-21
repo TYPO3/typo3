@@ -189,8 +189,12 @@ class FileStorageExtractionAdditionalFieldProvider implements AdditionalFieldPro
         if (!$task instanceof FileStorageExtractionTask) {
             throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275698);
         }
-        $task->storageUid = (int)$submittedData['scheduler_fileStorageIndexing_storage'];
-        $task->maxFileCount = (int)$submittedData['scheduler_fileStorageIndexing_fileCount'];
+        $task->setTaskParameters(
+            [
+                'storageUid' => (int)$submittedData['scheduler_fileStorageIndexing_storage'],
+                'maxFileCount' => (int)$submittedData['scheduler_fileStorageIndexing_fileCount'],
+            ]
+        );
     }
 
     /**

@@ -73,7 +73,7 @@ class IpAnonymizationTask extends AbstractTask
      * @param array $configuration Clean up configuration
      * @return bool TRUE if cleanup was successful
      */
-    protected function handleTable($table, array $configuration)
+    protected function handleTable(string $table, array $configuration)
     {
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
         $queryBuilder = $connection->createQueryBuilder();
@@ -146,5 +146,21 @@ class IpAnonymizationTask extends AbstractTask
     public function getAdditionalInformation()
     {
         return sprintf($this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.ipAnonymization.additionalInformationTable'), $this->table, $this->numberOfDays);
+    }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'numberOfDays' => $this->numberOfDays,
+            'mask' => $this->mask,
+            'table' => $this->table,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->numberOfDays = $parameters['numberOfDays'] ?? 180;
+        $this->mask = $parameters['mask'] ?? 2;
+        $this->table = $parameters['table'] ?? '';
     }
 }

@@ -172,7 +172,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
         /** @var ExecuteSchedulableCommandTask $task */
         $task->setCommandIdentifier($submittedData['task_executeschedulablecommand']['command']);
-
+        $task->setTaskType($submittedData['task_executeschedulablecommand']['command']);
         $arguments = [];
         foreach ((array)($submittedData['task_executeschedulablecommand']['arguments'] ?? []) as $argumentName => $argumentValue) {
             try {
@@ -209,6 +209,14 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $optionValues[$optionDefinition->getName()] = $optionValue;
         }
 
+        $task->setTaskParameters(
+            [
+                'commandIdentifier' => $submittedData['task_executeschedulablecommand']['command'],
+                'arguments' => $arguments,
+                'options' => $options,
+                'optionValues' => $optionValues,
+            ]
+        );
         $task->setArguments($arguments);
         $task->setOptions($options);
         $task->setOptionValues($optionValues);

@@ -271,9 +271,13 @@ class TableGarbageCollectionAdditionalFieldProvider extends AbstractAdditionalFi
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        $task->allTables = ($submittedData['scheduler_tableGarbageCollection_allTables'] ?? '') === 'on';
-        $task->table = $submittedData['scheduler_tableGarbageCollection_table'] ?? '';
-        $task->numberOfDays = (int)($submittedData['scheduler_tableGarbageCollection_numberOfDays'] ?? 0);
+        $task->setTaskParameters(
+            [
+                'allTables' => ($submittedData['scheduler_tableGarbageCollection_allTables'] ?? '') === 'on',
+                'numberOfDays' => (int)($submittedData['scheduler_tableGarbageCollection_numberOfDays'] ?? 0),
+                'table' => $submittedData['scheduler_tableGarbageCollection_table'] ?? '',
+            ]
+        );
     }
 
     protected function getLanguageService(): ?LanguageService

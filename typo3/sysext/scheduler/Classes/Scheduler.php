@@ -71,7 +71,7 @@ class Scheduler implements SingletonInterface
         // Select all tasks with executions
         // NOTE: this cleanup is done for disabled tasks too,
         // to avoid leaving old executions lying around
-        $result = $queryBuilder->select('uid', 'serialized_executions', 'serialized_task_object')
+        $result = $queryBuilder->select('*')
             ->from('tx_scheduler_task')
             ->where(
                 $queryBuilder->expr()->neq(
@@ -90,17 +90,17 @@ class Scheduler implements SingletonInterface
                         $executions[] = $task;
                     } else {
                         try {
-                            $schedulerTask = $this->taskSerializer->deserialize($row['serialized_task_object']);
-                            $taskClass = get_class($schedulerTask);
+                            $schedulerTask = $this->taskSerializer->deserialize($row);
+                            $taskType = $schedulerTask->getTaskType();
                             $executionTime = date('Y-m-d H:i:s', $schedulerTask->getExecutionTime());
                         } catch (InvalidTaskException $e) {
-                            $taskClass = 'unknown class';
+                            $taskType = 'unknown type';
                             $executionTime = 'unknown time';
                         }
                         $this->logger->info(
-                            'Removing logged execution, assuming that the process is dead. Execution of  \'{taskClass} \' (UID: {taskId}) was started at {executionTime}',
+                            'Removing logged execution, assuming that the process is dead. Execution of  \'{taskType} \' (UID: {taskId}) was started at {executionTime}',
                             [
-                                'taskClass' => $taskClass,
+                                'taskType' => $taskType,
                                 'taskId' => $row['uid'],
                                 'executionTime' => $executionTime,
                             ]
@@ -133,7 +133,7 @@ class Scheduler implements SingletonInterface
      * @return bool Whether the task was saved successfully to the database or not
      * @throws \Throwable
      */
-    public function executeTask(AbstractTask $task)
+    public function executeTask(AbstractTask $task): bool
     {
         $task->setRunOnNextCronJob(false);
         // Trigger the saving of the task, as this will calculate its next execution time
@@ -148,17 +148,17 @@ class Scheduler implements SingletonInterface
         $executionID = $this->schedulerTaskRepository->addExecutionToTask($task);
         // Make sure we're the only one executing a single-execution-only task
         if (!$task->areMultipleExecutionsAllowed() && $executionID > 0) {
-            $this->schedulerTaskRepository->removeExecutionOfTask($task, $executionID, null);
-            $this->logger->info('Task is already running and multiple executions are not allowed, skipping! Class: {class}, UID: {uid}', [
-                'class' => get_class($task),
+            $this->schedulerTaskRepository->removeExecutionOfTask($task, $executionID);
+            $this->logger->info('Task is already running and multiple executions are not allowed, skipping! Task Type: {taskType}, UID: {uid}', [
+                'taskType' => $task->getTaskType(),
                 'uid' => $task->getTaskUid(),
             ]);
             return false;
         }
 
         // Log scheduler invocation
-        $this->logger->info('Start execution. Class: {class}, UID: {uid}', [
-            'class' => get_class($task),
+        $this->logger->info('Start execution. Task Type: {taskType}, UID: {uid}', [
+            'taskType' => $task->getTaskType(),
             'uid' => $task->getTaskUid(),
         ]);
 
@@ -167,13 +167,13 @@ class Scheduler implements SingletonInterface
             // Execute task
             $successfullyExecuted = $task->execute();
             if (!$successfullyExecuted) {
-                throw new FailedExecutionException('Task failed to execute successfully. Class: ' . get_class($task) . ', UID: ' . $task->getTaskUid(), 1250596541);
+                throw new FailedExecutionException('Task failed to execute successfully. Task Type: ' . $task->getTaskType() . ', UID: ' . $task->getTaskUid(), 1250596541);
             }
             return true;
         } catch (\Throwable $e) {
             // Log failed execution
-            $this->logger->error('Task failed to execute successfully. Class: {taskClass}, UID: {taskId}, Code: {code}, "{message}" in {exceptionFile} at line {exceptionLine}', [
-                'taskClass' => get_class($task),
+            $this->logger->error('Task failed to execute successfully. Task Type: {taskType}, UID: {taskId}, Code: {code}, "{message}" in {exceptionFile} at line {exceptionLine}', [
+                'taskType' => $task->getTaskType(),
                 'taskId' => $task->getTaskUid(),
                 'exception' => $e,
                 'exceptionFile' => $e->getFile(),
@@ -197,8 +197,8 @@ class Scheduler implements SingletonInterface
             // Un-register execution
             $this->schedulerTaskRepository->removeExecutionOfTask($task, $executionID, $failureString);
             // Log completion of execution
-            $this->logger->info('Task executed. Class: {class}, UID: {uid}', [
-                'class' => get_class($task),
+            $this->logger->info('Task executed. Task Type: {taskType}, UID: {uid}', [
+                'taskType' => $task->getTaskType(),
                 'uid' => $task->getTaskUid(),
             ]);
         }

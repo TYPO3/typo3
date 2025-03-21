@@ -17,15 +17,29 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+use TYPO3\CMS\Core\Console\CommandRegistry;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
+use TYPO3\CMS\Scheduler\Execution;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 
 /**
  * Handles serialization of `AbstractTask` objects.
  *
  * @internal This is an internal API, avoid using it in custom implementations.
  */
+#[Autoconfigure(public: true)]
 class TaskSerializer
 {
+    public function __construct(
+        protected readonly ContainerInterface $container,
+        protected readonly TaskService $taskService,
+        protected readonly CommandRegistry $commandRegistry,
+    ) {}
+
     /**
      * This method takes care of safely deserializing tasks from the database
      * and either returns a valid Task or throws an InvalidTaskException, which
@@ -33,28 +47,43 @@ class TaskSerializer
      *
      * @throws InvalidTaskException
      */
-    public function deserialize(string $serializedTask): AbstractTask
+    public function deserialize(array $row): AbstractTask
     {
-        try {
-            $task = @unserialize($serializedTask);
-            if ($task === false) {
-                throw new InvalidTaskException('The serialized task is corrupted', 1642956282);
+        $taskType = $row['tasktype'] ?? '';
+        if (!empty($taskType)) {
+            // First, find the task object, from the registry
+            // Second, recreate the execution object,
+            // Then fill all the data of the new task object from the rest of the row
+            if ($this->taskService->hasTaskType($taskType)) {
+                try {
+                    $taskObject = $this->container->get($taskType);
+                } catch (ServiceNotFoundException) {
+                    $taskObject = GeneralUtility::makeInstance($taskType);
+                }
+            } elseif ($this->commandRegistry->has($taskType)) {
+                /** @var ExecuteSchedulableCommandTask $taskObject */
+                $taskObject = GeneralUtility::makeInstance(ExecuteSchedulableCommandTask::class);
+                $taskObject->setTaskType($taskType);
+            } else {
+                throw new InvalidTaskException('Task type ' . $taskType . ' not found. Probably not registered?', 1742584362);
             }
-            if (!$task instanceof AbstractTask) {
+            if (!$taskObject instanceof AbstractTask) {
                 throw new InvalidTaskException('The deserialized task in not an instance of AbstractTask', 1642954501);
             }
-            return $task;
-        } catch (\BadMethodCallException $e) {
-            // This can happen, if a Task has a dependency to a class with the BlockSerializationTrait.
-            throw new InvalidTaskException($e->getMessage(), 1642938352, $e);
-        } catch (\Throwable $e) {
-            // This is a general "catch-all" to be able to use the backend to remove invalid tasks, for example via TypeErrors of incomplete classes.
-            // This catch-all shall not catch the individual InvalidTaskExceptions, of course:
-            if ($e instanceof InvalidTaskException) {
-                throw $e;
+            $taskObject->setTaskUid((int)$row['uid']);
+            $taskObject->setTaskGroup((int)$row['task_group']);
+            $taskObject->setTaskParameters(json_decode($row['parameters'] ?? '', true) ?: []);
+            $taskObject->setDescription((string)$row['description']);
+            $taskObject->setExecutionTime((int)$row['nextexecution']);
+            $taskObject->setTaskGroup((int)$row['task_group']);
+            $taskObject->setDisabled((bool)$row['disable']);
+            $executionDetails = json_decode($row['execution_details'] ?? '', true);
+            if ($executionDetails !== null) {
+                $taskObject->setExecution(Execution::createFromDetails($executionDetails));
             }
-            throw new InvalidTaskException('The serialized task is corrupted: ' . $e->getMessage(), 1740514197, $e);
+            return $taskObject;
         }
+        throw new InvalidTaskException('No task type given for task ID : ' . $row['uid'], 1740514192);
     }
 
     /**

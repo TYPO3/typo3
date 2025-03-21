@@ -53,6 +53,11 @@ class TaskService
         return $list;
     }
 
+    public function hasTaskType(string $taskType): bool
+    {
+        return isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskType]);
+    }
+
     private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];

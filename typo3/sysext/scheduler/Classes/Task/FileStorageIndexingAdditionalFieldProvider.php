@@ -121,6 +121,8 @@ class FileStorageIndexingAdditionalFieldProvider implements AdditionalFieldProvi
         if (!$task instanceof FileStorageIndexingTask) {
             throw new \InvalidArgumentException('Task not of type FileStorageExtractionTask', 1384275697);
         }
-        $task->storageUid = (int)$submittedData['scheduler_fileStorageIndexing_storage'];
+        $task->setTaskParameters([
+            'storageUid' => (int)$submittedData['scheduler_fileStorageIndexing_storage'],
+        ]);
     }
 }

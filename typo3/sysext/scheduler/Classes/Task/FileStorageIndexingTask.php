@@ -54,13 +54,20 @@ class FileStorageIndexingTask extends AbstractTask
         return true;
     }
 
-    /**
-     * Gets the indexer
-     *
-     * @return \TYPO3\CMS\Core\Resource\Index\Indexer
-     */
-    protected function getIndexer(ResourceStorage $storage)
+    protected function getIndexer(ResourceStorage $storage): Indexer
     {
         return GeneralUtility::makeInstance(Indexer::class, $storage);
+    }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'storageUid' => $this->storageUid,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->storageUid = $parameters['storageUid'] ?? 0;
     }
 }

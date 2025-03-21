@@ -100,7 +100,9 @@ class RecyclerGarbageCollectionAdditionalFieldProvider extends AbstractAdditiona
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        $task->numberOfDays = (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'];
+        $task->setTaskParameters([
+            'numberOfDays' => (int)$submittedData['scheduler_recyclerGarbageCollection_numberOfDays'],
+        ]);
     }
 
     protected function getLanguageService(): ?LanguageService

@@ -76,4 +76,16 @@ class OptimizeDatabaseTableTask extends AbstractTask
     {
         return implode(', ', $this->selectedTables);
     }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'tables' => $this->selectedTables,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->selectedTables = $parameters['tables'] ?? [];
+    }
 }

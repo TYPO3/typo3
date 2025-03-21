@@ -119,7 +119,11 @@ class OptimizeDatabaseTableAdditionalFieldProvider extends AbstractAdditionalFie
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        $task->selectedTables = $submittedData['scheduler_optimizeDatabaseTables_selectedTables'];
+        $task->setTaskParameters(
+            [
+                'tables' => $submittedData['scheduler_optimizeDatabaseTables_selectedTables'],
+            ]
+        );
     }
 
     /**

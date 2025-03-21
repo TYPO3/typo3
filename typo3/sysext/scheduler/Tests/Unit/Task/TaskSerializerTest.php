@@ -19,97 +19,63 @@ namespace TYPO3\CMS\Scheduler\Tests\Unit\Task;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Log\Writer\NullWriter;
-use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
+use Psr\Container\ContainerInterface;
+use Psr\Log\NullLogger;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Console\CommandRegistry;
+use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Tests\Unit\Task\Fixtures\TestTask;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class TaskSerializerTest extends UnitTestCase
 {
-    public static function dataIsDeserializedDataProvider(): array
+    public static function dataIsReconstitutedDataProvider(): array
     {
-        $testTaskWithString = new TestTask();
-        $testTaskWithString->any = [bin2hex(random_bytes(10))];
-
-        $testTaskWithStdClass = new TestTask();
-        $testTaskWithStdClass->any = [new \stdClass()];
+        $parameters = ['any' => [
+            'subtypes' => bin2hex(random_bytes(10)),
+        ]];
+        $testTask = new TestTask();
+        $testTask->setTaskUid(13);
+        $testTask->setExecutionTime(1743662825);
+        $testTask->setTaskParameters($parameters);
+        $testTask->setLogger(new NullLogger());
 
         return [
-            'TestTask with string' => [
-                serialize($testTaskWithString),
-                $testTaskWithString,
-            ],
-            'TestTask with stdClass' => [
-                serialize($testTaskWithStdClass),
-                $testTaskWithStdClass,
+            'Regular task' => [
+                [
+                    'uid' => 13,
+                    'task_group' => 0,
+                    'description' => '',
+                    'nextexecution' => 1743662825,
+                    'disable' => 0,
+                    'execution_details' => '',
+                    'tasktype' => get_class($testTask),
+                    'parameters' => json_encode($parameters),
+                ],
+                $testTask,
             ],
         ];
     }
 
-    #[DataProvider('dataIsDeserializedDataProvider')]
+    #[DataProvider('dataIsReconstitutedDataProvider')]
     #[Test]
-    public function dataIsDeserialized(string $data, $expectation): void
+    public function dataIsReconstituted(array $data, TestTask $expectation): void
     {
-        $taskSerializer = new TaskSerializer();
-        self::assertEquals($expectation, $taskSerializer->deserialize($data));
-    }
-
-    public static function deserializationThrowsExceptionDataProvider(): array
-    {
-        // as reported in https://forge.typo3.org/issues/92466 & https://forge.typo3.org/issues/91766
-        $testTaskWithNullWriter = new TestTask();
-        $testTaskWithNullWriter->any = [new NullWriter()];
-
-        $testTaskWithSerializationTypeError = new TestTask();
-        $serializedTestTaskWithSerializationTypeError = serialize($testTaskWithSerializationTypeError);
-        // Doing a string replace here because due to special escape characters,
-        // we cannot do a raw copy+paste as a fixture here.
-        // The following will set the serialized data for the
-        // property 'any' from an 'array' to a 'string', which will cause
-        // a type error on unserialization.
-        $serializedTestTaskWithSerializationTypeError = str_replace(
-            's:3:"any";a:0:{}',
-            's:3:"any";s:7:"invalid";',
-            $serializedTestTaskWithSerializationTypeError
+        $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][TestTask::class] = [
+            'extension' => 'scheduler',
+        ];
+        $container = new Container();
+        $container->set(TestTask::class, new TestTask());
+        $subject = new TaskSerializer(
+            $container,
+            new TaskService(),
+            $this->createMock(CommandRegistry::class),
         );
-
-        return [
-            'blank' => [
-                '',
-                1642956282,
-            ],
-            'invalid' => [
-                '{}',
-                1642956282,
-            ],
-            'invalid task' => [
-                'O:29:"TYPO3\CMS\Testing\InvalidTask":1:{s:5:"value";s:5:"value";}',
-                1642954501,
-            ],
-            'invalid root type' => [
-                'a:1:{i:0;O:29:"TYPO3\CMS\Testing\InvalidTask":1:{s:5:"value";s:5:"value";}}',
-                1642954501,
-            ],
-            'Provoking TypeError' => [
-                $serializedTestTaskWithSerializationTypeError,
-                1740514197,
-            ],
-            'TestTask with NullWriter' => [
-                serialize($testTaskWithNullWriter),
-                1642938352,
-            ],
-        ];
-    }
-
-    #[DataProvider('deserializationThrowsExceptionDataProvider')]
-    #[Test]
-    public function deserializationThrowsException(string $data, int $exceptionCode): void
-    {
-        $this->expectException(InvalidTaskException::class);
-        $this->expectExceptionCode($exceptionCode);
-        $taskSerializer = new TaskSerializer();
-        $taskSerializer->deserialize($data);
+        $result = $subject->deserialize($data);
+        $result->setLogger(new NullLogger());
+        self::assertInstanceOf(TestTask::class, $result);
+        self::assertEquals($expectation, $result);
     }
 
     public static function classNameIsResolvedDataProvider(): array
@@ -133,7 +99,11 @@ final class TaskSerializerTest extends UnitTestCase
     #[Test]
     public function classNameIsResolved(?object $task, ?string $expectation): void
     {
-        $taskSerializer = new TaskSerializer();
+        $taskSerializer = new TaskSerializer(
+            $this->createMock(ContainerInterface::class),
+            $this->createMock(TaskService::class),
+            $this->createMock(CommandRegistry::class),
+        );
         self::assertSame($expectation, $taskSerializer->resolveClassName($task));
     }
 
@@ -159,7 +129,11 @@ final class TaskSerializerTest extends UnitTestCase
     #[Test]
     public function classNameIsExtracted(string $serializedTask, ?string $expectation): void
     {
-        $taskSerializer = new TaskSerializer();
+        $taskSerializer = new TaskSerializer(
+            $this->createMock(ContainerInterface::class),
+            $this->createMock(TaskService::class),
+            $this->createMock(CommandRegistry::class),
+        );
         self::assertSame($expectation, $taskSerializer->extractClassName($serializedTask));
     }
 }

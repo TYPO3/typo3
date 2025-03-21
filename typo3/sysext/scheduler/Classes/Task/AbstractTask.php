@@ -308,7 +308,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function registerSingleExecution($timestamp)
     {
-        $execution = GeneralUtility::makeInstance(Execution::class);
+        $execution = new Execution();
         $execution->setStart($timestamp);
         $execution->setInterval(0);
         $execution->setEnd($timestamp);
@@ -412,16 +412,14 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function stop()
     {
-        $this->execution = GeneralUtility::makeInstance(Execution::class);
+        $this->execution = new Execution();
     }
 
     /**
      * Guess task type from the existing information
      * If an interval or a cron command is defined, it's a recurring task
-     *
-     * @return int
      */
-    public function getType()
+    public function getType(): int
     {
         if (!empty($this->getExecution()->getInterval()) || !empty($this->getExecution()->getCronCmd())) {
             return self::TYPE_RECURRING;
@@ -437,5 +435,49 @@ abstract class AbstractTask implements LoggerAwareInterface
     protected function getLanguageService(): ?LanguageService
     {
         return $GLOBALS['LANG'] ?? null;
+    }
+
+    public function getTaskType(): string
+    {
+        return static::class;
+    }
+
+    /**
+     * It is recommended to implement this method in the respective task class.
+     */
+    public function getTaskParameters(): array
+    {
+        $vars = get_object_vars($this);
+        $parameters = [];
+        foreach ($vars as $key => $value) {
+            $key = trim($key);
+            $key = trim($key, "*\0");
+            $key = trim($key);
+            $parameters[$key] = $value;
+        }
+        unset(
+            $parameters['scheduler'],
+            $parameters['logger'],
+            $parameters['taskUid'],
+            $parameters['disabled'],
+            $parameters['runOnNextCronJob'],
+            $parameters['execution'],
+            $parameters['executionTime'],
+            $parameters['description'],
+            $parameters['taskGroup'],
+        );
+        return $parameters;
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        foreach ($parameters as $key => $value) {
+            // Ensure a member property exists; Task objects might have old configuration data changed with
+            // attributes that were removed meanwhile. This would otherwise trigger a PHP notice like
+            // "PHP Runtime Deprecation Notice: Creation of dynamic property TYPO3\CMS\Linkvalidator\Task\ValidatorTask::$fileConfiguration is deprecated"
+            if (property_exists($this, $key)) {
+                $this->{$key} = $value;
+            }
+        }
     }
 }

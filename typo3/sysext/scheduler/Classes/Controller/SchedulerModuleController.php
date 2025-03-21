@@ -425,9 +425,17 @@ final class SchedulerModuleController
         $task = null;
         $class = null;
         $isInvalidTask = true;
-        if (isset($taskRecord['serialized_task_object']) && is_string($taskRecord['serialized_task_object'])) {
+        if (!empty($taskRecord['tasktype'])) {
             try {
-                $task = $this->taskSerializer->deserialize($taskRecord['serialized_task_object']);
+                $task = $this->taskSerializer->deserialize($taskRecord);
+                $class = $this->taskSerializer->resolveClassName($task);
+                $isInvalidTask = false;
+            } catch (InvalidTaskException) {
+                $class = $taskRecord['tasktype'];
+            }
+        } elseif (isset($taskRecord['serialized_task_object']) && is_string($taskRecord['serialized_task_object'])) {
+            try {
+                $task = $this->taskSerializer->deserialize($taskRecord);
                 $class = $this->taskSerializer->resolveClassName($task);
                 $isInvalidTask = false;
             } catch (InvalidTaskException) {

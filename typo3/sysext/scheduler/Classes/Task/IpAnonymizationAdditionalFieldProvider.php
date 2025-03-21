@@ -214,9 +214,13 @@ class IpAnonymizationAdditionalFieldProvider extends AbstractAdditionalFieldProv
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        $task->table = $submittedData['scheduler_ipAnonymization_table'];
-        $task->mask = (int)$submittedData['scheduler_ipAnonymization_mask'];
-        $task->numberOfDays = (int)$submittedData['scheduler_ipAnonymization_numberOfDays'];
+        $task->setTaskParameters(
+            [
+                'numberOfDays' => (int)$submittedData['scheduler_ipAnonymization_numberOfDays'],
+                'mask' => (int)$submittedData['scheduler_ipAnonymization_mask'],
+                'table' => $submittedData['scheduler_ipAnonymization_table'],
+            ]
+        );
     }
 
     protected function getLanguageService(): LanguageService

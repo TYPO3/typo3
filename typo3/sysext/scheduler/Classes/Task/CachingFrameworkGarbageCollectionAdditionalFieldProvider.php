@@ -102,7 +102,9 @@ class CachingFrameworkGarbageCollectionAdditionalFieldProvider extends AbstractA
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task)
     {
-        $task->selectedBackends = $submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'];
+        $task->setTaskParameters([
+            'selectedBackends' => $submittedData['scheduler_cachingFrameworkGarbageCollection_selectedBackends'],
+        ]);
     }
 
     /**

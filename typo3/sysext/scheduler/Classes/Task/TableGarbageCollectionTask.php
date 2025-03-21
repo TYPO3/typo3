@@ -131,4 +131,20 @@ class TableGarbageCollectionTask extends AbstractTask
         }
         return $message;
     }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'allTables' => $this->allTables,
+            'numberOfDays' => $this->numberOfDays,
+            'table' => $this->table,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->allTables = (bool)($parameters['allTables'] ?? false);
+        $this->numberOfDays = (int)($parameters['numberOfDays'] ?? 180);
+        $this->table = (string)($parameters['table'] ?? '');
+    }
 }

@@ -59,14 +59,12 @@ class SchedulerTaskRepository
             'disable' => (int)$task->isDisabled(),
             'description' => $task->getDescription(),
             'task_group' => $task->getTaskGroup(),
-            'serialized_task_object' => 'RESERVED',
+            'tasktype' => $task->getTaskType(),
+            'parameters' => $task->getTaskParameters(),
+            'execution_details' => $task->getExecution()->toArray(),
         ];
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::TABLE_NAME);
-        $result = $connection->insert(
-            self::TABLE_NAME,
-            $fields,
-            ['serialized_task_object' => Connection::PARAM_LOB]
-        );
+        $result = $connection->insert(self::TABLE_NAME, $fields);
         if ($result) {
             $task->setTaskUid((int)$connection->lastInsertId());
             $this->update($task);
@@ -122,7 +120,9 @@ class SchedulerTaskRepository
             'disable' => (int)$task->isDisabled(),
             'description' => $task->getDescription(),
             'task_group' => $task->getTaskGroup(),
-            'serialized_task_object' => serialize($task),
+            'tasktype' => $task->getTaskType(),
+            'parameters' => $task->getTaskParameters(),
+            'execution_details' => $task->getExecution()->toArray(),
         ];
         try {
             GeneralUtility::makeInstance(ConnectionPool::class)
@@ -130,8 +130,7 @@ class SchedulerTaskRepository
                 ->update(
                     self::TABLE_NAME,
                     $fields,
-                    ['uid' => $taskUid],
-                    ['serialized_task_object' => Connection::PARAM_LOB]
+                    ['uid' => $taskUid]
                 );
         } catch (DBALException $e) {
             $result = false;
@@ -180,7 +179,7 @@ class SchedulerTaskRepository
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
 
-        $queryBuilder->select('uid', 'serialized_task_object')
+        $queryBuilder->select('*')
             ->from(self::TABLE_NAME)
             ->setMaxResults(1)
             ->where(
@@ -209,8 +208,23 @@ class SchedulerTaskRepository
         // If no uid is given, take any non-disabled task which has a next execution time in the past
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $queryBuilder = $connectionPool->getQueryBuilderForTable(self::TABLE_NAME);
-
-        $queryBuilder->select('t.uid', 't.serialized_task_object')
+        $queryBuilder->select(
+            't.uid',
+            't.crdate',
+            't.deleted',
+            't.description',
+            't.nextexecution',
+            't.lastexecution_time',
+            't.lastexecution_failure',
+            't.lastexecution_context',
+            't.serialized_task_object',
+            't.disable',
+            't.tasktype',
+            't.parameters',
+            't.execution_details',
+            't.serialized_executions',
+            't.task_group',
+        )
             ->from(self::TABLE_NAME, 't')
             ->setMaxResults(1);
         // Define where clause
@@ -290,10 +304,10 @@ class SchedulerTaskRepository
             ];
 
             try {
-                $taskObject = $this->taskSerializer->deserialize($row['serialized_task_object']);
+                $taskObject = $this->taskSerializer->deserialize($row);
             } catch (InvalidTaskException $e) {
                 $taskData['errorMessage'] = $e->getMessage();
-                $taskData['class'] = $this->taskSerializer->extractClassName($row['serialized_task_object']);
+                $taskData['class'] = $row['tasktype'] ?: $this->taskSerializer->extractClassName($row['serialized_task_object']);
                 $errorClasses[] = $taskData;
                 continue;
             }
@@ -366,7 +380,7 @@ class SchedulerTaskRepository
         $isInvalidTask = false;
         $task = null;
         try {
-            $task = $this->taskSerializer->deserialize($row['serialized_task_object']);
+            $task = $this->taskSerializer->deserialize($row);
         } catch (InvalidTaskException) {
             $isInvalidTask = true;
         }
@@ -402,7 +416,7 @@ class SchedulerTaskRepository
             ->getQueryBuilderForTable(self::TABLE_NAME);
 
         $queryBuilder
-            ->select('serialized_task_object')
+            ->select('*')
             ->from(self::TABLE_NAME)
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
@@ -415,7 +429,7 @@ class SchedulerTaskRepository
         $result = $queryBuilder->executeQuery();
         while ($row = $result->fetchAssociative()) {
             try {
-                $task = $this->taskSerializer->deserialize($row['serialized_task_object']);
+                $task = $this->taskSerializer->deserialize($row);
             } catch (InvalidTaskException) {
                 continue;
             }

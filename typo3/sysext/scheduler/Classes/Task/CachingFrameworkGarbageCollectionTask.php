@@ -58,4 +58,17 @@ class CachingFrameworkGarbageCollectionTask extends AbstractTask
         }
         return true;
     }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'selectedBackends' => $this->selectedBackends,
+        ];
+    }
+
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->selectedBackends = $parameters['selectedBackends'] ?? [];
+    }
+
 }

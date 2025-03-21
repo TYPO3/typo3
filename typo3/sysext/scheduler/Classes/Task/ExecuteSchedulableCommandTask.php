@@ -194,4 +194,30 @@ class ExecuteSchedulableCommandTask extends AbstractTask
         }
         return array_merge($this->arguments, $options);
     }
+
+    public function getTaskType(): string
+    {
+        return $this->commandIdentifier;
+    }
+    public function setTaskType(string $taskType): void
+    {
+        $this->commandIdentifier = $taskType;
+    }
+
+    public function getTaskParameters(): array
+    {
+        return [
+            'commandIdentifier' => $this->commandIdentifier,
+            'arguments' => $this->arguments,
+            'options' => $this->options,
+            'optionValues' => $this->optionValues,
+        ];
+    }
+    public function setTaskParameters(array $parameters): void
+    {
+        $this->commandIdentifier = $parameters['commandIdentifier'] ?? '';
+        $this->arguments = $parameters['arguments'] ?? [];
+        $this->options = $parameters['options'] ?? [];
+        $this->optionValues = $parameters['optionValues'] ?? [];
+    }
 }
