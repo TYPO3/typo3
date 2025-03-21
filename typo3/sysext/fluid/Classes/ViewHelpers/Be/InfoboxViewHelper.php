@@ -79,7 +79,7 @@ final class InfoboxViewHelper extends AbstractViewHelper
         $this->registerArgument('message', 'string', 'The message of the info box, if NULL tag content is used');
         $this->registerArgument('title', 'string', 'The title of the info box');
         $this->registerArgument('state', 'int', 'The state of the box, InfoboxViewHelper::STATE_*', false, self::STATE_NOTICE);
-        $this->registerArgument('iconName', 'string', 'The icon name from font awesome, NULL sets default icon');
+        $this->registerArgument('iconName', 'string', 'Identifier of the icon as registered in the Icon Registry. NULL sets default icon');
         $this->registerArgument('disableIcon', 'bool', 'If set to TRUE, the icon is not rendered.', false, false);
     }
 
