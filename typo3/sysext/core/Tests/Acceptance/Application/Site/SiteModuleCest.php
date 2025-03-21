@@ -58,6 +58,8 @@ final class SiteModuleCest
         $I->click('button[name="yes"]', ModalDialog::$openedModalButtonContainerSelector);
         $I->waitForElementNotVisible(ModalDialog::$openedModalSelector, 30);
         $I->switchToContentFrame();
+        // await 0.5s fade-out transition
+        $I->wait(1);
         $I->dontSee('styleguide demo language danish [1] (da_DK.UTF-8)');
         $I->see('styleguide demo language danish [1]', 'option');
 
