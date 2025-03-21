@@ -1881,7 +1881,7 @@ class DatabaseRecordList
                     ]),
                     'data-title' => $titleText,
                 ], true, true);
-                $deleteAction = '<button ' . $deleteActionAttributes . '>' . $icon . '</a>';
+                $deleteAction = '<button ' . $deleteActionAttributes . '>' . $icon . '</button>';
             } else {
                 $deleteAction = $this->spaceIcon;
             }
