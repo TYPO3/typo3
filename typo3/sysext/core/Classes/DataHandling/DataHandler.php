@@ -4324,6 +4324,10 @@ class DataHandler
             return;
         }
         $pagesLocalizationParentFieldName = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
+        $tableLanguageFieldName = null;
+        if ($schema->hasCapability(TcaSchemaCapability::Language)) {
+            $tableLanguageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+        }
 
         // Gather record facts
         $plainRecord = BackendUtility::getRecord($table, $uid, '*', '', false);
@@ -4627,7 +4631,9 @@ class DataHandler
 
         $this->registerRecordIdForPageCacheClearing($table, $sourceUid, $table === 'pages' ? $workspaceRecord['uid'] ?? $liveRecord['uid'] : $workspaceRecord['pid'] ?? $liveRecord['pid']);
         $this->connectionPool->getConnectionForTable($table)->update($table, $updateFields, ['uid' => $sourceUid]);
-        $this->moveL10nOverlayRecords($table, $sourceUid, $updateFields['pid'], $destination);
+        if ($tableLanguageFieldName && (int)($workspaceRecord[$tableLanguageFieldName] ?? $liveRecord[$tableLanguageFieldName]) === 0) {
+            $this->moveL10nOverlayRecords($table, $sourceUid, $updateFields['pid'], $destination);
+        }
         if ($destination >= 0) {
             foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['moveRecordClass'] ?? [] as $className) {
                 $hook = GeneralUtility::makeInstance($className);
