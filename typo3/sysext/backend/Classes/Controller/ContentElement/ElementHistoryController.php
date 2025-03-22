@@ -30,9 +30,12 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffGranularity;
 use TYPO3\CMS\Core\Utility\DiffUtility;
@@ -46,22 +49,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsController]
 class ElementHistoryController
 {
-    /**
-     * @var RecordHistory
-     */
-    protected $historyObject;
+    protected RecordHistory $historyObject;
 
     /**
      * Display inline differences or not
-     *
-     * @var bool
      */
-    protected $showDiff = true;
-
-    /**
-     * @var array
-     */
-    protected $recordCache = [];
+    protected bool $showDiff = true;
+    protected array $recordCache = [];
 
     protected ModuleTemplate $view;
 
@@ -73,14 +67,12 @@ class ElementHistoryController
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly DiffUtility $diffUtility,
         private readonly FlexFormValueFormatter $flexFormValueFormatter,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
      * Injects the request object for the current request or sub request
      * As this controller goes only through the main() method, it is rather simple for now
-     *
-     * @param ServerRequestInterface $request the current request
-     * @return ResponseInterface the response with the content
      */
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
@@ -136,6 +128,7 @@ class ElementHistoryController
         $editLock = false;
         if (!empty($elementData)) {
             [$elementTable, $elementUid] = $elementData;
+            $elementUid = (int)$elementUid;
             $this->setPagePath($elementTable, $elementUid);
             $editLock = $this->getEditLockFromElement($elementTable, $elementUid);
             // Get link to page history if the element history is shown
@@ -167,14 +160,9 @@ class ElementHistoryController
 
     /**
      * Creates the correct path to the current record
-     *
-     * @param string $table
-     * @param int $uid
      */
-    protected function setPagePath($table, $uid)
+    protected function setPagePath(string $table, int $uid): void
     {
-        $uid = (int)$uid;
-
         $record = BackendUtility::getRecord($table, $uid, '*', '', false);
         if ($table === 'pages') {
             $pageId = $uid;
@@ -187,9 +175,10 @@ class ElementHistoryController
             $this->view->getDocHeaderComponent()->setMetaInformation($pageAccess);
         }
 
+        $schema = $this->tcaSchemaFactory->get($table);
         $this->view->assignMultiple([
             'recordTable' => $table,
-            'recordTableReadable' => $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+            'recordTableReadable' => $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? ''),
             'recordUid' => $uid,
             'recordTitle' => $this->generateTitle($table, (string)$uid),
         ]);
@@ -229,7 +218,7 @@ class ElementHistoryController
      *
      * @param array $diff Difference array
      */
-    protected function displayMultipleDiff(array $diff)
+    protected function displayMultipleDiff(array $diff): void
     {
         $languageService = $this->getLanguageService();
 
@@ -294,9 +283,9 @@ class ElementHistoryController
     /**
      * Shows the full change log
      */
-    protected function displayHistory(array $historyEntries)
+    protected function displayHistory(array $historyEntries): void
     {
-        if (empty($historyEntries)) {
+        if ($historyEntries === []) {
             return;
         }
         $languageService = $this->getLanguageService();
@@ -328,7 +317,7 @@ class ElementHistoryController
             $singleLine['day'] = BackendUtility::date($entry['tstamp']);
             $singleLine['time'] = BackendUtility::time($entry['tstamp']);
 
-            $singleLine['title'] = $this->generateTitle($entry['tablename'], $entry['recuid']);
+            $singleLine['title'] = $this->generateTitle($entry['tablename'], (string)$entry['recuid']);
             $singleLine['recordTable'] = $entry['tablename'];
             $singleLine['recordUid'] = $entry['recuid'];
 
@@ -353,7 +342,7 @@ class ElementHistoryController
                     $singleLine['fieldNames'] = implode(',', $tmpFieldList);
                 } else {
                     // Display diff
-                    $singleLine['differences'] = $this->renderDiff($entry, $entry['tablename'], $entry['recuid']);
+                    $singleLine['differences'] = $this->renderDiff($entry, $entry['tablename'], (int)$entry['recuid']);
                 }
             }
             // put line together
@@ -371,17 +360,24 @@ class ElementHistoryController
      * @param bool $showRollbackLink Whether a rollback link should be shown for each changed field
      * @return array array of records
      */
-    protected function renderDiff($entry, $table, $rollbackUid = 0, bool $showRollbackLink = false): array
+    protected function renderDiff(array $entry, string $table, int $rollbackUid, bool $showRollbackLink = false): array
     {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return [];
+        }
         $lines = [];
         if (is_array($entry['newRecord'] ?? null)) {
             $fieldsToDisplay = array_keys($entry['newRecord']);
             $languageService = $this->getLanguageService();
+            $schema = $this->tcaSchemaFactory->get($table);
             foreach ($fieldsToDisplay as $fN) {
-                $tcaType = $GLOBALS['TCA'][$table]['columns'][$fN]['config']['type'] ?? '';
-                if (is_array($GLOBALS['TCA'][$table]['columns'][$fN] ?? null) && $tcaType !== 'passthrough') {
-                    if ($tcaType === 'flex') {
-                        $colConfig = $GLOBALS['TCA'][$table]['columns'][$fN]['config'] ?? [];
+                if (!$schema->hasField($fN)) {
+                    continue;
+                }
+                $fieldInformation = $schema->getField($fN);
+                if (!$fieldInformation->isType(TableColumnType::PASSTHROUGH)) {
+                    if ($fieldInformation->isType(TableColumnType::FLEX)) {
+                        $colConfig = $fieldInformation->getConfiguration();
                         $old = $this->flexFormValueFormatter->format($table, $fN, ($entry['oldRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
                         $new = $this->flexFormValueFormatter->format($table, $fN, ($entry['newRecord'][$fN] ?? ''), $rollbackUid, $colConfig);
                         $diffResult = $this->diffUtility->diff(strip_tags($old), strip_tags($new), DiffGranularity::CHARACTER);
@@ -395,7 +391,7 @@ class ElementHistoryController
                         $rollbackUrl = $this->buildUrl(['rollbackFields' => $table . ':' . $rollbackUid . ':' . $fN]);
                     }
                     $lines[] = [
-                        'title' => $languageService->sL(BackendUtility::getItemLabel($table, $fN)),
+                        'title' => $languageService->sL($fieldInformation->getLabel()),
                         'rollbackUrl' => $rollbackUrl,
                         'result' => str_replace('\n', PHP_EOL, str_replace('\r\n', '\n', $diffResult)),
                     ];
@@ -407,10 +403,8 @@ class ElementHistoryController
 
     /**
      * Generates the URL for a link to the current page
-     *
-     * @param array $overrideParameters
      */
-    protected function buildUrl($overrideParameters = []): string
+    protected function buildUrl(array $overrideParameters = []): string
     {
         $params = [];
 
@@ -434,14 +428,11 @@ class ElementHistoryController
 
     /**
      * Generates the title and puts the record title behind
-     *
-     * @param string $table
-     * @param string $uid
      */
-    protected function generateTitle($table, $uid): string
+    protected function generateTitle(string $table, string $uid): string
     {
         $title = '';
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['label'])) {
+        if ($this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Label)) {
             $record = $this->getRecord($table, (int)$uid) ?? [];
             $title .= BackendUtility::getRecordTitle($table, $record);
         }
@@ -450,12 +441,8 @@ class ElementHistoryController
 
     /**
      * Gets a database record (cached).
-     *
-     * @param string $table
-     * @param int $uid
-     * @return array|null
      */
-    protected function getRecord($table, $uid)
+    protected function getRecord(string $table, int $uid): ?array
     {
         if (!isset($this->recordCache[$table][$uid])) {
             $this->recordCache[$table][$uid] = BackendUtility::getRecord($table, $uid, '*', '', false);
@@ -475,11 +462,8 @@ class ElementHistoryController
 
     /**
      * Get the editlock value from page of a history element
-     *
-     * @param string $tableName
-     * @param int $elementUid
      */
-    protected function getEditLockFromElement($tableName, $elementUid): bool
+    protected function getEditLockFromElement(string $tableName, int $elementUid): bool
     {
         // If the user is admin, then he may always edit the page.
         if ($this->getBackendUser()->isAdmin()) {
@@ -487,8 +471,8 @@ class ElementHistoryController
         }
 
         // Early return if $elementUid is zero
-        if ((int)$elementUid === 0) {
-            return !($GLOBALS['TCA'][$tableName]['ctrl']['security']['ignoreRootLevelRestriction'] ?? false);
+        if ($elementUid === 0) {
+            return !$this->tcaSchemaFactory->get($tableName)->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
         }
 
         $record = BackendUtility::getRecord($tableName, $elementUid, '*', '', false);
