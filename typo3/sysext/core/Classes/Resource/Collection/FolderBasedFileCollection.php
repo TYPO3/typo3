@@ -42,15 +42,9 @@ class FolderBasedFileCollection extends AbstractFileCollection
 
     /**
      * The folder
-     *
-     * @var \TYPO3\CMS\Core\Resource\Folder
      */
-    protected $folder;
-
-    /**
-     * @var bool
-     */
-    protected $recursive;
+    protected ?Folder $folder = null;
+    protected bool $recursive = false;
 
     /**
      * Populates the content-entries of the storage
@@ -60,7 +54,7 @@ class FolderBasedFileCollection extends AbstractFileCollection
      *
      * If the content entries of the storage had not been loaded on creation
      * ($fillItems = false) this function is to be used for loading the contents
-     * afterwards.
+     * afterward.
      */
     public function loadContents()
     {
@@ -105,9 +99,9 @@ class FolderBasedFileCollection extends AbstractFileCollection
      */
     public function fromArray(array $array)
     {
-        $this->uid = $array['uid'];
-        $this->title = $array['title'];
-        $this->description = $array['description'];
+        $this->uid = (int)$array['uid'];
+        $this->title = (string)$array['title'];
+        $this->description = (string)$array['description'];
         $this->recursive = (bool)$array['recursive'];
         if (str_contains($array['folder_identifier'] ?? '', ':')) {
             $parts = GeneralUtility::trimExplode(':', $array['folder_identifier']);

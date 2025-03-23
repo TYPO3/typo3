@@ -175,7 +175,7 @@ final class RemoteServerTest extends UnitTestCase
         $fileMock->expects(self::any())->method('process')->willReturn($processedFileMock);
 
         $fileReferenceMock = $this->getMockBuilder(FileReference::class)->disableOriginalConstructor()->getMock();
-        $fileReferenceMock->method('getUid')->willReturn($id);
+        $fileReferenceMock->method('getUid')->willReturn((int)$id);
         $fileReferenceMock->method('getOriginalFile')->willReturn($fileMock);
         $fileReferenceMock->expects(self::any())->method('getPublicUrl')->willReturn('/img/' . $id . '.png');
 

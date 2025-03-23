@@ -27,10 +27,7 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
  */
 class FolderConverter extends AbstractFileFolderConverter
 {
-    /**
-     * @var string
-     */
-    protected $expectedObjectType = Folder::class;
+    protected string $expectedObjectType = Folder::class;
 
     /**
      * @param string $source

@@ -104,9 +104,6 @@ class FileCollector implements \Countable, LoggerAwareInterface
     {
         foreach ($fileReferenceUids as $fileReferenceUid) {
             $fileObject = $this->resourceFactory->getFileReferenceObject((int)$fileReferenceUid);
-            if (!$fileObject instanceof FileInterface) {
-                continue;
-            }
             $this->addFileObject($fileObject);
         }
     }

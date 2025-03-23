@@ -40,24 +40,18 @@ abstract class AbstractFile implements FileInterface
 
     /**
      * The storage this file is located in
-     *
-     * @var ResourceStorage|null
      */
-    protected $storage;
+    protected ?ResourceStorage $storage = null;
 
     /**
      * The file name of this file
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name = '';
 
     /**
      * If set to true, this file is regarded as being deleted.
-     *
-     * @var bool
      */
-    protected $deleted = false;
+    protected bool $deleted = false;
 
     /******************
      * VARIOUS FILE PROPERTY GETTERS
@@ -90,7 +84,7 @@ abstract class AbstractFile implements FileInterface
      *
      * @return array<non-empty-string, mixed>
      */
-    public function getProperties()
+    public function getProperties(): array
     {
         return $this->properties;
     }
@@ -138,10 +132,8 @@ abstract class AbstractFile implements FileInterface
 
     /**
      * Returns the uid of this file
-     *
-     * @return int
      */
-    public function getUid()
+    public function getUid(): int
     {
         return (int)$this->getProperty('uid');
     }
@@ -192,10 +184,7 @@ abstract class AbstractFile implements FileInterface
     public function getExtension(): string
     {
         $pathinfo = PathUtility::pathinfo($this->getName());
-
-        $extension = strtolower($pathinfo['extension'] ?? '');
-
-        return $extension;
+        return strtolower($pathinfo['extension'] ?? '');
     }
 
     /**
@@ -335,7 +324,7 @@ abstract class AbstractFile implements FileInterface
      *
      * @return bool TRUE if this file physically exists
      */
-    public function exists()
+    public function exists(): bool
     {
         if ($this->deleted) {
             return false;
@@ -348,9 +337,10 @@ abstract class AbstractFile implements FileInterface
      * \TYPO3\CMS\Core\Resource-internal usage; don't use it to move files.
      *
      * @internal Should only be used by other parts of the File API (e.g. drivers after moving a file)
+     *
      * @return $this
      */
-    public function setStorage(ResourceStorage $storage)
+    public function setStorage(ResourceStorage $storage): self
     {
         $this->storage = $storage;
         $this->properties['storage'] = $storage->getUid();
@@ -363,7 +353,7 @@ abstract class AbstractFile implements FileInterface
      *
      * @return string Combined storage and file identifier, e.g. StorageUID:path/and/fileName.png
      */
-    public function getCombinedIdentifier()
+    public function getCombinedIdentifier(): string
     {
         if (!empty($this->properties['storage']) && MathUtility::canBeInterpretedAsInteger($this->properties['storage'])) {
             $combinedIdentifier = $this->properties['storage'] . ':' . $this->getIdentifier();
@@ -394,17 +384,15 @@ abstract class AbstractFile implements FileInterface
      * Marks this file as deleted. This should only be used inside the
      * File Abstraction Layer, as it is a low-level API method.
      */
-    public function setDeleted()
+    public function setDeleted(): void
     {
         $this->deleted = true;
     }
 
     /**
      * Returns TRUE if this file has been deleted
-     *
-     * @return bool
      */
-    public function isDeleted()
+    public function isDeleted(): bool
     {
         return $this->deleted;
     }
@@ -413,7 +401,7 @@ abstract class AbstractFile implements FileInterface
      * Renames this file.
      *
      * @param non-empty-string $newName The new file name
-     * @param DuplicationBehavior $conflictMode
+     * @todo: this method actually belongs to the "File" object and should be moved from AbstractFile to File. In addition, the method should be removed from the interface.
      */
     public function rename(string $newName, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
     {
@@ -426,15 +414,14 @@ abstract class AbstractFile implements FileInterface
 
     /**
      * Copies this file into a target folder
-     *
      * @param Folder $targetFolder Folder to copy file into.
-     * @param string $targetFileName an optional destination fileName
-     * @param DuplicationBehavior $conflictMode
+     * @param string|null $targetFileName an optional destination fileName
      *
-     * @throws \RuntimeException
      * @return File The new (copied) file.
+     * @throws \RuntimeException
+     * @todo: this method actually belongs to the "File" object and should be moved from AbstractFile to File.
      */
-    public function copyTo(Folder $targetFolder, $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function copyTo(Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821483);
@@ -445,21 +432,24 @@ abstract class AbstractFile implements FileInterface
 
     /**
      * Moves the file into the target folder
+     * @todo: this method actually belongs to the "File" object and should be moved from AbstractFile to File.
      *
      * @param Folder $targetFolder Folder to move file into.
-     * @param string $targetFileName an optional destination fileName
+     * @param string|null $targetFileName an optional destination fileName
      * @param DuplicationBehavior $conflictMode
      *
-     * @throws \RuntimeException
      * @return File This file object, with updated properties.
+     * @throws \RuntimeException
      */
-    public function moveTo(Folder $targetFolder, $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function moveTo(Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
     {
         if ($this->deleted) {
             throw new \RuntimeException('File has been deleted.', 1329821484);
         }
 
-        return $targetFolder->getStorage()->moveFile($this, $targetFolder, $targetFileName, $conflictMode);
+        /** @var File $file */
+        $file = $targetFolder->getStorage()->moveFile($this, $targetFolder, $targetFileName, $conflictMode);
+        return $file;
     }
 
     /*****************

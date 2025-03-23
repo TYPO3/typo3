@@ -127,7 +127,7 @@ class ProcessedFile extends AbstractFile
 
         $this->originalFileSha1 = $databaseRow['originalfilesha1'];
         $this->identifier = (string)$databaseRow['identifier'];
-        $this->name = $databaseRow['name'];
+        $this->name = (string)$databaseRow['name'];
         $this->properties = $databaseRow;
         $this->processingUrl = $databaseRow['processing_url'] ?? '';
 
@@ -178,9 +178,7 @@ class ProcessedFile extends AbstractFile
         // Update some related properties
         $this->identifier = $addedFile->getIdentifier();
         $this->originalFileSha1 = $this->originalFile->getSha1();
-        if ($addedFile instanceof AbstractFile) {
-            $this->updateProperties($addedFile->getProperties());
-        }
+        $this->updateProperties($addedFile->getProperties());
         $this->deleted = false;
         $this->updated = true;
     }
@@ -190,10 +188,8 @@ class ProcessedFile extends AbstractFile
      *****************************************/
     /**
      * Returns TRUE if this file is indexed
-     *
-     * @return false
      */
-    public function isIndexed(): bool
+    public function isIndexed(): false
     {
         // Processed files are never indexed; instead you might be looking for isPersisted()
         return false;

@@ -105,7 +105,7 @@ final class FolderLinkHandlerTest extends UnitTestCase
         $storage = $this->getMockBuilder(ResourceStorage::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $storage->method('getUid')->willReturn($folderData[0]);
+        $storage->method('getUid')->willReturn((int)$folderData[0]);
         $folderObject->method('getStorage')->willReturn($storage);
         $folderObject->method('getIdentifier')->willReturn($folderData[1]);
         $parameters['folder'] = $folderObject;

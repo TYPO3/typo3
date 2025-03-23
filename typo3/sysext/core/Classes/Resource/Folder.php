@@ -43,33 +43,27 @@ class Folder implements FolderInterface
 {
     /**
      * The storage this folder belongs to.
-     *
-     * @var ResourceStorage
      */
-    protected $storage;
+    protected ResourceStorage $storage;
 
     /**
      * The identifier of this folder to identify it on the storage.
      * On some drivers, this is the path to the folder, but drivers could also just
      * provide any other unique identifier for this folder on the specific storage.
-     *
-     * @var string
      */
-    protected $identifier;
+    protected string $identifier;
 
     /**
      * The name of this folder
-     *
-     * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * The filters this folder should use for a filelist.
      *
      * @var callable[]
      */
-    protected $fileAndFolderNameFilters = [];
+    protected array $fileAndFolderNameFilters = [];
 
     /**
      * Modes for filter usage in getFiles()/getFolders()
@@ -82,13 +76,7 @@ class Folder implements FolderInterface
     // Only use the filters provided by the current class
     public const FILTER_MODE_USE_OWN_FILTERS = 3;
 
-    /**
-     * Initialization of the folder
-     *
-     * @param string $identifier
-     * @param string $name
-     */
-    public function __construct(ResourceStorage $storage, $identifier, $name)
+    public function __construct(ResourceStorage $storage, string $identifier, string $name)
     {
         $this->storage = $storage;
         $this->identifier = $identifier;
@@ -103,11 +91,9 @@ class Folder implements FolderInterface
     /**
      * Returns the full path of this folder, from the root.
      *
-     * @param string $rootId ID of the root folder, NULL to auto-detect
-     *
-     * @return string
+     * @param string|null $rootId ID of the root folder, NULL to auto-detect
      */
-    public function getReadablePath($rootId = null)
+    public function getReadablePath(?string $rootId = null): string
     {
         if ($rootId === null) {
             // Find first matching file mount and use that as root
@@ -126,7 +112,7 @@ class Folder implements FolderInterface
             try {
                 $readablePath = $this->getParentFolder()->getReadablePath($rootId);
             } catch (InsufficientFolderAccessPermissionsException $e) {
-                // May no access to parent folder (e.g. because of mount point)
+                // May have no access to parent folder (e.g. because of mount point)
                 $readablePath = '/';
             }
         }
@@ -140,7 +126,7 @@ class Folder implements FolderInterface
      *
      * @param string $name The new name
      */
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -172,7 +158,7 @@ class Folder implements FolderInterface
      *
      * @return string Combined storage and folder identifier, e.g. StorageUID:folder/path/
      */
-    public function getCombinedIdentifier()
+    public function getCombinedIdentifier(): string
     {
         return $this->getStorage()->getUid() . ':' . $this->getIdentifier();
     }
@@ -185,7 +171,7 @@ class Folder implements FolderInterface
      *
      * @return string|null NULL if file is missing or deleted, the generated url otherwise
      */
-    public function getPublicUrl()
+    public function getPublicUrl(): ?string
     {
         return $this->getStorage()->getPublicUrl($this);
     }
@@ -199,19 +185,17 @@ class Folder implements FolderInterface
      * @param int $start The item to start at
      * @param int $numberOfItems The number of items to return
      * @param int $filterMode The filter mode to use for the filelist.
-     * @param bool $recursive
      * @param string $sort Property name used to sort the items.
      *                     Among them may be: '' (empty, no sorting), name,
      *                     fileext, size, tstamp and rw.
      *                     If a driver does not support the given property, it
      *                     should fall back to "name".
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
-     * @return \TYPO3\CMS\Core\Resource\File[]
+     * @return File[]
      */
-    public function getFiles($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false, $sort = '', $sortRev = false)
+    public function getFiles(int $start = 0, int $numberOfItems = 0, int $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, bool $recursive = false, string $sort = '', bool $sortRev = false): array
     {
-        // Fallback for compatibility with the old method signature variable $useFilters that was used instead of $filterMode
-        if ($filterMode === false) {
+        if ($filterMode === 0) {
             $useFilters = false;
             $backedUpFilters = [];
         } else {
@@ -227,7 +211,7 @@ class Folder implements FolderInterface
 
     /**
      * Returns a file search result based on the given demand.
-     * The result also includes matches in meta data fields that are defined in TCA.
+     * The result also includes matches in meta-data fields that are defined in TCA.
      *
      * @param int $filterMode The filter mode to use for the found files
      */
@@ -244,11 +228,9 @@ class Folder implements FolderInterface
      * Returns amount of all files within this folder, optionally filtered by
      * the given pattern
      *
-     * @param bool $recursive
-     * @return int
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    public function getFileCount(array $filterMethods = [], $recursive = false)
+    public function getFileCount(array $filterMethods = [], bool $recursive = false): int
     {
         return $this->storage->countFilesInFolder($this, true, $recursive);
     }
@@ -271,10 +253,9 @@ class Folder implements FolderInterface
      * @param int $start The item to start at
      * @param int $numberOfItems The number of items to return
      * @param int $filterMode The filter mode to use for the filelist.
-     * @param bool $recursive
      * @phpstan-return array<array-key, Folder>
      */
-    public function getSubfolders($start = 0, $numberOfItems = 0, $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, $recursive = false): array
+    public function getSubfolders(int $start = 0, int $numberOfItems = 0, int $filterMode = self::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, bool $recursive = false): array
     {
         [$backedUpFilters, $useFilters] = $this->prepareFiltersInStorage($filterMode);
         $folderObjects = $this->storage->getFoldersInFolder($this, $start, $numberOfItems, $useFilters, $recursive);
@@ -286,13 +267,9 @@ class Folder implements FolderInterface
      * Adds a file from the local server disk. If the file already exists and
      * overwriting is disabled,
      *
-     * @param string $localFilePath
-     * @param string $fileName
-     * @param DuplicationBehavior $conflictMode
-     * @return File The file object
      * @throws ExistingTargetFileNameException
      */
-    public function addFile($localFilePath, $fileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL)
+    public function addFile(string $localFilePath, ?string $fileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): File
     {
         $fileName = $fileName ?: PathUtility::basename($localFilePath);
 
@@ -320,10 +297,8 @@ class Folder implements FolderInterface
 
     /**
      * Deletes this folder from its storage. This also means that this object becomes useless.
-     *
-     * @param bool $deleteRecursively
      */
-    public function delete($deleteRecursively = true): bool
+    public function delete(bool $deleteRecursively = true): bool
     {
         return $this->storage->deleteFolder($this, $deleteRecursively);
     }
@@ -334,7 +309,7 @@ class Folder implements FolderInterface
      * @param string $fileName
      * @return File The new file object
      */
-    public function createFile($fileName)
+    public function createFile(string $fileName): File
     {
         return $this->storage->createFile($fileName, $this);
     }
@@ -342,12 +317,10 @@ class Folder implements FolderInterface
     /**
      * Creates a new folder
      *
-     * @param string $folderName
-     * @return Folder The new folder object
      * @throws ExistingTargetFolderException
      * @throws InsufficientFolderWritePermissionsException
      */
-    public function createFolder($folderName)
+    public function createFolder(string $folderName): Folder
     {
         return $this->storage->createFolder($folderName, $this);
     }
@@ -356,11 +329,11 @@ class Folder implements FolderInterface
      * Copies folder to a target folder
      *
      * @param Folder $targetFolder Target folder to copy to.
-     * @param string $targetFolderName an optional destination fileName
+     * @param string|null $targetFolderName an optional destination fileName
      * @param DuplicationBehavior $conflictMode
      * @return Folder New (copied) folder object.
      */
-    public function copyTo(Folder $targetFolder, $targetFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function copyTo(Folder $targetFolder, ?string $targetFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): Folder
     {
         return $targetFolder->getStorage()->copyFolder($this, $targetFolder, $targetFolderName, $conflictMode);
     }
@@ -369,11 +342,11 @@ class Folder implements FolderInterface
      * Moves folder to a target folder
      *
      * @param Folder $targetFolder Target folder to move to.
-     * @param string $targetFolderName an optional destination fileName
+     * @param string|null $targetFolderName an optional destination fileName
      * @param DuplicationBehavior $conflictMode
      * @return Folder New (copied) folder object.
      */
-    public function moveTo(Folder $targetFolder, $targetFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function moveTo(Folder $targetFolder, ?string $targetFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): Folder
     {
         return $targetFolder->getStorage()->moveFolder($this, $targetFolder, $targetFolderName, $conflictMode);
     }
@@ -409,9 +382,8 @@ class Folder implements FolderInterface
      * Check if a file operation (= action) is allowed on this folder
      *
      * @param string $action Action that can be read, write or delete
-     * @return bool
      */
-    public function checkActionPermission($action)
+    public function checkActionPermission(string $action): bool
     {
         try {
             return $this->getStorage()->checkFolderActionPermission($action, $this);
@@ -428,7 +400,7 @@ class Folder implements FolderInterface
      * @param array $properties
      * @internal
      */
-    public function updateProperties(array $properties)
+    public function updateProperties(array $properties): void
     {
         // Setting identifier and name to update values
         if (isset($properties['identifier'])) {
@@ -445,7 +417,7 @@ class Folder implements FolderInterface
      * @param int $filterMode The filter mode to use; one of the FILTER_MODE_* constants
      * @return array The backed up filters as an array (NULL if filters were not backed up) and whether to use filters or not (bool)
      */
-    protected function prepareFiltersInStorage($filterMode)
+    protected function prepareFiltersInStorage(int $filterMode): array
     {
         $backedUpFilters = null;
         $useFilters = true;
@@ -483,11 +455,11 @@ class Folder implements FolderInterface
     /**
      * Restores the filters of a storage.
      *
-     * @param array $backedUpFilters The filters to restore; might be NULL if no filters have been backed up, in
+     * @param array|null $backedUpFilters The filters to restore; might be NULL if no filters have been backed up, in
      *                               which case this method does nothing.
      * @see prepareFiltersInStorage()
      */
-    protected function restoreBackedUpFiltersInStorage($backedUpFilters)
+    protected function restoreBackedUpFiltersInStorage(?array $backedUpFilters): void
     {
         if ($backedUpFilters !== null) {
             $this->storage->setFileAndFolderNameFilters($backedUpFilters);
@@ -498,17 +470,15 @@ class Folder implements FolderInterface
      * Sets the filters to use when listing files. These are only used if the filter mode is one of
      * FILTER_MODE_USE_OWN_FILTERS and FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS
      */
-    public function setFileAndFolderNameFilters(array $filters)
+    public function setFileAndFolderNameFilters(array $filters): void
     {
         $this->fileAndFolderNameFilters = $filters;
     }
 
     /**
      * Returns the role of this folder (if any). See FolderInterface::ROLE_* constants for possible values.
-     *
-     * @return string
      */
-    public function getRole()
+    public function getRole(): string
     {
         return $this->storage->getRole($this);
     }

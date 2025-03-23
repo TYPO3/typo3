@@ -114,7 +114,7 @@ final class ExtractorServiceTest extends UnitTestCase
         $extractorObject1->method('getPriority')->willReturn(10);
         $extractorObject1->method('getExecutionPriority')->willReturn(10);
         $extractorObject1->method('canProcess')->willReturn(true);
-        $extractorObject1->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE->value]);
+        $extractorObject1->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE]);
         $extractorObject1->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
         $extractorObject1->method('extractMetaData')->with($fileMock)->willReturn([
             'width' => 800,
@@ -129,7 +129,7 @@ final class ExtractorServiceTest extends UnitTestCase
         $extractorObject2->method('getPriority')->willReturn(20);
         $extractorObject2->method('getExecutionPriority')->willReturn(20);
         $extractorObject2->method('canProcess')->willReturn(true);
-        $extractorObject2->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE->value]);
+        $extractorObject2->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE]);
         $extractorObject2->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
         $extractorObject2->method('extractMetaData')->with($fileMock)->willReturn([
             'keywords' => 'typo3, cms',
@@ -233,7 +233,7 @@ final class ExtractorServiceTest extends UnitTestCase
         $extractorObject1->expects(self::any())->method('getPriority')->willReturn($extractorOneDataPriority);
         $extractorObject1->expects(self::any())->method('getExecutionPriority')->willReturn($extractorOneExecutionPriority);
         $extractorObject1->expects(self::any())->method('canProcess')->willReturn(true);
-        $extractorObject1->expects(self::any())->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE->value]);
+        $extractorObject1->expects(self::any())->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE]);
         $extractorObject1->expects(self::any())->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
         $extractorObject1->expects(self::any())->method('extractMetaData')->with($fileMock)->willReturn([
             'foo' => 'first',
@@ -248,7 +248,7 @@ final class ExtractorServiceTest extends UnitTestCase
         $extractorObject2->expects(self::any())->method('getPriority')->willReturn($extractorTwoDataPriority);
         $extractorObject2->expects(self::any())->method('getExecutionPriority')->willReturn($extractorTwoExecutionPriority);
         $extractorObject2->expects(self::any())->method('canProcess')->willReturn(true);
-        $extractorObject2->expects(self::any())->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE->value]);
+        $extractorObject2->expects(self::any())->method('getFileTypeRestrictions')->willReturn([FileType::IMAGE]);
         $extractorObject2->expects(self::any())->method('getDriverRestrictions')->willReturn([$storageMock->getDriverType()]);
         $extractorObject2->expects(self::any())->method('extractMetaData')->with($fileMock)->willReturn([
             'foo' => 'second',

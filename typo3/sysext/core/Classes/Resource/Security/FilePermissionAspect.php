@@ -67,12 +67,11 @@ readonly class FilePermissionAspect implements DataHandlerCheckModifyAccessListH
      *
      * @param mixed $incomingFieldArray
      * @param string $table
-     * @param int|string $id
      * @param DataHandler $dataHandler
      */
-    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, string $table, $id, DataHandler $dataHandler): void
+    public function processDatamap_preProcessFieldArray(&$incomingFieldArray, string $table, int|string $id, DataHandler $dataHandler): void
     {
-        if (!is_array($incomingFieldArray) || !is_scalar($id)) {
+        if (!is_array($incomingFieldArray)) {
             $incomingFieldArray = null;
             return;
         }

@@ -33,10 +33,7 @@ use TYPO3\CMS\Extbase\Property\PropertyMappingConfigurationInterface;
  */
 abstract class AbstractFileFolderConverter extends AbstractTypeConverter
 {
-    /**
-     * @var string
-     */
-    protected $expectedObjectType;
+    protected string $expectedObjectType;
 
     protected ResourceFactory $fileFactory;
 

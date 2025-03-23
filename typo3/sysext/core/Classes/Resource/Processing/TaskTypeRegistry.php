@@ -24,10 +24,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class TaskTypeRegistry implements SingletonInterface
 {
-    /**
-     * @var array
-     */
-    protected $registeredTaskTypes = [];
+    protected array $registeredTaskTypes = [];
 
     /**
      * Register task types from configuration
@@ -39,21 +36,16 @@ class TaskTypeRegistry implements SingletonInterface
 
     /**
      * Returns the class that implements the given task type.
-     *
-     * @param string $taskType
-     * @return string
      */
-    protected function getClassForTaskType($taskType)
+    protected function getClassForTaskType(string $taskType): ?string
     {
         return $this->registeredTaskTypes[$taskType] ?? null;
     }
 
     /**
-     * @param string $taskType
-     * @return TaskInterface
      * @throws \RuntimeException
      */
-    public function getTaskForType($taskType, ProcessedFile $processedFile, array $processingConfiguration)
+    public function getTaskForType(string $taskType, ProcessedFile $processedFile, array $processingConfiguration): TaskInterface
     {
         $taskClass = $this->getClassForTaskType($taskType);
         if ($taskClass === null) {

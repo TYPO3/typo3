@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Collection\CollectionInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
@@ -28,24 +29,16 @@ use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
  */
 class FileCollectionRepository
 {
-    /**
-     * @var string
-     */
-    protected $table = 'sys_file_collection';
-
-    /**
-     * @var string
-     */
-    protected $typeField = 'type';
+    protected string $table = 'sys_file_collection';
+    protected string $typeField = 'type';
 
     /**
      * Finds a record collection by uid.
      *
      * @param int $uid The uid to be looked up
-     * @return Collection\AbstractFileCollection|null
      * @throws Exception\ResourceDoesNotExistException
      */
-    public function findByUid($uid)
+    public function findByUid($uid): ?CollectionInterface
     {
         $object = null;
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->table);
@@ -76,9 +69,9 @@ class FileCollectionRepository
      * Finds record collection by type.
      *
      * @param string $type Type to be looked up
-     * @return Collection\AbstractFileCollection[]|null
+     * @return CollectionInterface[]|null
      */
-    public function findByType($type)
+    public function findByType($type): ?array
     {
         $expressionBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable($this->table)
@@ -93,9 +86,9 @@ class FileCollectionRepository
      * Queries for multiple records for the given conditions.
      *
      * @param array $conditions Conditions concatenated with AND for query
-     * @return Collection\AbstractFileCollection[]|null
+     * @return CollectionInterface[]|null
      */
-    protected function queryMultipleRecords(array $conditions = [])
+    protected function queryMultipleRecords(array $conditions = []): ?array
     {
         $result = null;
 
@@ -123,9 +116,9 @@ class FileCollectionRepository
      * Creates multiple record collection domain objects.
      *
      * @param array $data Array of multiple database records to be reconstituted
-     * @return \TYPO3\CMS\Core\Collection\AbstractRecordCollection[]
+     * @return CollectionInterface[]
      */
-    protected function createMultipleDomainObjects(array $data)
+    protected function createMultipleDomainObjects(array $data): array
     {
         $collections = [];
         foreach ($data as $collection) {
@@ -147,20 +140,13 @@ class FileCollectionRepository
      * Creates a record collection domain object.
      *
      * @param array $record Database record to be reconstituted
-     *
-     * @return Collection\AbstractFileCollection
      */
-    protected function createDomainObject(array $record)
+    protected function createDomainObject(array $record): CollectionInterface
     {
         return $this->getFileFactory()->createCollectionObject($record);
     }
 
-    /**
-     * Gets the file factory.
-     *
-     * @return ResourceFactory
-     */
-    protected function getFileFactory()
+    protected function getFileFactory(): ResourceFactory
     {
         return GeneralUtility::makeInstance(ResourceFactory::class);
     }
@@ -168,9 +154,9 @@ class FileCollectionRepository
     /**
      * Finds all record collections.
      *
-     * @return Collection\AbstractFileCollection[]|null
+     * @return CollectionInterface[]|null
      */
-    public function findAll()
+    public function findAll(): ?array
     {
         return $this->queryMultipleRecords();
     }

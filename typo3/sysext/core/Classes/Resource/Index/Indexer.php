@@ -35,25 +35,14 @@ class Indexer implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    /**
-     * @var array
-     */
-    protected $filesToUpdate = [];
+    protected array $filesToUpdate = [];
 
     /**
      * @var int[]
      */
-    protected $identifiedFileUids = [];
-
-    /**
-     * @var ResourceStorage
-     */
-    protected $storage;
-
-    /**
-     * @var ExtractorService
-     */
-    protected $extractorService;
+    protected array $identifiedFileUids = [];
+    protected ResourceStorage $storage;
+    protected ?ExtractorService $extractorService = null;
 
     public function __construct(ResourceStorage $storage)
     {
@@ -63,14 +52,13 @@ class Indexer implements LoggerAwareInterface
     /**
      * Create index entry
      *
-     * @param string $identifier
      * @throws \InvalidArgumentException
      */
-    public function createIndexEntry($identifier): File
+    public function createIndexEntry(string $identifier): File
     {
-        if (!is_string($identifier) || $identifier === '') {
+        if ($identifier === '') {
             throw new \InvalidArgumentException(
-                'Invalid file identifier given. It must be of type string and not empty. "' . gettype($identifier) . '" given.',
+                'Invalid file identifier given. It must not empty.',
                 1401732565
             );
         }
@@ -112,7 +100,7 @@ class Indexer implements LoggerAwareInterface
         return $fileObject;
     }
 
-    public function processChangesInStorages()
+    public function processChangesInStorages(): void
     {
         // get all file-identifiers from the storage
         $availableFiles = $this->storage->getFileIdentifiersInFolder($this->storage->getRootLevelFolder(false)->getIdentifier(), true, true);
@@ -122,10 +110,7 @@ class Indexer implements LoggerAwareInterface
         $this->detectMissingFiles();
     }
 
-    /**
-     * @param int $maximumFileCount
-     */
-    public function runMetaDataExtraction($maximumFileCount = -1)
+    public function runMetaDataExtraction(int $maximumFileCount = -1): void
     {
         $fileIndexRecords = $this->getFileIndexRepository()->findInStorageWithIndexOutstanding($this->storage, $maximumFileCount);
         foreach ($fileIndexRecords as $indexRecord) {
@@ -149,7 +134,7 @@ class Indexer implements LoggerAwareInterface
     /**
      * Extract metadata for given fileObject
      */
-    public function extractMetaData(File $fileObject)
+    public function extractMetaData(File $fileObject): void
     {
         $metaData = array_merge([
             $fileObject->getMetaData()->get(),
@@ -164,7 +149,7 @@ class Indexer implements LoggerAwareInterface
      * Since by now all files in filesystem have been looked at, it is safe to assume,
      * that files that are indexed, but not touched in this run, are missing
      */
-    protected function detectMissingFiles()
+    protected function detectMissingFiles(): void
     {
         $allCurrentFiles = $this->getFileIndexRepository()->findInStorageAndNotInUidList(
             $this->storage,
@@ -188,10 +173,8 @@ class Indexer implements LoggerAwareInterface
 
     /**
      * Check whether the extractor service supports this file according to file type restrictions.
-     *
-     * @return bool
      */
-    protected function isFileTypeSupportedByExtractor(File $file, ExtractorInterface $extractor)
+    protected function isFileTypeSupportedByExtractor(File $file, ExtractorInterface $extractor): bool
     {
         $isSupported = true;
         $fileTypeRestrictions = $extractor->getFileTypeRestrictions();
@@ -204,7 +187,7 @@ class Indexer implements LoggerAwareInterface
     /**
      * Adds updated files to the processing queue
      */
-    protected function detectChangedFilesInStorage(array $fileIdentifierArray)
+    protected function detectChangedFilesInStorage(array $fileIdentifierArray): void
     {
         foreach ($fileIdentifierArray as $fileIdentifier) {
             // skip processed files
@@ -232,7 +215,7 @@ class Indexer implements LoggerAwareInterface
      * Processes the Files which have been detected as "changed or new"
      * in the storage
      */
-    protected function processChangedAndNewFiles()
+    protected function processChangedAndNewFiles(): void
     {
         foreach ($this->filesToUpdate as $identifier => $data) {
             try {
@@ -308,11 +291,8 @@ class Indexer implements LoggerAwareInterface
      ****************************/
     /**
      * Collects the information to be cached in sys_file
-     *
-     * @param string $identifier
-     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
      */
-    protected function gatherFileInformationArray($identifier): array
+    protected function gatherFileInformationArray(string $identifier): array
     {
         $fileInfo = $this->storage->getFileInfoByIdentifier($identifier);
         $fileInfo = $this->transformFromDriverFileInfoArrayToFileObjectFormat($fileInfo);
@@ -335,11 +315,9 @@ class Indexer implements LoggerAwareInterface
      * However it happened, the properties of a file object which
      * are persisted to the database are named different than the
      * properties the driver returns in getFileInfo.
-     * Therefore a mapping must happen.
-     *
-     * @return array
+     * Therefore, a mapping must happen.
      */
-    protected function transformFromDriverFileInfoArrayToFileObjectFormat(array $fileInfo)
+    protected function transformFromDriverFileInfoArrayToFileObjectFormat(array $fileInfo): array
     {
         $mappingInfo = [
             // 'driverKey' => 'fileProperty' Key is from the driver, value is for the property in the file
@@ -362,32 +340,12 @@ class Indexer implements LoggerAwareInterface
         return $mappedFileInfo;
     }
 
-    /**
-     * Returns an instance of the FileIndexRepository
-     *
-     * @return FileIndexRepository
-     */
-    protected function getFileIndexRepository()
+    protected function getFileIndexRepository(): FileIndexRepository
     {
         return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
 
-    /**
-     * Returns an instance of the FileIndexRepository
-     *
-     * @return MetaDataRepository
-     */
-    protected function getMetaDataRepository()
-    {
-        return GeneralUtility::makeInstance(MetaDataRepository::class);
-    }
-
-    /**
-     * Returns the ResourceFactory
-     *
-     * @return ResourceFactory
-     */
-    protected function getResourceFactory()
+    protected function getResourceFactory(): ResourceFactory
     {
         return GeneralUtility::makeInstance(ResourceFactory::class);
     }

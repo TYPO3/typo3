@@ -1315,100 +1315,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Core\\Resource\\AbstractFile\:\:moveTo\(\) should return TYPO3\\CMS\\Core\\Resource\\File but returns TYPO3\\CMS\\Core\\Resource\\FileInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/AbstractFile.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\Folder and TYPO3\\CMS\\Core\\Resource\\Folder will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Collection/FolderBasedFileCollection.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between non\-empty\-string and '''' will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Driver/AbstractHierarchicalFilesystemDriver.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Resource\\FileCollectionRepository\:\:createDomainObject\(\) should return TYPO3\\CMS\\Core\\Resource\\Collection\\AbstractFileCollection but returns TYPO3\\CMS\\Core\\Collection\\CollectionInterface\<TYPO3\\CMS\\Core\\Resource\\File\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/FileCollectionRepository.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Resource\\FileCollectionRepository\:\:queryMultipleRecords\(\) should return array\<TYPO3\\CMS\\Core\\Resource\\Collection\\AbstractFileCollection\>\|null but returns array\<TYPO3\\CMS\\Core\\Collection\\AbstractRecordCollection\>\|null\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/FileCollectionRepository.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:getCombinedIdentifier\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/FileReference.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:getProperties\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/FileReference.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:getType\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Resource/FileReference.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Resource\\FileReference\:\:getOriginalFile\(\) should return TYPO3\\CMS\\Core\\Resource\\File but returns TYPO3\\CMS\\Core\\Resource\\FileInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/FileReference.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FolderInterface\:\:getReadablePath\(\)\.$#'
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Resource\\Folder\:\:rename\(\) should return \$this\(TYPO3\\CMS\\Core\\Resource\\Folder\) but returns TYPO3\\CMS\\Core\\Resource\\Folder\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between array and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between int and false will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\Folder and TYPO3\\CMS\\Core\\Resource\\Folder will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Index/FileIndexRepository.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Index/Indexer.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Processing/TaskTypeRegistry.php
 
 		-
 			message: '#^Parameter \#1 \$file of method TYPO3\\CMS\\Core\\Resource\\OnlineMedia\\Helpers\\OnlineMediaHelperInterface\:\:getOnlineMediaId\(\) expects TYPO3\\CMS\\Core\\Resource\\File, TYPO3\\CMS\\Core\\Resource\\FileInterface given\.$#'
@@ -1423,94 +1333,10 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/Rendering/YouTubeRenderer.php
 
 		-
-			message: '#^Call to function is_numeric\(\) with int will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceFactory.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:getCollectionObject\(\) should return TYPO3\\CMS\\Core\\Resource\\Collection\\AbstractFileCollection but returns TYPO3\\CMS\\Core\\Collection\\CollectionInterface\<TYPO3\\CMS\\Core\\Resource\\File\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceFactory.php
-
-		-
-			message: '#^Parameter &\$fileIdentifier by\-ref type of method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:getFileObjectByStorageAndIdentifier\(\) expects string, string\|null given\.$#'
-			identifier: parameterByRef.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceFactory.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:getCombinedIdentifier\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:setMissing\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FolderInterface\:\:getRole\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Core\\Resource\\ResourceStorage\:\:getAllFileObjectsInFolder\(\) should return array\<TYPO3\\CMS\\Core\\Resource\\File\> but returns array\<string, TYPO3\\CMS\\Core\\Resource\\FileInterface\>\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^PHPDoc tag @var with type TYPO3\\CMS\\Core\\Resource\\FileInterface is not subtype of native type string\.$#'
-			identifier: varTag.nativeType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^Parameter \#1 \$array \(list\<string\>\) of array_values is already a list, call has no effect\.$#'
-			identifier: arrayValues.list
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
-			message: '#^Parameter \#2 \$folder of method TYPO3\\CMS\\Core\\Resource\\ResourceStorage\:\:checkFolderActionPermission\(\) expects TYPO3\\CMS\\Core\\Resource\\Folder\|null, TYPO3\\CMS\\Core\\Resource\\FolderInterface given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
-
-		-
 			message: '#^Call to function is_callable\(\) with callable\(\)\: mixed will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Resource/Search/Result/DriverFilteredSearchResult.php
-
-		-
-			message: '#^Call to function is_scalar\(\) with int\|string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Security/FilePermissionAspect.php
 
 		-
 			message: '#^Parameter &\$localPath by\-ref type of method TYPO3\\CMS\\Core\\Resource\\StorageRepository\:\:findBestMatchingStorageByLocalPath\(\) expects non\-empty\-string, string given\.$#'
@@ -2005,12 +1831,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Log/LoggerAwareChannelTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Resource\\\\Folder'' and TYPO3\\CMS\\Core\\Resource\\Folder will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 3
-			path: ../../typo3/sysext/core/Tests/Functional/Resource/StorageRepositoryTest.php
-
-		-
 			message: '#^Parameter \#2 \$data of method TYPO3\\CMS\\Core\\Cache\\Backend\\Typo3DatabaseBackend\:\:set\(\) expects string, array\<int, string\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -2435,12 +2255,6 @@ parameters:
 			identifier: deadCode.unreachable
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Service/CacheService.php
-
-		-
-			message: '#^Parameter \#1 \$uid of method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:getFileObject\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Service/ImageService.php
 
 		-
 			message: '#^Call to function is_subclass_of\(\) with class\-string and mixed will always evaluate to true\.$#'
@@ -2935,12 +2749,6 @@ parameters:
 			path: ../../typo3/sysext/fluid/Classes/ViewHelpers/Uri/TypolinkViewHelper.php
 
 		-
-			message: '#^Parameter \#1 \$input of method TYPO3\\CMS\\Core\\Resource\\ResourceFactory\:\:retrieveFileOrFolderObject\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/fluid/Tests/Functional/ViewHelpers/Link/FileViewHelperTest.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between ''sys_file…'' and ''sys_file…'' will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
 			count: 1
@@ -3053,12 +2861,6 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/form/Classes/Hooks/FormElementHooks.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Form\\Mvc\\Persistence\\FormPersistenceManager\:\:getOrCreateFile\(\) should return TYPO3\\CMS\\Core\\Resource\\File but returns TYPO3\\CMS\\Core\\Resource\\FileInterface\.$#'
-			identifier: return.type
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Mvc/Persistence/FormPersistenceManager.php
 
 		-
 			message: '#^Property TYPO3\\CMS\\Form\\Mvc\\Property\\Exception\\TypeConverterException\:\:\$error \(TYPO3\\CMS\\Extbase\\Error\\Error\) in empty\(\) is not falsy\.$#'
@@ -3455,12 +3257,6 @@ parameters:
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: ../../typo3/sysext/frontend/Classes/Middleware/FrontendUserAuthenticator.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\FileReference and TYPO3\\CMS\\Core\\Resource\\FileInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/frontend/Classes/Resource/FileCollector.php
 
 		-
 			message: '#^Call to function is_string\(\) with non\-empty\-string will always evaluate to true\.$#'

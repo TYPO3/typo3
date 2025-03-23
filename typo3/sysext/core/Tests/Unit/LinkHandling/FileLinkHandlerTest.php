@@ -122,7 +122,7 @@ final class FileLinkHandlerTest extends UnitTestCase
 
         $uid = 0;
         if (MathUtility::canBeInterpretedAsInteger($parameters['file'])) {
-            $uid = $parameters['file'];
+            $uid = (int)$parameters['file'];
         }
         $fileObject->expects(self::once())->method('getUid')->willReturn($uid);
         $fileObject->method('getIdentifier')->willReturn($parameters['file']);

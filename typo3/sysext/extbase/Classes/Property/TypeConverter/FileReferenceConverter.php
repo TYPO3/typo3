@@ -27,10 +27,7 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
  */
 class FileReferenceConverter extends AbstractFileFolderConverter
 {
-    /**
-     * @var string
-     */
-    protected $expectedObjectType = FileReference::class;
+    protected string $expectedObjectType = FileReference::class;
 
     /**
      * @param string|int $source

@@ -61,8 +61,6 @@ interface FolderInterface extends ResourceInterface
 
     /**
      * Renames this folder.
-     *
-     * @return $this
      */
     public function rename(string $newName): self;
 
@@ -80,4 +78,10 @@ interface FolderInterface extends ResourceInterface
      * Returns the creation time of the folder as Unix timestamp
      */
     public function getCreationTime(): int;
+
+    // Future additions
+    // public function getReadablePath(): string;
+    // public function getFiles(): string;
+    // public function searchFiles(): string;
+    // public function getRole(): string;
 }

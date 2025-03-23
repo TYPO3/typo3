@@ -20,7 +20,10 @@ namespace TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 
 /**
- * File Interface
+ * Interface for a file object. This can be any kind of file object,
+ * e.g. a processed file (which is not a FAL file), or a file reference object,
+ * which is a decorator around a "File" object, but of course without any additional
+ * file on the file system.
  */
 interface FileInterface extends ResourceInterface
 {

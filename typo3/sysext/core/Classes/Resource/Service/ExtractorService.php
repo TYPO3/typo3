@@ -31,7 +31,7 @@ class ExtractorService
     /**
      * @var ExtractorInterface[][]
      */
-    private $extractionServices;
+    private array $extractionServices;
 
     public function extractMetaData(File $fileObject): array
     {

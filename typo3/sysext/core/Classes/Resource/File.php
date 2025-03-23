@@ -27,15 +27,9 @@ class File extends AbstractFile
     /**
      * Contains the names of all properties that have been update since the
      * instantiation of this object
-     *
-     * @var array
      */
-    protected $updatedProperties = [];
-
-    /**
-     * @var MetaDataAspect
-     */
-    private $metaDataAspect;
+    protected array $updatedProperties = [];
+    private ?MetaDataAspect $metaDataAspect = null;
 
     protected string $identifier;
 
@@ -50,7 +44,7 @@ class File extends AbstractFile
         $this->properties = $fileData;
         $this->storage = $storage;
 
-        if (!empty($metaData)) {
+        if ($metaData !== []) {
             $this->getMetaData()->add($metaData);
         }
     }
@@ -79,10 +73,8 @@ class File extends AbstractFile
     /**
      * Checks if the file has a (metadata) property which
      * can be retrieved by "getProperty"
-     *
-     * @param string $key
      */
-    public function hasProperty($key): bool
+    public function hasProperty(string $key): bool
     {
         if (!parent::hasProperty($key)) {
             return isset($this->getMetaData()[$key]);
@@ -158,10 +150,9 @@ class File extends AbstractFile
      *
      * NOTE: This method should not be called from outside the File Abstraction Layer (FAL)!
      *
-     * @param array $properties
      * @internal
      */
-    public function updateProperties(array $properties)
+    public function updateProperties(array $properties): void
     {
         // Setting identifier and name to update values; we have to do this
         // here because we might need a new identifier when loading
@@ -197,10 +188,8 @@ class File extends AbstractFile
 
     /**
      * Returns the names of all properties that have been updated in this record
-     *
-     * @return array
      */
-    public function getUpdatedProperties()
+    public function getUpdatedProperties(): array
     {
         return $this->updatedProperties;
     }
@@ -213,7 +202,7 @@ class File extends AbstractFile
      *
      * @param string $action can be read, write, delete
      */
-    public function checkActionPermission($action): bool
+    public function checkActionPermission(string $action): bool
     {
         return $this->getStorage()->checkFileActionPermission($action, $this);
     }
@@ -228,7 +217,7 @@ class File extends AbstractFile
      *
      * @return string the MD5 hash
      */
-    public function calculateChecksum()
+    public function calculateChecksum(): string
     {
         return md5(
             $this->getCombinedIdentifier() . '|' .
@@ -283,18 +272,12 @@ class File extends AbstractFile
         return $array;
     }
 
-    /**
-     * @return bool
-     */
-    public function isMissing()
+    public function isMissing(): bool
     {
         return (bool)$this->getProperty('missing');
     }
 
-    /**
-     * @param bool $missing
-     */
-    public function setMissing($missing)
+    public function setMissing(bool $missing): void
     {
         $this->updateProperties(['missing' => $missing ? 1 : 0]);
     }
@@ -315,11 +298,9 @@ class File extends AbstractFile
     }
 
     /**
-     * @param string $key
      * @internal Only for use in Repositories and indexer
-     * @return mixed
      */
-    public function _getPropertyRaw($key)
+    public function _getPropertyRaw(string $key): mixed
     {
         return parent::getProperty($key);
     }

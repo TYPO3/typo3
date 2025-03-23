@@ -25,40 +25,28 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
 {
-    /**
-     * @var File
-     */
-    private $file;
-
-    /**
-     * @var array
-     */
-    private $metaData = [];
+    private array $metaData = [];
 
     /**
      * This flag is used to treat a possible recursion between $this->get() and $this->file->getUid()
-     *
-     * @var bool
      */
-    private $loaded = false;
+    private bool $loaded = false;
 
-    /**
-     * @var int
-     */
-    private $indexPosition = 0;
+    private int $indexPosition = 0;
 
     /**
      * Constructor
      */
-    public function __construct(File $file)
-    {
-        $this->file = $file;
-    }
+    public function __construct(
+        private readonly File $file
+    ) {}
 
     /**
      * Adds already known metadata to the aspect
      *
      * @internal
+     *
+     * @return $this
      */
     public function add(array $metaData): self
     {
@@ -80,36 +68,23 @@ class MetaDataAspect implements \ArrayAccess, \Countable, \Iterator
         return $this->metaData;
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetExists($offset): bool
+    public function offsetExists(mixed $offset): bool
     {
         return array_key_exists($offset, $this->get());
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetGet($offset): mixed
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->get()[$offset] ?? null;
     }
 
-    /**
-     * @param mixed $offset
-     * @param mixed $value
-     */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->loaded = true;
         $this->metaData[$offset] = $value;
     }
 
-    /**
-     * @param mixed $offset
-     */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $this->metaData[$offset] = null;
     }

@@ -1253,7 +1253,7 @@ final class ContentObjectRendererTest extends UnitTestCase
         $request = new ServerRequest('https://example.com');
         $request = $request->withAttribute('frontend.page.information', $pageInformation);
         $this->subject->setRequest($request);
-        $uid = StringUtility::getUniqueId();
+        $uid = rand(10, 100);
         $file = $this->createMock(File::class);
         $file->expects(self::once())->method('getUid')->willReturn($uid);
         $this->subject->setCurrentFile($file);

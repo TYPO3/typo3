@@ -305,7 +305,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 ->getMock();
             $uid = 0;
             if (MathUtility::canBeInterpretedAsInteger($parameters['file'])) {
-                $uid = $parameters['file'];
+                $uid = (int)$parameters['file'];
             }
             $fileObject->expects(self::once())->method('getUid')->willReturn($uid);
             $fileObject->method('getIdentifier')->willReturn($parameters['file']);
@@ -330,7 +330,7 @@ final class LegacyLinkNotationConverterTest extends UnitTestCase
                 ->onlyMethods(['getUid'])
                 ->disableOriginalConstructor()
                 ->getMock();
-            $storage->method('getUid')->willReturn($folderData[0]);
+            $storage->method('getUid')->willReturn((int)$folderData[0]);
             $folderObject->method('getStorage')->willReturn($storage);
             $folderObject->method('getIdentifier')->willReturn($folderData[1]);
             $parameters['folder'] = $folderObject;

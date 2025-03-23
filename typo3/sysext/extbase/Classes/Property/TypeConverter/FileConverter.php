@@ -28,10 +28,7 @@ use TYPO3\CMS\Core\Resource\ResourceInterface;
  */
 class FileConverter extends AbstractFileFolderConverter
 {
-    /**
-     * @var string
-     */
-    protected $expectedObjectType = File::class;
+    protected string $expectedObjectType = File::class;
 
     /**
      * @param string|int $source

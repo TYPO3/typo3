@@ -131,13 +131,6 @@ use TYPO3\CMS\Core\Utility\StringUtility;
  */
 class ResourceStorage implements ResourceStorageInterface
 {
-    protected DriverInterface $driver;
-
-    /**
-     * The database record for this storage
-     */
-    protected array $storageRecord;
-
     /**
      * The configuration belonging to this storage (decoded from the configuration field).
      */
@@ -170,11 +163,7 @@ class ResourceStorage implements ResourceStorageInterface
     protected Capabilities $capabilities;
 
     protected EventDispatcherInterface $eventDispatcher;
-
-    /**
-     * @var Folder|null
-     */
-    protected $processingFolder;
+    protected ?Folder $processingFolder = null;
 
     /**
      * All processing folders of this storage used in any storage
@@ -204,26 +193,27 @@ class ResourceStorage implements ResourceStorageInterface
      * Constructor for a storage object.
      *
      * @param array $storageRecord The storage record row from the database
-     * @param EventDispatcherInterface|null $eventDispatcher
      */
     public function __construct(
-        DriverInterface $driver,
-        array $storageRecord,
+        protected DriverInterface $driver,
+        /**
+         * The database record for this storage
+         */
+        protected array $storageRecord,
         ?EventDispatcherInterface $eventDispatcher = null
     ) {
-        if (!isset($storageRecord['uid'])) {
+        if (!isset($this->storageRecord['uid'])) {
             throw new \InvalidArgumentException(
                 '$storageRecord[\'uid\'] is unexpectedly not set',
                 1688920972
             );
         }
 
-        $this->storageRecord = $storageRecord;
         $this->eventDispatcher = $eventDispatcher ?? GeneralUtility::makeInstance(EventDispatcherInterface::class);
-        if (is_array($storageRecord['configuration'] ?? null)) {
-            $this->configuration = $storageRecord['configuration'];
-        } elseif (!empty($storageRecord['configuration'] ?? '')) {
-            $this->configuration = GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($storageRecord['configuration']);
+        if (is_array($this->storageRecord['configuration'] ?? null)) {
+            $this->configuration = $this->storageRecord['configuration'];
+        } elseif (!empty($this->storageRecord['configuration'] ?? '')) {
+            $this->configuration = GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($this->storageRecord['configuration']);
         } else {
             $this->configuration = [];
         }
@@ -237,8 +227,7 @@ class ResourceStorage implements ResourceStorageInterface
 
         $this->capabilities = new Capabilities($capabilityBits);
 
-        $this->driver = $driver;
-        $this->driver->setStorageUid((int)$storageRecord['uid']);
+        $this->driver->setStorageUid((int)$this->storageRecord['uid']);
         $this->driver->mergeConfigurationCapabilities($this->capabilities);
         try {
             $this->driver->processConfiguration();
@@ -259,34 +248,21 @@ class ResourceStorage implements ResourceStorageInterface
         $this->driver->initialize();
         $this->capabilities = $this->driver->getCapabilities();
 
-        $this->isDefault = (isset($storageRecord['is_default']) && $storageRecord['is_default'] == 1);
+        $this->isDefault = (isset($this->storageRecord['is_default']) && $this->storageRecord['is_default'] == 1);
         $this->resetFileAndFolderNameFiltersToDefault();
     }
 
-    /**
-     * Gets the configuration.
-     *
-     * @return array
-     */
-    public function getConfiguration()
+    public function getConfiguration(): array
     {
         return $this->configuration;
     }
 
-    /**
-     * Sets the configuration.
-     */
     public function setConfiguration(array $configuration): void
     {
         $this->configuration = $configuration;
     }
 
-    /**
-     * Gets the storage record.
-     *
-     * @return array
-     */
-    public function getStorageRecord()
+    public function getStorageRecord(): array
     {
         return $this->storageRecord;
     }
@@ -294,9 +270,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Sets the storage that belongs to this storage.
      *
-     * @return ResourceStorage
+     * @return $this
      */
-    public function setDriver(DriverInterface $driver)
+    public function setDriver(DriverInterface $driver): self
     {
         $this->driver = $driver;
         return $this;
@@ -304,40 +280,34 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns the driver object belonging to this storage.
-     *
-     * @return Driver\DriverInterface
+     * Note: This is a non-public method on purpose, because the outside world should never know if this is
+     * a local or remote storage.
      */
-    protected function getDriver()
+    protected function getDriver(): DriverInterface
     {
         return $this->driver;
     }
 
     /**
      * Returns the name of this storage.
-     *
-     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->storageRecord['name'];
     }
 
     /**
      * Returns the UID of this storage.
-     *
-     * @return int
      */
-    public function getUid()
+    public function getUid(): int
     {
         return (int)($this->storageRecord['uid'] ?? 0);
     }
 
     /**
      * Tells whether there are children in this storage.
-     *
-     * @return bool
      */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return true;
     }
@@ -379,10 +349,8 @@ class ResourceStorage implements ResourceStorageInterface
      * configuration option and does not mean that it really *is* public. OTOH
      * a storage that is marked as not publicly available will trigger the file
      * publishing mechanisms of TYPO3.
-     *
-     * @return bool
      */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->hasCapability(Capabilities::CAPABILITY_PUBLIC);
     }
@@ -390,20 +358,16 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Returns TRUE if this storage is writable. This is determined by the
      * driver and the storage configuration; user permissions are not taken into account.
-     *
-     * @return bool
      */
-    public function isWritable()
+    public function isWritable(): bool
     {
         return $this->hasCapability(Capabilities::CAPABILITY_WRITABLE);
     }
 
     /**
      * Returns TRUE if this storage is browsable by a (backend) user of TYPO3.
-     *
-     * @return bool
      */
-    public function isBrowsable()
+    public function isBrowsable(): bool
     {
         return $this->isOnline() && $this->hasCapability(Capabilities::CAPABILITY_BROWSABLE);
     }
@@ -420,7 +384,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Search for files in a storage based on given restrictions
      * and a possibly given folder.
      *
-     * @param Folder|null $folder
      * @param bool $useFilters Whether storage filters should be applied
      */
     public function searchFiles(FileSearchDemand $searchDemand, ?Folder $folder = null, bool $useFilters = true): FileSearchResultInterface
@@ -441,20 +404,16 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns TRUE if the identifiers used by this storage are case-sensitive.
-     *
-     * @return bool
      */
-    public function usesCaseSensitiveIdentifiers()
+    public function usesCaseSensitiveIdentifiers(): bool
     {
         return $this->driver->isCaseSensitiveFileSystem();
     }
 
     /**
      * Returns TRUE if this storage is browsable by a (backend) user of TYPO3.
-     *
-     * @return bool
      */
-    public function isOnline()
+    public function isOnline(): bool
     {
         if ($this->isOnline === null) {
             if ($this->getUid() === 0) {
@@ -487,10 +446,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns TRUE if auto extracting of metadata is enabled
-     *
-     * @return bool
      */
-    public function autoExtractMetadataEnabled()
+    public function autoExtractMetadataEnabled(): bool
     {
         return !empty($this->storageRecord['auto_extract_metadata']);
     }
@@ -502,7 +459,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * Typically, this is only done if the configuration is wrong.
      */
-    public function markAsPermanentlyOffline()
+    public function markAsPermanentlyOffline(): void
     {
         if ($this->getUid() > 0) {
             // @todo: move this to the storage repository
@@ -524,7 +481,7 @@ class ResourceStorage implements ResourceStorageInterface
      * Non-permanent: This typically happens for remote storages
      * that are "flaky" and not available all the time.
      */
-    public function markAsTemporaryOffline()
+    public function markAsTemporaryOffline(): void
     {
         $registryObject = GeneralUtility::makeInstance(Registry::class);
         $registryObject->set('core', 'sys_file_storage-' . $this->getUid() . '-offline-until', time() + 60 * 5);
@@ -539,12 +496,9 @@ class ResourceStorage implements ResourceStorageInterface
      * Adds a file mount as a "filter" for users to only work on a subset of a
      * storage object
      *
-     * @param string $folderIdentifier
-     * @param array $additionalData
-     *
      * @throws Exception\FolderDoesNotExistException
      */
-    public function addFileMount($folderIdentifier, $additionalData = [])
+    public function addFileMount(string $folderIdentifier, array $additionalData = []): void
     {
         // check for the folder before we add it as a file mount
         if ($this->driver->folderExists($folderIdentifier) === false) {
@@ -581,10 +535,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns all file mounts that are registered with this storage.
-     *
-     * @return array
      */
-    public function getFileMounts()
+    public function getFileMounts(): array
     {
         return $this->fileMounts;
     }
@@ -595,17 +547,13 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param ResourceInterface $subject file or folder
      * @param bool $checkWriteAccess If true, it is not only checked if the subject is within the file mount but also whether it isn't a read only file mount
-     * @return bool
      */
-    public function isWithinFileMountBoundaries($subject, $checkWriteAccess = false)
+    public function isWithinFileMountBoundaries(ResourceInterface $subject, bool $checkWriteAccess = false): bool
     {
         if (!$this->evaluatePermissions) {
             return true;
         }
         $isWithinFileMount = false;
-        if (!$subject) {
-            $subject = $this->getRootLevelFolder();
-        }
         $identifier = $subject->getIdentifier();
 
         // Allow access to processing folder
@@ -637,21 +585,17 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Sets whether the permissions to access or write
      * into this storage should be checked or not.
-     *
-     * @param bool $evaluatePermissions
      */
-    public function setEvaluatePermissions($evaluatePermissions)
+    public function setEvaluatePermissions(bool $evaluatePermissions): void
     {
-        $this->evaluatePermissions = (bool)$evaluatePermissions;
+        $this->evaluatePermissions = $evaluatePermissions;
     }
 
     /**
      * Gets whether the permissions to access or write
      * into this storage should be checked or not.
-     *
-     * @return bool $evaluatePermissions
      */
-    public function getEvaluatePermissions()
+    public function getEvaluatePermissions(): bool
     {
         return $this->evaluatePermissions;
     }
@@ -659,7 +603,7 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Sets the user permissions of the storage.
      */
-    public function setUserPermissions(array $userPermissions)
+    public function setUserPermissions(array $userPermissions): void
     {
         $this->userPermissions = $userPermissions;
     }
@@ -668,11 +612,10 @@ class ResourceStorage implements ResourceStorageInterface
      * Checks if the ACL settings allow for a certain action
      * (is a user allowed to read a file or copy a folder).
      *
-     * @param string $action
+     * @param string $action (e.g. "read" or "write")
      * @param string $type either File or Folder
-     * @return bool
      */
-    public function checkUserActionPermission($action, $type)
+    public function checkUserActionPermission(string $action, string $type): bool
     {
         if (!$this->evaluatePermissions) {
             return true;
@@ -696,7 +639,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $action action, can be read, write, delete, editMeta
      */
-    public function checkFileActionPermission($action, FileInterface $file): bool
+    public function checkFileActionPermission(string $action, FileInterface $file): bool
     {
         $isProcessedFile = $file instanceof ProcessedFile;
         // Check 1: Allow editing meta data of a file if it is in mount boundaries of a writable file mount
@@ -730,7 +673,7 @@ class ResourceStorage implements ResourceStorageInterface
             $isMissing = $file->isMissing();
         }
 
-        if ($this->driver->fileExists($file->getIdentifier()) === false) {
+        if ($this->driver->fileExists($file->getIdentifier()) === false && $file instanceof File) {
             $file->setMissing(true);
             $isMissing = true;
         }
@@ -756,14 +699,10 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Checks if a folder operation (= action) is allowed on a Folder.
      *
-     * This method, by design, does not throw exceptions or do logging.
+     * This method, by design, does not throw exceptions or does logging.
      * See the checkFileActionPermission() method above for the reasons.
-     *
-     * @param string $action
-     * @param Folder|null $folder
-     * @return bool
      */
-    public function checkFolderActionPermission($action, ?Folder $folder = null)
+    public function checkFolderActionPermission(string $action, ?Folder $folder = null): bool
     {
         // Check 1: Does the user have permission to perform the action? e.g. "writeFolder"
         if ($this->checkUserActionPermission($action, 'Folder') === false) {
@@ -814,7 +753,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param string $fileName full filename
      * @return bool TRUE if extension/filename is allowed
      */
-    protected function checkFileExtensionPermission($fileName)
+    protected function checkFileExtensionPermission(string $fileName): bool
     {
         $fileName = $this->driver->sanitizeFileName($fileName);
         return GeneralUtility::makeInstance(FileNameValidator::class)->isValid($fileName);
@@ -837,7 +776,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder|null $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    protected function assureFolderReadPermission(?Folder $folder = null)
+    protected function assureFolderReadPermission(?Folder $folder = null): void
     {
         if (!$this->checkFolderActionPermission('read', $folder)) {
             if ($folder === null) {
@@ -862,7 +801,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFolderDeletePermission(Folder $folder, $checkDeleteRecursively)
+    protected function assureFolderDeletePermission(Folder $folder, bool $checkDeleteRecursively): void
     {
         // Check user permissions for recursive deletion if it is requested
         if ($checkDeleteRecursively && !$this->checkUserActionPermission('recursivedelete', 'Folder')) {
@@ -889,7 +828,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFileAccessPermissionsException
      * @throws Exception\IllegalFileExtensionException
      */
-    protected function assureFileReadPermission(FileInterface $file)
+    protected function assureFileReadPermission(FileInterface $file): void
     {
         if (!$this->checkFileActionPermission('read', $file)) {
             throw new InsufficientFileAccessPermissionsException(
@@ -910,9 +849,8 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileWritePermissionsException
-     * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileWritePermissions(FileInterface $file)
+    protected function assureFileWritePermissions(FileInterface $file): void
     {
         // Check if user is allowed to write the file and $file is writable
         if (!$this->checkFileActionPermission('write', $file)) {
@@ -929,14 +867,15 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
      */
-    protected function assureFileReplacePermissions(FileInterface $file)
+    protected function assureFileReplacePermissions(FileInterface $file): void
     {
         // Check if user is allowed to replace the file and $file is writable
         if (!$this->checkFileActionPermission('replace', $file)) {
             throw new InsufficientFileWritePermissionsException('Replacing file "' . $file->getIdentifier() . '" is not allowed.', 1436899571);
         }
         // Check if parentFolder is writable for the user
-        if (!$this->checkFolderActionPermission('write', $file->getParentFolder())) {
+        $parentFolder = $file->getParentFolder();
+        if (!$parentFolder instanceof Folder || !$this->checkFolderActionPermission('write', $parentFolder)) {
             throw new InsufficientFolderWritePermissionsException('You are not allowed to write to the target folder "' . $file->getIdentifier() . '"', 1436899572);
         }
     }
@@ -948,7 +887,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
      */
-    protected function assureFileDeletePermissions(FileInterface $file)
+    protected function assureFileDeletePermissions(FileInterface $file): void
     {
         // Check for disallowed file extensions
         if (!$this->checkValidFileExtension($file)) {
@@ -985,7 +924,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileAddPermissions($targetFolder, $targetFileName)
+    protected function assureFileAddPermissions(Folder $targetFolder, string $targetFileName): void
     {
         // Check for a valid file extension
         if (!$this->checkFileExtensionPermission($targetFileName)) {
@@ -1008,7 +947,6 @@ class ResourceStorage implements ResourceStorageInterface
      * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
      * @param Folder $targetFolder The target folder where the file should be uploaded
      * @param string $targetFileName the destination file name $_FILES['file1']['name']
-     * @param int $uploadedFileSize
      *
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\UploadException
@@ -1016,7 +954,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\UploadSizeException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $uploadedFileSize)
+    protected function assureFileUploadPermissions(string $localFilePath, Folder $targetFolder, string $targetFileName, int $uploadedFileSize): void
     {
         // Makes sure this is an uploaded file
         if (!is_uploaded_file($localFilePath)) {
@@ -1038,9 +976,8 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFolderAccessPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      * @throws Exception\IllegalFileExtensionException
-     * @param string $targetFileName
      */
-    protected function assureFileMovePermissions(FileInterface $file, Folder $targetFolder, $targetFileName)
+    protected function assureFileMovePermissions(FileInterface $file, Folder $targetFolder, string $targetFileName): void
     {
         // Check if targetFolder is within this storage
         if ($this->getUid() !== $targetFolder->getStorage()->getUid()) {
@@ -1063,13 +1000,11 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Checks for permissions to rename a file.
      *
-     * @param string $targetFileName
      * @throws Exception\InsufficientFileWritePermissionsException
      * @throws Exception\IllegalFileExtensionException
-     * @throws Exception\InsufficientFileReadPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileRenamePermissions(FileInterface $file, $targetFileName)
+    protected function assureFileRenamePermissions(FileInterface $file, string $targetFileName): void
     {
         // Check if file extension is allowed
         if (!$this->checkFileExtensionPermission($targetFileName) || !$this->checkValidFileExtension($file)) {
@@ -1092,15 +1027,13 @@ class ResourceStorage implements ResourceStorageInterface
      * Check if a file has the permission to be copied on a File/Folder/Storage,
      * if not throw an exception
      *
-     * @param string $targetFileName
-     *
      * @throws Exception
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileReadPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileCopyPermissions(FileInterface $file, Folder $targetFolder, $targetFileName)
+    protected function assureFileCopyPermissions(FileInterface $file, Folder $targetFolder, string $targetFileName): void
     {
         // Check if targetFolder is within this storage, this should never happen
         if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
@@ -1122,8 +1055,7 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Check if a file has the permission to be copied on a File/Folder/Storage,
-     * if not throw an exception
-     *
+     * if not throw an exception.
      *
      * @throws Exception
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -1132,7 +1064,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientUserPermissionsException
      * @throws \RuntimeException
      */
-    protected function assureFolderCopyPermissions(FolderInterface $folderToCopy, FolderInterface $targetParentFolder)
+    protected function assureFolderCopyPermissions(FolderInterface $folderToCopy, FolderInterface $targetParentFolder): void
     {
         // Check if targetFolder is within this storage, this should never happen
         if ($this->getUid() !== $targetParentFolder->getStorage()->getUid()) {
@@ -1156,17 +1088,14 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Check if a file has the permission to be copied on a File/Folder/Storage,
-     * if not throw an exception
-     *
+     * if not throw an exception.
      *
      * @throws \InvalidArgumentException
      * @throws Exception\InsufficientFolderWritePermissionsException
-     * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFileReadPermissionsException
-     * @throws Exception\InsufficientUserPermissionsException
      * @throws \RuntimeException
      */
-    protected function assureFolderMovePermissions(FolderInterface $folderToMove, FolderInterface $targetParentFolder)
+    protected function assureFolderMovePermissions(FolderInterface $folderToMove, FolderInterface $targetParentFolder): void
     {
         // Check if targetFolder is within this storage, this should never happen
         if ($this->getUid() !== $targetParentFolder->getStorage()->getUid()) {
@@ -1195,20 +1124,16 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $fileName The name of the file to be sanitized
      * @param Folder|null $targetFolder The target folder where the file is located or should be added
-     *
-     * @return string
      */
-    public function sanitizeFileName($fileName, ?Folder $targetFolder = null)
+    public function sanitizeFileName(string $fileName, ?Folder $targetFolder = null): string
     {
         $targetFolder = $targetFolder ?: $this->getDefaultFolder();
         $fileName = $this->driver->sanitizeFileName($fileName);
 
         // The file name could be changed by an event listener
-        $fileName = $this->eventDispatcher->dispatch(
+        return $this->eventDispatcher->dispatch(
             new SanitizeFileNameEvent($fileName, $targetFolder, $this, $this->driver)
         )->getFileName();
-
-        return $fileName;
     }
 
     /********************
@@ -1219,15 +1144,13 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $localFilePath The file on the server's hard disk to add
      * @param Folder $targetFolder The target folder where the file should be added
-     * @param string $targetFileName The name of the file to be add, If not set, the local file name is used
-     * @param DuplicationBehavior $conflictMode
+     * @param string $targetFileName The name of the file to be added, If not set, the local file name is used
      * @param bool $removeOriginal if set the original file will be removed after successful operation
      *
      * @throws \InvalidArgumentException
      * @throws Exception\ExistingTargetFileNameException
-     * @return File
      */
-    public function addFile($localFilePath, Folder $targetFolder, $targetFileName = '', DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME, $removeOriginal = true)
+    public function addFile(string $localFilePath, Folder $targetFolder, string $targetFileName = '', DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME, bool $removeOriginal = true): File
     {
         $localFilePath = PathUtility::getCanonicalPath($localFilePath);
         // File is not available locally NOR is it an uploaded file
@@ -1270,12 +1193,10 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Updates a processed file with a new file from the local filesystem.
      *
-     * @param string $localFilePath
-     * @return FileInterface
      * @throws \InvalidArgumentException
-     * @internal use only
+     * @internal do not use outside TYPO3's File Abstraction Layer code
      */
-    public function updateProcessedFile($localFilePath, ProcessedFile $processedFile, ?Folder $processingFolder = null)
+    public function updateProcessedFile(string $localFilePath, ProcessedFile $processedFile, ?Folder $processingFolder = null): ProcessedFile
     {
         if (!file_exists($localFilePath)) {
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1319552746);
@@ -1291,12 +1212,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Creates a (cryptographic) hash for a file.
-     *
-     * @param string $hash
-     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
-     * @return string
      */
-    public function hashFile(FileInterface $fileObject, $hash)
+    public function hashFile(FileInterface $fileObject, string $hash): string
     {
         return $this->hashFileByIdentifier($fileObject->getIdentifier(), $hash);
     }
@@ -1304,15 +1221,12 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Creates a (cryptographic) hash for a fileIdentifier.
      *
-     * @param string $fileIdentifier
-     * @param string $hash
-     * @throws \TYPO3\CMS\Core\Resource\Exception\InvalidHashException
-     * @return string
+     * @throws InvalidHashException
      */
-    public function hashFileByIdentifier($fileIdentifier, $hash)
+    public function hashFileByIdentifier(string $fileIdentifier, string $hash): string
     {
         $hash = $this->driver->hash($fileIdentifier, $hash);
-        if (!is_string($hash) || $hash === '') {
+        if ($hash === '') {
             throw new InvalidHashException('Hash has to be non-empty string.', 1551950301);
         }
         return $hash;
@@ -1320,16 +1234,12 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Hashes a file identifier, taking the case sensitivity of the file system
-     * into account. This helps mitigating problems with case-insensitive
+     * into account. This helps to mitigate problems with case-insensitive
      * databases.
-     *
-     * @param string|FileInterface $file
-     * @return string
      */
-    public function hashFileIdentifier($file)
+    public function hashFileIdentifier(FileInterface|string $file): string
     {
         if ($file instanceof FileInterface) {
-            /** @var FileInterface $file */
             $file = $file->getIdentifier();
         }
         return $this->driver->hashIdentifier($file);
@@ -1418,24 +1328,18 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Copies a file from the storage for local processing.
      *
-     * @param bool $writable
      * @return string Path to local file (either original or copied to some temporary local location)
      */
-    public function getFileForLocalProcessing(FileInterface $fileObject, $writable = true)
+    public function getFileForLocalProcessing(FileInterface $fileObject, bool $writable = true): string
     {
-        $filePath = $this->driver->getFileForLocalProcessing($fileObject->getIdentifier(), $writable);
-        return $filePath;
+        return $this->driver->getFileForLocalProcessing($fileObject->getIdentifier(), $writable);
     }
 
     /**
      * Gets a file by identifier.
-     *
-     * @param string $identifier
-     * @return FileInterface
      */
-    public function getFile($identifier)
+    public function getFile(string $identifier): ProcessedFile|File|null
     {
-        // @todo not sure if this method is used with processed files too, if so, the return value is missing types
         $file = $this->getFileByIdentifier($identifier);
         if ($file instanceof File && !$this->driver->fileExists($identifier)) {
             $file->setMissing(true);
@@ -1445,12 +1349,12 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Gets a file object from storage by file identifier
-     * If the file is outside of the process folder, it gets indexed and returned as file object afterwards
+     * If the file is outside the process folder, it gets indexed and returned as file object afterward
      * If the file is within processing folder, the file object will be directly returned
      *
      * @return File|ProcessedFile|null Returns ProcessedFile|null only if a processed file is requested, always File otherwise
      */
-    public function getFileByIdentifier(string $fileIdentifier)
+    public function getFileByIdentifier(string $fileIdentifier): File|ProcessedFile|null
     {
         if (!$this->isWithinProcessingFolder($fileIdentifier)) {
             $fileData = $this->getFileIndexRepository()->findOneByStorageAndIdentifier($this, $fileIdentifier);
@@ -1470,10 +1374,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Gets information about a file.
      *
-     * @return array
      * @internal
      */
-    public function getFileInfo(FileInterface $fileObject)
+    public function getFileInfo(FileInterface $fileObject): array
     {
         return $this->getFileInfoByIdentifier($fileObject->getIdentifier());
     }
@@ -1481,11 +1384,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Gets information about a file by its identifier.
      *
-     * @param string $identifier
-     * @return array
      * @internal
      */
-    public function getFileInfoByIdentifier($identifier, array $propertiesToExtract = [])
+    public function getFileInfoByIdentifier(string $identifier, array $propertiesToExtract = []): array
     {
         return $this->driver->getFileInfoByIdentifier($identifier, $propertiesToExtract);
     }
@@ -1493,7 +1394,7 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Unsets the file and folder name filters, thus making this storage return unfiltered filelists.
      */
-    public function unsetFileAndFolderNameFilters()
+    public function unsetFileAndFolderNameFilters(): void
     {
         $this->fileAndFolderNameFilters = [];
     }
@@ -1501,7 +1402,7 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Resets the file and folder name filters to the default values defined in the TYPO3 configuration.
      */
-    public function resetFileAndFolderNameFiltersToDefault()
+    public function resetFileAndFolderNameFiltersToDefault(): void
     {
         $this->fileAndFolderNameFilters = $GLOBALS['TYPO3_CONF_VARS']['SYS']['fal']['defaultFilterCallbacks'];
     }
@@ -1524,7 +1425,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @return array
      */
-    public function getFileAndFolderNameFilters()
+    public function getFileAndFolderNameFilters(): array
     {
         return array_merge($this->fileAndFolderNameFilters, [$this->getImportExportFilter()]);
     }
@@ -1532,47 +1433,32 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * @return $this
      */
-    public function setFileAndFolderNameFilters(array $filters)
+    public function setFileAndFolderNameFilters(array $filters): self
     {
         $this->fileAndFolderNameFilters = $filters;
         return $this;
     }
 
-    /**
-     * @param callable $filter
-     */
-    public function addFileAndFolderNameFilter($filter)
+    public function addFileAndFolderNameFilter(callable $filter): void
     {
         $this->fileAndFolderNameFilters[] = $filter;
     }
 
-    /**
-     * @param string $fileIdentifier
-     *
-     * @return string
-     */
-    public function getFolderIdentifierFromFileIdentifier($fileIdentifier)
+    public function getFolderIdentifierFromFileIdentifier(string $fileIdentifier): string
     {
         return $this->driver->getParentFolderIdentifierOfIdentifier($fileIdentifier);
     }
 
     /**
      * Get file from folder
-     *
-     * @param string $fileName
-     * @return File|ProcessedFile|null
      */
-    public function getFileInFolder($fileName, Folder $folder)
+    public function getFileInFolder(string $fileName, Folder $folder): File|ProcessedFile|null
     {
         $identifier = $this->driver->getFileInFolder($fileName, $folder->getIdentifier());
         return $this->getFileByIdentifier($identifier);
     }
 
     /**
-     * @param int $start
-     * @param int $maxNumberOfItems
-     * @param bool $useFilters
-     * @param bool $recursive
      * @param string $sort Property name used to sort the items.
      *                     Among them may be: '' (empty, no sorting), name,
      *                     fileext, size, tstamp and rw.
@@ -1582,79 +1468,63 @@ class ResourceStorage implements ResourceStorageInterface
      * @return File[]
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    public function getFilesInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = true, $recursive = false, $sort = '', $sortRev = false)
+    public function getFilesInFolder(Folder $folder, int $start = 0, int $maxNumberOfItems = 0, bool $useFilters = true, bool $recursive = false, string $sort = '', bool $sortRev = false): array
     {
         $this->assureFolderReadPermission($folder);
 
         $rows = $this->getFileIndexRepository()->findByFolder($folder);
 
-        $filters = $useFilters == true ? $this->getFileAndFolderNameFilters() : [];
-        $fileIdentifiers = array_values($this->driver->getFilesInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev));
+        $filters = $useFilters ? $this->getFileAndFolderNameFilters() : [];
+        $fileIdentifiers = $this->driver->getFilesInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev);
 
         $items = [];
         foreach ($fileIdentifiers as $identifier) {
             if (isset($rows[$identifier])) {
                 $fileObject = $this->getFileFactory()->getFileObject($rows[$identifier]['uid'], $rows[$identifier]);
             } else {
-                // @todo check if processed files can be involved here, if so, return type is wrong
                 $fileObject = $this->getFileByIdentifier($identifier);
             }
-            if ($fileObject instanceof FileInterface) {
-                $key = $fileObject->getName();
-                while (isset($items[$key])) {
-                    $key .= 'z';
-                }
-                $items[$key] = $fileObject;
+            // We never want to list anything else than regular files, not processed files etc.
+            if (!$fileObject instanceof File) {
+                continue;
             }
+            $key = $fileObject->getName();
+            while (isset($items[$key])) {
+                $key .= 'z';
+            }
+            $items[$key] = $fileObject;
         }
 
         return $items;
     }
 
-    /**
-     * @param string $folderIdentifier
-     * @param bool $useFilters
-     * @param bool $recursive
-     * @return array
-     */
-    public function getFileIdentifiersInFolder($folderIdentifier, $useFilters = true, $recursive = false)
+    public function getFileIdentifiersInFolder(string $folderIdentifier, bool $useFilters = true, bool $recursive = false): array
     {
-        $filters = $useFilters == true ? $this->getFileAndFolderNameFilters() : [];
+        $filters = $useFilters ? $this->getFileAndFolderNameFilters() : [];
         return $this->driver->getFilesInFolder($folderIdentifier, 0, 0, $recursive, $filters);
     }
 
     /**
-     * @param bool $useFilters
-     * @param bool $recursive
      * @return int Number of files in folder
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    public function countFilesInFolder(Folder $folder, $useFilters = true, $recursive = false)
+    public function countFilesInFolder(Folder $folder, bool $useFilters = true, bool $recursive = false): int
     {
         $this->assureFolderReadPermission($folder);
         $filters = $useFilters ? $this->getFileAndFolderNameFilters() : [];
         return $this->driver->countFilesInFolder($folder->getIdentifier(), $recursive, $filters);
     }
 
-    /**
-     * @param string $folderIdentifier
-     * @param bool $useFilters
-     * @param bool $recursive
-     * @return array
-     */
-    public function getFolderIdentifiersInFolder($folderIdentifier, $useFilters = true, $recursive = false)
+    public function getFolderIdentifiersInFolder(string $folderIdentifier, bool $useFilters = true, bool $recursive = false): array
     {
-        $filters = $useFilters == true ? $this->getFileAndFolderNameFilters() : [];
+        $filters = $useFilters ? $this->getFileAndFolderNameFilters() : [];
         return $this->driver->getFoldersInFolder($folderIdentifier, 0, 0, $recursive, $filters);
     }
 
     /**
      * Returns TRUE if the specified file exists
-     *
-     * @param string $identifier
-     * @return bool
      */
-    public function hasFile($identifier)
+    public function hasFile(string $identifier): bool
     {
         // Allow if identifier is in processing folder
         if (!$this->isWithinProcessingFolder($identifier)) {
@@ -1668,7 +1538,7 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @return Folder[]
      */
-    public function getProcessingFolders()
+    public function getProcessingFolders(): array
     {
         if ($this->processingFolders === null) {
             $this->processingFolders = [];
@@ -1695,10 +1565,8 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Returns TRUE if folder that is in current storage  is set as
      * processing folder for one of the existing storages
-     *
-     * @return bool
      */
-    public function isProcessingFolder(Folder $folder)
+    public function isProcessingFolder(Folder $folder): bool
     {
         $isProcessingFolder = false;
         foreach ($this->getProcessingFolders() as $processingFolder) {
@@ -1712,11 +1580,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Checks if the queried file in the given folder exists
-     *
-     * @param string $fileName
-     * @return bool
      */
-    public function hasFileInFolder($fileName, Folder $folder)
+    public function hasFileInFolder(string $fileName, Folder $folder): bool
     {
         $this->assureFolderReadPermission($folder);
         return $this->driver->fileExistsInFolder($fileName, $folder->getIdentifier());
@@ -1725,12 +1590,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Get contents of a file object
      *
-     * @param FileInterface $file
-     *
      * @throws Exception\InsufficientFileReadPermissionsException
-     * @return string
      */
-    public function getFileContents($file)
+    public function getFileContents(FileInterface $file): string
     {
         $this->assureFileReadPermission($file);
         return $this->driver->getFileContents($file->getIdentifier());
@@ -1768,14 +1630,13 @@ class ResourceStorage implements ResourceStorageInterface
      * @param bool $asDownload If set Content-Disposition attachment is sent, inline otherwise
      * @param string|null $alternativeFilename the filename for the download (if $asDownload is set)
      * @param string|null $overrideMimeType If set this will be used as Content-Type header instead of the automatically detected mime type.
-     * @return ResponseInterface
      */
     protected function getPseudoStream(
         FileInterface $file,
         bool $asDownload = false,
         ?string $alternativeFilename = null,
         ?string $overrideMimeType = null
-    ) {
+    ): ResponseInterface {
         $downloadName = $alternativeFilename ?: $file->getName();
         $contentDisposition = $asDownload ? 'attachment' : 'inline';
 
@@ -1797,14 +1658,11 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Set contents of a file object.
      *
-     * @param string $contents
-     *
      * @throws \Exception|\RuntimeException
      * @throws Exception\InsufficientFileWritePermissionsException
-     * @throws Exception\InsufficientUserPermissionsException
      * @return int The number of bytes written to the file
      */
-    public function setFileContents(AbstractFile $file, $contents)
+    public function setFileContents(AbstractFile $file, string $contents): int
     {
         // Check if user is allowed to edit
         $this->assureFileWritePermissions($file);
@@ -1832,9 +1690,8 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientFolderWritePermissionsException
-     * @return File The file object
      */
-    public function createFile($fileName, Folder $targetFolderObject)
+    public function createFile(string $fileName, Folder $targetFolderObject): ProcessedFile|File|null
     {
         $this->assureFileAddPermissions($targetFolderObject, $fileName);
         $this->eventDispatcher->dispatch(
@@ -1850,12 +1707,11 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::deleteFile()
      *
-     * @param FileInterface $fileObject
      * @throws Exception\InsufficientFileAccessPermissionsException
      * @throws Exception\FileOperationErrorException
      * @return bool TRUE if deletion succeeded
      */
-    public function deleteFile($fileObject)
+    public function deleteFile(FileInterface $fileObject): bool
     {
         $this->assureFileDeletePermissions($fileObject);
 
@@ -1900,14 +1756,12 @@ class ResourceStorage implements ResourceStorageInterface
      * copies a source file (from any location) in to the target
      * folder, the latter has to be part of this storage
      *
-     * @param string $targetFileName an optional destination fileName
-     * @param DuplicationBehavior $conflictMode
+     * @param string|null $targetFileName an optional destination fileName
      *
      * @throws \Exception|Exception\AbstractFileOperationException
      * @throws Exception\ExistingTargetFileNameException
-     * @return File
      */
-    public function copyFile(FileInterface $file, Folder $targetFolder, $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function copyFile(FileInterface $file, Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): ProcessedFile|File|null
     {
         if ($targetFileName === null) {
             $targetFileName = $file->getName();
@@ -1923,7 +1777,7 @@ class ResourceStorage implements ResourceStorageInterface
         if ($conflictMode === DuplicationBehavior::CANCEL && $targetFolder->hasFile($sanitizedTargetFileName)) {
             throw new ExistingTargetFileNameException('The target file already exists.', 1320291064);
         }
-        // File exists and we should find another name, let's find another one
+        // File exists, and we should find another name, let's find another one
         if ($conflictMode === DuplicationBehavior::RENAME && $targetFolder->hasFile($sanitizedTargetFileName)) {
             $sanitizedTargetFileName = $this->getUniqueName($targetFolder, $sanitizedTargetFileName);
         }
@@ -1959,16 +1813,12 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::func_move()
      *
-     * @param FileInterface $file
-     * @param Folder $targetFolder
-     * @param string $targetFileName an optional destination fileName
-     * @param DuplicationBehavior $conflictMode
+     * @param string|null $targetFileName an optional destination fileName
      *
      * @throws Exception\ExistingTargetFileNameException
      * @throws \RuntimeException
-     * @return FileInterface
      */
-    public function moveFile($file, $targetFolder, $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function moveFile(FileInterface $file, Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
     {
         if ($targetFileName === null) {
             $targetFileName = $file->getName();
@@ -2030,13 +1880,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::func_rename()
      *
-     * @param FileInterface $file
-     * @param string $targetFileName
-     * @param DuplicationBehavior $conflictMode
-     * @return FileInterface
      * @throws ExistingTargetFileNameException
      */
-    public function renameFile($file, $targetFileName, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function renameFile(FileInterface $file, string $targetFileName, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
     {
         $sanitizedTargetFileName = $this->driver->sanitizeFileName($targetFileName);
         // The new name should be different from the current.
@@ -2067,11 +1913,13 @@ class ResourceStorage implements ResourceStorageInterface
             } elseif ($conflictMode === DuplicationBehavior::CANCEL) {
                 throw $exception;
             } elseif ($conflictMode === DuplicationBehavior::REPLACE) {
-                $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $sanitizedTargetFileName;
-                $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
-                $file = $this->replaceFile($sourceFile, Environment::getPublicPath() . '/' . $file->getPublicUrl());
+                if ($file instanceof AbstractFile) {
+                    $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $sanitizedTargetFileName;
+                    $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
+                    $file = $this->replaceFile($sourceFile, Environment::getPublicPath() . '/' . $file->getPublicUrl());
+                }
             }
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
         }
 
         $this->eventDispatcher->dispatch(
@@ -2084,14 +1932,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Replaces a file with a local file (e.g. a freshly uploaded file)
      *
-     * @param string $localFilePath
-     *
-     * @return FileInterface
-     *
-     * @throws Exception\IllegalFileExtensionException
      * @throws \InvalidArgumentException
      */
-    public function replaceFile(FileInterface $file, $localFilePath)
+    public function replaceFile(FileInterface $file, string $localFilePath): FileInterface
     {
         $this->assureFileReplacePermissions($file);
         if (!file_exists($localFilePath)) {
@@ -2118,7 +1961,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param Folder|null $targetFolder the target folder
      * @param string|null $targetFileName the file name to be written
      */
-    public function addUploadedFile(array|UploadedFileInterface $uploadedFileData, ?Folder $targetFolder = null, $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): FileInterface
+    public function addUploadedFile(array|UploadedFileInterface $uploadedFileData, ?Folder $targetFolder = null, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): FileInterface
     {
         if ($uploadedFileData instanceof UploadedFileInterface) {
             if ($uploadedFileData instanceof UploadedFile) {
@@ -2165,7 +2008,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @todo check if this is a duplicate
      * @return File[]
      */
-    protected function getAllFileObjectsInFolder(Folder $folder)
+    protected function getAllFileObjectsInFolder(Folder $folder): array
     {
         $files = [];
         $folderQueue = [$folder];
@@ -2175,7 +2018,7 @@ class ResourceStorage implements ResourceStorageInterface
                 $folderQueue[] = $subfolder;
             }
             foreach ($folder->getFiles() as $file) {
-                /** @var FileInterface $file */
+                /** @var File $file */
                 $files[$file->getIdentifier()] = $file;
             }
         }
@@ -2189,15 +2032,12 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param Folder $folderToMove The folder to move.
      * @param Folder $targetParentFolder The target parent folder
-     * @param string $newFolderName
-     * @param DuplicationBehavior $conflictMode
      *
      * @throws \Exception|\TYPO3\CMS\Core\Exception
      * @throws \InvalidArgumentException
      * @throws InvalidTargetFolderException
-     * @return Folder
      */
-    public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, $newFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function moveFolder(Folder $folderToMove, Folder $targetParentFolder, ?string $newFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): Folder
     {
         // @todo add tests
         $this->assureFolderMovePermissions($folderToMove, $targetParentFolder);
@@ -2241,10 +2081,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Moves the given folder from a different storage to the target folder in this storage.
      *
-     * @param string $newFolderName
      * @throws NotImplementedMethodException
      */
-    protected function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, $newFolderName)
+    protected function moveFolderBetweenStorages(Folder $folderToMove, Folder $targetParentFolder, string $newFolderName)
     {
         throw new NotImplementedMethodException('Not yet implemented', 1476046361);
     }
@@ -2254,12 +2093,10 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param FolderInterface $folderToCopy The folder to copy
      * @param FolderInterface $targetParentFolder The target folder
-     * @param string $newFolderName
-     * @param DuplicationBehavior $conflictMode
      * @return Folder The new (copied) folder object
      * @throws InvalidTargetFolderException
      */
-    public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
+    public function copyFolder(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, ?string $newFolderName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): Folder
     {
         $this->assureFolderCopyPermissions($folderToCopy, $targetParentFolder);
         $returnObject = null;
@@ -2279,7 +2116,7 @@ class ResourceStorage implements ResourceStorageInterface
                 1422723059
             );
         }
-        // Folder exists and we should find another name, let's find another one
+        // Folder exists, and we should find another name, let's find another one
         if ($conflictMode === DuplicationBehavior::RENAME && ($targetParentFolder->hasFolder($sanitizedNewFolderName) || $targetParentFolder->hasFile($sanitizedNewFolderName))) {
             $sanitizedNewFolderName = $this->getUniqueName($targetParentFolder, $sanitizedNewFolderName);
         }
@@ -2303,10 +2140,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Copies a folder between storages.
      *
-     * @param string $newFolderName
      * @throws NotImplementedMethodException
      */
-    protected function copyFolderBetweenStorages(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, $newFolderName)
+    protected function copyFolderBetweenStorages(FolderInterface $folderToCopy, FolderInterface $targetParentFolder, string $newFolderName)
     {
         throw new NotImplementedMethodException('Not yet implemented.', 1476046386);
     }
@@ -2314,13 +2150,10 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::folder_move()
      *
-     * @param Folder $folderObject
-     * @param string $newName
      * @throws \Exception
      * @throws \InvalidArgumentException
-     * @return Folder
      */
-    public function renameFolder($folderObject, $newName)
+    public function renameFolder(Folder $folderObject, string $newName): Folder
     {
         // Renaming the folder should check if the parent folder is writable
         // We cannot do this however because we cannot extract the parent folder from a folder currently
@@ -2354,16 +2187,12 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Previously in \TYPO3\CMS\Core\Utility\File\ExtendedFileUtility::folder_delete()
      *
-     * @param Folder $folderObject
-     * @param bool $deleteRecursively
      * @throws \RuntimeException
      * @throws Exception\InsufficientFolderAccessPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      * @throws Exception\FileOperationErrorException
-     * @throws Exception\InvalidPathException
-     * @return bool
      */
-    public function deleteFolder($folderObject, $deleteRecursively = false)
+    public function deleteFolder(Folder $folderObject, bool $deleteRecursively = false): bool
     {
         $isEmpty = $this->driver->isFolderEmpty($folderObject->getIdentifier());
         $this->assureFolderDeletePermission($folderObject, $deleteRecursively && !$isEmpty);
@@ -2399,22 +2228,17 @@ class ResourceStorage implements ResourceStorageInterface
      * Returns the Identifier for a folder within a given folder.
      *
      * @param string $folderName The name of the target folder
-     * @param bool $returnInaccessibleFolderObject
-     * @return Folder|InaccessibleFolder
      * @throws \Exception
      * @throws Exception\InsufficientFolderAccessPermissionsException
+     * @todo: this should eventually return a FolderInterface
      */
-    public function getFolderInFolder($folderName, Folder $parentFolder, $returnInaccessibleFolderObject = false)
+    public function getFolderInFolder(string $folderName, Folder $parentFolder, bool $returnInaccessibleFolderObject = false): Folder
     {
         $folderIdentifier = $this->driver->getFolderInFolder($folderName, $parentFolder->getIdentifier());
         return $this->getFolder($folderIdentifier, $returnInaccessibleFolderObject);
     }
 
     /**
-     * @param int $start
-     * @param int $maxNumberOfItems
-     * @param bool $useFilters
-     * @param bool $recursive
      * @param string $sort Property name used to sort the items.
      *                     Among them may be: '' (empty, no sorting), name,
      *                     fileext, size, tstamp and rw.
@@ -2423,12 +2247,12 @@ class ResourceStorage implements ResourceStorageInterface
      * @param bool $sortRev TRUE to indicate reverse sorting (last to first)
      * @return array<string|int, Folder>
      */
-    public function getFoldersInFolder(Folder $folder, $start = 0, $maxNumberOfItems = 0, $useFilters = true, $recursive = false, $sort = '', $sortRev = false)
+    public function getFoldersInFolder(Folder $folder, int $start = 0, int $maxNumberOfItems = 0, bool $useFilters = true, bool $recursive = false, string $sort = '', bool $sortRev = false): array
     {
         if (!$this->isOnline()) {
             return [];
         }
-        $filters = $useFilters == true ? $this->getFileAndFolderNameFilters() : [];
+        $filters = $useFilters ? $this->getFileAndFolderNameFilters() : [];
 
         $folderIdentifiers = $this->driver->getFoldersInFolder($folder->getIdentifier(), $start, $maxNumberOfItems, $recursive, $filters, $sort, $sortRev);
 
@@ -2449,12 +2273,9 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * @param bool $useFilters
-     * @param bool $recursive
-     * @return int Number of subfolders
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    public function countFoldersInFolder(Folder $folder, $useFilters = true, $recursive = false)
+    public function countFoldersInFolder(Folder $folder, bool $useFilters = true, bool $recursive = false): int
     {
         $this->assureFolderReadPermission($folder);
         $filters = $useFilters ? $this->getFileAndFolderNameFilters() : [];
@@ -2463,11 +2284,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns TRUE if the specified folder exists.
-     *
-     * @param string $identifier
-     * @return bool
      */
-    public function hasFolder($identifier)
+    public function hasFolder(string $identifier): bool
     {
         $this->assureFolderReadPermission();
         return $this->driver->folderExists($identifier);
@@ -2475,11 +2293,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Checks if the given file exists in the given folder
-     *
-     * @param string $folderName
-     * @return bool
      */
-    public function hasFolderInFolder($folderName, Folder $folder)
+    public function hasFolderInFolder(string $folderName, Folder $folder): bool
     {
         $this->assureFolderReadPermission($folder);
         return $this->driver->folderExistsInFolder($folderName, $folder->getIdentifier());
@@ -2498,7 +2313,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws \Exception
      */
-    public function createFolder($folderName, ?Folder $parentFolder = null)
+    public function createFolder(string $folderName, ?Folder $parentFolder = null): Folder
     {
         if ($parentFolder === null) {
             $parentFolder = $this->getRootLevelFolder();
@@ -2528,33 +2343,29 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Retrieves information about a folder
-     *
-     * @return array
      */
-    public function getFolderInfo(Folder $folder)
+    public function getFolderInfo(Folder $folder): array
     {
         return $this->driver->getFolderInfoByIdentifier($folder->getIdentifier());
     }
 
     /**
      * Returns the default folder where new files are stored if no other folder is given.
-     *
-     * @return Folder
      */
-    public function getDefaultFolder()
+    public function getDefaultFolder(): Folder
     {
-        return $this->getFolder($this->driver->getDefaultFolder());
+        /** @var Folder $folder */
+        $folder = $this->getFolder($this->driver->getDefaultFolder());
+        return $folder;
     }
 
     /**
-     * @param string $identifier
-     * @param bool $returnInaccessibleFolderObject
-     *
-     * @return Folder|InaccessibleFolder
      * @throws \Exception
      * @throws Exception\InsufficientFolderAccessPermissionsException
+     * @todo return type should become FolderInterface
+     * @return Folder
      */
-    public function getFolder($identifier, $returnInaccessibleFolderObject = false)
+    public function getFolder(string $identifier, bool $returnInaccessibleFolderObject = false)
     {
         $data = $this->driver->getFolderInfoByIdentifier($identifier);
         $folder = $this->createFolderObject($data['identifier'], $data['name']);
@@ -2567,8 +2378,7 @@ class ResourceStorage implements ResourceStorageInterface
                 // if parent folder is readable return inaccessible folder object
                 $parentPermissions = $this->driver->getPermissions($this->driver->getParentFolderIdentifierOfIdentifier($identifier));
                 if ($parentPermissions['r']) {
-                    $folder = GeneralUtility::makeInstance(
-                        InaccessibleFolder::class,
+                    $folder = new InaccessibleFolder(
                         $this,
                         $data['identifier'],
                         $data['name']
@@ -2585,11 +2395,8 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Returns TRUE if the specified file is in a folder that is set a processing for a storage
-     *
-     * @param string $identifier
-     * @return bool
      */
-    public function isWithinProcessingFolder($identifier)
+    public function isWithinProcessingFolder(string $identifier): bool
     {
         $inProcessingFolder = false;
         foreach ($this->getProcessingFolders() as $processingFolder) {
@@ -2604,10 +2411,9 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Checks if a resource (file or folder) is within the given folder
      *
-     * @return bool
      * @throws \InvalidArgumentException
      */
-    public function isWithinFolder(Folder $folder, ResourceInterface $resource)
+    public function isWithinFolder(Folder $folder, ResourceInterface $resource): bool
     {
         if ($folder->getStorage() !== $this) {
             throw new \InvalidArgumentException('Given folder "' . $folder->getIdentifier() . '" is not part of this storage!', 1422709241);
@@ -2651,7 +2457,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @return string A unique fileName inside $folder, based on $theFile.
      * @see \TYPO3\CMS\Core\Utility\File\BasicFileUtility::getUniqueName()
      */
-    protected function getUniqueName(FolderInterface $folder, $theFile, $dontCheckForUnique = false)
+    protected function getUniqueName(FolderInterface $folder, string $theFile, bool $dontCheckForUnique = false): string
     {
         $maxNumber = 99;
         // Fetches info about path, name, extension of $theFile
@@ -2686,18 +2492,12 @@ class ResourceStorage implements ResourceStorageInterface
         throw new \RuntimeException('Last possible name "' . $theDestFile . '" is already taken.', 1325194291);
     }
 
-    /**
-     * @return ResourceFactory
-     */
-    protected function getFileFactory()
+    protected function getFileFactory(): ResourceFactory
     {
         return GeneralUtility::makeInstance(ResourceFactory::class);
     }
 
-    /**
-     * @return Index\FileIndexRepository
-     */
-    protected function getFileIndexRepository()
+    protected function getFileIndexRepository(): FileIndexRepository
     {
         return GeneralUtility::makeInstance(FileIndexRepository::class);
     }
@@ -2716,7 +2516,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @param FolderInterface $folder Folder object to get the role from
      * @return string The role the folder has
      */
-    public function getRole(FolderInterface $folder)
+    public function getRole(FolderInterface $folder): string
     {
         $folderRole = FolderInterface::ROLE_DEFAULT;
         $identifier = $folder->getIdentifier();
@@ -2745,9 +2545,8 @@ class ResourceStorage implements ResourceStorageInterface
      * be processed. Does not check for access rights here.
      *
      * @param File|null $file Specific file you want to have the processing folder for
-     * @return Folder
      */
-    public function getProcessingFolder(?File $file = null)
+    public function getProcessingFolder(?File $file = null): Folder
     {
         // If a file is given, make sure to return the processing folder of the correct storage
         if ($file !== null && $file->getStorage()->getUid() !== $this->getUid()) {
@@ -2816,13 +2615,12 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * Getter function to return the the file's corresponding hashed subfolder
-     * of the processed folder
+     * Getter function to return the file's corresponding hashed subfolder
+     * of the processed folder.
      *
-     * @return Folder
      * @throws Exception\InsufficientFolderWritePermissionsException
      */
-    protected function getNestedProcessingFolder(File $file, Folder $rootProcessingFolder)
+    protected function getNestedProcessingFolder(File $file, Folder $rootProcessingFolder): Folder
     {
         $processingFolder = $rootProcessingFolder;
         $nestedFolderNames = $this->getNamesForNestedProcessingFolder($file->getIdentifier(), self::PROCESSING_FOLDER_LEVELS);
@@ -2847,13 +2645,11 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * Generates appropriate hashed sub-folder path for a given file identifier
+     * Generates appropriate hashed sub-folder path for a given file identifier.
      *
-     * @param string $fileIdentifier
-     * @param int $levels
      * @return string[]
      */
-    protected function getNamesForNestedProcessingFolder($fileIdentifier, $levels)
+    protected function getNamesForNestedProcessingFolder(string $fileIdentifier, int $levels): array
     {
         $names = [];
         if ($levels === 0) {
@@ -2868,36 +2664,23 @@ class ResourceStorage implements ResourceStorageInterface
 
     /**
      * Gets the driver Type configured for this storage.
-     *
-     * @return string
      */
-    public function getDriverType()
+    public function getDriverType(): string
     {
         return $this->storageRecord['driver'];
     }
 
-    /**
-     * Gets the Indexer.
-     *
-     * @return Index\Indexer
-     */
-    protected function getIndexer()
+    protected function getIndexer(): Indexer
     {
         return GeneralUtility::makeInstance(Indexer::class, $this);
     }
 
-    /**
-     * @param bool $isDefault
-     */
-    public function setDefault($isDefault)
+    public function setDefault(bool $isDefault): void
     {
-        $this->isDefault = (bool)$isDefault;
+        $this->isDefault = $isDefault;
     }
 
-    /**
-     * @return bool
-     */
-    public function isDefault()
+    public function isDefault(): bool
     {
         return $this->isDefault;
     }
@@ -2919,11 +2702,8 @@ class ResourceStorage implements ResourceStorageInterface
      *  - There is no folder with ROLE_RECYCLER in the rootline of the given Resource
      *  - Resource is a ProcessedFile (we don't know the concept of recycler folders for processedFiles)
      *  - Resource is located in a folder with ROLE_RECYCLER
-     *
-     * @param ResourceInterface $resource
-     * @return Folder|null
      */
-    protected function getNearestRecyclerFolder(ResourceInterface $resource)
+    protected function getNearestRecyclerFolder(ResourceInterface $resource): ?Folder
     {
         if ($resource instanceof ProcessedFile) {
             return null;
@@ -2937,6 +2717,10 @@ class ResourceStorage implements ResourceStorageInterface
         $folder = $resource->getParentFolder();
 
         do {
+            // This can be removed once ->getRole() is implemented in FolderInterface
+            if (!$folder instanceof Folder) {
+                break;
+            }
             if ($folder->getRole() === FolderInterface::ROLE_RECYCLER) {
                 break;
             }
@@ -2961,9 +2745,8 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $identifier The path to the folder. Might also be a simple unique string, depending on the storage driver.
      * @param string $name The name of the folder (e.g. the folder name)
-     * @return Folder
      */
-    protected function createFolderObject(string $identifier, string $name)
+    protected function createFolderObject(string $identifier, string $name): Folder
     {
         return GeneralUtility::makeInstance(Folder::class, $this, $identifier, $name);
     }

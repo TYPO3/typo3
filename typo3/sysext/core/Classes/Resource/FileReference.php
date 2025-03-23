@@ -30,8 +30,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * It acts as a decorator over the original file in the way that most method calls are
  * directly passed along to the original file object.
  *
- * All file related methods are directly passed along; only meta data functionality is adopted
- * in this decorator class to priorities possible overrides for the metadata for this specific usage
+ * All file related methods are directly passed along; only meta-data functionality is adopted
+ * in this decorator class to prioritize possible overrides for the metadata for this specific usage
  * of the file.
  */
 class FileReference implements FileInterface
@@ -44,10 +44,8 @@ class FileReference implements FileInterface
 
     /**
      * Reference to the original File object underlying this FileReference.
-     *
-     * @var FileInterface
      */
-    protected $originalFile;
+    protected File $originalFile;
 
     /**
      * Properties merged with the parent object (File) if
@@ -60,12 +58,9 @@ class FileReference implements FileInterface
      * Constructor for a file in use object. Should normally not be used
      * directly, use the corresponding factory methods instead.
      *
-     * @param ResourceFactory $factory
-     *
      * @throws \InvalidArgumentException
-     * @throws Exception\FileDoesNotExistException
      */
-    public function __construct(array $fileReferenceData, $factory = null)
+    public function __construct(array $fileReferenceData, ?ResourceFactory $factory = null)
     {
         $this->propertiesOfFileReference = $fileReferenceData;
         if (!$fileReferenceData['uid_local']) {
@@ -74,11 +69,7 @@ class FileReference implements FileInterface
         $this->originalFile = $this->getFileObject((int)$fileReferenceData['uid_local'], $factory);
     }
 
-    /**
-     * @param ResourceFactory|null $factory
-     * @throws Exception\FileDoesNotExistException
-     */
-    private function getFileObject(int $uidLocal, ?ResourceFactory $factory = null): FileInterface
+    private function getFileObject(int $uidLocal, ?ResourceFactory $factory = null): File
     {
         if ($factory === null) {
             $factory = GeneralUtility::makeInstance(ResourceFactory::class);
@@ -118,10 +109,9 @@ class FileReference implements FileInterface
      * Gets a property of the file reference.
      *
      * @param string $key The property to be looked up
-     * @return mixed
      * @throws \InvalidArgumentException
      */
-    public function getReferenceProperty($key)
+    public function getReferenceProperty(string $key): mixed
     {
         if (!array_key_exists($key, $this->propertiesOfFileReference)) {
             throw new \InvalidArgumentException('Property "' . $key . '" of file reference was not found.', 1360684914);
@@ -163,10 +153,8 @@ class FileReference implements FileInterface
 
     /**
      * Gets all properties of the file reference.
-     *
-     * @return array
      */
-    public function getReferenceProperties()
+    public function getReferenceProperties(): array
     {
         return $this->propertiesOfFileReference;
     }
@@ -180,10 +168,8 @@ class FileReference implements FileInterface
      * Returns the title text to this image
      *
      * @todo Possibly move this to the image domain object instead
-     *
-     * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return (string)$this->getProperty('title');
     }
@@ -192,10 +178,8 @@ class FileReference implements FileInterface
      * Returns the alternative text to this image
      *
      * @todo Possibly move this to the image domain object instead
-     *
-     * @return string
      */
-    public function getAlternative()
+    public function getAlternative(): string
     {
         return (string)$this->getProperty('alternative');
     }
@@ -204,10 +188,8 @@ class FileReference implements FileInterface
      * Returns the description text to this file
      *
      * @todo Possibly move this to the image domain object instead
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return (string)$this->getProperty('description');
     }
@@ -216,20 +198,16 @@ class FileReference implements FileInterface
      * Returns the link that should be active when clicking on this image
      *
      * @todo Move this to the image domain object instead
-     *
-     * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return $this->propertiesOfFileReference['link'];
     }
 
     /**
      * Returns the uid of this File In Use
-     *
-     * @return int
      */
-    public function getUid()
+    public function getUid(): int
     {
         return (int)$this->propertiesOfFileReference['uid'];
     }
@@ -285,7 +263,7 @@ class FileReference implements FileInterface
      */
     public function getModificationTime(): int
     {
-        return (int)$this->originalFile->getModificationTime();
+        return $this->originalFile->getModificationTime();
     }
 
     /**
@@ -293,7 +271,7 @@ class FileReference implements FileInterface
      */
     public function getCreationTime(): int
     {
-        return (int)$this->originalFile->getCreationTime();
+        return $this->originalFile->getCreationTime();
     }
 
     /**
@@ -301,7 +279,7 @@ class FileReference implements FileInterface
      */
     public function getType(): int
     {
-        return (int)$this->originalFile->getType();
+        return $this->originalFile->getType();
     }
 
     public function isType(FileType $fileType): bool
@@ -311,15 +289,13 @@ class FileReference implements FileInterface
 
     public function getFileType(): FileType
     {
-        return FileType::from($this->originalFile->getType());
+        return $this->originalFile->getFileType();
     }
 
     /**
      * Check if file is marked as missing by indexer
-     *
-     * @return bool
      */
-    public function isMissing()
+    public function isMissing(): bool
     {
         return (bool)$this->originalFile->getProperty('missing');
     }
@@ -339,6 +315,7 @@ class FileReference implements FileInterface
      * Replace the current file contents with the given string
      *
      * @param string $contents The contents to write to the file.
+     *
      * @return $this
      */
     public function setContents(string $contents): self
@@ -373,7 +350,7 @@ class FileReference implements FileInterface
      *
      * @return string Combined storage and file identifier, e.g. StorageUID:path/and/fileName.png
      */
-    public function getCombinedIdentifier()
+    public function getCombinedIdentifier(): string
     {
         return $this->originalFile->getCombinedIdentifier();
     }
@@ -480,16 +457,13 @@ class FileReference implements FileInterface
      */
     public function toArray(): array
     {
-        $array = array_merge($this->originalFile->toArray(), $this->propertiesOfFileReference);
-        return $array;
+        return array_merge($this->originalFile->toArray(), $this->propertiesOfFileReference);
     }
 
     /**
      * Gets the original file being referenced.
-     *
-     * @return File
      */
-    public function getOriginalFile()
+    public function getOriginalFile(): File
     {
         return $this->originalFile;
     }

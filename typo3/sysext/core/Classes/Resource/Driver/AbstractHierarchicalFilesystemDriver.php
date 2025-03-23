@@ -55,8 +55,7 @@ abstract class AbstractHierarchicalFilesystemDriver extends AbstractDriver
     /**
      * Makes sure the Path given as parameter is valid.
      *
-     * @phpstan-param non-empty-string $fileIdentifier The file path (including the file name!)
-     * @phpstan-return non-empty-string
+     * @param string $fileIdentifier The file path (including the file name!)
      */
     protected function canonicalizeAndCheckFileIdentifier(string $fileIdentifier): string
     {

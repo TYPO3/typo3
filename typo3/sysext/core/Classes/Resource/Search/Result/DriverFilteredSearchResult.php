@@ -27,32 +27,16 @@ use TYPO3\CMS\Core\Utility\PathUtility;
  */
 class DriverFilteredSearchResult implements FileSearchResultInterface
 {
-    /**
-     * @var FileSearchResultInterface
-     */
-    private $searchResult;
+    private ?array $result = null;
 
-    /**
-     * @var DriverInterface
-     */
-    private $driver;
-
-    /**
-     * @var callable[]
-     */
-    private $filters;
-
-    /**
-     * @var array
-     */
-    private $result;
-
-    public function __construct(FileSearchResultInterface $searchResult, DriverInterface $driver, array $filters)
-    {
-        $this->searchResult = $searchResult;
-        $this->driver = $driver;
-        $this->filters = $filters;
-    }
+    public function __construct(
+        private readonly FileSearchResultInterface $searchResult,
+        private readonly DriverInterface $driver,
+        /**
+         * @var callable[]
+         */
+        private readonly array $filters
+    ) {}
 
     /**
      * @see Countable::count()
