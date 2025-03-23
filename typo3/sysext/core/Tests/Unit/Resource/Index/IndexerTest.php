@@ -43,7 +43,7 @@ final class IndexerTest extends UnitTestCase
 
         $fileMock = $this->createMock(File::class);
         $fileMock->method('getUid')->willReturn(42);
-        $fileMock->method('getType')->willReturn(FileType::TEXT->value);
+        $fileMock->method('getType')->willReturn(FileType::TEXT);
         $fileMock->method('getStorage')->willReturn($mockStorage);
 
         $extractorServiceMock = $this->getMockBuilder(ExtractorService::class)->getMock();
