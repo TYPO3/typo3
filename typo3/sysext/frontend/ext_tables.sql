@@ -34,7 +34,5 @@ CREATE TABLE tt_content (
 	# @todo: Needs a look for default null and nullable
 	table_caption varchar(255) DEFAULT NULL,
 
-	KEY parent (pid,sorting),
-	KEY t3ver_oid (t3ver_oid,t3ver_wsid),
-	KEY language (l18n_parent,sys_language_uid)
+	KEY parent (pid,sorting)
 );

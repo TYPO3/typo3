@@ -271,6 +271,7 @@ class DefaultTcaSchema
             }
 
             // sys_language_uid column
+            $languageColumnAdded = false;
             if (!empty($tableDefinition['ctrl']['languageField'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['languageField'])
             ) {
@@ -283,9 +284,11 @@ class DefaultTcaSchema
                         'unsigned' => false,
                     ]
                 );
+                $languageColumnAdded = true;
             }
 
             // l10n_parent column
+            $translationOriginPointerColumnAdded = false;
             if (!empty($tableDefinition['ctrl']['languageField'])
                 && !empty($tableDefinition['ctrl']['transOrigPointerField'])
                 && !$this->isColumnDefinedForTable($tables, $tableName, $tableDefinition['ctrl']['transOrigPointerField'])
@@ -299,6 +302,15 @@ class DefaultTcaSchema
                         'unsigned' => true,
                     ]
                 );
+                $translationOriginPointerColumnAdded = true;
+            }
+
+            // Add index for sys_language_uid and l10n_parent
+            if ($languageColumnAdded && $translationOriginPointerColumnAdded && !$this->isIndexDefinedForTable($tables, $tableName, 'language_identifier')) {
+                $tables[$tableName]->addIndex([
+                    (string)$tableDefinition['ctrl']['transOrigPointerField'],
+                    (string)$tableDefinition['ctrl']['languageField'],
+                ], 'language_identifier');
             }
 
             // l10n_source column

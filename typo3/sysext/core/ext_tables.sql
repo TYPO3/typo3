@@ -43,7 +43,6 @@ CREATE TABLE pages (
 	mount_pid int(10) unsigned DEFAULT '0' NOT NULL,
 
 	KEY determineSiteRoot (is_siteroot),
-	KEY language_identifier (l10n_parent,sys_language_uid),
 	KEY slug (slug(127))
 );
 
@@ -112,8 +111,7 @@ CREATE TABLE sys_file_metadata (
 	# @todo: Restrict to varchar(255)?
 	alternative text,
 
-	KEY file (file),
-	KEY fal_filelist (l10n_parent,sys_language_uid)
+	KEY file (file)
 );
 
 # Define table and fields since it has no TCA
