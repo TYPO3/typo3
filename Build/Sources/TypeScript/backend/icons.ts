@@ -26,9 +26,9 @@ export class IconStyles {
           align-items: center;
           justify-content: center;
           height: var(--icon-size, 1em);
-          width: var(--icon-size, 1em)
+          width: var(--icon-size, 1em);
           line-height: var(--icon-size, 1em);
-          vertical-align: -22%
+          vertical-align: -22%;
         }
 
         :host([size=default]),
@@ -38,22 +38,22 @@ export class IconStyles {
 
         :host([size=small]),
         :host([raw]) .icon-size-small {
-          --icon-size: var(--icon-size-small, 16px)
+          --icon-size: var(--icon-size-small, 16px);
         }
 
         :host([size=medium]),
         :host([raw]) .icon-size-medium {
-          --icon-size: var(--icon-size-medium, 32px)
+          --icon-size: var(--icon-size-medium, 32px);
         }
 
         :host([size=large]),
         :host([raw]) .icon-size-large {
-          --icon-size: var(--icon-size-large, 48px)
+          --icon-size: var(--icon-size-large, 48px);
         }
 
         :host([size=mega]),
         :host([raw]) .icon-size-mega {
-          --icon-size: var(--icon-size-mega, 64px)
+          --icon-size: var(--icon-size-mega, 64px);
         }
 
         .icon {
@@ -71,12 +71,12 @@ export class IconStyles {
         .icon img, .icon svg {
           display: block;
           height: 100%;
-          width: 100%
+          width: 100%;
         }
 
         .icon * {
           display: block;
-          line-height: inherit
+          line-height: inherit;
         }
 
         .icon-markup {
@@ -86,7 +86,7 @@ export class IconStyles {
           top: 0;
           left: 0;
           right: 0;
-          bottom: 0
+          bottom: 0;
         }
 
         .icon-overlay {
@@ -95,35 +95,35 @@ export class IconStyles {
           right: 0;
           height: 68.75%;
           width: 68.75%;
-          text-align: center
+          text-align: center;
         }
 
         .icon-spin .icon-markup {
           -webkit-animation: icon-spin 2s infinite linear;
-          animation: icon-spin 2s infinite linear
+          animation: icon-spin 2s infinite linear;
         }
 
         @keyframes icon-spin {
           0% {
-            transform: rotate(0)
+            transform: rotate(0);
           }
           100% {
-            transform: rotate(360deg)
+            transform: rotate(360deg);
           }
         }
 
         .icon-state-disabled .icon-markup {
-          opacity: var(--icon-opacity-disabled, 0.5)
+          opacity: var(--icon-opacity-disabled, 0.5);
         }
 
         .icon-unify {
           line-height: var(--icon-size, 1em);
-          font-size: calc(var(--icon-size, 1em) * var(--icon-unify-modifier, .86))
+          font-size: calc(var(--icon-size, 1em) * var(--icon-unify-modifier, .86));
         }
 
         .icon-overlay .icon-unify {
           line-height: calc(var(--icon-size, 1em) / 1.6);
-          font-size: calc((var(--icon-size, 1em) / 1.6) * var(--icon-unify-modifier, .86))
+          font-size: calc((var(--icon-size, 1em) / 1.6) * var(--icon-unify-modifier, .86));
         }
       `
     ];
