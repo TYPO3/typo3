@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\RateLimiter\RateLimiterFactory;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
@@ -52,7 +53,8 @@ class PasswordRecoveryController extends ActionController
         protected FrontendUserRepository $userRepository,
         protected RecoveryConfiguration $recoveryConfiguration,
         protected readonly Features $features,
-        protected readonly PageRepository $pageRepository
+        protected readonly PageRepository $pageRepository,
+        protected readonly RateLimiterFactory $rateLimiterFactory
     ) {}
 
     /**
@@ -71,15 +73,32 @@ class PasswordRecoveryController extends ActionController
 
         $userData = $this->userRepository->findUserByUsernameOrEmailOnPages($userIdentifier, $storagePageIds);
 
-        if ($userData && GeneralUtility::validEmail($userData['email'])) {
+        if ($userData &&
+            GeneralUtility::validEmail($userData['email']) &&
+            !$this->hasExceededMaximumAttemptsForReset($userData['email'])
+        ) {
             $hash = $this->recoveryConfiguration->getForgotHash();
             $this->userRepository->updateForgotHashForUserByUid($userData['uid'], $this->hashService->hmac($hash, self::class));
             $this->recoveryService->sendRecoveryEmail($this->request, $userData, $hash);
         }
 
+        // Prevent time based information disclosure by waiting a random time before sending a response. This prevents
+        // that the response time can be an indicator if the used username or email exists or not. Wait a random time
+        // between 200 milliseconds and 3 seconds.
+        usleep(random_int(200000, 3000000));
+
+        // Always show the default message and never notify about a potential rate limit, because this would reveal,
+        // that a given user identifier is actually valid.
         $this->addFlashMessage($this->getTranslation('forgot_reset_message_emailSent'));
 
         return $this->redirect('login', 'Login', 'felogin');
+    }
+
+    protected function hasExceededMaximumAttemptsForReset(string $email): bool
+    {
+        $limiter = $this->rateLimiterFactory->create($email);
+        $limit = $limiter->consume();
+        return !$limit->isAccepted();
     }
 
     /**
