@@ -586,7 +586,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                     ['title' => 'EN: ACME in your Region', 'link' => '/acme-in-your-region', 'target' => ''],
                     [
                         'title' => 'Divider',
-                        'link' => '/divider',
+                        // Dividers are not linkable so the link is empty
+                        'link' => '',
                         'target' => '',
                         'children' => [
                             [
@@ -1220,10 +1221,10 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                 [
                     [
                         'title' => 'Common Collection',
-                        // @todo Folders should not be linked in frontend menus, as they are not accessible there.
                         // @todo Folder as rootpage - reconsider if this should be a valid use/test case, as marking
                         //       it as root_page is not possible if page is doktype sysfolder first.
-                        'link' => 'https://common.acme.com/common',
+                        // Folders are not be linked in frontend menus, as they are not accessible there.
+                        'link' => '',
                         'children' => [
                             [
                                 'title' => 'Announcements & News',
@@ -1251,8 +1252,8 @@ final class SlugLinkGeneratorTest extends AbstractTestCase
                         'children' => [
                             [
                                 'title' => 'Announcements & News',
-                                // @todo Folders should not be linked in frontend menus, as they are not accessible there.
-                                'link' => 'https://usual.acme.com/usual/news-folder',
+                                // Folders are not be linked in frontend menus, as they are not accessible there.
+                                'link' => '',
                             ],
                         ],
                     ],

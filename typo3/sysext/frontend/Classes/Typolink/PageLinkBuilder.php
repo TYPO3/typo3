@@ -192,6 +192,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
             if (empty($url)) {
                 throw new UnableToLinkException('Link to external page "' . $page['uid'] . '" does not have a proper target URL, so "' . $linkText . '" was not linked.', 1551621999, null, $linkText);
             }
+        } elseif ((int)$page['doktype'] === PageRepository::DOKTYPE_SYSFOLDER || (int)$page['doktype'] === PageRepository::DOKTYPE_SPACER) {
+            throw new UnableToLinkException('Link to page of type ' . $page['doktype'] . ' is not possible.', 1742757285, null, $linkText);
         } else {
             // Generate the URL
             $url = $this->generateUrlForPageWithSiteConfiguration($page, $siteOfTargetPage, $queryParameters, $fragment, $conf);
