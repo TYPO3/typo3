@@ -25,51 +25,22 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class LogicalAnd implements AndInterface
+final readonly class LogicalAnd implements AndInterface
 {
-    /**
-     * @var ConstraintInterface
-     */
-    protected $constraint1;
+    public function __construct(protected ConstraintInterface $constraint1, protected ConstraintInterface $constraint2) {}
 
-    /**
-     * @var ConstraintInterface
-     */
-    protected $constraint2;
-
-    public function __construct(ConstraintInterface $constraint1, ConstraintInterface $constraint2)
-    {
-        $this->constraint1 = $constraint1;
-        $this->constraint2 = $constraint2;
-    }
-
-    /**
-     * Fills an array with the names of all bound variables in the constraints
-     *
-     * @param array $boundVariables
-     */
-    public function collectBoundVariableNames(&$boundVariables)
+    public function collectBoundVariableNames(array &$boundVariables): void
     {
         $this->constraint1->collectBoundVariableNames($boundVariables);
         $this->constraint2->collectBoundVariableNames($boundVariables);
     }
 
-    /**
-     * Gets the first constraint.
-     *
-     * @return ConstraintInterface the constraint; non-null
-     */
-    public function getConstraint1()
+    public function getConstraint1(): ConstraintInterface
     {
         return $this->constraint1;
     }
 
-    /**
-     * Gets the second constraint.
-     *
-     * @return ConstraintInterface the constraint; non-null
-     */
-    public function getConstraint2()
+    public function getConstraint2(): ConstraintInterface
     {
         return $this->constraint2;
     }

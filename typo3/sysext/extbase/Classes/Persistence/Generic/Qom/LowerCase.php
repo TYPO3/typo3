@@ -28,47 +28,21 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class LowerCase implements LowerCaseInterface
+final readonly class LowerCase implements LowerCaseInterface
 {
-    /**
-     * @var PropertyValueInterface
-     */
-    protected $operand;
+    public function __construct(protected PropertyValueInterface $operand) {}
 
-    /**
-     * Constructs this LowerCase instance
-     */
-    public function __construct(PropertyValueInterface $operand)
-    {
-        $this->operand = $operand;
-    }
-
-    /**
-     * Gets the operand whose value is converted to a lower-case string.
-     *
-     * @return PropertyValueInterface the operand; non-null
-     */
-    public function getOperand()
+    public function getOperand(): PropertyValueInterface
     {
         return $this->operand;
     }
 
-    /**
-     * Gets the name of the selector against which to evaluate this operand.
-     *
-     * @return string the selector name; non-null
-     */
-    public function getSelectorName()
+    public function getSelectorName(): string
     {
         return $this->operand->getSelectorName();
     }
 
-    /**
-     * Gets the name of the property.
-     *
-     * @return string the property name; non-null
-     */
-    public function getPropertyName()
+    public function getPropertyName(): string
     {
         return 'LOWER' . $this->operand->getPropertyName();
     }

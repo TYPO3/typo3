@@ -22,10 +22,5 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 interface BindVariableValueInterface extends StaticOperandInterface
 {
-    /**
-     * Gets the name of the bind variable.
-     *
-     * @return string the bind variable name; non-null
-     */
-    public function getBindVariableName();
+    public function getBindVariableName(): string;
 }

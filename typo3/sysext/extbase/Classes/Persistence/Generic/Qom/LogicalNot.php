@@ -24,34 +24,16 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class LogicalNot implements NotInterface
+final readonly class LogicalNot implements NotInterface
 {
-    /**
-     * @var ConstraintInterface
-     */
-    protected $constraint;
+    public function __construct(protected ConstraintInterface $constraint) {}
 
-    public function __construct(ConstraintInterface $constraint)
-    {
-        $this->constraint = $constraint;
-    }
-
-    /**
-     * Fills an array with the names of all bound variables in the constraint
-     *
-     * @param array $boundVariables
-     */
-    public function collectBoundVariableNames(&$boundVariables)
+    public function collectBoundVariableNames(array &$boundVariables): void
     {
         $this->constraint->collectBoundVariableNames($boundVariables);
     }
 
-    /**
-     * Gets the constraint negated by this Not constraint.
-     *
-     * @return ConstraintInterface the constraint; non-null
-     */
-    public function getConstraint()
+    public function getConstraint(): ConstraintInterface
     {
         return $this->constraint;
     }

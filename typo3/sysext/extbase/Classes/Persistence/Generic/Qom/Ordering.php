@@ -25,46 +25,25 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Ordering implements OrderingInterface
+final readonly class Ordering implements OrderingInterface
 {
     /**
-     * @var DynamicOperandInterface
+     * @param string $order One of QueryInterface::ORDER_*
      */
-    protected $operand;
+    public function __construct(
+        protected DynamicOperandInterface $operand,
+        protected string $order = QueryInterface::ORDER_ASCENDING
+    ) {}
 
-    /**
-     * @var string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
-     */
-    protected $order;
-
-    /**
-     * Constructs the Ordering instance
-     *
-     * @param DynamicOperandInterface $operand The operand; non-null
-     * @param string $order One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
-     */
-    public function __construct(DynamicOperandInterface $operand, $order = QueryInterface::ORDER_ASCENDING)
-    {
-        $this->operand = $operand;
-        $this->order = $order;
-    }
-
-    /**
-     * The operand by which to order.
-     *
-     * @return DynamicOperandInterface the operand; non-null
-     */
-    public function getOperand()
+    public function getOperand(): DynamicOperandInterface
     {
         return $this->operand;
     }
 
     /**
-     * Gets the order.
-     *
-     * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
+     * @return string One of QueryInterface::ORDER_*
      */
-    public function getOrder()
+    public function getOrder(): string
     {
         return $this->order;
     }

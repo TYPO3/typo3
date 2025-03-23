@@ -23,17 +23,10 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 interface OrderingInterface
 {
-    /**
-     * The operand by which to order.
-     *
-     * @return DynamicOperandInterface the operand; non-null
-     */
-    public function getOperand();
+    public function getOperand(): DynamicOperandInterface;
 
     /**
-     * Gets the order.
-     *
-     * @return string One of \TYPO3\CMS\Extbase\Persistence\QueryInterface::ORDER_*
+     * @return string One of QueryInterface::ORDER_*
      */
-    public function getOrder();
+    public function getOrder(): string;
 }

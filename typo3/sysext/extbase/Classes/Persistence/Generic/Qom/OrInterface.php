@@ -27,17 +27,6 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 interface OrInterface extends ConstraintInterface
 {
-    /**
-     * Gets the first constraint.
-     *
-     * @return ConstraintInterface the constraint
-     */
-    public function getConstraint1();
-
-    /**
-     * Gets the second constraint.
-     *
-     * @return ConstraintInterface the constraint
-     */
-    public function getConstraint2();
+    public function getConstraint1(): ConstraintInterface;
+    public function getConstraint2(): ConstraintInterface;
 }

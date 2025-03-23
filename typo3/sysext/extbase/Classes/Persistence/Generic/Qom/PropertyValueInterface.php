@@ -30,17 +30,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 interface PropertyValueInterface extends DynamicOperandInterface
 {
-    /**
-     * Gets the name of the selector against which to evaluate this operand.
-     *
-     * @return string the selector name; non-null
-     */
-    public function getSelectorName();
+    public function getSelectorName(): string;
 
-    /**
-     * Gets the name of the property.
-     *
-     * @return string the property name; non-null
-     */
-    public function getPropertyName();
+    public function getPropertyName(): string;
 }

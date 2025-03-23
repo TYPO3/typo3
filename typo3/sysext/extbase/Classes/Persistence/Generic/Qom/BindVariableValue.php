@@ -22,39 +22,16 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class BindVariableValue implements BindVariableValueInterface
+final readonly class BindVariableValue implements BindVariableValueInterface
 {
-    /**
-     * @var string
-     */
-    protected $variableName;
+    public function __construct(protected string $variableName) {}
 
-    /**
-     * Constructs this BindVariableValue instance
-     *
-     * @param string $variableName
-     */
-    public function __construct($variableName)
-    {
-        $this->variableName = $variableName;
-    }
-
-    /**
-     * Fills an array with the names of all bound variables in the operand
-     *
-     * @param array $boundVariables
-     */
-    public function collectBoundVariableNames(&$boundVariables)
+    public function collectBoundVariableNames(array &$boundVariables): void
     {
         $boundVariables[$this->variableName] = null;
     }
 
-    /**
-     * Gets the name of the bind variable.
-     *
-     * @return string the bind variable name; non-null
-     */
-    public function getBindVariableName()
+    public function getBindVariableName(): string
     {
         return $this->variableName;
     }

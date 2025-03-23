@@ -22,10 +22,5 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 interface JoinConditionInterface
 {
-    /**
-     * Gets the name of the first selector.
-     *
-     * @return string the selector name; non-null
-     */
-    public function getSelector1Name();
+    public function getSelector1Name(): string;
 }

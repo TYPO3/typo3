@@ -64,47 +64,23 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Comparison implements ComparisonInterface
+final readonly class Comparison implements ComparisonInterface
 {
-    protected PropertyValueInterface $operand1;
-
     /**
-     * @var QueryInterface::OPERATOR_*
-     */
-    protected int $operator;
-
-    /**
-     * The type of the second operand will vary depending on the operator.
-     *
-     * @var mixed
-     * @todo Type this as mixed in v13.
-     */
-    protected $operand2;
-
-    /**
-     * Constructs this Comparison instance
-     *
      * @param QueryInterface::OPERATOR_* $operator
-     * @param mixed $operand2
      */
-    public function __construct(PropertyValueInterface $operand1, int $operator, $operand2)
-    {
-        $this->operand1 = $operand1;
-        $this->operator = $operator;
-        $this->operand2 = $operand2;
-    }
+    public function __construct(
+        protected PropertyValueInterface $operand1,
+        protected int $operator,
+        protected mixed $operand2
+    ) {}
 
-    /**
-     * Gets the first operand.
-     */
     public function getOperand1(): PropertyValueInterface
     {
         return $this->operand1;
     }
 
     /**
-     * Gets the operator.
-     *
      * @return QueryInterface::OPERATOR_*
      */
     public function getOperator(): int
@@ -122,20 +98,12 @@ class Comparison implements ComparisonInterface
         return $operator;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getOperand2()
+    public function getOperand2(): mixed
     {
         return $this->operand2;
     }
 
-    /**
-     * Fills an array with the names of all bound variables in the constraints
-     *
-     * @param array $boundVariables
-     */
-    public function collectBoundVariableNames(&$boundVariables): array
+    public function collectBoundVariableNames(array &$boundVariables): array
     {
         return [];
     }

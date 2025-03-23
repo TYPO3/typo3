@@ -26,17 +26,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
  */
 interface EquiJoinConditionInterface extends JoinConditionInterface
 {
-    /**
-     * Gets the name of the child selector.
-     *
-     * @return string the selector name; non-null
-     */
-    public function getChildSelectorName();
+    public function getChildSelectorName(): string;
 
-    /**
-     * Gets the name of the parent selector.
-     *
-     * @return string the selector name; non-null
-     */
-    public function getParentSelectorName();
+    public function getParentSelectorName(): string;
 }

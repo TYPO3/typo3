@@ -64,25 +64,12 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
  */
 interface ComparisonInterface extends ConstraintInterface
 {
-    /**
-     * Gets the first operand.
-     */
     public function getOperand1(): PropertyValueInterface;
 
     /**
-     * Gets the operator.
-     *
      * @return QueryInterface::OPERATOR_*
      */
     public function getOperator(): int;
 
-    /**
-     * Gets the second operand.
-     *
-     * For some operators, this value may be null.
-     *
-     * @return mixed
-     * @todo Type this as mixed in v13.
-     */
-    public function getOperand2();
+    public function getOperand2(): mixed;
 }

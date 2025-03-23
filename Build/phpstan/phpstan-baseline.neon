@@ -2329,72 +2329,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Mapper/DataMapper.php
 
 		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:_and\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:_or\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:ascending\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:bindVariable\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:comparison\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:descending\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:equiJoinCondition\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:lowerCase\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:not\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:propertyValue\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:upperCase\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception\\RepositoryException in PHPDoc @throws tag but it''s not thrown\.$#'
-			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Qom/QueryObjectModelFactory.php
-
-		-
 			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
@@ -2415,12 +2349,6 @@ parameters:
 		-
 			message: '#^Method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Query\:\:getQuerySettings\(\) has TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Exception in PHPDoc @throws tag but it''s not thrown\.$#'
 			identifier: throws.unusedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
-
-		-
-			message: '#^Parameter \#3 \$operand2 of method TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\QueryObjectModelFactory\:\:comparison\(\) expects TYPO3\\CMS\\Extbase\\Persistence\\Generic\\Qom\\StaticOperandInterface, string given\.$#'
-			identifier: argument.type
 			count: 1
 			path: ../../typo3/sysext/extbase/Classes/Persistence/Generic/Query.php
 

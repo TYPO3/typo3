@@ -17,59 +17,32 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+
 /**
  * A statement acting as a constraint.
  *
  * @internal only to be used within Extbase, not part of TYPO3 Core API.
  */
-class Statement implements ConstraintInterface
+final readonly class Statement implements ConstraintInterface
 {
     /**
-     * @var string|\Doctrine\DBAL\Statement|\TYPO3\CMS\Core\Database\Query\QueryBuilder
-     */
-    protected $statement;
-
-    /**
-     * @var array
-     */
-    protected $boundVariables = [];
-
-    /**
-     * Constructs the Statement instance
-     *
-     * @param string|\Doctrine\DBAL\Statement|\TYPO3\CMS\Core\Database\Query\QueryBuilder $statement The statement as sql string or an instance of \Doctrine\DBAL\Statement or \TYPO3\CMS\Core\Database\Query\QueryBuilder
      * @param array $boundVariables An array of variables to bind to the statement, only to be used with prepared statements
      */
-    public function __construct($statement, array $boundVariables = [])
-    {
-        $this->statement = $statement;
-        $this->boundVariables = $boundVariables;
-    }
+    public function __construct(
+        protected string|\Doctrine\DBAL\Statement|QueryBuilder $statement,
+        protected array $boundVariables = []
+    ) {}
 
-    /**
-     * Gets the statement.
-     *
-     * @return string|\Doctrine\DBAL\Statement|\TYPO3\CMS\Core\Database\Query\QueryBuilder the statement; non-null
-     */
-    public function getStatement()
+    public function getStatement(): string|\Doctrine\DBAL\Statement|QueryBuilder
     {
         return $this->statement;
     }
 
-    /**
-     * Gets the bound variables
-     *
-     * @return array $boundVariables
-     */
-    public function getBoundVariables()
+    public function getBoundVariables(): array
     {
         return $this->boundVariables;
     }
 
-    /**
-     * Fills an array with the names of all bound variables in the constraints
-     *
-     * @param array $boundVariables
-     */
-    public function collectBoundVariableNames(&$boundVariables) {}
+    public function collectBoundVariableNames(array &$boundVariables) {}
 }
