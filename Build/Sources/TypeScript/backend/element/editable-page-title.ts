@@ -24,7 +24,7 @@ export class EditablePageTitle extends LitElement {
       --input-border-color: #bebebe;
       --input-hover-border-color: #bebebe;
       --input-focus-border-color: #bebebe;
-      --button-border-radius:
+      --button-border-radius: 2px;
       --button-color: inherit;
       --button-bg: transparent;
       --button-border-color: transparent;
@@ -103,7 +103,7 @@ export class EditablePageTitle extends LitElement {
       width: 1em;
       position: absolute;
       top: 0;
-      border-radius: 2px;
+      border-radius: var(--button-border-radius);
       overflow: hidden;
       outline: none;
       color: var(--button-color);
