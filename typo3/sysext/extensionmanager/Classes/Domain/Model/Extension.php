@@ -35,14 +35,14 @@ class Extension extends AbstractEntity
     protected string $description = '';
     protected int $state = 0;
     protected int $category = 0;
-    protected ?\DateTime $lastUpdated;
+    protected ?\DateTime $lastUpdated = null;
     protected string $updateComment = '';
     protected string $authorName = '';
     protected string $authorEmail = '';
     protected bool $currentVersion = false;
     protected string $md5hash = '';
-    protected int $reviewState;
-    protected int $alldownloadcounter;
+    protected int $reviewState = 0;
+    protected int $alldownloadcounter = 0;
     protected string $serializedDependencies = '';
 
     /**
@@ -52,7 +52,7 @@ class Extension extends AbstractEntity
     protected string $documentationLink = '';
     protected string $distributionImage = '';
     protected string $distributionWelcomeImage = '';
-    protected string $remote;
+    protected string $remote = '';
 
     /**
      * @internal
@@ -109,12 +109,12 @@ class Extension extends AbstractEntity
         return $this->extensionKey;
     }
 
-    public function setLastUpdated(\DateTime $lastUpdated): void
+    public function setLastUpdated(?\DateTime $lastUpdated): void
     {
         $this->lastUpdated = $lastUpdated;
     }
 
-    public function getLastUpdated(): \DateTime
+    public function getLastUpdated(): ?\DateTime
     {
         return $this->lastUpdated;
     }
