@@ -222,8 +222,12 @@ abstract class AbstractFile implements FileInterface
      * "video"
      * "other"
      * see FileType enum
+     *
+     * @return int $fileType
+     * @todo will return an instance of FileType enum in TYPO3 v14.0
      */
-    public function getType(): FileType
+    #[\ReturnTypeWillChange]
+    public function getType()
     {
         // this basically extracts the mimetype and guess the filetype based
         // on the first part of the mimetype works for 99% of all cases, and
@@ -231,12 +235,12 @@ abstract class AbstractFile implements FileInterface
         if (!($this->properties['type'] ?? false)) {
             $this->properties['type'] = FileType::tryFromMimeType($this->getMimeType())->value;
         }
-        return $this->properties['type'] instanceof FileType ? $this->properties['type'] : FileType::from($this->properties['type']);
+        return (int)$this->properties['type'];
     }
 
     public function isType(FileType $fileType): bool
     {
-        return $this->getType() === $fileType;
+        return FileType::tryFrom($this->getType()) === $fileType;
     }
 
     /**

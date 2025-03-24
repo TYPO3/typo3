@@ -84,7 +84,7 @@ class FileInfoElement extends AbstractFormElement
             }
             $content .= '<strong>' . htmlspecialchars($file->getName()) . '</strong>';
             $content .= ' (' . htmlspecialchars(GeneralUtility::formatSize((int)$file->getSize())) . 'bytes)<br />';
-            $content .= BackendUtility::getProcessedValue('sys_file', 'type', (string)$file->getType()->value) . ' (' . $file->getMimeType() . ')<br />';
+            $content .= BackendUtility::getProcessedValue('sys_file', 'type', (string)$file->getType()) . ' (' . $file->getMimeType() . ')<br />';
             $content .= htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:fileMetaDataLocation')) . ': ';
             $content .= '<a href="' . htmlspecialchars($file->getPublicUrl() ?? '') . '" target="_blank" title="' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:cm.view') . '">' . htmlspecialchars($file->getStorage()->getName()) . ' - ' . htmlspecialchars($file->getIdentifier()) . '</a><br />';
             $content .= '<br />';

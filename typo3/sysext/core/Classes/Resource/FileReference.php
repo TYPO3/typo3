@@ -296,14 +296,19 @@ class FileReference implements FileInterface
         return (int)$this->originalFile->getCreationTime();
     }
 
-    public function getType(): FileType
+    /**
+     * Returns the fileType of this file
+     *
+     * @return int $fileType
+     */
+    public function getType()
     {
-        return $this->originalFile->getType();
+        return (int)$this->originalFile->getType();
     }
 
     public function isType(FileType $fileType): bool
     {
-        return $this->getType() === $fileType;
+        return FileType::tryFrom($this->getType()) === $fileType;
     }
 
     /**

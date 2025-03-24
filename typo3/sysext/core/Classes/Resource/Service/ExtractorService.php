@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Resource\Service;
 
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\FileType;
 use TYPO3\CMS\Core\Resource\Index\ExtractorInterface;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -78,19 +77,12 @@ class ExtractorService
      */
     private function isFileTypeSupportedByExtractor(File $file, ExtractorInterface $extractor): bool
     {
-        $supportedFileTypes = $extractor->getFileTypeRestrictions();
-        if ($supportedFileTypes === []) {
-            return true;
+        $isSupported = true;
+        $fileTypeRestrictions = $extractor->getFileTypeRestrictions();
+        if (!empty($fileTypeRestrictions) && !in_array($file->getType(), $fileTypeRestrictions, true)) {
+            $isSupported = false;
         }
-        foreach ($supportedFileTypes as $supportedFileType) {
-            if (is_int($supportedFileType)) {
-                $supportedFileType = FileType::tryFrom($supportedFileType);
-            }
-            if ($supportedFileType === $file->getType()) {
-                return true;
-            }
-        }
-        return false;
+        return $isSupported;
     }
 
     /**
