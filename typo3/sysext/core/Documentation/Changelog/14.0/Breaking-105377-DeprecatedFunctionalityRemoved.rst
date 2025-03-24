@@ -188,6 +188,12 @@ The following hooks have been removed:
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvHeader']` :ref:`(Deprecation entry) <deprecation-102337-1715591179>`
 - :php:`$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['TYPO3\CMS\Recordlist\RecordList\DatabaseRecordList']['customizeCsvRow']` :ref:`(Deprecation entry) <deprecation-102337-1715591179>`
 
+The following TCA options are not evaluated anymore:
+
+- :php:`$GLOBALS['TCA'][$table]['types']['subtype_value_field']`
+- :php:`$GLOBALS['TCA'][$table]['types']['subtypes_addlist']`
+- :php:`$GLOBALS['TCA'][$table]['types']['subtypes_excludelist']`
+
 The following extbase validator options have been removed:
 
 - :php:`errorMessage` in :php:`TYPO3\CMS\Extbase\Validation\Validator\RegularExpressionValidator` :ref:`(Deprecation entry) <deprecation-102326-1699703964>`

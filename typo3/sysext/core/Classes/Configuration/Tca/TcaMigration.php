@@ -49,7 +49,6 @@ class TcaMigration
     public function migrate(array $tca): array
     {
         $this->validateTcaType($tca);
-        $this->removeSubTypesConfiguration($tca);
 
         $tca = $this->migrateColumnsConfig($tca);
         $tca = $this->migratePagesLanguageOverlayRemoval($tca);
@@ -90,6 +89,7 @@ class TcaMigration
         $tca = $this->removeMmHasUidField($tca);
         $tca = $this->migrateT3EditorToCodeEditor($tca);
         $tca = $this->removeAllowLanguageSynchronizationFromColumnsOverrides($tca);
+        $tca = $this->removeSubTypesConfiguration($tca);
 
         return $tca;
     }
@@ -1533,7 +1533,7 @@ class TcaMigration
      * - subtypes_addlist
      * - subtypes_excludelist
      */
-    protected function removeSubTypesConfiguration(array $tca): void
+    protected function removeSubTypesConfiguration(array $tca): array
     {
         foreach ($tca as $table => $tableDefinition) {
             if (!is_array($tableDefinition['types'] ?? false)) {
@@ -1557,5 +1557,6 @@ class TcaMigration
                     . 'TCA accordingly by migrating those sub types to dedicated record types.';
             }
         }
+        return $tca;
     }
 }
