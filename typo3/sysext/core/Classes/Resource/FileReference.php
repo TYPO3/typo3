@@ -305,17 +305,20 @@ class FileReference implements FileInterface
 
     /**
      * Returns the fileType of this file
-     *
-     * @return int $fileType
      */
-    public function getType()
+    public function getType(): int
     {
         return (int)$this->originalFile->getType();
     }
 
     public function isType(FileType $fileType): bool
     {
-        return FileType::tryFrom($this->getType()) === $fileType;
+        return $this->getFileType() === $fileType;
+    }
+
+    public function getFileType(): FileType
+    {
+        return FileType::from($this->originalFile->getType());
     }
 
     /**

@@ -1425,7 +1425,7 @@ parameters:
 		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:getType\(\)\.$#'
 			identifier: method.notFound
-			count: 1
+			count: 2
 			path: ../../typo3/sysext/core/Classes/Resource/FileReference.php
 
 		-
