@@ -526,9 +526,17 @@ final readonly class PageInformationFactory
      */
     protected function checkBackendUserAccess(ServerRequestInterface $request, PageInformation $pageInformation): void
     {
-        if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
-            && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)
-            && !$GLOBALS['BE_USER']->doesUserHaveAccess($pageInformation->getPageRecord(), Permission::PAGE_SHOW)
+        // No backend user was logged in, nothing to check
+        if (!$this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)) {
+            return;
+        }
+        // PreviewSimulator did not detect anything
+        if (!$this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)) {
+            return;
+        }
+        // Editor has no show permission for this page PLUS regular user is not allowed to see the page? 403.
+        if (!$GLOBALS['BE_USER']->doesUserHaveAccess($pageInformation->getPageRecord(), Permission::PAGE_SHOW)
+            && !$this->accessVoter->accessGranted('pages', $pageInformation->getPageRecord(), $this->context)
         ) {
             $response = $this->errorController->accessDeniedAction(
                 $request,
