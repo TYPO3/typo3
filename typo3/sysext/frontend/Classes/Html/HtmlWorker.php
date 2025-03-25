@@ -152,10 +152,12 @@ class HtmlWorker
             // 2) `<ELEMENT><c></ELEMENT><a><b><NEXT>`
             // 3) `<ELEMENT></ELEMENT><a><b><c><NEXT>`
             // rm `<a><b><c><NEXT>`
+            $parentNode = $element->parentNode;
             foreach ($element->childNodes as $child) {
-                $element->parentNode->insertBefore($child, $element->nextSibling);
+                $cloned = $child->cloneNode(true);
+                $parentNode->insertBefore($cloned, $element);
             }
-            $element->parentNode->removeChild($element);
+            $parentNode->removeChild($element);
         }
     }
 
