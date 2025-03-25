@@ -134,6 +134,8 @@ final class IncludeTreeConditionMatcherVisitor implements IncludeTreeVisitorInte
         // if not, create an instance from ServerRequestInterface and set it.
         if (isset($variables['request']) && !($variables['request'] instanceof RequestWrapper)) {
             $variables['request'] = new RequestWrapper($variables['request']);
+        } elseif (!isset($variables['request'])) {
+            $variables['request'] = new RequestWrapper(null);
         }
 
         // We do not expose pageId, rootLine and fullRootLine to conditions directly.
