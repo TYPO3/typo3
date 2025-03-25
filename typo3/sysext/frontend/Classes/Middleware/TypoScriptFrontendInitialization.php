@@ -22,6 +22,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -95,7 +96,9 @@ final class TypoScriptFrontendInitialization implements MiddlewareInterface
         // Check if backend user has read access to this page.
         if ($this->context->getPropertyFromAspect('backend.user', 'isLoggedIn', false)
             && $this->context->getPropertyFromAspect('frontend.preview', 'isPreview', false)
+            // Editor has no show permission for this page PLUS regular user is not allowed to see the page? 403
             && !$GLOBALS['BE_USER']->doesUserHaveAccess($controller->page, Permission::PAGE_SHOW)
+            && !GeneralUtility::makeInstance(RecordAccessVoter::class)->accessGranted('pages', $controller->page, $this->context)
         ) {
             return GeneralUtility::makeInstance(ErrorController::class)->accessDeniedAction(
                 $request,
