@@ -844,7 +844,14 @@ class ReferenceIndex
             }
         }
         foreach ($itemArray as &$item) {
-            $item = array_merge($item, $rows[$item['id']]);
+            if (isset($rows[$item['id']])) {
+                // @todo: The isset() prevents a PHP array access warning here. It seems this can happen with
+                //        inline CSV since RelationHandler->realList() does not verify if attached records
+                //        really exist. There is probably a deeper issue with CSV lists here, see #106428 for
+                //        more information and reproduce. This area should have a closer look, it looks as if
+                //        "count" value instead of uid fields are hand over here - at least with tx_styleguide_inline_11.
+                $item = array_merge($item, $rows[$item['id']]);
+            }
         }
         return $itemArray;
     }
