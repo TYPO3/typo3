@@ -18,6 +18,7 @@ return [
             'ignorePageTypeRestriction' => true,
         ],
         'iconfile' => 'EXT:core/Resources/Public/Icons/T3Icons/content/content-carousel.svg',
+        'versioningWS' => true,
     ],
     'columns' => [
         'header' => [

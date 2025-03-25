@@ -15,6 +15,7 @@ return [
             'disabled' => 'hidden',
         ],
         'iconfile' => 'EXT:blog_example/Resources/Public/Icons/icon_tx_blogexample_domain_model_comment.gif',
+        'versioningWS' => true,
     ],
     'columns' => [
         'date' => [

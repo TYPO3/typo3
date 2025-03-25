@@ -91,6 +91,7 @@ class TcaMigration
         $tca = $this->migrateT3EditorToCodeEditor($tca);
         $tca = $this->removeAllowLanguageSynchronizationFromColumnsOverrides($tca);
         $tca = $this->removeSubTypesConfiguration($tca);
+        $tca = $this->addWorkspaceAwarenessToInlineChildren($tca);
 
         return $tca;
     }
@@ -1607,6 +1608,39 @@ class TcaMigration
                     . 'use of the removed "sub types" functionality. The options \'subtype_value_field\', '
                     . '\'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your '
                     . 'TCA accordingly by migrating those sub types to dedicated record types.';
+            }
+        }
+        return $tca;
+    }
+
+    /**
+     * Inline foreign_table relations with a parent being workspace aware and
+     * a child not being workspace aware are not supported. The method detects
+     * this scenario in parent columns (not in flex forms) and enforces workspace
+     * awareness of child tables.
+     */
+    protected function addWorkspaceAwarenessToInlineChildren(array $tca): array
+    {
+        foreach ($tca as $parentTable => $parentTableDefinition) {
+            if (!($parentTableDefinition['ctrl']['versioningWS'] ?? false)
+                || !is_array($parentTableDefinition['columns'] ?? null)
+            ) {
+                continue;
+            }
+            foreach ($parentTableDefinition['columns'] as $parentFieldName => $parentFieldConfig) {
+                if (($parentFieldConfig['config']['type'] ?? '') === 'inline') {
+                    if (empty($parentFieldConfig['config']['foreign_table'] ?? '')) {
+                        continue;
+                    }
+                    $foreignTable = $parentFieldConfig['config']['foreign_table'];
+                    if ((bool)($tca[$foreignTable]['ctrl']['versioningWS'] ?? false) === false) {
+                        $tca[$foreignTable]['ctrl']['versioningWS'] = true;
+                        $this->messages[] = 'The TCA table \'' . $foreignTable . '\' has been declared workspace aware because it is'
+                            . ' used as an inline child in TCA table field \'' . $parentTable . '\':\'' . $parentFieldName . '\','
+                            . ' and that table is workspace aware. Please adjust your TCA accordingly by adding'
+                            . ' "\'versioningWS\' => true;" to the \'ctrl\' section of \'' . $foreignTable . '\'.';
+                    }
+                }
             }
         }
         return $tca;

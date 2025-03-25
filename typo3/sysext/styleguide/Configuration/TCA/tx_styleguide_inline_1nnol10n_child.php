@@ -15,6 +15,7 @@ return [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
+        'versioningWS' => true,
     ],
 
     'columns' => [

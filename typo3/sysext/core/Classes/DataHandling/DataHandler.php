@@ -5645,8 +5645,7 @@ class DataHandler
                 if (in_array($this->getRelationFieldType($configuration), ['list', 'field'], true)) {
                     $dbAnalysis = $this->createRelationHandlerInstance();
                     if ($forceHardDelete) {
-                        // @todo: This should be called "disableDeleteClause" or similar. Also, PlainDataResolver
-                        //        still applies deleteClause in processSorting() which can not be disabled.
+                        // @todo: This should be called "disableDeleteClause" or similar.
                         $dbAnalysis->undeleteRecord = true;
                     }
                     $dbAnalysis->start($value, $configuration['foreign_table'], '', $uid, $table, $configuration);
@@ -5705,8 +5704,7 @@ class DataHandler
                                 if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
                                     $dbAnalysis = $this->createRelationHandlerInstance();
                                     if ($forceHardDelete) {
-                                        // @todo: This should be called "disableDeleteClause" or similar. Also, PlainDataResolver
-                                        //        still applies deleteClause in processSorting() which can not be disabled.
+                                        // @todo: This should be called "disableDeleteClause" or similar.
                                         $dbAnalysis->undeleteRecord = true;
                                     }
                                     $dbAnalysis->start($flexFormValue, $flexFieldConfig['foreign_table'], '', $uid, $table, $flexFieldConfig);

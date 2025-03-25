@@ -18,6 +18,7 @@ return [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
+        'versioningWS' => true,
     ],
     'columns' => [
         'select_parent' => [

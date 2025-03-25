@@ -3717,4 +3717,147 @@ final class TcaMigrationTest extends UnitTestCase
         ];
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
+
+    #[Test]
+    public function inlineChildrenAreMadeWorkspaceAware(): void
+    {
+        $input = [
+            'parent1WorkspaceAware' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'child1NotWorkspaceAware',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+            'child1NotWorkspaceAware' => [
+                // This table is made workspace aware since the parent is.
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+
+            'parent2WorkspaceAware' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'child2WorkspaceAware',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+            'child2WorkspaceAware' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+
+            'parent3NotWorkspaceAware' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'child3NotWorkspaceAware',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+            'child3NotWorkspaceAware' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+
+            'parent4NotWorkspaceAware' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'inline',
+                            'foreign_table' => 'child4WorkspaceAware',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+            'child4WorkspaceAware' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+                'types' => [
+                    'aType' => [
+                        'showitem' => 'aColumn',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = $input;
+        $expected['child1NotWorkspaceAware']['ctrl']['versioningWS'] = true;
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
 }
