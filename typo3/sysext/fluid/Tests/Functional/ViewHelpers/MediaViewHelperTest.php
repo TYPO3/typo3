@@ -34,6 +34,7 @@ final class MediaViewHelperTest extends FunctionalTestCase
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Folders/fileadmin/user_upload/typo3_image2.jpg' => 'fileadmin/user_upload/typo3_image2.jpg',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/Link/FileViewHelper/Folders/fileadmin/user_upload/example.mp4' => 'fileadmin/user_upload/example.mp4',
         'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/MediaViewHelper/Folders/fileadmin/user_upload/example.youtube' => 'fileadmin/user_upload/example.youtube',
+        'typo3/sysext/fluid/Tests/Functional/Fixtures/ViewHelpers/MediaViewHelper/Folders/fileadmin/user_upload/example.m4a' => 'fileadmin/user_upload/example.m4a',
     ];
 
     public static function renderReturnsExpectedMarkupDataProvider(): array
@@ -63,6 +64,60 @@ final class MediaViewHelperTest extends FunctionalTestCase
                 '<f:media file="{file}" title="null" additionalConfig="{allowFullScreen: \'true\'}" />',
                 '1:/user_upload/example.youtube',
                 '<iframe src="https://www.youtube-nocookie.com/embed/hsrAtnI9244?autohide=1&amp;controls=1&amp;enablejsapi=1&amp;origin=http%3A%2F%2F" allowfullscreen allow="fullscreen"></iframe>',
+            ],
+            'evaluate file type "image"' => [
+                '<f:switch expression="{file.type}">
+                    <f:case value="3">audio</f:case>
+                    <f:case value="4">video</f:case>
+                    <f:defaultCase>image</f:defaultCase>
+                </f:switch>',
+                '1:/user_upload/typo3_image2.jpg',
+                'image',
+            ],
+            'evaluate file type "video"' => [
+                '<f:switch expression="{file.type}">
+                    <f:case value="3">audio</f:case>
+                    <f:case value="4">video</f:case>
+                    <f:defaultCase>image</f:defaultCase>
+                </f:switch>',
+                '1:/user_upload/example.mp4',
+                'video',
+            ],
+            'evaluate file type "audio"' => [
+                '<f:switch expression="{file.type}">
+                    <f:case value="3">audio</f:case>
+                    <f:case value="4">video</f:case>
+                    <f:defaultCase>image</f:defaultCase>
+                </f:switch>',
+                '1:/user_upload/example.m4a',
+                'audio',
+            ],
+            'evaluate file type "image" (ENUM)' => [
+                '<f:switch expression="{file.fileType}">
+                    <f:case value="{f:constant(name: \'\TYPO3\CMS\Core\Resource\FileType::AUDIO\')}">audio</f:case>
+                    <f:case value="{f:constant(name: \'\TYPO3\CMS\Core\Resource\FileType::VIDEO\')}">video</f:case>
+                    <f:defaultCase>image</f:defaultCase>
+                </f:switch>',
+                '1:/user_upload/typo3_image2.jpg',
+                'image',
+            ],
+            'evaluate file type "video" (ENUM)' => [
+                '<f:switch expression="{file.fileType}">
+                    <f:case value="{f:constant(name: \'\TYPO3\CMS\Core\Resource\FileType::AUDIO\')}">audio</f:case>
+                    <f:case value="{f:constant(name: \'\TYPO3\CMS\Core\Resource\FileType::VIDEO\')}">video</f:case>
+                    <f:defaultCase>image</f:defaultCase>
+                </f:switch>',
+                '1:/user_upload/example.mp4',
+                'video',
+            ],
+            'evaluate file type "audio" (ENUM)' => [
+                '<f:switch expression="{file.fileType}">
+                    <f:case value="{f:constant(name: \'\TYPO3\CMS\Core\Resource\FileType::AUDIO\')}">audio</f:case>
+                    <f:case value="{f:constant(name: \'\TYPO3\CMS\Core\Resource\FileType::VIDEO\')}">video</f:case>
+                    <f:defaultCase>image</f:defaultCase>
+                </f:switch>',
+                '1:/user_upload/example.m4a',
+                'audio',
             ],
         ];
     }
