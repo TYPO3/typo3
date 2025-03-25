@@ -183,10 +183,11 @@ class ShortcutButton implements ButtonInterface, PositionInterface
      */
     public function render()
     {
-        if (!$this->getBackendUser()->mayMakeShortcut()) {
-            // Early return in case the current user is not allowed to create shortcuts.
-            // Note: This is not checked in isValid(), since it only concerns the current
-            //       user and does not mean, the button is not configured properly.
+        $createShortcut = $this->getBackendUser()->mayMakeShortcut();
+        // Early return in case the current user is not allowed to create shortcuts.
+        // Note: This is not checked in isValid(), since it only concerns the current
+        //       user and does not mean, the button is not configured properly.
+        if (!$createShortcut && !$this->copyUrlToClipboard) {
             return '';
         }
 
@@ -206,7 +207,7 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $confirmationText = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.makeBookmark');
         $alreadyBookmarkedText = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.alreadyBookmarked');
 
-        if (!$this->copyUrlToClipboard) {
+        if ($createShortcut && !$this->copyUrlToClipboard) {
             $shortcutButton = GeneralUtility::makeInstance(GenericButton::class);
             if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
                 $shortcutButton->setLabel($alreadyBookmarkedText);
@@ -222,36 +223,40 @@ class ShortcutButton implements ButtonInterface, PositionInterface
         $dropdownItems = [];
 
         // Shortcut Button
-        $shortcutItem = GeneralUtility::makeInstance(DropDownItem::class);
-        $shortcutItem->setTag('button');
-        $attributes = $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText);
-        if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
-            $shortcutItem->setLabel($alreadyBookmarkedText);
-            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-active', IconSize::SMALL));
-            $shortcutItem->setAttributes($attributes + ['data-dispatch-disabled' => 'disabled', 'disabled' => 'disabled']);
-        } else {
-            $shortcutItem->setLabel($confirmationText);
-            $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-new', IconSize::SMALL));
-            $shortcutItem->setAttributes($attributes);
+        if ($createShortcut) {
+            $shortcutItem = GeneralUtility::makeInstance(DropDownItem::class);
+            $shortcutItem->setTag('button');
+            $attributes = $this->getDispatchActionAttrs($routeIdentifier, $encodedArguments, $confirmationText);
+            if (GeneralUtility::makeInstance(ShortcutRepository::class)->shortcutExists($routeIdentifier, $encodedArguments)) {
+                $shortcutItem->setLabel($alreadyBookmarkedText);
+                $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-active', IconSize::SMALL));
+                $shortcutItem->setAttributes($attributes + ['data-dispatch-disabled' => 'disabled', 'disabled' => 'disabled']);
+            } else {
+                $shortcutItem->setLabel($confirmationText);
+                $shortcutItem->setIcon($iconFactory->getIcon('actions-system-shortcut-new', IconSize::SMALL));
+                $shortcutItem->setAttributes($attributes);
+            }
+            $dropdownItems[] = $shortcutItem;
         }
-        $dropdownItems[] = $shortcutItem;
 
         // Clipboard Button
-        $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
-        $pageRenderer->loadJavaScriptModule('@typo3/backend/copy-to-clipboard.js');
-        $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
-        $clipboardItem = GeneralUtility::makeInstance(DropDownItem::class);
-        $clipboardItem->setTag('typo3-copy-to-clipboard');
-        $clipboardItem->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl'));
-        $clipboardItem->setAttributes([
-            'text' => GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
-                $routeIdentifier,
-                $arguments,
-                UriBuilder::SHAREABLE_URL
-            ),
-        ]);
-        $clipboardItem->setIcon($iconFactory->getIcon('actions-link', IconSize::SMALL));
-        $dropdownItems[] = $clipboardItem;
+        if ($this->copyUrlToClipboard) {
+            $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
+            $pageRenderer->loadJavaScriptModule('@typo3/backend/copy-to-clipboard.js');
+            $pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/locallang_copytoclipboard.xlf');
+            $clipboardItem = GeneralUtility::makeInstance(DropDownItem::class);
+            $clipboardItem->setTag('typo3-copy-to-clipboard');
+            $clipboardItem->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.copyCurrentUrl'));
+            $clipboardItem->setAttributes([
+                'text' => GeneralUtility::makeInstance(UriBuilder::class)->buildUriFromRoute(
+                    $routeIdentifier,
+                    $arguments,
+                    UriBuilder::SHAREABLE_URL
+                ),
+            ]);
+            $clipboardItem->setIcon($iconFactory->getIcon('actions-link', IconSize::SMALL));
+            $dropdownItems[] = $clipboardItem;
+        }
 
         $dropdownButton = GeneralUtility::makeInstance(DropDownButton::class);
         $dropdownButton->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.share'));
