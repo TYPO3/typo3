@@ -18,6 +18,7 @@
         @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-info));
         width: calc(16 / 12 * 1em);
         height: calc(16 / 12 * 1em);
+        flex-shrink: 0;
     }
 }
 
@@ -39,6 +40,7 @@
         @include icon-background($icon-actions-check-circle, var(--typo3-text-color-success));
         width: calc(16 / 12 * 1em);
         height: calc(16 / 12 * 1em);
+        flex-shrink: 0;
     }
 }
 
@@ -59,6 +61,7 @@
         @include icon-background($icon-actions-exclamation-triangle, var(--typo3-text-color-warning));
         width: calc(16 / 12 * 1em);
         height: calc(16 / 12 * 1em);
+        flex-shrink: 0;
     }
 }
 
@@ -80,5 +83,6 @@
         @include icon-background($icon-actions-exclamation-circle, var(--typo3-text-color-danger));
         width: calc(16 / 12 * 1em);
         height: calc(16 / 12 * 1em);
+        flex-shrink: 0;
     }
 }
