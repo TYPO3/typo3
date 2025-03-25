@@ -45,9 +45,9 @@ final class ShortcutButtonTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../../../../Fixtures/be_users_no_bookmarks.csv');
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-        self::assertEmpty(
-            (new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->render()
-        );
+        $result = (new ShortcutButton())->setRouteIdentifier('web_list')->setDisplayName('Some module anme')->render();
+        self::assertStringContainsString('Copy URL of this record', $result);
+        self::assertStringNotContainsString('actions-system-shortcut', $result);
     }
 
     #[DataProvider('rendersCorrectMarkupDataProvider')]
