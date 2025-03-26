@@ -183,7 +183,7 @@ class FileSessionHandler implements \SessionHandlerInterface
         }
         $deleted = 0;
         foreach ($files as $filename) {
-            if (filemtime($filename) + $this->expirationTimeInMinutes * 60 < time()) {
+            if (@filemtime($filename) + $this->expirationTimeInMinutes * 60 < time()) {
                 @unlink($filename);
                 $deleted++;
             }
