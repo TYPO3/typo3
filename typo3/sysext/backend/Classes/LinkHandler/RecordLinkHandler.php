@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -79,6 +80,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
         private readonly ElementBrowserRecordList $elementBrowserRecordList,
         private readonly RecordSearchBoxComponent $recordSearchBoxComponent,
         private readonly LinkService $linkService,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {
         parent::__construct();
     }
@@ -119,7 +121,7 @@ final class RecordLinkHandler extends AbstractLinkHandler implements LinkHandler
             $linkParts['pid'] = (int)$record['pid'];
             $linkParts['title'] = !empty($linkParts['title']) ? $linkParts['title'] : BackendUtility::getRecordTitle($table, $record);
         }
-        $linkParts['tableName'] = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['ctrl']['title']);
+        $linkParts['tableName'] = $this->getLanguageService()->sL($this->tcaSchemaFactory->get($table)->getRawConfiguration()['title']);
         $linkParts['url']['type'] = $linkParts['type'];
         $this->linkParts = $linkParts;
 

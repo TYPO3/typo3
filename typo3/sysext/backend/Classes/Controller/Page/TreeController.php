@@ -31,12 +31,13 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -104,6 +105,8 @@ class TreeController
         protected readonly UriBuilder $uriBuilder,
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly SiteFinder $siteFinder,
+        protected readonly PageDoktypeRegistry $pageDoktypeRegistry,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     protected function initializeConfiguration(ServerRequestInterface $request)
@@ -184,11 +187,7 @@ class TreeController
     {
         $backendUser = $this->getBackendUser();
         $doktypeLabelMap = [];
-        foreach ($GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] as $doktypeItemConfig) {
-            $selectionItem = SelectItem::fromTcaItemArray($doktypeItemConfig);
-            if ($selectionItem->isDivider()) {
-                continue;
-            }
+        foreach ($this->pageDoktypeRegistry->getAllDoktypes() as $selectionItem) {
             $doktypeLabelMap[$selectionItem->getValue()] = $selectionItem->getLabel();
         }
         $doktypes = GeneralUtility::intExplode(',', (string)($backendUser->getTSConfig()['options.']['pageTree.']['doktypesToShowInNewPageDragArea'] ?? ''), true);
@@ -207,7 +206,7 @@ class TreeController
             $label = htmlspecialchars($this->getLanguageService()->sL($doktypeLabelMap[$doktype]));
             $output[] = [
                 'nodeType' => $doktype,
-                'icon' => $GLOBALS['TCA']['pages']['ctrl']['typeicon_classes'][$doktype] ?? '',
+                'icon' => $this->tcaSchemaFactory->get('pages')->getRawConfiguration()['typeicon_classes'][$doktype] ?? '',
                 'title' => $label,
             ];
         }

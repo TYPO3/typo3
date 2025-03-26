@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\Tree\View\LinkParameterProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Imaging\IconSize;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -96,9 +97,11 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
             $tablesArr = GeneralUtility::trimExplode(',', $allowedTables, true);
             $onlyRootLevel = true;
             foreach ($tablesArr as $currentTable) {
-                if (isset($GLOBALS['TCA'][$currentTable])) {
-                    if (!isset($GLOBALS['TCA'][$currentTable]['ctrl']['rootLevel']) || (int)$GLOBALS['TCA'][$currentTable]['ctrl']['rootLevel'] !== 1) {
+                if ($this->tcaSchemaFactory->has($currentTable)) {
+                    $schema = $this->tcaSchemaFactory->get($currentTable);
+                    if ($schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->canExistOnPages()) {
                         $onlyRootLevel = false;
+                        break;
                     }
                 }
             }
@@ -145,7 +148,7 @@ class DatabaseBrowser extends AbstractElementBrowser implements ElementBrowserIn
         }
         // Set array with table names to list:
         if (trim($tables) === '*') {
-            $tablesArr = array_keys($GLOBALS['TCA']);
+            $tablesArr = $this->tcaSchemaFactory->all()->getNames();
         } else {
             $tablesArr = GeneralUtility::trimExplode(',', $tables, true);
         }

@@ -21,27 +21,17 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Preview\PreviewRendererInterface;
 use TYPO3\CMS\Backend\Preview\StandardContentPreviewRenderer;
 use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\RelationMapBuilder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StandardPreviewRendererResolverTest extends UnitTestCase
 {
-    protected StandardPreviewRendererResolver $subject;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->subject = new StandardPreviewRendererResolver();
-        $GLOBALS['TCA']['tt_content'] = [
-            'ctrl' => [
-                'type' => 'CType',
-                'previewRenderer' => StandardContentPreviewRenderer::class,
-            ],
-        ];
-    }
-
     protected function tearDown(): void
     {
         GeneralUtility::purgeInstances();
@@ -56,9 +46,13 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
             'CType' => 'text',
         ];
 
+        $tcaSchemaFactory = $this->createTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($this->getDefaultTca());
+        $subject = new StandardPreviewRendererResolver($tcaSchemaFactory);
+
         self::assertEquals(
             StandardContentPreviewRenderer::class,
-            get_class($this->subject->resolveRendererFor($table, $row, 0))
+            get_class($subject->resolveRendererFor($table, $row, 0))
         );
     }
 
@@ -71,11 +65,15 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         $row = [
             'CType' => 'my_plugin_pi1',
         ];
-        $GLOBALS['TCA'][$table]['types']['my_plugin_pi1']['previewRenderer'] = get_class($customPreviewRenderer);
+        $tcaSchemaFactory = $this->createTcaSchemaFactory();
+        $tca = $this->getDefaultTca();
+        $tca[$table]['types']['my_plugin_pi1']['previewRenderer'] = get_class($customPreviewRenderer);
+        $tcaSchemaFactory->rebuild($tca);
+        $subject = new StandardPreviewRendererResolver($tcaSchemaFactory);
 
         self::assertEquals(
             get_class($customPreviewRenderer),
-            get_class($this->subject->resolveRendererFor($table, $row, 0))
+            get_class($subject->resolveRendererFor($table, $row, 0))
         );
     }
 
@@ -88,18 +86,38 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         $row = [
             'CType' => 'my_plugin_pi1',
         ];
-        $GLOBALS['TCA'][$table]['types']['my_plugin_pi1']['previewRenderer']['custom'] = get_class($customPreviewRenderer);
+
+        $tcaSchemaFactory = $this->createTcaSchemaFactory();
+        $tca = $this->getDefaultTca();
+        $tca[$table]['types']['my_plugin_pi1']['previewRenderer']['custom'] = get_class($customPreviewRenderer);
+        $tcaSchemaFactory->rebuild($tca);
+        $subject = new StandardPreviewRendererResolver($tcaSchemaFactory);
 
         self::assertEquals(
             StandardContentPreviewRenderer::class,
-            get_class($this->subject->resolveRendererFor($table, $row, 0))
+            get_class($subject->resolveRendererFor($table, $row, 0))
         );
     }
 
     #[Test]
     public function getExceptionWithNoPreviewRendererDefined(): void
     {
-        $GLOBALS['TCA']['pages']['ctrl'] = [];
+        $tcaSchemaFactory = $this->createTcaSchemaFactory();
+        $tca = $this->getDefaultTca();
+        $tca['pages'] = [
+            'ctrl' => [
+                'label' => 'nothing',
+            ],
+            'columns' => [
+                'nothing' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+            ],
+        ];
+        $tcaSchemaFactory->rebuild($tca);
+        $subject = new StandardPreviewRendererResolver($tcaSchemaFactory);
 
         $table = 'pages';
         $row = [
@@ -109,6 +127,46 @@ final class StandardPreviewRendererResolverTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1477520356);
 
-        $this->subject->resolveRendererFor($table, $row, 0);
+        $subject->resolveRendererFor($table, $row, 0);
+    }
+
+    private function createTcaSchemaFactory(): TcaSchemaFactory
+    {
+        return new TcaSchemaFactory(
+            new RelationMapBuilder(
+                $this->createMock(FlexFormTools::class)
+            ),
+            new FieldTypeFactory(),
+            'cacheIdentifier',
+            new NullFrontend('runtime')
+        );
+    }
+
+    private function getDefaultTca(): array
+    {
+        $tca['tt_content'] = [
+            'ctrl' => [
+                'type' => 'CType',
+                'previewRenderer' => StandardContentPreviewRenderer::class,
+            ],
+            'columns' => [
+                'CType' => [
+                    'config' => [
+                        'type' => 'select',
+                        'items' => [
+                            ['label' => 'Text', 'value' => 'text'],
+                            ['label' => 'Image', 'value' => 'image'],
+                            ['label' => 'My Plugin', 'value' => 'my_plugin_pi1'],
+                        ],
+                    ],
+                ],
+            ],
+            'types' => [
+                'text' => ['showitem' => 'CType'],
+                'image' => ['showitem' => 'CType'],
+                'my_plugin_pi1' => ['showitem' => 'CType'],
+            ],
+        ];
+        return $tca;
     }
 }

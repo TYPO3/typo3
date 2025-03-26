@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\ContextMenu\ItemProviders;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -269,8 +270,8 @@ class PageProvider extends RecordProvider
         if (!$this->backendUser->checkLanguageAccess(0)) {
             return false;
         }
-        if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
-            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']] ?? false, [0, -1])
+        if ($this->getLanguageField() !== ''
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, -1])
         ) {
             return false;
         }
@@ -291,13 +292,13 @@ class PageProvider extends RecordProvider
         if ($this->isRoot()) {
             return false;
         }
-        if (isset($GLOBALS['TCA'][$this->table]['ctrl']['readOnly']) && $GLOBALS['TCA'][$this->table]['ctrl']['readOnly']) {
+        if ($this->getSchema()?->hasCapability(TcaSchemaCapability::AccessReadOnly)) {
             return false;
         }
         if ($this->backendUser->isAdmin()) {
             return true;
         }
-        if (isset($GLOBALS['TCA'][$this->table]['ctrl']['adminOnly']) && $GLOBALS['TCA'][$this->table]['ctrl']['adminOnly']) {
+        if ($this->getSchema()?->hasCapability(TcaSchemaCapability::AccessAdminOnly)) {
             return false;
         }
         if (!$this->backendUser->check('tables_modify', $this->table)) {
@@ -311,7 +312,7 @@ class PageProvider extends RecordProvider
      */
     protected function isRecordLocked(): bool
     {
-        return (bool)$this->record['editlock'];
+        return (bool)$this->record[$this->getSchema()->getCapability(TcaSchemaCapability::EditLock)->getFieldName()];
     }
 
     /**
@@ -322,8 +323,8 @@ class PageProvider extends RecordProvider
         if (!$this->languageAccess) {
             return false;
         }
-        if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
-            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']] ?? false, [0, -1])
+        if ($this->getLanguageField() !== ''
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, -1])
         ) {
             return false;
         }
@@ -343,8 +344,8 @@ class PageProvider extends RecordProvider
         if (!$this->languageAccess) {
             return false;
         }
-        if (isset($GLOBALS['TCA'][$this->table]['ctrl']['languageField'])
-            && !in_array($this->record[$GLOBALS['TCA'][$this->table]['ctrl']['languageField']] ?? false, [0, -1])
+        if ($this->getLanguageField() !== ''
+            && !in_array($this->record[$this->getLanguageField()] ?? false, [0, -1])
         ) {
             return false;
         }
@@ -540,7 +541,8 @@ class PageProvider extends RecordProvider
         if (!$this->languageAccess || $this->isRoot()) {
             return false;
         }
-        if (!empty($GLOBALS['TCA'][$this->table]['columns'][$fieldName]['exclude'])
+        $field = $this->getSchema()->getField($fieldName);
+        if ($field->supportsAccessControl()
             && !$this->isExcludedDoktype()
             && $this->backendUser->check('non_exclude_fields', $this->table . ':' . $fieldName)
             && $this->backendUser->check('tables_modify', $this->table)

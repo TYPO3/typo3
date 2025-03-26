@@ -165,7 +165,7 @@ class LocalizationController
             }
             $records[$colPos][] = [
                 'icon' => $this->iconFactory->getIconForRecord('tt_content', $row, IconSize::SMALL)->render(),
-                'title' => $row[$GLOBALS['TCA']['tt_content']['ctrl']['label']],
+                'title' => BackendUtility::getRecordTitle('tt_content', $row),
                 'uid' => $row['uid'],
             ];
             $flatRecords[] = $row;

@@ -46,6 +46,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -81,6 +83,7 @@ class RecordListController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -452,8 +455,8 @@ class RecordListController
     protected function addNoRecordsFlashMessage(ModuleTemplate $view, string $table)
     {
         $languageService = $this->getLanguageService();
-        if ($table && isset($GLOBALS['TCA'][$table]['ctrl']['title'])) {
-            $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']));
+        if ($table && $this->tcaSchemaFactory->has($table) && isset($this->tcaSchemaFactory->get($table)->getRawConfiguration()['title'])) {
+            $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $languageService->sL($this->tcaSchemaFactory->get($table)->getRawConfiguration()['title']));
         } else {
             $message = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOnThisPage');
         }
@@ -481,8 +484,9 @@ class RecordListController
             $availableTranslations[$siteLanguage->getLanguageId()] = $siteLanguage->getTitle();
         }
         // Then, subtract the languages which are already on the page:
-        $localizationParentField = $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'];
-        $languageField = $GLOBALS['TCA']['pages']['ctrl']['languageField'];
+        $schema = $this->tcaSchemaFactory->get('pages');
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageField = $languageCapability->getLanguageField()->getName();
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
@@ -491,7 +495,7 @@ class RecordListController
             ->from('pages')
             ->where(
                 $queryBuilder->expr()->eq(
-                    $localizationParentField,
+                    $languageCapability->getTranslationOriginPointerField()->getName(),
                     $queryBuilder->createNamedParameter($this->id, Connection::PARAM_INT)
                 )
             )
@@ -564,7 +568,12 @@ class RecordListController
         $tableTitle = '';
         $languageService = $this->getLanguageService();
         if (isset($arguments['table'])) {
-            $tableTitle = ': ' . (isset($GLOBALS['TCA'][$arguments['table']]['ctrl']['title']) ? $languageService->sL($GLOBALS['TCA'][$arguments['table']]['ctrl']['title']) : $arguments['table']);
+            $tableName = $arguments['table'];
+            if ($this->tcaSchemaFactory->has($tableName)) {
+                $schema = $this->tcaSchemaFactory->get($tableName);
+                $tableTitle = $languageService->sL($schema->getRawConfiguration()['title']);
+            }
+            $tableTitle = ': ' . ($tableTitle ?: $tableName);
         }
         if ($this->pageInfo !== []) {
             $pageTitle = BackendUtility::getRecordTitle('pages', $this->pageInfo);
@@ -586,8 +595,9 @@ class RecordListController
         if (isset($this->modTSconfig['table.']['pages.']['hideTable'])) {
             return !$this->modTSconfig['table.']['pages.']['hideTable'];
         }
+        $schema = $this->tcaSchemaFactory->get('pages');
         $hideTables = $this->modTSconfig['hideTables'] ?? '';
-        return !($GLOBALS['TCA']['pages']['ctrl']['hideTable'] ?? false)
+        return !($schema->getRawConfiguration()['hideTable'] ?? false)
             && $hideTables !== '*'
             && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }
@@ -625,14 +635,16 @@ class RecordListController
      */
     protected function isPageEditable(): bool
     {
-        if ($GLOBALS['TCA']['pages']['ctrl']['readOnly'] ?? false) {
+        $schema = $this->tcaSchemaFactory->get('pages');
+
+        if ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly)) {
             return false;
         }
         $backendUser = $this->getBackendUserAuthentication();
         if ($backendUser->isAdmin()) {
             return true;
         }
-        if ($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false) {
+        if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)) {
             return false;
         }
 

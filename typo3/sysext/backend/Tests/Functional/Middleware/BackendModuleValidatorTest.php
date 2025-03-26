@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -54,6 +55,7 @@ final class BackendModuleValidatorTest extends FunctionalTestCase
             $this->get(UriBuilder::class),
             $this->get(ModuleProvider::class),
             $this->get(FlashMessageService::class),
+            $this->get(TcaSchemaFactory::class),
         );
         $this->request = new ServerRequest('/some/uri');
         $this->requestHandler = new class () implements RequestHandlerInterface {

@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Preview;
 
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -28,8 +30,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Depending on which one is defined and checking the first, type-specific
  * variant first.
  */
+#[Autoconfigure(public: true)]
 class StandardPreviewRendererResolver
 {
+    public function __construct(
+        protected readonly TcaSchemaFactory $tcaSchemaFactory
+    ) {}
+
     /**
      * @param string $table The name of the table the returned PreviewRenderer must work with
      * @param array $row A record from $table which will be previewed - allows returning a different PreviewRenderer based on record attributes
@@ -39,22 +46,21 @@ class StandardPreviewRendererResolver
      */
     public function resolveRendererFor(string $table, array $row, int $pageUid): PreviewRendererInterface
     {
-        $tca = $GLOBALS['TCA'][$table];
-        $tcaTypeField = $tca['ctrl']['type'] ?? null;
+        $schema = $this->tcaSchemaFactory->get($table);
         $previewRendererClassName = null;
-        if ($tcaTypeField) {
-            $tcaTypeOfRow = $row[$tcaTypeField];
-            $typeConfiguration = $tca['types'][$tcaTypeOfRow] ?? [];
-            if (is_string($typeConfiguration['previewRenderer'] ?? false) && $typeConfiguration['previewRenderer'] !== '') {
+        if ($schema->getSubSchemaDivisorField()) {
+            $tcaTypeOfRow = $row[$schema->getSubSchemaDivisorField()->getName()];
+            $subSchema = $schema->getSubSchema($tcaTypeOfRow);
+            if (is_string($subSchema->getRawConfiguration()['previewRenderer'] ?? false) && $subSchema->getRawConfiguration()['previewRenderer'] !== '') {
                 // A type-specific preview renderer was configured for the TCA type
-                $previewRendererClassName = $typeConfiguration['previewRenderer'];
+                $previewRendererClassName = $subSchema->getRawConfiguration()['previewRenderer'];
             }
         }
 
         if (!$previewRendererClassName) {
             // Table either has no type field or no custom preview renderer was defined for the type.
             // Use table's standard renderer if any is defined.
-            $previewRendererClassName = $tca['ctrl']['previewRenderer'] ?? null;
+            $previewRendererClassName = $schema->getRawConfiguration()['previewRenderer'] ?? null;
         }
 
         if (is_string($previewRendererClassName) && $previewRendererClassName !== '') {

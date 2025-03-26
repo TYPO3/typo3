@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -72,8 +73,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
             $outHeader .= '<div class="element-preview-header-date">' . htmlspecialchars($dateLabel) . ' </div>';
         }
 
-        $labelField = $GLOBALS['TCA'][$table]['ctrl']['label'] ?? '';
-        $label = (string)($record[$labelField] ?? '');
+        $label = BackendUtility::getRecordTitle($table, $record, false, false);
         if ($label !== '') {
             $outHeader .= '<div class="element-preview-header-header">' . $this->linkEditContent($this->renderText($label), $record, $table) . '</div>';
         }
@@ -182,24 +182,22 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         $info = [];
         $record = $item->getRecord();
         $table = $item->getTable();
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($table);
         $fieldList = [];
-        $startTimeField = (string)($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'] ?? '');
-        if ($startTimeField !== '') {
-            $fieldList[] = $startTimeField;
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
+            $fieldList[] = $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
         }
-        $endTimeField = (string)($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'] ?? '');
-        if ($endTimeField !== '') {
-            $fieldList[] = $endTimeField;
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
+            $fieldList[] = $schema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
         }
-        $feGroupField = (string)($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'] ?? '');
-        if ($feGroupField !== '') {
-            $fieldList[] = $feGroupField;
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
+            $fieldList[] = $schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)->getFieldName();
         }
         if ($table === 'tt_content') {
-            if (is_array($GLOBALS['TCA'][$table]['columns']['space_before_class'] ?? null)) {
+            if ($schema->hasField('space_before_class')) {
                 $fieldList[] = 'space_before_class';
             }
-            if (is_array($GLOBALS['TCA'][$table]['columns']['space_after_class'] ?? null)) {
+            if ($schema->hasField('space_after_class')) {
                 $fieldList[] = 'space_after_class';
             }
         }
@@ -208,8 +206,9 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
         }
         $this->getProcessedValue($item, $fieldList, $info);
 
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']) && !empty($record[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']])) {
-            $info[] = htmlspecialchars($record[$GLOBALS['TCA'][$table]['ctrl']['descriptionColumn']]);
+        if ($schema->hasCapability(TcaSchemaCapability::InternalDescription) &&
+            !empty($record[$schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName()])) {
+            $info[] = htmlspecialchars($record[$schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName()]);
         }
 
         if ($info !== []) {

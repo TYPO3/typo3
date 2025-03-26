@@ -25,6 +25,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\View\ViewInterface;
 
 /**
@@ -52,6 +54,7 @@ class ColumnSelectorController
     public function __construct(
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly BackendViewFactory $backendViewFactory,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -132,9 +135,14 @@ class ColumnSelectorController
             if ($tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['disabled'] ?? false) {
                 continue;
             }
+            $schema = $this->tcaSchemaFactory->get($concreteTableName);
+            $labelFieldName = false;
+            if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+                $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName();
+            }
 
             // Determine if the column should be disabled (Meaning it is always selected and can not be turned off)
-            $isDisabled = $fieldName === ($GLOBALS['TCA'][$concreteTableName]['ctrl']['label'] ?? false);
+            $isDisabled = $fieldName === $labelFieldName;
 
             // Determine field label
             $label = BackendUtility::getItemLabel($concreteTableName, $fieldName);
