@@ -114,7 +114,7 @@ class SelectSingleElement extends AbstractFormElement
 
         // Initialization:
         $selectId = StringUtility::getUniqueId('tceforms-select-');
-        $selectedIcon = '';
+        $selectedItem = null;
         $size = (int)($config['size'] ?? 0);
 
         // Style set on <select/>
@@ -153,25 +153,18 @@ class SelectSingleElement extends AbstractFormElement
                 ];
             } elseif ($selected || !in_array((int)$item['value'], $uniqueIds, true)) {
                 $icon = !empty($item['icon']) ? FormEngineUtility::getIconHtml($item['icon'], $item['label'], $item['label']) : '';
-
-                if ($selected) {
-                    $selectedIcon = $icon;
-                }
-
-                $selectItemGroups[$selectItemGroupCount]['items'][] = [
+                $enhancedItem = [
                     'title' => $this->appendValueToLabelInDebugMode($item['label'], $item['value']),
                     'value' => $item['value'],
                     'icon' => $icon,
                     'selected' => $selected,
                 ];
+                if ($selected) {
+                    $selectedItem = $enhancedItem;
+                }
+                $selectItemGroups[$selectItemGroupCount]['items'][] = $enhancedItem;
                 $selectItemCounter++;
             }
-        }
-
-        // Fallback icon
-        // @todo: assign a special icon for non matching values?
-        if (!$selectedIcon && !empty($selectItemGroups[0]['items'][0]['icon'])) {
-            $selectedIcon = $selectItemGroups[0]['items'][0]['icon'];
         }
 
         // Process groups
@@ -189,11 +182,23 @@ class SelectSingleElement extends AbstractFormElement
                     $options .= '<option value="' . htmlspecialchars($item['value']) . '" data-icon="' .
                         htmlspecialchars($item['icon']) . '"'
                         . ($item['selected'] ? ' selected="selected"' : '') . '>' . htmlspecialchars((string)($item['title'] ?? ''), ENT_COMPAT, 'UTF-8', false) . '</option>';
-                }
-                $hasIcons = !empty($item['icon']);
-            }
 
+                    // At least one select item with icon found.
+                    if (!empty($item['icon'])) {
+                        $hasIcons = true;
+                    }
+                }
+            }
             $options .= ($optionGroup ? '</optgroup>' : '');
+        }
+
+        // No item selected. Use first item of first group as selected item, which is display
+        // in the form to render icon of that item icon as selected icon when item has one.
+        if ($hasIcons
+            && $selectedItem === null
+            && isset($selectItemGroups[0]['items'][0])
+        ) {
+            $selectedItem = $selectItemGroups[0]['items'][0];
         }
 
         $selectAttributes = [
@@ -231,7 +236,9 @@ class SelectSingleElement extends AbstractFormElement
         if ($hasIcons) {
             $html[] =           '<div class="input-group">';
             $html[] =               '<span class="input-group-text input-group-icon">';
-            $html[] =                   $selectedIcon;
+            if ($selectedItem !== null) {
+                $html[] =              $selectedItem['icon'];
+            }
             $html[] =               '</span>';
         }
         $html[] =                   '<select ' . GeneralUtility::implodeAttributes($selectAttributes, true) . '>';

@@ -320,6 +320,42 @@ return [
                 'foreign_table_item_group' => 'item_group',
             ],
         ],
+        'select_single_22' => [
+            'label' => 'select_single_22 selectIcons, items with icons and no icons (first has icon)',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['label' => 'foo 1 (with icon)', 'value' => 'foo1', 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    // Note this is intentionally "broken" to see have one case that can distinguish between "no image" and "broken image".
+                    // @see https://review.typo3.org/c/Packages/TYPO3.CMS/+/88774
+                    ['label' => 'foo 2 (with broken icon)', 'value' => 'foo2', 'icon' => 'EXT:styleguide/Resources/Public/Icons/provider_sv_icon.svg'],
+                    ['label' => 'foo 1 (no icon)', 'value' => 'foo3'],
+                ],
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
+            ],
+        ],
+        'select_single_23' => [
+            'label' => 'select_single_23 selectIcons, items with icons and no icons (first has NO icon)',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['label' => 'foo 1 (no icon)', 'value' => 'foo1'],
+                    ['label' => 'foo 2 (with icon)', 'value' => 'foo2', 'icon' => 'EXT:styleguide/Resources/Public/Icons/tx_styleguide.svg'],
+                    ['label' => 'foo 3 (no icon)', 'value' => 'foo3'],
+                ],
+                'fieldWizard' => [
+                    'selectIcons' => [
+                        'disabled' => false,
+                    ],
+                ],
+            ],
+        ],
         'select_singlebox_1' => [
             'label' => 'select_singlebox_1 description',
             'description' => 'field description',
@@ -968,7 +1004,8 @@ return [
                     select_single_1, select_single_2, select_single_3, select_single_4, select_single_5,
                     select_single_7, select_single_12, select_single_8, select_single_13, select_single_10,
                     select_single_11, select_single_14, select_single_15,select_single_16,select_single_17,
-                    select_single_18, select_single_19, select_single_20, select_single_21,
+                    select_single_18, select_single_19, select_single_20, select_single_21, select_single_22,
+                    select_single_23,
                 --div--;renderType=selectSingleBox,
                     select_singlebox_1, select_singlebox_2,select_singlebox_3,
                 --div--;renderType=selectCheckBox,
