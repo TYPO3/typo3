@@ -7,13 +7,9 @@
 
 <f:section name="Content">
 
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/context-menu.js',
-        1: '@typo3/backend/modal.js',
-        2: '@typo3/backend/site-inline-actions.js'
-    }"
-/>
+<f:asset.module identifier="@typo3/backend/context-menu.js"/>
+<f:asset.module identifier="@typo3/backend/modal.js"/>
+<f:asset.module identifier="@typo3/backend/site-inline-actions.js"/>
 
 <f:render partial="SiteManagement/InvalidSets" arguments="{site: site}"/>
 

@@ -6,10 +6,8 @@
 <f:layout name="Module" />
 
 <f:section name="Before">
-    <f:be.pageRenderer includeJavaScriptModules="{
-        0: '@typo3/linkvalidator/linkvalidator.js',
-        1: '@typo3/linkvalidator/linkvalidator-modal.js'
-    }"/>
+    <f:asset.module identifier="@typo3/linkvalidator/linkvalidator.js"/>
+    <f:asset.module identifier="@typo3/linkvalidator/linkvalidator-modal.js"/>
 </f:section>
 
 <f:section name="Content">

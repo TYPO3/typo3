@@ -6,17 +6,15 @@
 <f:layout name="Module" />
 
 <f:section name="Before">
+    <f:asset.module identifier="@typo3/backend/clear-cache.js"/>
+    <f:asset.module identifier="@typo3/backend/new-content-element-wizard-button.js"/>
+    <f:asset.module identifier="@typo3/backend/context-menu.js"/>
+    <f:asset.module identifier="@typo3/backend/localization.js"/>
+    <f:asset.module identifier="@typo3/backend/layout-module/drag-drop.js"/>
+    <f:asset.module identifier="@typo3/backend/modal.js"/>
+    <f:asset.module identifier="@typo3/backend/element/editable-page-title.js"/>
+    <f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
     <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/clear-cache.js',
-            1: '@typo3/backend/new-content-element-wizard-button.js',
-            2: '@typo3/backend/context-menu.js',
-            3: '@typo3/backend/localization.js',
-            4: '@typo3/backend/layout-module/drag-drop.js',
-            5: '@typo3/backend/modal.js',
-            6: '@typo3/backend/element/editable-page-title.js',
-            7: '@typo3/backend/element/immediate-action-element.js'
-        }"
         addJsInlineLabels="{
             'editablePageTitle.input.field.label': 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageTitle.input.field.label',
             'editablePageTitle.button.edit.label': 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageTitle',

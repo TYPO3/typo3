@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
+use TYPO3\CMS\Core\Page\AssetCollector;
 use TYPO3\CMS\Core\Page\AssetRenderer;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\RelativeCssPathFixer;
@@ -46,6 +47,7 @@ final class PageRendererTest extends FunctionalTestCase
             $container->get(MarkerBasedTemplateService::class),
             $container->get(MetaTagManagerRegistry::class),
             $container->get(AssetRenderer::class),
+            $container->get(AssetCollector::class),
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
             $container->get(LanguageServiceFactory::class),

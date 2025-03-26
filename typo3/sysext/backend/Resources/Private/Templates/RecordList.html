@@ -6,22 +6,20 @@
 <f:layout name="Module" />
 
 <f:section name="Before">
+    <f:asset.module identifier="@typo3/backend/recordlist.js"/>
+    <f:asset.module identifier="@typo3/backend/record-download-button.js"/>
+    <f:asset.module identifier="@typo3/backend/clear-cache.js"/>
+    <f:asset.module identifier="@typo3/backend/record-search.js"/>
+    <f:asset.module identifier="@typo3/backend/ajax-data-handler.js"/>
+    <f:asset.module identifier="@typo3/backend/column-selector-button.js"/>
+    <f:asset.module identifier="@typo3/backend/multi-record-selection.js"/>
+    <f:asset.module identifier="@typo3/backend/multi-record-selection-delete-action.js"/>
+    <f:asset.module identifier="@typo3/backend/clipboard-panel.js"/>
+    <f:asset.module identifier="@typo3/backend/new-content-element-wizard-button.js"/>
+    <f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
+    <f:asset.module identifier="@typo3/backend/context-menu.js"/>
+    <f:asset.module identifier="@typo3/backend/element/editable-page-title.js"/>
     <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/recordlist.js',
-            1: '@typo3/backend/record-download-button.js',
-            2: '@typo3/backend/clear-cache.js',
-            3: '@typo3/backend/record-search.js',
-            4: '@typo3/backend/ajax-data-handler.js',
-            5: '@typo3/backend/column-selector-button.js',
-            6: '@typo3/backend/multi-record-selection.js',
-            8: '@typo3/backend/multi-record-selection-delete-action.js',
-            9: '@typo3/backend/clipboard-panel.js',
-            10: '@typo3/backend/new-content-element-wizard-button.js',
-            11: '@typo3/backend/element/immediate-action-element.js',
-            12: '@typo3/backend/context-menu.js',
-            13: '@typo3/backend/element/editable-page-title.js'
-        }"
         addJsInlineLabels="{
             'editablePageTitle.input.field.label': 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageTitle.input.field.label',
             'editablePageTitle.button.edit.label': 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editPageTitle',

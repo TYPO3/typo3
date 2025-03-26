@@ -54,6 +54,7 @@ trait PageRendererFactoryTrait
             ),
             new MetaTagManagerRegistry(),
             new AssetRenderer(new AssetCollector(), new NoopEventDispatcher()),
+            new AssetCollector(),
             new ResourceCompressor(),
             new RelativeCssPathFixer(),
             new LanguageServiceFactory(

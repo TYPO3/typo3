@@ -3,11 +3,7 @@
     data-namespace-typo3-fluid="true"
 >
 
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/security/element/sudo-mode.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/backend/security/element/sudo-mode.js"/>
     <div class="modal-backdrop in"></div>
     <typo3-backend-security-sudo-mode verifyActionUri="{verifyActionUri}"></typo3-backend-security-sudo-mode>
 

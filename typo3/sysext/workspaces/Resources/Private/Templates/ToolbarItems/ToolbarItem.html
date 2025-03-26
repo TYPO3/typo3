@@ -1,12 +1,13 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<f:asset.module identifier="@typo3/workspaces/toolbar/workspaces-menu.js"/>
+
 <f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/workspaces/toolbar/workspaces-menu.js'
-    }"
     addJsInlineLabels="{
         'Workspaces.workspaceTitle': workspaceTitle
     }"
 />
+
 <f:render partial="ToolbarItems/ToolbarItem" arguments="{
     title: 'LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:toolbarItems.workspace',
     icon: '{core:icon(identifier: \'apps-toolbar-menu-workspace\', size: \'small\', alternativeMarkupIdentifier: \'inline\')}',

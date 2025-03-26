@@ -7,11 +7,8 @@
 
 <f:section name="Content">
 
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/lowlevel/reference-index.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/lowlevel/reference-index.js"/>
+
     <h1>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex')}</h1>
     <p>{f:translate(key:'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:referenceIndex_description')}</p>
 

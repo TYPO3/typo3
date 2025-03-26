@@ -9,12 +9,8 @@
 
 <f:section name="Content">
 
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0:'@typo3/backend/context-menu.js',
-            1:'@typo3/backend/new-multiple-pages.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/backend/context-menu.js"/>
+    <f:asset.module identifier="@typo3/backend/new-multiple-pages.js"/>
 
     <h1>
         <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_pages_new.xlf:title" />

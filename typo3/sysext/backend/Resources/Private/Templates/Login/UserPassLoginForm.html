@@ -7,11 +7,7 @@
 <f:layout name="Login" />
 
 <f:section name="loginFormFields">
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/user-pass-login.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/backend/user-pass-login.js"/>
 
     <div class="form-group t3js-login-username-section" id="t3-login-username-section">
         <div class="form-control-wrap">

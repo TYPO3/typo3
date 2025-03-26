@@ -5,12 +5,8 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/tree/tree-node-toggle.js',
-        1: '@typo3/backend/utility/collapse-state-persister.js'
-    }"
-/>
+<f:asset.module identifier="@typo3/backend/tree/tree-node-toggle.js"/>
+<f:asset.module identifier="@typo3/backend/utility/collapse-state-persister.js"/>
 
 <f:comment><!-- This is a template that calls itself recursive for sub nodes. --></f:comment>
 
