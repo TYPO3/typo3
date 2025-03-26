@@ -5,12 +5,8 @@
 <f:layout name="Module"/>
 <f:section name="Content">
 
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/global-event-handler.js',
-            1: '@typo3/belog/backend-log.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/backend/global-event-handler.js"/>
+    <f:asset.module identifier="@typo3/belog/backend-log.js"/>
 
     <h1>
         <f:translate key="adminLog" />

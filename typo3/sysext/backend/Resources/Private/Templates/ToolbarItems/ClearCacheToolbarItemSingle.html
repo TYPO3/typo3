@@ -1,9 +1,5 @@
 <html xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers" data-namespace-typo3-fluid="true">
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/toolbar/clear-cache-menu.js'
-    }"
-/>
+<f:asset.module identifier="@typo3/backend/toolbar/clear-cache-menu.js"/>
 <a href="{link}" class="toolbar-item-link t3js-toolbar-cache-flush-action" title="{f:translate(key: title, default: title)}">
     <f:render partial="ToolbarItems/ToolbarItem" arguments="{title: title, icon: '{core:icon(identifier: iconIdentifier, size: \'small\')}'}"/>
 </a>

@@ -42,6 +42,7 @@ class AssetCollector implements SingletonInterface
 {
     protected array $javaScripts = [];
     protected array $inlineJavaScripts = [];
+    protected array $javaScriptModules = [];
     protected array $styleSheets = [];
     protected array $inlineStyleSheets = [];
     protected array $media = [];
@@ -62,6 +63,15 @@ class AssetCollector implements SingletonInterface
             'attributes' => $existingAttributes,
             'options' => $existingOptions,
         ];
+        return $this;
+    }
+
+    /**
+     * @param string $identifier Bare module identifier like @my/package/Filename.js
+     */
+    public function addJavaScriptModule(string $identifier): self
+    {
+        $this->javaScriptModules[$identifier] = true;
         return $this;
     }
 
@@ -182,6 +192,11 @@ class AssetCollector implements SingletonInterface
     public function getInlineJavaScripts(?bool $priority = null): array
     {
         return $this->filterAssetsPriority($this->inlineJavaScripts, $priority);
+    }
+
+    public function getJavaScriptModules(): array
+    {
+        return array_keys($this->javaScriptModules);
     }
 
     public function getStyleSheets(?bool $priority = null): array

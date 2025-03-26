@@ -7,13 +7,11 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
+    <f:asset.module identifier="@typo3/backend/tree/tree-node-toggle.js"/>
+    <f:asset.module identifier="@typo3/backend/utility/collapse-state-persister.js"/>
+    <f:asset.module identifier="@typo3/backend/utility/collapse-state-search.js"/>
 
     <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/tree/tree-node-toggle.js',
-            1: '@typo3/backend/utility/collapse-state-persister.js',
-            2: '@typo3/backend/utility/collapse-state-search.js'
-        }"
         addJsInlineLabels="{
             'collapse-state-search.numberOfSearchMatches': 'LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:module.configuration.numberOfSearchMatches'
         }"

@@ -6,11 +6,7 @@
 <f:layout name="Module" />
 <f:section name="Content">
 
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/beuser/permissions.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/beuser/permissions.js"/>
 
     <h1>
         <f:translate key="LLL:EXT:beuser/Resources/Private/Language/locallang_mod_permission.xlf:permissions" />:

@@ -6,14 +6,10 @@
 <f:layout name="Module"/>
 
 <f:section name="Before">
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/context-menu.js',
-            1: '@typo3/backend/element/immediate-action-element.js',
-            3: '@typo3/backend/utility/collapse-state-persister.js',
-            4: '@typo3/tstemplate/constant-editor.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/backend/context-menu.js"/>
+    <f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
+    <f:asset.module identifier="@typo3/backend/utility/collapse-state-persister.js"/>
+    <f:asset.module identifier="@typo3/tstemplate/constant-editor.js"/>
     <f:variable name="args" value="{0: 'web', 1: pageUid}" />
     <typo3-immediate-action
         action="TYPO3.Backend.Storage.ModuleStateStorage.update"

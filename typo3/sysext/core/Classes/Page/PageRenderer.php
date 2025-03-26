@@ -129,6 +129,7 @@ class PageRenderer implements SingletonInterface
         protected readonly MarkerBasedTemplateService $templateService,
         protected readonly MetaTagManagerRegistry $metaTagRegistry,
         protected readonly AssetRenderer $assetRenderer,
+        protected readonly AssetCollector $assetCollector,
         protected readonly ResourceCompressor $resourceCompressor,
         protected readonly RelativeCssPathFixer $relativeCssPathFixer,
         protected readonly LanguageServiceFactory $languageServiceFactory,
@@ -148,6 +149,7 @@ class PageRenderer implements SingletonInterface
             switch ($var) {
                 case 'assetsCache':
                 case 'assetRenderer':
+                case 'assetCollector':
                 case 'templateService':
                 case 'resourceCompressor':
                 case 'relativeCssPathFixer':
@@ -1045,7 +1047,7 @@ class PageRenderer implements SingletonInterface
      * Includes an ES6/ES11 compatible JavaScript module by
      * resolving the specifier to an import-mapped filename.
      *
-     * @param string $specifier Bare module identifier like @my/package/Filename.js
+     * @param string $specifier Bare module identifier like @my/package/filename.js
      */
     public function loadJavaScriptModule(string $specifier)
     {
@@ -1423,6 +1425,10 @@ class PageRenderer implements SingletonInterface
     protected function renderMainJavaScriptLibraries()
     {
         $out = '';
+
+        foreach ($this->assetCollector->getJavaScriptModules() as $module) {
+            $this->loadJavaScriptModule($module);
+        }
 
         // adds a nonce hint/work-around for lit-elements (which is only applied automatically in ShadowDOM)
         // see https://lit.dev/docs/api/ReactiveElement/#ReactiveElement.styles)

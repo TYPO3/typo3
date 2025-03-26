@@ -3,27 +3,23 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/java-script-module-import-event-handler.js',
-        1: 'bootstrap',
-        2: '@typo3/backend/module/router.js',
-        3: '@typo3/backend/module-menu.js',
-        4: '@typo3/backend/storage/module-state-storage.js',
-        5: '@typo3/backend/toolbar.js',
-        6: '@typo3/backend/notification.js',
-        7: '@typo3/backend/modal.js',
-        8: '@typo3/backend/info-window.js',
-        9: '@typo3/backend/viewport/resizable-navigation.js',
-        10: '@typo3/backend/context-menu.js',
-        11: '@typo3/backend/global-event-handler.js',
-        12: '@typo3/backend/action-dispatcher.js',
-        13: '@typo3/backend/element/immediate-action-element.js',
-        14: '@typo3/backend/toolbar/live-search.js',
-        15: '@typo3/backend/live-search/element/backend-search.js',
-        16: '@typo3/backend/drag-tooltip.js'
-    }"
-/>
+<f:asset.module identifier="@typo3/backend/java-script-module-import-event-handler.js"/>
+<f:asset.module identifier="bootstrap"/>
+<f:asset.module identifier="@typo3/backend/module/router.js"/>
+<f:asset.module identifier="@typo3/backend/module-menu.js"/>
+<f:asset.module identifier="@typo3/backend/storage/module-state-storage.js"/>
+<f:asset.module identifier="@typo3/backend/toolbar.js"/>
+<f:asset.module identifier="@typo3/backend/notification.js"/>
+<f:asset.module identifier="@typo3/backend/modal.js"/>
+<f:asset.module identifier="@typo3/backend/info-window.js"/>
+<f:asset.module identifier="@typo3/backend/viewport/resizable-navigation.js"/>
+<f:asset.module identifier="@typo3/backend/context-menu.js"/>
+<f:asset.module identifier="@typo3/backend/global-event-handler.js"/>
+<f:asset.module identifier="@typo3/backend/action-dispatcher.js"/>
+<f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
+<f:asset.module identifier="@typo3/backend/toolbar/live-search.js"/>
+<f:asset.module identifier="@typo3/backend/live-search/element/backend-search.js"/>
+<f:asset.module identifier="@typo3/backend/drag-tooltip.js"/>
 
 <div class="scaffold{f:if(condition: '!{modulesCollapsed} && {modules}', then: ' scaffold-modulemenu-expanded')}{f:if(condition: '{isInWorkspace}', then: ' scaffold-in-workspace')} t3js-scaffold">
     <div class="scaffold-header t3js-scaffold-header">

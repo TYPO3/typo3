@@ -7,17 +7,15 @@
 <f:layout name="Module" />
 
 <f:section name="Content">
+    <f:asset.module identifier="@typo3/backend/modal.js"/>
+    <f:asset.module identifier="@typo3/backend/multi-record-selection.js"/>
+    <f:asset.module identifier="@typo3/backend/element/progress-bar-element.js"/>
+    <f:asset.module identifier="@typo3/scheduler/scheduler.js"/>
+    <f:asset.module identifier="@typo3/scheduler/scheduler-sortable-groups.js"/>
+    <f:asset.module identifier="@typo3/scheduler/scheduler-editable-group-name.js"/>
+    <f:asset.module identifier="@typo3/scheduler/scheduler-add-group.js"/>
 
     <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/backend/modal.js',
-            1: '@typo3/backend/multi-record-selection.js',
-            2: '@typo3/backend/element/progress-bar-element.js',
-            3: '@typo3/scheduler/scheduler.js',
-            4: '@typo3/scheduler/scheduler-sortable-groups.js',
-            5: '@typo3/scheduler/scheduler-editable-group-name.js',
-            6: '@typo3/scheduler/scheduler-add-group.js'
-        }"
         addJsInlineLabels="{
             'scheduler.createGroup': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.add',
             'scheduler.groupName': 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.group.label',

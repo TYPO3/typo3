@@ -9,11 +9,7 @@
 
 <f:section name="Content">
 
-    <f:be.pageRenderer
-        includeJavaScriptModules="{
-            0: '@typo3/extensionmanager/main.js'
-        }"
-    />
+    <f:asset.module identifier="@typo3/extensionmanager/main.js"/>
 
     <em:be.trigger triggers="{triggers}" />
 

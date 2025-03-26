@@ -5,12 +5,8 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: 'bootstrap',
-        1: '@typo3/backend/login.js'
-    }"
-/>
+<f:asset.module identifier="bootstrap"/>
+<f:asset.module identifier="@typo3/backend/login.js"/>
 
 <div class="typo3-login">
     <div class="typo3-login-inner">

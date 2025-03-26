@@ -3,12 +3,8 @@
     xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/switch-user.js',
-        1: '@typo3/backend/color-scheme-switch.js',
-    }"
-/>
+<f:asset.module identifier="@typo3/backend/switch-user.js"/>
+<f:asset.module identifier="@typo3/backend/color-scheme-switch.js"/>
 <p class="dropdown-headline">{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.user')}</p>
 <f:if condition="{modules}">
     <ul class="dropdown-list">

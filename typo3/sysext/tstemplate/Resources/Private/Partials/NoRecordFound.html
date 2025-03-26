@@ -3,12 +3,8 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:be.pageRenderer
-    includeJavaScriptModules="{
-        0: '@typo3/backend/context-menu.js',
-        1: '@typo3/backend/element/immediate-action-element.js'
-    }"
-/>
+<f:asset.module identifier="@typo3/backend/context-menu.js"/>
+<f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
 
 <f:be.infobox title="{f:translate(key: 'LLL:EXT:tstemplate/Resources/Private/Language/locallang.xlf:noRecordFound.infobox.title')}" state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}">
     <p>
