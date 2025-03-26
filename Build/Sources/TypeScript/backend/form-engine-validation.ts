@@ -560,12 +560,6 @@ export default class FormEngineValidation {
     return theVal;
   }
 
-  public static pol(foreign: string, value: string): object {
-    // @todo deprecate
-    // eslint-disable-next-line no-eval
-    return eval(((foreign == '-') ? '-' : '') + value);
-  }
-
   /**
    * Find tab by field and mark it as has-validation-error
    */
