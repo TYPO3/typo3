@@ -14,7 +14,7 @@ Description
 A new PSR-14 event :php:`AfterPageUrlsForSiteForRedirectIntegrityHaveBeenCollectedEvent`
 is added which allows TYPO3 Extensions to register event listeners to modify
 the list of URLs that are being processed by the CLI command
-:ref:`redirects:checkintegrity <redirects-checkintegrity>`.
+`redirects:checkintegrity <https://docs.typo3.org/permalink/typo3/cms-redirects:redirects-checkintegrity>`_.
 
 Example
 =======

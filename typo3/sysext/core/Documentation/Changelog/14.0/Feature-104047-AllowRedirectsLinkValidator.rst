@@ -16,7 +16,7 @@ A new Page TSconfig option
 has been added to the link validator to report HTTP redirects
 with external links as problems.
 
-.. code-block:: typoscript:
+.. code-block:: typoscript
 
     mod.linkvalidator.linktypesConfig.external.allowRedirects = 0
 
