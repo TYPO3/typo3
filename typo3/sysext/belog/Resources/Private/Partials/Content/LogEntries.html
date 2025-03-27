@@ -44,7 +44,7 @@
                                         </f:if>
                                     </td>
                                     <td class="col-time">
-                                        <f:format.date format="H:i:s">@{logItem.tstamp}</f:format.date>
+                                        <f:format.date format="H:i:s">{logItem.tstamp}</f:format.date>
                                     </td>
                                     <td class="col-avatar">
                                         <f:if condition="{belog:username(uid:logItem.backendUserUid)}">

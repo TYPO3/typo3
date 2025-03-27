@@ -79,7 +79,7 @@ class LogEntry extends AbstractEntity
     /**
      * Timestamp when the log entry was written
      */
-    protected int $tstamp = 0;
+    protected ?\DateTimeImmutable $tstamp = null;
 
     /**
      * Type code
@@ -211,14 +211,14 @@ class LogEntry extends AbstractEntity
         return $this->details;
     }
 
-    public function setTstamp(int $tstamp): void
+    public function setTstamp(\DateTimeImmutable $tstamp): void
     {
         $this->tstamp = $tstamp;
     }
 
-    public function getTstamp(): int
+    public function getTstamp(): \DateTimeImmutable
     {
-        return $this->tstamp;
+        return $this->tstamp ?? new \DateTimeImmutable(date('Y-m-d\TH:i:s', 0));
     }
 
     public function setType(int $type): void
