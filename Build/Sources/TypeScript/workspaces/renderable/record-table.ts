@@ -62,6 +62,7 @@ export type RecordData = {
   allowedAction_versionPageOpen: boolean,
   state_Workspace: string,
   hasChanges: boolean,
+  urlToPage: string,
   expanded: boolean,
   integrity: {
     status: string,
@@ -202,7 +203,7 @@ export class RecordTableElement extends LitElement {
           <th></th>
           <th colspan="7">
             <span title=${data.path_Workspace}>
-              ${data.path_Workspace_crop}
+              <a href=${data.urlToPage}>${data.path_Workspace_crop}</a>
             </span>
           </th>
         </tr>

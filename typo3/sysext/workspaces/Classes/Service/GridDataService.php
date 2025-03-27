@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -80,6 +81,7 @@ class GridDataService
         private readonly IntegrityService $integrityService,
         private readonly PreviewUriBuilder $previewUriBuilder,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly UriBuilder $uriBuilder,
     ) {}
 
     /**
@@ -225,6 +227,10 @@ class GridDataService
                 $versionArray['allowedAction_versionPageOpen'] = $this->isPageModuleAllowed() && !$isDeletedPage;
                 $versionArray['state_Workspace'] = $recordState;
                 $versionArray['hasChanges'] = $recordState !== 'unchanged';
+                $versionArray['urlToPage'] = (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', [
+                    'workspace' => $backendUser->workspace,
+                    'id' => $record['pid'] ?? 0,
+                ]);
                 // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
                 $versionArray['expanded'] = false;
 
