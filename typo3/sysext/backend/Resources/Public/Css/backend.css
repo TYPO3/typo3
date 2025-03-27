@@ -3727,7 +3727,7 @@ video{background-color:#000}
 .form-irre-header-body{font-weight:400;white-space:normal;width:100%}
 .form-irre-header-icon{-webkit-padding-end:0;padding-inline-end:0}
 .form-irre-header-thumbnail{-webkit-padding-end:.25rem;padding-inline-end:.25rem;width:100%}
-.form-irre-header-control{align-items:center;display:flex;gap:.25rem}
+.form-irre-header-control{align-items:center;display:flex;gap:.25rem;inset-inline-end:var(--typo3-panel-padding-x);position:absolute}
 textarea.formengine-textarea{resize:none}
 .sticky-form-actions{--typo3-stickyform-bg:var(--typo3-surface-base);--typo3-stickyform-border-width:var(--typo3-component-border-width);--typo3-stickyform-border-color:var(--typo3-component-border-color);--typo3-stickyform-padding-y:1rem;--typo3-stickyform-padding-x:1rem;--typo3-stickyform-spacing:1rem;background:var(--typo3-stickyform-bg);border-bottom:var(--typo3-stickyform-border-width) solid var(--typo3-stickyform-border-color);display:flex;gap:var(--typo3-stickyform-spacing);margin-inline:calc(var(--typo3-stickyform-padding-x)*-1);margin-bottom:var(--typo3-stickyform-spacing);padding:var(--typo3-stickyform-padding-y) var(--typo3-stickyform-padding-x);position:-webkit-sticky;position:sticky;top:0;z-index:2}
 .modal-body:has(.sticky-form-actions){padding-top:0}

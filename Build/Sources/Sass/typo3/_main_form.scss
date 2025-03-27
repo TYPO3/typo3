@@ -62,6 +62,8 @@
     display: flex;
     align-items: center;
     gap: .25rem;
+    position: absolute;
+    inset-inline-end: var(--typo3-panel-padding-x);
 }
 
 //
