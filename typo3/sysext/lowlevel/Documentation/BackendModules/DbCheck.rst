@@ -22,12 +22,6 @@ Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
         Gives you an overview of how many pages of which type and how many
         records of any table are present in the current system.
 
-
-    ..  card:: :ref:`Database Relations <module-db-check-Database-Relations>`
-
-        Gives an overview of the count of lost relations in select and group
-        fields
-
     ..  card:: :ref:`Full Search <module-db-check-full-search>`
 
         Search the complete database or specific table / field combinations
@@ -44,6 +38,5 @@ Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
     :titlesonly:
 
     DbCheck/RecordsStatistics
-    DbCheck/DatabaseRelations
     DbCheck/FullSearch
     DbCheck/ManageReferenceIndex

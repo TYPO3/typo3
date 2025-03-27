@@ -253,9 +253,6 @@ class DatabaseIntegrityController
             case 'records':
                 $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics'));
                 return $this->recordStatisticsAction($moduleTemplate, $request);
-            case 'relations':
-                $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:databaseRelations'));
-                return $this->relationsAction($moduleTemplate);
             default:
                 $moduleTemplate->setTitle($title, $languageService->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex'));
                 return $this->referenceIndexAction($moduleTemplate, $request);
@@ -279,7 +276,6 @@ class DatabaseIntegrityController
             'function' => [
                 'refindex' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:manageRefIndex'),
                 'records' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:recordStatistics'),
-                'relations' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:databaseRelations'),
                 'search' => $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch'),
             ],
             'search' => [
@@ -2923,21 +2919,6 @@ class DatabaseIntegrityController
         ]);
 
         return $view->renderResponse('RecordStatistics');
-    }
-
-    /**
-     * Show reference list
-     */
-    protected function relationsAction(ModuleTemplate $view): ResponseInterface
-    {
-        $databaseIntegrityCheck = GeneralUtility::makeInstance(DatabaseIntegrityCheck::class);
-        $databaseIntegrityCheck->selectNonEmptyRecordsWithFkeys();
-        $view->assignMultiple([
-            'select_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckSelectDBRefs()),
-            'group_db' => $databaseIntegrityCheck->testDBRefs($databaseIntegrityCheck->getCheckGroupDBRefs()),
-        ]);
-
-        return $view->renderResponse('Relations');
     }
 
     protected function getBackendUserAuthentication(): BackendUserAuthentication

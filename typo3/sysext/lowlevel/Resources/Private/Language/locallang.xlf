@@ -109,9 +109,6 @@
 			<trans-unit id="totalPageTree">
 				<source>Total Page Tree</source>
 			</trans-unit>
-			<trans-unit id="databaseRelations">
-				<source>Database Relations</source>
-			</trans-unit>
 			<trans-unit id="fullSearch">
 				<source>Full search</source>
 			</trans-unit>
@@ -360,21 +357,6 @@
 			</trans-unit>
 			<trans-unit id="total_lost">
 				<source>Records total / lost</source>
-			</trans-unit>
-			<trans-unit id="relations">
-				<source>Relations</source>
-			</trans-unit>
-			<trans-unit id="relations_description">
-				<source>The module gives some overview of missing relations in fields of the TCA types 'select' and 'group'.</source>
-			</trans-unit>
-			<trans-unit id="relations_noRecordsFound">
-				<source>No records found.</source>
-			</trans-unit>
-			<trans-unit id="select_db">
-				<source>Select fields</source>
-			</trans-unit>
-			<trans-unit id="group_db">
-				<source>Group fields</source>
 			</trans-unit>
 			<trans-unit id="tree">
 				<source>The Page Tree</source>

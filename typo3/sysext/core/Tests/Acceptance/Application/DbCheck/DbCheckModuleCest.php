@@ -82,13 +82,6 @@ final class DbCheckModuleCest
         $I->assertGreaterThanOrEqual($testData['count'], $count);
     }
 
-    public function seeDatabaseRelations(ApplicationTester $I): void
-    {
-        $this->goToPageAndSeeHeadline($I, 'Database Relations', 'Relations');
-        $I->see('Select fields', 'h2');
-        $I->see('Group fields', 'h2');
-    }
-
     public function seeFullSearch(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $this->goToPageAndSeeHeadline($I, 'Full search', 'Search whole Database');
