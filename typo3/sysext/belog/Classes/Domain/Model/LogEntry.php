@@ -76,7 +76,7 @@ class LogEntry
     /**
      * Timestamp when the log entry was written
      */
-    protected int $tstamp = 0;
+    protected \DateTimeInterface $tstamp;
 
     /**
      * Type code
@@ -170,7 +170,7 @@ class LogEntry
         return $this->details;
     }
 
-    public function getTstamp(): int
+    public function getTstamp(): \DateTimeInterface
     {
         return $this->tstamp;
     }
@@ -228,7 +228,7 @@ class LogEntry
     {
         $obj = new self();
         $obj->uid = $row['uid'] ?? $obj->uid;
-        $obj->tstamp = $row['tstamp'] ?? $obj->tstamp;
+        $obj->tstamp = new \DateTimeImmutable(date('Y-m-d\TH:i:s', $row['tstamp'] ?? 0));
         $obj->backendUserUid = $row['userid'] ?? $obj->backendUserUid;
         $obj->action = $row['action'] ?? $obj->action;
         $obj->recordUid = $row['recuid'] ?? $obj->recordUid;

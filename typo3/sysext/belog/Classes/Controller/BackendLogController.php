@@ -214,8 +214,7 @@ class BackendLogController extends ActionController
                 $targetStructure[-1] = [];
             }
             // Get day timestamp of log entry and create sub array if needed
-            $entryTimestamp = \DateTimeImmutable::createFromFormat('U', (string)$entry->getTstamp());
-            $timestampDay = strtotime($entryTimestamp->format('d.m.Y'));
+            $timestampDay = strtotime($entry->getTstamp()->format('Y-m-d'));
             if (!is_array($targetStructure[$pid][$timestampDay] ?? false)) {
                 $targetStructure[$pid][$timestampDay] = [];
             }
