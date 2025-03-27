@@ -677,7 +677,8 @@ class ResourceCompressor
     {
         if (!isset($GLOBALS['TSFE'])
             || !($GLOBALS['TSFE'] instanceof TypoScriptFrontendController)
-            || ($GLOBALS['TSFE']->config['config']['doctype'] ?? 'html5') === 'html5'
+            || empty($GLOBALS['TSFE']->config['config']['doctype'] ?? null)
+            || ($GLOBALS['TSFE']->config['config']['doctype'] === 'html5')
         ) {
             // no TSFE, or doctype set to html5
             return '';
