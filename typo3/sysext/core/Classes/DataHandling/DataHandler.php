@@ -8476,8 +8476,9 @@ class DataHandler
     {
         // Set title value to check for:
         $checkTitle = $value;
+        $labelToAppend = $this->prependLabel($table);
         if ($count > 0) {
-            $checkTitle = $value . rtrim(' ' . sprintf($this->prependLabel($table), $count));
+            $checkTitle = $value . rtrim(' ' . sprintf($labelToAppend, $count));
         }
         // Do check:
         if ($prevTitle != $checkTitle || $count < 100) {
@@ -8492,7 +8493,9 @@ class DataHandler
                 )
                 ->executeQuery()
                 ->fetchOne();
-            if ($rowCount) {
+            // Only call getCopyHeader() again, if $labelToAppend is actually filled, otherwise we execute
+            // superfluous calls to the DB
+            if ($rowCount && $labelToAppend !== '') {
                 return $this->getCopyHeader($table, $pid, $field, $value, $count + 1, $checkTitle);
             }
         }
