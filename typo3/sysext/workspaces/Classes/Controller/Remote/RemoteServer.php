@@ -19,19 +19,24 @@ namespace TYPO3\CMS\Workspaces\Controller\Remote;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
@@ -70,6 +75,7 @@ readonly class RemoteServer
         private IntegrityService $integrityService,
         private TcaSchemaFactory $tcaSchemaFactory,
         private HistoryService $historyService,
+        private LoggerInterface $logger,
     ) {}
 
     /**
@@ -160,18 +166,25 @@ readonly class RemoteServer
                         $useThumbnails = empty($differentExtensions);
                     }
 
-                    $liveFileReferences = (array)BackendUtility::resolveFileReferences(
-                        $table,
-                        $fieldName,
-                        $liveRecord,
-                        0
-                    );
-                    $versionFileReferences = (array)BackendUtility::resolveFileReferences(
-                        $table,
-                        $fieldName,
-                        $versionRecord,
-                        $this->getCurrentWorkspace()
-                    );
+                    if ($fieldTypeInformation->getType() === 'file') {
+                        $liveFileReferences = $this->resolveFileReferences(
+                            $table,
+                            $fieldName,
+                            $fieldTypeInformation,
+                            $liveRecord,
+                            0
+                        );
+                        $versionFileReferences = $this->resolveFileReferences(
+                            $table,
+                            $fieldName,
+                            $fieldTypeInformation,
+                            $versionRecord,
+                            $this->getCurrentWorkspace()
+                        );
+                    } else {
+                        $liveFileReferences = [];
+                        $versionFileReferences = [];
+                    }
                     $fileReferenceDifferences = $this->prepareFileReferenceDifferences(
                         $liveFileReferences,
                         $versionFileReferences,
@@ -453,5 +466,59 @@ readonly class RemoteServer
             $this->visibleSchemaFieldsCollector->getFieldNames($table, $row),
             false
         );
+    }
+
+    /**
+     * @return FileReference[]
+     */
+    protected function resolveFileReferences(string $tableName, string $fieldName, FieldTypeInterface $fieldTypeInformation, array $element, ?int $workspaceId = null): array
+    {
+        $configuration = $fieldTypeInformation->getConfiguration();
+        if (($configuration['type'] ?? '') !== 'file') {
+            return [];
+        }
+
+        $fileReferences = [];
+        $relationHandler = GeneralUtility::makeInstance(RelationHandler::class);
+        if ($workspaceId !== null) {
+            $relationHandler->setWorkspaceId($workspaceId);
+        }
+        $relationHandler->initializeForField(
+            $tableName,
+            $configuration,
+            $element,
+            $element[$fieldName],
+        );
+        $relationHandler->processDeletePlaceholder();
+        $referenceUids = $relationHandler->tableArray[$configuration['foreign_table']] ?? [];
+
+        foreach ($referenceUids as $referenceUid) {
+            try {
+                $fileReference = GeneralUtility::makeInstance(ResourceFactory::class)->getFileReferenceObject(
+                    $referenceUid,
+                    [],
+                    $workspaceId === 0
+                );
+                $fileReferences[$fileReference->getUid()] = $fileReference;
+            } catch (FileDoesNotExistException) {
+                /*
+                We just catch the exception here
+                Reasoning: There is nothing an editor or even admin could do
+                */
+            } catch (\InvalidArgumentException $e) {
+                /*
+                The storage does not exist anymore
+                Log the exception message for admins as they maybe can restore the storage
+                */
+                $this->logger->error($e->getMessage(), [
+                    'table' => $tableName,
+                    'fieldName' => $fieldName,
+                    'referenceUid' => $referenceUid,
+                    'exception' => $e,
+                ]);
+            }
+        }
+
+        return $fileReferences;
     }
 }

@@ -978,9 +978,14 @@ class BackendUtility
      * @param array $element Record data
      * @param int|null $workspaceId Workspace to fetch data for
      * @return \TYPO3\CMS\Core\Resource\FileReference[]|null
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public static function resolveFileReferences($tableName, $fieldName, $element, $workspaceId = null)
     {
+        trigger_error(
+            'BackendUtility::resolveFileReferences() has been deprecated in TYPO3 v14.0 and will be removed in v15.0.',
+            E_USER_DEPRECATED
+        );
         if (empty($GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'])) {
             return null;
         }

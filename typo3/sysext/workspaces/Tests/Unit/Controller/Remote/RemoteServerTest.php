@@ -20,14 +20,17 @@ namespace TYPO3\CMS\Workspaces\Tests\Unit\Controller\Remote;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\NullLogger;
 use TYPO3\CMS\Backend\Backend\Avatar\Avatar;
 use TYPO3\CMS\Backend\View\ValueFormatter\FlexFormValueFormatter;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
+use TYPO3\CMS\Core\Schema\Field\FileFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Schema\VisibleSchemaFieldsCollector;
@@ -132,6 +135,7 @@ final class RemoteServerTest extends UnitTestCase
             new IntegrityService($this->createMock(TcaSchemaFactory::class)),
             $this->createMock(TcaSchemaFactory::class),
             $this->createMock(HistoryService::class),
+            new NullLogger()
         );
         $subjectReflection = new \ReflectionObject($subject);
         $result = $subjectReflection->getMethod('prepareFileReferenceDifferences')
@@ -177,5 +181,34 @@ final class RemoteServerTest extends UnitTestCase
 
         $this->fileReferenceMocks[$id] = $fileReferenceMock;
         return $this->fileReferenceMocks[$id];
+    }
+
+    #[Test]
+    public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable(): void
+    {
+        $tableName = 'table_a';
+        $fieldName = 'field_a';
+        $elementData = [
+            $fieldName => 'foo',
+            'uid' => 42,
+        ];
+        $relationHandlerMock = $this->createMock(RelationHandler::class);
+        $relationHandlerMock->expects(self::once())->method('initializeForField')->with(
+            $tableName,
+            ['type' => 'file', 'foreign_table' => 'sys_file_reference'],
+            $elementData,
+            'foo'
+        );
+        $relationHandlerMock->expects(self::once())->method('processDeletePlaceholder');
+        $relationHandlerMock->tableArray = ['sys_file_reference' => []];
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
+
+        $fileFieldType = new FileFieldType($fieldName, [
+            'type' => 'file',
+            'foreign_table' => 'sys_file_reference',
+        ], []);
+
+        $remoteServerMock = $this->getAccessibleMock(RemoteServer::class, null, [], '', false);
+        self::assertEmpty($remoteServerMock->_call('resolveFileReferences', $tableName, $fieldName, $fileFieldType, $elementData));
     }
 }

@@ -1226,61 +1226,6 @@ final class BackendUtilityTest extends UnitTestCase
     }
 
     #[Test]
-    public function returnNullForMissingTcaConfigInResolveFileReferences(): void
-    {
-        $tableName = 'table_a';
-        $fieldName = 'field_a';
-        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [];
-        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
-    }
-
-    #[DataProvider('unfitResolveFileReferencesTableConfig')]
-    #[Test]
-    public function returnNullForUnfitTableConfigInResolveFileReferences(array $config): void
-    {
-        $tableName = 'table_a';
-        $fieldName = 'field_a';
-        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = $config;
-        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
-    }
-
-    public static function unfitResolveFileReferencesTableConfig(): array
-    {
-        return [
-            'invalid table' => [
-                [
-                    'type' => 'inline',
-                    'foreign_table' => 'table_b',
-                ],
-            ],
-            'empty table' => [
-                [
-                    'type' => 'inline',
-                    'foreign_table' => '',
-                ],
-            ],
-            'invalid type' => [
-                [
-                    'type' => 'select',
-                    'foreign_table' => 'sys_file_reference',
-                ],
-            ],
-            'empty type' => [
-                [
-                    'type' => '',
-                    'foreign_table' => 'sys_file_reference',
-                ],
-            ],
-            'empty' => [
-                [
-                    'type' => '',
-                    'foreign_table' => '',
-                ],
-            ],
-        ];
-    }
-
-    #[Test]
     public function workspaceOLDoesNotChangeValuesForNoBeUserAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
@@ -1292,33 +1237,6 @@ final class BackendUtilityTest extends UnitTestCase
         $reference = $row;
         BackendUtility::workspaceOL($tableName, $row);
         self::assertSame($reference, $row);
-    }
-
-    #[Test]
-    public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable(): void
-    {
-        $tableName = 'table_a';
-        $fieldName = 'field_a';
-        $elementData = [
-            $fieldName => 'foo',
-            'uid' => 42,
-        ];
-        $relationHandlerMock = $this->createMock(RelationHandler::class);
-        $relationHandlerMock->expects(self::once())->method('initializeForField')->with(
-            $tableName,
-            ['type' => 'file', 'foreign_table' => 'sys_file_reference'],
-            $elementData,
-            'foo'
-        );
-        $relationHandlerMock->expects(self::once())->method('processDeletePlaceholder');
-        $relationHandlerMock->tableArray = ['sys_file_reference' => []];
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
-        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
-            'type' => 'file',
-            'foreign_table' => 'sys_file_reference',
-        ];
-
-        self::assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
     }
 
     #[Test]
