@@ -74,6 +74,16 @@ class BackendLogController extends ActionController
             $constraint = new Constraint();
         } elseif ($constraint === null) {
             $constraint = $this->getConstraintFromBeUserData();
+        } else {
+            // Date is supplied as fake UTC-0, convert to localtime
+            $start = $constraint->getManualDateStart();
+            if ($start !== null) {
+                $constraint->setManualDateStart(new \DateTime($start->format('Y-m-d\TH:i:s')));
+            }
+            $stop = $constraint->getManualDateStop();
+            if ($stop !== null) {
+                $constraint->setManualDateStop(new \DateTime($stop->format('Y-m-d\TH:i:s')));
+            }
         }
 
         $access = true;
@@ -210,8 +220,7 @@ class BackendLogController extends ActionController
                 $targetStructure[-1] = [];
             }
             // Get day timestamp of log entry and create sub array if needed
-            $entryTimestamp = \DateTimeImmutable::createFromFormat('U', (string)$entry->getTstamp());
-            $timestampDay = strtotime($entryTimestamp->format('d.m.Y'));
+            $timestampDay = strtotime($entry->getTstamp()->format('Y-m-d'));
             if (!is_array($targetStructure[$pid][$timestampDay] ?? false)) {
                 $targetStructure[$pid][$timestampDay] = [];
             }
