@@ -207,7 +207,7 @@ class GridDataService
                 $languageValue = $this->getLanguageValue($schema, $versionRecord);
                 $versionArray['languageValue'] = $languageValue;
                 $versionArray['language'] = [
-                    'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon'), IconSize::SMALL)->getIdentifier(),
+                    'icon' => $iconFactory->getIcon($this->getSystemLanguageValue($languageValue, $pageId, 'flagIcon') ?? 'empty-empty', IconSize::SMALL)->getIdentifier(),
                     'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
                     'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
                 ];
