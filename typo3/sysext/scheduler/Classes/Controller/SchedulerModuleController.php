@@ -491,7 +491,6 @@ final class SchedulerModuleController
             $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang_mod.xlf:mlang_tabs_tab'),
             sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.edit'), $taskName)
         );
-        $this->addDocHeaderNewButton($view);
         $this->addDocHeaderDeleteButton($view, $taskUid);
         $this->addDocHeaderShortcutButton(
             $view,
@@ -877,20 +876,6 @@ final class SchedulerModuleController
             ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:save'))
             ->setShowLabelText(true);
         $buttonBar->addButton($saveButton, ButtonBar::BUTTON_POSITION_LEFT, 4);
-    }
-
-    protected function addDocHeaderNewButton(ModuleTemplate $moduleTemplate): void
-    {
-        $languageService = $this->getLanguageService();
-        $buttonBar = $moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $newButton = $buttonBar->makeInputButton()
-            ->setName('CMD')
-            ->setValue('new')
-            ->setForm('tx_scheduler_form')
-            ->setIcon($this->iconFactory->getIcon('actions-document-new', IconSize::SMALL))
-            ->setTitle($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new'))
-            ->setShowLabelText(true);
-        $buttonBar->addButton($newButton, ButtonBar::BUTTON_POSITION_LEFT, 5);
     }
 
     protected function addDocHeaderDeleteButton(ModuleTemplate $moduleTemplate, int $taskUid): void
