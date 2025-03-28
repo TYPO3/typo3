@@ -146,8 +146,22 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function copyLocalizedContent(): void
     {
-        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageId);
+        // When a record is copied in the backend, this data is always passed along
+        $recordData = [
+            'colPos' => 0, // target colPos
+            'sys_language_uid' => 0, // target language
+        ];
+        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdFirst, self::VALUE_PageId, $recordData);
         $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentIdFirst];
+    }
+    public function copyLanguageAllContent(): void
+    {
+        $recordData = [
+            'colPos' => 0, // target colPos
+            'sys_language_uid' => 0, // target language – for a -1 element, this can be 0 or -1 depending on paste position
+        ];
+        $copiedTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentLanguageAll, self::VALUE_PageId, $recordData);
+        $this->recordIds['copiedContentId'] = $copiedTableIds[self::TABLE_Content][self::VALUE_ContentLanguageAll];
     }
 
     public function copyLocalizedContentToLocalizedPage(): void

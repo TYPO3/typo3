@@ -3284,10 +3284,24 @@ class DataHandler
 
                 foreach ($incomingCmdArray as $command => $value) {
                     $pasteUpdate = false;
+                    $schema = $this->tcaSchemaFactory->get($table);
+                    $languageField = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : null;
                     if (is_array($value) && isset($value['action']) && $value['action'] === 'paste') {
                         // Extended paste command: $command is set to "move" or "copy"
                         // $value['update'] holds field/value pairs which should be updated after copy/move operation
                         // $value['target'] holds original $value (target of move/copy)
+                        if ($languageField) {
+                            $row = BackendUtility::getRecord($table, $id);
+                            $languageId = $value['update'][$languageField] ?? null;
+                            // Update language field after copy/move only if language was changed
+                            if ($languageId !== null && (int)$languageId === $row[$languageField]) {
+                                unset($value['update'][$languageField]);
+                            }
+                            // Reset language for a -1 element from original record if copied or moved into language 0
+                            if ($row[$languageField] === -1 && (int)$languageId === 0) {
+                                $value['update'][$languageField] = $row[$languageField];
+                            }
+                        }
                         $pasteUpdate = $value['update'];
                         $value = $value['target'];
                     }
@@ -3345,12 +3359,8 @@ class DataHandler
                                     foreach ($this->copyMappingArray as $procTable => $copyProcIds) {
                                         foreach ($copyProcIds as $copyProcId) {
                                             if ($copyProcId !== $procId) {
-                                                $schema = $this->tcaSchemaFactory->get($procTable);
-                                                if ($schema->isLanguageAware()) {
-                                                    $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-                                                    if (isset($pasteUpdate[$languageField])) {
-                                                        $pasteDatamap[$procTable][$copyProcId][$languageField] = $pasteUpdate[$languageField];
-                                                    }
+                                                if ($languageField !== null && isset($pasteUpdate[$languageField])) {
+                                                    $pasteDatamap[$procTable][$copyProcId][$languageField] = $pasteUpdate[$languageField];
                                                 }
                                             }
                                         }
