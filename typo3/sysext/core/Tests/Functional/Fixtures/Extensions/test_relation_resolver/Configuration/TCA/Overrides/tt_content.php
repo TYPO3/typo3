@@ -561,11 +561,11 @@ $overrides = [
                     'config' => [],
                 ],
                 'typo3tests_contentelementb_datetime' => [
-                    'label' => 'json',
+                    'label' => 'datetime',
                     'config' => [],
                 ],
                 'typo3tests_contentelementb_datetime_nullable' => [
-                    'label' => 'json',
+                    'label' => 'dateime nullable',
                     'config' => [],
                 ],
             ],

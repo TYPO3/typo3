@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Collection\LazyRecordCollection;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Country\CountryProvider;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\FlexFormFieldValues;
 use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\RawRecord;
@@ -47,7 +48,6 @@ use TYPO3\CMS\Core\Schema\RelationMap;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\MathUtility;
 
 /**
  * This generic mapper takes a field value of a record, and maps the value
@@ -177,9 +177,7 @@ readonly class RecordFieldTransformer
             );
         }
         if ($fieldInformation instanceof DateTimeFieldType) {
-            return $fieldValue === null || (!$fieldInformation->isNullable() && $fieldValue === 0)
-                ? null
-                : new \DateTimeImmutable((MathUtility::canBeInterpretedAsInteger($fieldValue) ? '@' : '') . $fieldValue);
+            return DateTimeFactory::createFromDatabaseValue($fieldValue, $fieldInformation);
         }
         if ($fieldInformation->isType(TableColumnType::LINK)) {
             return new RecordPropertyClosure(

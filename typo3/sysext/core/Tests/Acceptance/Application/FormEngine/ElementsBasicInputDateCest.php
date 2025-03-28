@@ -214,8 +214,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '00:00',
                 'expectedValue' => '00:00',
                 'expectedInternalValue' => '1970-01-01T00:00:00',
-                // @todo render time-based values based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00',
                 'comment' => 'inputdatetime_12 format=time dbType=time',
             ],
             [
@@ -231,8 +230,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '00:00',
                 'expectedValue' => '00:00',
                 'expectedInternalValue' => '1970-01-01T00:00:00',
-                // @todo return time-based value based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00',
                 'comment' => 'inputdatetime_32 format=time dbType=time nullable=true',
             ],
         ];
@@ -260,8 +258,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '05:43',
                 'expectedValue' => '05:43',
                 'expectedInternalValue' => '1970-01-01T05:43:00',
-                // @todo render time-based values based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:00',
+                'expectedValueAfterSave' => '1970-01-01T05:43:00',
                 'comment' => 'inputdatetime_12 format=time dbType=time',
             ],
             [
@@ -277,8 +274,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '05:43',
                 'expectedValue' => '05:43',
                 'expectedInternalValue' => '1970-01-01T05:43:00',
-                // @todo return time-based value based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:00',
+                'expectedValueAfterSave' => '1970-01-01T05:43:00',
                 'comment' => 'inputdatetime_32 format=time dbType=time nullable=true',
             ],
         ];
@@ -352,8 +348,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '00:00:00',
                 'expectedValue' => '00:00:00',
                 'expectedInternalValue' => '1970-01-01T00:00:00',
-                // @todo render time-based values based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00',
                 'comment' => 'inputdatetime_13 format=timesec dbType=time',
             ],
             [
@@ -369,8 +364,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '00:00:00',
                 'expectedValue' => '00:00:00',
                 'expectedInternalValue' => '1970-01-01T00:00:00',
-                // @todo return time-based value based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T00:00:00',
+                'expectedValueAfterSave' => '1970-01-01T00:00:00',
                 'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
             ],
         ];
@@ -398,8 +392,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '05:43:21',
                 'expectedValue' => '05:43:21',
                 'expectedInternalValue' => '1970-01-01T05:43:21',
-                // @todo render time-based values based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:21',
+                'expectedValueAfterSave' => '1970-01-01T05:43:21',
                 'comment' => 'inputdatetime_13 format=timesec dbType=time',
             ],
             [
@@ -415,8 +408,7 @@ final class ElementsBasicInputDateCest extends AbstractElementsBasicCest
                 'inputValue' => '05:43:21',
                 'expectedValue' => '05:43:21',
                 'expectedInternalValue' => '1970-01-01T05:43:21',
-                // @todo return time-based value based on 1970 instead of "today"
-                'expectedValueAfterSave' => date('Y-m-d') . 'T05:43:21',
+                'expectedValueAfterSave' => '1970-01-01T05:43:21',
                 'comment' => 'inputdatetime_33 format=timesec dbType=time nullable=true',
             ],
         ];

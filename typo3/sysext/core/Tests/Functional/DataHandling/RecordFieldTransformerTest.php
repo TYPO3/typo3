@@ -932,50 +932,75 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         yield 'canResolveDatetime' => [
             'fieldName' => 'typo3tests_contentelementb_datetime',
             'input' => 30,
-            'expected' => '1970-01-01T00:00:30+00:00',
+            'expectedUTC' => '1970-01-01T00:00:30+00:00',
+            'expectedBerlin' => '1970-01-01T01:00:30+01:00',
         ];
         yield 'canResolveDatetimeZero' => [
             'fieldName' => 'typo3tests_contentelementb_datetime',
             'input' => 0,
-            'expected' => null,
+            'expectedUTC' => null,
+            'expectedBerlin' => null,
         ];
         yield 'canResolveDatetimeNull' => [
             'fieldName' => 'typo3tests_contentelementb_datetime_nullable',
             'input' => 30,
-            'expected' => '1970-01-01T00:00:30+00:00',
+            'expectedUTC' => '1970-01-01T00:00:30+00:00',
+            'expectedBerlin' => '1970-01-01T01:00:30+01:00',
         ];
         yield 'canResolveDatetimeNullZero' => [
             'fieldName' => 'typo3tests_contentelementb_datetime_nullable',
             'input' => 0,
-            'expected' => '1970-01-01T00:00:00+00:00',
+            'expectedUTC' => '1970-01-01T00:00:00+00:00',
+            'expectedBerlin' => '1970-01-01T01:00:00+01:00',
         ];
         yield 'canResolveDatetimeNullNull' => [
             'fieldName' => 'typo3tests_contentelementb_datetime_nullable',
             'input' => null,
-            'expected' => null,
+            'expectedUTC' => null,
+            'expectedBerlin' => null,
         ];
     }
 
     #[Test]
     #[DataProvider('canConvertDateTimeDataProvider')]
-    public function canConvertDateTime(string $fieldName, ?int $input, ?string $expected): void
+    public function canConvertDateTime(string $fieldName, ?int $input, ?string $expectedUTC, ?string $expectedBerlin): void
     {
         $dummyRecord = $this->createTestRecordObject([
             $fieldName => $input,
         ]);
         $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField($fieldName);
         $subject = $this->get(RecordFieldTransformer::class);
+
         $result = $subject->transformField(
             $fieldInformation,
             $dummyRecord,
             $this->get(Context::class),
             GeneralUtility::makeInstance(RecordIdentityMap::class)
         );
-
-        self::assertSame($expected, $result?->format('c'));
+        self::assertSame($expectedUTC, $result?->format('c'));
+        if ($result !== null) {
+            self::assertSame('UTC', $result->getTimeZone()->getName());
+        }
 
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
-        self::assertSame($expected, $resolvedRecord->get($fieldName)?->format('c'));
+        self::assertSame($expectedUTC, $resolvedRecord->get($fieldName)?->format('c'));
+
+        $oldTimezone = date_default_timezone_get();
+        date_default_timezone_set('Europe/Berlin');
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        );
+        self::assertSame($expectedBerlin, $result?->format('c'));
+        if ($result !== null) {
+            self::assertSame('Europe/Berlin', $result->getTimeZone()->getName());
+        }
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        self::assertSame($expectedBerlin, $resolvedRecord->get($fieldName)?->format('c'));
+        date_default_timezone_set($oldTimezone);
     }
 
     #[Test]
