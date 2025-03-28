@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting;
 
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\ModelService;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\MutationCollection;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
@@ -49,7 +50,7 @@ class Resolution implements \JsonSerializable
             $array['mutation_identifier'],
             $mutationCollection,
             $meta ?: [],
-            (new \DateTimeImmutable())->setTimestamp((int)($array['created'] ?? 0)),
+            DateTimeFactory::createFromTimestamp((int)($array['created'] ?? 0)),
         );
     }
 

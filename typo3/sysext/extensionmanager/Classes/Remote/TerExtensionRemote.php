@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Extensionmanager\Remote;
 
 use Psr\Http\Message\ResponseInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extensionmanager\Domain\Repository\BulkExtensionRepositoryWriter;
@@ -97,7 +98,7 @@ class TerExtensionRemote implements ExtensionDownloaderRemoteInterface, Listable
     {
         if (file_exists($this->localExtensionListCacheFile) && filesize($this->localExtensionListCacheFile) > 0) {
             $mtime = filemtime($this->localExtensionListCacheFile);
-            return (new \DateTimeImmutable())->setTimestamp($mtime);
+            return DateTimeFactory::createFromTimestamp($mtime);
         }
         // Select a very old date (hint: easter egg)
         return new \DateTimeImmutable('1975-04-13');

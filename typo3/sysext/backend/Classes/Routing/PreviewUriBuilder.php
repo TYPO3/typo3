@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
@@ -441,7 +442,7 @@ class PreviewUriBuilder
             // a URL for it
             $dateAspect = GeneralUtility::makeInstance(
                 DateTimeAspect::class,
-                (new \DateTimeImmutable())->setTimestamp($access['starttime'])
+                DateTimeFactory::createFromTimestamp($access['starttime'])
             );
             $context->setAspect('date', $dateAspect);
             $additionalQueryParameters['ADMCMD_simTime'] = $access['starttime'];
@@ -451,7 +452,7 @@ class PreviewUriBuilder
             // in turn PageRouter will generate a URL for it
             $dateAspect = GeneralUtility::makeInstance(
                 DateTimeAspect::class,
-                (new \DateTimeImmutable())->setTimestamp($access['endtime'] - 1)
+                DateTimeFactory::createFromTimestamp($access['endtime'] - 1)
             );
             $context->setAspect('date', $dateAspect);
             $additionalQueryParameters['ADMCMD_simTime'] = ($access['endtime'] - 1);

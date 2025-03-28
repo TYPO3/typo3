@@ -272,16 +272,16 @@ readonly class RecordFactory
             }
             switch ($capability) {
                 case TcaSchemaCapability::CreatedAt:
-                    $systemProperties['createdAt'] = (new \DateTimeImmutable())->setTimestamp($rawRecord->get($fieldName));
+                    $systemProperties['createdAt'] = DateTimeFactory::createFromTimestamp($rawRecord->get($fieldName));
                     break;
                 case TcaSchemaCapability::UpdatedAt:
-                    $systemProperties['lastUpdatedAt'] = (new \DateTimeImmutable())->setTimestamp($rawRecord->get($fieldName));
+                    $systemProperties['lastUpdatedAt'] = DateTimeFactory::createFromTimestamp($rawRecord->get($fieldName));
                     break;
                 case TcaSchemaCapability::RestrictionStartTime:
-                    $systemProperties['publishAt'] = (new \DateTimeImmutable())->setTimestamp($rawRecord->get($fieldName));
+                    $systemProperties['publishAt'] = DateTimeFactory::createFromTimestamp($rawRecord->get($fieldName));
                     break;
                 case TcaSchemaCapability::RestrictionEndTime:
-                    $systemProperties['publishUntil'] = (new \DateTimeImmutable())->setTimestamp($rawRecord->get($fieldName));
+                    $systemProperties['publishUntil'] = DateTimeFactory::createFromTimestamp($rawRecord->get($fieldName));
                     break;
 
                 case TcaSchemaCapability::SoftDelete:

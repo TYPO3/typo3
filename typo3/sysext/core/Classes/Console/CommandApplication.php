@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Core\ApplicationInterface;
 use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 
@@ -176,7 +177,7 @@ class CommandApplication implements ApplicationInterface
         $this->context->setAspect(
             'date',
             new DateTimeAspect(
-                (new \DateTimeImmutable())->setTimestamp($GLOBALS['EXEC_TIME'])
+                DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'])
             )
         );
         $this->context->setAspect('visibility', new VisibilityAspect(true, true, false, true));

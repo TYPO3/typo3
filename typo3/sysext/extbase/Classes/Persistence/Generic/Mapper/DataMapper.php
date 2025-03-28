@@ -335,6 +335,7 @@ class DataMapper
      * @param string|null $storageFormat Storage format for native date/datetime/time fields
      * @param string $targetType The object class name to be created
      * @return \DateTimeInterface
+     * @todo Use \TYPO3\CMS\Core\Domain\DateTimeFactory
      */
     protected function mapDateTime($value, $storageFormat = null, $targetType = \DateTime::class)
     {
