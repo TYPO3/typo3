@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Tests\Unit\Utility\Fixtures\LabelFromItemListMergedReturnsCorrectFieldsFixture;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
@@ -1293,5 +1294,105 @@ final class BackendUtilityTest extends UnitTestCase
             ['title', 'createdon', 'uid', 'pid', 'updatedon', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
             BackendUtility::getAllowedFieldsForTable('myTable', false)
         );
+    }
+
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     * @todo Remove in TYPO3 v15 along with deprecated {@see BackendUtility::resolveFileReferences()}.
+     */
+    #[Test]
+    #[IgnoreDeprecations]
+    public function returnNullForMissingTcaConfigInResolveFileReferences(): void
+    {
+        $tableName = 'table_a';
+        $fieldName = 'field_a';
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [];
+        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+    }
+
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     * @todo Remove in TYPO3 v15 along with deprecated {@see BackendUtility::resolveFileReferences()}.
+     */
+    #[DataProvider('unfitResolveFileReferencesTableConfig')]
+    #[Test]
+    #[IgnoreDeprecations]
+    public function returnNullForUnfitTableConfigInResolveFileReferences(array $config): void
+    {
+        $tableName = 'table_a';
+        $fieldName = 'field_a';
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = $config;
+        self::assertNull(BackendUtility::resolveFileReferences($tableName, $fieldName, []));
+    }
+
+    public static function unfitResolveFileReferencesTableConfig(): array
+    {
+        return [
+            'invalid table' => [
+                [
+                    'type' => 'inline',
+                    'foreign_table' => 'table_b',
+                ],
+            ],
+            'empty table' => [
+                [
+                    'type' => 'inline',
+                    'foreign_table' => '',
+                ],
+            ],
+            'invalid type' => [
+                [
+                    'type' => 'select',
+                    'foreign_table' => 'sys_file_reference',
+                ],
+            ],
+            'empty type' => [
+                [
+                    'type' => '',
+                    'foreign_table' => 'sys_file_reference',
+                ],
+            ],
+            'empty' => [
+                [
+                    'type' => '',
+                    'foreign_table' => '',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Do NOT remove this test, even though it has IgnoreDeprecations attribute,
+     * we're testing the core's deprecation strategy here.
+     * @todo Remove in TYPO3 v15 along with deprecated {@see BackendUtility::resolveFileReferences()}.
+     */
+    #[Test]
+    #[IgnoreDeprecations]
+    public function resolveFileReferencesReturnsEmptyResultForNoReferencesAvailable(): void
+    {
+        $tableName = 'table_a';
+        $fieldName = 'field_a';
+        $elementData = [
+            $fieldName => 'foo',
+            'uid' => 42,
+        ];
+        $relationHandlerMock = $this->createMock(RelationHandler::class);
+        $relationHandlerMock->expects(self::once())->method('initializeForField')->with(
+            $tableName,
+            ['type' => 'file', 'foreign_table' => 'sys_file_reference'],
+            $elementData,
+            'foo'
+        );
+        $relationHandlerMock->expects(self::once())->method('processDeletePlaceholder');
+        $relationHandlerMock->tableArray = ['sys_file_reference' => []];
+        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
+        $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = [
+            'type' => 'file',
+            'foreign_table' => 'sys_file_reference',
+        ];
+
+        self::assertEmpty(BackendUtility::resolveFileReferences($tableName, $fieldName, $elementData));
     }
 }
