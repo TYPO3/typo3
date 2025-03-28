@@ -208,7 +208,7 @@ class NewMultiplePagesController
         // Filter out unavailable types.
         $availablePageTypes = array_filter(
             $availablePageTypes,
-            fn(SelectItem $item): bool => $item->isDivider() || in_array($item->getValue(), $allowedPageTypes, true)
+            fn(SelectItem $item): bool => $item->isDivider() || in_array($item->getValue(), $allowedPageTypes, false)
         );
 
         // Sort items.
