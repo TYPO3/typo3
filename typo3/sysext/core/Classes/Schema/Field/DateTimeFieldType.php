@@ -31,12 +31,28 @@ final readonly class DateTimeFieldType extends AbstractFieldType
 
     public function getFormat(): string
     {
-        return $this->configuration['format'];
+        $format = $this->configuration['format'] ?? null;
+        $persistenceType = $this->getPersistenceType();
+        // A native time field must not be formatted as date
+        if (($format === 'datetime' || $format === 'date') && $persistenceType === 'time') {
+            return 'timesec';
+        }
+        // A native date field must not be formatted as time
+        if (($format === 'time' || $format === 'timesec') && $persistenceType === 'date') {
+            return 'date';
+        }
+        if (in_array($format, ['datetime', 'date', 'time', 'timesec'], true)) {
+            return $format;
+        }
+        if ($persistenceType !== null) {
+            return $persistenceType === 'time' ? 'timesec' : $persistenceType;
+        }
+        return 'datetime';
     }
 
     public function isSearchable(): bool
     {
-        return !$this->getPersistenceType();
+        return $this->getPersistenceType() === null;
     }
 
     public function getPersistenceType(): ?string
