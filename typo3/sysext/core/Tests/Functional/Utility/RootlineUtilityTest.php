@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
@@ -1350,7 +1351,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect($workspace));
         $context->setAspect('language', new LanguageAspect($language));
-        $context->setAspect('date', new DateTimeAspect((new \DateTimeImmutable())->setTimestamp(time())));
+        $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(time())));
         $result = (new RootlineUtility($uid, '', $context))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
     }
@@ -1422,7 +1423,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(0));
         $context->setAspect('language', new LanguageAspect(0));
-        $context->setAspect('date', new DateTimeAspect((new \DateTimeImmutable())->setTimestamp(time())));
+        $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp(time())));
         $context->setAspect('visibility', new VisibilityAspect(false, $includeHiddenRecords, false, false));
         $result = (new RootlineUtility($uid, '', $context))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
@@ -1555,7 +1556,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $context = new Context();
         $context->setAspect('workspace', new WorkspaceAspect(0));
         $context->setAspect('language', new LanguageAspect(0));
-        $context->setAspect('date', new DateTimeAspect((new \DateTimeImmutable())->setTimestamp($simulateTime)));
+        $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($simulateTime)));
         $context->setAspect('visibility', new VisibilityAspect(false, false, false, $includeScheduledRecords));
         $result = (new RootlineUtility($uid, '', $context))->get();
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));

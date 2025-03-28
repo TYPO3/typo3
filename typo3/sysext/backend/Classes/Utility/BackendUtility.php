@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -1768,58 +1769,33 @@ class BackendUtility
                 }
                 break;
             case 'datetime':
-                $format = (string)($theColConf['format'] ?? 'datetime');
-                $dateTimeFormats = QueryHelper::getDateTimeFormats();
-                if ($format === 'date') {
-                    // Handle native date field
-                    if (($theColConf['dbType'] ?? '') === 'date') {
-                        $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime((string)$value);
-                    } else {
-                        $value = (int)$value;
+                try {
+                    $datetime = DateTimeFactory::createFomDatabaseValueAndTCAConfig($value, $theColConf);
+                    $format = DateTimeFactory::getFormatFromTCAConfig($theColConf);
+                } catch (\InvalidArgumentException) {
+                    $datetime = false;
+                    $format = null;
+                }
+                if ($datetime === null) {
+                    $l = '';
+                } elseif ($format === 'date') {
+                    $ageSuffix = '';
+                    // Generate age suffix as long as not explicitly suppressed
+                    if (!($theColConf['disableAgeDisplay'] ?? false)) {
+                        $ageDelta = $GLOBALS['EXEC_TIME'] - $datetime->getTimestamp();
+                        $calculatedAge = BackendUtility::calcAge(
+                            (int)abs($ageDelta),
+                            $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        );
+                        $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
                     }
-                    if (!empty($value)) {
-                        $ageSuffix = '';
-                        // Generate age suffix as long as not explicitly suppressed
-                        if (!($theColConf['disableAgeDisplay'] ?? false)) {
-                            $ageDelta = $GLOBALS['EXEC_TIME'] - $value;
-                            $calculatedAge = self::calcAge(
-                                (int)abs($ageDelta),
-                                $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-                            );
-                            $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
-                        }
-                        $l = self::date($value) . $ageSuffix;
-                    }
+                    $l = self::date($datetime->getTimestamp()) . $ageSuffix;
                 } elseif ($format === 'time') {
-                    // Handle native time field
-                    if (($theColConf['dbType'] ?? '') === 'time') {
-                        $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-                    } else {
-                        $value = (int)$value;
-                    }
-                    if (!empty($value)) {
-                        $l = gmdate('H:i', (int)$value);
-                    }
+                    $l = $datetime->format('H:i');
                 } elseif ($format === 'timesec') {
-                    // Handle native time field
-                    if (($theColConf['dbType'] ?? '') === 'time') {
-                        $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-                    } else {
-                        $value = (int)$value;
-                    }
-                    if (!empty($value)) {
-                        $l = gmdate('H:i:s', (int)$value);
-                    }
+                    $l = $datetime->format('H:i:s');
                 } elseif ($format === 'datetime') {
-                    // Handle native datetime field
-                    if (($theColConf['dbType'] ?? '') === 'datetime') {
-                        $value = $value === $dateTimeFormats['datetime']['empty'] ? 0 : (int)strtotime((string)$value);
-                    } else {
-                        $value = (int)$value;
-                    }
-                    if (!empty($value)) {
-                        $l = self::datetime($value);
-                    }
+                    $l = self::datetime($datetime->getTimestamp());
                 } elseif (isset($value)) {
                     // todo: As soon as more strict types are used, this isset check must be replaced with a more
                     //       appropriate check.

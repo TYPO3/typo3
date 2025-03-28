@@ -17,7 +17,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -338,76 +338,49 @@ class TcaRecordTitle implements FormDataProviderInterface
 
     protected function getRecordTitleForDatetimeType(mixed $value, array $fieldConfig): string
     {
-        if (!isset($value)) {
-            return '';
+        try {
+            if (str_contains((string)$value, 'T')) {
+                // FormDataProvider\DatabaseRowDateTimeFields misinterprets the native LOCALTIME datetime
+                // value as UTC and creates an invalid ISO8601 datetime string in the current server timezone
+                // based on the incorrectly assumed UTC base value, which means the time value has an effective
+                // timezone offset that matches the current server timezone.
+                // Remove the timezone offset to normalize back to LOCALTIME.
+                // Note: This ugly workaround is removed in v14 due to refactoring of
+                //       DatabaseRowDateTimeFields to use unqualified ISO8601 localtime in #105549.
+                $datetime = new \DateTimeImmutable((new \DateTimeImmutable($value))->format('Y-m-d\TH:i:s'));
+            } else {
+                $datetime = DateTimeFactory::createFomDatabaseValueAndTCAConfig($value, $fieldConfig);
+            }
+            if ($datetime === null) {
+                return '';
+            }
+        } catch (\InvalidArgumentException) {
+            return (string)$value;
         }
-        $title = $value;
-        $format = (string)($fieldConfig['format'] ?? 'datetime');
-        $dateTimeFormats = QueryHelper::getDateTimeFormats();
+        $format = DateTimeFactory::getFormatFromTCAConfig($fieldConfig);
         if ($format === 'date') {
-            // Handle native date field
-            if (($fieldConfig['dbType'] ?? '') === 'date') {
-                $value = $value === $dateTimeFormats['date']['empty'] ? 0 : (int)strtotime($value);
-            } else {
-                $value = (int)$value;
+            $ageSuffix = '';
+            // Generate age suffix as long as not explicitly suppressed
+            if (!($fieldConfig['disableAgeDisplay'] ?? false)) {
+                $ageDelta = $GLOBALS['EXEC_TIME'] - $datetime->getTimestamp();
+                $calculatedAge = BackendUtility::calcAge(
+                    (int)abs($ageDelta),
+                    $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                );
+                $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
             }
-            if (!empty($value)) {
-                $ageSuffix = '';
-                // Generate age suffix as long as not explicitly suppressed
-                if (!($fieldConfig['disableAgeDisplay'] ?? false)) {
-                    $ageDelta = $GLOBALS['EXEC_TIME'] - $value;
-                    $calculatedAge = BackendUtility::calcAge(
-                        (int)abs($ageDelta),
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-                    );
-                    $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
-                }
-                $title = BackendUtility::date($value) . $ageSuffix;
-            }
-        } elseif ($format === 'time') {
-            // Handle native time field
-            if (($fieldConfig['dbType'] ?? '') === 'time') {
-                $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-            } else {
-                $value = (int)$value;
-            }
-            if (!empty($value)) {
-                $title = gmdate('H:i', $value);
-            }
-        } elseif ($format === 'timesec') {
-            // Handle native time field
-            if (($fieldConfig['dbType'] ?? '') === 'time') {
-                $value = $value === $dateTimeFormats['time']['empty'] ? 0 : (int)strtotime('1970-01-01 ' . $value . ' UTC');
-            } else {
-                $value = (int)$value;
-            }
-            if (!empty($value)) {
-                $title = gmdate('H:i:s', $value);
-            }
-        } elseif ($format === 'datetime') {
-            // Handle native datetime field
-            if (($fieldConfig['dbType'] ?? '') === 'datetime') {
-                if ($value === $dateTimeFormats['datetime']['empty']) {
-                    $value = 0;
-                } else {
-                    // FormDataProvider\DatabaseRowDateTimeFields misinterprets the native LOCALTIME datetime
-                    // value as UTC and creates an invalid ISO8601 datetime string in the current server timezone
-                    // based on the incorrectly assumed UTC base value, which means the time value has an effective
-                    // timezone offset that matches the current server timezone.
-                    // Remove the timezone offset to normalize back to LOCALTIME.
-                    // @todo: This ugly workaround will be removed with refactoring of DatabaseRowDateTimeFields
-                    //        to use unqualified ISO8601 localtime in #105549.
-                    $datetime = new \DateTimeImmutable($value);
-                    $value = $datetime->getTimestamp() - $datetime->getOffset();
-                }
-            } else {
-                $value = (int)$value;
-            }
-            if (!empty($value)) {
-                $title = BackendUtility::datetime($value);
-            }
+            return BackendUtility::date($datetime->getTimestamp()) . $ageSuffix;
         }
-        return $title;
+        if ($format === 'time') {
+            return $datetime->format('H:i');
+        }
+        if ($format === 'timesec') {
+            return $datetime->format('H:i:s');
+        }
+        if ($format === 'datetime') {
+            return BackendUtility::datetime($datetime->getTimestamp());
+        }
+        return (string)$value;
     }
 
     /**

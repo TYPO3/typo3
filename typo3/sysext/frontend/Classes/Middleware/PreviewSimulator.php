@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\LanguageAspectFactory;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -170,7 +171,7 @@ class PreviewSimulator implements MiddlewareInterface
             'date',
             GeneralUtility::makeInstance(
                 DateTimeAspect::class,
-                (new \DateTimeImmutable())->setTimestamp($queryTime)
+                DateTimeFactory::createFromTimestamp($queryTime)
             )
         );
         return true;

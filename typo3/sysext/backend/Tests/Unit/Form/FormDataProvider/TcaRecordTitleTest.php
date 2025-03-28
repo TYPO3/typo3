@@ -251,11 +251,13 @@ final class TcaRecordTitleTest extends UnitTestCase
                 ],
                 '',
                 '',
+                '',
             ],
             'plain text input' => [
                 [
                     'type' => 'datetime',
                 ],
+                'aValue',
                 'aValue',
                 'aValue',
             ],
@@ -266,6 +268,7 @@ final class TcaRecordTitleTest extends UnitTestCase
                 ],
                 '978307261',
                 '2001-01-01 (-7 days)',
+                '2001-01-01 (-7 days)',
             ],
             'date (dbType: date)' => [
                 [
@@ -274,6 +277,7 @@ final class TcaRecordTitleTest extends UnitTestCase
                     'dbType' => 'date',
                 ],
                 '2001-01-01',
+                '2001-01-01 (-7 days)',
                 '2001-01-01 (-7 days)',
             ],
             'date (disableAgeDisplay: TRUE)' => [
@@ -284,6 +288,7 @@ final class TcaRecordTitleTest extends UnitTestCase
                 ],
                 '978307261',
                 '2001-01-01',
+                '2001-01-01',
             ],
             'time' => [
                 [
@@ -291,6 +296,7 @@ final class TcaRecordTitleTest extends UnitTestCase
                     'format' => 'time',
                 ],
                 '44100',
+                '12:15',
                 '12:15',
             ],
             'time (dbType: time)' => [
@@ -301,6 +307,7 @@ final class TcaRecordTitleTest extends UnitTestCase
                 ],
                 '23:59:00',
                 '23:59',
+                '23:59',
             ],
             'timesec' => [
                 [
@@ -308,6 +315,7 @@ final class TcaRecordTitleTest extends UnitTestCase
                     'format' => 'timesec',
                 ],
                 '44130',
+                '12:15:30',
                 '12:15:30',
             ],
             'timesec (dbType: time)' => [
@@ -318,14 +326,25 @@ final class TcaRecordTitleTest extends UnitTestCase
                 ],
                 '23:59:59',
                 '23:59:59',
+                '23:59:59',
             ],
-            'datetime' => [
+            'datetime (dbType: date)' => [
+                [
+                    'type' => 'datetime',
+                    'dbType' => 'date',
+                ],
+                '2001-01-01',
+                '2001-01-01 (-7 days)',
+                '2001-01-01 (-7 days)',
+            ],
+            'datetime (dbType: date, invalid timestamp value)' => [
                 [
                     'type' => 'datetime',
                     'dbType' => 'date',
                 ],
                 '978307261',
-                '2001-01-01 00:01',
+                '2001-01-01 (-7 days)',
+                '2001-01-01 (-7 days)',
             ],
             'datetime (dbType: datetime)' => [
                 [
@@ -334,14 +353,28 @@ final class TcaRecordTitleTest extends UnitTestCase
                 ],
                 '2014-12-31 23:59:59',
                 '2014-12-31 23:59',
+                '2014-12-31 23:59',
+            ],
+            'datetime (dbType: datetime, invalid timestamp value)' => [
+                [
+                    'type' => 'datetime',
+                    'dbType' => 'datetime',
+                ],
+                '978307261',
+                '2001-01-01 00:01',
+                '2001-01-01 01:01',
             ],
         ];
     }
 
     #[DataProvider('addDataReturnsRecordTitleForDatetimeTypeDataProvider')]
     #[Test]
-    public function addDataReturnsRecordTitleForDatetimeType(array $fieldConfig, string $fieldValue, string $expectedTitle): void
-    {
+    public function addDataReturnsRecordTitleForDatetimeType(
+        array $fieldConfig,
+        string $fieldValue,
+        string $expectedUTCTitle,
+        string $expectedBerlinTitle,
+    ): void {
         $input = [
             'tableName' => 'aTable',
             'isInlineChild' => false,
@@ -361,15 +394,25 @@ final class TcaRecordTitleTest extends UnitTestCase
             ],
         ];
 
-        $languageService = $this->createMock(LanguageService::class);
-        $GLOBALS['LANG'] = $languageService;
-        $languageService->method('sL')->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-            ->willReturn(' min| hrs| days| yrs| min| hour| day| year');
-        $GLOBALS['EXEC_TIME'] = 978912061;
+        $timezones = [
+            'UTC' => $expectedUTCTitle,
+            'Europe/Berlin' => $expectedBerlinTitle,
+        ];
+        foreach ($timezones as $timezone => $expectedTitle) {
+            $bak = date_default_timezone_get();
+            date_default_timezone_set($timezone);
 
-        $expected = $input;
-        $expected['recordTitle'] = $expectedTitle;
-        self::assertSame($expected, (new TcaRecordTitle())->addData($input));
+            $languageService = $this->createMock(LanguageService::class);
+            $GLOBALS['LANG'] = $languageService;
+            $languageService->method('sL')->with('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                ->willReturn(' min| hrs| days| yrs| min| hour| day| year');
+            $GLOBALS['EXEC_TIME'] = 978912061;
+
+            $expected = $input;
+            $expected['recordTitle'] = $expectedTitle;
+            self::assertSame($expected, (new TcaRecordTitle())->addData($input));
+            date_default_timezone_set($bak);
+        }
     }
 
     #[Test]

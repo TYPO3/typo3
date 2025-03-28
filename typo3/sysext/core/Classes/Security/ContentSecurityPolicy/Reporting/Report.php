@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Security\ContentSecurityPolicy\Reporting;
 
 use Symfony\Component\Uid\UuidV4;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\Scope;
 
 /**
@@ -41,8 +42,8 @@ class Report implements \JsonSerializable
             new ReportDetails($details ?: []),
             $array['summary'] ?? '',
             UuidV4::fromString($array['uuid'] ?? ''),
-            (new \DateTimeImmutable())->setTimestamp((int)($array['created'] ?? 0)),
-            (new \DateTimeImmutable())->setTimestamp((int)($array['changed'] ?? 0)),
+            DateTimeFactory::createFromTimestamp((int)($array['created'] ?? 0)),
+            DateTimeFactory::createFromTimestamp((int)($array['changed'] ?? 0)),
         );
     }
 

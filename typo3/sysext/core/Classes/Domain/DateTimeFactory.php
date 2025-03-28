@@ -117,10 +117,13 @@ final readonly class DateTimeFactory
 
         try {
             $datetime = match (true) {
-                is_int($value) && ($format === 'time' || $format === 'timesec') => self::createFromTimestamp(
-                    // Time is stored in seconds for integer fields
-                    // Add local datetime offset to apply correct offset to midnight in current timezone
-                    $value + (int)date('Z')
+                is_int($value) && ($format === 'time' || $format === 'timesec') => new \DateTimeImmutable(
+                    // time(sec) is stored as elapsed seconds in DB and has no defined date associated.
+                    // Per convention we map to 1970-01-01 for the sake of a reliable date.
+                    // We still want a PHP localtime timezone in the DateTime object set,
+                    // therefore we interpret the second as UTC time on 1970-01-01T00:00:00
+                    // and map the resulting value to PHP localtime
+                    gmdate('Y-m-d\TH:i:s', $value)
                 ),
                 // Unix timestamp
                 is_int($value) => self::createFromTimestamp($value),

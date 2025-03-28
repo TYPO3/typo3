@@ -33,6 +33,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\DateTimeAspect;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\View\ViewFactoryData;
@@ -194,7 +195,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
                 'date',
                 GeneralUtility::makeInstance(
                     DateTimeAspect::class,
-                    (new \DateTimeImmutable())->setTimestamp($simTime)
+                    DateTimeFactory::createFromTimestamp($simTime)
                 )
             );
         }
@@ -241,7 +242,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             'date',
             GeneralUtility::makeInstance(
                 DateTimeAspect::class,
-                (new \DateTimeImmutable())->setTimestamp($GLOBALS['SIM_EXEC_TIME'])
+                DateTimeFactory::createFromTimestamp($GLOBALS['SIM_EXEC_TIME'])
             )
         );
         $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));

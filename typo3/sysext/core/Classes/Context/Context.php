@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Context;
 
 use TYPO3\CMS\Core\Context\Exception\AspectNotFoundException;
 use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\SingletonInterface;
 
 /**
@@ -88,7 +89,7 @@ class Context implements SingletonInterface
                     $this->setAspect(
                         'date',
                         new DateTimeAspect(
-                            (new \DateTimeImmutable())->setTimestamp($GLOBALS['EXEC_TIME'])
+                            DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'])
                         )
                     );
                     break;
