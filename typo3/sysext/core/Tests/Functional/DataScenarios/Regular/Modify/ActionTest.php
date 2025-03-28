@@ -235,6 +235,18 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function copyLanguageAllContent(): void
+    {
+        parent::copyLanguageAllContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyLanguageAllContent.csv');
+
+        $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Language all element'));
+    }
+
+    #[Test]
     public function copyLocalizedContentToLocalizedPage(): void
     {
         parent::copyLocalizedContentToLocalizedPage();
