@@ -217,6 +217,57 @@ class QueryHelper
         ];
     }
 
+    public static function transformDateTimeToDatabaseValue(
+        ?\DateTimeInterface $datetime,
+        bool $isNullable,
+        string $format,
+        ?string $persistenceType,
+    ): int|string|null {
+        if ($datetime === null) {
+            if ($isNullable) {
+                return null;
+            }
+            if ($persistenceType === null) {
+                return 0;
+            }
+            return self::getDateTimeFormats()[$persistenceType]['empty'] ?? null;
+        }
+
+        if (!$datetime instanceof \DateTimeImmutable) {
+            $datetime = \DateTimeImmutable::createFromInterface($datetime);
+        }
+
+        // Apply format-specific normalizations
+        if ($format === 'time') {
+            // time(sec) is stored as elapsed seconds in DB, hence we base the time on 1970-01-01
+            $datetime = $datetime->setDate(1970, 01, 01)->setTime((int)$datetime->format('H'), (int)$datetime->format('i'), 0);
+        } elseif ($format === 'timesec' || $persistenceType === 'time') {
+            $datetime = $datetime->setDate(1970, 01, 01);
+        } elseif ($format === 'date' || $persistenceType === 'date') {
+            $datetime = $datetime->setTime(0, 0, 0);
+        }
+
+        // Native DATETIME, DATE or TIME field
+        if (in_array($persistenceType, self::getDateTimeTypes(), true)) {
+            $dateTimeFormats = self::getDateTimeFormats();
+            $persistenceFormat = $dateTimeFormats[$persistenceType]['format'];
+            if ($persistenceType === 'datetime') {
+                // native DATETIME values are stored in server LOCALTIME. Force conversion to the servers current timezone.
+                $datetime = $datetime->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+            }
+
+            return $datetime->format($persistenceFormat);
+        }
+
+        // Time is stored in seconds for integer fields
+        if ($format === 'timesec' || $format === 'time') {
+            return (int)$datetime->format('H') * 3600 + (int)$datetime->format('i') * 60 + (int)$datetime->format('s');
+        }
+
+        // Encode as unix timestamp (int) if no native field is used
+        return $datetime->getTimestamp();
+    }
+
     /**
      * Quote database table/column names indicated by {#identifier} markup in a SQL fragment string.
      * This is an intermediate step to make SQL fragments in Typoscript and TCA database agnostic.
