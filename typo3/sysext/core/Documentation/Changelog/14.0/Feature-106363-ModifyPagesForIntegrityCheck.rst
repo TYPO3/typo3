@@ -11,7 +11,7 @@ See :issue:`106363`
 Description
 ===========
 
-A new PSR-14 event :php:`AfterPageUrlsForSiteForRedirectIntegrityHaveBeenCollectedEvent`
+A new PSR-14 event :php-short:`\TYPO3\CMS\Redirects\Event\AfterPageUrlsForSiteForRedirectIntegrityHaveBeenCollectedEvent`
 is added which allows TYPO3 Extensions to register event listeners to modify
 the list of URLs that are being processed by the CLI command
 `redirects:checkintegrity <https://docs.typo3.org/permalink/typo3/cms-redirects:redirects-checkintegrity>`_.
@@ -45,6 +45,7 @@ registration, adds the URLs found in a sites XML sitemap to the list of URLs.
                 'allow_redirects' => false,
             ];
 
+            $site = $event->getSite();
             foreach ($site->getLanguages() as $siteLanguage) {
                 $sitemapIndexUrl = rtrim((string)$siteLanguage->getBase(), '/') . '/sitemap.xml';
                 $response = $this->requestFactory->request(
@@ -67,7 +68,7 @@ registration, adds the URLs found in a sites XML sitemap to the list of URLs.
                 }
             }
 
-            $event->getPageUrls($pageUrls);
+            $event->setPageUrls($pageUrls);
         }
     }
 
