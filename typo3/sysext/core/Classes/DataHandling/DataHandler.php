@@ -4046,8 +4046,16 @@ class DataHandler
         foreach ($dbAnalysis->itemArray as $k => $v) {
             $newId = null;
             $childTableIsWorkspaceAware = $this->tcaSchemaFactory->has($v['table']) && $this->tcaSchemaFactory->get($v['table'])->isWorkspaceAware();
+            $childTableIsLanguageAware = $this->tcaSchemaFactory->has($v['table']) && $this->tcaSchemaFactory->get($v['table'])->isLanguageAware();
             // If language is set and differs from original record, this isn't a copy action but a localization of our parent/ancestor:
             if ($language > 0 && $schema->isLanguageAware() && $language != ($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0)) {
+                // Skip localization of children whose table is not language-aware, as they cannot be localized (e.g. monoglot IRRE children).
+                // Remove from itemArray to prevent writeForeignField from reassigning the original child to the localized parent.
+                // @see DataScenarios\IrreForeignField\AbstractActionTestCase->localizeParentContentWithMonoglotHotelChild()
+                if (!$childTableIsLanguageAware) {
+                    unset($dbAnalysis->itemArray[$k]);
+                    continue;
+                }
                 // Children should be localized when the parent gets localized the first time, just do it:
                 $newId = $this->localize($v['table'], (int)$v['id'], (int)$language);
             } else {

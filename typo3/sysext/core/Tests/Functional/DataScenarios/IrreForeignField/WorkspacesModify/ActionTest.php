@@ -183,6 +183,39 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeParentContentWithMonoglotHotelChild(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChild();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChild.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLocalizationExclude(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChildWithLocalizationExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildWExclude.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections('Default', 'Extbase:list()');
+        self::assertThat($responseSections, (new StructureHasRecordConstraint())
+            ->setRecordIdentifier(self::TABLE_Content . ':' . self::VALUE_ContentIdLast)->setRecordField(self::FIELD_ContentHotel)
+            ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
+    }
+
+    #[Test]
     public function localizeParentContentChainLanguageSynchronizationSource(): void
     {
         // Create translated pages first

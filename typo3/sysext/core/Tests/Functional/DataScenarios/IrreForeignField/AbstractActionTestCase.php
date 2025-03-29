@@ -196,6 +196,60 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     }
 
     /**
+     * Localize content with a monoglot (non-language-aware) hotel child table.
+     * The monoglot table record is not copied nor localized.
+     *
+     * @todo: Discussion of localizeParentContentWithMonoglotHotelChild(), localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization()
+     *        and localizeParentContentWithMonoglotHotelChildWithLocalizationExclude(): There are scenarios we can't discuss away where an inline
+     *        parent *is* localizable and a child *is not*. DB-wise, it would be good to actually always copy those records since it allows easier
+     *        querying, and it would allow for localizable->not-localizable->localizable inline children chains. This strategy requires a good
+     *        synchronization strategy within DataHandler, though. So for now, we'll *not* copy "monoglot" children, but should eventually change
+     *        that at some point. Also, setting l10n_mode=exclude and allowLanguageSynchronization=true (the other two tests below) don't really
+     *        make much sense. Thoughts on that should be finalized when these two TCA toggles receive some general love, we might end up unsetting
+     *        them for the monoglot scenario in TcaPreparation. Codewise, DataMapProcessor triggers magic for them currently. UI-wise, we should
+     *        probably take care monoglot children can always *only* be edited from within the default language record?! We could sort out details
+     *        here when similar thoughts on sys_language_uid=-1 have been answered and solved.
+     */
+    public function localizeParentContentWithMonoglotHotelChild(): void
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['languageField']);
+        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['transOrigPointerField']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    /**
+     * Localize content with a monoglot (non-language-aware) hotel child table
+     * using allowLanguageSynchronization. The monoglot child table is kept as is
+     * and not localized, but copied to the localized parent record.
+     */
+    public function localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization(): void
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['languageField']);
+        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['transOrigPointerField']);
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    /**
+     * Localize content with a monoglot (non-language-aware) hotel child table
+     * using l10n_mode=exclude. The monoglot child table is kept as is
+     * and not localized, but copied to the localized parent record.
+     */
+    public function localizeParentContentWithMonoglotHotelChildWithLocalizationExclude(): void
+    {
+        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['languageField']);
+        unset($GLOBALS['TCA'][self::TABLE_Hotel]['ctrl']['transOrigPointerField']);
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_ContentHotel]['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    /**
      * See DataSet/localizeParentContentWAllChildrenSelect.csv
      */
     public function localizeParentContentChainLanguageSynchronizationSource(): void

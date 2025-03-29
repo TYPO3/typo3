@@ -256,6 +256,30 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeParentContentWithMonoglotHotelChild(): void
+    {
+        parent::localizeParentContentWithMonoglotHotelChild();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChild.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization(): void
+    {
+        parent::localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLocalizationExclude(): void
+    {
+        parent::localizeParentContentWithMonoglotHotelChildWithLocalizationExclude();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildWExclude.csv');
+    }
+
+    #[Test]
     public function localizeParentContentChainLanguageSynchronizationSource(): void
     {
         parent::localizeParentContentChainLanguageSynchronizationSource();

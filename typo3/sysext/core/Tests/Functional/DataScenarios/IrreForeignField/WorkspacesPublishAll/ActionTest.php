@@ -187,6 +187,33 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeParentContentWithMonoglotHotelChild(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChild();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChild.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLocalizationExclude(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChildWithLocalizationExclude();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildWExclude.csv');
+    }
+
+    #[Test]
     public function localizeParentContentChainLanguageSynchronizationSource(): void
     {
         // Create translated pages first

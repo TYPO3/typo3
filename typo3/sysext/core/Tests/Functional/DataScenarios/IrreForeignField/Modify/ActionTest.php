@@ -198,6 +198,30 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function localizeParentContentWithMonoglotHotelChild(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChild();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChild.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChildWithLanguageSynchronization();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeParentContentWithMonoglotHotelChildWithLocalizationExclude(): void
+    {
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        parent::localizeParentContentWithMonoglotHotelChildWithLocalizationExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeParentContentMonoglotHotelChildExclude.csv');
+    }
+
+    #[Test]
     public function localizeParentContentChainLanguageSynchronizationSource(): void
     {
         // Create translated page first
