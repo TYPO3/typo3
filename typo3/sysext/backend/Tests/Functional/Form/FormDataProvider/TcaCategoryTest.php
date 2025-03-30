@@ -23,6 +23,7 @@ use TYPO3\CMS\Backend\Form\FormDataProvider\TcaCategory;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -373,6 +374,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         $category = new TcaCategory();
         $category->injectConnectionPool($this->get(ConnectionPool::class));
         $category->injectIconFactory($this->get(IconFactory::class));
+        $category->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
         self::assertEquals($expected, $category->addData($input));
     }
 
@@ -444,6 +446,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         $category = new TcaCategory();
         $category->injectConnectionPool($this->get(ConnectionPool::class));
         $category->injectIconFactory($this->get(IconFactory::class));
+        $category->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
         self::assertEquals($expected, $category->addData($input));
     }
 
@@ -505,6 +508,7 @@ final class TcaCategoryTest extends FunctionalTestCase
         $category = new TcaCategory();
         $category->injectConnectionPool($this->get(ConnectionPool::class));
         $category->injectIconFactory($this->get(IconFactory::class));
+        $category->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
         self::assertEquals($expected, $category->addData($input));
     }
 

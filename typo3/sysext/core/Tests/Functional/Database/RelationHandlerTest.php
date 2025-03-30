@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\RelationHandler;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RelationHandlerTest extends FunctionalTestCase
@@ -156,5 +157,37 @@ final class RelationHandlerTest extends FunctionalTestCase
         $subject->setWorkspaceId($workspaceUid);
         $subject->start('', '*', 'sys_category_record_mm', $categoryUid, 'sys_category', $fieldConfig);
         self::assertSame($expected, $subject->itemArray);
+    }
+
+    #[Test]
+    public function purgeItemArrayReturnsFalseIfVersioningForTableIsDisabled(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationHandler/readMmSysCategoryRelationsImport.csv');
+
+        $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = false;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $subject = new RelationHandler();
+        $subject->tableArray = [
+            'sys_category' => [1, 10, 20],
+        ];
+
+        self::assertFalse($subject->purgeItemArray(0));
+    }
+
+    #[Test]
+    public function purgeItemArrayReturnsTrueIfItemsHaveBeenPurged(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RelationHandler/readMmSysCategoryRelationsImport.csv');
+
+        $GLOBALS['TCA']['sys_category']['ctrl']['versioningWS'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $subject = new RelationHandler();
+        $subject->tableArray = [
+            'sys_category' => [1, 10, 20],
+        ];
+
+        self::assertTrue($subject->purgeItemArray(1));
     }
 }

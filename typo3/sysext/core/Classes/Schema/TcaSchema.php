@@ -186,7 +186,7 @@ readonly class TcaSchema implements SchemaInterface
             TcaSchemaCapability::RestrictionStartTime => new Capability\FieldCapability($this->getField($this->schemaConfiguration['enablecolumns']['starttime'])),
             TcaSchemaCapability::RestrictionEndTime => new Capability\FieldCapability($this->getField($this->schemaConfiguration['enablecolumns']['endtime'])),
             TcaSchemaCapability::RestrictionUserGroup => new Capability\FieldCapability($this->getField($this->schemaConfiguration['enablecolumns']['fe_group'])),
-            TcaSchemaCapability::RestrictionRootLevel => new Capability\RootLevelCapability((int)($this->schemaConfiguration['rootLevel'] ?? 0), $this->schemaConfiguration['security']['ignoreRootLevelRestriction'] ?? false),
+            TcaSchemaCapability::RestrictionRootLevel => new Capability\RootLevelCapability((int)($this->schemaConfiguration['rootLevel'] ?? 0), (bool)($this->schemaConfiguration['security']['ignoreRootLevelRestriction'] ?? false)),
             TcaSchemaCapability::RestrictionWebMount => new Capability\ScalarCapability((bool)($this->schemaConfiguration['security']['ignoreWebMountRestriction'] ?? false)),
         };
     }

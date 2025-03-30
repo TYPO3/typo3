@@ -266,7 +266,7 @@ class ElementInformationController
                 continue;
             }
 
-            $label = $lang->sL(BackendUtility::getItemLabel($this->table, $name));
+            $label = $lang->sL($schema->getField($name)->getLabel());
             $label = $label ?: $name;
 
             $propertiesForTable['fields'][] = [
@@ -309,7 +309,7 @@ class ElementInformationController
                 // file size
                 $propertiesForTable['fields']['size'] = [
                     'fieldValue' => GeneralUtility::formatSize((int)$this->fileObject->getProperty('size'), htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:byteSizeUnits'))),
-                    'fieldLabel' => $lang->sL(BackendUtility::getItemLabel($this->table, 'size')),
+                    'fieldLabel' => $lang->sL($schema?->hasField('size') ? $schema->getField('size')->getLabel() : ''),
                 ];
 
                 // show the metadata of a file as well

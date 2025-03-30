@@ -31,6 +31,10 @@ use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseUserPermissionCheck;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -50,7 +54,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
     public function addDataSetsUserPermissionsOnPageForAdminUser(): void
     {
         $this->beUserMock->method('isAdmin')->willReturn(true);
-        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData([]);
+        $result = (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData([]);
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
@@ -66,7 +73,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedTableModifyException::class);
         $this->expectExceptionCode(1437683248);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -89,7 +99,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437679657);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -108,7 +121,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('calcPerms')->with(['pid' => 321])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
-        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        $result = (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
@@ -131,7 +147,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -169,7 +188,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageEditException::class);
         $this->expectExceptionCode(1437679336);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -204,7 +226,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('calcPerms')->with($input['databaseRow'])->willReturn(Permission::PAGE_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
 
-        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        $result = (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
 
         self::assertSame(Permission::PAGE_EDIT, $result['userPermissionOnPage']);
     }
@@ -226,7 +251,16 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
 
-        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        $rootLevelCapability = new RootLevelCapability(0, true);
+        $schema = $this->createMock(TcaSchema::class);
+        $schema->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
+        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory->method('get')->willReturn($schema);
+
+        $result = (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $schemaFactory
+        ))->addData($input);
 
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
@@ -250,7 +284,17 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437679856);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        $rootLevelCapability = new RootLevelCapability(0, false);
+        $schema = $this->createMock(TcaSchema::class);
+        $schema->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
+        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory->method('get')->willReturn($schema);
+
+        (new DatabaseUserPermissionCheck(new NoopEventDispatcher(), $schemaFactory))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $schemaFactory
+        ))->addData($input);
     }
 
     #[Test]
@@ -274,7 +318,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedEditInternalsException::class);
         $this->expectExceptionCode(1437687404);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -297,7 +344,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedContentEditException::class);
         $this->expectExceptionCode(1437745759);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -322,7 +372,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->expectException(AccessDeniedPageNewException::class);
         $this->expectExceptionCode(1437745640);
 
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -353,7 +406,12 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
             $event->denyUserAccess();
             return $event;
         });
-        (new DatabaseUserPermissionCheck($eventDispatcher))->addData($input);
+        (new DatabaseUserPermissionCheck($eventDispatcher, $this->createMock(TcaSchemaFactory::class)))->addData($input);
+
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
     }
 
     #[Test]
@@ -381,7 +439,7 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
             $event->allowUserAccess();
             return $event;
         });
-        $result = (new DatabaseUserPermissionCheck($eventDispatcher))->addData($input);
+        $result = (new DatabaseUserPermissionCheck($eventDispatcher, $this->createMock(TcaSchemaFactory::class)))->addData($input);
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
@@ -402,7 +460,17 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::PAGE_NEW);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
-        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+
+        $rootLevelCapability = new RootLevelCapability(-1, false);
+        $schema = $this->createMock(TcaSchema::class);
+        $schema->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
+        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory->method('get')->willReturn($schema);
+
+        $result = (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $schemaFactory
+        ))->addData($input);
         self::assertSame(Permission::PAGE_NEW, $result['userPermissionOnPage']);
     }
 
@@ -423,7 +491,10 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('calcPerms')->with($input['parentPageRow'])->willReturn(Permission::CONTENT_EDIT);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
-        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+        $result = (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $this->createMock(TcaSchemaFactory::class)
+        ))->addData($input);
         self::assertSame(Permission::CONTENT_EDIT, $result['userPermissionOnPage']);
     }
 
@@ -441,7 +512,17 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
         $this->beUserMock->method('recordEditAccessInternals')->with($input['tableName'], self::anything())->willReturn(true);
         $GLOBALS['TCA'][$input['tableName']]['ctrl']['security']['ignoreRootLevelRestriction'] = true;
-        $result = (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+
+        $rootLevelCapability = new RootLevelCapability(0, true);
+        $schema = $this->createMock(TcaSchema::class);
+        $schema->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
+        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory->method('get')->willReturn($schema);
+
+        $result = (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $schemaFactory
+        ))->addData($input);
         self::assertSame(Permission::ALL, $result['userPermissionOnPage']);
     }
 
@@ -459,8 +540,18 @@ final class DatabaseUserPermissionCheckTest extends UnitTestCase
         $this->beUserMock->method('isAdmin')->willReturn(false);
         $this->beUserMock->method('check')->with('tables_modify', $input['tableName'])->willReturn(true);
 
+        $rootLevelCapability = new RootLevelCapability(0, false);
+        $schema = $this->createMock(TcaSchema::class);
+        $schema->method('getCapability')->with(TcaSchemaCapability::RestrictionRootLevel)->willReturn($rootLevelCapability);
+        $schemaFactory = $this->createMock(TcaSchemaFactory::class);
+        $schemaFactory->method('get')->willReturn($schema);
+
         $this->expectException(AccessDeniedRootNodeException::class);
         $this->expectExceptionCode(1437745221);
-        (new DatabaseUserPermissionCheck(new NoopEventDispatcher()))->addData($input);
+
+        (new DatabaseUserPermissionCheck(
+            new NoopEventDispatcher(),
+            $schemaFactory
+        ))->addData($input);
     }
 }

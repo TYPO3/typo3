@@ -21,7 +21,6 @@ use Doctrine\DBAL\Exception as DBALException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Cache\CacheTag;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
 use TYPO3\CMS\Core\Context\Context;
@@ -617,7 +616,7 @@ readonly class Typo3DbBackend implements BackendInterface, SingletonInterface
         if ($workspaceUid === 0) {
             return $rows;
         }
-        if (!BackendUtility::isTableWorkspaceEnabled($tableName)) {
+        if (!$this->tcaSchemaFactory->has($tableName) || !$this->tcaSchemaFactory->get($tableName)->hasCapability(TcaSchemaCapability::Workspace)) {
             return $rows;
         }
         if (count($rows) !== 1) {

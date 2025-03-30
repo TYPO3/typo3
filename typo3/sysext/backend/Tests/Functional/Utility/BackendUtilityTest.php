@@ -322,4 +322,186 @@ final class BackendUtilityTest extends FunctionalTestCase
             'the tree.rootLineIds condition should lead to a different hash for page 6'
         );
     }
+
+    #[Test]
+    public function getProcessedValueForGroupWithOneAllowedTable(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('pages')->insert('pages', [
+            'uid' => 10001,
+            'pid' => 0,
+            'title' => 'Page 1',
+            'deleted' => 0,
+            'hidden' => 0,
+        ]);
+        $this->get(ConnectionPool::class)->getConnectionForTable('pages')->insert('pages', [
+            'uid' => 10002,
+            'pid' => 0,
+            'title' => 'Page 2',
+            'deleted' => 0,
+            'hidden' => 0,
+        ]);
+
+        $GLOBALS['TCA']['tt_content']['columns']['pages'] = [
+            'config' => [
+                'type' => 'group',
+                'allowed' => 'pages',
+                'maxitems' => 22,
+                'size' => 3,
+            ],
+        ];
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $result = BackendUtility::getProcessedValue('tt_content', 'pages', '10001,10002');
+        self::assertSame('Page 1, Page 2', $result);
+    }
+
+    #[Test]
+    public function getProcessedValueForGroupWithMultipleAllowedTables(): void
+    {
+        $this->get(ConnectionPool::class)->getConnectionForTable('pages')->insert('pages', [
+            'uid' => 10003,
+            'pid' => 0,
+            'title' => 'Page 1',
+            'deleted' => 0,
+            'hidden' => 0,
+        ]);
+
+        $GLOBALS['TCA']['index_config'] = [
+            'ctrl' => [
+                'label' => 'title',
+            ],
+            'columns' => [
+                'title' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+                'indexcfgs' => [
+                    'config' => [
+                        'type' => 'group',
+                        'allowed' => 'index_config,pages',
+                        'size' => 5,
+                    ],
+                ],
+            ],
+        ];
+        $connection = $this->get(ConnectionPool::class)->getConnectionForTable('pages');
+        $connection->executeStatement('CREATE TABLE IF NOT EXISTS index_config (uid int PRIMARY KEY, pid int, title varchar(255))');
+        $connection->executeStatement("INSERT INTO index_config (uid, pid, title) VALUES (10004, 0, 'Configuration 2')");
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $result = BackendUtility::getProcessedValue('index_config', 'indexcfgs', 'pages_10003,index_config_10004');
+        self::assertSame('Page 1, Configuration 2', $result);
+
+        $connection->executeStatement('DROP TABLE IF EXISTS index_config');
+    }
+
+    #[Test]
+    public function getProcessedValueForSelectWithMMRelation(): void
+    {
+        $GLOBALS['TCA']['pages']['columns']['categories'] = [
+            'config' => [
+                'type' => 'category',
+            ],
+        ];
+        $GLOBALS['TCA']['sys_category']['ctrl']['label'] = 'title';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        $this->get(ConnectionPool::class)->getConnectionForTable('pages')->insert('pages', [
+            'uid' => 10007,
+            'pid' => 0,
+            'title' => 'Test Page',
+            'deleted' => 0,
+            'hidden' => 0,
+        ]);
+
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_category')->insert('sys_category', [
+            'uid' => 10005,
+            'pid' => 0,
+            'title' => 'Category 1',
+            'deleted' => 0,
+            'hidden' => 0,
+        ]);
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_category')->insert('sys_category', [
+            'uid' => 10006,
+            'pid' => 0,
+            'title' => 'Category 2',
+            'deleted' => 0,
+            'hidden' => 0,
+        ]);
+
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_category_record_mm')->insert('sys_category_record_mm', [
+            'uid_local' => 10005,
+            'uid_foreign' => 10007,
+            'tablenames' => 'pages',
+            'fieldname' => 'categories',
+            'sorting' => 1,
+        ]);
+        $this->get(ConnectionPool::class)->getConnectionForTable('sys_category_record_mm')->insert('sys_category_record_mm', [
+            'uid_local' => 10006,
+            'uid_foreign' => 10007,
+            'tablenames' => 'pages',
+            'fieldname' => 'categories',
+            'sorting' => 2,
+        ]);
+
+        $result = BackendUtility::getProcessedValue('pages', 'categories', '10005,10006', 10007);
+        self::assertNotEmpty($result);
+    }
+
+    #[Test]
+    public function workspaceOLDoesNotChangeValuesForNoBeUserAvailable(): void
+    {
+        $tableName = 'table_a';
+        $row = [
+            'uid' => 1,
+            'pid' => 17,
+        ];
+        $expected = $row;
+
+        BackendUtility::workspaceOL($tableName, $row);
+        self::assertSame($expected, $row);
+    }
+
+    #[Test]
+    public function getAllowedFieldsForTableReturnsUniqueList(): void
+    {
+        $GLOBALS['TCA']['myTable'] = [
+            'ctrl' => [
+                'tstamp' => 'updatedon',
+                // Won't be added due to defined in "columns"
+                'crdate' => 'createdon',
+                'sortby' => 'sorting',
+                'versioningWS' => true,
+            ],
+            'columns' => [
+                // Regular field
+                'title' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+                // Overwrite automatically set management field from "ctrl"
+                'createdon' => [
+                    'config' => [
+                        'type' => 'input',
+                    ],
+                ],
+                // Won't be added due to type "none"
+                'reference' => [
+                    'config' => [
+                        'type' => 'none',
+                    ],
+                ],
+            ],
+        ];
+
+        // Rebuild TCA schema
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
+        self::assertEquals(
+            ['title', 'createdon', 'uid', 'pid', 'updatedon', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
+            BackendUtility::getAllowedFieldsForTable('myTable', false)
+        );
+    }
 }

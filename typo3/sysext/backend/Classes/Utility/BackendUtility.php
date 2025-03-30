@@ -42,6 +42,8 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
@@ -276,8 +278,8 @@ class BackendUtility
     public static function getRecordLocalization(string $table, $uid, $language, $andWhereClause = '')
     {
         $recordLocalization = false;
-
-        if (self::isTableLocalizable($table)) {
+        $schemaFactory = static::getTcaSchemaFactory();
+        if ($schemaFactory->has($table) && $schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Language)) {
             $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
 
             $queryBuilder = self::getQueryBuilderForTable($table);
@@ -593,15 +595,17 @@ class BackendUtility
      *
      * @param string $table The table to check
      * @return bool Whether a table is localizable
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public static function isTableLocalizable(string $table): bool
     {
-        $isLocalizable = false;
-        if (isset($GLOBALS['TCA'][$table]['ctrl']) && is_array($GLOBALS['TCA'][$table]['ctrl'])) {
-            $tcaCtrl = $GLOBALS['TCA'][$table]['ctrl'];
-            $isLocalizable = isset($tcaCtrl['languageField']) && $tcaCtrl['languageField'] && isset($tcaCtrl['transOrigPointerField']) && $tcaCtrl['transOrigPointerField'];
-        }
-        return $isLocalizable;
+        trigger_error(
+            'BackendUtility::isTableLocalizable() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->hasCapability(TcaSchemaCapability::Language) instead.',
+            E_USER_DEPRECATED
+        );
+
+        $schemaFactory = static::getTcaSchemaFactory();
+        return $schemaFactory->has($table) && $schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Language);
     }
 
     /**
@@ -1146,6 +1150,7 @@ class BackendUtility
         }
 
         $languageService = static::getLanguageService();
+        $schemaFactory = static::getTcaSchemaFactory();
         $ctrl = $GLOBALS['TCA'][$table]['ctrl'] ?? [];
 
         $parts = ['id=' . ($row['uid'] ?? '0')];
@@ -1171,7 +1176,7 @@ class BackendUtility
             }
         }
 
-        if (static::isTableWorkspaceEnabled($table)) {
+        if ($schemaFactory->has($table) && $schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)) {
             switch (VersionState::tryFrom($row['t3ver_state'] ?? 0)) {
                 case VersionState::DELETE_PLACEHOLDER:
                     $parts[] = 'Deleted element!';
@@ -1341,10 +1346,20 @@ class BackendUtility
      * @param string $table Table name present in $GLOBALS['TCA']
      * @param string $column Field name in $GLOBALS['TCA']['columns']
      * @return string|null Value of $GLOBALS['TCA']['columns']['label'] or null if not set
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public static function getItemLabel(string $table, string $column): ?string
     {
-        return $GLOBALS['TCA'][$table]['columns'][$column]['label'] ?? null;
+        trigger_error(
+            'BackendUtility::getItemLabel() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use $schema->getField($fieldName)->getLabel() instead.',
+            E_USER_DEPRECATED
+        );
+
+        $schemaFacotry = static::getTcaSchemaFactory();
+        if (!$schemaFacotry->has($table) || !($schema = $schemaFacotry->get($table))->hasField($column)) {
+            return null;
+        }
+        return $schema->getField($column)->getConfiguration()['label'] ?? null;
     }
 
     /**
@@ -1825,46 +1840,46 @@ class BackendUtility
      * @param array $fields Preset fields (must include prefix if that is used)
      * @return string List of fields.
      * @internal should only be used from within TYPO3 Core
-     * @todo: Consider dropping this method: It is used only twice and may select not actually needed fields.
-     *        Also, the CSV string return is unfortunate. Consuming callers know better what they actually need,
-     *        this method should be inlined to consumers instead.
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public static function getCommonSelectFields($table, $prefix = '', $fields = [])
     {
-        $fields[] = $prefix . 'uid';
-        $fields[] = $prefix . 'pid';
-        if (isset($GLOBALS['TCA'][$table]['ctrl']['label']) && $GLOBALS['TCA'][$table]['ctrl']['label'] != '') {
-            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['label'];
+        trigger_error(
+            'BackendUtility::getCommonSelectFields() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API instead to retrieve the fields.',
+            E_USER_DEPRECATED
+        );
+
+        $schema = static::getTcaSchemaFactory()->get($table);
+        $fields[] = 'uid';
+        $fields[] = 'pid';
+
+        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+            $fields = array_merge($fields, $schema->getCapability(TcaSchemaCapability::Label)->getAllLabelFieldNames());
         }
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['label_alt'])) {
-            $secondFields = GeneralUtility::trimExplode(',', $GLOBALS['TCA'][$table]['ctrl']['label_alt'], true);
-            foreach ($secondFields as $fieldN) {
-                $fields[] = $prefix . $fieldN;
+        if ($schema->isWorkspaceAware()) {
+            $fields[] = 't3ver_state';
+            $fields[] = 't3ver_wsid';
+        }
+        if ($schema->getRawConfiguration()['selicon_field'] ?? '') {
+            $fields[] = $schema->getRawConfiguration()['selicon_field'];
+        }
+        if ($schema->getRawConfiguration()['typeicon_column'] ?? '') {
+            $fields[] = $schema->getRawConfiguration()['typeicon_column'];
+        }
+        $capabilities = [
+            TcaSchemaCapability::SoftDelete,
+            TcaSchemaCapability::RestrictionDisabledField,
+            TcaSchemaCapability::RestrictionStartTime,
+            TcaSchemaCapability::RestrictionEndTime,
+            TcaSchemaCapability::RestrictionUserGroup,
+        ];
+        foreach ($capabilities as $capability) {
+            if ($schema->hasCapability($capability)) {
+                $fields[] = $schema->getCapability($capability)->getFieldName();
             }
         }
-        if (static::isTableWorkspaceEnabled($table)) {
-            $fields[] = $prefix . 't3ver_state';
-            $fields[] = $prefix . 't3ver_wsid';
-        }
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['selicon_field'])) {
-            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['selicon_field'];
-        }
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['typeicon_column'])) {
-            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['typeicon_column'];
-        }
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'])) {
-            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'];
-        }
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'])) {
-            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['starttime'];
-        }
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'])) {
-            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['endtime'];
-        }
-        if (!empty($GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'])) {
-            $fields[] = $prefix . $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['fe_group'];
-        }
-        return implode(',', array_unique($fields));
+        $fields = array_unique($fields);
+        return implode(',', array_map(static fn(string $value): string => $prefix . $value, $fields));
     }
 
     /**
@@ -2519,7 +2534,8 @@ class BackendUtility
         $includeDeletedRecords = false,
         $row = null
     ): ?array {
-        if (!static::isTableWorkspaceEnabled($table)) {
+        $schemaFactory = static::getTcaSchemaFactory();
+        if (!$schemaFactory->has($table) || !$schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)) {
             return null;
         }
 
@@ -2603,7 +2619,12 @@ class BackendUtility
      */
     public static function workspaceOL($table, &$row, $wsid = -99, $unsetMovePointers = false)
     {
-        if (!ExtensionManagementUtility::isLoaded('workspaces') || !is_array($row) || !static::isTableWorkspaceEnabled($table)) {
+        $schemaFactory = static::getTcaSchemaFactory();
+        if (!ExtensionManagementUtility::isLoaded('workspaces')
+            || !is_array($row)
+            || !$schemaFactory->has($table)
+            || !$schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)
+        ) {
             return;
         }
 
@@ -2669,9 +2690,11 @@ class BackendUtility
      */
     public static function getWorkspaceVersionOfRecord($workspace, string $table, $uid, $fields = '*'): array|false
     {
+        $schemaFactory = static::getTcaSchemaFactory();
         if ($workspace === 0
             || !ExtensionManagementUtility::isLoaded('workspaces')
-            || !self::isTableWorkspaceEnabled($table)
+            || !$schemaFactory->has($table)
+            || !$schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)
         ) {
             return false;
         }
@@ -2724,7 +2747,11 @@ class BackendUtility
      */
     public static function getPossibleWorkspaceVersionIdsOfLiveRecordIds(string $table, array $liveRecordIds, int $workspaceId): array
     {
-        if ($liveRecordIds === [] || $workspaceId === 0 || !self::isTableWorkspaceEnabled($table)) {
+        $schemaFactory = static::getTcaSchemaFactory();
+        if ($liveRecordIds === []
+            || $workspaceId === 0
+            || !$schemaFactory->has($table)
+            || !$schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)) {
             return [];
         }
         $doOverlaysForRecords = [];
@@ -2776,19 +2803,21 @@ class BackendUtility
      */
     public static function getLiveVersionIdOfRecord($table, $uid)
     {
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+        $schemaFactory = static::getTcaSchemaFactory();
+        if (!ExtensionManagementUtility::isLoaded('workspaces')
+            || !$schemaFactory->has($table)
+            || !$schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)
+        ) {
             return null;
         }
         $liveVersionId = null;
-        if (self::isTableWorkspaceEnabled($table)) {
-            $currentRecord = self::getRecord($table, $uid, 'pid,t3ver_oid,t3ver_state');
-            if (is_array($currentRecord)) {
-                if ((int)$currentRecord['t3ver_oid'] > 0) {
-                    $liveVersionId = $currentRecord['t3ver_oid'];
-                } elseif (VersionState::tryFrom($currentRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
-                    // New versions do not have a live counterpart
-                    $liveVersionId = (int)$uid;
-                }
+        $currentRecord = self::getRecord($table, $uid, 'pid,t3ver_oid,t3ver_state');
+        if (is_array($currentRecord)) {
+            if ((int)$currentRecord['t3ver_oid'] > 0) {
+                $liveVersionId = $currentRecord['t3ver_oid'];
+            } elseif (VersionState::tryFrom($currentRecord['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
+                // New versions do not have a live counterpart
+                $liveVersionId = (int)$uid;
             }
         }
         return $liveVersionId;
@@ -2827,10 +2856,17 @@ class BackendUtility
      *
      * @param string $table Name of the table to be checked
      * @return bool
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public static function isTableWorkspaceEnabled(string $table): bool
     {
-        return !empty($GLOBALS['TCA'][$table]['ctrl']['versioningWS']);
+        trigger_error(
+            'BackendUtility::isTableWorkspaceEnabled() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->hasCapability(TcaSchemaCapability::Workspace) instead.',
+            E_USER_DEPRECATED
+        );
+
+        $schemaFactory = static::getTcaSchemaFactory();
+        return $schemaFactory->has($table) && $schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace);
     }
 
     /**
@@ -2845,10 +2881,12 @@ class BackendUtility
     public static function isWebMountRestrictionIgnored($table)
     {
         trigger_error(
-            'BackendUtility::isWebMountRestrictionIgnored() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with Schema->hasCapability(TcaSchemaCapability::RestrictionWebMount)',
+            'BackendUtility::isWebMountRestrictionIgnored() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->hasCapability(TcaSchemaCapability::RestrictionWebMount) instead.',
             E_USER_DEPRECATED
         );
-        return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreWebMountRestriction']);
+
+        $schemaFactory = static::getTcaSchemaFactory();
+        return $schemaFactory->has($table) && $schemaFactory->get($table)->hasCapability(TcaSchemaCapability::RestrictionWebMount);
     }
 
     /**
@@ -2858,10 +2896,17 @@ class BackendUtility
      *
      * @param string $table Name of the table
      * @return bool
+     * @deprecated since TYPO3 v14.0, will be removed in TYPO3 v15.0.
      */
     public static function isRootLevelRestrictionIgnored($table)
     {
-        return !empty($GLOBALS['TCA'][$table]['ctrl']['security']['ignoreRootLevelRestriction']);
+        trigger_error(
+            'BackendUtility::isRootLevelRestrictionIgnored() has been deprecated in TYPO3 v14.0 and will be removed in v15.0. Use Schema API with $schema->get($table)->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()',
+            E_USER_DEPRECATED
+        );
+
+        $schemaFactory = static::getTcaSchemaFactory();
+        return $schemaFactory->has($table) && $schemaFactory->get($table)->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction();
     }
 
     /**
@@ -2881,6 +2926,7 @@ class BackendUtility
 
         $fieldList = [];
         $backendUser = self::getBackendUserAuthentication();
+        $schemaFactory = static::getTcaSchemaFactory();
 
         // Traverse configured columns and add them to field array, if available for user.
         foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
@@ -2917,7 +2963,7 @@ class BackendUtility
             if ($GLOBALS['TCA'][$table]['ctrl']['sortby'] ?? false) {
                 $fieldList[] = $GLOBALS['TCA'][$table]['ctrl']['sortby'];
             }
-            if (self::isTableWorkspaceEnabled($table)) {
+            if ($schemaFactory->has($table) && $schemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)) {
                 $fieldList[] = 't3ver_state';
                 $fieldList[] = 't3ver_wsid';
                 $fieldList[] = 't3ver_oid';
@@ -2963,6 +3009,11 @@ class BackendUtility
     protected static function getLogger(): LoggerInterface
     {
         return GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+    }
+
+    protected static function getTcaSchemaFactory(): TcaSchemaFactory
+    {
+        return GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     protected static function getLanguageService(): LanguageService

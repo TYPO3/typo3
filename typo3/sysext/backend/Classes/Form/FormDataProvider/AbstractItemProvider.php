@@ -31,7 +31,11 @@ use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\FileRepository;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -52,6 +56,7 @@ abstract class AbstractItemProvider
     private FileRepository $fileRepository;
     private FlashMessageService $flashMessageService;
     private ConnectionPool $connectionPool;
+    private TcaSchemaFactory $tcaSchemaFactory;
 
     public function injectIconFactory(IconFactory $iconFactory): void
     {
@@ -61,6 +66,11 @@ abstract class AbstractItemProvider
     public function injectFileRepository(FileRepository $fileRepository): void
     {
         $this->fileRepository = $fileRepository;
+    }
+
+    public function injectTcaSchemaFactory(TcaSchemaFactory $tcaSchemaFactory): void
+    {
+        $this->tcaSchemaFactory = $tcaSchemaFactory;
     }
 
     public function injectFlashMessageService(FlashMessageService $flashMessageService): void
@@ -605,11 +615,8 @@ abstract class AbstractItemProvider
         // and using `ANY_VALUES()` aggregation for the `uid` field.
         $hasGroupBy = is_array($foreignTableClauseArray['GROUPBY']) && $foreignTableClauseArray['GROUPBY'] !== [];
         $selectFieldList = [];
-        $commonFieldList = GeneralUtility::trimExplode(
-            ',',
-            BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.'),
-            true,
-        );
+        $schema = $this->tcaSchemaFactory->get($foreignTableName);
+        $commonFieldList = $this->getCommonSelectFields($foreignTableName, $schema);
         foreach ($commonFieldList as $fieldName) {
             if ($hasGroupBy && in_array($fieldName, $foreignTableClauseArray['GROUPBY'], true)) {
                 $selectFieldList[] = sprintf('ANY_VALUE(%s)', $queryBuilder->quoteIdentifier($fieldName));
@@ -638,8 +645,8 @@ abstract class AbstractItemProvider
                 [$fieldName, $order] = $orderPair;
                 $queryBuilder->addOrderBy($fieldName, $order);
             }
-        } elseif (!empty($GLOBALS['TCA'][$foreignTableName]['ctrl']['default_sortby'])) {
-            $orderByClauses = QueryHelper::parseOrderBy($GLOBALS['TCA'][$foreignTableName]['ctrl']['default_sortby']);
+        } elseif ($schema->hasCapability(TcaSchemaCapability::DefaultSorting)) {
+            $orderByClauses = QueryHelper::parseOrderBy($schema->getCapability(TcaSchemaCapability::DefaultSorting)->getValue());
             foreach ($orderByClauses as $orderByClause) {
                 if (!empty($orderByClause[0])) {
                     $queryBuilder->addOrderBy($foreignTableName . '.' . $orderByClause[0], $orderByClause[1]);
@@ -659,19 +666,16 @@ abstract class AbstractItemProvider
         // rootLevel = -1 means that elements can be on the rootlevel OR on any page (pid!=-1)
         // rootLevel = 0 means that elements are not allowed on root level
         // rootLevel = 1 means that elements are only on the root level (pid=0)
-        $rootLevel = 0;
-        if (isset($GLOBALS['TCA'][$foreignTableName]['ctrl']['rootLevel'])) {
-            $rootLevel = (int)$GLOBALS['TCA'][$foreignTableName]['ctrl']['rootLevel'];
-        }
-
-        if ($rootLevel === -1) {
+        /** @var RootLevelCapability $rootLevelCapability */
+        $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+        if ($rootLevelCapability->getRootLevelType() === -1) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq(
                     $foreignTableName . '.pid',
                     $wrapQueryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
                 )
             );
-        } elseif ($rootLevel === 1) {
+        } elseif ($rootLevelCapability->getRootLevelType() === 1) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $foreignTableName . '.pid',
@@ -693,7 +697,7 @@ abstract class AbstractItemProvider
         }
 
         // @todo what about PID restriction?
-        if ($this->getBackendUser()->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($foreignTableName)) {
+        if ($this->getBackendUser()->workspace !== 0 && $schema->hasCapability(TcaSchemaCapability::Workspace)) {
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->neq(
@@ -1184,10 +1188,47 @@ abstract class AbstractItemProvider
         $table = $result['tableName'];
         $row = $result['databaseRow'];
         $uid = $row['uid'] ?? 0;
-        if (BackendUtility::isTableWorkspaceEnabled($table) && (int)($row['t3ver_oid'] ?? 0) > 0) {
+        if ($this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace) && (int)($row['t3ver_oid'] ?? 0) > 0) {
             $uid = $row['t3ver_oid'];
         }
         return $uid;
+    }
+
+    /**
+     * @internal private on purpose
+     */
+    private function getCommonSelectFields(string $table, TcaSchema $schema): array
+    {
+        $fields = ['uid', 'pid'];
+
+        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+            $fields = array_merge($fields, $schema->getCapability(TcaSchemaCapability::Label)->getAllLabelFieldNames());
+        }
+        if ($schema->isWorkspaceAware()) {
+            $fields[] = 't3ver_state';
+            $fields[] = 't3ver_wsid';
+        }
+        if ($schema->getRawConfiguration()['selicon_field'] ?? '') {
+            $fields[] = $schema->getRawConfiguration()['selicon_field'];
+        }
+        if ($schema->getRawConfiguration()['typeicon_column'] ?? '') {
+            $fields[] = $schema->getRawConfiguration()['typeicon_column'];
+        }
+
+        $capabilities = [
+            TcaSchemaCapability::SoftDelete,
+            TcaSchemaCapability::RestrictionDisabledField,
+            TcaSchemaCapability::RestrictionStartTime,
+            TcaSchemaCapability::RestrictionEndTime,
+            TcaSchemaCapability::RestrictionUserGroup,
+        ];
+        foreach ($capabilities as $capability) {
+            if ($schema->hasCapability($capability)) {
+                $fields[] = $schema->getCapability($capability)->getFieldName();
+            }
+        }
+        $fields = array_unique($fields);
+        return array_map(static fn(string $value): string => $table . '.' . $value, $fields);
     }
 
     protected function getLanguageService(): LanguageService

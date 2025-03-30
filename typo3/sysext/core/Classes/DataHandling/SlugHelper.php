@@ -99,8 +99,8 @@ class SlugHelper
         } else {
             $this->prependSlashInSlug = $this->configuration['prependSlash'] ?? false;
         }
-
-        $this->workspaceEnabled = BackendUtility::isTableWorkspaceEnabled($tableName);
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        $this->workspaceEnabled = $schemaFactory->has($tableName) && $schemaFactory->get($tableName)->hasCapability(TcaSchemaCapability::Workspace);
         $this->slugNormalizer = GeneralUtility::makeInstance(SlugNormalizer::class);
     }
 

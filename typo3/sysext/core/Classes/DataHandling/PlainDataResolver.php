@@ -15,10 +15,11 @@
 
 namespace TYPO3\CMS\Core\DataHandling;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -396,7 +397,8 @@ class PlainDataResolver
     protected function isWorkspaceEnabled()
     {
         if (ExtensionManagementUtility::isLoaded('workspaces')) {
-            return BackendUtility::isTableWorkspaceEnabled($this->tableName);
+            $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+            return $schemaFactory->has($this->tableName) && $schemaFactory->get($this->tableName)->hasCapability(TcaSchemaCapability::Workspace);
         }
         return false;
     }

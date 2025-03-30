@@ -36,6 +36,70 @@ final class TcaGroupTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/TcaGroup.csv');
     }
 
+    #[Test]
+    public function addDataReturnsFieldUnchangedIfFieldIsNotTypeGroup(): void
+    {
+        $input = [
+            'databaseRow' => [
+                'aField' => 'aValue',
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'type' => 'foo',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = $input;
+        self::assertSame($expected, (new TcaGroup())->addData($input));
+    }
+
+    #[Test]
+    public function addDataSetsDatabaseData(): void
+    {
+        $aFieldConfig = [
+            'type' => 'group',
+            'allowed' => 'pages',
+            'maxitems' => 99999,
+        ];
+        $input = [
+            'tableName' => 'aTable',
+            'databaseRow' => [
+                'uid' => 42,
+                'aField' => '1,3', // Reference existing pages from fixture
+            ],
+            'processedTca' => [
+                'columns' => [
+                    'aField' => [
+                        'config' => $aFieldConfig,
+                    ],
+                ],
+            ],
+        ];
+
+        $result = (new TcaGroup())->addData($input);
+
+        // Verify the field was processed and contains the expected structure
+        self::assertIsArray($result['databaseRow']['aField']);
+        self::assertCount(2, $result['databaseRow']['aField']);
+
+        self::assertEquals('pages', $result['databaseRow']['aField'][0]['table']);
+        self::assertEquals('visible', $result['databaseRow']['aField'][0]['title']);
+        self::assertEquals(1, $result['databaseRow']['aField'][0]['uid']);
+        self::assertNotEmpty($result['databaseRow']['aField'][0]['row']);
+        self::assertEquals('pages', $result['databaseRow']['aField'][1]['table']);
+        self::assertEquals('hidden', $result['databaseRow']['aField'][1]['title']);
+        self::assertEquals(3, $result['databaseRow']['aField'][1]['uid']);
+        self::assertNotEmpty($result['databaseRow']['aField'][1]['row']);
+
+        // Verify clipboard elements are set
+        self::assertArrayHasKey('clipboardElements', $result['processedTca']['columns']['aField']['config']);
+        self::assertIsArray($result['processedTca']['columns']['aField']['config']['clipboardElements']);
+    }
+
     /**
      * This test checks if TcaGroup respects deleted elements
      */

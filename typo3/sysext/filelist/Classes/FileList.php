@@ -1765,7 +1765,8 @@ class FileList
         }
 
         $concreteTableName = $this->getConcreteTableName($field);
-        $label = BackendUtility::getItemLabel($concreteTableName, $field);
+        $schema = $this->tcaSchemaFactory->has($concreteTableName) ? $this->tcaSchemaFactory->get($concreteTableName) : null;
+        $label = $schema?->hasField($field) ? $schema->getField($field)->getLabel() : null;
 
         // In case global TSconfig exists we have to check if the label is overridden there
         $tsConfig = BackendUtility::getPagesTSconfig(0);

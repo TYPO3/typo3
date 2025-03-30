@@ -26,6 +26,8 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
@@ -40,6 +42,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
 
     public function __construct(
         private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function addData(array $result): array
@@ -312,7 +315,7 @@ class TcaFiles extends AbstractDatabaseRecordProvider implements FormDataProvide
     protected function getSubstitutedWorkspacedUids(array $connectedUids): array
     {
         $workspace = $this->getBackendUser()->workspace;
-        if ($workspace === 0 || !BackendUtility::isTableWorkspaceEnabled(self::FILE_REFERENCE_TABLE)) {
+        if ($workspace === 0 || !$this->tcaSchemaFactory->get(self::FILE_REFERENCE_TABLE)->hasCapability(TcaSchemaCapability::Workspace)) {
             return $connectedUids;
         }
         $substitutedUids = [];

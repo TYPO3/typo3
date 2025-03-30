@@ -253,7 +253,11 @@ class ElementHistoryController
                         /** @var string[] $tmpFieldList */
                         $tmpFieldList = array_keys($tmpArr['newRecord']);
                         foreach ($tmpFieldList as $fieldKey => $value) {
-                            $tmp = str_replace(':', '', $languageService->sL(BackendUtility::getItemLabel($elParts[0], $value)));
+                            $itemLabel = '';
+                            if ($this->tcaSchemaFactory->has($elParts[0]) && ($schema = $this->tcaSchemaFactory->get($elParts[0]))->hasField($value)) {
+                                $itemLabel = $schema->getField($value)->getLabel();
+                            }
+                            $tmp = str_replace(':', '', $languageService->sL($itemLabel));
                             if ($tmp) {
                                 $tmpFieldList[$fieldKey] = $tmp;
                             } else {
@@ -331,7 +335,11 @@ class ElementHistoryController
                     /** @var string[] $tmpFieldList */
                     $tmpFieldList = array_keys($entry['newRecord']);
                     foreach ($tmpFieldList as $key => $value) {
-                        $tmp = str_replace(':', '', $languageService->sL(BackendUtility::getItemLabel($entry['tablename'], $value)));
+                        $itemLabel = '';
+                        if ($this->tcaSchemaFactory->has($entry['tablename']) && ($schema = $this->tcaSchemaFactory->get($entry['tablename']))->hasField($value)) {
+                            $itemLabel = $schema->getField($value)->getLabel();
+                        }
+                        $tmp = str_replace(':', '', $languageService->sL($itemLabel));
                         if ($tmp) {
                             $tmpFieldList[$key] = $tmp;
                         } else {

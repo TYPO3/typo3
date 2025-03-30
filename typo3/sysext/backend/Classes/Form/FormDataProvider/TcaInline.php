@@ -27,6 +27,8 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -40,6 +42,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
     public function __construct(
         private readonly FlashMessageService $flashMessageService,
         private readonly InlineStackProcessor $inlineStackProcessor,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -435,7 +438,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
         $newConnectedUids = [];
         foreach ($connectedUids as $uid) {
             // Fetch workspace version of a record (if any):
-            if ($backendUser->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($childTableName)) {
+            if ($backendUser->workspace !== 0 && $this->tcaSchemaFactory->has($childTableName) && $this->tcaSchemaFactory->get($childTableName)->hasCapability(TcaSchemaCapability::Workspace)) {
                 $workspaceVersion = BackendUtility::getWorkspaceVersionOfRecord($backendUser->workspace, $childTableName, $uid, 'uid,t3ver_state');
                 if (!empty($workspaceVersion)) {
                     $versionState = VersionState::tryFrom($workspaceVersion['t3ver_state'] ?? 0);

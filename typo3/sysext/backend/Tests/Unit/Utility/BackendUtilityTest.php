@@ -29,6 +29,9 @@ use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Field\CheckboxFieldType;
+use TYPO3\CMS\Core\Schema\Field\FieldCollection;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -330,223 +333,6 @@ final class BackendUtilityTest extends UnitTestCase
     }
 
     #[Test]
-    public function getProcessedValueForGroupWithOneAllowedTable(): void
-    {
-        $GLOBALS['TCA'] = [
-            'tt_content' => [
-                'columns' => [
-                    'pages' => [
-                        'config' => [
-                            'type' => 'group',
-                            'allowed' => 'pages',
-                            'maxitems' => 22,
-                            'size' => 3,
-                        ],
-                    ],
-                ],
-            ],
-            'pages' => [
-                'ctrl' => [
-                    'label' => 'title',
-                ],
-                'columns' => [
-                    'title' => [
-                        'config' => [
-                            'type' => 'input',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::any())->method('sL')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
-
-        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->disableOriginalConstructor()->getMock();
-        $relationHandlerMock->expects(self::once())->method('initializeForField');
-        $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
-        $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
-            [
-                'table' => 'pages',
-                'uid' => 1,
-                'record' => [
-                    'uid' => 1,
-                    'pid' => 0,
-                    'title' => 'Page 1',
-                ],
-            ],
-            [
-                'table' => 'pages',
-                'uid' => 2,
-                'record' => [
-                    'uid' => 2,
-                    'pid' => 0,
-                    'title' => 'Page 2',
-                ],
-            ],
-        ]);
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
-
-        self::assertSame('Page 1, Page 2', BackendUtility::getProcessedValue('tt_content', 'pages', '1,2'));
-    }
-
-    #[Test]
-    public function getProcessedValueForGroupWithMultipleAllowedTables(): void
-    {
-        $GLOBALS['TCA'] = [
-            'index_config' => [
-                'ctrl' => [
-                    'label' => 'title',
-                ],
-                'columns' => [
-                    'title' => [
-                        'config' => [
-                            'type' => 'input',
-                        ],
-                    ],
-                    'indexcfgs' => [
-                        'config' => [
-                            'type' => 'group',
-                            'allowed' => 'index_config,pages',
-                            'size' => 5,
-                        ],
-                    ],
-                ],
-            ],
-            'pages' => [
-                'ctrl' => [
-                    'label' => 'title',
-                ],
-                'columns' => [
-                    'title' => [
-                        'config' => [
-                            'type' => 'input',
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->method('sL')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
-
-        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->disableOriginalConstructor()->getMock();
-        $relationHandlerMock->expects(self::once())->method('initializeForField');
-        $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
-        $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
-            [
-                'table' => 'pages',
-                'uid' => 1,
-                'record' => [
-                    'uid' => 1,
-                    'pid' => 0,
-                    'title' => 'Page 1',
-                ],
-            ],
-            [
-                'table' => 'index_config',
-                'uid' => 2,
-                'record' => [
-                    'uid' => 2,
-                    'pid' => 0,
-                    'title' => 'Configuration 2',
-                ],
-            ],
-        ]);
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerMock);
-        self::assertSame('Page 1, Configuration 2', BackendUtility::getProcessedValue('index_config', 'indexcfgs', 'pages_1,index_config_2'));
-    }
-
-    #[Test]
-    public function getProcessedValueForSelectWithMMRelation(): void
-    {
-        $relationHandlerMock = $this->getMockBuilder(RelationHandler::class)->disableOriginalConstructor()->getMock();
-        $relationHandlerMock->expects(self::once())->method('initializeForField');
-        $relationHandlerMock->expects(self::once())->method('getFromDB')->willReturn([]);
-        $relationHandlerMock->expects(self::once())->method('getResolvedItemArray')->willReturn([
-            [
-                'table' => 'sys_category',
-                'uid' => 1,
-                'record' => [
-                    'uid' => 2,
-                    'pid' => 0,
-                    'title' => 'Category 1',
-                ],
-            ],
-            [
-                'table' => 'sys_category',
-                'uid' => 2,
-                'record' => [
-                    'uid' => 2,
-                    'pid' => 0,
-                    'title' => 'Category 2',
-                ],
-            ],
-        ]);
-
-        $relationHandlerInstance = $relationHandlerMock;
-        $relationHandlerInstance->tableArray['sys_category'] = [1, 2];
-
-        GeneralUtility::addInstance(RelationHandler::class, $relationHandlerInstance);
-
-        $GLOBALS['TCA'] = [
-            'pages' => [
-                'columns' => [
-                    'categories' => [
-                        'config' => [
-                            'type' => 'select',
-                            'foreign_table' => 'sys_category',
-                            'MM' => 'sys_category_record_mm',
-                            'MM_match_fields' => [
-                                'fieldname' => 'categories',
-                                'tablesnames' => 'pages',
-                            ],
-                            'MM_opposite_field' => 'items',
-                        ],
-                    ],
-                ],
-            ],
-            'sys_category' => [
-                'ctrl' => ['label' => 'title'],
-                'columns' => [
-                    'title' => [
-                        'config' => [
-                            'type' => 'input',
-                        ],
-                    ],
-                    'items' => [
-                        'config' => [
-                            'type' => 'group',
-                            'allowed' => '*',
-                            'MM' => 'sys_category_record_mm',
-                            'MM_oppositeUsage' => [],
-                        ],
-                    ],
-                ],
-            ],
-        ];
-
-        $languageServiceMock = $this->createMock(LanguageService::class);
-        $languageServiceMock->expects(self::any())->method('sL')->willReturnArgument(0);
-        $GLOBALS['LANG'] = $languageServiceMock;
-
-        self::assertSame(
-            'Category 1, Category 2',
-            BackendUtility::getProcessedValue(
-                'pages',
-                'categories',
-                '2',
-                0,
-                false,
-                false,
-                1
-            )
-        );
-    }
-
-    #[Test]
     public function getProcessedValueDisplaysAgeForDateInputFieldsIfSettingAbsent(): void
     {
         $languageServiceMock = $this->createMock(LanguageService::class);
@@ -707,10 +493,11 @@ final class BackendUtilityTest extends UnitTestCase
                 'presetFields' => [],
                 'tca' => [
                     'ctrl' => [
-                        'label_alt' => 'label,label2',
+                        'label' => 'label', // @todo This is a bug, see #107143
+                        'label_alt' => 'label2,label3',
                     ],
                 ],
-                'expectedFields' => 'uid,pid,label,label2',
+                'expectedFields' => 'uid,pid,label,label2,label3',
             ],
             'versioningWS set' => [
                 'table' => 'test_table',
@@ -758,6 +545,12 @@ final class BackendUtilityTest extends UnitTestCase
                             'fe_group' => 'groups',
                         ],
                     ],
+                    'columns' => [
+                        'hidden' => ['config' => ['type' => 'check']],
+                        'start' => ['config' => ['type' => 'check']],
+                        'stop' => ['config' => ['type' => 'check']],
+                        'groups' => ['config' => ['type' => 'check']],
+                    ],
                 ],
                 'expectedFields' => 'uid,pid,hidden,start,stop,groups',
             ],
@@ -772,10 +565,24 @@ final class BackendUtilityTest extends UnitTestCase
                 ],
                 'expectedFields' => 'uid,pid',
             ],
+            'prefix used' => [
+                'table' => 'test_table',
+                'prefix' => 'prefix.',
+                'presetFields' => [
+                    'preset',
+                ],
+                'tca' => [
+                    'ctrl' => [
+                        'label' => 'label',
+                        'label_alt' => 'label2,label3', ],
+                ],
+                'expectedFields' => 'prefix.preset,prefix.uid,prefix.pid,prefix.label,prefix.label2,prefix.label3',
+            ],
         ];
     }
 
     #[DataProvider('getCommonSelectFieldsReturnsCorrectFieldsDataProvider')]
+    #[IgnoreDeprecations]
     #[Test]
     public function getCommonSelectFieldsReturnsCorrectFields(
         string $table,
@@ -784,9 +591,20 @@ final class BackendUtilityTest extends UnitTestCase
         array $tca,
         string $expectedFields = ''
     ): void {
-        $GLOBALS['TCA'][$table] = $tca;
+        $fields = [];
+        foreach ($tca['columns'] ?? [] as $columnName => $columnConfig) {
+            $fields[$columnName] = new CheckboxFieldType($columnName, $columnConfig);
+        }
+        $expectedTcaSchema = new TcaSchema(
+            'your_table_name',
+            new FieldCollection($fields),
+            $tca['ctrl'] ?? []
+        );
+        $tcaSchemaFactoryMock = $this->createMock(TcaSchemaFactory::class);
+        $tcaSchemaFactoryMock->method('get')->with($table)->willReturn($expectedTcaSchema);
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $tcaSchemaFactoryMock);
         $selectFields = BackendUtility::getCommonSelectFields($table, $prefix, $presetFields);
-        self::assertEquals($selectFields, $expectedFields);
+        self::assertEquals($expectedFields, $selectFields);
     }
 
     public static function getLabelFromItemlistReturnsCorrectFieldsDataProvider(): array
@@ -1255,20 +1073,6 @@ final class BackendUtilityTest extends UnitTestCase
     }
 
     #[Test]
-    public function workspaceOLDoesNotChangeValuesForNoBeUserAvailable(): void
-    {
-        $GLOBALS['BE_USER'] = null;
-        $tableName = 'table_a';
-        $row = [
-            'uid' => 1,
-            'pid' => 17,
-        ];
-        $reference = $row;
-        BackendUtility::workspaceOL($tableName, $row);
-        self::assertSame($reference, $row);
-    }
-
-    #[Test]
     public function wsMapIdReturnsLiveIdIfNoBeUserIsAvailable(): void
     {
         $GLOBALS['BE_USER'] = null;
@@ -1282,46 +1086,6 @@ final class BackendUtilityTest extends UnitTestCase
     {
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
         self::assertEmpty(BackendUtility::getAllowedFieldsForTable('myTable', false));
-    }
-
-    #[Test]
-    public function getAllowedFieldsForTableReturnsUniqueList(): void
-    {
-        $GLOBALS['BE_USER'] = new BackendUserAuthentication();
-        $GLOBALS['TCA']['myTable'] = [
-            'ctrl' => [
-                'tstamp' => 'updatedon',
-                // Won't be added due to defined in "columns"
-                'crdate' => 'createdon',
-                'sortby' => 'sorting',
-                'versioningWS' => true,
-            ],
-            'columns' => [
-                // Regular field
-                'title' => [
-                    'config' => [
-                        'type' => 'input',
-                    ],
-                ],
-                // Overwrite automatically set management field from "ctrl"
-                'createdon' => [
-                    'config' => [
-                        'type' => 'input',
-                    ],
-                ],
-                // Won't be added due to type "none"
-                'reference' => [
-                    'config' => [
-                        'type' => 'none',
-                    ],
-                ],
-            ],
-        ];
-
-        self::assertEquals(
-            ['title', 'createdon', 'uid', 'pid', 'updatedon', 'sorting', 't3ver_state', 't3ver_wsid', 't3ver_oid'],
-            BackendUtility::getAllowedFieldsForTable('myTable', false)
-        );
     }
 
     /**

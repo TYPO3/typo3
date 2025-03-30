@@ -89,6 +89,7 @@ class RecordListDownloadController
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly BackendViewFactory $backendViewFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -104,6 +105,8 @@ class RecordListDownloadController
         if ($this->table === '') {
             throw new \RuntimeException('No table was given for downloading records', 1623941276);
         }
+        // @todo we might want to throw an exception in case no schema exists for the table
+        $schema = $this->tcaSchemaFactory->has($this->table) ? $this->tcaSchemaFactory->get($this->table) : null;
         $this->format = (string)($parsedBody['format'] ?? '');
         if ($this->format === '' || !isset(self::DOWNLOAD_FORMATS[$this->format])) {
             throw new \RuntimeException('No or an invalid download format given', 1624562166);
@@ -153,14 +156,14 @@ class RecordListDownloadController
             DownloadRecordList::class,
             $recordList,
             GeneralUtility::makeInstance(TranslationConfigurationProvider::class),
-            GeneralUtility::makeInstance(TcaSchemaFactory::class),
+            $this->tcaSchemaFactory,
         );
 
         // Fetch and process the header row and the records
         $headerRow = $downloader->getHeaderRow($columnsToRender);
         if (!$rawValues) {
             foreach ($headerRow as &$headerField) {
-                $label = BackendUtility::getItemLabel($this->table, $headerField);
+                $label = $schema?->hasField($headerField) ? $schema->getField($headerField)->getLabel() : null;
                 if ($label !== null) {
                     $headerField = rtrim(trim($this->getLanguageService()->translateLabel($tsConfig[$headerField . '.']['label.'] ?? [], $tsConfig[$headerField . '.']['label'] ?? $label)), ':');
                 } elseif ($specialLabel = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.' . $headerField)) {

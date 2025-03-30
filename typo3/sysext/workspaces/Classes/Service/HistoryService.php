@@ -138,7 +138,7 @@ readonly class HistoryService implements SingletonInterface
                 }
                 if (!empty($fieldDifferences)) {
                     $differences[] = [
-                        'label' => $this->getLanguageService()->sL((string)BackendUtility::getItemLabel($tableName, (string)$field)),
+                        'label' => $this->getLanguageService()->sL($fieldInformation->getLabel()),
                         'html' => trim($fieldDifferences),
                     ];
                 }

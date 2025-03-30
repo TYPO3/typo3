@@ -1672,4 +1672,39 @@ return [
             'Deprecation-106618-GeneralUtilityresolveBackPath.rst',
         ],
     ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getCommonSelectFields' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 3,
+        'restFiles' => [
+            'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::isTableLocalizable' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::isTableWorkspaceEnabled' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::isRootLevelRestrictionIgnored' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+        ],
+    ],
+    'TYPO3\CMS\Backend\Utility\BackendUtility::getItemLabel' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Deprecation-106393-VariousMethodsInBackendUtility.rst',
+        ],
+    ],
 ];

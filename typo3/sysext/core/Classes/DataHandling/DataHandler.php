@@ -863,7 +863,7 @@ class DataHandler
                             $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} denied by checkRecordUpdateAccess hook', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
                             continue;
                         }
-                    } elseif ($pageRecord === [] && $currentRecord['pid'] === 0 && !($this->admin || BackendUtility::isRootLevelRestrictionIgnored($table))
+                    } elseif ($pageRecord === [] && $currentRecord['pid'] === 0 && !($this->admin || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction())
                         || (($pageRecord !== [] || $currentRecord['pid'] !== 0) && !$this->hasPermissionToUpdate($table, $pageRecord))
                     ) {
                         $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} without permission or non-existing page', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
@@ -3383,6 +3383,7 @@ class DataHandler
         if (!$this->tcaSchemaFactory->has($table) || $uid === 0) {
             return null;
         }
+        $schema = $this->tcaSchemaFactory->get($table);
         if ($this->isRecordCopied($table, $uid)) {
             return null;
         }
@@ -3403,7 +3404,7 @@ class DataHandler
                 return null;
             }
         }
-        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || BackendUtility::isRootLevelRestrictionIgnored($table)))
+        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
             || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
         ) {
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without read permissions', null, ['table' => $table, 'uid' => (int)$uid]);
@@ -3429,7 +3430,7 @@ class DataHandler
         $data = [];
         $nonFields = array_unique(GeneralUtility::trimExplode(',', 'uid,perms_userid,perms_groupid,perms_user,perms_group,perms_everybody,t3ver_oid,t3ver_wsid,t3ver_state,t3ver_stage,' . $excludeFields, true));
         BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
-        if (BackendUtility::isTableWorkspaceEnabled($table)
+        if ($schema->hasCapability(TcaSchemaCapability::Workspace)
             && $this->BE_USER->workspace > 0
             && VersionState::tryFrom($row['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER
         ) {
@@ -4742,7 +4743,7 @@ class DataHandler
                 return false;
             }
         }
-        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || BackendUtility::isRootLevelRestrictionIgnored($table)))
+        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()))
             || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
         ) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} without permission', null, ['table' => $table, 'uid' => (int)$uid]);
@@ -4953,7 +4954,7 @@ class DataHandler
             // @todo: this needs to be revisited, as getRecordLocalization() does a WorkspaceRestriction
             //        based on $GLOBALS[BE_USER], which could differ from the $this->BE_USER->workspace value
             //        and that's why we have this check here and do the overlay manually there (which is a bad idea)
-            $whereClause = BackendUtility::isTableWorkspaceEnabled($table) ? 'AND t3ver_oid=0' : '';
+            $whereClause = $schema->hasCapability(TcaSchemaCapability::Workspace) ? 'AND t3ver_oid=0' : '';
             $parentRecordLocalization = BackendUtility::getRecordLocalization($table, $id, $command['language'], $whereClause);
             if (empty($parentRecordLocalization)) {
                 $this->log($table, $id, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::MESSAGE, 'Localization for parent record {table}:{uid} cannot be fetched', null, ['table' => $table, 'uid' => (int)$id], $table === 'pages' ? $id : $parentRecord['pid']);
@@ -5177,7 +5178,7 @@ class DataHandler
             $this->deleteEl($table, $recordToDelete, $noRecordCheck, $forceHardDelete);
             return;
         }
-        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+        if (!$this->tcaSchemaFactory->has($table) || !$this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)) {
             if (!$noRecordCheck && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
                 $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "{table}:{uid}" from not workspace aware table without live editing permissions', null, ['table' => $table, 'uid' => $uid]);
                 return;
@@ -5990,7 +5991,8 @@ class DataHandler
         $userWorkspace = $this->BE_USER->workspace;
         if ($recordWasDiscarded
             || $userWorkspace === 0
-            || !BackendUtility::isTableWorkspaceEnabled($table)
+            || !$this->tcaSchemaFactory->has($table)
+            || !$this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)
         ) {
             return;
         }
@@ -7253,6 +7255,7 @@ class DataHandler
      */
     protected function hasPermissionToInsert($table, $pid, array $pageRecord): bool
     {
+        $schema = $this->tcaSchemaFactory->get($table);
         $pid = (int)$pid;
         if ($table === 'pages') {
             $perms = Permission::PAGE_NEW;
@@ -7262,7 +7265,14 @@ class DataHandler
         } else {
             $perms = Permission::CONTENT_EDIT;
         }
-        if (($pid !== 0 || (!$this->admin && !BackendUtility::isRootLevelRestrictionIgnored($table)))
+        if (
+            (
+                $pid !== 0
+                || (
+                    !$this->admin
+                    && !$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->shallIgnoreRootLevelRestriction()
+                )
+            )
             && !$this->hasPagePermission($perms, $pageRecord)
         ) {
             // If page does not exist, it can still be an attempt to add to pid 0. Check this case
@@ -8706,7 +8716,7 @@ class DataHandler
             $clearCacheEnabled = false;
         }
 
-        if ($clearCacheEnabled && $this->BE_USER->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($table)) {
+        if ($clearCacheEnabled && $this->BE_USER->workspace !== 0 && $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Workspace)) {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
                 ->removeAll()

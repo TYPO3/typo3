@@ -145,7 +145,7 @@ class ColumnSelectorController
             $isDisabled = $fieldName === $labelFieldName;
 
             // Determine field label
-            $label = BackendUtility::getItemLabel($concreteTableName, $fieldName);
+            $label = $schema->hasField($fieldName) ? $schema->getField($fieldName)->getLabel() : null;
             $label = $this->getLanguageService()->translateLabel(
                 $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label.'] ?? [],
                 $tsConfig['TCEFORM.'][$concreteTableName . '.'][$fieldName . '.']['label']

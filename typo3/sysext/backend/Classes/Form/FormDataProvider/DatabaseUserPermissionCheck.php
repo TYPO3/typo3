@@ -26,8 +26,9 @@ use TYPO3\CMS\Backend\Form\Exception\AccessDeniedPageNewException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedRootNodeException;
 use TYPO3\CMS\Backend\Form\Exception\AccessDeniedTableModifyException;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 
 /**
@@ -37,6 +38,7 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
+        private TcaSchemaFactory $schemaFactory,
     ) {}
 
     /**
@@ -76,6 +78,8 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
 
         $exception = null;
         $userPermissionOnPage = new Permission(Permission::NOTHING);
+        $rootLevelCapability = $this->schemaFactory->get($result['tableName'])->getCapability(TcaSchemaCapability::RestrictionRootLevel);
+
         if ($result['command'] === 'new') {
             // A new record is created. Access rights of parent record are important here
             // @todo: In case of new inline child, parentPageRow should probably be the
@@ -98,7 +102,7 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
                         1437745759
                     );
                 }
-            } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
+            } elseif ($rootLevelCapability->shallIgnoreRootLevelRestriction()) {
                 // Non admin is creating a record on root node for a table that is actively allowed
                 $userPermissionOnPage->set(Permission::ALL);
             } else {
@@ -131,7 +135,7 @@ readonly class DatabaseUserPermissionCheck implements FormDataProviderInterface
                         1437679657
                     );
                 }
-            } elseif (BackendUtility::isRootLevelRestrictionIgnored($result['tableName'])) {
+            } elseif ($rootLevelCapability->shallIgnoreRootLevelRestriction()) {
                 // Non admin is editing a record on root node for a table that is actively allowed
                 $userPermissionOnPage->set(Permission::ALL);
             } else {

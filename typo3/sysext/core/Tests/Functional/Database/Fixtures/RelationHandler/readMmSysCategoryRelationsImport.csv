@@ -6,6 +6,7 @@
 ,"uid","pid","parent","deleted","hidden","starttime","endtime","sorting","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","title"
 ,1,3000,0,0,0,0,0,1,0,0,0,0,0,"parent 1"
 ,10,3000,1,0,0,0,0,10,0,0,0,0,0,"EN cat 10"
+,20,3000,1,0,0,0,0,10,0,0,1,10,0,"WS Record"
 "pages"
 ,"uid","pid","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","slug","title"
 ,1,0,0,0,0,0,0,0,"/","EN Root"

@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Form\Container;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Backend\Form\Event\CustomFileControlsEvent;
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -30,6 +29,8 @@ use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\OnlineMediaHelperRegistry;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -78,6 +79,7 @@ class FilesControlContainer extends AbstractContainer
         private readonly OnlineMediaHelperRegistry $onlineMediaHelperRegistry,
         private readonly DefaultUploadFolderResolver $defaultUploadFolderResolver,
         private readonly HashService $hashService,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -103,8 +105,8 @@ class FilesControlContainer extends AbstractContainer
         $config = $parameterArray['fieldConf']['config'];
         $isReadOnly = (bool)($config['readOnly'] ?? false);
         $language = 0;
-        if (BackendUtility::isTableLocalizable($table)) {
-            $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
+        if ($this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Language)) {
+            $languageFieldName = $this->tcaSchemaFactory->get($table)->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)$row[$languageFieldName];
         }
 

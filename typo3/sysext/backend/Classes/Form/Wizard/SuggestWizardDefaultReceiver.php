@@ -335,7 +335,7 @@ class SuggestWizardDefaultReceiver
     protected function makeWorkspaceOverlay(array &$row): void
     {
         // Check for workspace-versions
-        if ($this->getBackendUser()->workspace !== 0 && BackendUtility::isTableWorkspaceEnabled($this->table)) {
+        if ($this->getBackendUser()->workspace !== 0 && $this->tcaSchema->hasCapability(TcaSchemaCapability::Workspace)) {
             BackendUtility::workspaceOL($this->mmForeignTable ?: $this->table, $row);
         }
     }

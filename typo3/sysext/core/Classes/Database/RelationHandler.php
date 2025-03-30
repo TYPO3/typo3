@@ -209,7 +209,8 @@ class RelationHandler
             // If not dealing with MM relations, use default live uid, not versioned uid for record relations
             // MM relations point to their versioned ID
             if (!$manyToManyConfiguration
-                && BackendUtility::isTableWorkspaceEnabled($tableName)
+                && $this->tcaSchemaFactory->has($tableName)
+                && $this->tcaSchemaFactory->get($tableName)->hasCapability(TcaSchemaCapability::Workspace)
                 && ($baseRecordOrUid['t3ver_oid'] ?? 0) > 0
             ) {
                 $recordUid = (int)$baseRecordOrUid['t3ver_oid'];
@@ -403,7 +404,7 @@ class RelationHandler
             if (!isset($configuration['type']) || ($configuration['type'] !== 'inline' && $configuration['type'] !== 'file')
                 || empty($configuration['foreign_table']) || !empty($configuration['foreign_field'])
                 || !empty($configuration['MM']) || count($this->tableArray) !== 1 || empty($this->tableArray[$configuration['foreign_table']])
-                || $this->getWorkspaceId() === 0 || !BackendUtility::isTableWorkspaceEnabled($configuration['foreign_table'])
+                || $this->getWorkspaceId() === 0 || (!$this->tcaSchemaFactory->has($configuration['foreign_table']) || !$this->tcaSchemaFactory->get($configuration['foreign_table'])->hasCapability(TcaSchemaCapability::Workspace))
             ) {
                 return;
             }
@@ -1299,7 +1300,10 @@ class RelationHandler
         $itemArrayHasBeenPurged = false;
 
         foreach ($this->tableArray as $itemTableName => $itemIds) {
-            if (empty($itemIds) || !BackendUtility::isTableWorkspaceEnabled($itemTableName)) {
+            if (empty($itemIds)
+                || !$this->tcaSchemaFactory->has($itemTableName)
+                || !$this->tcaSchemaFactory->get($itemTableName)->hasCapability(TcaSchemaCapability::Workspace)
+            ) {
                 continue;
             }
 

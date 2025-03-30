@@ -230,7 +230,7 @@ class PageInformationController extends InfoModuleController
                 ) {
                     $iTitle = sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:editThisColumn'),
-                        rtrim(trim($lang->sL(BackendUtility::getItemLabel('pages', $field))), ':')
+                        rtrim(trim($lang->sL($pagesSchema->getField($field)->getLabel())), ':')
                     );
                     $urlParameters = [
                         'edit' => [

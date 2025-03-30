@@ -16,12 +16,13 @@
 namespace TYPO3\CMS\Backend\Form\Container;
 
 use TYPO3\CMS\Backend\Form\InlineStackProcessor;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\JavaScriptModuleInstruction;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -74,6 +75,7 @@ class InlineControlContainer extends AbstractContainer
         private readonly IconFactory $iconFactory,
         private readonly InlineStackProcessor $inlineStackProcessor,
         private readonly HashService $hashService,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -100,8 +102,8 @@ class InlineControlContainer extends AbstractContainer
         $foreign_table = $config['foreign_table'];
         $isReadOnly = isset($config['readOnly']) && $config['readOnly'];
         $language = 0;
-        if (BackendUtility::isTableLocalizable($table)) {
-            $languageFieldName = $GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? '';
+        if ($this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->hasCapability(TcaSchemaCapability::Language)) {
+            $languageFieldName = $this->tcaSchemaFactory->get($table)->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             $language = isset($row[$languageFieldName][0]) ? (int)$row[$languageFieldName][0] : (int)($row[$languageFieldName] ?? 0);
         }
 

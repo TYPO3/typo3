@@ -17,8 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Styleguide\TcaDataGenerator\TableHandler;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\Exception;
 use TYPO3\CMS\Styleguide\TcaDataGenerator\RecordFinder;
@@ -36,10 +37,16 @@ abstract class AbstractTableHandler
     protected $tableName;
 
     private RecordFinder $recordFinder;
+    private TcaSchemaFactory $tcaSchemaFactory;
 
     public function injectRecordFinder(RecordFinder $recordFinder): void
     {
         $this->recordFinder = $recordFinder;
+    }
+
+    public function injectTcaSchemaFactory(TcaSchemaFactory $tcaSchemaFactory): void
+    {
+        $this->tcaSchemaFactory = $tcaSchemaFactory;
     }
 
     /**
@@ -59,7 +66,7 @@ abstract class AbstractTableHandler
      */
     protected function generateTranslatedRecords(string $tableName, $fieldValues): void
     {
-        if (!BackendUtility::isTableLocalizable($tableName)) {
+        if (!$this->tcaSchemaFactory->has($tableName) || !$this->tcaSchemaFactory->get($tableName)->hasCapability(TcaSchemaCapability::Language)) {
             return;
         }
         $demoLanguages = $this->recordFinder->findIdsOfDemoLanguages();

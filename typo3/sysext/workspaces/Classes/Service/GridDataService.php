@@ -134,12 +134,12 @@ readonly class GridDataService
             if ($schema->hasCapability(TcaSchemaCapability::AncestorReferenceField) && $schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName() === $fieldName) {
                 continue;
             }
+            $fieldTypeInformation = $schema->getField($fieldName);
             // Get the field's label. If not available, use the field name
-            $fieldTitle = $this->getLanguageService()->sL(BackendUtility::getItemLabel($table, $fieldName));
+            $fieldTitle = $this->getLanguageService()->sL($fieldTypeInformation->getLabel());
             if (empty($fieldTitle)) {
                 $fieldTitle = $fieldName;
             }
-            $fieldTypeInformation = $schema->getField($fieldName);
             // Gets the TCA configuration for the current field
             $configuration = $fieldTypeInformation->getConfiguration();
             // check for exclude fields

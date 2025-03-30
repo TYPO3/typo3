@@ -145,6 +145,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function sanitizeConvertsString(array $configuration, string $input, string $expected): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $subject = new SlugHelper(
             'dummyTable',
@@ -183,6 +184,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateNeverDeliversEmptySlug(string $input, string $expected): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $subject = new SlugHelper(
             'dummyTable',
@@ -334,6 +336,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function sanitizeConvertsStringForPages(array $configuration, string $input, string $expected): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $subject = new SlugHelper(
             'pages',
@@ -372,6 +375,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateNeverDeliversEmptySlugForPages(string $input, string $expected): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $subject = new SlugHelper(
             'pages',
@@ -557,6 +561,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generatePrependsSlugsForPages(string $input, string $expected, array $options): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
@@ -699,6 +704,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $subject = new SlugHelper(
             'pages',
@@ -720,6 +726,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateSlugWithHookModifiers(): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $options = [];
         $options['fallbackCharacter'] = '-';
@@ -771,6 +778,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generateSlugWithPid0(array $input, string $expected)
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $subject = new SlugHelper(
             $input['table'],
@@ -803,6 +811,7 @@ final class SlugHelperTest extends UnitTestCase
     #[Test]
     public function generatePrependsSlugsForNonPages(string $input, string $expected, array $options): void
     {
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
         $parentPage = [
             'uid' => '0',

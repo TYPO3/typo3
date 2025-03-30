@@ -834,7 +834,7 @@ class DatabaseRecordList
 
         $recordListMessages = '';
         $recordlistMessageEntries = [];
-        if ($backendUser->workspace > 0 && ExtensionManagementUtility::isLoaded('workspaces') && !BackendUtility::isTableWorkspaceEnabled($table)) {
+        if ($backendUser->workspace > 0 && ExtensionManagementUtility::isLoaded('workspaces') && !$schema->hasCapability(TcaSchemaCapability::Workspace)) {
             // In case the table is not editable in workspace inform the user about the missing actions
             if ($backendUser->workspaceAllowsLiveEditingInTable($table)) {
                 $recordlistMessageEntries[] = [
