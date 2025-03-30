@@ -375,17 +375,19 @@ class Typo3DbQueryParser
     protected function parseDynamicOperand(ComparisonInterface $comparison, SourceInterface $source): string
     {
         $value = $comparison->getOperand2();
-        $fieldName = $this->parseOperand($comparison->getOperand1(), $source);
+        // columnMap is filled by parseOperand
+        $columnMap = null;
+        $fieldName = $this->parseOperand($comparison->getOperand1(), $source, $columnMap);
         $exprBuilder = $this->queryBuilder->expr();
         switch ($comparison->getOperator()) {
             case QueryInterface::OPERATOR_IN:
                 $hasValue = false;
                 $plainValues = [];
                 foreach ($value as $singleValue) {
-                    $plainValue = $this->dataMapper->getPlainValue($singleValue);
+                    $plainValue = $this->dataMapper->getPlainValue($singleValue, $columnMap);
                     if ($plainValue !== null) {
                         $hasValue = true;
-                        $plainValues[] = $this->createTypedNamedParameter($singleValue);
+                        $plainValues[] = $this->createTypedNamedParameter($singleValue, null, $columnMap);
                     }
                 }
                 if (!$hasValue) {
@@ -401,7 +403,7 @@ class Typo3DbQueryParser
                 if ($value === null) {
                     $expr = $fieldName . ' IS NULL';
                 } else {
-                    $placeHolder = $this->createTypedNamedParameter($value);
+                    $placeHolder = $this->createTypedNamedParameter($value, null, $columnMap);
                     $expr = $exprBuilder->comparison($fieldName, $exprBuilder::EQ, $placeHolder);
                 }
                 break;
@@ -412,7 +414,7 @@ class Typo3DbQueryParser
                 if ($value === null) {
                     $expr = $fieldName . ' IS NOT NULL';
                 } else {
-                    $placeHolder = $this->createTypedNamedParameter($value);
+                    $placeHolder = $this->createTypedNamedParameter($value, null, $columnMap);
                     $expr = $exprBuilder->comparison($fieldName, $exprBuilder::NEQ, $placeHolder);
                 }
                 break;
@@ -420,23 +422,23 @@ class Typo3DbQueryParser
                 $expr = $fieldName . ' IS NOT NULL';
                 break;
             case QueryInterface::OPERATOR_LESS_THAN:
-                $placeHolder = $this->createTypedNamedParameter($value);
+                $placeHolder = $this->createTypedNamedParameter($value, null, $columnMap);
                 $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LT, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_LESS_THAN_OR_EQUAL_TO:
-                $placeHolder = $this->createTypedNamedParameter($value);
+                $placeHolder = $this->createTypedNamedParameter($value, null, $columnMap);
                 $expr = $exprBuilder->comparison($fieldName, $exprBuilder::LTE, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_GREATER_THAN:
-                $placeHolder = $this->createTypedNamedParameter($value);
+                $placeHolder = $this->createTypedNamedParameter($value, null, $columnMap);
                 $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GT, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_GREATER_THAN_OR_EQUAL_TO:
-                $placeHolder = $this->createTypedNamedParameter($value);
+                $placeHolder = $this->createTypedNamedParameter($value, null, $columnMap);
                 $expr = $exprBuilder->comparison($fieldName, $exprBuilder::GTE, $placeHolder);
                 break;
             case QueryInterface::OPERATOR_LIKE:
-                $placeHolder = $this->createTypedNamedParameter($value, Connection::PARAM_STR);
+                $placeHolder = $this->createTypedNamedParameter($value, Connection::PARAM_STR, $columnMap);
                 if ($this->queryBuilder->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform) {
                     $expr = $exprBuilder->comparison($fieldName, 'ILIKE', $placeHolder);
                 } else {
@@ -479,27 +481,33 @@ class Typo3DbQueryParser
      * @return string The placeholder string to be used in the query
      * @see \TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper::getPlainValue()
      */
-    protected function createTypedNamedParameter(mixed $value, ParameterType|Type|ArrayParameterType|null $forceType = null): string
-    {
+    protected function createTypedNamedParameter(
+        mixed $value,
+        ParameterType|Type|ArrayParameterType|null $forceType = null,
+        ?ColumnMap $columnMap = null,
+    ): string {
         if ($value instanceof DomainObjectInterface
             && $value->_hasProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID)
             && $value->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) > 0
         ) {
             $plainValue = (int)$value->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         } else {
-            $plainValue = $this->dataMapper->getPlainValue($value);
+            $plainValue = $this->dataMapper->getPlainValue($value, $columnMap);
         }
         $parameterType = $forceType ?? $this->getParameterType($plainValue);
         return $this->queryBuilder->createNamedParameter($plainValue, $parameterType);
     }
 
-    protected function parseOperand(DynamicOperandInterface $operand, SourceInterface $source): string
-    {
+    protected function parseOperand(
+        DynamicOperandInterface $operand,
+        SourceInterface $source,
+        ?ColumnMap &$columnMapOut = null
+    ): string {
         $tableName = null;
         if ($operand instanceof LowerCaseInterface) {
-            $constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source) . ')';
+            $constraintSQL = 'LOWER(' . $this->parseOperand($operand->getOperand(), $source, $columnMapOut) . ')';
         } elseif ($operand instanceof UpperCaseInterface) {
-            $constraintSQL = 'UPPER(' . $this->parseOperand($operand->getOperand(), $source) . ')';
+            $constraintSQL = 'UPPER(' . $this->parseOperand($operand->getOperand(), $source, $columnMapOut) . ')';
         } elseif ($operand instanceof PropertyValueInterface) {
             $propertyName = $operand->getPropertyName();
             $className = '';
@@ -512,6 +520,9 @@ class Typo3DbQueryParser
                 }
             } elseif ($source instanceof JoinInterface) {
                 $tableName = $source->getJoinCondition()->getSelector1Name();
+            }
+            if ($className) {
+                $columnMapOut = $this->dataMapper->getDataMap($className)->getColumnMap($propertyName);
             }
             $columnName = $this->dataMapper->convertPropertyNameToColumnName($propertyName, $className);
             $constraintSQL = (!empty($tableName) ? $tableName . '.' : '') . $columnName;
