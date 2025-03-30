@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
@@ -26,6 +27,8 @@ use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Enum\Salutation;
 use TYPO3Tests\BlogExample\Domain\Repository\AdministratorRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\DateExampleRepository;
+use TYPO3Tests\BlogExample\Domain\Repository\DateTimeImmutableExampleRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PersonRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
@@ -159,5 +162,93 @@ final class QueryParserTest extends FunctionalTestCase
         $query = $this->get(PersonRepository::class)->createQuery();
         $person = $query->matching($query->equals('salutation', Salutation::MR))->execute()->getFirst();
         self::assertSame(4, $person->getUid());
+    }
+
+    public static function queryForDateTimeDataProvider(): array
+    {
+        return [
+            'datetime int' => [
+                'property' => 'datetimeInt',
+                'repository' => DateExampleRepository::class,
+                'objectType' => \DateTime::class,
+            ],
+            'datetime native' => [
+                'property' => 'datetimeDatetime',
+                'repository' => DateExampleRepository::class,
+                'objectType' => \DateTime::class,
+            ],
+            'datetime text' => [
+                'property' => 'datetimeText',
+                'repository' => DateExampleRepository::class,
+                'objectType' => \DateTime::class,
+            ],
+            'datetime immutable int' => [
+                'property' => 'datetimeImmutableInt',
+                'repository' => DateTimeImmutableExampleRepository::class,
+                'objectType' => \DateTimeImmutable::class,
+            ],
+            'datetime immutable native' => [
+                'property' => 'datetimeImmutableDatetime',
+                'repository' => DateTimeImmutableExampleRepository::class,
+                'objectType' => \DateTimeImmutable::class,
+            ],
+            'datetime immutable text' => [
+                'property' => 'datetimeImmutableText',
+                'repository' => DateTimeImmutableExampleRepository::class,
+                'objectType' => \DateTimeImmutable::class,
+            ],
+        ];
+    }
+
+    #[DataProvider('queryForDateTimeDataProvider')]
+    #[Test]
+    public function queryForDateTime(string $property, string $repository, string $objectType): void
+    {
+        $query = $this->get($repository)->createQuery();
+
+        $dateExample = $query->matching(
+            $query->equals($property, new $objectType('2025-01-20T14:18:56'))
+        )->execute()->getFirst();
+        self::assertNotNull($dateExample);
+        self::assertSame(1, $dateExample->getUid());
+
+        $dateExample = $query->matching(
+            $query->greaterThan($property, new $objectType('2025-01-20T14:18:55'))
+        )->execute()->getFirst();
+        self::assertNotNull($dateExample);
+        self::assertSame(1, $dateExample->getUid());
+
+        $dateExample = $query->matching(
+            $query->greaterThanOrEqual($property, new $objectType('2025-01-20T14:18:56'))
+        )->execute()->getFirst();
+        self::assertNotNull($dateExample);
+        self::assertSame(1, $dateExample->getUid());
+
+        $dateExample = $query->matching(
+            $query->lessThan($property, new $objectType('2025-01-20T14:18:57'))
+        )->execute()->getFirst();
+        self::assertNotNull($dateExample);
+        self::assertSame(1, $dateExample->getUid());
+
+        $dateExample = $query->matching(
+            $query->lessThanOrEqual($property, new $objectType('2025-01-20T14:18:56'))
+        )->execute()->getFirst();
+        self::assertNotNull($dateExample);
+        self::assertSame(1, $dateExample->getUid());
+
+        $dateExampleQueryInvalid = $query->matching(
+            $query->equals($property, new $objectType('2025-01-20T14:18:55'))
+        )->execute()->getFirst();
+        self::assertNull($dateExampleQueryInvalid);
+
+        $dateExampleQueryInvalid = $query->matching(
+            $query->greaterThan($property, new $objectType('2025-01-20T14:18:56'))
+        )->execute()->getFirst();
+        self::assertNull($dateExampleQueryInvalid);
+
+        $dateExampleQueryInvalid = $query->matching(
+            $query->lessThan($property, new $objectType('2025-01-20T14:18:56'))
+        )->execute()->getFirst();
+        self::assertNull($dateExampleQueryInvalid);
     }
 }

@@ -79,3 +79,9 @@ sys_category_record_mm
 ,1,2,tx_blogexample_domain_model_post,categories,1,2
 ,4,1,tx_my_extension,categories,1,2
 ,1,1,tx_blogexample_domain_model_blog,categories,1,1
+"tx_blogexample_domain_model_dateexample",
+,"uid","pid","datetime_int","datetime_datetime","datetime_text"
+,1,0,1737382736,"2025-01-20 14:18:56","1737382736"
+"tx_blogexample_domain_model_datetimeimmutableexample",
+,"uid","pid","datetime_immutable_int","datetime_immutable_datetime","datetime_immutable_text"
+,1,0,1737382736,"2025-01-20 14:18:56","1737382736"
