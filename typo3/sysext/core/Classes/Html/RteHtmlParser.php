@@ -617,7 +617,7 @@ class RteHtmlParser extends HtmlParser implements LoggerAwareInterface
                 // This was previously an option to disable called "dontConvAmpInNBSP_rte"
                 $parts[$k] = str_replace('&amp;nbsp;', '&nbsp;', $parts[$k]);
             }
-            $partFirstTagName = strtolower($this->getFirstTagName($parts[$k] ?? ''));
+            $partFirstTagName = strtolower($this->getFirstTagName($parts[$k]));
             // Wrapping the line in <p> tags if not already wrapped and does not contain an hr tag and is not allowed outside of paragraphs.
             if (!in_array($partFirstTagName, $this->allowedTagsOutsideOfParagraphs, true) && !preg_match('/<(hr)(\\s[^>\\/]*)?[[:space:]]*\\/?>/i', $partFirstTagName)) {
                 $testStr = strtolower(trim($parts[$k]));

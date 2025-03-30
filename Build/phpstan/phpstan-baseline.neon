@@ -637,12 +637,6 @@ parameters:
 			path: ../../typo3/sysext/beuser/Classes/Controller/BackendUserController.php
 
 		-
-			message: '#^Comparison operation "\>\=" between int\<2, max\> and 2 is always true\.$#'
-			identifier: greaterOrEqual.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/beuser/Classes/Domain/Repository/BackendUserRepository.php
-
-		-
 			message: '#^Offset ''tables_modify'' on array\{tables_select\: array\<non\-empty\-string, mixed\>, tables_modify\: array\<non\-empty\-string, mixed\>\} on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.offset
 			count: 1
@@ -3395,12 +3389,6 @@ parameters:
 			identifier: argument.type
 			count: 3
 			path: ../../typo3/sysext/core/Tests/Unit/Localization/LocalesTest.php
-
-		-
-			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Locking\\Fixtures\\DummyLock has an unused parameter \$subject\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Locking/Fixtures/DummyLock.php
 
 		-
 			message: '#^Method TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\WriterFixture\:\:writeLog\(\) should return TYPO3\\CMS\\Core\\Log\\Writer\\WriterInterface but return statement is missing\.$#'
@@ -6694,12 +6682,6 @@ parameters:
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<string\> will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 16
-			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
-
-		-
-			message: '#^Offset 1 does not exist on non\-empty\-array\<0, TYPO3\\CMS\\Redirects\\Event\\BeforeRedirectMatchDomainEvent\>\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
 			path: ../../typo3/sysext/redirects/Tests/Functional/Service/RedirectServiceTest.php
 
 		-

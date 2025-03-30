@@ -79,6 +79,8 @@ final class SystemEnvironmentBuilderTest extends UnitTestCase
     {
         unset($GLOBALS['T3_SERVICES']);
         $this->subject->_call('initializeGlobalVariables');
+        // PHPStan ignore required to mitigate phpstan confusion about `unset($GLOBALS['T3_SERVICES']);` above.
+        /** @phpstan-ignore offsetAccess.notFound */
         self::assertIsArray($GLOBALS['T3_SERVICES']);
     }
 
