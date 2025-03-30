@@ -2551,12 +2551,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Localization/LocalesTest.php
 
 		-
-			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Locking\\Fixtures\\DummyLock has an unused parameter \$subject\.$#'
-			identifier: constructor.unusedParameter
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Locking/Fixtures/DummyLock.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Core\\Tests\\Unit\\Log\\Fixtures\\WriterFixture\:\:writeLog\(\) should return TYPO3\\CMS\\Core\\Log\\Writer\\WriterInterface but return statement is missing\.$#'
 			identifier: return.missing
 			count: 1
