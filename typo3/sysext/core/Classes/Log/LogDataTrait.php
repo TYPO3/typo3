@@ -65,7 +65,7 @@ trait LogDataTrait
         // Handles placeholders with "{myPlaceholder}"
         $detailString = preg_replace_callback('/{([A-z]+)}/', static function (array $matches) use ($substitutes) {
             // $matches[0] contains the unsubstituted placeholder
-            /** @var array{0: string, 1?: string} $matches added to mitigate false-positives PHPStan reportings */
+            /** @var array{0: non-falsy-string, 1?: non-falsy-string} $matches added to mitigate false-positives PHPStan reportings */
             return $substitutes[$matches[1] ?? null] ?? $matches[0];
         }, $detailString);
 
