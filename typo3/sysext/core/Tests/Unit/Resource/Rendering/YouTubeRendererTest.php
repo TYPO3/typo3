@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Helpers\YouTubeHelper;
 use TYPO3\CMS\Core\Resource\Rendering\YouTubeRenderer;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class YouTubeRendererTest extends UnitTestCase
@@ -34,6 +35,7 @@ final class YouTubeRendererTest extends UnitTestCase
     {
         parent::setUp();
         $_SERVER['HTTP_HOST'] = 'test.server.org';
+        GeneralUtility::flushInternalRuntimeCaches();
 
         $youTubeHelper = $this->getAccessibleMock(YouTubeHelper::class, ['getOnlineMediaId'], ['youtube']);
         $youTubeHelper->method('getOnlineMediaId')->willReturn('7331');
