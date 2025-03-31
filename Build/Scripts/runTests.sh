@@ -561,7 +561,7 @@ else
 fi
 
 if [[ "${CI}" == "true" ]]; then
-    CONTAINER_COMMON_PARAMS="${CONTAINER_COMMON_PARAMS} --add-host \"repo.packagist.org:146.59.12.218\"  --add-host \"github.com:140.82.121.3\" --add-host \"api.github.com:140.82.121.6\" --add-host \"codeload.github.com:140.82.121.10\" --add-host \"registry.npmjs.org:104.16.1.35\""
+    CONTAINER_COMMON_PARAMS="${CONTAINER_COMMON_PARAMS} ${CONTAINER_COMMON_PARAMS_CI:-}"
 fi
 
 if [ ${PHP_XDEBUG_ON} -eq 0 ]; then
