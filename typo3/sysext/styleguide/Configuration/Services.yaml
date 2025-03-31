@@ -46,7 +46,6 @@ services:
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalMd5'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalNum'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalUpper'
-        - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputEvalYear'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputWizardSelect'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputDynamicTextWithRecordUid'
         - '@TYPO3\CMS\Styleguide\TcaDataGenerator\FieldGenerator\TypeInputForceL10nParent'

@@ -2738,9 +2738,6 @@ class DataHandler
         $set = true;
         foreach ($evalArray as $func) {
             switch ($func) {
-                case 'year':
-                    $value = (int)$value;
-                    break;
                 case 'md5':
                     if (strlen($value) !== 32) {
                         $set = false;

@@ -468,15 +468,6 @@ export default class FormEngineValidation {
           returnValue = dt.toISO({ suppressMilliseconds: true, includeOffset: false });
         }
         break;
-      case 'year':
-        if (value !== '') {
-          let year = parseInt(value, 10);
-          if (isNaN(year)) {
-            year = new Date().getUTCFullYear();
-          }
-          returnValue = year.toString(10);
-        }
-        break;
       case 'null':
         // unknown type null, we ignore it
         break;

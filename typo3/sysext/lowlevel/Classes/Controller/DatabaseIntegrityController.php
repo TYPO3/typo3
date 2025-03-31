@@ -947,11 +947,7 @@ class DatabaseIntegrityController
             if ($fieldLabel) {
                 switch ($fields['type']) {
                     case 'input':
-                        if (GeneralUtility::inList($fields['eval'] ?? '', 'year')) {
-                            $fields['type'] = 'number';
-                        } else {
-                            $fields['type'] = 'text';
-                        }
+                        $fields['type'] = 'text';
                         break;
                     case 'number':
                         // Empty on purpose, we have to keep the type "number".

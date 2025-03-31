@@ -272,12 +272,6 @@ abstract class AbstractFormElement extends AbstractNode
                     $itemValue = BackendUtility::time((int)$itemValue);
                 }
                 break;
-            case 'year':
-                // compatibility with "eval" (type "input")
-                if ($itemValue !== '' && $itemValue !== null) {
-                    $itemValue = date('Y', (int)$itemValue);
-                }
-                break;
             case 'int':
                 $baseArr = ['dec' => 'd', 'hex' => 'x', 'HEX' => 'X', 'oct' => 'o', 'bin' => 'b'];
                 $base = isset($formatOptions['base']) ? trim($formatOptions['base']) : '';

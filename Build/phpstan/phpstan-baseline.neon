@@ -147,7 +147,7 @@ parameters:
 		-
 			message: '#^Strict comparison using \!\=\= between non\-empty\-string and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
-			count: 4
+			count: 3
 			path: ../../typo3/sysext/backend/Classes/Form/Element/AbstractFormElement.php
 
 		-

@@ -159,30 +159,6 @@ final class ElementsBasicInputSimpleCest extends AbstractElementsBasicCest
                 'expectedValueAfterSave' => 'KASPER TYPO3!',
                 'comment' => '',
             ],
-            [
-                'label' => 'input_24',
-                'inputValue' => '2016',
-                'expectedValue' => '2016',
-                'expectedInternalValue' => '2016',
-                'expectedValueAfterSave' => '2016',
-                'comment' => '',
-            ],
-            [
-                'label' => 'input_24',
-                'inputValue' => '12',
-                'expectedValue' => '12',
-                'expectedInternalValue' => '12',
-                'expectedValueAfterSave' => '12',
-                'comment' => '',
-            ],
-            [
-                'label' => 'input_24',
-                'inputValue' => 'Kasper',
-                'expectedValue' => date('Y'),
-                'expectedInternalValue' => date('Y'),
-                'expectedValueAfterSave' => date('Y'),
-                'comment' => 'Invalid character is converted to current year',
-            ],
         ];
     }
 

@@ -3860,4 +3860,68 @@ final class TcaMigrationTest extends UnitTestCase
         $expected['child1NotWorkspaceAware']['ctrl']['versioningWS'] = true;
         self::assertSame($expected, (new TcaMigration())->migrate($input));
     }
+
+    #[DataProvider('requiredYearFlagIsRemovedDataProvider')]
+    #[Test]
+    public function requiredYearFlagIsRemoved(array $tca, array $expected): void
+    {
+        $subject = new TcaMigration();
+        self::assertEquals($expected, $subject->migrate($tca));
+    }
+
+    public static function requiredYearFlagIsRemovedDataProvider(): iterable
+    {
+        yield 'field contains eval=year' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'year',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        yield 'field contains eval=fo,year' => [
+            'tca' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'fo,year',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'expected' => [
+                'aTable' => [
+                    'columns' => [
+                        'aColumn' => [
+                            'config' => [
+                                'type' => 'input',
+                                'eval' => 'fo',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
 }

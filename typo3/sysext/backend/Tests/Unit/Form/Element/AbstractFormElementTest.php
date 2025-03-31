@@ -140,27 +140,6 @@ final class AbstractFormElementTest extends UnitTestCase
                 null,
                 '',
             ],
-            'format to year' => [
-                [
-                    'format' => 'year',
-                ],
-                '1412358894',
-                '2014',
-            ],
-            'format to year with empty value' => [
-                [
-                    'format' => 'year',
-                ],
-                '',
-                '',
-            ],
-            'format to year with null value' => [
-                [
-                    'format' => 'year',
-                ],
-                null,
-                '',
-            ],
             'format to int' => [
                 [
                     'format' => 'int',

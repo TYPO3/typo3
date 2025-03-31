@@ -92,6 +92,7 @@ class TcaMigration
         $tca = $this->removeAllowLanguageSynchronizationFromColumnsOverrides($tca);
         $tca = $this->removeSubTypesConfiguration($tca);
         $tca = $this->addWorkspaceAwarenessToInlineChildren($tca);
+        $tca = $this->removeEvalYearFlag($tca);
 
         return $tca;
     }
@@ -1643,6 +1644,42 @@ class TcaMigration
                 }
             }
         }
+        return $tca;
+    }
+
+    /**
+     * Removes [config][eval] = 'year'.
+     * If [config][eval] becomes empty, it will be removed completely.
+     */
+    protected function removeEvalYearFlag(array $tca): array
+    {
+        foreach ($tca as $table => $tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => $fieldConfig) {
+                if (!GeneralUtility::inList($fieldConfig['config']['eval'] ?? '', 'year')) {
+                    continue;
+                }
+
+                $evalList = GeneralUtility::trimExplode(',', $fieldConfig['config']['eval'], true);
+                // Remove "year" from $evalList
+                $evalList = array_filter($evalList, static fn(string $eval): bool => $eval !== 'year');
+                if ($evalList !== []) {
+                    // Write back filtered 'eval'
+                    $tca[$table]['columns'][$fieldName]['config']['eval'] = implode(',', $evalList);
+                } else {
+                    // 'eval' is empty, remove whole configuration
+                    unset($tca[$table]['columns'][$fieldName]['config']['eval']);
+                }
+
+                $this->messages[] = 'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines'
+                    . ' "year" in its "eval" list. This is not evaluated anymore and is therefore removed.'
+                    . ' Please adjust your TCA accordingly.';
+            }
+        }
+
         return $tca;
     }
 }

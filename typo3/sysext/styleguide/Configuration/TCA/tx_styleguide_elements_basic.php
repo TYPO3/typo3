@@ -148,14 +148,6 @@ return [
                 'eval' => 'upper',
             ],
         ],
-        'input_24' => [
-            'label' => 'input_24',
-            'description' => 'eval=year',
-            'config' => [
-                'type' => 'input',
-                'eval' => 'year',
-            ],
-        ],
         'input_26' => [
             'label' => 'input_26',
             'description' => 'default="input_26", value for input_27 and input_28',
@@ -1939,7 +1931,7 @@ backend_layout {
                 --div--;input,
                     input_1, input_40, input_2, input_3, input_41, input_42, input_43, input_4, input_5, input_10,
                     input_11, input_12, input_13, input_15, input_16, input_19,
-                    input_21, input_22, input_23, input_24, input_26, input_27, input_14, input_28,
+                    input_21, input_22, input_23, input_26, input_27, input_14, input_28,
                     input_33, input_35, input_36,
                 --div--;inputDateTime,
                     inputdatetime_1, inputdatetime_2, inputdatetime_3, inputdatetime_4, inputdatetime_5,
