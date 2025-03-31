@@ -455,7 +455,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * Well, it has to be called manually since it is not a real constructor function.
      * So after making an instance of the class, call this function and pass to it a database record and the tablename from where the record is from. That will then become the "current" record loaded into memory and accessed by the .fields property found in eg. stdWrap.
      *
-     * @param array $data The record data that is rendered.
+     * @param array|int|string $data The record data that is rendered.
      * @param string $table The table that the data record is from.
      */
     public function start($data, $table = '')
@@ -472,7 +472,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
         );
 
         $autoTagging = GeneralUtility::makeInstance(Features::class)->isFeatureEnabled('frontend.cache.autoTagging');
-        if ($this->currentRecord !== '' && $autoTagging) {
+        if (is_array($this->data) && $this->currentRecord !== '' && $autoTagging) {
             $cacheLifetimeCalculator = GeneralUtility::makeInstance(CacheLifetimeCalculator::class);
             $this->request?->getAttribute('frontend.cache.collector')?->addCacheTags(
                 new CacheTag(
