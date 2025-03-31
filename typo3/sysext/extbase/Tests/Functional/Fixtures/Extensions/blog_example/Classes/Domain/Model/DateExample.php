@@ -36,6 +36,12 @@ class DateExample extends AbstractEntity
      */
     protected ?\DateTime $datetimeDatetime = null;
 
+    /**
+     * A date stored in a date field with an extended DateTime type
+     * @var CustomDate $customDate
+     */
+    protected ?CustomDate $customDate = null;
+
     public function getDatetimeText(): ?\DateTime
     {
         return $this->datetimeText;
@@ -64,5 +70,15 @@ class DateExample extends AbstractEntity
     public function setDatetimeDatetime(?\DateTime $datetimeDatetime): void
     {
         $this->datetimeDatetime = $datetimeDatetime;
+    }
+
+    public function getCustomDate(): ?CustomDate
+    {
+        return $this->customDate;
+    }
+
+    public function setCustomDate(CustomDate $customDate): void
+    {
+        $this->customDate = $customDate;
     }
 }

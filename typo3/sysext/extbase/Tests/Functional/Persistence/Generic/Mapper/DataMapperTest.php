@@ -35,6 +35,7 @@ use TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper\Fixtures\Hydra
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Comment;
+use TYPO3Tests\BlogExample\Domain\Model\CustomDate;
 use TYPO3Tests\BlogExample\Domain\Model\DateExample;
 use TYPO3Tests\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -118,6 +119,25 @@ final class DataMapperTest extends FunctionalTestCase
         $example = $persistenceManager->getObjectByIdentifier($uid, DateExample::class);
 
         self::assertEquals($example->getDatetimeDatetime()->getTimestamp(), $date->getTimestamp());
+    }
+
+    #[Test]
+    public function dateValuesAreStoredInLocalTimeFromCustomDateTimeObject(): void
+    {
+        $example = new DateExample();
+        $date = new CustomDate('2016-03-06T00:00:00+01:00');
+        $example->setCustomDate($date);
+
+        $persistenceManager = $this->get(PersistenceManager::class);
+        $persistenceManager->add($example);
+        $persistenceManager->persistAll();
+        $uid = $persistenceManager->getIdentifierByObject($example);
+        $persistenceManager->clearState();
+
+        /** @var DateExample $example */
+        $example = $persistenceManager->getObjectByIdentifier($uid, DateExample::class);
+
+        self::assertEquals($example->getCustomDate()->format('Y-m-d'), $date->format('Y-m-d'));
     }
 
     #[Test]
