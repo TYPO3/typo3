@@ -31,12 +31,12 @@ class ElementBrowserRecordList extends DatabaseRecordList
     /**
      * Table name of the field pointing to this element browser
      */
-    protected string $relatingTable;
+    protected string $relatingTable = '';
 
     /**
      * Field name of the field pointing to this element browser
      */
-    protected string $relatingField;
+    protected string $relatingField = '';
 
     /**
      * Returns the title (based on $code) of a record (from table $table) with the proper link around (that is for "pages"-records a link to the level of that record...)
