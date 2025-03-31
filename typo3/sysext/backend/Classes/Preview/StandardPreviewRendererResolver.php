@@ -50,10 +50,13 @@ class StandardPreviewRendererResolver
         $previewRendererClassName = null;
         if ($schema->getSubSchemaDivisorField()) {
             $tcaTypeOfRow = $row[$schema->getSubSchemaDivisorField()->getName()];
-            $subSchema = $schema->getSubSchema($tcaTypeOfRow);
-            if (is_string($subSchema->getRawConfiguration()['previewRenderer'] ?? false) && $subSchema->getRawConfiguration()['previewRenderer'] !== '') {
-                // A type-specific preview renderer was configured for the TCA type
-                $previewRendererClassName = $subSchema->getRawConfiguration()['previewRenderer'];
+            if ($schema->hasSubSchema($tcaTypeOfRow)) {
+                // Outdated subschemas may still be present in the database fields, this must not block backend rendering and utilize fallback.
+                $subSchema = $schema->getSubSchema($tcaTypeOfRow);
+                if (is_string($subSchema->getRawConfiguration()['previewRenderer'] ?? false) && $subSchema->getRawConfiguration()['previewRenderer'] !== '') {
+                    // A type-specific preview renderer was configured for the TCA type
+                    $previewRendererClassName = $subSchema->getRawConfiguration()['previewRenderer'];
+                }
             }
         }
 
