@@ -154,7 +154,7 @@ class TcaSelectTreeItems extends AbstractItemProvider implements FormDataProvide
                 }
 
                 // Fetch the list of all possible "related" items (yuk!) and apply a similar processing as with the "static" list
-                $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName, []);
+                $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName);
                 $dynamicItems = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $dynamicItems);
                 $dynamicItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $dynamicItems);
                 $dynamicItems = $this->removeItemsByUserLanguageFieldRestriction($result, $fieldName, $dynamicItems);

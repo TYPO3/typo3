@@ -83,12 +83,11 @@ class TcaCategory extends AbstractItemProvider implements FormDataProviderInterf
                 }
 
                 // Fetch the list of all possible "related" items and apply processing
-                // @todo: This uses 4th param 'true' as hack to add the full item rows speeding up
-                //        processing of items in the tree class construct below. Simplify the construct:
+                // @todo: Simplify the construct:
                 //        The entire $treeDataProvider / $treeRenderer / $tree construct should probably
                 //        vanish and the tree processing could happen here in the data provider? Watch
                 //        out for the permission event in the tree construct when doing this.
-                $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName, [], true);
+                $dynamicItems = $this->addItemsFromForeignTable($result, $fieldName);
                 // Remove items as configured via TsConfig
                 $dynamicItems = $this->removeItemsByKeepItemsPageTsConfig($result, $fieldName, $dynamicItems);
                 $dynamicItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $fieldName, $dynamicItems);

@@ -15,7 +15,7 @@
 
 namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 
-use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\Driver\Exception as DBALException;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\Connection;
@@ -283,12 +283,10 @@ abstract class AbstractItemProvider
      * @param array $result Result array
      * @param string $fieldName Current handled field name
      * @param array $items Incoming items
-     * @param bool $includeFullRows @internal Hack for category tree to speed up tree processing, adding full db row as
-     *                              _row to item
      * @return array Modified item array
      * @throws \UnexpectedValueException
      */
-    protected function addItemsFromForeignTable(array $result, $fieldName, array $items, bool $includeFullRows = false)
+    protected function addItemsFromForeignTable(array $result, string $fieldName, array $items = []): array
     {
         if (empty($result['processedTca']['columns'][$fieldName]['config']['foreign_table'])
             || !is_string($result['processedTca']['columns'][$fieldName]['config']['foreign_table'])
@@ -308,7 +306,7 @@ abstract class AbstractItemProvider
             );
         }
 
-        $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName, $includeFullRows);
+        $queryBuilder = $this->buildForeignTableQueryBuilder($result, $fieldName);
         try {
             $queryResult = $queryBuilder->executeQuery();
         } catch (DBALException $e) {
@@ -369,11 +367,9 @@ abstract class AbstractItemProvider
                     'value' => $foreignRow['uid'],
                     'icon' => $icon,
                     'group' => $foreignRow[$itemGroupField] ?? null,
+                    // This line is part of the category tree performance hack, which should be used everywhere
+                    '_row' => $foreignRow,
                 ];
-                if ($includeFullRows) {
-                    // @todo: This is part of the category tree performance hack
-                    $item['_row'] = $foreignRow;
-                }
                 $items[] = $item;
             }
         }
@@ -571,45 +567,69 @@ abstract class AbstractItemProvider
     }
 
     /**
-     * Build query to fetch foreign records. Helper method of
-     * addItemsFromForeignTable(), do not call otherwise.
+     * Build wrapped QueryBuilder to fetch full foreign records. Helper method of
+     * {@see self::addItemsFromForeignTable()}, do not call otherwise.
      *
      * @param array $result Result array
      * @param string $localFieldName Current handle field name
-     * @param bool $selectAllFields @internal True to select * all fields of row, otherwise an auto-calculated list.
-     *                              Select * is an optimization hack to speed up category tree calculation.
      */
-    protected function buildForeignTableQueryBuilder(array $result, string $localFieldName, bool $selectAllFields = false): QueryBuilder
+    protected function buildForeignTableQueryBuilder(array $result, string $localFieldName): QueryBuilder
     {
         $backendUser = $this->getBackendUser();
 
         $foreignTableName = $result['processedTca']['columns'][$localFieldName]['config']['foreign_table'];
         $foreignTableClauseArray = $this->processForeignTableClause($result, $foreignTableName, $localFieldName);
 
-        if ($selectAllFields) {
-            $fieldList = [$foreignTableName . '.*'];
-        } else {
-            $fieldList = BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.');
-            $fieldList = GeneralUtility::trimExplode(',', $fieldList, true);
+        $connection = $this->connectionPool->getConnectionForTable($foreignTableName);
+        $wrapQueryBuilder = $connection->createQueryBuilder();
+        $queryBuilder = $connection->createQueryBuilder();
+
+        // Full foreign table row is wanted for the result, which requires to have `GROUP BY` columns listed
+        // within the `SELECT <fields>` list for some database systems and vice versa. Second requirement is,
+        // that all fields used for `GROUP BY` and listed as select fields needs to be aggregated with a proper
+        // function, for example (MIN(), MAX(), ANY_VALUES(), ...).
+        //
+        // MariaDB is even stricter than MySQL with default and recommend `sql_mode = 'ONLY_FULL_GROUP_BY',
+        // which is also a long time questioned fact why MariaDB differs here from MySQL and also PostgresSQL
+        // without an explicit mode setting.
+        //
+        // To sum up all requirements for all database systems and expectable modes, we ...
+        //
+        //  * can't simply select all foreign table fields, for example with `$foreignTableName . '.*'` as select()
+        //    for the QueryBuilder below.
+        //  * need to ensure that we have grouped fields aggregated.
+        //  * need to use a wrapped SQL query (QueryBuilder) to retrieve full rows of foreign table because we cannot
+        //    use full-table columns information to replace a `*` wildcard here.
+        //
+        // The first step respecting all requirements is, to determine commonly used select fields for the table
+        // and using `ANY_VALUES()` aggregation for the `uid` field.
+        $hasGroupBy = is_array($foreignTableClauseArray['GROUPBY']) && $foreignTableClauseArray['GROUPBY'] !== [];
+        $selectFieldList = [];
+        $commonFieldList = GeneralUtility::trimExplode(
+            ',',
+            BackendUtility::getCommonSelectFields($foreignTableName, $foreignTableName . '.'),
+            true,
+        );
+        foreach ($commonFieldList as $fieldName) {
+            if ($hasGroupBy && in_array($fieldName, $foreignTableClauseArray['GROUPBY'], true)) {
+                $selectFieldList[] = sprintf('ANY_VALUE(%s)', $queryBuilder->quoteIdentifier($fieldName));
+                continue;
+            }
+            $selectFieldList[] = $queryBuilder->quoteIdentifier($fieldName);
         }
 
-        if ($result['processedTca']['columns'][$localFieldName]['config']['foreign_table_item_group'] ?? false) {
-            $fieldList[] = $foreignTableName . '.' . $result['processedTca']['columns'][$localFieldName]['config']['foreign_table_item_group'];
-        }
-
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($foreignTableName);
-
+        $wrapQueryBuilder->getRestrictions()->removeAll();
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->getBackendUser()->workspace));
 
         $queryBuilder
-            ->select(...$fieldList)
+            ->selectLiteral(...$selectFieldList)
             ->from($foreignTableName)
             ->where($foreignTableClauseArray['WHERE']);
 
-        if (!empty($foreignTableClauseArray['GROUPBY'])) {
+        if ($hasGroupBy) {
             $queryBuilder->groupBy(...$foreignTableClauseArray['GROUPBY']);
         }
 
@@ -648,14 +668,14 @@ abstract class AbstractItemProvider
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->neq(
                     $foreignTableName . '.pid',
-                    $queryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
+                    $wrapQueryBuilder->createNamedParameter(-1, Connection::PARAM_INT)
                 )
             );
         } elseif ($rootLevel === 1) {
             $queryBuilder->andWhere(
                 $queryBuilder->expr()->eq(
                     $foreignTableName . '.pid',
-                    $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
+                    $wrapQueryBuilder->createNamedParameter(0, Connection::PARAM_INT)
                 )
             );
         } else {
@@ -678,12 +698,28 @@ abstract class AbstractItemProvider
                 ->andWhere(
                     $queryBuilder->expr()->neq(
                         $foreignTableName . '.t3ver_state',
-                        $queryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)
+                        $wrapQueryBuilder->createNamedParameter(VersionState::MOVE_POINTER->value, Connection::PARAM_INT)
                     )
                 );
         }
 
-        return $queryBuilder;
+        // Second step to respect all database requirements regarding `GROUP BY` and still returning full foreign table
+        // records is using the QueryBuilder (query) as a sub-query, join the table and retrieve the full records using
+        // column wildcard. That ensures that really the full records are retrieved including not TCA managed columns.
+        $wrapQueryBuilder->select('joined_table.*');
+        $wrapQueryBuilder->getConcreteQueryBuilder()->from(
+            '(' . $queryBuilder->getSQL() . ')',
+            $wrapQueryBuilder->quoteIdentifier('inner_table_alias')
+        );
+        $wrapQueryBuilder->innerJoin(
+            'inner_table_alias',
+            $foreignTableName,
+            'joined_table',
+            $wrapQueryBuilder->expr()->and(
+                $wrapQueryBuilder->expr()->eq('joined_table.uid', $wrapQueryBuilder->quoteIdentifier('inner_table_alias.uid'))
+            )
+        );
+        return $wrapQueryBuilder;
     }
 
     /**
@@ -1077,6 +1113,8 @@ abstract class AbstractItemProvider
                     $helpText = $item['description'];
                 }
             }
+            // @todo This removes `_row` full item row and does not have it in processedTCA later, at lest for
+            //       TcaSelectItems. Consider to keep that information here if available or if dropping is good.
             $itemArray[$key] = [
                 'label' => $label,
                 'value' => $value,
