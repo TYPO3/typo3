@@ -377,24 +377,11 @@ final class BlogPostEditingControllerTest extends FunctionalTestCase
             . '<li>#7 - Category 5 \(German\)</li>\s*'
             . '</ul>@', $content);
 
-        // Ensure f:form.select
-        // @todo This is the bug in https://review.typo3.org/c/Packages/TYPO3.CMS/+/88891
-        // ACTUAL EXPECTATION:
-        /*
         self::assertMatchesRegularExpression('@<input type="hidden" name="tx_blogexample_blogpostediting\[blog\]\[categories\]" value="" /><select id="persist-categories" multiple="multiple" name="tx_blogexample_blogpostediting\[blog\]\[categories\]\[\]">'
             . '<option value="1" selected="selected">Category 1 \(German\)</option>\s*'
             . '<option value="4">Category 3 \(Only german\)</option>\s*'
             . '<option value="5" selected="selected">Category 4 \(German\)</option>\s*'
             . '<option value="7" selected="selected">Category 5 \(German\)</option>\s*'
-            . '</select>@', $content);
-        */
-
-        // CURRENT BROKEN OUTPUT:
-        self::assertMatchesRegularExpression('@<input type="hidden" name="tx_blogexample_blogpostediting\[blog\]\[categories\]" value="" /><select id="persist-categories" multiple="multiple" name="tx_blogexample_blogpostediting\[blog\]\[categories\]\[\]">'
-            . '<option value="1">Category 1 \(German\)</option>\s*'
-            . '<option value="4">Category 3 \(Only german\)</option>\s*'
-            . '<option value="5">Category 4 \(German\)</option>\s*'
-            . '<option value="7">Category 5 \(German\)</option>\s*'
             . '</select>@', $content);
     }
 

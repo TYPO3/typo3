@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -193,9 +194,16 @@ abstract class AbstractFormFieldViewHelper extends AbstractFormViewHelper
     protected function convertToPlainValue($value)
     {
         if (is_object($value)) {
+            if ($value instanceof DomainObjectInterface && $value->getUid() !== null) {
+                // We prefer to use the `getUid()` method because this returns the properly overlaid identifier (defaultLanguageRecordUid).
+                // Otherwise, an identifier would contain '[defaultLanguageRecordUid]_[localizedRecordUid]'. This in turn
+                // will not properly trigger the select option "is selected" comparison.
+                // @see SelectViewHelper->getOptionValueScalar()
+                return $value->getUid();
+            }
             $identifier = $this->persistenceManager->getIdentifierByObject($value);
             if ($identifier !== null) {
-                $value = $identifier;
+                return $identifier;
             }
         }
         return $value;
