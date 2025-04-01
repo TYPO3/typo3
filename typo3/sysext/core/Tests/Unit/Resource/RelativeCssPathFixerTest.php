@@ -68,6 +68,11 @@ final class RelativeCssPathFixerTest extends UnitTestCase
                          url(\'fileadmin/fonts/testfont.woff\') format("woff");
                     }',
             ],
+            'url() containing an id only' => [
+                'clip-path: url(#example-clip-path)',
+                'fileadmin/css',
+                'clip-path: url(#example-clip-path)',
+            ],
         ];
     }
 
