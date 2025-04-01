@@ -26,6 +26,7 @@ import DomHelper from '@typo3/backend/utility/dom-helper';
 import { selector } from '@typo3/core/literals';
 import SubmitInterceptor from '@typo3/backend/form/submit-interceptor';
 import { FormEngineReview } from '@typo3/backend/form-engine-review';
+import type FormEngine from '@typo3/backend/form-engine';
 
 type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
 type CustomEvaluationCallback = (value: string) => string;
@@ -36,7 +37,7 @@ export interface PostValidationEvent {
   isValid: boolean,
 }
 
-let formEngineFormElement: HTMLFormElement;
+let formEngineInstance: typeof FormEngine;
 let validationSuspended = false;
 
 const customEvaluations: Map<string, CustomEvaluationCallback> = new Map();
@@ -59,20 +60,20 @@ export default class FormEngineValidation {
   /**
    * Initialize validation for the first time
    */
-  public static initialize(formElement: HTMLFormElement): void {
-    formEngineFormElement = formElement;
-    formEngineFormElement.querySelectorAll('.' + FormEngineValidation.errorClass).forEach((e: HTMLElement) => e.classList.remove(FormEngineValidation.errorClass));
+  public static initialize(formEngine: typeof FormEngine): void {
+    formEngineInstance = formEngine;
+    formEngineInstance.formElement.querySelectorAll('.' + FormEngineValidation.errorClass).forEach((e: HTMLElement) => e.classList.remove(FormEngineValidation.errorClass));
 
     // Initialize input fields
     FormEngineValidation.initializeInputFields();
 
-    new FormEngineReview(formElement);
+    new FormEngineReview(formEngineInstance.formElement);
 
     // Bind to field changes
     new RegularEvent('change', (e: Event, target: FormEngineFieldElement): void => {
       FormEngineValidation.validateField(target);
       FormEngineValidation.markFieldAsChanged(target);
-    }).delegateTo(formEngineFormElement, FormEngineValidation.rulesSelector);
+    }).delegateTo(formEngineInstance.formElement, FormEngineValidation.rulesSelector);
 
     FormEngineValidation.registerSubmitCallback();
 
@@ -83,10 +84,10 @@ export default class FormEngineValidation {
    * Initialize all input fields
    */
   public static initializeInputFields(): void {
-    formEngineFormElement.querySelectorAll(FormEngineValidation.inputSelector).forEach((visibleField: FormEngineFieldElement): void => {
+    formEngineInstance.formElement.querySelectorAll(FormEngineValidation.inputSelector).forEach((visibleField: FormEngineFieldElement): void => {
       const config = JSON.parse(visibleField.dataset.formengineInputParams);
       const fieldName = config.field;
-      const actualValueField = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
+      const actualValueField = formEngineInstance.formElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
 
       // ignore fields which already have been initialized
       if (!('formengineInputInitialized' in visibleField.dataset)) {
@@ -100,8 +101,8 @@ export default class FormEngineValidation {
    * Initialize field by name
    */
   public static initializeInputField(fieldName: string): void {
-    const field = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
-    const humanReadableField = formEngineFormElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
+    const field = formEngineInstance.formElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
+    const humanReadableField = formEngineInstance.formElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -163,8 +164,8 @@ export default class FormEngineValidation {
    * Update input field after change
    */
   public static updateInputField(fieldName: string): void {
-    const field = formEngineFormElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
-    const humanReadableField = formEngineFormElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
+    const field = formEngineInstance.formElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
+    const humanReadableField = formEngineInstance.formElement.querySelector(selector`[data-formengine-input-name="${fieldName}"]`) as FormEngineFieldElement;
 
     if (field.dataset.config !== undefined) {
       const config = JSON.parse(field.dataset.config);
@@ -226,7 +227,7 @@ export default class FormEngineValidation {
         case 'range':
           if (value !== '') {
             if (rule.minItems || rule.maxItems) {
-              relatedField = formEngineFormElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
+              relatedField = formEngineInstance.formElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
               if (relatedField !== null) {
                 selected = Utility.trimExplode(',', relatedField.value).length;
               } else {
@@ -282,7 +283,7 @@ export default class FormEngineValidation {
         case 'select':
         case 'category':
           if (rule.minItems || rule.maxItems) {
-            relatedField = formEngineFormElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
+            relatedField = formEngineInstance.formElement.querySelector(selector`[name="${field.dataset.relatedfieldname}"]`) as FormEngineFieldElement;
             if (relatedField !== null) {
               selected = Utility.trimExplode(',', relatedField.value).length;
             } else if (field instanceof HTMLSelectElement) {
@@ -360,7 +361,7 @@ export default class FormEngineValidation {
     field.closest(FormEngineValidation.markerSelector)?.querySelector(FormEngineValidation.labelSelector)?.classList.toggle(FormEngineValidation.errorClass, !isValid);
 
     FormEngineValidation.markParentTab(field, isValid);
-    formEngineFormElement.dispatchEvent(new CustomEvent<PostValidationEvent>('t3-formengine-postfieldvalidation', { detail: { field: field, isValid: isValid }, cancelable: false, bubbles: true }));
+    formEngineInstance.formElement.dispatchEvent(new CustomEvent<PostValidationEvent>('t3-formengine-postfieldvalidation', { detail: { field: field, isValid: isValid }, cancelable: false, bubbles: true }));
   }
 
   public static processByEvals(config: FormEngineInputParams, value: string): string {
@@ -495,7 +496,7 @@ export default class FormEngineValidation {
    */
   public static validate(section?: Element): void {
     if (typeof section === 'undefined' || section instanceof Document) {
-      formEngineFormElement.querySelectorAll(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item').forEach((tabMenuItem: HTMLElement): void => {
+      formEngineInstance.formElement.querySelectorAll(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item').forEach((tabMenuItem: HTMLElement): void => {
         tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass)
       });
     }
@@ -571,7 +572,7 @@ export default class FormEngineValidation {
       }
 
       const id = pane.id;
-      formEngineFormElement
+      formEngineInstance.formElement
         .querySelector('[data-bs-target="#' + id + '"]')
         .closest('.t3js-tabmenu-item')
         .classList.toggle(FormEngineValidation.validationErrorClass, !isValid);
@@ -614,7 +615,7 @@ export default class FormEngineValidation {
   }
 
   public static registerSubmitCallback() {
-    const submitInterceptor = new SubmitInterceptor(formEngineFormElement);
+    const submitInterceptor = new SubmitInterceptor(formEngineInstance.formElement);
     submitInterceptor.addPreSubmitCallback((): boolean => {
       if (validationSuspended || FormEngineValidation.isValid()) {
         return true;

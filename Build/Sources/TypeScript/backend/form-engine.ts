@@ -1282,7 +1282,7 @@ export default (function() {
 
     DocumentService.ready().then((): void => {
       FormEngine.initializeEvents();
-      FormEngine.Validation.initialize(FormEngine.formElement);
+      FormEngine.Validation.initialize(this);
       FormEngine.reinitialize();
       $('#t3js-ui-block').remove();
 
