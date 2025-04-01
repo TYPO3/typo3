@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Fluid\ViewHelpers\Form;
 
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
 use TYPO3Fluid\Fluid\Core\ViewHelper\Exception;
 
@@ -329,6 +330,13 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
             }
             // @todo use $this->persistenceManager->isNewObject() once it is implemented
             if ($this->persistenceManager->getIdentifierByObject($valueElement) !== null) {
+                if ($valueElement instanceof DomainObjectInterface) {
+                    // We prefer to use the `getUid()` method because this returns the properly overlaid identifier (defaultLanguageRecordUid).
+                    // Otherwise, an identifier would contain '[defaultLanguageRecordUid]_[localizedRecordUid]'. This in turn
+                    // will not properly trigger the select option "is selected" comparison.
+                    // @see AbstractFormFieldViewHelper->convertToPlainValue()
+                    return $valueElement->getUid() ?? $this->persistenceManager->getIdentifierByObject($valueElement);
+                }
                 return $this->persistenceManager->getIdentifierByObject($valueElement);
             }
             if ($valueElement instanceof \BackedEnum) {
