@@ -314,6 +314,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.Textarea.label
+          description: formEditor.elements.Textarea.description
           group: input
           groupSorting: 200
           iconIdentifier: form-textarea

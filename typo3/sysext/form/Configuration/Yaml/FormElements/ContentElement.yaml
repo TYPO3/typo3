@@ -27,6 +27,7 @@ prototypes:
             properties:
               contentElementUid: ''
           label: formEditor.elements.ContentElement.label
+          description: formEditor.elements.ContentElement.description
           group: custom
           groupSorting: 700
           iconIdentifier: form-content-element

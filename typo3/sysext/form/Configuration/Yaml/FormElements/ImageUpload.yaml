@@ -153,6 +153,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.ImageUpload.label
+          description: formEditor.elements.ImageUpload.description
           group: custom
           groupSorting: 400
           iconIdentifier: form-image-upload

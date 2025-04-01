@@ -89,6 +89,7 @@ prototypes:
               templateName: Inspector-RemoveElementEditor
           predefinedDefaults: {  }
           label: formEditor.elements.Checkbox.label
+          description: formEditor.elements.Checkbox.description
           group: select
           groupSorting: 100
           iconIdentifier: form-checkbox

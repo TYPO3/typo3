@@ -1,7 +1,7 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
 <f:for each="{formEditorPartials}" key="formEditorTemplateName" as="formEditorPartial">
     <template data-template-name="{formEditorTemplateName}">
-        <f:render partial="{formEditorPartial}" arguments="{insertRenderablesPanelConfiguration: insertRenderablesPanelConfiguration}" />
+        <f:render partial="{formEditorPartial}" arguments="{elementsCategoriesJson: elementsCategoriesJson, pagesCategoriesJson: pagesCategoriesJson}" />
     </template>
 </f:for>
 </html>

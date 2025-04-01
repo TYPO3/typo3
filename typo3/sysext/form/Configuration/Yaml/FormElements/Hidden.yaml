@@ -64,6 +64,7 @@ prototypes:
           predefinedDefaults:
             defaultValue: ''
           label: formEditor.elements.Hidden.label
+          description: formEditor.elements.Hidden.description
           group: custom
           groupSorting: 300
           iconIdentifier: form-hidden

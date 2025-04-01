@@ -304,6 +304,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.Email.label
+          description: formEditor.elements.Email.description
           group: html5
           groupSorting: 100
           iconIdentifier: form-email

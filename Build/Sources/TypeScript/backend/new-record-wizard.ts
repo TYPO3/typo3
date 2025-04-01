@@ -23,7 +23,18 @@ import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 
-type RequestType = 'location'|'ajax'|'event'|undefined;
+type RequestType = 'location' | 'ajax' | 'event' | undefined;
+
+const booleanConverter = {
+  fromAttribute: (value: string | null) => {
+    if (value === null) {
+      return true;
+    }
+
+    return value.toLowerCase() === 'true';
+  },
+  toAttribute: (value: boolean) => (value ? 'true' : 'false'),
+}
 
 class Item {
   public visible: boolean = true;
@@ -38,7 +49,8 @@ class Item {
     public readonly defaultValues: Array<any>,
     public readonly saveAndClose: boolean,
     public readonly event: string | null,
-  ) { }
+  ) {
+  }
 
   public static fromData(data: DataItemInterface) {
     return new Item(
@@ -54,8 +66,7 @@ class Item {
     );
   }
 
-  public reset(): void
-  {
+  public reset(): void {
     this.visible = true;
   }
 }
@@ -67,7 +78,8 @@ export class Category {
     public readonly identifier: string,
     public readonly label: string,
     public readonly items: Item[],
-  ) { }
+  ) {
+  }
 
   public static fromData(data: DataCategoryInterface) {
     return new Category(
@@ -77,10 +89,11 @@ export class Category {
     );
   }
 
-  public reset(): void
-  {
+  public reset(): void {
     this.disabled = false;
-    this.items.forEach((item: Item): void => { item.reset(); });
+    this.items.forEach((item: Item): void => {
+      item.reset();
+    });
   }
 
   public activeItems(): Item[] {
@@ -91,7 +104,8 @@ export class Category {
 export class Categories {
   public constructor(
     public readonly items: Category[],
-  ) { }
+  ) {
+  }
 
   public static fromData(data: DataCategoriesInterface) {
     return new Categories(
@@ -99,9 +113,10 @@ export class Categories {
     );
   }
 
-  public reset(): void
-  {
-    this.items.forEach((item: Category): void => { item.reset(); });
+  public reset(): void {
+    this.items.forEach((item: Category): void => {
+      item.reset();
+    });
   }
 
   public categoriesWithItems(): Category[] {
@@ -165,7 +180,7 @@ export class NewRecordWizard extends LitElement {
 
       @container (min-width: 500px) {
         .main {
-            flex-direction: row;
+          flex-direction: row;
         }
       }
 
@@ -180,14 +195,14 @@ export class NewRecordWizard extends LitElement {
 
       @container (min-width: 500px) {
         .navigation {
-            flex-grow: 0;
-            width: 200px;
+          flex-grow: 0;
+          width: 200px;
         }
       }
 
       @container (min-width: 500px) {
         .navigation-toggle {
-            display: none !important;
+          display: none !important;
         }
       }
 
@@ -218,7 +233,7 @@ export class NewRecordWizard extends LitElement {
 
       @container (min-width: 500px) {
         .navigation-list {
-            display: flex;
+          display: flex;
         }
       }
 
@@ -281,15 +296,32 @@ export class NewRecordWizard extends LitElement {
         container-type: inline-size;
       }
 
-      .item-list {
+      .elementwizard-categories {
+        display: grid;
+        gap: var(--typo3-spacing);
+      }
+
+      .elementwizard-category-headline {
+        font-weight: bold;
+        color: var(--typo3-text-color-variant);
+        margin-bottom: calc(var(--typo3-spacing) / 2);
+      }
+
+      .elementwizard-category-items {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
         gap: var(--typo3-spacing);
       }
 
       @container (min-width: 500px) {
-        .item-list {
+        .elementwizard-category-items {
           grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @container (min-width: 750px) {
+        .elementwizard-category-items {
+          grid-template-columns: repeat(3, 1fr);
         }
       }
 
@@ -332,7 +364,8 @@ export class NewRecordWizard extends LitElement {
   ];
 
   @property({
-    type: Object, converter: {
+    type: Object,
+    converter: {
       fromAttribute: (value) => {
         const data: DataCategoriesInterface = JSON.parse(value);
         return Categories.fromData(data);
@@ -341,6 +374,14 @@ export class NewRecordWizard extends LitElement {
   }) categories: Categories = new Categories([]);
   @property({ type: String }) searchPlaceholder: string = 'newRecordWizard.filter.placeholder';
   @property({ type: String }) searchNothingFoundLabel: string = 'newRecordWizard.filter.noResults';
+  @property({
+    type: Boolean,
+    converter: booleanConverter
+  }) displayMenu: boolean = true;
+  @property({
+    type: Boolean,
+    converter: booleanConverter
+  }) displayFilter: boolean = true;
   @property({ type: String, attribute: false }) selectedCategory: Category | null = null;
   @property({ type: String, attribute: false }) searchTerm: string = '';
   @property({ type: Array, attribute: false }) messages: Message[] = [];
@@ -353,8 +394,11 @@ export class NewRecordWizard extends LitElement {
     link.setAttribute('href', TYPO3.settings.cssUrls.backend);
     this.shadowRoot.appendChild(link);
 
-    const filterField: HTMLInputElement = this.renderRoot.querySelector('input[name="search"]');
-    filterField.focus();
+    if (this.displayFilter === true) {
+      const filterField: HTMLInputElement = this.renderRoot.querySelector('input[name="search"]');
+      filterField.focus();
+    }
+
     this.selectAvailableCategory();
   }
 
@@ -392,7 +436,7 @@ export class NewRecordWizard extends LitElement {
       const categoryMatch: boolean = !(this.searchTerm !== '' && !RegExp(this.searchTerm, 'i').test(categoryText));
       if (!categoryMatch) {
         category.items.forEach((item: Item) => {
-          const text = item.label.trim().replace(/\s+/g, ' ') + item.description.trim().replace(/\s+/g, ' ');
+          const text = item.label.trim().replace(/\s+/g, ' ') + item.description?.trim().replace(/\s+/g, ' ');
           item.visible = !(this.searchTerm !== '' && !RegExp(this.searchTerm, 'i').test(text));
         });
       }
@@ -404,19 +448,20 @@ export class NewRecordWizard extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <div class="element">
-        ${this.renderFilter()}
+        ${this.displayFilter === true ? this.renderFilter() : nothing}
         ${this.renderMessages()}
         ${this.selectedCategory === null ? nothing : html`
-        <div class="main">
-          <div class="navigation">
-            ${this.renderNavigationToggle()}
-            ${this.renderNavigationList()}
+          <div class="main">
+            ${this.categories.items.length > 1 && this.displayMenu === true ? html`
+              <div class="navigation">
+                ${this.renderNavigationToggle()}
+                ${this.renderNavigationList()}
+              </div>` : nothing}
+            <div class="content">
+              ${this.renderCategories()}
+            </div>
           </div>
-          <div class="content">
-            ${this.renderCategories()}
-          </div>
-        </div>
-      `}
+        `}
       </div>
     `;
   }
@@ -487,16 +532,19 @@ export class NewRecordWizard extends LitElement {
   }
 
   protected renderCategory(category: Category): TemplateResult {
-    return html`${this.selectedCategory === category ?
+    return html`${(this.selectedCategory === category || this.displayMenu === false) && !category.disabled ?
       html`
-        <div class="item-list">
-          ${category.items.map((item: Item) => this.renderCategoryButton(item))}
+        <div class="elementwizard-category">
+          ${this.displayMenu === false ? html`<div class="elementwizard-category-headline">${category.label}</div>` : nothing}
+          <div class="elementwizard-category-items">
+            ${category.items.map((item: Item) => this.renderCategoryItem(item))}
+          </div>
         </div>` :
       nothing
     }`;
   }
 
-  protected renderCategoryButton(item: Item): TemplateResult {
+  protected renderCategoryItem(item: Item): TemplateResult {
     return html`${item.visible ?
       html`
       <button

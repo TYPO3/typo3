@@ -30,6 +30,7 @@ prototypes:
               previousButtonLabel: formEditor.elements.Page.editor.previousButtonLabel.value
               nextButtonLabel: formEditor.elements.Page.editor.nextButtonLabel.value
           label: formEditor.elements.Page.label
+          description: formEditor.elements.Page.description
           group: page
           groupSorting: 100
           _isTopLevelFormElement: true

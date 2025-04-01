@@ -114,6 +114,7 @@ prototypes:
             properties:
               options: {  }
           label: formEditor.elements.RadioButton.label
+          description: formEditor.elements.RadioButton.description
           group: select
           groupSorting: 300
           iconIdentifier: form-radio-button

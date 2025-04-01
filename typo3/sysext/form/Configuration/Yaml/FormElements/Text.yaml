@@ -374,6 +374,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.Text.label
+          description: formEditor.elements.Text.description
           group: input
           groupSorting: 100
           iconIdentifier: form-text

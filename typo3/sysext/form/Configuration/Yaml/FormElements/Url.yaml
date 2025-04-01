@@ -302,6 +302,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.Url.label
+          description: formEditor.elements.Url.description
           group: html5
           groupSorting: 300
           iconIdentifier: form-url

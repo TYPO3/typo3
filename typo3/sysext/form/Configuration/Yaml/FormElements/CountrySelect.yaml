@@ -110,6 +110,7 @@ prototypes:
             properties:
               options: {  }
           label: formEditor.elements.CountrySelect.label
+          description: formEditor.elements.CountrySelect.description
           group: select
           groupSorting: 200
           iconIdentifier: form-multi-select

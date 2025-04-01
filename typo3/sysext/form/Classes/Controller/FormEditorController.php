@@ -277,12 +277,12 @@ class FormEditorController extends ActionController
      * Prepare the formElements.*.formEditor section from the YAML settings.
      * Sort all formElements into groups and add additional data.
      */
-    protected function getInsertRenderablesPanelConfiguration(array $prototypeConfiguration, array $formElementsDefinition): array
+    protected function getInsertRenderablesPanelConfiguration(array $prototypeConfiguration, array $formElementsDefinition, bool $isInsertPages = false): array
     {
-        /** @var array<string, list<array<string, array{key: string, cssKey: string, label: string, sorting: int, iconIdentifier: string}>>> $formElementsByGroup */
+        /** @var array<string, list<array<string, array{key: string, cssKey: string, label: string, description: string, sorting: int, iconIdentifier: string}>>> $formElementsByGroup */
         $formElementsByGroup = [];
         foreach ($formElementsDefinition as $formElementName => $formElementConfiguration) {
-            if (!isset($formElementConfiguration['group'])) {
+            if (!isset($formElementConfiguration['group']) || ($isInsertPages && $formElementConfiguration['group'] !== 'page') || (!$isInsertPages && $formElementConfiguration['group'] === 'page')) {
                 continue;
             }
             if (!isset($formElementsByGroup[$formElementConfiguration['group']])) {
@@ -293,11 +293,13 @@ class FormEditorController extends ActionController
                 $prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
             $formElementsByGroup[$formElementConfiguration['group']][] = [
-                'key' => $formElementName,
-                'cssKey' => preg_replace('/[^a-z0-9]/', '-', strtolower($formElementName)),
+                'identifier' => $formElementName,
                 'label' => $formElementConfiguration['label'],
+                'description' => $formElementConfiguration['description'] ?? '',
+                'requestType' => 'event',
+                'event' => 'typo3:form:insert-element-click',
                 'sorting' => $formElementConfiguration['groupSorting'],
-                'iconIdentifier' => $formElementConfiguration['iconIdentifier'],
+                'icon' => $formElementConfiguration['iconIdentifier'],
             ];
         }
         $formGroups = [];
@@ -312,9 +314,9 @@ class FormEditorController extends ActionController
                 $groupConfiguration,
                 $prototypeConfiguration['formEditor']['translationFiles'] ?? []
             );
-            $formGroups[] = [
-                'key' => $groupName,
-                'elements' => $formElementsByGroup[$groupName],
+            $formGroups[$groupName] = [
+                'identifier' => $groupName,
+                'items' => $formElementsByGroup[$groupName],
                 'label' => $groupConfiguration['label'],
             ];
         }
@@ -412,7 +414,9 @@ class FormEditorController extends ActionController
         if (!isset($fluidConfiguration['partialRootPaths']) || !is_array($fluidConfiguration['partialRootPaths'])) {
             throw new RenderingException('The option partialRootPaths must be set.', 1480294722);
         }
-        $insertRenderablesPanelConfiguration = $this->getInsertRenderablesPanelConfiguration($prototypeConfiguration, $formEditorDefinitions['formElements']);
+
+        $elementsCategories = $this->getInsertRenderablesPanelConfiguration($prototypeConfiguration, $formEditorDefinitions['formElements']);
+        $pagesCategories = $this->getInsertRenderablesPanelConfiguration($prototypeConfiguration, $formEditorDefinitions['formElements'], true);
         $viewFactoryData = new ViewFactoryData(
             templatePathAndFilename: $fluidConfiguration['templatePathAndFilename'],
             partialRootPaths: $fluidConfiguration['partialRootPaths'],
@@ -421,7 +425,8 @@ class FormEditorController extends ActionController
         );
         $view = $this->viewFactory->create($viewFactoryData);
         $view->assignMultiple([
-            'insertRenderablesPanelConfiguration' => $insertRenderablesPanelConfiguration,
+            'elementsCategoriesJson' => GeneralUtility::jsonEncodeForHtmlAttribute($elementsCategories, false),
+            'pagesCategoriesJson' => GeneralUtility::jsonEncodeForHtmlAttribute($pagesCategories, false),
             'formEditorPartials' => $formEditorPartials,
         ]);
         return $view->render();

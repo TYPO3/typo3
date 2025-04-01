@@ -81,50 +81,59 @@ final class FormEditorControllerTest extends FunctionalTestCase
                 'groupSorting' => 110,
                 'iconIdentifier' => 'form-password',
                 'label' => 'Password label',
+                'description' => 'Password description',
             ],
             'Text' => [
                 'group' => 'input',
                 'groupSorting' => 100,
                 'iconIdentifier' => 'form-text',
                 'label' => 'Text label',
+                'description' => 'Text description',
             ],
             'SingleSelect' => [
                 'group' => 'select',
                 'groupSorting' => 100,
                 'iconIdentifier' => 'form-single-select',
                 'label' => 'Single select label',
+                'description' => 'Single select description',
             ],
         ];
         $expected = [
-            0 => [
-                'key' => 'input',
-                'elements' => [
+            'input' => [
+                'identifier' => 'input',
+                'items' => [
                     0 => [
-                        'key' => 'Text',
-                        'cssKey' => 'text',
+                        'identifier' => 'Text',
                         'label' => 'Text label',
+                        'description' => 'Text description',
+                        'requestType' => 'event',
+                        'event' => 'typo3:form:insert-element-click',
                         'sorting' => 100,
-                        'iconIdentifier' => 'form-text',
+                        'icon' => 'form-text',
                     ],
                     1 => [
-                        'key' => 'Password',
-                        'cssKey' => 'password',
+                        'identifier' => 'Password',
                         'label' => 'Password label',
+                        'description' => 'Password description',
+                        'requestType' => 'event',
+                        'event' => 'typo3:form:insert-element-click',
                         'sorting' => 110,
-                        'iconIdentifier' => 'form-password',
+                        'icon' => 'form-password',
                     ],
                 ],
                 'label' => 'Basic elements',
             ],
-            1 => [
-                'key' => 'select',
-                'elements' => [
+            'select' => [
+                'identifier' => 'select',
+                'items' => [
                     0 => [
-                        'key' => 'SingleSelect',
-                        'cssKey' => 'singleselect',
+                        'identifier' => 'SingleSelect',
                         'label' => 'Single select label',
+                        'description' => 'Single select description',
+                        'requestType' => 'event',
+                        'event' => 'typo3:form:insert-element-click',
                         'sorting' => 100,
-                        'iconIdentifier' => 'form-single-select',
+                        'icon' => 'form-single-select',
                     ],
                 ],
                 'label' => 'Select elements',
