@@ -67,8 +67,8 @@ class RelativeCssPathFixer
         foreach ($matches[2] as $matchCount => $match) {
             // remove '," or white-spaces around
             $match = trim($match, '\'" ');
-            // we must not rewrite paths containing ":" or "url(", e.g. data URIs (see RFC 2397)
-            if (!str_contains($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
+            // we must not rewrite paths starting with "#", containing ":" or "url(", e.g. data URIs (see RFC 2397)
+            if (!str_starts_with($match, '#') && !str_contains($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
                 $newPath = GeneralUtility::resolveBackPath($newDir . $match);
                 $replacements[$matches[1][$matchCount]] = $wrapParts[0] . $newPath . $wrapParts[1];
             }
