@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Clipboard;
 
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Clipboard\Type\CountMode;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
@@ -560,12 +561,16 @@ class Clipboard
         string $table,
         $reference,
         string $type,
+        CountMode $countMode = CountMode::CURRENT,
     ): string {
         if (!$this->getBackendUser()->jsConfirmation(JsConfirmation::COPY_MOVE_PASTE)) {
             return '';
         }
 
-        $selectedElements = $this->elFromTable($table);
+        $selectedElements = match ($countMode) {
+            CountMode::CURRENT => $this->elFromTable($table),
+            CountMode::ALL => $this->elFromTable(),
+        };
 
         $labelKey = 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:mess.'
             . ($this->currentMode() === 'copy' ? 'copy' : 'move')
