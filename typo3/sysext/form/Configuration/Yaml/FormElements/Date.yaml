@@ -347,6 +347,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.Date.label
+          description: formEditor.elements.Date.description
           group: html5
           groupSorting: 500
           iconIdentifier: form-date-picker

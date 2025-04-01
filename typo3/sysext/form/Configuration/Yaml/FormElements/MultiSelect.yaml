@@ -158,6 +158,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.MultiSelect.label
+          description: formEditor.elements.MultiSelect.description
           group: select
           groupSorting: 500
           iconIdentifier: form-multi-select

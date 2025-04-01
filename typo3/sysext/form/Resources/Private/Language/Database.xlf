@@ -973,6 +973,9 @@
 			<trans-unit id="formEditor.elements.Page.label" xml:space="preserve">
 				<source>Step</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Page.description" xml:space="preserve">
+				<source>A form step that can be customized with various elements</source>
+			</trans-unit>
 			<trans-unit id="formEditor.elements.Page.editor.label.label" xml:space="preserve">
 				<source>Step name</source>
 			</trans-unit>
@@ -991,6 +994,9 @@
 
 			<trans-unit id="formEditor.elements.SummaryPage.label" xml:space="preserve">
 				<source>Summary step</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.SummaryPage.description" xml:space="preserve">
+				<source>A form step that displays all entered values for review before submission</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.SummaryPage.editor.label.label" xml:space="preserve">
 				<source>Step name</source>
@@ -1011,12 +1017,18 @@
 			<trans-unit id="formEditor.elements.Fieldset.label" xml:space="preserve">
 				<source>Fieldset</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Fieldset.description" xml:space="preserve">
+				<source>A container used to group related form elements, improving accessibility and providing content-based structure</source>
+			</trans-unit>
 			<trans-unit id="formEditor.elements.Fieldset.editor.label.label" xml:space="preserve">
 				<source>Fieldset name</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.elements.GridRow.label" xml:space="preserve">
 				<source>Grid: Row</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.GridRow.description" xml:space="preserve">
+				<source>A container element for arranging fields side by side, providing visual structuring</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.GridRow.editor.label.label" xml:space="preserve">
 				<source>Row name (not visible within frontend)</source>
@@ -1025,21 +1037,36 @@
 			<trans-unit id="formEditor.elements.Text.label" xml:space="preserve">
 				<source>Text</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Text.description" xml:space="preserve">
+				<source>A single-line text field</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.elements.Email.label" xml:space="preserve">
 				<source>Email address</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.Email.description" xml:space="preserve">
+				<source>A text field for inputting an email address</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.elements.Telephone.label" xml:space="preserve">
 				<source>Telephone number</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Telephone.description" xml:space="preserve">
+				<source>A text field for inputting a phone number</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.elements.Url.label" xml:space="preserve">
 				<source>URL</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Url.description" xml:space="preserve">
+				<source>A text field for inputting a URL</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.elements.Number.label" xml:space="preserve">
 				<source>Number</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.Number.description" xml:space="preserve">
+				<source>A text field for inputting numbers, with browser controls to adjust the value in predefined steps</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.Number.editor.validators.Number.label" xml:space="preserve">
 				<source>Number</source>
@@ -1047,6 +1074,9 @@
 
 			<trans-unit id="formEditor.elements.Date.label" xml:space="preserve">
 				<source>Date</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.Date.description" xml:space="preserve">
+				<source>A text field for inputting a date in a single line</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.Date.editor.defaultValue.placeholder" xml:space="preserve">
 				<source>A date in format Y-m-d (e.g 2018-03-17)</source>
@@ -1079,8 +1109,14 @@
 			<trans-unit id="formEditor.elements.Password.label" xml:space="preserve">
 				<source>Password</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Password.description" xml:space="preserve">
+				<source>A text field for entering a password</source>
+			</trans-unit>
 			<trans-unit id="formEditor.elements.AdvancedPassword.label" xml:space="preserve">
 				<source>Advanced password</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.AdvancedPassword.description" xml:space="preserve">
+				<source>A text field for entering and confirming a password</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.elements.AdvancedPassword.editor.confirmationLabel.label" xml:space="preserve">
@@ -1093,33 +1129,57 @@
 			<trans-unit id="formEditor.elements.Textarea.label" xml:space="preserve">
 				<source>Textarea</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Textarea.description" xml:space="preserve">
+				<source>A multi-line text field for entering extended or continuous text</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.elements.Checkbox.label" xml:space="preserve">
 				<source>Checkbox</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.Checkbox.description" xml:space="preserve">
+				<source>An element for creating a single checkbox</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.elements.CountrySelect.label" xml:space="preserve">
 				<source>Country select</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.CountrySelect.description" xml:space="preserve">
+				<source>An element to select a country</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.elements.MultiCheckbox.label" xml:space="preserve">
 				<source>Multi checkbox</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.MultiCheckbox.description" xml:space="preserve">
+				<source>An element for creating multiple checkboxes</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.elements.MultiSelect.label" xml:space="preserve">
 				<source>Multi select</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.MultiSelect.description" xml:space="preserve">
+				<source>An element for creating a field that allows multiple selections</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.elements.RadioButton.label" xml:space="preserve">
 				<source>Radio button</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.RadioButton.description" xml:space="preserve">
+				<source>An element for displaying one or more radio buttons</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.elements.SingleSelect.label" xml:space="preserve">
 				<source>Single select</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.SingleSelect.description" xml:space="preserve">
+				<source>An element for creating a dropdown list for selecting a single option</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.elements.DatePicker.label" xml:space="preserve">
 				<source>Date picker (jQuery)</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.DatePicker.description" xml:space="preserve">
+				<source>A text field for selecting a date via a calendar interface</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.DatePicker.editor.dateFormat.label" xml:space="preserve">
 				<source>Date format</source>
@@ -1152,6 +1212,9 @@
 			<trans-unit id="formEditor.elements.StaticText.label" xml:space="preserve">
 				<source>Static text</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.StaticText.description" xml:space="preserve">
+				<source>A field for unformatted text</source>
+			</trans-unit>
 			<trans-unit id="formEditor.elements.StaticText.editor.label.label" xml:space="preserve">
 				<source>Header</source>
 			</trans-unit>
@@ -1162,12 +1225,18 @@
 			<trans-unit id="formEditor.elements.Hidden.label" xml:space="preserve">
 				<source>Hidden</source>
 			</trans-unit>
+			<trans-unit id="formEditor.elements.Hidden.description" xml:space="preserve">
+				<source>A field that is not displayed in the frontend</source>
+			</trans-unit>
 			<trans-unit id="formEditor.elements.Hidden.editor.defaultValue.label" xml:space="preserve">
 				<source>Value</source>
 			</trans-unit>
 
 			<trans-unit id="formEditor.elements.ContentElement.label" xml:space="preserve">
 				<source>Content element</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.ContentElement.description" xml:space="preserve">
+				<source>A field for displaying any content element from your website</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.ContentElement.selectContentElement" xml:space="preserve">
 				<source>No content element selected</source>
@@ -1182,6 +1251,9 @@
 
 			<trans-unit id="formEditor.elements.FileUpload.label" xml:space="preserve">
 				<source>File upload</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.FileUpload.description" xml:space="preserve">
+				<source>An element for uploading a file</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.FileUpload.editor.allowedMimeTypes.label" xml:space="preserve">
 				<source>Allowed file mime types</source>
@@ -1216,6 +1288,9 @@ If you need higher values contact your administrator for help.
 
 			<trans-unit id="formEditor.elements.ImageUpload.label" xml:space="preserve">
 				<source>Image upload</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.ImageUpload.description" xml:space="preserve">
+				<source>An element for uploading an image</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.ImageUpload.editor.allowedMimeTypes.label" xml:space="preserve">
 				<source>Allowed file mime types</source>
@@ -1274,6 +1349,20 @@ If you need higher values contact your administrator for help.
 			</trans-unit>
 			<trans-unit id="formEditor.inspector.editor.grid.remove" xml:space="preserve">
 				<source>Remove this row</source>
+			</trans-unit>
+
+			<trans-unit id="formEditor.modals.insertElements.filter.noResults">
+				<source>Unfortunately no element type matches your query, please try a different one.</source>
+			</trans-unit>
+			<trans-unit id="formEditor.modals.insertElements.filter.placeholder">
+				<source>Search for any element type</source>
+			</trans-unit>
+
+			<trans-unit id="formEditor.modals.newPages.filter.noResults">
+				<source>Unfortunately no step type matches your query, please try a different one.</source>
+			</trans-unit>
+			<trans-unit id="formEditor.modals.newPages.filter.placeholder">
+				<source>Search for any step type</source>
 			</trans-unit>
 		</body>
 	</file>

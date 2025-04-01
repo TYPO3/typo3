@@ -119,6 +119,7 @@ prototypes:
               enableDatePicker: true
               displayTimeSelector: false
           label: formEditor.elements.DatePicker.label
+          description: formEditor.elements.DatePicker.description
           group: custom
           groupSorting: 200
           iconIdentifier: form-date-picker

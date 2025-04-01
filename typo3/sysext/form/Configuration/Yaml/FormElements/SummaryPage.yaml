@@ -30,6 +30,7 @@ prototypes:
               previousButtonLabel: formEditor.elements.SummaryPage.editor.previousButtonLabel.value
               nextButtonLabel: formEditor.elements.SummaryPage.editor.nextButtonLabel.value
           label: formEditor.elements.SummaryPage.label
+          description: formEditor.elements.SummaryPage.description
           group: page
           groupSorting: 200
           _isTopLevelFormElement: true

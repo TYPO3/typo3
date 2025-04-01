@@ -45,6 +45,7 @@ prototypes:
               templateName: Inspector-RemoveElementEditor
           predefinedDefaults: {  }
           label: formEditor.elements.Fieldset.label
+          description: formEditor.elements.Fieldset.description
           group: container
           groupSorting: 100
           _isCompositeFormElement: true

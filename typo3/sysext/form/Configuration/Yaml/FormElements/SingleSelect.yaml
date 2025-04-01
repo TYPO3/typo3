@@ -121,6 +121,7 @@ prototypes:
             properties:
               options: {  }
           label: formEditor.elements.SingleSelect.label
+          description: formEditor.elements.SingleSelect.description
           group: select
           groupSorting: 200
           iconIdentifier: form-single-select

@@ -1,21 +1,8 @@
 <html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:formvh="http://typo3.org/ns/TYPO3/CMS/Form/ViewHelpers" data-namespace-typo3-fluid="true">
-<div id="t3-form-insert-elements-panel">
-    <f:for each="{insertRenderablesPanelConfiguration}" as="insertRenderablePanelConfiguration">
-        <f:if condition="{insertRenderablePanelConfiguration.key} != 'page'">
-            <h2 class="h3 t3-form-group-{insertRenderablePanelConfiguration.key}">
-                <span>{insertRenderablePanelConfiguration.label}</span>
-            </h2>
-            <div class="row">
-                <f:for each="{insertRenderablePanelConfiguration.elements}" as="element">
-                    <div class="col-4 mb-3">
-                        <button type="button" class="t3-form-group-{insertRenderablePanelConfiguration.key} t3-form-type-{element.cssKey} btn btn-default btn-block btn-align-start" title="{element.key}" data-element-type="{element.key}">
-                            <core:icon identifier="{element.iconIdentifier}" alternativeMarkupIdentifier="inline" />
-                            <span>{element.label}</span>
-                        </button>
-                    </div>
-                </f:for>
-            </div>
-        </f:if>
-    </f:for>
-</div>
+<typo3-backend-new-record-wizard
+    displaymenu="false"
+    categories="{elementsCategoriesJson}"
+    searchplaceholder="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.modals.insertElements.filter.placeholder')}"
+    searchnothingfoundlabel="{f:translate(key: 'LLL:EXT:form/Resources/Private/Language/Database.xlf:formEditor.modals.insertElements.filter.noResults')}"
+></typo3-backend-new-record-wizard>
 </html>

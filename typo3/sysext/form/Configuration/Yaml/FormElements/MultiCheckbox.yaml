@@ -149,6 +149,7 @@ prototypes:
                     identifier: removeButton
                     templateName: Inspector-RemoveElementEditor
           label: formEditor.elements.MultiCheckbox.label
+          description: formEditor.elements.MultiCheckbox.description
           group: select
           groupSorting: 400
           iconIdentifier: form-multi-checkbox

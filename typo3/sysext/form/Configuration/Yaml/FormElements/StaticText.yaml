@@ -24,6 +24,7 @@ prototypes:
             properties:
               text: ''
           label: formEditor.elements.StaticText.label
+          description: formEditor.elements.StaticText.description
           group: custom
           groupSorting: 600
           iconIdentifier: form-static-text
