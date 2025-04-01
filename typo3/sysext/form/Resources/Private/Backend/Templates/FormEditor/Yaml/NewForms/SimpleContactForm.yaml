@@ -28,6 +28,7 @@ renderables:
 
     renderables:
       -
+        defaultValue: ''
         identifier: name
         label: 'Name'
         type: Text
@@ -35,22 +36,24 @@ renderables:
           fluidAdditionalAttributes:
             placeholder: 'Name'
             autocomplete: name
-        defaultValue: ''
+            required: required
         validators:
           -
             identifier: NotEmpty
       -
+        defaultValue: ''
         identifier: subject
         label: 'Subject'
         type: Text
         properties:
           fluidAdditionalAttributes:
             placeholder: 'Subject'
-        defaultValue: ''
+            required: required
         validators:
           -
             identifier: NotEmpty
       -
+        defaultValue: ''
         identifier: email
         label: 'Email'
         type: Email
@@ -58,20 +61,21 @@ renderables:
           fluidAdditionalAttributes:
             placeholder: 'Email address'
             autocomplete: email
-        defaultValue: ''
+            required: required
         validators:
           -
             identifier: NotEmpty
           -
             identifier: EmailAddress
       -
+        defaultValue: ''
         identifier: message
         label: 'Message'
         type: Textarea
         properties:
           fluidAdditionalAttributes:
             placeholder: ''
-        defaultValue: ''
+            required: required
         validators:
           -
             identifier: NotEmpty
