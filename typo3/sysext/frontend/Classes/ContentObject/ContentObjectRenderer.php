@@ -941,8 +941,12 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 ];
                 $url = $this->cObjGetSingle('IMG_RESOURCE', $imgResourceConf);
                 if (!$url) {
-                    // If no imagemagick / gm is available
-                    $url = $imageFile;
+                    // Either imagemagick/gm is not available or image URL could not be resolved due to invalid image file
+                    if ($imageFile instanceof File || $imageFile instanceof FileReference) {
+                        $url = $imageFile->getPublicUrl();
+                    } else {
+                        $url = $imageFile;
+                    }
                 }
             }
             $target = (string)$this->stdWrapValue('target', $conf ?? []);
