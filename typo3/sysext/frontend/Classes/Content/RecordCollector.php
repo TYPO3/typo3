@@ -79,6 +79,10 @@ readonly class RecordCollector
                 $again = $select['pidInList'] !== '';
             }
         } while ($again && $slide && ($recordsOnPid === [] || $collect));
+
+        foreach ($totalRecords as $record) {
+            $contentObjectRenderer->lastChanged($record);
+        }
         return $totalRecords;
     }
 }
