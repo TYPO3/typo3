@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Form\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\Yaml\Yaml;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
@@ -44,6 +43,7 @@ use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
 use TYPO3\CMS\Form\Exception as FormException;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\Exception\PersistenceManagerException;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
@@ -72,6 +72,7 @@ class FormManagerController extends ActionController
         protected readonly TranslationService $translationService,
         protected readonly CharsetConverter $charsetConverter,
         protected readonly UriBuilder $coreUriBuilder,
+        protected readonly YamlSource $yamlSource,
     ) {}
 
     /**
@@ -146,7 +147,7 @@ class FormManagerController extends ActionController
             throw new FormException('No form name', 1472312204);
         }
         $templatePath = GeneralUtility::getFileAbsFileName($templatePath);
-        $form = Yaml::parse((string)file_get_contents($templatePath));
+        $form = $this->yamlSource->load([$templatePath]);
         $form['label'] = $formName;
         $form['identifier'] = $this->formPersistenceManager->getUniqueIdentifier($formSettings, $this->convertFormNameToIdentifier($formName));
         $form['prototypeName'] = $prototypeName;

@@ -1,0 +1,7 @@
+module.tx_form {
+    settings {
+        yamlConfigurations {
+            100 = EXT:form/Tests/Functional/Controller/Fixtures/FormSetup.yaml
+        }
+    }
+}

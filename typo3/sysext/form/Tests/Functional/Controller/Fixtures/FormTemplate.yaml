@@ -1,0 +1,3 @@
+type: 'Form env:%env(FORM_ENV)%'
+identifier: 'formTemplate'
+label: '[Form Template]'

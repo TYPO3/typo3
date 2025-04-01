@@ -1,0 +1,6 @@
+formManager:
+  selectablePrototypesConfiguration:
+    - identifier: standard
+      newFormTemplates:
+        - templatePath: EXT:form/Tests/Functional/Controller/Fixtures/FormTemplate.yaml
+          label: Test Form Template

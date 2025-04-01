@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Form\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\Routing\Route as SymfonyRoute;
+use TYPO3\CMS\Backend\Routing\Route as BackendRoute;
+use TYPO3\CMS\Backend\Routing\Router;
 use TYPO3\CMS\Backend\Routing\UriBuilder as CoreUriBuilder;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
@@ -29,6 +32,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Extbase\Core\Bootstrap;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder as ExtbaseUriBuilder;
@@ -37,6 +41,7 @@ use TYPO3\CMS\Form\Event\BeforeFormIsCreatedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDeletedEvent;
 use TYPO3\CMS\Form\Event\BeforeFormIsDuplicatedEvent;
 use TYPO3\CMS\Form\Mvc\Configuration\ConfigurationManagerInterface as ExtFormConfigurationManagerInterface;
+use TYPO3\CMS\Form\Mvc\Configuration\YamlSource;
 use TYPO3\CMS\Form\Mvc\Persistence\FormPersistenceManagerInterface;
 use TYPO3\CMS\Form\Service\DatabaseService;
 use TYPO3\CMS\Form\Service\TranslationService;
@@ -50,6 +55,12 @@ final class FormManagerControllerTest extends FunctionalTestCase
 
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/form/Tests/Functional/Controller/Fixtures/Folders/fileadmin/form_definitions' => 'fileadmin/form_definitions',
+    ];
+
+    protected array $configurationToUseInTestInstance = [
+        'FE' => [
+            'defaultTypoScript_setup' => '@import "EXT:form/Tests/Functional/Controller/Fixtures/formSetup.typoscript"',
+        ],
     ];
 
     #[Test]
@@ -69,6 +80,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
 
@@ -134,6 +146,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $translationServiceMock,
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
 
@@ -192,6 +205,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         $formPersistenceManagerMock->method('listForms')->willReturn([
@@ -251,6 +265,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         self::assertTrue($subjectMock->_call(
@@ -296,6 +311,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         self::assertFalse(
@@ -343,6 +359,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->createMock(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         self::assertFalse(
@@ -400,6 +417,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         $input = 'test form';
@@ -423,6 +441,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         $input = 'téstform';
@@ -446,6 +465,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         $input = 'test form ' . hex2bin('667275cc88686e65757a6569746c696368656e');
@@ -469,6 +489,7 @@ final class FormManagerControllerTest extends FunctionalTestCase
                 $this->createMock(TranslationService::class),
                 $this->get(CharsetConverter::class),
                 $this->createMock(CoreUriBuilder::class),
+                $this->createMock(YamlSource::class),
             ],
         );
         $input = 'test form ä#!_-01';
@@ -632,5 +653,47 @@ final class FormManagerControllerTest extends FunctionalTestCase
         self::assertInstanceOf(BeforeFormIsDuplicatedEvent::class, $state['before-form-duplicated-listener']);
         self::assertEquals('1:/form_definitions/duplicated_form.form.yaml', $state['before-form-duplicated-listener']->formPersistenceIdentifier);
         self::assertEquals('bar', $state['before-form-duplicated-listener']->form['label']);
+    }
+
+    #[Test]
+    public function formIsCreatedFromTemplateWithEnvSubstitution(): void
+    {
+        $testEnv = 'TEST';
+        putenv('FORM_ENV=' . $testEnv);
+        $route = $this->createBackendRouteFromSymfonyRoute(
+            $this->get(Router::class)->getRoute('web_FormFormbuilder.FormManager_create')
+        );
+        $serverRequest = (new ServerRequest())
+            ->withMethod('POST')
+            ->withParsedBody([
+                'formName' => 'testform',
+                'templatePath' => 'EXT:form/Tests/Functional/Controller/Fixtures/FormTemplate.yaml',
+                'prototypeName' => 'standard',
+                'savePath' => '1:/form_definitions/',
+            ])
+            ->withAttribute('route', $route)
+            ->withAttribute('module', $route->getOption('module'))
+            ->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+
+        $bootstrap = $this->get(Bootstrap::class);
+        $result = $bootstrap->handleBackendRequest($serverRequest);
+        $status = json_decode((string)$result->getBody(), true)['status'] ?? null;
+        $targetFilePath = $this->instancePath . '/fileadmin/form_definitions/testform.form.yaml';
+
+        self::assertSame('success', $status);
+        self::assertFileExists($targetFilePath);
+        self::assertStringContainsString('Form env:' . $testEnv, file_get_contents($targetFilePath));
+    }
+
+    /**
+     * @todo this transformation should be in Backend\Routing\Route::fromSymfonyRoute
+     * @see https://review.typo3.org/c/Packages/TYPO3.CMS/+/90148
+     */
+    private function createBackendRouteFromSymfonyRoute(SymfonyRoute $symfonyRoute): BackendRoute
+    {
+        $symfonyRouteOptions = $symfonyRoute->getOptions();
+        $symfonyRouteOptions['_identifier'] = 'web_FormFormbuilder.FormManager_create';
+        unset($symfonyRouteOptions['methods']);
+        return new BackendRoute($symfonyRoute->getPath(), $symfonyRouteOptions);
     }
 }
