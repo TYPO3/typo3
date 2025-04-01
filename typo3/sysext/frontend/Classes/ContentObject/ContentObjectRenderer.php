@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\Record;
+use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Html\HtmlCropper;
 use TYPO3\CMS\Core\Html\HtmlParser;
@@ -1030,15 +1032,21 @@ class ContentObjectRenderer implements LoggerAwareInterface
      * The SYS_LASTCHANGED timestamp can be used by various caching/indexing applications to determine if the page has new content.
      * Therefore you should call this function with the last-changed timestamp of any element you display.
      *
-     * @param int $tstamp Unix timestamp (number of seconds since 1970)
+     * @param RecordInterface|int|string|float|null $item a record objet or a Unix timestamp (number of seconds since 1970)
      * @see TypoScriptFrontendController::setSysLastChanged()
      */
-    public function lastChanged($tstamp)
+    public function lastChanged(RecordInterface|int|string|float|null $item)
     {
-        $tstamp = (int)$tstamp;
+        if (MathUtility::canBeInterpretedAsInteger($item)) {
+            $item = (int)$item;
+        } elseif ($item instanceof Record) {
+            $item = $item->getSystemProperties()->getLastUpdatedAt()->getTimestamp();
+        } else {
+            $item = 0;
+        }
         $tsfe = $this->getTypoScriptFrontendController();
-        if ($tstamp > (int)($tsfe->register['SYS_LASTCHANGED'] ?? 0)) {
-            $tsfe->register['SYS_LASTCHANGED'] = $tstamp;
+        if ($item > (int)($tsfe->register['SYS_LASTCHANGED'] ?? 0)) {
+            $tsfe->register['SYS_LASTCHANGED'] = $item;
         }
     }
 
