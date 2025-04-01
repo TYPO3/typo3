@@ -195,7 +195,7 @@ class RecordListController
             $searchBoxHtml = $this->renderSearchBox($request, $dbList, $this->searchTerm, $search_levels);
         }
         $clipboardHtml = '';
-        if ($this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
+        if ($this->allowClipboard && $this->moduleData->get('clipBoard') && ($tableListHtml || $clipboard->hasElements())) {
             $clipboardHtml = '<hr class="spacer"><typo3-backend-clipboard-panel return-url="' . htmlspecialchars($dbList->listURL()) . '"></typo3-backend-clipboard-panel>';
         }
 
