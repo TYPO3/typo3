@@ -130,7 +130,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   describe('tests for formatValue', () => {
     using(formatValueDataProvider, function(testCase: FormatValueData) {
       it(testCase.description, () => {
-        FormEngineValidation.initialize(document.createElement('form'));
         const result = FormEngineValidation.formatValue(testCase.type, testCase.value);
         expect(result).to.equal(testCase.result);
       });
@@ -173,7 +172,6 @@ describe('TYPO3/CMS/Backend/FormEngineValidationTest:', () => {
   describe('tests for invalid value to formatValue', () => {
     using(formatInvalidValueDataProvider, function(testCase: FormatInvalidValueData) {
       it(testCase.description, () => {
-        FormEngineValidation.initialize(document.createElement('form'));
         expect(() => FormEngineValidation.formatValue(testCase.type, testCase.value)).to.throw();
       });
     });
