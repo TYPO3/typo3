@@ -5654,7 +5654,7 @@ content="benni">',
             'bodyTag' => '<body style="margin:0; background:#fff;">',
             'title' => 'My Title',
             'wrap' => '<div class="my-wrap">|</div>',
-            'crop' => '{"default":{"cropArea":{"x":0,"y":0,"width":1,"height":1},"selectedRatio":"NaN","focusArea":null}}',
+            'crop' => '{"x":0,"y":0,"width":1024,"height":683}',
         ];
         $parameterConfiguration = array_replace($defaultConfiguration, $parameters);
         $expectedParameters = $parameters;

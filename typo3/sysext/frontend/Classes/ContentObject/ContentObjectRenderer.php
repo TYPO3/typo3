@@ -941,7 +941,7 @@ class ContentObjectRenderer
 
         // Create imageFileLink if not created with typolink
         if ($content === $string && $file !== null) {
-            $parameterNames = ['width', 'height', 'effects', 'bodyTag', 'title', 'wrap', 'crop'];
+            $parameterNames = ['width', 'height', 'effects', 'bodyTag', 'title', 'wrap', 'crop', 'cropVariant'];
             $parameters = [];
             $sample = $this->stdWrapValue('sample', $conf);
             if ($sample) {
@@ -955,6 +955,17 @@ class ContentObjectRenderer
                     $parameters[$parameterName] = $conf[$parameterName];
                 }
             }
+
+            $cropString = $parameters['crop'] ?? '';
+            if (!$cropString && $imageFile instanceof FileReference && $imageFile->hasProperty('crop') && $imageFile->getProperty('crop')) {
+                $cropString = $imageFile->getProperty('crop');
+            }
+            $cropVariantCollection = CropVariantCollection::create((string)$cropString);
+            $cropVariant = ($parameters['cropVariant'] ?? null) ?: 'default';
+            $cropArea = $cropVariantCollection->getCropArea($cropVariant);
+            $conf['crop'] = $cropArea->isEmpty() ? null : $cropArea->makeAbsoluteBasedOnFile($file);
+            $parameters['crop'] = json_encode($cropArea->makeAbsoluteBasedOnFile($file)->asArray());
+
             $parametersEncoded = base64_encode((string)json_encode($parameters));
             $hmac = $this->hashService->hmac(implode('|', [$file->getUid(), $parametersEncoded]), 'tx_cms_showpic', HashAlgo::SHA3_256);
             $params = '&md5=' . $hmac;
