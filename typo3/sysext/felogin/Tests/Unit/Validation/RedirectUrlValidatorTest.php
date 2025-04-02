@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\FrontendLogin\Tests\Unit\Validation;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -146,6 +147,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
 
     #[DataProvider('validateRedirectUrlKeepsCleanUrlDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function validateRedirectUrlKeepsCleanUrl(string $url): void
     {
         Environment::initialize(
@@ -183,6 +185,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
 
     #[DataProvider('validateRedirectUrlClearsInvalidUrlInSubdirectoryDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function validateRedirectUrlClearsInvalidUrlInSubdirectory(string $url): void
     {
         GeneralUtility::flushInternalRuntimeCaches();
@@ -213,6 +216,7 @@ final class RedirectUrlValidatorTest extends UnitTestCase
 
     #[DataProvider('validateRedirectUrlKeepsCleanUrlInSubdirectoryDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function validateRedirectUrlKeepsCleanUrlInSubdirectory(string $url): void
     {
         Environment::initialize(

@@ -78,7 +78,7 @@ class PathUtility
             }
         } else {
             // Make an absolute path out of it
-            $targetPath = GeneralUtility::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $targetPath);
+            $targetPath = self::dirname(Environment::getCurrentScript()) . '/' . $targetPath;
             $targetPath = self::stripPathSitePrefix($targetPath);
         }
 

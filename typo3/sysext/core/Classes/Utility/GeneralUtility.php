@@ -1910,9 +1910,11 @@ class GeneralUtility
      * For example "fileadmin/directory/../other_directory/" will be resolved to "fileadmin/other_directory/"
      *
      * @param string $pathStr File path in which "/../" is resolved
+     * @deprecated will be made protected in TYPO3 v15.0, as it is only used internally then.
      */
     public static function resolveBackPath(string $pathStr): string
     {
+        trigger_error('GeneralUtility::resolveBackPath() will be removed in TYPO3 v15.0. Avoid working with relative paths as TYPO3 will not canonicalize them anymore.', E_USER_DEPRECATED);
         if (!str_contains($pathStr, '..')) {
             return $pathStr;
         }
@@ -2039,22 +2041,11 @@ class GeneralUtility
         $lookupFile = explode('?', $file);
         $path = $lookupFile[0];
 
-        // @todo: in v13 this should be resolved by using Environment::getPublicPath() only
-        if ($isFrontend) {
-            // Since frontend should still allow absolute web paths (= absolute to TYPO3's web dir),
-            // there is no way to differentiate between those paths and "real" absolute paths (= from
-            // the file system) without checking for the file's existence
-            // see #98106
-            if (file_exists($path)) {
-                $path = self::resolveBackPath($path);
-            } else {
-                // Prepend absolute web paths with TYPO3's web dir (= the dir in which index.php is located)
-                $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
-            }
-        } elseif (!PathUtility::isAbsolutePath($path)) {
-            // Backend and non-absolute path
-            $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+        if (!PathUtility::isAbsolutePath($path)) {
+            $path = Environment::getPublicPath() . '/' . $path;
         } elseif (is_file(Environment::getPublicPath() . '/' . ltrim($path, '/'))) {
+            // Frontend should still allow /static/myfile.css - see #98106
+            // This should happen regardless of the incoming path is absolute or not
             // Use-case: $path = /typo3/sysext/backend/Resources/Public/file.css when the order was not built properly
             $path = Environment::getPublicPath() . '/' . ltrim($path, '/');
         }
@@ -2576,8 +2567,6 @@ class GeneralUtility
         if (!empty($url)) {
             $decodedUrl = rawurldecode($url);
             $parsedUrl = parse_url($decodedUrl);
-            $testAbsoluteUrl = self::resolveBackPath($decodedUrl);
-            $testRelativeUrl = self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl);
             // Pass if URL is on the current host:
             if (self::isValidUrl($decodedUrl)) {
                 if (self::isOnCurrentHost($decodedUrl) && str_starts_with($decodedUrl, self::getIndpEnv('TYPO3_SITE_URL'))) {
@@ -2585,13 +2574,9 @@ class GeneralUtility
                 }
             } elseif (PathUtility::isAbsolutePath($decodedUrl) && self::isAllowedAbsPath($decodedUrl)) {
                 $sanitizedUrl = $url;
-            } elseif (str_starts_with($testAbsoluteUrl, self::getIndpEnv('TYPO3_SITE_PATH')) && $decodedUrl[0] === '/' &&
-                substr($decodedUrl, 0, 2) !== '//'
-            ) {
+            } elseif ($decodedUrl[0] === '/' && !str_starts_with($decodedUrl, '//') && str_starts_with(self::resolveBackPath($decodedUrl), self::getIndpEnv('TYPO3_SITE_PATH'))) {
                 $sanitizedUrl = $url;
-            } elseif (empty($parsedUrl['scheme']) && str_starts_with($testRelativeUrl, self::getIndpEnv('TYPO3_SITE_PATH'))
-                && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && !str_contains($decodedUrl, '\\\\')
-            ) {
+            } elseif (empty($parsedUrl['scheme']) && $decodedUrl[0] !== '/' && strpbrk($decodedUrl, '*:|"<>') === false && !str_contains($decodedUrl, '\\\\') && str_starts_with(self::resolveBackPath(self::dirname(self::getIndpEnv('SCRIPT_NAME')) . '/' . $decodedUrl), self::getIndpEnv('TYPO3_SITE_PATH'))) {
                 $sanitizedUrl = $url;
             }
         }

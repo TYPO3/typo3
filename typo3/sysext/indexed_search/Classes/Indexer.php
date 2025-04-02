@@ -638,7 +638,6 @@ class Indexer
      */
     protected static function isAllowedLocalFile(string $filePath): bool
     {
-        $filePath = GeneralUtility::resolveBackPath($filePath);
         $insideWebPath = str_starts_with($filePath, Environment::getPublicPath());
         $isFile = is_file($filePath);
         return $insideWebPath && $isFile;

@@ -252,7 +252,7 @@ class ResourceCompressor
                 ) {
                     // attempt to turn it into a local file path
                     $localFilename = substr($filename, strlen($GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getSiteUrl()));
-                    if (@is_file(GeneralUtility::resolveBackPath($this->rootPath . $localFilename))) {
+                    if (@is_file($this->rootPath . $localFilename)) {
                         $filesToInclude[$key] = $localFilename;
                     } else {
                         $filesToInclude[$key] = $this->retrieveExternalFile($filename);
@@ -262,7 +262,7 @@ class ResourceCompressor
                 }
                 $filename = $filesToInclude[$key];
             }
-            $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $filename);
+            $filenameAbsolute = $this->rootPath . $filename;
             if (@file_exists($filenameAbsolute)) {
                 $fileStatus = stat($filenameAbsolute);
                 $unique .= $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
@@ -276,7 +276,7 @@ class ResourceCompressor
             $concatenated = '';
             // concatenate all the files together
             foreach ($filesToInclude as $filename) {
-                $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $filename);
+                $filenameAbsolute = $this->rootPath . $filename;
                 $filename = PathUtility::stripPathSitePrefix($filenameAbsolute);
                 $contents = (string)file_get_contents($filenameAbsolute);
                 // remove any UTF-8 byte order mark (BOM) from files
@@ -338,7 +338,7 @@ class ResourceCompressor
     {
         $this->initialize();
         // generate the unique name of the file
-        $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
+        $filenameAbsolute = $this->rootPath . $this->getFilenameFromMainDir($filename);
         if (@file_exists($filenameAbsolute)) {
             $fileStatus = stat($filenameAbsolute);
             $unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];
@@ -395,7 +395,7 @@ class ResourceCompressor
     {
         $this->initialize();
         // generate the unique name of the file
-        $filenameAbsolute = GeneralUtility::resolveBackPath($this->rootPath . $this->getFilenameFromMainDir($filename));
+        $filenameAbsolute = $this->rootPath . $this->getFilenameFromMainDir($filename);
         if (@file_exists($filenameAbsolute)) {
             $fileStatus = stat($filenameAbsolute);
             $unique = $filenameAbsolute . $fileStatus['mtime'] . $fileStatus['size'];

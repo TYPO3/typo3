@@ -2019,8 +2019,6 @@ class PageRenderer implements SingletonInterface
             // as the path is now absolute, make it "relative" to the current script to stay compatible
             $file = PathUtility::getRelativePathTo($file) ?? '';
             $file = rtrim($file, '/');
-        } else {
-            $file = GeneralUtility::resolveBackPath($file);
         }
         if ($prepareForOutput) {
             $file = GeneralUtility::createVersionNumberedFilename($file);

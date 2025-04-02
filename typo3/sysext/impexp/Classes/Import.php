@@ -1621,7 +1621,7 @@ class Import extends ImportExport
                             if ($this->dat['files'][$res_fileID]['filename']) {
                                 // Resolve original filename:
                                 $relResourceFileName = $this->dat['files'][$res_fileID]['parentRelFileName'];
-                                $absResourceFileName = GeneralUtility::resolveBackPath(Environment::getPublicPath() . '/' . $origDirPrefix . $relResourceFileName);
+                                $absResourceFileName = Environment::getPublicPath() . '/' . $origDirPrefix . $relResourceFileName;
                                 $absResourceFileName = GeneralUtility::getFileAbsFileName($absResourceFileName);
                                 if ($absResourceFileName && str_starts_with($absResourceFileName, Environment::getPublicPath() . '/' . $this->getFileadminFolderName() . '/')) {
                                     $destDir = PathUtility::stripPathSitePrefix(PathUtility::dirname($absResourceFileName) . '/');

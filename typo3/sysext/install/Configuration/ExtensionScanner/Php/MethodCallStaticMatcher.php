@@ -1665,4 +1665,11 @@ return [
             'Deprecation-106393-VariousMethodsInBackendUtility.rst',
         ],
     ],
+    'TYPO3\CMS\Core\Utility\GeneralUtility::resolveBackPath' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Deprecation-106618-GeneralUtilityresolveBackPath.rst',
+        ],
+    ],
 ];

@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-
 /**
  * This fixes import paths in CSS files if their location changes,
  * e.g. when inlining or compressing css
@@ -69,7 +67,7 @@ class RelativeCssPathFixer
             $match = trim($match, '\'" ');
             // we must not rewrite paths starting with "#", containing ":" or "url(", e.g. data URIs (see RFC 2397)
             if (!str_starts_with($match, '#') && !str_contains($match, ':') && !preg_match('/url\\s*\\(/i', $match)) {
-                $newPath = GeneralUtility::resolveBackPath($newDir . $match);
+                $newPath = $this->resolveBackPath($newDir . $match);
                 $replacements[$matches[1][$matchCount]] = $wrapParts[0] . $newPath . $wrapParts[1];
             }
         }
@@ -78,5 +76,35 @@ class RelativeCssPathFixer
             $contents = str_replace(array_keys($replacements), array_values($replacements), $contents);
         }
         return $contents;
+    }
+
+    /**
+     * Resolves "../" sections in the input path string.
+     * For example "fileadmin/directory/../other_directory/" will be resolved to "fileadmin/other_directory/"
+     *
+     * @param string $pathStr File path in which "/../" is resolved
+     */
+    protected function resolveBackPath(string $pathStr): string
+    {
+        if (!str_contains($pathStr, '..')) {
+            return $pathStr;
+        }
+        $parts = explode('/', $pathStr);
+        $output = [];
+        $c = 0;
+        foreach ($parts as $part) {
+            if ($part === '..') {
+                if ($c) {
+                    array_pop($output);
+                    --$c;
+                } else {
+                    $output[] = $part;
+                }
+            } else {
+                ++$c;
+                $output[] = $part;
+            }
+        }
+        return implode('/', $output);
     }
 }

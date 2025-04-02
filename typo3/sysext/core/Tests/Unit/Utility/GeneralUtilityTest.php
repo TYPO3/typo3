@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Utility;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -1308,6 +1309,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlValidPathsDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function sanitizeLocalUrlAcceptsNotEncodedValidPaths(string $path): void
     {
         Environment::initialize(
@@ -1329,6 +1331,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlValidPathsDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function sanitizeLocalUrlAcceptsEncodedValidPaths(string $path): void
     {
         Environment::initialize(
@@ -1381,6 +1384,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlValidUrlsDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function sanitizeLocalUrlAcceptsNotEncodedValidUrls(string $url, string $host, string $subDirectory): void
     {
         Environment::initialize(
@@ -1401,6 +1405,7 @@ final class GeneralUtilityTest extends UnitTestCase
 
     #[DataProvider('sanitizeLocalUrlValidUrlsDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function sanitizeLocalUrlAcceptsEncodedValidUrls(string $url, string $host, string $subDirectory): void
     {
         Environment::initialize(
@@ -2683,6 +2688,7 @@ final class GeneralUtilityTest extends UnitTestCase
      */
     #[DataProvider('resolveBackPathDataProvider')]
     #[Test]
+    #[IgnoreDeprecations]
     public function resolveBackPathWithDataProvider(string $input, string $expectedValue): void
     {
         self::assertEquals($expectedValue, GeneralUtility::resolveBackPath($input));

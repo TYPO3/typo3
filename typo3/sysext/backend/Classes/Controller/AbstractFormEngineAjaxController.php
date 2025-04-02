@@ -64,8 +64,6 @@ abstract readonly class AbstractFormEngineAjaxController
             $stylesheetFile = Environment::getPublicPath() . '/' . PathUtility::getPublicResourceWebPath($stylesheetFile, false);
             $stylesheetFile = PathUtility::getRelativePathTo($stylesheetFile) ?? '';
             $stylesheetFile = rtrim($stylesheetFile, '/');
-        } else {
-            $stylesheetFile = GeneralUtility::resolveBackPath($stylesheetFile);
         }
         $stylesheetFile = GeneralUtility::createVersionNumberedFilename($stylesheetFile);
         return PathUtility::getAbsoluteWebPath($stylesheetFile);
