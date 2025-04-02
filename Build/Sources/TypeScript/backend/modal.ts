@@ -111,6 +111,8 @@ export class ModalElement extends LitElement {
 
   public userData: { [key: string]: any } = {};
 
+  private keydownEventHandler: RegularEvent = null;
+
   public setContent(content: TemplateResult | JQuery | Element | DocumentFragment): void {
     this.templateResultContent = content;
   }
@@ -118,6 +120,7 @@ export class ModalElement extends LitElement {
   public hideModal(): void {
     if (this.bootstrapModal) {
       this.bootstrapModal.hide();
+      this.keydownEventHandler?.release();
     }
   }
 
@@ -224,9 +227,8 @@ export class ModalElement extends LitElement {
   }
 
   private renderModalBody(): TemplateResult | JQuery | Element | DocumentFragment {
-    if (this.type === Types.ajax) {
-      return this.renderAjaxBody();
-    }
+    this.keydownEventHandler = new RegularEvent('keydown', this.handleKeydown);
+    this.keydownEventHandler.bindTo(document);
 
     if (this.type === Types.iframe) {
       const loadCallback = (e: Event) => {
@@ -234,17 +236,15 @@ export class ModalElement extends LitElement {
         if (iframe.contentDocument.title) {
           this.modalTitle = iframe.contentDocument.title;
         }
-
-        // Register global event handler to close modal when <ESC> is invoked in modal iframe
-        new RegularEvent('keydown', (event: KeyboardEvent) => {
-          if(event.key === 'Escape' && parent?.top?.TYPO3?.Modal) {
-            parent.top.TYPO3.Modal.dismiss();
-          }
-        }).bindTo(iframe.contentDocument);
+        new RegularEvent('keydown', this.handleKeydown).bindTo(iframe.contentDocument);
       };
       return html`
         <iframe src="${this.content}" name="modal_frame" class="modal-iframe t3js-modal-iframe" @load=${loadCallback}></iframe>
       `;
+    }
+
+    if (this.type === Types.ajax) {
+      return this.renderAjaxBody();
     }
 
     if (this.type === Types.template) {
@@ -274,6 +274,12 @@ export class ModalElement extends LitElement {
 
   private trigger(event: string): void {
     this.dispatchEvent(new CustomEvent(event, { bubbles: true, composed: true }));
+  }
+
+  private handleKeydown(e: KeyboardEvent): void {
+    if (e.key === 'Escape' && parent?.top?.TYPO3?.Modal) {
+      parent.top.TYPO3.Modal.dismiss();
+    }
   }
 }
 
