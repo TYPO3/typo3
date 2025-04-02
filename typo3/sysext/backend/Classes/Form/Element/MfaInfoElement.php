@@ -106,7 +106,7 @@ class MfaInfoElement extends AbstractFormElement
 
             if ($activeProviders !== []) {
                 // Change status label to MFA being enabled
-                $status = '<span class="badge badge-success badge-space-end t3js-mfa-status-label"' . ' data-alternative-label="' . $disabledLabel . '">' . $enabledLabel . '</span>';
+                $status = '<span class="badge badge-success badge-space-end t3js-mfa-status-label mb-2"' . ' data-alternative-label="' . $disabledLabel . '">' . $enabledLabel . '</span>';
 
                 // Add providers list
                 $childHtml[] = '<ul class="list-group t3js-mfa-active-providers-list">';
@@ -148,7 +148,7 @@ class MfaInfoElement extends AbstractFormElement
         if ($isDeactivationAllowed) {
             $html[] = '<div class="form-wizards-item-bottom">';
             $html[] =     '<button type="button"';
-            $html[] =         ' class="t3js-deactivate-mfa-button btn btn-danger ' . ($activeProviders === [] ? 'disabled" disabled="disabled' : '') . '"';
+            $html[] =         ' class="t3js-deactivate-mfa-button btn btn-danger mt-2 ' . ($activeProviders === [] ? 'disabled" disabled="disabled' : '') . '"';
             $html[] =         ' data-confirmation-title="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa')) . '"';
             $html[] =         ' data-confirmation-content="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:buttons.deactivateMfa.confirmation.text')) . '"';
             $html[] =         ' data-confirmation-cancel-text="' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel')) . '"';
