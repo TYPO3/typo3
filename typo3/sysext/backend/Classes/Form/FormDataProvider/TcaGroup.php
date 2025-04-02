@@ -95,28 +95,25 @@ class TcaGroup implements FormDataProviderInterface
             $allowed = GeneralUtility::trimExplode(',', $fieldConfig['config']['allowed'], true);
             $clipboard = GeneralUtility::makeInstance(Clipboard::class);
             $clipboard->initializeClipboard();
+
+            $clipboardElements = [];
             if ($allowed[0] !== '*') {
                 // Only some tables, filter them:
                 foreach ($allowed as $tablename) {
-                    foreach ($clipboard->elFromTable($tablename) as $recordUid) {
-                        $record = BackendUtility::getRecordWSOL($tablename, $recordUid);
-                        $sanitizedClipboardElements[] = [
-                            'title' => BackendUtility::getRecordTitle($tablename, $record),
-                            'value' => $tablename . '_' . $recordUid,
-                        ];
-                    }
+                    $clipboardElements = [...$clipboardElements, ...array_keys($clipboard->elFromTable($tablename))];
                 }
             } else {
                 // All tables allowed for relation:
                 $clipboardElements = array_keys($clipboard->elFromTable(''));
-                foreach ($clipboardElements as $elementValue) {
-                    [$elementTable, $elementUid] = explode('|', $elementValue);
-                    $record = BackendUtility::getRecordWSOL($elementTable, (int)$elementUid);
-                    $sanitizedClipboardElements[] = [
-                        'title' => BackendUtility::getRecordTitle($elementTable, $record),
-                        'value' => $elementTable . '_' . $elementUid,
-                    ];
-                }
+            }
+
+            foreach ($clipboardElements as $elementValue) {
+                [$elementTable, $elementUid] = explode('|', $elementValue);
+                $record = BackendUtility::getRecordWSOL($elementTable, (int)$elementUid);
+                $sanitizedClipboardElements[] = [
+                    'title' => BackendUtility::getRecordTitle($elementTable, $record),
+                    'value' => $elementTable . '_' . $elementUid,
+                ];
             }
 
             $result['databaseRow'][$fieldName] = $items;
