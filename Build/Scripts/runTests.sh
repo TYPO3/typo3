@@ -257,8 +257,7 @@ Options:
             - acceptance: main application acceptance tests
             - acceptanceComposer: main application acceptance tests
             - acceptanceInstall: installation acceptance tests, only with -d mariadb|postgres|sqlite
-            - buildCss: execute scss to css builder
-            - buildJavascript: execute typescript to javascript builder
+            - build: execute frontend build (TypeScript, Sass, Contrib, Assets)
             - cgl: test and fix all core php files
             - cglGit: test and fix latest committed patch for CGL compliance
             - cglHeader: test and fix file header for all core php files
@@ -879,14 +878,9 @@ case ${TEST_SUITE} in
         PLAYWRIGHT_PREPARE_ONLY=1
         runPlaywright
         ;;
-    buildCss)
-        COMMAND="cd Build; npm ci || exit 1; node_modules/grunt/bin/grunt css"
+    build*)
+        COMMAND="cd Build; npm install && npm run build"
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name build-css-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}"
-        SUITE_EXIT_CODE=$?
-        ;;
-    buildJavascript)
-        COMMAND="cd Build/; npm ci || exit 1; node_modules/grunt/bin/grunt scripts"
-        ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name build-js-${SUFFIX} -e HOME=${CORE_ROOT}/.cache ${IMAGE_NODEJS} /bin/sh -c "${COMMAND}"
         SUITE_EXIT_CODE=$?
         ;;
     cgl)
