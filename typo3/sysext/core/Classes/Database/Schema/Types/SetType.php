@@ -48,14 +48,4 @@ class SetType extends Type
         return sprintf('SET(%s)', implode(', ', $quotedValues));
 
     }
-
-    /**
-     * Gets the name of this type.
-     * @todo Remove this method with doctrine/dbal 4.0 upgrade.
-     * @see https://github.com/doctrine/dbal/blob/3.8.x/UPGRADE.md#deprecated-typegetname
-     */
-    public function getName(): string
-    {
-        return static::TYPE;
-    }
 }

@@ -56,11 +56,11 @@ final class SQLiteSchemaManagerTest extends UnitTestCase
         $column = $subject->callProcessCustomDoctrineTypesColumnDefinitionFromTraitDirectly(['Type' => "enum('value1', 'value2','value3')"]);
         self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(EnumType::class, $column->getType());
-        self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('values'));
+        self::assertSame(['value1', 'value2', 'value3'], $column->getValues());
 
         $column = $subject->callProtectedGetPortableTableColumnDefinition(['Type' => "enum('value1', 'value2','value3')"]);
         self::assertInstanceOf(EnumType::class, $column->getType());
-        self::assertSame(['value1', 'value2', 'value3'], $column->getPlatformOption('values'));
+        self::assertSame(['value1', 'value2', 'value3'], $column->getValues());
     }
 
     #[Test]
@@ -80,11 +80,11 @@ final class SQLiteSchemaManagerTest extends UnitTestCase
         $column = $subject->callProcessCustomDoctrineTypesColumnDefinitionFromTraitDirectly(['Type' => "set('value1', 'value3')"]);
         self::assertInstanceOf(Column::class, $column);
         self::assertInstanceOf(SetType::class, $column->getType());
-        self::assertSame(['value1', 'value3'], $column->getPlatformOption('values'));
+        self::assertSame(['value1', 'value3'], $column->getValues());
 
         $column = $subject->callProtectedGetPortableTableColumnDefinition(['Type' => "set('value1', 'value3')"]);
         self::assertInstanceOf(SetType::class, $column->getType());
-        self::assertSame(['value1', 'value3'], $column->getPlatformOption('values'));
+        self::assertSame(['value1', 'value3'], $column->getValues());
     }
 
     private function createSchemaManager(Connection $connection, DoctrineSQLitePlatform $platform): FixtureSQLiteSchemaManager
