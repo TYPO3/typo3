@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Field\FolderFieldType;
 use TYPO3\CMS\Core\Schema\Field\RelationalFieldTypeInterface;
 use TYPO3\CMS\Core\Schema\RelationshipType;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema\Exception\NoSuchPropertyException;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
@@ -70,6 +71,17 @@ readonly class ColumnMapFactory
         $columnConfiguration = $field->getConfiguration();
         $columnName = $field->getName();
         $tableColumnType = TableColumnType::tryFrom($field->getType());
+        $childTableName = null;
+        if ($field->isType(TableColumnType::GROUP)) {
+            // TCA type="group" has no TCA property "foreign_table" and can only deal with single-table
+            // relations in extbase (no support for union types). That means `allowed` should only
+            // contain ONE table entry, as Extbase can only evaluate the first one, if multiple
+            // are defined.
+            $allowed = GeneralUtility::trimExplode(',', $columnConfiguration['allowed'] ?? '', true);
+            $childTableName = $allowed[0] ?? $columnConfiguration['foreign_table'] ?? null;
+        } elseif ($field instanceof RelationalFieldTypeInterface) {
+            $childTableName = $columnConfiguration['foreign_table'] ?? null;
+        }
 
         if ($field instanceof DateTimeFieldType) {
             // TCA type="datetime" considers "dbtype" and is done.
@@ -92,8 +104,7 @@ readonly class ColumnMapFactory
                 columnName: $columnName,
                 type: $tableColumnType,
                 typeOfRelation: Relation::HAS_AND_BELONGS_TO_MANY,
-                // @todo: This does not model TCA type="group" "allowed" property which can specify multi table child relations
-                childTableName: $columnConfiguration['foreign_table'] ?? null,
+                childTableName: $childTableName,
                 relationTableName: $columnConfiguration['MM'],
                 relationTableMatchFields: is_array($columnConfiguration['MM_match_fields'] ?? false) ? $columnConfiguration['MM_match_fields'] : [],
                 parentKeyFieldName: !empty($columnConfiguration['MM_opposite_field']) ? 'uid_foreign' : 'uid_local',
@@ -111,7 +122,7 @@ readonly class ColumnMapFactory
                 columnName: $columnName,
                 type: $tableColumnType,
                 typeOfRelation: Relation::HAS_MANY,
-                childTableName: $columnConfiguration['foreign_table'] ?? null,
+                childTableName: $childTableName,
                 relationTableMatchFields: is_array($columnConfiguration['foreign_match_fields'] ?? false) ? $columnConfiguration['foreign_match_fields'] : [],
                 parentKeyFieldName: $columnConfiguration['foreign_field'] ?? null,
                 parentTableFieldName: $columnConfiguration['foreign_table_field'] ?? null,
@@ -127,7 +138,7 @@ readonly class ColumnMapFactory
                 columnName: $columnName,
                 type: $tableColumnType,
                 typeOfRelation: Relation::HAS_ONE,
-                childTableName: $columnConfiguration['foreign_table'] ?? null,
+                childTableName: $childTableName,
                 relationTableMatchFields: is_array($columnConfiguration['foreign_match_fields'] ?? false) ? $columnConfiguration['foreign_match_fields'] : [],
                 parentKeyFieldName: $columnConfiguration['foreign_field'] ?? null,
                 parentTableFieldName: $columnConfiguration['foreign_table_field'] ?? null,
