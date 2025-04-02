@@ -810,10 +810,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($tableDefinition->hasColumn($fieldName));
         $column = $tableDefinition->getColumn($fieldName);
         if ($expectDefaultValue) {
-            self::assertArrayHasKey('default', $column->toArray());
             self::assertSame($expectedDefaultValue, $column->getDefault());
         } else {
-            self::assertArrayNotHasKey('default', $column->toArray());
+            self::assertNull($column->getDefault());
         }
         self::assertSame($expectedNotNull, $column->getNotnull());
 
@@ -915,10 +914,9 @@ final class SchemaMigratorTest extends FunctionalTestCase
         self::assertTrue($tableDefinition->hasColumn($fieldName));
         $column = $tableDefinition->getColumn($fieldName);
         if ($expectDefaultValue) {
-            self::assertArrayHasKey('default', $column->toArray());
             self::assertSame($expectedDefaultValue, $column->getDefault());
         } else {
-            self::assertArrayNotHasKey('default', $column->toArray());
+            self::assertNull($column->getDefault());
         }
         self::assertSame($expectedNotNull, $column->getNotnull());
 
