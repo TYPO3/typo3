@@ -185,7 +185,7 @@ class TypoScriptWaterfall extends AbstractSubModule implements RequestEnricherIn
         // Create hierarchical array of keys pointing to the stack
         $arr = [];
         foreach ($tsStackLog as $uniqueId => $data) {
-            $this->createHierarchyArray($arr, $data['level'] ?? 0, $uniqueId);
+            $this->createHierarchyArray($arr, $data['level'] ?? 0, (string)$uniqueId);
         }
         // Parsing the registered content and create icon-html for the tree
         $tsStackLog[$arr['0.'][0]]['content'] = $this->fixContent($tsStackLog, $arr['0.'], $tsStackLog[$arr['0.'][0]]['content'] ?? '', '', $arr['0.'][0]);
