@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 
 /**
@@ -27,19 +27,13 @@ class Comment extends AbstractEntity
 {
     protected \DateTime $date;
 
-    /**
-     * @Extbase\Validate("NotEmpty")
-     */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected string $author = '';
 
-    /**
-     * @Extbase\Validate("EmailAddress")
-     */
+    #[Validate(['validator' => 'EmailAddress'])]
     protected string $email = '';
 
-    /**
-     * @Extbase\Validate("StringLength", options={"maximum": 500})
-     */
+    #[Validate(['validator' => 'StringLength', 'options' => ['maximum' => 500]])]
     protected string $content = '';
 
     public function __construct()

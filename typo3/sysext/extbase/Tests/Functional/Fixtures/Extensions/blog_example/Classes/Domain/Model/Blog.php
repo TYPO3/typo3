@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
@@ -30,9 +32,9 @@ class Blog extends AbstractEntity
 {
     /**
      * The blog's title.
-     *
-     * @Extbase\Validate("StringLength", options={"minimum": 1, "maximum": 80})
      */
+    #[Validate(['validator' => 'NotEmpty'])]
+    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 80]])]
     protected string $title = '';
 
     /**
@@ -42,9 +44,8 @@ class Blog extends AbstractEntity
 
     /**
      * A short description of the blog
-     *
-     * @Extbase\Validate("StringLength", options={"maximum": 150})
      */
+    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 1, 'maximum' => 150]])]
     protected string $description = '';
 
     /**
@@ -58,9 +59,9 @@ class Blog extends AbstractEntity
      * The posts of this blog
      *
      * @var ObjectStorage<Post>
-     * @Extbase\ORM\Lazy
-     * @Extbase\ORM\Cascade("remove")
      */
+    #[Lazy()]
+    #[Cascade(['value' => 'remove'])]
     protected ObjectStorage $posts;
 
     /**
@@ -70,9 +71,8 @@ class Blog extends AbstractEntity
 
     /**
      * The blog's administrator
-     *
-     * @Extbase\ORM\Lazy
      */
+    #[Lazy()]
     protected Administrator|LazyLoadingProxy|null $administrator = null;
 
     public function __construct()

@@ -1,0 +1,40 @@
+<div class="form-errors">
+    <f:flashMessages />
+    <f:form.validationResults>
+        <f:if condition="{validationResults.flattenedErrors}">
+            <div class="errors" id="form-feedback">
+                <ul class="typo3-messages">
+                    <f:for each="{validationResults.flattenedErrors}" key="propertyName" as="errors">
+                        <f:for each="{errors}" as="propertyError">
+                            <li class="alert alert-danger" data-error="{propertyError.code}">
+                                {propertyName}: {propertyError.message}
+                            </li>
+                        </f:for>
+                    </f:for>
+                </ul>
+            </div>
+        </f:if>
+    </f:form.validationResults>
+</div>
+
+<f:form action="create" name="blog" object="{blog}">
+    <div class="section-title">
+        <label for="persist-title">Title</label>
+        <f:form.textfield id="persist-title" required="1" property="title" />
+    </div>
+
+    <div class="section-title">
+        <label for="persist-categories">Categories</label>
+        <!-- intentionally a list of extbase identities here, not really "human-readable" -->
+        <f:form.select property="categories"
+                       id="persist-categories"
+                       options="{categories}"
+                       multiple="multiple" />
+    </div>
+
+    <f:form.submit name="submit" value="create" />
+</f:form>
+
+<p>
+    <f:link.action action="list" class="list-link">back to list</f:link.action>
+</p>

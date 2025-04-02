@@ -8,6 +8,11 @@ defined('TYPO3') or die();
     ExtensionUtility::registerPlugin(
         'blog_example',
         'Blogs',
-        'Blog listing'
+        'Blog listing (JSON)'
+    );
+    ExtensionUtility::registerPlugin(
+        'blog_example',
+        'BlogPostEditing',
+        'Blog listing and editing (Fluid forms)'
     );
 })();

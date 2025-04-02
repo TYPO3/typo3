@@ -1,0 +1,21 @@
+config {
+  no_cache = 1
+  debug = 1
+  admPanel = 0
+  disableAllHeaderCode = 1
+}
+page = PAGE
+page {
+  typeNum = 0
+  10 < styles.content.get
+  20 < styles.content.get
+  20 {
+    select.where = {#colPos}=1
+    slide = -1
+  }
+}
+plugin.tx_blogexample {
+	persistence {
+		storagePid = 3
+	}
+}

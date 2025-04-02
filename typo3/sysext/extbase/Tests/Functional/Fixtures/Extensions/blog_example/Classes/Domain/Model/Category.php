@@ -17,7 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 
@@ -26,16 +27,12 @@ use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
  */
 class Category extends AbstractEntity
 {
-    /**
-     * @Extbase\Validate("NotEmpty")
-     */
+    #[Validate(['validator' => 'NotEmpty'])]
     protected string $title = '';
 
     protected string $description = '';
 
-    /**
-     * @Extbase\ORM\Lazy
-     */
+    #[Lazy()]
     protected Category|LazyLoadingProxy|null $parent = null;
 
     public function getTitle(): string

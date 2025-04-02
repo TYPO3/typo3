@@ -1,0 +1,19 @@
+<ul data-type="blog">
+    <f:for each="{blogs}" as="blog">
+        <li><span class="blogtitle">{blog.title}</span>
+            <ul data-type="category">
+                <f:for each="{blog.categories}" as="category">
+                    <li>{category.title}</li>
+                </f:for>
+            </ul>
+
+            <f:link.action action="edit" class="edit-link" arguments="{blog: blog}">edit</f:link.action>
+            <f:link.action action="view" class="view-link" arguments="{blog: blog}">view</f:link.action>
+        </li>
+    </f:for>
+
+</ul>
+
+<p>
+    <f:link.action action="new" class="new-link">create new</f:link.action>
+</p>

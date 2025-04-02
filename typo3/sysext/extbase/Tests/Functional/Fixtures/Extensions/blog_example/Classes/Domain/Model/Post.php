@@ -17,7 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\BlogExample\Domain\Model;
 
-use TYPO3\CMS\Extbase\Annotation as Extbase;
+use TYPO3\CMS\Extbase\Annotation\ORM\Cascade;
+use TYPO3\CMS\Extbase\Annotation\ORM\Lazy;
+use TYPO3\CMS\Extbase\Annotation\Validate;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 
@@ -28,9 +30,7 @@ class Post extends AbstractEntity
 {
     protected ?Blog $blog = null;
 
-    /**
-     * @Extbase\Validate("StringLength", options={"minimum": 3, "maximum": 50})
-     */
+    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 3, 'maximum' => 50]])]
     protected string $title = '';
 
     protected \DateTime $date;
@@ -43,9 +43,7 @@ class Post extends AbstractEntity
 
     protected ?Person $reviewer = null;
 
-    /**
-     * @Extbase\Validate("StringLength", options={"minimum": 3})
-     */
+    #[Validate(['validator' => 'StringLength', 'options' => ['minimum' => 3]])]
     protected string $content = '';
 
     /**
@@ -60,15 +58,15 @@ class Post extends AbstractEntity
 
     /**
      * @var ObjectStorage<Comment>
-     * @Extbase\ORM\Lazy
-     * @Extbase\ORM\Cascade("remove")
      */
+    #[Lazy()]
+    #[Cascade(['value' => 'remove'])]
     protected ObjectStorage $comments;
 
     /**
      * @var ObjectStorage<Post>
-     * @Extbase\ORM\Lazy
      */
+    #[Lazy()]
     protected ObjectStorage $relatedPosts;
 
     /**
@@ -84,8 +82,8 @@ class Post extends AbstractEntity
     /**
      * 1:n relation stored as CSV value
      * @var ObjectStorage<Comment>
-     * @Extbase\ORM\Lazy
      */
+    #[Lazy()]
     protected ObjectStorage $additionalComments;
 
     public function __construct()
