@@ -135,10 +135,19 @@ readonly class ColumnMapFactory
     {
         $columnConfiguration = $field->getConfiguration();
         $columnMap->setTypeOfRelation(Relation::HAS_ONE);
-        // @todo "allowed" (type=group) is missing here -> can only be evaluated if single value
-        // check if foreign_table is set, which usually won't be the case for type "group" fields
-        if (!empty($columnConfiguration['foreign_table'])) {
-            $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        $childTableName = null;
+        if ($field->isType(TableColumnType::GROUP)) {
+            // TCA type="group" has no TCA property "foreign_table" and can only deal with single-table
+            // relations in extbase (no support for union types). That means `allowed` should only
+            // contain ONE table entry, as Extbase can only evaluate the first one, if multiple
+            // are defined.
+            $allowed = GeneralUtility::trimExplode(',', $columnConfiguration['allowed'] ?? '', true);
+            $childTableName = $allowed[0] ?? $columnConfiguration['foreign_table'] ?? null;
+        } elseif ($field instanceof RelationalFieldTypeInterface) {
+            $childTableName = $columnConfiguration['foreign_table'] ?? null;
+        }
+        if (!empty($childTableName)) {
+            $columnMap->setChildTableName($childTableName);
         }
         // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
@@ -160,10 +169,19 @@ readonly class ColumnMapFactory
     {
         $columnConfiguration = $field->getConfiguration();
         $columnMap->setTypeOfRelation(Relation::HAS_MANY);
-        // @todo "allowed" (type=group) is missing here -> can only be evaluated if single value
-        // check if foreign_table is set, which usually won't be the case for type "group" fields
-        if (!empty($columnConfiguration['foreign_table'])) {
-            $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        $childTableName = null;
+        if ($field->isType(TableColumnType::GROUP)) {
+            // TCA type="group" has no TCA property "foreign_table" and can only deal with single-table
+            // relations in extbase (no support for union types). That means `allowed` should only
+            // contain ONE table entry, as Extbase can only evaluate the first one, if multiple
+            // are defined.
+            $allowed = GeneralUtility::trimExplode(',', $columnConfiguration['allowed'] ?? '', true);
+            $childTableName = $allowed[0] ?? $columnConfiguration['foreign_table'] ?? null;
+        } elseif ($field instanceof RelationalFieldTypeInterface) {
+            $childTableName = $columnConfiguration['foreign_table'] ?? null;
+        }
+        if (!empty($childTableName)) {
+            $columnMap->setChildTableName($childTableName);
         }
         // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setChildSortByFieldName($columnConfiguration['foreign_sortby'] ?? null);
@@ -183,10 +201,19 @@ readonly class ColumnMapFactory
     {
         $columnConfiguration = $field->getConfiguration();
         $columnMap->setTypeOfRelation(Relation::HAS_AND_BELONGS_TO_MANY);
-        // @todo "allowed" (type=group) is missing here -> can only be evaluated if single value
-        // check if foreign_table is set, which usually won't be the case for type "group" fields
-        if ($columnConfiguration['foreign_table'] ?? false) {
-            $columnMap->setChildTableName($columnConfiguration['foreign_table']);
+        $childTableName = null;
+        if ($field->isType(TableColumnType::GROUP)) {
+            // TCA type="group" has no TCA property "foreign_table" and can only deal with single-table
+            // relations in extbase (no support for union types). That means `allowed` should only
+            // contain ONE table entry, as Extbase can only evaluate the first one, if multiple
+            // are defined.
+            $allowed = GeneralUtility::trimExplode(',', $columnConfiguration['allowed'] ?? '', true);
+            $childTableName = $allowed[0] ?? $columnConfiguration['foreign_table'] ?? null;
+        } elseif ($field instanceof RelationalFieldTypeInterface) {
+            $childTableName = $columnConfiguration['foreign_table'] ?? null;
+        }
+        if (!empty($childTableName)) {
+            $columnMap->setChildTableName($childTableName);
         }
         // todo: don't update column map if value(s) isn't/aren't set.
         $columnMap->setRelationTableName($columnConfiguration['MM']);

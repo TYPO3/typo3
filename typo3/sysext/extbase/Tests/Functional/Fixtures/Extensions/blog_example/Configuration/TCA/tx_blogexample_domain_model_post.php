@@ -100,7 +100,6 @@ return [
             'config' => [
                 'type' => 'group',
                 'allowed' => 'tx_blogexample_domain_model_person',
-                'foreign_table' => 'tx_blogexample_domain_model_person',
                 'relationship' => 'manyToOne',
                 'fieldControl' => [
                     'editPopup' => [
