@@ -201,7 +201,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         // simulate usergroup
         if ($simulateUserGroup) {
             $frontendUser = $request->getAttribute('frontend.user');
-            $frontendUser->user[$frontendUser->usergroup_column] = $simulateUserGroup;
+            $frontendUser->user[$frontendUser->usergroup_column] = (string)$simulateUserGroup;
             $frontendUser->userGroups[$simulateUserGroup] = [
                 'uid' => $simulateUserGroup,
                 'title' => '_PREVIEW_',
