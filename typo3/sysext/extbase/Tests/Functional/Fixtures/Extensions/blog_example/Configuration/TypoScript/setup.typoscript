@@ -7,6 +7,8 @@ plugin.tx_blogexample {
 		editorUsergroupUid = {$plugin.tx_blogexample.settings.editorUsergroupUid}
 		 # Plaintext page type number
 		plaintextPageType = {$plugin.tx_blogexample.settings.plaintextPageType}
+		# When creating new entries, where to store records
+		pidNewRecords = {$plugin.tx_blogexample.persistence.storagePid}
 	}
 	persistence {
 		storagePid = {$plugin.tx_blogexample.persistence.storagePid}

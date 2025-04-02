@@ -1,0 +1,52 @@
+<div class="form-errors">
+    <f:flashMessages />
+
+    <f:form.validationResults>
+        <f:if condition="{validationResults.flattenedErrors}">
+            <div class="errors" id="form-feedback">
+                <ul class="typo3-messages">
+                    <f:for each="{validationResults.flattenedErrors}" key="propertyName" as="errors">
+                        <f:for each="{errors}" as="propertyError">
+                            <li class="alert alert-danger" data-error="{propertyError.code}">
+                                {propertyName}: {propertyError.message}
+                            </li>
+                        </f:for>
+                    </f:for>
+                </ul>
+            </div>
+        </f:if>
+    </f:form.validationResults>
+</div>
+
+<f:form action="persist" name="blog" object="{blog}">
+    <div class="section-title">
+        <label for="persist-title">Title</label>
+        <f:form.textfield required="1" id="persist-title" property="title" />
+    </div>
+
+    <div class="section-title">
+        <label for="persist-categories">Categories</label>
+        <ul class="available-categories-list">
+            <f:for each="{categories}" as="category">
+                <li>#{category.uid} - {category.title}</li>
+            </f:for>
+        </ul>
+        <p>Currently set:</p>
+        <ul class="set-categories-list">
+            <f:for each="{blog.categories}" as="category">
+                <li>#{category.uid} - {category.title}</li>
+            </f:for>
+        </ul>
+
+        <f:form.select property="categories"
+                       id="persist-categories"
+                       options="{categoriesSelect}"
+                       multiple="multiple" />
+    </div>
+
+    <f:form.submit name="submit" value="save" />
+</f:form>
+
+<p>
+    <f:link.action action="list" class="list-link">back to list</f:link.action>
+</p>

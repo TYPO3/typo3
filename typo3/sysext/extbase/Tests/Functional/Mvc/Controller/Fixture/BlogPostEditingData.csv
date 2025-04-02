@@ -1,0 +1,41 @@
+"pages",
+,"uid","pid","doktype","deleted","hidden","sys_language_uid","l10n_parent","l18n_cfg","slug","title"
+,1,0,1,0,0,0,0,0,"/","Site Root (EN)"
+,2,0,1,0,0,1,1,0,"/","Site Root (DE)"
+,3,1,1,0,0,0,0,0,"/home","Home (EN)"
+,4,1,1,0,0,1,3,0,"/home","Home (DE)"
+"tt_content",
+,"uid","pid","deleted","hidden","sys_language_uid","l18n_parent","CType","header","bodytext"
+,1,3,0,0,0,0,"blogexample_blogpostediting","BlogExample EN",""
+,2,3,0,0,1,1,"blogexample_blogpostediting","BlogExample DE",""
+,3,3,0,0,0,0,"text","Blog in EN","Intro for EN"
+,4,3,0,0,1,3,"text","Blog in DE","Intro for DE"
+tx_blogexample_domain_model_blog
+,uid,pid,title,description,categories,sys_language_uid,l18n_parent
+,1,3,"Blog1 EN","Created in english, has translation",3,0,0
+,2,3,"Blog1 DE","Created in german, translation of #1",3,1,1
+,3,3,"Blog2","Created in english, no translation",3,0,0
+,4,3,"Blog3","Created in german, no translation",2,1,0
+sys_category
+,uid,pid,title,sys_language_uid,l10n_parent,sorting
+,1,0,"Category 1 (English)",0,0,2
+,2,0,"Category 1 (German)",1,1,4
+,3,0,"Category 2 (Only english)",0,0,6
+,4,0,"Category 3 (Only german)",1,0,8
+,5,0,"Category 4 (English)",0,0,10
+,6,0,"Category 4 (German)",1,5,12
+,7,0,"Category 5 (English)",0,0,14
+,8,0,"Category 5 (German)",1,7,16
+sys_category_record_mm
+,uid_local,uid_foreign,tablenames,fieldname,sorting,sorting_foreign
+,1,1,tx_blogexample_domain_model_blog,categories,2,2
+,5,1,tx_blogexample_domain_model_blog,categories,4,4
+,7,1,tx_blogexample_domain_model_blog,categories,6,6
+,1,2,tx_blogexample_domain_model_blog,categories,8,7
+,5,2,tx_blogexample_domain_model_blog,categories,10,10
+,7,2,tx_blogexample_domain_model_blog,categories,12,12
+,1,3,tx_blogexample_domain_model_blog,categories,14,14
+,5,3,tx_blogexample_domain_model_blog,categories,16,16
+,7,3,tx_blogexample_domain_model_blog,categories,18,18
+,1,4,tx_blogexample_domain_model_blog,categories,20,20
+,5,4,tx_blogexample_domain_model_blog,categories,22,22

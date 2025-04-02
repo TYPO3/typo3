@@ -56,6 +56,30 @@ final class InternalRequestDataMappingTest extends FunctionalTestCase
                 ],
             ],
         ];
+        yield 'POST parsedBody(_POST) as parsedBody, body using multidimensional array that guzzle is not supporting' => [
+            'uri' => 'https://acme.com/request-mirror',
+            'method' => 'POST',
+            'queryParams' => [],
+            'parsedBody' => ['param1' => 'value1', 'subparam' => ['subsubparam' => 'value', 'subsubsubparam' => ['key' => 'value']]],
+            'headers' => [
+                'Content-type' => 'application/x-www-form-urlencoded',
+            ],
+            'body' => http_build_query(['param1' => 'value1', 'subparam' => ['subsubparam' => 'value', 'subsubsubparam' => ['key' => 'value']]]),
+            'expectedJsonKeyValues' => [
+                'method' => 'POST',
+                'parsedBody' => ['param1' => 'value1', 'subparam' => ['subsubparam' => 'value', 'subsubsubparam' => ['key' => 'value']]],
+                'queryParams' => [],
+                'body' => http_build_query(['param1' => 'value1', 'subparam' => ['subsubparam' => 'value', 'subsubsubparam' => ['key' => 'value']]]),
+                'headers' => [
+                    'Content-type' => [
+                        'application/x-www-form-urlencoded',
+                    ],
+                    'Host' => [
+                        'acme.com',
+                    ],
+                ],
+            ],
+        ];
         yield 'PATCH body as parsedBody' => [
             'uri' => 'https://acme.com/request-mirror',
             'method' => 'PATCH',

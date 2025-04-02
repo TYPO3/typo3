@@ -147,6 +147,20 @@ class PostRepository extends Repository
             ->execute();
     }
 
+    /**
+     * Find posts by categories (OR combined)
+     * @param array<int, int> $categoryUids
+     */
+    public function findByCategories(array $categoryUids): QueryResultInterface
+    {
+        $query = $this->createQuery();
+        return $query
+            ->matching(
+                $query->in('categories.uid', $categoryUids)
+            )
+            ->execute();
+    }
+
     public function findAllSortedByCategory(array $uids): QueryResultInterface
     {
         $q = $this->createQuery();
