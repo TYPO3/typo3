@@ -83,6 +83,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifySoftDeletedContent(): void
+    {
+        parent::modifySoftDeletedContent();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifySoftDeletedContent.csv');
+    }
+
+    #[Test]
     public function hideContent(): void
     {
         parent::hideContent();

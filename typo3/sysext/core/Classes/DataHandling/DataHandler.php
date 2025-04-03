@@ -875,7 +875,7 @@ class DataHandler
                     $id = (int)$id;
                     $fieldArray = [];
                     $recordAccess = null;
-                    $currentRecord = BackendUtility::getRecord($table, $id);
+                    $currentRecord = BackendUtility::getRecord($table, $id, '*', '', false);
                     if (empty($currentRecord) || ($currentRecord['pid'] ?? null) === null) {
                         // Skip if there is no record. Skip if record has no pid column indicating incomplete DB.
                         continue;
