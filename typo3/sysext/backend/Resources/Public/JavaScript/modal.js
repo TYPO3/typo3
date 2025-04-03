@@ -46,6 +46,7 @@ var Identifiers,__decorate=function(t,e,a,o){var s,n=arguments.length,i=n<3?e:nu
       `}return this.type===Types.template?this.templateResultContent:html`<p>${this.content}</p>`}renderModalButton(t){const e=t.btnClass||"btn-default",a={btn:!0,[e]:!0,"t3js-active":t.active,disabled:this.activeButton&&this.activeButton!==t};return html`
       <button class=${classMap(a)}
               name=${ifDefined(t.name||void 0)}
+              form=${ifDefined(t.form||void 0)}
               @click=${e=>this._buttonClick(e,t)}>
           ${t.icon?html`<typo3-backend-icon identifier="${t.icon}" size="small"></typo3-backend-icon>`:nothing}
           ${t.text}

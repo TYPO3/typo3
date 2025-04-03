@@ -34,7 +34,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -55,7 +55,6 @@ final class SudoModeController implements LoggerAwareInterface
 
     public function __construct(
         private readonly UriBuilder $uriBuilder,
-        private readonly PageRenderer $pageRenderer,
         private readonly AccessFactory $factory,
         private readonly AccessStorage $storage,
         private readonly PasswordVerification $passwordVerification,
@@ -71,13 +70,19 @@ final class SudoModeController implements LoggerAwareInterface
         );
     }
 
+    public function buildVerifyActionUriForClaim(AccessClaim $claim): UriInterface
+    {
+        return $this->uriBuilder->buildUriFromRoutePath(
+            self::ROUTE_PATH_VERIFY,
+            $this->buildUriParametersForClaim($claim, 'verify')
+        );
+    }
+
     /**
      * Renders the module backend markup, including the `<typo3-backend-security-sudo-mode>` element.
      */
     public function moduleAction(ServerRequestInterface $request): ResponseInterface
     {
-        $this->pageRenderer->addInlineLanguageLabelFile('EXT:backend/Resources/Private/Language/SudoMode.xmlf');
-
         $claim = $this->resolveClaimFromRequest($request, 'module');
         if ($claim === null) {
             return $this->redirectToErrorAction();
@@ -85,10 +90,8 @@ final class SudoModeController implements LoggerAwareInterface
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
-            'verifyActionUri' => $this->uriBuilder->buildUriFromRoutePath(
-                self::ROUTE_PATH_VERIFY,
-                $this->buildUriParametersForClaim($claim, 'verify')
-            ),
+            'verifyActionUri' => $this->buildVerifyActionUriForClaim($claim),
+            'labels' => $this->getLanguageService()->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf'),
         ]);
         return $view->renderResponse('SudoMode/Module');
     }
@@ -118,6 +121,7 @@ final class SudoModeController implements LoggerAwareInterface
         $view->assignMultiple([
             'cancelUri' => $this->backendEntryPointResolver->getPathFromRequest($request),
             'cancelTarget' => '_top',
+            'labels' => $this->getLanguageService()->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf'),
         ]);
         return $view->renderResponse('SudoMode/Error');
     }
@@ -210,5 +214,10 @@ final class SudoModeController implements LoggerAwareInterface
     private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
     }
 }

@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Extensionmanager;
 
 use Codeception\Attribute\Env;
+use Codeception\Exception\MalformedLocatorException;
 use Facebook\WebDriver\WebDriverKeys;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 
@@ -31,13 +32,19 @@ final class GetExtensionsCest
         $I->useExistingSession('admin');
 
         $I->click('Extensions', '#modulemenu');
-        $I->switchToContentFrame();
 
-        if ($I->tryToSeeElement('#sudo-mode-verification')) {
+        $I->switchToMainFrame();
+        try {
+            $needsStepUp = count($I->grabMultiple('.modal-sudo-mode-verification')) > 0;
+        } catch (MalformedLocatorException) {
+            $needsStepUp = false;
+        }
+        if ($needsStepUp) {
             $I->see('Verify with user password');
             $I->fillField('//input[@name="password"]', 'password');
-            $I->click('//button[@type="submit"]');
+            $I->click('//button[@name="verify"]');
         }
+        $I->switchToContentFrame();
 
         $I->waitForElementVisible('#typo3-extension-list');
 

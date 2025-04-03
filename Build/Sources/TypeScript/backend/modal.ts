@@ -65,6 +65,7 @@ export interface Button {
   active?: boolean;
   btnClass: string;
   name?: string;
+  form?: string;
   trigger?: (e: Event, modal: ModalElement) => void;
   icon?: string;
   action?: AbstractAction;
@@ -258,6 +259,7 @@ export class ModalElement extends LitElement {
     return html`
       <button class=${classMap(classes)}
               name=${ifDefined(button.name || undefined)}
+              form=${ifDefined(button.form || undefined)}
               @click=${(e: Event) => this._buttonClick(e, button)}>
           ${button.icon ? html`<typo3-backend-icon identifier="${button.icon}" size="small"></typo3-backend-icon>` : nothing}
           ${button.text}
