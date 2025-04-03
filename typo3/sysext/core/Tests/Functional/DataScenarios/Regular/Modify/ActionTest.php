@@ -77,6 +77,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function modifySoftDeletedContent(): void
+    {
+        parent::modifySoftDeletedContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifySoftDeletedContent.csv');
+    }
+
+    #[Test]
     public function modifyTranslatedContent(): void
     {
         parent::modifyTranslatedContent();

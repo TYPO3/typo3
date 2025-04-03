@@ -99,6 +99,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifySoftDeletedContent(): void
+    {
+        parent::modifySoftDeletedContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifySoftDeletedContent.csv');
+    }
+
+    #[Test]
     public function hideContent(): void
     {
         parent::hideContent();
