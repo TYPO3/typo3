@@ -142,7 +142,7 @@ class PropertyMappingConfiguration implements PropertyMappingConfigurationInterf
      * @param non-empty-string ...$propertyNames
      * @return $this
      */
-    public function allowProperties(string ...$propertyNames): self
+    public function allowProperties(int|string ...$propertyNames): self
     {
         foreach ($propertyNames as $propertyName) {
             $this->propertiesToBeMapped[$propertyName] = $propertyName;
