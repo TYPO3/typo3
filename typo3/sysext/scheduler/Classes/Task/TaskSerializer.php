@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
 use TYPO3\CMS\Scheduler\Execution;
@@ -37,7 +36,6 @@ class TaskSerializer
     public function __construct(
         protected readonly ContainerInterface $container,
         protected readonly TaskService $taskService,
-        protected readonly CommandRegistry $commandRegistry,
     ) {}
 
     /**
@@ -60,7 +58,7 @@ class TaskSerializer
                 } catch (ServiceNotFoundException) {
                     $taskObject = GeneralUtility::makeInstance($taskType);
                 }
-            } elseif ($this->commandRegistry->has($taskType)) {
+            } elseif (isset($this->taskService->getRegisteredCommands()[$taskType])) {
                 /** @var ExecuteSchedulableCommandTask $taskObject */
                 $taskObject = GeneralUtility::makeInstance(ExecuteSchedulableCommandTask::class);
                 $taskObject->setTaskType($taskType);
@@ -84,6 +82,21 @@ class TaskSerializer
             return $taskObject;
         }
         throw new InvalidTaskException('No task type given for task ID : ' . $row['uid'], 1740514192);
+    }
+
+    public function getClassNameFromTaskType(string $taskType): string
+    {
+        if ($this->taskService->hasTaskType($taskType)) {
+            if ($this->container->has($taskType)) {
+                // This is a service, so we use the class name directly
+                return $taskType;
+            }
+            return $taskType;
+        }
+        if (isset($this->taskService->getRegisteredCommands()[$taskType])) {
+            return ExecuteSchedulableCommandTask::class;
+        }
+        throw new InvalidTaskException('Task type ' . $taskType . ' not found. Probably not registered?', 1742584382);
     }
 
     /**

@@ -164,6 +164,7 @@ abstract class AbstractTask implements LoggerAwareInterface
 
     /**
      * This method returns the class name of the scheduler task
+     * Unused since TYPO3 v14.0, can be deprecated and removed once we migrate task registration away from TYPO3_CONF_VARS.
      *
      * @return string
      */

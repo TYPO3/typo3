@@ -40,6 +40,7 @@ class SchedulerTaskRepository
 
     public function __construct(
         protected readonly TaskSerializer $taskSerializer,
+        protected readonly TaskService $taskService,
     ) {}
 
     /**
@@ -266,7 +267,7 @@ class SchedulerTaskRepository
      */
     public function getGroupedTasks(): array
     {
-        $registeredClasses = GeneralUtility::makeInstance(TaskService::class)->getAvailableTaskTypes();
+        $registeredClasses = $this->taskService->getAvailableTaskTypes();
 
         // Get all registered tasks
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
@@ -307,20 +308,21 @@ class SchedulerTaskRepository
                 $taskObject = $this->taskSerializer->deserialize($row);
             } catch (InvalidTaskException $e) {
                 $taskData['errorMessage'] = $e->getMessage();
-                $taskData['class'] = $row['tasktype'] ?: $this->taskSerializer->extractClassName($row['serialized_task_object']);
+                $taskData['taskType'] = $row['tasktype'] ?: $this->taskSerializer->extractClassName($row['serialized_task_object']);
+                $errorClasses[] = $taskData;
+                continue;
+            }
+
+            $taskData['taskType'] = $taskObject->getTaskType();
+
+            if (!$this->isValidTaskObject($taskObject)) {
+                $taskClass = $this->taskSerializer->resolveClassName($taskObject);
+                $taskData['errorMessage'] = 'The task "' . $taskClass . ' is not a valid task';
                 $errorClasses[] = $taskData;
                 continue;
             }
 
             $taskClass = $this->taskSerializer->resolveClassName($taskObject);
-            $taskData['class'] = $taskClass;
-
-            if (!$this->isValidTaskObject($taskObject)) {
-                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a valid task';
-                $errorClasses[] = $taskData;
-                continue;
-            }
-
             if (!isset($registeredClasses[$taskClass])) {
                 $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a registered task';
                 $errorClasses[] = $taskData;
@@ -336,10 +338,11 @@ class SchedulerTaskRepository
             $taskData['disabled'] = (bool)$row['disable'];
             $taskData['isRunning'] = !empty($row['serialized_executions']);
             $taskData['nextExecution'] = (int)$row['nextexecution'];
-            $taskData['type'] = 'single';
+            $taskData['taskType'] = $taskObject->getTaskType();
+            $taskData['runningType'] = 'single';
             $taskData['frequency'] = '';
             if ($taskObject->getType() === AbstractTask::TYPE_RECURRING) {
-                $taskData['type'] = 'recurring';
+                $taskData['runningType'] = 'recurring';
                 $taskData['frequency'] = $taskObject->getExecution()->getCronCmd() ?: $taskObject->getExecution()->getInterval();
             }
             $taskData['multiple'] = (bool)$taskObject->getExecution()->getMultiple();

@@ -75,6 +75,9 @@
 			<trans-unit id="label.class">
 				<source>Task</source>
 			</trans-unit>
+			<trans-unit id="label.taskType">
+				<source>Task Type</source>
+			</trans-unit>
 			<trans-unit id="label.cron">
 				<source>Cron</source>
 			</trans-unit>

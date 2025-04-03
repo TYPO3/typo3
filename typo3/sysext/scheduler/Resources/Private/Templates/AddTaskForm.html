@@ -34,21 +34,21 @@
             <div class="row">
                 <f:render partial="AddEditDisableField" arguments="{currentData: currentData}" />
                 <div class="form-group">
-                    <label class="form-label" for="task_class"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.class"/></label>
+                    <label class="form-label" for="task_type"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.taskType"/></label>
                     <div class="formengine-field-item">
                         <div class="form-control-wrap">
                             <div class="form-wizards-wrap">
                                 <div class="form-wizards-item-element">
-                                    <select name="tx_scheduler[class]" id="task_class" class="form-select">
-                                        <f:for each="{groupedClasses}" as="classGroup" key="extension">
+                                    <select name="tx_scheduler[taskType]" id="task_type" class="form-select">
+                                        <f:for each="{groupedTasks}" as="taskGroup" key="extension">
                                             <optgroup label="{extension}">
-                                                <f:for each="{classGroup}" as="classInfo" key="class">
+                                                <f:for each="{taskGroup}" as="taskInfo" key="taskType">
                                                     <option
-                                                        value="{class}"
-                                                        title="{classInfo.description}"
-                                                        {f:if(condition:'{currentData.class} == {class}',then:'selected="selected"')}
+                                                        value="{taskType}"
+                                                        title="{taskInfo.description}"
+                                                        {f:if(condition:'{currentData.taskType} == {taskType}',then:'selected="selected"')}
                                                     >
-                                                    {classInfo.title}
+                                                    {taskInfo.title}
                                                     </option>
                                                 </f:for>
                                             </optgroup>

@@ -17,7 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Scheduler\Service;
 
+use Symfony\Component\Console\Command\Command;
+use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 
 /**
  * Service class helping to retrieve data for EXT:scheduler
@@ -25,6 +28,10 @@ use TYPO3\CMS\Core\Localization\LanguageService;
  */
 class TaskService
 {
+    public function __construct(
+        protected readonly CommandRegistry $commandRegistry,
+    ) {}
+
     /**
      * This method fetches a list of all classes that have been registered with the Scheduler
      * For each item the following information is provided, as an associative array:
@@ -56,6 +63,29 @@ class TaskService
     public function hasTaskType(string $taskType): bool
     {
         return isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskType]);
+    }
+
+    /**
+     * If the "command" task is registered, create a list of available commands to be rendered.
+     *
+     * @return Command[]
+     */
+    public function getRegisteredCommands(): array
+    {
+        $commands = [];
+        if (array_key_exists(ExecuteSchedulableCommandTask::class, $this->getAvailableTaskTypes())) {
+            foreach ($this->commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
+                $commands[$commandIdentifier] = $command;
+            }
+            ksort($commands);
+        }
+        return $commands;
+    }
+
+    public function isValidTaskTypeOrCommand(string $taskType): bool
+    {
+        return isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskType]) ||
+            isset($this->getRegisteredCommands()[$taskType]);
     }
 
     private function getLanguageService(): LanguageService

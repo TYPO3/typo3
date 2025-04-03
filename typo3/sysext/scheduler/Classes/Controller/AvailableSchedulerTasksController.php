@@ -19,14 +19,11 @@ namespace TYPO3\CMS\Scheduler\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Backend\Attribute\AsController as BackendController;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
-use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Scheduler\Service\TaskService;
-use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 
 /**
  * Render information about available tasks and commands.
@@ -38,16 +35,12 @@ final class AvailableSchedulerTasksController
 {
     public function __construct(
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
-        private readonly CommandRegistry $commandRegistry,
         private readonly TaskService $taskService,
     ) {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-
-        $tasks = $this->taskService->getAvailableTaskTypes();
-        $commands = $this->getRegisteredCommands($tasks);
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->setTitle(
@@ -61,8 +54,8 @@ final class AvailableSchedulerTasksController
                 'day' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'd-m-y',
                 'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
             ],
-            'registeredClasses' => $tasks,
-            'commands' => $commands,
+            'registeredClasses' => $this->taskService->getAvailableTaskTypes(),
+            'commands' => $this->taskService->getRegisteredCommands(),
         ]);
         return $view->renderResponse('InfoScreen');
     }
@@ -74,23 +67,6 @@ final class AvailableSchedulerTasksController
             ->setRouteIdentifier('scheduler_availabletasks')
             ->setDisplayName($name);
         $buttonBar->addButton($shortcutButton);
-    }
-
-    /**
-     * If the "command" task is registered, create a list of available commands to be rendered.
-     *
-     * @return Command[]
-     */
-    private function getRegisteredCommands(array $tasks): array
-    {
-        $commands = [];
-        if (array_key_exists(ExecuteSchedulableCommandTask::class, $tasks)) {
-            foreach ($this->commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
-                $commands[$commandIdentifier] = $command;
-            }
-            ksort($commands);
-        }
-        return $commands;
     }
 
     private function getLanguageService(): LanguageService

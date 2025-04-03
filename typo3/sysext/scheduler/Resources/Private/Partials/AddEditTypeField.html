@@ -4,16 +4,16 @@
 >
 
 <div class="form-group">
-    <label class="form-label" for="task_type"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type"/></label>
+    <label class="form-label" for="task_running_type"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type"/></label>
     <div class="formengine-field-item">
         <div class="form-control-wrap">
             <div class="form-wizards-wrap">
                 <div class="form-wizards-item-element">
-                    <select name="tx_scheduler[type]" id="task_type" class="form-select">
-                        <option value="1" {f:if(condition:'{currentData.type} == 1',then:'selected="selected"')}>
+                    <select name="tx_scheduler[runningType]" id="task_running_type" class="form-select">
+                        <option value="1" {f:if(condition:'{currentData.runningType} == 1',then:'selected="selected"')}>
                             <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type.single" />
                         </option>
-                        <option value="2" {f:if(condition:'{currentData.type} == 2',then:'selected="selected"')}>
+                        <option value="2" {f:if(condition:'{currentData.runningType} == 2',then:'selected="selected"')}>
                             <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type.recurring" />
                         </option>
                     </select>

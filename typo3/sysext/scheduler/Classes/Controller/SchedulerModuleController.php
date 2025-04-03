@@ -49,6 +49,7 @@ use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
+use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 use TYPO3\CMS\Scheduler\Task\TaskSerializer;
 use TYPO3\CMS\Scheduler\Validation\Validator\TaskValidator;
 
@@ -223,8 +224,8 @@ final class SchedulerModuleController
                         SystemLogDatabaseAction::DELETE,
                         SystemLogErrorClassification::MESSAGE,
                         null,
-                        'Scheduler task "%s" (UID: %s, Class: "%s") was deleted',
-                        [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
+                        'Scheduler task "%s" (UID: %s, Type: "%s") was deleted',
+                        [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskType()]
                     );
                     $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.deleteSuccess'));
                 } else {
@@ -320,7 +321,7 @@ final class SchedulerModuleController
     protected function renderAddTaskFormView(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $registeredClasses = $this->taskService->getAvailableTaskTypes();
+        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
         // Class selection can be GET - link and + button in info screen.
         $queryParams = $request->getQueryParams()['tx_scheduler'] ?? [];
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
@@ -334,10 +335,10 @@ final class SchedulerModuleController
         }
 
         $currentData = [
-            'class' => $parsedBody['class'] ?? $queryParams['class'] ?? key($registeredClasses),
+            'taskType' => $parsedBody['taskType'] ?? $queryParams['taskType'] ?? key($availableTaskTypes),
             'disable' => (bool)($parsedBody['disable'] ?? false),
             'task_group' => $selectedTaskGroup,
-            'type' => (int)($parsedBody['type'] ?? AbstractTask::TYPE_RECURRING),
+            'runningType' => (int)($parsedBody['runningType'] ?? AbstractTask::TYPE_RECURRING),
             'start' => $parsedBody['start'] ?? $this->formatTimestampForDatePicker($this->context->getAspect('date')->get('timestamp')),
             'end' => $parsedBody['end'] ?? '',
             'frequency' => $parsedBody['frequency'] ?? '',
@@ -346,17 +347,17 @@ final class SchedulerModuleController
         ];
 
         // Group available tasks by extension name
-        $groupedClasses = [];
-        foreach ($registeredClasses as $class => $classInfo) {
-            $groupedClasses[$classInfo['extension']][$class] = $classInfo;
+        $groupedTasks = [];
+        foreach ($availableTaskTypes as $class => $classInfo) {
+            $groupedTasks[$classInfo['extension']][$class] = $classInfo;
         }
-        ksort($groupedClasses);
+        ksort($groupedTasks);
 
         // Additional field provider access $this->getCurrentAction() - Init it for them
         $this->currentAction = SchedulerManagementAction::ADD;
         // Get the extra fields to display for each task that needs some.
         $additionalFields = [];
-        foreach ($registeredClasses as $class => $registrationInfo) {
+        foreach ($availableTaskTypes as $class => $registrationInfo) {
             if (!empty($registrationInfo['provider'])) {
                 /** @var AdditionalFieldProviderInterface $providerObject */
                 $providerObject = GeneralUtility::makeInstance($registrationInfo['provider']);
@@ -373,7 +374,7 @@ final class SchedulerModuleController
 
         $view->assignMultiple([
             'currentData' => $currentData,
-            'groupedClasses' => $groupedClasses,
+            'groupedTasks' => $groupedTasks,
             'registeredTaskGroups' => $this->getRegisteredTaskGroups(),
             'preSelectedTaskGroup' => (int)($request->getQueryParams()['groupId'] ?? 0),
             'frequencyOptions' => (array)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions'] ?? []),
@@ -397,7 +398,7 @@ final class SchedulerModuleController
     protected function renderEditTaskFormView(ModuleTemplate $view, ServerRequestInterface $request, ?int $taskUid = null): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $registeredClasses = $this->taskService->getAvailableTaskTypes();
+        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
         $moduleData = $request->getAttribute('moduleData');
         $taskUid = (int)($taskUid ?? $request->getQueryParams()['uid'] ?? $parsedBody['uid'] ?? 0);
@@ -423,63 +424,60 @@ final class SchedulerModuleController
         }
 
         $task = null;
-        $class = null;
+        $taskType = null;
         $isInvalidTask = true;
         if (!empty($taskRecord['tasktype'])) {
             try {
                 $task = $this->taskSerializer->deserialize($taskRecord);
-                $class = $this->taskSerializer->resolveClassName($task);
+                $taskType = $task->getTaskType();
                 $isInvalidTask = false;
             } catch (InvalidTaskException) {
-                $class = $taskRecord['tasktype'];
-            }
-        } elseif (isset($taskRecord['serialized_task_object']) && is_string($taskRecord['serialized_task_object'])) {
-            try {
-                $task = $this->taskSerializer->deserialize($taskRecord);
-                $class = $this->taskSerializer->resolveClassName($task);
-                $isInvalidTask = false;
-            } catch (InvalidTaskException) {
-                $class = $this->taskSerializer->extractClassName($taskRecord['serialized_task_object']);
+                $taskType = $taskRecord['tasktype'];
             }
         }
 
-        if ($isInvalidTask || !isset($registeredClasses[$class]) || !(new TaskValidator())->isValid($task)) {
+        // @todo workaround, will be removed once commands and tasks are consolidated.
+        if (isset($this->taskService->getRegisteredCommands()[$taskType])) {
+            $taskType = ExecuteSchedulableCommandTask::class;
+        }
+
+        if ($isInvalidTask || !isset($availableTaskTypes[$taskType]) || !(new TaskValidator())->isValid($task)) {
             // The task object is not valid anymore. Add flash message and go back to list view.
-            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $class), ContextualFeedbackSeverity::ERROR);
+            $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $taskType), ContextualFeedbackSeverity::ERROR);
             return $this->renderListTasksView($view, $moduleData);
         }
 
         $taskExecution = $task->getExecution();
         $taskName = $this->getHumanReadableTaskName($task);
         // If an interval or a cron command is defined, it's a recurring task
-        $taskType = (int)($parsedBody['type'] ?? ((empty($taskExecution->getCronCmd()) && empty($taskExecution->getInterval())) ? AbstractTask::TYPE_SINGLE : AbstractTask::TYPE_RECURRING));
+        $taskRunningType = (int)($parsedBody['runningType'] ?? ((empty($taskExecution->getCronCmd()) && empty($taskExecution->getInterval())) ? AbstractTask::TYPE_SINGLE : AbstractTask::TYPE_RECURRING));
 
         $currentData = [
-            'class' => $class,
+            'taskType' => $taskType,
             'taskName' => $taskName,
             'disable' => (bool)($parsedBody['disable'] ?? $task->isDisabled()),
             'task_group' => (int)($parsedBody['task_group'] ?? $task->getTaskGroup()),
-            'type' => $taskType,
+            'runningType' => $taskRunningType,
             'start' => $parsedBody['start'] ?? $this->formatTimestampForDatePicker($taskExecution->getStart()),
             // End for single execution tasks is always empty
-            'end' => $parsedBody['end'] ?? ($taskType === AbstractTask::TYPE_RECURRING ? $this->formatTimestampForDatePicker($taskExecution->getEnd()) : ''),
+            'end' => $parsedBody['end'] ?? ($taskRunningType === AbstractTask::TYPE_RECURRING ? $this->formatTimestampForDatePicker($taskExecution->getEnd()) : ''),
             // Find current frequency field value depending on task type and interval vs. cron command
-            'frequency' => $parsedBody['frequency'] ?? ($taskType === AbstractTask::TYPE_RECURRING ? ($taskExecution->getInterval() ?: $taskExecution->getCronCmd()) : ''),
-            'multiple' => !($taskType === AbstractTask::TYPE_SINGLE) && (bool)($parsedBody['multiple'] ?? $taskExecution->getMultiple()),
+            'frequency' => $parsedBody['frequency'] ?? ($taskRunningType === AbstractTask::TYPE_RECURRING ? ($taskExecution->getInterval() ?: $taskExecution->getCronCmd()) : ''),
+            'multiple' => !($taskRunningType === AbstractTask::TYPE_SINGLE) && (bool)($parsedBody['multiple'] ?? $taskExecution->getMultiple()),
             'description' => $parsedBody['description'] ?? $task->getDescription(),
         ];
 
         // Additional field provider access $this->getCurrentAction() - Init it for them
         $this->currentAction = SchedulerManagementAction::EDIT;
         $additionalFields = [];
-        if (!empty($registeredClasses[$class]['provider'])) {
-            $providerObject = GeneralUtility::makeInstance($registeredClasses[$class]['provider']);
+        if (!empty($availableTaskTypes[$taskType]['provider'])) {
+            $providerObject = GeneralUtility::makeInstance($availableTaskTypes[$taskType]['provider']);
             if ($providerObject instanceof AdditionalFieldProviderInterface) {
                 // Additional field provider receive form data by reference. But they shouldn't pollute our array here.
                 $parseBodyForProvider = $request->getParsedBody()['tx_scheduler'] ?? [];
                 $fields = $providerObject->getAdditionalFields($parseBodyForProvider, $task, $this);
                 if (is_array($fields)) {
-                    $additionalFields = $this->addPreparedAdditionalFields($additionalFields, $fields, (string)$class);
+                    $additionalFields = $this->addPreparedAdditionalFields($additionalFields, $fields, (string)$taskType);
                 }
             }
         }
@@ -579,7 +577,7 @@ final class SchedulerModuleController
     {
         $languageService = $this->getLanguageService();
         $data = $this->taskRepository->getGroupedTasks();
-        $registeredClasses = $this->taskService->getAvailableTaskTypes();
+        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
 
         $groups = $data['taskGroupsWithTasks'] ?? [];
         $groups = array_map(
@@ -601,7 +599,7 @@ final class SchedulerModuleController
         );
         $view->makeDocHeaderModuleMenu();
         $this->addDocHeaderReloadButton($view);
-        if (!empty($registeredClasses)) {
+        if (!empty($availableTaskTypes)) {
             $this->addDocHeaderAddTaskButton($view);
             $this->addDocHeaderAddTaskGroupButton($view);
         }
@@ -613,13 +611,13 @@ final class SchedulerModuleController
     {
         $languageService = $this->getLanguageService();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
-        $type = (int)($parsedBody['type'] ?? 0);
+        $runningType = (int)($parsedBody['runningType'] ?? 0);
         $startTime = $parsedBody['start'] ?? 0;
         $endTime = $parsedBody['end'] ?? 0;
         $result = true;
         $taskClass = '';
         if ($isNewTask) {
-            $taskClass = $parsedBody['class'] ?? '';
+            $taskClass = $this->taskSerializer->getClassNameFromTaskType($parsedBody['taskType'] ?? '');
             if (!class_exists($taskClass)) {
                 $result = false;
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTaskClassFound'), ContextualFeedbackSeverity::ERROR);
@@ -634,7 +632,7 @@ final class SchedulerModuleController
                 $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
             }
         }
-        if ($type !== AbstractTask::TYPE_SINGLE && $type !== AbstractTask::TYPE_RECURRING) {
+        if ($runningType !== AbstractTask::TYPE_SINGLE && $runningType !== AbstractTask::TYPE_RECURRING) {
             $result = false;
             $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskType'), ContextualFeedbackSeverity::ERROR);
         }
@@ -649,7 +647,7 @@ final class SchedulerModuleController
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), ContextualFeedbackSeverity::ERROR);
             }
         }
-        if ($type === AbstractTask::TYPE_RECURRING && !empty($endTime)) {
+        if ($runningType === AbstractTask::TYPE_RECURRING && !empty($endTime)) {
             try {
                 $endTime = $this->getTimestampFromDateString($endTime);
             } catch (InvalidDateException $e) {
@@ -657,11 +655,11 @@ final class SchedulerModuleController
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate'), ContextualFeedbackSeverity::ERROR);
             }
         }
-        if ($type === AbstractTask::TYPE_RECURRING && $endTime > 0 && $endTime < $startTime) {
+        if ($runningType === AbstractTask::TYPE_RECURRING && $endTime > 0 && $endTime < $startTime) {
             $result = false;
             $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.endDateSmallerThanStartDate'), ContextualFeedbackSeverity::ERROR);
         }
-        if ($type === AbstractTask::TYPE_RECURRING) {
+        if ($runningType === AbstractTask::TYPE_RECURRING) {
             if (empty(trim($parsedBody['frequency']))) {
                 $result = false;
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noFrequency'), ContextualFeedbackSeverity::ERROR);
@@ -690,8 +688,14 @@ final class SchedulerModuleController
      */
     protected function createTask(ModuleTemplate $view, ServerRequestInterface $request): int
     {
+        $taskType = $request->getParsedBody()['tx_scheduler']['taskType'];
         /** @var AbstractTask $task */
-        $task = GeneralUtility::makeInstance($request->getParsedBody()['tx_scheduler']['class']);
+        $task = GeneralUtility::makeInstance(
+            $this->taskSerializer->getClassNameFromTaskType($taskType)
+        );
+        if ($task instanceof ExecuteSchedulableCommandTask) {
+            $task->setTaskType($taskType);
+        }
         $task = $this->setTaskDataFromRequest($task, $request);
         if (!$this->taskRepository->add($task)) {
             throw new \RuntimeException('Unable to add task. Possible database error', 1641720169);
@@ -701,8 +705,8 @@ final class SchedulerModuleController
             SystemLogDatabaseAction::INSERT,
             SystemLogErrorClassification::MESSAGE,
             null,
-            'Scheduler task "%s" (UID: %s, Class: "%s") was added',
-            [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
+            'Scheduler task "%s" (UID: %s, Type: "%s") was added',
+            [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskType()]
         );
         $this->addMessage($view, $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.addSuccess'));
         return $task->getTaskUid();
@@ -721,8 +725,8 @@ final class SchedulerModuleController
             SystemLogDatabaseAction::UPDATE,
             SystemLogErrorClassification::MESSAGE,
             null,
-            'Scheduler task "%s" (UID: %s, Class: "%s") was updated',
-            [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskClassName()]
+            'Scheduler task "%s" (UID: %s, Type: "%s") was updated',
+            [$task->getTaskTitle(), $task->getTaskUid(), $task->getTaskType()]
         );
         $this->addMessage($view, $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.updateSuccess'));
     }
@@ -730,7 +734,7 @@ final class SchedulerModuleController
     protected function setTaskDataFromRequest(AbstractTask $task, ServerRequestInterface $request): AbstractTask
     {
         $parsedBody = $request->getParsedBody()['tx_scheduler'];
-        if ((int)$parsedBody['type'] === AbstractTask::TYPE_SINGLE) {
+        if ((int)$parsedBody['runningType'] === AbstractTask::TYPE_SINGLE) {
             $task->registerSingleExecution($this->getTimestampFromDateString($parsedBody['start']));
         } else {
             $task->registerRecurringExecution(
@@ -804,13 +808,13 @@ final class SchedulerModuleController
     /**
      * Prepared additional fields from field providers for rendering.
      */
-    protected function addPreparedAdditionalFields(array $currentAdditionalFields, array $newAdditionalFields, string $class): array
+    protected function addPreparedAdditionalFields(array $currentAdditionalFields, array $newAdditionalFields, string $taskType): array
     {
         foreach ($newAdditionalFields as $fieldID => $fieldInfo) {
             $currentAdditionalFields[] = [
-                'class' => $class,
+                'taskType' => $taskType,
                 'fieldID' => $fieldID,
-                'htmlClassName' => strtolower(str_replace('\\', '-', $class)),
+                'htmlClassName' => strtolower(str_replace('\\', '-', $taskType)),
                 'code' => $fieldInfo['code'] ?? '',
                 'cshKey' => $fieldInfo['cshKey'] ?? '',
                 'cshLabel' => $fieldInfo['cshLabel'] ?? '',
@@ -818,7 +822,7 @@ final class SchedulerModuleController
                 'browser' => $fieldInfo['browser'] ?? '',
                 'pageTitle' => $fieldInfo['pageTitle'] ?? '',
                 'pageUid' => $fieldInfo['pageUid'] ?? '',
-                'type' => $fieldInfo['type'] ?? '',
+                'renderType' => $fieldInfo['type'] ?? '',
                 'description' => $fieldInfo['description'] ?? '',
             ];
         }
@@ -924,11 +928,11 @@ final class SchedulerModuleController
     protected function getHumanReadableTaskName(AbstractTask $task): string
     {
         $class = get_class($task);
-        $registeredClasses = $this->taskService->getAvailableTaskTypes();
-        if (!array_key_exists($class, $registeredClasses)) {
+        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
+        if (!array_key_exists($class, $availableTaskTypes)) {
             throw new \RuntimeException('Class ' . $class . ' not found in list of registered task classes', 1641658569);
         }
-        return $registeredClasses[$class]['title'] . ' (' . $registeredClasses[$class]['extension'] . ')';
+        return $availableTaskTypes[$class]['title'] . ' (' . $availableTaskTypes[$class]['extension'] . ')';
     }
 
     /**

@@ -7,14 +7,14 @@
 <f:for each="{additionalFields}" as="field">
     <div
         class="form-group extraFields extra_fields_{field.htmlClassName}"
-        {f:if(condition: '{currentData.class} != {field.class}', then:'hidden')}
+        {f:if(condition: '{currentData.taskType} != {field.taskType}', then:'hidden')}
         id="{field.fieldID}_row"
     >
-        <f:if condition="{field.type} == 'check'">
+        <f:if condition="{field.renderType} == 'check'">
             <f:then>
                 <label class="form-label">{field.langLabel}</label>
             </f:then>
-            <f:else if="{field.type} == 'commandOption'">
+            <f:else if="{field.renderType} == 'commandOption'">
                 <label class="form-label" for="{field.fieldID}_values">{field.langLabel}</label>
             </f:else>
             <f:else>
@@ -64,7 +64,7 @@
                 </div>
             </f:then>
             <f:else>
-                <f:if condition="{field.type} == 'select'">
+                <f:if condition="{field.renderType} == 'select'">
                     <f:then>
                         <div class="formengine-field-item t3js-formengine-field-item">
                             <f:if condition="{field.description}">
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                     </f:then>
-                    <f:else if="{field.type} == 'input'">
+                    <f:else if="{field.renderType} == 'input'">
                         <div class="formengine-field-item t3js-formengine-field-item">
                             <f:if condition="{field.description}">
                                 <div class="form-description">{field.description}</div>
@@ -93,7 +93,7 @@
                             </div>
                         </div>
                     </f:else>
-                    <f:else if="{field.type} == 'textarea'">
+                    <f:else if="{field.renderType} == 'textarea'">
                         <typo3-formengine-element-text class="formengine-field-item t3js-formengine-field-item">
                             <f:if condition="{field.description}">
                                 <div class="form-description">{field.description}</div>
@@ -107,7 +107,7 @@
                             </div>
                         </typo3-formengine-element-text>
                     </f:else>
-                    <f:else if="{field.type} == 'check'">
+                    <f:else if="{field.renderType} == 'check'">
                         <div class="formengine-field-item t3js-formengine-field-item">
                             <f:if condition="{field.description}">
                                 <div class="form-description">{field.description}</div>
@@ -131,7 +131,7 @@
                             </div>
                         </div>
                     </f:else>
-                    <f:else if="{field.type} == 'checkToggle'">
+                    <f:else if="{field.renderType} == 'checkToggle'">
                         <div class="formengine-field-item t3js-formengine-field-item">
                             <f:if condition="{field.description}">
                                 <div class="form-description">{field.description}</div>
@@ -145,7 +145,7 @@
                             </div>
                         </div>
                     </f:else>
-                    <f:else if="{field.type} == 'commandOption'">
+                    <f:else if="{field.renderType} == 'commandOption'">
                         <div class="formengine-field-item t3js-formengine-field-item">
                             <f:if condition="{field.description}">
                                 <div class="form-description">{field.description}</div>

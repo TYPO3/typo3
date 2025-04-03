@@ -34,7 +34,7 @@
                                 <tr>
                                     <td>
                                         <a
-                                            href="{be:moduleLink(route: 'scheduler_manage', query: 'action=add&tx_scheduler[class]={class}')}"
+                                            href="{be:moduleLink(route: 'scheduler_manage', query: 'action=add&tx_scheduler[taskType]={class}')}"
                                             title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}"
                                         >
                                             {classInfo.title}
@@ -46,7 +46,7 @@
                                         <div class="btn-group" role="group">
                                     <span class="btn btn-default">
                                         <a
-                                            href="{be:moduleLink(route: 'scheduler_manage', query: 'action=add&tx_scheduler[class]={class}')}"
+                                            href="{be:moduleLink(route: 'scheduler_manage', query: 'action=add&tx_scheduler[taskType]={class}')}"
                                             title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}"
                                         >
                                             <core:icon identifier="actions-plus" />
@@ -84,7 +84,7 @@
                                     <tr>
                                         <td>
                                             <form action="{uri}" method="post">
-                                                <input type="hidden" name="tx_scheduler[class]" value="TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask" />
+                                                <input type="hidden" name="tx_scheduler[taskType]" value="TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask" />
                                                 <input type="hidden" name="tx_scheduler[task_executeschedulablecommand][command]" value="{command}" />
                                                 <a
                                                     href=""
@@ -99,7 +99,7 @@
                                         <td>{commandInfo.description}</td>
                                         <td class="text-end">
                                             <form action="{uri}" method="post">
-                                                <input type="hidden" name="tx_scheduler[class]" value="TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask" />
+                                                <input type="hidden" name="tx_scheduler[taskType]" value="TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask" />
                                                 <input type="hidden" name="tx_scheduler[task_executeschedulablecommand][command]" value="{command}" />
                                                 <button class="btn btn-default" type="submit" title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}">
                                                     <core:icon identifier="actions-add" />

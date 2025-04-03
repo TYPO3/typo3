@@ -29,14 +29,14 @@
     <form class="form task-form" name="tx_scheduler_form" id="tx_scheduler_form" method="post">
         <input type="hidden" name="action" value="edit" />
         <input type="hidden" name="tx_scheduler[uid]" value="{uid}" />
-        <input type="hidden" name="tx_scheduler[class]" id="task_class" value="{currentData.class}">
+        <input type="hidden" name="tx_scheduler[taskType]" id="task_type" value="{currentData.taskType}">
 
         <fieldset class="form-section">
             <h2 class="form-section-headline"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:scheduler.form.palettes.general" /></h2>
             <div class="row">
                 <f:render partial="AddEditDisableField" arguments="{currentData: currentData}" />
                 <div class="form-group">
-                    <label class="form-label" for="task_class"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.class"/></label>
+                    <label class="form-label" for="task_type"><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.taskType"/></label>
                     <div class="formengine-field-item">
                         <div class="form-control-wrap">
                             <div class="form-wizards-wrap">

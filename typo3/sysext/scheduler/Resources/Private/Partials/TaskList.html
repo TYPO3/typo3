@@ -350,7 +350,7 @@
                                         </f:for>
                                     </td>
                                     <td class="align-top col-state">
-                                        <f:if condition="{task.type} === 'single'">
+                                        <f:if condition="{task.runningType} === 'single'">
                                             <f:then>
                                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.type.single" />
                                             </f:then>
@@ -360,7 +360,7 @@
                                         </f:if>
                                     </td>
                                     <td class="align-top col-state">
-                                        <f:if condition="{task.type} === 'single'">
+                                        <f:if condition="{task.runningType} === 'single'">
                                             <f:then>-</f:then>
                                             <f:else>{task.frequency}</f:else>
                                         </f:if>

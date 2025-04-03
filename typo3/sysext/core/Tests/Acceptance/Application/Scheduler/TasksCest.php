@@ -44,9 +44,9 @@ final class TasksCest
         $I->click('button[value="save"]');
         $I->waitForText('No frequency was defined, either as an interval or as a cron command.');
 
-        $I->selectOption('#task_class', 'System Status Update');
+        $I->selectOption('#task_type', 'System Status Update');
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
-        $I->selectOption('#task_type', 'Single');
+        $I->selectOption('#task_running_type', 'Single');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->click('button[value="save"]');
         $I->waitForText('The task was added successfully.');

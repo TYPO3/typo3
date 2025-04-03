@@ -69,8 +69,9 @@ final class TaskSerializerTest extends UnitTestCase
         $container->set(TestTask::class, new TestTask());
         $subject = new TaskSerializer(
             $container,
-            new TaskService(),
-            $this->createMock(CommandRegistry::class),
+            new TaskService(
+                $this->createMock(CommandRegistry::class)
+            ),
         );
         $result = $subject->deserialize($data);
         $result->setLogger(new NullLogger());
@@ -102,7 +103,6 @@ final class TaskSerializerTest extends UnitTestCase
         $taskSerializer = new TaskSerializer(
             $this->createMock(ContainerInterface::class),
             $this->createMock(TaskService::class),
-            $this->createMock(CommandRegistry::class),
         );
         self::assertSame($expectation, $taskSerializer->resolveClassName($task));
     }
@@ -132,7 +132,6 @@ final class TaskSerializerTest extends UnitTestCase
         $taskSerializer = new TaskSerializer(
             $this->createMock(ContainerInterface::class),
             $this->createMock(TaskService::class),
-            $this->createMock(CommandRegistry::class),
         );
         self::assertSame($expectation, $taskSerializer->extractClassName($serializedTask));
     }

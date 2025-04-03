@@ -181,18 +181,18 @@ class Scheduler {
    * Registers listeners
    */
   private initializeEvents(): void {
-    const taskClassElement = document.querySelector('#task_class');
-    if (taskClassElement) {
-      new RegularEvent('change', (evt: Event): void => {
-        this.toggleTaskSettingFields(evt.target as HTMLSelectElement);
-      }).bindTo(taskClassElement);
-    }
-
     const taskTypeElement = document.querySelector('#task_type');
     if (taskTypeElement) {
       new RegularEvent('change', (evt: Event): void => {
-        this.toggleFieldsByTaskType((evt.target as HTMLSelectElement).value);
+        this.toggleTaskSettingFields(evt.target as HTMLSelectElement);
       }).bindTo(taskTypeElement);
+    }
+
+    const taskRunningTypeElement = document.querySelector('#task_running_type');
+    if (taskRunningTypeElement) {
+      new RegularEvent('change', (evt: Event): void => {
+        this.toggleFieldsByTaskType((evt.target as HTMLSelectElement).value);
+      }).bindTo(taskRunningTypeElement);
     }
 
     const taskTableGarbageCollectionAllTablesElement = document.querySelector('#task_tableGarbageCollection_allTables');
@@ -320,13 +320,13 @@ class Scheduler {
    * Initialize default states
    */
   private initializeDefaultStates(): void {
+    const taskRunningType = document.querySelector('#task_running_type') as HTMLSelectElement;
+    if (taskRunningType !== null) {
+      this.toggleFieldsByTaskType(taskRunningType.value);
+    }
     const taskType = document.querySelector('#task_type') as HTMLSelectElement;
     if (taskType !== null) {
-      this.toggleFieldsByTaskType(taskType.value);
-    }
-    const taskClass = document.querySelector('#task_class') as HTMLSelectElement;
-    if (taskClass !== null) {
-      this.toggleTaskSettingFields(taskClass);
+      this.toggleTaskSettingFields(taskType);
       Scheduler.updateClearableInputs();
       Scheduler.updateDateTimePickers();
       Scheduler.updateElementBrowserTriggers();
