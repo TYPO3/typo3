@@ -3471,7 +3471,7 @@ class DataHandler
 
         $fullLanguageCheckNeeded = $table !== 'pages';
         // Used to check language and general editing rights
-        if (!$ignoreLocalization && ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$this->BE_USER->recordEditAccessInternals($table, $uid, false, false, $fullLanguageCheckNeeded)) {
+        if (!$ignoreLocalization && ($language <= 0 || !$this->BE_USER->checkLanguageAccess($language)) && !$this->BE_USER->recordEditAccessInternals($table, $row, false, null, $fullLanguageCheckNeeded)) {
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $uid, 'reason' => $this->BE_USER->errorMsg]);
             return null;
         }
@@ -4526,7 +4526,7 @@ class DataHandler
                 }
             }
         }
-        if (!$this->BE_USER->recordEditAccessInternals($table, $liveRecord ?? $workspaceRecord, false, false, $table !== 'pages')) {
+        if (!$this->BE_USER->recordEditAccessInternals($table, $liveRecord ?? $workspaceRecord, false, null, $table !== 'pages')) {
             // Check if anything else disallows the move operation
             $this->log($table, $sourceUid, SystemLogDatabaseAction::MOVE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to move record {table}:{uid} without having permissions to do so [{reason}]', null, ['table' => $table, 'uid' => $sourceUid, 'reason' => $this->BE_USER->errorMsg], $sourcePid);
             return;
@@ -5251,17 +5251,17 @@ class DataHandler
     protected function discardLocalizedWorkspaceVersionsOfRecord(string $table, int $uid): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        if (!$schema->isLanguageAware()
-            || !$schema->isWorkspaceAware()
-            || !$this->BE_USER->recordEditAccessInternals($table, $uid)
-        ) {
+        if (!$schema->isLanguageAware() || !$schema->isWorkspaceAware()) {
+            return;
+        }
+        $liveRecord = BackendUtility::getRecord($table, $uid);
+        if ($liveRecord === null || !$this->BE_USER->recordEditAccessInternals($table, $liveRecord)) {
             return;
         }
         /** @var LanguageAwareSchemaCapability $languageCapability */
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $languageField = $languageCapability->getLanguageField()->getName();
         $localizationParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
-        $liveRecord = BackendUtility::getRecord($table, $uid);
         if ((int)($liveRecord[$languageField] ?? 0) !== 0 || (int)($liveRecord['t3ver_wsid'] ?? 0) !== 0) {
             // Don't do anything if we're not deleting a live record in default language
             return;
@@ -5355,8 +5355,13 @@ class DataHandler
                 $fullLanguageAccessCheck = false;
             }
         }
-        $hasEditAccess = $this->BE_USER->recordEditAccessInternals($table, $uid, false, $forceHardDelete, $fullLanguageAccessCheck);
-        if (!$hasEditAccess) {
+
+        $recordToDelete = BackendUtility::getRecord($table, $uid, '*', '', false);
+        if ($recordToDelete === null) {
+            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete not existing record "{table}:{uid}"', null, ['table' => $table, 'uid' => $uid]);
+            return;
+        }
+        if (!$this->BE_USER->recordEditAccessInternals($table, $recordToDelete, false, null, $fullLanguageAccessCheck)) {
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions');
             return;
         }
@@ -5369,13 +5374,7 @@ class DataHandler
             $perms = Permission::CONTENT_EDIT;
         }
 
-        $recordToDelete = BackendUtility::getRecord($table, $uid, '*', '', false);
-        if ($recordToDelete === null) {
-            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete not existing record "{table}:{uid}"', null, ['table' => $table, 'uid' => $uid]);
-            return;
-        }
         $recordWorkspaceId = (int)($recordToDelete['t3ver_wsid'] ?? 0);
-
         if (!$noRecordCheck) {
             $pageRecord = [];
             if ($table === 'pages') {
@@ -5622,7 +5621,14 @@ class DataHandler
         }
 
         foreach ($pagesInBranch as $pageInBranch) {
-            if (!$this->BE_USER->recordEditAccessInternals('pages', $pageInBranch, false, false, !$isTranslatedPage)) {
+            // @todo: This seems to be weird, ideally recordEditAccessInternals() should be called
+            //        within doesBranchExist(). This would remove the need to fetch the record again.
+            if ($pageInBranch === (int)$pageRecord['uid']) {
+                $record = $pageRecord;
+            } else {
+                $record = BackendUtility::getRecord('pages', $pageInBranch);
+            }
+            if (!$this->BE_USER->recordEditAccessInternals('pages', $record, false, null, !$isTranslatedPage)) {
                 return 'Attempt to delete page which has prohibited localizations';
             }
         }
@@ -5799,7 +5805,7 @@ class DataHandler
         // @todo: When restoring a not-default language record, it should be verified the default language
         // @todo: record is *not* set to deleted. Maybe even verify a possible l10n_source chain is not deleted?
 
-        if (!$this->BE_USER->recordEditAccessInternals($table, $record, false, true)) {
+        if (!$this->BE_USER->recordEditAccessInternals($table, $record, false, null)) {
             // User misses access permissions to record
             $this->log(
                 $table,
@@ -5976,7 +5982,7 @@ class DataHandler
             return;
         }
         $fullLanguageAccessCheck = !($table === 'pages' && (int)$versionRecord[$this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName()] !== 0);
-        if (!$this->BE_USER->recordEditAccessInternals($table, $versionRecord, false, true, $fullLanguageAccessCheck)) {
+        if (!$this->BE_USER->recordEditAccessInternals($table, $versionRecord, false, null, $fullLanguageAccessCheck)) {
             $this->log($table, $versionRecord['uid'], SystemLogDatabaseAction::DISCARD, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to discard workspace record {table}:{uid} failed: User has no delete access', null, ['table' => $table, 'uid' => (int)$versionRecord['uid']]);
             return;
         }

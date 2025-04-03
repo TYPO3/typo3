@@ -604,7 +604,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * @param array $record The current record
      * @return bool
      */
-    public function checkFullLanguagesAccess($table, $record)
+    public function checkFullLanguagesAccess(string $table, array $record): bool
     {
         if (!$this->checkLanguageAccess(0)) {
             return false;
@@ -647,14 +647,14 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * The function takes an ID (int) or row (array) as second argument.
      *
      * @param string $table Table name
-     * @param int|array $idOrRow If integer, then this is the ID of the record. If Array this just represents fields in the record.
+     * @param array $row Full record row
      * @param bool $newRecord Set, if testing a new (non-existing) record array. Will disable certain checks that doesn't make much sense in that context.
-     * @param bool $deletedRecord Set, if testing a deleted record array.
+     * @param null $_ unused
      * @param bool $checkFullLanguageAccess Set, whenever access to all translations of the record is required
      * @return bool TRUE if OK, otherwise FALSE
      * @internal should only be used from within TYPO3 Core
      */
-    public function recordEditAccessInternals($table, $idOrRow, $newRecord = false, $deletedRecord = false, $checkFullLanguageAccess = false): bool
+    public function recordEditAccessInternals(string $table, array $row, $newRecord = false, $_ = null, $checkFullLanguageAccess = false): bool
     {
         if (!isset($GLOBALS['TCA'][$table])) {
             return false;
@@ -663,32 +663,20 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->isAdmin()) {
             return true;
         }
-        // Fetching the record if the $idOrRow variable was not an array on input:
-        if (!is_array($idOrRow)) {
-            if ($deletedRecord) {
-                $idOrRow = BackendUtility::getRecord($table, $idOrRow, '*', '', false);
-            } else {
-                $idOrRow = BackendUtility::getRecord($table, $idOrRow);
-            }
-            if (!is_array($idOrRow)) {
-                $this->errorMsg = 'ERROR: Record could not be fetched.';
-                return false;
-            }
-        }
         // Checking languages:
-        if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $idOrRow)) {
+        if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $row)) {
             return false;
         }
         if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
             // Language field must be found in input row - otherwise it does not make sense.
-            if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
-                if (!$this->checkLanguageAccess($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
+            if (isset($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
+                if (!$this->checkLanguageAccess($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
                     $this->errorMsg = 'ERROR: Language was not allowed.';
                     return false;
                 }
                 if (
-                    $checkFullLanguageAccess && $idOrRow[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0
-                    && !$this->checkFullLanguagesAccess($table, $idOrRow)
+                    $checkFullLanguageAccess && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0
+                    && !$this->checkFullLanguagesAccess($table, $row)
                 ) {
                     $this->errorMsg = 'ERROR: Related/affected language was not allowed.';
                     return false;
@@ -702,21 +690,21 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         // Checking authMode fields:
         if (is_array($GLOBALS['TCA'][$table]['columns'])) {
             foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
-                if (isset($idOrRow[$fieldName])
+                if (isset($row[$fieldName])
                     && ($fieldValue['config']['type'] ?? '') === 'select'
                     && ($fieldValue['config']['authMode'] ?? false)
-                    && !$this->checkAuthMode($table, $fieldName, $idOrRow[$fieldName])) {
+                    && !$this->checkAuthMode($table, $fieldName, $row[$fieldName])) {
                     $this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode']
                             . '" failed for field "' . $fieldName . '" with value "'
-                            . $idOrRow[$fieldName] . '" evaluated';
+                            . $row[$fieldName] . '" evaluated';
                     return false;
                 }
             }
         }
         // Checking "editlock" feature (doesn't apply to new records)
         if (!$newRecord && ($GLOBALS['TCA'][$table]['ctrl']['editlock'] ?? false)) {
-            if (isset($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']])) {
-                if ($idOrRow[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
+            if (isset($row[$GLOBALS['TCA'][$table]['ctrl']['editlock']])) {
+                if ($row[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
                     $this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
                     return false;
                 }
@@ -732,7 +720,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_userauthgroup.php']['recordEditAccessInternals'] ?? [] as $funcRef) {
             $params = [
                 'table' => $table,
-                'idOrRow' => $idOrRow,
+                'idOrRow' => $row,
                 'newRecord' => $newRecord,
             ];
             if (!GeneralUtility::callUserFunction($funcRef, $params, $this)) {
