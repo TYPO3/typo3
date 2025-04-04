@@ -340,7 +340,7 @@ readonly class IconFactory
 
         // Folder
         if ($resource instanceof FolderInterface) {
-            // non browsable storage
+            // non-browsable storage
             if ($resource->getStorage()->isBrowsable() === false && !empty($options['mount-root'])) {
                 $iconIdentifier = 'apps-filetree-folder-locked';
             } else {
@@ -349,14 +349,12 @@ readonly class IconFactory
                     $iconIdentifier = 'apps-filetree-root';
                 }
 
-                $role = is_callable([$resource, 'getRole']) ? $resource->getRole() : '';
-
                 // user/group mount root
                 if (!empty($options['mount-root'])) {
                     $iconIdentifier = 'apps-filetree-mount';
-                    if ($role === FolderInterface::ROLE_READONLY_MOUNT) {
+                    if ($resource->getRole() === FolderInterface::ROLE_READONLY_MOUNT) {
                         $overlayIdentifier = 'overlay-locked';
-                    } elseif ($role === FolderInterface::ROLE_USER_MOUNT) {
+                    } elseif ($resource->getRole() === FolderInterface::ROLE_USER_MOUNT) {
                         $overlayIdentifier = 'overlay-restricted';
                     }
                 }
@@ -369,9 +367,9 @@ readonly class IconFactory
                         $iconIdentifier = 'apps-filetree-folder-default';
                     }
 
-                    if ($role === FolderInterface::ROLE_TEMPORARY) {
+                    if ($resource->getRole() === FolderInterface::ROLE_TEMPORARY) {
                         $iconIdentifier = 'apps-filetree-folder-temp';
-                    } elseif ($role === FolderInterface::ROLE_RECYCLER) {
+                    } elseif ($resource->getRole() === FolderInterface::ROLE_RECYCLER) {
                         $iconIdentifier = 'apps-filetree-folder-recycler';
                     }
                 }

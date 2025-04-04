@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
-use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -397,61 +396,6 @@ abstract class AbstractFile implements FileInterface
         return $this->deleted;
     }
 
-    /**
-     * Renames this file.
-     *
-     * @param non-empty-string $newName The new file name
-     * @todo: this method actually belongs to the "File" object and should be moved from AbstractFile to File. In addition, the method should be removed from the interface.
-     */
-    public function rename(string $newName, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
-    {
-        if ($this->deleted) {
-            throw new \RuntimeException('File has been deleted.', 1329821482);
-        }
-
-        return $this->getStorage()->renameFile($this, $newName, $conflictMode);
-    }
-
-    /**
-     * Copies this file into a target folder
-     * @param Folder $targetFolder Folder to copy file into.
-     * @param string|null $targetFileName an optional destination fileName
-     *
-     * @return File The new (copied) file.
-     * @throws \RuntimeException
-     * @todo: this method actually belongs to the "File" object and should be moved from AbstractFile to File.
-     */
-    public function copyTo(Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
-    {
-        if ($this->deleted) {
-            throw new \RuntimeException('File has been deleted.', 1329821483);
-        }
-
-        return $targetFolder->getStorage()->copyFile($this, $targetFolder, $targetFileName, $conflictMode);
-    }
-
-    /**
-     * Moves the file into the target folder
-     * @todo: this method actually belongs to the "File" object and should be moved from AbstractFile to File.
-     *
-     * @param Folder $targetFolder Folder to move file into.
-     * @param string|null $targetFileName an optional destination fileName
-     * @param DuplicationBehavior $conflictMode
-     *
-     * @return File This file object, with updated properties.
-     * @throws \RuntimeException
-     */
-    public function moveTo(Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME)
-    {
-        if ($this->deleted) {
-            throw new \RuntimeException('File has been deleted.', 1329821484);
-        }
-
-        /** @var File $file */
-        $file = $targetFolder->getStorage()->moveFile($this, $targetFolder, $targetFileName, $conflictMode);
-        return $file;
-    }
-
     /*****************
      * SPECIAL METHODS
      *****************/
@@ -499,7 +443,7 @@ abstract class AbstractFile implements FileInterface
      */
     abstract public function updateProperties(array $properties);
 
-    public function getParentFolder(): FolderInterface
+    public function getParentFolder(): Folder
     {
         return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
     }

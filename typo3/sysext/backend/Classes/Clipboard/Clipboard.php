@@ -307,7 +307,7 @@ class Clipboard
                             'title="' . htmlspecialchars($processedFile->getName()) . '" alt="" loading="lazy" />';
                     }
                     $linkItemText = GeneralUtility::fixed_lgd_cs($fileObject->getName(), (int)($this->getBackendUser()->uc['titleLen'] ?? 0));
-                    $combinedIdentifier = ($parentFolder = $fileObject->getParentFolder()) instanceof Folder ? $parentFolder->getCombinedIdentifier() : '';
+                    $combinedIdentifier = $fileObject->getParentFolder()->getCombinedIdentifier();
                     $filesRequested = $currentTable === '_FILE';
                     $records[] = [
                         'identifier' => '_FILE|' . md5($value),

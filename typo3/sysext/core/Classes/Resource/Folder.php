@@ -492,7 +492,7 @@ class Folder implements FolderInterface
      *
      * @throws InsufficientFolderAccessPermissionsException
      */
-    public function getParentFolder(): FolderInterface
+    public function getParentFolder(): Folder
     {
         return $this->getStorage()->getFolder($this->getStorage()->getFolderIdentifierFromFileIdentifier($this->getIdentifier()));
     }

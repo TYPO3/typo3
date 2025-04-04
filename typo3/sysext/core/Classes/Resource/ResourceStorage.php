@@ -702,7 +702,7 @@ class ResourceStorage implements ResourceStorageInterface
      * This method, by design, does not throw exceptions or does logging.
      * See the checkFileActionPermission() method above for the reasons.
      */
-    public function checkFolderActionPermission(string $action, ?Folder $folder = null): bool
+    public function checkFolderActionPermission(string $action, ?FolderInterface $folder = null): bool
     {
         // Check 1: Does the user have permission to perform the action? e.g. "writeFolder"
         if ($this->checkUserActionPermission($action, 'Folder') === false) {
@@ -773,10 +773,10 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Assures read permission for given folder.
      *
-     * @param Folder|null $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
+     * @param FolderInterface|null $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
      * @throws Exception\InsufficientFolderAccessPermissionsException
      */
-    protected function assureFolderReadPermission(?Folder $folder = null): void
+    protected function assureFolderReadPermission(?FolderInterface $folder = null): void
     {
         if (!$this->checkFolderActionPermission('read', $folder)) {
             if ($folder === null) {
@@ -795,13 +795,13 @@ class ResourceStorage implements ResourceStorageInterface
     /**
      * Assures delete permission for given folder.
      *
-     * @param Folder $folder If a folder is given, mountpoints are checked. If not only user folder delete permissions are checked.
+     * @param FolderInterface $folder If a folder is given, mountpoints are checked. If not only user folder delete permissions are checked.
      * @param bool $checkDeleteRecursively
      * @throws Exception\InsufficientFolderAccessPermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFolderDeletePermission(Folder $folder, bool $checkDeleteRecursively): void
+    protected function assureFolderDeletePermission(FolderInterface $folder, bool $checkDeleteRecursively): void
     {
         // Check user permissions for recursive deletion if it is requested
         if ($checkDeleteRecursively && !$this->checkUserActionPermission('recursivedelete', 'Folder')) {
@@ -917,14 +917,14 @@ class ResourceStorage implements ResourceStorageInterface
      * Checks if a file/user has the permission to be written to a Folder/Storage.
      * If not, throws an exception.
      *
-     * @param Folder $targetFolder The target folder where the file should be written
+     * @param FolderInterface $targetFolder The target folder where the file should be written
      * @param string $targetFileName The file name which should be written into the storage
      *
      * @throws Exception\InsufficientFolderWritePermissionsException
      * @throws Exception\IllegalFileExtensionException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileAddPermissions(Folder $targetFolder, string $targetFileName): void
+    protected function assureFileAddPermissions(FolderInterface $targetFolder, string $targetFileName): void
     {
         // Check for a valid file extension
         if (!$this->checkFileExtensionPermission($targetFileName)) {
@@ -945,7 +945,7 @@ class ResourceStorage implements ResourceStorageInterface
      * If not, throws an exception.
      *
      * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
-     * @param Folder $targetFolder The target folder where the file should be uploaded
+     * @param FolderInterface $targetFolder The target folder where the file should be uploaded
      * @param string $targetFileName the destination file name $_FILES['file1']['name']
      *
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -954,7 +954,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\UploadSizeException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileUploadPermissions(string $localFilePath, Folder $targetFolder, string $targetFileName, int $uploadedFileSize): void
+    protected function assureFileUploadPermissions(string $localFilePath, FolderInterface $targetFolder, string $targetFileName, int $uploadedFileSize): void
     {
         // Makes sure this is an uploaded file
         if (!is_uploaded_file($localFilePath)) {
@@ -977,7 +977,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientUserPermissionsException
      * @throws Exception\IllegalFileExtensionException
      */
-    protected function assureFileMovePermissions(FileInterface $file, Folder $targetFolder, string $targetFileName): void
+    protected function assureFileMovePermissions(FileInterface $file, FolderInterface $targetFolder, string $targetFileName): void
     {
         // Check if targetFolder is within this storage
         if ($this->getUid() !== $targetFolder->getStorage()->getUid()) {
@@ -1033,7 +1033,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\InsufficientFileReadPermissionsException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileCopyPermissions(FileInterface $file, Folder $targetFolder, string $targetFileName): void
+    protected function assureFileCopyPermissions(FileInterface $file, FolderInterface $targetFolder, string $targetFileName): void
     {
         // Check if targetFolder is within this storage, this should never happen
         if ($this->getUid() != $targetFolder->getStorage()->getUid()) {
@@ -1761,7 +1761,7 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws \Exception|Exception\AbstractFileOperationException
      * @throws Exception\ExistingTargetFileNameException
      */
-    public function copyFile(FileInterface $file, Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): ProcessedFile|File|null
+    public function copyFile(FileInterface $file, Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): File
     {
         if ($targetFileName === null) {
             $targetFileName = $file->getName();
@@ -2225,12 +2225,11 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
-     * Returns the Identifier for a folder within a given folder.
+     * Returns the folder object from the folder identifier within a given parent folder.
      *
      * @param string $folderName The name of the target folder
      * @throws \Exception
      * @throws Exception\InsufficientFolderAccessPermissionsException
-     * @todo: this should eventually return a FolderInterface
      */
     public function getFolderInFolder(string $folderName, Folder $parentFolder, bool $returnInaccessibleFolderObject = false): Folder
     {
@@ -2307,7 +2306,6 @@ class ResourceStorage implements ResourceStorageInterface
      *
      * @param string $folderName The new folder name
      * @param Folder|null $parentFolder (optional) the parent folder to create the new folder inside of. If not given, the root folder is used
-     * @return Folder
      * @throws Exception\ExistingTargetFolderException
      * @throws Exception\InsufficientFolderAccessPermissionsException
      * @throws Exception\InsufficientFolderWritePermissionsException
@@ -2354,18 +2352,14 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function getDefaultFolder(): Folder
     {
-        /** @var Folder $folder */
-        $folder = $this->getFolder($this->driver->getDefaultFolder());
-        return $folder;
+        return $this->getFolder($this->driver->getDefaultFolder());
     }
 
     /**
      * @throws \Exception
      * @throws Exception\InsufficientFolderAccessPermissionsException
-     * @todo return type should become FolderInterface
-     * @return Folder
      */
-    public function getFolder(string $identifier, bool $returnInaccessibleFolderObject = false)
+    public function getFolder(string $identifier, bool $returnInaccessibleFolderObject = false): Folder
     {
         $data = $this->driver->getFolderInfoByIdentifier($identifier);
         $folder = $this->createFolderObject($data['identifier'], $data['name']);

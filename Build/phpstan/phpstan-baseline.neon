@@ -379,34 +379,10 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/Template/Components/Buttons/LinkButton.php
 
 		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FolderInterface\:\:getReadablePath\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Template/Components/MetaInformation.php
-
-		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 2
 			path: ../../typo3/sysext/backend/Classes/Template/Components/MetaInformation.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FolderInterface\:\:getCombinedIdentifier\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/FileStorageTreeProvider.php
-
-		-
-			message: '#^Dead catch \- TYPO3\\CMS\\Core\\Resource\\Exception\\FolderDoesNotExistException is never thrown in the try block\.$#'
-			identifier: catch.neverThrown
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/FileStorageTreeProvider.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Resource\\Folder and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/backend/Classes/Tree/FileStorageTreeProvider.php
 
 		-
 			message: '#^Parameter \#1 \$node of method TYPO3\\CMS\\Backend\\Tree\\Renderer\\UnorderedListTreeRenderer\:\:renderNode\(\) expects TYPO3\\CMS\\Backend\\Tree\\TreeRepresentationNode, TYPO3\\CMS\\Backend\\Tree\\TreeNode given\.$#'
@@ -1141,12 +1117,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/IO/CsvStreamFilter.php
 
 		-
-			message: '#^Parameter \#2 \$folder of method TYPO3\\CMS\\Core\\Resource\\ResourceStorage\:\:checkFolderActionPermission\(\) expects TYPO3\\CMS\\Core\\Resource\\Folder\|null, TYPO3\\CMS\\Core\\Resource\\FolderInterface given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Imaging/IconFactory.php
-
-		-
 			message: '#^Using nullsafe property access "\?\-\>value" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
 			identifier: nullsafe.neverNull
 			count: 1
@@ -1313,12 +1283,6 @@ parameters:
 			identifier: offsetAccess.notFound
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Package/PackageManager.php
-
-		-
-			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FolderInterface\:\:getReadablePath\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Resource/Folder.php
 
 		-
 			message: '#^Parameter \#1 \$file of method TYPO3\\CMS\\Core\\Resource\\OnlineMedia\\Helpers\\OnlineMediaHelperInterface\:\:getOnlineMediaId\(\) expects TYPO3\\CMS\\Core\\Resource\\File, TYPO3\\CMS\\Core\\Resource\\FileInterface given\.$#'
@@ -2653,12 +2617,6 @@ parameters:
 			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
 
 		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\Folder and TYPO3\\CMS\\Core\\Resource\\Folder will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
-
-		-
 			message: '#^Parameter \#1 \$attributes of method TYPO3\\CMS\\Backend\\Template\\Components\\Buttons\\DropDown\\AbstractDropDownItem\:\:setAttributes\(\) expects array\<string, string\>, array\<string, Psr\\Http\\Message\\UriInterface\|string\|null\> given\.$#'
 			identifier: argument.type
 			count: 1
@@ -3641,18 +3599,6 @@ parameters:
 			identifier: arrayValues.list
 			count: 1
 			path: ../../typo3/sysext/redirects/Classes/EventListener/AddPlainSlugReplacementSource.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\File and TYPO3\\CMS\\Core\\Resource\\File will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/Service/RedirectService.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Core\\Resource\\Folder and TYPO3\\CMS\\Core\\Resource\\Folder will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/redirects/Classes/Service/RedirectService.php
 
 		-
 			message: '#^Offset 0 on non\-empty\-list\<string\> on left side of \?\? always exists and is not nullable\.$#'

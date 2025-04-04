@@ -189,6 +189,11 @@ class InaccessibleFolder extends Folder
         return 0;
     }
 
+    public function getReadablePath(?string $rootId = null): string
+    {
+        return '';
+    }
+
     public function getCreationTime(): int
     {
         return 0;

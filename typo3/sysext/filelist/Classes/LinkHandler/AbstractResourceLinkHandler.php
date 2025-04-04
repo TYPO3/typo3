@@ -174,10 +174,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
                     $this->expandFolder = $resource->getCombinedIdentifier();
                     if ($this->type === LinkType::FOLDER) {
                         // Select the parent folder of selected folder as entry point.
-                        $parentFolder = $resource->getParentFolder();
-                        if ($parentFolder instanceof Folder) {
-                            $this->expandFolder = $parentFolder->getCombinedIdentifier();
-                        }
+                        $this->expandFolder = $resource->getParentFolder()->getCombinedIdentifier();
                     }
                 }
             } else {

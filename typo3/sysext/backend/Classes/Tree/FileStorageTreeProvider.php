@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Backend\Tree;
 use TYPO3\CMS\Backend\Configuration\BackendUserConfiguration;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
-use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderReadPermissionsException;
 use TYPO3\CMS\Core\Resource\Folder;
@@ -46,13 +45,13 @@ class FileStorageTreeProvider
         $storage = $folder->getStorage();
         try {
             $parentFolder = $parentFolder ?? $folder->getParentFolder();
-        } catch (FolderDoesNotExistException | InsufficientFolderAccessPermissionsException $e) {
+        } catch (InsufficientFolderAccessPermissionsException $e) {
             $parentFolder = null;
         }
         if (str_contains($folder->getRole(), FolderInterface::ROLE_MOUNT)) {
             $tableName = 'sys_filemount';
             $isStorage = true;
-        } elseif ($parentFolder === null || $folder->getIdentifier() === $storage->getRootLevelFolder(true)->getIdentifier()) {
+        } elseif ($parentFolder === null || $folder->getIdentifier() === $storage->getRootLevelFolder()->getIdentifier()) {
             $tableName = 'sys_file_storage';
             $isStorage = true;
         } else {
@@ -73,7 +72,7 @@ class FileStorageTreeProvider
             'storage' => $storage->getUid(),
             'pathIdentifier' => rawurlencode($folder->getIdentifier()),
             'hasChildren' => $hasSubfolders,
-            'parentIdentifier' => $parentFolder instanceof Folder && !$isStorage ? rawurlencode($parentFolder->getCombinedIdentifier()) : null,
+            'parentIdentifier' => !$isStorage ? rawurlencode($parentFolder->getCombinedIdentifier()) : null,
             'recordType' => $tableName,
         ];
     }
@@ -180,9 +179,7 @@ class FileStorageTreeProvider
                 }
                 foreach ($folders as $folder) {
                     $folderObj = $resourceStorage->getFolder($folder);
-                    if ($folderObj !== null) {
-                        $foundFolders[$folderObj->getCombinedIdentifier()] = $folderObj;
-                    }
+                    $foundFolders[$folderObj->getCombinedIdentifier()] = $folderObj;
                 }
             } catch (InsufficientFolderAccessPermissionsException $e) {
                 // do nothing

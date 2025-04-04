@@ -137,7 +137,7 @@ class FileListController implements LoggerAwareInterface
                         );
                     }
                     // Disallow the rendering of the processing folder (e.g. could be called manually)
-                    if ($this->folderObject instanceof Folder && $storage->isProcessingFolder($this->folderObject)) {
+                    if ($storage->isProcessingFolder($this->folderObject)) {
                         $this->folderObject = $storage->getRootLevelFolder();
                     }
                 }
@@ -568,7 +568,6 @@ class FileListController implements LoggerAwareInterface
             $parentFolder = $this->folderObject->getParentFolder();
             if ($currentStorage->isWithinFileMountBoundaries($parentFolder)
                 && $parentFolder->getIdentifier() !== $this->folderObject->getIdentifier()
-                && $parentFolder instanceof Folder
             ) {
                 $levelUpButton = $buttonBar->makeLinkButton()
                     ->setDataAttributes([

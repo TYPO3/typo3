@@ -278,17 +278,13 @@ class FileController
         $thumbUrl = $result->isImage()
             ? ($result->process(ProcessedFile::CONTEXT_IMAGEPREVIEW, [])->getPublicUrl() ?? '')
             : '';
-        $path = '';
-        if (is_callable([$result->getParentFolder(), 'getReadablePath'])) {
-            $path = $result->getParentFolder()->getReadablePath();
-        }
         return array_merge(
             $result->toArray(),
             [
                 'date' => BackendUtility::date($result->getModificationTime()),
                 'icon' => $this->iconFactory->getIconForFileExtension($result->getExtension(), IconSize::SMALL)->render(),
                 'thumbUrl' => $thumbUrl,
-                'path' => $path,
+                'path' => $result->getParentFolder()->getReadablePath(),
             ]
         );
     }

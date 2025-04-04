@@ -98,9 +98,6 @@ class TreeController
             } catch (InsufficientFolderAccessPermissionsException) {
                 break;
             }
-            if (!$parent instanceof Folder) {
-                break;
-            }
             if ($parent->getCombinedIdentifier() === $identifier) {
                 // parent folder of root folder is the root folder => break
                 break;
@@ -147,7 +144,7 @@ class TreeController
                 } catch (InsufficientFolderAccessPermissionsException) {
                     $nextFolder = null;
                 }
-            } while ($nextFolder instanceof Folder && $nextFolder->getIdentifier() !== '/');
+            } while ($nextFolder?->getIdentifier() !== '/');
             // Add the storage / sys_filemount itself
             $storageData = $this->treeProvider->prepareFolderInformation(
                 $storage->getRootLevelFolder(true),

@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
+use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
+
 /**
  * Interface for folders
  */
@@ -35,14 +38,14 @@ interface FolderInterface extends ResourceInterface
     public const ROLE_USER_MOUNT = 'user-mount';
 
     /**
-     * @phpstan-return array<array-key, Folder>
+     * @phpstan-return array<array-key, FolderInterface>
      */
     public function getSubfolders(): array;
 
     /**
      * Returns the object for a subfolder of the current folder, if it exists.
      */
-    public function getSubfolder(string $name): Folder;
+    public function getSubfolder(string $name): FolderInterface;
 
     /**
      * Checks if a folder exists in this folder.
@@ -79,9 +82,23 @@ interface FolderInterface extends ResourceInterface
      */
     public function getCreationTime(): int;
 
-    // Future additions
-    // public function getReadablePath(): string;
-    // public function getFiles(): string;
-    // public function searchFiles(): string;
-    // public function getRole(): string;
+    /**
+     * Returns a string of the path to this folder, relative to the root of the storage
+     */
+    public function getReadablePath(?string $rootId = null): string;
+
+    /**
+     * Returns a list of files in this folder, based on filters and includes pagination.
+     */
+    public function getFiles(int $start = 0, int $numberOfItems = 0, int $filterMode = Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS, bool $recursive = false, string $sort = '', bool $sortRev = false);
+
+    /**
+     * Returns a list of files in this folder, based on SearchDemand.
+     */
+    public function searchFiles(FileSearchDemand $searchDemand, int $filterMode = Folder::FILTER_MODE_USE_OWN_AND_STORAGE_FILTERS): FileSearchResultInterface;
+
+    /**
+     * Some folders have special roles in TYPO3, see the constants of this interface.
+     */
+    public function getRole(): string;
 }

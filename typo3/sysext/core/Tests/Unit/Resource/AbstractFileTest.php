@@ -19,7 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Resource;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Tests\Unit\Resource\Fixtures\TestingFile;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -37,7 +37,7 @@ final class AbstractFileTest extends UnitTestCase
 
         $mockedStorageForParent = $this->createMock(ResourceStorage::class);
 
-        $parentFolderFixture = $this->createMock(FolderInterface::class);
+        $parentFolderFixture = $this->createMock(Folder::class);
         $parentFolderFixture->method('getStorage')->willReturn($mockedStorageForParent);
 
         $mockedStorage = $this->getMockBuilder(ResourceStorage::class)

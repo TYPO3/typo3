@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Resource;
 
+use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -68,6 +69,56 @@ class File extends AbstractFile
             return parent::getProperty($key);
         }
         return $this->getMetaData()[$key];
+    }
+
+    /**
+     * Renames this file.
+     *
+     * @param non-empty-string $newName The new file name
+     */
+    public function rename(string $newName, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
+    {
+        if ($this->deleted) {
+            throw new \RuntimeException('File has been deleted.', 1329821482);
+        }
+
+        return $this->getStorage()->renameFile($this, $newName, $conflictMode);
+    }
+
+    /**
+     * Copies this file into a target folder
+     * @param Folder $targetFolder Folder to copy file into.
+     * @param string|null $targetFileName an optional destination fileName
+     *
+     * @return self The new (copied) file.
+     * @throws \RuntimeException
+     */
+    public function copyTo(Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
+    {
+        if ($this->deleted) {
+            throw new \RuntimeException('File has been deleted.', 1329821483);
+        }
+
+        return $targetFolder->getStorage()->copyFile($this, $targetFolder, $targetFileName, $conflictMode);
+    }
+
+    /**
+     * Moves the file into the target folder
+     *
+     * @param Folder $targetFolder Folder to move file into.
+     * @param string|null $targetFileName an optional destination fileName
+     * @param DuplicationBehavior $conflictMode
+     *
+     * @return FileInterface This file object, with updated properties.
+     * @throws \RuntimeException
+     */
+    public function moveTo(Folder $targetFolder, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME): FileInterface
+    {
+        if ($this->deleted) {
+            throw new \RuntimeException('File has been deleted.', 1329821484);
+        }
+
+        return $targetFolder->getStorage()->moveFile($this, $targetFolder, $targetFileName, $conflictMode);
     }
 
     /**

@@ -224,14 +224,12 @@ readonly class RedirectService
                     // all set up, nothing to do
                     break;
                 case LinkService::TYPE_FILE:
-                    /** @var File $file */
                     $file = $linkDetails['file'];
                     if ($file instanceof File) {
                         $linkDetails['url'] = $file->getPublicUrl();
                     }
                     break;
                 case LinkService::TYPE_FOLDER:
-                    /** @var Folder $folder */
                     $folder = $linkDetails['folder'];
                     if ($folder instanceof Folder) {
                         $linkDetails['url'] = $folder->getPublicUrl();
