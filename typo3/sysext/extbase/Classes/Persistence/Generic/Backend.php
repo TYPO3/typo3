@@ -34,7 +34,9 @@ use TYPO3\CMS\Extbase\Event\Persistence\EntityFinalizedAfterPersistenceEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityPersistedEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityRemovedFromPersistenceEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\EntityUpdatedInPersistenceEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectCountEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\ModifyQueryBeforeFetchingObjectDataEvent;
+use TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectCountEvent;
 use TYPO3\CMS\Extbase\Event\Persistence\ModifyResultAfterFetchingObjectDataEvent;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalRelationTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
@@ -93,7 +95,13 @@ class Backend implements BackendInterface
      */
     public function getObjectCountByQuery(QueryInterface $query)
     {
-        return $this->storageBackend->getObjectCountByQuery($query);
+        $event = new ModifyQueryBeforeFetchingObjectCountEvent($query);
+        $this->eventDispatcher->dispatch($event);
+        $query = $event->getQuery();
+        $result = $this->storageBackend->getObjectCountByQuery($query);
+        $event = new ModifyResultAfterFetchingObjectCountEvent($query, $result);
+        $this->eventDispatcher->dispatch($event);
+        return $event->getResult();
     }
 
     /**
