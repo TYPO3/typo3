@@ -40,7 +40,7 @@ test.describe('modules', () => {
   const defaultDisableRules = ['color-contrast'];
   for (let [key, data] of Object.entries(dataprovider)) {
     test(key + ':' + data.label, async ({ page }) => {
-      const url = `${config.baseUrl}/${data.route}`;
+      const url = `${data.route}`;
       await page.goto(url);
       await expect(page).toHaveURL(url);
       await page.waitForLoadState('networkidle');
