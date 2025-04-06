@@ -1,81 +1,53 @@
-import {test, expect, Locator, Page} from '@playwright/test';
-import config from '../config';
-
-let treeRootElement: Locator;
-let newPageToolbarItem: Locator;
+import { test, expect } from '../fixtures/setup-fixtures';
 
 test.beforeEach( async ({page}) => {
-  await page.goto(`${config.baseUrl}/module/web/layout`);
-  await page.waitForLoadState('networkidle');
-
-  treeRootElement = page.locator('#typo3-pagetree-tree [identifier="apps-pagetree-root"]');
-  newPageToolbarItem = page.locator('#typo3-pagetree-toolbar [data-tree-icon="apps-pagetree-page-default"]');
+  await page.goto('module/web/layout');
 })
 
-test('Drag and drop new page in node without children', async ({ page }) => {
+test('Drag and drop new page in node without children', async ({ backend }) => {
   const dummySiteTitle = 'Dummy page tree';
-  await newPageToolbarItem.dragTo(treeRootElement);
-  await page.fill('.node-edit', dummySiteTitle);
-  await page.keyboard.press('Enter');
-  const newPageElement = page.getByRole('treeitem', { name: dummySiteTitle });
+  await backend.pageTree.create(await backend.pageTree.root, dummySiteTitle);
+  const newPageElement = await backend.pageTree.open(dummySiteTitle);
 
   await expect(newPageElement.locator('.node-name')).toHaveText(dummySiteTitle);
 
-  await dragDeletePage(newPageElement);
+  await backend.pageTree.dragDeletePage(newPageElement);
 });
 
-test('Drag and drop new page in node with children', async ({ page }) => {
-  const dummySiteTitle = 'Dummy page tree';
-  await newPageToolbarItem.dragTo(treeRootElement);
-  await page.fill('.node-edit', dummySiteTitle);
-  await page.keyboard.press('Enter');
-  const newRootPageElement = page.getByRole('treeitem', { name: dummySiteTitle });
+test('Drag and drop new page in node with children', async ({ backend}) => {
+  const dummySiteTitle = 'Dummy page tree with children';
+  const pageTitle = 'Dummy page tree child';
 
-  const pageTitle = 'Dummy 1';
-  newPageToolbarItem.dragTo(newRootPageElement);
-  await page.fill('.node-edit', pageTitle);
-  await page.keyboard.press('Enter');
-  const newPageElement = page.getByRole('treeitem', { name: pageTitle });
+  // Create root page
+  await backend.pageTree.create(backend.pageTree.root, dummySiteTitle);
+  const newRootPageElement = await backend.pageTree.open(dummySiteTitle);
 
-  await newPageElement.waitFor({ state: 'visible' });
+  // Create child page under newRootPageElement
+  await backend.pageTree.create(newRootPageElement, pageTitle);
+  const newPageElement = backend.pageTree.container.locator('[role="treeitem"]', { hasText: pageTitle });
+
+  // Validate page creation
+  await backend.pageTree.open(dummySiteTitle, pageTitle);
   await expect(newPageElement.locator('.node-name')).toHaveText(pageTitle);
 
-  await dragDeletePage(newPageElement);
-  await dragDeletePage(newRootPageElement);
+  // Delete pages
+  await backend.pageTree.dragDeletePage(newPageElement);
+  await backend.pageTree.dragDeletePage(newRootPageElement);
 });
 
-test('Drag and drop new page and quit page creation', async ({ page }) => {
+test('Drag and drop new page and quit page creation', async ({ page, backend }) => {
   const pageTitle = 'Dummy quit creation';
-  await newPageToolbarItem.dragTo(treeRootElement);
-
+  await backend.pageTree.dragNewPageTo(backend.pageTree.root);
   await page.fill('.node-edit', pageTitle);
   await page.keyboard.press('Escape');
 
   await expect(page.getByRole('treeitem', { name: pageTitle })).not.toBeAttached();
 });
 
-test('Drag and drop new page and leave page title empty', async ({ page }) => {
+test('Drag and drop new page and leave page title empty', async ({ page, backend }) => {
   let pageTitle = 'Dummy empty title';
-  await newPageToolbarItem.dragTo(treeRootElement);
-
-  await page.fill('.node-edit', '');
+  await backend.pageTree.dragNewPageTo(backend.pageTree.root);
   await page.keyboard.press('Enter');
 
   await expect(page.getByRole('treeitem', { name: pageTitle })).not.toBeAttached();
 });
-
-async function dragDeletePage(pageToDelete: Locator) {
-  const box = await pageToDelete.boundingBox();
-  await pageToDelete.dragTo(pageToDelete, {
-    sourcePosition: {
-      x: 10,
-      y: box.height / 2,
-    },
-    targetPosition: {
-      x: box.width - 10,
-      y: box.height / 2,
-    }
-  });
-  await pageToDelete.page().locator('typo3-backend-modal button[name="delete"]').click();
-  await expect(pageToDelete).not.toBeAttached();
-}

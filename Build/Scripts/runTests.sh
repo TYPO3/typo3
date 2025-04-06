@@ -225,11 +225,11 @@ runPlaywright() {
         echo
         echo "  Run with local playwright (headless):"
         echo -n "    "
-        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3 ${COMMAND}"
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3/ ${COMMAND}"
         echo
         echo "  Open local playwright UI:"
         echo -n "    "
-        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3 ${COMMAND_UI}"
+        echo "PLAYWRIGHT_BASE_URL=${PLAYWRIGHT_BASE_URL}typo3/ ${COMMAND_UI}"
         echo
         echo -e "(Press \033[31mControl-C\033[0m to quit, \033[32mEnter\033[0m to run tests in container)"
         # maybe use https://stackoverflow.com/a/58508884/4223467
