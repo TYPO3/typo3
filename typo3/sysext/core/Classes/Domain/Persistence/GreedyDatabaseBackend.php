@@ -26,6 +26,13 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -77,6 +84,26 @@ readonly class GreedyDatabaseBackend
                 ->select('*')
                 ->from($tableName);
             // @todo: consider a context-based query restriction container here!
+            // @todo: we should not remove the restrictions but rather add them based on the given Context
+            /** @var DefaultRestrictionContainer $restrictions */
+            $restrictions = $queryBuilder->getRestrictions();
+            $visibilityAspect = $context->getAspect('visibility');
+            if ($visibilityAspect->includeHidden()) {
+                $restrictions->removeByType(HiddenRestriction::class);
+            }
+            if ($visibilityAspect->includeDeletedRecords()) {
+                $restrictions->removeByType(DeletedRestriction::class);
+            }
+            if ($visibilityAspect->includeScheduledRecords()) {
+                $restrictions->removeByType(StartTimeRestriction::class);
+                $restrictions->removeByType(EndTimeRestriction::class);
+            }
+            if ($context->hasAspect('frontend.user')) {
+                $groupIds = $context->getAspect('frontend.user')->getGroupIds();
+                $restrictions->add(GeneralUtility::makeInstance(FrontendGroupRestriction::class, $groupIds));
+            }
+            // Workspace Restriction is never added
+            $restrictions->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $context->getAspect('workspace')->getId()));
 
             // Subselect is doing: give me the PID of the given UIDs
             // So we can get a greedy query for all records of these PIDs
