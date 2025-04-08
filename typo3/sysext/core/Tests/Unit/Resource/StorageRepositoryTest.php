@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
@@ -42,6 +43,7 @@ final class StorageRepositoryTest extends UnitTestCase
             null,
             [
                 new NoopEventDispatcher(),
+                $this->createMock(ConnectionPool::class),
                 $registry,
                 $this->createMock(FlexFormTools::class),
                 $this->createMock(LoggerInterface::class),
@@ -104,6 +106,7 @@ final class StorageRepositoryTest extends UnitTestCase
     {
         $subject = new StorageRepository(
             new NoopEventDispatcher(),
+            $this->createMock(ConnectionPool::class),
             $this->createMock(DriverRegistry::class),
             $this->createMock(FlexFormTools::class),
             $this->createMock(LoggerInterface::class),

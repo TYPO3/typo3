@@ -45,8 +45,6 @@ class StorageRepository
      */
     protected ?array $localDriverStorageCache = null;
 
-    protected readonly string $table;
-
     /**
      * @var array<int<0, max>, ResourceStorage>
      */
@@ -54,12 +52,11 @@ class StorageRepository
 
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly ConnectionPool $connectionPool,
         protected readonly DriverRegistry $driverRegistry,
         protected readonly FlexFormTools $flexFormTools,
         protected readonly LoggerInterface $logger,
-    ) {
-        $this->table = 'sys_file_storage';
-    }
+    ) {}
 
     /**
      * Returns the Default Storage
@@ -116,12 +113,9 @@ class StorageRepository
     protected function initializeLocalCache(): void
     {
         if ($this->storageRowCache === null) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($this->table);
-
-            $result = $queryBuilder
+            $result = $this->connectionPool->getQueryBuilderForTable('sys_file_storage')
                 ->select('*')
-                ->from($this->table)
+                ->from('sys_file_storage')
                 ->orderBy('name')
                 ->executeQuery();
 
@@ -138,11 +132,8 @@ class StorageRepository
             // selecting just one row is enough
 
             if ($this->storageRowCache === []) {
-                $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-                    ->getConnectionForTable($this->table);
-
-                $storageObjectsCount = $connection->count('uid', $this->table, []);
-
+                $storageObjectsCount = $this->connectionPool->getConnectionForTable('sys_file_storage')
+                    ->count('uid', 'sys_file_storage', []);
                 if ($storageObjectsCount === 0) {
                     if ($this->createLocalStorage(
                         rtrim($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] ?? 'fileadmin', '/'),
@@ -241,9 +232,7 @@ class StorageRepository
                 ],
             ],
         ];
-
         $flexFormXml = $this->flexFormTools->flexArray2Xml($flexFormData);
-
         // create the record
         $field_values = [
             'pid' => 0,
@@ -260,14 +249,10 @@ class StorageRepository
             'is_writable' => 1,
             'is_default' => $default ? 1 : 0,
         ];
-
-        $dbConnection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionForTable($this->table);
-        $dbConnection->insert($this->table, $field_values);
-
+        $dbConnection = $this->connectionPool->getConnectionForTable('sys_file_storage');
+        $dbConnection->insert('sys_file_storage', $field_values);
         // Flush local resourceStorage cache so the storage can be accessed during the same request right away
         $this->flush();
-
         return (int)$dbConnection->lastInsertId();
     }
 

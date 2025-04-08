@@ -531,6 +531,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, Resource\StorageRepository::class, [
             $container->get(EventDispatcherInterface::class),
+            $container->get(Database\ConnectionPool::class),
             $container->get(Resource\Driver\DriverRegistry::class),
             $container->get(FlexFormTools::class),
             $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
