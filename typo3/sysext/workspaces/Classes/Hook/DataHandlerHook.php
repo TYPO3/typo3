@@ -353,9 +353,13 @@ class DataHandlerHook
         $schema = $this->tcaSchemaFactory->get($table);
         // Find fields to keep
         $keepFields = $this->getFieldNamesToKeep($schema);
-        // Sorting needs to be exchanged for moved records
+        // Sorting needs to be exchanged for moved records, but should be kept otherwise
         if ($schema->hasCapability(TcaSchemaCapability::SortByField) && $versionState !== VersionState::MOVE_POINTER) {
             $keepFields[] = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
+        }
+        // Do not update the creation date of the live record while publishing
+        if ($schema->hasCapability(TcaSchemaCapability::CreatedAt)) {
+            $keepFields[] = $schema->getCapability(TcaSchemaCapability::CreatedAt)->getFieldName();
         }
         // l10n-fields must be kept otherwise the localization
         // will be lost during the publishing
