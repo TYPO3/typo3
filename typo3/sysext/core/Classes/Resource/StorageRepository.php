@@ -55,6 +55,7 @@ class StorageRepository
         protected readonly ConnectionPool $connectionPool,
         protected readonly DriverRegistry $driverRegistry,
         protected readonly FlexFormTools $flexFormTools,
+        protected readonly FlexFormService $flexFormService,
         protected readonly LoggerInterface $logger,
     ) {}
 
@@ -445,7 +446,7 @@ class StorageRepository
     protected function convertFlexFormDataToConfigurationArray(string $flexFormData): array
     {
         if ($flexFormData) {
-            return GeneralUtility::makeInstance(FlexFormService::class)->convertFlexFormContentToArray($flexFormData);
+            return $this->flexFormService->convertFlexFormContentToArray($flexFormData);
         }
         return [];
     }

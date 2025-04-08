@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\DriverRegistry;
 use TYPO3\CMS\Core\Resource\LocalPath;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class StorageRepositoryTest extends UnitTestCase
@@ -46,6 +47,7 @@ final class StorageRepositoryTest extends UnitTestCase
                 $this->createMock(ConnectionPool::class),
                 $registry,
                 $this->createMock(FlexFormTools::class),
+                new FlexFormService(),
                 $this->createMock(LoggerInterface::class),
             ]
         );
@@ -109,6 +111,7 @@ final class StorageRepositoryTest extends UnitTestCase
             $this->createMock(ConnectionPool::class),
             $this->createMock(DriverRegistry::class),
             $this->createMock(FlexFormTools::class),
+            new FlexFormService(),
             $this->createMock(LoggerInterface::class),
         );
         $mock = \Closure::bind(static function (StorageRepository $storageRepository) use (&$path, $storageConfiguration) {

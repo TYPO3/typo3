@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 
@@ -115,7 +116,6 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
             Resource\StorageRepository::class => self::getStorageRepository(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
-            Service\FlexFormService::class => self::getFlexFormService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
             TypoScript\TypoScriptStringFactory::class => self::getTypoScriptStringFactory(...),
             TypoScript\TypoScriptService::class => self::getTypoScriptService(...),
@@ -534,6 +534,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Database\ConnectionPool::class),
             $container->get(Resource\Driver\DriverRegistry::class),
             $container->get(FlexFormTools::class),
+            new FlexFormService(),
             $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
         ]);
     }
@@ -541,11 +542,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getDependencyOrderingService(ContainerInterface $container): Service\DependencyOrderingService
     {
         return new Service\DependencyOrderingService();
-    }
-
-    public static function getFlexFormService(ContainerInterface $container): Service\FlexFormService
-    {
-        return self::new($container, Service\FlexFormService::class);
     }
 
     public static function getOpcodeCacheService(ContainerInterface $container): Service\OpcodeCacheService

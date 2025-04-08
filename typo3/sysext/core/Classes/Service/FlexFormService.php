@@ -15,13 +15,12 @@
 
 namespace TYPO3\CMS\Core\Service;
 
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Utilities to process flexForms
  */
-class FlexFormService implements SingletonInterface
+readonly class FlexFormService
 {
     /**
      * Parses the flexForm content and converts it to an array
