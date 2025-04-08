@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
@@ -77,7 +78,8 @@ class ExportController
         protected readonly IconFactory $iconFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
-        protected readonly PresetRepository $presetRepository
+        protected readonly PresetRepository $presetRepository,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function handleRequest(ServerRequestInterface $request): ResponseInterface
@@ -359,8 +361,7 @@ class ExportController
         $options = [
             '_ALL' => $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:ALL_tables'),
         ];
-        $availableTables = array_keys($GLOBALS['TCA']);
-        foreach ($availableTables as $table) {
+        foreach ($this->tcaSchemaFactory->all()->getNames() as $table) {
             if (!in_array($table, $excludeList, true) && $backendUser->check('tables_select', $table)) {
                 $options[$table] = $table;
             }
