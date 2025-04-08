@@ -338,12 +338,17 @@ readonly class ResourceFactory implements SingletonInterface
     {
         if (array_key_exists('storage', $fileData) && MathUtility::canBeInterpretedAsInteger($fileData['storage'])) {
             $storageObject = $this->storageRepository->findByUid((int)$fileData['storage']);
-        } elseif ($storage !== null) {
-            $storageObject = $storage;
-            $fileData['storage'] = $storage->getUid();
         } else {
+            $storageObject = $storage;
+        }
+
+        // Ensure a storage could be fetched to create the file.
+        if ($storageObject === null) {
             throw new \RuntimeException('A file needs to reside in a Storage', 1381570997);
         }
+
+        $fileData['storage'] = $storageObject->getUid();
+
         return GeneralUtility::makeInstance(File::class, $fileData, $storageObject);
     }
 
