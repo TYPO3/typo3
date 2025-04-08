@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -31,6 +32,8 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsExcepti
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\DiffUtility;
 use TYPO3\CMS\Core\Utility\File\ExtendedFileUtility;
@@ -170,9 +173,12 @@ abstract class ImportExport
      */
     protected bool $excludeDisabledRecords = false;
 
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
     public function __construct()
     {
         $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
         $this->lang = $this->getLanguageService();
         $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
     }
@@ -274,9 +280,15 @@ abstract class ImportExport
      */
     protected function isRecordDisabled(string $table, int $uid): bool
     {
-        return (bool)($this->dat['records'][$table . ':' . $uid]['data'][
-            $GLOBALS['TCA'][$table]['ctrl']['enablecolumns']['disabled'] ?? ''
-        ] ?? false);
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return false;
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        if (!$schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            return false;
+        }
+        $disabledFieldName = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
+        return (bool)($this->dat['records'][$table . ':' . $uid]['data'][$disabledFieldName] ?? false);
     }
 
     /**
@@ -389,7 +401,7 @@ abstract class ImportExport
             // Record is a soft reference
             $line['preCode'] = $this->renderIndent($indent);
             $line['title'] = '<em>' . htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_softReferencesFiles')) . '</em>';
-        } elseif (!isset($GLOBALS['TCA'][$table])) {
+        } elseif (!$this->tcaSchemaFactory->has($table)) {
             // Record is of unknown table
             $line['preCode'] = $this->renderIndent($indent);
             $line['title'] = '<em>' . htmlspecialchars((string)$record['title']) . '</em>';
@@ -419,27 +431,29 @@ abstract class ImportExport
             }
             $line['active'] = !$this->isRecordDisabled($table, $uid) ? 'active' : 'hidden';
             if ($this->mode === 'import' && $pidRecord !== null) {
+                $schema = $this->tcaSchemaFactory->get($table);
+                $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
                 if ($checkImportInPidRecord) {
                     if (!$this->getBackendUser()->doesUserHaveAccess($pidRecord, ($table === 'pages' ? 8 : 16))) {
                         $line['msg'] .= '"' . $line['ref'] . '" cannot be INSERTED on this page! ';
                     }
-                    if ($this->pid > 0 && !$this->checkDokType($table, $pidRecord['doktype']) && !($GLOBALS['TCA'][$table]['ctrl']['rootLevel'] ?? 0)) {
+                    if ($this->pid > 0 && !$this->checkDokType($table, $pidRecord['doktype']) && !$rootLevelCapability->getRootLevelType()) {
                         $line['msg'] .= '"' . $table . '" cannot be INSERTED on this page type (change page type to "Folder".) ';
                     }
                 }
                 if (!$this->getBackendUser()->check('tables_modify', $table)) {
                     $line['msg'] .= 'You are not allowed to CREATE "' . $table . '" tables! ';
                 }
-                if ($GLOBALS['TCA'][$table]['ctrl']['readOnly'] ?? false) {
+                if ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly)) {
                     $line['msg'] .= 'TABLE "' . $table . '" is READ ONLY! ';
                 }
-                if (($GLOBALS['TCA'][$table]['ctrl']['adminOnly'] ?? false) && !$this->getBackendUser()->isAdmin()) {
+                if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly) && !$this->getBackendUser()->isAdmin()) {
                     $line['msg'] .= 'TABLE "' . $table . '" is ADMIN ONLY! ';
                 }
-                if ($GLOBALS['TCA'][$table]['ctrl']['is_static'] ?? false) {
+                if ($schema->getRawConfiguration()['is_static'] ?? false) {
                     $line['msg'] .= 'TABLE "' . $table . '" is a STATIC TABLE! ';
                 }
-                if ((int)($GLOBALS['TCA'][$table]['ctrl']['rootLevel'] ?? 0) === 1) {
+                if ($rootLevelCapability->getRootLevelType() === 1) {
                     $line['msg'] .= 'TABLE "' . $table . '" will be inserted on ROOT LEVEL! ';
                 }
                 $databaseRecord = null;
@@ -1135,12 +1149,13 @@ abstract class ImportExport
      */
     protected function isTableStatic(string $table): bool
     {
-        if (is_array($GLOBALS['TCA'][$table] ?? null)) {
-            return ($GLOBALS['TCA'][$table]['ctrl']['is_static'] ?? false)
-                || in_array($table, $this->relStaticTables, true)
-                || in_array('_ALL', $this->relStaticTables, true);
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return false;
         }
-        return false;
+        $schema = $this->tcaSchemaFactory->get($table);
+        return ($schema->getRawConfiguration()['is_static'] ?? false)
+            || in_array($table, $this->relStaticTables, true)
+            || in_array('_ALL', $this->relStaticTables, true);
     }
 
     /**
@@ -1208,11 +1223,14 @@ abstract class ImportExport
     {
         $diffHtml = '';
 
+        $schema = $this->tcaSchemaFactory->get($table);
         // Updated fields
         foreach ($databaseRecord as $fieldName => $_) {
-            if (is_array($GLOBALS['TCA'][$table]['columns'][$fieldName] ?? null)
-                && $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] !== 'passthrough'
-            ) {
+            if (!$schema->hasField($fieldName)) {
+                continue;
+            }
+            $fieldInfo = $schema->getField($fieldName);
+            if (!$fieldInfo->isType(TableColumnType::PASSTHROUGH)) {
                 if (isset($importRecord[$fieldName])) {
                     if (trim((string)$databaseRecord[$fieldName]) !== trim((string)$importRecord[$fieldName])) {
                         $diffFieldHtml = $this->getDiffUtility()->diff(
@@ -1235,7 +1253,7 @@ abstract class ImportExport
                         );
                         $diffHtml .= sprintf(
                             '<tr><td>%s (%s)</td><td>%s</td></tr>' . PHP_EOL,
-                            htmlspecialchars($this->lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'])),
+                            htmlspecialchars($this->lang->sL($fieldInfo->getLabel())),
                             htmlspecialchars((string)$fieldName),
                             $diffFieldHtml
                         );
@@ -1247,13 +1265,15 @@ abstract class ImportExport
 
         // New fields
         foreach ($importRecord as $fieldName => $_) {
-            if (is_array($GLOBALS['TCA'][$table]['columns'][$fieldName] ?? null)
-                && $GLOBALS['TCA'][$table]['columns'][$fieldName]['config']['type'] !== 'passthrough'
-            ) {
+            if (!$schema->hasField($fieldName)) {
+                continue;
+            }
+            $fieldInfo = $schema->getField($fieldName);
+            if (!$fieldInfo->isType(TableColumnType::PASSTHROUGH)) {
                 $diffFieldHtml = '<strong>Field missing</strong> in database';
                 $diffHtml .= sprintf(
                     '<tr><td>%s (%s)</td><td>%s</td></tr>' . PHP_EOL,
-                    htmlspecialchars($this->lang->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label'])),
+                    htmlspecialchars($this->lang->sL($fieldInfo->getLabel())),
                     htmlspecialchars((string)$fieldName),
                     $diffFieldHtml
                 );

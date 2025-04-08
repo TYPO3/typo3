@@ -3459,7 +3459,7 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array\<string, mixed\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/impexp/Classes/Export.php
 
 		-
