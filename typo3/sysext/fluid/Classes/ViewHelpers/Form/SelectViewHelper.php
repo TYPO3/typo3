@@ -236,8 +236,8 @@ final class SelectViewHelper extends AbstractFormFieldViewHelper
                 if (!$this->hasArgument('optionLabelField')) {
                     throw new \InvalidArgumentException('Missing parameter "optionLabelField" in SelectViewHelper for array value options.', 1682693721);
                 }
-                $key = ObjectAccess::getPropertyPath($value, $this->arguments['optionValueField']);
-                $value = ObjectAccess::getPropertyPath($value, $this->arguments['optionLabelField']);
+                $key = ObjectAccess::getPropertyPath($value, (string)$this->arguments['optionValueField']);
+                $value = ObjectAccess::getPropertyPath($value, (string)$this->arguments['optionLabelField']);
                 $options[$key] = $value;
                 continue;
             }
