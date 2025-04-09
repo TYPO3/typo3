@@ -28,9 +28,7 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
-use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParser;
@@ -87,7 +85,6 @@ class Import extends ImportExport
      */
     protected array $importNewIdPids = [];
 
-    protected bool $decompressionAvailable = false;
     private array $supportedFileExtensions = [
         'xml',
         't3d',
@@ -112,7 +109,6 @@ class Import extends ImportExport
      * Currently registered default storage object
      */
     protected ?ResourceStorage $defaultStorage = null;
-    protected StorageRepository $storageRepository;
 
     /**
      * Name of the "fileadmin" folder where files for export/import should be located
@@ -121,11 +117,11 @@ class Import extends ImportExport
 
     public function __construct(
         protected readonly FlexFormTools $flexFormTools,
+        protected readonly StorageRepository $storageRepository,
+        protected readonly FlexFormService $flexFormService,
+        protected readonly ConnectionPool $connectionPool,
     ) {
-        $this->storageRepository = GeneralUtility::makeInstance(StorageRepository::class);
-        parent::__construct();
         $this->fetchStorages();
-        $this->decompressionAvailable = function_exists('gzuncompress');
     }
 
     /**
@@ -153,10 +149,6 @@ class Import extends ImportExport
             }
         }
     }
-
-    /**************************
-     * File Input
-     *************************/
 
     /**
      * Loads the TYPO3 import file $fileName into memory.
@@ -261,8 +253,6 @@ class Import extends ImportExport
      * @param resource $fd Import file pointer
      * @param string $name For error messages this indicates the section of the problem.
      * @return array|null Data array or NULL in case of an error
-     *
-     * @see loadFile()
      */
     protected function getNextFilePart($fd, string $name): ?array
     {
@@ -292,13 +282,12 @@ class Import extends ImportExport
         }
 
         if ($isDataCompressed) {
-            if ($this->decompressionAvailable) {
-                $dataString = (string)gzuncompress($dataString);
-            } else {
+            if (!function_exists('gzuncompress')) {
                 $this->addError('Content read error: This file requires decompression, ' .
                     'but this server does not offer gzcompress()/gzuncompress() functions.');
                 return null;
             }
+            $dataString = (string)gzuncompress($dataString);
         }
 
         return unserialize($dataString, ['allowed_classes' => false]) ?: null;
@@ -318,10 +307,6 @@ class Import extends ImportExport
     {
         return $this->dat['header']['meta'] ?? [];
     }
-
-    /***********************
-     * Import
-     ***********************/
 
     /**
      * Checks all requirements that must be met before import.
@@ -517,8 +502,7 @@ class Import extends ImportExport
             && $storageObject->isWritable() === (bool)$storageRecord['is_writable']
             && $storageObject->isOnline() === (bool)$storageRecord['is_online']
         ) {
-            $storageRecordConfiguration = GeneralUtility::makeInstance(FlexFormService::class)
-                ->convertFlexFormContentToArray($storageRecord['configuration'] ?? '');
+            $storageRecordConfiguration = $this->flexFormService->convertFlexFormContentToArray($storageRecord['configuration'] ?? '');
             $storageObjectConfiguration = $storageObject->getConfiguration();
             if ($storageRecordConfiguration['pathType'] === $storageObjectConfiguration['pathType']
                 && $storageRecordConfiguration['basePath'] === $storageObjectConfiguration['basePath']
@@ -733,8 +717,6 @@ class Import extends ImportExport
      * Writing page tree / pages to database:
      * If the operation is an update operation, the root of the page tree inside will be moved to $this->pid
      * unless it is the same as the root page from the import.
-     *
-     * @see writeRecords()
      */
     protected function writePages(): void
     {
@@ -784,9 +766,6 @@ class Import extends ImportExport
     /**
      * Organize all updated pages in page tree so they are related like in the import file.
      * Only used for updates.
-     *
-     * @see writePages()
-     * @see writeRecordsOrder()
      */
     protected function writePagesOrder(): void
     {
@@ -844,8 +823,6 @@ class Import extends ImportExport
 
     /**
      * Write all database records except pages (written in writePages())
-     *
-     * @see writePages()
      */
     protected function writeRecords(): void
     {
@@ -906,9 +883,6 @@ class Import extends ImportExport
     /**
      * Organize all updated records so they are related like in the import file.
      * Only used for updates.
-     *
-     * @see writeRecords()
-     * @see writePagesOrder()
      */
     protected function writeRecordsOrder(): void
     {
@@ -969,7 +943,6 @@ class Import extends ImportExport
      * @param string $table Table name
      * @param int $uid Record UID
      * @param int|string $pid Page id or NEW-id, e.g. "NEW5fb3c2641281c885267727"
-     * @see setRelations()
      */
     protected function addSingle(array &$importData, string $table, int $uid, $pid): void
     {
@@ -1115,9 +1088,7 @@ class Import extends ImportExport
      */
     protected function getSysFileMetaDataFromDatabase(int $file, int $sysLanguageUid): ?array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable('sys_file_metadata');
-
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_file_metadata');
         $databaseRecord = $queryBuilder->select('uid')
             ->from('sys_file_metadata')
             ->where(
@@ -1132,7 +1103,6 @@ class Import extends ImportExport
             )
             ->executeQuery()
             ->fetchAssociative();
-
         return is_array($databaseRecord) ? $databaseRecord : null;
     }
 
@@ -1141,7 +1111,6 @@ class Import extends ImportExport
      *
      * @param array $importData Data to be modified or inserted in the database during import
      * @param array $substNEWwithIDs A map between the "NEW..." string IDs and the eventual record UID in database
-     * @see writeRecords()
      */
     protected function addToMapId(array $importData, array $substNEWwithIDs): void
     {
@@ -1179,17 +1148,11 @@ class Import extends ImportExport
         return $dataHandler;
     }
 
-    /********************
-     * Import relations
-     *******************/
-
     /**
      * At the end of the import process all file and database relations should be set properly.
      * This means that the relations to imported records are all recreated so that the imported
      * records are correctly related again.
      * Relations in flexform fields are processed in setFlexFormRelations() after this function.
-     *
-     * @see setFlexFormRelations()
      */
     protected function setRelations(): void
     {
@@ -1270,9 +1233,9 @@ class Import extends ImportExport
                     // If an input field has a relation to a sys_file record this need to be converted back to
                     // the public path. But use getPublicUrl() here, because could normally only be a local file path.
                     try {
-                        $file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($actualUid);
+                        $file = $this->resourceFactory->retrieveFileOrFolderObject($actualUid);
                         $actualRelations[] = $file->getPublicUrl();
-                    } catch (\Exception $e) {
+                    } catch (\Exception) {
                         $actualRelations[] = 'file:' . $actualUid;
                     }
                 } elseif ($translationSourceFieldName && $field === $translationSourceFieldName) {
@@ -1297,8 +1260,6 @@ class Import extends ImportExport
      * After all database relations have been set in the end of the import (see setRelations()) then it is time to
      * correct all relations inside FlexForm fields. The reason for doing this after is that the setting of relations
      * may affect (quite often!) which data structure is used for the FlexForm field!
-     *
-     * @see setRelations()
      */
     protected function setFlexFormRelations(): void
     {
@@ -1718,13 +1679,13 @@ class Import extends ImportExport
         }
         // Just for security, check again. Should actually not be necessary.
         try {
-            GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier(PathUtility::dirname($fileName));
+            $this->resourceFactory->getFolderObjectFromCombinedIdentifier(PathUtility::dirname($fileName));
         } catch (InsufficientFolderAccessPermissionsException $e) {
             $this->addError('ERROR: Filename "' . $fileName . '" was not allowed in destination path!');
             return false;
         }
         $pathInfo = GeneralUtility::split_fileref($fileName);
-        if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($pathInfo['file'])) {
+        if (!$this->fileNameValidator->isValid($pathInfo['file'])) {
             $this->addError('ERROR: Filename "' . $fileName . '" failed against extension check or deny-pattern!');
             return false;
         }
@@ -1790,8 +1751,6 @@ class Import extends ImportExport
     }
 
     /**
-     * Call Hook
-     *
      * @param string $name Name of the hook
      * @param array $params Array with params
      */
@@ -1802,18 +1761,8 @@ class Import extends ImportExport
         }
     }
 
-    public function isEnableLogging(): bool
-    {
-        return $this->enableLogging;
-    }
-
     public function setEnableLogging(bool $enableLogging): void
     {
         $this->enableLogging = $enableLogging;
-    }
-
-    public function isDecompressionAvailable(): bool
-    {
-        return $this->decompressionAvailable;
     }
 }

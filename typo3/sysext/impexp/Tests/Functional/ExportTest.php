@@ -16,9 +16,17 @@
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RequiresFunction;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Resource\DefaultUploadFolderResolver;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Export;
 
 final class ExportTest extends AbstractImportExportTestCase
@@ -228,9 +236,10 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function addFilesSucceeds(array $dat, array $relations, array $expected): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['addError']);
+        $subject = $this->get(Export::class);
         $lines = [];
-        $subject->_set('dat', $dat);
+        $datProperty = new \ReflectionProperty($subject, 'dat');
+        $datProperty->setValue($subject, $dat);
         $subject->addFiles($relations, $lines, 0);
         self::assertEquals($expected, $lines);
     }
@@ -238,7 +247,7 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function renderSucceedsWithoutArguments(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [], '', false);
         $subject->process();
         $actual = $subject->render();
         self::assertXmlStringEqualsXmlFile(__DIR__ . '/Fixtures/XmlExports/empty.xml', $actual);
@@ -247,7 +256,8 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function saveXmlToFileIsDefaultAndSucceeds(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [], '', false);
+        $subject->injectDefaultUploadFolderResolver($this->get(DefaultUploadFolderResolver::class));
         $subject->setExportFileName('export');
         $subject->process();
         $file = $subject->saveToFile();
@@ -262,7 +272,8 @@ final class ExportTest extends AbstractImportExportTestCase
     #[Test]
     public function saveT3dToFileSucceeds(): void
     {
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [], '', false);
+        $subject->injectDefaultUploadFolderResolver($this->get(DefaultUploadFolderResolver::class));
         $subject->setExportFileName('export');
         $subject->setExportFileType(Export::FILETYPE_T3D);
         $subject->process();
@@ -280,13 +291,11 @@ final class ExportTest extends AbstractImportExportTestCase
     }
 
     #[Test]
+    #[RequiresFunction('gzcompress')]
     public function saveT3dCompressedToFileSucceeds(): void
     {
-        if (!function_exists('gzcompress')) {
-            self::markTestSkipped('The function gzcompress() is not available for compression.');
-        }
-
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [], '', false);
+        $subject->injectDefaultUploadFolderResolver($this->get(DefaultUploadFolderResolver::class));
         $subject->setExportFileName('export');
         $subject->setExportFileType(Export::FILETYPE_T3DZ);
         $subject->process();
@@ -314,7 +323,15 @@ final class ExportTest extends AbstractImportExportTestCase
         $fileDirectory = Environment::getVarPath() . '/transient';
         $numTemporaryFilesAndFoldersBeforeImport = iterator_count(new \FilesystemIterator($fileDirectory, \FilesystemIterator::SKIP_DOTS));
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
+            $this->get(ConnectionPool::class),
+            $this->get(Locales::class),
+            $this->get(Typo3Version::class),
+            $this->get(ReferenceIndex::class),
+        ]);
+        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject->injectResourceFactory($this->get(ResourceFactory::class));
+        $subject->injectDefaultUploadFolderResolver($this->get(DefaultUploadFolderResolver::class));
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
@@ -339,7 +356,15 @@ final class ExportTest extends AbstractImportExportTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file.csv');
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DatabaseImports/sys_file-export-pages-and-tt-content.csv');
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
+            $this->get(ConnectionPool::class),
+            $this->get(Locales::class),
+            $this->get(Typo3Version::class),
+            $this->get(ReferenceIndex::class),
+        ]);
+        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject->injectResourceFactory($this->get(ResourceFactory::class));
+        $subject->injectDefaultUploadFolderResolver($this->get(DefaultUploadFolderResolver::class));
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);

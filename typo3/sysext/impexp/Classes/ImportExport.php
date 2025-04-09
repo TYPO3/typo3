@@ -55,11 +55,6 @@ abstract class ImportExport
     protected string $mode = '';
 
     /**
-     * A WHERE clause for selection records from the pages table based on read-permissions of the current backend user.
-     */
-    protected string $permsClause;
-
-    /**
      * Root page of import or export page tree
      */
     protected int $pid = -1;
@@ -161,31 +156,57 @@ abstract class ImportExport
      */
     protected ?ExtendedFileUtility $fileProcObj = null;
     protected array $remainHeader = [];
-    protected LanguageService $lang;
-    protected IconFactory $iconFactory;
-
     protected ?string $temporaryFolderName = null;
-    protected ?Folder $defaultImportExportFolder = null;
 
+    protected ?Folder $defaultImportExportFolder = null;
     /**
      * Flag to control whether all disabled records and their children are excluded (true) or included (false). Defaults
      * to the old behaviour of including everything.
      */
     protected bool $excludeDisabledRecords = false;
 
+    protected IconFactory $iconFactory;
     protected TcaSchemaFactory $tcaSchemaFactory;
+    protected FileNameValidator $fileNameValidator;
+    protected PageDoktypeRegistry $pageDoktypeRegistry;
+    protected DefaultUploadFolderResolver $defaultUploadFolderResolver;
+    protected ResourceFactory $resourceFactory;
+    protected DiffUtility $diffUtility;
 
-    public function __construct()
+    public function injectIconFactory(IconFactory $iconFactory): void
     {
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-        $this->lang = $this->getLanguageService();
-        $this->permsClause = $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW);
+        $this->iconFactory = $iconFactory;
     }
 
-    /********************************************************
-     * Visual rendering of import/export memory, $this->dat
-     ********************************************************/
+    public function injectTcaSchemaFactory(TcaSchemaFactory $tcaSchemaFactory): void
+    {
+        $this->tcaSchemaFactory = $tcaSchemaFactory;
+    }
+
+    public function injectFileNameValidator(FileNameValidator $fileNameValidator): void
+    {
+        $this->fileNameValidator = $fileNameValidator;
+    }
+
+    public function injectPageDoktypeRegistry(PageDoktypeRegistry $pageDoktypeRegistry): void
+    {
+        $this->pageDoktypeRegistry = $pageDoktypeRegistry;
+    }
+
+    public function injectDefaultUploadFolderResolver(DefaultUploadFolderResolver $defaultUploadFolderResolver): void
+    {
+        $this->defaultUploadFolderResolver = $defaultUploadFolderResolver;
+    }
+
+    public function injectResourceFactory(ResourceFactory $resourceFactory): void
+    {
+        $this->resourceFactory = $resourceFactory;
+    }
+
+    public function injectDiffUtility(DiffUtility $diffUtility): void
+    {
+        $this->diffUtility = $diffUtility;
+    }
 
     /**
      * Displays a preview of the import or export.
@@ -400,7 +421,7 @@ abstract class ImportExport
         if ($table === '_SOFTREF_') {
             // Record is a soft reference
             $line['preCode'] = $this->renderIndent($indent);
-            $line['title'] = '<em>' . htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_softReferencesFiles')) . '</em>';
+            $line['title'] = '<em>' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_softReferencesFiles')) . '</em>';
         } elseif (!$this->tcaSchemaFactory->has($table)) {
             // Record is of unknown table
             $line['preCode'] = $this->renderIndent($indent);
@@ -437,7 +458,10 @@ abstract class ImportExport
                     if (!$this->getBackendUser()->doesUserHaveAccess($pidRecord, ($table === 'pages' ? 8 : 16))) {
                         $line['msg'] .= '"' . $line['ref'] . '" cannot be INSERTED on this page! ';
                     }
-                    if ($this->pid > 0 && !$this->checkDokType($table, $pidRecord['doktype']) && !$rootLevelCapability->getRootLevelType()) {
+                    if ($this->pid > 0
+                        && !$this->pageDoktypeRegistry->isRecordTypeAllowedForDoktype($table, $pidRecord['doktype'])
+                        && !$rootLevelCapability->getRootLevelType()
+                    ) {
                         $line['msg'] .= '"' . $table . '" cannot be INSERTED on this page type (change page type to "Folder".) ';
                     }
                 }
@@ -518,8 +542,6 @@ abstract class ImportExport
      * @param array $lines Output lines array
      * @param int $indent Indentation level
      * @param array $recursionCheck Recursion check stack
-     *
-     * @see addRecord()
      */
     protected function addRelations(array $relations, array &$lines, int $indent, array $recursionCheck = []): void
     {
@@ -594,8 +616,6 @@ abstract class ImportExport
      * @param array $lines Output lines array
      * @param int $indent Indentation level
      * @param string $tokenID Token ID if this is a soft reference (in which case it only makes sense with a single element in the $relations array!)
-     *
-     * @see addRecord()
      */
     public function addFiles(array $relations, array &$lines, int $indent, string $tokenID = ''): void
     {
@@ -654,7 +674,7 @@ abstract class ImportExport
                 $fileProcObj = $this->getFileProcObj();
                 if ($fileProcObj->actionPerms['addFile']) {
                     $pathInfo = GeneralUtility::split_fileref(Environment::getPublicPath() . '/' . $fileInfo['relFileName']);
-                    if (!GeneralUtility::makeInstance(FileNameValidator::class)->isValid($pathInfo['file'])) {
+                    if (!$this->fileNameValidator->isValid($pathInfo['file'])) {
                         $line['msg'] .= 'File extension was not allowed!';
                     }
                 } else {
@@ -696,11 +716,10 @@ abstract class ImportExport
      * @param array $softrefs Soft references
      * @param array $lines Output lines array
      * @param int $indent Indentation level
-     *
-     * @see addRecord()
      */
     protected function addSoftRefs(array $softrefs, array &$lines, int $indent): void
     {
+        $languageService = $this->getLanguageService();
         foreach ($softrefs as $softref) {
             $line = [];
             $line['ref'] = 'SOFTREF';
@@ -724,7 +743,7 @@ abstract class ImportExport
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_title')),
+                        htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_title')),
                         htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['title'], 60))
                     );
                 }
@@ -732,7 +751,7 @@ abstract class ImportExport
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_descr')),
+                        htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_descr')),
                         htmlspecialchars(GeneralUtility::fixed_lgd_cs($softref['subst']['description'], 60))
                     );
                 }
@@ -740,21 +759,21 @@ abstract class ImportExport
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_record')),
+                        htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_record')),
                         $softref['subst']['recordRef']
                     );
                 } elseif ($softref['subst']['type'] === 'file') {
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_filename')),
+                        htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_filename')),
                         $softref['subst']['relFileName']
                     );
                 } elseif ($softref['subst']['type'] === 'string') {
                     $line['title'] .= sprintf(
                         '<br>%s <strong>%s</strong> %s',
                         $this->renderIndent($indent + 1),
-                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_value')),
+                        htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_value')),
                         $softref['subst']['tokenValue']
                     );
                 }
@@ -783,18 +802,6 @@ abstract class ImportExport
     protected function renderIndent(int $indent): string
     {
         return $indent > 0 ? '<span class="indent indent-inline-block" style="--indent-level: ' . $indent . '"></span>' : '';
-    }
-
-    /**
-     * Verifies that a table is allowed on a certain doktype of a page.
-     *
-     * @param string $table Table name to check
-     * @param int $dokType Page doktype
-     * @return bool TRUE if OK
-     */
-    protected function checkDokType(string $table, int $dokType): bool
-    {
-        return GeneralUtility::makeInstance(PageDoktypeRegistry::class)->isRecordTypeAllowedForDoktype($table, $dokType);
     }
 
     /**
@@ -828,11 +835,13 @@ abstract class ImportExport
      */
     protected function renderRecordExcludeCheckbox(string $recordRef): string
     {
-        return ''
-            . '<div class="form-check mb-0">'
-            . '<input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][' . $recordRef . ']" id="checkExclude' . $recordRef . '" value="1" />'
-            . '<label class="form-check-label" for="checkExclude' . $recordRef . '">' . htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude')) . '</label>'
-            . '</div>';
+        return
+            '<div class="form-check mb-0">' .
+            '<input class="form-check-input t3js-exclude-checkbox" type="checkbox" name="tx_impexp[exclude][' . $recordRef . ']" id="checkExclude' . $recordRef . '" value="1" />' .
+            '<label class="form-check-label" for="checkExclude' . $recordRef . '">' .
+            htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude')) .
+            '</label>' .
+            '</div>';
     }
 
     /**
@@ -873,12 +882,13 @@ abstract class ImportExport
      */
     protected function renderSoftRefExportSelector(array $softref): string
     {
+        $languageService = $this->getLanguageService();
         // Substitution scheme has to be around.
         if (isset($softref['subst']['tokenID'])) {
             $options = [];
             $options[''] = '';
-            $options[Import::SOFTREF_IMPORT_MODE_EDITABLE] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_editable');
-            $options[Import::SOFTREF_IMPORT_MODE_EXCLUDE] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_exclude');
+            $options[Import::SOFTREF_IMPORT_MODE_EDITABLE] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_editable');
+            $options[Import::SOFTREF_IMPORT_MODE_EXCLUDE] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_softrefsel_exclude');
             $value = $this->softrefCfg[$softref['subst']['tokenID']]['mode'] ?? '';
             $selectHtml = $this->renderSelectBox(
                 'tx_impexp[softrefCfg][' . $softref['subst']['tokenID'] . '][mode]',
@@ -901,7 +911,7 @@ abstract class ImportExport
                         '
                         %s<br>
                         <input type="text" name="tx_impexp[softrefCfg][%s][description]" value="%s" />',
-                        htmlspecialchars($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_printerror_description')),
+                        htmlspecialchars($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_printerror_description')),
                         $softref['subst']['tokenID'],
                         htmlspecialchars($this->softrefCfg[$softref['subst']['tokenID']]['description'] ?? '')
                     );
@@ -935,22 +945,23 @@ abstract class ImportExport
      */
     protected function renderImportModeSelector(string $table, int $uid, bool $doesRecordExist): string
     {
+        $languageService = $this->getLanguageService();
         $options = [];
         if (!$doesRecordExist) {
-            $options[] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_insert');
+            $options[] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_insert');
             if ($this->getBackendUser()->isAdmin()) {
-                $options[Import::IMPORT_MODE_FORCE_UID] = sprintf($this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_forceUidSAdmin'), $uid);
+                $options[Import::IMPORT_MODE_FORCE_UID] = sprintf($languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_forceUidSAdmin'), $uid);
             }
         } else {
-            $options[] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_update');
-            $options[Import::IMPORT_MODE_AS_NEW] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_importAsNew');
+            $options[] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_update');
+            $options[Import::IMPORT_MODE_AS_NEW] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_importAsNew');
             if (!$this->globalIgnorePid) {
-                $options[Import::IMPORT_MODE_IGNORE_PID] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_ignorePid');
+                $options[Import::IMPORT_MODE_IGNORE_PID] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_ignorePid');
             } else {
-                $options[Import::IMPORT_MODE_RESPECT_PID] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_respectPid');
+                $options[Import::IMPORT_MODE_RESPECT_PID] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_respectPid');
             }
         }
-        $options[Import::IMPORT_MODE_EXCLUDE] = $this->lang->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude');
+        $options[Import::IMPORT_MODE_EXCLUDE] = $languageService->sL('LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:impexpcore_singlereco_exclude');
         return $this->renderSelectBox(
             'tx_impexp[import_mode][' . $table . ':' . $uid . ']',
             (string)($this->importMode[$table . ':' . $uid] ?? ''),
@@ -1068,8 +1079,7 @@ abstract class ImportExport
      */
     protected function getDefaultUploadTemporaryFolder(): ?Folder
     {
-        $defaultFolder = GeneralUtility::makeInstance(DefaultUploadFolderResolver::class)->resolve($this->getBackendUser());
-
+        $defaultFolder = $this->defaultUploadFolderResolver->resolve($this->getBackendUser());
         if ($defaultFolder !== false) {
             $tempFolderName = '_temp_';
             $createFolder = !$defaultFolder->hasFolder($tempFolderName);
@@ -1088,7 +1098,7 @@ abstract class ImportExport
     public function removeDefaultImportExportFolder(): void
     {
         if (!empty($this->defaultImportExportFolder)) {
-            $this->defaultImportExportFolder->delete(true);
+            $this->defaultImportExportFolder->delete();
             $this->defaultImportExportFolder = null;
         }
     }
@@ -1105,16 +1115,16 @@ abstract class ImportExport
     protected function resolveStoragePath(string $dirPrefix, bool $checkAlternatives = true): ?string
     {
         try {
-            GeneralUtility::makeInstance(ResourceFactory::class)->getFolderObjectFromCombinedIdentifier($dirPrefix);
+            $this->resourceFactory->getFolderObjectFromCombinedIdentifier($dirPrefix);
             return $dirPrefix;
-        } catch (InsufficientFolderAccessPermissionsException $e) {
+        } catch (InsufficientFolderAccessPermissionsException) {
             if ($checkAlternatives) {
                 $storagesByUser = $this->getBackendUser()->getFileStorages();
                 foreach ($storagesByUser as $storage) {
                     try {
                         $folder = $storage->getFolder(rtrim($dirPrefix, '/'));
                         return $folder->getPublicUrl();
-                    } catch (InsufficientFolderAccessPermissionsException $e) {
+                    } catch (InsufficientFolderAccessPermissionsException) {
                     }
                 }
             }
@@ -1204,7 +1214,11 @@ abstract class ImportExport
     protected function getRecordPath(int $pid): string
     {
         if (!isset($this->cacheGetRecordPath[$pid])) {
-            $this->cacheGetRecordPath[$pid] = (string)BackendUtility::getRecordPath($pid, $this->permsClause, 20);
+            $this->cacheGetRecordPath[$pid] = (string)BackendUtility::getRecordPath(
+                $pid,
+                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW),
+                20
+            );
         }
         return $this->cacheGetRecordPath[$pid];
     }
@@ -1223,6 +1237,7 @@ abstract class ImportExport
     {
         $diffHtml = '';
 
+        $languageService = $this->getLanguageService();
         $schema = $this->tcaSchemaFactory->get($table);
         // Updated fields
         foreach ($databaseRecord as $fieldName => $_) {
@@ -1233,7 +1248,7 @@ abstract class ImportExport
             if (!$fieldInfo->isType(TableColumnType::PASSTHROUGH)) {
                 if (isset($importRecord[$fieldName])) {
                     if (trim((string)$databaseRecord[$fieldName]) !== trim((string)$importRecord[$fieldName])) {
-                        $diffFieldHtml = $this->getDiffUtility()->diff(
+                        $diffFieldHtml = $this->diffUtility->diff(
                             strip_tags((string)BackendUtility::getProcessedValue(
                                 $table,
                                 $fieldName,
@@ -1253,7 +1268,7 @@ abstract class ImportExport
                         );
                         $diffHtml .= sprintf(
                             '<tr><td>%s (%s)</td><td>%s</td></tr>' . PHP_EOL,
-                            htmlspecialchars($this->lang->sL($fieldInfo->getLabel())),
+                            htmlspecialchars($languageService->sL($fieldInfo->getLabel())),
                             htmlspecialchars((string)$fieldName),
                             $diffFieldHtml
                         );
@@ -1273,7 +1288,7 @@ abstract class ImportExport
                 $diffFieldHtml = '<strong>Field missing</strong> in database';
                 $diffHtml .= sprintf(
                     '<tr><td>%s (%s)</td><td>%s</td></tr>' . PHP_EOL,
-                    htmlspecialchars($this->lang->sL($fieldInfo->getLabel())),
+                    htmlspecialchars($languageService->sL($fieldInfo->getLabel())),
                     htmlspecialchars((string)$fieldName),
                     $diffFieldHtml
                 );
@@ -1293,11 +1308,6 @@ abstract class ImportExport
         );
     }
 
-    protected function getDiffUtility(): DiffUtility
-    {
-        return GeneralUtility::makeInstance(DiffUtility::class);
-    }
-
     /**
      * Returns file processing object, initialized only once.
      *
@@ -1311,10 +1321,6 @@ abstract class ImportExport
         }
         return $this->fileProcObj;
     }
-
-    /*****************************
-     * Error handling
-     *****************************/
 
     /**
      * Sets error message in the internal error log
@@ -1362,8 +1368,10 @@ abstract class ImportExport
     protected function getPidRecord(): ?array
     {
         if ($this->pidRecord === null && $this->pid >= 0) {
-            $pidRecord = BackendUtility::readPageAccess($this->pid, $this->permsClause);
-
+            $pidRecord = BackendUtility::readPageAccess(
+                $this->pid,
+                $this->getBackendUser()->getPagePermsClause(Permission::PAGE_SHOW)
+            );
             if (is_array($pidRecord)) {
                 if ($this->pid === 0) {
                     $pidRecord += ['title' => '[root-level]', 'uid' => 0, 'pid' => 0];
@@ -1386,24 +1394,9 @@ abstract class ImportExport
         $this->excludeDisabledRecords = $excludeDisabledRecords;
     }
 
-    public function isExcludeDisabledRecords(): bool
-    {
-        return $this->excludeDisabledRecords;
-    }
-
-    public function getExcludeMap(): array
-    {
-        return $this->excludeMap;
-    }
-
     public function setExcludeMap(array $excludeMap): void
     {
         $this->excludeMap = $excludeMap;
-    }
-
-    public function getSoftrefCfg(): array
-    {
-        return $this->softrefCfg;
     }
 
     public function setSoftrefCfg(array $softrefCfg): void
@@ -1411,29 +1404,14 @@ abstract class ImportExport
         $this->softrefCfg = $softrefCfg;
     }
 
-    public function getExtensionDependencies(): array
-    {
-        return $this->extensionDependencies;
-    }
-
     public function setExtensionDependencies(array $extensionDependencies): void
     {
         $this->extensionDependencies = $extensionDependencies;
     }
 
-    public function isShowStaticRelations(): bool
-    {
-        return $this->showStaticRelations;
-    }
-
     public function setShowStaticRelations(bool $showStaticRelations): void
     {
         $this->showStaticRelations = $showStaticRelations;
-    }
-
-    public function getRelStaticTables(): array
-    {
-        return $this->relStaticTables;
     }
 
     public function setRelStaticTables(array $relStaticTables): void
@@ -1446,24 +1424,9 @@ abstract class ImportExport
         return $this->errorLog;
     }
 
-    public function setErrorLog(array $errorLog): void
-    {
-        $this->errorLog = $errorLog;
-    }
-
-    public function isUpdate(): bool
-    {
-        return $this->update;
-    }
-
     public function setUpdate(bool $update): void
     {
         $this->update = $update;
-    }
-
-    public function getImportMode(): array
-    {
-        return $this->importMode;
     }
 
     public function setImportMode(array $importMode): void
@@ -1471,19 +1434,9 @@ abstract class ImportExport
         $this->importMode = $importMode;
     }
 
-    public function isGlobalIgnorePid(): bool
-    {
-        return $this->globalIgnorePid;
-    }
-
     public function setGlobalIgnorePid(bool $globalIgnorePid): void
     {
         $this->globalIgnorePid = $globalIgnorePid;
-    }
-
-    public function isForceAllUids(): bool
-    {
-        return $this->forceAllUids;
     }
 
     public function setForceAllUids(bool $forceAllUids): void
@@ -1491,19 +1444,9 @@ abstract class ImportExport
         $this->forceAllUids = $forceAllUids;
     }
 
-    public function isShowDiff(): bool
-    {
-        return $this->showDiff;
-    }
-
     public function setShowDiff(bool $showDiff): void
     {
         $this->showDiff = $showDiff;
-    }
-
-    public function getSoftrefInputValues(): array
-    {
-        return $this->softrefInputValues;
     }
 
     public function setSoftrefInputValues(array $softrefInputValues): void
@@ -1516,23 +1459,8 @@ abstract class ImportExport
         return $this->mode;
     }
 
-    public function setMode(string $mode): void
-    {
-        $this->mode = $mode;
-    }
-
     public function getImportMapId(): array
     {
         return $this->importMapId;
-    }
-
-    public function setImportMapId(array $importMapId): void
-    {
-        $this->importMapId = $importMapId;
-    }
-
-    public function getDat(): array
-    {
-        return $this->dat;
     }
 }

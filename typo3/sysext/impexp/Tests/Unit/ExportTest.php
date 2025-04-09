@@ -17,37 +17,13 @@ namespace TYPO3\CMS\Impexp\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Impexp\Export;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ExportTest extends UnitTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
-    protected Export&MockObject&AccessibleObjectInterface $exportMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
-        $this->exportMock->_set('compressionAvailable', true);
-    }
-
-    #[DataProvider('setExportFileNameSanitizesFileNameProvider')]
-    #[Test]
-    public function setExportFileNameSanitizesFileName(string $fileName, string $expected): void
-    {
-        $this->exportMock->setExportFileName($fileName);
-        $actual = $this->exportMock->getExportFileName();
-
-        self::assertEquals($expected, $actual);
-    }
-
     public static function setExportFileNameSanitizesFileNameProvider(): array
     {
         return [
@@ -58,29 +34,42 @@ final class ExportTest extends UnitTestCase
         ];
     }
 
+    #[DataProvider('setExportFileNameSanitizesFileNameProvider')]
+    #[Test]
+    public function setExportFileNameSanitizesFileName(string $fileName, string $expected): void
+    {
+        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
+        $exportMock->setExportFileName($fileName);
+        $actual = $exportMock->getExportFileName();
+        self::assertEquals($expected, $actual);
+    }
+
     #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersPidAndLevels(): void
     {
-        $this->exportMock->setPid(1);
-        $this->exportMock->setLevels(2);
+        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
+        $exportMock->setPid(1);
+        $exportMock->setLevels(2);
         $patternDateTime = '[0-9-_]{16}';
-        self::assertMatchesRegularExpression("/T3D_tree_PID1_L2_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
+        self::assertMatchesRegularExpression("/T3D_tree_PID1_L2_$patternDateTime.xml/", $exportMock->getOrGenerateExportFileNameWithFileExtension());
     }
 
     #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersRecords(): void
     {
-        $this->exportMock->setRecord(['page:1', 'tt_content:1']);
+        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
+        $exportMock->setRecord(['page:1', 'tt_content:1']);
         $patternDateTime = '[0-9-_]{16}';
-        self::assertMatchesRegularExpression("/T3D_recs_page_1-tt_conte_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
+        self::assertMatchesRegularExpression("/T3D_recs_page_1-tt_conte_$patternDateTime.xml/", $exportMock->getOrGenerateExportFileNameWithFileExtension());
     }
 
     #[Test]
     public function getOrGenerateExportFileNameWithFileExtensionConsidersLists(): void
     {
-        $this->exportMock->setList(['sys_news:0', 'news:12']);
+        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
+        $exportMock->setList(['sys_news:0', 'news:12']);
         $patternDateTime = '[0-9-_]{16}';
-        self::assertMatchesRegularExpression("/T3D_list_sys_news_0-news_$patternDateTime.xml/", $this->exportMock->getOrGenerateExportFileNameWithFileExtension());
+        self::assertMatchesRegularExpression("/T3D_list_sys_news_0-news_$patternDateTime.xml/", $exportMock->getOrGenerateExportFileNameWithFileExtension());
     }
 
     public static function setExportFileTypeSucceedsWithSupportedFileTypeProvider(): array
@@ -96,15 +85,17 @@ final class ExportTest extends UnitTestCase
     #[Test]
     public function setExportFileTypeSucceedsWithSupportedFileType(string $fileType): void
     {
-        $this->exportMock->setExportFileType($fileType);
-        self::assertEquals($fileType, $this->exportMock->getExportFileType());
+        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
+        $exportMock->setExportFileType($fileType);
+        self::assertEquals($fileType, $exportMock->getExportFileType());
     }
 
     #[Test]
     public function setExportFileTypeFailsWithUnsupportedFileType(): void
     {
         $this->expectException(\Exception::class);
-        $this->exportMock->setExportFileType('json');
+        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
+        $exportMock->setExportFileType('json');
     }
 
     public static function removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArrayDataProvider(): array
@@ -152,13 +143,7 @@ final class ExportTest extends UnitTestCase
     #[Test]
     public function removeRedundantSoftRefsInRelationsProcessesOriginalRelationsArray(array $relations, array $expected): void
     {
-        $resourceFactoryMock = $this->getAccessibleMock(
-            ResourceFactory::class,
-            ['retrieveFileOrFolderObject'],
-            [],
-            '',
-            false
-        );
+        $resourceFactoryMock = $this->createMock(ResourceFactory::class);
         $resourceFactoryMock->method('retrieveFileOrFolderObject')
             ->willReturnCallback(function (string $input): File {
                 $fakeFileUidDerivedFromFileName = hexdec(substr(md5($input), 0, 6));
@@ -172,8 +157,9 @@ final class ExportTest extends UnitTestCase
                 $fileMock->_set('properties', ['uid' => $fakeFileUidDerivedFromFileName]);
                 return $fileMock;
             });
-        GeneralUtility::setSingletonInstance(ResourceFactory::class, $resourceFactoryMock);
-        self::assertEquals($expected, $this->exportMock->_call('removeRedundantSoftRefsInRelations', $relations));
+        $exportMock = $this->getAccessibleMock(Export::class, null, [], '', false);
+        $exportMock->_set('resourceFactory', $resourceFactoryMock);
+        self::assertEquals($expected, $exportMock->_call('removeRedundantSoftRefsInRelations', $relations));
     }
 
     public static function exportAddFilesFromRelationsSucceedsDataProvider(): array
@@ -276,7 +262,6 @@ final class ExportTest extends UnitTestCase
             false
         );
         $exportMock->method('isSoftRefIncluded')->willReturn(true);
-
         $exportMock->_set('dat', $dat);
         $exportMock->_call('exportAddFilesFromRelations');
         self::assertEquals($expected, $exportMock->_get('dat'));

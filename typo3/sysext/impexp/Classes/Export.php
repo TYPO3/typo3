@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Impexp;
 
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Result;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
@@ -36,7 +37,6 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\File;
-use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -51,6 +51,7 @@ use TYPO3\CMS\Impexp\View\ExportPageTreeView;
  *
  * @internal This class is not considered part of the public TYPO3 API.
  */
+#[Autoconfigure(public: true, shared: false)]
 class Export extends ImportExport
 {
     public const LEVELS_RECORDS_ON_THIS_PAGE = -2;
@@ -97,22 +98,18 @@ class Export extends ImportExport
     protected string $exportFileName = '';
     protected string $exportFileType = self::FILETYPE_XML;
     protected array $supportedFileTypes = [];
-    protected bool $compressionAvailable = false;
 
     /**
      * Cache for checks if page is in user web mounts.
      */
     protected array $pageInWebMountCache = [];
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->compressionAvailable = function_exists('gzcompress');
-    }
-
-    /**************************
-     * Export / Init + Meta Data
-     *************************/
+    public function __construct(
+        protected readonly ConnectionPool $connectionPool,
+        protected readonly Locales $locales,
+        protected readonly Typo3Version $typo3Version,
+        protected readonly ReferenceIndex $referenceIndex,
+    ) {}
 
     /**
      * Process configuration
@@ -239,7 +236,7 @@ class Export extends ImportExport
         if ($languageCapability === null) {
             return [];
         }
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class))
@@ -283,9 +280,6 @@ class Export extends ImportExport
         ];
     }
 
-    /**
-     * Set header basics
-     */
     protected function setHeaderBasics(): void
     {
         // Initializing:
@@ -310,14 +304,11 @@ class Export extends ImportExport
         $this->dat['header']['charset'] = 'utf-8';
     }
 
-    /**
-     * Sets meta data
-     */
     protected function setMetaData(): void
     {
         $user = $this->getBackendUser();
         if ($user->user['lang'] ?? false) {
-            $locale = GeneralUtility::makeInstance(Locales::class)->createLocale($user->user['lang']);
+            $locale = $this->locales->createLocale($user->user['lang']);
         } else {
             $locale = new Locale();
         }
@@ -328,14 +319,10 @@ class Export extends ImportExport
             'packager_username' => $this->getBackendUser()->user['username'],
             'packager_name' => $this->getBackendUser()->user['realName'],
             'packager_email' => $this->getBackendUser()->user['email'],
-            'TYPO3_version' => (string)GeneralUtility::makeInstance(Typo3Version::class),
+            'TYPO3_version' => (string)$this->typo3Version,
             'created' => (new DateFormatter())->format($GLOBALS['EXEC_TIME'], 'EEE d. MMMM y', $locale),
         ];
     }
-
-    /**************************
-     * Export / Init Page tree
-     *************************/
 
     /**
      * Sets the page-tree array in the export header
@@ -362,10 +349,6 @@ class Export extends ImportExport
             }
         }
     }
-
-    /**************************
-     * Export
-     *************************/
 
     /**
      * Sets the fields of record types to be included in the export.
@@ -470,7 +453,7 @@ class Export extends ImportExport
      */
     protected function execListQueryPid(int $pid, string $table): Result
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $schema = $this->tcaSchemaFactory->get($table);
 
         $orderBy = '';
@@ -545,8 +528,6 @@ class Export extends ImportExport
                 $this->dat['header']['records'][$table][$row['uid']] = $headerInfo;
                 // Create entry in the PID lookup:
                 $this->dat['header']['pid_lookup'][$row['pid']][$table][$row['uid']] = 1;
-                // Initialize reference index object:
-                $refIndexObj = GeneralUtility::makeInstance(ReferenceIndex::class);
                 // @todo: Using getRelations() from Refindex for this operation is a misuse, the method should
                 //        be protected. It would be better to use softref parser and RelationHandler here directly,
                 //        or fetch the relations using a sys_refindex query. Note with recent changes, 'itemArray'
@@ -556,7 +537,7 @@ class Export extends ImportExport
                 //        to two different fields in a target table (e.g. 'pages'), that field indicates to which
                 //        of those a relation is bound. This is currently most likely not handled during import and
                 //        should have more test coverage.
-                $relations = $refIndexObj->getRelations($table, $row, 0);
+                $relations = $this->referenceIndex->getRelations($table, $row, 0);
                 $relations = $this->removeRedundantSoftRefsInRelations($relations);
                 // Data:
                 $this->dat['records'][$table . ':' . $row['uid']] = [];
@@ -649,7 +630,7 @@ class Export extends ImportExport
                         if (isset($relation['softrefs']['keys']['typolink'])) {
                             foreach ($relation['softrefs']['keys']['typolink'] as $tokenID => $softref) {
                                 if ($softref['subst']['type'] === 'file') {
-                                    $file = GeneralUtility::makeInstance(ResourceFactory::class)->retrieveFileOrFolderObject($softref['subst']['relFileName']);
+                                    $file = $this->resourceFactory->retrieveFileOrFolderObject($softref['subst']['relFileName']);
                                     if ($file instanceof File) {
                                         if ($file->getUid() == $dbRelationData['id']) {
                                             unset($relation['softrefs']['keys']['typolink'][$tokenID]);
@@ -756,7 +737,6 @@ class Export extends ImportExport
      *
      * @param int $relationLevel Recursion level
      * @return int number of records from relations found and added
-     * @see exportAddFilesFromRelations()
      */
     protected function exportAddRecordsFromRelations(int $relationLevel = 0): int
     {
@@ -859,7 +839,6 @@ class Export extends ImportExport
      * @param array $recordData Record of relation with table/id key to add to $addRecords
      * @param array $addRecords Records of relations which are already marked as to be added to the export
      * @param string $tokenID Soft reference token ID, if applicable.
-     * @see exportAddRecordsFromRelations()
      */
     protected function exportAddRecordsFromRelationsPushRelation(array $recordData, array &$addRecords, string $tokenID = ''): void
     {
@@ -891,8 +870,6 @@ class Export extends ImportExport
     /**
      * This adds all files in relations.
      * Call this method AFTER adding all records including relations.
-     *
-     * @see exportAddRecordsFromRelations()
      */
     protected function exportAddFilesFromRelations(): void
     {
@@ -1019,7 +996,7 @@ class Export extends ImportExport
     protected function exportAddSysFile(array $fileData): void
     {
         try {
-            $file = GeneralUtility::makeInstance(ResourceFactory::class)->createFileObject($fileData);
+            $file = $this->resourceFactory->createFileObject($fileData);
             $file->checkActionPermission('read');
         } catch (\Exception $e) {
             $this->addError('Error when trying to add file ' . $fileData['title'] . ': ' . $e->getMessage());
@@ -1056,10 +1033,6 @@ class Export extends ImportExport
         $fileInfo['content_sha1'] = $fileSha1;
         $this->dat['files_fal'][$fileId] = $fileInfo;
     }
-
-    /**************************
-     * File Output
-     *************************/
 
     /**
      * This compiles and returns the data content for an exported file
@@ -1304,7 +1277,7 @@ class Export extends ImportExport
             $supportedFileTypes = [];
             $supportedFileTypes[] = self::FILETYPE_XML;
             $supportedFileTypes[] = self::FILETYPE_T3D;
-            if ($this->compressionAvailable) {
+            if (function_exists('gzcompress')) {
                 $supportedFileTypes[] = self::FILETYPE_T3DZ;
             }
             $this->supportedFileTypes = $supportedFileTypes;
@@ -1339,11 +1312,6 @@ class Export extends ImportExport
     public function setDescription(string $description): void
     {
         $this->description = $description;
-    }
-
-    public function getNotes(): string
-    {
-        return $this->notes;
     }
 
     public function setNotes(string $notes): void
@@ -1381,19 +1349,9 @@ class Export extends ImportExport
         $this->levels = $levels;
     }
 
-    public function getTables(): array
-    {
-        return $this->tables;
-    }
-
     public function setTables(array $tables): void
     {
         $this->tables = $tables;
-    }
-
-    public function getRelOnlyTables(): array
-    {
-        return $this->relOnlyTables;
     }
 
     public function setRelOnlyTables(array $relOnlyTables): void
@@ -1406,11 +1364,6 @@ class Export extends ImportExport
         return $this->treeHTML;
     }
 
-    public function isIncludeExtFileResources(): bool
-    {
-        return $this->includeExtFileResources;
-    }
-
     public function setIncludeExtFileResources(bool $includeExtFileResources): void
     {
         $this->includeExtFileResources = $includeExtFileResources;
@@ -1419,16 +1372,9 @@ class Export extends ImportExport
     /**
      * Option to enable having the files not included in the export file.
      * The files are saved to a temporary folder instead.
-     *
-     * @see ImportExport::getOrCreateTemporaryFolderName()
      */
     public function setSaveFilesOutsideExportFile(bool $saveFilesOutsideExportFile): void
     {
         $this->saveFilesOutsideExportFile = $saveFilesOutsideExportFile;
-    }
-
-    public function isSaveFilesOutsideExportFile(): bool
-    {
-        return $this->saveFilesOutsideExportFile;
     }
 }

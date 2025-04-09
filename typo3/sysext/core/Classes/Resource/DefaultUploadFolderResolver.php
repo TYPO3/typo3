@@ -29,11 +29,11 @@ use TYPO3\CMS\Core\Resource\Exception\FolderDoesNotExistException;
  * when uploading or selecting files, based on UserTSconfig or PageTSconfig
  */
 #[Autoconfigure(public: true)]
-class DefaultUploadFolderResolver
+readonly class DefaultUploadFolderResolver
 {
     public function __construct(
-        protected readonly ResourceFactory $resourceFactory,
-        protected readonly EventDispatcher $eventDispatcher,
+        protected ResourceFactory $resourceFactory,
+        protected EventDispatcher $eventDispatcher,
     ) {}
 
     public function resolve(BackendUserAuthentication $user, ?int $pid = null, ?string $table = null, ?string $field = null): Folder | bool

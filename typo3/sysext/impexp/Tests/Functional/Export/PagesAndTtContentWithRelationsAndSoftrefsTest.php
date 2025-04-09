@@ -18,6 +18,12 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Impexp\Tests\Functional\Export;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Tests\Functional\AbstractImportExportTestCase;
 
@@ -89,7 +95,13 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
     </ROOT>
 </T3DataStructure>';
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
+            $this->get(ConnectionPool::class),
+            $this->get(Locales::class),
+            $this->get(Typo3Version::class),
+            $this->get(ReferenceIndex::class),
+        ]);
+        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['tt_content']);
@@ -132,7 +144,14 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
     </ROOT>
 </T3DataStructure>';
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
+            $this->get(ConnectionPool::class),
+            $this->get(Locales::class),
+            $this->get(Typo3Version::class),
+            $this->get(ReferenceIndex::class),
+        ]);
+        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject->injectResourceFactory($this->get(ResourceFactory::class));
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);
@@ -185,7 +204,14 @@ final class PagesAndTtContentWithRelationsAndSoftrefsTest extends AbstractImport
     </sheets>
 </T3DataStructure>';
 
-        $subject = $this->getAccessibleMock(Export::class, ['setMetaData']);
+        $subject = $this->getAccessibleMock(Export::class, ['setMetaData'], [
+            $this->get(ConnectionPool::class),
+            $this->get(Locales::class),
+            $this->get(Typo3Version::class),
+            $this->get(ReferenceIndex::class),
+        ]);
+        $subject->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $subject->injectResourceFactory($this->get(ResourceFactory::class));
         $subject->setPid(1);
         $subject->setLevels(1);
         $subject->setTables(['_ALL']);

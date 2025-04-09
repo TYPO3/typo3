@@ -16,10 +16,13 @@
 namespace TYPO3\CMS\Impexp\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Test;
-use PHPUnit\Framework\MockObject\MockObject;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\ReferenceIndex;
+use TYPO3\CMS\Core\Information\Typo3Version;
+use TYPO3\CMS\Core\Localization\Locales;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Impexp\Export;
 use TYPO3\CMS\Impexp\Import;
-use TYPO3\TestingFramework\Core\AccessibleObjectInterface;
 
 final class ImportExportTest extends AbstractImportExportTestCase
 {
@@ -32,14 +35,6 @@ final class ImportExportTest extends AbstractImportExportTestCase
         'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_irre_mnattributesimple',
     ];
 
-    protected Export&MockObject&AccessibleObjectInterface $exportMock;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->exportMock = $this->getAccessibleMock(Export::class, ['setMetaData']);
-    }
-
     #[Test]
     public function importExportPingPongSucceeds(): void
     {
@@ -51,13 +46,20 @@ final class ImportExportTest extends AbstractImportExportTestCase
         $import->setForceAllUids(true);
         $import->importData();
 
-        $this->exportMock->setPid(1);
-        $this->exportMock->setLevels(Export::LEVELS_INFINITE);
-        $this->exportMock->setTables(['_ALL']);
-        $this->exportMock->setRelOnlyTables(['_ALL']);
-        $this->exportMock->setRecordTypesIncludeFields($recordTypesIncludeFields);
-        $this->exportMock->process();
-        $actual = $this->exportMock->render();
+        $exportMock = $this->getAccessibleMock(Export::class, ['setMetaData'], [
+            $this->get(ConnectionPool::class),
+            $this->get(Locales::class),
+            $this->get(Typo3Version::class),
+            $this->get(ReferenceIndex::class),
+        ]);
+        $exportMock->injectTcaSchemaFactory($this->get(TcaSchemaFactory::class));
+        $exportMock->setPid(1);
+        $exportMock->setLevels(Export::LEVELS_INFINITE);
+        $exportMock->setTables(['_ALL']);
+        $exportMock->setRelOnlyTables(['_ALL']);
+        $exportMock->setRecordTypesIncludeFields($recordTypesIncludeFields);
+        $exportMock->process();
+        $actual = $exportMock->render();
 
         // @todo Use self::assertXmlStringEqualsXmlFile() instead when sqlite issue is sorted out
         $this->assertXmlStringEqualsXmlFileWithIgnoredSqliteTypeInteger(
