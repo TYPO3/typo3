@@ -1566,6 +1566,7 @@ class EditDocumentController
                 )
             )
             && $this->getTsConfigOption($this->firstEl['table'], 'showDuplicate')
+            && $this->isSingleRecordView()
         ) {
             $duplicateButton = $buttonBar->makeLinkButton()
                 ->setHref('#')
