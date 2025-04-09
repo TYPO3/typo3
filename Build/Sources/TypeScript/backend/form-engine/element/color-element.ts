@@ -16,6 +16,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import { selector } from '@typo3/core/literals';
 import '@typo3/backend/color-picker';
+import FormEngine from '@typo3/backend/form-engine';
 
 /**
  * Module: @typo3/backend/form-engine/element/color-element
@@ -64,7 +65,7 @@ class ColorElement extends HTMLElement {
 
   private handleEvent(e: Event): void {
     FormEngineValidation.validateField(e.target as HTMLInputElement);
-    FormEngineValidation.markFieldAsChanged(e.target as HTMLInputElement);
+    FormEngine.markFieldAsChanged(e.target as HTMLInputElement);
 
     document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
       btn.classList.remove('disabled');

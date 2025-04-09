@@ -14,6 +14,7 @@
 import DocumentService from '@typo3/core/document-service';
 import FormEngineValidation from '@typo3/backend/form-engine-validation';
 import RegularEvent from '@typo3/core/event/regular-event';
+import FormEngine from '@typo3/backend/form-engine';
 
 /**
  * Module: @typo3/backend/form-engine/element/datetime-element
@@ -48,7 +49,7 @@ class DatetimeElement extends HTMLElement {
   private registerEventHandler(): void {
     new RegularEvent('formengine.dp.change', (e: CustomEvent): void => {
       FormEngineValidation.validateField(e.target as HTMLInputElement);
-      FormEngineValidation.markFieldAsChanged(e.target as HTMLInputElement);
+      FormEngine.markFieldAsChanged(e.target as HTMLInputElement);
 
       document.querySelectorAll('.module-docheader-bar .btn').forEach((btn: HTMLButtonElement): void => {
         btn.classList.remove('disabled');

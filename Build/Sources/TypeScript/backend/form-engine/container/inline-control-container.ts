@@ -431,7 +431,7 @@ class InlineControlContainer {
       if (hiddenValueCheckBox !== null && hiddenValueInput !== null) {
         hiddenValueCheckBox.checked = !hiddenValueCheckBox.checked;
         hiddenValueInput.value = hiddenValueCheckBox.checked ? '1' : '0';
-        FormEngineValidation.markFieldAsChanged(hiddenValueCheckBox);
+        FormEngine.markFieldAsChanged(hiddenValueCheckBox);
       }
 
       const hiddenClass = 't3-form-field-container-inline-hidden';
@@ -665,7 +665,7 @@ class InlineControlContainer {
     }
 
     (<HTMLInputElement>formField).value = records.join(',');
-    FormEngineValidation.markFieldAsChanged(formField);
+    FormEngine.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('change'));
 
     this.redrawSortingButtons(this.container.dataset.objectGroup, records);
@@ -696,7 +696,7 @@ class InlineControlContainer {
       records.splice(indexOfRemoveUid, 1);
 
       (<HTMLInputElement>formField).value = records.join(',');
-      FormEngineValidation.markFieldAsChanged(formField);
+      FormEngine.markFieldAsChanged(formField);
       document.dispatchEvent(new Event('change'));
 
       this.redrawSortingButtons(this.container.dataset.objectGroup, records);
@@ -750,7 +750,7 @@ class InlineControlContainer {
       .map((child: HTMLElement) => child.dataset.objectUid);
 
     (<HTMLInputElement>formField).value = records.join(',');
-    FormEngineValidation.markFieldAsChanged(formField);
+    FormEngine.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('inline:sorting-changed'));
     document.dispatchEvent(new Event('change'));
 

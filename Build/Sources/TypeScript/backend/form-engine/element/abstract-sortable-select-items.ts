@@ -138,7 +138,7 @@ export abstract class AbstractSortableSelectItems {
       }
 
       FormEngine.updateHiddenFieldValueFromSelect(fieldElement, relatedField);
-      FormEngineValidation.markFieldAsChanged(relatedAvailableValuesField);
+      FormEngine.markFieldAsChanged(relatedAvailableValuesField);
       FormEngineValidation.validateField(relatedAvailableValuesField);
     });
   }
@@ -177,7 +177,7 @@ export abstract class AbstractSortableSelectItems {
       }
       if (e.defaultPrevented) {
         FormEngine.updateHiddenFieldValueFromSelect(fieldElement, relatedField);
-        FormEngineValidation.markFieldAsChanged(relatedAvailableValuesField);
+        FormEngine.markFieldAsChanged(relatedAvailableValuesField);
         FormEngineValidation.validateField(relatedAvailableValuesField);
       }
     }).bindTo(fieldElement);

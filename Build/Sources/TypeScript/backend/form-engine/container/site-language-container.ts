@@ -407,7 +407,7 @@ class SiteLanguageContainer extends HTMLElement {
     }
 
     (<HTMLInputElement>formField).value = records.join(',');
-    FormEngineValidation.markFieldAsChanged(formField);
+    FormEngine.markFieldAsChanged(formField);
     document.dispatchEvent(new Event('change'));
 
     this.setUnique(newUid, selectedValue);
@@ -429,7 +429,7 @@ class SiteLanguageContainer extends HTMLElement {
       records.splice(indexOfRemoveUid, 1);
 
       (<HTMLInputElement>formField).value = records.join(',');
-      FormEngineValidation.markFieldAsChanged(formField);
+      FormEngine.markFieldAsChanged(formField);
       document.dispatchEvent(new Event('change'));
     }
 

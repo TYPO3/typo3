@@ -27,8 +27,8 @@ import { selector } from '@typo3/core/literals';
 import SubmitInterceptor from '@typo3/backend/form/submit-interceptor';
 import { FormEngineReview } from '@typo3/backend/form-engine-review';
 import type FormEngine from '@typo3/backend/form-engine';
+import type { FormEngineFieldElement } from '@typo3/backend/form-engine';
 
-type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
 type CustomEvaluationCallback = (value: string) => string;
 type FormEngineInputParams = { field: string, evalList?: string, is_in?: string };
 
@@ -72,7 +72,7 @@ export default class FormEngineValidation {
     // Bind to field changes
     new RegularEvent('change', (e: Event, target: FormEngineFieldElement): void => {
       FormEngineValidation.validateField(target);
-      FormEngineValidation.markFieldAsChanged(target);
+      formEngineInstance.markFieldAsChanged(target);
     }).delegateTo(formEngineInstance.formElement, FormEngineValidation.rulesSelector);
 
     FormEngineValidation.registerSubmitCallback();
@@ -511,13 +511,13 @@ export default class FormEngineValidation {
 
   /**
    * Helper function to mark a field as changed.
+   *
+   * @deprecated
    */
   public static markFieldAsChanged(field: FormEngineFieldElement): void {
-    field.classList.add('has-change');
-    const fieldLabel = field.closest('.t3js-formengine-palette-field')?.querySelector('.t3js-formengine-label');
-    if (fieldLabel !== null) {
-      fieldLabel.classList.add('has-change');
-    }
+    console.warn('Calling markFieldAsChanged() from \'@typo3/backend/form-engine-validation\' is deprecated and will be removed in TYPO3 v15. Instead, call the method from \'@typo3/backend/form-engine\'.');
+
+    formEngineInstance.markFieldAsChanged(field);
   }
 
   /**

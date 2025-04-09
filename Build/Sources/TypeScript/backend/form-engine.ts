@@ -59,6 +59,7 @@ type PreviewActionCallback = (targetName: string, previewUrl: string, $actionEle
 type NewActionCallback = (targetName: string, $actionElement: JQuery) => void;
 type DuplicateActionCallback = (targetName: string, $actionElement: JQuery) => void;
 type DeleteActionCallback = (targetName: string, $actionElement: JQuery) => void;
+export type FormEngineFieldElement = HTMLInputElement|HTMLTextAreaElement|HTMLSelectElement;
 
 /**
  * Module: @typo3/backend/form-engine
@@ -81,7 +82,7 @@ export default (function() {
     const humanReadableField = document.querySelector(selector`[data-formengine-input-name="${data.elementName}"]`);
     FormEngine.Validation.updateInputField(data.elementName);
     if (valueField !== null) {
-      FormEngine.Validation.markFieldAsChanged(valueField as HTMLInputElement);
+      FormEngine.markFieldAsChanged(valueField as HTMLInputElement);
       FormEngine.Validation.validateField(valueField as HTMLInputElement);
     }
     if (humanReadableField !== null && humanReadableField !== valueField) {
@@ -314,7 +315,7 @@ export default (function() {
         // set the hidden field
         FormEngine.updateHiddenFieldValueFromSelect(fieldEl, originalFieldEl);
 
-        FormEngine.Validation.markFieldAsChanged(originalFieldEl);
+        FormEngine.markFieldAsChanged(originalFieldEl);
         FormEngine.Validation.validateField(fieldEl);
         FormEngine.Validation.validateField(availableFieldEl);
       }
@@ -431,7 +432,7 @@ export default (function() {
 
     new RegularEvent('change', (event: Event, target: HTMLInputElement): void => {
       FormEngine.toggleCheckboxField(target);
-      FormEngine.Validation.markFieldAsChanged(target);
+      FormEngine.markFieldAsChanged(target);
     }).delegateTo(document, '.t3js-form-field-eval-null-placeholder-checkbox input[type="checkbox"]');
 
     new RegularEvent('click', (e: Event, target: HTMLElement): void => {
@@ -731,6 +732,17 @@ export default (function() {
   FormEngine.isNew = function(): boolean {
     return (document.querySelector('form[name="' + FormEngine.formName + '"] .typo3-TCEforms.is-new') !== null);
   };
+
+  /**
+   * Helper function to mark a field as changed.
+   */
+  FormEngine.markFieldAsChanged = function (field: FormEngineFieldElement): void {
+    field.classList.add('has-change');
+    const fieldLabel = field.closest('.t3js-formengine-palette-field')?.querySelector('.t3js-formengine-label');
+    if (fieldLabel !== null) {
+      fieldLabel.classList.add('has-change');
+    }
+  }
 
   /**
    * @param {boolean} response
