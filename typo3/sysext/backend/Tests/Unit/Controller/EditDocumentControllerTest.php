@@ -284,7 +284,7 @@ final class EditDocumentControllerTest extends UnitTestCase
     private function getTcaSchemaFactory(): TcaSchemaFactory
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $tcaSchemaFactory = new TcaSchemaFactory(
             new RelationMapBuilder(),
             new FieldTypeFactory(),

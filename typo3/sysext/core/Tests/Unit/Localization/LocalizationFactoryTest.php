@@ -60,8 +60,8 @@ final class LocalizationFactoryTest extends UnitTestCase
         $packageManagerMock->method('extractPackageKeyFromPackagePath')->with('EXT:core/Tests/Unit/Localization/Fixtures/locallang.xlf')->willReturn('core');
 
         $cacheFrontendMock = $this->createMock(FrontendInterface::class);
-        $cacheFrontendMock->expects(self::atLeastOnce())->method('get')->with(self::isType('string'))->willReturn(false);
-        $cacheFrontendMock->expects(self::atLeastOnce())->method('set')->with(self::isType('string'), [
+        $cacheFrontendMock->expects(self::atLeastOnce())->method('get')->with(self::isString())->willReturn(false);
+        $cacheFrontendMock->expects(self::atLeastOnce())->method('set')->with(self::isString(), [
             'label1' => [['source' => 'This is label #1', 'target' => 'This is label #1']],
         ])->willReturn(null);
 

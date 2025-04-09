@@ -123,7 +123,7 @@ final class RequestHandlerTest extends AbstractTestCase
         $nonceValueSubstitutionMock = $this->createMock(NonceValueSubstitution::class);
         $nonceValueSubstitutionMock->expects(self::once())
             ->method('substituteNonce')
-            ->with(self::isType('array'))
+            ->with(self::isArray())
             ->willReturnCallback(static fn(array $context) => $context['content'] ?? null);
         GeneralUtility::addInstance(NonceValueSubstitution::class, $nonceValueSubstitutionMock);
         $this->executeFrontendSubRequest(new InternalRequest('https://website.local/welcome'));
