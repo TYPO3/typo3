@@ -906,6 +906,7 @@ class FormPersistenceManager implements FormPersistenceManagerInterface
                     }
                 }
             }
+            return 0;
         });
 
         return ($ascending) ? $forms : array_reverse($forms);
