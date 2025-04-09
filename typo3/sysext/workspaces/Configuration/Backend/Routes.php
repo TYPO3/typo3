@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Definitions for routes provided by EXT:workspaces
  */

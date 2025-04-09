@@ -1,4 +1,5 @@
 <?php
+
 /**
  * An array consisting of implementations of middlewares for a middleware stack to be registered
  *  'stackname' => [

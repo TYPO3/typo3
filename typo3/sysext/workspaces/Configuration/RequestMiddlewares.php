@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Definitions for middlewares provided by EXT:workspaces
  */
