@@ -492,6 +492,7 @@ class PageTreeToolbar extends TreeToolbar {
           return html`
                 <div
                   class="tree-toolbar__menuitem tree-toolbar__drag-node"
+                  title="${item.title}"
                   draggable="true"
                   data-tree-icon="${item.icon}"
                   data-node-type="${item.nodeType}"
