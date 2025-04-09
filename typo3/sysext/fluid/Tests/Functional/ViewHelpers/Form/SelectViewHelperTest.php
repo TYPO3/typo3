@@ -684,6 +684,40 @@ EOT;
     }
 
     #[Test]
+    public function selectCreatesExpectedOptionsWithOptionFieldsBeingNumbers(): void
+    {
+        $options = [
+            [
+                0 => 1,
+                1 => 'Foo',
+            ],
+            [
+                0 => -1,
+                1 => 'Bar',
+            ],
+            [
+                1 => 'Baz',
+            ],
+            [
+                0 => '2',
+            ],
+        ];
+        $serverRequest = (new ServerRequest())->withAttribute('extbase', new ExtbaseRequestParameters());
+        $context = $this->get(RenderingContextFactory::class)->create([], new Request($serverRequest));
+        $context->getTemplatePaths()->setTemplateSource('<f:form.select name="myName" optionsAfterContent="0" optionValueField="0" optionLabelField="1" sortByOptionLabel="true" options="{options}" />');
+        $view = new TemplateView($context);
+        $view->assign('options', $options);
+        $expected = <<< EOT
+<select name="myName"><option value="2"></option>
+<option value="-1">Bar</option>
+<option value="">Baz</option>
+<option value="1">Foo</option>
+</select>
+EOT;
+        self::assertSame($expected, $view->render());
+    }
+
+    #[Test]
     public function selectCreatesExpectedOptionsWithPrependedValuesInTagContent(): void
     {
         $options = [
