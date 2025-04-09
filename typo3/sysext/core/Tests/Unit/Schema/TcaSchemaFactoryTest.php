@@ -187,7 +187,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function findRelevantFieldsForSubSchemaFindsRelevantFields(array $tableTca, ?string $subSchemaName, array $expected): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
@@ -232,7 +232,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         ];
         $this->expectExceptionCode(1661617062);
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
@@ -382,7 +382,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function getFinalFieldConfigurationProcessesColumnOverrides(string $fieldName, array $schemaConfiguration, array $subSchemaConfiguration, ?string $fieldLabel, array $expected): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $subject = $this->getAccessibleMock(
             TcaSchemaFactory::class,
             ['load'],
@@ -400,7 +400,7 @@ final class TcaSchemaFactoryTest extends UnitTestCase
     public function recordTypesInfoIsMergedWithMainSchemaInformation(): void
     {
         $cacheMock = $this->createMock(PhpFrontend::class);
-        $cacheMock->method('has')->with(self::isType('string'))->willReturn(false);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
         $subject = new TcaSchemaFactory(
             new RelationMapBuilder($this->createMock(FlexFormTools::class)),
             new FieldTypeFactory(),
