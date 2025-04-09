@@ -153,6 +153,7 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
             }
 
             // Look up tt_content elements from the expanded page
+            // @todo: this should be grouped by colPos and use the layout from the page module
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
                 ->getQueryBuilderForTable('tt_content');
 
@@ -182,14 +183,24 @@ class PageLinkHandler extends AbstractLinkHandler implements LinkHandlerInterfac
                 ->fetchAllAssociative();
 
             // Enrich list of records
-            foreach ($contentElements as &$contentElement) {
-                BackendUtility::workspaceOL('tt_content', $contentElement);
-                $contentElement['url'] = $linkService->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => $pageId, 'fragment' => $contentElement['uid']]);
-                $contentElement['isSelected'] = (int)($this->linkParts['url']['fragment'] ?? 0) === (int)$contentElement['uid'];
-                $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, IconSize::SMALL)->render();
-                $contentElement['title'] = BackendUtility::getRecordTitle('tt_content', $contentElement, true);
+            $items = [];
+            foreach ($contentElements as $contentElement) {
+                BackendUtility::workspaceOL('tt_content', $contentElement, $this->getBackendUser()->workspace, true);
+                if (is_array($contentElement)) {
+                    // Ensure to always link to the live version of the record
+                    if ((int)$contentElement['t3ver_oid'] > 0) {
+                        $contentElementId = (int)$contentElement['t3ver_oid'];
+                    } else {
+                        $contentElementId = (int)$contentElement['uid'];
+                    }
+                    $contentElement['url'] = $linkService->asString(['type' => LinkService::TYPE_PAGE, 'pageuid' => $pageId, 'fragment' => $contentElementId]);
+                    $contentElement['isSelected'] = (int)($this->linkParts['url']['fragment'] ?? 0) === $contentElementId;
+                    $contentElement['icon'] = $this->iconFactory->getIconForRecord('tt_content', $contentElement, IconSize::SMALL)->render();
+                    $contentElement['title'] = BackendUtility::getRecordTitle('tt_content', $contentElement, true);
+                    $items[] = $contentElement;
+                }
             }
-            $this->view->assign('contentElements', $contentElements);
+            $this->view->assign('contentElements', $items);
         }
     }
 
