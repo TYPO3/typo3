@@ -215,7 +215,6 @@ class ExportController
         $export->setSoftrefCfg((array)($inputData['softrefCfg'] ?? []));
         $export->setExtensionDependencies((($inputData['extension_dep'] ?? '') === '') ? [] : (array)$inputData['extension_dep']);
         $export->setShowStaticRelations((bool)($inputData['showStaticRelations'] ?? false));
-        $export->setIncludeExtFileResources(!($inputData['excludeHTMLfileResources'] ?? false));
         $export->setExcludeDisabledRecords((bool)($inputData['excludeDisabled'] ?? false));
         if (!empty($inputData['filetype'])) {
             $export->setExportFileType((string)$inputData['filetype']);

@@ -78,11 +78,6 @@ class Export extends ImportExport
     protected string $treeHTML = '';
 
     /**
-     * If set, HTML file resources are included.
-     */
-    protected bool $includeExtFileResources = true;
-
-    /**
      * The key is the record type (e.g. 'be_users'),
      * the value is an array of fields to be included in the export.
      *
@@ -1362,11 +1357,6 @@ class Export extends ImportExport
     public function getTreeHTML(): string
     {
         return $this->treeHTML;
-    }
-
-    public function setIncludeExtFileResources(bool $includeExtFileResources): void
-    {
-        $this->includeExtFileResources = $includeExtFileResources;
     }
 
     /**

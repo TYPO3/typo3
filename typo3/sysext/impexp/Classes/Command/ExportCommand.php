@@ -123,12 +123,6 @@ class ExportCommand extends Command
                 'Exclude records which are handled as disabled by their TCA configuration, e.g. by fields "disabled", "starttime" or "endtime".'
             )
             ->addOption(
-                'exclude-html-css',
-                null,
-                InputOption::VALUE_NONE,
-                'Exclude referenced HTML and CSS files.'
-            )
-            ->addOption(
                 'title',
                 null,
                 InputOption::VALUE_OPTIONAL,
@@ -183,7 +177,6 @@ class ExportCommand extends Command
             $this->export->setRelStaticTables($input->getOption('include-static'));
             $this->export->setExcludeMap($input->getOption('exclude'));
             $this->export->setExcludeDisabledRecords($input->getOption('exclude-disabled-records'));
-            $this->export->setIncludeExtFileResources(!$input->getOption('exclude-html-css'));
             $this->export->setTitle((string)$input->getOption('title'));
             $this->export->setDescription((string)$input->getOption('description'));
             $this->export->setNotes((string)$input->getOption('notes'));

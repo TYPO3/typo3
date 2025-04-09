@@ -83,7 +83,6 @@ final class ExportCommandTest extends AbstractImportExportTestCase
             '--include-static' => ['sys_category'],
             '--exclude' => ['be_users:3'],
             '--exclude-disabled-records' => false,
-            '--exclude-html-css' => false,
             '--title' => 'Export Command',
             '--description' => 'The export which considers all arguments passed on the command line.',
             '--notes' => 'This export is not for production use.',
@@ -96,8 +95,7 @@ final class ExportCommandTest extends AbstractImportExportTestCase
             [
                 'setExportFileType', 'setExportFileName', 'setPid', 'setLevels', 'setTables', 'setRecord', 'setList',
                 'setRelOnlyTables', 'setRelStaticTables', 'setExcludeMap', 'setExcludeDisabledRecords',
-                'setIncludeExtFileResources', 'setTitle', 'setDescription', 'setNotes', 'setExtensionDependencies',
-                'setSaveFilesOutsideExportFile',
+                'setTitle', 'setDescription', 'setNotes', 'setExtensionDependencies', 'setSaveFilesOutsideExportFile',
             ],
             [
                 $this->get(ConnectionPool::class),
@@ -118,7 +116,6 @@ final class ExportCommandTest extends AbstractImportExportTestCase
         $exportMock->expects(self::once())->method('setRelStaticTables')->with(self::equalTo(['sys_category']));
         $exportMock->expects(self::once())->method('setExcludeMap')->with(self::equalTo(['be_users:3']));
         $exportMock->expects(self::once())->method('setExcludeDisabledRecords')->with(self::equalTo(false));
-        $exportMock->expects(self::once())->method('setIncludeExtFileResources')->with(self::equalTo(true));
         $exportMock->expects(self::once())->method('setTitle')->with(self::equalTo('Export Command'));
         $exportMock->expects(self::once())->method('setDescription')->with(self::equalTo('The export which considers all arguments passed on the command line.'));
         $exportMock->expects(self::once())->method('setNotes')->with(self::equalTo('This export is not for production use.'));

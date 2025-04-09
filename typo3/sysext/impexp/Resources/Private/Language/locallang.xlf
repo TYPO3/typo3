@@ -111,12 +111,6 @@
 			<trans-unit id="makeadvanc_update">
 				<source>Update</source>
 			</trans-unit>
-			<trans-unit id="makeadvanc_softReferences">
-				<source>Soft References</source>
-			</trans-unit>
-			<trans-unit id="makeadvanc_excludeHtmlCssFile">
-				<source>Exclude HTML/CSS file resources</source>
-			</trans-unit>
 			<trans-unit id="makeadvanc_files">
 				<source>Files</source>
 			</trans-unit>
