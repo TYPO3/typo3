@@ -111,10 +111,13 @@ class FileListRenameHandler {
   }
 
   private composeEditForm(resource: ResourceInterface): TemplateResult {
+    const label = resource?.type === 'folder' ?
+      TYPO3.lang['folder_rename.label'] ?? 'New folder name' :
+      TYPO3.lang['file_rename.label'] ?? 'New filename'
     return html`
       <form>
         <label class="form-label" for="rename_target">
-          ${TYPO3.lang['file_rename.label'] ?? 'New filename'}
+          ${label}
         </label>
         <input id="rename_target" name="name" class="form-control" value="${resource.name}" required>
       </form>
