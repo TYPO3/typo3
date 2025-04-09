@@ -19,7 +19,7 @@
 		"sort-packages": true
 	},
 	"require": {
-		"symfony/uid": "^7.1.4",
+		"symfony/uid": "^7.2",
 		"typo3/cms-core": "14.0.*@dev"
 	},
 	"suggest": {
