@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Field\CategoryFieldType;
 use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -218,9 +219,8 @@ readonly class TcaItemsProcessorFunctions
             throw new \UnexpectedValueException('No table to search for category fields given.', 1627565458);
         }
 
-        $columns = $GLOBALS['TCA'][$table]['columns'] ?? false;
-        if (!is_array($columns) || $columns === []) {
-            throw new \RuntimeException('Given table ' . $table . ' does not define any columns to search for category fields.', 1627565459);
+        if (!$this->tcaSchemaFactory->has($table)) {
+            throw new \RuntimeException('Given table ' . $table . ' does not define any valid schema to search for category fields.', 1627565459);
         }
 
         // Only category fields with the "manyToMany" relationship are allowed by default.
@@ -230,15 +230,21 @@ readonly class TcaItemsProcessorFunctions
             $allowedRelationships = ['manyToMany'];
         }
 
+        $schema = $this->tcaSchemaFactory->get($table);
+
         // Loop on all table columns to find category fields
-        foreach ($columns as $fieldName => $fieldConfig) {
-            if (($fieldConfig['config']['type'] ?? '') !== 'category'
-                || !in_array($fieldConfig['config']['relationship'] ?? '', $allowedRelationships, true)
-            ) {
+        foreach ($schema->getFields() as $fieldName => $fieldConfig) {
+            /** @var CategoryFieldType $fieldConfig */
+            if (!$fieldConfig->isType(TableColumnType::CATEGORY)) {
                 continue;
             }
-            $fieldLabel = $this->getLanguageService()->sL($GLOBALS['TCA'][$table]['columns'][$fieldName]['label']);
-            $fieldDefinition['items'][] = ['label' => $fieldLabel, 'value' => $fieldName];
+            if (!in_array($fieldConfig->getConfiguration()['relationship'] ?? '', $allowedRelationships, true)) {
+                continue;
+            }
+            $fieldDefinition['items'][] = [
+                'label' => $this->getLanguageService()->sL($fieldConfig->getLabel()),
+                'value' => $fieldName,
+            ];
         }
     }
 

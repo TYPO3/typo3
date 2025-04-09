@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\FileReference;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FileReferenceTest extends FunctionalTestCase
@@ -54,6 +55,8 @@ final class FileReferenceTest extends FunctionalTestCase
     public function fileReferenceCanBeDeleted(): void
     {
         unset($GLOBALS['TCA']['sys_file_reference']['ctrl']['delete']);
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+
         $fileReference = new FileReference(['uid' => 1, 'uid_local' => 1, 'tablenames' => 'tt_content', 'uid_foreign' => 1]);
         self::assertTrue($fileReference->delete());
 

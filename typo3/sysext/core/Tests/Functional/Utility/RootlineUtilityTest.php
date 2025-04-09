@@ -235,9 +235,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertFalse($subjectMethodReflection->invoke(
             $subject,
             [
-                'config' => [
-                    'type' => 'group',
-                ],
+                'type' => 'group',
             ]
         ));
     }
@@ -250,10 +248,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertTrue($subjectMethodReflection->invoke(
             $subject,
             [
-                'config' => [
-                    'type' => 'group',
-                    'MM' => 'tx_xyz',
-                ],
+                'type' => 'group',
+                'MM' => 'tx_xyz',
             ]
         ));
     }
@@ -266,9 +262,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertFalse($subjectMethodReflection->invoke(
             $subject,
             [
-                'config' => [
-                    'type' => 'inline',
-                ],
+                'type' => 'inline',
             ]
         ));
     }
@@ -281,10 +275,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertTrue($subjectMethodReflection->invoke(
             $subject,
             [
-                'config' => [
-                    'type' => 'inline',
-                    'foreign_field' => 'xyz',
-                ],
+                'type' => 'inline',
+                'foreign_field' => 'xyz',
             ]
         ));
     }
@@ -297,10 +289,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertTrue($subjectMethodReflection->invoke(
             $subject,
             [
-                'config' => [
-                    'type' => 'inline',
-                    'MM' => 'xyz',
-                ],
+                'type' => 'inline',
+                'MM' => 'xyz',
             ]
         ));
     }
@@ -313,9 +303,7 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertFalse($subjectMethodReflection->invoke(
             $subject,
             [
-                'config' => [
-                    'type' => 'select',
-                ],
+                'type' => 'select',
             ]
         ));
     }
@@ -328,10 +316,8 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertTrue($subjectMethodReflection->invoke(
             $subject,
             [
-                'config' => [
-                    'type' => 'select',
-                    'MM' => 'xyz',
-                ],
+                'type' => 'select',
+                'MM' => 'xyz',
             ]
         ));
     }
@@ -353,24 +339,6 @@ final class RootlineUtilityTest extends FunctionalTestCase
         $subjectMethodReflection = (new \ReflectionMethod($subject, 'getCacheIdentifier'));
         self::assertSame('42_47-11_8_0_0_1', $subjectMethodReflection->invoke($subject));
         self::assertTrue($cacheFrontend->isValidEntryIdentifier($subjectMethodReflection->invoke($subject)));
-    }
-
-    #[Test]
-    public function getWithMissingPagesColumnsTcaThrowsException(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionCode(1712572738);
-        unset($GLOBALS['TCA']['pages']['columns']);
-        (new RootlineUtility(1))->get();
-    }
-
-    #[Test]
-    public function getWithPagesColumnsTcaNonArrayThrowsException(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionCode(1712572738);
-        $GLOBALS['TCA']['pages']['columns'] = 'This is not an array.';
-        (new RootlineUtility(1))->get();
     }
 
     #[Test]

@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\NullSite;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -35,7 +36,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class ItemProcessingService
 {
     public function __construct(
-        protected readonly SiteFinder $siteFinder
+        protected readonly SiteFinder $siteFinder,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly FlashMessageService $flashMessageService,
     ) {}
 
     /**
@@ -78,13 +81,18 @@ class ItemProcessingService
                 $params['items']
             );
         } catch (\Exception $exception) {
-            $languageService = $this->getLanguageService();
-            $fieldLabel = $field;
-            if (isset($GLOBALS['TCA'][$table]['columns'][$field]['label'])) {
-                $fieldLabel = $languageService->sL($GLOBALS['TCA'][$table]['columns'][$field]['label']);
+            $fieldLabel = '';
+            if ($this->tcaSchemaFactory->has($table)) {
+                $schema = $this->tcaSchemaFactory->get($table);
+                if ($schema->hasField($field)) {
+                    $fieldLabel = $this->getLanguageService()->sL($schema->getField($field)->getLabel());
+                }
+            }
+            if (!$fieldLabel) {
+                $fieldLabel = $field;
             }
             $message = sprintf(
-                $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.items_proc_func_error'),
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:error.items_proc_func_error'),
                 $fieldLabel,
                 $exception->getMessage()
             );
@@ -95,8 +103,7 @@ class ItemProcessingService
                 ContextualFeedbackSeverity::ERROR,
                 true
             );
-            $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
-            $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
+            $defaultFlashMessageQueue = $this->flashMessageService->getMessageQueueByIdentifier();
             $defaultFlashMessageQueue->enqueue($flashMessage);
         }
 

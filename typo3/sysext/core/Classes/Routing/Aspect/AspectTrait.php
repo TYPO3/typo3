@@ -17,16 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Routing\Aspect;
 
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 trait AspectTrait
 {
     protected function isSlugUniqueInSite(string $tableName, string $fieldName): bool
     {
-        $configuration = $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] ?? null;
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($tableName);
+        if (!$schema->hasField($fieldName)) {
+            return false;
+        }
+        $fieldType = $schema->getField($fieldName);
         return
-            ($configuration['type'] ?? null) === 'slug'
-            && GeneralUtility::inList($configuration['eval'] ?? '', 'uniqueInSite');
+            $fieldType->isType(TableColumnType::SLUG)
+            && GeneralUtility::inList($fieldType->getConfiguration()['eval'] ?? '', 'uniqueInSite');
     }
 
     protected function hasSlugUniqueInSite(string $tableName, string ...$fieldNames): bool

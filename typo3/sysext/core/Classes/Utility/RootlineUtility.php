@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Exception\Page\CircularRootLineException;
 use TYPO3\CMS\Core\Exception\Page\MountPointsDisabledException;
 use TYPO3\CMS\Core\Exception\Page\PageNotFoundException;
 use TYPO3\CMS\Core\Exception\Page\PagePropertyRelationNotFoundException;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -177,25 +178,20 @@ class RootlineUtility
      */
     protected function enrichWithRelationFields(int $uid, array $pageRecord): array
     {
-        if (!is_array($GLOBALS['TCA']['pages']['columns'] ?? false)) {
-            throw new \LogicException(
-                'Main ext:core configuration $GLOBALS[\'TCA\'][\'pages\'][\'columns\'] not found.',
-                1712572738
-            );
-        }
-
         $resultFieldUidArray = [];
         $localRelationColumns = [];
         $foreignRelationColumns = [];
         $foreignRelationColumnTableFieldMapping = [];
-        foreach ($GLOBALS['TCA']['pages']['columns'] as $column => $configuration) {
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages');
+        foreach ($schema->getFields() as $column => $fieldType) {
+            $configuration = $fieldType->getConfiguration();
             if ($this->columnHasRelationToResolve($configuration)) {
                 $resultFieldUidArray[$column] = [];
-                if (!empty($configuration['config']['MM']) && !empty($configuration['config']['MM_opposite_field']) && !empty($configuration['config']['foreign_table'])) {
+                if (!empty($configuration['MM']) && !empty($configuration['MM_opposite_field']) && !empty($configuration['foreign_table'])) {
                     $foreignRelationColumns[] = $column;
                     // This is a solution when multiple fields are on the foreign side in an MM relation to the same local side.
                     // For instance, when there are two category fields in pages.
-                    $foreignRelationColumnTableFieldMapping[$configuration['config']['foreign_table']][$configuration['config']['MM_opposite_field']][$column] = 1;
+                    $foreignRelationColumnTableFieldMapping[$configuration['foreign_table']][$configuration['MM_opposite_field']][$column] = 1;
                 } else {
                     $localRelationColumns[] = $column;
                 }
@@ -398,7 +394,6 @@ class RootlineUtility
      */
     protected function columnHasRelationToResolve(array $configuration): bool
     {
-        $configuration = $configuration['config'] ?? [];
         if (!empty($configuration['MM']) && !empty($configuration['type']) && in_array($configuration['type'], ['select', 'inline', 'group'])) {
             return true;
         }

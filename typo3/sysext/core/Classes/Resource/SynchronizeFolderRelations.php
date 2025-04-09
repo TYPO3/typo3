@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Resource\Event\AfterFolderRenamedEvent;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -35,16 +36,13 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal
  */
-class SynchronizeFolderRelations
+readonly class SynchronizeFolderRelations
 {
-    protected ConnectionPool $connectionPool;
-    protected FlashMessageService $flashMessageService;
-
-    public function __construct(ConnectionPool $connectionPool, FlashMessageService $flashMessageService)
-    {
-        $this->connectionPool = $connectionPool;
-        $this->flashMessageService = $flashMessageService;
-    }
+    public function __construct(
+        protected ConnectionPool $connectionPool,
+        protected FlashMessageService $flashMessageService,
+        protected TcaSchemaFactory $tcaSchemaFactory
+    ) {}
 
     /**
      * Synchronize file collection relations after a folder was renamed
@@ -142,7 +140,7 @@ class SynchronizeFolderRelations
         $message = sprintf(
             $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeFolderRelations.' . $event),
             $updatedRelationsCount,
-            $languageService->sL($GLOBALS['TCA'][$table]['ctrl']['title']),
+            $languageService->sL($this->tcaSchemaFactory->get($table)->getRawConfiguration()['title'] ?? ''),
         );
 
         $this->flashMessageService

@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Charset\CharsetConverter;
 use TYPO3\CMS\Core\Charset\CharsetProvider;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Slug\SlugNormalizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -183,7 +184,6 @@ final class SlugHelperTest extends UnitTestCase
     public function generateNeverDeliversEmptySlug(string $input, string $expected): void
     {
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
-        $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
             'dummyTable',
             'dummyField',
@@ -373,7 +373,6 @@ final class SlugHelperTest extends UnitTestCase
     public function generateNeverDeliversEmptySlugForPages(string $input, string $expected): void
     {
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
-        $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
             'pages',
             'slug',
@@ -559,7 +558,9 @@ final class SlugHelperTest extends UnitTestCase
     public function generatePrependsSlugsForPages(string $input, string $expected, array $options): void
     {
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
-        $GLOBALS['dummyTable']['ctrl'] = [];
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        GeneralUtility::addInstance(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+
         $parentPage = [
             'uid' => '13',
             'pid' => '10',
@@ -699,7 +700,6 @@ final class SlugHelperTest extends UnitTestCase
     public function generateSlugWithNavTitleAndFallbackForPages(array $input, string $expected, array $options): void
     {
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
-        $GLOBALS['dummyTable']['ctrl'] = [];
         $subject = new SlugHelper(
             'pages',
             'slug',
@@ -772,9 +772,6 @@ final class SlugHelperTest extends UnitTestCase
     public function generateSlugWithPid0(array $input, string $expected)
     {
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
-        if (empty($GLOBALS[$input['table']]['ctrl'])) {
-            $GLOBALS[$input['table']]['ctrl'] = [];
-        }
         $subject = new SlugHelper(
             $input['table'],
             'title',
@@ -807,7 +804,6 @@ final class SlugHelperTest extends UnitTestCase
     public function generatePrependsSlugsForNonPages(string $input, string $expected, array $options): void
     {
         GeneralUtility::addInstance(SlugNormalizer::class, new SlugNormalizer(new CharsetConverter(new CharsetProvider())));
-        $GLOBALS['dummyTable']['ctrl'] = [];
         $parentPage = [
             'uid' => '0',
             'pid' => null,

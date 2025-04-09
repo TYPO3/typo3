@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Routing\Enhancer\EnhancerInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\InflatableEnhancerInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\ResultingInterface;
 use TYPO3\CMS\Core\Routing\Enhancer\RoutingEnhancerInterface;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -632,10 +634,11 @@ class PageRouter implements RouterInterface
     protected function isRouteReallyValidForLanguage(Route $route, SiteLanguage $siteLanguage): bool
     {
         $page = $route->getOption('_page');
-        $languageIdField = $GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? '';
-        if ($languageIdField === '') {
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages');
+        if (!$schema->isLanguageAware()) {
             return true;
         }
+        $languageIdField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
         $languageId = (int)($page[$languageIdField] ?? 0);
         if ($siteLanguage->getLanguageId() === 0 || $siteLanguage->getLanguageId() === $languageId) {
             // default language site request or if page record is same language then siteLanguage, page record

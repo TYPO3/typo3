@@ -26,6 +26,8 @@ use TYPO3\CMS\Core\Resource\Search\QueryRestrictions\ConsistencyRestriction;
 use TYPO3\CMS\Core\Resource\Search\QueryRestrictions\FolderMountsRestriction;
 use TYPO3\CMS\Core\Resource\Search\QueryRestrictions\FolderRestriction;
 use TYPO3\CMS\Core\Resource\Search\QueryRestrictions\SearchTermRestriction;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
@@ -49,15 +51,16 @@ class FileSearchQuery
 
     private ?Result $result = null;
 
+    private TcaSchemaFactory $tcaSchemaFactory;
+
     public function __construct(?QueryBuilder $queryBuilder = null)
     {
         $this->queryBuilder = $queryBuilder ?? GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::FILES_TABLE);
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
      * Prepares a query based on a search demand to be used to fetch rows.
-     *
-     * @param QueryBuilder|null $queryBuilder
      */
     public static function createForSearchDemand(FileSearchDemand $searchDemand, ?QueryBuilder $queryBuilder = null): self
     {
@@ -89,8 +92,15 @@ class FileSearchQuery
         }
 
         if ($searchDemand->getOrderings() === null) {
-            $orderBy = ($GLOBALS['TCA'][self::FILES_TABLE]['ctrl']['sortby'] ?? '') ?: ($GLOBALS['TCA'][self::FILES_TABLE]['ctrl']['default_sortby'] ?? '');
-            foreach (QueryHelper::parseOrderBy((string)$orderBy) as [$fieldName, $order]) {
+            $schema = $query->tcaSchemaFactory->get(self::FILES_TABLE);
+            if ($schema->hasCapability(TcaSchemaCapability::SortByField)) {
+                $orderBy = $schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
+            } elseif ($schema->hasCapability(TcaSchemaCapability::DefaultSorting)) {
+                $orderBy = $schema->getCapability(TcaSchemaCapability::DefaultSorting)->getValue();
+            } else {
+                $orderBy = '';
+            }
+            foreach (QueryHelper::parseOrderBy($orderBy) as [$fieldName, $order]) {
                 if (is_string($fieldName) && $fieldName !== '') {
                     // Call add ordering only for valid field names
                     $searchDemand = $searchDemand->addOrdering(self::FILES_TABLE, $fieldName, $order ?? 'ASC');
@@ -98,7 +108,9 @@ class FileSearchQuery
             }
         }
         foreach ($searchDemand->getOrderings() as [$tableName, $fieldName, $direction]) {
-            if (!isset($GLOBALS['TCA'][$tableName]['columns'][$fieldName]) || !in_array($direction, ['ASC', 'DESC'], true)) {
+            if (!$query->tcaSchemaFactory->has($tableName)
+                || !$query->tcaSchemaFactory->get($tableName)->hasField($fieldName)
+                || !in_array($direction, ['ASC', 'DESC'], true)) {
                 // This exception is essential to avoid SQL injections based on ordering field names, which could be input controlled by an attacker.
                 throw new \RuntimeException(sprintf('Invalid file search ordering given table: "%s", field: "%s", direction: "%s".', $tableName, $fieldName, $direction), 1555850106);
             }
@@ -122,8 +134,6 @@ class FileSearchQuery
 
     /**
      * Prepares a query based on a search demand to be used to count rows.
-     *
-     * @param QueryBuilder|null $queryBuilder
      */
     public static function createCountForSearchDemand(FileSearchDemand $searchDemand, ?QueryBuilder $queryBuilder = null): self
     {

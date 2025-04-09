@@ -25,6 +25,8 @@ use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteAwareInterface;
 use TYPO3\CMS\Core\Site\SiteLanguageAwareInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -128,8 +130,14 @@ class PersistedAliasMapper implements PersistedMappableAspectInterface, StaticMa
         $this->tableName = $tableName;
         $this->routeFieldName = $routeFieldName;
         $this->routeValuePrefix = $routeValuePrefix;
-        $this->languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
-        $this->languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->tableName);
+        if ($schema->isLanguageAware()) {
+            $this->languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+            $this->languageParentFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationSourceField()->getName();
+        } else {
+            $this->languageFieldName = null;
+            $this->languageParentFieldName = null;
+        }
         $this->persistenceFieldNames = $this->buildPersistenceFieldNames();
         $this->slugUniqueInSite = $this->isSlugUniqueInSite($this->tableName, $this->routeFieldName);
     }

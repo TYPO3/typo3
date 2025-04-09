@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\DataHandling\Model;
 
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -69,12 +71,17 @@ class RecordStateFactory
      */
     protected function resolveAspectFieldNames(): array
     {
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->name);
+        $languageCapability = null;
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        }
         return [
             'workspace' => 't3ver_wsid',
             'versionParent' => 't3ver_oid',
-            'language' => $GLOBALS['TCA'][$this->name]['ctrl']['languageField'] ?? null,
-            'languageParent' => $GLOBALS['TCA'][$this->name]['ctrl']['transOrigPointerField'] ?? null,
-            'languageSource' => $GLOBALS['TCA'][$this->name]['ctrl']['translationSource'] ?? null,
+            'language' => $languageCapability?->getLanguageField()?->getName(),
+            'languageParent' => $languageCapability?->getTranslationOriginPointerField()?->getName(),
+            'languageSource' => $languageCapability?->getTranslationSourceField()?->getName(),
         ];
     }
 

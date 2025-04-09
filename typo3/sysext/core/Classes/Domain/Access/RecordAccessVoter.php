@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Domain\Access;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
  * Checks if a record can be accessed (usually in TYPO3 Frontend) due to various "enableFields" or group access checks.
@@ -30,7 +32,8 @@ use TYPO3\CMS\Core\Context\Context;
 class RecordAccessVoter
 {
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher
+        protected readonly EventDispatcherInterface $eventDispatcher,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -52,28 +55,35 @@ class RecordAccessVoter
         }
         $record = $event->getRecord();
 
-        $configuration = $this->getEnableFieldsConfigurationForTable($table);
+        $schema = $this->tcaSchemaFactory->get($table);
         $visibilityAspect = $context->getAspect('visibility');
         $includeHidden = $table === 'pages'
             ? $visibilityAspect->includeHiddenPages()
             : $visibilityAspect->includeHiddenContent();
 
         // Hidden field is active and hidden records should not be included
-        if (($record[$configuration['disabled'] ?? null] ?? false) && !$includeHidden) {
-            return false;
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $fieldName = $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
+            if (($record[$fieldName] ?? false) && !$includeHidden) {
+                return false;
+            }
         }
         // Records' starttime set AND is HIGHER than the current access time
-        if (isset($configuration['starttime'], $record[$configuration['starttime']])
-            && (int)$record[$configuration['starttime']] > $GLOBALS['SIM_ACCESS_TIME']
-        ) {
-            return false;
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
+            $fieldName = $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
+            if (isset($record[$fieldName]) && (int)$record[$fieldName] > $GLOBALS['SIM_ACCESS_TIME']) {
+                return false;
+            }
         }
         // Records' endtime is set AND NOT "0" AND LOWER than the current access time
-        if (isset($configuration['endtime'], $record[$configuration['endtime']])
-            && ((int)$record[$configuration['endtime']] !== 0)
-            && ((int)$record[$configuration['endtime']] < $GLOBALS['SIM_ACCESS_TIME'])
-        ) {
-            return false;
+        if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
+            $fieldName = $schema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
+            if (isset($record[$fieldName])
+                && ((int)$record[$fieldName] !== 0)
+                && ((int)$record[$fieldName] < $GLOBALS['SIM_ACCESS_TIME'])
+            ) {
+                return false;
+            }
         }
         // Insufficient group access
         if ($this->groupAccessGranted($table, $record, $context) === false) {
@@ -93,15 +103,24 @@ class RecordAccessVoter
      */
     public function groupAccessGranted(string $table, array $record, Context $context): bool
     {
-        $configuration = $this->getEnableFieldsConfigurationForTable($table);
-        if (!isset($configuration['fe_group']) || !($record[$configuration['fe_group']] ?? false)) {
+        if (!$this->tcaSchemaFactory->has($table)) {
+            return true;
+        }
+        $schema = $this->tcaSchemaFactory->get($table);
+        // No fe_group field in TCA, so no group access check
+        if (!$schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
+            return true;
+        }
+        $fieldName = $schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)->getFieldName();
+        // Field not given, so no group access check
+        if (!($record[$fieldName] ?? false)) {
             return true;
         }
         // No frontend user, but 'fe_group' is not empty, so shut this down.
         if (!$context->hasAspect('frontend.user')) {
             return false;
         }
-        $pageGroupList = explode(',', (string)$record[$configuration['fe_group']]);
+        $pageGroupList = explode(',', (string)$record[$fieldName]);
         return count(array_intersect($context->getAspect('frontend.user')->getGroupIds(), $pageGroupList)) > 0;
     }
 
@@ -116,10 +135,5 @@ class RecordAccessVoter
     public function accessGrantedForPageInRootLine(array $pageRecord, Context $context): bool
     {
         return !($pageRecord['extendToSubpages'] ?? false) || $this->accessGranted('pages', $pageRecord, $context);
-    }
-
-    protected function getEnableFieldsConfigurationForTable(string $table): array
-    {
-        return $GLOBALS['TCA'][$table]['ctrl']['enablecolumns'] ?? [];
     }
 }

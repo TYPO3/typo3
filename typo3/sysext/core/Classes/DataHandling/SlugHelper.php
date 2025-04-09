@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\DataHandling\Model\RecordState;
 use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Slug\SlugNormalizer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -138,7 +140,11 @@ class SlugHelper
         }
         $prefix = '';
         if ($this->tableName === 'pages' && ($this->configuration['generatorOptions']['prefixParentPageSlug'] ?? false)) {
-            $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
+            $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->tableName);
+            $languageFieldName = null;
+            if ($schema->isLanguageAware()) {
+                $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+            }
             $languageId = (int)($recordData[$languageFieldName] ?? 0);
             $parentPageRecord = $this->resolveParentPageRecord($pid, $languageId);
             if (is_array($parentPageRecord)) {
@@ -404,13 +410,10 @@ class SlugHelper
             $fieldNames[] = 't3ver_state';
             $fieldNames[] = 't3ver_oid';
         }
-        $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
-        if (is_string($languageFieldName)) {
-            $fieldNames[] = $languageFieldName;
-        }
-        $languageParentFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['transOrigPointerField'] ?? null;
-        if (is_string($languageParentFieldName)) {
-            $fieldNames[] = $languageParentFieldName;
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->tableName);
+        if ($schema->isLanguageAware()) {
+            $fieldNames[] = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+            $fieldNames[] = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
@@ -448,8 +451,8 @@ class SlugHelper
      */
     protected function applyLanguageConstraint(QueryBuilder $queryBuilder, int $languageId)
     {
-        $languageFieldName = $GLOBALS['TCA'][$this->tableName]['ctrl']['languageField'] ?? null;
-        if (!is_string($languageFieldName)) {
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->tableName);
+        if (!$schema->isLanguageAware()) {
             return;
         }
         if ($languageId === -1) {
@@ -457,6 +460,7 @@ class SlugHelper
             // any kind of language constraints.
             return;
         }
+        $languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
 
         // Only check records of the given language or -1 (all languages)
         $queryBuilder->andWhere(

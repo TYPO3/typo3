@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Domain\Access\RecordAccessVoter;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class RecordAccessVoterTest extends FunctionalTestCase
@@ -35,7 +36,8 @@ final class RecordAccessVoterTest extends FunctionalTestCase
         parent::setUp();
 
         $this->subject = new RecordAccessVoter(
-            $this->get(EventDispatcherInterface::class)
+            $this->get(EventDispatcherInterface::class),
+            $this->get(TcaSchemaFactory::class),
         );
     }
 

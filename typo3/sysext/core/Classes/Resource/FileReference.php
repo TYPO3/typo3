@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Resource;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -361,14 +363,15 @@ class FileReference implements FileInterface
      */
     public function delete(): bool
     {
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('sys_file_reference');
         $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $tcaDeleteFieldname = $GLOBALS['TCA']['sys_file_reference']['ctrl']['delete'] ?? null;
-        if ($tcaDeleteFieldname) {
+        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            $softDeleteFieldName = $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
             $affectedRows = $connectionPool->getConnectionForTable('sys_file_reference')
                 ->update(
                     'sys_file_reference',
                     [
-                        $tcaDeleteFieldname => 1,
+                        $softDeleteFieldName => 1,
                     ],
                     [
                         'uid' => $this->getUid(),

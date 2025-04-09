@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\Aspect\PersistedAliasMapper;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -88,6 +89,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
         $tableName = self::ASPECT_CONFIGURATION['tableName'];
         $fieldName = self::ASPECT_CONFIGURATION['routeFieldName'];
         $GLOBALS['TCA'][$tableName]['columns'][$fieldName]['config'] = self::SLUG_CONFIGURATION;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
 
         $languages = [
             [

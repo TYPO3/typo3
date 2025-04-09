@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\ImmediateResponseException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
@@ -36,6 +37,9 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\Filter\FileNameFilter;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
 use TYPO3\CMS\Core\SysLog\Action as SystemLogGenericAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
@@ -321,6 +325,10 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if ($this->isAdmin()) {
             return 1;
         }
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages');
+        $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+        $languageFieldName = $languageCapability->getLanguageField()->getName();
+        $transOrigPointerFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
         $checkRec = [];
         $fetchPageFromDatabase = true;
         if (is_array($idOrRow)) {
@@ -330,7 +338,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $checkRec = $idOrRow;
             $id = (int)$idOrRow['uid'];
             // ensure the required fields are present on the record
-            if (isset($checkRec['t3ver_oid'], $checkRec[$GLOBALS['TCA']['pages']['ctrl']['languageField']], $checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']])) {
+            if (isset($checkRec['t3ver_oid'], $checkRec[$languageFieldName], $checkRec[$transOrigPointerFieldName])) {
                 $fetchPageFromDatabase = false;
             }
         } else {
@@ -341,18 +349,19 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $checkRec = BackendUtility::getRecord(
                 'pages',
                 $id,
-                't3ver_oid,' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ',' . $GLOBALS['TCA']['pages']['ctrl']['languageField']
+                't3ver_oid,' . $transOrigPointerFieldName . ',' . $languageFieldName
             );
+        }
+        if (!is_array($checkRec)) {
+            return null;
         }
         if ((int)($checkRec['t3ver_oid'] ?? 0) > 0) {
             $id = (int)$checkRec['t3ver_oid'];
         }
         // if current rec is a translation then get uid from l10n_parent instead
         // because web mounts point to pages in default language and rootline returns uids of default languages
-        if ((int)($checkRec[$GLOBALS['TCA']['pages']['ctrl']['languageField'] ?? null] ?? 0) !== 0
-            && (int)($checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] ?? null] ?? 0) !== 0
-        ) {
-            $id = (int)$checkRec[$GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField']];
+        if ((int)($checkRec[$languageFieldName]) !== 0 && (int)($checkRec[$transOrigPointerFieldName]) !== 0) {
+            $id = (int)$checkRec[$transOrigPointerFieldName];
         }
         if (!$readPerms) {
             $readPerms = $this->getPagePermsClause(Permission::PAGE_SHOW);
@@ -600,18 +609,26 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * Check if user has access to all existing localizations for a certain record
      *
-     * @param string $table The table
+     * @param string|TcaSchema $table The table/schema
      * @param array $record The current record
      * @return bool
      */
-    public function checkFullLanguagesAccess(string $table, array $record): bool
+    public function checkFullLanguagesAccess(string|TcaSchema $table, array $record): bool
     {
         if (!$this->checkLanguageAccess(0)) {
             return false;
         }
+        if ($table instanceof TcaSchema) {
+            $schema = $table;
+            $table = $table->getName();
+        } else {
+            $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($table);
+        }
 
-        if (BackendUtility::isTableLocalizable($table)) {
-            $pointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'];
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
+            $pointerField = $languageCapability->getTranslationOriginPointerField()->getName();
             $pointerValue = $record[$pointerField] > 0 ? $record[$pointerField] : $record['uid'];
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
             $queryBuilder->getRestrictions()
@@ -630,7 +647,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
                 ->fetchAllAssociative();
 
             foreach ($recordLocalizations as $recordLocalization) {
-                if (!$this->checkLanguageAccess($recordLocalization[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
+                if (!$this->checkLanguageAccess($recordLocalization[$languageField])) {
                     return false;
                 }
             }
@@ -656,60 +673,63 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     public function recordEditAccessInternals(string $table, array $row, $newRecord = false, $_ = null, $checkFullLanguageAccess = false): bool
     {
-        if (!isset($GLOBALS['TCA'][$table])) {
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        if (!$schemaFactory->has($table)) {
             return false;
         }
+        $schema = $schemaFactory->get($table);
         // Always return TRUE for Admin users.
         if ($this->isAdmin()) {
             return true;
         }
         // Checking languages:
-        if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($table, $row)) {
+        if ($table === 'pages' && $checkFullLanguageAccess && !$this->checkFullLanguagesAccess($schema, $row)) {
             return false;
         }
-        if ($GLOBALS['TCA'][$table]['ctrl']['languageField'] ?? false) {
+        if ($schema->isLanguageAware()) {
+            $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
+            $languageField = $languageCapability->getLanguageField()->getName();
+
             // Language field must be found in input row - otherwise it does not make sense.
-            if (isset($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
-                if (!$this->checkLanguageAccess($row[$GLOBALS['TCA'][$table]['ctrl']['languageField']])) {
+            if (isset($row[$languageField])) {
+                if (!$this->checkLanguageAccess($row[$languageField])) {
                     $this->errorMsg = 'ERROR: Language was not allowed.';
                     return false;
                 }
                 if (
-                    $checkFullLanguageAccess && $row[$GLOBALS['TCA'][$table]['ctrl']['languageField']] == 0
+                    $checkFullLanguageAccess && $row[$languageField] == 0
                     && !$this->checkFullLanguagesAccess($table, $row)
                 ) {
                     $this->errorMsg = 'ERROR: Related/affected language was not allowed.';
                     return false;
                 }
             } else {
-                $this->errorMsg = 'ERROR: The "languageField" field named "'
-                    . $GLOBALS['TCA'][$table]['ctrl']['languageField'] . '" was not found in testing record!';
+                $this->errorMsg = 'ERROR: The "languageField" field named "' . $languageField . '" was not found in testing record!';
                 return false;
             }
         }
         // Checking authMode fields:
-        if (is_array($GLOBALS['TCA'][$table]['columns'])) {
-            foreach ($GLOBALS['TCA'][$table]['columns'] as $fieldName => $fieldValue) {
-                if (isset($row[$fieldName])
-                    && ($fieldValue['config']['type'] ?? '') === 'select'
-                    && ($fieldValue['config']['authMode'] ?? false)
-                    && !$this->checkAuthMode($table, $fieldName, $row[$fieldName])) {
-                    $this->errorMsg = 'ERROR: authMode "' . $fieldValue['config']['authMode']
-                            . '" failed for field "' . $fieldName . '" with value "'
-                            . $row[$fieldName] . '" evaluated';
-                    return false;
-                }
+        foreach ($schema->getFields() as $fieldName => $fieldType) {
+            if (isset($row[$fieldName])
+                && $fieldType->isType(TableColumnType::SELECT)
+                && ($fieldType->getConfiguration()['authMode'] ?? false)
+                && !$this->checkAuthMode($table, $fieldName, $row[$fieldName])) {
+                $this->errorMsg = 'ERROR: authMode "' . $fieldType->getConfiguration()['authMode']
+                        . '" failed for field "' . $fieldName . '" with value "'
+                        . $row[$fieldName] . '" evaluated';
+                return false;
             }
         }
         // Checking "editlock" feature (doesn't apply to new records)
-        if (!$newRecord && ($GLOBALS['TCA'][$table]['ctrl']['editlock'] ?? false)) {
-            if (isset($row[$GLOBALS['TCA'][$table]['ctrl']['editlock']])) {
-                if ($row[$GLOBALS['TCA'][$table]['ctrl']['editlock']]) {
+        if (!$newRecord && $schema->hasCapability(TcaSchemaCapability::EditLock)) {
+            $editLockFieldName = $schema->getCapability(TcaSchemaCapability::EditLock)->getFieldName();
+            if (isset($row[$editLockFieldName])) {
+                if ($row[$editLockFieldName]) {
                     $this->errorMsg = 'ERROR: Record was locked for editing. Only admin users can change this state.';
                     return false;
                 }
             } else {
-                $this->errorMsg = 'ERROR: The "editLock" field named "' . $GLOBALS['TCA'][$table]['ctrl']['editlock']
+                $this->errorMsg = 'ERROR: The "editLock" field named "' . $editLockFieldName
                     . '" was not found in testing record!';
                 return false;
             }

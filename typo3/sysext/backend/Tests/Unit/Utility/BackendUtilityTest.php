@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\ItemProcessingService;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\TypoScript\AST\Node\RootNode;
@@ -893,8 +894,11 @@ final class BackendUtilityTest extends UnitTestCase
             ['pageTsConfig-pid-to-hash-0', 'hash'],
             ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode(), [])],
         ]);
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
+        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService(
+            $this->createMock(SiteFinder::class),
+            $this->createMock(TcaSchemaFactory::class),
+            $this->createMock(FlashMessageService::class)
+        ));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $label = BackendUtility::getLabelFromItemlist($table, $col, $key);
@@ -1053,8 +1057,11 @@ final class BackendUtilityTest extends UnitTestCase
             ['pageTsConfig-pid-to-hash-0', 'hash'],
             ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode(), [])],
         ]);
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
+        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService(
+            $this->createMock(SiteFinder::class),
+            $this->createMock(TcaSchemaFactory::class),
+            $this->createMock(FlashMessageService::class)
+        ));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $GLOBALS['TCA'][$table] = $tca;
@@ -1123,8 +1130,11 @@ final class BackendUtilityTest extends UnitTestCase
             ['pageTsConfig-pid-to-hash-0', 'hash'],
             ['pageTsConfig-hash-to-object-hash', new PageTsConfig(new RootNode(), [])],
         ]);
-        $siteFinderMock = $this->createMock(SiteFinder::class);
-        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService($siteFinderMock));
+        GeneralUtility::addInstance(ItemProcessingService::class, new ItemProcessingService(
+            $this->createMock(SiteFinder::class),
+            $this->createMock(TcaSchemaFactory::class),
+            $this->createMock(FlashMessageService::class)
+        ));
         GeneralUtility::setSingletonInstance(CacheManager::class, $cacheManagerMock);
 
         $row = [
