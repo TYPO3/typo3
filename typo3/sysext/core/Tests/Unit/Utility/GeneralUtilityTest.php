@@ -3638,6 +3638,42 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
+    public function createVersionNumberedFilenameResolvesAlreadyGivenAbsolutePathInBackend(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getPublicPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $request = new ServerRequest('https://www.example.com', 'GET');
+        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
+        $uniqueFilename = StringUtility::getUniqueId('main_');
+        $testFileDirectory = Environment::getPublicPath() . '/static/';
+        $testFilepath = $testFileDirectory . $uniqueFilename . '.css';
+        GeneralUtility::mkdir_deep($testFileDirectory);
+        touch($testFilepath);
+
+        $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = false;
+        $incomingFileName = '/' . PathUtility::stripPathSitePrefix($testFilepath);
+        $versionedFilename = GeneralUtility::createVersionNumberedFilename($incomingFileName);
+        self::assertStringContainsString('.css?', $versionedFilename);
+        self::assertStringStartsWith('/static/main_', $versionedFilename);
+
+        $incomingFileName = PathUtility::stripPathSitePrefix($testFilepath);
+        $versionedFilename = GeneralUtility::createVersionNumberedFilename($incomingFileName);
+        self::assertStringContainsString('.css?', $versionedFilename);
+        self::assertStringStartsWith('static/main_', $versionedFilename);
+
+        GeneralUtility::rmdir($testFileDirectory, true);
+    }
+
+    #[Test]
     public function getMaxUploadFileSizeReturnsPositiveInt(): void
     {
         $result = GeneralUtility::getMaxUploadFileSize();
