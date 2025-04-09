@@ -1990,20 +1990,16 @@ class PageRenderer implements SingletonInterface
     /**
      * Processes a Javascript file dependent on the current context
      *
-     * Adds the version number for Frontend, compresses the file for Backend
-     *
      * @param string $filename Filename
      * @return string New filename
      */
-    protected function processJsFile($filename)
+    protected function processJsFile($filename): string
     {
         $filename = $this->getStreamlinedFileName($filename, false);
-        if ($this->getApplicationType() === 'FE') {
-            if ($this->compressJavascript) {
-                $filename = $this->resourceCompressor->compressJsFile($filename);
-            } else {
-                $filename = GeneralUtility::createVersionNumberedFilename($filename);
-            }
+        if ($this->compressJavascript) {
+            $filename = $this->resourceCompressor->compressJsFile($filename);
+        } else {
+            $filename = GeneralUtility::createVersionNumberedFilename($filename);
         }
         return $this->getAbsoluteWebPath($filename);
     }

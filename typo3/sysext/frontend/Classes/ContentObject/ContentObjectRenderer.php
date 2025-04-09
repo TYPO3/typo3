@@ -3887,7 +3887,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                         if ($absoluteFilePath === '') {
                             throw new \RuntimeException('Asset "' . $key . '" not found', 1670713983);
                         }
-                        $retVal = GeneralUtility::createVersionNumberedFilename(PathUtility::getAbsoluteWebPath($absoluteFilePath));
+                        $retVal = PathUtility::getAbsoluteWebPath(GeneralUtility::createVersionNumberedFilename($absoluteFilePath));
                         break;
                     case 'parameters':
                         $retVal = $this->parameters[$key] ?? null;

@@ -2017,6 +2017,18 @@ class GeneralUtility
      * = TRUE : modify filename
      * = FALSE : add timestamp as query parameter
      *
+     * Benni Note:
+     *
+     * Always call it like this:
+     * 1. make a file reference (EXT...) completely absolute
+     * $file = GeneralUtility::getFileAbsFileName($file);
+     *
+     * 2. attach ?timestamp to filename or re-write
+     * $file = GeneralUtility::createVersionNumberedFilename($file);
+     *
+     * 3. make it ready for attaching in your HTML/JSON etc. by making it an "absolute" URI path
+     * $file = PathUtility::getAbsoluteWebPath($file);
+     *
      * @param string $file Relative path to file including all potential query parameters (not htmlspecialchared yet)
      * @return string Relative path with version filename including the timestamp
      */
@@ -2035,6 +2047,9 @@ class GeneralUtility
         } elseif (!PathUtility::isAbsolutePath($path)) {
             // Backend and non-absolute path
             $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+        } elseif (is_file(Environment::getPublicPath() . '/' . ltrim($path, '/'))) {
+            // Use-case: $path = /typo3/sysext/backend/Resources/Public/file.css when the order was not built properly
+            $path = Environment::getPublicPath() . '/' . ltrim($path, '/');
         }
 
         if ($isFrontend) {

@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Fluid\ViewHelpers\Uri;
 
 use Psr\Http\Message\ServerRequestInterface;
-use TYPO3\CMS\Core\Resource\Exception\InvalidFileException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
@@ -90,15 +89,16 @@ final class ResourceViewHelper extends AbstractViewHelper
      * Render the URI to the resource. The filename is used from child content.
      *
      * @return string The URI to the resource
-     * @throws InvalidFileException
      * @throws \RuntimeException
      */
     public function render(): string
     {
-        $uri = PathUtility::getPublicResourceWebPath(self::resolveExtensionPath($this->arguments, $this->renderingContext));
+        $uri = self::resolveExtensionPath($this->arguments, $this->renderingContext);
+        $uri = GeneralUtility::getFileAbsFileName($uri);
         if ($this->arguments['useCacheBusting']) {
             $uri = GeneralUtility::createVersionNumberedFilename($uri);
         }
+        $uri = PathUtility::getAbsoluteWebPath($uri);
         if ($this->arguments['absolute']) {
             $uri = GeneralUtility::locationHeaderUrl($uri);
         }

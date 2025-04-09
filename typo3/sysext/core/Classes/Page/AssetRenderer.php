@@ -116,7 +116,8 @@ readonly class AssetRenderer
         if (PathUtility::hasProtocolAndScheme($file)) {
             return $file;
         }
-        $file = PathUtility::getAbsoluteWebPath(GeneralUtility::getFileAbsFileName($file));
-        return GeneralUtility::createVersionNumberedFilename($file);
+        $file = GeneralUtility::getFileAbsFileName($file);
+        $file = GeneralUtility::createVersionNumberedFilename($file);
+        return PathUtility::getAbsoluteWebPath($file);
     }
 }
