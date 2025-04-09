@@ -240,7 +240,7 @@ abstract class AbstractFile implements FileInterface
         if (!($this->properties['type'] ?? false)) {
             $this->properties['type'] = FileType::tryFromMimeType($this->getMimeType())->value;
         }
-        return $this->properties['type'] instanceof FileType ? $this->properties['type'] : FileType::from($this->properties['type']);
+        return $this->properties['type'] instanceof FileType ? $this->properties['type'] : FileType::from((int)$this->properties['type']);
     }
 
     /**
