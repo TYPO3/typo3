@@ -788,7 +788,7 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
                     }
                 }
             }
-            return false;
+            return 0;
         });
         $ascending = $formSettings['persistenceManager']['sortAscending'] ?? true;
         return $ascending ? $forms : array_reverse($forms);
