@@ -115,7 +115,7 @@
 		"codeception/module-filesystem": "^3.0.1",
 		"codeception/module-webdriver": "^4.0.2",
 		"composer/composer": "^2.7.8",
-		"friendsofphp/php-cs-fixer": "^3.64.0",
+		"friendsofphp/php-cs-fixer": "^3.75.0",
 		"php-webdriver/webdriver": "^1.15.2",
 		"phpstan/phpdoc-parser": "^1.30.0",
 		"phpstan/phpstan": "^2.1.11",
