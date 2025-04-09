@@ -85,15 +85,17 @@ export default class FormEngineValidation {
    */
   public static initializeInputFields(): void {
     formEngineInstance.formElement.querySelectorAll(FormEngineValidation.inputSelector).forEach((visibleField: FormEngineFieldElement): void => {
+      // ignore fields which already have been initialized
+      if ('formengineInputInitialized' in visibleField.dataset) {
+        return;
+      }
+
       const config = JSON.parse(visibleField.dataset.formengineInputParams);
       const fieldName = config.field;
       const actualValueField = formEngineInstance.formElement.querySelector(selector`[name="${fieldName}"]`) as HTMLInputElement;
 
-      // ignore fields which already have been initialized
-      if (!('formengineInputInitialized' in visibleField.dataset)) {
-        actualValueField.dataset.config = visibleField.dataset.formengineInputParams;
-        FormEngineValidation.initializeInputField(fieldName);
-      }
+      actualValueField.dataset.config = visibleField.dataset.formengineInputParams;
+      FormEngineValidation.initializeInputField(fieldName);
     });
   }
 
