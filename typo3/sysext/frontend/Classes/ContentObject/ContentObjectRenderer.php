@@ -3255,7 +3255,7 @@ class ContentObjectRenderer implements LoggerAwareInterface
                 } else {
                     $tagContent = substr($data, 1, -1);
                 }
-                $tag = explode(' ', trim($tagContent), 2);
+                $tag = preg_split('/[\t\n\f ]/', trim($tagContent), 2);
                 $tag[0] = strtolower($tag[0]);
                 // end tag like </li>
                 if (str_starts_with($tag[0], '/')) {

@@ -2464,6 +2464,89 @@ final class ContentObjectRendererTest extends UnitTestCase
         self::assertEquals($expectedResult, $this->subject->stdWrap_parseFunc($value, $configuration));
     }
 
+    public static function _parseFuncCanHandleTagsAcrossMultipleLinesDataProvider(): iterable
+    {
+        $configuration = [
+            'parseFunc' => '',
+            'parseFunc.' => [
+                'allowTags' => 'div,meta',
+            ],
+        ];
+        yield 'classic tag in one line' => [
+            'input' => '<div id="very-important-div">Hello, world!</div>',
+            'configuration' => $configuration,
+            'expected' => '<div id="very-important-div">Hello, world!</div>',
+        ];
+        yield 'classic tag in multiple lines' => [
+            'input' => '<div
+        id="very-important-div"
+    >Hello, world!</div>',
+            'configuration' => $configuration,
+            'expected' => '<div id="very-important-div">Hello, world!</div>',
+        ];
+        yield 'classic tag in multiple lines with other special chars' => [
+            'input' => '<div
+
+
+        id  =  "very-important-div"
+
+        ' . "\t\t\f\f" . ' class="nothing"
+    >Hello, world!</div>',
+            'configuration' => $configuration,
+            'expected' => '<div id="very-important-div" class="nothing">Hello, world!</div>',
+        ];
+
+        yield 'self-closing tag in one line' => [
+            'input' => '<meta id="author" content="benni" />',
+            'configuration' => $configuration,
+            'expected' => '<meta id="author" content="benni">',
+        ];
+        yield 'self-closing tag in multiple lines' => [
+            'input' => '<meta
+        id="author"
+        content="benni"
+/>',
+            'configuration' => $configuration,
+            'expected' => '<meta id="author" content="benni">',
+        ];
+        yield 'self-closing tag in multiple lines with other special chars' => [
+            'input' => '<meta
+
+        ' . "\t\t\f\f" . '
+        id  =  "author"
+        ' . "\t\t\f\f" . '
+
+        content = "benni"
+/>',
+            'configuration' => $configuration,
+            'expected' => '<meta id="author" content="benni">',
+        ];
+        yield 'html5-style tag in one line' => [
+            'input' => '<meta id="author" content="benni" />',
+            'configuration' => $configuration,
+            'expected' => '<meta id="author" content="benni">',
+        ];
+        yield 'html5-style tag in multiple lines' => [
+            'input' => '<meta
+id="author"
+content="benni">',
+            'configuration' => $configuration,
+            'expected' => '<meta id="author" content="benni">',
+        ];
+    }
+
+    #[DataProvider('_parseFuncCanHandleTagsAcrossMultipleLinesDataProvider')]
+    #[Test]
+    public function parseFuncCanHandleTagsAcrossMultipleLines(string $input, array $configuration, string $expected): void
+    {
+        $typoScript = new FrontendTypoScript(new RootNode(), [], [], []);
+        $typoScript->setConfigArray([]);
+        $request = (new ServerRequest())->withAttribute('frontend.typoscript', $typoScript);
+        $this->subject->setRequest($request);
+        self::assertEquals($expected, $this->subject->stdWrap_parseFunc($input, $configuration));
+
+    }
+
     public static function httpMakelinksDataProvider(): array
     {
         return [
