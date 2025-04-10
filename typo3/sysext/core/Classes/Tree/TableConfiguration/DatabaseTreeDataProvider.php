@@ -346,7 +346,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
             if ($this->columnConfiguration['MM'] ?? null) {
                 $dbGroup = GeneralUtility::makeInstance(RelationHandler::class);
                 // Dummy field for setting "look from other site"
-                $this->columnConfiguration['MM_oppositeField'] = 'children';
+                $this->columnConfiguration['MM_opposite_field'] = 'children';
                 $dbGroup->start($row[$this->lookupField], $this->getTableName(), $this->columnConfiguration['MM'], $uid, $this->getTableName(), $this->columnConfiguration);
                 $relatedUids = $dbGroup->tableArray[$this->getTableName()];
             } elseif ($this->columnConfiguration['foreign_field'] ?? null) {
