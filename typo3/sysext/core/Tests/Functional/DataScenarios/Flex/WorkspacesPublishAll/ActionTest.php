@@ -55,4 +55,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveRecordToDifferentPageBelowOtherRecordMovesFlexChildren.csv');
     }
+
+    #[Test]
+    public function localizeRecord(): void
+    {
+        parent::localizeRecord();
+        $this->actionService->publishWorkspace(self::VALUE_WorkspaceId);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeRecord.csv');
+    }
 }

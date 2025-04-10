@@ -13,8 +13,8 @@
 ,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0
 "sys_file"
 ,"uid","pid","type","storage","identifier","extension","mime_type","name","sha1","size","creation_date","modification_date","missing","metadata","identifier_hash","folder_hash","last_indexed"
-,1,0,2,0,"/file1.jpg","jpg","image/jpeg","file1.jpg","1111111111111111111111111111111111111111",1,1738278261,1738278261,0,0,"abc1","abc1",0
-,2,0,2,0,"/file2.jpg","jpg","image/jpeg","file2.jpg","2222222222222222222222222222222222222222",2,1738278261,1738278261,0,0,"abc2","abc2",0
+,1,0,2,1,"/file1.jpg","jpg","image/jpeg","file1.jpg","1111111111111111111111111111111111111111",1,1738278261,1738278261,0,0,"abc1","abc1",0
+,2,0,2,1,"/file2.jpg","jpg","image/jpeg","file2.jpg","2222222222222222222222222222222222222222",2,1738278261,1738278261,0,0,"abc2","abc2",0
 "sys_file_metadata"
 ,"uid","pid","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","file","title","width","height","description","alternative","categories"
 ,1,0,0,0,0,0,0,0,1,"image 1",1,2,,,0
@@ -122,6 +122,8 @@
 </T3FlexForms>"
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"662118c0b7a0096482db813011801a45","sys_file",1,"storage",0,0,2147483647,0,,,,0,0,"sys_file_storage",1,,0,0,2147483647,0,0,
+,"b29f51a7f7e6e6dcc6d99be7849ae442","sys_file",2,"storage",0,0,2147483647,0,,,,0,0,"sys_file_storage",1,,0,0,2147483647,0,0,
 ,"bee7419b079bf1311d4a280440fd7887","sys_file",1,"metadata",0,0,2147483647,0,,,,0,0,"sys_file_metadata",1,,0,0,2147483647,0,0,
 ,"5cf62de176f58998d1750ec070eb9269","sys_file",2,"metadata",0,0,2147483647,0,,,,0,0,"sys_file_metadata",2,,0,0,2147483647,0,0,
 ,"f9c64f1c71a8b40ffa94f38fcbb366b0","sys_file_metadata",1,"file",0,0,2147483647,0,,,,0,0,"sys_file",1,,0,0,2147483647,0,0,
