@@ -176,8 +176,13 @@
                             >
                                 {f:if(condition: targetUri, then:targetUri, else:redirect.target)}
                             </f:link.typolink>
-                            <f:variable name="pageId" value="{rd:targetPageId(target:redirect.target)}" />
-                            <f:if condition="{pageId}">(<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:pageID"/>: {pageId})</f:if>
+                            <f:variable name="pageRow" value="{rd:targetPageRecord(target:redirect.target)}" />
+                            <f:if condition="{pageRow}">(<f:translate key="LLL:EXT:redirects/Resources/Private/Language/locallang_module_redirect.xlf:pageID"/>:
+                                <be:link.editRecord
+                                    table="pages"
+                                    uid="{pageRow.uid}"
+                                    title="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:edit')}: {redirect.source_path}"
+                                ><core:iconForRecord table="pages" row="{pageRow}" /> {pageRow.uid}</be:link.editRecord>)</f:if>
                         </td>
                         <td>{redirect.target_statuscode}</td>
                         <td>
