@@ -27,6 +27,87 @@
                     <div class="localconf-item searchhit t3js-localConfiguration-item" id="{sectionName}-{item.key}">
                         <div class="localconf-item-heading">
                             <strong>[{sectionName}]{item.path} </strong>
+
+                            <!-- @see typo3-formengine-table-wizard -->
+                            <f:if condition="{item.type} == 'map' || {item.type} == 'element-list'">
+                                <table width="100%">
+                                    <thead>
+                                        <tr>
+                                            <f:if condition="{item.type} == 'map'">
+                                                <th>{item.arrayKey}</th>
+                                            </f:if>
+                                            <th>{item.arrayValue}</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <f:if condition="{item.values}">
+                                            <f:for each="{item.values}" as="value" key="key">
+                                                <tr class="t3js-localConfiguration-array-clone" data-valuetype="{item.type}">
+                                                    <f:if condition="{item.type} == 'map'">
+                                                        <td>
+                                                            <input
+                                                                type="text"
+                                                                value="{key}"
+                                                                data-path="{sectionName}/{item.key}/key[]"
+                                                                data-valuetype="{item.type}"
+                                                                class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                                autocomplete="off"
+                                                                {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                            />
+                                                        </td>
+                                                    </f:if>
+                                                    <td>
+                                                        <input
+                                                            type="text"
+                                                            value="{value}"
+                                                            data-path="{sectionName}/{item.key}/value[]"
+                                                            data-valuetype="{item.type}"
+                                                            class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                            autocomplete="off"
+                                                            {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                        />
+                                                    </td>
+                                                    <td><button class="btn btn-default t3js-localConfiguration-removeRow"><core:icon identifier="actions-remove" /></button></td>
+                                                </tr>
+                                            </f:for>
+                                        </f:if>
+                                        <tr class="t3js-localConfiguration-array-clone" data-valuetype="{item.type}">
+                                            <f:if condition="{item.type} == 'map'">
+                                                <td>
+                                                    <input
+                                                        type="text"
+                                                        value=""
+                                                        placeholder="(required key)"
+                                                        data-path="{sectionName}/{item.key}/key[]"
+                                                        data-valuetype="{item.type}"
+                                                        class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                        autocomplete="off"
+                                                        {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                    />
+                                                </td>
+                                            </f:if>
+                                            <td>
+                                                <input
+                                                    type="text"
+                                                    value=""
+                                                    placeholder="(required value)"
+                                                    data-path="{sectionName}/{item.key}/value[]"
+                                                    data-valuetype="{item.type}"
+                                                    class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                    autocomplete="off"
+                                                    {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                />
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-default t3js-localConfiguration-cloneRow"><core:icon identifier="actions-add" /></button>
+                                                <button class="d-none btn btn-default t3js-localConfiguration-removeRow"><core:icon identifier="actions-remove" /></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </f:if>
+
                             <f:if condition="{item.type} == 'checkbox'">
                                 <f:then>
                                     =

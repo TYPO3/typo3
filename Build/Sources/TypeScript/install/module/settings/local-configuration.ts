@@ -29,7 +29,10 @@ enum Identifiers {
   item = '.t3js-localConfiguration-item',
   toggleAllTrigger = '.t3js-localConfiguration-toggleAll',
   writeTrigger = '.t3js-localConfiguration-write',
-  searchTrigger = '.t3js-localConfiguration-search'
+  searchTrigger = '.t3js-localConfiguration-search',
+  cloneRowTrigger = '.t3js-localConfiguration-cloneRow',
+  removeRowTrigger = '.t3js-localConfiguration-removeRow',
+  arrayRowTrigger = '.t3js-localConfiguration-array-clone'
 }
 
 type LocalConfigurationWrittenResponse = {
@@ -90,6 +93,66 @@ class LocalConfiguration extends AbstractInteractableModule {
       const typedQuery = target.value;
       this.search(typedQuery);
     }).delegateTo(currentModal, Identifiers.searchTrigger);
+
+    // Remove a cloned row
+    new RegularEvent('click', (event: Event, target: HTMLInputElement): void => {
+      event.preventDefault();
+      const row = target.closest(Identifiers.arrayRowTrigger);
+      if (row) {
+        row.parentNode?.removeChild(row);
+      }
+    }).delegateTo(currentModal, Identifiers.removeRowTrigger);
+
+    // Add a fresh clone row
+    new RegularEvent('click', (event: Event, target: HTMLInputElement): void => {
+
+      event.preventDefault();
+      const row = target.closest(Identifiers.arrayRowTrigger) as HTMLTableRowElement;
+      if (!row) {
+        return;
+      }
+
+      // Get input values from the original row
+      const inputs = Array.from(row.querySelectorAll('input'));
+
+      let arrayKey: string;
+      let arrayValue: string;
+
+      if (row.dataset.valuetype === 'map') {
+        arrayKey = inputs[0].value.trim();
+        arrayValue = inputs[1].value.trim();
+      } else if (row.dataset.valuetype === 'element-list') {
+        arrayValue = inputs[0].value.trim();
+        arrayKey = 'empty';
+      } else {
+        return;
+      }
+
+      // Skip if map is lacking key/value, or element-list is lacking value
+      if (!arrayKey || !arrayValue) {
+        row.style.animation = 'record-pulse 0.5s ease-in-out 5';
+        setTimeout(() => {
+          row.style.animation = '';
+        }, 2500);
+        return;
+      }
+
+      // Insert the cloned row before the template row
+      const clonedRow = row.cloneNode(true) as HTMLTableRowElement;
+      row.parentNode?.insertBefore(clonedRow, row);
+
+      // Clear input values in the template row (original row)
+      inputs.forEach(input => {
+        input.value = '';
+      });
+
+      // Replace clone button with remove button
+      const buttonCell = clonedRow.querySelector(Identifiers.cloneRowTrigger);
+      if (buttonCell) {
+        buttonCell.classList.add('d-none');
+        clonedRow.querySelector(Identifiers.removeRowTrigger)?.classList.remove('d-none');
+      }
+    }).delegateTo(currentModal, Identifiers.cloneRowTrigger);
   }
 
   private search(typedQuery: string): void {
@@ -134,7 +197,9 @@ class LocalConfiguration extends AbstractInteractableModule {
 
     const modalContent = this.getModalBody();
     const executeToken = this.getModuleContent().dataset.localConfigurationWriteToken;
-    const configurationValues: Record<string, string> = {};
+    const configurationValues: Record<string, string | Record<string, string>> = {};
+    const collectedArrayKeys: Record<string, string[]> = {};
+    const collectedArrayValues: Record<string, string[]> = {};
     this.currentModal.querySelectorAll('.t3js-localConfiguration-pathValue').forEach((element: HTMLInputElement): void => {
       if (element.type === 'checkbox') {
         if (element.checked) {
@@ -143,9 +208,81 @@ class LocalConfiguration extends AbstractInteractableModule {
           configurationValues[element.dataset.path] = '0';
         }
       } else {
-        configurationValues[element.dataset.path] = element.value;
+        if (element.dataset.valuetype === 'map' || element.dataset.valuetype === 'element-list') {
+          // Special type "data-valuetype='map|element-list'" found.
+          // "map": has 'speaking' key and a value
+          // "element-list": only the value counts, the key is just a running numerical index
+          // Note that "array" is a regular input string value that is later exploded and NOT part
+          // of this code fork. The type "list" is a string-only listing NOT getting exploded.
+          // We want to convert these pairs:
+          // <input type="text" name="/GFX/someKey/key[]" value="myKey">
+          // <input type="text" name="/GFX/someKey/value[]" value="myValue">
+          // <input type="text" name="/GFX/someKey/key[]" value="anotherKey">
+          // <input type="text" name="/GFX/someKey/value[]" value="anotherValue">
+          // into:
+          // configurationValues[GFX/someKey][myKey] = myValue
+          // configurationValues[GFX/someKey][anotherKey] = anotherValue
+          // This is done with a temporary helper structure of collectedArrayKeys+collectedArrayValues,
+          // indexed by their main key ("GFX/someKey") so they can later be easily piped into it as JavaScript array.
+
+          // The "value[]" portion is always required (for map+list), but "key[]" can be optional (only needed for map)
+          if (element.dataset.path!.includes('/key[]') && element.value !== '') {
+            const itemArrayPath = element.dataset.path!.replace('/key[]', '');
+            if (collectedArrayKeys[itemArrayPath] === undefined) {
+              collectedArrayKeys[itemArrayPath] = [];
+            }
+            collectedArrayKeys[itemArrayPath].push(element.value);
+          } else if (element.dataset.path!.includes('/value[]') && element.value !== '') {
+            const itemArrayPath = element.dataset.path!.replace('/value[]', '');
+            if (collectedArrayValues[itemArrayPath] === undefined) {
+              collectedArrayValues[itemArrayPath] = [];
+            }
+            collectedArrayValues[itemArrayPath].push(element.value);
+          }
+        } else {
+          // Regular input string values.
+          configurationValues[element.dataset.path] = element.value;
+        }
       }
     });
+
+    // Now iterate the collectedArrayValues and collectedArrayKeys (map needs key+value, list only values).
+    for (const itemArrayPath in collectedArrayValues) {
+      if (Object.prototype.hasOwnProperty.call(collectedArrayValues, itemArrayPath)) {
+        // Create a properly typed object for the collection
+        if (configurationValues[itemArrayPath] === undefined) {
+          configurationValues[itemArrayPath] = {};
+        }
+
+        // Ensure configurationValues[itemArrayPath] is treated as a Record
+        const configObject = configurationValues[itemArrayPath] as Record<string, string>;
+
+        // Iterate by index, not by keys array values
+        collectedArrayValues[itemArrayPath].forEach((arrayValue, index) => {
+          // Ensure we really have that paired collectedArrayValues[] value corresponding to the same key for maps.
+          // Empty key+value pairs are skipped (removed from config).
+          // Also, element-list is evaluated for the cases collectedArrayKeys is not set.
+          if (arrayValue === '') {
+            return;
+          }
+
+          if (collectedArrayKeys[itemArrayPath]
+                && collectedArrayKeys[itemArrayPath][index] !== undefined
+                && collectedArrayKeys[itemArrayPath][index] !== ''
+          ) {
+            // Case "map"
+            // Now populate configurationValues[itemArrayPath][myKey] = myValue
+            const arrayKey = collectedArrayKeys[itemArrayPath][index];
+            configObject[arrayKey] = arrayValue;
+          } else {
+            // Case "list"
+            // Now populate configurationValues[itemArrayPath][numericalKey] = myValue
+            configObject[index] = arrayValue;
+          }
+        });
+      }
+    }
+
     (new AjaxRequest(Router.getUrl())).post({
       install: {
         action: 'localConfigurationWrite',
