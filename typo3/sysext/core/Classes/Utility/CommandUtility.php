@@ -166,6 +166,11 @@ class CommandUtility
             } else {
                 $parameters = str_replace('###SkipStripProfile###', '', $parameters);
             }
+
+            // When converting images that have background transparency, this needs to be not filled,
+            // but preserved, so that e.g. conversion from SVG into PNG/JPG contains transparency info.
+            // Without this option, the default background color for conversions is white (https://imagemagick.org/script/command-line-options.php#background)
+            $parameters = '-background none ' . $parameters;
         }
         // Add -auto-orient on convert so IM/GM respects the image orient
         if ($parameters && $command === 'convert') {

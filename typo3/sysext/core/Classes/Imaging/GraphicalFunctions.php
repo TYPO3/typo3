@@ -531,7 +531,8 @@ class GraphicalFunctions
             return null;
         }
         // @todo: check if we actually need this, as ImageInfo deals with this much more professionally
-        if (!in_array(strtolower($reg[0]), $this->imageFileExt, true)) {
+        // @todo: "svg" is not part of imageFileExt, but getting image width/height from it is possible.
+        if (!in_array(strtolower($reg[0]), $this->imageFileExt, true) && strtolower($reg[0]) !== 'svg') {
             return null;
         }
         $imageInfoObject = GeneralUtility::makeInstance(ImageInfo::class, $imageFile);

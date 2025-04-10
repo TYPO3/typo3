@@ -665,6 +665,70 @@ class EnvironmentController extends AbstractController
     }
 
     /**
+     * Scaling transparent files - svg to webp (note black/white background)
+     */
+    public function imageProcessingSvgToWebpAction(): ResponseInterface
+    {
+        if (!$this->isImageMagickEnabledAndConfigured()) {
+            return new JsonResponse([
+                'success' => true,
+                'status' => [$this->imageMagickDisabledMessage()],
+            ]);
+        }
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $imageService = $this->initializeGraphicalFunctions();
+        $inputFile = $imageBasePath . 'TestInput/Transparent.svg';
+        $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('transparent-svg-webp');
+        $imResult = $imageService->resize($inputFile, 'webp', '300', '', '-flatten', [], true);
+        if ($imResult !== null && $imResult->isFile()) {
+            $result = [
+                'fileExists' => true,
+                'outputFile' => $imResult->getRealPath(),
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Convert-svg-transparent.webp',
+                'command' => $imageService->IM_commands,
+            ];
+        } else {
+            $result = [
+                'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageService->IM_commands,
+            ];
+        }
+        return $this->getImageTestResponse($result);
+    }
+
+    /**
+     * Scaling transparent files - svg to png (note black/white background)
+     */
+    public function imageProcessingSvgToPngAction(): ResponseInterface
+    {
+        if (!$this->isImageMagickEnabledAndConfigured()) {
+            return new JsonResponse([
+                'success' => true,
+                'status' => [$this->imageMagickDisabledMessage()],
+            ]);
+        }
+        $imageBasePath = ExtensionManagementUtility::extPath('install') . 'Resources/Public/Images/';
+        $imageService = $this->initializeGraphicalFunctions();
+        $inputFile = $imageBasePath . 'TestInput/Transparent.svg';
+        $imageService->imageMagickConvert_forceFileNameBody = StringUtility::getUniqueId('transparent-svg-webp');
+        $imResult = $imageService->resize($inputFile, 'png', '300', '', '-flatten', [], true);
+        if ($imResult !== null && $imResult->isFile()) {
+            $result = [
+                'fileExists' => true,
+                'outputFile' => $imResult->getRealPath(),
+                'referenceFile' => self::TEST_REFERENCE_PATH . '/Convert-svg-transparent.png',
+                'command' => $imageService->IM_commands,
+            ];
+        } else {
+            $result = [
+                'status' => [$this->imageGenerationFailedMessage()],
+                'command' => $imageService->IM_commands,
+            ];
+        }
+        return $this->getImageTestResponse($result);
+    }
+
+    /**
      * Converting jpg to webp
      */
     public function imageProcessingJpgToWebpAction(): ResponseInterface
