@@ -52,4 +52,11 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::moveRecordToDifferentPageBelowOtherRecordMovesFlexChildren();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/moveRecordToDifferentPageBelowOtherRecordMovesFlexChildren.csv');
     }
+
+    #[Test]
+    public function localizeRecord(): void
+    {
+        parent::localizeRecord();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeRecord.csv');
+    }
 }

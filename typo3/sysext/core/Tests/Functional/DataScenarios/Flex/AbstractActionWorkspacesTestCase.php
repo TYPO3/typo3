@@ -24,4 +24,15 @@ abstract class AbstractActionWorkspacesTestCase extends AbstractActionTestCase
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefaultWorkspaces.csv';
 
     protected array $coreExtensionsToLoad = ['workspaces'];
+
+    public function localizeRecord(): void
+    {
+        // Localize page first in live.
+        $this->setWorkspaceId(0);
+        $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        // Localize record in workspace.
+        $this->setWorkspaceId(self::VALUE_WorkspaceId);
+        $newTableIds = $this->actionService->localizeRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, self::VALUE_LanguageId);
+        $this->recordIds['localizedElementId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst];
+    }
 }
