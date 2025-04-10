@@ -108,12 +108,12 @@
 	},
 	"require-dev": {
 		"bnf/phpstan-psr-container": "^1.1.0",
-		"codeception/codeception": "^5.1.2",
-		"codeception/lib-asserts": "^2.1.0",
+		"codeception/codeception": "^5.2.1",
+		"codeception/lib-asserts": "^2.2.0",
 		"codeception/module-asserts": "^3.0.0",
 		"codeception/module-cli": "^2.0.1",
 		"codeception/module-filesystem": "^3.0.1",
-		"codeception/module-webdriver": "^4.0.2",
+		"codeception/module-webdriver": "^4.0.3",
 		"composer/composer": "^2.7.8",
 		"friendsofphp/php-cs-fixer": "^3.75.0",
 		"php-webdriver/webdriver": "^1.15.2",
@@ -123,7 +123,7 @@
 		"phpunit/phpunit": "^11.5.17",
 		"sokil/php-isocodes-db-i18n": "^4.0.25",
 		"symfony/translation": "^7.2",
-		"typo3/testing-framework": "^9.1.2",
+		"typo3/testing-framework": "^9.2.0",
 		"webmozart/assert": "^1.11.0"
 	},
 	"suggest": {
