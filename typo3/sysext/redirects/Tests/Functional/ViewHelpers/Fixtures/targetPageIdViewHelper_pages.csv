@@ -1,0 +1,6 @@
+"pages",
+,"uid","pid","doktype","hidden","deleted","title","is_siteroot",
+,1,0,1,0,0,"site root",1,
+,2,1,1,0,0,"standard page - not hidden or soft deleted",0,
+,3,1,1,0,1,"standard page - not hidden but soft deleted",0,
+,4,1,1,1,0,"standard page - hidden but not soft deleted",0,
