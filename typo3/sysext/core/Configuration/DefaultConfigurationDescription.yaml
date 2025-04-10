@@ -1,3 +1,4 @@
+# For supported YAML types @see TYPO3\CMS\Install\Service\LocalConfigurationValueService->recursiveConfigurationFetching() docblock
 GFX:
     type: container
     description: 'Image Processing'
@@ -34,8 +35,8 @@ GFX:
             type: bool
             description: 'If set, the processor_stripColorProfileParameters is used with all processor image operations by default. See tsRef for setting this parameter explicitly for IMAGE generation.'
         processor_stripColorProfileParameters:
-            type: array
-            description: 'Comma separated list of parameters: Specify the parameters to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also know the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank" rel="noreferrer">imagemagick.org</a> for details'
+            type: element-list
+            description: 'List of parameters: Specify the parameters to strip the profile information, which can reduce thumbnail size up to 60KB. Command can differ in IM/GM, IM also knows the -strip command. See <a href="http://www.imagemagick.org/Usage/thumbnails/#profiles" target="_blank" rel="noreferrer">imagemagick.org</a> for details'
         processor_colorspace:
             type: text
             description: 'String: Specify the colorspace to use. Defaults to "RGB" when using GraphicsMagick as processor and "sRGB" when using ImageMagick. Images would be rendered darker than the original when using ImageMagick in combination with "RGB". <br />Possible Values: CMY, CMYK, Gray, HCL, HSB, HSL, HWB, Lab, LCH, LMS, Log, Luv, OHTA, Rec601Luma, Rec601YCbCr, Rec709Luma, Rec709YCbCr, RGB, sRGB, Transparent, XYZ, YCbCr, YCC, YIQ, YCbCr, YUV'
@@ -166,7 +167,7 @@ SYS:
             type: errors
             description: 'Configures which PHP errors should be logged to the "syslog" database table (extension: belog). If set to "0" no PHP errors are logged to the sys_log table. Default is 30711 = <code>E_ALL & ~(E_STRICT | E_NOTICE)</code> (see <a href="https://php.net/manual/en/errorfunc.constants.php" target="_blank" rel="noreferrer">PHP documentation</a>).'
         allowedPhpDisableFunctions:
-          type: array
+          type: element-list
           description: 'A list of function names, which will not trigger an error but only a warning, if they can be found in your php.ini setting "disable_functions".'
         generateApacheHtaccess:
             type: bool
@@ -239,7 +240,7 @@ BE:
             type: text
             description: 'Path to the primary directory of files for editors. This is relative to the public web dir, DefaultStorage will be created with that configuration, do not access manually but via <code>\TYPO3\CMS\Core\Resource\ResourceFactory::getDefaultStorage().</code>'
         lockRootPath:
-            type: array
+            type: element-list
             description: 'List of absolute root path prefixes to be allowed for file operations (including FAL storages). The project root path is allowed in any case and does not need to be defined here. Ending slashes are enforced!'
         lockBackendFile:
             type: text
