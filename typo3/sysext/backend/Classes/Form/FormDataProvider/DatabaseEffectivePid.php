@@ -32,7 +32,17 @@ class DatabaseEffectivePid implements FormDataProviderInterface
     {
         $effectivePid = 0;
         if ($result['command'] === 'edit' && $result['tableName'] === 'pages') {
-            $effectivePid = $result['databaseRow']['uid'];
+            // We always need to detect the "live record of the default language"
+            // Translated pages should always point to UID of the default language as "pid" anyway.
+            // Good to know: l10n_parent in a translated versioned record (double-overlay) points
+            // to the "live record of the default language"
+            if (isset($result['databaseRow']['l10n_parent']) && $result['databaseRow']['l10n_parent'] > 0) {
+                $effectivePid = $result['databaseRow']['l10n_parent'];
+            } elseif (isset($result['databaseRow']['t3ver_oid']) && $result['databaseRow']['t3ver_oid'] > 0) {
+                $effectivePid = $result['databaseRow']['t3ver_oid'];
+            } else {
+                $effectivePid = $result['databaseRow']['uid'];
+            }
         } elseif ($result['command'] === 'edit') {
             $effectivePid = $result['databaseRow']['pid'];
         } elseif ($result['command'] === 'new' && is_array($result['parentPageRow'])) {
