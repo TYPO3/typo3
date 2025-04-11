@@ -664,7 +664,11 @@ class FileList
         $attributes['title'] = $resourceView->getName();
         $attributes['type'] = 'button';
         $attributes['class'] = 'btn btn-link';
-        $attributes['data-filelist-action'] = 'primary';
+        if ($resourceView->isSelectable) {
+            $attributes['data-filelist-action'] = 'primary';
+        } else {
+            $attributes['disabled'] = true;
+        }
 
         $output = '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $resourceName . '</button>';
         if ($resourceView->isMissing()) {
