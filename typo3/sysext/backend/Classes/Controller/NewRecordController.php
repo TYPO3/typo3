@@ -541,7 +541,7 @@ class NewRecordController
     {
         $rootLevelCapability = $schema->getCapability(TcaSchemaCapability::RestrictionRootLevel);
 
-        $rootLevelConstraintMatches = $rootLevelCapability->canExistOnRootLevel() || ($this->id && $rootLevelCapability->canExistOnPages());
+        $rootLevelConstraintMatches = ($rootLevelCapability->canExistOnRootLevel() && $this->id === 0) || ($this->id && $rootLevelCapability->canExistOnPages());
         if (empty($page)) {
             return $rootLevelConstraintMatches && $this->getBackendUserAuthentication()->isAdmin();
         }
