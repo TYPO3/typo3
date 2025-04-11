@@ -1118,7 +1118,7 @@ class DataHandler
                     && (int)($currentRecord[$languageCapability->getTranslationOriginPointerField()->getName()] ?? 0) > 0
                 ) {
                     $originalLanguageRecord = BackendUtility::getRecord($table, $currentRecord[$languageCapability->getTranslationOriginPointerField()->getName()], '*', '', false);
-                    BackendUtility::workspaceOL($table, $originalLanguageRecord);
+                    BackendUtility::workspaceOL($table, $originalLanguageRecord, $this->BE_USER->workspace);
                     $originalLanguage_diffStorage = json_decode(
                         (string)($currentRecord[$languageCapability->getDiffSourceField()->getName()] ?? ''),
                         true
@@ -3451,7 +3451,7 @@ class DataHandler
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" which does not exist', null, ['table' => $table, 'uid' => (int)$uid]);
             return null;
         }
-        BackendUtility::workspaceOL($table, $row);
+        BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
         $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $row;
@@ -4469,8 +4469,10 @@ class DataHandler
             // If this is a translation of a page sorting and pid is kept in sync with default language record.
             // Also in workspaces, the default language page may have been moved to a different pid than the
             // default language page record of live workspace. In this case, localized pages need to be
-            // moved to the pid of the workspace move record, which is why we use getRecordWSOL() here.
-            $defaultLanguagePageRecord = BackendUtility::getRecordWSOL('pages', (int)($workspaceRecord[$pagesLocalizationParentFieldName] ?? $liveRecord[$pagesLocalizationParentFieldName]));
+            // moved to the pid of the workspace move record, which is why we use getRecord() and workspaceOL() here.
+            $defaultLanguagePageRecord = BackendUtility::getRecord('pages', (int)($workspaceRecord[$pagesLocalizationParentFieldName] ?? $liveRecord[$pagesLocalizationParentFieldName]));
+            BackendUtility::workspaceOL('pages', $defaultLanguagePageRecord, $this->BE_USER->workspace);
+
             if (is_array($defaultLanguagePageRecord)) {
                 $updateFields[$sortByFieldName] = $defaultLanguagePageRecord[$sortByFieldName];
                 $updateFields['pid'] = $defaultLanguagePageRecord['pid'];
@@ -4782,7 +4784,8 @@ class DataHandler
         $translationOriginPointerFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
 
         // Getting workspace overlay if possible - this will localize versions in workspace if any
-        $row = BackendUtility::getRecordWSOL($table, $uid);
+        $row = BackendUtility::getRecord($table, $uid);
+        BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
         if (!is_array($row)) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} that did not exist', null, ['table' => $table, 'uid' => (int)$uid]);
             return false;
@@ -4988,7 +4991,8 @@ class DataHandler
     protected function inlineLocalizeSynchronize($table, $id, array $command): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        $parentRecord = BackendUtility::getRecordWSOL($table, $id);
+        $parentRecord = BackendUtility::getRecord($table, $id);
+        BackendUtility::workspaceOL($table, $parentRecord, $this->BE_USER->workspace);
 
         /** @var LanguageAwareSchemaCapability $languageCapability */
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
@@ -5008,7 +5012,7 @@ class DataHandler
             $parentRecord = $parentRecordLocalization[0];
             $id = $parentRecord['uid'];
             // Process overlay for current selected workspace
-            BackendUtility::workspaceOL($table, $parentRecord);
+            BackendUtility::workspaceOL($table, $parentRecord, $this->BE_USER->workspace);
         }
 
         $field = $command['field'] ?? '';
@@ -5037,7 +5041,8 @@ class DataHandler
             return;
         }
 
-        $transOrigRecord = BackendUtility::getRecordWSOL($table, $transOrigPointer);
+        $transOrigRecord = BackendUtility::getRecord($table, $transOrigPointer);
+        BackendUtility::workspaceOL($table, $transOrigRecord, $this->BE_USER->workspace);
 
         $removeArray = [];
         $mmTable = $relationFieldType === 'mm' && isset($config['MM']) && $config['MM'] ? $config['MM'] : '';
@@ -5055,7 +5060,8 @@ class DataHandler
         // Perform synchronization: Possibly removal of already localized records:
         if ($action === 'synchronize') {
             foreach ($dbAnalysisCurrent->itemArray as $index => $item) {
-                $childRecord = BackendUtility::getRecordWSOL($item['table'], $item['id']);
+                $childRecord = BackendUtility::getRecord($item['table'], $item['id']);
+                BackendUtility::workspaceOL($item['table'], $childRecord, $this->BE_USER->workspace);
                 if (isset($childRecord[$childTransOrigPointerField]) && $childRecord[$childTransOrigPointerField] > 0) {
                     $childTransOrigPointer = $childRecord[$childTransOrigPointerField];
                     // If synchronization is requested, child record was translated once, but original record does not exist anymore, remove it:
@@ -5135,7 +5141,8 @@ class DataHandler
      */
     protected function isRecordLocalized(string $table, int $uid, int $language): bool
     {
-        $row = BackendUtility::getRecordWSOL($table, $uid);
+        $row = BackendUtility::getRecord($table, $uid);
+        BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
         $localizations = BackendUtility::getRecordLocalization($table, $uid, $language, 'pid=' . (int)$row['pid']);
         return !empty($localizations);
     }
@@ -6318,7 +6325,7 @@ class DataHandler
             $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to create workspace version of "{table}:{uid}" which does not exist', null, ['table' => $table, 'uid' => (int)$id]);
             return null;
         }
-        BackendUtility::workspaceOL($table, $row);
+        BackendUtility::workspaceOL($table, $row, $this->BE_USER->workspace);
         $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $row;
@@ -6597,7 +6604,7 @@ class DataHandler
                                     // This will fetch the new row for the element
                                     $origRecordRow = BackendUtility::getRecord($table, $theUidToUpdate, '*', '', false);
                                     if (is_array($origRecordRow)) {
-                                        BackendUtility::workspaceOL($table, $origRecordRow);
+                                        BackendUtility::workspaceOL($table, $origRecordRow, $this->BE_USER->workspace);
                                         // Get current data structure and value array:
                                         $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(
                                             ['config' => $fieldType->getConfiguration()],
@@ -7025,7 +7032,7 @@ class DataHandler
         if (!$table || !$uid || !$field || !is_array($record)) {
             return;
         }
-        BackendUtility::workspaceOL($table, $record);
+        BackendUtility::workspaceOL($table, $record, $this->BE_USER->workspace);
         // Get current data structure and value array:
         $valueStructure = GeneralUtility::xml2array($record[$field]);
         // Do recursive processing of the XML data:
