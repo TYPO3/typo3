@@ -1994,23 +1994,6 @@ class PageRenderer implements SingletonInterface
     }
 
     /**
-     * Processes a Javascript file dependent on the current context
-     *
-     * @param string $filename Filename
-     * @return string New filename
-     */
-    protected function processJsFile($filename): string
-    {
-        $filename = $this->getStreamlinedFileName($filename, false);
-        if ($this->compressJavascript) {
-            $filename = $this->resourceCompressor->compressJsFile($filename);
-        } else {
-            $filename = GeneralUtility::createVersionNumberedFilename($filename);
-        }
-        return $this->getAbsoluteWebPath($filename);
-    }
-
-    /**
      * This function acts as a wrapper to allow relative and paths starting with EXT: to be dealt with
      * in this very case to always return the absolute web path to be included directly before output.
      *
