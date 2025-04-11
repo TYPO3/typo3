@@ -421,7 +421,7 @@ export class PageTreeNavigationComponent extends LitElement {
     }
     ContextMenu.show(
       node.itemType,
-      parseInt(node.identifier, 10),
+      node.identifier,
       'tree',
       '',
       '',

@@ -38,8 +38,15 @@ class ContextMenuController
         $contextMenu = GeneralUtility::makeInstance(ContextMenu::class);
 
         $params = $request->getQueryParams();
+        $table = $params['table'] ?? '';
+        $identifier = $params['uid'] ?? '';
         $context = $params['context'] ?? '';
-        $items = $contextMenu->getItems($params['table'], $params['uid'], $context);
+
+        if ($table === '' || $identifier === '') {
+            return new JsonResponse([], 400);
+        }
+
+        $items = $contextMenu->getItems($table, $identifier, $context);
         if (!is_array($items)) {
             $items = [];
         }
