@@ -59,4 +59,16 @@ final readonly class DateTimeFieldType extends AbstractFieldType
     {
         return in_array($this->configuration['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $this->configuration['dbType'] : null;
     }
+
+    public function getDefaultValue(): mixed
+    {
+        $defaultValue = parent::getDefaultValue();
+        $isIntegerBased = $this->getPersistenceType() === null;
+        if (($defaultValue === 0 || $defaultValue === '0') && $isIntegerBased && !$this->isNullable()) {
+            // Map the database-oriented default value `0` to the logical value to `null` if the field is not nullable.
+            // (logical `null` is transformed to database value `0` by the persistence layer as this field is not nullable)
+            return null;
+        }
+        return $defaultValue;
+    }
 }
