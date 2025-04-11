@@ -47,6 +47,39 @@ final class DatabaseEffectivePidTest extends UnitTestCase
     }
 
     #[Test]
+    public function addDataSetsUidOfDefaultPageIsEdited(): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'pages',
+            'databaseRow' => [
+                'uid' => 456,
+                'l10n_parent' => 123,
+            ],
+        ];
+        $expected = $input;
+        $expected['effectivePid'] = 123;
+        self::assertSame($expected, $this->subject->addData($input));
+    }
+
+    #[Test]
+    public function addDataSetsEffectivePidFromVersionedPageRecordInDefaultLanguage(): void
+    {
+        $input = [
+            'command' => 'edit',
+            'tableName' => 'pages',
+            'databaseRow' => [
+                'uid' => 456,
+                'l10n_parent' => 0,
+                't3ver_oid' => 123,
+            ],
+        ];
+        $expected = $input;
+        $expected['effectivePid'] = 123;
+        self::assertSame($expected, $this->subject->addData($input));
+    }
+
+    #[Test]
     public function addDataSetsPidOfRecordIfNoPageIsEdited(): void
     {
         $input = [
