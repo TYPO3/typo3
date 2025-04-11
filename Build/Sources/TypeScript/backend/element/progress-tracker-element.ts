@@ -29,35 +29,19 @@ export type Stage = string;
 export class ProgressTrackerElement extends LitElement {
   static override styles = css`
     :host {
-      --progress-stage-active: 0;
-      --progress-stages-columns: 1;
-
-      /* Progress bar skeleton */
+      --progress-tracker-stage: 0;
+      --progress-tracker-stages: 0;
       --progress-tracker-bar-height: 4px;
       --progress-tracker-bar-border-radius: var(--progress-tracker-bar-height);
-      --progress-tracker-bar-progress-bg-color: var(--typo3-component-primary-color);
-      --progress-tracker-bar-rail-bg-color: light-dark(var(--token-color-neutral-20), var(--token-color-neutral-70));
-
-      /* Indicator skeleton */
-      --progress-tracker-indicator-width: 12px;
-      --progress-tracker-indicator-height: 12px;
-      --progress-tracker-indicator-border-radius: 100%;
-      --progress-tracker-indicator-border-height: 1px;
-
-      /* Indicator background colors */
-      --progress-tracker-indicator-bg-color-default: light-dark(var(--token-color-neutral-20), var(--token-color-neutral-70));
-      --progress-tracker-indicator-bg-color-complete: var(--typo3-component-primary-color);
-      --progress-tracker-indicator-bg-color-current: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-90));
-
-      /* Indicator border colors */
-      --progress-tracker-indicator-border-color-complete: var(--typo3-component-primary-color);
-      --progress-tracker-indicator-border-color-current: var(--typo3-component-primary-color);
-
-      /* Indicator inlet */
-      --progress-tracker-indicator-inlet-scale-complete: 1;
-      --progress-tracker-indicator-inlet-scale-current: 0.6;
-      --progress-tracker-indicator-inlet-bg-color: var(--progress-tracker-indicator-border-color-current);
-      --progress-tracker-indicator-inlet-border-radius: 100%;
+      --progress-tracker-bar-progress-bg-color: var(--typo3-state-primary-border-color);
+      --progress-tracker-bar-track-bg-color: light-dark(var(--token-color-neutral-20), var(--token-color-neutral-80));
+      --progress-tracker-indicator-size: 12px;
+      --progress-tracker-indicator-inlet-bg-default: transparent;
+      --progress-tracker-indicator-inlet-bg-current: var(--typo3-state-primary-color);
+      --progress-tracker-indicator-inlet-bg: var(--progress-tracker-indicator-inlet-bg-default);
+      --progress-tracker-indicator-bg-default: light-dark(var(--token-color-neutral-20), var(--token-color-neutral-70));
+      --progress-tracker-indicator-bg-complete: var(--typo3-state-primary-border-color);
+      --progress-tracker-indicator-bg: var(--progress-tracker-indicator-bg-default);
 
       display: block;
       width: 100%;
@@ -68,47 +52,41 @@ export class ProgressTrackerElement extends LitElement {
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: var(--progress-tracker-indicator-size);
     }
 
     .track-bar-wrapper {
-      position: relative;
-      top: calc((var(--progress-tracker-indicator-height) - var(--progress-tracker-bar-height)) / 2 + var(--progress-tracker-indicator-border-height));
+      position: absolute;
+      top: calc((var(--progress-tracker-indicator-size) - var(--progress-tracker-bar-height)) / 2);
       width: 100%;
       height: var(--progress-tracker-bar-height);
     }
 
     .track-bar {
-      --progress-tracker-bar-inset: calc(calc(100% / var(--progress-stages-columns) / 2) - var(--progress-tracker-indicator-width) / 2);
-
       position: absolute;
       height: 100%;
-      inset-inline-start: var(--progress-tracker-bar-inset);
+      inset-inline-start: calc(100% / var(--progress-tracker-stages) / 2);
       border-radius: var(--progress-tracker-bar-border-radius);
     }
 
-    .track-bar-rail {
-      --progress-tracker-rail-width: calc(calc(100% / var(--progress-stages-columns) * calc(var(--progress-stages-columns) - 1)) + calc(var(--progress-tracker-indicator-width)));
-
-      width: var(--progress-tracker-rail-width);
-      background-color: var(--progress-tracker-bar-rail-bg-color);
+    .track-bar-track {
+      width: calc(100% / var(--progress-tracker-stages) * calc(var(--progress-tracker-stages) - 1));
+      background-color: var(--progress-tracker-bar-track-bg-color);
     }
 
     .track-bar-active {
-      --progress-tracker-bar-width: calc(calc(100% / var(--progress-stages-columns) * var(--progress-stage-active)) + calc(var(--progress-tracker-indicator-width)));
-
-      width: var(--progress-tracker-bar-width, 0);
+      width: calc(100% / var(--progress-tracker-stages) * calc(var(--progress-tracker-stage) - 1));
       background-color: var(--progress-tracker-bar-progress-bg-color);
     }
 
     .stages {
       display: grid;
-      grid-template-columns: repeat(var(--progress-stages-columns), 1fr);
+      grid-template-columns: repeat(var(--progress-tracker-stages), 1fr);
       list-style: none;
       padding: 0;
       margin: 0;
       width: 100%;
       position: relative;
-      top: calc(var(--progress-tracker-bar-height) * -1);
     }
 
     .stage {
@@ -118,48 +96,38 @@ export class ProgressTrackerElement extends LitElement {
     }
 
     .stage-indicator {
+      position: relative;
       display: block;
-      width: var(--progress-tracker-indicator-width);
-      height: var(--progress-tracker-indicator-height);
-      background-color: var(--progress-tracker-indicator-bg-color-default);
-      border-radius: var(--progress-tracker-indicator-border-radius);
-      border: var(--progress-tracker-indicator-border-height) solid transparent;
+      width: var(--progress-tracker-indicator-size);
+      height: var(--progress-tracker-indicator-size);
+      background-color: var(--progress-tracker-indicator-bg);
+      border-radius: 100%;
     }
 
     .stage-indicator:after {
-      display: block;
-      content: "";
-      width: var(--progress-tracker-indicator-width);
-      height: var(--progress-tracker-indicator-height);
-      background-color: var(--progress-tracker-indicator-inlet-bg-color);
-      transform: scale(0);
-      border-radius: var(--progress-tracker-indicator-inlet-border-radius);
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: calc(100% - 6px);
+      height: calc(100% - 6px);
+      border-radius: 100%;
+      transform: translate(-50%, -50%);
+      background-color: var(--progress-tracker-indicator-inlet-bg);
     }
 
+    .stage-indicator-current,
     .stage-indicator-complete {
-      border-color: var(--progress-tracker-indicator-border-color-complete);
-      background-color: var(--progress-tracker-indicator-bg-color-complete);
-    }
-
-    .stage-indicator-complete:after {
-      transform: scale(var(--progress-tracker-indicator-inlet-scale-complete));
-    }
-
-    .stage-indicator-current {
-      border-color: var(--progress-tracker-indicator-border-color-current);
-      background-color: var(--progress-tracker-indicator-bg-color-current);
+      --progress-tracker-indicator-bg: var(--progress-tracker-indicator-bg-complete);
     }
 
     .stage-indicator-current:after {
-      transform: scale(var(--progress-tracker-indicator-inlet-scale-current));
-    }
-
-    .stage-indicator-open:after {
-      background-color: transparent;
+      --progress-tracker-indicator-inlet-bg: var(--progress-tracker-indicator-inlet-bg-current);
     }
 
     .stage-label {
-      margin-top: 2px;
+      margin-top: .5rem;
+      text-align: center;
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -168,11 +136,11 @@ export class ProgressTrackerElement extends LitElement {
       }
 
       .stage-indicator {
-        transition: background-color .5s ease-in-out, border-color .5s ease-in-out;
+        transition: background-color .5s ease-in-out;
       }
 
       .stage-indicator:after {
-        transition: transform .5s ease-in-out, background-color .5s ease-in-out;
+        transition: background-color .5s ease-in-out;
       }
     }
   `;
@@ -184,36 +152,35 @@ export class ProgressTrackerElement extends LitElement {
     if (this.stages.length < 2) {
       return nothing;
     }
-    this.activeStage = Math.min(this.activeStage, this.stages.length - 1);
+    this.activeStage = Math.min(Math.max(this.activeStage, this.stages.length > 0 ? 1 : 0), this.stages.length);
 
     const styles = styleMap({
-      '--progress-stage-active': `${this.activeStage}`,
-      '--progress-stages-columns': `${this.stages.length}`,
+      '--progress-tracker-stage': `${this.activeStage}`,
+      '--progress-tracker-stages': `${this.stages.length}`,
     });
 
     return html`
       <div class="track-wrapper" role="group" style=${styles}>
         <div class="track-bar-wrapper">
-          <div class="track-bar track-bar-rail"></div>
+          <div class="track-bar track-bar-track"></div>
           <div class="track-bar track-bar-active"></div>
         </div>
         <ul class="stages">
-          ${this.stages.map((stage: Stage, index: number): TemplateResult => this.renderStage(stage, index))}
+          ${this.stages.map((stage: Stage, index: number): TemplateResult => this.renderStage(stage, index + 1))}
         </ul>
       </div>
     `;
   }
 
-  private renderStage(stage: Stage, index: number): TemplateResult {
+  private renderStage(stage: Stage, cycle: number): TemplateResult {
     const classes = classMap({
       'stage-indicator': true,
-      'stage-indicator-complete': index < this.activeStage,
-      'stage-indicator-current': index === this.activeStage,
-      'stage-indicator-open': index > this.activeStage,
+      'stage-indicator-complete': cycle < this.activeStage,
+      'stage-indicator-current': cycle === this.activeStage
     });
 
     return html`
-      <li class="stage" aria-current="${index === this.activeStage ? 'step' : 'false'}">
+      <li class="stage" aria-current="${cycle === this.activeStage ? 'step' : 'false'}">
         <span class=${classes}></span>
         <span class="stage-label">${stage}</span>
       </li>
