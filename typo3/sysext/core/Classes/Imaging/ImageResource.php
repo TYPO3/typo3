@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Imaging;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Type\File\ImageInfo;
@@ -44,24 +43,24 @@ class ImageResource
     public static function createFromImageInfo(ImageInfo $imageInfo): self
     {
         return new self(
-            $imageInfo->getWidth(),
-            $imageInfo->getHeight(),
-            $imageInfo->getExtension(),
-            $imageInfo->getRealPath(),
-            PathUtility::stripPathSitePrefix($imageInfo->getRealPath()),
+            width: $imageInfo->getWidth(),
+            height: $imageInfo->getHeight(),
+            extension: $imageInfo->getExtension(),
+            fullPath: $imageInfo->getRealPath(),
+            publicUrl: PathUtility::stripPathSitePrefix($imageInfo->getRealPath()),
         );
     }
 
     public static function createFromProcessedFile(ProcessedFile $processedFile): self
     {
         return new self(
-            (int)$processedFile->getProperty('width'),
-            (int)$processedFile->getProperty('height'),
-            $processedFile->getExtension(),
-            Environment::getPublicPath() . '/' . $processedFile->getPublicUrl(),
-            $processedFile->getPublicUrl(),
-            $processedFile->getOriginalFile(),
-            $processedFile
+            width: (int)$processedFile->getProperty('width'),
+            height: (int)$processedFile->getProperty('height'),
+            extension: $processedFile->getExtension(),
+            fullPath: $processedFile->getForLocalProcessing(false),
+            publicUrl: $processedFile->getPublicUrl(),
+            originalFile: $processedFile->getOriginalFile(),
+            processedFile: $processedFile
         );
     }
 
