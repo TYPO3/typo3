@@ -43,40 +43,50 @@ export class ProgressBarElement extends LitElement {
     }
 
     :host {
-      --progress-bar-height: 3px;
-      --progress-track-bg-color: light-dark(var(--bs-gray-300), var(--bs-gray-800));
+      --progress-bar-height: 4px;
+      --progress-bar-color-primary: var(--typo3-state-primary-border-color);
+      --progress-bar-color-success: var(--typo3-state-success-border-color);
+      --progress-bar-color-warning: var(--typo3-state-warning-border-color);
+      --progress-bar-color-danger: var(--typo3-state-danger-border-color);
+      --progress-bar-color-info: var(--typo3-state-info-border-color);
+      --progress-bar-color: var(--progress-bar-color-primary);
+      --progress-track-color: light-dark(var(--token-color-neutral-20), var(--token-color-neutral-80));
+      --progress-border-radius: var(--typo3-component-border-radius);
       display: block;
       width: 100%;
-      border-radius: var(--typo3-component-border-radius);
+      border-radius: var(--progress-border-radius);
     }
 
     .progress {
       position: relative;
       overflow: hidden;
       height: var(--progress-bar-height);
-      border-radius: var(--typo3-component-border-radius);
+      border-radius: var(--progress-border-radius);
     }
 
     .track {
-      background: var(--progress-track-bg-color);
+      background: var(--progress-track-color);
       inset: 0;
     }
 
     .bar {
-      --progress-bar-bg-color: var(--typo3-component-primary-color);
-      background: var(--progress-bar-bg-color);
+      background: var(--progress-bar-color);
       transition: width 0.5s ease-in-out;
 
       &.bar-success {
-        --progress-bar-bg-color: var(--bs-success);
+        --progress-bar-color: var(--progress-bar-color-success);
       }
 
       &.bar-warning {
-        --progress-bar-bg-color: var(--bs-warning);
+        --progress-bar-color: var(--progress-bar-color-warning);
       }
 
       &.bar-danger {
-        --progress-bar-bg-color: var(--bs-danger);
+        --progress-bar-color: var(--progress-bar-color-danger);
+      }
+
+      &.bar-info {
+        --progress-bar-color: var(--progress-bar-color-info);
       }
 
       &.indeterminate {
@@ -85,7 +95,7 @@ export class ProgressBarElement extends LitElement {
         animation-iteration-count: infinite;
         animation-timing-function: linear;
         width: 33%;
-        background-image: linear-gradient(to right, var(--progress-track-bg-color) 0%, transparent 50%, var(--progress-track-bg-color) 100%)
+        background-image: linear-gradient(to right, var(--progress-track-color) 0%, transparent 50%, var(--progress-track-color) 100%)
       }
     }
 
@@ -93,27 +103,26 @@ export class ProgressBarElement extends LitElement {
     .bar {
       position: absolute;
       height: var(--progress-bar-height);
-      border-radius: var(--typo3-component-border-radius);
+      border-radius: var(--progress-border-radius);
     }
 
     .label {
-      margin-top: 2px;
+      margin-top: .5rem;
     }
   `;
 
   @property({ type: Number, reflect: true }) value: number|undefined = undefined;
   @property({ type: Number, reflect: true }) max: number = 100;
-  @property({ type: Number, reflect: true }) severity: SeverityEnum = SeverityEnum.info;
+  @property({ type: Number, reflect: true }) severity: SeverityEnum|undefined = undefined;
   @property({ type: String, reflect: true }) label: string|undefined;
 
   protected override render(): TemplateResult {
     const labelIdentifier = 'progress-label-' + (Math.random() + 1).toString(36).substring(2);
     const isLabelDefined = this.label !== undefined && this.label;
     const isIndeterminate = isNaN(this.value);
-    const severityClassName = 'bar-' + Severity.getCssClass(this.severity);
     const classes = classMap({
       bar: true,
-      [severityClassName]: !isIndeterminate,
+      ['bar-' + Severity.getCssClass(this.severity)]: !isIndeterminate && this.severity !== undefined,
       indeterminate: isIndeterminate,
     });
     const styles = isIndeterminate ? nothing : styleMap({

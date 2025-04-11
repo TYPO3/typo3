@@ -364,7 +364,7 @@ class MultiStepWizard {
     this.setup.$carousel.data('currentIndex', nextIndex);
 
     const progressTracker = $modalFooter.find('typo3-backend-progress-tracker');
-    progressTracker.attr('active', nextIndex);
+    progressTracker.attr('active', nextIndex + 1);
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
   }
@@ -403,7 +403,7 @@ class MultiStepWizard {
     $nextButton.text(top.TYPO3.lang['wizard.button.next']);
 
     const progressTracker = $modalFooter.find('typo3-backend-progress-tracker');
-    progressTracker.attr('active', nextIndex);
+    progressTracker.attr('active', nextIndex + 1);
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
   }

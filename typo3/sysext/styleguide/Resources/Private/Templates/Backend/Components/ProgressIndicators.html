@@ -66,27 +66,28 @@
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressIndicator.section.severity.headline" /></h2>
         <f:variable name="codeSnippetSeverity">
             /
+            severity="-1"
             severity="0"
             severity="1"
             severity="2"
         </f:variable>
         <sg:example codePreview="true" codeLanguage="html" customCode="{codeSnippetSeverity}">
-            <typo3-backend-progress-bar value="10" max="10" label="info"></typo3-backend-progress-bar><br>
-            <typo3-backend-progress-bar value="10" max="10" label="ok" severity="0"></typo3-backend-progress-bar><br>
-            <typo3-backend-progress-bar value="10" max="10" label="warning" severity="1"></typo3-backend-progress-bar><br>
-            <typo3-backend-progress-bar value="10" max="10" label="error" severity="2"></typo3-backend-progress-bar>
+            <typo3-backend-progress-bar value="5" max="10" label="default"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="info" severity="-1"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="ok" severity="0"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="warning" severity="1"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="error" severity="2"></typo3-backend-progress-bar>
         </sg:example>
-
-        <hr>
 
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
 
         <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
         <sg:colorScheme>
-            <typo3-backend-progress-bar value="10" max="10" label="info"></typo3-backend-progress-bar><br>
-            <typo3-backend-progress-bar value="10" max="10" label="ok" severity="0"></typo3-backend-progress-bar><br>
-            <typo3-backend-progress-bar value="10" max="10" label="warning" severity="1"></typo3-backend-progress-bar><br>
-            <typo3-backend-progress-bar value="10" max="10" label="error" severity="2"></typo3-backend-progress-bar>
+            <typo3-backend-progress-bar value="5" max="10" label="default"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="info" severity="-1"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="ok" severity="0"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="warning" severity="1"></typo3-backend-progress-bar><br>
+            <typo3-backend-progress-bar value="5" max="10" label="error" severity="2"></typo3-backend-progress-bar>
         </sg:colorScheme>
     </div>
 
