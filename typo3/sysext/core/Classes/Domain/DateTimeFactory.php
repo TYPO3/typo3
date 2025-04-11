@@ -40,7 +40,7 @@ final readonly class DateTimeFactory
     {
         $persistenceType = in_array($fieldConfig['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true) ? $fieldConfig['dbType'] : null;
         $isNative = $persistenceType !== null;
-        $isNullable = $fieldConfig['nullable'] ?? $isNative;
+        $isNullable = (bool)($fieldConfig['nullable'] ?? $isNative);
         $format = self::getFormatFromTCAConfig($fieldConfig);
         return self::fromDatabase(
             $value,
