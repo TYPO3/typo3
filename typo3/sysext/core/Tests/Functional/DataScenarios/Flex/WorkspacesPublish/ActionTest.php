@@ -63,4 +63,12 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $this->actionService->publishRecord(self::TABLE_Element, $this->recordIds['localizedElementId']);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeRecord.csv');
     }
+
+    #[Test]
+    public function deleteRecord(): void
+    {
+        parent::deleteRecord();
+        $this->actionService->publishRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecord.csv');
+    }
 }

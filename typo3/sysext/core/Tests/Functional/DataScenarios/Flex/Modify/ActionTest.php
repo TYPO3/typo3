@@ -59,4 +59,11 @@ final class ActionTest extends AbstractActionTestCase
         parent::localizeRecord();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeRecord.csv');
     }
+
+    #[Test]
+    public function deleteRecord(): void
+    {
+        parent::deleteRecord();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteRecord.csv');
+    }
 }
