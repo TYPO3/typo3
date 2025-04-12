@@ -1,4 +1,4 @@
-functional mariadb 10.4 php 8.3 pre-merge:
+functional mariadb 10.4 php 8.3 pdo_mysql pre-merge:
   stage: main
   tags:
     - metal2
@@ -9,7 +9,7 @@ functional mariadb 10.4 php 8.3 pre-merge:
   parallel: 6
   script:
     - Build/Scripts/runTests.sh -s composerInstall -p 8.3
-    - Build/Scripts/runTests.sh -s functional -d mariadb -i 10.4 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
+    - Build/Scripts/runTests.sh -s functional -d mariadb -a pdo_mysql -i 10.4 -p 8.3 -c $CI_NODE_INDEX/$CI_NODE_TOTAL
 
 functional postgres 10 php 8.4 pre-merge:
   stage: main
