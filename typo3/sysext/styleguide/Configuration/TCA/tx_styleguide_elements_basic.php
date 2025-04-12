@@ -1582,6 +1582,17 @@ backend_layout {
                 ],
             ],
         ],
+        'none_5' => [
+            'label' => 'none_5',
+            'description' => 'format=date with appendAge',
+            'config' => [
+                'type' => 'none',
+                'format' => 'date',
+                'format.' => [
+                    'appendAge' => true,
+                ],
+            ],
+        ],
 
         'passthrough_1' => [
             'label' => 'passthrough_1',
@@ -1962,7 +1973,7 @@ backend_layout {
                 --div--;language,
                     language_1,
                 --div--;none,
-                    none_1, none_2, none_3, none_4,
+                    none_1, none_2, none_3, none_4, none_5,
                 --div--;passthrough,
                     passthrough_1, passthrough_2,
                 --div--;user,
