@@ -125,8 +125,8 @@ readonly class RemoteServer
     {
         $diffReturnArray = [];
         $liveReturnArray = [];
-        $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
-        $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
+        $plainLiveRecord = $liveRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->t3ver_oid);
+        $plainVersionRecord = $versionRecord = (array)BackendUtility::getRecord($parameter->table, $parameter->uid);
         $versionState = VersionState::tryFrom($versionRecord['t3ver_state'] ?? 0);
         $iconWorkspace = $this->iconFactory->getIconForRecord($parameter->table, $versionRecord, IconSize::SMALL);
         $stagePosition = $this->stagesService->getPositionOfCurrentStage($parameter->stage);
@@ -140,6 +140,7 @@ readonly class RemoteServer
                 continue;
             }
             // Disable internal fields
+            // l10n_diffsource is not needed, see #91667
             if (($GLOBALS['TCA'][$parameter->table]['ctrl']['transOrigDiffSourceField'] ?? '') === $fieldName) {
                 continue;
             }
@@ -200,7 +201,7 @@ readonly class RemoteServer
                     ];
                 } elseif ($isNewOrDeletePlaceholder && isset($suitableFields[$fieldName])) {
                     // If this is a new or delete placeholder, add diff view for all appropriate fields
-                    $newOrDeleteRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
+                    $newOrDeleteRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration, $plainLiveRecord);
 
                     // Don't add empty fields
                     if ($newOrDeleteRecord[$fieldName] === '') {
@@ -224,8 +225,8 @@ readonly class RemoteServer
                     ];
                 } elseif ((string)$liveRecord[$fieldName] !== (string)$versionRecord[$fieldName]) {
                     // Select the human-readable values before diff
-                    $liveRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration);
-                    $versionRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$versionRecord[$fieldName], $versionRecord['uid'], $configuration);
+                    $liveRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$liveRecord[$fieldName], $liveRecord['uid'], $configuration, $plainLiveRecord);
+                    $versionRecord[$fieldName] = $this->formatValue($parameter->table, $fieldName, (string)$versionRecord[$fieldName], $versionRecord['uid'], $configuration, $plainVersionRecord);
                     $fieldDifferences = ($configuration['type'] ?? '') === 'flex'
                         ? $this->diffUtility->diff(strip_tags($liveRecord[$fieldName]), strip_tags($versionRecord[$fieldName]), DiffGranularity::CHARACTER)
                         : $this->diffUtility->diff(strip_tags($liveRecord[$fieldName]), strip_tags($versionRecord[$fieldName]));
@@ -296,12 +297,12 @@ readonly class RemoteServer
         ];
     }
 
-    protected function formatValue(string $table, string $fieldName, string $value, int $uid, array $tcaConfiguration): string
+    protected function formatValue(string $table, string $fieldName, string $value, int $uid, array $tcaConfiguration, array $fullRow): string
     {
         if (($tcaConfiguration['type'] ?? '') === 'flex') {
             return $this->flexFormValueFormatter->format($table, $fieldName, $value, $uid, $tcaConfiguration);
         }
-        return (string)BackendUtility::getProcessedValue($table, $fieldName, $value, 0, true, false, $uid);
+        return (string)BackendUtility::getProcessedValue($table, $fieldName, $value, 0, true, false, $uid, true, (int)$fullRow['pid'], $fullRow);
     }
 
     /**
