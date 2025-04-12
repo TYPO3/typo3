@@ -351,6 +351,21 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeContentWithLocalizationExclude(): void
+    {
+        parent::localizeContentWithLocalizationExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWExclude.csv');
+
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('[Translate to Dansk:] Regular Element #1', 'Testing #1'));
+    }
+
+    #[Test]
     public function localizeContentWithHideAtCopy(): void
     {
         parent::localizeContentWithHideAtCopy();
