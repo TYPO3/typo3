@@ -82,4 +82,11 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $newTableIds = $this->actionService->localizeRecord(self::TABLE_Element, self::VALUE_ElementIdFirst, self::VALUE_LanguageId);
         $this->recordIds['localizedContentId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst];
     }
+
+    public function deleteRecord(): void
+    {
+        $newTableIds = $this->actionService->deleteRecord(self::TABLE_Element, self::VALUE_ElementIdFirst);
+        // Usually this is the record ID itself, but when in a workspace, the ID is the one from the versioned record
+        $this->recordIds['deletedRecordId'] = $newTableIds[self::TABLE_Element][self::VALUE_ElementIdFirst] ?? self::VALUE_ElementIdFirst;
+    }
 }
