@@ -29,6 +29,18 @@ final readonly class DateTimeFieldType extends AbstractFieldType
         return 'datetime';
     }
 
+    /**
+     * native datetime fields are nullable by default, and
+     * are only not-nullable if `nullable` is explicitly set to false.
+     */
+    public function isNullable(): bool
+    {
+        if ($this->getPersistenceType() !== null) {
+            return $this->configuration['nullable'] ?? true;
+        }
+        return parent::isNullable();
+    }
+
     public function getFormat(): string
     {
         $format = $this->configuration['format'] ?? null;

@@ -166,7 +166,7 @@ readonly class TcaSchema implements SchemaInterface
      *          : ($capability is TcaSchemaCapability::Label ? Capability\LabelCapability
      *          : ($capability is TcaSchemaCapability::AncestorReferenceField ? Capability\SystemInternalFieldCapability
      *          : Capability\SystemInternalFieldCapability))))))))))))))))
- */
+     */
     public function getCapability(TcaSchemaCapability $capability): Capability\SchemaCapabilityInterface
     {
         return match ($capability) {
