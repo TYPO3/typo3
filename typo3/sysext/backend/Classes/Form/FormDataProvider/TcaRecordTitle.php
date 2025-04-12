@@ -18,6 +18,7 @@ namespace TYPO3\CMS\Backend\Form\FormDataProvider;
 use TYPO3\CMS\Backend\Form\FormDataProviderInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -362,12 +363,11 @@ class TcaRecordTitle implements FormDataProviderInterface
             $ageSuffix = '';
             // Generate age suffix as long as not explicitly suppressed
             if (!($fieldConfig['disableAgeDisplay'] ?? false)) {
-                $ageDelta = $GLOBALS['EXEC_TIME'] - $datetime->getTimestamp();
-                $calculatedAge = BackendUtility::calcAge(
-                    (int)abs($ageDelta),
+                $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
+                $ageSuffix = sprintf(' (%s)', (new DateFormatter())->formatDateInterval(
+                    $now->diff($datetime),
                     $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-                );
-                $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
+                ));
             }
             return BackendUtility::date($datetime->getTimestamp()) . $ageSuffix;
         }

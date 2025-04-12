@@ -41,20 +41,32 @@ final class BackendUtilityTest extends UnitTestCase
     public static function calcAgeDataProvider(): array
     {
         return [
-            'Single year' => [
+            '366 days' => [
+                'seconds' => 60 * 60 * 24 * (365 + 1),
+                'expectedLabel' => '1 year',
+            ],
+            '365 days' => [
                 'seconds' => 60 * 60 * 24 * 365,
                 'expectedLabel' => '1 year',
             ],
             'Plural years' => [
-                'seconds' => 60 * 60 * 24 * 365 * 2,
+                'seconds' => 60 * 60 * 24 * (365 * 2 + 1),
                 'expectedLabel' => '2 yrs',
             ],
-            'Single negative year' => [
-                'seconds' => 60 * 60 * 24 * 365 * -1,
+            'Negative 366 year' => [
+                'seconds' => 60 * 60 * 24 * (365 + 1) * -1,
                 'expectedLabel' => '-1 year',
             ],
-            'Plural negative years' => [
-                'seconds' => 60 * 60 * 24 * 365 * 2 * -1,
+            'Negative 365 days (not a year, because of leap year)' => [
+                'seconds' => 60 * 60 * 24 * 365 * -1,
+                'expectedLabel' => '-365 days',
+            ],
+            'Negative 2*365 days' => [
+                'seconds' => 60 * 60 * 24 * (365 * 2) * -1,
+                'expectedLabel' => '-1 year',
+            ],
+            'Negative 366 + 365 days' => [
+                'seconds' => 60 * 60 * 24 * (366 + 365) * -1,
                 'expectedLabel' => '-2 yrs',
             ],
             'Single day' => [
@@ -116,6 +128,7 @@ final class BackendUtilityTest extends UnitTestCase
     #[Test]
     public function calcAgeReturnsExpectedValues(int $seconds, string $expectedLabel): void
     {
+        $GLOBALS['EXEC_TIME'] = mktime(0, 0, 0, 8, 30, 2015);
         self::assertSame($expectedLabel, BackendUtility::calcAge($seconds));
     }
 

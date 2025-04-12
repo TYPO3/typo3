@@ -40,6 +40,7 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\ImageDimension;
 use TYPO3\CMS\Core\Imaging\ImageManipulation\CropVariantCollection;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
@@ -926,29 +927,20 @@ class BackendUtility
     /**
      * Returns the "age" in minutes / hours / days / years of the number of $seconds inputted.
      *
-     * @param int $seconds Seconds could be the difference of a certain timestamp and time()
+     * @param int $seconds Seconds is the difference of current time() and a certain timestamp
      * @param string $labels Labels should be something like ' min| hrs| days| yrs| min| hour| day| year'. This value is typically delivered by this function call: $GLOBALS["LANG"]->sL("LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears")
      * @return string Formatted time
      */
     public static function calcAge($seconds, $labels = 'min|hrs|days|yrs|min|hour|day|year')
     {
-        $labelArr = GeneralUtility::trimExplode('|', $labels, true);
-        $absSeconds = abs($seconds);
-        $sign = $seconds < 0 ? -1 : 1;
-        if ($absSeconds < 3600) {
-            $val = round($absSeconds / 60);
-            $seconds = $sign * $val . ' ' . ($val == 1 ? $labelArr[4] : $labelArr[0]);
-        } elseif ($absSeconds < 24 * 3600) {
-            $val = round($absSeconds / 3600);
-            $seconds = $sign * $val . ' ' . ($val == 1 ? $labelArr[5] : $labelArr[1]);
-        } elseif ($absSeconds < 365 * 24 * 3600) {
-            $val = round($absSeconds / (24 * 3600));
-            $seconds = $sign * $val . ' ' . ($val == 1 ? $labelArr[6] : $labelArr[2]);
-        } else {
-            $val = round($absSeconds / (365 * 24 * 3600));
-            $seconds = $sign * $val . ' ' . ($val == 1 ? $labelArr[7] : $labelArr[3]);
-        }
-        return $seconds;
+        $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
+        $then = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'] - $seconds);
+        // Show past dates without a leading sign, but future dates with.
+        // This does not make sense, but is kept for legacy reasons.
+        $sign = $then > $now ? '-' : '';
+        // Take an absolute diff, since we don't want formatDateInterval to output the (correct) sign
+        $diff = $now->diff($then, true);
+        return $sign . (new DateFormatter())->formatDateInterval($diff, $labels);
     }
 
     /**
@@ -1776,12 +1768,11 @@ class BackendUtility
                     $ageSuffix = '';
                     // Generate age suffix as long as not explicitly suppressed
                     if (!($theColConf['disableAgeDisplay'] ?? false)) {
-                        $ageDelta = $GLOBALS['EXEC_TIME'] - $datetime->getTimestamp();
-                        $calculatedAge = BackendUtility::calcAge(
-                            (int)abs($ageDelta),
+                        $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
+                        $ageSuffix = sprintf(' (%s)', (new DateFormatter())->formatDateInterval(
+                            $now->diff($datetime),
                             $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-                        );
-                        $ageSuffix = ' (' . ($ageDelta > 0 ? '-' : '') . $calculatedAge . ')';
+                        ));
                     }
                     $l = self::date($datetime->getTimestamp()) . $ageSuffix;
                 } elseif ($format === 'time') {

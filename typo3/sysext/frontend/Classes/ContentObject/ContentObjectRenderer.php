@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DocumentTypeExclusionRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordInterface;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
@@ -4601,31 +4602,15 @@ class ContentObjectRenderer implements LoggerAwareInterface
      */
     public function calcAge($seconds, $labels = null)
     {
-        if ($labels === null || MathUtility::canBeInterpretedAsInteger($labels)) {
-            $labels = ' min| hrs| days| yrs| min| hour| day| year';
-        } else {
-            $labels = str_replace('"', '', $labels);
-        }
-        $labelArr = explode('|', $labels);
-        if (count($labelArr) === 4) {
-            $labelArr = array_merge($labelArr, $labelArr);
-        }
-        $absSeconds = abs($seconds);
-        $sign = $seconds > 0 ? 1 : -1;
-        if ($absSeconds < 3600) {
-            $val = round($absSeconds / 60);
-            $seconds = $sign * $val . ($val == 1 ? $labelArr[4] : $labelArr[0]);
-        } elseif ($absSeconds < 24 * 3600) {
-            $val = round($absSeconds / 3600);
-            $seconds = $sign * $val . ($val == 1 ? $labelArr[5] : $labelArr[1]);
-        } elseif ($absSeconds < 365 * 24 * 3600) {
-            $val = round($absSeconds / (24 * 3600));
-            $seconds = $sign * $val . ($val == 1 ? $labelArr[6] : $labelArr[2]);
-        } else {
-            $val = round($absSeconds / (365 * 24 * 3600));
-            $seconds = $sign * $val . ($val == 1 ? ($labelArr[7] ?? null) : ($labelArr[3] ?? null));
-        }
-        return $seconds;
+        $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
+        $then = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'] - $seconds);
+        // Show past dates without a leading sign, but future dates with.
+        // This does not make sense, but is kept for legacy reasons.
+        $sign = $then > $now ? '-' : '';
+        // Take an absolute diff, since we don't want formatDateInterval to output the (correct) sign
+        $diff = $now->diff($then, true);
+        $labels = ($labels === null || MathUtility::canBeInterpretedAsInteger($labels)) ? 'min|hrs|days|yrs|min|hour|day|year' : str_replace('"', '', $labels);
+        return $sign . (new DateFormatter())->formatDateInterval($diff, $labels);
     }
 
     /**

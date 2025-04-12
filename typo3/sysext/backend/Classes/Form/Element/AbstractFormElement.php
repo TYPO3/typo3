@@ -21,6 +21,7 @@ use TYPO3\CMS\Backend\Form\Behavior\UpdateBitmaskOnFieldChange;
 use TYPO3\CMS\Backend\Form\NodeFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
 use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locale;
@@ -239,15 +240,17 @@ abstract class AbstractFormElement extends AbstractNode
                     } else {
                         $value = BackendUtility::date((int)$itemValue);
                     }
+                    if (isset($formatOptions['appendAge']) && $formatOptions['appendAge']) {
+                        $now = DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME']);
+                        $then = DateTimeFactory::createFromTimestamp((int)$itemValue);
+                        $age = (new DateFormatter())->formatDateInterval(
+                            $now->diff($then),
+                            $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
+                        );
+                        $value .= ' (' . $age . ')';
+                    }
                 } else {
                     $value = '';
-                }
-                if (isset($formatOptions['appendAge']) && $formatOptions['appendAge']) {
-                    $age = BackendUtility::calcAge(
-                        $GLOBALS['EXEC_TIME'] - $itemValue,
-                        $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
-                    );
-                    $value .= ' (' . $age . ')';
                 }
                 $itemValue = $value;
                 break;

@@ -993,7 +993,7 @@ final class ContentObjectRendererTest extends UnitTestCase
                 ' min| hrs| days| yrs| min| hour| day| year',
             ],
             'years' => [
-                '45 yrs',
+                '44 yrs',
                 1417997800,
                 ' min| hrs| days| yrs',
             ],
@@ -1027,6 +1027,8 @@ final class ContentObjectRendererTest extends UnitTestCase
     #[Test]
     public function calcAge(string $expect, int $timestamp, string $labels): void
     {
+        // Set exec_time to a hard timestamp, since age calculation depends on current date
+        $GLOBALS['EXEC_TIME'] = 1417392000;
         self::assertSame(
             $expect,
             $this->subject->calcAge($timestamp, $labels)

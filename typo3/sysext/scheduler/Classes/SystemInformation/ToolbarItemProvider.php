@@ -20,8 +20,9 @@ namespace TYPO3\CMS\Scheduler\SystemInformation;
 use TYPO3\CMS\Backend\Backend\Event\SystemInformationToolbarCollectorEvent;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Toolbar\InformationStatus;
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Localization\DateFormatter;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -75,10 +76,12 @@ final class ToolbarItemProvider
                 $message = $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.incompleteLastRun');
                 $severity = InformationStatus::WARNING;
             } else {
-                $startDate = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'], $this->lastRunInformation['start']);
-                $startTime = date($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'], $this->lastRunInformation['start']);
-                $duration = BackendUtility::calcAge(
-                    $this->lastRunInformation['end'] - $this->lastRunInformation['start'],
+                $start = DateTimeFactory::createFromTimestamp($this->lastRunInformation['start']);
+                $end = DateTimeFactory::createFromTimestamp($this->lastRunInformation['end']);
+                $startDate = $start->format($GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy']);
+                $startTime = $start->format($GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm']);
+                $duration = (new DateFormatter())->formatDateInterval(
+                    $end->diff($start, true),
                     $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.minutesHoursDaysYears')
                 );
                 $severity = InformationStatus::NOTICE;
