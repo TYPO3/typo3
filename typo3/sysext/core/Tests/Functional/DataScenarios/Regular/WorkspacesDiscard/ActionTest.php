@@ -164,6 +164,16 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function localizeContentWithLocalizationExclude(): void
+    {
+        parent::localizeContentWithLocalizationExclude();
+        // @todo: currently two records are created, and need to be discarded separately
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId'] + 1);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWExclude.csv');
+    }
+
+    #[Test]
     public function localizeContentFromNonDefaultLanguage(): void
     {
         parent::localizeContentFromNonDefaultLanguage();

@@ -1,0 +1,30 @@
+"pages",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug",
+,1,0,256,0,0,0,0,0,0,0,"FunctionalTest","/",
+,50,0,512,0,0,0,0,0,0,0,"Second Root Page","/",
+,51,50,128,0,0,0,0,0,0,0,"DataHandlerTest in second tree","/data-handler",
+,52,51,128,0,0,0,0,0,0,0,"Relations in second tree","/data-handler/relations",
+,88,1,256,0,0,0,0,0,0,0,"DataHandlerTest","/data-handler",
+,89,88,256,0,0,0,0,0,0,0,"Relations","/data-handler/relations",
+,90,88,512,0,0,0,0,0,0,0,"Target","/data-handler/target",
+,91,88,256,0,1,89,0,0,0,0,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations",
+,92,88,256,0,2,89,0,0,0,0,"[Translate to Deutsch:] Relations","/data-handler/translate-to-deutsch-relations",
+"tt_content",,,,,,,,,,,,,,
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","l10n_state"
+,200,88,256,0,0,0,0,0,0,0,0,"Regular Element #0",
+,201,88,512,0,-1,0,0,0,0,0,0,"Language all element",
+,297,89,384,0,0,0,0,0,0,0,0,"Regular Element #1",
+,298,89,1024,0,0,0,0,0,0,0,0,"Testing #1","\NULL"
+,299,89,1280,0,0,0,0,0,0,0,0,"Regular Element #3",
+,300,89,1536,0,1,299,299,0,0,0,0,"[Translate to Dansk:] Regular Element #3",
+,301,89,384,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",
+,302,89,960,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",
+,303,89,640,0,1,298,298,0,0,0,0,"Testing #1","\NULL"
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"02aa95a647ed365ffeeac881bd1af449","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"14f90231b8565c61decd2aeaebea6034","pages",92,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"ca4f164be617724388f00923729e8558","tt_content",300,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",299,,0,0,2147483647,0,0,
+,"3676712de719382fe386617c1942c940","tt_content",301,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"2b5621b6ac407f06a71e517bf98c9c94","tt_content",302,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"47ebf8db6657e6130162e9bd690adb08","tt_content",303,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,0,
