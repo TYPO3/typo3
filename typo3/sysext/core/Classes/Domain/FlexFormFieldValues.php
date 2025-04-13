@@ -30,7 +30,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
 {
     public function __construct(
-        protected array $properties
+        protected array $sheets
     ) {}
 
     public function get(string $id)
@@ -38,19 +38,60 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
         if (!$this->has($id)) {
             throw new FlexFieldPropertyNotFoundException('Flex property "' . $id . '" is not available.', 1731962637);
         }
-        $propertyValue = ArrayUtility::getValueByPath($this->properties, $id, '.');
-        if (is_array($propertyValue)) {
-            array_walk_recursive($propertyValue, fn(mixed &$value): mixed => $value = $this->resolveRecordPropertyClosure($id, $value));
-        } else {
-            $propertyValue = $this->resolveRecordPropertyClosure($id, $propertyValue);
+
+        [$sheetName, $propertyPath] = $this->processId($id);
+
+        if ($sheetName === '' && $this->hasMultipleSheets()) {
+            // Get the sheet name for the requested property path - There is one, since has() returned true.
+            foreach ($this->sheets as $name => $sheet) {
+                if (ArrayUtility::isValidPath($sheet, $propertyPath, '.')) {
+                    $sheetName = $name;
+                    break;
+                }
+            }
         }
-        ArrayUtility::setValueByPath($this->properties, $id, $propertyValue, '.');
+
+        $propertyValue = ArrayUtility::getValueByPath($this->sheets[$sheetName], $propertyPath, '.');
+        if (is_array($propertyValue)) {
+            array_walk_recursive($propertyValue, fn(mixed &$value): mixed => $value = $this->resolveRecordPropertyClosure($propertyPath, $value));
+        } else {
+            $propertyValue = $this->resolveRecordPropertyClosure($propertyPath, $propertyValue);
+        }
+        ArrayUtility::setValueByPath($this->sheets[$sheetName], $propertyPath, $propertyValue, '.');
         return $propertyValue;
     }
 
     public function has(string $id): bool
     {
-        return ArrayUtility::isValidPath($this->properties, $id, '.');
+        [$sheetName, $propertyPath] = $this->processId($id);
+
+        if ($sheetName !== '' && !isset($this->sheets[$sheetName])) {
+            // Given sheet name does not exist
+            return false;
+        }
+        if ($this->hasMultipleSheets()) {
+            if ($sheetName !== '') {
+                return ArrayUtility::isValidPath($this->sheets[$sheetName], $propertyPath, '.');
+            }
+            // In case no sheet name is given, we try to execute fallback handling
+            // by searching for the requested $propertyPath in all sheets.
+            $occurences = [];
+            foreach ($this->sheets as $sheetName => $sheet) {
+                if (ArrayUtility::isValidPath($sheet, $propertyPath, '.')) {
+                    $occurences[$sheetName] = $propertyPath;
+                }
+            }
+
+            if (count($occurences) > 1) {
+                // This is a special case, which we handle with an exception to create awareness for the error.
+                throw new FlexFieldPropertyException('Given id is ambigious since the field exists in multiple sheets and no sheet is defined.', 1731962638);
+            }
+            // Whether the requested $propertyPath name exist in a sheet
+            return count($occurences) === 1;
+        }
+
+        // Standard case, whether the $propertyPath exists in the given sheet name
+        return ArrayUtility::isValidPath($this->sheets[$sheetName], $propertyPath, '.');
     }
 
     public function offsetExists(mixed $offset): bool
@@ -75,7 +116,29 @@ class FlexFormFieldValues implements ContainerInterface, \ArrayAccess
 
     public function toArray(): array
     {
-        return $this->properties;
+        return $this->sheets;
+    }
+
+    protected function hasMultipleSheets(): bool
+    {
+        return count($this->sheets) > 1;
+    }
+
+    protected function processId(string $id): array
+    {
+        if (str_contains($id, '/')) {
+            // $id contains a sheet name
+            return explode('/', $id, 2);
+        }
+        if ($this->hasMultipleSheets()) {
+            // $id does not contain a sheet name while there are multiple sheets. Therefore, we
+            // return an empty sheet name. This allows executing fallback handling in has() and get().
+            return ['', $id];
+        }
+
+        // In case the $id does not contain a sheet name, but we have a
+        // single sheet flex form, we fall back to this name automatically.
+        return [key($this->sheets), $id];
     }
 
     protected function resolveRecordPropertyClosure(string $id, mixed $propertyValue): mixed

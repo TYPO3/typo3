@@ -252,6 +252,54 @@ return [
                                         </el>
                                     </ROOT>
                                 </sSection>
+                                <sSection2>
+                                    <ROOT>
+                                        <sheetTitle>section2</sheetTitle>
+                                        <type>array</type>
+                                        <el>
+                                            <section_2>
+                                                <title>section_2</title>
+                                                <type>array</type>
+                                                <section>1</section>
+                                                <el>
+                                                    <container_1>
+                                                        <type>array</type>
+                                                        <title>container_1</title>
+                                                        <el>
+                                                            <input_1>
+                                                                <label>input_1 description</label>
+                                                                <description>field description</description>
+                                                                <config>
+                                                                    <type>input</type>
+                                                                </config>
+                                                            </input_1>
+                                                            <color_1>
+                                                                <label>color_1</label>
+                                                                <config>
+                                                                    <type>color</type>
+                                                                    <size>10</size>
+                                                                </config>
+                                                            </color_1>
+                                                        </el>
+                                                    </container_1>
+                                                    <container_2>
+                                                        <type>array</type>
+                                                        <title>container_2</title>
+                                                        <el>
+                                                            <text_1>
+                                                                <label>text_1 default "foo"</label>
+                                                                <config>
+                                                                    <type>text</type>
+                                                                    <default>foo</default>
+                                                                </config>
+                                                            </text_1>
+                                                        </el>
+                                                    </container_2>
+                                                </el>
+                                            </section_2>
+                                        </el>
+                                    </ROOT>
+                                </sSection2>
                             </sheets>
                         </T3DataStructure>
                     ',

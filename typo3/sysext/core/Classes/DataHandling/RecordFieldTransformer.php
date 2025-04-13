@@ -221,25 +221,23 @@ readonly class RecordFieldTransformer
         Context $context,
         RecordIdentityMap $recordIdentityMap,
     ): FlexFormFieldValues {
-        $plainValues = $this->flexFormService->convertFlexFormContentToArray((string)$fieldValue);
-        $usedSchema = $this->flexFormSchemaFactory->getSchemaForRecord(
-            $record,
-            $fieldInformation,
-            // @todo: RelationMap does not work in FlexForm currently, as we do not have this information persisted somewhere
-            new RelationMap()
-        );
-
-        if ($usedSchema !== null) {
-            $resolvedValues = [];
+        $plainValues = $this->flexFormService->convertFlexFormContentToSheetsArray((string)$fieldValue);
+        // @todo: RelationMap does not work in FlexForm currently, as we do not have this information persisted somewhere
+        $usedSchema = $this->flexFormSchemaFactory->getSchemaForRecord($record, $fieldInformation, new RelationMap());
+        if ($usedSchema === null) {
+            return new FlexFormFieldValues($plainValues);
+        }
+        $recordFactory = GeneralUtility::makeInstance(RecordFactory::class);
+        $transformedValues = [];
+        foreach ($plainValues as $sheetName => $values) {
             // Flatten keys (because we receive settings[mysetting] and we want settings.mysetting)
-            $plainValues = ArrayUtility::flattenPlain($plainValues);
-            $recordFactory = GeneralUtility::makeInstance(RecordFactory::class);
-            foreach ($plainValues as $fieldName => $plainFieldValue) {
+            $values = ArrayUtility::flattenPlain($values);
+            foreach ($values as $fieldName => &$plainFieldValue) {
                 // That's a "fun" workaround: In order to allow to process e.g. "sDEF/header", we need
                 // to add this to the "rawRecord" (thus, we clone it), so it is within the array
                 // and then set "sDEF/header" even though this is not a DB field. Then we keep it in "$fieldName"
                 // which actually is the plain field name (in this case "header")
-                $fieldInformationOfFlexField = $usedSchema->getField($fieldName);
+                $fieldInformationOfFlexField = $usedSchema->getField($fieldName, $sheetName);
                 // No field given, we just skip the value, as it is not properly defined
                 if ($fieldInformationOfFlexField === null) {
                     continue;
@@ -247,10 +245,11 @@ readonly class RecordFieldTransformer
                 $rawRecordValues = array_replace($record->toArray(), [$fieldInformationOfFlexField->getName() => $plainFieldValue]);
                 $fakeRawRecordWithFlexField = $recordFactory->createRawRecord($record->getMainType(), $rawRecordValues);
                 $transformedValue = $this->transformField($fieldInformationOfFlexField, $fakeRawRecordWithFlexField, $context, $recordIdentityMap);
-                $resolvedValues[$fieldName] = $transformedValue;
+                $plainFieldValue = $transformedValue;
             }
-            return new FlexFormFieldValues(ArrayUtility::unflatten($resolvedValues));
+            unset($plainFieldValue);
+            $transformedValues[$sheetName] = ArrayUtility::unflatten($values);
         }
-        return new FlexFormFieldValues($plainValues);
+        return new FlexFormFieldValues($transformedValues);
     }
 }
