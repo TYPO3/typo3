@@ -53,6 +53,11 @@ final readonly class FlexSheet
         return $this->fields[$fieldName];
     }
 
+    public function getSections(): array
+    {
+        return $this->sections;
+    }
+
     public static function __set_state(array $state): self
     {
         return new self(...$state);

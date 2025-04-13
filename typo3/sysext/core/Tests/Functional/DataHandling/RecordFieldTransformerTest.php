@@ -1368,6 +1368,226 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function handlesEmptyFlexFormValue(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield' => '',
+        ]);
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertInstanceOf(FlexFormFieldValues::class, $result);
+        self::assertSame([], $result->toArray());
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
+        self::assertSame([], $resolvedRelation->toArray());
+    }
+
+    #[Test]
+    public function throwsExceptionForAmbigiousPropertyPath(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Header in Flex</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="sheet2">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Second Header in Flex</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        $this->expectException(FlexFieldPropertyException::class);
+        $this->expectExceptionCode(1731962638);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertInstanceOf(FlexFormFieldValues::class, $result);
+        self::assertSame('Header in Flex', $result['header']);
+    }
+
+    #[Test]
+    public function canResolveSamePropertyPathInMultipleSheets(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Header in Flex</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="sheet2">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Second Header in Flex</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertInstanceOf(FlexFormFieldValues::class, $result);
+        self::assertSame('Header in Flex', $result['sDEF/header']);
+        self::assertSame('Header in Flex', $result->get('sDEF/header'));
+        self::assertSame('Second Header in Flex', $result['sheet2/header']);
+        self::assertSame('Second Header in Flex', $result->get('sheet2/header'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
+        self::assertSame('Header in Flex', $resolvedRelation['sDEF/header']);
+        self::assertSame('Header in Flex', $resolvedRelation->get('sDEF/header'));
+        self::assertSame('Second Header in Flex', $resolvedRelation['sheet2/header']);
+        self::assertSame('Second Header in Flex', $resolvedRelation->get('sheet2/header'));
+    }
+
+    #[Test]
+    public function fallbackPropertyPathInSingleSheet(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="datetime">
+                    <value index="vDEF">1366480800</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        $GLOBALS['TCA']['tt_content']['columns']['typo3tests_contentelementb_flexfield']['config']['ds']['typo3tests_contentelementb'] = '<T3FlexForms>
+    <sheets type="array">
+        <sDEF type="array">
+            <ROOT type="array">
+                <type>array</type>
+                <el type="array">
+                    <field index="datetime" type="array">
+                        <label>datetime</label>
+                        <config type="array">
+                            <type>datetime</type>
+                        </config>
+                    </field>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3FlexForms>';
+        $schemaFactory = $this->get(TcaSchemaFactory::class);
+        $schemaFactory->rebuild($GLOBALS['TCA']);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertInstanceOf(FlexFormFieldValues::class, $result);
+        self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
+        self::assertSame('2013-04-20', $result->get('datetime')->format('Y-m-d'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
+        self::assertSame('2013-04-20', $resolvedRelation['datetime']->format('Y-m-d'));
+        self::assertSame('2013-04-20', $resolvedRelation->get('datetime')->format('Y-m-d'));
+    }
+
+    #[Test]
+    public function fallbackPropertyPathInMultipleSheets(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Header in Flex</value>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="sheet2">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Second Header in Flex</value>
+                </field>
+                <field index="datetime">
+                    <value index="vDEF">1366480800</value>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertInstanceOf(FlexFormFieldValues::class, $result);
+        self::assertSame('2013-04-20', $result['datetime']->format('Y-m-d'));
+        self::assertSame('2013-04-20', $result->get('datetime')->format('Y-m-d'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
+        self::assertSame('2013-04-20', $resolvedRelation['datetime']->format('Y-m-d'));
+        self::assertSame('2013-04-20', $resolvedRelation->get('datetime')->format('Y-m-d'));
+    }
+
+    #[Test]
     public function canResolveFlexForm(): void
     {
         $dummyRecord = $this->createTestRecordObject([
@@ -1417,8 +1637,10 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         )->instantiate();
 
         self::assertInstanceOf(FlexFormFieldValues::class, $result);
-        self::assertSame('Second Header in Flex', $result['header']);
-        self::assertSame('Second Header in Flex', $result->get('header'));
+        self::assertSame('Header in Flex', $result['sDEF/header']);
+        self::assertSame('Header in Flex', $result->get('sDEF/header'));
+        self::assertSame('Second Header in Flex', $result['sheet2/header']);
+        self::assertSame('Second Header in Flex', $result->get('sheet2/header'));
         self::assertSame('Text in Flex', $result['textarea']);
         self::assertSame('Text in Flex', $result->get('textarea'));
         self::assertSame('t3://page?uid=13', $result['link']->url);
@@ -1435,8 +1657,10 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
         $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
         self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
-        self::assertSame('Second Header in Flex', $resolvedRelation['header']);
-        self::assertSame('Second Header in Flex', $resolvedRelation->get('header'));
+        self::assertSame('Header in Flex', $resolvedRelation['sDEF/header']);
+        self::assertSame('Header in Flex', $resolvedRelation->get('sDEF/header'));
+        self::assertSame('Second Header in Flex', $resolvedRelation['sheet2/header']);
+        self::assertSame('Second Header in Flex', $resolvedRelation->get('sheet2/header'));
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
         self::assertSame('Text in Flex', $resolvedRelation->get('textarea'));
         self::assertSame('t3://page?uid=13', $resolvedRelation['link']->url);
@@ -1449,6 +1673,152 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         self::assertSame('t3://page?uid=14', $resolvedRelation['some']['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRelation->get('some')['link']->url);
         self::assertSame('t3://page?uid=14', $resolvedRelation->get('some.link')->url);
+    }
+
+    #[Test]
+    public function canResolveFlexFormWithSections(): void
+    {
+        $dummyRecord = $this->createTestRecordObject([
+            'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3FlexForms>
+    <data>
+        <sheet index="sDEF">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Header in Flex</value>
+                </field>
+                <field index="settings.mysettings">
+                    <el index="el">
+                        <field index="67fba268d861a136844008">
+                            <value index="container_1">
+                                <el>
+                                    <field index="input_1">
+                                        <value index="vDEF">Section 1 Container 1 Input 1</value>
+                                    </field>
+                                    <field index="link_1">
+                                        <value index="vDEF">t3://page?uid=1</value>
+                                    </field>
+                                </el>
+                            </value>
+                        </field>
+                        <field index="67fba268d861a136844123">
+                            <value index="container_2">
+                                <el>
+                                    <field index="text_1">
+                                        <value index="vDEF">Section 1 Container 2 Text 1</value>
+                                    </field>
+                                </el>
+                            </value>
+                        </field>
+                        <field index="67fba26960152968425304">
+                            <value index="container_1">
+                                <el>
+                                    <field index="input_1">
+                                        <value index="vDEF">Section 1 Container 1 Input 2</value>
+                                    </field>
+                                    <field index="link_1">
+                                        <value index="vDEF">t3://page?uid=2</value>
+                                    </field>
+                                </el>
+                            </value>
+                        </field>
+                    </el>
+                </field>
+            </language>
+        </sheet>
+        <sheet index="sheet2">
+            <language index="lDEF">
+                <field index="header">
+                    <value index="vDEF">Second Header in Flex</value>
+                </field>
+                <field index="my_settings">
+                    <el index="el">
+                        <field index="27fba785d861a136844008">
+                            <value index="container_1">
+                                <el>
+                                    <field index="input_2">
+                                        <value index="vDEF">Section 2 Container 1 Input 1</value>
+                                    </field>
+                                </el>
+                            </value>
+                        </field>
+                        <field index="27fba785d861a136844123">
+                            <value index="container_2">
+                                <el>
+                                    <field index="text_2">
+                                        <value index="vDEF">Section 2 Container 2 Text 2</value>
+                                    </field>
+                                </el>
+                            </value>
+                        </field>
+                        <field index="97fba21960152968425304">
+                            <value index="container_1">
+                                <el>
+                                    <field index="input_2">
+                                        <value index="vDEF">Section 2 Container 1 Input 2</value>
+                                    </field>
+                                </el>
+                            </value>
+                        </field>
+                    </el>
+                </field>
+            </language>
+        </sheet>
+    </data>
+</T3FlexForms>',
+        ]);
+
+        $fieldInformation = $this->get(TcaSchemaFactory::class)->get('tt_content')->getField('typo3tests_contentelementb_flexfield');
+
+        $subject = $this->get(RecordFieldTransformer::class);
+        $result = $subject->transformField(
+            $fieldInformation,
+            $dummyRecord,
+            $this->get(Context::class),
+            GeneralUtility::makeInstance(RecordIdentityMap::class)
+        )->instantiate();
+
+        self::assertInstanceOf(FlexFormFieldValues::class, $result);
+        self::assertSame('Header in Flex', $result['sDEF/header']);
+        self::assertSame('Header in Flex', $result->get('sDEF/header'));
+        self::assertSame('Second Header in Flex', $result['sheet2/header']);
+        self::assertSame('Second Header in Flex', $result->get('sheet2/header'));
+        self::assertSame('Section 1 Container 1 Input 1', $result['settings']['mysettings']['67fba268d861a136844008']['container_1']['input_1']);
+        self::assertSame('Section 1 Container 1 Input 1', $result->get('settings.mysettings.67fba268d861a136844008.container_1.input_1'));
+        self::assertSame('t3://page?uid=1', $result['settings']['mysettings']['67fba268d861a136844008']['container_1']['link_1']->url);
+        self::assertSame('t3://page?uid=1', $result->get('settings.mysettings.67fba268d861a136844008.container_1.link_1')->url);
+        self::assertSame('Section 1 Container 2 Text 1', $result['settings']['mysettings']['67fba268d861a136844123']['container_2']['text_1']);
+        self::assertSame('Section 1 Container 2 Text 1', $result->get('settings.mysettings.67fba268d861a136844123.container_2.text_1'));
+        self::assertSame('Section 1 Container 1 Input 2', $result['settings']['mysettings']['67fba26960152968425304']['container_1']['input_1']);
+        self::assertSame('Section 1 Container 1 Input 2', $result->get('settings.mysettings.67fba26960152968425304.container_1.input_1'));
+        self::assertSame('t3://page?uid=2', $result['settings']['mysettings']['67fba26960152968425304']['container_1']['link_1']->url);
+        self::assertSame('t3://page?uid=2', $result->get('settings.mysettings.67fba26960152968425304.container_1.link_1')->url);
+        self::assertSame('Section 2 Container 1 Input 1', $result['my_settings']['27fba785d861a136844008']['container_1']['input_2']);
+        self::assertSame('Section 2 Container 1 Input 1', $result->get('my_settings.27fba785d861a136844008.container_1.input_2'));
+        self::assertSame('Section 2 Container 2 Text 2', $result['my_settings']['27fba785d861a136844123']['container_2']['text_2']);
+        self::assertSame('Section 2 Container 2 Text 2', $result->get('my_settings.27fba785d861a136844123.container_2.text_2'));
+        self::assertSame('Section 2 Container 1 Input 2', $result['my_settings']['97fba21960152968425304']['container_1']['input_2']);
+        self::assertSame('Section 2 Container 1 Input 2', $result->get('my_settings.97fba21960152968425304.container_1.input_2'));
+
+        $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
+        $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield');
+        self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
+        self::assertSame('Header in Flex', $resolvedRelation['sDEF/header']);
+        self::assertSame('Header in Flex', $resolvedRelation->get('sDEF/header'));
+        self::assertSame('Second Header in Flex', $resolvedRelation['sheet2/header']);
+        self::assertSame('Second Header in Flex', $resolvedRelation->get('sheet2/header'));
+        self::assertSame('Section 1 Container 1 Input 1', $resolvedRelation['settings']['mysettings']['67fba268d861a136844008']['container_1']['input_1']);
+        self::assertSame('Section 1 Container 1 Input 1', $resolvedRelation->get('settings.mysettings.67fba268d861a136844008.container_1.input_1'));
+        self::assertSame('Section 1 Container 2 Text 1', $resolvedRelation['settings']['mysettings']['67fba268d861a136844123']['container_2']['text_1']);
+        self::assertSame('Section 1 Container 2 Text 1', $resolvedRelation->get('settings.mysettings.67fba268d861a136844123.container_2.text_1'));
+        self::assertSame('Section 1 Container 1 Input 2', $resolvedRelation['settings']['mysettings']['67fba26960152968425304']['container_1']['input_1']);
+        self::assertSame('Section 1 Container 1 Input 2', $resolvedRelation->get('settings.mysettings.67fba26960152968425304.container_1.input_1'));
+        self::assertSame('Section 2 Container 1 Input 1', $resolvedRelation['my_settings']['27fba785d861a136844008']['container_1']['input_2']);
+        self::assertSame('Section 2 Container 1 Input 1', $resolvedRelation->get('my_settings.27fba785d861a136844008.container_1.input_2'));
+        self::assertSame('Section 2 Container 2 Text 2', $resolvedRelation['my_settings']['27fba785d861a136844123']['container_2']['text_2']);
+        self::assertSame('Section 2 Container 2 Text 2', $resolvedRelation->get('my_settings.27fba785d861a136844123.container_2.text_2'));
+        self::assertSame('Section 2 Container 1 Input 2', $resolvedRelation['my_settings']['97fba21960152968425304']['container_1']['input_2']);
+        self::assertSame('Section 2 Container 1 Input 2', $resolvedRelation->get('my_settings.97fba21960152968425304.container_1.input_2'));
     }
 
     #[Test]
@@ -1589,8 +1959,10 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         )->instantiate();
 
         self::assertInstanceOf(FlexFormFieldValues::class, $result);
-        self::assertSame('Second Header in Flex', $result['header']);
-        self::assertSame('Second Header in Flex', $result->get('header'));
+        self::assertSame('Header in Flex', $result['sheet1/header']);
+        self::assertSame('Header in Flex', $result->get('sheet1/header'));
+        self::assertSame('Second Header in Flex', $result['sheet2/header']);
+        self::assertSame('Second Header in Flex', $result->get('sheet2/header'));
         self::assertSame('Text in Flex', $result['textarea']);
         self::assertSame('Text in Flex', $result->get('textarea'));
         self::assertSame('t3://page?uid=13', $result['link']->url);
@@ -1607,8 +1979,10 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
         $resolvedRecord = $this->get(RecordFactory::class)->createResolvedRecordFromDatabaseRow('tt_content', $dummyRecord->toArray());
         $resolvedRelation = $resolvedRecord->get('typo3tests_contentelementb_flexfield_ds');
         self::assertInstanceOf(FlexFormFieldValues::class, $resolvedRelation);
-        self::assertSame('Second Header in Flex', $resolvedRelation['header']);
-        self::assertSame('Second Header in Flex', $resolvedRelation->get('header'));
+        self::assertSame('Header in Flex', $resolvedRelation['sheet1/header']);
+        self::assertSame('Header in Flex', $resolvedRelation->get('sheet1/header'));
+        self::assertSame('Second Header in Flex', $resolvedRelation['sheet2/header']);
+        self::assertSame('Second Header in Flex', $resolvedRelation->get('sheet2/header'));
         self::assertSame('Text in Flex', $resolvedRelation['textarea']);
         self::assertSame('Text in Flex', $resolvedRelation->get('textarea'));
         self::assertSame('t3://page?uid=13', $resolvedRelation['link']->url);
@@ -1712,7 +2086,7 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function throwsFlexFieldPropertyNotFoundException(): void
+    public function throwsFlexFieldPropertyNotFoundExceptionOnInvalidPropertyPath(): void
     {
         $dummyRecord = $this->createTestRecordObject([
             'typo3tests_contentelementb_flexfield' => '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
@@ -1725,9 +2099,6 @@ final class RecordFieldTransformerTest extends FunctionalTestCase
                 </field>
                 <field index="textarea">
                     <value index="vDEF">Text in Flex</value>
-                </field>
-                <field index="invalid">
-                    <value index="vDEF">Invalid field</value>
                 </field>
             </language>
         </sheet>

@@ -68,6 +68,55 @@ class FlexFormService implements SingletonInterface
     }
 
     /**
+     * Parses the flexForm content and converts it to an array.
+     * The resulting array will be multi-dimensional. Sheets are
+     * respected to support property paths in multiple sheets.
+     *
+     * A value such as "settings.pageId" results in three levels:
+     * "'sDEF' => ['settings' => ['pageId' => 123]]" and a value such
+     * as "settings.storages.newsPid" results in four levels:
+     * "'sDEF' => ['settings' => ['storages' => ['newsPid' => 123]]]"
+     *
+     * @param string $flexFormContent flexForm xml string
+     * @param string $languagePointer language pointer used in the flexForm
+     * @param string $valuePointer value pointer used in the flexForm
+     */
+    public function convertFlexFormContentToSheetsArray(string $flexFormContent, string $languagePointer = 'lDEF', string $valuePointer = 'vDEF'): array
+    {
+        $settings = [];
+        $flexFormArray = GeneralUtility::xml2array($flexFormContent);
+        $flexFormArray = $flexFormArray['data'] ?? [];
+        foreach ($flexFormArray as $sheetName => $sheet) {
+            foreach ($sheet as $langauge => $fields) {
+                if ($langauge !== $languagePointer) {
+                    continue;
+                }
+                foreach ($fields as $valueKey => $valueDefinition) {
+                    if (!str_contains($valueKey, '.')) {
+                        $settings[$sheetName][$valueKey] = $this->walkFlexFormNode($valueDefinition, $valuePointer);
+                    } else {
+                        $valueKeyParts = explode('.', $valueKey);
+                        $currentNode = &$settings[$sheetName];
+                        foreach ($valueKeyParts as $valueKeyPart) {
+                            $currentNode = &$currentNode[$valueKeyPart];
+                        }
+                        if (is_array($valueDefinition)) {
+                            if (array_key_exists($valuePointer, $valueDefinition)) {
+                                $currentNode = $valueDefinition[$valuePointer];
+                            } else {
+                                $currentNode = $this->walkFlexFormNode($valueDefinition, $valuePointer);
+                            }
+                        } else {
+                            $currentNode = $valueDefinition;
+                        }
+                    }
+                }
+            }
+        }
+        return $settings;
+    }
+
+    /**
      * Parses a flexForm node recursively and takes care of sections etc
      *
      * @param mixed $nodeArray The flexForm node to parse

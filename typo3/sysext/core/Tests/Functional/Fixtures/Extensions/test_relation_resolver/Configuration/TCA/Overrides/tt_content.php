@@ -195,6 +195,44 @@ $overrides = [
                             <type>text</type>
                         </config>
                     </field>
+                    <field index="settings.mysettings" type="array">
+                        <title>section_1</title>
+                        <type>array</type>
+                        <section>1</section>
+                        <el type="array">
+                            <field index="container_1" type="array">
+                                <type>array</type>
+                                <title>container_1</title>
+                                <el type="array">
+                                    <field index="input_1" type="array">
+                                        <label>input_1 description</label>
+                                        <config type="array">
+                                            <type>input</type>
+                                        </config>
+                                    </field>
+                                    <field index="link_1" type="array">
+                                        <label>link_1 description</label>
+                                        <config type="array">
+                                            <type>link</type>
+                                        </config>
+                                    </field>
+                                </el>
+                            </field>
+                            <field index="container_2" type="array">
+                                <type>array</type>
+                                <title>container_2</title>
+                                <el type="array">
+                                    <field index="text_1" type="array">
+                                        <label>text_1 description</label>
+                                        <config type="array">
+                                            <type>text</type>
+                                            <default>foo</default>
+                                        </config>
+                                    </field>
+                                </el>
+                            </field>
+                        </el>
+                    </field>
                 </el>
             </ROOT>
         </sDEF>
@@ -202,6 +240,12 @@ $overrides = [
             <ROOT type="array">
                 <type>array</type>
                 <el>
+                    <field index="header" type="array">
+                        <label>header</label>
+                        <config>
+                            <type>input</type>
+                        </config>
+                    </field>
                     <field index="link" type="array">
                         <label>header</label>
                         <config type="array">
@@ -231,6 +275,38 @@ $overrides = [
                         <config type="array">
                             <type>link</type>
                         </config>
+                    </field>
+                    <field index="my_settings" type="array">
+                        <title>section_2</title>
+                        <type>array</type>
+                        <section>1</section>
+                        <el type="array">
+                            <field index="container_1" type="array">
+                                <type>array</type>
+                                <title>container_1</title>
+                                <el type="array">
+                                    <field index="input_2" type="array">
+                                        <label>input_2 description</label>
+                                        <config type="array">
+                                            <type>input</type>
+                                        </config>
+                                    </field>
+                                </el>
+                            </field>
+                            <field index="container_2" type="array">
+                                <type>array</type>
+                                <title>container_2</title>
+                                <el type="array">
+                                    <field index="text_2" type="array">
+                                        <label>text_2 description</label>
+                                        <config type="array">
+                                            <type>text</type>
+                                            <default>bar</default>
+                                        </config>
+                                    </field>
+                                </el>
+                            </field>
+                        </el>
                     </field>
                 </el>
             </ROOT>
