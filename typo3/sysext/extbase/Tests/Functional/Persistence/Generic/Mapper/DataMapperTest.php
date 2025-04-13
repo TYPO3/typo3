@@ -39,6 +39,7 @@ use TYPO3Tests\BlogExample\Domain\Model\DateTimeImmutableExample;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\BlogExample\Domain\Model\RestrictedComment;
 use TYPO3Tests\BlogExample\Domain\Repository\RestrictedCommentRepository;
+use TYPO3Tests\TestDataMapper\Domain\Model\ConstructorPromotionExample;
 use TYPO3Tests\TestDataMapper\Domain\Model\CustomDateTime;
 use TYPO3Tests\TestDataMapper\Domain\Model\Enum\IntegerBackedEnum;
 use TYPO3Tests\TestDataMapper\Domain\Model\Enum\StringBackedEnum;
@@ -381,6 +382,27 @@ final class DataMapperTest extends FunctionalTestCase
         ];
         $dataMapper = $this->get(DataMapper::class);
         $mappedObjectsArray = $dataMapper->map(Example::class, $rows);
+
+        $getter = 'getInitializedDateTimeProperty' . ($storageFormat !== null ? ucfirst($storageFormat) : '');
+        self::assertSame($expectedValue, $mappedObjectsArray[0]->{$getter}()?->format('c'));
+
+        // Flush DataMapFactory cache on each run.
+        $cacheManager = $this->get(CacheManager::class);
+        $cacheManager->getCache('extbase')->flush();
+    }
+
+    #[DataProvider('mapDateTimeHandlesDifferentFieldEvaluationsDataProvider')]
+    #[Test]
+    public function mapDateTimeHandlesDifferentFieldEvaluationsWithConstructorPromotion(string|int|null $value, ?string $storageFormat, ?string $expectedValue): void
+    {
+        $rows = [
+            [
+                'uid' => 123,
+                'initialized_date_time_property' . ($storageFormat !== null ? '_' . $storageFormat : '') => $value,
+            ],
+        ];
+        $dataMapper = $this->get(DataMapper::class);
+        $mappedObjectsArray = $dataMapper->map(ConstructorPromotionExample::class, $rows);
 
         $getter = 'getInitializedDateTimeProperty' . ($storageFormat !== null ? ucfirst($storageFormat) : '');
         self::assertSame($expectedValue, $mappedObjectsArray[0]->{$getter}()?->format('c'));
