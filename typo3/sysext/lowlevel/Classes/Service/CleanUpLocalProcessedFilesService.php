@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Lowlevel\Service;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\Exception\InvalidConfigurationException;
 use TYPO3\CMS\Core\Resource\Exception\InvalidPathException;
@@ -218,14 +219,19 @@ class CleanUpLocalProcessedFilesService
 
     public function deleteRecord(array $recordUids): int
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
-        $queryBuilder->getRestrictions()->removeAll();
-
-        return $queryBuilder->delete(self::TABLE_NAME)
-            ->where(
-                $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($recordUids, Connection::PARAM_INT_ARRAY))
-            )
-            ->executeStatement();
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable(self::TABLE_NAME);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        $deletedRecords = 0;
+        foreach (array_chunk($recordUids, $maxBindParameters) as $chunk) {
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->getRestrictions()->removeAll();
+            $deletedRecords += $queryBuilder->delete(self::TABLE_NAME)
+                ->where(
+                    $queryBuilder->expr()->in('uid', $queryBuilder->createNamedParameter($chunk, Connection::PARAM_INT_ARRAY))
+                )
+                ->executeStatement();
+        }
+        return $deletedRecords;
     }
 
     protected function getQueryBuilderWithoutRestrictions(): QueryBuilder
