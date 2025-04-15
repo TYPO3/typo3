@@ -32,6 +32,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CollectionValidatorTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function collectionValidatorReturnsNoErrorsForANullValue(): void
     {

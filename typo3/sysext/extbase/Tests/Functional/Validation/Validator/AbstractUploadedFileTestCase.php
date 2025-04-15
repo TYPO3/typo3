@@ -22,6 +22,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 abstract class AbstractUploadedFileTestCase extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     /**
      * Tear down for remove of the test files
      */

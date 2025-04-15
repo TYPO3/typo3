@@ -23,6 +23,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class NumberRangeValidatorTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function numberRangeValidatorReturnsNoErrorForASimpleIntegerInRange(): void
     {
