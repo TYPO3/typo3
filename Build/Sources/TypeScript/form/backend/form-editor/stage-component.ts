@@ -72,6 +72,7 @@ const defaultConfiguration: Configuration = {
     'FormElement-CountrySelect': 'FormElement-CountrySelect',
     'FormElement-DatePicker': 'FormElement-DatePicker',
     'FormElement-Fieldset': 'FormElement-Fieldset',
+    'FormElement-GridColumn': 'FormElement-GridColumn',
     'FormElement-GridRow': 'FormElement-GridRow',
     'FormElement-FileUpload': 'FormElement-FileUpload',
     'FormElement-Hidden': 'FormElement-Hidden',
@@ -189,6 +190,7 @@ function renderTemplateDispatcher(formElement: FormElement, template: JQuery): v
       renderSimpleTemplateWithValidators(formElement, template);
       break;
     case 'Fieldset':
+    case 'GridColumn':
     case 'GridRow':
     case 'SummaryPage':
     case 'Page':
