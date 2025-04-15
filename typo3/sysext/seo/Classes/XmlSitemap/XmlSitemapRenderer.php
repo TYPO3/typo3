@@ -119,7 +119,7 @@ final class XmlSitemapRenderer
                 $provider = GeneralUtility::makeInstance($sitemapProvider, $request, $sitemapName, $sitemapConfig['config'] ?? []);
                 $items = $provider->getItems();
                 $view->assign('items', $items);
-                $template = $sitemapConfig['template'] ?? 'Sitemap';
+                $template = $sitemapConfig['config']['template'] ?? $sitemapConfig['template'] ?? 'Sitemap';
                 return $view->render($template);
             }
             throw new InvalidConfigurationException('No valid provider set for ' . $sitemapName, 1535578522);
