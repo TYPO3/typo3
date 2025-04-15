@@ -18,6 +18,7 @@ imports:
     - { resource: './FormElements/Page.yaml' }
     - { resource: './FormElements/SummaryPage.yaml' }
     - { resource: './FormElements/Fieldset.yaml' }
+    - { resource: './FormElements/GridColumn.yaml' }
     - { resource: './FormElements/GridRow.yaml' }
     - { resource: './FormElements/Text.yaml' }
     - { resource: './FormElements/Password.yaml' }

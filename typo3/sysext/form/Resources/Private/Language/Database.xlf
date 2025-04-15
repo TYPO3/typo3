@@ -1024,6 +1024,16 @@
 				<source>Fieldset name</source>
 			</trans-unit>
 
+			<trans-unit id="formEditor.elements.GridColumn.label">
+				<source>Grid: Column</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.GridColumn.description">
+				<source>A container element for arranging fields, providing visual structure</source>
+			</trans-unit>
+			<trans-unit id="formEditor.elements.GridColumn.editor.label.label">
+				<source>Name (not visible within frontend)</source>
+			</trans-unit>
+
 			<trans-unit id="formEditor.elements.GridRow.label" xml:space="preserve">
 				<source>Grid: Row</source>
 			</trans-unit>
