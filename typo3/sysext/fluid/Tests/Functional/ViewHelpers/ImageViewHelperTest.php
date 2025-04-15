@@ -61,8 +61,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:image src="something" />',
-                1509741911,
-                'Unable to render image tag: Folder "/something/" does not exist.',
+                1509741912,
+                'Unable to render image tag: Supplied something could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
@@ -110,8 +110,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:image src="something" />',
-                1509741911,
-                'Unable to render image tag in "tt_content:123": Folder "/something/" does not exist.',
+                1509741912,
+                'Unable to render image tag in "tt_content:123": Supplied something could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',

@@ -287,14 +287,18 @@ readonly class ResourceFactory implements SingletonInterface
             return null;
         }
         // this is a backwards-compatible way to access "0-storage" files or folders
+        // @todo: this needs to be removed once we remove support for fallback storage
         // eliminate double slashes, /./ and /../
         $input = PathUtility::getCanonicalPath(ltrim($input, '/'));
         if (@is_file(Environment::getPublicPath() . '/' . $input)) {
             // only the local file
             return $this->getFileObjectFromCombinedIdentifier($input);
         }
-        // only the local path
-        return $this->getFolderObjectFromCombinedIdentifier($input);
+        if (@is_dir(Environment::getPublicPath() . '/' . ltrim($input, '/'))) {
+            // only the local path
+            return $this->getFolderObjectFromCombinedIdentifier(ltrim($input, '/'));
+        }
+        return null;
     }
 
     /**

@@ -61,8 +61,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:uri.image src="something" />',
-                1509741907,
-                'Unable to render image uri: Folder "/something/" does not exist.',
+                1509741908,
+                'Unable to render image uri: Supplied something could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
@@ -110,8 +110,8 @@ final class ImageViewHelperTest extends FunctionalTestCase
             ],
             [
                 '<f:uri.image src="something" />',
-                1509741907,
-                'Unable to render image uri in "tt_content:123": Folder "/something/" does not exist.',
+                1509741908,
+                'Unable to render image uri in "tt_content:123": Supplied something could not be resolved to a File or FileReference.',
             ],
             [
                 '<f:uri.image src="EXT:fluid/Tests/Functional/Fixtures/ViewHelpers/" />',
