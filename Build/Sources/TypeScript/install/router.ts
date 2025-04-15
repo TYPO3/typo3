@@ -109,7 +109,6 @@ class Router {
       TYPO3.settings = {
         ajaxUrls: {
           icons: window.location.origin + window.location.pathname + '?install[controller]=icon&install[action]=getIcon',
-          icons_cache: window.location.origin + window.location.pathname + '?install[controller]=icon&install[action]=getCacheIdentifier',
         },
       } as unknown as typeof TYPO3.settings;
     }

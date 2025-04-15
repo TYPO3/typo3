@@ -25,6 +25,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Page\ImportMap;
@@ -54,6 +55,7 @@ class LayoutController extends AbstractController
         private readonly SilentTemplateFileUpgradeService $silentTemplateFileUpgradeService,
         private readonly BackendEntryPointResolver $backendEntryPointResolver,
         private readonly HashService $hashService,
+        private readonly IconRegistry $iconRegistry,
     ) {}
 
     /**
@@ -81,6 +83,7 @@ class LayoutController extends AbstractController
         $view->assignMultiple([
             // time is used as cache bust for js and css resources
             'bust' => $bust,
+            'iconCacheIdentifier' => sha1($this->iconRegistry->getBackendIconsCacheIdentifier()),
             'initModule' => $initModule,
             'importmap' => $importMap->render($sitePath, $nonce),
         ]);

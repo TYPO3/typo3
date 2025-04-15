@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\NormalizedParams;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Information\Typo3Version;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
@@ -73,6 +74,7 @@ final class InstallerController
         private readonly SetupService $setupService,
         private readonly SetupDatabaseService $setupDatabaseService,
         private readonly HashService $hashService,
+        private readonly IconRegistry $iconRegistry,
     ) {}
 
     /**
@@ -95,6 +97,7 @@ final class InstallerController
         $view = $this->initializeView();
         $view->assign('bust', $bust);
         $view->assign('initModule', $initModule);
+        $view->assign('iconCacheIdentifier', sha1($this->iconRegistry->getBackendIconsCacheIdentifier()));
         $nonce = new ConsumableNonce();
         $view->assign('importmap', $importMap->render($sitePath, $nonce));
 

@@ -289,7 +289,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getIconController(ContainerInterface $container): Controller\IconController
     {
         return new Controller\IconController(
-            $container->get(IconRegistry::class),
             $container->get(IconFactory::class)
         );
     }
@@ -305,6 +304,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(SetupService::class),
             $container->get(SetupDatabaseService::class),
             $container->get(HashService::class),
+            $container->get(IconRegistry::class),
         );
     }
 
@@ -316,6 +316,7 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Service\SilentTemplateFileUpgradeService::class),
             $container->get(BackendEntryPointResolver::class),
             $container->get(HashService::class),
+            $container->get(IconRegistry::class),
         );
     }
 

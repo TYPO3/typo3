@@ -23,6 +23,7 @@ use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
@@ -53,6 +54,7 @@ final class PageRendererTest extends FunctionalTestCase
             $container->get(LanguageServiceFactory::class),
             $container->get(ResponseFactoryInterface::class),
             $container->get(StreamFactoryInterface::class),
+            $container->get(IconRegistry::class),
         );
     }
 

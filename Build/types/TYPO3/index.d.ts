@@ -40,6 +40,9 @@ declare namespace TYPO3 {
     export const cssUrls: {
       [key: string]: string
     };
+    export namespace cache {
+      export const iconCacheIdentifier: string | undefined;
+    }
     export namespace Clipboard {
       export const moduleUrl: string;
     }

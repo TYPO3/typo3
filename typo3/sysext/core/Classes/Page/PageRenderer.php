@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\ApplicationType;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
@@ -135,6 +136,7 @@ class PageRenderer implements SingletonInterface
         protected readonly LanguageServiceFactory $languageServiceFactory,
         protected readonly ResponseFactoryInterface $responseFactory,
         protected readonly StreamFactoryInterface $streamFactory,
+        protected readonly IconRegistry $iconRegistry,
     ) {
         $this->reset();
         $this->setMetaTag('name', 'generator', 'TYPO3 CMS');
@@ -156,6 +158,7 @@ class PageRenderer implements SingletonInterface
                 case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
+                case 'iconRegistry':
                     break;
                 case 'nonce':
                     $this->setNonce(new ConsumableNonce($value));
@@ -189,6 +192,7 @@ class PageRenderer implements SingletonInterface
                 case 'languageServiceFactory':
                 case 'responseFactory':
                 case 'streamFactory':
+                case 'iconRegistry':
                     break;
                 case 'nonce':
                     if ($value instanceof ConsumableNonce) {
@@ -1448,6 +1452,7 @@ class PageRenderer implements SingletonInterface
             $noBackendUserLoggedIn = empty($GLOBALS['BE_USER']->user['uid']);
             $this->addAjaxUrlsToInlineSettings($noBackendUserLoggedIn);
             $this->addGlobalCSSUrlsToInlineSettings();
+            $this->inlineSettings['cache']['iconCacheIdentifier'] = sha1($this->iconRegistry->getBackendIconsCacheIdentifier());
         }
         $assignments = array_filter([
             'settings' => $this->inlineSettings,
