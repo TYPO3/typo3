@@ -19,50 +19,24 @@ namespace TYPO3\CMS\Core\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\Attribute\AsController;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Controller for icon handling
  *
  * @internal
  */
-class IconController
+#[AsController]
+readonly class IconController
 {
-    /**
-     * @var IconRegistry
-     */
-    protected $iconRegistry;
+    public function __construct(
+        private IconFactory $iconFactory
+    ) {}
 
-    /**
-     * @var IconFactory
-     */
-    protected $iconFactory;
-
-    /**
-     * Set up dependencies
-     */
-    public function __construct()
-    {
-        $this->iconRegistry = GeneralUtility::makeInstance(IconRegistry::class);
-        $this->iconFactory = GeneralUtility::makeInstance(IconFactory::class);
-    }
-
-    /**
-     * @internal
-     */
-    public function getCacheIdentifier(): ResponseInterface
-    {
-        return new HtmlResponse(sha1($this->iconRegistry->getBackendIconsCacheIdentifier()));
-    }
-
-    /**
-     * @internal
-     */
     public function getIcon(ServerRequestInterface $request): ResponseInterface
     {
         $parsedBody = $request->getParsedBody();

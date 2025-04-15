@@ -338,12 +338,6 @@ return [
         'target' => \TYPO3\CMS\Core\Controller\IconController::class . '::getIcon',
     ],
 
-    // Get icon cache identifier
-    'icons_cache' => [
-        'path' => '/icons/cache',
-        'target' => \TYPO3\CMS\Core\Controller\IconController::class . '::getCacheIdentifier',
-    ],
-
     // Encode typolink parts on demand
     'link_browser_encodetypolink' => [
         'path' => '/link-browser/encode-typolink',

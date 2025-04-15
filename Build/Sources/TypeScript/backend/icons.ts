@@ -143,7 +143,7 @@ class Icons {
   /**
    * Get the icon by its identifier
    */
-  public getIcon(
+  public async getIcon(
     identifier: string,
     size: Sizes,
     overlayIdentifier?: string,
@@ -167,31 +167,20 @@ class Icons {
 
     const describedIcon = [identifier, size, overlayIdentifier, state, markupIdentifier];
     const cacheIdentifier = describedIcon.join('_');
+    const registryCacheIdentifier = TYPO3?.settings?.cache?.iconCacheIdentifier ?? document.documentElement.dataset.iconCacheIdentifier
 
-    return this.getIconRegistryCache().then((registryCacheIdentifier: string): Promise<string> => {
-      if (!ClientStorage.isset('icon_registry_cache_identifier')
-        || ClientStorage.get('icon_registry_cache_identifier') !== registryCacheIdentifier
-      ) {
-        ClientStorage.unsetByPrefix('icon_');
-        ClientStorage.set('icon_registry_cache_identifier', registryCacheIdentifier);
-      }
+    if (!ClientStorage.isset('icon_registry_cache_identifier')
+      || ClientStorage.get('icon_registry_cache_identifier') !== registryCacheIdentifier
+    ) {
+      ClientStorage.unsetByPrefix('icon_');
+      ClientStorage.set('icon_registry_cache_identifier', registryCacheIdentifier);
+    }
 
-      return this.fetchFromLocal(cacheIdentifier).then(null, (): Promise<string> => {
-        return this.fetchFromRemote(describedIcon, cacheIdentifier, signal);
-      });
-    });
-  }
-
-  private getIconRegistryCache(): Promise<string> {
-    const promiseCacheIdentifier = 'icon_registry_cache_identifier';
-
-    return this.promiseCache.get(
-      promiseCacheIdentifier,
-      async (signal: AbortSignal): Promise<string> => {
-        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache).get({ signal })
-        return await response.resolve();
-      }
-    );
+    try {
+      return await this.fetchFromLocal(cacheIdentifier);
+    } catch {
+      return await this.fetchFromRemote(describedIcon, cacheIdentifier, signal);
+    }
   }
 
   /**

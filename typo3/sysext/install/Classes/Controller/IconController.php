@@ -21,7 +21,6 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\HtmlResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
-use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Imaging\IconState;
 
@@ -32,17 +31,8 @@ use TYPO3\CMS\Core\Imaging\IconState;
 class IconController extends AbstractController
 {
     public function __construct(
-        protected readonly IconRegistry $iconRegistry,
         protected readonly IconFactory $iconFactory
     ) {}
-
-    /**
-     * @internal
-     */
-    public function getCacheIdentifierAction(): ResponseInterface
-    {
-        return new HtmlResponse($this->iconRegistry->getBackendIconsCacheIdentifier());
-    }
 
     /**
      * @internal

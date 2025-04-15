@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\StreamFactory;
+use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Localization\LanguageStore;
 use TYPO3\CMS\Core\Localization\Locales;
@@ -64,6 +65,10 @@ trait PageRendererFactoryTrait
             ),
             new ResponseFactory(),
             new StreamFactory(),
+            new IconRegistry(
+                new NullFrontend('assets'),
+                'foobar',
+            ),
         ];
     }
 }
