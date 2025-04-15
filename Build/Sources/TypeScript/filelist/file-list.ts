@@ -89,26 +89,24 @@ export default class Filelist {
       const resource = detail.resources[0];
       const resourceElement: HTMLElement = detail.trigger.closest('[data-default-language-access]') as HTMLElement;
       if (resource.type === 'file' && resourceElement !== null) {
+        const formEngineUrl = new URL(top.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
         if (resource.metaUid > 0) {
-          window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
-            + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
-            + '&returnUrl=' + Filelist.getReturnUrl('');
+          formEngineUrl.searchParams.set('edit[sys_file_metadata][' + resource.metaUid + ']', 'edit');
         } else {
-          window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
-            + '&edit[sys_file_metadata][0]=new'
-            + '&defVals[sys_file_metadata][file]=' + resource.uid
-            + '&returnUrl=' + Filelist.getReturnUrl('');
+          formEngineUrl.searchParams.set('edit[sys_file_metadata][0]', 'new');
+          formEngineUrl.searchParams.set('defVals[sys_file_metadata][file]', resource.uid.toString(10));
         }
+        formEngineUrl.searchParams.set('returnUrl', Filelist.getReturnUrl(''));
+        window.location.href = formEngineUrl.toString();
       }
       if (resource.type === 'folder') {
         const parameters = Filelist.parseQueryParameters(document.location);
         parameters.id = resource.identifier;
-        let parameterString = '';
-        Object.keys(parameters).forEach(key => {
-          if (parameters[key] === '') { return; }
-          parameterString = parameterString + '&' + key + '=' + parameters[key];
-        });
-        window.location.href = window.location.pathname + '?' + parameterString.substring(1);
+        const url = new URL(window.location.pathname, window.location.origin);
+        for (const [key, value] of Object.entries(parameters)) {
+          url.searchParams.set(key, value);
+        }
+        window.location.href = url.toString();
       }
     }).bindTo(document);
 
@@ -210,15 +208,8 @@ export default class Filelist {
   }
 
   private static parseQueryParameters(location: Location): QueryParameters {
-    const queryParameters: QueryParameters = {};
-    if (location && Object.prototype.hasOwnProperty.call(location, 'search')) {
-      const parameters = location.search.substr(1).split('&');
-      for (let i = 0; i < parameters.length; i++) {
-        const parameter = parameters[i].split('=');
-        queryParameters[decodeURIComponent(parameter[0])] = decodeURIComponent(parameter[1]);
-      }
-    }
-    return queryParameters;
+    const searchParams = new URLSearchParams(location.search);
+    return Object.fromEntries(searchParams.entries());
   }
 
   private static getReturnUrl(returnUrl: string): string {
@@ -230,7 +221,7 @@ export default class Filelist {
         returnUrl = top.list_frame.document.location.pathname + top.list_frame.document.location.search;
       }
     }
-    return encodeURIComponent(returnUrl);
+    return returnUrl;
   }
 
   private deleteMultiple(e: CustomEvent): void {
@@ -276,14 +267,14 @@ export default class Filelist {
     });
 
     if (list.length) {
-      let uri = top.TYPO3.settings.FormEngine.moduleUrl
-        + '&edit[' + configuration.table + '][' + list.join(',') + ']=edit'
-        + '&returnUrl=' + Filelist.getReturnUrl(configuration.returnUrl || '');
+      const url = new URL(top.TYPO3.settings.FormEngine.moduleUrl, window.location.origin);
+      url.searchParams.set('edit[' + configuration.table + '][' + list.join(',') + ']', 'edit');
+      url.searchParams.set('returnUrl', Filelist.getReturnUrl(configuration.returnUrl || ''));
       const columnsOnly = configuration.columnsOnly || [];
-      if (columnsOnly.length > 0) {
-        uri += columnsOnly.map((column: string, i: number): string => '&columnsOnly[' + configuration.table + '][' + i + ']=' + column).join('');
-      }
-      window.location.href = uri;
+      columnsOnly.forEach((column: string, i: number): void => {
+        url.searchParams.set('columnsOnly[' + configuration.table + '][' + i + ']', column);
+      });
+      window.location.href = url.toString();
     } else {
       Notification.warning('The selected elements can not be edited.');
     }
