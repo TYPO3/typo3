@@ -26,6 +26,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class BooleanValidatorTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     protected function setUp(): void
     {
         parent::setUp();
