@@ -25,6 +25,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class TextValidatorTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     public static function isValidDataProvider(): array
     {
         return [

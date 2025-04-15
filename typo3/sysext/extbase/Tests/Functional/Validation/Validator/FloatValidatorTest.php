@@ -24,6 +24,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class FloatValidatorTest extends FunctionalTestCase
 {
+    protected bool $initializeDatabase = false;
+
     public static function validFloats(): array
     {
         return [
