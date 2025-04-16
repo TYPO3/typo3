@@ -2025,6 +2025,13 @@ class DataHandler
         if ($value === '') {
             $value = null;
         }
+        if (MathUtility::canBeInterpretedAsInteger($value)) {
+            $value = (int)$value;
+        }
+        if ($this->isImporting && is_int($value)) {
+            // Do not apply normalizations during import
+            return ['value' => $value];
+        }
 
         try {
             $datetime = match (true) {
@@ -2032,7 +2039,7 @@ class DataHandler
                 $value instanceof \DateTimeImmutable => $value,
                 $value instanceof \DateTimeInterface => \DateTimeImmutable::createFromInterface($value),
                 // Unix timestamp
-                is_int($value) || MathUtility::canBeInterpretedAsInteger($value) => DateTimeFactory::createFromTimestamp($value),
+                is_int($value) => DateTimeFactory::createFromTimestamp($value),
                 // The value we receive from the backend form is an unqualified ISO 8601 date,
                 // for instance "1999-11-11T11:11:11".
                 // We can also accept an ISO8601 date with offsets,
