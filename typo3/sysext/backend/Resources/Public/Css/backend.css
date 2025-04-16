@@ -3561,7 +3561,6 @@ typo3-backend-color-picker .form-control{-webkit-padding-start:calc(1.25rem + va
 .cropper .cropper-point.point-n{top:0}
 .cropper .cropper-point.point-s{bottom:0}
 .cropper .cropper-view-box{outline:1px dashed var(--typo3-state-primary-bg)}
-.cropper .cropper-bg{background-image:url(../Images/cropper-background.png)}
 .cropper .cropper-image-container{direction:ltr;display:block;max-height:calc(100dvh - 250px);max-width:1000px;width:100%}
 @media (min-width:992px){
 .cropper .cropper-image-container{max-height:100%}}
