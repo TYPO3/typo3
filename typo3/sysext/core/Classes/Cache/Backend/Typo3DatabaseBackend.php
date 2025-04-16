@@ -20,6 +20,7 @@ use TYPO3\CMS\Core\Cache\Exception\InvalidDataException;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -267,13 +268,10 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
     public function flushByTags(array $tags)
     {
         $this->throwExceptionIfFrontendDoesNotExist();
-
         if (empty($tags)) {
             return;
         }
-
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
-
         // A large set of tags was detected. Process it in chunks to guard against exceeding
         // maximum SQL query limits.
         if (count($tags) > 100) {
@@ -281,28 +279,17 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
             array_walk($chunks, $this->flushByTags(...));
             return;
         }
-        // VERY simple quoting of tags is sufficient here for performance. Tags are already
-        // validated to not contain any bad characters, e.g. they are automatically generated
-        // inside this class and suffixed with a pure integer enforced by DB.
-        $quotedTagList = array_map(static function (string $value): string {
-            return '\'' . $value . '\'';
-        }, $tags);
-
         $queryBuilder = $connection->createQueryBuilder();
         $result = $queryBuilder->select('identifier')
             ->from($this->tagsTable)
-            ->where('tag IN (' . implode(',', $quotedTagList) . ')')
+            ->where(
+                $queryBuilder->expr()->in('tag', $queryBuilder->quoteArrayBasedValueListToStringList($tags)),
+            )
             // group by is like DISTINCT and used here to suppress possible duplicate identifiers
             ->groupBy('identifier')
             ->executeQuery();
         $cacheEntryIdentifiers = $result->fetchFirstColumn();
-        $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-        $queryBuilder->delete($this->cacheTable)
-            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-            ->executeStatement();
-        $queryBuilder->delete($this->tagsTable)
-            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-            ->executeStatement();
+        $this->flushCacheByCacheEntryIdentifiers($cacheEntryIdentifiers);
     }
 
     /**
@@ -313,30 +300,47 @@ class Typo3DatabaseBackend extends AbstractBackend implements TaggableBackendInt
     public function flushByTag($tag)
     {
         $this->throwExceptionIfFrontendDoesNotExist();
-
         if (empty($tag)) {
             return;
         }
-
         $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
-
-        $quotedTag = '\'' . $tag . '\'';
-
         $queryBuilder = $connection->createQueryBuilder();
         $result = $queryBuilder->select('identifier')
             ->from($this->tagsTable)
-            ->where('tag = ' . $quotedTag)
+            ->where(
+                $queryBuilder->expr()->eq('tag', $queryBuilder->quote($tag)),
+            )
             // group by is like DISTINCT and used here to suppress possible duplicate identifiers
             ->groupBy('identifier')
             ->executeQuery();
         $cacheEntryIdentifiers = $result->fetchFirstColumn();
-        $quotedIdentifiers = $queryBuilder->createNamedParameter($cacheEntryIdentifiers, Connection::PARAM_STR_ARRAY);
-        $queryBuilder->delete($this->cacheTable)
-            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-            ->executeStatement();
-        $queryBuilder->delete($this->tagsTable)
-            ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
-            ->executeStatement();
+        $this->flushCacheByCacheEntryIdentifiers($cacheEntryIdentifiers);
+    }
+
+    private function flushCacheByCacheEntryIdentifiers(array $cacheEntryIdentifiers): void
+    {
+        if ($cacheEntryIdentifiers === []) {
+            // Nothing to do, return early.
+            return;
+        }
+        $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->cacheTable);
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($connection->getDatabasePlatform());
+        foreach (array_chunk($cacheEntryIdentifiers, $maxBindParameters) as $chunk) {
+            // Don't reuse QueryBuilder instance, create new one.
+            $queryBuilder = $connection->createQueryBuilder();
+            // Using string-list here directly is okay and mitigates additional processing
+            // for database driver without named placeholder support, which comes with a
+            // performance penalty we can work around and also do it only once per chunk.
+            $quotedIdentifiers = $queryBuilder->quoteArrayBasedValueListToStringList($chunk);
+            $queryBuilder->delete($this->cacheTable)
+                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+                ->executeStatement();
+            // Don't reuse QueryBuilder instance, create new one.
+            $queryBuilder = $connection->createQueryBuilder();
+            $queryBuilder->delete($this->tagsTable)
+                ->where($queryBuilder->expr()->in('identifier', $quotedIdentifiers))
+                ->executeStatement();
+        }
     }
 
     /**
