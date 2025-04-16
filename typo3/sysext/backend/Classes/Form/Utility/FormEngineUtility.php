@@ -153,6 +153,6 @@ class FormEngineUtility
         return $iconFactory
             ->getIcon($icon, IconSize::SMALL)
             ->setTitle($title)
-            ->render();
+            ->render('inline');
     }
 }
