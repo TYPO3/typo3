@@ -30,6 +30,7 @@ use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
@@ -208,12 +209,20 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function bulkInsert(string $tableName, array $data, array $columns = [], array $types = []): int
     {
-        $query = GeneralUtility::makeInstance(BulkInsertQuery::class, $this, $tableName, $columns);
-        foreach ($data as $values) {
-            $this->ensureDatabaseValueTypes($tableName, $values, $types);
-            $query->addValues($values, $types);
+        $totalAffectedRows = 0;
+        $columnLength = $columns !== [] ? count($columns) : 1000;
+        $maxBindParameters = PlatformInformation::getMaxBindParameters($this->getDatabasePlatform());
+        $maxChunkSize = (int)(($maxBindParameters / $columnLength) / 2);
+        $chunks = array_chunk($data, $maxChunkSize);
+        foreach ($chunks as $chunk) {
+            $query = GeneralUtility::makeInstance(BulkInsertQuery::class, $this, $tableName, $columns);
+            foreach ($chunk as $values) {
+                $this->ensureDatabaseValueTypes($tableName, $values, $types);
+                $query->addValues($values, $types);
+            }
+            $totalAffectedRows += $query->execute();
         }
-        return $query->execute();
+        return $totalAffectedRows;
     }
 
     /**

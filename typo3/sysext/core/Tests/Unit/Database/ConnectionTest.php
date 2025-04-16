@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\AbstractMySQLDriver;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -27,52 +28,16 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
+use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockSQLitePlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class ConnectionTest extends UnitTestCase
 {
-    protected Connection&MockObject $connection;
-
-    /**
-     * Create a new database connection mock object for every test.
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->connection = $this->getMockBuilder(Connection::class)
-            ->onlyMethods(
-                [
-                    'connect',
-                    'ensureDatabaseValueTypes',
-                    'executeQuery',
-                    'executeStatement',
-                    'getDatabasePlatform',
-                    'getDriver',
-                    'getExpressionBuilder',
-                    'getNativeConnection',
-                    'getServerVersion',
-                ]
-            )
-            ->setConstructorArgs([[], $this->createMock(AbstractMySQLDriver::class), new Configuration(), null])
-            ->getMock();
-
-        $this->connection
-            ->method('getExpressionBuilder')
-            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
-
-        $this->connection
-            ->method('connect');
-
-        $this->connection
-            ->method('getDatabasePlatform')
-            ->willReturn(new MockPlatform());
-    }
-
     #[Test]
     public function createQueryBuilderReturnsInstanceOfTypo3QueryBuilder(): void
     {
-        self::assertInstanceOf(QueryBuilder::class, $this->connection->createQueryBuilder());
+        self::assertInstanceOf(QueryBuilder::class, $this->createConnectionMock()->createQueryBuilder());
     }
 
     public static function quoteIdentifierDataProvider(): array
@@ -126,7 +91,7 @@ final class ConnectionTest extends UnitTestCase
     #[Test]
     public function quoteIdentifier(string $input, string $expected): void
     {
-        self::assertSame($expected, $this->connection->quoteIdentifier($input));
+        self::assertSame($expected, $this->createConnectionMock()->quoteIdentifier($input));
     }
 
     #[Test]
@@ -141,8 +106,7 @@ final class ConnectionTest extends UnitTestCase
             '"aField"',
             '"anotherField"',
         ];
-
-        self::assertSame($expected, $this->connection->quoteIdentifiers($input));
+        self::assertSame($expected, $this->createConnectionMock()->quoteIdentifiers($input));
     }
 
     public static function insertQueriesDataProvider(): array
@@ -183,23 +147,23 @@ final class ConnectionTest extends UnitTestCase
     #[Test]
     public function insertQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
-        $this->connection->expects(self::once())
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock->expects(self::once())
             ->method('executeStatement')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
             ->willReturn(1);
-
-        $this->connection->insert(...$args);
+        $connectionMock->insert(...$args);
     }
 
     #[Test]
     public function bulkInsert(): void
     {
-        $this->connection->expects(self::once())
+        $connectionMock = $this->createConnectionMock(new MockSQLitePlatform());
+        $connectionMock->expects(self::once())
             ->method('executeStatement')
             ->with('INSERT INTO "aTestTable" ("aField") VALUES (?), (?)', ['aValue', 'anotherValue'])
             ->willReturn(2);
-
-        $this->connection->bulkInsert('aTestTable', [['aField' => 'aValue'], ['aField' => 'anotherValue']], ['aField']);
+        $connectionMock->bulkInsert('aTestTable', [['aField' => 'aValue'], ['aField' => 'anotherValue']], ['aField']);
     }
 
     public static function updateQueriesDataProvider(): array
@@ -236,11 +200,12 @@ final class ConnectionTest extends UnitTestCase
     #[Test]
     public function updateQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
-        $this->connection->expects(self::once())
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock->expects(self::once())
             ->method('executeStatement')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
             ->willReturn(1);
-        $this->connection->update(...$args);
+        $connectionMock->update(...$args);
     }
 
     public static function deleteQueriesDataProvider(): array
@@ -277,11 +242,12 @@ final class ConnectionTest extends UnitTestCase
     #[Test]
     public function deleteQueries(array $args, string $expectedQuery, array $expectedValues, array $expectedTypes): void
     {
-        $this->connection->expects(self::once())
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock->expects(self::once())
             ->method('executeStatement')
             ->with($expectedQuery, $expectedValues, $expectedTypes)
             ->willReturn(1);
-        $this->connection->delete(...$args);
+        $connectionMock->delete(...$args);
     }
 
     /**
@@ -352,13 +318,13 @@ final class ConnectionTest extends UnitTestCase
     public function selectQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
         $resultStatement = $this->createMock(Result::class);
-
-        $this->connection->expects(self::once())
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock->expects(self::once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
             ->willReturn($resultStatement);
 
-        $this->connection->select(...$args);
+        $connectionMock->select(...$args);
     }
 
     /**
@@ -395,45 +361,75 @@ final class ConnectionTest extends UnitTestCase
     public function countQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
         $resultStatement = $this->createMock(Result::class);
-
         $resultStatement->expects(self::once())
             ->method('fetchOne')
             ->willReturn(false);
-        $this->connection->expects(self::once())
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock->expects(self::once())
             ->method('executeQuery')
             ->with($expectedQuery, $expectedParameters)
             ->willReturn($resultStatement);
-        $this->connection->count(...$args);
+        $connectionMock->count(...$args);
     }
 
     #[Test]
     public function truncateQuery(): void
     {
-        $this->connection->expects(self::once())
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock->expects(self::once())
             ->method('executeStatement')
             ->with('TRUNCATE "aTestTable"')
             ->willReturn(0);
-
-        $this->connection->truncate('aTestTable', false);
+        $connectionMock->truncate('aTestTable', false);
     }
 
     #[Test]
     public function getServerVersionReportsServerVersionOnly(): void
     {
-        $this->connection
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock
             ->method('getServerVersion')
             ->willReturn('5.7.11');
-
-        self::assertSame('5.7.11', $this->connection->getServerVersion());
+        self::assertSame('5.7.11', $connectionMock->getServerVersion());
     }
 
     #[Test]
     public function getPlatformServerVersionReportsPlatformVersion(): void
     {
-        $this->connection
+        $connectionMock = $this->createConnectionMock();
+        $connectionMock
             ->method('getServerVersion')
             ->willReturn('5.7.11');
+        self::assertSame('Mock 5.7.11', $connectionMock->getPlatformServerVersion());
+    }
 
-        self::assertSame('Mock 5.7.11', $this->connection->getPlatformServerVersion());
+    private function createConnectionMock(?AbstractPlatform $platform = null): Connection&MockObject
+    {
+        $platform ??= new MockPlatform();
+        $connectionMock = $this->getMockBuilder(Connection::class)
+            ->onlyMethods(
+                [
+                    'connect',
+                    'ensureDatabaseValueTypes',
+                    'executeQuery',
+                    'executeStatement',
+                    'getDatabasePlatform',
+                    'getDriver',
+                    'getExpressionBuilder',
+                    'getNativeConnection',
+                    'getServerVersion',
+                ]
+            )
+            ->setConstructorArgs([[], $this->createMock(AbstractMySQLDriver::class), new Configuration(), null])
+            ->getMock();
+        $connectionMock
+            ->method('getExpressionBuilder')
+            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $connectionMock));
+        $connectionMock
+            ->method('connect');
+        $connectionMock
+            ->method('getDatabasePlatform')
+            ->willReturn($platform);
+        return $connectionMock;
     }
 }
