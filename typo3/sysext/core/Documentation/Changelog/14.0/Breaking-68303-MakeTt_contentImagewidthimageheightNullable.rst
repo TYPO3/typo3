@@ -32,7 +32,7 @@ TYPO3 installation relying on fields `imagewidth` and `imageheight` of the
 Migration
 =========
 
-Use the provided upgrade wizard to update the default value of the fields.
+Use the "Media fields zero to null" upgrade wizard to update the field values.
 
 Also modify your queries to handle `null` values instead of `0`.
 

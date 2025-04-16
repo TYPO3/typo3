@@ -27,11 +27,11 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
  * @since 14.0
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
-#[UpgradeWizard('mediaFieldZeroToNullUpdateWizard')]
-class MediaFieldZeroToNullUpdateWizard implements UpgradeWizardInterface, RepeatableInterface
+#[UpgradeWizard('mediaFieldsZeroToNullUpdateWizard')]
+readonly class MediaFieldsZeroToNullUpdateWizard implements UpgradeWizardInterface, RepeatableInterface
 {
     public function __construct(
-        private readonly ConnectionPool $connectionPool
+        private ConnectionPool $connectionPool
     ) {}
 
     public function getTitle(): string
