@@ -343,6 +343,12 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-
+			message: '#^Offset 0 on list\{0\?\: string, 1\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
+
+		-
 			message: '#^Property TYPO3\\CMS\\Backend\\RecordList\\DatabaseRecordList\:\:\$currentTable \(array\<array\<int\>\>\) does not accept array\<array\<int\|string\>\>\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -829,6 +835,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/DataMapProcessor.php
 
 		-
+			message: '#^Property TYPO3\\CMS\\Core\\DataHandling\\Localization\\State\:\:\$states on left side of \?\? is not nullable nor uninitialized\.$#'
+			identifier: nullCoalesce.initializedProperty
+			count: 1
+			path: ../../typo3/sysext/core/Classes/DataHandling/Localization/State.php
+
+		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Resource\\FileInterface\:\:getUid\(\)\.$#'
 			identifier: method.notFound
 			count: 2
@@ -1217,6 +1229,12 @@ parameters:
 			identifier: nullCoalesce.property
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/CropVariant.php
+
+		-
+			message: '#^Method TYPO3\\CMS\\Core\\LinkHandling\\FileLinkHandler\:\:resolveHandlerData\(\) has TYPO3\\CMS\\Core\\Resource\\Exception\\FileDoesNotExistException in PHPDoc @throws tag but it''s not thrown\.$#'
+			identifier: throws.unusedType
+			count: 1
+			path: ../../typo3/sysext/core/Classes/LinkHandling/FileLinkHandler.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
@@ -3097,6 +3115,18 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
 
 		-
+			message: '#^Property TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator\:\:\$image on left side of \?\? is not nullable nor uninitialized\.$#'
+			identifier: nullCoalesce.initializedProperty
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
+
+		-
+			message: '#^Property TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator\:\:\$usergroup on left side of \?\? is not nullable nor uninitialized\.$#'
+			identifier: nullCoalesce.initializedProperty
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
+
+		-
 			message: '#^Variable \$expectations on left side of \?\? always exists and is not nullable\.$#'
 			identifier: nullCoalesce.variable
 			count: 1
@@ -4297,7 +4327,7 @@ parameters:
 			path: ../../typo3/sysext/frontend/Tests/Functional/Controller/ShowImageControllerTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\{0\?\: string, 1\?\: non\-empty\-string\} will always evaluate to true\.$#'
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with list\{0\?\: string, 1\?\: non\-empty\-string\} will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/frontend/Tests/Functional/Rendering/SvgImageRenderingTest.php
