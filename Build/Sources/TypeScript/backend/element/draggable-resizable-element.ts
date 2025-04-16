@@ -13,6 +13,7 @@
 
 import { html, LitElement, TemplateResult, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
+import type { Offset } from '@typo3/backend/offset';
 
 interface Position {
   x: number;
@@ -54,22 +55,6 @@ export interface PointerEventNames {
   pointerUp: string[],
 }
 
-export class Offset {
-  constructor(public left: number, public top: number, public width: number, public height: number) {}
-
-  get right(): number {
-    return this.left + this.width;
-  }
-
-  get bottom(): number {
-    return this.top + this.height;
-  }
-
-  public clone(): Offset {
-    return new Offset(this.left, this.top, this.width, this.height);
-  }
-}
-
 /**
  * Module: @typo3/backend/element/typo3-backend-draggable-resizable
  *
@@ -98,29 +83,9 @@ export class DraggableResizableElement extends LitElement {
   @property({ type: Boolean, reflect: true }) private reverting = false;
 
   @state() private action: Action = null;
-  @state() private windowRef: Window = window;
-  @state() private documentRef: Document = document;
 
   private originOffset: Offset = null;
   private originPosition: Position = null;
-
-  public get document(): Document {
-    return this.documentRef;
-  }
-
-  public get window(): Window {
-    return this.windowRef;
-  }
-
-  /**
-   * In case this component is used in a modal, the actual DOM might be located in
-   * `top.window.document`. This setter allows adjusting the DOM context, which is
-   * also relevant for assigning proper CSP nonce values for different IFRAMEs.
-   */
-  public set window(windowRef: Window) {
-    this.windowRef = windowRef;
-    this.documentRef = windowRef.document;
-  }
 
   /**
    * Reverts the position/dimension back to `offset`, having a transition effect enabled.
@@ -138,21 +103,21 @@ export class DraggableResizableElement extends LitElement {
       this.container = this.parentElement;
     }
     this.pointerEventNames.pointerDown.forEach((name: string): void =>
-      this.documentRef.addEventListener(name, this.handleStart.bind(this), true));
+      document.addEventListener(name, this.handleStart, true));
     this.pointerEventNames.pointerMove.forEach((name: string): void =>
-      this.documentRef.addEventListener(name, this.handleUpdate.bind(this), true));
+      document.addEventListener(name, this.handleUpdate, true));
     this.pointerEventNames.pointerUp.forEach((name: string): void =>
-      this.documentRef.addEventListener(name, this.handleFinish.bind(this), true));
+      document.addEventListener(name, this.handleFinish, true));
   }
 
   public disconnectedCallback() {
     super.disconnectedCallback();
     this.pointerEventNames.pointerDown.forEach((name: string): void =>
-      this.documentRef.removeEventListener(name, this.handleStart.bind(this), true));
+      document.removeEventListener(name, this.handleStart, true));
     this.pointerEventNames.pointerMove.forEach((name: string): void =>
-      this.documentRef.removeEventListener(name, this.handleUpdate.bind(this), true));
+      document.removeEventListener(name, this.handleUpdate, true));
     this.pointerEventNames.pointerUp.forEach((name: string): void =>
-      this.documentRef.removeEventListener(name, this.handleFinish.bind(this), true));
+      document.removeEventListener(name, this.handleFinish, true));
   }
 
   protected render(): TemplateResult {
@@ -179,7 +144,7 @@ export class DraggableResizableElement extends LitElement {
     return this;
   }
 
-  private handleStart(evt: MouseEvent): void {
+  private readonly handleStart = (evt: MouseEvent): void => {
     const target = evt.target as HTMLElement;
     if (evt.buttons !== 1 || !this.contains(target)) {
       return;
@@ -199,9 +164,9 @@ export class DraggableResizableElement extends LitElement {
       'draggable-resizable-started',
       { action: this.action, originOffset: this.originOffset }
     ));
-  }
+  };
 
-  private handleUpdate(evt: MouseEvent): void {
+  private readonly handleUpdate = (evt: MouseEvent): void => {
     if (!this.action) {
       return;
     }
@@ -215,9 +180,9 @@ export class DraggableResizableElement extends LitElement {
       'draggable-resizable-updated',
       { action: this.action, originOffset: this.originOffset }
     ));
-  }
+  };
 
-  private handleFinish(): void {
+  private readonly handleFinish = (): void => {
     if (!this.action) {
       return;
     }
@@ -228,7 +193,7 @@ export class DraggableResizableElement extends LitElement {
     this.action = null;
     this.originOffset = null;
     this.originPosition = null;
-  }
+  };
 
   private adjustOffset(originOffset: Offset, delta: Position): Offset {
     // width & height cannot be lower
