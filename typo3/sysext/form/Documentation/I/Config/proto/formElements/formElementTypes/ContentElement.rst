@@ -27,6 +27,9 @@ Properties
 .. _prototypes.prototypeIdentifier.formelementsdefinition.contentelement.formeditor.editors.300:
 .. include:: ContentElement/formEditor/editors/300.rst.txt
 
+.. _prototypes.prototypeIdentifier.formelementsdefinition.contentelement.formeditor.editors.700:
+.. include:: ContentElement/formEditor/editors/700.rst.txt
+
 .. _prototypes.prototypeIdentifier.formelementsdefinition.contentelement.formeditor.editors.9999:
 .. include:: ContentElement/formEditor/editors/9999.rst.txt
 

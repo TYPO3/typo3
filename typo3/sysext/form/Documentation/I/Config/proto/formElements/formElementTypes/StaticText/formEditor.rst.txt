@@ -36,6 +36,28 @@ formEditor
                  templateName: Inspector-TextareaEditor
                  label: formEditor.elements.StaticText.editor.staticText.label
                  propertyPath: properties.text
+               700:
+                 identifier: gridColumnViewPortConfiguration
+                 templateName: Inspector-GridColumnViewPortConfigurationEditor
+                 label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+                 configurationOptions:
+                   viewPorts:
+                     10:
+                       viewPortIdentifier: xs
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                     20:
+                       viewPortIdentifier: sm
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                     30:
+                       viewPortIdentifier: md
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                     40:
+                       viewPortIdentifier: lg
+                       label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                   numbersOfColumnsToUse:
+                     label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                     propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                     fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
                9999:
                  identifier: removeButton
                  templateName: Inspector-RemoveElementEditor
