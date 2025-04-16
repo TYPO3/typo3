@@ -166,7 +166,6 @@ class ConfigurationStatus implements StatusProviderInterface
                 }
                 $memcachedConnection = @memcache_connect($host, $port);
                 if ($memcachedConnection != null) {
-                    // @phpstan-ignore arguments.count
                     @memcache_close($memcachedConnection);
                 } else {
                     $failedConnections[] = $configuredServer;
