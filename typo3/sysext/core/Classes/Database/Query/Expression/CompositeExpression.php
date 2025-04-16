@@ -40,7 +40,7 @@ class CompositeExpression extends DoctrineCompositeExpression
     private bool $isOuter;
 
     /**
-     * @param string[]|self[] $parts
+     * @param list<self|DoctrineCompositeExpression|string|null> $parts
      * @internal Use factory methods `and()` or `or()` methods instead. Signature will change along with doctrine/dbal 4.
      */
     public function __construct(string $type, array $parts = [], bool $isOuter = false)
@@ -53,7 +53,7 @@ class CompositeExpression extends DoctrineCompositeExpression
             // doctrine/dbal solved the issue to avoid empty parts by making it mandatory to avoid instantiating this
             // class without a part. As we allow this and handle empty parts later on, we apply the empty check here.
             // @see https://github.com/doctrine/dbal/issues/2388
-            array_filter($parts, static fn(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
+            $parts = array_filter($parts, static fn(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
         }
         $this->parts = $parts;
     }
@@ -65,11 +65,11 @@ class CompositeExpression extends DoctrineCompositeExpression
      */
     public function __toString(): string
     {
-        $this->parts = array_filter($this->parts, static fn(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
-        if ($this->count() === 0) {
+        $count = $this->count();
+        if ($count === 0) {
             return '';
         }
-        if ($this->count() === 1) {
+        if ($count === 1) {
             return (string)$this->parts[0];
         }
         if ($this->isOuter) {
@@ -84,9 +84,7 @@ class CompositeExpression extends DoctrineCompositeExpression
      */
     public static function and($part = null, ...$parts): self
     {
-        $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
-        return (new self(self::TYPE_AND, []))->with(...$mergedParts);
+        return (new self(self::TYPE_AND, []))->with($part, ...$parts);
     }
 
     /**
@@ -95,9 +93,7 @@ class CompositeExpression extends DoctrineCompositeExpression
      */
     public static function or($part = null, ...$parts): self
     {
-        $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
-        return (new self(self::TYPE_OR, []))->with(...$mergedParts);
+        return (new self(self::TYPE_OR, []))->with($part, ...$parts);
     }
 
     /**
@@ -109,15 +105,10 @@ class CompositeExpression extends DoctrineCompositeExpression
     public function with($part = null, ...$parts): self
     {
         $mergedParts = array_merge([$part], $parts);
-        array_filter($mergedParts, static fn(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
+        $mergedParts = array_filter($mergedParts, static fn(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool => !self::isEmptyPart($value));
         $that = clone $this;
         foreach ($mergedParts as $singlePart) {
-            // Due to a bug in Doctrine DBAL, we must add our own check here,
-            // which we luckily can, as we use a subclass anyway.
-            // @see https://github.com/doctrine/dbal/issues/2388
-            if (!self::isEmptyPart($singlePart)) {
-                $that->parts[] = $singlePart;
-            }
+            $that->parts[] = $singlePart;
         }
 
         return $that;
@@ -139,11 +130,36 @@ class CompositeExpression extends DoctrineCompositeExpression
         return $this->type;
     }
 
+    /**
+     * Determine if a part is considerable empty.
+     *
+     * doctrine/dbal solved the issue to avoid empty parts by making it mandatory to avoid instantiating this
+     * class without a part. As we allow this and handle empty parts later on, we apply the empty check here.
+     * @see https://github.com/doctrine/dbal/issues/2388
+     */
     private static function isEmptyPart(CompositeExpression|DoctrineCompositeExpression|string|null $value): bool
     {
-        return $value === null
-            || ($value instanceof DoctrineCompositeExpression && $value->count() === 0)
-            || trim((string)$value, '() ') === ''
-        ;
+        if ($value === null) {
+            return true;
+        }
+        if (is_string($value)) {
+            return trim($value, '() ') === '';
+        }
+        if ($value instanceof CompositeExpression) {
+            // TYPO3 implementation filters empty parts on setting and count is reliable in that case.
+            return $value->parts === [];
+        }
+        // We need to use the count method, because the property is private in Doctrine and cannot be checked
+        // against an empty array like it can be done for the own instance. Using Reflection would negate the
+        // benefit. That's life.
+        if ($value->count() === 0) {
+            // Note that this should not be possible with plain Doctrine DBAL
+            // composite expression,  still lets ensure a fallback here.
+            return true;
+        }
+        // Doctrine DBAL CompositeExpression does not filter empty parts, so we need to build the string to
+        // evaluate if it is empty or not, which comes with some performance impact hitting only when TYPO3
+        // extension authors are using the Doctrine Composite Expression instead of the TYPO3 variant.
+        return trim((string)$value, '() ') === '';
     }
 }
