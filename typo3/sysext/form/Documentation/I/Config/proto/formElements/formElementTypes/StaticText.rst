@@ -30,6 +30,9 @@ Properties
 .. _prototypes.prototypeIdentifier.formelementsdefinition.statictext.formeditor.editors.300:
 .. include:: StaticText/formEditor/editors/300.rst.txt
 
+.. _prototypes.prototypeIdentifier.formelementsdefinition.statictext.formeditor.editors.700:
+.. include:: StaticText/formEditor/editors/700.rst.txt
+
 .. _prototypes.prototypeIdentifier.formelementsdefinition.statictext.formeditor.editors.9999:
 .. include:: StaticText/formEditor/editors/9999.rst.txt
 

@@ -19,6 +19,34 @@ prototypes:
               propertyValidators:
                 10: Integer
                 20: FormElementIdentifierWithinCurlyBracesExclusive
+            700:
+              identifier: gridColumnViewPortConfiguration
+              templateName: Inspector-GridColumnViewPortConfigurationEditor
+              label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.label
+              configurationOptions:
+                viewPorts:
+                  10:
+                    viewPortIdentifier: xs
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xs.label
+                  20:
+                    viewPortIdentifier: sm
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.sm.label
+                  30:
+                    viewPortIdentifier: md
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.md.label
+                  40:
+                    viewPortIdentifier: lg
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.lg.label
+                  50:
+                    viewPortIdentifier: xl
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xl.label
+                  60:
+                    viewPortIdentifier: xxl
+                    label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.xxl.label
+                numbersOfColumnsToUse:
+                  label: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.label
+                  propertyPath: 'properties.gridColumnClassAutoConfiguration.viewPorts.{@viewPortIdentifier}.numbersOfColumnsToUse'
+                  fieldExplanationText: formEditor.elements.FormElement.editor.gridColumnViewPortConfiguration.numbersOfColumnsToUse.fieldExplanationText
             9999:
               identifier: removeButton
               templateName: Inspector-RemoveElementEditor
