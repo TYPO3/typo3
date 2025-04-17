@@ -2,6 +2,7 @@ import {Page, FrameLocator, expect} from '@playwright/test';
 import {PageTree} from './page-tree';
 import {FormEngine} from './form-engine';
 import {DocHeader} from './doc-header';
+import {Modal} from './modal';
 
 export class BackendPage {
   private readonly page: Page;
@@ -10,6 +11,7 @@ export class BackendPage {
   readonly pageTree: PageTree;
   readonly formEngine: FormEngine;
   readonly docHeader: DocHeader;
+  readonly modal: Modal;
 
   constructor(page: Page) {
     this.page = page;
@@ -17,6 +19,7 @@ export class BackendPage {
     this.pageTree = new PageTree(page);
     this.formEngine = new FormEngine(page);
     this.docHeader = new DocHeader(page);
+    this.modal = new Modal(page);
   }
 
   async gotoModule(identifier: string) {

@@ -64,7 +64,7 @@ test('Switch between languages in "Open in new window"', async ({
       const saveResponse = standalonePage.waitForResponse(response =>
         response.url().includes('/typo3/record/edit') && response.status() === 200
       );
-      await standalonePage.getByRole('button', { name: 'Save' }).click();
+      standalonePage.getByRole('button', { name: 'Save' }).click();
       await saveResponse;
 
       await expectOriginalEnglishText.toBeAttached();
