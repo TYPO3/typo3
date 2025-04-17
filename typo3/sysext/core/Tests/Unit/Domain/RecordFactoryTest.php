@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\DataHandling\RecordFieldTransformer;
+use TYPO3\CMS\Core\Domain\Record;
 use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
@@ -65,7 +66,7 @@ final class RecordFactoryTest extends UnitTestCase
         );
         $schemaFactory->load([
             'foo' => [
-                'ctrl' => ['type' => 'type'],
+                'ctrl' => ['type' => 'type', 'crdate' => 'crdate'],
                 'columns' => ['type' => ['config' => ['type' => 'select', 'items' => [['value' => 'bar', 'label' => 'bar']]]]],
                 'types' => ['bar' => ['showitem' => 'type']],
             ],
@@ -75,8 +76,11 @@ final class RecordFactoryTest extends UnitTestCase
             $this->createMock(RecordFieldTransformer::class),
             $this->createMock(EventDispatcherInterface::class),
         );
-        $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'bar']);
+        $time = time();
+        /** @var Record $recordObject */
+        $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'bar', 'crdate' => $time]);
         self::assertEquals('bar', $recordObject->toArray()['type']);
+        self::assertEquals($time, $recordObject->toArray(true)['_system']['createdAt']->getTimestamp());
         self::assertEquals('bar', $recordObject->get('type'));
     }
 
@@ -103,9 +107,11 @@ final class RecordFactoryTest extends UnitTestCase
             $this->createMock(RecordFieldTransformer::class),
             $this->createMock(EventDispatcherInterface::class),
         );
+        /** @var Record $recordObject */
         $recordObject = $subject->createFromDatabaseRow('foo', ['uid' => 1, 'pid' => 2, 'type' => 'foo', 'foo' => 'fooValue', 'bar' => 'barValue']);
         self::assertFalse($recordObject->has('bar'));
         self::assertTrue($recordObject->has('foo'));
+        self::assertIsArray($recordObject->toArray(true)['_system']);
         self::assertTrue($recordObject->getRawRecord()->has('foo'));
         self::assertTrue($recordObject->getRawRecord()->has('bar'));
     }

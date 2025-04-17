@@ -62,17 +62,19 @@ class Record implements RecordInterface
         return $this->rawRecord->getMainType();
     }
 
-    public function toArray(bool $includeSpecialProperties = false): array
+    public function toArray(bool $includeSystemProperties = false): array
     {
+        $properties = ['uid' => $this->getUid(), 'pid' => $this->getPid()];
         foreach ($this->properties as $key => $property) {
             if ($property instanceof RecordPropertyClosure) {
                 $this->properties[$key] = $property->instantiate();
             }
         }
-        if ($includeSpecialProperties) {
-            return ['uid' => $this->getUid(), 'pid' => $this->getPid()] + $this->properties + ($this->systemProperties?->toArray() ?? []);
+        $properties += $this->properties;
+        if ($includeSystemProperties) {
+            $properties += ['_system' => $this->systemProperties?->toArray() ?? []];
         }
-        return ['uid' => $this->getUid(), 'pid' => $this->getPid()] + $this->properties;
+        return $properties;
     }
 
     public function has(string $id): bool
