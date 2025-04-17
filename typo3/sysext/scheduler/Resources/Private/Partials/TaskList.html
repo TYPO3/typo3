@@ -24,31 +24,26 @@
     <f:if condition="{errorClasses}">
         <div class="panel panel-default">
             <div class="panel-heading taskGroup" data-task-group-id="missing">
-                <button
-                    type="button"
-                    title="{f:translate(key: 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass')}"
-                    class="btn btn-link fw-bold"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#scheduler-task-group-missing"
-                    aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"
-                >
-                    <strong><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass"/></strong>
-                </button>
-                <button
-                    type="button"
-                    class="btn btn-default btn-sm float-end t3js-toggle-table"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#scheduler-task-group-missing"
-                    aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"
-                >
-                    <core:icon identifier="{f:if(condition: errorClassesCollapsed, then: 'actions-view-list-expand', else: 'actions-view-list-collapse')}" size="small" />
-                </button>
+                <div class="panel-heading-row">
+                    <button
+                        class="panel-button{f:if(condition: errorClassesCollapsed, then: ' collapsed', else: '')}"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#scheduler-task-group-missing"
+                        aria-expanded="{f:if(condition: errorClassesCollapsed, then: 'false', else: 'true')}"
+                    >
+                        <div class="panel-title">
+                            <strong><f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.errorClass"/></strong>
+                        </div>
+                        <span class="caret"></span>
+                    </button>
+                </div>
             </div>
             <div class="panel-collapse collapse {f:if(condition: '!{errorClassesCollapsed}', then: 'show')}" id="scheduler-task-group-missing" data-table="task-group-missing" >
                 <div class="table-fit">
                     <table class="table table-striped table-hover">
                         <tr class="taskGroup" data-task-group-id="0">
-                            <td class="nowrap-disabled"><span>{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass') -> f:format.raw()}</span></td>
+                            <td><span>{f:translate(key:'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClass') -> f:format.raw()}</span></td>
                         </tr>
                     </table>
                     <table class="table table-striped table-hover" data-scheduler-table>
