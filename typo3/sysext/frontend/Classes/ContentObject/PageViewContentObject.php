@@ -115,19 +115,23 @@ final class PageViewContentObject extends AbstractContentObject
         try {
             return $view->render($templateFileName);
         } catch (InvalidTemplateResourceException $e) {
-            $templateFileName .= '.html';
-            $checkedPaths = implode(', ', array_map(fn($path) => $path . $templateFileName, $paths));
-            throw new InvalidTemplateResourceException(
-                sprintf(
-                    'PAGEVIEW TypoScript object: Failed to resolve the expected template file "%s" for layout "%s". See also: %s. The following paths were checked: %s',
-                    $templateFileName,
-                    $pageLayoutName,
-                    (new Typo3Information())->getDocsLink('t3tsref:cobj-pageview'),
-                    $checkedPaths,
-                ),
-                1742058289,
-                $e
-            );
+            // Only add a PAGEVIEW specific message in case the exception has been thrown for the given $templateFileName.
+            if (str_contains($e->getMessage(), $templateFileName)) {
+                $templateFileName .= '.html';
+                $checkedPaths = implode(', ', array_map(static fn($path) => $path . $templateFileName, $paths));
+                throw new InvalidTemplateResourceException(
+                    sprintf(
+                        'PAGEVIEW TypoScript object: Failed to resolve the expected template file "%s" for layout "%s". See also: %s. The following paths were checked: %s',
+                        $templateFileName,
+                        $pageLayoutName,
+                        (new Typo3Information())->getDocsLink('t3tsref:cobj-pageview'),
+                        $checkedPaths,
+                    ),
+                    1742058289,
+                    $e
+                );
+            }
+            throw $e;
         }
     }
 
