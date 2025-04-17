@@ -192,9 +192,8 @@ class ContextMenuActions {
               top.document.dispatchEvent(new CustomEvent('typo3:pagetree:selectFirstNode'));
             }
             ContextMenuActions.refreshPageTree();
-          } else if (table === 'tt_content') {
-            Viewport.ContentContainer.refresh();
           }
+          ContextMenuActions.triggerRefresh(Viewport.ContentContainer.get().location.href);
         });
       }
       modal.hideModal();
