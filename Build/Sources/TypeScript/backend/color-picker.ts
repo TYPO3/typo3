@@ -25,16 +25,26 @@ export class Typo3BackendColorPicker extends LitElement {
     }
 
     .color-picker-preview {
+      --typo3-colorpicker-preview-width: 1.25rem;
+      --typo3-colorpicker-preview-height: 1.25rem;
+      --typo3-bg-checkerboard-pattern-size: calc(var(--typo3-colorpicker-preview-width) / 2);
+      --typo3-bg-checkerboard-background-color: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-85));
+      --typo3-bg-checkerboard-background-image-color: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-90));
+
       display: block;
       position: absolute;
-      width: 1.25rem;
-      height: 1.25rem;
+      width: var(--typo3-colorpicker-preview-width);
+      height: var(--typo3-colorpicker-preview-height);
       top: 50%;
       inset-inline-start: var(--typo3-input-sm-padding-x);
       z-index: 1;
       transform: translate(0, -50%);
-      background: var(--alwan-pattern);
-      border-radius: 3px !important;
+      background: var(--typo3-bg-checkerboard-background-color);
+      background-image: linear-gradient(45deg, var(--typo3-bg-checkerboard-background-image-color) 25%, transparent 25%), linear-gradient(135deg, var(--typo3-bg-checkerboard-background-image-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--typo3-bg-checkerboard-background-image-color) 75%), linear-gradient(135deg, transparent 75%, var(--typo3-bg-checkerboard-background-image-color) 75%);
+      background-position: 0 0, calc(var(--typo3-bg-checkerboard-pattern-size) / 2) 0, calc(var(--typo3-bg-checkerboard-pattern-size) / 2) calc(var(--typo3-bg-checkerboard-pattern-size) / 2 * -1), 0 calc(var(--typo3-bg-checkerboard-pattern-size) / 2);
+      background-size: var(--typo3-bg-checkerboard-pattern-size) var(--typo3-bg-checkerboard-pattern-size);
+      background-clip: padding-box;
+      border-radius: var(--typo3-component-border-radius);
       pointer-events: none;
     }
 

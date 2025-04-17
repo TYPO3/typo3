@@ -1,9 +1,10 @@
 @mixin background-checkered($size: 20) {
     --typo3-bg-checkerboard-pattern-size: #{$size}px;
-    --typo3-bg-checkerboard-background-image-color: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-90));
-    background: var(--typo3-example-content-bg);
+    --typo3-bg-checkerboard-background-color: light-dark(var(--token-color-neutral-10), var(--token-color-neutral-85));
+    --typo3-bg-checkerboard-background-image-color: light-dark(var(--token-color-neutral-0), var(--token-color-neutral-90));
+    background: var(--typo3-bg-checkerboard-background-color);
     background-image: linear-gradient(45deg, var(--typo3-bg-checkerboard-background-image-color) 25%, transparent 25%), linear-gradient(135deg, var(--typo3-bg-checkerboard-background-image-color) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, var(--typo3-bg-checkerboard-background-image-color) 75%), linear-gradient(135deg, transparent 75%, var(--typo3-bg-checkerboard-background-image-color) 75%);
     background-position: 0 0, calc(var(--typo3-bg-checkerboard-pattern-size) / 2) 0, calc(var(--typo3-bg-checkerboard-pattern-size) / 2) calc(var(--typo3-bg-checkerboard-pattern-size) / 2 * -1), 0 calc(var(--typo3-bg-checkerboard-pattern-size) / 2);
-    background-size: #{$size}px #{$size}px;
+    background-size: var(--typo3-bg-checkerboard-pattern-size) var(--typo3-bg-checkerboard-pattern-size);
     background-clip: padding-box;
 }
