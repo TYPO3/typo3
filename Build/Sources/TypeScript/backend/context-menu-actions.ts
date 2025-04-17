@@ -187,9 +187,8 @@ class ContextMenuActions {
         AjaxDataHandler.process('cmd[' + table + '][' + uid + '][delete]=1', eventData).then((): void => {
           if (table === 'pages') {
             ContextMenuActions.refreshPageTree();
-          } else if (table === 'tt_content') {
-            Viewport.ContentContainer.refresh();
           }
+          ContextMenuActions.triggerRefresh(Viewport.ContentContainer.get().location.href);
         });
       }
       modal.hideModal();
