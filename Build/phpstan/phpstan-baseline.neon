@@ -385,6 +385,12 @@ parameters:
 			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
 
 		-
+			message: '#^Offset 0 on list\{0\?\: string, 1\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: ../../typo3/sysext/backend/Classes/RecordList/DatabaseRecordList.php
+
+		-
 			message: '#^Property TYPO3\\CMS\\Backend\\RecordList\\DatabaseRecordList\:\:\$currentTable \(array\<array\<int\>\>\) does not accept array\<array\<int\|string\>\>\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -1697,6 +1703,12 @@ parameters:
 			identifier: nullCoalesce.property
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Imaging/ImageManipulation/CropVariant.php
+
+		-
+			message: '#^Method TYPO3\\CMS\\Core\\LinkHandling\\FileLinkHandler\:\:resolveHandlerData\(\) has TYPO3\\CMS\\Core\\Resource\\Exception\\FileDoesNotExistException in PHPDoc @throws tag but it''s not thrown\.$#'
+			identifier: throws.unusedType
+			count: 1
+			path: ../../typo3/sysext/core/Classes/LinkHandling/FileLinkHandler.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'
@@ -4103,6 +4115,18 @@ parameters:
 			identifier: method.notFound
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Controller/ContentController.php
+
+		-
+			message: '#^Property TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator\:\:\$image on left side of \?\? is not nullable nor uninitialized\.$#'
+			identifier: nullCoalesce.initializedProperty
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
+
+		-
+			message: '#^Property TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator\:\:\$usergroup on left side of \?\? is not nullable nor uninitialized\.$#'
+			identifier: nullCoalesce.initializedProperty
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example/Classes/Domain/Model/Administrator.php
 
 		-
 			message: '#^Variable \$expectations on left side of \?\? always exists and is not nullable\.$#'
@@ -6625,8 +6649,8 @@ parameters:
 			path: ../../typo3/sysext/reactions/Classes/Http/Middleware/ReactionResolver.php
 
 		-
-			message: '#^Offset ''records'' on non\-empty\-array on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
+			message: '#^Property TYPO3\\CMS\\Recycler\\Controller\\RecyclerAjaxController\:\:\$conf on left side of \?\? is not nullable nor uninitialized\.$#'
+			identifier: nullCoalesce.initializedProperty
 			count: 1
 			path: ../../typo3/sysext/recycler/Classes/Controller/RecyclerAjaxController.php
 
@@ -6687,6 +6711,12 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
+
+		-
+			message: '#^Function memcache_close invoked with 0 parameters, 1 required\.$#'
+			identifier: arguments.count
 			count: 1
 			path: ../../typo3/sysext/reports/Classes/Report/Status/ConfigurationStatus.php
 
