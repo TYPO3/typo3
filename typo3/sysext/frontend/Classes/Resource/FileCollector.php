@@ -287,7 +287,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
             return [];
         }
 
-        $localizedId = $element['_LOCALIZED_UID'] ?? null;
+        $localizedId = $element['_computed']['localizedUid'] ?? $element['_LOCALIZED_UID'] ?? null;
 
         if ($localizedId !== null && $this->tcaSchemaFactory->get($tableName)->isLanguageAware()) {
             $localizedReferences = $this->fileRepository->findByRelation($tableName, $fieldName, (int)$localizedId);
