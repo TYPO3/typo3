@@ -288,7 +288,7 @@ class FileCollector implements \Countable, LoggerAwareInterface
             return [];
         }
 
-        $localizedId = $element['_LOCALIZED_UID'] ?? null;
+        $localizedId = $element['_computed']['localizedUid'] ?? $element['_LOCALIZED_UID'] ?? null;
 
         $isTableLocalizable = (
             !empty($GLOBALS['TCA'][$tableName]['ctrl']['languageField'])
