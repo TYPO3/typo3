@@ -33,7 +33,7 @@ export class FormEngine {
    */
   async close() {
     const formEngineLoaded = this.formEngineLoaded();
-    await this.closeButton.click();
+    this.closeButton.click();
     await formEngineLoaded;
 
     await expect(this.container).not.toBeAttached();

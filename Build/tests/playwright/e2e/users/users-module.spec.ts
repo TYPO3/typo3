@@ -202,7 +202,7 @@ test.describe('Backend Users module', () => {
     });
 
     await test.step('test the edit link', async () => {
-      contentFrame.getByRole('button', { name: 'Reset' });
+      await contentFrame.getByRole('button', { name: 'Reset' }).click();
       await adminRow.getByRole('link', { name: 'Klaus Admin online (admin)' }).click();
       await openAndCloseTheEditForm(contentFrame, username);
     });
