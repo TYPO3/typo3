@@ -896,7 +896,9 @@ class DataHandler
                             $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} denied by checkRecordUpdateAccess hook', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
                             continue;
                         }
-                    } elseif (!$this->hasPermissionToUpdate($table, $pageRecord)) {
+                    } elseif ($pageRecord === [] && $currentRecord['pid'] === 0 && !($this->admin || BackendUtility::isRootLevelRestrictionIgnored($table))
+                        || (($pageRecord !== [] || $currentRecord['pid'] !== 0) && !$this->hasPermissionToUpdate($table, $pageRecord))
+                    ) {
                         $this->log($table, $id, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify record {table}:{uid} without permission or non-existing page', null, ['table' => $table, 'uid' => $id], (int)$currentRecord['pid']);
                         continue;
                     }
@@ -3511,7 +3513,9 @@ class DataHandler
                 return null;
             }
         }
-        if (!$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord)) {
+        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || BackendUtility::isRootLevelRestrictionIgnored($table)))
+            || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
+        ) {
             $this->log($table, $uid, SystemLogDatabaseAction::INSERT, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to copy record "{table}:{uid}" without read permissions', null, ['table' => $table, 'uid' => (int)$uid]);
             return null;
         }
@@ -4849,8 +4853,9 @@ class DataHandler
                 return false;
             }
         }
-
-        if (!$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord)) {
+        if (($pageRecord === [] && $row['pid'] === 0 && !($this->admin || BackendUtility::isRootLevelRestrictionIgnored($table)))
+            || (($pageRecord !== [] || $row['pid'] !== 0) && !$this->hasPagePermission(Permission::PAGE_SHOW, $pageRecord))
+        ) {
             $this->log($table, $uid, SystemLogDatabaseAction::LOCALIZE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to localize record {table}:{uid} without permission', null, ['table' => $table, 'uid' => (int)$uid]);
             return false;
         }
@@ -7248,8 +7253,8 @@ class DataHandler
         } else {
             $perms = Permission::CONTENT_EDIT;
         }
-        if (!$this->hasPagePermission($perms, $pageRecord)
-            && ($pid !== 0 || (!$this->admin && !BackendUtility::isRootLevelRestrictionIgnored($table)))
+        if (($pid !== 0 || (!$this->admin && !BackendUtility::isRootLevelRestrictionIgnored($table)))
+            && !$this->hasPagePermission($perms, $pageRecord)
         ) {
             // If page does not exist, it can still be an attempt to add to pid 0. Check this case
             // and deny record insert by looking at admin flag and TCA root level restriction as well.
