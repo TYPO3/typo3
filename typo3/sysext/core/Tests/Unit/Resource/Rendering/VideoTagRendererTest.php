@@ -143,6 +143,18 @@ final class VideoTagRendererTest extends UnitTestCase
                 ],
                 '<video muted="muted" foo="bar" data-js-required="yes" data-custom-id="video-123" width="300" height="200" controls controlsList="nodownload"><source src="//:path/myVideoFile" type="video/mp4"></video>',
             ],
+            [
+                '//:path/myVideoFile',
+                [
+                    'additionalConfig' => [
+                        'playsinline' => '1',
+                        'controls' => '1',
+                        'api' => '1',
+                        'no-cookie' => '1',
+                    ],
+                ],
+                '<video width="300" height="200" controls playsinline><source src="//:path/myVideoFile" type="video/mp4"></video>',
+            ],
         ];
     }
 

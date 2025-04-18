@@ -29,6 +29,13 @@ class VideoTagRenderer implements FileRendererInterface
     protected $possibleMimeTypes = ['video/mp4', 'video/webm', 'video/ogg', 'video/x-m4v', 'application/ogg'];
 
     /**
+     * Special attributes which do not exist on <video> tags and therefore should be omitted.
+     *
+     * @var string[]
+     */
+    protected array $excludeAttributes = ['api', 'no-cookie'];
+
+    /**
      * Returns the priority of the renderer
      * This way it is possible to define/overrule a renderer
      * for a specific file type/context.
@@ -103,7 +110,7 @@ class VideoTagRenderer implements FileRendererInterface
         }
         if (isset($options['additionalConfig']) && is_array($options['additionalConfig'])) {
             foreach ($options['additionalConfig'] as $key => $value) {
-                if ($value) {
+                if ($value && !in_array($key, $this->excludeAttributes, true)) {
                     if ((int)$value !== 1) {
                         $attributes[] = htmlspecialchars($key) . '="' . htmlspecialchars($value) . '"';
                     } else {
