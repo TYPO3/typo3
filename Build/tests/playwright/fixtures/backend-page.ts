@@ -1,24 +1,53 @@
 import {Page, FrameLocator, expect} from '@playwright/test';
 import {PageTree} from "./page-tree";
+import {FormEngine} from "./form-engine";
 
 export class BackendPage {
   private readonly page: Page;
 
   readonly contentFrame: FrameLocator;
   readonly pageTree: PageTree;
+  readonly formEngine: FormEngine;
 
   constructor(page: Page) {
     this.page = page;
     this.contentFrame = this.page.frameLocator('#typo3-contentIframe');
     this.pageTree = new PageTree(page);
+    this.formEngine = new FormEngine(page);
   }
 
-  async gotoModule(identifier) {
-    await this.page.goto('');
-    let moduleLink = await this.page.locator(`a[data-modulemenu-identifier="${identifier}"]`);
-    await moduleLink.click();
+  async gotoModule(identifier: string) {
+    await this.page.goto('module/web/layout');
+    let moduleLink = this.page.locator(`a[data-modulemenu-identifier="${identifier}"]`);
+    let moduleLoaded = this.moduleLoaded(identifier);
+    moduleLink.click();
+    await moduleLoaded;
 
     await expect(moduleLink).toHaveClass(/modulemenu-action-active/);
-    await expect(this.page.locator('.nprogress-busy')).not.toBeVisible();
+  }
+
+  async moduleLoaded(identifier: string) {
+    return this.page.waitForFunction((moduleId) => {
+      return new Promise((resolve) => {
+        // Listen for module loaded event and verify it's the right module
+        document.addEventListener('typo3-module-loaded', () => {
+          resolve(true);
+        }, {once: true});
+      });
+    }, identifier);
+  }
+
+  async waitForModuleResponse(urlPattern?: string | RegExp): Promise<void> {
+    await this.page.waitForResponse(response => {
+      if (urlPattern) {
+        const urlMatches = typeof urlPattern === 'string'
+          ? response.url().includes(urlPattern)
+          : urlPattern.test(response.url());
+        return urlMatches && response.status() === 200;
+      }
+
+      return (response.url().includes('/typo3/module/') || response.url().includes('/typo3/web/'))
+        && response.status() === 200;
+    });
   }
 }

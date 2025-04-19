@@ -1,7 +1,6 @@
 import {test, expect} from '../../fixtures/setup-fixtures';
 
 test.beforeEach(async ({page, backend}) => {
-  await page.goto('module/web/layout');
   await backend.gotoModule('site_redirects');
 });
 
@@ -11,13 +10,17 @@ test('See redirect management module', async ({backend}) => {
 
 test('Create a new redirect', async ({page, backend}) => {
   let amountOfRedirects = await backend.contentFrame.locator('table > tbody > tr').count()
+
+  let formEngineReady = backend.formEngine.formEngineLoaded();
   await backend.contentFrame.getByRole('button', {name: 'Add redirect'}).click();
+  await formEngineReady
   await expect(backend.contentFrame.locator('h1')).toContainText('Create new Redirect on root level');
-  await backend.contentFrame.locator('//input[contains(@data-formengine-input-name, "data[sys_redirect]") and contains(@data-formengine-input-name, "[source_path]")]').fill('/my-path/');
-  await backend.contentFrame.locator('//input[contains(@data-formengine-input-name, "data[sys_redirect]") and contains(@data-formengine-input-name, "[target]")]').fill('1');
-  await backend.contentFrame.getByRole('button', {name: 'Save'}).click();
-  await expect(page.getByLabel('Record saved')).toBeVisible();
-  await backend.contentFrame.getByRole('button', {name: 'Close'}).click();
+
+  await backend.contentFrame.getByLabel('Source Path [source_path]').pressSequentially('/my-path/');
+  await backend.contentFrame.getByLabel('Target [target]').pressSequentially('t3://page?uid=1');
+  await page.keyboard.press('Tab');
+  await backend.formEngine.save();
+  await backend.formEngine.close();
   await expect(backend.contentFrame.locator('h1')).toContainText('Redirect Management');
   let newAmountOfRedirects = await backend.contentFrame.locator('table > tbody > tr').count()
   expect(newAmountOfRedirects).toBe(amountOfRedirects + 1);

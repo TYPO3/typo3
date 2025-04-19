@@ -43,7 +43,8 @@ export class PageTree {
    * - All icons are loaded
    */
   async isReady() {
-    await expect(this.container.locator('.nodes-loader-inner')).not.toBeAttached();
+    // For some reason sometimes there are multiple loaders, just wait for the last to disappear
+    await expect(this.container.locator('.nodes-loader-inner').last()).not.toBeAttached();
     await expect(this.container.locator('[identifier="spinner-circle"]')).not.toBeAttached();
     await expect(this.page.locator('.nprogress-busy')).not.toBeVisible();
   }
@@ -69,6 +70,8 @@ export class PageTree {
     );
 
     const nodeEditLocator = this.page.locator('.node-edit');
+    // Wait for the edit field to appear after drag and drop
+    await expect(nodeEditLocator).toBeAttached();
     await nodeEditLocator.fill(title);
     await this.page.keyboard.press('Enter');
 
@@ -105,30 +108,80 @@ export class PageTree {
    * @param pages Array of pages to open in tree
    * @return The last page in the array
    */
-  async open(...pages: Array<string>) {
-    let resultPage: Locator;
+  async open(...pages: Array<string>): Promise<Locator> {
+    await this.isReady();
+
     let level = 1;
-    let element = this.container.locator(`[aria-level="${level}"][data-tree-id*="0"]`);
 
     for (const page of pages) {
       level++;
 
       // Consider only pages on the current level to avoid naming conflicts.
-      // Does not work when 2 pages have the same name and are on the same tree level
-      element = this.container.locator(`[aria-level="${level}"]`, { hasText: page });
+      const element = this.container.locator(`[aria-level="${level}"]`, {
+        has: this.page.locator('.node-contentlabel', { hasText: new RegExp(`^${page}$`) })
+      });
 
-      const isCollapsed = await element.locator('.node-toggle [identifier="actions-chevron-end"]').count() === 1;
-      if (isCollapsed) {
-        await element.locator('.node-toggle').click();
-      }
+      const targetElement = element.first();
 
-      if (page === pages[pages.length - 1]) {
-        await element.locator('.node-contentlabel').click();
+      // Wait for the element to be visible in the DOM
+      await expect(targetElement).toBeAttached();
+
+      // Check if this node needs to be expanded (not the last page in path)
+      if (page !== pages[pages.length - 1]) {
+        const toggleIcon = targetElement.locator('.node-toggle [identifier="actions-chevron-end"]');
+        const isCollapsed = await toggleIcon.count() === 1;
+
+        if (isCollapsed) {
+          // Set up event listener before clicking to expand
+          const expandEventPromise = this.page.evaluate(() => {
+            return new Promise<void>((resolve) => {
+              const tree = document.querySelector('typo3-backend-navigation-component-pagetree-tree');
+              if (tree) {
+                tree.addEventListener('typo3:tree:expand-toggle', () => resolve(), { once: true });
+              } else {
+                resolve();
+              }
+            });
+          });
+
+          await targetElement.locator('.node-toggle').click();
+          await expandEventPromise;
+          await this.isReady();
+        }
+      } else {
+        // This is the last page - click to select it
+        const contentLabel = targetElement.locator('.node-contentlabel').first();
+        await expect(contentLabel).toBeAttached({ timeout: 10000 });
+
+        // Set up event listener before clicking to select
+        const selectEventPromise = this.page.evaluate(() => {
+          return new Promise<void>((resolve) => {
+            const tree = document.querySelector('typo3-backend-navigation-component-pagetree-tree');
+            if (tree) {
+              tree.addEventListener('typo3:tree:node-selected', () => resolve(), { once: true });
+            } else {
+              resolve();
+            }
+          });
+        });
+
+        await contentLabel.click();
+        await selectEventPromise;
         await this.isReady();
-        await expect(element).toHaveClass(/node-selected/);
-        resultPage = element;
+
+        await expect(targetElement).toHaveClass(/node-selected/);
+
+        // Return a locator for the specific element by its unique data-id
+        // This ensures dragDeletePage checks the exact element, not another with same name
+        const dataId = await targetElement.getAttribute('data-id');
+        if (!dataId) {
+          throw new Error(`Could not get data-id for page "${page}"`);
+        }
+        return this.container.locator(`[data-id="${dataId}"]`);
       }
     }
-    return resultPage;
+
+    // This should never be reached if pages array is not empty
+    throw new Error('No pages provided to open()');
   }
 }

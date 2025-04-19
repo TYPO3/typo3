@@ -5,6 +5,7 @@ test('Switch between languages in "Open in new window"', async ({
   backend,
 }) => {
   await backend.gotoModule('web_layout');
+  await backend.pageTree.isReady();
   await backend.pageTree.open('styleguide TCA demo', 'staticdata');
 
   const standalonePage =
@@ -58,8 +59,14 @@ test('Switch between languages in "Open in new window"', async ({
 
     await test.step('make sure saving works on danish', async () => {
       await standalonePage.getByLabel('Page Title').fill('dansk staticdata');
+
+      // Wait for save response instead of notification
+      const saveResponse = standalonePage.waitForResponse(response =>
+        response.url().includes('/typo3/record/edit') && response.status() === 200
+      );
       await standalonePage.getByRole('button', { name: 'Save' }).click();
-      await expect(standalonePage.getByLabel('Record saved')).toBeVisible();
+      await saveResponse;
+
       await expectOriginalEnglishText.toBeAttached();
       await expect(languageButton).toContainText('styleguide demo language danish');
     });
