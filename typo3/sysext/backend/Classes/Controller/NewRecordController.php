@@ -110,7 +110,18 @@ class NewRecordController
             return $this->view->renderResponse('NewRecord/NewRecord');
         }
 
-        $this->renderNewRecordControls();
+        $allowedTables = $this->getAllowedTables();
+        $recordControls = $this->getNewRecordControls($allowedTables);
+
+        if (count($recordControls) === 1) {
+            $items = current($recordControls)['items'] ?? [];
+            if (count($items) === 1) {
+                $item = current($items);
+                return new RedirectResponse($item['url'], 301);
+            }
+        }
+
+        $this->view->assign('recordTypeGroups', $recordControls);
 
         // Setting up the buttons and markers for docheader (done after permissions are checked)
         $this->getButtons();
@@ -316,9 +327,31 @@ class NewRecordController
     }
 
     /**
+     * @return list<string>
+     */
+    protected function getAllowedTables(): array
+    {
+        $allowedTables = [];
+
+        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
+            $isTablesAllowed = match ($table) {
+                'pages' => $this->isRecordCreationAllowedForTable('pages'),
+                'tt_content' => false, // Skip, as inserting content elements is part of the page module
+                default => $this->newContentInto && $this->isRecordCreationAllowedForTable($table) && $this->isTableAllowedOnPage($schema, $this->pageinfo)
+            };
+
+            if ($isTablesAllowed) {
+                $allowedTables[] = $table;
+            }
+        }
+
+        return $allowedTables;
+    }
+
+    /**
      * Render controls for creating a regular new element (pages or records)
      */
-    protected function renderNewRecordControls(): void
+    protected function getNewRecordControls(array $allowedTables): array
     {
         $lang = $this->getLanguageService();
         // Get TSconfig for current page
@@ -342,106 +375,96 @@ class NewRecordController
             'system' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:system_records'),
         ];
         $groupedLinksOnTop = [];
-        foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
-            /** @var TcaSchema $schema */
+        foreach ($allowedTables as $table) {
+            $schema = $this->tcaSchemaFactory->get($table);
             $ctrlTitle = $schema->getRawConfiguration()['title'] ?? '';
 
-            switch ($table) {
-                // New page
-                case 'pages':
-                    if (!$this->isRecordCreationAllowedForTable('pages')) {
-                        break;
-                    }
-                    // New pages INSIDE this pages
-                    $newPageLinks = [];
-                    if ($displayNewPagesIntoLink && $this->isTableAllowedOnPage($schema, $this->pageinfo)) {
-                        // Create link to new page inside
-                        $newPageLinks[] = $this->renderLink(
-                            htmlspecialchars($lang->sL($ctrlTitle)) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside')) . ')',
-                            $table,
-                            $this->id
-                        );
-                    }
-                    // New pages AFTER this pages
-                    if ($displayNewPagesAfterLink && $this->isTableAllowedOnPage($schema, $this->pidInfo)) {
-                        $newPageLinks[] = $this->renderLink(
-                            htmlspecialchars($lang->sL($ctrlTitle)) . ' (' . htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after')) . ')',
-                            'pages',
-                            -$this->id
-                        );
-                    }
-                    // New pages at selection position
-                    if ($this->newPagesSelectPosition) {
-                        // Link to page-wizard
-                        $newPageLinks[] = $this->renderPageSelectPositionLink();
-                    }
-                    if (!empty($newPageLinks)) {
-                        $groupedLinksOnTop['pages'] = [
-                            'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:createNewPage'),
-                            'icon' => 'actions-page-new',
-                            'items' => $newPageLinks,
-                        ];
-                    }
-                    break;
-                case 'tt_content':
-                    // Skip, as inserting content elements is part of the page module
-                    break;
-                default:
-                    if (!$this->newContentInto) {
-                        break;
-                    }
-                    if (!$this->isRecordCreationAllowedForTable($table)) {
-                        break;
-                    }
-                    if (!$this->isTableAllowedOnPage($schema, $this->pageinfo)) {
-                        break;
-                    }
-                    $nameParts = explode('_', $table);
-                    $groupName = $schema->getRawConfiguration()['groupName'] ?? null;
-                    if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
-                        $groupName = $groupName ?? $nameParts[1] ?? null;
-                        // Try to extract extension name
-                        if ($groupName) {
-                            $_EXTKEY = '';
-                            $titleIsTranslatableLabel = str_starts_with($ctrlTitle, 'LLL:EXT:');
-                            if ($titleIsTranslatableLabel) {
-                                // In case the title is a locallang reference, we can simply
-                                // extract the extension name from the given extension path.
-                                $_EXTKEY = substr($ctrlTitle, 8);
-                                $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
-                            } elseif (ExtensionManagementUtility::isLoaded($groupName)) {
-                                // In case $title is not a locallang reference, we check the groupName to
-                                // be a valid extension key. This most probably work since by convention the
-                                // first part after tx_ / tt_ is the extension key.
-                                $_EXTKEY = $groupName;
-                            }
-                            // Fetch the group title from the extension name
-                            if ($_EXTKEY !== '') {
-                                // Try to get the extension title
-                                $package = GeneralUtility::makeInstance(PackageManager::class)->getPackage($_EXTKEY);
-                                $groupTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:extension.title');
-                                // If no localisation available, read title from the Package MetaData
-                                if (!$groupTitle) {
-                                    $groupTitle = $package->getPackageMetaData()->getTitle();
-                                }
-                                $extensionIcon = $package->getPackageIcon();
-                                if (!empty($extensionIcon)) {
-                                    $iconFile[$groupName] = '<img src="' . PathUtility::getAbsoluteWebPath($package->getPackagePath() . $extensionIcon) . '" width="16" height="16" alt="' . $groupTitle . '" />';
-                                }
-                                if (!empty($groupTitle)) {
-                                    $groupTitles[$groupName] = $groupTitle;
-                                } else {
-                                    $groupTitles[$groupName] = ucwords($_EXTKEY);
-                                }
-                            }
-                        } else {
-                            // Fall back to "system" in case no $groupName could be found
-                            $groupName = 'system';
+            if ($table === 'pages') {
+                // New pages INSIDE this pages
+                $newPageLinks = [];
+                if ($displayNewPagesIntoLink && $this->isTableAllowedOnPage($schema, $this->pageinfo)) {
+                    // Create link to new page inside
+                    $newPageLinks[] = [
+                        'url' => $this->renderLink($table, $this->id),
+                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                        'label' => $lang->sL($ctrlTitle) . ' (' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.inside') . ')',
+                    ];
+                }
+                // New pages AFTER this pages
+                if ($displayNewPagesAfterLink && $this->isTableAllowedOnPage($schema, $this->pidInfo)) {
+                    $newPageLinks[] = [
+                        'url' => $this->renderLink($table, -$this->id),
+                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                        'label' => $lang->sL($ctrlTitle) . ' (' . $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:db_new.php.after') . ')',
+                    ];
+                }
+                // New pages at selection position
+                if ($this->newPagesSelectPosition) {
+                    // Link to page-wizard
+                    $newPageLinks[] = [
+                        'url' => $this->renderPageSelectPositionLink(),
+                        'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                        'label' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:pageSelectPosition'),
+                    ];
+                }
+                if (!empty($newPageLinks)) {
+                    $groupedLinksOnTop['pages'] = [
+                        'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:createNewPage'),
+                        'icon' => $this->iconFactory->getIcon('actions-page-new', IconSize::SMALL),
+                        'items' => $newPageLinks,
+                    ];
+                }
+            } else {
+                $nameParts = explode('_', $table);
+                $groupName = $schema->getRawConfiguration()['groupName'] ?? null;
+                if (!isset($iconFile[$groupName]) || $nameParts[0] === 'tx' || $nameParts[0] === 'tt') {
+                    $groupName = $groupName ?? $nameParts[1] ?? null;
+                    // Try to extract extension name
+                    if ($groupName) {
+                        $_EXTKEY = '';
+                        $titleIsTranslatableLabel = str_starts_with($ctrlTitle, 'LLL:EXT:');
+                        if ($titleIsTranslatableLabel) {
+                            // In case the title is a locallang reference, we can simply
+                            // extract the extension name from the given extension path.
+                            $_EXTKEY = substr($ctrlTitle, 8);
+                            $_EXTKEY = substr($_EXTKEY, 0, (int)strpos($_EXTKEY, '/'));
+                        } elseif (ExtensionManagementUtility::isLoaded($groupName)) {
+                            // In case $title is not a locallang reference, we check the groupName to
+                            // be a valid extension key. This most probably work since by convention the
+                            // first part after tx_ / tt_ is the extension key.
+                            $_EXTKEY = $groupName;
                         }
+                        // Fetch the group title from the extension name
+                        if ($_EXTKEY !== '') {
+                            // Try to get the extension title
+                            $package = GeneralUtility::makeInstance(PackageManager::class)->getPackage($_EXTKEY);
+                            $groupTitle = $lang->sL('LLL:EXT:' . $_EXTKEY . '/Resources/Private/Language/locallang_db.xlf:extension.title');
+                            // If no localisation available, read title from the Package MetaData
+                            if (!$groupTitle) {
+                                $groupTitle = $package->getPackageMetaData()->getTitle();
+                            }
+                            $extensionIcon = $package->getPackageIcon();
+                            if (!empty($extensionIcon)) {
+                                $iconFile[$groupName] = '<img src="' . PathUtility::getAbsoluteWebPath($package->getPackagePath() . $extensionIcon) . '" width="16" height="16" alt="' . $groupTitle . '" />';
+                            }
+                            if (!empty($groupTitle)) {
+                                $groupTitles[$groupName] = $groupTitle;
+                            } else {
+                                $groupTitles[$groupName] = ucwords($_EXTKEY);
+                            }
+                        }
+                    } else {
+                        // Fall back to "system" in case no $groupName could be found
+                        $groupName = 'system';
                     }
-                    $this->tRows[$groupName]['title'] = $this->tRows[$groupName]['title'] ?? $groupTitles[$groupName] ?? $nameParts[1] ?? $ctrlTitle;
-                    $this->tRows[$groupName]['icon'] = $this->tRows[$groupName]['icon'] ?? $iconFile[$groupName] ?? $iconFile['system'] ?? '';
-                    $this->tRows[$groupName]['html'][$table] = $this->renderLink(htmlspecialchars($lang->sL($ctrlTitle)), $table, $this->id);
+                }
+                $this->tRows[$groupName]['title'] = $this->tRows[$groupName]['title'] ?? $groupTitles[$groupName] ?? $nameParts[1] ?? $ctrlTitle;
+                $this->tRows[$groupName]['icon'] = $this->tRows[$groupName]['icon'] ?? $iconFile[$groupName] ?? $iconFile['system'] ?? '';
+                $this->tRows[$groupName]['items'][$table] = [
+                    'url' => $this->renderLink($table, $this->id),
+                    'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
+                    'label' => $lang->sL($ctrlTitle),
+                ];
             }
         }
         // User sort
@@ -449,8 +472,9 @@ class NewRecordController
             $this->newRecordSortList = GeneralUtility::trimExplode(',', $pageTS['mod.']['wizards.']['newRecord.']['order'], true);
         }
         uksort($this->tRows, $this->sortTableRows(...));
-        $this->view->assign('groupedLinksOnTop', $groupedLinksOnTop);
-        $this->view->assign('recordTypeGroups', $this->tRows);
+        $this->tRows = array_merge($groupedLinksOnTop, $this->tRows);
+
+        return $this->tRows;
     }
 
     /**
@@ -486,14 +510,13 @@ class NewRecordController
     /**
      * Links the string $code to a create-new form for a record in $table created on page $pid
      *
-     * @param string $linkText Link text
      * @param string $table Table name (in which to create new record)
      * @param int $pid PID value for the "&edit['.$table.']['.$pid.']=new" command (positive/negative)
      * @return string The link.
      */
-    protected function renderLink(string $linkText, string $table, int $pid): string
+    protected function renderLink(string $table, int $pid): string
     {
-        $recordLink = (string)$this->uriBuilder->buildUriFromRoute(
+        return (string)$this->uriBuilder->buildUriFromRoute(
             'record_edit',
             [
                 'edit' => [
@@ -504,11 +527,6 @@ class NewRecordController
                 'returnUrl' => $this->returnUrl,
             ]
         );
-        return '
-            <a class="list-group-item list-group-item-action" href="' . htmlspecialchars($recordLink) . '">
-                ' . $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render() . '
-                ' . $linkText . '
-            </a>';
     }
 
     /**
@@ -516,18 +534,13 @@ class NewRecordController
      */
     protected function renderPageSelectPositionLink(): string
     {
-        $url = (string)$this->uriBuilder->buildUriFromRoute(
+        return (string)$this->uriBuilder->buildUriFromRoute(
             'db_new_pages',
             [
                 'id' => $this->id,
                 'returnUrl' => $this->returnUrl,
             ]
         );
-        return '
-            <a href="' . htmlspecialchars($url) . '" class="list-group-item list-group-item-action">
-                ' . $this->iconFactory->getIconForRecord('pages', [], IconSize::SMALL)->render() . '
-                ' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:pageSelectPosition')) . '
-            </a>';
     }
 
     /**
