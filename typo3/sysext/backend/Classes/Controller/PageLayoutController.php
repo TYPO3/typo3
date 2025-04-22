@@ -178,55 +178,69 @@ class PageLayoutController
     {
         $backendUser = $this->getBackendUser();
         $languageService = $this->getLanguageService();
+        $translations = [];
 
         // MENU-ITEMS:
         $this->MOD_MENU = [
             'function' => [
                 1 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.layout'),
-                2 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.language_comparison'),
             ],
             'language' => [
                 0 => isset($this->availableLanguages[0]) ? $this->availableLanguages[0]->getTitle() : $languageService->sL('LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:m_default'),
-                // We need to add -1 (all) here so a possible -1 value will be allowed when calling
-                // moduleData->cleanUp(). Actually, this is only relevant if we are dealing with the
-                // "languages" mode, which however can only be safely determined, after the moduleData
-                // have been cleaned up => chicken and egg problem. We therefore remove the -1 item from
-                // the menu again, as soon as we are able to determine the requested mode.
-                // @todo Replace the whole "mode" handling with some more robust solution
-                -1 => $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages'),
             ],
         ];
 
-        // First, select all localized page records on the current page.
-        // Each represents a possibility for a language on the page. Add these to language selector.
-        if ($this->id) {
-            // Compile language data for pid != 0 only. The language drop-down is not shown on pid 0
-            // since pid 0 can't be localized.
-            $pageTranslations = BackendUtility::getExistingPageTranslations($this->id);
-            $languageField = $this->schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-            foreach ($pageTranslations as $pageTranslation) {
-                $languageId = $pageTranslation[$languageField];
-                if (isset($this->availableLanguages[$languageId])) {
-                    $this->MOD_MENU['language'][$languageId] = $this->availableLanguages[$languageId]->getTitle();
+        // Add language comparison mode for sites with multiple languages
+        if (count($this->availableLanguages) > 0) {
+            // Add all possible languages first for the cleanup to make sure we keep the selected language
+            // when the user switches between pages with/without translations
+            foreach ($this->availableLanguages as $language) {
+                $this->MOD_MENU['language'][$language->getLanguageId()] = $language->getTitle();
+            }
+
+            // First, select all localized page records on the current page.
+            // Each represents a possibility for a language on the page. Add these to the language selector.
+            if ($this->id) {
+                // Compile language data for pid != 0 only. The language drop-down is not shown on pid 0
+                // since pid 0 can't be localized.
+                $pageTranslations = BackendUtility::getExistingPageTranslations($this->id);
+                $languageField = $this->schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+                foreach ($pageTranslations as $pageTranslation) {
+                    $languageId = $pageTranslation[$languageField];
+                    if (isset($this->availableLanguages[$languageId])) {
+                        $translations[] = $languageId;
+                    }
                 }
             }
+
+            // Add language comparison mode if translations are possible
+            $this->MOD_MENU['function'][2] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.language_comparison');
+            $this->MOD_MENU['language'][-1] = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:multipleLanguages');
         }
-        // Clean up settings
+
+        // Cleanup settings
         if ($this->moduleData->cleanUp($this->MOD_MENU)) {
             $backendUser->pushModuleData($this->moduleData->getModuleIdentifier(), $this->moduleData->toArray());
         }
+
+        // Remove all languages from MOD_MENU, which have no page translations after cleanup
+        foreach ($this->MOD_MENU['language'] as $languageId => $language) {
+            if ($languageId > 0 && !in_array($languageId, $translations, true)) {
+                unset($this->MOD_MENU['language'][$languageId]);
+            }
+        }
+
+        if ($translations === []) {
+            // Remove -1 if we have no translations
+            unset($this->MOD_MENU['language'][-1]);
+
+            // No translations -> set module data for the current request to default language
+            $this->moduleData->set('language', 0);
+        }
+
         if ($backendUser->workspace !== 0) {
             // Show all elements in draft workspaces
             $this->moduleData->set('showHidden', true);
-        }
-        if ((int)$this->moduleData->get('function') !== 2) {
-            // Remove -1 (all) from the module menu if not "languages" mode
-            unset($this->MOD_MENU['language'][-1]);
-            // In case -1 (all) is still set as language, but we are no longer in
-            // "languages" mode, we fall back to the default, preventing an empty grid.
-            if ((int)$this->moduleData->get('language') === -1) {
-                $this->moduleData->set('language', 0);
-            }
         }
     }
 

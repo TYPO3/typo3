@@ -128,6 +128,10 @@ class BackendLayoutRenderer
                     // localized page record use this context for grid creation.
                     $context = $localizedContext;
                 }
+            } elseif ($pageLayoutContext->getDrawingConfiguration()->getSelectedLanguageId() === -1) {
+                // In case we are not in language comparison mode and all-language is given,
+                // we fall back to the default language to prevent an empty grid.
+                $context->getDrawingConfiguration()->setSelectedLanguageId($context->getSiteLanguage()->getLanguageId());
             }
             $grid = $this->getGridForPageLayoutContext($context);
             $view->assign('grid', $grid);
