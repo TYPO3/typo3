@@ -140,6 +140,22 @@ final class DatetimeTest extends FunctionalTestCase
                 'timesec' => '1970-01-01T23:58:20+02:00',
                 'time' => '1970-01-01T23:58:00+02:00',
             ],
+            '0 on UTC' => [
+                'resultSet' => 'ResultZeroUTC',
+                'timezone' => 'UTC',
+                'datetime' => 0,
+                'date' => 0,
+                'timesec' => 0,
+                'time' => 0,
+            ],
+            '0 on Europe/Berlin' => [
+                'resultSet' => 'ResultZeroBerlin',
+                'timezone' => 'Europe/Berlin',
+                'datetime' => 0,
+                'date' => 0,
+                'timesec' => 0,
+                'time' => 0,
+            ],
         ];
     }
 
@@ -148,10 +164,10 @@ final class DatetimeTest extends FunctionalTestCase
     public function createDatetimeRecords(
         string $resultSet,
         string $timezone,
-        ?string $datetime,
-        ?string $date,
-        ?string $timesec,
-        ?string $time,
+        string|int|null $datetime,
+        string|int|null $date,
+        string|int|null $timesec,
+        string|int|null $time,
     ): void {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Datetime/Base.csv');
 

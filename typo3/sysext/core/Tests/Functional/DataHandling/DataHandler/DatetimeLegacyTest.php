@@ -83,11 +83,10 @@ final class DatetimeLegacyTest extends FunctionalTestCase
     public function createLegacyDatetimeRecords(
         string $resultSet,
         string $timezone,
-        ?string $datetime,
-        ?string $date,
-        ?string $timesec,
-        ?string $time,
-        string $comment = ''
+        string|int|null $datetime,
+        string|int|null $date,
+        string|int|null $timesec,
+        string|int|null $time,
     ): void {
         $this->importCSVDataSet(__DIR__ . '/DataSet/Datetime/Legacy/Base.csv');
 
@@ -109,7 +108,6 @@ final class DatetimeLegacyTest extends FunctionalTestCase
                     'NEW-1' => [
                         'pid' => 2,
                         ...$fields,
-                        'comment' => $comment,
                     ],
                 ],
             ],

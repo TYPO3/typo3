@@ -501,14 +501,14 @@ final class DataHandlerTest extends UnitTestCase
                 0,
                 null,
             ],
-            'Zero (unix timestamp) is clamped as it is interpreted as unix-startdate and needs to fulfill range requirement' => [
+            'Zero returns zero' => [
                 0,
-                1627077600,
+                0,
                 '2021-07-23 22:00:00',
             ],
-            'Zero (unix timestamp) as string is clamped as it is interpreted as unix-startdate and needs to fulfill range requirement' => [
+            'Zero as a string returns zero' => [
                 '0',
-                1627077600,
+                0,
                 '2021-07-23 22:00:00',
             ],
         ];

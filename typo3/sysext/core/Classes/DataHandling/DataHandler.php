@@ -2004,7 +2004,6 @@ class DataHandler
         }
 
         // Handle native date/time fields
-        $isNativeDateTimeField = false;
         $isNullable = $tcaFieldConf['nullable'] ?? false;
         $nativeDateTimeType = $tcaFieldConf['dbType'] ?? null;
         if (in_array($nativeDateTimeType, QueryHelper::getDateTimeTypes(), true)) {
@@ -2028,18 +2027,14 @@ class DataHandler
         if (MathUtility::canBeInterpretedAsInteger($value)) {
             $value = (int)$value;
         }
-        if ($this->isImporting && is_int($value)) {
-            // Do not apply normalizations during import
-            return ['value' => $value];
-        }
 
         try {
             $datetime = match (true) {
                 $value === null => null,
                 $value instanceof \DateTimeImmutable => $value,
                 $value instanceof \DateTimeInterface => \DateTimeImmutable::createFromInterface($value),
-                // Unix timestamp
-                is_int($value) => DateTimeFactory::createFromTimestamp($value),
+                // Reprocessing of an existing database value (e.g. Unix timestamp for date/datetime or seconds for time fields)
+                is_int($value) => DateTimeFactory::createFomDatabaseValueAndTCAConfig($value, $tcaFieldConf),
                 // The value we receive from the backend form is an unqualified ISO 8601 date,
                 // for instance "1999-11-11T11:11:11".
                 // We can also accept an ISO8601 date with offsets,
