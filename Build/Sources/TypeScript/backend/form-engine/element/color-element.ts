@@ -34,6 +34,11 @@ class ColorElement extends HTMLElement {
   private element: HTMLInputElement = null;
 
   public async connectedCallback(): Promise<void> {
+    if (this.element !== null) {
+      // Element is already initialized, which means the component has been rendered before. Nothing to do here.
+      return;
+    }
+
     const recordFieldId = this.getAttribute('recordFieldId');
     if (recordFieldId === null) {
       return;

@@ -89,6 +89,11 @@ class FilesControlContainer extends HTMLElement {
   private progressQueue: ProgressQueue = {};
 
   public async connectedCallback(): Promise<void> {
+    if (this.container !== null) {
+      // Container is already initialized, which means the component has been rendered before. Nothing to do here.
+      return;
+    }
+
     const identifier = this.getAttribute('identifier') || '' as string;
     await DocumentService.ready();
     this.container = <HTMLElement>this.querySelector(selector`[id="${identifier}"]`);
