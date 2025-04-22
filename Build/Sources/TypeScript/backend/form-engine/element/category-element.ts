@@ -33,12 +33,17 @@ import { selector } from '@typo3/core/literals';
  * This is based on W3C custom elements ("web components") specification, see
  * https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements
  */
-class CategoryElement extends HTMLElement{
+class CategoryElement extends HTMLElement {
   private recordField: HTMLInputElement = null;
   private treeWrapper: HTMLElement = null;
   private tree: SelectTree = null;
 
   public async connectedCallback(): Promise<void> {
+    if (this.tree !== null) {
+      // Element is already initialized, which means the component has been rendered before. Nothing to do here.
+      return;
+    }
+
     await DocumentService.ready();
     this.recordField = <HTMLInputElement>this.querySelector(selector`#${this.getAttribute('recordFieldId') || '' as string}`);
     this.treeWrapper = <HTMLElement>this.querySelector(selector`#${this.getAttribute('treeWrapperId') || '' as string}`);

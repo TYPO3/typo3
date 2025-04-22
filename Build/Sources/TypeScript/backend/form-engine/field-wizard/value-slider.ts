@@ -34,6 +34,11 @@ export class ValueSlider extends HTMLElement {
   private valueSlider: HTMLInputElement = null;
 
   public async connectedCallback(): Promise<void> {
+    if (this.valueSlider !== null) {
+      // Element is already initialized, which means the component has been rendered before. Nothing to do here.
+      return;
+    }
+
     await DocumentService.ready();
     this.valueSlider = this.querySelector('input') as HTMLInputElement;
     if (this.valueSlider !== null) {
