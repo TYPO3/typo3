@@ -2041,9 +2041,16 @@ class GeneralUtility
 
         // @todo: in v13 this should be resolved by using Environment::getPublicPath() only
         if ($isFrontend) {
-            // Frontend should still allow /static/myfile.css - see #98106
-            // This should happen regardless of the incoming path is absolute or not
-            $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+            // Since frontend should still allow absolute web paths (= absolute to TYPO3's web dir),
+            // there is no way to differentiate between those paths and "real" absolute paths (= from
+            // the file system) without checking for the file's existence
+            // see #98106
+            if (file_exists($path)) {
+                $path = self::resolveBackPath($path);
+            } else {
+                // Prepend absolute web paths with TYPO3's web dir (= the dir in which index.php is located)
+                $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+            }
         } elseif (!PathUtility::isAbsolutePath($path)) {
             // Backend and non-absolute path
             $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
