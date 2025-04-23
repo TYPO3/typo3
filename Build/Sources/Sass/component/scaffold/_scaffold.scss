@@ -204,7 +204,7 @@ iframe {
 .scaffold-content-navigation {
     display: none;
 
-    .scaffold-content-navigation-expanded & {
+    .scaffold-content-navigation-available.scaffold-content-navigation-expanded & {
         display: flex;
     }
     flex-direction: column;

@@ -90,7 +90,6 @@ class NavigationContainer extends AbstractContainer {
 
   public hide(): void {
     const parent = this.parent;
-    parent.classList.remove('scaffold-content-navigation-expanded');
     parent.classList.remove('scaffold-content-navigation-available');
   }
 
@@ -98,7 +97,6 @@ class NavigationContainer extends AbstractContainer {
     const parent = this.parent;
     const container = this.container;
     container.querySelectorAll(ScaffoldIdentifierEnum.contentNavigationDataComponent).forEach((el: HTMLElement) => el.style.display = 'none');
-    parent.classList.add('scaffold-content-navigation-expanded');
     parent.classList.add('scaffold-content-navigation-available');
     const selectedElement = container.querySelector('[data-component="' + component + '"]') as HTMLElement;
     if (selectedElement) {
