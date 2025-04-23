@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Scheduler\Task;
 
+use TYPO3\CMS\Core\Cache\Backend\Typo3DatabaseBackend;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -50,8 +51,8 @@ class CachingFrameworkGarbageCollectionTask extends AbstractTask
             // backend is within selected backends in additional field of task
             foreach ($cacheConfigurations as $cacheName => $cacheConfiguration) {
                 // The cache backend used for this cache
-                $usedCacheBackend = $cacheConfiguration['backend'] ?? null;
-                if (in_array($usedCacheBackend, $this->selectedBackends)) {
+                $usedCacheBackend = $cacheConfiguration['backend'] ?? Typo3DatabaseBackend::class;
+                if (in_array($usedCacheBackend, $this->selectedBackends, true)) {
                     GeneralUtility::makeInstance(CacheManager::class)->getCache($cacheName)->collectGarbage();
                 }
             }
