@@ -1745,17 +1745,17 @@ class DatabaseIntegrityController
                     if ($conf['comparison'] === 37 || $conf['comparison'] === 36) {
                         // between:
                         $lineHTML[] = '<div class="form-group col col-sm-2">';
-                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue'] ?? '') . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars((string)($conf['inputValue'] ?? '')) . '" name="' . $fieldPrefix . '[inputValue]">';
                         $lineHTML[] = '</div>';
                         $lineHTML[] = '<div class="form-group col col-sm-2">';
-                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue1'] ?? '') . '" name="' . $fieldPrefix . '[inputValue1]">';
+                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars((string)($conf['inputValue1'] ?? '')) . '" name="' . $fieldPrefix . '[inputValue1]">';
                         $lineHTML[] = '</div>';
                     } else {
                         if (is_array($conf['inputValue'] ?? null)) {
                             $conf['inputValue'] = '';
                         }
                         $lineHTML[] = '<div class="form-group col col-sm-4">';
-                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars($conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
+                        $lineHTML[] = '  <input class="form-control form-control-clearable t3js-clearable" type="text" value="' . htmlspecialchars((string)$conf['inputValue']) . '" name="' . $fieldPrefix . '[inputValue]">';
                         $lineHTML[] = '</div>';
                     }
                     $lineHTML[] = '</div>';
@@ -2035,15 +2035,15 @@ class DatabaseIntegrityController
      * @param bool $useSelectLabels - Whether foreign resolving of a primary TCA 'label' field is required
      * @param bool $useAltSelectLabels - Whether foreign resolving of the FIRST TCA 'label_alt' relation field is required
      * @param LabelCapability $labelCapability - Schema capability information, used here for the table's label/label_alt evaluation
-     * @param string $altLabelFieldName - The name of the matched first TCA 'label_alt' relation field
+     * @param string|null $altLabelFieldName - The name of the matched first TCA 'label_alt' relation field
      * @param array $val - The DB SQL result row array
      * @param array $labelFieldSelect - An array holding the possible select values of a 'label' relation
      * @param array $altLabelFieldSelect - An array holding the possible select values of a 'label_alt' relation
-     * @param string $labelFieldName - The name of the primary TCA column used for the label
+     * @param string|null $labelFieldName - The name of the primary TCA column used for the label
      * @return string
      * @todo Please refactor me.
      */
-    protected function evaluateRelationDisplayWithLabels(bool $useSelectLabels, bool $useAltSelectLabels, LabelCapability $labelCapability, string $altLabelFieldName, array $val, array $labelFieldSelect, array $altLabelFieldSelect, string $labelFieldName): string
+    protected function evaluateRelationDisplayWithLabels(bool $useSelectLabels, bool $useAltSelectLabels, LabelCapability $labelCapability, ?string $altLabelFieldName, array $val, array $labelFieldSelect, array $altLabelFieldSelect, ?string $labelFieldName): string
     {
         // Several checks here to decide whether:
         // 1. the primary label field contains resolved selectable values,
@@ -2054,7 +2054,7 @@ class DatabaseIntegrityController
         if ($useSelectLabels) {
             return htmlspecialchars($labelFieldSelect[$val[$labelFieldName]]);
         }
-        if ($val[$labelFieldName]) {
+        if ($val[$labelFieldName] ?? false) {
             return htmlspecialchars($val[$labelFieldName]);
         }
         if ($useAltSelectLabels) {
