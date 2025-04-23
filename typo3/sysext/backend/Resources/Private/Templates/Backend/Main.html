@@ -21,7 +21,7 @@
 <f:asset.module identifier="@typo3/backend/live-search/element/backend-search.js"/>
 <f:asset.module identifier="@typo3/backend/drag-tooltip.js"/>
 
-<div class="scaffold{f:if(condition: '!{modulesCollapsed} && {modules}', then: ' scaffold-modulemenu-expanded')}{f:if(condition: '{isInWorkspace}', then: ' scaffold-in-workspace')}{f:if(condition: '{isImpersonated}', then: ' scaffold-in-impersonation')} t3js-scaffold">
+<div class="scaffold{f:if(condition: '!{modulesCollapsed} && {modules}', then: ' scaffold-modulemenu-expanded')}{f:if(condition: '{isInWorkspace}', then: ' scaffold-in-workspace')}{f:if(condition: '{isImpersonated}', then: ' scaffold-in-impersonation')} scaffold-content-navigation-expanded t3js-scaffold">
     <div class="scaffold-header t3js-scaffold-header">
         <f:render partial="Backend/Topbar" arguments="{_all}" />
     </div>
