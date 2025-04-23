@@ -3585,7 +3585,7 @@ final class GeneralUtilityTest extends UnitTestCase
     }
 
     #[Test]
-    public function createVersionNumberedFilenameDoesNotResolveBackpathForAbsolutePath(): void
+    public function createVersionNumberedFilenameDoesNotResolveBackpathForAbsolutePathInBackend(): void
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['versionNumberInFilename'] = true;
 
@@ -3599,6 +3599,37 @@ final class GeneralUtilityTest extends UnitTestCase
         $versionedFilename = GeneralUtility::createVersionNumberedFilename($testFilepath);
 
         self::assertMatchesRegularExpression('/^.*\/tests\/' . $uniqueFilename . '\.[0-9]+\.css/', $versionedFilename);
+    }
+
+    #[Test]
+    public function createVersionNumberedFilenameDoesNotResolveBackpathForAbsolutePath(): void
+    {
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getPublicPath() . '/index.php',
+            Environment::isWindows() ? 'WINDOWS' : 'UNIX'
+        );
+        $request = new ServerRequest('https://www.example.com', 'GET');
+        $GLOBALS['TYPO3_REQUEST'] = $request->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
+
+        $GLOBALS['TYPO3_CONF_VARS']['FE']['versionNumberInFilename'] = false;
+
+        $uniqueFilename = StringUtility::getUniqueId() . 'frontend';
+        $testFileDirectory = Environment::getVarPath() . '/tests/';
+        $testFilepath = $testFileDirectory . $uniqueFilename . '.css';
+        $this->testFilesToDelete[] = $testFilepath;
+        GeneralUtility::mkdir_deep($testFileDirectory);
+        touch($testFilepath);
+
+        $versionedFilename = GeneralUtility::createVersionNumberedFilename($testFilepath);
+
+        self::assertMatchesRegularExpression('/^.*\/tests\/' . $uniqueFilename . '\.css\?[0-9]+/', $versionedFilename);
     }
 
     #[Test]
