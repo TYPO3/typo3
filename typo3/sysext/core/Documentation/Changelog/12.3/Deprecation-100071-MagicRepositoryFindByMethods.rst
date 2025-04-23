@@ -80,3 +80,7 @@ those methods allow for multiple comparisons, called constraints.
 
 
 .. index:: PHP-API, NotScanned, ext:extbase
+
+..  attention::
+
+    Please note that the (not-magic) methods `findByUid()` and `findByIdentifier()` did NOT get deprecated or removed, and are still valid to be used. Using these methods will also by default not respect storage page settings, and fetch the object straight via its identifier.
