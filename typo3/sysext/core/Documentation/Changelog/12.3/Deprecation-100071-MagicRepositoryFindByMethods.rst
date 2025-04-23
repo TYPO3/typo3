@@ -78,5 +78,11 @@ those methods allow for multiple comparisons, called constraints.
 
     $this->blogRepository->count(['propertyName' => $propertyValue]);
 
+..  attention::
+
+    Please note that the (not-magic) methods `findByUid()` and `findByIdentifier()` did **not**
+    get deprecated or removed, and are still valid to be used.
+    Using these methods will fetch a given domain object by it's UID, ignoring possible storage
+    page settings - unlike `findBy([...])`, which does respect those settings.
 
 .. index:: PHP-API, NotScanned, ext:extbase
