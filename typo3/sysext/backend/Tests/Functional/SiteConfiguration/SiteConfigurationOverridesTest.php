@@ -28,8 +28,8 @@ final class SiteConfigurationOverridesTest extends FunctionalTestCase
     protected array $subject;
 
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/backend/Tests/Functional/SiteConfiguration/Fixtures/Extensions/test_configoverride_first',
-        'typo3/sysext/backend/Tests/Functional/SiteConfiguration/Fixtures/Extensions/test_configoverride_second',
+        'typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_configoverride_first',
+        'typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_configoverride_second',
     ];
 
     /**

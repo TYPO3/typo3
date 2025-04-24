@@ -26,9 +26,9 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class BackendViewFactoryTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/backend/Tests/Functional/View/Fixtures/Extensions/test_templates_a',
-        'typo3/sysext/backend/Tests/Functional/View/Fixtures/Extensions/test_templates_b',
-        'typo3/sysext/backend/Tests/Functional/View/Fixtures/Extensions/test_templates_c',
+        'typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_templates_a',
+        'typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_templates_b',
+        'typo3/sysext/backend/Tests/Functional/Fixtures/Extensions/test_templates_c',
     ];
 
     #[Test]
