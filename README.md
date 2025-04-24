@@ -46,7 +46,7 @@ TYPO3 System requirements
 -------------------------
 
 TYPO3 is based upon PHP and uses a database management system like
-MySQL.
+MariaDB or MySQL.
 
 For more specific information regarding requirements see the file
 [INSTALL.md](INSTALL.md#server-system-requirements) in this folder.
