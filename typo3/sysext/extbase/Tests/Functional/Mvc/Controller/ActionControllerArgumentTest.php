@@ -44,7 +44,7 @@ final class ActionControllerArgumentTest extends FunctionalTestCase
     private string $pluginNamespacePrefix = 'tx_actioncontrollerargumenttest_pi1';
 
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_argument_test',
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_argument_test',
     ];
 
     public static function validationErrorReturnsToForwardedPreviousActionDataProvider(): array

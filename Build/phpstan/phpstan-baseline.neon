@@ -3142,7 +3142,7 @@ parameters:
 			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
 			identifier: argument.type
 			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test/Classes/Controller/TestController.php
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_test/Classes/Controller/TestController.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Http\\\\ForwardResponse'' and TYPO3\\CMS\\Extbase\\Http\\ForwardResponse will always evaluate to true\.$#'

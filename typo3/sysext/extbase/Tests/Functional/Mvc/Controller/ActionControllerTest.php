@@ -43,7 +43,7 @@ use TYPO3Tests\ActionControllerTest\Domain\Model\Model;
 final class ActionControllerTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/extbase/Tests/Functional/Mvc/Controller/Fixture/Extension/action_controller_test',
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_test',
     ];
 
     #[Test]
