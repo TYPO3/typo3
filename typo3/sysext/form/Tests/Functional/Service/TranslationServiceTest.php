@@ -31,7 +31,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class TranslationServiceTest extends FunctionalTestCase
 {
     private TranslationService $subject;
-    protected array $testExtensionsToLoad = ['typo3/sysext/form/Tests/Functional/Service/Fixtures/Extensions/form_labels'];
+    protected array $testExtensionsToLoad = ['typo3/sysext/form/Tests/Functional/Fixtures/Extensions/form_labels'];
 
     public function setUp(): void
     {
