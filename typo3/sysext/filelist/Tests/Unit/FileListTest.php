@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\Locale;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Filelist\FileList;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -33,39 +34,22 @@ final class FileListTest extends UnitTestCase
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock->method('getLocale')->willReturn(new Locale('pl'));
 
-        $file1 = $this->createMock(File::class);
-        $file1->method('hasProperty')->with('name')->willReturn(true);
-        $file1->method('getProperty')->with('name')->willReturn('file1.jpg');
-        $file1->method('getExtension')->willReturn('jpg');
+        $storageMock = $this->createMock(ResourceStorage::class);
 
-        $file2 = $this->createMock(File::class);
-        $file2->method('getProperty')->with('name')->willReturn('fileA.png');
-        $file2->method('hasProperty')->with('name')->willReturn(true);
-        $file2->method('getExtension')->willReturn('png');
-
-        //this file has an accented letter Ą, so it should be sorted between fileA and fileB
-        $file3 = $this->createMock(File::class);
-        $file3->method('getProperty')->with('name')->willReturn('fileĄ.png');
-        $file3->method('hasProperty')->with('name')->willReturn(true);
-        $file3->method('getExtension')->willReturn('png');
-
-        $file4 = $this->createMock(File::class);
-        $file4->method('getProperty')->with('name')->willReturn('fileB.aif');
-        $file4->method('hasProperty')->with('name')->willReturn(true);
-        $file4->method('getExtension')->willReturn('aif');
-
-        $folder1 = $this->createMock(Folder::class);
-        $folder1->method('getName')->willReturn('folder1');
-
-        $folder2 = $this->createMock(Folder::class);
-        $folder2->method('getName')->willReturn('folder2');
+        $file1 = new File(['name' => 'file1.jpg'], $storageMock);
+        $file2 = new File(['name' => 'fileA.png'], $storageMock);
+        // this file has an accented letter Ą, so it should be sorted between fileA and fileB
+        $file3 = new File(['name' => 'fileĄ.png'], $storageMock);
+        $file4 = new File(['name' => 'fileB.aif'], $storageMock);
+        $folder1 = new Folder($storageMock, '/folder1', 'folder1');
+        $folder2 = new Folder($storageMock, '/folder2', 'folder2');
 
         $resources = [$file2, $folder1, $folder2, $file1, $file3, $file4];
         $expected = [$file4, $file3, $file2, $file1, $folder2, $folder1];
 
         $fileList = $this->getAccessibleMock(FileList::class, ['getLanguageService'], [], '', false);
         $fileList->method('getLanguageService')->willReturn($languageServiceMock);
-        self::assertSame($expected, $fileList->_call('sortResources', $resources, 'name'));
+        self::assertEqualsCanonicalizing($expected, $fileList->_call('sortResources', $resources, 'name'));
     }
 
     #[Test]
@@ -74,38 +58,21 @@ final class FileListTest extends UnitTestCase
         $languageServiceMock = $this->createMock(LanguageService::class);
         $languageServiceMock->method('getLocale')->willReturn(new Locale('pl'));
 
-        $file1 = $this->createMock(File::class);
-        $file1->method('hasProperty')->with('name')->willReturn(true);
-        $file1->method('getProperty')->with('name')->willReturn('file1.jpg');
-        $file1->method('getExtension')->willReturn('jpg');
+        $storageMock = $this->createMock(ResourceStorage::class);
 
-        $file2 = $this->createMock(File::class);
-        $file2->method('getProperty')->with('name')->willReturn('fileA.png');
-        $file2->method('hasProperty')->with('name')->willReturn(true);
-        $file2->method('getExtension')->willReturn('png');
-
-        //this file has an accented letter Ą, so it should be sorted between fileA and fileB
-        $file3 = $this->createMock(File::class);
-        $file3->method('getProperty')->with('name')->willReturn('fileĄ.png');
-        $file3->method('hasProperty')->with('name')->willReturn(true);
-        $file3->method('getExtension')->willReturn('png');
-
-        $file4 = $this->createMock(File::class);
-        $file4->method('getProperty')->with('name')->willReturn('fileB.aif');
-        $file4->method('hasProperty')->with('name')->willReturn(true);
-        $file4->method('getExtension')->willReturn('aif');
-
-        $folder1 = $this->createMock(Folder::class);
-        $folder1->method('getName')->willReturn('folder1');
-
-        $folder2 = $this->createMock(Folder::class);
-        $folder2->method('getName')->willReturn('folder2');
+        $file1 = new File(['name' => 'file1.jpg'], $storageMock);
+        $file2 = new File(['name' => 'fileA.png'], $storageMock);
+        // this file has an accented letter Ą, so it should be sorted between fileA and fileB
+        $file3 = new File(['name' => 'fileĄ.png'], $storageMock);
+        $file4 = new File(['name' => 'fileB.aif'], $storageMock);
+        $folder1 = new Folder($storageMock, '/folder1', 'folder1');
+        $folder2 = new Folder($storageMock, '/folder2', 'folder2');
 
         $resources = [$file2, $folder1, $folder2, $file1, $file3, $file4];
         $expected = [$file3, $file2, $file1, $file4, $folder2, $folder1];
 
         $fileList = $this->getAccessibleMock(FileList::class, ['getLanguageService'], [], '', false);
         $fileList->method('getLanguageService')->willReturn($languageServiceMock);
-        self::assertSame($expected, $fileList->_call('sortResources', $resources, 'fileext'));
+        self::assertEqualsCanonicalizing($expected, $fileList->_call('sortResources', $resources, 'fileext'));
     }
 }

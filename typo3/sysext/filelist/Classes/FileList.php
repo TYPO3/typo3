@@ -1663,30 +1663,26 @@ class FileList
     protected function sortResources(array $resources, string $sortField): array
     {
         $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
-        if ($sortField === 'size') {
-            $collator->setAttribute(\Collator::NUMERIC_COLLATION, \Collator::ON);
-        }
-        uksort($resources, function (int $index1, int $index2) use ($sortField, $resources, $collator) {
+        $collator->setAttribute(\Collator::NUMERIC_COLLATION, \Collator::ON);
+
+        $sortMultiplier = $this->sortRev ? -1 : 1;
+        uksort($resources, function (int $index1, int $index2) use ($sortField, $sortMultiplier, $resources, $collator) {
             $resource1 = $resources[$index1];
             $resource2 = $resources[$index2];
 
             // Folders are always prioritized above files
             if ($resource1 instanceof File && $resource2 instanceof Folder) {
-                return 1;
+                return 1 * $sortMultiplier;
             }
             if ($resource1 instanceof Folder && $resource2 instanceof File) {
-                return -1;
+                return -1 * $sortMultiplier;
             }
 
-            return (int)$collator->compare(
+            return (int)($collator->compare(
                 $this->getSortingValue($resource1, $sortField) . $index1,
                 $this->getSortingValue($resource2, $sortField) . $index2
-            );
+            )) * $sortMultiplier;
         });
-
-        if ($this->sortRev) {
-            $resources = array_reverse($resources);
-        }
 
         return $resources;
     }
