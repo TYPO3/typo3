@@ -359,7 +359,7 @@ class LinkValidatorController
         $linkType = $this->linktypeRegistry->getLinktype($row['link_type'] ?? '');
 
         // Try to resolve the field label from TCA
-        if ($schema->hasSubSchema($elementType)) {
+        if ($schema->hasSubSchema($elementType) && $schema->getSubSchema($elementType)->hasField($row['field'])) {
             $fieldLabel = $schema->getSubSchema($elementType)->getField($row['field'])->getLabel();
         } else {
             $fieldLabel = $schema->getField($row['field'])->getLabel();
