@@ -25,7 +25,7 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class DatabaseServiceTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['form'];
-    protected array $testExtensionsToLoad = ['typo3/sysext/form/Tests/Functional/Service/Fixtures/Extensions/form_references'];
+    protected array $testExtensionsToLoad = ['typo3/sysext/form/Tests/Functional/Fixtures/Extensions/form_references'];
     protected array $pathsToProvideInTestInstance = [
         'typo3/sysext/form/Tests/Functional/Service/Fixtures/FileadminPublic/Forms/' => 'fileadmin/',
         'typo3/sysext/form/Tests/Functional/Service/Fixtures/FileadminPrivate/Forms/' => 'fileadmin-private/',
