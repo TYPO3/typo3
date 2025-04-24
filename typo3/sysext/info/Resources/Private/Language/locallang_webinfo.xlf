@@ -21,32 +21,35 @@
 			<trans-unit id="actual_backend_layout">
 				<source>Actual backend layout</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_viewPage">
-				<source>View page</source>
-			</trans-unit>
 			<trans-unit id="lang_title">
 				<source>Localization overview</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editDefaultLanguagePage">
-				<source>Edit default language page properties</source>
+			<trans-unit id="lang_renderl10n_editPage">
+				<source>Edit page content</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLangOverlays">
-				<source>Edit all language overlay records</source>
+			<trans-unit id="lang_renderl10n_editTranslatedPage">
+				<source>Edit translated page content</source>
+			</trans-unit>
+			<trans-unit id="lang_renderl10n_viewPage">
+				<source>View page</source>
+			</trans-unit>
+			<trans-unit id="lang_renderl10n_viewTranslatedPage">
+				<source>View translated page</source>
 			</trans-unit>
 			<trans-unit id="lang_renderl10n_editPageProperties">
+				<source>Edit page properties</source>
+			</trans-unit>
+			<trans-unit id="lang_renderl10n_editTranslatedPageProperties">
+				<source>Edit translated page properties</source>
+			</trans-unit>
+			<trans-unit id="lang_renderl10n_editAllPageProperties">
 				<source>Edit all page properties</source>
 			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPage">
-				<source>Edit page</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editPageLang">
-				<source>Edit page translation</source>
+			<trans-unit id="lang_renderl10n_editAllTranslationedPageProperties">
+				<source>Edit all translated page properties</source>
 			</trans-unit>
 			<trans-unit id="lang_renderl10n_badThingThereAre">
 				<source>ERROR: there are two or more page overlay records for this language! Only one is allowed!</source>
-			</trans-unit>
-			<trans-unit id="lang_renderl10n_editLanguageOverlayRecord">
-				<source>Edit language overlay record</source>
 			</trans-unit>
 			<trans-unit id="lang_renderl10n_page">
 				<source>Page</source>
