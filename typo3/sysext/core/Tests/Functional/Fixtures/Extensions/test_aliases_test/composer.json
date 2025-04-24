@@ -8,7 +8,7 @@
 	},
 	"extra": {
 		"typo3/cms": {
-			"extension-key": "aliases_test"
+			"extension-key": "test_aliases_test"
 		}
 	}
 }

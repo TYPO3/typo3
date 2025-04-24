@@ -22,8 +22,8 @@ use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 final class ExtensionManagementUtilityTcaOverrideRequireTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
-        'typo3/sysext/core/Tests/Functional/Utility/ExtensionManagementUtility/Fixtures/Extensions/test_tcaoverride_a',
-        'typo3/sysext/core/Tests/Functional/Utility/ExtensionManagementUtility/Fixtures/Extensions/test_tcaoverride_b',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tcaoverride_a',
+        'typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_tcaoverride_b',
     ];
 
     #[Test]
