@@ -612,7 +612,7 @@ export function addStructureValidationResults(): void {
  * ************************************************************/
 
 export function getModals(): typeof ModalsComponent {
-  return modalsComponent
+  return modalsComponent;
 }
 
 export function showRemoveFormElementModal(formElement?: FormElement): void {
@@ -661,7 +661,7 @@ export function showValidationErrorsModal(): void {
  * ************************************************************/
 
 export function getInspector(): typeof InspectorComponent {
-  return inspectorsComponent
+  return inspectorsComponent;
 }
 
 export function renderInspectorEditors(formElement?: FormElement | string, useFadeEffect?: boolean): void {
@@ -1100,7 +1100,7 @@ export function selectPageBatch(pageIndex: number): void {
 
   getFormEditorApp().setCurrentlySelectedFormElement(getRootFormElement().get('renderables')[pageIndex]);
   renewStructure();
-  renderPagination()
+  renderPagination();
   refreshSelectedElementItemsBatch();
   renderInspectorEditors();
 }

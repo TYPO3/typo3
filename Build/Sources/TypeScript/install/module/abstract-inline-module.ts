@@ -16,7 +16,7 @@ import MessageInterface from '@typo3/install/message-interface';
 export type ActionResponse = {
   status: MessageInterface[],
   success: boolean
-}
+};
 
 export abstract class AbstractInlineModule {
   protected setButtonState(button: JQuery, interactable: boolean): void {

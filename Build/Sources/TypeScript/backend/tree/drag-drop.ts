@@ -92,7 +92,7 @@ export class DragDrop {
       .clickDistance(5)
       .on('start', function(evt: d3drag.D3DragEvent<any, any, any>) {
         if (dragHandler.onDragStart(evt.sourceEvent, evt.subject)) {
-          DragDrop.setDragStart()
+          DragDrop.setDragStart();
         }
       })
       .on('drag', function(evt: d3drag.D3DragEvent<any, any, any>) { dragHandler.onDragOver(evt.sourceEvent, evt.subject); })

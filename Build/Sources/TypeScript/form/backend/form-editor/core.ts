@@ -130,23 +130,23 @@ export type FinisherDefinition = {
   label: string
   iconIdentifier?: string,
   predefinedDefaults?: Record<string, unknown>,
-}
+};
 
 export type FormElementPropertyValidatorDefinition = {
   errorMessage: string
-}
+};
 
 type ValidatorDefinition = {
   label: string
   iconIdentifier?: string,
-}
+};
 
 export type FormEditorDefinitions = {
   finishers: Record<string, FinisherDefinition>,
   formElementPropertyValidators: Record<string, FormElementPropertyValidatorDefinition>
   formElements: Record<string, FormElementDefinition>
   validators: Record<string, ValidatorDefinition>
-}
+};
 
 type ModelData<T extends object> = T & {
   __parentRenderable: FormElement,
@@ -166,7 +166,7 @@ type ValidatorsConfig = string[];
 
 type Validators = {
   [key: string]: Validator;
-}
+};
 
 export type ValidationResults = string[];
 
@@ -182,12 +182,12 @@ export type ValidationResultsRecursive = Array<{
 
 type PropertyValidatorConfiguration = {
   propertyValidatorsMode: 'OR' | 'AND';
-}
+};
 
 export type CollectionEntry = {
   identifier: string,
   editors?: Array<EditorConfiguration>,
-}
+};
 
 export type Collection = CollectionEntry[];
 
@@ -209,7 +209,7 @@ export interface ApplicationState {
 }
 type ApplicationStateType = keyof ApplicationState;
 
-type PublisherSubscriberTopic = keyof PublisherSubscriberTopicArgumentsMap
+type PublisherSubscriberTopic = keyof PublisherSubscriberTopicArgumentsMap;
 
 interface PublisherSubscriberFunction<T extends PublisherSubscriberTopic> {
   (topic: T, args: NoInfer<PublisherSubscriberTopicArgumentsMap[T]>): void;
@@ -222,7 +222,7 @@ interface PublisherSubscriberEntry<T extends PublisherSubscriberTopic> {
 
 type PublisherSubscriberTopics = {
   [T in PublisherSubscriberTopic]: PublisherSubscriberEntry<T>[];
-}
+};
 
 export function assert(test: boolean|(() => boolean), message: string, messageCode: number): void {
   if (typeof test === 'function') {
@@ -605,7 +605,7 @@ export class PropertyValidationService {
               !utility.isUndefinedOrNull(formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidatorsMode)
               && formElementTypeDefinition.propertyCollections[collectionName][i].editors[j].propertyValidatorsMode === 'OR'
             ) {
-              propertyValidatorConfiguration.propertyValidatorsMode = 'OR'
+              propertyValidatorConfiguration.propertyValidatorsMode = 'OR';
             }
             this.addValidatorIdentifiersToFormElementProperty(
               formElement,
@@ -716,7 +716,7 @@ function extendModel<D extends object, T extends ModelData<D>>(
     modelToExtend.on(pathPrefix, 'core/formElement/somePropertyChanged');
     modelToExtend.set(pathPrefix, modelExtension, disablePublishersOnSet);
   } else {
-    const _modelExtension = { ...modelExtension } as Record<string, T | [] | Record<string, never>>
+    const _modelExtension = { ...modelExtension } as Record<string, T | [] | Record<string, never>>;
     for (const key of Object.keys(_modelExtension)) {
       const path = (pathPrefix === '') ? key : pathPrefix + '.' + key;
 
@@ -743,7 +743,7 @@ export class Model<D extends object, T extends ModelData<D>> {
    * @throws 1475361755
    */
   public get(key: string): any | undefined {
-    let firstPartOfPath: string
+    let firstPartOfPath: string;
     let obj: Record<string, unknown>;
     assert(utility.isNonEmptyString(key), 'Invalid parameter "key"', 1475361755);
 
@@ -1066,7 +1066,7 @@ export class Repository {
             !utility.isUndefinedOrNull(formElementTypeDefinition.editors[i].propertyValidatorsMode)
             && formElementTypeDefinition.editors[i].propertyValidatorsMode === 'OR'
           ) {
-            propertyValidatorConfiguration.propertyValidatorsMode = 'OR'
+            propertyValidatorConfiguration.propertyValidatorsMode = 'OR';
           }
 
           propertyValidationService.addValidatorIdentifiersToFormElementProperty(
@@ -1373,7 +1373,7 @@ export class Repository {
           }
         }
       }
-    }
+    };
 
     checkIdentifier(getApplicationStateStack().getCurrentState('formDefinition'));
     return identifierFound;
@@ -1612,7 +1612,7 @@ export class Repository {
       }
     }
 
-    this.addPropertyCollectionElement(collectionElementToMove, collectionName, formElement, referenceCollectionElementIdentifier, disablePublishersOnSet)
+    this.addPropertyCollectionElement(collectionElementToMove, collectionName, formElement, referenceCollectionElementIdentifier, disablePublishersOnSet);
   }
 }
 
@@ -1689,7 +1689,7 @@ export class Factory {
           collectionName as keyof FormEditorDefinitions
         );
         if (i > 0) {
-          previousCreatePropertyCollectionElementIdentifier = collections[collectionName][i - 1].identifier
+          previousCreatePropertyCollectionElementIdentifier = collections[collectionName][i - 1].identifier;
         }
         repository.addPropertyCollectionElement(
           propertyCollectionElement,
@@ -1716,7 +1716,7 @@ export class Factory {
             !utility.isUndefinedOrNull(formElementTypeDefinition.editors[i].propertyValidatorsMode)
             && formElementTypeDefinition.editors[i].propertyValidatorsMode === 'OR'
           ) {
-            propertyValidatorConfiguration.propertyValidatorsMode = 'OR'
+            propertyValidatorConfiguration.propertyValidatorsMode = 'OR';
           }
 
           propertyValidationService.addValidatorIdentifiersToFormElementProperty(
@@ -1822,7 +1822,7 @@ export class DataBackend {
       } else {
         publisherSubscriber.publish('core/ajax/saveFormDefinition/error', [data]);
       }
-    })
+    });
     runningAjaxRequests.saveForm.fail((jqXHR, textStatus, errorThrown): void => {
       publisherSubscriber.publish('core/ajax/error', [jqXHR, textStatus, errorThrown]);
     });
@@ -1853,7 +1853,7 @@ export class DataBackend {
       }
       runningAjaxRequests.renderFormDefinitionPage = null;
       publisherSubscriber.publish('core/ajax/renderFormDefinitionPage/success', [data, pageIndex]);
-    })
+    });
     runningAjaxRequests.renderFormDefinitionPage.fail((jqXHR, textStatus, errorThrown): void => {
       publisherSubscriber.publish('core/ajax/error', [jqXHR, textStatus, errorThrown]);
     });

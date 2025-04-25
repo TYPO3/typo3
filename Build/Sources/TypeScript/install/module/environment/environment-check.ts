@@ -32,7 +32,7 @@ type EnvironmentCheckResponse = ModuleLoadedResponseWithButtons & {
     information: MessageInterface[],
     notice: MessageInterface[]
   },
-}
+};
 
 /**
  * Module: @typo3/install/environment-check

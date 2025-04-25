@@ -24,7 +24,7 @@ type CKEditor5Config = Omit<EditorConfig, 'toolbar'> & {
   height?: string|number;
   readOnly?: boolean;
   debug?: boolean;
-}
+};
 
 type Typo3Plugin = PluginConstructor<Editor> & {overrides?: PluginConstructor<Editor>[]};
 type PluginModule = Record<string, Typo3Plugin>;
@@ -157,7 +157,7 @@ export class CKEditor5Element extends LitElement {
           const sourceEditingPlugin = editor.plugins.get('SourceEditing') as SourceEditing;
           editor.model.document.on('change:data', (): void => {
             if (!sourceEditingPlugin.isSourceEditingMode) {
-              editor.updateSourceElement()
+              editor.updateSourceElement();
             }
             this.target[0].dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
           });
@@ -203,13 +203,13 @@ export class CKEditor5Element extends LitElement {
             return {
               module: await import(moduleDescriptor.module) as PluginModule,
               exports: moduleDescriptor.exports,
-            }
+            };
           } catch (e) {
             console.error(`Failed to load CKEditor5 module ${moduleDescriptor.module}`, e);
             return {
               module: null,
               exports: []
-            }
+            };
           }
         })
     );
@@ -286,7 +286,7 @@ export class CKEditor5Element extends LitElement {
       if (typeof _assignment === 'number' || !Number.isNaN(Number(assignment))) {
         assignment = `${_assignment}px`;
       } else {
-        assignment = _assignment
+        assignment = _assignment;
       }
       view.change((writer) => {
         writer.setStyle(key, assignment, view.document.getRoot());
@@ -350,7 +350,7 @@ function normalizeImportModules(modules: Array<string|PluginModuleDescriptor>): 
       return {
         module: moduleDescriptor,
         exports: [ 'default' ],
-      }
+      };
     }
     return moduleDescriptor;
   });

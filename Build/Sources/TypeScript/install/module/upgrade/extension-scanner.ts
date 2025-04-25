@@ -29,7 +29,7 @@ type Match = {
   lineContent: string;
   line: number;
   restFiles: RestFile[];
-}
+};
 
 type RestFile = {
   uniqueId: string;
@@ -38,12 +38,12 @@ type RestFile = {
   content: string;
   class: string;
   file_hash: string;
-}
+};
 
 type ExtensionScannerFilesResponse = {
   files: string[],
   success: boolean,
-}
+};
 
 type ExtensionScannerScanFileResponse = {
   effectiveCodeLines: number,
@@ -51,7 +51,7 @@ type ExtensionScannerScanFileResponse = {
   isFileIgnored: boolean,
   matches: Match[],
   success: boolean,
-}
+};
 
 class ExtensionScanner extends AbstractInteractableModule {
   private readonly listOfAffectedRestFileHashes: string[] = [];

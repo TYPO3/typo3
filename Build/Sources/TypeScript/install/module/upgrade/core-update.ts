@@ -25,11 +25,11 @@ type ActionItem = {
   loadingMessage: string;
   finishMessage: string;
   nextActionName: string;
-}
+};
 
 type ActionQueue = {
   [k: string]: ActionItem;
-}
+};
 
 class CoreUpdate extends AbstractInteractableModule {
   private readonly actionQueue: ActionQueue = {

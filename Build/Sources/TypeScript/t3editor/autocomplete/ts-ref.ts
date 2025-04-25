@@ -132,7 +132,7 @@ export class TsRef {
           result[key] = new TsRefProperty(this[key].parentType, this[key].name, this[key].value);
         }
         return result;
-      }
+      };
       return this.typeTree[tId].properties;
     }
     return {};

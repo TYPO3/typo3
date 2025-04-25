@@ -130,7 +130,7 @@ class UserPassLogin {
     if (passwordField.value === '') {
       this.togglePasswordVisibility(true);
     }
-  }
+  };
 
   private togglePasswordVisibility(forcePassword?: boolean): void {
     const passwordField = document.querySelector(this.options.passwordField) as HTMLInputElement;

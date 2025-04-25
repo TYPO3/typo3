@@ -166,7 +166,7 @@ export default (function() {
       default:
         return value.toString();
     }
-  }
+  };
 
   /**
    * Update input field after change
@@ -676,7 +676,7 @@ export default (function() {
 
   FormEngineValidation.isValid = function(): boolean {
     return document.querySelector('.' + FormEngineValidation.errorClass) === null;
-  }
+  };
 
   FormEngineValidation.showErrorModal = function(): void {
     const modal = Modal.confirm(
@@ -693,7 +693,7 @@ export default (function() {
       ]
     );
     modal.addEventListener('button.clicked', () => modal.hideModal());
-  }
+  };
 
   FormEngineValidation.registerSubmitCallback = function () {
     DocumentSaveActions.getInstance().addPreSubmitCallback(function (e: Event) {

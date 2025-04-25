@@ -282,7 +282,7 @@ export class CspReports extends LitElement {
 
   private renderCodeLocation(report: SummarizedCspReport): TemplateResult|symbol {
     if (!report.details.lineNumber) {
-      return nothing
+      return nothing;
     }
     const parts = [report.details.lineNumber];
     if (report.details.columnNumber) {

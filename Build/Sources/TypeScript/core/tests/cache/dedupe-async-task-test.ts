@@ -30,7 +30,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
     let counter = 0;
     const task = async (): Promise<number> => {
       return ++counter;
-    }
+    };
     const dedupe = new DedupeAsyncTask<number>();
     const a = await dedupe.get('foo', task);
     const b = await dedupe.get('foo', task);
@@ -42,14 +42,14 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
     const boolTask = async (signal: AbortSignal): Promise<boolean> => {
       await new Promise((resolve) => window.setTimeout(resolve, 0));
       return !signal.aborted;
-    }
+    };
 
     it('if all requests are aborted', async (): Promise<void> => {
       let wasAborted: boolean;
       const task = async (signal: AbortSignal): Promise<void> => {
         await new Promise((resolve) => window.setTimeout(resolve, 0));
         wasAborted = signal.aborted;
-      }
+      };
 
       const dedupe = new DedupeAsyncTask<void>();
 
@@ -102,7 +102,7 @@ describe('@typo3/core/cache/dedupe-async-task', (): void => {
       const b = await bPromise;
 
       expect(error.name).to.equal('AbortError');
-      expect(b).to.be.true
+      expect(b).to.be.true;
     });
 
     it('unless only last request is aborted', async (): Promise<void> => {

@@ -1431,7 +1431,7 @@ export class SvgTree extends LitElement {
     try {
       // Do not proceed if we are not embedded in an iframe (of if CSP prevent for accessing frameElement),
       if (!window.frameElement) {
-        return
+        return;
       }
       window.addEventListener(
         'pagehide',

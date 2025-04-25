@@ -26,12 +26,12 @@ type TemporaryAssetsListResponse = ModuleLoadedResponseWithButtons & {
     name: string,
     rowCount: number,
   }[]
-}
+};
 
 type TemporaryAssetsClearedResponse = {
   status: MessageInterface[],
   success: boolean
-}
+};
 
 /**
  * Module: @typo3/install/module/clear-typo3temp-files

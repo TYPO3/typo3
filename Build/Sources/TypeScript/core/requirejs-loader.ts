@@ -136,13 +136,13 @@ interface Require {
 
   const moduleImporter = (moduleName: string): Promise<unknown> => {
     if (useShim) {
-      return window.importShim(moduleName)
+      return window.importShim(moduleName);
     } else {
       return import(moduleName).catch(() => {
         // Consider that import-maps are not available and use shim from now on
         useShim = true;
-        return moduleImporter(moduleName)
-      })
+        return moduleImporter(moduleName);
+      });
     }
   };
 
@@ -150,25 +150,25 @@ interface Require {
     try {
       return JSON.parse(document.querySelector('script[type="importmap"]').innerHTML).imports || {};
     } catch {
-      return {}
+      return {};
     }
   })();
 
   const isDefinedInImportMap = (moduleName: string): boolean => {
     if (moduleName in importMap) {
-      return true
+      return true;
     }
 
     const moduleParts = moduleName.split('/');
     for (let i = 1; i < moduleParts.length; ++i) {
       const prefix = moduleParts.slice(0, i).join('/') + '/';
       if (prefix in importMap) {
-        return true
+        return true;
       }
     }
 
     return false;
-  }
+  };
 
   /**
    * Does the request to load a module for the browser case.

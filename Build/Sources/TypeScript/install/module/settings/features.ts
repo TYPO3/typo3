@@ -22,7 +22,7 @@ import MessageInterface from '@typo3/install/message-interface';
 type FeaturesWrittenResponse = {
   status: MessageInterface[],
   success: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/features

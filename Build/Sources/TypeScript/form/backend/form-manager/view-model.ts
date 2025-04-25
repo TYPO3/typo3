@@ -85,7 +85,7 @@ function newFormSetup(formManagerApp: FormManager): void {
               formManagerApp.assert(false, 'No accessible form storage folders', 1477506500);
             }
 
-            html = '<div class="new-form-modal">'
+            html = '<div class="new-form-modal">';
 
             html += '<div class="card-container">'
               + '<div class="card card-size-medium">'
@@ -200,7 +200,7 @@ function newFormSetup(formManagerApp: FormManager): void {
         MultiStepWizard.set('templatePath', 'EXT:form/Resources/Private/Backend/Templates/FormEditor/Yaml/NewForms/BlankForm.yaml');
         MultiStepWizard.set('templatePathName', TYPO3.lang['formManager.blankForm.label']);
       } else {
-        html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h5>'
+        html += '<h5 class="form-section-headline">' + TYPO3.lang['formManager.predefinedForm.label'] + '</h5>';
         if (prototypes.length > 1) {
           html += '<div class="mb-3">'
             + '<label for="new-form-prototype-name">' + '<strong>' + TYPO3.lang['formManager.form_prototype'] + '</strong>' + '</label>'
@@ -356,7 +356,7 @@ function newFormSetup(formManagerApp: FormManager): void {
                 + '<p>' + TYPO3.lang['formManager.newFormWizard.step3.message'] + '</p>'
                 + '</div>'
                 + '<div class="alert alert-notice">'
-                + '<div class="alert-body mt-1">'
+                + '<div class="alert-body mt-1">';
 
               if (settings.prototypeNameName) {
                 html += '<div class="row my-1">'

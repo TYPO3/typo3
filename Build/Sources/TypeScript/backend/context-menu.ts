@@ -170,7 +170,7 @@ class ContextMenu {
     contextMenu2.classList.add('context-menu');
     contextMenu2.id = 'contentMenu1';
     contextMenu2.style.display = 'none';
-    contextMenu2.dataset.parent = '#contentMenu0'
+    contextMenu2.dataset.parent = '#contentMenu0';
     document.querySelector('body').append(contextMenu2);
 
     document.querySelectorAll('.context-menu').forEach((contextMenu: Element): void => {
@@ -617,7 +617,7 @@ class ContextMenu {
         submenuList.classList.add('context-menu-group');
         this.drawMenu(item.childItems, 1).forEach((childItem) => {
           submenuList.appendChild(childItem);
-        })
+        });
         submenu.appendChild(submenuList);
         elements.push(submenu);
       }
@@ -639,7 +639,7 @@ class ContextMenu {
     element.style.display = 'none';
     const source = this.eventSources.pop();
     if (source) {
-      source.focus()
+      source.focus();
     }
   }
 

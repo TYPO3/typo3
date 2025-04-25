@@ -27,7 +27,7 @@ interface GridEditorConfigurationInterface {
   columnLabel: string;
 }
 
-type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number }
+type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number };
 
 /**
  * Module: @typo3/backend/grid-editor

@@ -116,7 +116,7 @@ class FormEngineReview {
         link.href = '#';
         link.textContent = $field.find(this.labelSelector).text() || $field.find(this.legendSelector).text();
         link.addEventListener('click', (e: Event) => {
-          this.switchToField(e, $fieldContainer, $input)
+          this.switchToField(e, $fieldContainer, $input);
         });
 
         $list.append(link);

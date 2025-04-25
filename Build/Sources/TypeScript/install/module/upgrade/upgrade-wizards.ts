@@ -46,23 +46,23 @@ type UpgradeWizardsBlockingDatabaseAddsResponse = {
 type UpgradeWizardBlockingDatabaseCharsetTestResponse = {
   needsUpdate: boolean;
   success: boolean;
-}
+};
 
 type UpgradeWizardBlockingDatabaseCharsetFixResponse = {
   status: MessageInterface[];
   success: boolean;
-}
+};
 
 type UpgradeWizardsBlockingDatabaseExecuteResponse = {
   status: MessageInterface[];
   success: boolean;
-}
+};
 
 type UpgradeWizardsListResponse = {
   status: MessageInterface[];
   success: boolean;
   wizards: UpgradeWizard[]
-}
+};
 
 type UpgradeWizardsInputResponse = {
   status: MessageInterface[];
@@ -73,7 +73,7 @@ type UpgradeWizardsInputResponse = {
     description: string;
     wizardHtml: string;
   }
-}
+};
 
 type UpgradeWizardsExecuteResponse = {
   status: MessageInterface[];
@@ -90,7 +90,7 @@ type UpgradeWizardsDoneUpgradesResponse = {
 type UpgradeWizardsMarkUndoneResponse = {
   status: MessageInterface[];
   success: boolean;
-}
+};
 
 type UpgradeWizard = {
   class: string;
@@ -382,7 +382,7 @@ class UpgradeWizards extends AbstractInteractableModule {
               list.find(this.selectorWizardsListRows + ' hr:last').remove();
             }
             let percent: number = 100;
-            const $progressWrapper = list.find('.progress')
+            const $progressWrapper = list.find('.progress');
             const $progressBar = $progressWrapper.find('.progress-bar');
             if (numberOfWizardsTodo > 0) {
               percent = Math.round((numberOfWizards - numberOfWizardsTodo) / data.wizards.length * 100);
@@ -391,7 +391,7 @@ class UpgradeWizards extends AbstractInteractableModule {
                 .removeClass('progress-bar-info')
                 .addClass('progress-bar-success');
             }
-            $progressWrapper.attr('aria-valuenow', String(percent))
+            $progressWrapper.attr('aria-valuenow', String(percent));
             $progressBar
               .removeClass('progress-bar-striped')
               .css('width', percent + '%')

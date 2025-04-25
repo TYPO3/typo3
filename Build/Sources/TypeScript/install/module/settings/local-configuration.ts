@@ -25,7 +25,7 @@ import MessageInterface from '@typo3/install/message-interface';
 type LocalConfigurationWrittenResponse = {
   status: MessageInterface[],
   success: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/local-configuration

@@ -27,7 +27,7 @@ export type ContentObjectIdentifier = string;
 export type TsObjTree = {
   c?: Record<string, TsObjTree>;
   v?: ContentObjectIdentifier;
-}
+};
 
 export class TsCodeCompletion {
   public extTsObjTree: TsObjTree = {};

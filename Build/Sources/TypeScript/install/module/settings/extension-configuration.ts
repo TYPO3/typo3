@@ -28,7 +28,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 type ExtensionConfigurationWrittenResponse = {
   status: MessageInterface[],
   success: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/extension-configuration

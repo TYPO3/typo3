@@ -96,10 +96,10 @@ class SetupModule {
     const clearElement = document.getElementById('clear_button_' + fieldName);
 
     if (clearElement) {
-      SetupModule.hideElement(clearElement)
+      SetupModule.hideElement(clearElement);
     }
     if (imageElement) {
-      SetupModule.hideElement(imageElement)
+      SetupModule.hideElement(imageElement);
     }
     fieldElement.value = 'delete';
   }

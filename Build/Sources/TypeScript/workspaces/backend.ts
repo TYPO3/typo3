@@ -53,13 +53,13 @@ type Comment = {
   tstamp: number;
   user_username: string;
   user_avatar: string
-}
+};
 type History = {
   differences: string | Diff[];
   datetime: string;
   user: string;
   user_avatar: string;
-}
+};
 
 /**
  * Backend workspace module. Loaded only in Backend context, not in

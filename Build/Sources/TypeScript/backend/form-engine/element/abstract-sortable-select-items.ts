@@ -142,7 +142,7 @@ export abstract class AbstractSortableSelectItems {
       FormEngineValidation.markFieldAsChanged(relatedAvailableValuesField);
       FormEngineValidation.validateField(relatedAvailableValuesField);
     });
-  }
+  };
 
   /**
    * @param {HTMLSelectElement} fieldElement
@@ -183,6 +183,6 @@ export abstract class AbstractSortableSelectItems {
         FormEngineValidation.validateField(relatedAvailableValuesField);
       }
     }).bindTo(fieldElement);
-  }
+  };
 
 }

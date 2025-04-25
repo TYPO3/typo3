@@ -86,7 +86,7 @@ class ElementBrowser {
       try {
         return typeof item.frameElement !== 'undefined'
           && item.frameElement.classList.contains('t3js-modal-iframe')
-          && item.frameElement !== window.frames.frameElement
+          && item.frameElement !== window.frames.frameElement;
       } catch {
         // browser extensions might inject their own frames, resulting in
         // `DOMException: Permission denied to access property "document" on cross-origin object`

@@ -26,12 +26,12 @@ type DatabaseTableListResponse = ModuleLoadedResponseWithButtons & {
     name: string,
     rowCount: number,
   }[]
-}
+};
 
 type DatabaseTableClearedResponse = {
   status: MessageInterface[],
   success: boolean
-}
+};
 
 /**
  * Module: @typo3/install/module/clear-tables

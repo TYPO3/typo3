@@ -49,6 +49,7 @@ export default [...compat.extends(
 
   rules: {
     "@stylistic/indent": ["error", 2],
+    "@stylistic/semi": ["error"],
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/no-restricted-types": "error",
     "@typescript-eslint/no-unsafe-function-type": "error",

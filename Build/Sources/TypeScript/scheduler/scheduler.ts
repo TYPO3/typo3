@@ -327,14 +327,14 @@ class Scheduler {
     const formData = new FormData(schedulerForm);
 
     new RegularEvent('click', (e: Event): void => {
-      const newFormData = new FormData(schedulerForm)
+      const newFormData = new FormData(schedulerForm);
       const formDataObj = Object.fromEntries(formData.entries());
       const newFormDataObj = Object.fromEntries(newFormData.entries());
-      const formChanged = JSON.stringify(formDataObj) !== JSON.stringify(newFormDataObj)
+      const formChanged = JSON.stringify(formDataObj) !== JSON.stringify(newFormDataObj);
 
       if (formChanged || schedulerForm.querySelector('input[value="add"]')) {
         e.preventDefault();
-        const closeUrl = (e.currentTarget as HTMLLinkElement).href
+        const closeUrl = (e.currentTarget as HTMLLinkElement).href;
         Modal.confirm(
           TYPO3.lang['label.confirm.close_without_save.title'] || 'Do you want to close without saving?',
           TYPO3.lang['label.confirm.close_without_save.content'] || 'You currently have unsaved changes. Are you sure you want to discard these changes?',
@@ -363,12 +363,12 @@ class Scheduler {
               trigger: () => {
                 Modal.dismiss();
 
-                const hidden = document.createElement('input')
+                const hidden = document.createElement('input');
                 hidden.type = 'hidden';
                 hidden.value = 'saveclose';
                 hidden.name = 'CMD';
 
-                schedulerForm.append(hidden)
+                schedulerForm.append(hidden);
                 schedulerForm.submit();
               },
             }

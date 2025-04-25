@@ -15,7 +15,7 @@ import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import ClientStorage from './storage/client';
 import { Sizes, States, MarkupIdentifiers } from './enum/icon-types';
 import { css, CSSResult } from 'lit';
-import { DedupeAsyncTask } from '@typo3/core/cache/dedupe-async-task'
+import { DedupeAsyncTask } from '@typo3/core/cache/dedupe-async-task';
 
 export class IconStyles {
   public static getStyles(): CSSResult[] {
@@ -188,7 +188,7 @@ class Icons {
     return this.promiseCache.get(
       promiseCacheIdentifier,
       async (signal: AbortSignal): Promise<string> => {
-        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache).get({ signal })
+        const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.icons_cache).get({ signal });
         return await response.resolve();
       }
     );
@@ -203,7 +203,7 @@ class Icons {
       async (signal: AbortSignal): Promise<string> => {
         const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.icons)
           .withQueryArguments({ icon: JSON.stringify(icon) })
-          .get({ signal })
+          .get({ signal });
         const markup = await response.resolve();
         if (!response.response.redirected &&
             markup.startsWith('<span') &&

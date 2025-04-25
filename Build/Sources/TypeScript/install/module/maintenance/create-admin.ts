@@ -24,7 +24,7 @@ type BackendUserCreatedResponse = {
   status: MessageInterface[],
   success: boolean,
   userCreated: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/create-admin

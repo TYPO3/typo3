@@ -157,7 +157,7 @@ export class NotificationMessage extends LitElement {
 
     const dispatchFinishEvent = (): void => {
       this.dispatchEvent(new CustomEvent('typo3-notification-clear-finish'));
-    }
+    };
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReducedMotion && 'animate' in this) {

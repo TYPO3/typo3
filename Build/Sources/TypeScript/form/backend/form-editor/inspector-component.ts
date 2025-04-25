@@ -1050,7 +1050,7 @@ export function renderCollectionElementHeaderEditor(
           .prepend(iconWrap);
       });
     }
-  }
+  };
 
   const collectionElementConfiguration = getFormEditorApp().getFormEditorDefinition(collectionName, collectionElementIdentifier);
   if ('iconIdentifier' in collectionElementConfiguration) {
@@ -2064,7 +2064,7 @@ export function renderRequiredValidatorEditor(
         $(this).val()
       ));
     });
-  }
+  };
 
   if (-1 !== getFormEditorApp().getIndexFromPropertyCollectionElement(validatorIdentifier, 'validators')) {
     $('input[type="checkbox"]', $(editorHtml)).prop('checked', true);
