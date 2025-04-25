@@ -77,6 +77,7 @@ class ContentCreationPagePositionMap extends AbstractContentPagePositionMap
                 'redirect' => $this->R_URI,
             ]);
         } else {
+            // @todo pass module context to this handler and pass to record_edit here
             $target = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => [
                     'tt_content' => [

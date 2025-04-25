@@ -151,6 +151,7 @@ class NewRecordController
                     ],
                 ],
                 'returnNewPageId' => 1,
+                // @todo add module context
                 'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('db_new_pages', ['id' => $this->id]),
             ];
             $url = $this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

@@ -382,6 +382,7 @@ class FileReferenceContainer extends AbstractContainer
                 if (!empty($metadataRecord)) {
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                         'edit[sys_file_metadata][' . (int)$metadataRecord['uid'] . ']' => 'edit',
+                        'module' => (string)($this->data['request']->getQueryParams()['module'] ?? ''),
                         'returnUrl' => $this->data['returnUrl'],
                     ]);
                     $controls['edit'] = '

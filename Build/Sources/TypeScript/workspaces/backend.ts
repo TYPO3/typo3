@@ -198,6 +198,7 @@ class Backend extends Workspaces {
       const row = target.closest('tr') as HTMLTableRowElement;
       const newUrl = TYPO3.settings.FormEngine.moduleUrl
         + '&returnUrl=' + encodeURIComponent(document.location.href)
+        + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
         + '&id=' + TYPO3.settings.Workspaces.id + '&edit[' + row.dataset.table + '][' + row.dataset.uid + ']=edit';
 
       window.location.href = newUrl;

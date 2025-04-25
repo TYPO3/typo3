@@ -109,6 +109,7 @@ class ManagementController
                 'record_edit',
                 [
                     'edit' => ['sys_reaction' => ['new']],
+                    'module' => 'system_reactions',
                     'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('system_reactions'),
                 ]
             ))

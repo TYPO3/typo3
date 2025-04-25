@@ -96,6 +96,7 @@ export default class Filelist {
           formEngineUrl.searchParams.set('edit[sys_file_metadata][0]', 'new');
           formEngineUrl.searchParams.set('defVals[sys_file_metadata][file]', resource.uid.toString(10));
         }
+        formEngineUrl.searchParams.set('module', top.TYPO3.ModuleMenu.App.getCurrentModule());
         formEngineUrl.searchParams.set('returnUrl', Filelist.getReturnUrl(''));
         window.location.href = formEngineUrl.toString();
       }

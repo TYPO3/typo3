@@ -171,6 +171,7 @@ final readonly class ReviewController
                         $activeWorkspace => 'edit',
                     ],
                 ],
+                'module' => 'workspaces_admin',
                 'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', ['id' => $pageUid]),
             ]);
             $editSettingsButton = $buttonBar->makeLinkButton()

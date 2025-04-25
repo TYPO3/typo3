@@ -801,6 +801,7 @@ class DatabaseIntegrityController
                         $row['uid'] => 'edit',
                     ],
                 ],
+                'module' => 'system_dbint',
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri()
                     . HttpUtility::buildQueryString(['SET' => $request->getParsedBody()['SET'] ?? []], '&'),
             ]);

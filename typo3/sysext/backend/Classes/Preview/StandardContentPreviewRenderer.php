@@ -383,6 +383,7 @@ class StandardContentPreviewRenderer implements PreviewRendererInterface, Logger
                         $row['uid'] => 'edit',
                     ],
                 ],
+                'module' => 'web_layout',
                 'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $table . '-' . $row['uid'],
             ];
             $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

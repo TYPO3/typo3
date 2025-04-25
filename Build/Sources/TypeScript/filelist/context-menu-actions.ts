@@ -92,6 +92,7 @@ class ContextMenuActions {
     top.TYPO3.Backend.ContentContainer.setUrl(
       top.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[sys_file_metadata][' + resource.metaUid + ']=edit'
+      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + ContextMenuActions.getReturnUrl()
     );
   }

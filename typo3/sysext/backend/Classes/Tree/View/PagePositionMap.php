@@ -218,6 +218,7 @@ class PagePositionMap
             return (string)$url;
         }
 
+        // @todo pass module context to this handler and pass to record_edit here
         return (string)$uriBuilder->buildUriFromRoute('record_edit', [
             'edit' => [
                 'pages' => [

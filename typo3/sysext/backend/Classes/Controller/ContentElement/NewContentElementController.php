@@ -186,6 +186,7 @@ class NewContentElementController
                                     $this->uid_pid => 'new',
                                 ],
                             ],
+                            'module' => '_CURRENT_MODULE_',
                             'returnUrl' => $this->returnUrl,
                             'defVals' => [
                                 'tt_content' => array_replace($defaultValues, [

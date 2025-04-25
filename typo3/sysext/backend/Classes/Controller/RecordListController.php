@@ -443,6 +443,7 @@ class RecordListController
                             $this->id => 'edit',
                         ],
                     ],
+                    'module' => 'web_list',
                     'returnUrl' => $listUrl,
                 ]);
                 $editButton = $buttonBar->makeLinkButton()

@@ -184,6 +184,7 @@ class AddController
         $redirectUrl = (string)$uriBuilder->buildUriFromRoute('record_edit', [
             'returnEditConf' => 1,
             'edit[' . $this->P['params']['table'] . '][' . $this->pid . ']' => 'new',
+            // @todo add module context to wizard/add routes and set module context here
             'returnUrl' => $normalizedParams->getRequestUri(),
         ]);
 

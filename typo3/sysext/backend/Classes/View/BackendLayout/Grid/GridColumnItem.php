@@ -358,6 +358,7 @@ class GridColumnItem extends AbstractGridObject
                     $this->record['uid'] => 'edit',
                 ],
             ],
+            'module' => 'web_layout',
             'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri() . '#element-' . $this->table . '-' . $this->record['uid'],
         ];
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);

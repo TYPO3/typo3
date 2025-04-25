@@ -183,6 +183,7 @@ class TranslationStatusController extends InfoModuleController
                         $data['row']['uid'] => 'edit',
                     ],
                 ],
+                'module' => 'web_info_translations',
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
             $info = '<button ' . ($previewUriBuilder->serializeDispatcherAttributes() ?? 'disabled="true"')
@@ -249,6 +250,7 @@ class TranslationStatusController extends InfoModuleController
                                     $row['uid'] => 'edit',
                                 ],
                             ],
+                            'module' => 'web_info_translations',
                             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ]);
                         // ViewPageLink
@@ -297,6 +299,7 @@ class TranslationStatusController extends InfoModuleController
                 'columnsOnly' => [
                     'pages' => ['title', 'nav_title', 'l18n_cfg', 'hidden'],
                 ],
+                'module' => 'web_info_translations',
                 'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
             ]);
             $editIco = '<a href="' . htmlspecialchars($editUrl)
@@ -331,6 +334,7 @@ class TranslationStatusController extends InfoModuleController
                         'columnsOnly' => [
                             'pages' =>  ['title', 'nav_title', 'hidden'],
                         ],
+                        'module' => 'web_info_translations',
                         'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ]);
                     $editButton = '<a href="' . htmlspecialchars($editUrl)

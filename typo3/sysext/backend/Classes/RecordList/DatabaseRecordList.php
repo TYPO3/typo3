@@ -991,6 +991,7 @@ class DatabaseRecordList
                             $this->id => 'new',
                         ],
                     ],
+                    'module' => $this->request->getAttribute('module')?->getIdentifier() ?? '',
                     'returnUrl' => $this->listURL(),
                 ]
             );
@@ -1643,6 +1644,7 @@ class DatabaseRecordList
                         $record->getUid() => 'edit',
                     ],
                 ],
+                'module' => $this->request->getAttribute('module')?->getIdentifier() ?? '',
             ];
             $iconIdentifier = 'actions-open';
             if ($table === 'pages') {
@@ -1752,6 +1754,7 @@ class DatabaseRecordList
                                     (0 - $record->getUid()) => 'new',
                                 ],
                             ],
+                            'module' => $this->request->getAttribute('module')?->getIdentifier() ?? '',
                             'returnUrl' => $this->listURL(),
                         ];
                         $icon = ($table === 'pages' ? $this->iconFactory->getIcon('actions-page-new', IconSize::SMALL) : $this->iconFactory->getIcon('actions-plus', IconSize::SMALL));
@@ -2790,6 +2793,7 @@ class DatabaseRecordList
                                 $record->getUid() => 'edit',
                             ],
                         ],
+                        'module' => $this->request->getAttribute('module')?->getIdentifier() ?? '',
                         'returnUrl' => $this->listURL(),
                     ];
                     $editLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $params);

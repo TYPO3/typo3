@@ -163,8 +163,8 @@ class ManagementController
             ->setHref((string)$this->uriBuilder->buildUriFromRoute(
                 'record_edit',
                 [
-                    'edit' => ['sys_redirect' => ['new'],
-                    ],
+                    'edit' => ['sys_redirect' => ['new']],
+                    'module' => 'site_redirects',
                     'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('site_redirects'),
                 ]
             ))

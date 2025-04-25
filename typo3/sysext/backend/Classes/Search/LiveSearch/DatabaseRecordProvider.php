@@ -495,6 +495,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 )
             )
         ) {
+            // @todo pass module context to live search and pass module context to edit link and use for return url
             $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('web_list', ['id' => $row['pid']]);
             $editLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
                 'edit[' . $tableName . '][' . $row['uid'] . ']' => 'edit',

@@ -84,6 +84,7 @@ final class ButtonBarProvider
                         $id => 'new',
                     ],
                 ],
+                'module' => $module->getIdentifier(),
                 'returnUrl' => $normalizedParams->getRequestUri(),
             ]
         );

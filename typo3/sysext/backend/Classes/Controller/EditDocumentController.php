@@ -32,6 +32,7 @@ use TYPO3\CMS\Backend\Form\FormDataCompiler;
 use TYPO3\CMS\Backend\Form\FormDataGroup\TcaDatabaseRecord;
 use TYPO3\CMS\Backend\Form\FormResultCompiler;
 use TYPO3\CMS\Backend\Form\NodeFactory;
+use TYPO3\CMS\Backend\Module\ModuleInterface;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Routing\Exception\ResourceNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
@@ -336,6 +337,8 @@ class EditDocumentController
 
     protected bool $isPageInFreeTranslationMode = false;
 
+    protected ?ModuleInterface $module = null;
+
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly IconFactory $iconFactory,
@@ -380,6 +383,7 @@ class EditDocumentController
             return $response;
         }
 
+        $this->setModuleContext($view);
         $this->init($request);
 
         if ($request->getMethod() === 'POST') {
@@ -400,6 +404,7 @@ class EditDocumentController
         }
 
         $view->assign('bodyHtml', $this->main($view, $request));
+
         return $view->renderResponse('Form/EditDocument');
     }
 
@@ -408,12 +413,14 @@ class EditDocumentController
      */
     protected function preInit(ServerRequestInterface $request): ?ResponseInterface
     {
+        $queryParams = $request->getQueryParams();
+        $this->module = $this->moduleProvider->getModule((string)($queryParams['module'] ?? ''), $this->getBackendUser());
+
         if ($response = $this->localizationRedirect($request)) {
             return $response;
         }
 
         $parsedBody = $request->getParsedBody();
-        $queryParams = $request->getQueryParams();
 
         $this->editconf = $parsedBody['edit'] ?? $queryParams['edit'] ?? [];
         $this->defVals = $parsedBody['defVals'] ?? $queryParams['defVals'] ?? null;
@@ -464,6 +471,35 @@ class EditDocumentController
         $event = new BeforeFormEnginePageInitializedEvent($this, $request);
         $this->eventDispatcher->dispatch($event);
         return null;
+    }
+
+    protected function setModuleContext(
+        ModuleTemplate $view,
+    ): void {
+        $view->assign('moduleContext', '');
+        $view->assign('moduleContextId', '');
+        if ($this->module === null) {
+            return;
+        }
+
+        $view->setModuleName($this->module->getIdentifier());
+
+        $parentIdentifier = null;
+        $parent = $this->module->getParentModule();
+        while ($parent->getParentModule() !== null) {
+            $parent = $parent->getParentModule();
+        }
+        if ($parent === null) {
+            return;
+        }
+        $moduleContext = $parent->getIdentifier();
+
+        if ($moduleContext === 'file') {
+            // Workaround for filelist using 'media' as ModuleStorage module context… :\
+            $moduleContext = 'media';
+        }
+
+        $view->assign('moduleContext', $moduleContext);
     }
 
     /**
@@ -906,7 +942,7 @@ class EditDocumentController
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
-        // Setting up the buttons and markers for doc header
+        // Setting up the buttons, markers for doc header and navigation component state
         $this->resolveMetaInformation($view);
         $this->getButtons($view, $request);
 
@@ -936,8 +972,10 @@ class EditDocumentController
         }
         if ($file instanceof FileInterface) {
             $view->getDocHeaderComponent()->setMetaInformationForResource($file);
+            $view->assign('moduleContextId', $file->getParentFolder()->getCombinedIdentifier());
         } elseif ($this->pageinfo !== []) {
             $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+            $view->assign('moduleContextId', $this->pageinfo['uid'] ?? '');
         }
     }
 
@@ -1399,6 +1437,7 @@ class EditDocumentController
                 // The below is a hack to replace the return url with an url to the current module on id=0. Otherwise,
                 // this might lead to empty views, since the current id is the page, which is about to be deleted.
                 $parsedUrl = parse_url($returnUrl);
+                // @todo consider using $this->module here
                 $routePath = str_replace($this->backendEntryPointResolver->getPathFromRequest($request), '', $parsedUrl['path'] ?? '');
                 parse_str($parsedUrl['query'] ?? '', $queryParams);
                 if ($routePath
@@ -1584,6 +1623,7 @@ class EditDocumentController
             'columnsOnly',
             'returnNewPageId',
             'noView',
+            'module',
         ];
         $arguments = [];
         foreach ($potentialArguments as $argument) {
@@ -1923,6 +1963,7 @@ class EditDocumentController
                                         'record_edit',
                                         [
                                             'justLocalized' => $table . ':' . $rowsByLang[0]['uid'] . ':' . $languageId,
+                                            'module' => $this->module?->getIdentifier() ?? '',
                                             'returnUrl' => $this->retUrl,
                                         ]
                                     ),
@@ -1932,6 +1973,7 @@ class EditDocumentController
                     } else {
                         $params = [
                             'edit[' . $table . '][' . $rowsByLang[$languageId]['uid'] . ']' => 'edit',
+                            'module' => $this->module?->getIdentifier() ?? '',
                             'returnUrl' => $this->retUrl,
                         ];
                         if ($this->columnsOnly[$table] ?? false) {
@@ -2008,6 +2050,7 @@ class EditDocumentController
                     'record_edit',
                     [
                         'edit[' . $table . '][' . $localizedRecord['uid'] . ']' => 'edit',
+                        'module' => $this->module?->getIdentifier() ?? '',
                         'returnUrl' => GeneralUtility::sanitizeLocalUrl($returnUrl),
                     ]
                 ),

@@ -9,6 +9,16 @@
 
     <f:asset.module identifier="@typo3/backend/context-menu.js"/>
 
+    <f:if condition="{moduleContext} != '' && {moduleContextId} != ''">
+        <f:asset.module identifier="@typo3/backend/element/immediate-action-element.js"/>
+
+        <f:variable name="immediateActionArgs" value="{0: moduleContext, 1: moduleContextId}" />
+        <typo3-immediate-action
+            action="TYPO3.Backend.Storage.ModuleStateStorage.update"
+            args="{immediateActionArgs -> f:format.json() -> f:format.htmlspecialchars()}"
+        ></typo3-immediate-action>
+    </f:if>
+
     <f:format.raw>{bodyHtml}</f:format.raw>
 
 </f:section>

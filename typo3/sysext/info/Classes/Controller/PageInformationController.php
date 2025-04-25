@@ -241,6 +241,7 @@ class PageInformationController extends InfoModuleController
                         'columnsOnly' => [
                             'pages' => [$field],
                         ],
+                        'module' => 'web_info_overview',
                         'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                     ];
                     $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
@@ -482,6 +483,7 @@ class PageInformationController extends InfoModuleController
                                     $row['uid'] => 'edit',
                                 ],
                             ],
+                            'module' => 'web_info_overview',
                             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ];
                         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);

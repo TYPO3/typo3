@@ -458,6 +458,7 @@ class FormManagerController extends ActionController
                         $referenceRow['recuid'] => 'edit',
                     ],
                 ],
+                'module' => 'web_FormFormbuilder',
                 'returnUrl' => $this->getModuleUrl('web_FormFormbuilder'),
             ];
             $references[] = [

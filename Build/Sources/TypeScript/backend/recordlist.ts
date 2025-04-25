@@ -197,6 +197,7 @@ class Recordlist {
 
     let editUrl: string = top.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[' + tableName + '][' + entityIdentifiers.join(',') + ']=edit'
+      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + Recordlist.getReturnUrl(returnUrl);
 
     if (columnsOnly.length > 0) {

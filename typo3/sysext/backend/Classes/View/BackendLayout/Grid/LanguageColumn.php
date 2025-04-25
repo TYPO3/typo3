@@ -100,6 +100,7 @@ class LanguageColumn extends AbstractGridObject
                     $pageRecordUid => 'edit',
                 ],
             ],
+            'module' => 'web_layout',
             'returnUrl' => $this->context->getCurrentRequest()->getAttribute('normalizedParams')->getRequestUri(),
         ];
         // Disallow manual adjustment of the language field for pages

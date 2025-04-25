@@ -1267,6 +1267,7 @@ class FileList
                                 $existingTranslations[$languageId]['uid'] => 'edit',
                             ],
                         ],
+                        'module' => 'media_management',
                         'returnUrl' => $this->createModuleUri(),
                     ]
                 );
@@ -1289,6 +1290,7 @@ class FileList
                             'record_edit',
                             [
                                 'justLocalized' => 'sys_file_metadata:' . $metaDataRecordId . ':' . $languageId,
+                                'module' => 'media_management',
                                 'returnUrl' => $this->createModuleUri(),
                             ]
                         ),
@@ -1602,6 +1604,7 @@ class FileList
         ) {
             $parameter = [
                 'edit' => ['sys_file_metadata' => [$metaDataUid => 'edit']],
+                'module' => 'media_management',
                 'returnUrl' => $this->createModuleUri(),
             ];
             return (string)$this->uriBuilder->buildUriFromRoute('record_edit', $parameter);

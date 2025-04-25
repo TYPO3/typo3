@@ -399,6 +399,7 @@ class LinkValidatorController
                     $row['record_uid'] => 'edit',
                 ],
             ],
+            'module' => 'web_linkvalidator',
             'returnUrl' => $this->getModuleUri(
                 'report',
                 [

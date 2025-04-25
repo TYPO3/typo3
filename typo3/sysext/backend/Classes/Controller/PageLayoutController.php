@@ -636,6 +636,7 @@ class PageLayoutController
         }
         $params = [
             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
+            'module' => 'web_layout',
             'edit' => [
                 'pages' => [
                     $pageUid => 'edit',

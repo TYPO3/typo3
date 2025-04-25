@@ -108,6 +108,7 @@ class ManagementController
                 'record_edit',
                 [
                     'edit' => ['sys_webhook' => ['new']],
+                    'module' => 'webhooks_management',
                     'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('webhooks_management'),
                 ]
             ))

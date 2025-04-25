@@ -182,6 +182,7 @@ class BackendUserController extends ActionController
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
+                'module' => 'backend_user_management',
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($createEditorButton, ButtonBar::BUTTON_POSITION_LEFT);
@@ -260,6 +261,7 @@ class BackendUserController extends ActionController
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [$uid => 'edit']],
+                'module' => 'backend_user_management',
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($editButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
@@ -269,6 +271,7 @@ class BackendUserController extends ActionController
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
+                'module' => 'backend_user_management',
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($addUserButton, ButtonBar::BUTTON_POSITION_LEFT, 3);
@@ -465,6 +468,7 @@ class BackendUserController extends ActionController
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_groups' => [0 => 'new']],
+                'module' => 'backend_user_management',
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($addGroupButton);
@@ -648,6 +652,7 @@ class BackendUserController extends ActionController
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['sys_filemounts' => [0 => 'new']],
+                'module' => 'backend_user_management',
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
         $buttonBar->addButton($addFilemountButton);

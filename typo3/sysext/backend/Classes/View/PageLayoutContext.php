@@ -325,6 +325,7 @@ class PageLayoutContext
                             'record_edit',
                             [
                                 'justLocalized' => 'pages:' . $this->pageId . ':' . $languageUid,
+                                'module' => 'web_layout',
                                 'returnUrl' => $this->getReturnUrl(),
                             ]
                         ),

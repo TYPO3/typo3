@@ -47,6 +47,7 @@ class ContextMenuActions {
       top.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[' + table + '][' + uid + ']=edit'
       + overrideVals
+      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + ContextMenuActions.getReturnUrl(),
     );
   }

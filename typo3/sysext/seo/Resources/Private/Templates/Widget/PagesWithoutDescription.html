@@ -27,7 +27,7 @@
                                     <a href="{page.frontendUrl}" target="_blank" class="btn btn-default">
                                         <core:icon identifier="actions-eye" alternativeMarkupIdentifier="inline"/>
                                     </a>
-                                    <be:link.editRecord uid="{page.uid}" table="pages" fields="description" returnUrl="{be:moduleLink(route: 'dashboard')}" class="btn btn-default">
+                                    <be:link.editRecord uid="{page.uid}" table="pages" module="web_layout" fields="description" returnUrl="{be:moduleLink(route: 'dashboard')}" class="btn btn-default">
                                         <core:icon identifier="actions-open" alternativeMarkupIdentifier="inline"/>
                                     </be:link.editRecord>
                                 </div>

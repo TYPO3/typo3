@@ -49,6 +49,7 @@ class MultiRecordSelectionEditAction {
 
     window.location.href = top.TYPO3.settings.FormEngine.moduleUrl
       + '&edit[' + tableName + '][' + entityIdentifiers.join(',') + ']=edit'
+      + '&module=' + encodeURIComponent(top.TYPO3.ModuleMenu.App.getCurrentModule())
       + '&returnUrl=' + encodeURIComponent(configuration.returnUrl || '');
   }
 }

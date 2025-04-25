@@ -83,6 +83,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
                             $workspaceId => 'edit',
                         ],
                     ],
+                    // @todo attach module context to live search
                     'returnUrl' => (string)$this->uriBuilder->buildUriFromRoute('workspaces_admin', ['id' => $searchDemand->getPageId()]),
                 ]);
 

@@ -273,6 +273,7 @@ return [
             'parameters' => [
                 'edit' => true,
                 'columnsOnly' => true,
+                'module' => true,
             ],
         ],
     ],

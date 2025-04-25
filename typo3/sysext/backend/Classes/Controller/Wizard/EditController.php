@@ -149,6 +149,7 @@ class EditController
             // SINGLE value
             $urlParameters['edit[' . $config['foreign_table'] . '][' . $this->P['currentValue'] . ']'] = 'edit';
             // Redirect to FormEngine
+            // Note: no 'module' context here, since we're opening in a popup
             $url = $this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
             return new RedirectResponse($url);
         }
