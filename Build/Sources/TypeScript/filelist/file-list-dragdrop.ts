@@ -112,7 +112,7 @@ class FileListDragDrop {
 
   private getPreviewLabel(selectedItems: ResourceInterface[]): string {
     // Counter
-    const previewItems = selectedItems.filter((item: ResourceInterface): boolean => item.thumbnail !== null)
+    const previewItems = selectedItems.filter((item: ResourceInterface): boolean => item.thumbnail !== null);
     const count = selectedItems.length - previewItems.length;
     if (count > 0) {
       return (previewItems.length > 0 ? '+' : '') + count.toString();

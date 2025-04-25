@@ -742,7 +742,7 @@ export default (function() {
     if (fieldLabel !== null) {
       fieldLabel.classList.add('has-change');
     }
-  }
+  };
 
   /**
    * @param {boolean} response
@@ -1277,7 +1277,7 @@ export default (function() {
     document.querySelector(selector`form[name="${FormEngine.formName}"]`).append(saveAndCloseInput);
 
     FormEngine.saveDocument();
-  }
+  };
 
   /**
    * Main init function called from outside

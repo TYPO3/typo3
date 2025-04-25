@@ -307,7 +307,7 @@ class Recycler {
           tableWrapper.parentElement.insertBefore(alertElement, tableWrapper);
         }
       } else {
-        tableWrapper.parentElement.querySelector('#no-recycler-records')?.remove()
+        tableWrapper.parentElement.querySelector('#no-recycler-records')?.remove();
         tableBody.innerHTML = data.rows;
       }
       tableWrapper.toggleAttribute('hidden', data.totalItems === 0);

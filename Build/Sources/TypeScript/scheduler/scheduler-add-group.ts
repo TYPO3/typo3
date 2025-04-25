@@ -54,7 +54,7 @@ class SchedulerAddGroups {
               name: 'cancel'
             },{
               trigger: (): void => {
-                const form: HTMLFormElement = Modal.currentModal.querySelector('form[name="scheduler-create-group"]')
+                const form: HTMLFormElement = Modal.currentModal.querySelector('form[name="scheduler-create-group"]');
                 form.requestSubmit();
               },
               text: lll('scheduler.modalOk') || 'Create group',
@@ -65,10 +65,10 @@ class SchedulerAddGroups {
         });
 
         modal.addEventListener('typo3-modal-shown', (): void => {
-          const input: HTMLInputElement = Modal.currentModal.querySelector('input[name="action[createGroup]"]')
+          const input: HTMLInputElement = Modal.currentModal.querySelector('input[name="action[createGroup]"]');
           input.focus();
         });
-      })
+      });
     }
   }
 
@@ -112,7 +112,7 @@ class SchedulerAddGroups {
         }
 
         Modal.dismiss();
-      })
+      });
   }
 }
 

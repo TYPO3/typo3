@@ -130,7 +130,7 @@ export class Tree extends LitElement {
       return this.settings.dataUrl;
     }
 
-    return this.settings.dataUrl + '&parent=' + parentNode.identifier + '&depth=' + parentNode.depth
+    return this.settings.dataUrl + '&parent=' + parentNode.identifier + '&depth=' + parentNode.depth;
   }
 
   public getFilterUrl(): string {
@@ -147,7 +147,7 @@ export class Tree extends LitElement {
 
   public async fetchData(parentNode: TreeNodeInterface|null = null): Promise<TreeNodeInterface[]> {
     try {
-      const response = await new AjaxRequest(this.getDataUrl(parentNode)).get({ cache: 'no-cache' })
+      const response = await new AjaxRequest(this.getDataUrl(parentNode)).get({ cache: 'no-cache' });
       let nodes: TreeNodeInterface[] = await response.resolve();
 
       if (!Array.isArray(nodes)) {
@@ -1048,7 +1048,7 @@ export class Tree extends LitElement {
     return this.settings.showIcons
       ? html`
         <span class="node-icon"
-          @click="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node: node, originalEvent: event } })) }}"
+          @click="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); this.dispatchEvent(new CustomEvent('typo3:tree:node-context', { detail: { node: node, originalEvent: event } })); }}"
           @dblclick="${(event: PointerEvent) => { event.preventDefault(); event.stopImmediatePropagation(); }}"
         >
           <typo3-backend-icon
@@ -1146,7 +1146,7 @@ export class Tree extends LitElement {
           this.focusNode(node);
         }
       }
-    }
+    };
 
     const blurFunction = (event: FocusEvent) => {
       if (this.editingNode !== null) {
@@ -1160,7 +1160,7 @@ export class Tree extends LitElement {
         }
         this.requestUpdate();
       }
-    }
+    };
 
     return html`
       <input
@@ -1179,22 +1179,22 @@ export class Tree extends LitElement {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async handleNodeEdit(node: TreeNodeInterface, newName: string): Promise<void> {
-    console.error('The function Tree->handleNodeEdit is not implemented.')
+    console.error('The function Tree->handleNodeEdit is not implemented.');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleNodeDelete(node: TreeNodeInterface) {
-    console.error('The function Tree->handleNodeDelete is not implemented.')
+    console.error('The function Tree->handleNodeDelete is not implemented.');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected handleNodeMove(node: TreeNodeInterface, target: TreeNodeInterface, position: TreeNodePositionEnum) {
-    console.error('The function Tree->handleNodeMove is not implemented.')
+    console.error('The function Tree->handleNodeMove is not implemented.');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected async handleNodeAdd(node: TreeNodeInterface, target: TreeNodeInterface, position: TreeNodePositionEnum): Promise<void> {
-    console.error('The function Tree->handleNodeAdd is not implemented.')
+    console.error('The function Tree->handleNodeAdd is not implemented.');
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -1205,7 +1205,7 @@ export class Tree extends LitElement {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   protected createDataTransferItemsFromNode(node: TreeNodeInterface): DataTransferStringItem[] {
-    throw new Error('The function Tree->createDataTransferItemFromNode is not implemented.')
+    throw new Error('The function Tree->createDataTransferItemFromNode is not implemented.');
   }
 
   //
@@ -1224,7 +1224,7 @@ export class Tree extends LitElement {
   }
 
   protected getNodeClasses(node: TreeNodeInterface): string[] {
-    const classList: Array<string> = ['node']
+    const classList: Array<string> = ['node'];
 
     if (node.checked) {
       classList.push('node-selected');
@@ -1296,7 +1296,7 @@ export class Tree extends LitElement {
 
   protected getNodeSetsize(node: TreeNodeInterface): number {
     if (node.depth === 0) {
-      return this.displayNodes.filter((node) => node.depth === 0).length
+      return this.displayNodes.filter((node) => node.depth === 0).length;
     }
     const parentNode = this.getParentNode(node);
     const childNodes = this.getNodeChildren(parentNode);
@@ -1308,7 +1308,7 @@ export class Tree extends LitElement {
     const parentNode = this.getParentNode(node);
     let nodeSet: TreeNodeInterface[] = [];
     if (node.depth === 0) {
-      nodeSet = this.displayNodes.filter((node) => node.depth === 0)
+      nodeSet = this.displayNodes.filter((node) => node.depth === 0);
     } else if (parentNode !== null) {
       nodeSet = this.getNodeChildren(parentNode);
     }
@@ -1504,7 +1504,7 @@ export class Tree extends LitElement {
     const nodeAnchorTop = node.__y;
     const nodeAnchorBottom = node.__y + this.nodeHeight;
     const nodeFitsTop = nodeAnchorTop >= this.currentScrollPosition;
-    const nodeFitsBottom = nodeAnchorBottom <= this.currentScrollPosition + this.currentVisibleHeight
+    const nodeFitsBottom = nodeAnchorBottom <= this.currentScrollPosition + this.currentVisibleHeight;
     const nodeFits = nodeFitsTop && nodeFitsBottom;
 
     if (!nodeFits) {
@@ -1533,7 +1533,7 @@ export class Tree extends LitElement {
     try {
       // Do not proceed if we are not embedded in an iframe (of if CSP prevent for accessing frameElement),
       if (!window.frameElement) {
-        return
+        return;
       }
       window.addEventListener(
         'pagehide',

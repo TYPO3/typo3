@@ -69,12 +69,12 @@ declare namespace TYPO3 {
           }
           context: import('@typo3/backend/form-engine/inline-relation/ajax-dispatcher').Context,
         }
-      }
+      };
       export const unique: {
         // todo: Resolve typing (possibly being real) issues in @typo3/backend/form-engine/container/inline-control-container
         // and use `import('@typo3/backend/form-engine/container/inline-control-container').UniqueDefinition`
         [key: string]: any,
-      }
+      };
     }
     export namespace WebLayout {
       export const moduleUrl: string;

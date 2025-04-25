@@ -117,11 +117,11 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     if (this.visible) {
       this.broadcast('visible');
     }
-  }
+  };
 
   public trackDragOverAllowed = (event: DragEvent): void => {
     this.dragAllowed = event.defaultPrevented;
-  }
+  };
 
   protected reset() {
     this.active = true;
@@ -151,7 +151,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     }
 
     const newProperties = propertyNames.map((propName: keyof this) => [ propName, this[propName] ]);
-    this.broadcast('changedProperties', Object.fromEntries(newProperties))
+    this.broadcast('changedProperties', Object.fromEntries(newProperties));
   }
 
   protected broadcast(eventName: string, payload?: unknown) {
@@ -162,26 +162,26 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
     let x = 0, y = 0;
 
     if (contentWindow === currentWindow) {
-      return { x, y }
+      return { x, y };
     }
 
-    const parentOffset = this.calculateIframeOffset(contentWindow.parent, currentWindow)
+    const parentOffset = this.calculateIframeOffset(contentWindow.parent, currentWindow);
     x += parentOffset.x;
     y += parentOffset.y;
 
     const iframe = contentWindow.frameElement;
     if (iframe) {
       const rect = iframe.getBoundingClientRect();
-      x += rect.x
-      y += rect.y
+      x += rect.x;
+      y += rect.y;
     }
 
-    return { x, y }
+    return { x, y };
   }
 
   protected trackDragEnd = (): void => {
     this.active = false;
-  }
+  };
 
   protected trackDragStart = (event: DragEvent): void => {
     if (event.defaultPrevented) {
@@ -196,17 +196,17 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
       Object.assign(this, metadata);
       this.broadcast('visible');
     }
-  }
+  };
 
   protected onMetadataUpdate = (event: CustomEvent<DragTooltipMetadata>): void => {
     const metadata = event.detail;
     Object.assign(this, metadata);
-  }
+  };
 
   protected onBroadcastVisible = () => {
     // Another tab is dragging, hide our instance
     this.visible = false;
-  }
+  };
 
   protected onBroadcastChangedProperties = (event: CustomEvent<{ payload: Partial<WritablePart<DragToolTip>> }>) => {
     const newProperties = event.detail.payload;
@@ -214,7 +214,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
       (this[key] as unknown) = newProperties[key];
     });
     this.skipNextUpdateBroadcast = true;
-  }
+  };
 
   protected onIframeLoaded = (event: Event) => {
     let win: Window;
@@ -234,7 +234,7 @@ export class DragToolTip extends LitElement implements DragTooltipMetadata {
       win.addEventListener('dragend', this.trackDragEnd, { capture, passive, signal });
       win.addEventListener('dragstart', this.trackDragStart, { passive, signal });
     }
-  }
+  };
 
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;

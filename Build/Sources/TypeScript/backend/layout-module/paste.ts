@@ -30,7 +30,7 @@ type PasteOptions = {
   itemOnClipboardUid: number;
   itemOnClipboardTitle: string;
   copyMode: string;
-}
+};
 
 class Paste {
   private readonly itemOnClipboardUid: number = 0;

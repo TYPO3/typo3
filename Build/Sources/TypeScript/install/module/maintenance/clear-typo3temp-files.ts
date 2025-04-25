@@ -27,12 +27,12 @@ type TemporaryAssetsListResponse = ModuleLoadedResponseWithButtons & {
     name: string,
     rowCount: number,
   }[]
-}
+};
 
 type TemporaryAssetsClearedResponse = {
   status: MessageInterface[],
   success: boolean
-}
+};
 
 enum Identifiers {
   deleteTrigger = '.t3js-clearTypo3temp-delete',

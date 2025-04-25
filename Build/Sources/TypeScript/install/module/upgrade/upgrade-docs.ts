@@ -190,7 +190,7 @@ class UpgradeDocs extends AbstractInteractableModule {
             // something similar
             items.forEach((item: HTMLElement) => {
               item.classList.remove('hidden', 'searchhit', 'filterhit');
-            })
+            });
           }
         }, { once: true }).bindTo(panel);
 
@@ -214,7 +214,7 @@ class UpgradeDocs extends AbstractInteractableModule {
       modalContent.querySelectorAll(tagSelection).forEach((result: HTMLElement) => {
         result.classList.remove('hidden');
         result.classList.add('searchhit', 'filterhit');
-      })
+      });
     } else {
       items.forEach((item: HTMLElement) => {
         item.classList.add('filterhit');

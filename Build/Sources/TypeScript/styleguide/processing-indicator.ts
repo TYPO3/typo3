@@ -54,7 +54,7 @@ new RegularEvent('click', (e: MouseEvent, target: HTMLButtonElement): void => {
   new AjaxRequest(target.dataset.href).get().then(async (response: AjaxResponse): Promise<void> => {
     const json = await response.resolve('application/json');
 
-    itemProcessing--
+    itemProcessing--;
     Notification.showMessage(json.title, json.body, json.status, 5);
     // Hide nprogress only if all items done loading/processing
     if (itemProcessing === 0) {

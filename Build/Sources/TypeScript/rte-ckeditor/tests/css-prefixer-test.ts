@@ -136,7 +136,7 @@ describe('@typo3/rte-ckeditor/css-prefixer-test', () => {
           source: getOriginCss(),
           target: getPrefixedCss(),
         },
-      }
+      };
     }
 
     for (const [name, dataSet] of Object.entries(cssIsPrefixedForScssDataProvider())) {

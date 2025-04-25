@@ -170,7 +170,7 @@ export class EditableGroupName extends LitElement {
     edit: TYPO3?.lang?.['editableGroupName.button.edit.label'] || 'Edit',
     save: TYPO3?.lang?.['editableGroupName.button.save.label'] || 'Save',
     cancel: TYPO3?.lang?.['editableGroupName.button.cancel.label'] || 'Cancel',
-  }
+  };
 
   async startEditing(): Promise<void> {
     if (this.isEditable()) {

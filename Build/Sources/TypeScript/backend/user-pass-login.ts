@@ -152,7 +152,7 @@ class UserPassLogin {
     }
 
     element.insertAdjacentElement('afterend', warningElement);
-  }
+  };
 
   private readonly removeCapslockWarning = (element: HTMLInputElement) => {
     const targetContainer = element.closest('.input-group');
@@ -166,7 +166,7 @@ class UserPassLogin {
     }
 
     warningElement.remove();
-  }
+  };
 
   private readonly showCapslockWarning = (event: Event): void => {
     const targetElement = (event.target as HTMLInputElement);
@@ -220,7 +220,7 @@ class UserPassLogin {
     });
 
     container.insertAdjacentElement('beforeend', button);
-  }
+  };
 
   private readonly removePasswordToggle = (element: HTMLInputElement) => {
     const container = element.closest('.input-group');
@@ -235,7 +235,7 @@ class UserPassLogin {
 
     button.remove();
     element.type = 'password';
-  }
+  };
 
   private readonly showPasswordToggle = (event: Event): void => {
     const passwordField: HTMLInputElement = (event.target as HTMLInputElement);
@@ -245,7 +245,7 @@ class UserPassLogin {
     } else {
       this.attachPasswordToggle(passwordField);
     }
-  }
+  };
 }
 
 export default new UserPassLogin();

@@ -32,7 +32,7 @@ describe('@typo3/backend/element/immediate-action-element', () => {
   });
 
   it('dispatches action when created via constructor', async () => {
-    const refreshStub = stub(viewportObject.Topbar, 'refresh')
+    const refreshStub = stub(viewportObject.Topbar, 'refresh');
 
     const element = new ImmediateActionElement;
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
@@ -46,7 +46,7 @@ describe('@typo3/backend/element/immediate-action-element', () => {
   });
 
   it('dispatches action when created via createElement', async () => {
-    const refreshStub = stub(viewportObject.Topbar, 'refresh')
+    const refreshStub = stub(viewportObject.Topbar, 'refresh');
 
     const element = <ImmediateActionElement>document.createElement('typo3-immediate-action');
     element.setAttribute('action', 'TYPO3.Backend.Topbar.refresh');
@@ -60,7 +60,7 @@ describe('@typo3/backend/element/immediate-action-element', () => {
   });
 
   it('dispatches action when created from string', async () => {
-    const refreshMenuStub = stub(moduleMenuApp.App, 'refreshMenu')
+    const refreshMenuStub = stub(moduleMenuApp.App, 'refreshMenu');
     const element = document.createRange().createContextualFragment('<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>').querySelector('typo3-immediate-action');
     expect(refreshMenuStub).not.to.have.been.called;
     root.appendChild(element);
@@ -71,7 +71,7 @@ describe('@typo3/backend/element/immediate-action-element', () => {
   });
 
   it('dispatches action when created via innerHTML', async () => {
-    const refreshMenuStub = stub(moduleMenuApp.App, 'refreshMenu')
+    const refreshMenuStub = stub(moduleMenuApp.App, 'refreshMenu');
     root.innerHTML = '<typo3-immediate-action action="TYPO3.ModuleMenu.App.refreshMenu"></typo3-immediate-action>';
     await import('@typo3/backend/module-menu.js');
     await new Promise((resolve) => setTimeout(resolve, 100));

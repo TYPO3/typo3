@@ -27,12 +27,12 @@ type DatabaseTableListResponse = ModuleLoadedResponseWithButtons & {
     name: string,
     rowCount: number,
   }[]
-}
+};
 
 type DatabaseTableClearedResponse = {
   status: MessageInterface[],
   success: boolean
-}
+};
 
 enum Identifiers {
   clearTrigger = '.t3js-clearTables-clear',

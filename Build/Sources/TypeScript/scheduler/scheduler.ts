@@ -259,7 +259,7 @@ class Scheduler {
       return;
     }
 
-    const hidden = document.createElement('input')
+    const hidden = document.createElement('input');
     hidden.type = 'hidden';
     hidden.value = 'save';
     hidden.name = 'CMD';
@@ -274,7 +274,7 @@ class Scheduler {
       return;
     }
 
-    const hidden = document.createElement('input')
+    const hidden = document.createElement('input');
     hidden.type = 'hidden';
     hidden.value = 'saveclose';
     hidden.name = 'CMD';
@@ -407,10 +407,10 @@ class Scheduler {
     const formData = new FormData(schedulerForm);
 
     new RegularEvent('click', (e: Event): void => {
-      const newFormData = new FormData(schedulerForm)
+      const newFormData = new FormData(schedulerForm);
       const formDataObj = Object.fromEntries(formData.entries());
       const newFormDataObj = Object.fromEntries(newFormData.entries());
-      const formChanged = JSON.stringify(formDataObj) !== JSON.stringify(newFormDataObj)
+      const formChanged = JSON.stringify(formDataObj) !== JSON.stringify(newFormDataObj);
 
       if (formChanged || schedulerForm.querySelector('input[value="add"]')) {
         e.preventDefault();
@@ -443,7 +443,7 @@ class Scheduler {
               trigger: () => {
                 Modal.dismiss();
 
-                const hidden = document.createElement('input')
+                const hidden = document.createElement('input');
                 hidden.type = 'hidden';
                 hidden.value = 'saveclose';
                 hidden.name = 'CMD';

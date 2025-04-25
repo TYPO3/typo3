@@ -52,7 +52,7 @@ class FlexFormContainerContainer {
     this.container = container;
     this.containerContent = container.querySelector(Selectors.sectionContentContainerSelector);
     this.containerId = container.dataset.flexformContainerId;
-    this.toggleKeyInLocalStorage = `formengine-flex-${parentContainer.getSectionContainer().id}-${this.containerId}-collapse`
+    this.toggleKeyInLocalStorage = `formengine-flex-${parentContainer.getSectionContainer().id}-${this.containerId}-collapse`;
 
     this.panelHeading = container.querySelector(selector`[data-bs-target="#flexform-container-${this.containerId}"]`);
     this.panelButton = this.panelHeading.querySelector(selector`[aria-controls="flexform-container-${this.containerId}"]`);

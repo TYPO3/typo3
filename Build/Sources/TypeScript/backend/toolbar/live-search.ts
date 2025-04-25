@@ -97,7 +97,7 @@ class LiveSearch {
       .map((item: [string, string]): SearchOption => {
         const trimmedKey = item[0].replace('livesearch-option-', '');
         const [key, value] = trimmedKey.split('-', 2);
-        return { key, value }
+        return { key, value };
       });
 
     const searchOptions = this.composeSearchOptions(persistedSearchOptions);
@@ -114,7 +114,7 @@ class LiveSearch {
       severity: SeverityEnum.notice,
       size: Modal.sizes.medium,
       ajaxCallback: (): void => {
-        const liveSearchContainer = modal.querySelector('typo3-backend-live-search')
+        const liveSearchContainer = modal.querySelector('typo3-backend-live-search');
         const searchForm = liveSearchContainer.querySelector('form');
         const searchField = searchForm.querySelector('input[type="search"]') as HTMLInputElement;
         const offsetField = searchForm.querySelector('input[name="offset"]') as HTMLInputElement;
@@ -233,7 +233,7 @@ class LiveSearch {
       const response: SearchResponse = await (await new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch).post(formData)).raw().json();
       this.updateSearchResults(response);
     }
-  }
+  };
 
   private handleKeyDown(e: KeyboardEvent): void {
     if (e.key !== 'ArrowDown') {

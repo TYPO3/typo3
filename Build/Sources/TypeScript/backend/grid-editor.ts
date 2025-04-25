@@ -23,7 +23,7 @@ import { type StyleInfo, styleMap } from 'lit/directives/style-map';
 import { ref, type Ref, createRef } from 'lit/directives/ref';
 import { CodeMirrorElement } from '@typo3/backend/code-editor/element/code-mirror-element';
 
-type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes }
+type Cell = { spanned: number, rowspan: number, colspan: number, name: string, colpos: string, column: number, identifier: string, slideMode: SlideModes };
 
 enum SlideModes {
   none = '',
@@ -101,25 +101,25 @@ export class GridEditor extends LitElement {
       top: this.addRowTopHandler,
       right: this.addColumnHandler,
       bottom: this.addRowBottomHandler
-    }
+    };
 
     const addLocaleMapping: Record<string, string> = {
       top: TYPO3.lang.grid_addRow,
       right: TYPO3.lang.grid_addColumn,
       bottom: TYPO3.lang.grid_addRow
-    }
+    };
 
     const removeHandlerMapping: Record<string, (e: Event) => void> = {
       top: this.removeRowTopHandler,
       right: this.removeColumnHandler,
       bottom: this.removeRowBottomHandler
-    }
+    };
 
     const removeLocaleMapping: Record<string, string> = {
       top: TYPO3.lang.grid_removeRow,
       right: TYPO3.lang.grid_removeColumn,
       bottom: TYPO3.lang.grid_removeRow
-    }
+    };
 
     return html`
       <div class="grideditor-control grideditor-control-${position}">
@@ -167,7 +167,7 @@ export class GridEditor extends LitElement {
       '--grideditor-cell-colspan': cell.colspan,
       '--grideditor-cell-row': row + 1,
       '--grideditor-cell-rowspan': cell.rowspan
-    }
+    };
 
     return html`
       <div class="grideditor-cell" style=${styleMap(styleMapping)}>

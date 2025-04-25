@@ -35,12 +35,12 @@ type SystemMaintainerListResponse = ModuleLoadedResponseWithButtons & {
     disable: boolean;
     isSystemMaintainer: boolean;
   }[];
-}
+};
 
 type SystemMaintainersWrittenResponse = {
   status: MessageInterface[],
   success: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/system-maintainer

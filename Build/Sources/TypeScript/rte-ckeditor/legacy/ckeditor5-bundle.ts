@@ -7,7 +7,7 @@ export * as Clipboard from '@ckeditor/ckeditor5-clipboard';
 export * as Essentials from '@ckeditor/ckeditor5-essentials';
 export * as Link from '@ckeditor/ckeditor5-link';
 
-export * as Typing from '@ckeditor/ckeditor5-typing'
+export * as Typing from '@ckeditor/ckeditor5-typing';
 export * as Widget from '@ckeditor/ckeditor5-widget';
 
 // single or prefixed exports

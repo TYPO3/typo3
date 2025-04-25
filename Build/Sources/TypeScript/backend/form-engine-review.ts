@@ -110,7 +110,7 @@ export class FormEngineReview {
         link.href = '#';
         link.textContent = fieldContainer.querySelector(this.labelSelector)?.textContent || '';
         link.addEventListener('click', (e: Event) => {
-          this.switchToField(e, fieldContainer, relatedInputField)
+          this.switchToField(e, fieldContainer, relatedInputField);
         });
 
         erroneousListGroup.append(link);

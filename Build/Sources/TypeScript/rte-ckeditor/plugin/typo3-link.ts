@@ -1,7 +1,7 @@
 import * as UI from '@ckeditor/ckeditor5-ui';
 import * as Core from '@ckeditor/ckeditor5-core';
 import * as Engine from '@ckeditor/ckeditor5-engine';
-import * as Typing from '@ckeditor/ckeditor5-typing'
+import * as Typing from '@ckeditor/ckeditor5-typing';
 import * as Widget from '@ckeditor/ckeditor5-widget';
 import * as Utils from '@ckeditor/ckeditor5-utils';
 import * as Link from '@ckeditor/ckeditor5-link';
@@ -72,7 +72,7 @@ export class Typo3LinkCommand extends Core.Command {
 
     // A check for any integration that allows linking elements (e.g. `LinkImage`).
     // Currently the selection reads attributes from text nodes only. See #7429 and #7465.
-    const sourceSelection = LinkUtils.isLinkableElement(selectedElement, model.schema) ? selectedElement : selection
+    const sourceSelection = LinkUtils.isLinkableElement(selectedElement, model.schema) ? selectedElement : selection;
     if (sourceSelection === selectedElement) {
       this.value = selectedElement.getAttribute('linkHref') as string;
       this.isEnabled = model.schema.checkAttribute(selectedElement, 'linkHref');

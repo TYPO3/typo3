@@ -75,16 +75,16 @@ export class CharCounter extends LitElement {
 
   private readonly onInput = (e: InputEvent): void => {
     this.determineRemainingCharacters(e.target as HTMLInputElement|HTMLTextAreaElement);
-  }
+  };
 
   private readonly onFocus = (e: FocusEvent): void => {
     this.determineRemainingCharacters(e.target as HTMLInputElement|HTMLTextAreaElement);
     this.hidden = false;
-  }
+  };
 
   private readonly onBlur = (): void => {
     this.hidden = true;
-  }
+  };
 
   private determineRemainingCharacters(field: HTMLInputElement|HTMLTextAreaElement): void {
     const fieldText = field.value;

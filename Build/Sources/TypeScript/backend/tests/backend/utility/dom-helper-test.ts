@@ -34,7 +34,7 @@ describe('@typo3/backend/utility/dom-helper', () => {
     const parents = DomHelper.parents(wrapperElement.querySelector('#enter-here'), '.dummy-matching-element');
     expect(parents).to.length(3);
     expect(parents.map((el: HTMLElement) => el.tagName)).to.have.ordered.members(['SPAN', 'P', 'DIV']);
-  })
+  });
 
   it('nextAll() returns a proper list of all next elements', () => {
     const wrapperElement = document.createElement('div');
@@ -47,5 +47,5 @@ describe('@typo3/backend/utility/dom-helper', () => {
     const nextAll = DomHelper.nextAll(pElement);
     expect(nextAll).to.length(2);
     expect(nextAll).to.have.ordered.members([strongElement, ulElement]);
-  })
+  });
 });

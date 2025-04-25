@@ -34,7 +34,7 @@ const booleanConverter = {
     return value.toLowerCase() === 'true';
   },
   toAttribute: (value: boolean) => (value ? 'true' : 'false'),
-}
+};
 
 class Item {
   public visible: boolean = true;

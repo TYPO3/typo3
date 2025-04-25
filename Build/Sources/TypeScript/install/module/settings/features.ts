@@ -28,7 +28,7 @@ enum Identifiers {
 type FeaturesWrittenResponse = {
   status: MessageInterface[],
   success: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/features

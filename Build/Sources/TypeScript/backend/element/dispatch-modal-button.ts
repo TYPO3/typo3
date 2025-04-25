@@ -40,14 +40,14 @@ export class DispatchModalButton extends LitElement {
     }
 
     this.addEventListener('click', this.triggerWizard);
-    this.addEventListener('keydown', this.triggerWizard)
+    this.addEventListener('keydown', this.triggerWizard);
   }
 
   public override disconnectedCallback(): void {
     super.disconnectedCallback();
 
     this.removeEventListener('click', this.triggerWizard);
-    this.removeEventListener('keydown', this.triggerWizard)
+    this.removeEventListener('keydown', this.triggerWizard);
   }
 
   protected override render(): TemplateResult {

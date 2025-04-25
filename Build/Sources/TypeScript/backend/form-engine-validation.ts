@@ -499,7 +499,7 @@ export default class FormEngineValidation {
   public static validate(section?: Element): void {
     if (typeof section === 'undefined' || section instanceof Document) {
       formEngineInstance.formElement.querySelectorAll(FormEngineValidation.markerSelector + ', .t3js-tabmenu-item').forEach((tabMenuItem: HTMLElement): void => {
-        tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass)
+        tabMenuItem.classList.remove(FormEngineValidation.validationErrorClass);
       });
     }
 

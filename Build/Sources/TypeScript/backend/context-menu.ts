@@ -199,7 +199,7 @@ export class ContextMenuElement extends LitElement {
         Notification.error('', error.message);
       }
     },
-  })
+  });
 
   private get nodes(): MenuItemInterface[] {
     return this.fetchTask.value ?? [];
@@ -272,7 +272,7 @@ export class ContextMenuElement extends LitElement {
     }
 
     this.fetchTask.run();
-  }
+  };
 
   private readonly hide = async (): Promise<void> => {
     if (!this.open) {
@@ -282,7 +282,7 @@ export class ContextMenuElement extends LitElement {
     this.fetchTask.run();
     await this.updateComplete;
     this.eventSource?.focus();
-  }
+  };
 
   private renderOverlay(): TemplateResult {
     return html`
@@ -405,7 +405,7 @@ export class ContextMenuElement extends LitElement {
   }
 
   private async handleOverlayClick(event: PointerEvent): Promise<void> {
-    event.preventDefault()
+    event.preventDefault();
     event.stopPropagation();
     this.eventSource = null;
     await this.hide();
@@ -457,7 +457,7 @@ export class ContextMenuElement extends LitElement {
             this.getElementFromNode(firstNode)?.focus();
           }
         } else {
-          this.getElementFromNode(node)?.click()
+          this.getElementFromNode(node)?.click();
         }
         break;
       case 'Tab':
@@ -570,7 +570,7 @@ export class ContextMenuElement extends LitElement {
   }
 
   private getLastNode(nodes: MenuItemInterface[]): MenuItemInterface | null {
-    return nodes.at(-1) ?? null
+    return nodes.at(-1) ?? null;
   }
 
   private isNodeExpanded(node: MenuItemInterface): boolean {
@@ -615,21 +615,21 @@ export class ContextMenuElement extends LitElement {
     let x = 0, y = 0;
 
     if (contentWindow === currentWindow) {
-      return { x, y }
+      return { x, y };
     }
 
-    const parentOffset = this.calculateIframeOffset(contentWindow.parent, currentWindow)
+    const parentOffset = this.calculateIframeOffset(contentWindow.parent, currentWindow);
     x += parentOffset.x;
     y += parentOffset.y;
 
     const iframe = contentWindow.frameElement;
     if (iframe) {
       const rect = iframe.getBoundingClientRect();
-      x += rect.x
-      y += rect.y
+      x += rect.x;
+      y += rect.y;
     }
 
-    return { x, y }
+    return { x, y };
   }
 
   private extractDataAttributesAndConvertToDataset(attributes: Record<string, unknown>): Record<string, string> {
@@ -718,7 +718,7 @@ export class ContextMenuElement extends LitElement {
   private getParralellNodesForNavigation(node: MenuItemInterface): MenuItemInterface[] {
     const parentNode = this.getParentNode(node);
     if (parentNode) {
-      return parentNode.childItems.filter(node => node.type !== 'divider')
+      return parentNode.childItems.filter(node => node.type !== 'divider');
     }
 
     return this.nodes.filter(node => node.type !== 'divider');

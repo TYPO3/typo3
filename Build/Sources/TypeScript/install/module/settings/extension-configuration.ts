@@ -37,7 +37,7 @@ enum Identifiers {
 type ExtensionConfigurationWrittenResponse = {
   status: MessageInterface[],
   success: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/extension-configuration

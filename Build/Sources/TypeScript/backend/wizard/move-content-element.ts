@@ -77,7 +77,7 @@ export class MoveContentElement {
               colPos: actionElement.dataset.colpos
             }
           }
-        }
+        };
       }
       AjaxDataHandler.process(parameters).then((): void => {
         Modal.dismiss();

@@ -295,7 +295,7 @@ class MultiStepWizard {
       } else {
         this.prevSlideChanges($modal);
       }
-    })
+    });
 
     // Event is fired when the carousel has completed its slide transition
     this.setup.$carousel.get(0).addEventListener('slid.bs.carousel', (evt: Event & Carousel.Event): void => {
@@ -519,7 +519,7 @@ class MultiStepWizard {
       slide.classList.add('carousel-item');
       slide.dataset.bsSlide = currentSlide.identifier;
       slide.dataset.step = i.toString(10);
-      slide.append(slideInner)
+      slide.append(slideInner);
       carouselInner.append(slide);
     }
 

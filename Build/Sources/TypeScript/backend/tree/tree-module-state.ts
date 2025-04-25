@@ -45,7 +45,7 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
     protected async selectActiveViaRootline(identifier: string) {
       const url = new URL(this.tree.settings.rootlineUrl, window.location.origin);
       url.searchParams.set('identifier', identifier);
-      const response = await new AjaxRequest(url.toString()).get({ cache: 'no-cache' })
+      const response = await new AjaxRequest(url.toString()).get({ cache: 'no-cache' });
       const { rootline }: { rootline: string[] } = await response.resolve();
       rootline.pop();
       const propagate = false;
@@ -156,4 +156,4 @@ export const TreeModuleState = <T extends Constructor<LitElement>>(superClass: T
     }
   };
   return TreeModuleStateClass;
-}
+};

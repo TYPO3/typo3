@@ -189,7 +189,7 @@ class Backend extends Workspaces {
       ).then(async (response: AjaxResponse): Promise<void> => {
         if ((await response.resolve())[0].result.result === 'warning') {
           this.openIntegrityWarningModal().addEventListener('confirm.button.ok', (): void => {
-            this.renderPublishModal(row)
+            this.renderPublishModal(row);
           });
         } else {
           this.renderPublishModal(row);
@@ -218,7 +218,7 @@ class Backend extends Workspaces {
     }).delegateTo(document, Identifiers.openAction);
 
     new RegularEvent('click', (event: Event, target: HTMLElement) => {
-      const row = target.closest('tr') as HTMLTableRowElement
+      const row = target.closest('tr') as HTMLTableRowElement;
       const recordUid = row.dataset.table === 'pages' ? row.dataset.t3ver_oid : row.dataset.pid;
       window.location.href = TYPO3.settings.WebLayout.moduleUrl
         + '&id=' + recordUid;
@@ -696,7 +696,7 @@ class Backend extends Workspaces {
     modal.addEventListener('button.clicked', (): void => modal.hideModal());
 
     return modal;
-  }
+  };
 
   private renderPublishModal(row: HTMLTableRowElement): void {
     const modal = Modal.advanced({

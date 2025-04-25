@@ -92,7 +92,7 @@ class OnlineMedia {
       severity: Severity.notice,
       callback: (modalElement: ModalElement): void => {
         modalElement.querySelector('typo3-backend-formengine-online-media-form').addEventListener('typo3:formengine:online-media-added', (e: CustomEvent): void => {
-          this.addOnlineMedia(trigger, modalElement, e.detail['online-media-url'])
+          this.addOnlineMedia(trigger, modalElement, e.detail['online-media-url']);
         });
       },
       buttons: [{

@@ -19,7 +19,7 @@ type CX = {
   marked: string,
   style?: string,
   cc: CC[]
-}
+};
 
 type LocalVars = {
   name: string,
@@ -29,7 +29,7 @@ type LocalVars = {
 type Context = {
   vars: LocalVars,
   prev?: Context | null
-}
+};
 
 type State = {
   tokenize: (stream: StringStream, state: State) => string | undefined;
@@ -1003,11 +1003,11 @@ export class TypoScriptStreamParserFactory {
       }
       if ((ch === '<' || ch === '>' || ch === '.' || (ch === '=' && stream.peek() !== '<'))) {
         inValue = true;
-        return ret(ch, 'operator')
+        return ret(ch, 'operator');
       }
       // eslint-disable-next-line no-useless-escape
       if (!inValue && ch && /[\[\]\(\),;\:\.\<\>\=]/.test(ch)) {
-        return ret(ch, 'operator')
+        return ret(ch, 'operator');
       }
       if (ch === '0' && stream.eat(/x/i)) {
         stream.eatWhile(/[\da-f]/i);
@@ -1187,7 +1187,7 @@ export class TypoScriptStreamParserFactory {
 
     function pushlex(type: Type, info?: number | string): CombinatorLexFunction {
       const result: CombinatorLexFunction = function(): CombinatorReturnType {
-        const state = cx.state
+        const state = cx.state;
         let indent = state.indented;
         if (state.lexical.type === 'stat') {
           indent = state.lexical.indented;
@@ -1248,7 +1248,7 @@ export class TypoScriptStreamParserFactory {
         return cont(pushlex('stat'), afterImport, poplex);
       }
       if (value === '@') {
-        return cont(expression, statement)
+        return cont(expression, statement);
       }
       return pass(pushlex('stat'), expression, expect(';'), poplex);
     }
@@ -1263,9 +1263,9 @@ export class TypoScriptStreamParserFactory {
 
     function parenExpr(type: Type): CombinatorReturnType {
       if (type !== '(') {
-        return pass()
+        return pass();
       }
-      return cont(pushlex(')'), expression, expect(')'), poplex)
+      return cont(pushlex(')'), expression, expect(')'), poplex);
     }
 
     function expressionInner(type: Type, noComma: boolean) {
@@ -1357,9 +1357,9 @@ export class TypoScriptStreamParserFactory {
         cx.marked = cx.style + ' property';
         return cont(afterprop);
       } else if (type === 'modifier') {
-        return cont(objprop)
+        return cont(objprop);
       } else if (type === ':') {
-        return pass(afterprop)
+        return pass(afterprop);
       }
       return undefined;
     }
@@ -1381,9 +1381,9 @@ export class TypoScriptStreamParserFactory {
           return cont(
             function(type: Type, value: Value): CombinatorReturnType {
               if (type == end || value == end) {
-                return pass()
+                return pass();
               }
-              return pass(what)
+              return pass(what);
             },
             proceed
           );
@@ -1553,7 +1553,7 @@ export class TypoScriptStreamParserFactory {
         if (state.tokenize != tokenBase) {
           return 0;
         }
-        const firstChar = textAfter && textAfter.charAt(0)
+        const firstChar = textAfter && textAfter.charAt(0);
         let lexical = state.lexical;
         let top;
         while (
@@ -1571,7 +1571,7 @@ export class TypoScriptStreamParserFactory {
         if (statementIndent && lexical.type === ')' && lexical.prev.type === 'stat') {
           lexical = lexical.prev;
         }
-        const type = lexical.type
+        const type = lexical.type;
         const closing = firstChar == type;
 
         if (type === 'form' && firstChar === '{') {

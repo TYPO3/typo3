@@ -120,9 +120,9 @@ class Notification {
       this.messageContainer = document.createElement('div');
       this.messageContainer.setAttribute('id', 'alert-container');
       this.notificationList = document.createElement('div');
-      this.notificationList.setAttribute('class', 'alert-list')
+      this.notificationList.setAttribute('class', 'alert-list');
       // Enable focusing for keyboard scrolling (accessibility)
-      this.notificationList.setAttribute('tabindex', '0')
+      this.notificationList.setAttribute('tabindex', '0');
       this.messageContainer.appendChild(this.notificationList);
 
       this.clearAllButton = <ClearNotificationMessages>document.createElement('typo3-notification-clear-all');
@@ -133,7 +133,7 @@ class Notification {
       document.addEventListener('typo3-notification-open', () => {
         this.totalNotifications++;
         this.containerItemVisibility();
-      })
+      });
 
       document.addEventListener('typo3-notification-clear', () => {
         // Avoid negative value
@@ -142,7 +142,7 @@ class Notification {
         }
 
         this.containerItemVisibility();
-      })
+      });
     }
 
     const box = <NotificationMessage>document.createElement('typo3-notification-message');
@@ -158,7 +158,7 @@ class Notification {
     // Wait for the animation to finish, before scrolling into view
     setTimeout(() => {
       this.notificationList.querySelector('typo3-notification-message:last-child').scrollIntoView();
-    }, Number(duration))
+    }, Number(duration));
 
     this.notificationList.appendChild(box);
   }
@@ -178,7 +178,7 @@ export class ClearNotificationMessages extends LitElement {
       new CustomEvent('typo3-notification-clear-all', { bubbles: true, composed: true })
     );
 
-    this.hidden = true
+    this.hidden = true;
   }
 
   protected override createRenderRoot(): HTMLElement | DocumentFragment {
@@ -231,7 +231,7 @@ export class NotificationMessage extends LitElement {
 
     const dispatchFinishEvent = (): void => {
       this.dispatchEvent(new CustomEvent('typo3-notification-clear-finish'));
-    }
+    };
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!prefersReducedMotion && 'animate' in this) {

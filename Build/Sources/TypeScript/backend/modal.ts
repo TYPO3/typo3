@@ -86,7 +86,7 @@ export interface Configuration {
   hideCloseButton: boolean;
 }
 
-type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: Array<Partial<Button>> }>
+type PartialConfiguration = Partial<Omit<Configuration, 'buttons'> & { buttons: Array<Partial<Button>> }>;
 
 @customElement('typo3-backend-modal')
 export class ModalElement extends LitElement {

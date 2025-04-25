@@ -168,7 +168,7 @@ export class EditablePageTitle extends LitElement {
     edit: TYPO3?.lang?.['editablePageTitle.button.edit.label'] || 'Edit',
     save: TYPO3?.lang?.['editablePageTitle.button.save.label'] || 'Save',
     cancel: TYPO3?.lang?.['editablePageTitle.button.cancel.label'] || 'Cancel',
-  }
+  };
 
   async startEditing(): Promise<void> {
     if (this.isEditable()) {

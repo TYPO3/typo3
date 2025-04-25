@@ -90,16 +90,16 @@ export abstract class AbstractInteractableModule {
     const progressBar = target.ownerDocument.createElement('typo3-backend-progress-bar');
     if (typeof properties === 'object') {
       Object.keys(properties).forEach((key: keyof WritablePart<ProgressBarElement>) => {
-        (progressBar[key] as unknown) = properties[key]
+        (progressBar[key] as unknown) = properties[key];
       });
     }
 
     if (mode === 'append') {
-      target.append(progressBar)
+      target.append(progressBar);
     } else if (mode === 'prepend') {
-      target.prepend(progressBar)
+      target.prepend(progressBar);
     } else {
-      target.replaceChildren(progressBar)
+      target.replaceChildren(progressBar);
     }
 
     return progressBar;

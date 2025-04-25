@@ -146,7 +146,7 @@ describe('@typo3/backend/notification:', () => {
         {
           label: 'My immediate action',
           action: new ImmediateAction(() => {
-            called = true
+            called = true;
           }),
         },
       ],

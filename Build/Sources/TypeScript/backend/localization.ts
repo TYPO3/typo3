@@ -223,7 +223,7 @@ class Localization {
 
             const column = columns[colPos];
             const rowElement = document.createElement('div');
-            rowElement.classList.add('row', 'gy-2')
+            rowElement.classList.add('row', 'gy-2');
 
             result.records[colPos].forEach((record: SummaryColPosRecord): void => {
               const label = ' (' + record.uid + ') ' + record.title;
