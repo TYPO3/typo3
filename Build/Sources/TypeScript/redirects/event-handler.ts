@@ -20,13 +20,13 @@ import type { AbstractAction } from '@typo3/backend/action-button/abstract-actio
 type Correlation = {
   correlationIdSlugUpdate: string;
   correlationIdRedirectCreation: string;
-}
+};
 
 type SlugChangeDetail = {
   correlations: Correlation;
   autoUpdateSlugs: boolean;
   autoCreateRedirects: boolean;
-}
+};
 
 /**
  * Module: @typo3/redirects/event-handler

@@ -21,7 +21,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
  */
 class RenderNotifications {
   constructor() {
-    this.registerEvents()
+    this.registerEvents();
   }
 
   private registerEvents() {

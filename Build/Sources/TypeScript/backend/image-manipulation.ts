@@ -363,7 +363,7 @@ class ImageManipulation {
         this.currentCropVariant = Object.assign({}, resetCropVariant, { cropArea: absoluteCropArea });
         this.update(this.currentCropVariant);
       }
-    ).delegateTo(this.currentModal, 'button[name=reset]')
+    ).delegateTo(this.currentModal, 'button[name=reset]');
 
     // if we start without an cropArea, maximize the cropper
     if (ImageManipulation.isEmptyObject(this.currentCropVariant.cropArea)) {
@@ -819,7 +819,7 @@ class ImageManipulation {
             <img src="${image.src}" style="${styleMap(imageStyles)}">
           </div>
         </span>
-      `
+      `;
       while (preview.firstChild) {
         preview.removeChild(preview.firstChild);
       }

@@ -94,7 +94,7 @@ export class DraggableResizableElement extends LitElement {
     pointerDown: ['mousedown'],
     pointerMove: ['mousemove'],
     pointerUp: ['mouseup'],
-  }
+  };
   @property({ type: Boolean, reflect: true }) public reverting = false;
 
   @state() private action: Action = null;

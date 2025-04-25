@@ -21,13 +21,13 @@ type Language = {
   active: boolean,
   lastUpdate: string,
   dependencies: string[]
-}
+};
 
 type ExtensionPack = {
   iso: string,
   exists: boolean,
   lastUpdate: string
-}
+};
 
 type Extension = {
   key: string,
@@ -35,25 +35,25 @@ type Extension = {
   type: string,
   icon: string,
   packs: ExtensionPack[]
-}
+};
 
 export type LanguagePacksGetDataResponse = {
   languages: Language[],
   extensions: Extension[],
   activeLanguages: string[],
   activeExtensions: string[],
-}
+};
 
 export type ActivateLanguageEvent = {
   iso: string,
-}
+};
 export type DeactivateLanguageEvent = {
   iso: string,
-}
+};
 export type DownloadPacksEvent = {
   iso?: string,
   extension?: string
-}
+};
 
 @customElement('typo3-install-language-matrix')
 export class LanguageMatrixElement extends LitElement {
@@ -101,7 +101,7 @@ export class LanguageMatrixElement extends LitElement {
       'btn-default': true,
       'update-all': true,
       'disabled': !this.hasActiveLanguages()
-    }
+    };
 
     return html`
       ${this.configurationIsWritable ? html`
@@ -122,7 +122,7 @@ export class LanguageMatrixElement extends LitElement {
   private renderLanguageActions(language: Language): TemplateResult[] {
     const actions: TemplateResult[] = [];
     const { iso } = language;
-    const eventData = { detail: { iso } }
+    const eventData = { detail: { iso } };
 
     if (language.active) {
       if (this.configurationIsWritable) {
@@ -194,7 +194,7 @@ export class ExtensionMatrixElement extends LitElement {
           subject="Language packs have been found for every installed extension."
           content="To download the latest changes, use the refresh button in the list above.">
         </typo3-install-infobox>
-      `
+      `;
     }
 
     return html`
@@ -226,7 +226,7 @@ export class ExtensionMatrixElement extends LitElement {
           ${activeLanguage}
         </button>
       </th>
-    `)
+    `);
   }
 
   private renderExtensions(): TemplateResult[] {
@@ -241,7 +241,7 @@ export class ExtensionMatrixElement extends LitElement {
         <td>${extension.key}</td>
         ${this.renderExtensionActions(extension)}
       </tr>
-    `)
+    `);
   }
 
   private renderExtensionActions(extension: Extension): TemplateResult[] {

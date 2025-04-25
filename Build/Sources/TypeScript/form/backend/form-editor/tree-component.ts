@@ -112,7 +112,7 @@ function renderTreeNodeLink(type: TreeNodeLinkType): HTMLElement {
   const link = document.createElement('span');
   link.classList.add('formeditor-tree-line', 'formeditor-tree-line--' + type);
 
-  return link
+  return link;
 }
 
 /**

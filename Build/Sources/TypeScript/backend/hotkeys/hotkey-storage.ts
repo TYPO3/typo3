@@ -26,7 +26,7 @@ export type Options = {
   allowOnEditables: boolean,
   allowRepeat: boolean,
   bindElement: Element|undefined
-}
+};
 export type HotkeySetup = {
   struct: HotkeyStruct;
   handler: HotkeyHandler;

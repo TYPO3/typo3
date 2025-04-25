@@ -211,7 +211,7 @@ class Wizard {
       $modal
         .removeClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex - 1].severity))
         .addClass('modal-severity-' + Severity.getCssClass(this.setup.slides[currentIndex].severity));
-    })
+    });
     this.setup.$carousel.get(0).addEventListener('slid.bs.carousel', (evt: Event & Carousel.Event): void => {
       const currentIndex = this.setup.$carousel.data('currentIndex');
       const slide = this.setup.slides[currentIndex];

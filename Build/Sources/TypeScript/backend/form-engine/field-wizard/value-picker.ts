@@ -81,7 +81,7 @@ export class ValuePicker extends HTMLElement {
   private readonly onChange = () => {
     this.setValue();
     this.valuePicker.blur();
-  }
+  };
 
   private readonly linkedFieldOnChange = () => {
     if (this.valuePicker === null) {
@@ -92,7 +92,7 @@ export class ValuePicker extends HTMLElement {
     } else {
       this.valuePicker.selectedIndex = 0;
     }
-  }
+  };
 
   private selectValue (value: string): void {
     this.valuePicker.selectedIndex = Array.from(this.valuePicker.options).findIndex((option): boolean => option.value === value);

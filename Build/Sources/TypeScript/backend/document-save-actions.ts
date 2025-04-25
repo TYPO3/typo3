@@ -105,7 +105,7 @@ class DocumentSaveActions {
         let affectedButton: SubmitTriggerHTMLElement;
         if (splitButton !== null) {
           affectedButton = splitButton.firstElementChild as HTMLButtonElement;
-          splitButton.querySelectorAll('button').forEach((button: HTMLButtonElement): void => { button.disabled = true });
+          splitButton.querySelectorAll('button').forEach((button: HTMLButtonElement): void => { button.disabled = true; });
         } else {
           affectedButton = target;
           if (affectedButton instanceof HTMLAnchorElement) {

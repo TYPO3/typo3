@@ -39,7 +39,7 @@ type FolderStructureResponse = ModuleLoadedResponseWithButtons & {
   okStatus: MessageInterface[],
   folderStructureFilePermissionStatus: MessageInterface,
   folderStructureDirectoryPermissionStatus: MessageInterface,
-}
+};
 
 /**
  * Module: @typo3/install/module/folder-structure

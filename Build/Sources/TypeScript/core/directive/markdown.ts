@@ -26,7 +26,7 @@ export const markdown = (
   markdown: string,
   profile: ProfileType = 'default'
 ): TemplateResult =>
-  html`${until(render(markdown, profiles[profile]), markdown)}`
+  html`${until(render(markdown, profiles[profile]), markdown)}`;
 
 dompurify.addHook('afterSanitizeAttributes', (node) => {
   if ('target' in node && !node.hasAttribute('target')) {

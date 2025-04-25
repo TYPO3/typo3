@@ -18,5 +18,5 @@ DocumentService.ready().then(() => {
   const dateTimePickers: NodeListOf<HTMLInputElement>|null = document.querySelectorAll('.t3js-datetimepicker');
   dateTimePickers?.forEach((element) => {
     DateTimePicker.initialize(element);
-  })
+  });
 });

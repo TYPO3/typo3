@@ -35,7 +35,7 @@ enum Identifiers {
 type LocalConfigurationWrittenResponse = {
   status: MessageInterface[],
   success: boolean,
-}
+};
 
 /**
  * Module: @typo3/install/module/local-configuration

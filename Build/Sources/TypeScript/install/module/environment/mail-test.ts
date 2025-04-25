@@ -36,7 +36,7 @@ type MailGetDataResponse = ModuleLoadedResponseWithButtons & {
 type SendTestMailResponse = {
   success: boolean,
   status: MessageInterface[],
-}
+};
 
 /**
  * Module: @typo3/install/module/create-admin

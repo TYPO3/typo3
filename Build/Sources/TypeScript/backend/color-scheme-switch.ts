@@ -79,7 +79,7 @@ export class ColorSchemeSwitchElement extends LitElement {
             class="btn btn-default ${this.advancedOptionsExpanded ? 'active' : ''}"
             aria-haspopup="true"
             aria-expanded=${this.advancedOptionsExpanded ? 'true' : 'false'}
-            @click=${(e: Event) => { e.stopPropagation(); this.advancedOptionsExpanded = !this.advancedOptionsExpanded }}
+            @click=${(e: Event) => { e.stopPropagation(); this.advancedOptionsExpanded = !this.advancedOptionsExpanded; }}
             >
           <span class="visually-hidden">Show more options</span>
           <typo3-backend-icon identifier=${this.advancedOptionsExpanded ? 'actions-chevron-up' : 'actions-chevron-down'} size="small"></typo3-backend-icon>
@@ -130,7 +130,7 @@ export class ColorSchemeSwitchElement extends LitElement {
     e.preventDefault();
     e.stopPropagation();
     const currentColorScheme = this.getRealColorScheme();
-    let colorScheme: ColorScheme = currentColorScheme === 'dark' ? 'light' : 'dark'
+    let colorScheme: ColorScheme = currentColorScheme === 'dark' ? 'light' : 'dark';
     if (colorScheme === this.autoDetect) {
       // Set to auto if the user toggled to the
       // OS default, that basically means user wants the color

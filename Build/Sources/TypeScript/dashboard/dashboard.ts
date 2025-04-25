@@ -211,7 +211,7 @@ export class Dashboard extends LitElement {
   @state() dashboards: DashboardInterface[] = [];
   @state() currentDashboard: DashboardInterface | null = null;
   @state() columns: number = 4;
-  @state() dragInformation: DashboardDragInformation | null = null
+  @state() dragInformation: DashboardDragInformation | null = null;
   @query('.dashboard-dragging-container') draggingContainer: HTMLElement;
   private resizeObserver: ResizeObserver | null = null;
   private readonly clientStorageIdentifier: string = 'dashboard/current_dashboard';
@@ -456,7 +456,7 @@ export class Dashboard extends LitElement {
 
   protected readonly mqListener = (mql: MediaQueryList|MediaQueryListEvent): void => {
     this.prefersReducedMotion = mql.matches;
-  }
+  };
 
   protected override firstUpdated(): void {
     this.load();
@@ -759,7 +759,7 @@ export class Dashboard extends LitElement {
       <button
         class="btn btn-primary btn-sm btn-dashboard-add-tab"
         title=${lll('dashboard.add')}
-        @click=${() => { this.createDashboard() }}
+        @click=${() => { this.createDashboard(); }}
       >
         <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
         <span class="visually-hidden">${lll('dashboard.add')}</span>
@@ -771,7 +771,7 @@ export class Dashboard extends LitElement {
         <button
           class="btn btn-default btn-sm"
           title=${lll('dashboard.configure')}
-          @click=${() => { this.editDashboard(this.currentDashboard) }}
+          @click=${() => { this.editDashboard(this.currentDashboard); }}
         >
           <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
           <span class="visually-hidden">${lll('dashboard.configure')}</span>
@@ -784,7 +784,7 @@ export class Dashboard extends LitElement {
         <button
           class="btn btn-default btn-sm"
           title=${lll('dashboard.delete')}
-          @click=${() => { this.deleteDashboard(this.currentDashboard) }}
+          @click=${() => { this.deleteDashboard(this.currentDashboard); }}
         >
           <typo3-backend-icon identifier="actions-delete" size="small"></typo3-backend-icon>
           <span class="visually-hidden">${lll('dashboard.delete')}</span>
@@ -861,7 +861,7 @@ export class Dashboard extends LitElement {
             <button
               title=${lll('widget.add')}
               class="btn btn-primary"
-              @click=${() => { this.addWidget() }}
+              @click=${() => { this.addWidget(); }}
             >
               <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
               ${lll('dashboard.empty.content.button')}
@@ -880,7 +880,7 @@ export class Dashboard extends LitElement {
         <button
           class="btn btn-primary btn-dashboard-add-widget"
           title=${lll('widget.addToDashboard', this.currentDashboard.title)}
-          @click=${() => { this.addWidget() }}
+          @click=${() => { this.addWidget(); }}
         >
           <typo3-backend-icon identifier="actions-plus" size="small"></typo3-backend-icon>
           <span class="visually-hidden">${lll('widget.addToDashboard', this.currentDashboard.title)}</span>
@@ -989,7 +989,7 @@ export class Dashboard extends LitElement {
       const currentY = Math.max(0, event.clientY - rect.top - this.dragInformation.offsetY);
       const currentX = Math.max(0, event.clientX - rect.left - this.dragInformation.offsetX);
       const row = Math.max(0, Math.round(currentY / rowHeight));
-      const col = Math.max(0, Math.min(Math.round(currentX / colWidth), this.columns - this.dragInformation.width))
+      const col = Math.max(0, Math.min(Math.round(currentX / colWidth), this.columns - this.dragInformation.width));
 
       // Reduce dragover recalculations when nothing changed
       if (this.dragInformation.currentY !== row || this.dragInformation.currentX !== col) {
@@ -1094,7 +1094,7 @@ export class Dashboard extends LitElement {
         return {
           ...item,
           x: newCol
-        }
+        };
       }
     }
 
@@ -1104,7 +1104,7 @@ export class Dashboard extends LitElement {
         return {
           ...item,
           y: newRow
-        }
+        };
       }
     }
 
@@ -1114,7 +1114,7 @@ export class Dashboard extends LitElement {
         return {
           ...item,
           x: newCol
-        }
+        };
       }
     }
 
@@ -1124,7 +1124,7 @@ export class Dashboard extends LitElement {
         return {
           ...item,
           y: newRow
-        }
+        };
       }
     }
 
@@ -1245,7 +1245,7 @@ export class DashboardWidget extends LitElement {
         error instanceof AjaxResponse ? `${error.response.status} ${error.response.statusText}` : error.message
       }`);
     },
-  })
+  });
 
   private get widget(): DashboardWidgetInterface | null {
     return this.fetchTask.value ?? null;
@@ -1375,7 +1375,7 @@ export class DashboardWidget extends LitElement {
 
   private handleMoveKeyDown(event: KeyboardEvent): void {
     if (!this.moving) {
-      return
+      return;
     }
 
     const handledKeys = [
@@ -1427,7 +1427,7 @@ export class DashboardWidget extends LitElement {
   }
 
   private handleRefresh(): void {
-    this.fetchTask.run()
+    this.fetchTask.run();
   }
 
   private handleRemove(event: Event): void {

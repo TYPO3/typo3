@@ -93,7 +93,7 @@ export class EditableSettingElement extends LitElement {
 
   protected async renderField(): Promise<HTMLElement> {
     const { definition, value, typeImplementation } = this.setting;
-    let element = this.typeElement
+    let element = this.typeElement;
     if (!element) {
       const implementation = await import(typeImplementation);
       if (!('componentName' in implementation)) {
@@ -177,7 +177,7 @@ export class EditableSettingElement extends LitElement {
           ` : nothing}
         </ul>
       </div>
-    `
+    `;
   }
 
   protected setToDefaultValue(): void {
@@ -188,7 +188,7 @@ export class EditableSettingElement extends LitElement {
 
   protected async copyAsYaml(): Promise<void> {
     const formData = new FormData(this.typeElement.form);
-    const name = `settings[${this.setting.definition.key}]`
+    const name = `settings[${this.setting.definition.key}]`;
     const value = formData.get(name);
 
     const data = new FormData();

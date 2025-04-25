@@ -207,7 +207,7 @@ class Preview extends Workspaces {
 
     this.elements.activePreviewMode.textContent = target.textContent;
     this.elements.activePreviewMode.dataset.activePreviewMode = newPreviewMode;
-    this.elements.workspacePreview.classList.remove('typo3-workspace-preview-' + currentPreviewMode)
+    this.elements.workspacePreview.classList.remove('typo3-workspace-preview-' + currentPreviewMode);
     this.elements.workspacePreview.classList.add('typo3-workspace-preview-' + newPreviewMode);
 
     if (newPreviewMode === 'slider') {

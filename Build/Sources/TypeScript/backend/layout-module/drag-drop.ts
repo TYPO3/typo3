@@ -38,7 +38,7 @@ export type ContentElementDragDropData = {
   language: number;
   content: string;
   moveElementUrl: string;
-}
+};
 
 enum Identifiers {
   content = '.t3js-page-ce',
@@ -313,7 +313,7 @@ class DragDrop {
           height: image.height,
           width: image.width,
         });
-      })
+      });
     }
 
     return {
@@ -335,7 +335,7 @@ class DragDrop {
 
   protected showDropZones(): void {
     document.querySelectorAll(Identifiers.dropZone).forEach((element: HTMLElement): void => {
-      element.hidden = false
+      element.hidden = false;
       const addContentButton = element.parentElement.querySelector(Identifiers.addContent) as HTMLElement;
       if (addContentButton !== null) {
         addContentButton.hidden = true;

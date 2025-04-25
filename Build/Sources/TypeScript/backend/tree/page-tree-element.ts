@@ -361,7 +361,7 @@ export class PageTreeNavigationComponent extends TreeModuleState(LitElement) {
   }
 
   protected async renderTree(): Promise<TemplateResult> {
-    const configuration = await this.getConfiguration()
+    const configuration = await this.getConfiguration();
     return html`
       <typo3-backend-navigation-component-pagetree-toolbar id="typo3-pagetree-toolbar" .tree="${this.tree}"></typo3-backend-navigation-component-pagetree-toolbar>
       <div id="typo3-pagetree-treeContainer" class="navigation-tree-container">
@@ -586,7 +586,7 @@ class PageTreeToolbar extends TreeToolbar {
       tooltipLabel: item.title,
     };
     event.dataTransfer.setData(DataTransferTypes.dragTooltip, JSON.stringify(metadata));
-    event.dataTransfer.setData(DataTransferTypes.newTreenode, JSON.stringify(newNode))
+    event.dataTransfer.setData(DataTransferTypes.newTreenode, JSON.stringify(newNode));
     event.dataTransfer.effectAllowed = 'move';
   }
 }

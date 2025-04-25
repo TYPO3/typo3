@@ -23,7 +23,7 @@ type Comment = {
   tstamp: number;
   user_username: string;
   user_avatar: string
-}
+};
 
 @customElement('typo3-workspaces-comment-view')
 export class CommentViewElement extends LitElement {

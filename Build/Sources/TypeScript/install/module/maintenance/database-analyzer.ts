@@ -56,7 +56,7 @@ type SuggestionsResponse = {
     key: string,
     label: string,
   }[]
-}
+};
 
 type SuggestionsExecutedResponse = {
   status: MessageInterface[],

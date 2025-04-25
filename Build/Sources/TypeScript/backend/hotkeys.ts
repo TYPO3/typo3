@@ -35,13 +35,13 @@ type Hotkey = string[];
 class Hotkeys {
   // navigator.platform is deprecated, but https://developer.mozilla.org/en-US/docs/Web/API/User-Agent_Client_Hints_API is experimental for now
   public readonly normalizedCtrlModifierKey = navigator.platform.toLowerCase().startsWith('mac') ? ModifierKeys.META : ModifierKeys.CTRL;
-  private readonly scopedHotkeyMap: ScopedHotkeyMap
+  private readonly scopedHotkeyMap: ScopedHotkeyMap;
   private readonly defaultOptions: Options = {
     scope: 'all',
     allowOnEditables: false,
     allowRepeat: false,
     bindElement: undefined
-  }
+  };
 
   public constructor() {
     this.scopedHotkeyMap = HotkeyStorage.getScopedHotkeyMap();

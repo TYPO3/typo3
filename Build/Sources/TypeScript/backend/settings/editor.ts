@@ -120,7 +120,7 @@ export class SettingsEditorElement extends LitElement {
         entries.forEach(entry => {
           const key = (entry.target as HTMLElement).dataset.key;
           this.visibleCategories[key] = entry.isIntersecting;
-        })
+        });
         const flatten = (list: Category[]): string[] => list.reduce((acc, c) => [...acc, c.key, ...flatten(c.categories)], []);
         const active = flatten(this.categories).filter(key => this.visibleCategories[key])[0] || '';
         if (active) {
@@ -166,7 +166,7 @@ export class SettingsEditorElement extends LitElement {
           <li ?hidden=${category.__hidden}>
             <button
               type="button"
-              @click=${(event: PointerEvent) => { event.preventDefault(); this.selectCategory(category)}}
+              @click=${(event: PointerEvent) => { event.preventDefault(); this.selectCategory(category);}}
               class="settings-navigation-item ${this.activeCategory === category.key ? 'active' : ''}"
             >
                 <span class="settings-navigation-item-icon">
@@ -237,7 +237,7 @@ export class SettingsEditorElement extends LitElement {
       top: topPosition,
       behavior: 'smooth'
     });
-    this.activeCategory = category.key
+    this.activeCategory = category.key;
   }
 
   protected async onSubmit(e: SubmitEvent): Promise<void> {

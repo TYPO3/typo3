@@ -35,7 +35,7 @@ type RecordInformation = {
   },
   stage_position: string,
   stage_count: string
-}
+};
 
 @customElement('typo3-workspaces-record-information')
 export class RecordInformationElement extends LitElement {

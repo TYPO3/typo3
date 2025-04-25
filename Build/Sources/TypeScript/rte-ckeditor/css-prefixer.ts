@@ -31,7 +31,7 @@ export function cssRelocator(currentPath: string): NodeProcessor {
 
     const absoluteUrl = new URL(currentPath.replace(/\?.+/, '') + '/../' + url.value, document.baseURI);
     url.value = absoluteUrl.pathname + absoluteUrl.search;
-  }
+  };
 }
 
 export function cssPrefixer(prefix: string): NodeProcessor {
@@ -90,5 +90,5 @@ export function cssPrefixer(prefix: string): NodeProcessor {
     selector.children.prependList(prefixSelector.children);
 
     return csstree.walk.skip;
-  }
+  };
 }

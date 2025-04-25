@@ -48,7 +48,7 @@ export class PageTree extends Tree
       return this.settings.dataUrl;
     }
 
-    return this.settings.dataUrl + '&parent=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&depth=' + parentNode.depth
+    return this.settings.dataUrl + '&parent=' + parentNode.identifier + '&mount=' + parentNode.mountPoint + '&depth=' + parentNode.depth;
   }
 
   protected override createNodeToggle(node: TreeNodeInterface): TemplateResult {

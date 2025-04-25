@@ -20,7 +20,7 @@ type ThemeIdentifier = string;
 type Theme = {
   icon: string,
   label: string
-}
+};
 
 const selectorConverter = {
   fromAttribute(selector: string) {

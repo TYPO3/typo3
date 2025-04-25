@@ -117,7 +117,7 @@ class LoginRefresh {
     this.timeoutModal.addEventListener('typo3-modal-hidden', () => this.timeoutModal = null);
     this.timeoutModal.addEventListener('show-login-form', () => {
       this.timeoutModal.hideModal();
-      this.showLoginForm()
+      this.showLoginForm();
     });
   }
 
@@ -383,7 +383,7 @@ class LoginRefresh {
       Notification.error(TYPO3.lang['mess.refresh_login_failed'], TYPO3.lang['mess.refresh_login_failed_message']);
       passwordField.focus();
     }
-  }
+  };
 
   /**
    * Periodically called task that checks if
@@ -472,7 +472,7 @@ export class SelfFillingProgressBarElement extends LitElement {
   protected override render(): TemplateResult {
     return html`
       <typo3-backend-progress-bar value=${100 - this.current} max="100"></typo3-backend-progress-bar>
-    `
+    `;
   }
 
   private readonly advanceProgressBar = () => {
@@ -481,7 +481,7 @@ export class SelfFillingProgressBarElement extends LitElement {
     if (isOverdue) {
       this.dispatchEvent(new Event('progress-bar-overdue'));
     }
-  }
+  };
 }
 
 let loginRefreshObject;

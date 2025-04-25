@@ -26,7 +26,7 @@ type CKEditor5Config = Omit<EditorConfig, 'toolbar'> & {
   height?: string|number;
   readOnly?: boolean;
   debug?: boolean;
-}
+};
 
 type Typo3Plugin = PluginConstructor<Editor> & {overrides?: PluginConstructor<Editor>[]};
 type PluginModule = Record<string, Typo3Plugin>;
@@ -156,7 +156,7 @@ export class CKEditor5Element extends LitElement {
         this.handleWordCountPlugin(editor, wordCount);
         this.applyReadOnly(editor, readOnly);
         editor.model.document.on('change:data', (): void => {
-          editor.updateSourceElement()
+          editor.updateSourceElement();
           this.target[0].dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
         });
         if (editor.plugins.has('SourceEditing')) {
@@ -168,7 +168,7 @@ export class CKEditor5Element extends LitElement {
               // The neat thing: if the user switches back to wysiwyg mode, the textarea is disposed,
               // we don't have to remove the event handler by ourselves.
               if (isEnabled) {
-                const sourceEditingTextarea = editor.ui.getEditableElement(`sourceEditing:${rootName}`)
+                const sourceEditingTextarea = editor.ui.getEditableElement(`sourceEditing:${rootName}`);
                 if (sourceEditingTextarea instanceof HTMLTextAreaElement) {
                   new DebounceEvent('input', (): void => {
                     // Force editor model update on input, this will dispatch `change:data`
@@ -222,13 +222,13 @@ export class CKEditor5Element extends LitElement {
             return {
               module: await import(moduleDescriptor.module) as PluginModule,
               exports: moduleDescriptor.exports,
-            }
+            };
           } catch (e) {
             console.error(`Failed to load CKEditor5 module ${moduleDescriptor.module}`, e);
             return {
               module: null,
               exports: []
-            }
+            };
           }
         })
     );
@@ -305,7 +305,7 @@ export class CKEditor5Element extends LitElement {
       if (typeof _assignment === 'number' || !Number.isNaN(Number(assignment))) {
         assignment = `${_assignment}px`;
       } else {
-        assignment = _assignment
+        assignment = _assignment;
       }
       view.change((writer) => {
         writer.setStyle(key, assignment, view.document.getRoot());
@@ -369,7 +369,7 @@ function normalizeImportModules(modules: Array<string|PluginModuleDescriptor>): 
       return {
         module: moduleDescriptor,
         exports: [ 'default' ],
-      }
+      };
     }
     return moduleDescriptor;
   });

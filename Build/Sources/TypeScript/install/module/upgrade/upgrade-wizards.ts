@@ -75,23 +75,23 @@ type UpgradeWizardsBlockingDatabaseAddsResponse = {
 type UpgradeWizardBlockingDatabaseCharsetTestResponse = {
   needsUpdate: boolean;
   success: boolean;
-}
+};
 
 type UpgradeWizardBlockingDatabaseCharsetFixResponse = {
   status: MessageInterface[];
   success: boolean;
-}
+};
 
 type UpgradeWizardsBlockingDatabaseExecuteResponse = {
   status: MessageInterface[];
   success: boolean;
-}
+};
 
 type UpgradeWizardsListResponse = {
   status: MessageInterface[];
   success: boolean;
   wizards: UpgradeWizard[]
-}
+};
 
 type UpgradeWizardsInputResponse = {
   status: MessageInterface[];
@@ -102,7 +102,7 @@ type UpgradeWizardsInputResponse = {
     description: string;
     wizardHtml: string;
   }
-}
+};
 
 type UpgradeWizardsExecuteResponse = {
   status: MessageInterface[];
@@ -119,7 +119,7 @@ type UpgradeWizardsDoneUpgradesResponse = {
 type UpgradeWizardsMarkUndoneResponse = {
   status: MessageInterface[];
   success: boolean;
-}
+};
 
 type UpgradeWizard = {
   class: string;

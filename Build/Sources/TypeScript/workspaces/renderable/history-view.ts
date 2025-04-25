@@ -22,7 +22,7 @@ type History = {
   datetime: string;
   user: string;
   user_avatar: string;
-}
+};
 
 @customElement('typo3-workspaces-history-view')
 export class HistoryViewElement extends LitElement {

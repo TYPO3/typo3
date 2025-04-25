@@ -1297,7 +1297,7 @@ export default (function() {
     document.querySelector(selector`form[name="${FormEngine.formName}"]`).append(saveAndCloseInput);
 
     FormEngine.saveDocument();
-  }
+  };
 
   /**
    * Main init function called from outside
