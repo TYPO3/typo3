@@ -1885,12 +1885,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Functional/Hooks/TcaItemsProcessorFunctionsTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Log\\\\LogRecord'' and TYPO3\\CMS\\Core\\Log\\LogRecord will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/core/Tests/Functional/Log/LoggerAwareChannelTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array\<string, string\> will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1

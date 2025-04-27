@@ -17,17 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestLogger;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Log\Channel;
 
+#[Channel('parent-beep')]
 #[Autoconfigure(public: true)]
-class ConstructorAttributeChannelTester
-{
-    public function __construct(#[Channel('beep')] protected LoggerInterface $logger) {}
-
-    public function initializeObject(): void
-    {
-        $this->logger->debug('beep beep');
-    }
-}
+class ParentInjectMethodClassAttributeChannelTester extends InjectMethodClassAttributeChannelTester {}
