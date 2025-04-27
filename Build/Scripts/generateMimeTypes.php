@@ -29,6 +29,13 @@ foreach ($dbJson as $mimeType => $mimeTypeInfo) {
 
 // @todo: add our own file extensions here
 
+// see https://www.rfc-editor.org/rfc/rfc9512.html
+if (!isset($mimeTypeMapping['application/yaml'])) {
+    $mimeTypeMapping['application/yaml'] = ['yaml', 'yml'];
+}
+
+ksort($mimeTypeMapping);
+
 foreach ($mimeTypeMapping as $mimeType => $extensionInfo) {
     $mimeTypeString .= "        '" . $mimeType . "' => ['" . implode("', '", $extensionInfo) . "'],
 ";
