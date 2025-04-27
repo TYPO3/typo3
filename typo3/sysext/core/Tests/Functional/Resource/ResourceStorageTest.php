@@ -262,6 +262,8 @@ final class ResourceStorageTest extends FunctionalTestCase
             [
                 'identifier' => '/a b.jpg',
                 'name' => 'a b.jpg',
+                'size' => 1024,
+                'mime_type' => 'image/jpeg',
             ],
             $subject,
         );
