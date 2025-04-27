@@ -22,9 +22,14 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Log\Channel;
 
 #[Autoconfigure(public: true)]
-class ConstructorAttributeChannelTester
+class InjectMethodAttributeChannelTester
 {
-    public function __construct(#[Channel('beep')] protected LoggerInterface $logger) {}
+    protected LoggerInterface $logger;
+
+    public function injectLoggerInterface(#[Channel('beep')] LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
 
     public function initializeObject(): void
     {

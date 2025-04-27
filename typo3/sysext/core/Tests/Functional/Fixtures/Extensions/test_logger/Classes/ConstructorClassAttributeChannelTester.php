@@ -21,10 +21,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Log\Channel;
 
+#[Channel('beep')]
 #[Autoconfigure(public: true)]
-class ConstructorAttributeChannelTester
+class ConstructorClassAttributeChannelTester
 {
-    public function __construct(#[Channel('beep')] protected LoggerInterface $logger) {}
+    public function __construct(protected LoggerInterface $logger) {}
 
     public function initializeObject(): void
     {

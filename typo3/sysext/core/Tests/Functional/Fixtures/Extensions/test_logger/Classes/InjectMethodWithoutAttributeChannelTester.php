@@ -19,12 +19,16 @@ namespace TYPO3Tests\TestLogger;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Log\Channel;
 
 #[Autoconfigure(public: true)]
-class ConstructorAttributeChannelTester
+class InjectMethodWithoutAttributeChannelTester
 {
-    public function __construct(#[Channel('beep')] protected LoggerInterface $logger) {}
+    protected LoggerInterface $logger;
+
+    public function injectLoggerInterface(LoggerInterface $logger): void
+    {
+        $this->logger = $logger;
+    }
 
     public function initializeObject(): void
     {

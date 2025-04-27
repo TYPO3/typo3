@@ -17,14 +17,14 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestLogger;
 
-use Psr\Log\LoggerInterface;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Core\Log\Channel;
 
 #[Autoconfigure(public: true)]
-class ConstructorAttributeChannelTester
+class LoggerAwareClassWithoutAttributeChannelTester implements LoggerAwareInterface
 {
-    public function __construct(#[Channel('beep')] protected LoggerInterface $logger) {}
+    use LoggerAwareTrait;
 
     public function initializeObject(): void
     {
