@@ -268,16 +268,15 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                     );
                 }
                 $fieldName = $conditionArray[1];
-                $allowedOperators = ['REQ', '>', '<', '>=', '<=', '-', '!-', '=', '!=', 'IN', '!IN', 'BIT', '!BIT'];
-                if (empty($conditionArray[2]) || !in_array($conditionArray[2], $allowedOperators)) {
+
+                if (empty($conditionArray[2])) {
                     throw new \RuntimeException(
-                        'Field condition "' . $conditionString . '" must have a valid operator as third part, non or invalid one given.'
-                        . ' Valid operators are: "' . implode('", "', $allowedOperators) . '".'
-                        . ' Example: "FIELD:myField:=:4"',
+                        'Field condition "' . $conditionString . '" must have a valid operator as third part, none given.',
                         1481386239
                     );
                 }
                 $namedConditionArray['operator'] = $conditionArray[2];
+
                 if (!isset($conditionArray[3])) {
                     throw new \RuntimeException(
                         'Field condition "' . $conditionString . '" must have an operand as fourth part, none given.'
@@ -286,6 +285,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                     );
                 }
                 $operand = $conditionArray[3];
+
                 if ($namedConditionArray['operator'] === 'REQ') {
                     $operand = strtolower($operand);
                     if ($operand === 'true') {
@@ -299,7 +299,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                             1481401892
                         );
                     }
-                } elseif (in_array($namedConditionArray['operator'], ['>', '<', '>=', '<=', 'BIT', '!BIT'])) {
+                } elseif (in_array($namedConditionArray['operator'], ['>', '<', '>=', '<=', 'BIT', '!BIT'], true)) {
                     if (!MathUtility::canBeInterpretedAsInteger($operand)) {
                         throw new \RuntimeException(
                             'Field condition "' . $conditionString . '" with comparison operator ' . $namedConditionArray['operator']
@@ -308,7 +308,7 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                         );
                     }
                     $namedConditionArray['operand'] = (int)$operand;
-                } elseif ($namedConditionArray['operator'] === '-' || $namedConditionArray['operator'] === '!-') {
+                } elseif (in_array($namedConditionArray['operator'], ['-', '!-'], true)) {
                     [$minimum, $maximum] = GeneralUtility::trimExplode('-', $operand);
                     if (!MathUtility::canBeInterpretedAsInteger($minimum) || !MathUtility::canBeInterpretedAsInteger($maximum)) {
                         throw new \RuntimeException(
@@ -320,10 +320,16 @@ class EvaluateDisplayConditions implements FormDataProviderInterface
                     $namedConditionArray['operand'] = '';
                     $namedConditionArray['min'] = (int)$minimum;
                     $namedConditionArray['max'] = (int)$maximum;
-                } elseif ($namedConditionArray['operator'] === 'IN' || $namedConditionArray['operator'] === '!IN'
-                    || $namedConditionArray['operator'] === '=' || $namedConditionArray['operator'] === '!='
-                ) {
+                } elseif (in_array($namedConditionArray['operator'], ['IN', '!IN', '=', '!='], true)) {
                     $namedConditionArray['operand'] = $operand;
+                } else {
+                    $allowedOperators = ['REQ', '>', '<', '>=', '<=', '-', '!-', '=', '!=', 'IN', '!IN', 'BIT', '!BIT'];
+                    throw new \RuntimeException(
+                        'Field condition "' . $conditionString . '" must have a valid operator as third part, invalid one given.'
+                        . ' Valid operators are: "' . implode('", "', $allowedOperators) . '".'
+                        . ' Example: "FIELD:myField:=:4"',
+                        1745918372
+                    );
                 }
                 $namedConditionArray['fieldValue'] = $this->findFieldValue($fieldName, $databaseRow, $flexContext);
                 break;
