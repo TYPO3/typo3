@@ -328,7 +328,7 @@ class DeletedRecordsCommand extends Command
                     // Notice, we are deleting pages with no regard to subpages/subrecords - we do this since they
                     // should also be included in the set of deleted pages of course (no un-deleted record can exist
                     // under a deleted page...)
-                    $dataHandler->deleteEl($table, (int)$uid, true, true);
+                    $dataHandler->deleteAction($table, (int)$uid, true, true);
                     // Return errors if any:
                     if (!empty($dataHandler->errorLog)) {
                         $errorMessage = array_merge(['DataHandler reported an error'], $dataHandler->errorLog);

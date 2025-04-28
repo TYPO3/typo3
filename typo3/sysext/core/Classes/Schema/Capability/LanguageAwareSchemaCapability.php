@@ -38,6 +38,7 @@ final readonly class LanguageAwareSchemaCapability implements SchemaCapabilityIn
 
     public function getLanguageField(): LanguageFieldType
     {
+        // $this->languageField->getName() typically resolves to 'sys_language_uid'
         return $this->languageField;
     }
 

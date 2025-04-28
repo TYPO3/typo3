@@ -1259,13 +1259,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deleteMovedContentByLiveUid(): void
     {
-        // @todo: This is odd. We are moving/resorting a CE / Page / whatever around in workspaces, which creates move
-        //        overlays. Fine. When then such a moved record is deleted (eg. waste-bin icon in page module), then
-        //        *currently*, the move overlays are removed from DB, so the records are not deleted, but simplify re-appear
-        //        at their old position. This is at least confusing to the editor, and it would be much better to turn the
-        //        move overlays into delete placeholders instead, probably by removing the move overlays, and then creating
-        //        new delete placeholders at the current live pid/sorting position a-new. Note "changed in workspaces"
-        //        overlays does the same: Those are simply changed into delete placeholders.
         parent::deleteMovedContentByLiveUid();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteMovedContentByLiveUid.csv');
     }
@@ -1273,7 +1266,6 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     #[Test]
     public function deleteMovedContentByDraftUid(): void
     {
-        // @todo: Same as with deleteMovedContentByLiveUid().
         parent::deleteMovedContentByDraftUid();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteMovedContentByDraftUid.csv');
     }

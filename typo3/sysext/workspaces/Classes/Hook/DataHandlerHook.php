@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Workspaces\Hook;
 
-use Doctrine\DBAL\Exception as DBALException;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -282,12 +281,12 @@ class DataHandlerHook
      */
     protected function version_swap(string $table, int $id, int $swapWith, DataHandler $dataHandler, string $comment, array $notificationAlternativeRecipients): void
     {
-        if ($dataHandler->hasDeletedRecord($table, $id)) {
-            // Skip already deleted records
-            return;
-        }
+        $currentUserWorkspace = $dataHandler->BE_USER->workspace;
         // Currently live version, contents will be removed.
         $curVersion = BackendUtility::getRecord($table, $id);
+        if ($curVersion === null) {
+            return;
+        }
         $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $curVersion;
@@ -301,7 +300,7 @@ class DataHandlerHook
         }
         // Versioned records which contents will be moved into $curVersion
         $isNewRecord = VersionState::tryFrom($curVersion['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER;
-        if ($isNewRecord && is_array($curVersion)) {
+        if ($isNewRecord) {
             if (!$dataHandler->hasPagePermission(Permission::PAGE_SHOW, $pageRecord)) {
                 $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::USER_ERROR, 'You cannot publish a record you do not have edit and show permissions for');
                 return;
@@ -316,7 +315,7 @@ class DataHandlerHook
             return;
         }
         $swapVersion = BackendUtility::getRecord($table, $swapWith);
-        if (!is_array($curVersion) || !is_array($swapVersion)) {
+        if (!is_array($swapVersion)) {
             $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Error: Either online or swap version for {table}:{uid}->{offlineUid} could not be selected', null, ['table' => $table, 'uid' => $id, 'offlineUid' => $swapWith]);
             return;
         }
@@ -413,13 +412,9 @@ class DataHandlerHook
         $dataHandler->compareFieldArrayWithCurrentAndUnset($table, $swapWith, $curVersion);
 
         // Execute swapping:
-        try {
-            $this->connectionPool->getConnectionForTable($table)->update($table, $swapVersion, ['uid' => $id]);
-            $this->connectionPool->getConnectionForTable($table)->update($table, $curVersion, ['uid' => $swapWith]);
-        } catch (DBALException $e) {
-            $dataHandler->log($table, $swapWith, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::SYSTEM_ERROR, 'During Swapping: SQL errors happened: {reason}', null, ['reason' => $e->getMessage()]);
-            return;
-        }
+        $this->connectionPool->getConnectionForTable($table)->update($table, $swapVersion, ['uid' => $id]);
+        // @todo: We should stop updating the workspace record, it will be discarded later on anyways.
+        $this->connectionPool->getConnectionForTable($table)->update($table, $curVersion, ['uid' => $swapWith]);
 
         // Update localized elements to use the live l10n_parent now
         $this->updateL10nOverlayRecordsOnPublish($schema, $id, $swapWith, $workspaceId, $dataHandler);
@@ -430,9 +425,9 @@ class DataHandlerHook
             // We're publishing a delete placeholder t3ver_state = 2. This means the live record should
             // be set to deleted. We're currently in some workspace and deal with a live record here. Thus,
             // we temporarily set backend user workspace to 0 so all operations happen as in live.
-            $currentUserWorkspace = $dataHandler->BE_USER->workspace;
             $dataHandler->BE_USER->workspace = 0;
-            $dataHandler->deleteEl($table, $id, true);
+            // @todo: This should probably not use such a high level method
+            $dataHandler->deleteAction($table, $id, true);
             $dataHandler->BE_USER->workspace = $currentUserWorkspace;
         }
         $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
@@ -452,17 +447,20 @@ class DataHandlerHook
 
         // Clear cache:
         $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
-        // If published, delete the record from the database
-        if ($table === 'pages') {
-            // Note on fifth argument false: At this point both $curVersion and $swapVersion page records are
-            // identical in DB. deleteEl() would now usually find all records assigned to our obsolete
-            // page which at the same time belong to our current version page, and would delete them.
-            // To suppress this, false tells deleteEl() to only delete the obsolete page but not its assigned records.
-            $dataHandler->deleteEl($table, $swapWith, true, true, false);
-        } else {
-            $dataHandler->deleteEl($table, $swapWith, true, true);
+        // Delete the old versioned record from the database
+        // @todo: Blind delete: Delete place holder handling above may have deleted the row already.
+        $this->connectionPool->getConnectionForTable($table)->delete($table, ['uid' => $swapWith], [Connection::PARAM_INT]);
+        if ($table !== 'pages') {
+            // @todo: Fishy call. This should probably be relocated or handled somewhere else: Handling such
+            //        dependencies at this point is not a great idea, this should be more explicit.
+            $dataHandler->deleteL10nOverlayRecords($table, $swapWith);
+            $dataHandler->log($table, $swapWith, DatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted unrecoverable from pages:{pid}', null, ['table' => $table, 'uid' =>  $swapWith, 'pid' => (int)$swapVersion['pid']], (int)($swapVersion['pid']));
+            $historyStore->deleteRecord($table, $swapWith);
+            // Update reference index with table/uid on left side (recuid)
+            $dataHandler->updateRefIndex($table, $swapWith, $currentUserWorkspace);
+            // Update reference index with table/uid on right side (ref_uid). Important if children of a relation are deleted.
+            $dataHandler->registerReferenceIndexUpdateForReferencesToItem($table, $swapWith, $currentUserWorkspace);
         }
-
         // Update reference index of the live record - which could have been a workspace record in case 'new'
         $dataHandler->updateRefIndex($table, $id, 0);
         // The 'swapWith' record has been deleted, so we can drop any reference index the record is involved in
