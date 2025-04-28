@@ -150,13 +150,13 @@ final class EvaluateDisplayConditionsTest extends UnitTestCase
             'processedTca' => [
                 'columns' => [
                     'field_1' => [
-                        'displayCond' => 'FIELD:fieldName:foo',
+                        'displayCond' => 'FIELD:fieldName:foo:bar',
                     ],
                 ],
             ],
         ];
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionCode(1481386239);
+        $this->expectExceptionCode(1745918372);
         (new EvaluateDisplayConditions())->addData($input);
     }
 
