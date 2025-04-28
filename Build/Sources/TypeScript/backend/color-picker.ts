@@ -15,6 +15,7 @@ import { customElement, property, query } from 'lit/decorators';
 import { css, html, LitElement, type TemplateResult } from 'lit';
 import Alwan from 'alwan';
 import RegularEvent from '@typo3/core/event/regular-event';
+import DocumentService from '@typo3/core/document-service';
 
 @customElement('typo3-backend-color-picker')
 export class Typo3BackendColorPicker extends LitElement {
@@ -63,7 +64,9 @@ export class Typo3BackendColorPicker extends LitElement {
   // Use a reference to the input slot element
   @query('slot') slotEl!: HTMLSlotElement;
 
-  protected override firstUpdated(): void {
+  protected override async firstUpdated(): Promise<void> {
+    await DocumentService.ready();
+
     const inputElement = this.getInputElement();
     if (inputElement) {
       if (!inputElement.value && this.color) {
