@@ -356,6 +356,8 @@ return [
             // Use this array only if the automatic detection does not work correct!
             'fileExtensionToMimeType' => [
                 'svg' => 'image/svg+xml',
+                'yml' => 'application/yaml',
+                'yaml' => 'application/yaml',
                 'youtube' => 'video/youtube',
                 'vimeo' => 'video/vimeo',
             ],
