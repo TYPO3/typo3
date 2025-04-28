@@ -24,7 +24,6 @@
 ,301,89,384,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
 ,302,89,448,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
 ,320,89,512,0,0,0,0,2,2,0,298,"Regular Element #2"
-# @todo: Should at least be identical to deleteMovedContentByLiveUid.csv - 321 is fully removed here not in the other
 ,322,89,384,0,1,297,297,1,0,0,301,"[Translate to Dansk:] Regular Element #1"
 ,323,89,448,0,2,297,301,1,0,0,302,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
 "sys_refindex"

@@ -487,7 +487,7 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], []);
         $dataHandler->disableDeleteClause();
-        $dataHandler->deleteEl(self::TABLE_Page, 91, true, true);
+        $dataHandler->deleteAction(self::TABLE_Page, 91, true, true);
     }
 
     public function deleteLocalizedContentAndDeleteContent(): void

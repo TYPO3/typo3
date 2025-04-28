@@ -31,5 +31,4 @@ final readonly class LanguageFieldType extends AbstractFieldType
     {
         return false;
     }
-
 }

@@ -394,7 +394,7 @@ class WorkspaceVersionRecordsCommand extends Command
                     $io->writeln('Flushing record "' . $table . ':' . $uid . '"');
                 }
                 if (!$dryRun) {
-                    $dataHandler->deleteEl($table, $uid, true, true);
+                    $dataHandler->deleteAction($table, $uid, true, true);
                     if (!empty($dataHandler->errorLog)) {
                         $errorMessage = array_merge(['DataHandler reported an error'], $dataHandler->errorLog);
                         $io->error($errorMessage);

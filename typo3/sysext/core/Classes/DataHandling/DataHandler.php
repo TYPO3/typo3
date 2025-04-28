@@ -242,11 +242,6 @@ class DataHandler
     public array $copyMappingArray_merged = [];
 
     /**
-     * Per-table array with UIDs that have been deleted.
-     */
-    protected array $deletedRecords = [];
-
-    /**
      * Errors are collected in this variable.
      *
      * @internal should only be used from within TYPO3 Core
@@ -3228,6 +3223,9 @@ class DataHandler
             // Remove not allowed sys_file_reference rows for this record
             $parts = GeneralUtility::revExplode('_', (string)$reference, 2);
             $fileReferenceUid = (int)$parts[count($parts) - 1];
+            if ($fileReferenceUid <= 0) {
+                continue;
+            }
             $this->deleteAction('sys_file_reference', $fileReferenceUid);
         }
         $dbAnalysis = $this->createRelationHandlerInstance();
@@ -5160,19 +5158,34 @@ class DataHandler
     /**
      * Delete a single record
      *
-     * @param string $table Table name
-     * @param int $id Record UID
+     * @internal should only be used from within DataHandler
      */
-    protected function deleteAction($table, $id): void
+    public function deleteAction(string $table, int|array $uidOrRow, bool $noRecordCheck = false, bool $forceHardDelete = false): void
     {
-        $recordToDelete = BackendUtility::getRecord($table, $id);
-
-        if (is_array($recordToDelete) && isset($recordToDelete['t3ver_wsid']) && (int)$recordToDelete['t3ver_wsid'] !== 0) {
-            // When dealing with a workspace record, use discard.
-            $this->discard($table, null, $recordToDelete);
+        if (is_int($uidOrRow) && $uidOrRow <= 0) {
+            $this->log($table, $uidOrRow, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Can not delete "{table}:{uid}": uid must be a positive int larger than zero', null, ['table' => $table, 'uid' => $uidOrRow], 0);
             return;
         }
-        if (!is_array($recordToDelete)) {
+        if (!is_array($uidOrRow)) {
+            $recordToDelete = BackendUtility::getRecord($table, $uidOrRow, '*', '', false);
+            if ($recordToDelete === null) {
+                // No record no cry.
+                return;
+            }
+            $uid = $uidOrRow;
+        } else {
+            $recordToDelete = $uidOrRow;
+            $uid = (int)$recordToDelete['uid'];
+        }
+        unset($uidOrRow);
+
+        if ((int)($recordToDelete['t3ver_wsid'] ?? null) !== 0) {
+            // When uid to a workspace record is given, then discard always. This is coming from workspace BE
+            // module "waste bin" icon, which sends the workspace uid of the record with the intention to
+            // discard the overlay.
+            // @todo: It might be better to have an own cmdmap action for 'discard' directly to avoid
+            //        live / workspace uid confusion with 'delete' and this dispatching.
+            $this->discard($table, null, $recordToDelete);
             return;
         }
 
@@ -5180,7 +5193,7 @@ class DataHandler
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processCmdmapClass'] ?? [] as $className) {
             $hookObj = GeneralUtility::makeInstance($className);
             if (method_exists($hookObj, 'processCmdmap_deleteAction')) {
-                $hookObj->processCmdmap_deleteAction($table, $id, $recordToDelete, $recordWasDeleted, $this);
+                $hookObj->processCmdmap_deleteAction($table, $uid, $recordToDelete, $recordWasDeleted, $this);
                 /** @var bool $recordWasDeleted */
             }
         }
@@ -5188,68 +5201,59 @@ class DataHandler
             return;
         }
 
-        $relevantUid = $id;
-        $relevantRecord = $recordToDelete;
-        // For Live version, try if there is a workspace version because if so, rather "delete" that instead
-        // Look, if record is an offline version, then delete directly:
-        if ((int)($relevantRecord['t3ver_oid'] ?? 0) === 0) {
-            if ($wsVersion = BackendUtility::getWorkspaceVersionOfRecord($this->BE_USER->workspace, $table, $relevantUid)) {
-                $relevantRecord = $wsVersion;
-                $relevantUid = $relevantRecord['uid'];
-            }
-        }
-        $recordVersionState = VersionState::tryFrom($relevantRecord['t3ver_state'] ?? 0);
-        // Look, if record is an offline version, then delete directly:
-        if ((int)($relevantRecord['t3ver_oid'] ?? 0) > 0) {
-            if ($this->tcaSchemaFactory->get($table)->isWorkspaceAware()) {
-                // In Live workspace, delete any. In other workspaces there must be match.
-                if ($this->BE_USER->workspace == 0 || (int)$relevantRecord['t3ver_wsid'] == $this->BE_USER->workspace) {
-                    $liveRec = BackendUtility::getLiveVersionOfRecord($table, $relevantUid, 'uid,t3ver_state');
-                    $liveRecordVersionState = VersionState::tryFrom($liveRec['t3ver_state'] ?? 0);
-                    if ($relevantRecord['t3ver_wsid'] > 0 && $recordVersionState === VersionState::DEFAULT_STATE) {
-                        // Change normal versioned record to delete placeholder
-                        // Happens when an edited record is deleted
-                        $this->connectionPool->getConnectionForTable($table)->update(
-                            $table,
-                            ['t3ver_state' => VersionState::DELETE_PLACEHOLDER->value],
-                            ['uid' => $relevantUid]
-                        );
-                        // Delete localization overlays:
-                        $this->deleteL10nOverlayRecords($table, $relevantUid);
-                    } elseif ($relevantRecord['t3ver_wsid'] == 0 || !$liveRecordVersionState->indicatesPlaceholder()) {
-                        // Delete those in WS 0 + if their live records state was not "Placeholder".
-                        $this->deleteEl($table, $relevantUid);
-                    } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
-                        $placeholderRecord = BackendUtility::getLiveVersionOfRecord($table, (int)$relevantUid);
-                        $this->deleteEl($table, (int)$relevantUid);
-                        if (is_array($placeholderRecord)) {
-                            $this->softOrHardDeleteSingleRecord($table, (int)$placeholderRecord['uid']);
-                        }
-                    }
-                } else {
-                    $this->log($table, (int)$relevantUid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Tried to delete record from another workspace');
+        $beUserCurrentWorkspace = $this->BE_USER->workspace;
+        if ($workspaceRecordOverlay = BackendUtility::getWorkspaceVersionOfRecord($beUserCurrentWorkspace, $table, $uid)) {
+            $workspaceRecordOverlayVersionState = VersionState::tryFrom($workspaceRecordOverlay['t3ver_state']);
+            if ($workspaceRecordOverlayVersionState === VersionState::DEFAULT_STATE) {
+                if (!$noRecordCheck && !$this->BE_USER->recordEditAccessInternals($table, $workspaceRecordOverlay)) {
+                    $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "{table:uid}" without delete-permissions', null, ['table' => $table, 'uid' => $workspaceRecordOverlay['uid']]);
+                    return;
                 }
+                // If incoming uid references a live record (t3ver_wsid=0), and user is in workspace, and there is a "workspace modified"
+                // version of the record, then we'll turn the workspace record into a delete overlay if it isn't one already.
+                $this->connectionPool->getConnectionForTable($table)->update(
+                    $table,
+                    ['t3ver_state' => VersionState::DELETE_PLACEHOLDER->value],
+                    ['uid' => (int)$workspaceRecordOverlay['uid']],
+                    [Connection::PARAM_INT]
+                );
+                $this->updateRefIndex($table, (int)$workspaceRecordOverlay['uid']);
+                // @todo: Optimize to hand over record and skip early for sys_language_uid !== 0 ??
+                $this->deleteL10nOverlayRecords($table, $uid);
             } else {
-                $this->log($table, (int)$relevantUid, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Versioning not enabled for record with an online ID (t3ver_oid) given');
+                // * Discard "delete" placeholder, kinda obvious.
+                // * Discard "new" placeholder, which is a DB inconsistency at this point since "existing live" record
+                //   plus "new" workspace placeholder shouldn't happen.
+                // * Discard "move" placeholder: When using "waste bin" in page module of a moved record, the move operation
+                //   (and potentially additionally changed) record is discarded. The live version "re-appers" at the
+                //   old position.
+                $this->discard($table, null, $workspaceRecordOverlay);
             }
-        } elseif ($recordVersionState === VersionState::NEW_PLACEHOLDER) {
-            // If it is a new versioned record, delete it directly.
-            $this->deleteEl($table, $relevantUid);
-        } elseif ($this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
-            // Look, if record is "online" then delete directly.
-            $this->deleteEl($table, $relevantUid);
-        } else {
-            // Otherwise, try to delete by versioning:
-            $copyMappingArray = $this->copyMappingArray;
-            $this->versionizeRecord($table, $relevantUid, 'DELETED!', true);
-            // Determine newly created versions:
-            // (remove placeholders are copied and modified, thus they appear in the copyMappingArray)
-            $versionedElements = ArrayUtility::arrayDiffKeyRecursive($this->copyMappingArray, $copyMappingArray);
-            // Delete localization overlays:
-            foreach ($versionedElements as $versionedTableName => $versionedOriginalIds) {
-                foreach ($versionedOriginalIds as $versionedOriginalId => $_) {
-                    $this->deleteL10nOverlayRecords($versionedTableName, $versionedOriginalId);
-                }
+            return;
+        }
+        if ($beUserCurrentWorkspace === 0) {
+            $this->deleteEl($table, $recordToDelete, $noRecordCheck, $forceHardDelete);
+            return;
+        }
+        if (!BackendUtility::isTableWorkspaceEnabled($table)) {
+            if (!$noRecordCheck && !$this->BE_USER->workspaceAllowsLiveEditingInTable($table)) {
+                $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "{table}:{uid}" from not workspace aware table without live editing permissions', null, ['table' => $table, 'uid' => $uid]);
+                return;
+            }
+            $this->deleteEl($table, $recordToDelete, $noRecordCheck, $forceHardDelete);
+            return;
+        }
+        // Create delete placeholder records in workspace
+        // @todo: Stop using versionizeRecord(), check permissions directly instead and use a lower level method.
+        $copyMappingArray = $this->copyMappingArray;
+        $this->versionizeRecord($table, $uid, 'DELETED!', true);
+        // Determine newly created versions to delete localization overlays:
+        // Remove placeholders are copied and modified, thus they appear in the copyMappingArray
+        $versionedElements = ArrayUtility::arrayDiffKeyRecursive($this->copyMappingArray, $copyMappingArray);
+        foreach ($versionedElements as $versionedTableName => $versionedOriginalIds) {
+            // Delete localization overlays
+            foreach ($versionedOriginalIds as $versionedOriginalId => $_) {
+                $this->deleteL10nOverlayRecords($versionedTableName, (int)$versionedOriginalId);
             }
         }
     }
@@ -5257,21 +5261,43 @@ class DataHandler
     /**
      * Delete element from any table
      *
-     * @param string $table Table name
-     * @param int $uid Record UID
-     * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
-     * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @param bool $deleteRecordsOnPage If false and if deleting pages, records on the page will not be deleted (edge case while swapping workspaces)
-     * @internal should only be used from within DataHandler
+     * @param array $recordToDelete Full record row
+     * @param bool $noRecordCheck If true, records are not checked for permissions
+     * @param bool $forceHardDelete If true, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      */
-    public function deleteEl(string $table, int $uid, bool $noRecordCheck = false, bool $forceHardDelete = false, bool $deleteRecordsOnPage = true): void
+    protected function deleteEl(string $table, array $recordToDelete, bool $noRecordCheck = false, bool $forceHardDelete = false): void
     {
+        $uid = (int)$recordToDelete['uid'];
         if ($table === 'pages') {
-            $this->deletePages($uid, $noRecordCheck, $forceHardDelete, $deleteRecordsOnPage);
+            $languageCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
+            $localizationParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
+            $localizationParent = (int)($recordToDelete[$localizationParentFieldName] ?? 0);
+            $subPages = [];
+            if ($localizationParent === 0) {
+                // When deleting a default language page, subpages have to be deleted as well.
+                $subPages = $this->getSubPagesOfPage($uid);
+            }
+            $defaultLanguagePageRecord = $recordToDelete;
+            if ($localizationParent !== 0) {
+                $defaultLanguagePageRecord = BackendUtility::getRecord('pages', $localizationParent, '*', '', false);
+                if ($defaultLanguagePageRecord === null) {
+                    $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Can not delete localized "pages:{uid}", default language page record "pages:{localizationParent}" not found', null, ['uid' => $uid, 'localizationParent' => $localizationParent], 0);
+                    return;
+                }
+            }
+            if (!$noRecordCheck && is_string($pagesDeletePermissionError = $this->canDeletePage($recordToDelete, $defaultLanguagePageRecord, $subPages))) {
+                $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, $pagesDeletePermissionError);
+                return;
+            }
+            foreach ($subPages as $subPage) {
+                // Delete subpages. $subPages is a list of default language pages.
+                $this->deleteSpecificPage($subPage, $forceHardDelete);
+            }
+            $this->deleteSpecificPage($recordToDelete, $forceHardDelete);
         } else {
             $this->discardLocalizedWorkspaceVersionsOfRecord($table, $uid);
             $this->discardWorkspaceVersionsOfRecord($table, $uid);
-            $this->deleteRecord($table, $uid, $noRecordCheck, $forceHardDelete);
+            $this->deleteRecord($table, $recordToDelete, $noRecordCheck, $forceHardDelete);
         }
     }
 
@@ -5331,7 +5357,7 @@ class DataHandler
      * @param string $table Table name
      * @param int $uid Record UID
      */
-    protected function discardWorkspaceVersionsOfRecord($table, $uid): void
+    protected function discardWorkspaceVersionsOfRecord(string $table, int $uid): void
     {
         $versions = BackendUtility::selectVersionsOfRecord($table, $uid, '*', null);
         if ($versions === null) {
@@ -5361,46 +5387,25 @@ class DataHandler
      * If both $noRecordCheck and $forceHardDelete are set it could even delete a "deleted"-flagged record!
      *
      * @param string $table Table name
-     * @param int $uid Record UID
+     * @param array $recordToDelete Full record row
      * @param bool $noRecordCheck Flag: If $noRecordCheck is set, then the function does not check permission to delete record
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
      */
-    protected function deleteRecord(string $table, int $uid, bool $noRecordCheck = false, bool $forceHardDelete = false): void
+    protected function deleteRecord(string $table, array $recordToDelete, bool $noRecordCheck = false, bool $forceHardDelete = false): void
     {
         $currentUserWorkspace = $this->BE_USER->workspace;
-        if (!$this->tcaSchemaFactory->has($table) || !$uid) {
+        $uid = (int)$recordToDelete['uid'];
+
+        if (!$this->tcaSchemaFactory->has($table) || $uid <= 0) {
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions [{reason}]', null, ['reason' => $this->BE_USER->errorMsg]);
             return;
         }
-        // Skip processing already deleted records
-        if (!$forceHardDelete && $this->hasDeletedRecord($table, $uid)) {
-            return;
-        }
-
         $schema = $this->tcaSchemaFactory->get($table);
-
-        // Checking if there is anything else disallowing deleting the record by checking if editing is allowed
-        $fullLanguageAccessCheck = true;
-        if ($table === 'pages') {
-            // If this is a page translation, the full language access check should not be done
-            $defaultLanguagePageId = $this->getDefaultLanguagePageId($uid);
-            if ($defaultLanguagePageId !== $uid) {
-                $fullLanguageAccessCheck = false;
-            }
-        }
-
-        $recordToDelete = BackendUtility::getRecord($table, $uid, '*', '', false);
-        if ($recordToDelete === null) {
-            $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete not existing record "{table}:{uid}"', null, ['table' => $table, 'uid' => $uid]);
-            return;
-        }
-        if (!$this->BE_USER->recordEditAccessInternals($table, $recordToDelete, false, null, $fullLanguageAccessCheck)) {
+        if (!$this->BE_USER->recordEditAccessInternals($table, $recordToDelete, false, null, true)) {
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record without delete-permissions');
             return;
         }
-        if ($table === 'pages') {
-            $perms = Permission::PAGE_DELETE;
-        } elseif ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
+        if ($table === 'sys_file_reference' && array_key_exists('pages', $this->datamap)) {
             // @todo: find a more generic way to handle content relations of a page (without needing content editing access to that page)
             $perms = Permission::PAGE_EDIT;
         } else {
@@ -5408,11 +5413,13 @@ class DataHandler
         }
 
         $recordWorkspaceId = (int)($recordToDelete['t3ver_wsid'] ?? 0);
+        if ($recordWorkspaceId > 0) {
+            // @todo: Verify this can not happen anymore and this case is dispatched to discard() more early.
+            return;
+        }
         if (!$noRecordCheck) {
             $pageRecord = [];
-            if ($table === 'pages') {
-                $pageRecord = $recordToDelete;
-            } elseif ((int)$recordToDelete['pid'] > 0) {
+            if ((int)$recordToDelete['pid'] > 0) {
                 $pageRecord = BackendUtility::getRecord('pages', $recordToDelete['pid'], '*', '', false);
                 if (!is_array($pageRecord)) {
                     $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "{table}:{uid}" which is not assigned to a valid page', null, ['table' => $table, 'uid' => $uid]);
@@ -5428,17 +5435,7 @@ class DataHandler
         // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
         [$parentUid] = BackendUtility::getTSCpid($table, $uid, '');
         $this->registerRecordIdForPageCacheClearing($table, $uid, $parentUid);
-        if ($recordWorkspaceId > 0) {
-            // @todo: This should be relocated elsewhere, dispatching to discard() here should happen at a different position:
-            //        This is called by "delete page" code, especially canDeletePage() and doesBranchExist() which fetch *all*
-            //        sub page uid's including their workspace overlays. It would be better if the "delete sub pages" code would
-            //        not fetch overlays, but if "delete single live page" code would take care of discarding overlays directly.
-            // If this is a workspace record, use discard
-            $this->BE_USER->workspace = $recordWorkspaceId;
-            $this->discard($table, null, $recordToDelete);
-            // Switch user back to original workspace
-            $this->BE_USER->workspace = $currentUserWorkspace;
-        } elseif ($schema->hasCapability(TcaSchemaCapability::SoftDelete) && !$forceHardDelete) {
+        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete) && !$forceHardDelete) {
             $updateFields = [
                 $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() => 1,
             ];
@@ -5446,16 +5443,14 @@ class DataHandler
                 $updateFields[$schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
             }
             // before deleting this record, check for child records or references
-            $this->deleteRecord_procFields($table, $uid);
+            $this->deleteRecord_procFields($table, $recordToDelete);
             // Delete all l10n records as well
-            $this->deletedRecords[$table][] = $uid;
             $this->deleteL10nOverlayRecords($table, $uid);
             $this->connectionPool->getConnectionForTable($table)->update($table, $updateFields, ['uid' => $uid]);
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
         } else {
             // Delete the hard way...:
             $this->hardDeleteSingleRecord($table, $uid);
-            $this->deletedRecords[$table][] = $uid;
             $this->deleteL10nOverlayRecords($table, $uid);
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted unrecoverable from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
         }
@@ -5469,62 +5464,25 @@ class DataHandler
     }
 
     /**
-     * Used to delete page because it will check for branch below pages and disallowed tables on the page as well.
-     *
-     * @param int $uid Page id
-     * @param bool $force If TRUE, pages are not checked for permission.
-     * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @param bool $deleteRecordsOnPage If false, records on the page will not be deleted (edge case while swapping workspaces)
-     */
-    protected function deletePages(int $uid, bool $force = false, bool $forceHardDelete = false, bool $deleteRecordsOnPage = true): void
-    {
-        if ($uid === 0) {
-            $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Deleting all pages starting from the root-page is disabled', null, [], 0);
-            return;
-        }
-        // Getting list of pages to delete:
-        if ($force) {
-            // Returns the branch WITHOUT permission checks, so it cannot return null
-            $res = $this->doesBranchExist($uid, Permission::NOTHING);
-            if (is_array($res)) {
-                $res[] = $uid;
-            }
-        } else {
-            $res = $this->canDeletePage($uid);
-        }
-        // Perform deletion if no error occurred
-        if (is_array($res)) {
-            foreach ($res as $deleteId) {
-                $this->deleteSpecificPage($deleteId, $forceHardDelete, $deleteRecordsOnPage);
-            }
-        } else {
-            $this->log(
-                'pages',
-                $uid,
-                SystemLogDatabaseAction::DELETE,
-                null,
-                SystemLogErrorClassification::SYSTEM_ERROR,
-                $res,
-            );
-        }
-    }
-
-    /**
      * Delete a page (or set deleted field to 1) and all records on it.
      *
-     * @param int $uid Page id
      * @param bool $forceHardDelete If TRUE, the "deleted" flag is ignored if applicable for record and the record is deleted COMPLETELY!
-     * @param bool $deleteRecordsOnPage If false, records on the page will not be deleted (edge case while swapping workspaces)
      */
-    protected function deleteSpecificPage(int $uid, bool $forceHardDelete, bool $deleteRecordsOnPage): void
+    protected function deleteSpecificPage(array $recordToDelete, bool $forceHardDelete): void
     {
-        if (!$uid) {
-            // Early void return on invalid uid
-            return;
-        }
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
+        $languageCapability = $pagesSchema->getCapability(TcaSchemaCapability::Language);
+
+        $currentUserWorkspace = $this->BE_USER->workspace;
+        $uid = (int)$recordToDelete['uid'];
 
         // Delete either a default language page or a translated page
-        $pageIdInDefaultLanguage = $this->getDefaultLanguagePageId($uid);
+        $pageIdInDefaultLanguage = $uid;
+        $localizationParent = (int)($recordToDelete[$languageCapability->getTranslationOriginPointerField()->getName()] ?? 0);
+        if ($localizationParent > 0) {
+            $pageIdInDefaultLanguage = $localizationParent;
+        }
+
         $isPageTranslation = false;
         $pageLanguageId = 0;
         if ($pageIdInDefaultLanguage !== $uid) {
@@ -5535,196 +5493,206 @@ class DataHandler
             // should be deleted. The code checks if the to-delete page is a translated page and
             // adapts the query for other tables to use the uid of the default language page as pid together
             // with the language id of the translated page.
+            // Also, if a default language page is delete, the access checks below behave subtly different.
             $isPageTranslation = true;
-            // @todo: This should be optimized away by handing over the full page record to the method.
-            $pageRecord = BackendUtility::getRecord('pages', $uid, '*', '', false);
             $pagesLanguageFieldName = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-            $pageLanguageId = $pageRecord[$pagesLanguageFieldName] ?? 0;
+            $pageLanguageId = $recordToDelete[$pagesLanguageFieldName] ?? 0;
         }
 
-        if ($deleteRecordsOnPage) {
-            foreach ($this->tcaSchemaFactory->all() as $schema) {
-                $table = $schema->getName();
-                if ($table === 'pages' || ($isPageTranslation && !$schema->isLanguageAware())) {
-                    // Skip pages table. And skip table if not translatable, but a translated page is deleted
-                    continue;
-                }
-
-                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-                $queryBuilder
-                    ->select('uid')
-                    ->from($table)
-                    // order by uid is needed here to process possible live records first - overlays always
-                    // have a higher uid. Otherwise dbms like postgres may return rows in arbitrary order,
-                    // leading to hard to debug issues. This is especially relevant for the
-                    // discardWorkspaceVersionsOfRecord() call below.
-                    ->addOrderBy('uid');
-
-                if ($isPageTranslation) {
-                    // Only delete records in the specified language
-                    $queryBuilder->where(
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($pageIdInDefaultLanguage, Connection::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
-                            $queryBuilder->createNamedParameter($pageLanguageId, Connection::PARAM_INT)
-                        )
-                    );
-                } else {
-                    // Delete all records on this page
-                    $queryBuilder->where(
-                        $queryBuilder->expr()->eq(
-                            'pid',
-                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                        )
-                    );
-                }
-
-                $currentUserWorkspace = $this->BE_USER->workspace;
-                if ($currentUserWorkspace !== 0 && $schema->isWorkspaceAware()) {
-                    // If we are in a workspace, make sure only records of this workspace are deleted.
-                    $queryBuilder->andWhere(
-                        $queryBuilder->expr()->eq(
-                            't3ver_wsid',
-                            $queryBuilder->createNamedParameter($currentUserWorkspace, Connection::PARAM_INT)
-                        )
-                    );
-                }
-
-                $statement = $queryBuilder->executeQuery();
-
-                while ($row = $statement->fetchAssociative()) {
-                    // Delete any further workspace overlays of the record in question, then delete the record.
-                    $this->discardWorkspaceVersionsOfRecord($table, $row['uid']);
-                    $this->deleteRecord($table, (int)$row['uid'], true, $forceHardDelete);
-                }
+        foreach ($this->tcaSchemaFactory->all() as $subSchema) {
+            $table = $subSchema->getName();
+            if ($table === 'pages' || ($isPageTranslation && !$subSchema->isLanguageAware())) {
+                // Skip pages table. And skip table if not translatable, but a translated page is deleted
+                continue;
+            }
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $queryBuilder
+                ->select('uid')
+                ->from($table)
+                // order by uid is needed here to process possible live records first - overlays always
+                // have a higher uid. Otherwise dbms like postgres may return rows in arbitrary order,
+                // leading to hard to debug issues. This is especially relevant for the
+                // discardWorkspaceVersionsOfRecord() call below.
+                ->addOrderBy('uid');
+            if ($isPageTranslation) {
+                // Only delete records in the specified language
+                $queryBuilder->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($pageIdInDefaultLanguage, Connection::PARAM_INT)
+                    ),
+                    $queryBuilder->expr()->eq(
+                        $subSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
+                        $queryBuilder->createNamedParameter($pageLanguageId, Connection::PARAM_INT)
+                    )
+                );
+            } else {
+                // Delete all records on this page
+                $queryBuilder->where(
+                    $queryBuilder->expr()->eq(
+                        'pid',
+                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                    )
+                );
+            }
+            if ($currentUserWorkspace !== 0 && $subSchema->isWorkspaceAware()) {
+                // If we are in a workspace, make sure only records of this workspace are deleted.
+                $queryBuilder->andWhere(
+                    $queryBuilder->expr()->eq(
+                        't3ver_wsid',
+                        $queryBuilder->createNamedParameter($currentUserWorkspace, Connection::PARAM_INT)
+                    )
+                );
+            }
+            $statement = $queryBuilder->executeQuery();
+            while ($row = $statement->fetchAssociative()) {
+                // Delete any further workspace overlays of the record in question, then delete the record.
+                $this->discardWorkspaceVersionsOfRecord($table, (int)$row['uid']);
+                $this->deleteRecord($table, $row, true, $forceHardDelete);
             }
         }
 
         // Delete any further workspace overlays of the record in question, then delete the record.
         $this->discardWorkspaceVersionsOfRecord('pages', $uid);
-        $this->deleteRecord('pages', $uid, true, $forceHardDelete);
+
+        if (!$this->BE_USER->recordEditAccessInternals('pages', $recordToDelete, false, null, !$isPageTranslation)) {
+            $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to delete record "pages:{uid}" without delete-permissions', null, ['uid' => $uid]);
+            return;
+        }
+
+        $recordWorkspaceId = (int)($recordToDelete['t3ver_wsid'] ?? 0);
+
+        // Clear cache before deleting the record, else the correct page cannot be identified by clear_cache
+        [$parentUid] = BackendUtility::getTSCpid('pages', $uid, '');
+        $this->registerRecordIdForPageCacheClearing('pages', $uid, $parentUid);
+        if ($recordWorkspaceId > 0) {
+            // @todo: This should be relocated elsewhere, dispatching to discard() here should happen at a different position:
+            //        This is called by "delete page" code, especially canDeletePage() and doesBranchExist() which fetch *all*
+            //        sub page uid's including their workspace overlays. It would be better if the "delete sub pages" code would
+            //        not fetch overlays, but if "delete single live page" code would take care of discarding overlays directly.
+            // If this is a workspace record, use discard
+            $this->BE_USER->workspace = $recordWorkspaceId;
+            $this->discard('pages', null, $recordToDelete);
+            // Switch user back to original workspace
+            $this->BE_USER->workspace = $currentUserWorkspace;
+        } elseif ($pagesSchema->hasCapability(TcaSchemaCapability::SoftDelete) && !$forceHardDelete) {
+            $updateFields = [
+                $pagesSchema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() => 1,
+            ];
+            if ($pagesSchema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+                $updateFields[$pagesSchema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = $GLOBALS['EXEC_TIME'];
+            }
+            // before deleting this record, check for child records or references
+            $this->deleteRecord_procFields('pages', $recordToDelete);
+            // Delete all l10n records as well
+            $this->deleteL10nOverlayRecords('pages', $uid);
+            $this->connectionPool->getConnectionForTable('pages')->update('pages', $updateFields, ['uid' => $uid]);
+            $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record pages:{uid} was deleted', null, ['uid' =>  $uid], (int)($recordToDelete['pid'] ?? 0));
+        } else {
+            // Delete the hard way...:
+            $this->hardDeleteSingleRecord('pages', $uid);
+            $this->deleteL10nOverlayRecords('pages', $uid);
+            $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record pages:{uid} was deleted unrecoverable', null, ['uid' =>  $uid], (int)($recordToDelete['pid'] ?? 0));
+        }
+
+        // Add history entry
+        $this->getRecordHistoryStore()->deleteRecord('pages', $uid, $this->correlationId);
+        // Update reference index with table/uid on left side (recuid)
+        $this->updateRefIndex('pages', $uid);
+        // Update reference index with table/uid on right side (ref_uid). Important if children of a relation are deleted.
+        $this->referenceIndexUpdater->registerUpdateForReferencesToItem('pages', $uid, $currentUserWorkspace);
     }
 
     /**
-     * Used to evaluate if a page can be deleted
+     * Evaluate if a page can be deleted. Checks access to page and sub pages, and access to records on them.
      *
-     * @param int $uid Page id
-     * @return int[]|string If array: List of page uids to traverse and delete (means OK), if string: error message.
-     * @internal should only be used from within DataHandler
+     * @param array $pageRecord The page record to delete
+     * @param array $defaultLanguagePageRecord The default language page record if $pageRecord is a localization. Identical to
+     *                                       $pageRecord if $pageRecord *is* a default language record
+     * @param array $subPages List of subpages. Only set if a default language page record should be deleted.
      */
-    public function canDeletePage($uid): string|array
+    protected function canDeletePage(array $pageRecord, array $defaultLanguagePageRecord, array $subPages): ?string
     {
-        $uid = (int)$uid;
-        $isTranslatedPage = false;
-
         $languageCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
         $localizationParentFieldName = $languageCapability->getTranslationOriginPointerField()->getName();
-        $pageRecord = BackendUtility::getRecord('pages', $uid);
-        if ($pageRecord === null) {
-            return 'Attempt to delete not existing page';
-        }
         $localizationParent = (int)($pageRecord[$localizationParentFieldName] ?? 0);
+        $pageRecordToCheck = $pageRecord;
         if ($localizationParent > 0) {
-            // If this is a page translation, do the check against the perms_* of the default page.
-            $pageRecord = BackendUtility::getRecord('pages', $localizationParent);
-            if ($pageRecord === null) {
-                return 'Attempt to delete not existing page';
-            }
+            $pageRecordToCheck = $defaultLanguagePageRecord;
         }
-        if ($localizationParent !== $uid) {
-            $isTranslatedPage = true;
-        }
-        if (!$this->hasPagePermission(Permission::PAGE_DELETE, $pageRecord)) {
+        if (!$this->hasPagePermission(Permission::PAGE_DELETE, $pageRecordToCheck)) {
             return 'Attempt to delete page without permissions';
         }
-
-        $pagesInBranch = $this->doesBranchExist($uid, Permission::PAGE_DELETE);
-        if ($pagesInBranch === null) {
-            return 'Attempt to delete pages in branch without permissions';
+        if (!$this->BE_USER->recordEditAccessInternals('pages', $pageRecord, false, null, $localizationParent === $pageRecord['uid'])) {
+            return 'Attempt to delete page which has prohibited localizations';
         }
-
-        $pagesInBranch[] = $uid;
-
-        if ($disallowedTables = $this->checkForRecordsFromDisallowedTables($pagesInBranch)) {
-            return 'Attempt to delete records from disallowed tables (' . implode(', ', $disallowedTables) . ')';
-        }
-
-        foreach ($pagesInBranch as $pageInBranch) {
-            // @todo: This seems to be weird, ideally recordEditAccessInternals() should be called
-            //        within doesBranchExist(). This would remove the need to fetch the record again.
-            if ($pageInBranch === (int)$pageRecord['uid']) {
-                $record = $pageRecord;
-            } else {
-                $record = BackendUtility::getRecord('pages', $pageInBranch);
+        foreach ($subPages as $subPage) {
+            if (!$this->admin && !$this->BE_USER->doesUserHaveAccess($subPage, Permission::PAGE_DELETE)) {
+                return 'Attempt to delete pages in branch without permissions';
             }
-            if (!$this->BE_USER->recordEditAccessInternals('pages', $record, false, null, !$isTranslatedPage)) {
+            if (!$this->BE_USER->recordEditAccessInternals('pages', $subPage, false, null, true)) {
                 return 'Attempt to delete page which has prohibited localizations';
             }
         }
-        return $pagesInBranch;
+        if (!$this->admin) {
+            // Check if there are records from tables on the pages to be deleted which the current user is not allowed to touch.
+            foreach ($this->tcaSchemaFactory->all() as $schema) {
+                // @todo: Shouldn't we skip 'pages' here?
+                $table = $schema->getName();
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                $count = $queryBuilder->count('uid')
+                    ->from($table)
+                    ->where(
+                        $queryBuilder->expr()->in(
+                            'pid',
+                            $queryBuilder->createNamedParameter(array_merge([$pageRecord['uid']], array_column($subPages, 'uid')), Connection::PARAM_INT_ARRAY)
+                        )
+                    )
+                    ->executeQuery()
+                    ->fetchOne();
+                if ($count && ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly) || !$this->checkModifyAccessList($table))) {
+                    return 'Attempt to delete records from disallowed table "' . $table . '"';
+                }
+            }
+        }
+        return null;
     }
 
     /**
      * Before a record is deleted, check if it has references such as inline type or MM references.
      * If so, set these child records also to be deleted.
-     *
-     * @param string $table Record Table
-     * @param int $uid Record UID
      */
-    protected function deleteRecord_procFields($table, $uid): void
+    protected function deleteRecord_procFields(string $table, array $row): void
     {
-        $row = BackendUtility::getRecord($table, $uid, '*', '', false);
-        if (empty($row)) {
-            return;
-        }
         $schema = $this->tcaSchemaFactory->get($table);
+        $uid = (int)$row['uid'];
         foreach ($row as $field => $value) {
             $configuration = $schema->hasField($field) ? $schema->getField($field)->getConfiguration() : [];
-            $this->deleteRecord_procBasedOnFieldType($table, $uid, $value, $configuration);
-        }
-    }
-
-    /**
-     * Process fields of a record to be deleted and search for special handling, like
-     * inline type, MM records, etc.
-     *
-     * @param string $table Record Table
-     * @param int $uid Record UID
-     * @param string $value Record field value
-     * @param array $conf TCA configuration of current field
-     */
-    protected function deleteRecord_procBasedOnFieldType($table, $uid, $value, $conf): void
-    {
-        if (!isset($conf['type'])) {
-            return;
-        }
-
-        if ($conf['type'] === 'inline' || $conf['type'] === 'file') {
-            if (in_array($this->getRelationFieldType($conf), ['list', 'field'], true)) {
-                $dbAnalysis = $this->createRelationHandlerInstance();
-                $dbAnalysis->start($value, $conf['foreign_table'], '', $uid, $table, $conf);
-                $dbAnalysis->undeleteRecord = true;
-
-                // non type save comparison is intended!
-                if (!isset($conf['behaviour']['enableCascadingDelete'])
-                    || $conf['behaviour']['enableCascadingDelete'] != false
-                ) {
-                    // Walk through the items and remove them
-                    foreach ($dbAnalysis->itemArray as $v) {
-                        $this->deleteAction($v['table'], $v['id']);
+            if (!isset($configuration['type'])) {
+                continue;
+            }
+            if ($configuration['type'] === 'inline' || $configuration['type'] === 'file') {
+                if (in_array($this->getRelationFieldType($configuration), ['list', 'field'], true)) {
+                    $dbAnalysis = $this->createRelationHandlerInstance();
+                    $dbAnalysis->start($value, $configuration['foreign_table'], '', $uid, $table, $configuration);
+                    $dbAnalysis->undeleteRecord = true;
+                    // Non type save comparison is intended!
+                    if (!isset($configuration['behaviour']['enableCascadingDelete']) || $configuration['behaviour']['enableCascadingDelete'] != false) {
+                        // Walk through the items and remove them
+                        foreach ($dbAnalysis->itemArray as $v) {
+                            $this->deleteAction($v['table'], (int)$v['id']);
+                        }
                     }
                 }
-            }
-        } elseif ($this->isReferenceField($conf)) {
-            $allowedTables = $conf['type'] === 'group' ? $conf['allowed'] : $conf['foreign_table'];
-            $dbAnalysis = $this->createRelationHandlerInstance();
-            $dbAnalysis->start($value, $allowedTables, $conf['MM'] ?? '', $uid, $table, $conf);
-            foreach ($dbAnalysis->itemArray as $v) {
-                $this->updateRefIndex($v['table'], $v['id']);
+            } elseif ($this->isReferenceField($configuration)) {
+                $allowedTables = $configuration['type'] === 'group' ? $configuration['allowed'] : $configuration['foreign_table'];
+                $dbAnalysis = $this->createRelationHandlerInstance();
+                $dbAnalysis->start($value, $allowedTables, $configuration['MM'] ?? '', $uid, $table, $configuration);
+                foreach ($dbAnalysis->itemArray as $v) {
+                    $this->updateRefIndex($v['table'], $v['id']);
+                }
             }
         }
     }
@@ -5732,11 +5700,9 @@ class DataHandler
     /**
      * Find l10n-overlay records and perform the requested delete action for these records.
      *
-     * @param string $table Record Table
-     * @param int $uid Record UID
      * @internal should only be used from within DataHandler
      */
-    public function deleteL10nOverlayRecords($table, $uid): void
+    public function deleteL10nOverlayRecords(string $table, int $uid): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
         // Check whether table can be localized
@@ -5750,8 +5716,7 @@ class DataHandler
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
-            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$this->BE_USER->workspace));
-
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->BE_USER->workspace));
         $queryBuilder->select('*')
             ->from($table)
             ->where(
@@ -5765,7 +5730,7 @@ class DataHandler
         while ($record = $result->fetchAssociative()) {
             // Ignore workspace delete placeholders. Those records have been marked for
             // deletion before - deleting them again in a workspace would revert that state.
-            if ((int)$this->BE_USER->workspace > 0 && $schema->isWorkspaceAware()) {
+            if ($this->BE_USER->workspace > 0 && $schema->isWorkspaceAware()) {
                 BackendUtility::workspaceOL($table, $record, $this->BE_USER->workspace);
                 if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER) {
                     continue;
@@ -5980,7 +5945,6 @@ class DataHandler
         if ($recordWasDiscarded
             || $userWorkspace === 0
             || !BackendUtility::isTableWorkspaceEnabled($table)
-            || $this->hasDeletedRecord($table, $uid)
         ) {
             return;
         }
@@ -6032,7 +5996,6 @@ class DataHandler
         $this->discardRecordRelations($table, $versionRecord);
         $this->discardCsvReferencesToRecord($table, $versionRecord);
         $this->hardDeleteSingleRecord($table, (int)$versionRecord['uid']);
-        $this->deletedRecords[$table][] = (int)$versionRecord['uid'];
         $this->registerReferenceIndexRowsForDrop($table, (int)$versionRecord['uid'], $userWorkspace);
         $this->getRecordHistoryStore()->deleteRecord($table, (int)$versionRecord['uid'], $this->correlationId);
         $this->log(
@@ -6358,8 +6321,22 @@ class DataHandler
         }
         if ($delete) {
             if ($table === 'pages') {
-                $pageDeletePermissionError = $this->canDeletePage($id);
-                if (is_string($pageDeletePermissionError)) {
+                $pagesLanguageCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language);
+                $pagesLocalizationParentFieldName = $pagesLanguageCapability->getTranslationOriginPointerField()->getName();
+                $pagesLocalizationParent = (int)($pageRecord[$pagesLocalizationParentFieldName] ?? 0);
+                $defaultLanguagePage = $pageRecord;
+                $subPages = [];
+                if ($pagesLocalizationParent === 0) {
+                    // When deleting a default language page, user has to have delete permission on subpages as well.
+                    $subPages = $this->getSubPagesOfPage($id);
+                } else {
+                    $defaultLanguagePage = BackendUtility::getRecord('pages', $pagesLocalizationParent, '*', '', false);
+                    if ($defaultLanguagePage === null) {
+                        $this->log($table, $id, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::SYSTEM_ERROR, 'Can not delete localized "pages:{uid}" in workspaces, default language page record "pages:{localizationParent}" not found', null, ['uid' => $id, 'localizationParent' => $pagesLocalizationParent], 0);
+                        return null;
+                    }
+                }
+                if (is_string($pageDeletePermissionError = $this->canDeletePage($pageRecord, $defaultLanguagePage, $subPages))) {
                     $this->log($table, $id, SystemLogDatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::USER_ERROR, 'Record {table}:{uid} cannot be deleted: {reason}', null, ['table' => $table, 'uid' => (int)$id, 'reason' => $pageDeletePermissionError]);
                     return null;
                 }
@@ -7259,36 +7236,44 @@ class DataHandler
      *
      * Tests the branch under $pid. It doesn't test the page with $pid as uid.
      *
-     * @param int $pid Page ID to select subpages from.
-     * @param int $permissions Perms integer to check each page record for.
-     * @param array $pageIdsInBranch List of page uids, this is added to and returned in the end
-     * @return array<int>|null List of page IDs in branch, if there are subpages, empty array if there are none or null if no permission
+     * @param int $defaultLanguagePid uid of a default language page record
+     * @return array<array<string,mixed>> List of subpage records in branch, empty array if there are none
      */
-    protected function doesBranchExist(int $pid, int $permissions, array $pageIdsInBranch = []): ?array
+    protected function getSubPagesOfPage(int $defaultLanguagePid): array
     {
+        $schema = $this->tcaSchemaFactory->get('pages');
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+        // Fetch deleted=1 pages as well, sorted out later if $forceDelete = false
+        // @todo: Finish this, probably needs a functional test?!
         $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
         $result = $queryBuilder
-            ->select('uid', 'perms_userid', 'perms_groupid', 'perms_user', 'perms_group', 'perms_everybody')
+            ->select('*')
             ->from('pages')
-            ->where($queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)))
+            ->where(
+                // Sub pages of given pid
+                $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($defaultLanguagePid, Connection::PARAM_INT)),
+                // Only default language pages
+                $queryBuilder->expr()->eq($schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(), 0),
+                // We do want to handle "workspace new" and "workspace moved" subpages
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq('t3ver_wsid', 0),
+                    // @todo: Verify / add test to see if a workspace-new page is properly discarded if parent page is deleted
+                    // @todo: Add test that moves a page in workspace below some other page, then delete that other page in
+                    //        live and workspaces to see what happens ...
+                    $queryBuilder->expr()->and(
+                        $queryBuilder->expr()->gt('t3ver_wsid', 0),
+                        $queryBuilder->expr()->eq('t3ver_state', VersionState::NEW_PLACEHOLDER->value)
+                    )
+                )
+            )
             ->orderBy('sorting')
             ->executeQuery();
+        $pages = [];
         while ($row = $result->fetchAssociative()) {
-            // IF admin, then it's OK
-            if ($this->admin || $this->BE_USER->doesUserHaveAccess($row, $permissions)) {
-                $pageIdsInBranch[] = (int)$row['uid'];
-                // Follow the subpages recursively
-                $pageIdsInBranch = $this->doesBranchExist((int)$row['uid'], $permissions, $pageIdsInBranch);
-                if ($pageIdsInBranch === null) {
-                    return null;
-                }
-            } else {
-                // No permissions
-                return null;
-            }
+            // Follow subpages recursive, add before self so deeper pages are handled first
+            $pages = array_merge($pages, $this->getSubPagesOfPage((int)$row['uid']), [$row]);
         }
-        return $pageIdsInBranch;
+        return $pages;
     }
 
     /**
@@ -8583,46 +8568,6 @@ class DataHandler
     }
 
     /**
-     * Check if there are records from tables on the pages to be deleted which the current user is not allowed to
-     *
-     * @param int[] $pageIds IDs of pages which should be checked
-     * @return string[]|null Return null, if permission granted, otherwise an array with the tables that are not allowed to be deleted
-     * @see canDeletePage()
-     */
-    protected function checkForRecordsFromDisallowedTables(array $pageIds): ?array
-    {
-        if ($this->admin) {
-            return null;
-        }
-        $disallowedTables = [];
-        if (!empty($pageIds)) {
-            // @todo: This solution can be a massive query hog: It scales with the number of TCA tables multiplied with
-            //        the number of pages to be deleted, which can be *a lot* when deleting bigger page trees with
-            //        some loaded extensions that bring TCA tables. This code should *at least* be tuned to not query
-            //        *all* tables, but only those the user has no access to, and should possibly receive a list of all
-            //        affected page uids in one go.
-            foreach ($this->tcaSchemaFactory->all() as $schema) {
-                $table = $schema->getName();
-                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-                $queryBuilder->getRestrictions()->removeAll()
-                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                $count = $queryBuilder->count('uid')
-                    ->from($table)
-                    ->where($queryBuilder->expr()->in(
-                        'pid',
-                        $queryBuilder->createNamedParameter($pageIds, Connection::PARAM_INT_ARRAY)
-                    ))
-                    ->executeQuery()
-                    ->fetchOne();
-                if ($count && ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly) || !$this->checkModifyAccessList($table))) {
-                    $disallowedTables[] = $table;
-                }
-            }
-        }
-        return !empty($disallowedTables) ? $disallowedTables : null;
-    }
-
-    /**
      * Determine if a record was copied or if a record is the result of a copy action.
      *
      * @param string $table The tablename of the record
@@ -9084,23 +9029,6 @@ class DataHandler
             }
         }
         return $result;
-    }
-
-    /**
-     * Determines whether a particular record has been deleted
-     * using DataHandler::deleteRecord() in this instance.
-     *
-     * @param string $tableName
-     * @param int $uid
-     * @return bool
-     * @internal should only be used from within TYPO3 Core
-     */
-    public function hasDeletedRecord($tableName, $uid)
-    {
-        return
-            !empty($this->deletedRecords[$tableName])
-            && in_array($uid, $this->deletedRecords[$tableName])
-        ;
     }
 
     /**

@@ -1084,16 +1084,6 @@ final class DataHandlerTest extends UnitTestCase
         self::assertStringEndsWith($expected, $subject->errorLog[0]);
     }
 
-    #[DataProvider('equalSubmittedAndStoredValuesAreDeterminedDataProvider')]
-    #[Test]
-    public function equalSubmittedAndStoredValuesAreDetermined(bool $expected, string|int|null $submittedValue, string|int|null $storedValue, string $storedType, bool $allowNull): void
-    {
-        $result = \Closure::bind(function () use ($submittedValue, $storedValue, $storedType, $allowNull) {
-            return $this->isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull);
-        }, $this->subject, DataHandler::class)();
-        self::assertEquals($expected, $result);
-    }
-
     public static function equalSubmittedAndStoredValuesAreDeterminedDataProvider(): array
     {
         return [
@@ -1272,21 +1262,14 @@ final class DataHandlerTest extends UnitTestCase
         ];
     }
 
+    #[DataProvider('equalSubmittedAndStoredValuesAreDeterminedDataProvider')]
     #[Test]
-    public function deletePagesOnRootLevelIsDenied(): void
+    public function equalSubmittedAndStoredValuesAreDetermined(bool $expected, string|int|null $submittedValue, string|int|null $storedValue, string $storedType, bool $allowNull): void
     {
-        $dataHandlerMock = $this->getMockBuilder(DataHandler::class)
-            ->onlyMethods(['canDeletePage', 'log'])
-            ->disableOriginalConstructor()
-            ->getMock();
-        $dataHandlerMock
-            ->expects(self::never())
-            ->method('canDeletePage');
-        $dataHandlerMock
-            ->expects(self::once())
-            ->method('log')
-            ->with('pages', 0, 3, 0, 2, 'Deleting all pages starting from the root-page is disabled', null, [], 0);
-        $dataHandlerMock->deleteEl('pages', 0);
+        $result = \Closure::bind(function () use ($submittedValue, $storedValue, $storedType, $allowNull) {
+            return $this->isSubmittedValueEqualToStoredValue($submittedValue, $storedValue, $storedType, $allowNull);
+        }, $this->subject, DataHandler::class)();
+        self::assertEquals($expected, $result);
     }
 
     public static function checkValue_checkReturnsExpectedValuesDataProvider(): array
