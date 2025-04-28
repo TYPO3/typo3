@@ -24,6 +24,7 @@ use TYPO3\CMS\Backend\View\PageLayoutContext;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
@@ -86,7 +87,8 @@ class LanguageColumn extends AbstractGridObject
 
     public function getAllowEditPage(): bool
     {
-        return $this->getBackendUser()->check('tables_modify', 'pages')
+        return $this->getBackendUser()->doesUserHaveAccess($this->context->getPageRecord(), Permission::PAGE_EDIT)
+            && $this->getBackendUser()->check('tables_modify', 'pages')
             && $this->getBackendUser()->checkLanguageAccess($this->context->getSiteLanguage());
     }
 
