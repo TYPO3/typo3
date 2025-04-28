@@ -2581,12 +2581,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Log/LogManagerTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''Symfony\\\\Component\\\\Mime\\\\Address'' and Symfony\\Component\\Mime\\Address will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Mail/MailMessageTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
