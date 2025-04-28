@@ -196,8 +196,8 @@
                 <field index="creation_date">1628060459</field>
                 <field index="modification_date">1628060459</field>
                 <field index="storage">1</field>
-                <field index="type">1</field>
-                <field index="mime_type">text/plain</field>
+                <field index="type">5</field>
+                <field index="mime_type">application/yaml</field>
                 <field index="size">501</field>
                 <field index="metadata">0</field>
             </fieldlist>
