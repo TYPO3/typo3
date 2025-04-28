@@ -361,6 +361,8 @@ return [
             'fileExtensionToMimeType' => [
                 'avif' => 'image/avif',
                 'svg' => 'image/svg+xml',
+                'yml' => 'application/yaml',
+                'yaml' => 'application/yaml',
                 'youtube' => 'video/youtube',
                 'vimeo' => 'video/vimeo',
             ],

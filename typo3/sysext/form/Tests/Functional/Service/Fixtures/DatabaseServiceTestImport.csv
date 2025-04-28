@@ -1,9 +1,9 @@
 "sys_file"
 ,"uid","storage","type","metadata","identifier","identifier_hash","folder_hash","extension","mime_type","sha1","size"
-,"100","1","1","0","/contact4.form.yaml","ab5b2e8188d771677ddf4b82ebe6b9de193d1872","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
-,"200","2","1","0","/contact3.form.yaml","d5e5f94123178881be510e7be3eca0738c2e416f","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
-,"300","3","1","0","/contact5.form.yaml","4ab1ad03214f3d482f1905333cf832e93d7dd6c2","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
-,"4712","1","1","0","/contact6.form.yaml","4ab1ad03214f3d482f1905333cf832e93d7dd6c3","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","text/plain","faked","4711"
+,"100","1","5","0","/contact4.form.yaml","ab5b2e8188d771677ddf4b82ebe6b9de193d1872","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","application/yaml","faked","4711"
+,"200","2","5","0","/contact3.form.yaml","d5e5f94123178881be510e7be3eca0738c2e416f","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","application/yaml","faked","4711"
+,"300","3","5","0","/contact5.form.yaml","4ab1ad03214f3d482f1905333cf832e93d7dd6c2","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","application/yaml","faked","4711"
+,"4712","1","5","0","/contact6.form.yaml","4ab1ad03214f3d482f1905333cf832e93d7dd6c3","7ea5946d0eecf7f73bdd557b83edb239647a3f3f","yaml","application/yaml","faked","4711"
 "sys_file_storage"
 ,"uid","pid","name","processingfolder","driver","is_browsable","is_public","is_writable","is_online","configuration"
 ,1,0,"fileadmin/ (auto-created)","temp/assets/_processed_/","Local",1,1,1,1,"<?xml version=""1.0"" encoding=""utf-8"" standalone=""yes"" ?>
