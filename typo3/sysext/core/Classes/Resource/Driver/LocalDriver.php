@@ -582,6 +582,9 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
      */
     protected function sortDirectoryEntries(array $directoryEntries, string $sort = '', bool $sortRev = false): array
     {
+        if (count($directoryEntries) < 2) {
+            return $directoryEntries;
+        }
         $entriesToSort = [];
         foreach ($directoryEntries as $entryArray) {
             $dir      = pathinfo($entryArray['name'], PATHINFO_DIRNAME) . '/';
@@ -624,11 +627,11 @@ class LocalDriver extends AbstractHierarchicalFilesystemDriver implements Stream
             }
             $entriesToSort[$sortingKey . $i] = $entryArray;
         }
-        uksort($entriesToSort, 'strnatcasecmp');
 
-        if ($sortRev) {
-            $entriesToSort = array_reverse($entriesToSort);
-        }
+        $sortMultiplier = $sortRev ? -1 : 1;
+        uksort($entriesToSort, static function (string $entryA, string $entryB) use ($sortMultiplier): int {
+            return strnatcasecmp($entryA, $entryB) * $sortMultiplier;
+        });
 
         return $entriesToSort;
     }

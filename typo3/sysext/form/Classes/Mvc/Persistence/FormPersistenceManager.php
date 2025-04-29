@@ -778,19 +778,20 @@ readonly class FormPersistenceManager implements FormPersistenceManagerInterface
 
     protected function sortForms(array $forms, array $formSettings): array
     {
+        $ascending = $formSettings['persistenceManager']['sortAscending'] ?? true;
+        $sortMultiplier = $ascending ? 1 : -1;
         $keys = $formSettings['persistenceManager']['sortByKeys'] ?? ['name', 'fileUid'];
-        usort($forms, static function (array $a, array $b) use ($keys) {
+        usort($forms, static function (array $a, array $b) use ($keys, $sortMultiplier) {
             foreach ($keys as $key) {
-                if (isset($a[$key]) && isset($b[$key])) {
+                if (isset($a[$key], $b[$key])) {
                     $diff = strcasecmp((string)$a[$key], (string)$b[$key]);
                     if ($diff) {
-                        return $diff;
+                        return $diff * $sortMultiplier;
                     }
                 }
             }
             return 0;
         });
-        $ascending = $formSettings['persistenceManager']['sortAscending'] ?? true;
-        return $ascending ? $forms : array_reverse($forms);
+        return $forms;
     }
 }

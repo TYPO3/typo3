@@ -195,25 +195,24 @@ class FileCollector implements \Countable, LoggerAwareInterface
      */
     public function sort(string $sortingProperty = '', string $sortingOrder = 'ascending'): void
     {
+        $sortingOrder = strtolower($sortingOrder);
+
         if ($sortingProperty !== '' && count($this->files) > 1) {
+            $sortMultiplier = in_array($sortingOrder, ['descending', 'desc'], true) ? -1 : 1;
             @usort(
                 $this->files,
                 static function (
                     FileInterface $a,
                     FileInterface $b
-                ) use ($sortingProperty) {
+                ) use ($sortingProperty, $sortMultiplier) {
                     if ($a->hasProperty($sortingProperty) && $b->hasProperty($sortingProperty)) {
-                        return strnatcasecmp((string)$a->getProperty($sortingProperty), (string)$b->getProperty($sortingProperty));
+                        return strnatcasecmp((string)$a->getProperty($sortingProperty), (string)$b->getProperty($sortingProperty)) * $sortMultiplier;
                     }
                     return 0;
                 }
             );
 
-            switch (strtolower($sortingOrder)) {
-                case 'descending':
-                case 'desc':
-                    $this->files = array_reverse($this->files);
-                    break;
+            switch ($sortingOrder) {
                 case 'random':
                 case 'rand':
                     shuffle($this->files);
