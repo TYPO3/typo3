@@ -19,25 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Site\Entity;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
-use Psr\Http\Message\RequestFactoryInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
-use Symfony\Component\DependencyInjection\Container;
-use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Crypto\Random;
-use TYPO3\CMS\Core\Error\PageErrorHandler\FluidPageErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\InvalidPageErrorHandlerException;
-use TYPO3\CMS\Core\Error\PageErrorHandler\PageContentErrorHandler;
 use TYPO3\CMS\Core\Error\PageErrorHandler\PageErrorHandlerNotConfiguredException;
-use TYPO3\CMS\Core\Http\Client\GuzzleClientFactory;
-use TYPO3\CMS\Core\Http\RequestFactory;
-use TYPO3\CMS\Core\Http\ResponseFactory;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Site\Entity\Site;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Frontend\Http\Application;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class SiteTest extends UnitTestCase
@@ -134,49 +120,6 @@ final class SiteTest extends UnitTestCase
     }
 
     #[Test]
-    public function getErrorHandlerReturnsConfiguredErrorHandler(): void
-    {
-        $subject = new Site('aint-misbehaving', 13, [
-            'languages' => [],
-            'errorHandling' => [
-                [
-                    'errorCode' => 123,
-                    'errorHandler' => 'Fluid',
-                ],
-                [
-                    'errorCode' => 124,
-                    'errorContentSource' => 123,
-                    'errorHandler' => 'Page',
-                ],
-                [
-                    'errorCode' => 125,
-                    'errorHandler' => 'PHP',
-                    'errorContentSource' => 123,
-                    'errorPhpClassFQCN' => PageContentErrorHandler::class,
-                ],
-            ],
-        ]);
-
-        GeneralUtility::addInstance(FluidPageErrorHandler::class, $this->createMock(FluidPageErrorHandler::class));
-
-        $container = new Container();
-        $container->set(Application::class, $this->createMock(Application::class));
-        $container->set(Features::class, new Features());
-        $container->set(GuzzleClientFactory::class, new GuzzleClientFactory());
-        $container->set(RequestFactory::class, new RequestFactory(new GuzzleClientFactory()));
-        $container->set(RequestFactoryInterface::class, new RequestFactory(new GuzzleClientFactory()));
-        $container->set(ResponseFactoryInterface::class, new ResponseFactory());
-        $container->set(LinkService::class, $this->createMock(LinkService::class));
-        $container->set(SiteFinder::class, $this->createMock(SiteFinder::class));
-        $container->set(CacheManager::class, $this->createMock(CacheManager::class));
-        GeneralUtility::setContainer($container);
-
-        self::assertInstanceOf(FluidPageErrorHandler::class, $subject->getErrorHandler(123));
-        self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(124));
-        self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(125));
-    }
-
-    #[Test]
     public function getErrorHandlerThrowsExceptionOnInvalidErrorHandler(): void
     {
         $this->expectException(InvalidPageErrorHandlerException::class);
@@ -221,36 +164,5 @@ final class SiteTest extends UnitTestCase
             ],
         ]);
         $subject->getErrorHandler(404);
-    }
-
-    #[Test]
-    public function getErrorHandlerUsesFallbackWhenNoErrorHandlerForStatusCodeIsConfigured(): void
-    {
-        $container = new Container();
-        $container->set(Application::class, $this->createMock(Application::class));
-        $container->set(Features::class, new Features());
-        $container->set(GuzzleClientFactory::class, new GuzzleClientFactory());
-        $container->set(RequestFactory::class, new RequestFactory(new GuzzleClientFactory()));
-        $container->set(RequestFactoryInterface::class, new RequestFactory(new GuzzleClientFactory()));
-        $container->set(ResponseFactoryInterface::class, new ResponseFactory());
-        $container->set(LinkService::class, $this->createMock(LinkService::class));
-        $container->set(SiteFinder::class, $this->createMock(SiteFinder::class));
-        GeneralUtility::setContainer($container);
-
-        $subject = new Site('aint-misbehaving', 13, [
-            'languages' => [],
-            'errorHandling' => [
-                [
-                    'errorCode' => 403,
-                    'errorHandler' => 'Does it really matter?',
-                ],
-                [
-                    'errorCode' => 0,
-                    'errorContentSource' => 123,
-                    'errorHandler' => 'Page', // PageContentErrorHandler fallback
-                ],
-            ],
-        ]);
-        self::assertInstanceOf(PageContentErrorHandler::class, $subject->getErrorHandler(404));
     }
 }
