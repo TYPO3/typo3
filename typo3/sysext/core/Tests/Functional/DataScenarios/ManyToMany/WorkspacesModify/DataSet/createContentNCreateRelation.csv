@@ -39,4 +39,4 @@
 ,"59046773345c0e6b18ca7eb473a975b0","tx_test_mm_surf",31,"base",0,0,2147483647,0,,,,0,0,"tx_test_mm_surf",28,,0,0,2147483647,0,0
 ,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0
 ,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0
-,"c4052cfeb52b70918198d4c83cb2fd25","tx_test_mm_surf",32,"relations",0,0,2147483647,1,,,,0,1,"tt_content",299,"surfing",0,0,2147483647,0,1
+,"60421ba916d15d0b4496a174037eb18b","tx_test_mm_surf",32,"relations",0,0,2147483647,1,,,,0,1,"tt_content",299,"surfing",0,0,2147483647,1,1

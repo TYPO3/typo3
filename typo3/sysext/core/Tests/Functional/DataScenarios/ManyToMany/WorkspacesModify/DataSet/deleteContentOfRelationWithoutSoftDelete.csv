@@ -40,5 +40,5 @@
 ,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0
 ,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0
 ,"9917005021db0bd2c9259530b4c43214","tx_test_mm_surf",29,"relations",0,0,2147483647,0,,,,0,1,"tt_content",297,"surfing",0,0,2147483647,0,2
-,"ebfc45d39cb02e30ed5b05da68a4970d","tx_test_mm_surf",29,"relations",0,0,2147483647,0,,,,1,1,"tt_content",299,"surfing",0,0,2147483647,0,1
-,"baa1d3c30533f2a848ba7f1b2b567dbb","tx_test_mm_surf",30,"relations",0,0,2147483647,0,,,,0,1,"tt_content",299,"surfing",0,0,2147483647,0,2
+,"f203ca9c2a45c2a39e5c902b78452b63","tx_test_mm_surf",29,"relations",0,0,2147483647,0,,,,1,1,"tt_content",299,"surfing",0,0,2147483647,2,1
+,"5226973e5cfcb3f4c653dc27b4644f9c","tx_test_mm_surf",30,"relations",0,0,2147483647,0,,,,0,1,"tt_content",299,"surfing",0,0,2147483647,2,2
