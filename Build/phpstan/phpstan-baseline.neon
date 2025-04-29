@@ -2641,12 +2641,6 @@ parameters:
 			path: ../../typo3/sysext/core/Tests/Unit/Pagination/SimplePaginationTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Error\\\\PageErrorHandler\\\\PageErrorHandlerInterface'' and TYPO3\\CMS\\Core\\Error\\PageErrorHandler\\PageErrorHandlerInterface will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Tests/Unit/Site/Entity/SiteTest.php
-
-		-
 			message: '#^Constructor of class TYPO3\\CMS\\Core\\Tests\\Unit\\Tree\\TableConfiguration\\Fixtures\\TreeDataProviderFixture has an unused parameter \$configuration\.$#'
 			identifier: constructor.unusedParameter
 			count: 1
@@ -3115,6 +3109,12 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Validation/Validator/CollectionValidator.php
 
 		-
+			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_test/Classes/Controller/TestController.php
+
+		-
 			message: '#^Property TYPO3Tests\\BlogExample\\Domain\\Model\\Administrator\:\:\$image on left side of \?\? is not nullable nor uninitialized\.$#'
 			identifier: nullCoalesce.initializedProperty
 			count: 1
@@ -3137,12 +3137,6 @@ parameters:
 			identifier: staticMethod.alreadyNarrowedType
 			count: 2
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
-
-		-
-			message: '#^Parameter \#2 \$optionKey of method TYPO3\\CMS\\Extbase\\Property\\PropertyMappingConfiguration\:\:setTypeConverterOption\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/action_controller_test/Classes/Controller/TestController.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Http\\\\ForwardResponse'' and TYPO3\\CMS\\Extbase\\Http\\ForwardResponse will always evaluate to true\.$#'
