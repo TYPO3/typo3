@@ -43,7 +43,11 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     protected const FIELD_Relations = 'relations';
 
+    protected const FIELD_Posts = 'posts';
+
     protected const FIELD_Surfing = 'surfing';
+
+    protected const FIELD_Surfers = 'surfers';
 
     protected const SCENARIO_DataSet = __DIR__ . '/DataSet/ImportDefault.csv';
 
@@ -240,6 +244,50 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst, self::VALUE_LanguageId);
         $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdFirst];
+    }
+
+    public function localizeLocalDefaultSurfer(): void
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdThird, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdThird];
+    }
+
+    public function localizeLocalDefaultSurferWithExclude(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Surf]['columns'][self::FIELD_Posts]['config']['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdThird, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdThird];
+    }
+
+    public function localizeLocalDefaultSurferWithLanguageSynchronization(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Surf]['columns'][self::FIELD_Posts]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Surf, self::VALUE_SurfIdThird, self::VALUE_LanguageId);
+        $this->recordIds['localizedSurfId'] = $localizedTableIds[self::TABLE_Surf][self::VALUE_SurfIdThird];
+    }
+
+    public function localizeForeignDefaultPost(): void
+    {
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function localizeForeignDefaultPostWithExclude(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfers]['config']['l10n_mode'] = 'exclude';
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
+    }
+
+    public function localizeForeignDefaultPostWithLanguageSynchronization(): void
+    {
+        $GLOBALS['TCA'][self::TABLE_Content]['columns'][self::FIELD_Surfers]['config']['behaviour']['allowLanguageSynchronization'] = true;
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        $localizedTableIds = $this->actionService->localizeRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_LanguageId);
+        $this->recordIds['localizedContentId'] = $localizedTableIds[self::TABLE_Content][self::VALUE_ContentIdLast];
     }
 
     public function moveContentOfRelationToDifferentPage(): void

@@ -459,4 +459,46 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setRecordIdentifier(self::TABLE_Content . ':' . $this->recordIds['newContentIdLast'])->setRecordField(self::FIELD_Surfing)
             ->setTable(self::TABLE_Surf)->setField('title')->setValues('Surf B', 'Surf C'));
     }
+
+    #[Test]
+    public function localizeLocalDefaultSurfer(): void
+    {
+        parent::localizeLocalDefaultSurfer();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurfer.csv');
+    }
+
+    #[Test]
+    public function localizeLocalDefaultSurferWithExclude(): void
+    {
+        parent::localizeLocalDefaultSurferWithExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurferWExclude.csv');
+    }
+
+    #[Test]
+    public function localizeLocalDefaultSurferWithLanguageSynchronization(): void
+    {
+        parent::localizeLocalDefaultSurferWithLanguageSynchronization();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurferWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeForeignDefaultPost(): void
+    {
+        parent::localizeForeignDefaultPost();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPost.csv');
+    }
+
+    #[Test]
+    public function localizeForeignDefaultPostWithExclude(): void
+    {
+        parent::localizeForeignDefaultPostWithExclude();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPostWExclude.csv');
+    }
+
+    #[Test]
+    public function localizeForeignDefaultPostWithLanguageSynchronization(): void
+    {
+        parent::localizeForeignDefaultPostWithLanguageSynchronization();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPostWSyncrhonization.csv');
+    }
 }

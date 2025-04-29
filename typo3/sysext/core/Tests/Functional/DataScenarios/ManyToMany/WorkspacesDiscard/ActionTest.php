@@ -274,4 +274,52 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         ]);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/copyPage.csv');
     }
+
+    #[Test]
+    public function localizeLocalDefaultSurfer(): void
+    {
+        parent::localizeLocalDefaultSurfer();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurfer.csv');
+    }
+
+    #[Test]
+    public function localizeLocalDefaultSurferWithExclude(): void
+    {
+        parent::localizeLocalDefaultSurferWithExclude();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurferWExclude.csv');
+    }
+
+    #[Test]
+    public function localizeLocalDefaultSurferWithLanguageSynchronization(): void
+    {
+        parent::localizeLocalDefaultSurferWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurferWSynchronization.csv');
+    }
+
+    #[Test]
+    public function localizeForeignDefaultPost(): void
+    {
+        parent::localizeForeignDefaultPost();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPost.csv');
+    }
+
+    #[Test]
+    public function localizeForeignDefaultPostWithExclude(): void
+    {
+        parent::localizeForeignDefaultPostWithExclude();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPostWExclude.csv');
+    }
+
+    #[Test]
+    public function localizeForeignDefaultPostWithLanguageSynchronization(): void
+    {
+        parent::localizeForeignDefaultPostWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPostWSyncrhonization.csv');
+    }
 }

@@ -12,11 +12,11 @@
 ,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","notification_defaults","allow_notificaton_settings"
 ,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0
 "tx_test_mm_surf"
-,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","base","relations"
-,28,0,256,0,0,0,0,0,0,0,"Surf A",0,0
-,29,0,512,0,0,0,0,0,0,0,"Surf B",0,0
-,30,0,768,0,0,0,0,0,0,0,"Surf C",0,0
-,31,0,1024,0,0,0,0,0,0,0,"Surf A.A",28,0
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","base","relations","posts"
+,28,0,256,0,0,0,0,0,0,0,"Surf A",0,0,0
+,29,0,512,0,0,0,0,0,0,0,"Surf B",0,0,0
+,30,0,768,0,0,0,0,0,0,0,"Surf C",0,0,1
+,31,0,1024,0,0,0,0,0,0,0,"Surf A.A",28,0,0
 "surf_content_mm"
 ,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname"
 ,28,297,"tt_content",0,1,"surfing"
@@ -30,13 +30,18 @@
 ,30,300,"tt_content",0,2,"surfing"
 ,31,300,"tt_content",0,3,"surfing"
 ,31,299,"tt_content",0,3,"surfing"
+"surf_content_surfers_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,30,298,0,1
+,30,299,0,1
+,30,300,0,1
 "tt_content"
-,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","surfing","l10n_state"
-,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,2,
-,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2,
-,299,89,768,0,1,298,1,1,0,0,"[Translate to Dansk:] Regular Element #2",0,3,"{""surfing"":""parent""}"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","surfing","surfers","l10n_state"
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,2,0,
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2,1,
+,299,89,768,0,1,298,1,1,0,0,"[Translate to Dansk:] Regular Element #2",0,3,1,"{""surfing"":""parent"",""surfers"":""parent""}"
 # @todo: This does not seem right at all. This is a copy of the regular element IN ADDITION to the translated version
-,300,89,512,0,0,0,1,0,0,298,"Regular Element #2",0,3,
+,300,89,512,0,0,0,1,0,0,298,"Regular Element #2",0,3,1,
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting"
 ,"2ddf9a3a4a77acfc78f81c10628b31f4","tx_test_mm_surf",28,"relations",0,0,2147483647,0,,,,0,0,"tt_content",297,"surfing",0,0,2147483647,0,1
@@ -44,8 +49,10 @@
 ,"b7ec8e570c77b01be9df5d0383799ea8","tx_test_mm_surf",29,"relations",0,0,2147483647,0,,,,1,0,"tt_content",298,"surfing",0,0,2147483647,0,1
 ,"0d48785143ea00562994a78c0869de81","tx_test_mm_surf",30,"relations",0,0,2147483647,0,,,,0,0,"tt_content",298,"surfing",0,0,2147483647,0,2
 ,"59046773345c0e6b18ca7eb473a975b0","tx_test_mm_surf",31,"base",0,0,2147483647,0,,,,0,0,"tx_test_mm_surf",28,,0,0,2147483647,0,0
+,"383717f95e52a554c5fa73f913243bfe","tx_test_mm_surf",30,"posts",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,1
 ,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0
 ,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0
+,"a93e357944a746be203b8ecf12b775cb","tx_test_mm_surf",30,"posts",0,0,2147483647,0,,,,1,1,"tt_content",300,,0,0,2147483647,0,1
 ,"27bcc9480dd80b803dcd303f194b0eb8","tt_content",299,"l18n_parent",0,0,2147483647,1,,,,0,1,"tt_content",298,,0,0,2147483647,0,0
 ,"9917005021db0bd2c9259530b4c43214","tx_test_mm_surf",29,"relations",0,0,2147483647,0,,,,0,1,"tt_content",297,"surfing",0,0,2147483647,0,2
 ,"b5499cc928e1fa6f16c46be0467288f9","tx_test_mm_surf",29,"relations",0,0,2147483647,0,,,,2,1,"tt_content",300,"surfing",0,0,2147483647,0,1
@@ -54,4 +61,4 @@
 ,"c79691561bd5fb46fab245d45d9ac4ac","tx_test_mm_surf",29,"relations",0,0,2147483647,0,,,,1,1,"tt_content",299,"surfing",0,0,2147483647,1,1
 ,"e301b55b5930170050365dc52e9ab497","tx_test_mm_surf",30,"relations",0,0,2147483647,0,,,,0,1,"tt_content",299,"surfing",0,0,2147483647,1,2
 ,"d06fecc301173bf7f749014a19ac53e3","tx_test_mm_surf",31,"relations",0,0,2147483647,0,,,,0,1,"tt_content",299,"surfing",0,0,2147483647,1,3
-
+,"e366b08207cde6d1265829da8a7dbbd6","tx_test_mm_surf",30,"posts",0,0,2147483647,0,,,,0,1,"tt_content",299,,0,0,2147483647,1,1
