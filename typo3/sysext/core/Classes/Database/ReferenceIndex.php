@@ -314,7 +314,8 @@ class ReferenceIndex
             foreach ($tableTcaSchema->getFields() as $field) {
                 $fieldConfig = $field->getConfiguration();
                 if (!empty($fieldConfig['MM'] ?? '')
-                    && !empty($fieldConfig['allowed'] ?? '')
+                    // Catch type=group 'allowed' and type=select 'foreign_table' MM scenarios
+                    && (!empty($fieldConfig['allowed'] ?? '') || !empty($fieldConfig['foreign_table'] ?? ''))
                     && empty($fieldConfig['MM_opposite_field'] ?? '')
                 ) {
                     $tableHasLocalSideMmRelation = true;
@@ -615,6 +616,9 @@ class ReferenceIndex
                             $endtimeFieldName = $itemTableSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
                             $itemArray[$itemKey][$endtimeFieldName] = $foreignSideRecord[$endtimeFieldName];
                         }
+                        if ($itemTableSchema->hasCapability(TcaSchemaCapability::Workspace)) {
+                            $itemArray[$itemKey]['t3ver_state'] = $foreignSideRecord['t3ver_state'];
+                        }
                     }
                 }
                 $sorting = 0;
@@ -637,9 +641,6 @@ class ReferenceIndex
                         'ref_table' => $refTable,
                         'ref_uid' => (int)$refRecord['id'],
                         'ref_field' => (string)($refRecord['fieldname'] ?? ''),
-                        // @todo: With MM records, the relation MM record has no hidden, starttime and endtime info, this
-                        //        has to be fetched from the actual related record. We may want to have additional
-                        //        tests for this and implement here properly.
                         'ref_hidden' => $refTcaTableSchema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)
                             ? (int)($refRecord[$refTcaTableSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName()] ?? 0)
                             : 0,
@@ -755,7 +756,7 @@ class ReferenceIndex
                             'ref_table' => $refRecord['table'],
                             'ref_uid' => (int)$refRecord['id'],
                             'ref_field' => (string)($refRecord['fieldname'] ?? ''),
-                            // @todo: ref_hidden, ref_starttime, ref_endtime, ref_t3ver_state, ref_t3ver_state and ref_sorting need coverage and handling, see above.
+                            // @todo: ref_hidden, ref_starttime, ref_endtime, ref_t3ver_state, ref_t3ver_state and ref_sorting need coverage and handling.
                             'ref_hidden' => 0,
                             'ref_starttime' => 0,
                             'ref_endtime' => 2147483647,
@@ -960,7 +961,7 @@ class ReferenceIndex
                     // Not a section but a simple field. Get its relations.
                     $fieldValue = $valueArray['data'][$sheetKey]['lDEF'][$sheetElementKey]['vDEF'];
                     $structurePath = $sheetKey . '/lDEF/' . $sheetElementKey . '/vDEF/';
-                    $databaseRelations = $this->getRelationsFromRelationField($tableName, $fieldValue, $sheetElementTca['config'] ?? [], (int)$row['uid'], $workspaceUid);
+                    $databaseRelations = $this->getRelationsFromRelationField($tableName, $fieldValue, $sheetElementTca['config'] ?? [], (int)$row['uid'], $workspaceUid, $row);
                     if (!empty($databaseRelations)) {
                         $flexRelations['db'][$structurePath] = $databaseRelations;
                     }
@@ -988,7 +989,7 @@ class ReferenceIndex
     /**
      * Check field configuration if it is a DB relation field and extract DB relations if any
      */
-    private function getRelationsFromRelationField(string $tableName, mixed $fieldValue, array $conf, int $uid, int $workspaceUid, array $row = []): array
+    private function getRelationsFromRelationField(string $tableName, mixed $fieldValue, array $conf, int $uid, int $workspaceUid, array $row): array
     {
         if (empty($conf)) {
             return [];
@@ -1013,7 +1014,8 @@ class ReferenceIndex
             if (ExtensionManagementUtility::isLoaded('workspaces')
                 && $workspaceUid > 0
                 && !empty($conf['MM'] ?? '')
-                && !empty($conf['allowed'] ?? '')
+                // Catch type=group 'allowed' and type=select 'foreign_table' MM scenarios
+                && (!empty($conf['allowed'] ?? '') || !empty($conf['foreign_table'] ?? ''))
                 && empty($conf['MM_opposite_field'] ?? '')
                 && (int)($row['t3ver_wsid'] ?? 0) === 0
             ) {
