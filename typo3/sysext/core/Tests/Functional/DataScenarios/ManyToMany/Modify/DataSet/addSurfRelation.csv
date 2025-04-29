@@ -5,11 +5,11 @@
 ,89,88,256,0,0,0,0,0,"Relations"
 ,90,88,512,0,0,0,0,0,"Target"
 "tx_test_mm_surf"
-,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","base","relations"
-,28,0,256,0,0,0,0,0,0,0,"Surf A",0,0
-,29,0,512,0,0,0,0,0,0,0,"Surf B",0,0
-,30,0,768,0,0,0,0,0,0,0,"Surf C",0,0
-,31,0,1024,0,0,0,0,0,0,0,"Surf A.A",28,0
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","base","relations","posts"
+,28,0,256,0,0,0,0,0,0,0,"Surf A",0,0,0
+,29,0,512,0,0,0,0,0,0,0,"Surf B",0,0,0
+,30,0,768,0,0,0,0,0,0,0,"Surf C",0,0,1
+,31,0,1024,0,0,0,0,0,0,0,"Surf A.A",28,0,0
 "surf_content_mm"
 ,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname"
 ,28,297,"tt_content",0,1,"surfing"
@@ -17,10 +17,13 @@
 ,29,298,"tt_content",0,1,"surfing"
 ,30,298,"tt_content",0,2,"surfing"
 ,31,297,"tt_content",0,3,"surfing"
+"surf_content_surfers_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,30,298,0,1
 "tt_content"
-,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","surfing"
-,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,3
-,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","surfing","surfers"
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,3,0
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2,1
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting"
 ,"2ddf9a3a4a77acfc78f81c10628b31f4","tx_test_mm_surf",28,"relations",0,0,2147483647,0,,,,0,0,"tt_content",297,"surfing",0,0,2147483647,0,1
@@ -29,3 +32,4 @@
 ,"0d48785143ea00562994a78c0869de81","tx_test_mm_surf",30,"relations",0,0,2147483647,0,,,,0,0,"tt_content",298,"surfing",0,0,2147483647,0,2
 ,"59046773345c0e6b18ca7eb473a975b0","tx_test_mm_surf",31,"base",0,0,2147483647,0,,,,0,0,"tx_test_mm_surf",28,,0,0,2147483647,0,0
 ,"92f5c56c89dff7a9890a2a3706a39c3e","tx_test_mm_surf",31,"relations",0,0,2147483647,0,,,,0,0,"tt_content",297,"surfing",0,0,2147483647,0,3
+,"383717f95e52a554c5fa73f913243bfe","tx_test_mm_surf",30,"posts",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,1

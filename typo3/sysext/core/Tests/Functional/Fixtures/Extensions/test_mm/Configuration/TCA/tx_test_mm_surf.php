@@ -17,7 +17,7 @@ return [
         'languageField' => 'sys_language_uid',
         'transOrigPointerField' => 'l10n_parent',
         'transOrigDiffSourceField' => 'l10n_diffsource',
-        //        'translationSource' => 'l10n_source',
+        'translationSource' => 'l10n_source',
         'searchFields' => 'title',
         'enablecolumns' => [
             'disabled' => 'hidden',
@@ -36,7 +36,7 @@ return [
         '1' => [
             'showitem' => '
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:general,
-                    title, base, relations,
+                    title, base, relations, posts,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:language,
                     --palette--;;language,
                 --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
@@ -94,6 +94,16 @@ return [
                         'disabled' => true,
                     ],
                 ],
+            ],
+        ],
+        'posts' => [
+            'label' => 'Posts',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectMultipleSideBySide',
+                'foreign_table' => 'tt_content',
+                'foreign_table_where' => 'AND {#tt_content}.{#sys_language_uid} IN (-1,0)',
+                'MM' => 'surf_content_surfers_mm',
             ],
         ],
     ],

@@ -4953,7 +4953,14 @@ class DataHandler
                     $overrideValues[$field->getName()] = $row[$field->getName()];
                 }
             }
-            if (($field->getConfiguration()['MM'] ?? false) && !empty($field->getConfiguration()['MM_oppositeUsage'])) {
+            if (($field->getConfiguration()['MM'] ?? false)
+                // To determine the local side for fields with 'MM' config, we check if the field either
+                // has "MM_oppositeUsage" (foreign table names / field names) defined — e.g., sys_category with
+                // opposite usage to the table "pages" with the field "categories" — or if it does not have
+                // "MM_opposite_field" set. This field is set by the foreign side (e.g., an inline child)
+                // to allow editing the connection from both sides (bidirectional).
+                && (!empty($field->getConfiguration()['MM_oppositeUsage']) || !isset($field->getConfiguration()['MM_opposite_field']))
+            ) {
                 // We are localizing the 'local' side of an MM relation. (eg. localizing a category).
                 // In this case, MM relations connected to the default lang record should not be copied,
                 // so we set an override here to not trigger mm handling of 'items' field for this.
