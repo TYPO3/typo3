@@ -61,4 +61,13 @@ typo3-rte-ckeditor-ckeditor5 {
     .ck.ck-style-panel .ck-style-grid .ck-style-grid__button.ck-disabled {
         display: none;
     }
+
+    /* Render as an inactive element if used with mode=useOrOverridePlaceholder */
+    .t3js-formengine-placeholder-placeholder & {
+        opacity: .5;
+
+        .ck.ck-editor__top {
+            display: none;
+        }
+    }
 }

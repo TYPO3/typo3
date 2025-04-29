@@ -32,10 +32,10 @@ return [
             ],
         ],
         'rte_2' => [
-            'label' => 'rte_2 default value',
+            'label' => 'rte_2 default value, acts as placeholder for rte_7',
             'config' => [
                 'type' => 'text',
-                'default' => 'rte_2',
+                'default' => '<p><strong>rte_2</strong> default.</p>',
                 'enableRichtext' => true,
             ],
         ],
@@ -61,6 +61,110 @@ return [
                 'type' => 'text',
                 'enableRichtext' => true,
                 'richtextConfiguration' => 'full',
+            ],
+        ],
+        'rte_6' => [
+            'label' => 'rte_6 with placeholder, no default, null handling',
+            'config' => [
+                'type' => 'text',
+                'default' => null,
+                'enableRichtext' => true,
+                'mode' => 'useOrOverridePlaceholder',
+                'nullable' => true,
+                'placeholder' => '<p>My placeholder text - it is long and will be shorted, and <strong>HTML</strong> will be stripped. Default is empty.</p>',
+            ],
+        ],
+        'rte_7' => [
+            'label' => 'rte_7 with placeholder from rte_2, no default, no userOrOverridePlaceholder',
+            'config' => [
+                'type' => 'text',
+                'enableRichtext' => true,
+                'mode' => 'useOrOverridePlaceholder',
+                'placeholder' => '__row|rte_2',
+            ],
+        ],
+        'rte_8' => [
+            'label' => 'rte_8 with placeholder, default value, null handling',
+            'config' => [
+                'type' => 'text',
+                'default' => '<p>Actual <strong>HTML</strong>.</p>',
+                'enableRichtext' => true,
+                'mode' => 'useOrOverridePlaceholder',
+                'nullable' => true,
+                // Placeholder will only appear once the "default" is cleared from the CKEditor textarea!
+                'placeholder' => '<p>My placeholder text - it is long and will be shorted, and <strong>HTML</strong> will be stripped. Default is set.</p>',
+            ],
+        ],
+        'rte_9' => [
+            'label' => 'rte_9 with short placeholder, no default, null handling',
+            'config' => [
+                'type' => 'text',
+                'default' => null,
+                'enableRichtext' => true,
+                'mode' => 'useOrOverridePlaceholder',
+                'nullable' => true,
+                'placeholder' => 'Short placeholder',
+            ],
+        ],
+        'rte_10' => [
+            'label' => 'rte_10 with short placeholder, short default, null handling',
+            'config' => [
+                'type' => 'text',
+                'default' => 'Short default',
+                'enableRichtext' => true,
+                'mode' => 'useOrOverridePlaceholder',
+                'nullable' => true,
+                'placeholder' => 'Short placeholder',
+            ],
+        ],
+
+        'rte_11' => [
+            'label' => 'rte_11 with placeholder, no default, null handling, no useOrOverridePlaceholder',
+            'config' => [
+                'type' => 'text',
+                'default' => null,
+                'enableRichtext' => true,
+                'nullable' => true,
+                'placeholder' => '<p>My placeholder text - it is long and will be shorted, and <strong>HTML</strong> will be stripped. Default is empty.</p>',
+            ],
+        ],
+        'rte_12' => [
+            'label' => 'rte_12 with placeholder from rte_2, no default, no useOrOverridePlaceholder',
+            'config' => [
+                'type' => 'text',
+                'enableRichtext' => true,
+                'placeholder' => '__row|rte_2',
+            ],
+        ],
+        'rte_13' => [
+            'label' => 'rte_13 with placeholder, default value, null handling, no useOrOverridePlaceholder',
+            'config' => [
+                'type' => 'text',
+                'default' => '<p>Actual <strong>HTML</strong>.</p>',
+                'enableRichtext' => true,
+                'nullable' => true,
+                // Placeholder will only appear once the "default" is cleared from the CKEditor textarea!
+                'placeholder' => '<p>My placeholder text - it is long and will be shorted, and <strong>HTML</strong> will be stripped. Default is set.</p>',
+            ],
+        ],
+        'rte_14' => [
+            'label' => 'rte_14 with short placeholder, no default, null handling, no useOrOverridePlaceholder',
+            'config' => [
+                'type' => 'text',
+                'default' => null,
+                'enableRichtext' => true,
+                'nullable' => true,
+                'placeholder' => 'Short placeholder',
+            ],
+        ],
+        'rte_15' => [
+            'label' => 'rte_15 with short placeholder, short default, null handling, no useOrOverridePlaceholder',
+            'config' => [
+                'type' => 'text',
+                'default' => 'Short default',
+                'enableRichtext' => true,
+                'nullable' => true,
+                'placeholder' => 'Short placeholder',
             ],
         ],
 
@@ -178,6 +282,10 @@ return [
             'showitem' => '
                 --div--;rte,
                     rte_1, rte_2, rte_3, rte_4, rte_5,
+                --div--;rte with useOrOverridePlaceholder,
+                    rte_6, rte_7, rte_8, rte_9, rte_10,
+                --div--;rte without useOrOverridePlaceholder,
+                    rte_11, rte_12, rte_13, rte_14, rte_15,
                 --div--;in inline,
                     rte_inline_1,
                 --div--;in flex,
