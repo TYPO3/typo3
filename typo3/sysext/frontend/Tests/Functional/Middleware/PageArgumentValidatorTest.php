@@ -21,12 +21,10 @@ use PHPUnit\Framework\Attributes\Test;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\NullLogger;
 use TYPO3\CMS\Core\Http\Response;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Frontend\Middleware\PageArgumentValidator;
-use TYPO3\CMS\Frontend\Page\CacheHashCalculator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageArgumentValidatorTest extends FunctionalTestCase
@@ -53,9 +51,7 @@ final class PageArgumentValidatorTest extends FunctionalTestCase
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'XYZ'], ['parameter-from' => 'path']);
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-        $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $subject->setLogger(new NullLogger());
-        $response = $subject->process($request, $this->responseOutputHandler);
+        $response = $this->get(PageArgumentValidator::class)->process($request, $this->responseOutputHandler);
         self::assertEquals(308, $response->getStatusCode());
         self::assertEquals($expectedResult, $response->getHeader('Location')[0]);
     }
@@ -67,8 +63,7 @@ final class PageArgumentValidatorTest extends FunctionalTestCase
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'XYZ', 'dynamic' => 'argument'], ['parameter-from' => 'path']);
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-        $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $response = $subject->process($request, $this->responseOutputHandler);
+        $response = $this->get(PageArgumentValidator::class)->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
 
@@ -77,8 +72,7 @@ final class PageArgumentValidatorTest extends FunctionalTestCase
     {
         $incomingUrl = 'https://king.com/lotus-flower/en/mr-magpie/bloom/';
         $request = new ServerRequest($incomingUrl, 'GET');
-        $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $response = $subject->process($request, $this->responseOutputHandler);
+        $response = $this->get(PageArgumentValidator::class)->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
 
@@ -89,8 +83,7 @@ final class PageArgumentValidatorTest extends FunctionalTestCase
         $pageArguments = new PageArguments(13, '1', [], ['parameter-from' => 'path']);
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-        $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $response = $subject->process($request, $this->responseOutputHandler);
+        $response = $this->get(PageArgumentValidator::class)->process($request, $this->responseOutputHandler);
         self::assertEquals(200, $response->getStatusCode());
     }
 
@@ -101,8 +94,7 @@ final class PageArgumentValidatorTest extends FunctionalTestCase
         $pageArguments = new PageArguments(13, '1', ['cHash' => 'coolio', 'download' => true], ['parameter-from' => 'path']);
         $request = new ServerRequest($incomingUrl, 'GET');
         $request = $request->withAttribute('routing', $pageArguments);
-        $subject = new PageArgumentValidator(new CacheHashCalculator());
-        $response = $subject->process($request, $this->responseOutputHandler);
+        $response = $this->get(PageArgumentValidator::class)->process($request, $this->responseOutputHandler);
         self::assertEquals(404, $response->getStatusCode());
     }
 }

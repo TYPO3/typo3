@@ -106,18 +106,16 @@ class PageRouter implements RouterInterface
 
         // Legacy URIs (?id=12345) takes precedence, no matter if a route is given
         $requestId = ($request->getQueryParams()['id'] ?? null);
+        $type = '0';
+        if (isset($request->getQueryParams()['type']) && is_scalar($request->getQueryParams()['type'])) {
+            $type = (string)$request->getQueryParams()['type'];
+        }
         if ($requestId !== null) {
             if (MathUtility::canBeInterpretedAsInteger($requestId)
                 && (int)$requestId > 0
                 && !empty($pageId = $candidateProvider->getRealPageIdForPageIdAsPossibleCandidate((int)$requestId))
             ) {
-                return new PageArguments(
-                    (int)$pageId,
-                    (string)($request->getQueryParams()['type'] ?? '0'),
-                    [],
-                    [],
-                    $request->getQueryParams()
-                );
+                return new PageArguments((int)$pageId, $type, [], [], $request->getQueryParams());
             }
             throw new RouteNotFoundException('The requested page does not exist.', 1557839801);
         }
@@ -562,7 +560,10 @@ class PageRouter implements RouterInterface
                 $decoratedParameters
             );
         }
-        return (string)$type;
+        if (is_scalar($type)) {
+            return (string)$type;
+        }
+        return '0';
     }
 
     /**

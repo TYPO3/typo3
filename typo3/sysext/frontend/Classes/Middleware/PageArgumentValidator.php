@@ -21,8 +21,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Routing\PageArguments;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -35,12 +34,11 @@ use TYPO3\CMS\Frontend\Page\PageAccessFailureReasons;
 /**
  * This middleware validates given request parameters against the common "cHash" functionality.
  */
-class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
+readonly class PageArgumentValidator implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     public function __construct(
-        private readonly CacheHashCalculator $cacheHashCalculator,
+        private CacheHashCalculator $cacheHashCalculator,
+        private LoggerInterface $logger,
     ) {}
 
     /**
@@ -71,7 +69,10 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
             return $handler->handle($request);
         }
         // Evaluate the cache hash parameter or dynamic arguments when coming from a Site-based routing
-        $cHash = (string)($pageArguments->getArguments()['cHash'] ?? '');
+        $cHash = '';
+        if (isset($pageArguments->getArguments()['cHash']) && is_scalar($pageArguments->getArguments()['cHash'])) {
+            $cHash = (string)($pageArguments->getArguments()['cHash']);
+        }
         $queryParams = $pageArguments->getDynamicArguments();
         if ($cHash !== '' || !empty($queryParams)) {
             $relevantParametersForCacheHashArgument = $this->getRelevantParametersForCacheHashCalculation($pageArguments);
