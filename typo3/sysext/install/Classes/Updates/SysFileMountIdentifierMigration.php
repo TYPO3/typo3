@@ -103,7 +103,10 @@ class SysFileMountIdentifierMigration implements UpgradeWizardInterface
             ->where(
                 $queryBuilder->expr()->gt('base', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
                 $queryBuilder->expr()->neq('path', $queryBuilder->createNamedParameter('')),
-                $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter(''))
+                $queryBuilder->expr()->or(
+                    $queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter('')),
+                    $queryBuilder->expr()->isNull('identifier'),
+                ),
             );
 
         return $queryBuilder;
