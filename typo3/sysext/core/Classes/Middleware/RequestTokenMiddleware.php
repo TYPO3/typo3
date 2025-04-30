@@ -105,7 +105,10 @@ class RequestTokenMiddleware implements MiddlewareInterface, LoggerAwareInterfac
     protected function resolveReceivedRequestToken(ServerRequestInterface $request): ?RequestToken
     {
         $headerValue = $request->getHeaderLine(RequestToken::HEADER_NAME);
-        $paramValue = (string)($request->getParsedBody()[RequestToken::PARAM_NAME] ?? '');
+        $paramValue = '';
+        if (isset($request->getParsedBody()[RequestToken::PARAM_NAME]) && is_scalar($request->getParsedBody()[RequestToken::PARAM_NAME])) {
+            $paramValue = (string)($request->getParsedBody()[RequestToken::PARAM_NAME]);
+        }
         if ($headerValue !== '') {
             $tokenValue = $headerValue;
         } elseif (in_array($request->getMethod(), self::ALLOWED_METHODS, true)) {

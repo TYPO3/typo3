@@ -78,7 +78,10 @@ class PageArgumentValidator implements MiddlewareInterface, LoggerAwareInterface
             return $handler->handle($request);
         }
         // Evaluate the cache hash parameter or dynamic arguments when coming from a Site-based routing
-        $cHash = (string)($pageArguments->getArguments()['cHash'] ?? '');
+        $cHash = '';
+        if (isset($pageArguments->getArguments()['cHash']) && is_scalar($pageArguments->getArguments()['cHash'])) {
+            $cHash = (string)($pageArguments->getArguments()['cHash']);
+        }
         $queryParams = $pageArguments->getDynamicArguments();
         if ($cHash !== '' || !empty($queryParams)) {
             $relevantParametersForCacheHashArgument = $this->getRelevantParametersForCacheHashCalculation($pageArguments);
