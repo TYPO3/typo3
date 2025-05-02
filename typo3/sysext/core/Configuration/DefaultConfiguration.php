@@ -1442,6 +1442,7 @@ return [
                 '_gl',
                 // Google ads
                 'gad',
+                'gad_campaignid',
                 'gad_source',
                 'gbraid',
                 'gclid',
@@ -1474,6 +1475,8 @@ return [
                 'hsCtaTracking',
                 // HubSpot Form Tracking Parameters
                 'submissionGuid',
+                // LinkedIn First-Party Ad Tracking ID
+                'li_fat_id',
             ],
             'requireCacheHashPresenceParameters' => [],
             'excludeAllEmptyParameters' => false,
