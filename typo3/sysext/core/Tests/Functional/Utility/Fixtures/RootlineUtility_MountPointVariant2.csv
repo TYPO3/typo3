@@ -1,0 +1,6 @@
+"pages"
+,"uid","pid","doktype","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_oid","t3ver_state","mount_pid","mount_pid_ol","slug","title","is_siteroot",
+,10000,0,1,0,0,0,0,0,0,0,0,"/","site-1",1,
+,10001,10000,1,0,0,0,0,0,0,0,0,"/sub-1-1","sub-1-1",0,
+,10002,10001,1,0,0,0,0,0,0,0,0,"/sub-1-1-1","sub-1-1-1",0,
+,10100,0,7,0,0,0,0,0,0,10000,1,"/","site-2",1,
