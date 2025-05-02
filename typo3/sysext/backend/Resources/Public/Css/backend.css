@@ -3887,8 +3887,7 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .task-form .form-wizards-wrap{margin-bottom:.5rem!important}
 .task-form .row{max-width:800px}
 @media (min-width:1200px){
-.scheduler-info-text{width:90%}
-.scheduler-info-container{display:grid;gap:var(--typo3-spacing);grid-template-columns:50% 50%}}
+.scheduler-info-text{width:90%}}
 .module-styleguide .module-body{container-type:inline-size;display:flex;flex-wrap:wrap;gap:2.5rem}
 .styleguide-navigation{align-self:flex-start;flex:0 1 200px}
 .styleguide-content{contain:inline-size;flex:1 1 500px}

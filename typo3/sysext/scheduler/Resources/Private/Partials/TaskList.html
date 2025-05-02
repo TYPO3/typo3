@@ -286,7 +286,7 @@
                                     <td class="align-top col-task">
                                         <div class="name">
                                             <f:be.link route="scheduler_manage" parameters="{action: 'edit', 'uid': task.uid}">
-                                                <strong>{task.classTitle} ({task.classExtension})</strong>
+                                                <strong>{task.fullTitle}</strong>
                                                 <f:if condition="{task.progress}">
                                                     <typo3-backend-progress-bar value="{task.progress}" max="100" label="{task.progress}%"></typo3-backend-progress-bar>
                                                 </f:if>

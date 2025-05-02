@@ -267,7 +267,7 @@ class SchedulerTaskRepository
      */
     public function getGroupedTasks(): array
     {
-        $registeredClasses = $this->taskService->getAvailableTaskTypes();
+        $allTaskTypes = $this->taskService->getAllTaskTypes();
 
         // Get all registered tasks
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
@@ -316,24 +316,22 @@ class SchedulerTaskRepository
             $taskData['taskType'] = $taskObject->getTaskType();
 
             if (!$this->isValidTaskObject($taskObject)) {
-                $taskClass = $this->taskSerializer->resolveClassName($taskObject);
-                $taskData['errorMessage'] = 'The task "' . $taskClass . ' is not a valid task';
+                $taskData['errorMessage'] = 'The task "' . $taskObject->getTaskType() . ' is not a valid task';
                 $errorClasses[] = $taskData;
                 continue;
             }
 
-            $taskClass = $this->taskSerializer->resolveClassName($taskObject);
-            if (!isset($registeredClasses[$taskClass])) {
-                $taskData['errorMessage'] = 'The class ' . $taskClass . ' is not a registered task';
+            if (!isset($allTaskTypes[$taskObject->getTaskType()])) {
+                $taskData['errorMessage'] = 'The task ' . $taskObject->getTaskType() . ' is not a registered task';
                 $errorClasses[] = $taskData;
                 continue;
             }
 
+            $taskInformation = $allTaskTypes[$taskObject->getTaskType()];
             if ($taskObject instanceof ProgressProviderInterface) {
                 $taskData['progress'] = round((float)$taskObject->getProgress(), 2);
             }
-            $taskData['classTitle'] = $registeredClasses[$taskClass]['title'];
-            $taskData['classExtension'] = $registeredClasses[$taskClass]['extension'];
+            $taskData['fullTitle'] = $taskInformation['fullTitle'];
             $taskData['additionalInformation'] = $taskObject->getAdditionalInformation();
             $taskData['disabled'] = (bool)$row['disable'];
             $taskData['isRunning'] = !empty($row['serialized_executions']);

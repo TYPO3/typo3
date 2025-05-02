@@ -156,8 +156,8 @@ class SchedulerExecuteCommand extends Command
             $selectableTasks['g:' . $uid] = '<fg=yellow>' . $groupLabel . '</>';
 
             foreach ($group['tasks'] as $task) {
-                $additionalInformation = $task['additionalInformation'] === '' ? '' : '(' . $task['additionalInformation'] . ')';
-                $selectableTasks[$task['uid']] = $task['classTitle'] . $additionalInformation;
+                $additionalInformation = $task['additionalInformation'] === '' ? '' : ' (' . $task['additionalInformation'] . ')';
+                $selectableTasks[$task['uid']] = $task['fullTitle'] . $additionalInformation;
             }
         }
         return $selectableTasks;

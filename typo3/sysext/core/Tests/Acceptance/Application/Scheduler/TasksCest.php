@@ -44,7 +44,7 @@ final class TasksCest
         $I->click('button[value="save"]');
         $I->waitForText('No frequency was defined, either as an interval or as a cron command.');
 
-        $I->selectOption('#task_type', 'System Status Update');
+        $I->selectOption('#task_type', 'System Status Update [reports]');
         $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
         $I->selectOption('#task_running_type', 'Single');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
@@ -57,7 +57,7 @@ final class TasksCest
     {
         // run the task
         $I->click('button[name="execute"]');
-        $I->waitForText('Task "System Status Update (reports)" with uid');
+        $I->waitForText('Task "System Status Update [reports]" with uid');
         $I->seeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
         $I->see('disabled');
     }
@@ -65,7 +65,7 @@ final class TasksCest
     public function canEditTask(ApplicationTester $I): void
     {
         $I->click('//a[contains(@title, "Edit")]');
-        $I->waitForText('Edit scheduled task "System Status Update (reports)"');
+        $I->waitForText('Edit scheduled task "System Status Update [reports]"');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
         $I->click('button[value="save"]');
@@ -133,7 +133,7 @@ final class TasksCest
         $I->amGoingTo('test the new task group button on task edit view');
         $I->click('[data-scheduler-table] > tbody > tr > td.col-control > div:nth-child(1) > a:nth-child(1)');
         $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->canSee('Edit scheduled task "System Status Update (reports)"');
+        $I->canSee('Edit scheduled task "System Status Update [reports]"');
         $I->click('#task_group_row button.t3js-create-group');
         $modalDialog->canSeeDialog();
 

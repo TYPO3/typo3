@@ -84,36 +84,6 @@ class TaskSerializer
         throw new InvalidTaskException('No task type given for task ID : ' . $row['uid'], 1740514192);
     }
 
-    public function getClassNameFromTaskType(string $taskType): string
-    {
-        if ($this->taskService->hasTaskType($taskType)) {
-            if ($this->container->has($taskType)) {
-                // This is a service, so we use the class name directly
-                return $taskType;
-            }
-            return $taskType;
-        }
-        if (isset($this->taskService->getRegisteredCommands()[$taskType])) {
-            return ExecuteSchedulableCommandTask::class;
-        }
-        throw new InvalidTaskException('Task type ' . $taskType . ' not found. Probably not registered?', 1742584382);
-    }
-
-    /**
-     * @template T of object
-     * @param T $task
-     * @return class-string<T>|string
-     */
-    public function resolveClassName(object $task): string
-    {
-        $taskClass = get_class($task);
-        if ($taskClass === '__PHP_Incomplete_Class') {
-            $taskArray = json_decode((string)json_encode($task, 0, 1), true);
-            $taskClass = (string)$taskArray['__PHP_Incomplete_Class_Name'];
-        }
-        return $taskClass;
-    }
-
     /**
      * If the task class couldn't be figured out from the unserialization (because of uninstalled extensions or exceptions),
      * try to find it in the serialized string with a simple preg match.

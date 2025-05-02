@@ -79,34 +79,6 @@ final class TaskSerializerTest extends UnitTestCase
         self::assertEquals($expectation, $result);
     }
 
-    public static function classNameIsResolvedDataProvider(): array
-    {
-        $missingTaskData = 'O:29:"TYPO3\CMS\Testing\MissingTask":0:{}';
-        $missingTask = unserialize($missingTaskData, ['allowed_classes' => false]);
-
-        return [
-            'stdClass' => [
-                new \stdClass(),
-                \stdClass::class,
-            ],
-            'MissingTask' => [
-                $missingTask,
-                'TYPO3\CMS\Testing\MissingTask',
-            ],
-        ];
-    }
-
-    #[DataProvider('classNameIsResolvedDataProvider')]
-    #[Test]
-    public function classNameIsResolved(?object $task, ?string $expectation): void
-    {
-        $taskSerializer = new TaskSerializer(
-            $this->createMock(ContainerInterface::class),
-            $this->createMock(TaskService::class),
-        );
-        self::assertSame($expectation, $taskSerializer->resolveClassName($task));
-    }
-
     public static function classNameIsExtractedDataProvider(): array
     {
         return [

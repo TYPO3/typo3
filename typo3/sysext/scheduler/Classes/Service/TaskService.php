@@ -20,6 +20,9 @@ namespace TYPO3\CMS\Scheduler\Service;
 use Symfony\Component\Console\Command\Command;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 
 /**
@@ -43,7 +46,7 @@ class TaskService
      *
      * The name of the class itself is used as the key of the list array
      */
-    public function getAvailableTaskTypes(): array
+    protected function getAvailableTaskTypes(): array
     {
         $languageService = $this->getLanguageService();
         $list = [];
@@ -82,10 +85,67 @@ class TaskService
         return $commands;
     }
 
-    public function isValidTaskTypeOrCommand(string $taskType): bool
+    public function getAllTaskTypes(): array
     {
-        return isset($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskType]) ||
-            isset($this->getRegisteredCommands()[$taskType]);
+        $taskTypes = [];
+        foreach ($this->getAvailableTaskTypes() as $taskClass => $registrationInformation) {
+            $data = [
+                'class' => $taskClass,
+                'category' => $registrationInformation['extension'],
+                'title' => $registrationInformation['title'],
+                'fullTitle' => $registrationInformation['title'] . ' [' . $registrationInformation['extension'] . ']',
+                'description' => $registrationInformation['description'],
+                'provider' => $registrationInformation['provider'] ?? '',
+            ];
+            if ($taskClass === ExecuteSchedulableCommandTask::class) {
+                foreach ($this->commandRegistry->getSchedulableCommands() as $commandIdentifier => $command) {
+                    $commandData = $data;
+                    $commandData['category'] = explode(':', $commandIdentifier)[0];
+                    $commandData['title'] = $command->getName();
+                    $commandData['description'] = $command->getDescription();
+                    // Used for select dropdown and on InfoScreen
+                    $commandData['fullTitle'] = $command->getDescription() . ' [' . $command->getName() . ']';
+                    $taskTypes[$commandIdentifier] = $commandData;
+                }
+            } else {
+                $taskTypes[$taskClass] = $data;
+            }
+        }
+        ksort($taskTypes);
+        return $taskTypes;
+    }
+
+    public function getCategorizedTaskTypes(): array
+    {
+        $categorizedTaskTypes = [];
+        foreach ($this->getAllTaskTypes() as $taskType => $taskInformation) {
+            $categorizedTaskTypes[$taskInformation['category']][$taskType] = $taskInformation;
+        }
+        ksort($categorizedTaskTypes);
+        return $categorizedTaskTypes;
+    }
+
+    public function getAdditionalFieldProviderForTask(string $taskType): ?AdditionalFieldProviderInterface
+    {
+        $taskInformation = $this->getAllTaskTypes()[$taskType];
+        $provider = null;
+        if (!empty($taskInformation['provider'])) {
+            /** @var AdditionalFieldProviderInterface $provider */
+            $provider = GeneralUtility::makeInstance($taskInformation['provider']);
+        }
+        return $provider;
+    }
+
+    public function createNewTask(string $taskType): AbstractTask
+    {
+        /** @var AbstractTask $task */
+        $task = GeneralUtility::makeInstance(
+            $this->getAllTaskTypes()[$taskType]['class']
+        );
+        if ($task instanceof ExecuteSchedulableCommandTask) {
+            $task->setTaskType($taskType);
+        }
+        return $task;
     }
 
     private function getLanguageService(): LanguageService

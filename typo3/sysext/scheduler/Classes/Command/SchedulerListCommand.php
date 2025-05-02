@@ -165,7 +165,7 @@ class SchedulerListCommand extends Command
                     $taskStatus[] = '<fg=yellow>' . $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:status.disabledByGroup') . '</>';
                 }
 
-                $taskTitle = $task['classTitle'] . (empty($task['additionalInformation']) ? '' : ' (' . $task['additionalInformation'] . ')');
+                $taskTitle = $task['fullTitle'] . (empty($task['additionalInformation']) ? '' : ' (' . $task['additionalInformation'] . ')');
                 $rows[] = [
                     $task['uid'],
                     $taskTitle,

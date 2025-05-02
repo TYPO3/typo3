@@ -45,15 +45,6 @@
 			<trans-unit id="hdg.lastRun">
 				<source>Last run</source>
 			</trans-unit>
-			<trans-unit id="availableCommands.headline">
-				<source>Available commands</source>
-			</trans-unit>
-			<trans-unit id="availableCommands.description">
-				<source>List of all available commands in this TYPO3 installation.</source>
-			</trans-unit>
-			<trans-unit id="availableCommands.noCommandsDefined">
-				<source>There are currently no commands available at all.</source>
-			</trans-unit>
 			<trans-unit id="availableTasks.headline">
 				<source>Available tasks</source>
 			</trans-unit>
@@ -104,9 +95,6 @@
 			</trans-unit>
 			<trans-unit id="label.cronjobSelected">
 				<source>Execute on next cron job</source>
-			</trans-unit>
-			<trans-unit id="label.extension">
-				<source>Extension</source>
 			</trans-unit>
 			<trans-unit id="label.frequency">
 				<source>Frequency</source>
@@ -233,9 +221,6 @@
 			</trans-unit>
 			<trans-unit id="label.errorClass.taskCount">
 				<source>Amount of broken tasks</source>
-			</trans-unit>
-			<trans-unit id="label.schedulableCommandName">
-				<source>Schedulable Command. Save and reopen to define command arguments</source>
 			</trans-unit>
 			<trans-unit id="label.saveAndCreateNewTask">
 				<source>Save and create new task</source>
@@ -588,6 +573,9 @@
 			</trans-unit>
 			<trans-unit id="editableGroupName.button.edit.label">
 				<source>Edit group name</source>
+			</trans-unit>
+			<trans-unit id="category">
+				<source>Category</source>
 			</trans-unit>
 		</body>
 	</file>

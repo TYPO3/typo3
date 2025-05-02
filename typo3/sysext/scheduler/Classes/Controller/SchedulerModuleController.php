@@ -40,7 +40,6 @@ use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
-use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
@@ -321,7 +320,7 @@ final class SchedulerModuleController
     protected function renderAddTaskFormView(ModuleTemplate $view, ServerRequestInterface $request): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
+        $availableTaskTypes = $this->taskService->getAllTaskTypes();
         // Class selection can be GET - link and + button in info screen.
         $queryParams = $request->getQueryParams()['tx_scheduler'] ?? [];
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
@@ -347,34 +346,32 @@ final class SchedulerModuleController
         ];
 
         // Group available tasks by extension name
-        $groupedTasks = [];
-        foreach ($availableTaskTypes as $class => $classInfo) {
-            $groupedTasks[$classInfo['extension']][$class] = $classInfo;
-        }
-        ksort($groupedTasks);
+        $categorizedTasks = $this->taskService->getCategorizedTaskTypes();
 
         // Additional field provider access $this->getCurrentAction() - Init it for them
         $this->currentAction = SchedulerManagementAction::ADD;
         // Get the extra fields to display for each task that needs some.
         $additionalFields = [];
-        foreach ($availableTaskTypes as $class => $registrationInfo) {
-            if (!empty($registrationInfo['provider'])) {
-                /** @var AdditionalFieldProviderInterface $providerObject */
-                $providerObject = GeneralUtility::makeInstance($registrationInfo['provider']);
-                if ($providerObject instanceof AdditionalFieldProviderInterface) {
-                    // Additional field provider receive form data by reference. But they shouldn't pollute our array here.
-                    $parseBodyForProvider = $request->getParsedBody()['tx_scheduler'] ?? [];
-                    $fields = $providerObject->getAdditionalFields($parseBodyForProvider, null, $this);
-                    if (is_array($fields)) {
-                        $additionalFields = $this->addPreparedAdditionalFields($additionalFields, $fields, (string)$class);
-                    }
-                }
+        foreach ($availableTaskTypes as $taskType => $registrationInfo) {
+            $providerObject = $this->taskService->getAdditionalFieldProviderForTask($taskType);
+            if ($providerObject === null) {
+                continue;
             }
+            // Additional field providers receive form data by reference. But they shouldn't pollute our array here.
+            $parseBodyForProvider = $request->getParsedBody()['tx_scheduler'] ?? [];
+            // Hand over the correct command so we can populate the additional fields right away
+            // In this case, the ExecuteSchedulableCommandTaskAdditionalFieldProvider is executed
+            // multiple times (for each CLI command once)
+            if ($registrationInfo['class'] === ExecuteSchedulableCommandTask::class) {
+                $parseBodyForProvider['taskType'] = $taskType;
+            }
+            $fields = $providerObject->getAdditionalFields($parseBodyForProvider, null, $this);
+            $additionalFields = array_merge($additionalFields, $this->preparedAdditionalFields($fields, $taskType));
         }
 
         $view->assignMultiple([
             'currentData' => $currentData,
-            'groupedTasks' => $groupedTasks,
+            'categorizedTasks' => $categorizedTasks,
             'registeredTaskGroups' => $this->getRegisteredTaskGroups(),
             'preSelectedTaskGroup' => (int)($request->getQueryParams()['groupId'] ?? 0),
             'frequencyOptions' => (array)($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions'] ?? []),
@@ -398,7 +395,7 @@ final class SchedulerModuleController
     protected function renderEditTaskFormView(ModuleTemplate $view, ServerRequestInterface $request, ?int $taskUid = null): ResponseInterface
     {
         $languageService = $this->getLanguageService();
-        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
+        $allTaskTypes = $this->taskService->getAllTaskTypes();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
         $moduleData = $request->getAttribute('moduleData');
         $taskUid = (int)($taskUid ?? $request->getQueryParams()['uid'] ?? $parsedBody['uid'] ?? 0);
@@ -436,12 +433,7 @@ final class SchedulerModuleController
             }
         }
 
-        // @todo workaround, will be removed once commands and tasks are consolidated.
-        if (isset($this->taskService->getRegisteredCommands()[$taskType])) {
-            $taskType = ExecuteSchedulableCommandTask::class;
-        }
-
-        if ($isInvalidTask || !isset($availableTaskTypes[$taskType]) || !(new TaskValidator())->isValid($task)) {
+        if ($isInvalidTask || !isset($allTaskTypes[$taskType]) || !(new TaskValidator())->isValid($task)) {
             // The task object is not valid anymore. Add flash message and go back to list view.
             $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidTaskClassEdit'), $taskType), ContextualFeedbackSeverity::ERROR);
             return $this->renderListTasksView($view, $moduleData);
@@ -470,16 +462,12 @@ final class SchedulerModuleController
         // Additional field provider access $this->getCurrentAction() - Init it for them
         $this->currentAction = SchedulerManagementAction::EDIT;
         $additionalFields = [];
-        if (!empty($availableTaskTypes[$taskType]['provider'])) {
-            $providerObject = GeneralUtility::makeInstance($availableTaskTypes[$taskType]['provider']);
-            if ($providerObject instanceof AdditionalFieldProviderInterface) {
-                // Additional field provider receive form data by reference. But they shouldn't pollute our array here.
-                $parseBodyForProvider = $request->getParsedBody()['tx_scheduler'] ?? [];
-                $fields = $providerObject->getAdditionalFields($parseBodyForProvider, $task, $this);
-                if (is_array($fields)) {
-                    $additionalFields = $this->addPreparedAdditionalFields($additionalFields, $fields, (string)$taskType);
-                }
-            }
+        $providerObject = $this->taskService->getAdditionalFieldProviderForTask($taskType);
+        if ($providerObject !== null) {
+            // Additional field providers receive form data by reference. But they shouldn't pollute our array here.
+            $parseBodyForProvider = $request->getParsedBody()['tx_scheduler'] ?? [];
+            $fields = $providerObject->getAdditionalFields($parseBodyForProvider, $task, $this);
+            $additionalFields = $this->preparedAdditionalFields($fields, (string)$taskType);
         }
 
         $view->assignMultiple([
@@ -571,13 +559,13 @@ final class SchedulerModuleController
     }
 
     /**
-     * Assemble display of list of scheduled tasks
+     * Assemble a listing of scheduled tasks
      */
     protected function renderListTasksView(ModuleTemplate $view, ModuleData $moduleData): ResponseInterface
     {
         $languageService = $this->getLanguageService();
         $data = $this->taskRepository->getGroupedTasks();
-        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
+        $allTaskTypes = $this->taskService->getAllTaskTypes();
 
         $groups = $data['taskGroupsWithTasks'] ?? [];
         $groups = array_map(
@@ -599,7 +587,7 @@ final class SchedulerModuleController
         );
         $view->makeDocHeaderModuleMenu();
         $this->addDocHeaderReloadButton($view);
-        if (!empty($availableTaskTypes)) {
+        if (!empty($allTaskTypes)) {
             $this->addDocHeaderAddTaskButton($view);
             $this->addDocHeaderAddTaskGroupButton($view);
         }
@@ -611,22 +599,22 @@ final class SchedulerModuleController
     {
         $languageService = $this->getLanguageService();
         $parsedBody = $request->getParsedBody()['tx_scheduler'] ?? [];
+        $taskType = $parsedBody['taskType'];
         $runningType = (int)($parsedBody['runningType'] ?? 0);
         $startTime = $parsedBody['start'] ?? 0;
         $endTime = $parsedBody['end'] ?? 0;
         $result = true;
-        $taskClass = '';
         if ($isNewTask) {
-            $taskClass = $this->taskSerializer->getClassNameFromTaskType($parsedBody['taskType'] ?? '');
-            if (!class_exists($taskClass)) {
+            // @todo: check how this could ever happen, that a task class is registered but not exists, this might be removed once we have a better registration API in place.
+            $taskClass = $this->taskService->getAllTaskTypes()[$taskType]['class'] ?? '';
+            if ($taskClass === '' || !class_exists($taskClass)) {
                 $result = false;
                 $this->addMessage($view, $languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.noTaskClassFound'), ContextualFeedbackSeverity::ERROR);
             }
         } else {
             try {
                 $taskUid = (int)($parsedBody['uid'] ?? 0);
-                $task = $this->taskRepository->findByUid($taskUid);
-                $taskClass = get_class($task);
+                $this->taskRepository->findByUid($taskUid);
             } catch (\OutOfBoundsException|\UnexpectedValueException $e) {
                 $result = false;
                 $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskNotFound'), $taskUid), ContextualFeedbackSeverity::ERROR);
@@ -672,13 +660,10 @@ final class SchedulerModuleController
                 }
             }
         }
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskClass]['additionalFields'])) {
-            /** @var AdditionalFieldProviderInterface $provider */
-            $provider = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskClass]['additionalFields']);
-            if ($provider instanceof AdditionalFieldProviderInterface) {
-                // Providers should add messages for failed validations on their own.
-                $result = $result && $provider->validateAdditionalFields($parsedBody, $this);
-            }
+        $provider = $this->taskService->getAdditionalFieldProviderForTask($taskType);
+        if ($provider !== null) {
+            // Providers should add messages for failed validations on their own.
+            $result = $result && $provider->validateAdditionalFields($parsedBody, $this);
         }
         return $result;
     }
@@ -689,13 +674,7 @@ final class SchedulerModuleController
     protected function createTask(ModuleTemplate $view, ServerRequestInterface $request): int
     {
         $taskType = $request->getParsedBody()['tx_scheduler']['taskType'];
-        /** @var AbstractTask $task */
-        $task = GeneralUtility::makeInstance(
-            $this->taskSerializer->getClassNameFromTaskType($taskType)
-        );
-        if ($task instanceof ExecuteSchedulableCommandTask) {
-            $task->setTaskType($taskType);
-        }
+        $task = $this->taskService->createNewTask($taskType);
         $task = $this->setTaskDataFromRequest($task, $request);
         if (!$this->taskRepository->add($task)) {
             throw new \RuntimeException('Unable to add task. Possible database error', 1641720169);
@@ -748,14 +727,8 @@ final class SchedulerModuleController
         $task->setDisabled($parsedBody['disable'] ?? false);
         $task->setDescription($parsedBody['description'] ?? '');
         $task->setTaskGroup((int)($parsedBody['task_group'] ?? 0));
-        $taskClass = get_class($task);
-        if (!empty($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskClass]['additionalFields'])) {
-            /** @var AdditionalFieldProviderInterface $provider */
-            $provider = GeneralUtility::makeInstance($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][$taskClass]['additionalFields']);
-            if ($provider instanceof AdditionalFieldProviderInterface) {
-                $provider->saveAdditionalFields($parsedBody, $task);
-            }
-        }
+        $provider = $this->taskService->getAdditionalFieldProviderForTask($task->getTaskType());
+        $provider?->saveAdditionalFields($parsedBody, $task);
         return $task;
     }
 
@@ -808,10 +781,11 @@ final class SchedulerModuleController
     /**
      * Prepared additional fields from field providers for rendering.
      */
-    protected function addPreparedAdditionalFields(array $currentAdditionalFields, array $newAdditionalFields, string $taskType): array
+    protected function preparedAdditionalFields(array $additionalFields, string $taskType): array
     {
-        foreach ($newAdditionalFields as $fieldID => $fieldInfo) {
-            $currentAdditionalFields[] = [
+        $result = [];
+        foreach ($additionalFields as $fieldID => $fieldInfo) {
+            $result[] = [
                 'taskType' => $taskType,
                 'fieldID' => $fieldID,
                 'htmlClassName' => strtolower(str_replace('\\', '-', $taskType)),
@@ -826,7 +800,7 @@ final class SchedulerModuleController
                 'description' => $fieldInfo['description'] ?? '',
             ];
         }
-        return $currentAdditionalFields;
+        return $result;
     }
 
     protected function addDocHeaderReloadButton(ModuleTemplate $moduleTemplate): void
@@ -927,12 +901,11 @@ final class SchedulerModuleController
 
     protected function getHumanReadableTaskName(AbstractTask $task): string
     {
-        $class = get_class($task);
-        $availableTaskTypes = $this->taskService->getAvailableTaskTypes();
-        if (!array_key_exists($class, $availableTaskTypes)) {
-            throw new \RuntimeException('Class ' . $class . ' not found in list of registered task classes', 1641658569);
+        $taskInformation = $this->taskService->getAllTaskTypes()[$task->getTaskType()];
+        if (!isset($taskInformation)) {
+            throw new \RuntimeException('Task Type ' . $task->getTaskType() . ' not found in list of registered tasks', 1641658569);
         }
-        return $availableTaskTypes[$class]['title'] . ' (' . $availableTaskTypes[$class]['extension'] . ')';
+        return $taskInformation['fullTitle'];
     }
 
     /**

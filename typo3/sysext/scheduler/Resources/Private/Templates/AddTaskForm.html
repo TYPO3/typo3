@@ -40,15 +40,15 @@
                             <div class="form-wizards-wrap">
                                 <div class="form-wizards-item-element">
                                     <select name="tx_scheduler[taskType]" id="task_type" class="form-select">
-                                        <f:for each="{groupedTasks}" as="taskGroup" key="extension">
-                                            <optgroup label="{extension}">
-                                                <f:for each="{taskGroup}" as="taskInfo" key="taskType">
+                                        <f:for each="{categorizedTasks}" as="tasks" key="category">
+                                            <optgroup label="{category}">
+                                                <f:for each="{tasks}" as="taskInfo" key="taskType">
                                                     <option
                                                         value="{taskType}"
                                                         title="{taskInfo.description}"
                                                         {f:if(condition:'{currentData.taskType} == {taskType}',then:'selected="selected"')}
                                                     >
-                                                    {taskInfo.title}
+                                                    {taskInfo.fullTitle}
                                                     </option>
                                                 </f:for>
                                             </optgroup>

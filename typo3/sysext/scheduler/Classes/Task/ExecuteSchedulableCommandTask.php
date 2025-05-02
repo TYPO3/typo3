@@ -107,8 +107,6 @@ class ExecuteSchedulableCommandTask extends AbstractTask
      */
     public function getAdditionalInformation(): string
     {
-        $label = $this->commandIdentifier;
-
         try {
             $commandRegistry = GeneralUtility::makeInstance(CommandRegistry::class);
             $schedulableCommand = $commandRegistry->getCommandByIdentifier($this->commandIdentifier);
@@ -123,23 +121,23 @@ class ExecuteSchedulableCommandTask extends AbstractTask
             $input = new ArrayInput($this->getParameters(true), $schedulableCommand->getDefinition());
             $arguments = $input->__toString();
         } catch (\Symfony\Component\Console\Exception\RuntimeException|InvalidArgumentException $e) {
-            return $label . "\n"
+            return $this->commandIdentifier . "\n"
                 . sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorParsingArguments'),
                     $e->getMessage()
                 );
         } catch (InvalidOptionException $e) {
-            return $label . "\n"
+            return $this->commandIdentifier . "\n"
                 . sprintf(
                     $this->getLanguageService()->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.errorParsingOptions'),
                     $e->getMessage()
                 );
         }
         if ($arguments !== '') {
-            $label .= ' ' . $arguments;
+            return $this->commandIdentifier . ' ' . $arguments;
         }
 
-        return $label;
+        return '';
     }
 
     public function getArguments(): array

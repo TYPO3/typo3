@@ -49,7 +49,7 @@ final class SchedulerSetupCheckController
             'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
         ]);
 
-        // Display information about last automated run, as stored in the system registry.
+        // Display information about the last automated run, as stored in the system registry.
         $lastRun = $this->registry->get('tx_scheduler', 'lastRun');
         $lastRunMessageLabel = 'msg.noLastRun';
         $lastRunMessageLabelArguments = [];

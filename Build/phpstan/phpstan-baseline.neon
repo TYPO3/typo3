@@ -3655,18 +3655,6 @@ parameters:
 			path: ../../typo3/sysext/reports/Classes/Task/SystemStatusUpdateTaskNotificationEmailField.php
 
 		-
-			message: '#^Call to function is_array\(\) with array will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
-			message: '#^Instanceof between TYPO3\\CMS\\Scheduler\\AdditionalFieldProviderInterface and TYPO3\\CMS\\Scheduler\\AdditionalFieldProviderInterface will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 3
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between ''save'' and ''save'' will always evaluate to true\.$#'
 			identifier: identical.alwaysTrue
 			count: 2

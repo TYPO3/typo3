@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
-use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3Fluid\Fluid\Core\ViewHelper\TagBuilder;
 
 /**
@@ -41,7 +40,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     /**
      * @var Command[]
      */
-    protected $schedulableCommands = [];
+    protected array $schedulableCommands = [];
 
     /**
      * @var ExecuteSchedulableCommandTask|null
@@ -73,18 +72,20 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
             $this->task->setScheduler();
         }
 
-        $fields = [
-            'schedulableCommands' => $this->getSchedulableCommandsField($txSchedulerPostData),
-        ];
-
+        $fields = [];
+        // This happens when a new task is going to be added, so we fake a task object to get the default
+        // values etc.
+        if ($this->task === null && ($txSchedulerPostData['taskType'] ?? null) && isset($this->schedulableCommands[$txSchedulerPostData['taskType']])) {
+            $command = $this->schedulableCommands[$txSchedulerPostData['taskType']];
+            $this->task = new ExecuteSchedulableCommandTask();
+            $this->task->setTaskType($command->getName());
+        }
         if ($this->task !== null && isset($this->schedulableCommands[$this->task->getCommandIdentifier()])) {
             $command = $this->schedulableCommands[$this->task->getCommandIdentifier()];
             $argumentFields = $this->getCommandArgumentFields($command->getDefinition());
             $fields = array_merge($fields, $argumentFields);
             $optionFields = $this->getCommandOptionFields($command->getDefinition());
             $fields = array_merge($fields, $optionFields);
-            // @todo: this seems to be superfluous
-            GeneralUtility::makeInstance(SchedulerTaskRepository::class)->update($this->task);
         }
 
         return $fields;
@@ -95,11 +96,11 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule): bool
     {
-        if (!isset($this->schedulableCommands[$submittedData['task_executeschedulablecommand']['command']])) {
+        if (!isset($this->schedulableCommands[$submittedData['taskType'] ?? null])) {
             return false;
         }
 
-        $command = $this->schedulableCommands[$submittedData['task_executeschedulablecommand']['command']];
+        $command = $this->schedulableCommands[$submittedData['taskType']];
 
         $flashMessageService = GeneralUtility::makeInstance(FlashMessageService::class);
 
@@ -168,11 +169,12 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): bool
     {
-        $command = $this->schedulableCommands[$submittedData['task_executeschedulablecommand']['command']];
+        $taskType = $submittedData['taskType'];
+        $command = $this->schedulableCommands[$taskType];
 
         /** @var ExecuteSchedulableCommandTask $task */
-        $task->setCommandIdentifier($submittedData['task_executeschedulablecommand']['command']);
-        $task->setTaskType($submittedData['task_executeschedulablecommand']['command']);
+        $task->setCommandIdentifier($taskType);
+        $task->setTaskType($taskType);
         $arguments = [];
         foreach ((array)($submittedData['task_executeschedulablecommand']['arguments'] ?? []) as $argumentName => $argumentValue) {
             try {
@@ -211,7 +213,7 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
 
         $task->setTaskParameters(
             [
-                'commandIdentifier' => $submittedData['task_executeschedulablecommand']['command'],
+                'commandIdentifier' => $taskType,
                 'arguments' => $arguments,
                 'options' => $options,
                 'optionValues' => $optionValues,
@@ -221,29 +223,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
         $task->setOptions($options);
         $task->setOptionValues($optionValues);
         return true;
-    }
-
-    /**
-     * Gets a select field containing all possible schedulable commands
-     */
-    protected function getSchedulableCommandsField(array $txSchedulerPostData): array
-    {
-        $currentlySelectedCommand = $this->task !== null
-            ? $this->task->getCommandIdentifier()
-            // Use value from POST if given. Happens when 'add task' is re-rendered due to
-            // broken / incomplete input data, and if such a task is added from the
-            // "info" submodule.
-            : $txSchedulerPostData['task_executeschedulablecommand']['command'] ?? '';
-        $options = [];
-        foreach ($this->schedulableCommands as $commandIdentifier => $command) {
-            $options[$commandIdentifier] = $commandIdentifier . ': ' . $command->getDescription();
-        }
-        $fieldCode = $this->renderSelectField($options, $currentlySelectedCommand);
-        return [
-            'code' => $fieldCode,
-            'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:label.schedulableCommandName',
-            'type' => 'select',
-        ];
     }
 
     /**
@@ -339,35 +318,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     protected function getOptionDescription(InputOption $option): string
     {
         return $option->getDescription();
-    }
-
-    protected function renderSelectField(array $options, string $selectedOptionValue): string
-    {
-        $selectTag = new TagBuilder();
-        $selectTag->setTagName('select');
-        $selectTag->forceClosingTag(true);
-        $selectTag->addAttribute('id', 'schedulableCommands');
-        $selectTag->addAttribute('class', 'form-select');
-        $selectTag->addAttribute('name', 'tx_scheduler[task_executeschedulablecommand][command]');
-
-        $optionsHtml = '';
-        foreach ($options as $value => $label) {
-            $optionTag = new TagBuilder();
-            $optionTag->setTagName('option');
-            $optionTag->forceClosingTag(true);
-            $optionTag->addAttribute('title', (string)$label);
-            $optionTag->addAttribute('value', (string)$value);
-            $optionTag->setContent($label);
-
-            if ($value === $selectedOptionValue) {
-                $optionTag->addAttribute('selected', 'selected');
-            }
-
-            $optionsHtml .= $optionTag->render();
-        }
-
-        $selectTag->setContent($optionsHtml);
-        return $selectTag->render();
     }
 
     /**

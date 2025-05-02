@@ -54,8 +54,7 @@ final class AvailableSchedulerTasksController
                 'day' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'] ?? 'd-m-y',
                 'time' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'] ?? 'H:i',
             ],
-            'registeredClasses' => $this->taskService->getAvailableTaskTypes(),
-            'commands' => $this->taskService->getRegisteredCommands(),
+            'categorizedTasks' => $this->taskService->getCategorizedTaskTypes(),
         ]);
         return $view->renderResponse('InfoScreen');
     }
