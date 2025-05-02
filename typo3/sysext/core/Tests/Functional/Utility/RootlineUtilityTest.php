@@ -1645,4 +1645,101 @@ final class RootlineUtilityTest extends FunctionalTestCase
         self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
         self::assertSame('second', GeneralUtility::makeInstance(SiteFinder::class)->getSiteByRootPageId($result[0]['uid'])->getIdentifier());
     }
+
+    #[Test]
+    public function mountedPageVariant1GenerateExpectedRootline(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RootlineUtility_MountPointVariant1.csv');
+        $this->writeSiteConfiguration(
+            'site1',
+            $this->buildSiteConfiguration(10000, 'https://site1.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'site2',
+            $this->buildSiteConfiguration(10100, 'https://site2.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $result = (new RootlineUtility(10002, '10000-10100', new Context()))->get();
+        $testFields = ['uid', 'pid', 'title'];
+        $expected = [
+            2 => [
+                'uid' => 10002,
+                'pid' => 10001,
+                'title' => 'sub-1-1-1',
+            ],
+            1 => [
+                'uid' => 10001,
+                'pid' => 10000,
+                'title' => 'sub-1-1',
+            ],
+            0 => [
+                'uid' => 10100,
+                'pid' => 0,
+                'title' => 'site-2',
+            ],
+        ];
+        self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+        self::assertCount(3, $result);
+        self::assertArrayHasKey(0, $result);
+        self::assertIsArray($result[0]);
+        self::assertSame(10000, $result[0]['_MOUNTED_FROM']);
+        self::assertSame('10000-10100', $result[0]['_MP_PARAM']);
+        self::assertArrayNotHasKey('_MOUNT_PAGE', $result[0]);
+    }
+
+    #[Test]
+    public function mountedPageVariant2GenerateExpectedRootline(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/RootlineUtility_MountPointVariant2.csv');
+        $this->writeSiteConfiguration(
+            'site1',
+            $this->buildSiteConfiguration(10000, 'https://site1.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'site2',
+            $this->buildSiteConfiguration(10100, 'https://site2.acme.com/'),
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $result = (new RootlineUtility(10002, '10000-10100', new Context()))->get();
+        $testFields = ['uid', 'pid', 'title'];
+        $expected = [
+            2 => [
+                'uid' => 10002,
+                'pid' => 10001,
+                'title' => 'sub-1-1-1',
+            ],
+            1 => [
+                'uid' => 10001,
+                'pid' => 10000,
+                'title' => 'sub-1-1',
+            ],
+            0 => [
+                'uid' => 10000,
+                'pid' => 0,
+                'title' => 'site-1',
+            ],
+        ];
+        self::assertSame($expected, $this->filterExpectedValues($result, $testFields));
+        self::assertCount(3, $result);
+        self::assertArrayHasKey(0, $result);
+        self::assertIsArray($result[0]);
+        self::assertSame(10000, $result[0]['_MOUNTED_FROM']);
+        self::assertSame('10000-10100', $result[0]['_MP_PARAM']);
+        self::assertTrue($result[0]['_MOUNT_OL']);
+        self::assertArrayHasKey('_MOUNT_PAGE', $result[0]);
+        self::assertIsArray($result[0]['_MOUNT_PAGE']);
+        self::assertSame(10100, $result[0]['_MOUNT_PAGE']['uid']);
+        self::assertSame(0, $result[0]['_MOUNT_PAGE']['pid']);
+        self::assertSame('site-2', $result[0]['_MOUNT_PAGE']['title']);
+    }
 }

@@ -723,7 +723,11 @@ class RootlineUtility
                 'cte.__CTE_LEVEL__',
             ]))
             ->from('cte')
-            ->orderBy('cte.__CTE_LEVEL__', 'DESC')
+            // It's important to traverse determined rootline records in the correct order, which means from the page
+            // record down to the rootpage. The recursive CTE builds up the CTE level starting from current record as
+            // level 1 and incrementing the level for each parent record, which means that we need to order by the
+            // level in ascending order (1, 2, 3, 4).
+            ->orderBy('cte.__CTE_LEVEL__', 'ASC')
             ->addOrderBy('cte.uid', 'ASC')
             ->innerJoin(
                 'cte',
@@ -775,8 +779,6 @@ class RootlineUtility
                 $mountPointParameter = !empty($this->parsedMountPointParameters) ? $this->mountPointParameter : '';
                 $rootlineUtility = GeneralUtility::makeInstance(self::class, $recordId, $mountPointParameter, $this->context);
                 $rootline = $rootlineUtility->get();
-                // Reverse sub-rootline again to process entries in correct order.
-                ksort($rootline);
                 foreach ($rootline as $rootlineRecord) {
                     $records[] = $rootlineRecord;
                 }
@@ -793,7 +795,10 @@ class RootlineUtility
             $records[] = $record;
 
         }
-        return $records;
+        // `$records` are build having the current record as first item. We need to revers it here to ensure correct
+        // rootline completion and indexing within `RootlineUtility::generateRootlineCache()`, which expects to have
+        // a record with `pid=0` as first item in the returned records. Note, that keys are not preserved on purpose.
+        return array_reverse($records);
     }
 
     /**
