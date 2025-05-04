@@ -44,6 +44,7 @@ use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
 use TYPO3\CMS\Scheduler\Exception\InvalidTaskException;
+use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Scheduler;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
@@ -297,7 +298,8 @@ final class SchedulerModuleController
             $isTaskDisabled = $task->isDisabled();
             if ($isTaskDisabled && $isTaskQueuedForExecution) {
                 $task->setDisabled(false);
-                $task->registerSingleExecution($this->context->getAspect('date')->get('timestamp'));
+                $execution = Execution::createSingleExecution($this->context->getAspect('date')->get('timestamp'));
+                $task->setExecution($execution);
                 $this->addMessage($view, sprintf($languageService->sL('LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.taskEnabledAndQueuedForExecution'), $taskName, $taskUid));
             } elseif ($isTaskDisabled) {
                 $task->setDisabled(false);
@@ -714,9 +716,9 @@ final class SchedulerModuleController
     {
         $parsedBody = $request->getParsedBody()['tx_scheduler'];
         if ((int)$parsedBody['runningType'] === AbstractTask::TYPE_SINGLE) {
-            $task->registerSingleExecution($this->getTimestampFromDateString($parsedBody['start']));
+            $execution = Execution::createSingleExecution($this->getTimestampFromDateString($parsedBody['start']));
         } else {
-            $task->registerRecurringExecution(
+            $execution = Execution::createRecurringExecution(
                 $this->getTimestampFromDateString($parsedBody['start']),
                 is_numeric($parsedBody['frequency']) ? (int)$parsedBody['frequency'] : 0,
                 !empty($parsedBody['end'] ?? '') ? $this->getTimestampFromDateString($parsedBody['end']) : 0,
@@ -724,6 +726,7 @@ final class SchedulerModuleController
                 !is_numeric($parsedBody['frequency']) ? $parsedBody['frequency'] : '',
             );
         }
+        $task->setExecution($execution);
         $task->setDisabled($parsedBody['disable'] ?? false);
         $task->setDescription($parsedBody['description'] ?? '');
         $task->setTaskGroup((int)($parsedBody['task_group'] ?? 0));

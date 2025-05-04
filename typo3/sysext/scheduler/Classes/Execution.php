@@ -68,6 +68,63 @@ class Execution
      */
     protected $isNewSingleExecution = false;
 
+    public static function createFromDetails(array $details): self
+    {
+        $obj = new self();
+        $obj->setStart((int)$details['start']);
+        $obj->setEnd((int)$details['end']);
+        $obj->setInterval((int)$details['interval']);
+        $obj->setMultiple((bool)$details['multiple']);
+        $obj->setCronCmd((string)$details['cronCmd']);
+        $obj->setIsNewSingleExecution((bool)$details['isNewSingleExecution']);
+        return $obj;
+    }
+
+    /**
+     * Registers a single execution of the task
+     *
+     * @param int $timestamp Timestamp of the next execution
+     */
+    public static function createSingleExecution(int $timestamp): self
+    {
+        $obj = new self();
+        $obj->setStart($timestamp);
+        $obj->setInterval(0);
+        $obj->setEnd($timestamp);
+        $obj->setCronCmd('');
+        $obj->setMultiple(false);
+        $obj->setIsNewSingleExecution(true);
+        return $obj;
+    }
+
+    /**
+     * Registers a recurring execution of the task
+     *
+     * @param int $start The first date/time when this execution should occur (timestamp)
+     * @param int $interval Execution interval in seconds
+     * @param int $end The last date/time when this execution should occur (timestamp)
+     * @param bool $multiple Set to FALSE if multiple executions of this task are not permitted in parallel
+     * @param string $cronCmd Used like in crontab (minute hour day month weekday)
+     */
+    public static function createRecurringExecution(int $start, int $interval, int $end = 0, bool $multiple = false, string $cronCmd = ''): self
+    {
+        $obj = new self();
+        // Set general values
+        $obj->setStart($start);
+        $obj->setEnd($end);
+        $obj->setMultiple($multiple);
+        if (empty($cronCmd)) {
+            // Use interval
+            $obj->setInterval($interval);
+            $obj->setCronCmd('');
+        } else {
+            // Use cron syntax
+            $obj->setInterval(0);
+            $obj->setCronCmd($cronCmd);
+        }
+        return $obj;
+    }
+
     /**********************************
      * Setters and getters
      **********************************/
@@ -280,18 +337,6 @@ class Execution
             $result = $this->getEnd() < time();
         }
         return $result;
-    }
-
-    public static function createFromDetails(array $details): self
-    {
-        $obj = new self();
-        $obj->setStart((int)$details['start']);
-        $obj->setEnd((int)$details['end']);
-        $obj->setInterval((int)$details['interval']);
-        $obj->setMultiple((bool)$details['multiple']);
-        $obj->setCronCmd((string)$details['cronCmd']);
-        $obj->setIsNewSingleExecution((bool)$details['isNewSingleExecution']);
-        return $obj;
     }
 
     public function toArray(): array

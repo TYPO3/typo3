@@ -302,55 +302,6 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * Registers a single execution of the task
-     *
-     * @param int $timestamp Timestamp of the next execution
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function registerSingleExecution($timestamp)
-    {
-        $execution = new Execution();
-        $execution->setStart($timestamp);
-        $execution->setInterval(0);
-        $execution->setEnd($timestamp);
-        $execution->setCronCmd('');
-        $execution->setMultiple(false);
-        $execution->setIsNewSingleExecution(true);
-        // Replace existing execution object
-        $this->execution = $execution;
-    }
-
-    /**
-     * Registers a recurring execution of the task
-     *
-     * @param int $start The first date/time where this execution should occur (timestamp)
-     * @param int $interval Execution interval in seconds
-     * @param int $end The last date/time where this execution should occur (timestamp)
-     * @param bool $multiple Set to FALSE if multiple executions of this task are not permitted in parallel
-     * @param string $cron_cmd Used like in crontab (minute hour day month weekday)
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function registerRecurringExecution($start, $interval, $end = 0, $multiple = false, $cron_cmd = '')
-    {
-        $execution = GeneralUtility::makeInstance(Execution::class);
-        // Set general values
-        $execution->setStart($start);
-        $execution->setEnd($end);
-        $execution->setMultiple($multiple);
-        if (empty($cron_cmd)) {
-            // Use interval
-            $execution->setInterval($interval);
-            $execution->setCronCmd('');
-        } else {
-            // Use cron syntax
-            $execution->setInterval(0);
-            $execution->setCronCmd($cron_cmd);
-        }
-        // Replace existing execution object
-        $this->execution = $execution;
-    }
-
-    /**
      * Sets the internal execution object
      *
      * @param Execution $execution The execution to add
