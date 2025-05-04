@@ -54,12 +54,13 @@ class FieldMapElement extends AbstractFormElement
 
         $fieldsHtml = '';
         if (is_array($columns) && $columns !== []) {
+            $itemValue = is_array($itemValue) ? $itemValue : [];
             foreach ($columns as $fieldName => $fieldConfig) {
                 if (!in_array($fieldConfig['config']['type'], $this->supportedFieldTypes, true)) {
                     continue;
                 }
                 $fieldName = htmlspecialchars($fieldName);
-                $fieldValue = is_array($itemValue) && isset($itemValue[$fieldName]) ? htmlspecialchars((string)$itemValue[$fieldName]) : '';
+                $fieldValue = isset($itemValue[$fieldName]) ? htmlspecialchars((string)$itemValue[$fieldName]) : '';
                 $fieldsHtml .= '
                     <div class="form-group">
                         <label class="form-label" for="' . $fieldName . '">
