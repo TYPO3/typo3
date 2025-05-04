@@ -1,0 +1,3 @@
+tx_testjsonfields_domain_model_example,
+,"uid","pid","title","native_json_as_text_field","tca_json_field",
+,1,0,"test 1","{""nativeJsonAsTextField"": 123}","{""tcaJsonField"": 987}"

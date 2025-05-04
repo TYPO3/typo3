@@ -18,6 +18,9 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Extbase\Persistence\Generic\Storage;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Types\Exception\TypesException;
+use Doctrine\DBAL\Types\Type;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -86,7 +89,7 @@ readonly class Typo3DbBackend implements BackendInterface
         }
         try {
             $connection = $this->connectionPool->getConnectionForTable($tableName);
-            $connection->insert($tableName, $fieldValues);
+            $connection->insert($tableName, $fieldValues, $this->getTypesForDataset($tableName, $fieldValues));
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getMessage(), 1470230766, $e);
         }
@@ -120,7 +123,7 @@ readonly class Typo3DbBackend implements BackendInterface
 
         try {
             $connection = $this->connectionPool->getConnectionForTable($tableName);
-            $connection->update($tableName, $fieldValues, ['uid' => $uid]);
+            $connection->update($tableName, $fieldValues, ['uid' => $uid], $this->getTypesForDataset($tableName, $fieldValues));
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getMessage(), 1470230767, $e);
         }
@@ -163,7 +166,12 @@ readonly class Typo3DbBackend implements BackendInterface
         }
 
         try {
-            $this->connectionPool->getConnectionForTable($tableName)->update($tableName, $fieldValues, $where);
+            $this->connectionPool->getConnectionForTable($tableName)->update(
+                $tableName,
+                $fieldValues,
+                $where,
+                $this->getTypesForDataset($tableName, $fieldValues),
+            );
         } catch (DBALException $e) {
             throw new SqlErrorException($e->getMessage(), 1470230768, $e);
         }
@@ -649,5 +657,36 @@ readonly class Typo3DbBackend implements BackendInterface
                 )
             );
         }
+    }
+
+    /**
+     * @param array<string, mixed> $fieldValues
+     * @return array<string, Type|ParameterType>
+     */
+    private function getTypesForDataset(string $tableName, array $fieldValues): array
+    {
+        $connection = $this->connectionPool->getConnectionForTable($tableName);
+        $tableInfo = $connection->getSchemaInformation()->getTableInfo($tableName);
+        $types = [];
+        foreach ($fieldValues as $key => $value) {
+            if (!$tableInfo->hasColumnInfo($key)) {
+                // Field is not part of the database schema information, therefore no type is set here and
+                // Doctrine DBAL handles the value with its default binding type (ParameterType::STRING).
+                continue;
+            }
+            try {
+                // `ColumnInfo->getType()` returns the Doctrine type (e.g. JsonType), which carries the
+                // `PHP value <-> database value` conversion methods applied by Doctrine DBAL. Each Doctrine
+                // type maps to a plain binding type (e.g. ParameterType::STRING for VARCHAR/CHAR/TEXT/...),
+                // which binds the value as-is without applying any conversion. Extbase already performs that
+                // conversion itself, which is why the plain binding type is enforced here. This additionally
+                // prevents `Connection::ensureDatabaseValueTypes()` from adding the Doctrine type looked up
+                // from the database schema.
+                $types[$key] = $tableInfo->getColumnInfo($key)->getType()->getBindingType();
+            } catch (TypesException) {
+                // Ignore, no type to be set
+            }
+        }
+        return $types;
     }
 }

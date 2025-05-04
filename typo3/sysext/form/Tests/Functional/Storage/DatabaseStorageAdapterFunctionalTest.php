@@ -225,8 +225,7 @@ final class DatabaseStorageAdapterFunctionalTest extends FunctionalTestCase
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
 
         $this->expectException(PersistenceManagerException::class);
-        // @todo Needs to be changed to `1767199423` with https://review.typo3.org/c/Packages/TYPO3.CMS/+/89293
-        $this->expectExceptionCode(1767199444);
+        $this->expectExceptionCode(1767199423);
 
         $subject->read(new FormIdentifier('100'), $request);
     }

@@ -17,6 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Persistence;
 
+use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
@@ -39,17 +43,21 @@ use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PersonRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
+use TYPO3Tests\TestJsonFields\Domain\Model\Example;
+use TYPO3Tests\TestJsonFields\Domain\Repository\ExampleRepository;
 
 final class AddTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = [
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
+        'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_json_fields',
     ];
 
     private PersistenceManager $persistentManager;
     private BlogRepository $blogRepository;
     private PersonRepository $personRepository;
     private PostRepository $postRepository;
+    private ExampleRepository $exampleRepository;
 
     protected function setUp(): void
     {
@@ -59,6 +67,7 @@ final class AddTest extends FunctionalTestCase
         $this->blogRepository = $this->get(BlogRepository::class);
         $this->personRepository = $this->get(PersonRepository::class);
         $this->postRepository = $this->get(PostRepository::class);
+        $this->exampleRepository = $this->get(ExampleRepository::class);
 
         $request = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -290,5 +299,31 @@ final class AddTest extends FunctionalTestCase
         $this->persistentManager->persistAll();
 
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/TestResultAddObjectStoresDomainObjectRelationAsUidNotToStringInHistory.csv');
+    }
+
+    #[Test]
+    public function addObjectWithJsonAsStringsCanBePersisted(): void
+    {
+        $platform = $this->get(ConnectionPool::class)->getConnectionForTable('tx_testjsonfields_domain_model_example')->getDatabasePlatform();
+        $platformName = match (true) {
+            ($platform instanceof DoctrineMySQLPlatform) => 'MySQL',
+            ($platform instanceof DoctrineMariaDBPlatform) => 'MariaDB',
+            ($platform instanceof DoctrinePostgreSQLPlatform) => 'Postgres',
+            ($platform instanceof DoctrineSQLitePlatform) => 'SQLite',
+            default => throw new \RuntimeException(
+                sprintf('Unsupported database platform %s', $platform::class),
+                1746384276,
+            ),
+        };
+
+        $newExample = new Example();
+        $newExample->setTitle('test 1');
+        $newExample->setNativeJsonAsTextField(json_encode(['nativeJsonAsTextField' => 123], JSON_THROW_ON_ERROR));
+        $newExample->setTcaJsonField(json_encode(['tcaJsonField' => 987], JSON_THROW_ON_ERROR));
+
+        $this->exampleRepository->add($newExample);
+        $this->persistentManager->persistAll();
+
+        $this->assertCSVDataSet(__DIR__ . sprintf('/Fixtures/TestJsonFields/repositoryAdd_assertFor%s.csv', $platformName));
     }
 }
