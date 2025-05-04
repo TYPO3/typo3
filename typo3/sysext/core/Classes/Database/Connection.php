@@ -29,7 +29,6 @@ use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\ServerVersionProvider;
-use Doctrine\DBAL\Types\Type;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Cache\CacheManager;
@@ -428,23 +427,13 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     protected function ensureDatabaseValueTypes(string $tableName, array &$data, array &$types): void
     {
-        // If types are incoming already (meaning they're hand over to insert() for instance), don't auto-set them.
-        $setAllTypes = $types === [];
         $tableInfo = $this->getSchemaInformation()->getTableInfo($tableName);
-        $databasePlatform = $this->getDatabasePlatform();
-        array_walk($data, function (mixed &$value, string $key) use ($tableInfo, $setAllTypes, &$types, $databasePlatform): void {
-            $typeName = ($types[$key] ?? '');
-            if (!$setAllTypes && is_string($typeName) && $typeName !== '' && Type::hasType($typeName)) {
-                $types[$key] = Type::getType($typeName)->getBindingType();
-            } elseif ($typeName instanceof Type) {
-                $types[$key] = $typeName->getBindingType();
-            }
-            if ($tableInfo->hasColumnInfo($key)) {
-                $type = $tableInfo->getColumnInfo($key)->getType();
-                if ($setAllTypes) {
-                    $types[$key] = $type->getBindingType();
-                }
-                $value = $type->convertToDatabaseValue($value, $databasePlatform);
+        array_walk($data, function (mixed &$value, string $key) use ($tableInfo, &$types): void {
+            // Use database schema field type in case no Type or ParameterType has been provided manually
+            // for field `$key`, falling back to ParameterType::STRING in case field does not exists in
+            // the schema, which is the default ParameterType used by doctrine anyway.
+            if (!isset($types[$key]) && $tableInfo->hasColumnInfo($key)) {
+                $types[$key] = $tableInfo->getColumnInfo($key)->getType();
             }
         });
     }

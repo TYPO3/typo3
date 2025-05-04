@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="EXT:test_json_fields/Resources/Private/Language/locallang_db.xlf" date="2020-06-03T15:50:00Z" product-name="test_json_fields">
+    <header/>
+    <body>
+      <trans-unit id="tx_testjsonfields_domain_model_example">
+        <source>JSONExample</source>
+      </trans-unit>
+      <trans-unit id="tx_testjsonfields_domain_model_example.title">
+        <source>Blog title</source>
+      </trans-unit>
+      <trans-unit id="tx_testjsonfields_domain_model_example.description">
+        <source>Short description</source>
+      </trans-unit>
+      <trans-unit id="tx_testjsonfields_domain_model_example.native_json_as_textfield">
+        <source>Native JSON field as TCA type=text</source>
+      </trans-unit>
+      <trans-unit id="tx_testjsonfields_domain_model_example.tca_json_field">
+        <source>TCA type=json</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
