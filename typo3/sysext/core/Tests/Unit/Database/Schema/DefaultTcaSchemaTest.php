@@ -1906,7 +1906,7 @@ final class DefaultTcaSchemaTest extends UnitTestCase
             Type::getType('string'),
             [
                 'length' => 255,
-                'default' => '',
+                'default' => null,
                 'notnull' => false,
             ]
         );

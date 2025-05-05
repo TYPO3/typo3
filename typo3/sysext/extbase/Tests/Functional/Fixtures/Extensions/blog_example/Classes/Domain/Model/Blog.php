@@ -82,7 +82,12 @@ class Blog extends AbstractEntity
         $this->logo = new ObjectStorage();
     }
 
-    public function getSubtitle(): string
+    public function setSubtitle(?string $subtitle): void
+    {
+        $this->subtitle = $subtitle;
+    }
+
+    public function getSubtitle(): ?string
     {
         return $this->subtitle;
     }
@@ -180,10 +185,5 @@ class Blog extends AbstractEntity
     public function getAdministrator(): Administrator|LazyLoadingProxy|null
     {
         return $this->administrator;
-    }
-
-    public function setSubtitle(?string $subtitle): void
-    {
-        $this->subtitle = $subtitle;
     }
 }

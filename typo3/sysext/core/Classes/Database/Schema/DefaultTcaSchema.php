@@ -803,7 +803,7 @@ class DefaultTcaSchema
                             Types::STRING,
                             [
                                 'length' => $length,
-                                'default' => '',
+                                'default' => $nullable ? null : '',
                                 'notnull' => !$nullable,
                             ]
                         );
