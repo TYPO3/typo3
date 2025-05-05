@@ -176,15 +176,25 @@ class BackendUserController extends ActionController
 
         $this->addMainMenu('list');
         $buttonBar = $this->moduleTemplate->getDocHeaderComponent()->getButtonBar();
-        $addUserButton = $buttonBar->makeLinkButton()
+        $createEditorButton = $buttonBar->makeLinkButton()
             ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
-            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.backendUser.create', 'beuser'))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.editor.create', 'beuser'))
             ->setShowLabelText(true)
             ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
                 'edit' => ['be_users' => [0 => 'new']],
                 'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
             ]));
-        $buttonBar->addButton($addUserButton);
+        $buttonBar->addButton($createEditorButton, ButtonBar::BUTTON_POSITION_LEFT);
+        $createAdminButton = $buttonBar->makeLinkButton()
+            ->setIcon($this->iconFactory->getIcon('actions-plus', IconSize::SMALL))
+            ->setTitle(LocalizationUtility::translate('LLL:EXT:beuser/Resources/Private/Language/locallang.xlf:btn.admin.create', 'beuser'))
+            ->setShowLabelText(true)
+            ->setHref((string)$this->backendUriBuilder->buildUriFromRoute('record_edit', [
+                'edit' => ['be_users' => [0 => 'new']],
+                'returnUrl' => $this->request->getAttribute('normalizedParams')->getRequestUri(),
+                'defVals' => ['be_users' => ['admin' => 1]],
+            ]));
+        $buttonBar->addButton($createAdminButton, ButtonBar::BUTTON_POSITION_LEFT, 2);
         $shortcutButton = $buttonBar->makeShortcutButton()
             ->setRouteIdentifier('backend_user_management')
             ->setArguments(['action' => 'list'])

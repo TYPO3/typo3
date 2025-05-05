@@ -145,6 +145,12 @@
 			<trans-unit id="btn.backendUser.create">
 				<source>Create new backend user</source>
 			</trans-unit>
+			<trans-unit id="btn.editor.create">
+				<source>Create editor</source>
+			</trans-unit>
+			<trans-unit id="btn.admin.create">
+				<source>Create admin</source>
+			</trans-unit>
 			<trans-unit id="btn.backendUserGroup.create">
 				<source>Create new backend user group</source>
 			</trans-unit>
