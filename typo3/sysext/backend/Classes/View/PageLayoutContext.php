@@ -172,6 +172,11 @@ class PageLayoutContext
         return [$this->site->getDefaultLanguage()];
     }
 
+    public function hasMultiLanguages(): bool
+    {
+        return count($this->getLanguagesToShow()) > 1;
+    }
+
     public function getSiteLanguage(?int $languageId = null): SiteLanguage
     {
         if ($languageId === null) {

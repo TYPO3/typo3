@@ -81,7 +81,7 @@ final class InlineContentElementLocalizeSynchronizeCest
         $I->switchToContentFrame();
         $I->waitForText('(copy 1)');
         // Edit default language content element again and add another image
-        $I->click('.module-body td[data-language-uid="0"] span[data-identifier="actions-open"]');
+        $I->click('.module-body div.t3-page-ce[data-language-uid="0"] span[data-identifier="actions-open"]');
         $I->waitForText('Edit Page Content on page "staticdata"', 3, 'h1');
         $I->click('Images');
         $I->click('span[data-identifier="actions-insert-record"]', 'div.active');
@@ -104,7 +104,7 @@ final class InlineContentElementLocalizeSynchronizeCest
         // Open the localized element and see that the second image can be synchronized
         $I->switchToContentFrame();
         $I->waitForText('(copy 1)');
-        $I->click('.module-body td[data-language-uid="1"] span[data-identifier="actions-open"]');
+        $I->click('.module-body div.t3-page-ce[data-language-uid="1"] span[data-identifier="actions-open"]');
         $I->waitForText('Edit Page Content " (copy 1)" on page "staticdata"', 3, 'h1');
         $I->click('Images');
         $I->waitForText('underground.jpg');

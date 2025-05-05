@@ -19,7 +19,6 @@ namespace TYPO3\CMS\Backend\View;
 
 /**
  * State how to render the page layout module.
- * @todo: we could move the "mod.defLangBinding" option as a separate View in here as well.
  *
  * @internal
  */

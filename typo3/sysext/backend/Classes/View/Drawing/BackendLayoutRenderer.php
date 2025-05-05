@@ -110,11 +110,7 @@ class BackendLayoutRenderer
         $view = $this->createView($request, $pageLayoutContext);
 
         if ($pageLayoutContext->getDrawingConfiguration()->isLanguageComparisonMode()) {
-            if ($pageLayoutContext->getDrawingConfiguration()->getDefaultLanguageBinding()) {
-                $view->assign('languageColumns', $this->getLanguageColumnsWithDefLangBindingForPageLayoutContext($pageLayoutContext));
-            } else {
-                $view->assign('languageColumns', $this->getLanguageColumnsForPageLayoutContext($pageLayoutContext));
-            }
+            $view->assign('languageColumns', $this->getLanguageColumnsForPageLayoutContext($pageLayoutContext));
         } else {
             $context = $pageLayoutContext;
             // Check if we have to use a localized context for grid creation
@@ -181,43 +177,7 @@ class BackendLayoutRenderer
         return $view->render('PageLayout/UnusedRecords');
     }
 
-    /**
-     * @return LanguageColumn[]
-     */
     protected function getLanguageColumnsForPageLayoutContext(PageLayoutContext $context): iterable
-    {
-        $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
-        $languageColumns = [];
-        foreach ($context->getLanguagesToShow() as $siteLanguage) {
-            $localizedLanguageId = $siteLanguage->getLanguageId();
-            if ($localizedLanguageId === -1) {
-                continue;
-            }
-            if ($localizedLanguageId > 0) {
-                $localizedContext = $context->cloneForLanguage($siteLanguage);
-                if (!$localizedContext->getLocalizedPageRecord()) {
-                    continue;
-                }
-            } else {
-                $localizedContext = $context;
-            }
-            $translationInfo = $contentFetcher->getTranslationData(
-                $context,
-                $contentFetcher->getFlatContentRecords($context, $localizedLanguageId),
-                $localizedContext->getSiteLanguage()->getLanguageId()
-            );
-            $languageColumnObject = GeneralUtility::makeInstance(
-                LanguageColumn::class,
-                $localizedContext,
-                $this->getGridForPageLayoutContext($localizedContext),
-                $translationInfo
-            );
-            $languageColumns[] = $languageColumnObject;
-        }
-        return $languageColumns;
-    }
-
-    protected function getLanguageColumnsWithDefLangBindingForPageLayoutContext(PageLayoutContext $context): iterable
     {
         $contentFetcher = GeneralUtility::makeInstance(ContentFetcher::class);
         $languageColumns = [];

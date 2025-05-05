@@ -266,7 +266,7 @@ class DragDrop {
         throw result.messages;
       }
 
-      if (isCopyAction || (gridContainer?.dataset.defaultLanguageBinding === '1')) {
+      if (isCopyAction || (gridContainer?.dataset.multiLanguages === '1')) {
         self.location.reload();
       }
     });

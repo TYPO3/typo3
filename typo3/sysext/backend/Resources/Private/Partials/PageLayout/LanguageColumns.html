@@ -9,7 +9,7 @@
         </div>
     </div>
 </f:if>
-<div class="t3-grid-container{f:if(condition: context.backendLayout.identifierCleaned, then: ' t3-grid-container-{context.backendLayout.identifierCleaned}')}" data-default-language-binding="{f:if(condition: context.drawingConfiguration.defaultLanguageBinding, then: '1', else: '0')}">
+<div class="t3-grid-container{f:if(condition: context.backendLayout.identifierCleaned, then: ' t3-grid-container-{context.backendLayout.identifierCleaned}')}" data-multi-languages="{f:if(condition: context.multiLanguages, then: '1', else: '0')}">
     <div class="t3-grid-container-inner">
         <table class="t3-page-columns t3-grid-table t3js-page-columns">
             <tr>
@@ -72,7 +72,7 @@
                     </td>
                 </f:for>
             </tr>
-            <f:if condition="{context.drawingConfiguration.defaultLanguageBinding}">
+            <f:if condition="{languageColumns -> f:count()} > 1">
                 <f:then>
                     <f:variable name="grid" value="{languageColumns.0.grid}" />
                     <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
