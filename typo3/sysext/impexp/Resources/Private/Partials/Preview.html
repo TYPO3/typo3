@@ -8,7 +8,14 @@
         <h2>
             <f:if condition="{inData.import_file}">
                 <f:then>
-                    <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_structureHasBeenImported" />
+                    <f:if condition="{errors}">
+                        <f:then>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_structureNotImported" />
+                        </f:then>
+                        <f:else>
+                            <f:translate key="LLL:EXT:impexp/Resources/Private/Language/locallang.xlf:importdata_structureHasBeenImported" />
+                        </f:else>
+                    </f:if>
                 </f:then>
                 <f:else>
                     <f:if condition="{inData.file}">
