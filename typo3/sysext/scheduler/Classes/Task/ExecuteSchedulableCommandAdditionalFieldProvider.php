@@ -68,9 +68,6 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
     public function getAdditionalFields(array &$txSchedulerPostData, $task, SchedulerModuleController $schedulerModule): array
     {
         $this->task = $task;
-        if ($this->task !== null) {
-            $this->task->setScheduler();
-        }
 
         $fields = [];
         // This happens when a new task is going to be added, so we fake a task object to get the default

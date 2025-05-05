@@ -18,11 +18,9 @@ namespace TYPO3\CMS\Scheduler\Task;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Execution;
-use TYPO3\CMS\Scheduler\Scheduler;
 
 /**
  * This is the base class for all Scheduler tasks
@@ -35,13 +33,6 @@ abstract class AbstractTask implements LoggerAwareInterface
 
     public const TYPE_SINGLE = 1;
     public const TYPE_RECURRING = 2;
-
-    /**
-     * Reference to a scheduler object
-     *
-     * @var \TYPO3\CMS\Scheduler\Scheduler|null
-     */
-    protected $scheduler;
 
     /**
      * The unique id of the task used to identify it in the database.
@@ -88,14 +79,9 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     protected $taskGroup = 0;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
-        // Using makeInstance instead of setScheduler() here as the logger is injected due to LoggerAwareTrait
-        $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
-        $this->execution = GeneralUtility::makeInstance(Execution::class);
+        $this->execution = new Execution();
     }
 
     /**
@@ -278,36 +264,12 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * Sets the internal reference to the singleton instance of the Scheduler
-     * and the logger instance in case it was unserialized
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function setScheduler()
-    {
-        $this->scheduler = GeneralUtility::makeInstance(Scheduler::class);
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-    }
-
-    /**
-     * Unsets the internal reference to the singleton instance of the Scheduler
-     * and the logger instance.
-     * This is done before a task is serialized, so that the scheduler instance
-     * and the logger instance are not saved to the database
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function unsetScheduler()
-    {
-        $this->scheduler = null;
-        unset($this->logger);
-    }
-
-    /**
      * Sets the internal execution object
      *
      * @param Execution $execution The execution to add
      * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
      */
-    public function setExecution(Execution $execution)
+    public function setExecution(Execution $execution): void
     {
         $this->execution = $execution;
     }
@@ -368,7 +330,7 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * Guess task type from the existing information
+     * Guess recurring type from the existing information
      * If an interval or a cron command is defined, it's a recurring task
      */
     public function getType(): int
@@ -381,7 +343,7 @@ abstract class AbstractTask implements LoggerAwareInterface
 
     protected function logException(\Exception $e)
     {
-        $this->logger->error('A Task Exception was captured.', ['exception' => $e]);
+        $this->logger?->error('A Task Exception was captured.', ['exception' => $e]);
     }
 
     protected function getLanguageService(): ?LanguageService
@@ -408,6 +370,7 @@ abstract class AbstractTask implements LoggerAwareInterface
             $parameters[$key] = $value;
         }
         unset(
+            // Needs to be kept until TYPO3 v16.0 until the upgrade wizard was run through
             $parameters['scheduler'],
             $parameters['logger'],
             $parameters['taskUid'],

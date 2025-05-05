@@ -140,9 +140,6 @@ class Scheduler implements SingletonInterface
         // This should be calculated all the time, even if the execution is skipped
         // (in case it is skipped, this pushes back execution to the next possible date)
         $this->schedulerTaskRepository->update($task);
-        // Set a scheduler object for the task again,
-        // as it was removed during the save operation
-        $task->setScheduler();
 
         // Reserve an id for the upcoming execution
         $executionID = $this->schedulerTaskRepository->addExecutionToTask($task);

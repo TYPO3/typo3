@@ -115,7 +115,6 @@ class SchedulerTaskRepository
             $task->setDisabled(true);
             $executionTime = 0;
         }
-        $task->unsetScheduler();
         $fields = [
             'nextexecution' => $executionTime,
             'disable' => (int)$task->isDisabled(),
@@ -400,7 +399,6 @@ class SchedulerTaskRepository
         }
 
         // The task is valid, return it
-        $task->setScheduler();
         if ($task->getTaskGroup() === null) {
             // Fix invalid task_group=NULL settings in order to avoid exceptions when saving on PostgreSQL
             $task->setTaskGroup(0);
@@ -437,7 +435,6 @@ class SchedulerTaskRepository
 
             // Add the task to the list only if it is valid
             if ($this->isValidTaskObject($task)) {
-                $task->setScheduler();
                 return $task;
             }
         }
