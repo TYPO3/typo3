@@ -309,6 +309,9 @@
 			<trans-unit id="importdata_structureHasBeenImported">
 				<source>Structure has been imported, here is the result</source>
 			</trans-unit>
+			<trans-unit id="importdata_structureNotImported">
+				<source>The Import has failed, refer to the messages tab to view errors</source>
+			</trans-unit>
 			<trans-unit id="importdata_no_default_upload_folder">
 				<source>No default upload folder</source>
 			</trans-unit>
