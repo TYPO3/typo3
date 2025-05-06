@@ -85,6 +85,26 @@ final class CopyRecordTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function copyOfMultipleRecordsAppliesUpdateValuesToAllCopies(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/CopyRecord/ContentLanguages.csv');
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->enableLogging = false;
+
+        $cmd['tt_content'][10]['copy'] = ['action' => 'paste', 'target' => 2, 'update' => ['colPos' => 3]];
+        $cmd['tt_content'][11]['copy'] = ['action' => 'paste', 'target' => 2, 'update' => ['colPos' => 3]];
+        $dataHandler->start([], $cmd);
+        $dataHandler->process_cmdmap();
+
+        foreach ([10, 11] as $sourceUid) {
+            $copyUid = $dataHandler->copyMappingArray_merged['tt_content'][$sourceUid] ?? null;
+            self::assertIsInt($copyUid);
+            $copy = BackendUtility::getRecord('tt_content', $copyUid);
+            self::assertSame(3, (int)$copy['colPos'], 'Copy of tt_content:' . $sourceUid);
+        }
+    }
+
+    #[Test]
     public function beforeRemoveNonCopyableFieldsEventIsCalledAndNonCopyableFieldsAreRespected(): void
     {
         $beforeRemoveNonCopyableFieldsEvent = null;

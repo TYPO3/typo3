@@ -3263,7 +3263,6 @@ class DataHandler
                         }
                     }
                     // Only execute default commands if a hook hasn't been processed the command already
-                    $pasteDatamap = [];
                     if (!$commandIsProcessed) {
                         $procId = $id;
                         // Branch, based on command
