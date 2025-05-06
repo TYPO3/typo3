@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -65,5 +66,22 @@ final class MoveActionTest extends FunctionalTestCase
             ),
             $this->subject->errorLog[0]
         );
+    }
+
+    #[Test]
+    public function moveOfMultipleRecordsAppliesUpdateValuesToAllRecords(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/MoveRecordMultiple.csv');
+        $cmd['tt_content'][1]['move'] = ['action' => 'paste', 'target' => 3, 'update' => ['colPos' => 3]];
+        $cmd['tt_content'][3]['move'] = ['action' => 'paste', 'target' => 3, 'update' => ['colPos' => 3]];
+        $this->subject->start([], $cmd);
+        $this->subject->process_cmdmap();
+
+        self::assertEmpty($this->subject->errorLog);
+        foreach ([1, 3] as $uid) {
+            $record = BackendUtility::getRecord('tt_content', $uid);
+            self::assertSame(3, (int)$record['pid'], 'tt_content:' . $uid);
+            self::assertSame(3, (int)$record['colPos'], 'tt_content:' . $uid);
+        }
     }
 }

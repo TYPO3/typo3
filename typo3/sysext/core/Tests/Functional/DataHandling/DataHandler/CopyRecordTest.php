@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\Event\BeforeRemoveNonCopyableFieldsEvent;
 use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
@@ -52,6 +53,26 @@ final class CopyRecordTest extends FunctionalTestCase
         $dataHandler->process_cmdmap();
 
         $this->assertCSVDataSet(__DIR__ . '/DataSet/CopyRecord/PageRecordIsCopiedResult.csv');
+    }
+
+    #[Test]
+    public function copyOfMultipleRecordsAppliesUpdateValuesToAllCopies(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/DataSet/CopyRecord/ContentLanguages.csv');
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->enableLogging = false;
+
+        $cmd['tt_content'][10]['copy'] = ['action' => 'paste', 'target' => 2, 'update' => ['colPos' => 3]];
+        $cmd['tt_content'][11]['copy'] = ['action' => 'paste', 'target' => 2, 'update' => ['colPos' => 3]];
+        $dataHandler->start([], $cmd);
+        $dataHandler->process_cmdmap();
+
+        foreach ([10, 11] as $sourceUid) {
+            $copyUid = $dataHandler->copyMappingArray_merged['tt_content'][$sourceUid] ?? null;
+            self::assertIsInt($copyUid);
+            $copy = BackendUtility::getRecord('tt_content', $copyUid);
+            self::assertSame(3, (int)$copy['colPos'], 'Copy of tt_content:' . $sourceUid);
+        }
     }
 
     #[Test]
