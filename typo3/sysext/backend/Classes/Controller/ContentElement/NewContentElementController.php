@@ -129,17 +129,39 @@ class NewContentElementController
                     'items' => [],
                 ];
             } else {
+                // Get default values for the wizard item
+                $defaultValues = (array)($wizardItem['defaultValues'] ?? []);
+
                 // Initialize the view variables for the item
                 $item = [
                     'identifier' => $wizardKey,
                     'icon' => $wizardItem['iconIdentifier'] ?? '',
                     'label' => $wizardItem['title'] ?? '',
                     'description' => $wizardItem['description'] ?? '',
+                    'defaultValues' => $defaultValues,
                 ];
-
-                // Get default values for the wizard item
-                $defaultValues = (array)($wizardItem['defaultValues'] ?? []);
-                if (!$positionSelection) {
+                // If the URL was already created (e.g. via the PSR-14 event) this needs to be
+                // kept and not overwritten
+                if (isset($wizardItem['url'])) {
+                    $item['url'] = $wizardItem['url'];
+                    if ($positionSelection) {
+                        $item['requestType'] = 'ajax';
+                        $item['saveAndClose'] = (bool)($wizardItem['saveAndClose'] ?? false);
+                    }
+                } elseif ($positionSelection) {
+                    $item['url'] = (string)$this->uriBuilder
+                        ->buildUriFromRoute(
+                            'new_content_element_wizard',
+                            [
+                                'action' => 'positionMap',
+                                'id' => $this->id,
+                                'sys_language_uid' => $this->sys_language,
+                                'returnUrl' => $this->returnUrl,
+                            ]
+                        );
+                    $item['requestType'] = 'ajax';
+                    $item['saveAndClose'] = (bool)($wizardItem['saveAndClose'] ?? false);
+                } else {
                     // In case no position has to be selected, we can just add the target
                     if ($wizardItem['saveAndClose'] ?? false) {
                         // Go to DataHandler directly instead of FormEngine
@@ -171,20 +193,6 @@ class NewContentElementController
                             ],
                         ]);
                     }
-                } else {
-                    $item['url'] = (string)$this->uriBuilder
-                        ->buildUriFromRoute(
-                            'new_content_element_wizard',
-                            [
-                                'action' => 'positionMap',
-                                'id' => $this->id,
-                                'sys_language_uid' => $this->sys_language,
-                                'returnUrl' => $this->returnUrl,
-                            ]
-                        );
-                    $item['requestType'] = 'ajax';
-                    $item['defaultValues'] = $defaultValues;
-                    $item['saveAndClose'] = (bool)($wizardItem['saveAndClose'] ?? false);
                 }
                 $categories[$key]['items'][] = $item;
             }
