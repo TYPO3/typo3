@@ -878,4 +878,13 @@ final class ActionTest extends AbstractActionTestCase
         $response = $this->executeFrontendSubRequest((new InternalRequest())->withPageId(self::VALUE_PageId));
         self::assertEquals(404, $response->getStatusCode());
     }
+
+    #[Test]
+    public function deleteThenHardDeleteLocalizedPage(): void
+    {
+        // This test is only done in live since this is a "recycler" scenario and "recycler"
+        // is disabled in workspaces.
+        parent::deleteThenHardDeleteLocalizedPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteThenHardDeleteLocalizedPage.csv');
+    }
 }
