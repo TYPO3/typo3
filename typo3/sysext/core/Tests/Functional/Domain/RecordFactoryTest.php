@@ -211,16 +211,17 @@ final class RecordFactoryTest extends FunctionalTestCase
         $eventListener->addListener(RecordCreationEvent::class, 'record-creation-listener');
 
         $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        $dbRow = $pageRepository->getPage(3);
+        $dbRow = $pageRepository->getPage(1);
         self::assertNull($dbRow['customProperty'] ?? null);
 
         $subject = $this->get(RecordFactory::class);
         $result = $subject->createFromDatabaseRow('pages', $dbRow);
 
-        self::assertEquals('Dummy 1-3', $dbRow['title']);
+        self::assertEquals('Root 1', $dbRow['title']);
         self::assertEquals('custom title', $result->get('title'));
         self::assertEquals('somePropertyValue', $result->get('customProperty'));
         self::assertInstanceOf(RecordCreationEvent::class, $recordCreationEvent);
+        self::assertEquals('pages.1', $recordCreationEvent->getSchema()->getName());
         self::assertEquals('somePropertyValue', $recordCreationEvent->getProperty('customProperty'));
     }
 

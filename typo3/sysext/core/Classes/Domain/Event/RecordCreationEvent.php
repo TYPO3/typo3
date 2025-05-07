@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Core\Domain\Event;
 
 use Psr\EventDispatcher\StoppableEventInterface;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Domain\Persistence\RecordIdentityMap;
 use TYPO3\CMS\Core\Domain\RawRecord;
 use TYPO3\CMS\Core\Domain\Record\SystemProperties;
 use TYPO3\CMS\Core\Domain\RecordInterface;
+use TYPO3\CMS\Core\Schema\TcaSchema;
 
 /**
  * Event which allows to manipulate the properties to be used for a new Record.
@@ -34,6 +36,8 @@ final class RecordCreationEvent implements StoppableEventInterface
         private readonly RawRecord $rawRecord,
         private readonly SystemProperties $systemProperties,
         private readonly Context $context,
+        private readonly RecordIdentityMap $recordIdentityMap,
+        private readonly TcaSchema $schema,
         private ?RecordInterface $record = null,
     ) {}
 
@@ -94,6 +98,19 @@ final class RecordCreationEvent implements StoppableEventInterface
     public function getContext(): Context
     {
         return $this->context;
+    }
+
+    public function getRecordIdentityMap(): RecordIdentityMap
+    {
+        return $this->recordIdentityMap;
+    }
+
+    /**
+     * If available this is the subSchema for the current record type
+     */
+    public function getSchema(): TcaSchema
+    {
+        return $this->schema;
     }
 
     /**
