@@ -82,12 +82,17 @@ readonly class RecordFactory
         // Only use the fields that are defined in the schema
         $properties = [];
         foreach ($record as $fieldName => $fieldValue) {
-            if ($subSchema && !$subSchema->hasField($fieldName)) {
+            if ($subSchema) {
+                if (!$subSchema->hasField($fieldName)) {
+                    continue;
+                }
+                $schema = $subSchema;
+            } elseif (!$schema->hasField($fieldName)) {
                 continue;
             }
             $properties[$fieldName] = $fieldValue;
         }
-        return $this->createRecord($rawRecord, $properties);
+        return $this->createRecord($rawRecord, $properties, $schema);
     }
 
     /**
@@ -129,7 +134,7 @@ readonly class RecordFactory
                 $recordIdentityMap
             );
         }
-        $resolvedRecord = $this->createRecord($rawRecord, $properties, $context);
+        $resolvedRecord = $this->createRecord($rawRecord, $properties, $schema, $context, $recordIdentityMap);
         $recordIdentityMap->add($resolvedRecord);
         return $resolvedRecord;
     }
@@ -167,16 +172,17 @@ readonly class RecordFactory
     /**
      * Quick helper function in order to avoid duplicate code.
      */
-    protected function createRecord(RawRecord $rawRecord, array $properties, ?Context $context = null): RecordInterface
+    protected function createRecord(RawRecord $rawRecord, array $properties, TcaSchema $schema, ?Context $context = null, ?RecordIdentityMap $recordIdentityMap = null): RecordInterface
     {
         $context = $context ?? GeneralUtility::makeInstance(Context::class);
-        $schema = $this->schemaFactory->get($rawRecord->getMainType());
+        $mainSchema = $this->schemaFactory->get($rawRecord->getMainType());
+        $recordIdentityMap = $recordIdentityMap ?? GeneralUtility::makeInstance(RecordIdentityMap::class);
         [$properties, $systemProperties] = $this->extractSystemInformation(
-            $schema,
+            $mainSchema,
             $rawRecord,
             $properties,
         );
-        $event = new RecordCreationEvent($properties, $rawRecord, $systemProperties, $context);
+        $event = new RecordCreationEvent($properties, $rawRecord, $systemProperties, $context, $recordIdentityMap, $schema);
         $this->eventDispatcher->dispatch($event);
         return $event->isPropagationStopped()
             ? $event->getRecord()
