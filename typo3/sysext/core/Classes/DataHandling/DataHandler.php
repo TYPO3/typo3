@@ -5596,7 +5596,7 @@ class DataHandler
             // with the language id of the translated page.
             $isPageTranslation = true;
             // @todo: This should be optimized away by handing over the full page record to the method.
-            $pageRecord = BackendUtility::getRecord('pages', $uid);
+            $pageRecord = BackendUtility::getRecord('pages', $uid, '*', '', false);
             $pagesLanguageFieldName = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
             $pageLanguageId = $pageRecord[$pagesLanguageFieldName] ?? 0;
         }

@@ -18,9 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\Regular;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
 
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
@@ -474,6 +476,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function deletePage(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+    }
+
+    public function deleteThenHardDeleteLocalizedPage(): void
+    {
+        // Soft-delete a localized page
+        $this->actionService->deleteRecord(self::TABLE_Page, 91);
+        // Now hard deleted that localized page. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->disableDeleteClause();
+        $dataHandler->deleteEl(self::TABLE_Page, 91, true, true);
     }
 
     public function deleteLocalizedContentAndDeleteContent(): void
