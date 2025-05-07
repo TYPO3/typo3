@@ -72,7 +72,7 @@
                     </td>
                 </f:for>
             </tr>
-            <f:if condition="{languageColumns -> f:count()} > 1">
+            <f:if condition="{context.multiLanguages}">
                 <f:then>
                     <f:variable name="grid" value="{languageColumns.0.grid}" />
                     <f:for each="{context.drawingConfiguration.activeColumns}" as="columnNumber">
