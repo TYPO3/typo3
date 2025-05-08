@@ -229,7 +229,7 @@ final readonly class FrontendTypoScriptFactory
      *
      * The cached variant uses a similar trick as with the settings calculation above: We
      * calculate a flat tree of all conditions and cache this, so the traverser only needs
-     * to iterate the conditions to calculate there verdicts, but not the entire include
+     * to iterate the conditions to calculate their verdicts, but not the entire include
      * tree next time.
      *
      * The method returns:
@@ -247,8 +247,12 @@ final readonly class FrontendTypoScriptFactory
         array $flatSettings,
         array $settingsConditionList,
     ): array {
-        $conditionTreeCacheIdentifier = 'setup-condition-tree-'
-            . hash('xxh3', json_encode($sysTemplateRows, JSON_THROW_ON_ERROR) . json_encode($settingsConditionList, JSON_THROW_ON_ERROR));
+        $conditionTreeCacheIdentifier = 'setup-condition-tree-' . hash(
+            'xxh3',
+            json_encode($sysTemplateRows, JSON_THROW_ON_ERROR)
+            . json_encode($site instanceof Site && $site->isTypoScriptRoot() ? $site->getSets() : '', JSON_THROW_ON_ERROR)
+            . json_encode($settingsConditionList, JSON_THROW_ON_ERROR)
+        );
 
         if ($conditionTree = $typoScriptCache?->require($conditionTreeCacheIdentifier)) {
             // We got the flat list of all setup conditions for this TypoScript combination from cache. Good. We traverse
