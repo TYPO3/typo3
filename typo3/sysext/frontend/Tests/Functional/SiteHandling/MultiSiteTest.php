@@ -43,7 +43,7 @@ final class MultiSiteTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/MultiSiteTestPageAndSysTemplateImport.csv');
         $this->writeSiteConfiguration(
-            'acme-brand',
+            'acme-brand-1',
             [
                 'rootPageId' => 1,
                 'base' => 'https://acme.com/brand',
@@ -56,7 +56,7 @@ final class MultiSiteTest extends FunctionalTestCase
             ]
         );
         $this->writeSiteConfiguration(
-            'acme-tech',
+            'acme-tech-1',
             [
                 'rootPageId' => 2,
                 'base' => 'https://acme.com/tech',
@@ -83,7 +83,7 @@ final class MultiSiteTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/MultiSiteTestPageImport.csv');
         $this->writeSiteConfiguration(
-            'acme-brand',
+            'acme-brand-2',
             [
                 'rootPageId' => 1,
                 'base' => 'https://acme.com/brand',
@@ -99,7 +99,7 @@ final class MultiSiteTest extends FunctionalTestCase
             ]
         );
         $this->writeSiteConfiguration(
-            'acme-tech',
+            'acme-tech-2',
             [
                 'rootPageId' => 2,
                 'base' => 'https://acme.com/tech',
@@ -122,5 +122,45 @@ final class MultiSiteTest extends FunctionalTestCase
         // The test verifies the correct constant value is calculated when first calling one site
         // and then the other one, when both have the same site setting with different values.
         self::assertStringContainsString('TechBar', (string)$response->getBody());
+    }
+
+    #[Test]
+    public function twoSetBasedSitesCalculateCorrectConditionsInTypoScript(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/MultiSiteTestPageImport.csv');
+        $this->writeSiteConfiguration(
+            'acme-brand-3',
+            [
+                'rootPageId' => 1,
+                'base' => 'https://acme.com/brand',
+                'dependencies' => [
+                    'typo3tests/site1',
+                ],
+            ],
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $this->writeSiteConfiguration(
+            'acme-tech-3',
+            [
+                'rootPageId' => 2,
+                'base' => 'https://acme.com/tech',
+                'dependencies' => [
+                    'typo3tests/site2',
+                ],
+            ],
+            [
+                $this->buildDefaultLanguageConfiguration('EN', '/'),
+            ]
+        );
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/brand')));
+        self::assertStringContainsString('brand-root', (string)$response->getBody());
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/brand/brand-sub')));
+        self::assertStringContainsString('brand-sub', (string)$response->getBody());
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/tech')));
+        self::assertStringContainsString('tech-root', (string)$response->getBody());
+        $response = $this->executeFrontendSubRequest((new InternalRequest('https://acme.com/tech/tech-sub')));
+        self::assertStringContainsString('tech-sub', (string)$response->getBody());
     }
 }

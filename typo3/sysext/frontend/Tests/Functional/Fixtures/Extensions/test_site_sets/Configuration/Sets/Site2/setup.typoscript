@@ -1,0 +1,9 @@
+page = PAGE
+page {
+  10 = TEXT
+  10.value = tech-root
+}
+
+[traverse(page, "uid") == 4]
+  page.10.value = tech-sub
+[end]
