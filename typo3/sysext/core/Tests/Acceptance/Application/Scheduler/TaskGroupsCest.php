@@ -49,10 +49,14 @@ final class TaskGroupsCest
     public function addTaskToEmptyGroup(ApplicationTester $I): void
     {
         $I->click('//table//td[contains(., "' . $this->groupName . '")]/following-sibling::td/*//a[contains(@title, "New task")]');
-        $I->seeOptionIsSelected('#task_group', $this->groupName);
-        $I->fillField('#task_frequency', '0 */2 * * *');
+        // second item on first tab (see fieldset)
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(2)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div.form-wizards-wrap';
+        $select = $formWizardsWrap . ' > div:nth-of-type(1) > select';
+        $I->seeOptionIsSelected($select, $this->groupName . ' [tx_scheduler_task_group_1]');
         $I->click('button[title="Save"]', '.module-docheader');
-        $I->waitForText('The task was added successfully.');
+        // Show the "Edit record" screen (= it is saved)
+        $I->waitForText('Edit Scheduler task');
         $I->click('a[title="Close"]', '.module-docheader');
         $I->seeElement('//div[contains(@class, "panel-heading")][contains(., "' . $this->groupName . '")]');
     }

@@ -64,28 +64,8 @@ class SchedulerTaskRepository
         if (!empty($taskUid)) {
             return false;
         }
-
-        try {
-            if ($task->getRunOnNextCronJob()) {
-                $executionTime = time();
-            } else {
-                $executionTime = $task->getNextDueExecution();
-            }
-            $task->setExecutionTime($executionTime);
-        } catch (\Exception) {
-            $task->setDisabled(true);
-            $executionTime = 0;
-        }
-        $fields = [
-            'pid' => 0,
-            'nextexecution' => $executionTime,
-            'disable' => (int)$task->isDisabled(),
-            'description' => $task->getDescription(),
-            'task_group' => $task->getTaskGroup(),
-            'tasktype' => $task->getTaskType(),
-            'parameters' => $task->getTaskParameters(),
-            'execution_details' => $task->getExecution()->toArray(),
-        ];
+        $fields = $this->taskService->getFieldsForRecord($task);
+        $fields['pid'] = 0;
         $newId = uniqid('NEW');
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([
@@ -129,31 +109,37 @@ class SchedulerTaskRepository
     /**
      * Update a task in the pool.
      */
-    public function update(AbstractTask $task): bool
+    public function update(AbstractTask $task, ?array $fields = null): bool
     {
         $taskUid = $task->getTaskUid();
         if (empty($taskUid)) {
             return false;
         }
-        try {
-            if ($task->getRunOnNextCronJob()) {
-                $executionTime = time();
-            } else {
-                $executionTime = $task->getNextDueExecution();
-            }
-            $task->setExecutionTime($executionTime);
-        } catch (\Exception) {
-            $task->setDisabled(true);
-            $executionTime = 0;
+        $fields = $fields ?? $this->taskService->getFieldsForRecord($task);
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([
+            self::TABLE_NAME => [
+                $taskUid => $fields,
+            ],
+        ], []);
+        $dataHandler->process_datamap();
+        return true;
+    }
+
+    /**
+     * Update a task in the pool but only the execution information.
+     */
+    public function updateExecution(AbstractTask $task, bool $forceDisablingTask = false): bool
+    {
+        $taskUid = $task->getTaskUid();
+        if (empty($taskUid)) {
+            return false;
         }
+        $fields = $this->taskService->getFieldsForRecord($task);
         $fields = [
-            'nextexecution' => $executionTime,
-            'disable' => (int)$task->isDisabled(),
-            'description' => $task->getDescription(),
-            'task_group' => $task->getTaskGroup(),
-            'tasktype' => $task->getTaskType(),
-            'parameters' => $task->getTaskParameters(),
-            'execution_details' => $task->getExecution()->toArray(),
+            'nextexecution' => $fields['nextexecution'],
+            'disable' => $forceDisablingTask ? true : $fields['disable'],
+            'execution_details' => $fields['execution_details'],
         ];
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([
@@ -264,7 +250,7 @@ class SchedulerTaskRepository
             't',
             'tx_scheduler_task_group',
             'g',
-            $queryBuilder->expr()->eq('t.task_group', $queryBuilder->quoteIdentifier('g.uid'))
+            $queryBuilder->expr()->eq('g.uid', $queryBuilder->expr()->castInt($queryBuilder->quoteIdentifier('t.task_group')))
         );
         $queryBuilder->where(
             $queryBuilder->expr()->eq('t.disable', $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)),
@@ -315,7 +301,7 @@ class SchedulerTaskRepository
                 't',
                 'tx_scheduler_task_group',
                 'g',
-                $queryBuilder->expr()->eq('t.task_group', $queryBuilder->quoteIdentifier('g.uid'))
+                $queryBuilder->expr()->eq('g.uid', $queryBuilder->expr()->castInt($queryBuilder->quoteIdentifier('t.task_group')))
             )
             ->where(
                 $queryBuilder->expr()->eq('t.deleted', 0)

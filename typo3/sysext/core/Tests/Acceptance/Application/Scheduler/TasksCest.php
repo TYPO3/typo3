@@ -34,23 +34,24 @@ final class TasksCest
         $I->switchToContentFrame();
     }
 
-    public function createASchedulerTask(ApplicationTester $I): void
+    public function createASchedulerTask(ApplicationTester $I, ModalDialog $modalDialog): void
     {
         $I->see('No tasks defined yet');
         $I->click('//a[contains(@title, "New task")]', '.module-docheader');
-        $I->waitForElementNotVisible('#task_SystemStatusUpdateNotificationEmail');
+        $I->dontSeeElement('#task_SystemStatusUpdateNotificationEmail');
 
-        $I->amGoingTo('check save action in case no settings given');
-        $I->click('button[value="save"]');
-        $I->waitForText('No frequency was defined, either as an interval or as a cron command.');
-
-        $I->selectOption('#task_type', 'System Status Update [reports]');
-        $I->seeElement('#task_SystemStatusUpdateNotificationEmail');
-        $I->selectOption('#task_running_type', 'Single');
+        // first item on first tab (see fieldset) = task type
+        $fieldset = 'div.typo3-TCEforms > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1) > fieldset:nth-of-type(1)';
+        $formWizardsWrap = $fieldset . ' > div:nth-of-type(1) div.t3js-formengine-field-item > div.form-control-wrap:nth-of-type(1) > div.form-wizards-wrap:nth-of-type(1)';
+        $select = $formWizardsWrap . ' > div:nth-of-type(1) > select';
+        $I->selectOption($select, 'System Status Update [reports]');
+        $modalDialog->clickButtonInDialog('OK');
+        $I->switchToContentFrame();
+        $I->waitForElement('#task_SystemStatusUpdateNotificationEmail');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
-        $I->click('button[value="save"]');
-        $I->waitForText('The task was added successfully.');
-        $I->click('a[title="Close"]');
+        $I->click('button[title="Save"]', '.module-docheader');
+        $I->waitForText('Edit Scheduler task');
+        $I->click('a[title="Close"]', '.module-docheader');
     }
 
     public function canRunTask(ApplicationTester $I): void
@@ -65,11 +66,12 @@ final class TasksCest
     public function canEditTask(ApplicationTester $I): void
     {
         $I->click('//a[contains(@title, "Edit")]');
-        $I->waitForText('Edit scheduled task "System Status Update [reports]"');
+        $I->waitForText('Edit Scheduler task "System Status Update [reports]" on root level');
         $I->seeInField('#task_SystemStatusUpdateNotificationEmail', 'test@local.typo3.org');
         $I->fillField('#task_SystemStatusUpdateNotificationEmail', 'foo@local.typo3.org');
-        $I->click('button[value="save"]');
-        $I->waitForText('The task was updated successfully.');
+        $I->click('button[title="Save"]', '.module-docheader');
+        $I->waitForText('Edit Scheduler task');
+        $I->click('a[title="Close"]', '.module-docheader');
     }
 
     public function canEnableAndDisableTask(ApplicationTester $I): void
@@ -122,30 +124,5 @@ final class TasksCest
         $I->see('Available scheduler commands & tasks');
         $I->canSeeNumberOfElements('[data-module-name="scheduler_availabletasks"] table tbody tr', [1, 10000]);
         $I->selectOption('select[name=moduleMenu]', 'Scheduled tasks');
-    }
-
-    public function canCreateNewTaskGroupFromEditForm(ApplicationTester $I, ModalDialog $modalDialog): void
-    {
-        $I->amGoingTo('create a task when none exists yet');
-        $I->canSee('Scheduled tasks', 'h1');
-        $this->createASchedulerTask($I);
-
-        $I->amGoingTo('test the new task group button on task edit view');
-        $I->click('[data-scheduler-table] > tbody > tr > td.col-control > div:nth-child(1) > a:nth-child(1)');
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->canSee('Edit scheduled task "System Status Update [reports]"');
-        $I->click('#task_group_row button.t3js-create-group');
-        $modalDialog->canSeeDialog();
-
-        $I->fillField('.modal.show input[name="action[createGroup]"]', 'new task group');
-        $modalDialog->clickButtonInDialog('Create group');
-        $I->switchToContentFrame();
-        $I->selectOption('select#task_group', 'new task group');
-        $I->click('button[value="save"]');
-        $I->waitForElementNotVisible('#t3js-ui-block');
-        $I->click('a[title="Close"]');
-        $I->waitForElementVisible('[data-module-name="scheduler_manage"]');
-
-        $I->canSee('new task group', '.panel-heading');
     }
 }

@@ -104,14 +104,14 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
     public function validateAdditionalFields(array &$submittedData, SchedulerModuleController $schedulerModule)
     {
         $validInput = true;
-        $notificationEmails = GeneralUtility::trimExplode(LF, $submittedData[$this->fieldPrefix . 'NotificationEmail'], true);
+        $notificationEmails = GeneralUtility::trimExplode(LF, $submittedData[$this->fieldPrefix . 'NotificationEmail'] ?? '', true);
         foreach ($notificationEmails as $notificationEmail) {
             if (!GeneralUtility::validEmail($notificationEmail)) {
                 $validInput = false;
                 break;
             }
         }
-        if (!$validInput || empty($submittedData[$this->fieldPrefix . 'NotificationEmail'])) {
+        if (!$validInput || empty($submittedData[$this->fieldPrefix . 'NotificationEmail'] ?? '')) {
             $this->addMessage($this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_updateTaskField_notificationEmails_invalid'), ContextualFeedbackSeverity::ERROR);
             $validInput = false;
         }
@@ -130,7 +130,7 @@ class SystemStatusUpdateTaskNotificationEmailField extends AbstractAdditionalFie
         if (!$task instanceof SystemStatusUpdateTask) {
             throw new \InvalidArgumentException('Expected a task of type ' . SystemStatusUpdateTask::class . ', but got ' . get_class($task), 1295012802);
         }
-        $task->setNotificationEmail($submittedData[$this->fieldPrefix . 'NotificationEmail']);
+        $task->setNotificationEmail($submittedData[$this->fieldPrefix . 'NotificationEmail'] ?? '');
         $task->setNotificationAll(!empty($submittedData[$this->fieldPrefix . 'NotificationAll']));
     }
 

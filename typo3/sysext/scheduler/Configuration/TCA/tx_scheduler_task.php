@@ -13,7 +13,7 @@ return [
             // @todo, TYPO3.icons needs to introduce tx_scheduler_task and use the current icon for "tx_scheduler_task_group"
             'default' => 'mimetypes-x-tx_scheduler_task_group',
         ],
-        'hideTable' => true,
+        'hideTable' => true, // Disabled for now until sorting and grouping is usable in list module
         'adminOnly' => true, // Only admin users can edit
         'groupName' => 'system',
         'rootLevel' => 1,
@@ -24,13 +24,13 @@ return [
     'columns' => [
         'tasktype' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.tasktype',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'itemsProcFunc' => \TYPO3\CMS\Scheduler\Service\TaskService::class . '->getTaskTypesForTcaItems',
-                'items' => [
-                    ['value' => '', 'label' => ''],
-                ],
+                // Always select the first tasktype
+                'items' => [],
                 'default' => '',
                 'required' => true,
                 // relevant for migration
@@ -40,15 +40,31 @@ return [
         'task_group' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.task_group',
             'config' => [
-                'type' => 'select',
-                'renderType' => 'selectSingle',
-                'items' => [
-                    ['value' => 0, 'label' => ''],
-                ],
-                'foreign_table' => 'tx_scheduler_task_group',
-                'foreign_table_where' => 'AND {#tx_scheduler_task_group}.deleted=0',
-                'required' => true,
+                'type' => 'group',
+                'allowed' => 'tx_scheduler_task_group',
+                'size' => 1,
+                'maxitems' => 1,
                 'default' => 0,
+                'hideSuggest' => true,
+                'fieldWizard' => [
+                    'tableList' => [
+                        'disabled' => true,
+                    ],
+                    'recordsOverview' => [
+                        'disabled' => true,
+                    ],
+                ],
+                'fieldControl' => [
+                    'editPopup' => [
+                        'disabled' => true,
+                    ],
+                    'addRecord' => [
+                        'disabled' => false,
+                    ],
+                    'listModule' => [
+                        'disabled' => true,
+                    ],
+                ],
             ],
         ],
         'description' => [
@@ -61,30 +77,35 @@ return [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.parameters',
             'config' => [
                 'type' => 'json',
+                'renderType' => 'schedulerAdditionalFields',
             ],
         ],
         'execution_details' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.execution_details',
             'config' => [
                 'type' => 'json',
+                'renderType' => 'schedulerTimingOptions',
             ],
         ],
         'nextexecution' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.nextexecution',
             'config' => [
                 'type' => 'datetime',
+                'readOnly' => true,
             ],
         ],
         'lastexecution_time' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.lastexecution_time',
             'config' => [
                 'type' => 'datetime',
+                'readOnly' => true,
             ],
         ],
         'lastexecution_failure' => [
             'label' => 'LLL:EXT:scheduler/Resources/Private/Language/locallang_tca.xlf:tx_scheduler_task.lastexecution_failure',
             'config' => [
                 'type' => 'text',
+                'readOnly' => true,
             ],
         ],
         'lastexecution_context' => [
@@ -97,6 +118,7 @@ return [
                     ['value' => 'BE', 'label' => 'BE'],
                     ['value' => '', 'label' => ''],
                 ],
+                'readOnly' => true,
                 'dbFieldLength' => 3,
                 'default' => '',
             ],
@@ -130,6 +152,7 @@ return [
             'showitem' => '
                 lastexecution_context,
                 lastexecution_time,
+                --linebreak--,
                 lastexecution_failure,
             ',
         ],

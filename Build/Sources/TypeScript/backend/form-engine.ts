@@ -142,6 +142,9 @@ export default (function() {
     elementRef.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
   });
 
+  let formEngineIsReady: boolean = false;
+  let formEngineReadyPromise: Promise<void> = null;
+
   /**
    * @exports @typo3/backend/form-engine
    */
@@ -165,6 +168,18 @@ export default (function() {
       configurable: false,
     }
   );
+
+  FormEngine.ready = async function(): Promise<void> {
+    const createReadyPromise = async function(): Promise<void> {
+      if (formEngineIsReady) {
+        return;
+      }
+
+      await new Promise<void>(resolve => FormEngine.formElement.addEventListener('typo3:form-engine:ready', () => resolve(), { once: true }));
+    };
+
+    return formEngineReadyPromise ?? (formEngineReadyPromise = createReadyPromise());
+  };
 
   /**
    * Opens a popup window with the element browser (browser.php)
@@ -1289,7 +1304,7 @@ export default (function() {
    */
   FormEngine.initialize = function(browserUrl: string, doSaveFieldName: string): void {
     FormEngine.browserUrl = browserUrl;
-    // Add doSaveFieldName - fall back to to `doSave` for b/w compatibility
+    // Add doSaveFieldName - fall back to do `doSave` for b/w compatibility
     FormEngine.doSaveFieldName = doSaveFieldName || 'doSave';
 
     DocumentService.ready().then((): void => {
@@ -1297,6 +1312,9 @@ export default (function() {
       FormEngine.Validation.initialize(this);
       FormEngine.reinitialize();
       $('#t3js-ui-block').remove();
+
+      FormEngine.formElement.dispatchEvent(new Event('typo3:form-engine:ready'));
+      formEngineIsReady = true;
 
       Hotkeys.setScope('backend/form-engine');
       Hotkeys.register([Hotkeys.normalizedCtrlModifierKey, 's'], (e: KeyboardEvent): void => {

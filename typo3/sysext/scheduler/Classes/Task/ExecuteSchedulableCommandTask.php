@@ -213,7 +213,7 @@ class ExecuteSchedulableCommandTask extends AbstractTask
     }
     public function setTaskParameters(array $parameters): void
     {
-        $this->commandIdentifier = $parameters['commandIdentifier'] ?? '';
+        $this->commandIdentifier = $parameters['commandIdentifier'] ?? $this->commandIdentifier;
         $this->arguments = $parameters['arguments'] ?? [];
         $this->options = $parameters['options'] ?? [];
         $this->optionValues = $parameters['optionValues'] ?? [];

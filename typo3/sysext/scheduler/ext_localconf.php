@@ -130,3 +130,18 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['frequencyOptions'] = [
     '*/20 * * * *' =>  'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example3',
     '0 7 * * 2' =>  'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:command.example4',
 ];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1746714036] = [
+    'nodeName' => 'schedulerTimingOptions',
+    'priority' => 40,
+    'class' => \TYPO3\CMS\Scheduler\Form\Element\TimingOptionsElement::class,
+];
+
+$GLOBALS['TYPO3_CONF_VARS']['SYS']['formEngine']['nodeRegistry'][1746714037] = [
+    'nodeName' => 'schedulerAdditionalFields',
+    'priority' => 40,
+    'class' => \TYPO3\CMS\Scheduler\Form\Element\AdditionalSchedulerFieldsElement::class,
+];
+
+// Register hook for datamap
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = \TYPO3\CMS\Scheduler\Hooks\SchedulerTaskPersistenceValidator::class;

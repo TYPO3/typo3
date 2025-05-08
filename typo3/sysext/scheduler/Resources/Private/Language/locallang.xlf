@@ -90,6 +90,12 @@
 			<trans-unit id="label.end">
 				<source>End (HH:MM DD-MM-YYYY)</source>
 			</trans-unit>
+			<trans-unit id="scheduledFrom">
+				<source>Start at</source>
+			</trans-unit>
+			<trans-unit id="scheduledUntil">
+				<source>Run periodically until</source>
+			</trans-unit>
 			<trans-unit id="label.executeSelected">
 				<source>Execute</source>
 			</trans-unit>
@@ -176,6 +182,9 @@
 			</trans-unit>
 			<trans-unit id="label.type">
 				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="runningType">
+				<source>Run task multiple times?</source>
 			</trans-unit>
 			<trans-unit id="label.type.recurring">
 				<source>Recurring</source>

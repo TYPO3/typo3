@@ -166,7 +166,8 @@ class ExecuteSchedulableCommandAdditionalFieldProvider implements AdditionalFiel
      */
     public function saveAdditionalFields(array $submittedData, AbstractTask $task): bool
     {
-        $taskType = $submittedData['taskType'];
+        // @todo: "taskType" can be removed soon
+        $taskType = $submittedData['taskType'] ?? $submittedData['tasktype'];
         $command = $this->schedulableCommands[$taskType];
 
         /** @var ExecuteSchedulableCommandTask $task */

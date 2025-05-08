@@ -39,23 +39,24 @@
                             <tr>
                                 <td>&nbsp;</td>
                                 <td>
-                                    <a
-                                        href="{be:moduleLink(route: 'scheduler_manage', query: 'action=add&tx_scheduler[taskType]={taskType}')}"
+                                    <be:link.newRecord
+                                        table="tx_scheduler_task"
+                                        defaultValues="{tx_scheduler_task: {tasktype: taskType}}"
                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}"
                                     >
                                         {taskInfo.title}
-                                    </a>
+                                    </be:link.newRecord>
                                 </td>
                                 <td>{taskInfo.description}</td>
                                 <td>
                                     <div class="btn-group" role="group">
                                     <span class="btn btn-default">
-                                        <a
-                                            href="{be:moduleLink(route: 'scheduler_manage', query: 'action=add&tx_scheduler[taskType]={taskType}')}"
-                                            title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:new')}"
+                                        <be:link.newRecord
+                                            table="tx_scheduler_task"
+                                            defaultValues="{tx_scheduler_task: {tasktype: taskType}}"
                                         >
                                             <core:icon identifier="actions-plus" />
-                                        </a>
+                                        </be:link.newRecord>
                                     </span>
                                     </div>
                                 </td>

@@ -1,5 +1,6 @@
 <html
     xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:be="http://typo3.org/ns/TYPO3/CMS/Backend/ViewHelpers"
     xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
     data-namespace-typo3-fluid="true"
 >
@@ -129,13 +130,14 @@
                     <div class="panel-actions">
                         <form name="tx_scheduler_form_group_toggle_hidden" id="tx_scheduler_form_group_toggle_hidden" method="post">
                             <input name="action[group][uid]" type="hidden" value="{group.uid}">
-                            <a
-                                href="{be:moduleLink(route: 'scheduler_manage', arguments: {action: 'add', groupId: group.uid}, currentUrlParameterName: 'redirect')}"
+                            <be:link.newRecord
+                                table="tx_scheduler_task"
+                                defaultValues="{tx_scheduler_task: {task_group: group.uid}}"
                                 class="btn btn-sm btn-default"
                             >
                                 <core:icon identifier="actions-plus" />
                                 <f:translate key="LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:function.add" />
-                            </a>
+                            </be:link.newRecord>
                             <f:if condition="{group.uid}">
                                 <f:if condition="{group.hidden}">
                                     <f:then>
@@ -285,7 +287,12 @@
                                     <td class="align-top">{task.uid}</td>
                                     <td class="align-top col-task">
                                         <div class="name">
-                                            <f:be.link route="scheduler_manage" parameters="{action: 'edit', 'uid': task.uid}">
+                                            <be:link.editRecord
+                                                uid="{task.uid}"
+                                                table="tx_scheduler_task"
+                                                returnUrl="{f:be.uri(route: 'scheduler_manage')}"
+                                                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}"
+                                            >
                                                 <strong>{task.fullTitle}</strong>
                                                 <f:if condition="{task.progress}">
                                                     <typo3-backend-progress-bar value="{task.progress}" max="100" label="{task.progress}%"></typo3-backend-progress-bar>
@@ -293,7 +300,7 @@
                                                 <f:if condition="{task.additionalInformation}">
                                                     <div class="additional-information"><f:format.nl2br>{task.additionalInformation}</f:format.nl2br></div>
                                                 </f:if>
-                                            </f:be.link>
+                                            </be:link.editRecord>
                                         </div>
                                         <f:if condition="{task.description} != ''">
                                             <div class="text-body-secondary" style="margin-top: 0.5em;"><f:format.nl2br>{task.description}</f:format.nl2br></div>
@@ -424,14 +431,15 @@
                                             </f:then>
                                             <f:else>
                                                 <div class="btn-group" role="group">
-                                                    <f:be.link
-                                                        route="scheduler_manage"
-                                                        parameters="{action: 'edit', 'uid': task.uid}"
+                                                    <be:link.editRecord
+                                                        uid="{task.uid}"
+                                                        table="tx_scheduler_task"
                                                         class="btn btn-default"
+                                                        returnUrl="{f:be.uri(route: 'scheduler_manage')}"
                                                         title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit')}"
                                                     >
-                                                        <core:icon identifier="actions-open"/>
-                                                    </f:be.link>
+                                                        <core:icon identifier="actions-open" />
+                                                    </be:link.editRecord>
                                                     <f:if condition="{task.disabled}">
                                                         <f:then>
                                                             <button

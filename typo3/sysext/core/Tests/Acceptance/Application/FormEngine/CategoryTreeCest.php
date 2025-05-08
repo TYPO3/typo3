@@ -18,15 +18,20 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\FormEngine;
 
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
+use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
 /**
  * Category tree tests
  */
 final class CategoryTreeCest
 {
-    public function _before(ApplicationTester $I): void
+    public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
         $I->useExistingSession('admin');
+        // Ensure to select PID=0 in navigation component, enforcing page module to mitigate state issue
+        // when acceptance tests get resorted or re-grouped.
+        $I->click('Page');
+        $pageTree->openPath(['styleguide TCA demo', 'New TYPO3 site']);
     }
 
     public function checkIfCategoryListIsAvailable(ApplicationTester $I): void

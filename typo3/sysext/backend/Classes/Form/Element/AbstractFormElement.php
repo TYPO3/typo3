@@ -125,7 +125,7 @@ abstract class AbstractFormElement extends AbstractNode
     {
         $label = htmlspecialchars($this->data['parameterArray']['fieldConf']['label'] ?? '');
         if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-            $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+            $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['containerFieldName'] ?? $this->data['fieldName'];
             $label .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
         return '<label for="' . htmlspecialchars($for) . '" class="form-label t3js-formengine-label">' . $label . '</label>';
@@ -139,7 +139,7 @@ abstract class AbstractFormElement extends AbstractNode
     {
         $legend = htmlspecialchars($this->data['parameterArray']['fieldConf']['label'] ?? '');
         if ($this->getBackendUser()->shallDisplayDebugInformation()) {
-            $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['fieldName'];
+            $fieldName = $this->data['flexFormContainerFieldName'] ?? $this->data['flexFormFieldName'] ?? $this->data['containerFieldName'] ?? $this->data['fieldName'];
             $legend .= ' <code>[' . htmlspecialchars($fieldName) . ']</code>';
         }
         $html = [];

@@ -90,7 +90,7 @@ class Execution
         $obj = new self();
         $obj->setStart($timestamp);
         $obj->setInterval(0);
-        $obj->setEnd($timestamp);
+        $obj->setEnd(0);
         $obj->setCronCmd('');
         $obj->setMultiple(false);
         $obj->setIsNewSingleExecution(true);

@@ -131,6 +131,30 @@ class TaskService
         return $categorizedTaskTypes;
     }
 
+    public function getFieldsForRecord(AbstractTask $task): array
+    {
+        try {
+            if ($task->getRunOnNextCronJob()) {
+                $executionTime = time();
+            } else {
+                $executionTime = $task->getExecution()->getNextExecution();
+            }
+            $task->setExecutionTime($executionTime);
+        } catch (\Exception) {
+            $task->setDisabled(true);
+            $executionTime = 0;
+        }
+        return [
+            'nextexecution' => $executionTime,
+            'disable' => (int)$task->isDisabled(),
+            'description' => $task->getDescription(),
+            'task_group' => $task->getTaskGroup(),
+            'tasktype' => $task->getTaskType(),
+            'parameters' => $task->getTaskParameters(),
+            'execution_details' => $task->getExecution()->toArray(),
+        ];
+    }
+
     public function getAdditionalFieldProviderForTask(string $taskType): ?AdditionalFieldProviderInterface
     {
         $taskInformation = $this->getAllTaskTypes()[$taskType];
@@ -169,6 +193,13 @@ class TaskService
     public function prepareAdditionalFields(string $taskType, array $newAdditionalFields, array $currentAdditionalFields = []): array
     {
         foreach ($newAdditionalFields as $fieldID => $fieldInfo) {
+            // fetch the name attribute of the input tag
+            $inputName = '';
+            if (is_string($fieldInfo['code'] ?? null) && str_contains($fieldInfo['code'] ?? '', '<input')) {
+                $matches = [];
+                preg_match('/name="([^"]+)"/', $fieldInfo['code'], $matches);
+                $inputName = $matches[1];
+            }
             $currentAdditionalFields[] = [
                 'taskType' => $taskType,
                 'fieldID' => $fieldID,
@@ -178,6 +209,7 @@ class TaskService
                 'cshLabel' => $fieldInfo['cshLabel'] ?? '',
                 'langLabel' => $this->getLanguageService()->sL($fieldInfo['label'] ?? ''),
                 'browser' => $fieldInfo['browser'] ?? '',
+                'browserParams' => ($inputName ? $inputName . '|||' . 'pages' . '|' : ''),
                 'pageTitle' => $fieldInfo['pageTitle'] ?? '',
                 'pageUid' => (int)($fieldInfo['pageUid'] ?? 0),
                 'renderType' => $fieldInfo['type'] ?? '',
@@ -187,25 +219,33 @@ class TaskService
         return $currentAdditionalFields;
     }
 
-    public function setTaskDataFromRequest(AbstractTask $task, array $parsedBody): AbstractTask
+    public function setTaskDataFromRequest(AbstractTask $task, array $incomingData): AbstractTask
     {
-        if ((int)$parsedBody['runningType'] === AbstractTask::TYPE_SINGLE) {
-            $execution = Execution::createSingleExecution($this->getTimestampFromDateString($parsedBody['start']));
+        $incomingData = array_merge($incomingData, $incomingData['execution_details'] ?? []);
+        $incomingData = array_merge($incomingData['parameters'] ?? [], $incomingData);
+        $endTime = $incomingData['end'] ?? '';
+        $frequency = $incomingData['frequency'] ?? $incomingData['cronCmd'] ?? '';
+        $runningType = (int)($incomingData['runningType'] ?? ($frequency ? AbstractTask::TYPE_RECURRING : AbstractTask::TYPE_SINGLE));
+        if ($runningType === AbstractTask::TYPE_SINGLE) {
+            $execution = Execution::createSingleExecution($this->getTimestampFromDateString($incomingData['start']));
         } else {
             $execution = Execution::createRecurringExecution(
-                $this->getTimestampFromDateString($parsedBody['start']),
-                is_numeric($parsedBody['frequency']) ? (int)$parsedBody['frequency'] : 0,
-                !empty($parsedBody['end'] ?? '') ? $this->getTimestampFromDateString($parsedBody['end']) : 0,
-                (bool)($parsedBody['multiple'] ?? false),
-                !is_numeric($parsedBody['frequency']) ? $parsedBody['frequency'] : '',
+                $this->getTimestampFromDateString($incomingData['start']),
+                is_numeric($frequency) ? (int)$frequency : 0,
+                !empty($endTime) ? $this->getTimestampFromDateString($endTime) : 0,
+                (bool)($incomingData['multiple'] ?? false),
+                !is_numeric($frequency) ? $frequency : '',
             );
         }
         $task->setExecution($execution);
-        $task->setDisabled($parsedBody['disable'] ?? false);
-        $task->setDescription($parsedBody['description'] ?? '');
-        $task->setTaskGroup((int)($parsedBody['task_group'] ?? 0));
+        $task->setDisabled($incomingData['disable'] ?? false);
+        $task->setDescription($incomingData['description'] ?? '');
+        if (str_starts_with((string)$incomingData['task_group'], 'tx_scheduler_task_group_')) {
+            $incomingData['task_group'] = (int)substr($incomingData['task_group'], 24);
+        }
+        $task->setTaskGroup((int)($incomingData['task_group'] ?? 0));
         $provider = $this->getAdditionalFieldProviderForTask($task->getTaskType());
-        $provider?->saveAdditionalFields($parsedBody, $task);
+        $provider?->saveAdditionalFields($incomingData, $task);
         return $task;
     }
 
@@ -214,7 +254,7 @@ class TaskService
      *
      * @throws InvalidDateException
      */
-    protected function getTimestampFromDateString(string $input): int
+    protected function getTimestampFromDateString(int|string $input): int
     {
         if ($input === '') {
             return 0;
@@ -247,6 +287,7 @@ class TaskService
                 description: $taskInformation['description'],
             );
         }
+        // @todo: Let's sort them by group
         return $config;
     }
 
