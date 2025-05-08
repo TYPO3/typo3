@@ -339,6 +339,20 @@ class Execution
         return $result;
     }
 
+    /**
+     * Guess recurring type from the existing information
+     * If an interval or a cron command is defined, it's a recurring task
+     */
+    public function isRecurring(): bool
+    {
+        return !empty($this->getInterval()) || !empty($this->getCronCmd());
+    }
+
+    public function isSingleRun(): bool
+    {
+        return !$this->isRecurring();
+    }
+
     public function toArray(): array
     {
         // The type cast is necessary as long as the DB migration (upgrade wizard) exists,

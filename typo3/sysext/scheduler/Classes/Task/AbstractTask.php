@@ -18,8 +18,6 @@ namespace TYPO3\CMS\Scheduler\Task;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Execution;
 
 /**
@@ -309,17 +307,6 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * Saves the details of the task to the database.
-     *
-     * @return bool
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function save()
-    {
-        return GeneralUtility::makeInstance(SchedulerTaskRepository::class)->update($this);
-    }
-
-    /**
      * Stops the task, by replacing the execution object by an empty one
      * NOTE: the task still needs to be saved after that
      * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
@@ -335,7 +322,7 @@ abstract class AbstractTask implements LoggerAwareInterface
      */
     public function getType(): int
     {
-        if (!empty($this->getExecution()->getInterval()) || !empty($this->getExecution()->getCronCmd())) {
+        if ($this->execution->isRecurring()) {
             return self::TYPE_RECURRING;
         }
         return self::TYPE_SINGLE;

@@ -18,10 +18,15 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Scheduler\Service;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Struct\SelectItem;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface;
+use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
+use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
 
@@ -29,6 +34,7 @@ use TYPO3\CMS\Scheduler\Task\ExecuteSchedulableCommandTask;
  * Service class helping to retrieve data for EXT:scheduler
  * @internal This is not a public API method, do not use in own extensions
  */
+#[Autoconfigure(public: true)]
 class TaskService
 {
     public function __construct(
@@ -146,6 +152,102 @@ class TaskService
             $task->setTaskType($taskType);
         }
         return $task;
+    }
+
+    public function getHumanReadableTaskName(AbstractTask $task): string
+    {
+        $taskInformation = $this->getAllTaskTypes()[$task->getTaskType()] ?? null;
+        if (!is_array($taskInformation)) {
+            throw new \RuntimeException('Task Type ' . $task->getTaskType() . ' not found in list of registered tasks', 1641658569);
+        }
+        return $taskInformation['fullTitle'];
+    }
+
+    /**
+     * Prepared additional fields from field providers for rendering.
+     */
+    public function prepareAdditionalFields(string $taskType, array $newAdditionalFields, array $currentAdditionalFields = []): array
+    {
+        foreach ($newAdditionalFields as $fieldID => $fieldInfo) {
+            $currentAdditionalFields[] = [
+                'taskType' => $taskType,
+                'fieldID' => $fieldID,
+                'htmlClassName' => strtolower(str_replace('\\', '-', $taskType)),
+                'code' => $fieldInfo['code'] ?? '',
+                'cshKey' => $fieldInfo['cshKey'] ?? '',
+                'cshLabel' => $fieldInfo['cshLabel'] ?? '',
+                'langLabel' => $this->getLanguageService()->sL($fieldInfo['label'] ?? ''),
+                'browser' => $fieldInfo['browser'] ?? '',
+                'pageTitle' => $fieldInfo['pageTitle'] ?? '',
+                'pageUid' => (int)($fieldInfo['pageUid'] ?? 0),
+                'renderType' => $fieldInfo['type'] ?? '',
+                'description' => $fieldInfo['description'] ?? '',
+            ];
+        }
+        return $currentAdditionalFields;
+    }
+
+    public function setTaskDataFromRequest(AbstractTask $task, array $parsedBody): AbstractTask
+    {
+        if ((int)$parsedBody['runningType'] === AbstractTask::TYPE_SINGLE) {
+            $execution = Execution::createSingleExecution($this->getTimestampFromDateString($parsedBody['start']));
+        } else {
+            $execution = Execution::createRecurringExecution(
+                $this->getTimestampFromDateString($parsedBody['start']),
+                is_numeric($parsedBody['frequency']) ? (int)$parsedBody['frequency'] : 0,
+                !empty($parsedBody['end'] ?? '') ? $this->getTimestampFromDateString($parsedBody['end']) : 0,
+                (bool)($parsedBody['multiple'] ?? false),
+                !is_numeric($parsedBody['frequency']) ? $parsedBody['frequency'] : '',
+            );
+        }
+        $task->setExecution($execution);
+        $task->setDisabled($parsedBody['disable'] ?? false);
+        $task->setDescription($parsedBody['description'] ?? '');
+        $task->setTaskGroup((int)($parsedBody['task_group'] ?? 0));
+        $provider = $this->getAdditionalFieldProviderForTask($task->getTaskType());
+        $provider?->saveAdditionalFields($parsedBody, $task);
+        return $task;
+    }
+
+    /**
+     * Convert input to DateTime and retrieve timestamp.
+     *
+     * @throws InvalidDateException
+     */
+    protected function getTimestampFromDateString(string $input): int
+    {
+        if ($input === '') {
+            return 0;
+        }
+        if (MathUtility::canBeInterpretedAsInteger($input)) {
+            // Already looks like a timestamp
+            return (int)$input;
+        }
+        try {
+            // Convert from ISO 8601 dates
+            $value = (new \DateTime($input))->getTimestamp();
+        } catch (\Exception $e) {
+            throw new InvalidDateException($e->getMessage(), 1746744540);
+        }
+        return $value;
+    }
+
+    /**
+     * Used in FormEngine and Backend listings
+     */
+    public function getTaskTypesForTcaItems(array &$config): array
+    {
+        $taskTypes = $this->getAllTaskTypes();
+        foreach ($taskTypes as $taskType => $taskInformation) {
+            $config['items'][] = new SelectItem(
+                type: 'select',
+                label: $taskInformation['fullTitle'],
+                value: $taskType,
+                group: $taskInformation['category'],
+                description: $taskInformation['description'],
+            );
+        }
+        return $config;
     }
 
     private function getLanguageService(): LanguageService

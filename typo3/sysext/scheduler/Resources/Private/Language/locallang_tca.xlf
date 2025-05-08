@@ -3,6 +3,36 @@
 	<file source-language="en" datatype="plaintext" original="EXT:scheduler/Resources/Private/Language/locallang_tca.xlf" date="2011-10-17T20:22:37Z" product-name="scheduler">
 		<header/>
 		<body>
+			<trans-unit id="tx_scheduler_task">
+				<source>Scheduler task</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.tasktype">
+				<source>Task type</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.task_group">
+				<source>Belongs to task group</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.description">
+				<source>Description</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.parameters">
+				<source>Task parameters</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.execution_details">
+				<source>Schedule</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.nextexecution">
+				<source>Next run planned at</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.lastexecution_time">
+				<source>Last run started at</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.lastexecution_failure">
+				<source>Error details from last run</source>
+			</trans-unit>
+			<trans-unit id="tx_scheduler_task.lastexecution_context">
+				<source>Last run via</source>
+			</trans-unit>
 			<trans-unit id="tx_scheduler_task_group">
 				<source>Scheduler task group</source>
 			</trans-unit>
