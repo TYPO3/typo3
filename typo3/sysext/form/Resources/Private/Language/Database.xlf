@@ -856,7 +856,7 @@
 				<source>address-line1 - Street address, line 1</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-line2" xml:space="preserve">
-				<source>address-line1 - Street address, line 2</source>
+				<source>address-line2 - Street address, line 2</source>
 			</trans-unit>
 			<trans-unit id="formEditor.elements.FormElement.editor.autocomplete.option.address-level1" xml:space="preserve">
 				<source>address-level1 - State, Canton etc</source>
