@@ -70,21 +70,15 @@ prototypes:
           iconIdentifier: form-hidden
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
         properties:
-          containerClassAttribute: input
+          containerClassAttribute: 'form-element form-element-hidden'
           elementClassAttribute: ''
-          elementErrorClassAttribute: error
+          elementErrorClassAttribute: ~
         variants:
           -
             identifier: hide-1
             renderingOptions:
               enabled: false
             condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-hidden'
-              elementErrorClassAttribute: ~
     formEditor:
       formEditorPartials:
         FormElement-Hidden: Stage/SimpleTemplate

@@ -95,20 +95,12 @@ prototypes:
           iconIdentifier: form-checkbox
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
         properties:
-          containerClassAttribute: 'input checkbox'
-          elementClassAttribute: add-on
-          elementErrorClassAttribute: error
+          containerClassAttribute: 'form-element form-element-check mb-3'
+          elementClassAttribute: form-check-input
+          elementErrorClassAttribute: ~
+          labelClassAttribute: form-check-wrapping-label
+          labelTextClassAttribute: form-check-label
           value: 1
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-check mb-3'
-              elementClassAttribute: form-check-input
-              elementErrorClassAttribute: ~
-              labelClassAttribute: form-check-wrapping-label
-              labelTextClassAttribute: form-check-label
     formEditor:
       formEditorPartials:
         FormElement-Checkbox: Stage/SimpleTemplate

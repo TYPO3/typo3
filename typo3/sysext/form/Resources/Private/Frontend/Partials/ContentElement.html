@@ -2,7 +2,7 @@
 <formvh:renderRenderable renderable="{element}">
     <f:if condition="{element.rootForm.renderingOptions.previewMode}">
         <f:then>
-            <div class="clearfix">
+            <div class="{element.properties.outerContainerClassAttribute}">
                 <f:if condition="{element.properties.contentElementUid}">
                     <f:then>
                         <formvh:be.renderContentElementPreview contentElementUid="{element.properties.contentElementUid}" />
@@ -15,7 +15,7 @@
         </f:then>
         <f:else>
             <f:if condition="{element.properties.contentElementUid}">
-                <div class="clearfix{f:if(condition: element.properties.elementClassAttribute, then: ' {element.properties.elementClassAttribute}')}">
+                <div class="{element.properties.outerContainerClassAttribute}{f:if(condition: element.properties.elementClassAttribute, then: ' {element.properties.elementClassAttribute}')}">
                     <f:cObject typoscriptObjectPath="lib.tx_form.contentElementRendering">{element.properties.contentElementUid}</f:cObject>
                 </div>
             </f:if>

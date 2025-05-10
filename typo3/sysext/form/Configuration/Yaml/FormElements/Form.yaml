@@ -450,7 +450,6 @@ prototypes:
                     templateName: Inspector-RemoveElementEditor
         rendererClassName: TYPO3\CMS\Form\Domain\Renderer\FluidFormRenderer
         renderingOptions:
-          templateVariant: version1
           translation:
             translationFiles:
               10: 'EXT:form/Resources/Private/Language/locallang.xlf'
@@ -473,27 +472,16 @@ prototypes:
             formElementToUse: Honeypot
           submitButtonLabel: Submit
           skipUnknownElements: true
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            renderingOptions:
-              templateRootPaths:
-                10: 'EXT:form/Resources/Private/FrontendVersion2/Templates/'
-              partialRootPaths:
-                10: 'EXT:form/Resources/Private/FrontendVersion2/Partials/'
-              layoutRootPaths:
-                10: 'EXT:form/Resources/Private/FrontendVersion2/Layouts/'
-              fieldProperties:
-                errorMsgClassAttribute: invalid-feedback
-                errorClassAttribute: is-invalid
-                descriptionClassAttribute: form-text
-                requiredMarkClassAttribute: required
-                visuallyHiddenClassAttribute: visually-hidden
-              formNavigation:
-                navigationWrapperClassAttribute: actions
-                navigationClassAttribute: form-navigation
-                navigationAriaLabelAttribute: Form Navigation
-                btnPreviousClassAttribute: 'btn btn-outline-primary'
-                btnNextClassAttribute: 'btn btn-primary'
-                btnSubmitClassAttribute: 'btn btn-primary'
+          fieldProperties:
+            errorMsgClassAttribute: invalid-feedback
+            errorClassAttribute: is-invalid
+            descriptionClassAttribute: form-text
+            requiredMarkClassAttribute: required
+            visuallyHiddenClassAttribute: visually-hidden
+          formNavigation:
+            navigationWrapperClassAttribute: actions
+            navigationClassAttribute: form-navigation
+            navigationAriaLabelAttribute: Form Navigation
+            btnPreviousClassAttribute: 'btn btn-outline-primary'
+            btnNextClassAttribute: 'btn btn-primary'
+            btnSubmitClassAttribute: 'btn btn-primary'

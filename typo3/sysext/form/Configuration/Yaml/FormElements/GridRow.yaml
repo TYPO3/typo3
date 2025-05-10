@@ -53,9 +53,9 @@ prototypes:
           iconIdentifier: form-gridrow
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GridRow
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: row
-          elementErrorClassAttribute: error
+          containerClassAttribute: ~
+          elementClassAttribute: 'form-element form-element-gridrow row'
+          elementErrorClassAttribute: ~
           gridColumnClassAutoConfiguration:
             gridSize: 12
             viewPorts:
@@ -74,14 +74,6 @@ prototypes:
         renderingOptions:
           _isCompositeFormElement: true
           _isGridRowFormElement: true
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: ~
-              elementClassAttribute: 'form-element form-element-gridrow row'
-              elementErrorClassAttribute: ~
     formEditor:
       formEditorPartials:
         FormElement-GridRow: Stage/Fieldset

@@ -320,17 +320,10 @@ prototypes:
           iconIdentifier: form-textarea
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: xxlarge
+          containerClassAttribute: 'form-element form-element-textarea mb-3'
+          elementClassAttribute: 'form-control xxlarge'
           elementErrorClassAttribute: error
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-textarea mb-3'
-              elementClassAttribute: 'form-control xxlarge'
-              labelClassAttribute: form-label
+          labelClassAttribute: form-label
     formEditor:
       formEditorPartials:
         FormElement-Textarea: Stage/SimpleTemplate

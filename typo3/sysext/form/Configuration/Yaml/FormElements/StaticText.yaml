@@ -59,17 +59,13 @@ prototypes:
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
         properties:
           text: ''
+          containerClassAttribute: 'form-element form-element-statictext mb-3'
         variants:
           -
             identifier: hide-1
             renderingOptions:
               enabled: false
             condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-statictext mb-3'
     formEditor:
       formEditorPartials:
         FormElement-StaticText: Stage/StaticText

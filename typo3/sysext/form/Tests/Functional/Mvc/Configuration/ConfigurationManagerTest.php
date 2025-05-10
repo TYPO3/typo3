@@ -38,7 +38,6 @@ final class ConfigurationManagerTest extends FunctionalTestCase
                         'Form' => [
                             'renderingOptions' => [
                                 'submitButtonLabel' => 'Foo',
-                                'templateVariant' => 'version1',
                                 'addQueryString' => [
                                     'value' => 'Baz',
                                     '_typoScriptNodeValue' => 'TEXT',
@@ -56,7 +55,6 @@ final class ConfigurationManagerTest extends FunctionalTestCase
                         'Form' => [
                             'renderingOptions' => [
                                 'submitButtonLabel' => 'Foo',
-                                'templateVariant' => 'version1',
                                 'addQueryString' => [
                                     'value' => 'Baz',
                                     '_typoScriptNodeValue' => 'TEXT',

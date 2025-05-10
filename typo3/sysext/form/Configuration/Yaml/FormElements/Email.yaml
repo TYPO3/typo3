@@ -310,21 +310,13 @@ prototypes:
           iconIdentifier: form-email
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: ''
-          elementErrorClassAttribute: error
+          containerClassAttribute: 'form-element form-element-email mb-3'
+          elementClassAttribute: form-control
+          elementErrorClassAttribute: ~
+          labelClassAttribute: form-label
         validators:
           -
             identifier: EmailAddress
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-email mb-3'
-              elementClassAttribute: form-control
-              elementErrorClassAttribute: ~
-              labelClassAttribute: form-label
     formEditor:
       formEditorPartials:
         FormElement-Email: Stage/SimpleTemplate

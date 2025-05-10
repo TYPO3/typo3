@@ -12,9 +12,6 @@
 Properties
 ==========
 
-..  _prototypes.prototypeIdentifier.formelementsdefinition.form.renderingoptions.templateVariant:
-..  include:: renderingOptions/templateVariant.rst.txt
-
 ..  _prototypes.prototypeIdentifier.formelementsdefinition.form.renderingoptions.translation.translationfiles:
 ..  include:: renderingOptions/translation/translationFiles.rst.txt
 

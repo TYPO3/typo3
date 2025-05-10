@@ -29,7 +29,7 @@ final class FormFrameworkCest
     private string $emailSelector = '[id^=simpleform] input[placeholder="Email address"]';
     private string $textareaSelector = '[id^=simpleform] textarea';
     private string $submitSelector = '[id^=simpleform] button[type=submit]:not([formnovalidate])';
-    private string $summaryValueSelector = '[id^=simpleform] table td:not(.summary-table-first-col)';
+    private string $summaryValueSelector = '[id^=simpleform] .summary-list dd';
 
     public function _before(ApplicationTester $I, PageTree $pageTree): void
     {
@@ -76,10 +76,10 @@ final class FormFrameworkCest
 
         $I->fillField($this->emailSelector, 'invalid mail');
         $I->click($this->submitSelector);
-        $I->see($mandatory, $this->nameSelector . ' + div');
-        $I->see($mandatory, $this->subjectSelector . ' + div');
-        $I->see($mandatoryEmail, $this->emailSelector . ' + div');
-        $I->see($mandatory, $this->textareaSelector . ' + div');
+        $I->see($mandatory, $this->nameSelector . ' + span');
+        $I->see($mandatory, $this->subjectSelector . ' + span');
+        $I->see($mandatoryEmail, $this->emailSelector . ' + span');
+        $I->see($mandatory, $this->textareaSelector . ' + span');
     }
 
     public function sentValidForm(ApplicationTester $I): void

@@ -315,9 +315,9 @@ prototypes:
                     templateName: Inspector-RemoveElementEditor
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: ''
-          elementErrorClassAttribute: error
+          containerClassAttribute: form-element
+          elementClassAttribute: form-control
+          elementErrorClassAttribute: ~
           renderAsHiddenField: false
           styleAttribute: 'position:absolute; margin:0 0 0 -999em;'
         variants:
@@ -326,10 +326,3 @@ prototypes:
             renderingOptions:
               enabled: false
             condition: 'stepType == "SummaryPage" || finisherIdentifier in ["EmailToSender", "EmailToReceiver"]'
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: form-element
-              elementClassAttribute: form-control
-              elementErrorClassAttribute: ~

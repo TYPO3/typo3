@@ -127,18 +127,10 @@ prototypes:
           iconIdentifier: form-single-select
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\GenericFormElement
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: ''
-          elementErrorClassAttribute: error
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-select mb-3'
-              elementClassAttribute: form-select
-              elementErrorClassAttribute: ~
-              labelClassAttribute: form-label
+          containerClassAttribute: 'form-element form-element-select mb-3'
+          elementClassAttribute: form-select
+          elementErrorClassAttribute: ~
+          labelClassAttribute: form-label
     formEditor:
       formEditorPartials:
         FormElement-SingleSelect: Stage/SelectTemplate

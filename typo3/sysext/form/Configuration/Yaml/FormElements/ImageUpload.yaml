@@ -159,23 +159,15 @@ prototypes:
           iconIdentifier: form-image-upload
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: lightbox
-          elementErrorClassAttribute: error
+          containerClassAttribute: 'form-element form-element-imageupload mb-3'
+          elementClassAttribute: 'form-control lightbox'
+          elementErrorClassAttribute: ~
+          labelClassAttribute: form-label
           saveToFileMount: '1:/user_upload/'
           allowedMimeTypes: []
           imageLinkMaxWidth: 500
           imageMaxWidth: 500
           imageMaxHeight: 500
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-imageupload mb-3'
-              elementClassAttribute: 'form-control lightbox'
-              elementErrorClassAttribute: ~
-              labelClassAttribute: form-label
     formEditor:
       formEditorPartials:
         FormElement-ImageUpload: Stage/FileUploadTemplate

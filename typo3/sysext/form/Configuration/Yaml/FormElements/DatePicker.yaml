@@ -145,9 +145,10 @@ prototypes:
                     templateName: Inspector-RemoveElementEditor
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\DatePicker
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: 'small form-control'
-          elementErrorClassAttribute: error
+          containerClassAttribute: 'form-element form-element-datepicker form-inline mb-3'
+          elementClassAttribute: form-control
+          elementErrorClassAttribute: ~
+          labelClassAttribute: form-label
           timeSelectorClassAttribute: mini
           timeSelectorHourLabel: ''
           timeSelectorMinuteLabel: ''
@@ -156,15 +157,6 @@ prototypes:
           datePickerInitializationJavaScriptFile: EXT:form/Resources/Public/JavaScript/frontend/date-picker.js
           enableDatePicker: true
           displayTimeSelector: false
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-datepicker form-inline mb-3'
-              elementClassAttribute: form-control
-              elementErrorClassAttribute: ~
-              labelClassAttribute: form-label
     formEditor:
       formEditorPartials:
         FormElement-DatePicker: Stage/SimpleTemplate

@@ -170,20 +170,12 @@ prototypes:
           iconIdentifier: form-file-upload
         implementationClassName: TYPO3\CMS\Form\Domain\Model\FormElements\FileUpload
         properties:
-          containerClassAttribute: input
-          elementClassAttribute: ''
-          elementErrorClassAttribute: error
+          containerClassAttribute: 'form-element form-element-fileupload mb-3'
+          elementClassAttribute: form-control
+          elementErrorClassAttribute: ~
+          labelClassAttribute: form-label
           saveToFileMount: '1:/user_upload/'
           allowedMimeTypes: []
-        variants:
-          -
-            identifier: template-variant
-            condition: 'getRootFormProperty("renderingOptions.templateVariant") == "version2"'
-            properties:
-              containerClassAttribute: 'form-element form-element-fileupload mb-3'
-              elementClassAttribute: form-control
-              elementErrorClassAttribute: ~
-              labelClassAttribute: form-label
     formEditor:
       formEditorPartials:
         FormElement-FileUpload: Stage/FileUploadTemplate
