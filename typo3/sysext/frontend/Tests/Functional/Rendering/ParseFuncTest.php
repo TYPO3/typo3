@@ -35,8 +35,6 @@ final class ParseFuncTest extends FunctionalTestCase
         'EN' => ['id' => 0, 'title' => 'English', 'locale' => 'en_US.UTF8'],
     ];
 
-    protected array $coreExtensionsToLoad = ['fluid_styled_content'];
-
     public static function contentIsRenderedDataProvider(): array
     {
         return [
@@ -78,15 +76,12 @@ final class ParseFuncTest extends FunctionalTestCase
                     'root' => 1,
                     'clear' => 3,
                     'constants' => <<<EOT
-@import 'EXT:fluid_styled_content/Configuration/TypoScript/constants.typoscript'
 project = TYPO3
 foo = BAR
 EOT,
                     'config' => <<<EOT
-@import 'EXT:fluid_styled_content/Configuration/TypoScript/setup.typoscript'
-
 lib.parseFunc_Custom < lib.parseFunc_RTE
-lib.parseFunc_Custom.allowTags := addToList(wbr)
+lib.parseFunc_Custom.allowTags = wbr,em,p
 
 page = PAGE
 page.10 = FLUIDTEMPLATE

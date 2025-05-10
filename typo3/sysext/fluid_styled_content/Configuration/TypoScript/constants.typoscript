@@ -14,9 +14,6 @@ styles.content {
     # cat=content/cShortcut/t0; type=string; label=List of accepted tables
     shortcut.tables = tt_content
 
-    # cat=content/parseFunc/a0; type=string; label=List of allowed HTML tags when rendering RTE content
-    allowTags = a, abbr, acronym, address, article, aside, b, bdo, big, blockquote, br, caption, center, cite, code, col, colgroup, dd, del, dfn, dl, div, dt, em, figcaption, figure, font, footer, header, h1, h2, h3, h4, h5, h6, hr, i, img, ins, kbd, label, li, link, mark, meta, nav, ol, p, pre, q, s, samp, sdfield, section, small, span, strike, strong, style, sub, sup, table, thead, tbody, tfoot, td, th, tr, title, tt, u, ul, var
-
     # cat=content/cImage/a0; type=options[lazy,eager,auto,]; label=Default settings for browser-native image lazy loading: Can be "lazy" (browsers could choose to load images later), "eager" (load images right away) or "auto" (browser will determine whether the image should be lazy loaded or not)
     image.lazyLoading = lazy
 
@@ -55,12 +52,5 @@ styles.content {
         linkWrap.lightboxCssClass = lightbox
         # cat=content/cTextmedia/c6; type=string; label= Lightbox rel="" attribute: Which rel="" attribute to use for lightbox links (only applicable if lightbox rendering is enabled)
         linkWrap.lightboxRelAttribute = lightbox[{field:uid}]
-    }
-
-    links {
-        # cat=content/links/l2; type=small; label= Target for external links
-        extTarget = _blank
-        # cat=content/links/l3; type=string; label= Parts to keep when building links: Comma separated list of the link parts to show when building the link-text: scheme,path,query. Example: "" (empty) => www.example.com, "scheme,path" => http://www.example.com
-        keep = path
     }
 }

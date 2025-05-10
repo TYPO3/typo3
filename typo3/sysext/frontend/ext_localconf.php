@@ -14,6 +14,16 @@ ExtensionManagementUtility::addTypoScriptSetup(
     '
 # Creates persistent ParseFunc setup for non-HTML content.
 lib.parseFunc {
+    makelinks = 1
+    makelinks {
+        http {
+            keep = path
+            extTarget = _blank
+        }
+        mailto {
+            keep = path
+        }
+    }
     tags {
         a = TEXT
         a {

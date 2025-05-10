@@ -26,9 +26,6 @@
 			<trans-unit id="settings.styles.content.shortcut.tables">
 				<source>List of accepted tables</source>
 			</trans-unit>
-			<trans-unit id="settings.styles.content.allowTags">
-				<source>List of allowed HTML tags when rendering RTE content</source>
-			</trans-unit>
 			<trans-unit id="settings.styles.content.image.lazyLoading">
 				<source>Default settings for browser-native image lazy loading</source>
 			</trans-unit>
@@ -124,19 +121,6 @@
 			</trans-unit>
 			<trans-unit id="settings.description.styles.content.textmedia.linkWrap.lightboxRelAttribute">
 				<source>Which `rel=""` attribute to use for lightbox links (only applicable if lightbox rendering is enabled)</source>
-			</trans-unit>
-			<trans-unit id="settings.styles.content.links.extTarget">
-				<source>Target for external links</source>
-			</trans-unit>
-			<trans-unit id="settings.styles.content.links.keep">
-				<source>Parts to keep when building links</source>
-			</trans-unit>
-			<trans-unit id="settings.description.styles.content.links.keep">
-				<source>Comma separated list of the link parts to show when building the link-text: scheme,path,query.
-
-Example:
- - ` ` (empty) =&gt; `www.example.com`
- - `scheme,path` =&gt; `http://www.example.com`</source>
 			</trans-unit>
 			<trans-unit id="settings.styles.templates.templateRootPath">
 				<source>Path of Fluid Templates for all defined content elements</source>
