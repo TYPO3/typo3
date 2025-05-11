@@ -2608,7 +2608,7 @@ class DatabaseIntegrityController
                     $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                     if ($column !== null
                         && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
-                        && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                        && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING], true)
                     ) {
                         if ($column->getType()->getName() === Types::SMALLINT) {
                             // we need to cast smallint to int first, otherwise text case below won't work
@@ -2638,7 +2638,7 @@ class DatabaseIntegrityController
                         $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                         if ($column !== null
                             && $connection->getDatabasePlatform() instanceof PostgreSQLPlatform
-                            && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                            && !in_array($column->getType()->getName(), [Types::STRING, Types::ASCII_STRING], true)
                         ) {
                             if ($column->getType()->getName() === Types::SMALLINT) {
                                 // we need to cast smallint to int first, otherwise text case below won't work
