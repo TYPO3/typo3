@@ -2736,7 +2736,7 @@ class DatabaseIntegrityController
                 $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                 if ($column !== null
                     && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
-                    && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                    && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING], true)
                 ) {
                     if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {
                         // we need to cast smallint to int first, otherwise text case below won't work
@@ -2770,7 +2770,7 @@ class DatabaseIntegrityController
                     $column = $normalizedTableColumns[$field] ?? $normalizedTableColumns[$quotedField] ?? null;
                     if ($column !== null
                         && $connection->getDatabasePlatform() instanceof DoctrinePostgreSQLPlatform
-                        && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING, Types::JSON], true)
+                        && !in_array(Type::getTypeRegistry()->lookupName($column->getType()), [Types::STRING, Types::ASCII_STRING], true)
                     ) {
                         if (Type::getTypeRegistry()->lookupName($column->getType()) === Types::SMALLINT) {
                             // we need to cast smallint to int first, otherwise text case below won't work
