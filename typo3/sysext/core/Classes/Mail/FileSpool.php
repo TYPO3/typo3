@@ -176,7 +176,7 @@ class FileSpool extends AbstractTransport implements DelayedTransportInterface
     protected function getRandomString(int $count): string
     {
         // This string MUST stay FS safe, avoid special chars
-        $base = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-';
+        $base = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_';
         $ret = '';
         $strlen = strlen($base);
         for ($i = 0; $i < $count; ++$i) {
