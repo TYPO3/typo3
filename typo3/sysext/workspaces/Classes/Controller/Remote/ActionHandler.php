@@ -539,7 +539,7 @@ class ActionHandler
     public function sendToPrevStageExecute(\stdClass $parameters)
     {
         $cmdArray = [];
-        $setStageId = $parameters->affects->nextStage;
+        $setStageId = (int)$parameters->affects->nextStage;
         $comments = $parameters->comments;
         $table = $parameters->affects->table;
         $uid = $parameters->affects->uid;
