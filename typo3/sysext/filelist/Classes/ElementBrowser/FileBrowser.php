@@ -112,6 +112,11 @@ class FileBrowser extends AbstractResourceBrowser
                 Mode::BROWSE
             );
 
+            // Only add selected columns if the feature is enabled
+            if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
+                $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
+            }
+
             // Create the filelist header bar
             $markup[] = '<div class="row justify-content-between mb-2">';
             $markup[] = '    <div class="col-auto">';

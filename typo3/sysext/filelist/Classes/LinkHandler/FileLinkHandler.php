@@ -83,6 +83,11 @@ class FileLinkHandler extends AbstractResourceLinkHandler
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
 
+            // Only add selected columns if the feature is enabled
+            if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
+                $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
+            }
+
             $searchWord = trim((string)($request->getParsedBody()['searchTerm'] ?? $request->getQueryParams()['searchTerm'] ?? ''));
             $searchDemand = $searchWord !== '' ? FileSearchDemand::createForSearchTerm($searchWord)->withFolder($this->selectedFolder)->withRecursive() : null;
 

@@ -29,7 +29,7 @@ enum Mode: string
     {
         return match ($this) {
             Mode::MANAGE => ['_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size', 'rw', '_REF_'],
-            Mode::BROWSE => ['_SELECTOR_', 'icon', 'name', '_CONTROL_'],
+            Mode::BROWSE => ['_SELECTOR_', 'icon', 'name', '_CONTROL_', 'record_type', 'size'],
         };
     }
 }

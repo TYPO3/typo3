@@ -22,6 +22,7 @@ use TYPO3\CMS\Backend\ElementBrowser\AbstractElementBrowser;
 use TYPO3\CMS\Backend\ElementBrowser\ElementBrowserInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownDivider;
+use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItem;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownRadio;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
@@ -188,6 +189,32 @@ abstract class AbstractResourceBrowser extends AbstractElementBrowser implements
                 ->setHref($this->createUri(['displayThumbs' => $this->displayThumbs ? 0 : 1]))
                 ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.showThumbnails'))
                 ->setIcon($this->iconFactory->getIcon('actions-image'));
+        }
+        if (
+            ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true)
+            && $this->viewMode === ViewMode::LIST
+            && $this->identifier === 'file'
+        ) {
+            $this->pageRenderer->loadJavaScriptModule('@typo3/backend/column-selector-button.js');
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownItem::class)
+                ->setTag('typo3-backend-column-selector-button')
+                ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
+                ->setAttributes([
+                    'data-url' => (string)$this->uriBuilder->buildUriFromRoute(
+                        'ajax_show_columns_selector',
+                        ['table' => '_FILE']
+                    ),
+                    'data-target' => (string)$this->filelist->createModuleUri(),
+                    'data-title' => sprintf(
+                        $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
+                        $this->tcaSchemaFactory->get('sys_file')->getTitle($this->getLanguageService()->sL(...)),
+                    ),
+                    'data-button-ok' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
+                    'data-button-close' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),
+                    'data-error-message' => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView.error'),
+                ])
+                ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
 
         $viewModeButton = GeneralUtility::makeInstance(DropDownButton::class)
