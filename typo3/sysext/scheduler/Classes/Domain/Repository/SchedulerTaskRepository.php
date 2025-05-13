@@ -480,8 +480,8 @@ class SchedulerTaskRepository
 
     public function isTaskMarkedAsRunning(AbstractTask $task): bool
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_NAME);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $row = $queryBuilder
             ->select('serialized_executions')
             ->from(self::TABLE_NAME)
