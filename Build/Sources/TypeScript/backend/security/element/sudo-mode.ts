@@ -99,14 +99,12 @@ export class SudoMode extends SudoModeProperties {
       buttons: [
         this.hasFatalError ? {
           text: this.labels.cancel,
-          active: true,
           btnClass: 'btn-default',
           trigger: () => {
             top.location.href = this.cancelUri;
           },
         } : {
           text: this.labels.verify,
-          active: true,
           name: 'verify',
           form: 'verify-sudo-mode',
           btnClass: 'btn-primary',
@@ -167,7 +165,7 @@ export class SudoModeForm extends SudoModeProperties {
           `}
           <div class="form-group">
             <label class="form-label" for="password">${this.labels.password}</label>
-            <input required="required" class="form-control" id="password" type="password" name="password"
+            <input required="required" class="form-control" id="password" type="password" name="password" autofocus
                    autocomplete=${this.useInstallToolPassword ? 'section-install current-password' : 'current-password'}>
           </div>
         </form>
@@ -186,11 +184,6 @@ export class SudoModeForm extends SudoModeProperties {
     if (changedProperties.has('useInstallToolPassword')) {
       this.closest('typo3-backend-modal').modalTitle = this.getModalTitle();
     }
-  }
-
-  protected override firstUpdated(_changedProperties: PropertyValues): void {
-    super.firstUpdated(_changedProperties);
-    this.passwordElement?.focus();
   }
 
   protected getModalTitle() {
