@@ -28,86 +28,6 @@
                         <div class="localconf-item-heading">
                             <strong>[{sectionName}]{item.path} </strong>
 
-                            <!-- @see typo3-formengine-table-wizard -->
-                            <f:if condition="{item.type} == 'map' || {item.type} == 'element-list'">
-                                <table width="100%">
-                                    <thead>
-                                        <tr>
-                                            <f:if condition="{item.type} == 'map'">
-                                                <th>{item.arrayKey}</th>
-                                            </f:if>
-                                            <th>{item.arrayValue}</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <f:if condition="{item.values}">
-                                            <f:for each="{item.values}" as="value" key="key">
-                                                <tr class="t3js-localConfiguration-array-clone" data-valuetype="{item.type}">
-                                                    <f:if condition="{item.type} == 'map'">
-                                                        <td>
-                                                            <input
-                                                                type="text"
-                                                                value="{key}"
-                                                                data-path="{sectionName}/{item.key}/key[]"
-                                                                data-valuetype="{item.type}"
-                                                                class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
-                                                                autocomplete="off"
-                                                                {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
-                                                            />
-                                                        </td>
-                                                    </f:if>
-                                                    <td>
-                                                        <input
-                                                            type="text"
-                                                            value="{value}"
-                                                            data-path="{sectionName}/{item.key}/value[]"
-                                                            data-valuetype="{item.type}"
-                                                            class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
-                                                            autocomplete="off"
-                                                            {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
-                                                        />
-                                                    </td>
-                                                    <td><button class="btn btn-default t3js-localConfiguration-removeRow"><core:icon identifier="actions-remove" /></button></td>
-                                                </tr>
-                                            </f:for>
-                                        </f:if>
-                                        <tr class="t3js-localConfiguration-array-clone" data-valuetype="{item.type}">
-                                            <f:if condition="{item.type} == 'map'">
-                                                <td>
-                                                    <input
-                                                        type="text"
-                                                        value=""
-                                                        placeholder="(required key)"
-                                                        data-path="{sectionName}/{item.key}/key[]"
-                                                        data-valuetype="{item.type}"
-                                                        class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
-                                                        autocomplete="off"
-                                                        {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
-                                                    />
-                                                </td>
-                                            </f:if>
-                                            <td>
-                                                <input
-                                                    type="text"
-                                                    value=""
-                                                    placeholder="(required value)"
-                                                    data-path="{sectionName}/{item.key}/value[]"
-                                                    data-valuetype="{item.type}"
-                                                    class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
-                                                    autocomplete="off"
-                                                    {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
-                                                />
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-default t3js-localConfiguration-cloneRow"><core:icon identifier="actions-add" /></button>
-                                                <button class="d-none btn btn-default t3js-localConfiguration-removeRow"><core:icon identifier="actions-remove" /></button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </f:if>
-
                             <f:if condition="{item.type} == 'checkbox'">
                                 <f:then>
                                     =
@@ -135,6 +55,89 @@
                                     </div>
                                 </div>
                             </f:if>
+                            <!-- @see typo3-formengine-table-wizard -->
+                            <f:if condition="{item.type} == 'map' || {item.type} == 'element-list'">
+                                <f:variable name="configurationListNamespace" value="item-{item.type}-{sectionName}-{item.key}" />
+
+                                <f:if condition="{item.description}">
+                                    <div class="form-description">{item.description -> f:sanitize.html()}</div>
+                                </f:if>
+
+                                <div class="configuration-map-container t3js-configuration-list" data-namespace="{configurationListNamespace}" data-type="{item.type}">
+                                    <div class="configuration-map-item-collection">
+                                        <div class="configuration-map-item">
+                                            <f:if condition="{item.type} == 'map'">
+                                                <div class="configuration-map-item-header">{item.arrayKey}</div>
+                                            </f:if>
+                                            <div class="configuration-map-item-header">{item.arrayValue}</div>
+                                        </div>
+                                        <f:for each="{item.values}" as="value" key="key">
+                                            <div class="configuration-map-item t3js-localConfiguration-configuration-item">
+                                                <div class="input-group">
+                                                    <f:if condition="{item.type} == 'map'">
+                                                        <input
+                                                            type="text"
+                                                            value="{key}"
+                                                            placeholder="{item.arrayKey} [enumerated when empty]"
+                                                            data-path="{sectionName}/{item.key}/key[]"
+                                                            data-valuetype="{item.type}"
+                                                            class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                            autocomplete="off"
+                                                            {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                        />
+                                                    </f:if>
+                                                    <input
+                                                        type="text"
+                                                        value="{value}"
+                                                        placeholder="{item.arrayValue} [required]"
+                                                        data-path="{sectionName}/{item.key}/value[]"
+                                                        data-valuetype="{item.type}"
+                                                        class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                        autocomplete="off"
+                                                        {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                    />
+                                                    <f:if condition="{isWritable} && !{item.readonly}">
+                                                        <button class="btn btn-default t3js-localConfiguration-removeRow"><core:icon identifier="actions-remove" /></button>
+                                                    </f:if>
+                                                </div>
+                                            </div>
+                                        </f:for>
+                                    </div>
+                                    <f:if condition="{isWritable} && !{item.readonly}">
+                                        <template id="{configurationListNamespace}">
+                                            <div class="configuration-map-item t3js-localConfiguration-configuration-item">
+                                                <div class="input-group">
+                                                    <f:if condition="{item.type} == 'map'">
+                                                        <input
+                                                            type="text"
+                                                            value=""
+                                                            placeholder="{item.arrayKey} [enumerated when empty]"
+                                                            data-path="{sectionName}/{item.key}/key[]"
+                                                            data-valuetype="{item.type}"
+                                                            class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                            autocomplete="off"
+                                                            {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                        />
+                                                    </f:if>
+                                                    <input
+                                                        type="text"
+                                                        value=""
+                                                        placeholder="{item.arrayValue} [required]"
+                                                        data-path="{sectionName}/{item.key}/value[]"
+                                                        data-valuetype="{item.type}"
+                                                        class="t3-install-form-input-text form-control t3js-localConfiguration-pathValue"
+                                                        autocomplete="off"
+                                                        {f:if(condition: '!{isWritable} || {item.readonly}', then: 'disabled')}
+                                                    />
+                                                    <button class="btn btn-default t3js-localConfiguration-removeRow"><core:icon identifier="actions-remove" /></button>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <button type="button" class="btn btn-default btn-configuration-map-add t3js-localConfiguration-createRow"><core:icon identifier="actions-add" /> Add item</button>
+                                    </f:if>
+                                </div>
+                            </f:if>
+
                             <f:if condition="{f:count(subject: item.allowedValues)} || {item.dataType} == 'dropdown'">
                                 <f:then>
                                     <div class="form-group">

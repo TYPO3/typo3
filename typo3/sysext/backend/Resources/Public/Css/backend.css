@@ -3849,6 +3849,12 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .localconf-item-body{padding:1rem}
 .localconf-item-body>:first-child{margin-top:0}
 .localconf-item-body>:last-child{margin-bottom:0}
+.configuration-map-container{display:flex;flex-direction:column;gap:calc(var(--typo3-spacing)*.5);margin-bottom:var(--typo3-spacing);margin-top:var(--typo3-spacing)}
+.configuration-map-container .configuration-map-item{align-items:stretch;display:flex;position:relative;width:100%}
+.configuration-map-container .configuration-map-item-collection{display:flex;flex-direction:column;gap:calc(var(--typo3-spacing)*.5)}
+.configuration-map-container .configuration-map-item-header{flex:1 1 0;font-weight:700;margin-bottom:calc(var(--typo3-spacing)*.25)}
+.configuration-map-container .configuration-map-item-header:last-child{flex-basis:calc(var(--typo3-input-padding-x)*2 + var(--icon-size-small))}
+.configuration-map-container .btn-configuration-map-add{width:-webkit-fit-content;width:-moz-fit-content;width:fit-content}
 :root{--pagemodule-grid-border-radius:5px;--pagemodule-grid-border-color:color-mix(in srgb,var(--module-bg),currentColor 30%);--pagemodule-grid-spacing:1rem;--pagemodule-grid-inner-spacing:1rem;--pagemodule-grid-cell-header-size:1em;--pagemodule-grid-cell-border-radius:4px;--pagemodule-grid-cell-bg:color-mix(in srgb,var(--module-bg),currentColor 5%);--pagemodule-grid-cell-restricted-bg:var(--typo3-surface-container-warning);--pagemodule-grid-column-unused-bg:var(--typo3-surface-container-warning);--pagemodule-element-spacing:1rem;--pagemodule-element-bg:var(--typo3-surface-bright);--pagemodule-element-border-radius:4px;--pagemodule-element-border-color:color-mix(in srgb,var(--pagemodule-element-bg),currentColor 15%);--pagemodule-element-warning-bg:var(--typo3-surface-container-warning);--pagemodule-element-hidden-bg:var(--pagemodule-grid-cell-bg);--pagemodule-action-height:28.5px;--pagemodule-dropzone-bg:var(--typo3-surface-container-warning);--pagemodule-dropzone-possible-bg:var(--typo3-surface-container-success)}
 .t3-grid-table{border-collapse:separate;border-spacing:var(--pagemodule-grid-spacing);min-width:100%;table-layout:fixed}
 .t3-grid-container{border:1px dotted var(--pagemodule-grid-border-color);border-radius:var(--pagemodule-grid-border-radius);margin-bottom:var(--typo3-spacing);overflow-x:auto;overflow-y:hidden}

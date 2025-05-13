@@ -30,9 +30,9 @@ enum Identifiers {
   toggleAllTrigger = '.t3js-localConfiguration-toggleAll',
   writeTrigger = '.t3js-localConfiguration-write',
   searchTrigger = '.t3js-localConfiguration-search',
-  cloneRowTrigger = '.t3js-localConfiguration-cloneRow',
+  createRowTrigger = '.t3js-localConfiguration-createRow',
   removeRowTrigger = '.t3js-localConfiguration-removeRow',
-  arrayRowTrigger = '.t3js-localConfiguration-array-clone'
+  configurationItem = '.t3js-localConfiguration-configuration-item',
 }
 
 type LocalConfigurationWrittenResponse = {
@@ -97,62 +97,60 @@ class LocalConfiguration extends AbstractInteractableModule {
     // Remove a cloned row
     new RegularEvent('click', (event: Event, target: HTMLInputElement): void => {
       event.preventDefault();
-      const row = target.closest(Identifiers.arrayRowTrigger);
-      if (row) {
-        row.parentNode?.removeChild(row);
-      }
+      const row = target.closest(Identifiers.configurationItem);
+      row?.remove();
     }).delegateTo(currentModal, Identifiers.removeRowTrigger);
 
     // Add a fresh clone row
     new RegularEvent('click', (event: Event, target: HTMLInputElement): void => {
-
       event.preventDefault();
-      const row = target.closest(Identifiers.arrayRowTrigger) as HTMLTableRowElement;
-      if (!row) {
+
+      const container = target.closest('.t3js-configuration-list') as HTMLElement|null;
+      if (container === null) {
         return;
       }
 
-      // Get input values from the original row
-      const inputs = Array.from(row.querySelectorAll('input'));
+      const querySelectorLast = (selector: string): HTMLElement|null => {
+        const elements = container.querySelectorAll(selector);
+        return elements.item(elements.length - 1) as HTMLElement|null;
+      };
 
-      let arrayKey: string;
-      let arrayValue: string;
+      // Iterate all rows to find empty inputs per row
+      const rows = container.querySelectorAll(Identifiers.configurationItem);
+      for (const row of rows) {
+        const inputs = row.querySelectorAll('input[type="text"]') as NodeListOf<HTMLInputElement>;
+        let arrayKey;
+        let arrayValue;
+        if (container.dataset.type === 'map') {
+          arrayKey = inputs.item(0).value.trim();
+          arrayValue = inputs.item(1).value.trim();
+        } else if (container.dataset.type === 'element-list') {
+          arrayKey = undefined;
+          arrayValue = inputs[0].value.trim();
+        } else {
+          return;
+        }
 
-      if (row.dataset.valuetype === 'map') {
-        arrayKey = inputs[0].value.trim();
-        arrayValue = inputs[1].value.trim();
-      } else if (row.dataset.valuetype === 'element-list') {
-        arrayValue = inputs[0].value.trim();
-        arrayKey = 'empty';
-      } else {
-        return;
+        // Skip if map is lacking key/value, or element-list is lacking value
+        // @todo: this doesn't allow empty values when using `map` – on purpose?
+        if (arrayKey === '' || arrayValue === '') {
+          for (const input of inputs) {
+            if (input.value === '') {
+              // Found an empty input, focus it
+              input.focus();
+              return;
+            }
+          }
+        }
       }
 
-      // Skip if map is lacking key/value, or element-list is lacking value
-      if (!arrayKey || !arrayValue) {
-        row.style.animation = 'record-pulse 0.5s ease-in-out 5';
-        setTimeout(() => {
-          row.style.animation = '';
-        }, 2500);
-        return;
-      }
+      const rowTemplate = (container.querySelector('#' + container.dataset.namespace) as HTMLTemplateElement).content.cloneNode(true) as DocumentFragment;
+      container.querySelector('.configuration-map-item-collection').append(rowTemplate);
 
-      // Insert the cloned row before the template row
-      const clonedRow = row.cloneNode(true) as HTMLTableRowElement;
-      row.parentNode?.insertBefore(clonedRow, row);
-
-      // Clear input values in the template row (original row)
-      inputs.forEach(input => {
-        input.value = '';
-      });
-
-      // Replace clone button with remove button
-      const buttonCell = clonedRow.querySelector(Identifiers.cloneRowTrigger);
-      if (buttonCell) {
-        buttonCell.classList.add('d-none');
-        clonedRow.querySelector(Identifiers.removeRowTrigger)?.classList.remove('d-none');
-      }
-    }).delegateTo(currentModal, Identifiers.cloneRowTrigger);
+      const lastRow = querySelectorLast(Identifiers.configurationItem);
+      // Focus first input field in inserted item
+      (lastRow.querySelector('input[type="text"]') as HTMLInputElement|null)?.focus();
+    }).delegateTo(currentModal, Identifiers.createRowTrigger);
   }
 
   private search(typedQuery: string): void {

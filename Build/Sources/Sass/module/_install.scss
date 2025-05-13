@@ -166,3 +166,38 @@
         margin-bottom: 0;
     }
 }
+
+.configuration-map-container {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--typo3-spacing) * .5);
+    margin-top: var(--typo3-spacing);
+    margin-bottom: var(--typo3-spacing);
+
+    .configuration-map-item {
+        display: flex;
+        align-items: stretch;
+        position: relative;
+        width: 100%;
+
+        &-collection {
+            display: flex;
+            flex-direction: column;
+            gap: calc(var(--typo3-spacing) * .5);
+        }
+
+        &-header {
+            margin-bottom: calc(var(--typo3-spacing) * .25);
+            font-weight: bold;
+            flex: 1 1 0;
+
+            &:last-child {
+                flex-basis: calc(2*var(--typo3-input-padding-x) + var(--icon-size-small));
+            }
+        }
+    }
+
+    .btn-configuration-map-add {
+        width: fit-content;
+    }
+}
