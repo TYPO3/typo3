@@ -615,7 +615,13 @@ class Modal {
       backdrop.style.zIndex = backdropZIndex.toString();
 
       // focus the button which was configured as active button
-      (currentModal.querySelector(`${Identifiers.footer} .t3js-active`) as HTMLInputElement)?.focus();
+      const activeButton = currentModal.querySelector(`${Identifiers.footer} .t3js-active`) as HTMLInputElement | null;
+      if (activeButton !== null) {
+        activeButton.focus();
+      } else {
+        // @todo can be removed once we switch to a native <dialog> tag
+        (currentModal.querySelector('[autofocus]') as HTMLInputElement)?.focus();
+      }
     });
 
     // Remove modal from Modal.instances when hidden
