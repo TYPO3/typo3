@@ -2161,11 +2161,11 @@ class GeneralUtility
             // there is no way to differentiate between those paths and "real" absolute paths (= from
             // the file system) without checking for the file's existence
             // see #98106
-            if (file_exists($path)) {
+            if (PathUtility::isAbsolutePath($path) && self::isAllowedAbsPath($path) && file_exists($path)) {
                 $path = self::resolveBackPath($path);
             } else {
                 // Prepend absolute web paths with TYPO3's web dir (= the dir in which index.php is located)
-                $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . $path);
+                $path = self::resolveBackPath(self::dirname(Environment::getCurrentScript()) . '/' . ltrim($path, '/'));
             }
         } elseif (!PathUtility::isAbsolutePath($path)) {
             // Backend and non-absolute path
