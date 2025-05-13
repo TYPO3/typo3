@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'DataHandler Testing test_irre_mnsymmetric',
     'description' => 'DataHandler Testing test_irre_mnsymmetric',
     'category' => 'example',
-    'version' => '12.4.29',
+    'version' => '12.4.30',
     'state' => 'beta',
     'author' => 'Anja Leichsenring',
     'author_email' => 'aleichsenring@ab-softlab.de',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.29',
+            'typo3' => '12.4.30',
         ],
         'conflicts' => [],
         'suggests' => [],
