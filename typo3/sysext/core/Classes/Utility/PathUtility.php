@@ -422,23 +422,13 @@ class PathUtility
     }
 
     /**
-     * Strips the public web path from the provided `$path`, also with trailing slash when additional
-     * path segments are provided, but only if $path starts with the public path and otherwise throw
-     * an exception to point to the issue.
-     *
-     * Simply returning not stripped path silently may lead to undetected issues. Further, simply
-     * cutting `$path` characters from the left out based on public path length leads also to not
-     * expectable behaviour and undetected issues.
+     * Strip first part of a path, equal to the length of public web path including trailing slash
      *
      * @internal
      */
     public static function stripPathSitePrefix(string $path): string
     {
-        if (!str_starts_with($path, Environment::getPublicPath())) {
-            // No prefix to strip, return untouched `$path`.
-            return $path;
-        }
-        return ltrim(substr($path, strlen(Environment::getPublicPath() . '/')), '/');
+        return substr($path, strlen(Environment::getPublicPath() . '/'));
     }
 
     /**

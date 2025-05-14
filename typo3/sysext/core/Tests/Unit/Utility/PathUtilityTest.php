@@ -359,7 +359,17 @@ final class PathUtilityTest extends UnitTestCase
     public function getCanonicalPathCorrectlyCleansPath(string $inputName, string $expectedResult): void
     {
         // Ensure Environment runs as Windows test
-        $this->ensureEnvironment(true);
+        Environment::initialize(
+            Environment::getContext(),
+            true,
+            false,
+            Environment::getProjectPath(),
+            Environment::getPublicPath(),
+            Environment::getVarPath(),
+            Environment::getConfigPath(),
+            Environment::getCurrentScript(),
+            'WINDOWS'
+        );
         self::assertSame(
             $expectedResult,
             PathUtility::getCanonicalPath($inputName)
@@ -498,7 +508,20 @@ final class PathUtilityTest extends UnitTestCase
     #[Test]
     public function isAbsolutePathRespectsAllOperatingSystems(string $inputPath, bool $isWindows, bool $expectedResult): void
     {
-        $this->ensureEnvironment($isWindows);
+        if ($isWindows) {
+            // Ensure Environment runs as Windows test
+            Environment::initialize(
+                Environment::getContext(),
+                true,
+                false,
+                Environment::getProjectPath(),
+                Environment::getPublicPath(),
+                Environment::getVarPath(),
+                Environment::getConfigPath(),
+                Environment::getCurrentScript(),
+                'WINDOWS'
+            );
+        }
 
         self::assertSame($expectedResult, PathUtility::isAbsolutePath($inputPath));
     }
@@ -561,45 +584,5 @@ final class PathUtilityTest extends UnitTestCase
     {
         $GLOBALS['TYPO3_CONF_VARS']['BE']['lockRootPath'] = $lockRootPath;
         self::assertSame($expectation, PathUtility::isAllowedAdditionalPath($path));
-    }
-
-    #[Test]
-    public function stripPathSitePrefixReturnsEmptyStringWhenOnlyPublicPathIsProvided(): void
-    {
-        self::assertSame('', PathUtility::stripPathSitePrefix(Environment::getPublicPath()));
-    }
-
-    #[Test]
-    public function stripPathSitePrefixReturnsEmptyStringWhenOnlyPublicPathWithTrailingSlashIsProvided(): void
-    {
-        self::assertSame('', PathUtility::stripPathSitePrefix(Environment::getPublicPath() . '/'));
-    }
-
-    #[Test]
-    public function stripPathSitePrefixReturnsStrippedPathWithoutLeadingSlash(): void
-    {
-        self::assertSame('some/additional/path', PathUtility::stripPathSitePrefix(Environment::getPublicPath() . '/' . '/some/additional/path'));
-    }
-
-    #[Test]
-    public function stripPathSitePrefixReturnsProvidedPathWhenNotStartingWithPublicPath(): void
-    {
-        $expectedPath = '/some/path/not/starting/with/public/path';
-        self::assertSame($expectedPath, PathUtility::stripPathSitePrefix($expectedPath));
-    }
-
-    private function ensureEnvironment(bool $isWindows): void
-    {
-        Environment::initialize(
-            Environment::getContext(),
-            true,
-            false,
-            Environment::getProjectPath(),
-            Environment::getPublicPath(),
-            Environment::getVarPath(),
-            Environment::getConfigPath(),
-            Environment::getCurrentScript(),
-            $isWindows ? 'WINDOWS' : 'UNIX'
-        );
     }
 }
