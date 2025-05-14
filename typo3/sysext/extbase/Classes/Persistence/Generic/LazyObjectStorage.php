@@ -308,9 +308,10 @@ class LazyObjectStorage extends ObjectStorage implements LoadingStrategyInterfac
     public function __unserialize(array $data): void
     {
         foreach ($data as $propertyName => $propertyValue) {
-            $this->{$propertyName} = $propertyValue;
+            if (property_exists($this, $propertyName)) {
+                $this->{$propertyName} = $propertyValue;
+            }
         }
-
         $this->dataMapper = GeneralUtility::getContainer()->get(DataMapper::class);
     }
 }

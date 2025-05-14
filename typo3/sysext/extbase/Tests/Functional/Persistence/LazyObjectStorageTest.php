@@ -66,4 +66,14 @@ final class LazyObjectStorageTest extends FunctionalTestCase
         self::assertSame('Post1', $posts[0]->getTitle());
         self::assertSame('Post2', $posts[1]->getTitle());
     }
+
+    #[Test]
+    public function undefinedPropertyIsNotDeserialized(): void
+    {
+        // this would cause a warning if not handled during deserialization:
+        // Creation of dynamic property TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage::$undefined is deprecated
+        $serialized = 'O:55:"TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage":1:{s:9:"undefined";b:1;}';
+        $subject = unserialize($serialized, ['allowed_classes' => [LazyObjectStorage::class]]);
+        self::assertObjectNotHasProperty('undefined', $subject);
+    }
 }
