@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Localization Testing',
     'description' => 'Localization Testing',
     'category' => 'example',
-    'version' => '13.4.11',
+    'version' => '13.4.12',
     'state' => 'beta',
     'author' => 'Simon Gilli',
     'author_email' => 'simon.gilli@typo3.org',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.11',
+            'typo3' => '13.4.12',
         ],
         'conflicts' => [],
         'suggests' => [],

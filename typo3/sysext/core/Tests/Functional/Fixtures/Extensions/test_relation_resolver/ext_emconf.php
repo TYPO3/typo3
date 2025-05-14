@@ -4,13 +4,13 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Relation Resolver Test',
     'description' => 'Relation Resolver Test',
     'category' => 'example',
-    'version' => '13.4.11',
+    'version' => '13.4.12',
     'state' => 'beta',
     'author' => 'Nikita Hovratov',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.11',
+            'typo3' => '13.4.12',
         ],
         'conflicts' => [],
         'suggests' => [],
