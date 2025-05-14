@@ -49,12 +49,12 @@ final class AssetRendererTest extends FunctionalTestCase
             ],
             '1 file from extension' => [
                 'files' => [
-                    ['file1', 'EXT:core/Resources/Public/foo.ext', [], []],
+                    ['file1', 'EXT:core/Resource/Public/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="typo3/sysext/core/Resources/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -105,25 +105,25 @@ final class AssetRendererTest extends FunctionalTestCase
             '2 files' => [
                 'files' => [
                     ['file1', 'fileadmin/foo.ext', [], []],
-                    ['file2', 'EXT:core/Resources/Public/foo.ext', [], []],
+                    ['file2', 'EXT:core/Resource/Public/foo.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >' . PHP_EOL . '<link href="typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="fileadmin/foo.ext" rel="stylesheet" >' . PHP_EOL . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>' . PHP_EOL . '<script src="typo3/sysext/core/Resources/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="fileadmin/foo.ext"></script>' . PHP_EOL . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
             '2 files with override' => [
                 'files' => [
                     ['file1', 'fileadmin/foo.ext', [], []],
-                    ['file2', 'EXT:core/Resources/Public/foo.ext', [], []],
-                    ['file1', 'EXT:core/Resources/Public/bar.ext', [], []],
+                    ['file2', 'EXT:core/Resource/Public/foo.ext', [], []],
+                    ['file1', 'EXT:core/Resource/Public/bar.ext', [], []],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="typo3/sysext/core/Resources/Public/bar.ext" rel="stylesheet" >' . PHP_EOL . '<link href="typo3/sysext/core/Resources/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="typo3/sysext/core/Resource/Public/bar.ext" rel="stylesheet" >' . PHP_EOL . '<link href="typo3/sysext/core/Resource/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="typo3/sysext/core/Resources/Public/bar.ext"></script>' . PHP_EOL . '<script src="typo3/sysext/core/Resources/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="typo3/sysext/core/Resource/Public/bar.ext"></script>' . PHP_EOL . '<script src="typo3/sysext/core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
@@ -186,12 +186,12 @@ final class AssetRendererTest extends FunctionalTestCase
             ],
             '1 file with external option' => [
                 'files' => [
-                    ['file1', 'EXT:core/Resources/Public/foo.ext', [], ['external' => true]],
+                    ['file1', 'EXT:core/Resource/Public/foo.ext', [], ['external' => true]],
                 ],
                 'expectedMarkup' => [
-                    'css_no_prio' => '<link href="EXT:core/Resources/Public/foo.ext" rel="stylesheet" >',
+                    'css_no_prio' => '<link href="EXT:core/Resource/Public/foo.ext" rel="stylesheet" >',
                     'css_prio' => '',
-                    'js_no_prio' => '<script src="EXT:core/Resources/Public/foo.ext"></script>',
+                    'js_no_prio' => '<script src="EXT:core/Resource/Public/foo.ext"></script>',
                     'js_prio' => '',
                 ],
             ],
