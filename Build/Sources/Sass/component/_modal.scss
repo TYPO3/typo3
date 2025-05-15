@@ -126,6 +126,26 @@
             opacity: 1;
         }
     }
+
+    &:has(+ .modal-progress) {
+        padding-bottom: 0;
+        border-bottom: 0;
+    }
+}
+
+.modal-progress {
+    padding: var(--typo3-modal-padding);
+    color: var(--typo3-modal-header-color);
+    background-color: var(--typo3-modal-header-bg);
+    border-bottom: var(--typo3-modal-border-width) solid var(--typo3-modal-header-border-color);
+
+    > *:first-child {
+        margin-top: 0;
+    }
+
+    > *:last-child {
+        margin-bottom: 0;
+    }
 }
 
 .modal-title {

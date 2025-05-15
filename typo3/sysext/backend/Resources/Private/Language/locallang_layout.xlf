@@ -418,6 +418,9 @@
 			<trans-unit id="dragdrop.copy.message">
 				<source>Press CTRL to copy</source>
 			</trans-unit>
+			<trans-unit id="progressTracker.steps">
+				<source>Step %d of %d</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

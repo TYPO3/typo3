@@ -655,6 +655,9 @@
 			<trans-unit id="component.progressTrackers.section.activeStage.headline">
 				<source>Active stage</source>
 			</trans-unit>
+			<trans-unit id="component.progressTrackers.section.demo.headline">
+				<source>Demo</source>
+			</trans-unit>
 
 			<!-- Component: Select -->
 			<trans-unit id="component.select.headline">

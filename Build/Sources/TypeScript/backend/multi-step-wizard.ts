@@ -347,7 +347,6 @@ class MultiStepWizard {
     this.initializeSlideNextEvent($modal);
 
     const $modalTitle = $modal.find('.modal-title');
-    const $modalFooter = $modal.find('.modal-footer');
     const nextSlideNumber = this.setup.$carousel.data('currentSlide') + 1;
     const currentIndex = this.setup.$carousel.data('currentIndex');
     const nextIndex = currentIndex + 1;
@@ -363,7 +362,7 @@ class MultiStepWizard {
     this.setup.$carousel.data('currentSlide', nextSlideNumber);
     this.setup.$carousel.data('currentIndex', nextIndex);
 
-    const progressTracker = $modalFooter.find('typo3-backend-progress-tracker');
+    const progressTracker = $modal.find('typo3-backend-progress-tracker');
     progressTracker.attr('active', nextIndex + 1);
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
@@ -402,7 +401,7 @@ class MultiStepWizard {
 
     $nextButton.text(top.TYPO3.lang['wizard.button.next']);
 
-    const progressTracker = $modalFooter.find('typo3-backend-progress-tracker');
+    const progressTracker = $modal.find('typo3-backend-progress-tracker');
     progressTracker.attr('active', nextIndex + 1);
 
     this.updateCurrentSeverity($modal, currentIndex, nextIndex);
@@ -449,8 +448,6 @@ class MultiStepWizard {
     const realSlideCount = this.setup.$carousel.find('.carousel-item').length;
     const slideCount = Math.max(1, realSlideCount);
     const initialStep = Math.round(100 / slideCount);
-    const $modal = this.setup.$carousel.closest('.modal');
-    const $modalFooter = $modal.find('.modal-footer');
 
     this.setup.$carousel
       .data('initialStep', initialStep)
@@ -467,7 +464,13 @@ class MultiStepWizard {
           return slide.progressBarTitle;
         });
 
-      $modalFooter.prepend(progressTracker);
+      const modalContent = this.setup.$carousel.get(0).closest('.modal-content');
+      const modalBody = modalContent.querySelector('.modal-body');
+      const modalProgress = document.createElement('div');
+      modalProgress.classList.add('modal-progress');
+      modalProgress.appendChild(progressTracker);
+
+      modalContent.insertBefore(modalProgress, modalBody);
     }
   }
 
