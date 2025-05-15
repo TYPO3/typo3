@@ -2722,7 +2722,7 @@ class GeneralUtility
     public static function callUserFunction(string|\Closure $funcName, mixed &$params, ?object $ref = null): mixed
     {
         // Check if we're using a closure and invoke it directly.
-        if (is_object($funcName) && is_a($funcName, \Closure::class)) {
+        if (is_a($funcName, \Closure::class)) {
             return call_user_func_array($funcName, [&$params, &$ref]);
         }
         $funcName = trim($funcName);
