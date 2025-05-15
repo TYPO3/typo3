@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
+use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -228,8 +229,6 @@ class LocalConfigurationValueService
                 $value = (int)$value;
                 $valueHasChanged = (int)$oldValue !== $value;
             } elseif ($dataType === 'map') {
-                $oldValueAsJson = json_encode($oldValue);
-                $valueHasChanged = $oldValueAsJson !== json_encode($value);
                 // Validate array
                 if (!is_array($value)) {
                     $value = [];
@@ -244,9 +243,16 @@ class LocalConfigurationValueService
                     // Restoring config values with slashes is a problem, so instead we use htmlentities() to escape
                     // single and double quotes, which keeps PHP namespace backslashes.
                     // @todo may need further inspection.
-                    $cleanedArray[htmlentities($arrayKey)] = $arrayValue;
+                    $cleanedArray[htmlentities((string)$arrayKey)] = (string)$arrayValue;
                 }
                 $value = $cleanedArray;
+                // Incoming array data is sorted, but the GUI may have a different sorting.
+                // To prevent the GUI from flagging the same configuration values as changed,
+                // when the configuration is written multiple times without a reload, the comparison
+                // here checks for actual differences in values, not order (as json_encode() would do).
+                // We need to compare array1 vs. array2 and array2 vs. array1 to both find differences
+                // in removed and added keys.
+                $valueHasChanged = (ArrayUtility::arrayDiffAssocRecursive($value, $oldValue) !== [] || ArrayUtility::arrayDiffAssocRecursive($oldValue, $value) !== []);
             } elseif ($dataType === 'element-list') {
                 // Validate array
                 if (!is_array($value)) {
