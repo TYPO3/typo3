@@ -100,7 +100,8 @@ class UpgradeController extends AbstractController
         protected readonly PackageManager $packageManager,
         private readonly LateBootService $lateBootService,
         private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
-        private readonly FormProtectionFactory $formProtectionFactory
+        private readonly FormProtectionFactory $formProtectionFactory,
+        private readonly LoadTcaService $loadTcaService
     ) {}
 
     /**
@@ -538,6 +539,7 @@ class UpgradeController extends AbstractController
     public function extensionCompatTesterLoadExtTablesAction(ServerRequestInterface $request): ResponseInterface
     {
         $brokenExtensions = [];
+        $this->loadTcaService->loadExtensionTablesWithoutMigration();
         $container = $this->lateBootService->getContainer();
         $backup = $this->lateBootService->makeCurrent($container);
 
