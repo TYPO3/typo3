@@ -18,6 +18,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
     <title></title>
     <style type="text/css">
         p {
@@ -124,7 +125,6 @@
             table-layout:fixed !important;
         }
         h1 {
-            color:#222222;
             font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
             font-size:40px;
             font-style:normal;
@@ -134,7 +134,6 @@
             text-align:center;
         }
         h2 {
-            color:#222222;
             font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
             font-size:34px;
             font-style:normal;
@@ -144,7 +143,6 @@
             text-align:left;
         }
         h3 {
-            color:#444444;
             font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
             font-size:22px;
             font-style:normal;
@@ -154,7 +152,6 @@
             text-align:left;
         }
         h4 {
-            color:#999999;
             font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
             font-size:20px;
             font-style:italic;
@@ -174,7 +171,6 @@
             padding-bottom:0;
         }
         .headerContainer {
-            background-color:#ffffff;
             background-image:none;
             background-repeat:no-repeat;
             background-position:center;
@@ -186,7 +182,6 @@
         }
         .headerContainer .textContent,
         .headerContainer .textContent p {
-            color:#808080;
             font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
             font-size:16px;
             line-height:150%;
@@ -194,12 +189,10 @@
         }
         .headerContainer .textContent a,
         .headerContainer .textContent p a {
-            color:#538bb3;
             font-weight:normal;
             text-decoration:underline;
         }
         #templateBody {
-            background-color:#f2f2f2;
             background-image:none;
             background-repeat:no-repeat;
             background-position:center;
@@ -210,7 +203,6 @@
             padding-bottom:0;
         }
         .bodyContainer {
-            background-color:#ffffff;
             background-image:none;
             background-repeat:no-repeat;
             background-position:center;
@@ -222,7 +214,6 @@
         }
         .bodyContainer .textContent,
         .bodyContainer .textContent p {
-            color:#808080;
             font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
             font-size:16px;
             line-height:150%;
@@ -230,7 +221,6 @@
         }
         .bodyContainer .textContent a,
         .bodyContainer .textContent p a {
-            color:#538bb3;
             font-weight:normal;
             text-decoration:underline;
         }
@@ -247,7 +237,6 @@
             padding-right: 0;
         }
         #templateFooter{
-            background-color:#f2f2f2;
             background-image:none;
             background-repeat:no-repeat;
             background-position:center;
@@ -258,7 +247,6 @@
             padding-bottom:36px;
         }
         .footerContainer{
-            background-color:#313131;
             background-image:none;
             background-repeat:no-repeat;
             background-position:center;
@@ -270,7 +258,6 @@
         }
         .footerContainer .textContent,
         .footerContainer .textContent p {
-            color:#FFFFFF;
             font-family:'Helvetica Neue', Helvetica, Arial, Verdana, sans-serif;
             font-size:12px;
             line-height:150%;
@@ -278,15 +265,28 @@
         }
         .footerContainer .textContent a,
         .footerContainer .textContent p a {
-            color:#FFFFFF;
             font-weight:normal;
             text-decoration:underline;
         }
+
+        @media only screen and (min-width:600px){
+            .headerContainer {
+                border-top-left-radius: .25rem;
+                border-top-right-radius: .25rem;
+            }
+
+            .footerContainer {
+                border-bottom-left-radius: .25rem;
+                border-bottom-right-radius: .25rem;
+            }
+        }
+
         @media only screen and (min-width:768px){
             .templateContainer {
                 width:600px !important;
             }
         }
+
         @media only screen and (max-width: 480px){
             body,
             table,
@@ -326,6 +326,79 @@
                 line-height:150% !important;
             }
         }
+
+        #templateBody,
+        #templateFooter {
+            background-color:#f2f2f2;
+        }
+
+        .headerContainer,
+        .bodyContainer {
+            background-color:#ffffff;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .headerContainer .textContent,
+        .bodyContainer .textContent,
+        .headerContainer .textContent p,
+        .bodyContainer .textContent p {
+            color:#1a1a1a;
+        }
+
+        .bodyContainer .textContent a,
+        .headerContainer .textContent a,
+        .bodyContainer .textContent p a,
+        .headerContainer .textContent p a {
+            color:#1f5aad;
+        }
+
+        .footerContainer {
+            background-color:#4d4d4d;
+        }
+
+        .footerContainer .textContent,
+        .footerContainer .textContent p,
+        .footerContainer .textContent a,
+        .footerContainer .textContent p a {
+            color:#ffffff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            #templateBody,
+            #templateFooter {
+                background-color:#121212;
+            }
+
+            .headerContainer,
+            .bodyContainer {
+                background-color:#1a1a1a;
+            }
+
+            h1,
+            h2,
+            h3,
+            h4,
+            .headerContainer .textContent,
+            .bodyContainer .textContent,
+            .headerContainer .textContent p,
+            .bodyContainer .textContent p {
+                color:#d9d9d9;
+            }
+
+            .bodyContainer .textContent a,
+            .headerContainer .textContent a,
+            .bodyContainer .textContent p a,
+            .headerContainer .textContent p a {
+                color:#7daae8;
+            }
+
+            .footerContainer {
+                background-color:#141414;
+            }
+        }
     </style>
 </head>
 <body>
@@ -355,7 +428,7 @@
                         <table align="left" border="0" cellpadding="0" cellspacing="0" style="max-width:100%; min-width:100%;" width="100%" class="textContentContainer">
                             <tbody>
                             <tr>
-                                <td valign="top" class="image" align="center" style="padding: 0px 36px; padding-bottom: 20px; color: #222222;text-align: center;">
+                                <td valign="top" class="image" align="center" style="padding: 0px 36px; padding-bottom: 20px; text-align: center;">
                                     <f:if condition="{typo3.systemConfiguration.backend.loginLogo}">
                                         <f:then>
                                             <img src="{typo3.systemConfiguration.backend.loginLogo -> core:normalizedUrl()}" alt="Logo" height="41" width="150" />
@@ -370,7 +443,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td valign="top" class="textContent" style="padding: 0px 36px;color: #222222;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 24px;text-align: center;">
+                                <td valign="top" class="textContent" style="padding: 0px 36px;font-family: &quot;Helvetica Neue&quot;, Helvetica, Arial, Verdana, sans-serif;font-size: 24px;text-align: center;">
                                     <strong><f:render section="Title" optional="true" /></strong>
                                 </td>
                             </tr>
