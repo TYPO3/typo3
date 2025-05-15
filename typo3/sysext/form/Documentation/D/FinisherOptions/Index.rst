@@ -95,21 +95,21 @@ Usage within form definition for the case, you want to output a content element.
      -
        identifier: Confirmation
        options:
-         contentElement: 9
+         contentElementUid: 9
    ...
 
 
 Usage through code::
 
    $formDefinition->createFinisher('Confirmation', [
-       'contentElement' => 9,
+       'contentElementUid' => 9,
    ]);
 
 or create manually (not preferred)::
 
    $confirmationFinisher = GeneralUtility::makeInstance(ConfirmationFinisher::class);
    $confirmationFinisher->setOptions([
-       'contentElement' => 9,
+       'contentElementUid' => 9,
    ]);
    $formDefinition->addFinisher($confirmationFinisher);
 
