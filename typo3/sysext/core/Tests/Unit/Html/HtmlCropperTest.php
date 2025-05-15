@@ -500,7 +500,7 @@ final class HtmlCropperTest extends UnitTestCase
      */
     protected function handleCharset(string &$subject, string &$expected): void
     {
-        $subject = mb_convert_encoding($subject, 'utf-8', 'iso-8859-1');
-        $expected = mb_convert_encoding($expected, 'utf-8', 'iso-8859-1');
+        $subject = mb_convert_encoding($subject, 'utf-8', 'iso-8859-1') ?: throw new \RuntimeException('Failed to convert string "' . $subject . '" from iso-8859-1 to utf-8.', 1747289638);
+        $expected = mb_convert_encoding($expected, 'utf-8', 'iso-8859-1') ?: throw new \RuntimeException('Failed to convert string "' . $expected . '" from iso-8859-1 to utf-8.', 1747289641);
     }
 }

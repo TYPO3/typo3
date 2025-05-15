@@ -829,12 +829,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Charset/CharsetConverter.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and false will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Charset/CharsetConverter.php
-
-		-
 			message: '#^Unsafe usage of new static\(\)\.$#'
 			identifier: new.static
 			count: 1
@@ -4081,18 +4075,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Classes/Utility/DebuggerUtility.php
 
 		-
-			message: '#^Call to function is_subclass_of\(\) with class\-string and mixed will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Utility/TypeHandlingUtility.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between true and true will always evaluate to true\.$#'
-			identifier: identical.alwaysTrue
-			count: 1
-			path: ../../typo3/sysext/extbase/Classes/Utility/TypeHandlingUtility.php
-
-		-
 			message: '#^Call to function is_array\(\) with object will always evaluate to false\.$#'
 			identifier: function.impossibleType
 			count: 1
@@ -5427,7 +5409,7 @@ parameters:
 		-
 			message: '#^Strict comparison using \!\=\= between string and false will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
-			count: 2
+			count: 1
 			path: ../../typo3/sysext/frontend/Classes/ContentObject/ContentObjectRenderer.php
 
 		-
