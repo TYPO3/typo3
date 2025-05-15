@@ -771,6 +771,23 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
+     * @throws \InvalidArgumentException
+     */
+    protected function assertUploadedFileType(array|UploadedFileInterface $uploadedFileData): void
+    {
+        if ($uploadedFileData instanceof UploadedFileInterface && !$uploadedFileData instanceof UploadedFile) {
+            // This throws if $uploadedFileData is UploadedFileInterface, but is not the TYPO3
+            // core implementation UploadedFile. It should be fair to throw here for now since
+            // getTemporaryFileName() is not part of PSR-7 UploadedFileInterface, but it
+            // could be eventually refactored away or streamlined?
+            throw new \InvalidArgumentException(
+                'Uploaded file with streams are not supported yet',
+                1736765655
+            );
+        }
+    }
+
+    /**
      * Assures read permission for given folder.
      *
      * @param FolderInterface|null $folder If a folder is given, mountpoints are checked. If not only user folder read permissions are checked.
@@ -1963,32 +1980,13 @@ class ResourceStorage implements ResourceStorageInterface
      */
     public function addUploadedFile(array|UploadedFileInterface $uploadedFileData, ?Folder $targetFolder = null, ?string $targetFileName = null, DuplicationBehavior $conflictMode = DuplicationBehavior::CANCEL): FileInterface
     {
-        if ($uploadedFileData instanceof UploadedFileInterface) {
-            if ($uploadedFileData instanceof UploadedFile) {
-                $localFilePath = $uploadedFileData->getTemporaryFileName();
-                if ($targetFileName === null) {
-                    $targetFileName = $uploadedFileData->getClientFilename();
-                }
-                $size = $uploadedFileData->getSize();
-            } else {
-                // This throws if $uploadedFileData is UploadedFileInterface, but is not the TYPO3
-                // core implementation UploadedFile. It should be fair to throw here for now since
-                // getTemporaryFileName() is not part of PSR-7 UploadedFileInterface, but it
-                // could be eventually refactored away or streamlined?
-                throw new \InvalidArgumentException('Uploaded file with streams are not supported yet', 1736765655);
-            }
-        } else {
-            $localFilePath = $uploadedFileData['tmp_name'];
-            if ($targetFileName === null) {
-                $targetFileName = \Normalizer::normalize($uploadedFileData['name']);
-            }
-            $size = $uploadedFileData['size'];
-        }
-        if ($targetFolder === null) {
-            $targetFolder = $this->getDefaultFolder();
-        }
-
-        $targetFileName = $this->driver->sanitizeFileName($targetFileName);
+        $this->assertUploadedFileType($uploadedFileData);
+        $size = $uploadedFileData instanceof UploadedFile
+            ? $uploadedFileData->getSize()
+            : $uploadedFileData['size'];
+        $localFilePath = $this->getUploadedLocalFilePath($uploadedFileData);
+        $targetFileName = $this->getUploadedTargetFileName($uploadedFileData, $targetFileName);
+        $targetFolder ??= $this->getDefaultFolder();
 
         $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $size);
         if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode === DuplicationBehavior::REPLACE) {
@@ -1998,6 +1996,37 @@ class ResourceStorage implements ResourceStorageInterface
             $resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, $conflictMode);
         }
         return $resultObject;
+    }
+
+    /**
+     * Resolves the actual local file path of a new uploaded file.
+     *
+     * @internal
+     */
+    public function getUploadedLocalFilePath(array|UploadedFileInterface $uploadedFileData): string
+    {
+        $this->assertUploadedFileType($uploadedFileData);
+        return $uploadedFileData instanceof UploadedFile
+            ? $uploadedFileData->getTemporaryFileName()
+            : $uploadedFileData['tmp_name'];
+    }
+
+    /**
+     * Resolves the actual sanitized file name to be used for persisting a new uploaded file.
+     *
+     * @internal
+     */
+    public function getUploadedTargetFileName(array|UploadedFileInterface $uploadedFileData, ?string $targetFileName = null): string
+    {
+        $this->assertUploadedFileType($uploadedFileData);
+        if ($targetFileName === null) {
+            if ($uploadedFileData instanceof UploadedFile) {
+                $targetFileName = $uploadedFileData->getClientFilename();
+            } else {
+                $targetFileName = \Normalizer::normalize($uploadedFileData['name']);
+            }
+        }
+        return $this->driver->sanitizeFileName($targetFileName);
     }
 
     /********************
