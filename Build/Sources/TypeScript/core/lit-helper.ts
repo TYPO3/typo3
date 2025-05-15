@@ -41,12 +41,18 @@ export const renderHTML = (result: TemplateResult): string => {
  * @internal
  */
 export const lll = (key: string, ...args: any[]): string => {
-  if (!window.TYPO3 || !window.TYPO3.lang || typeof window.TYPO3.lang[key] !== 'string') {
+  let languagePool = null;
+  if (window.TYPO3 && window.TYPO3.lang && typeof window.TYPO3.lang[key] === 'string') {
+    languagePool = window.TYPO3.lang;
+  } else if (top.TYPO3 && top.TYPO3.lang && typeof top.TYPO3.lang[key] === 'string') {
+    languagePool = top.TYPO3.lang;
+  }
+  if (languagePool === null) {
     return '';
   }
 
   let index = 0;
-  return window.TYPO3.lang[key].replace(/%[sdf]/g, (match) => {
+  return languagePool[key].replace(/%[sdf]/g, (match) => {
     const arg = args[index++];
     switch (match) {
       case '%s':

@@ -43,6 +43,24 @@
             {codeSnippetActive}
         </sg:example>
 
+        <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.progressTrackers.section.demo.headline" /></h2>
+        <sg:colorScheme>
+            <typo3-backend-progress-tracker id="progressTrackerDemo" stages='["Stage 1","Stage 2","Stage 3","Stage 4"]'></typo3-backend-progress-tracker>
+            <button type="button" id="progressTrackerDemoMinus" class="btn btn-default">- Stage</button>
+            <button type="button" id="progressTrackerDemoPlus" class="btn btn-default">+ Stage</button>
+        </sg:colorScheme>
+        <f:asset.script identifier="progressTrackerDemo" useNonce="true">
+            const progressTrackerDemo = document.querySelector('#progressTrackerDemo');
+            const progressTrackerDemoMinus = document.querySelector('#progressTrackerDemoMinus');
+            progressTrackerDemoMinus.addEventListener('click', () => {
+                progressTrackerDemo.activeStage--;
+            });
+            const progressTrackerDemoPlus = document.querySelector('#progressTrackerDemoPlus');
+            progressTrackerDemoPlus.addEventListener('click', () => {
+                progressTrackerDemo.activeStage++;
+            });
+        </f:asset.script>
+
         <h2><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.frontend.headline" /></h2>
 
         <h3><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:section.colorScheme.headline" /></h3>
