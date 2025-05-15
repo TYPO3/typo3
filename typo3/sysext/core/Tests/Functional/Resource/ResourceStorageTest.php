@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Resource;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
+use TYPO3\CMS\Core\Http\UploadedFile;
 use TYPO3\CMS\Core\Resource\Driver\DriverInterface;
 use TYPO3\CMS\Core\Resource\Driver\LocalDriver;
 use TYPO3\CMS\Core\Resource\File;
@@ -270,4 +271,24 @@ final class ResourceStorageTest extends FunctionalTestCase
         $subject->renameFile($file, 'a b.jpg');
     }
 
+    #[Test]
+    public function pathAndNameOfUploadedFileIsResolved(): void
+    {
+        $localDriver = new LocalDriver(['basePath' => $this->instancePath . '/resource-storage-test']);
+        $subject = new ResourceStorage($localDriver, ['uid' => 1, 'name' => 'testing'], new NoopEventDispatcher());
+
+        // the file is not written to the test file-system
+        $uploadedFilePath = $this->instancePath . '/resource-storage-test/source.txt';
+
+        $uploadedFile = new UploadedFile(
+            $uploadedFilePath,
+            0,
+            UPLOAD_ERR_OK,
+            "directory//up\x00loaded.txt",
+            'text/plain'
+        );
+
+        self::assertSame($uploadedFilePath, $subject->getUploadedLocalFilePath($uploadedFile));
+        self::assertSame('directory__up_loaded.txt', $subject->getUploadedTargetFileName($uploadedFile));
+    }
 }

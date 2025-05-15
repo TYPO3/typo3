@@ -2126,24 +2126,12 @@ class ResourceStorage implements ResourceStorageInterface
     public function addUploadedFile(array|UploadedFile $uploadedFileData, ?Folder $targetFolder = null, $targetFileName = null, $conflictMode = DuplicationBehavior::CANCEL)
     {
         $conflictMode = DuplicationBehavior::cast($conflictMode);
-        if ($uploadedFileData instanceof UploadedFile) {
-            $localFilePath = $uploadedFileData->getTemporaryFileName();
-            if ($targetFileName === null) {
-                $targetFileName = $uploadedFileData->getClientFilename();
-            }
-            $size = $uploadedFileData->getSize();
-        } else {
-            $localFilePath = $uploadedFileData['tmp_name'];
-            if ($targetFileName === null) {
-                $targetFileName = \Normalizer::normalize($uploadedFileData['name']);
-            }
-            $size = $uploadedFileData['size'];
-        }
-        if ($targetFolder === null) {
-            $targetFolder = $this->getDefaultFolder();
-        }
-
-        $targetFileName = $this->driver->sanitizeFileName($targetFileName);
+        $size = $uploadedFileData instanceof UploadedFile
+            ? $uploadedFileData->getSize()
+            : $uploadedFileData['size'];
+        $localFilePath = $this->getUploadedLocalFilePath($uploadedFileData);
+        $targetFileName = $this->getUploadedTargetFileName($uploadedFileData, $targetFileName);
+        $targetFolder ??= $this->getDefaultFolder();
 
         $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $size);
         if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode->equals(DuplicationBehavior::REPLACE)) {
@@ -2153,6 +2141,35 @@ class ResourceStorage implements ResourceStorageInterface
             $resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, (string)$conflictMode);
         }
         return $resultObject;
+    }
+
+    /**
+     * Resolves the actual local file path of a new uploaded file.
+     *
+     * @internal
+     */
+    public function getUploadedLocalFilePath(array|UploadedFile $uploadedFileData): string
+    {
+        return $uploadedFileData instanceof UploadedFile
+            ? $uploadedFileData->getTemporaryFileName()
+            : $uploadedFileData['tmp_name'];
+    }
+
+    /**
+     * Resolves the actual sanitized file name to be used for persisting a new uploaded file.
+     *
+     * @internal
+     */
+    public function getUploadedTargetFileName(array|UploadedFile $uploadedFileData, ?string $targetFileName = null): string
+    {
+        if ($targetFileName === null) {
+            if ($uploadedFileData instanceof UploadedFile) {
+                $targetFileName = $uploadedFileData->getClientFilename();
+            } else {
+                $targetFileName = \Normalizer::normalize($uploadedFileData['name']);
+            }
+        }
+        return $this->driver->sanitizeFileName($targetFileName);
     }
 
     /********************
