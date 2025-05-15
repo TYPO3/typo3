@@ -254,7 +254,8 @@ class LocalConfiguration extends AbstractInteractableModule {
           configurationValues[itemArrayPath] = {};
         }
 
-        // Ensure configurationValues[itemArrayPath] is treated as a Record
+        // Ensure configurationValues[itemArrayPath] is treated as a Record.
+        // Record keys are sorted, and configuration values are also persisted with sorting.
         const configObject = configurationValues[itemArrayPath] as Record<string, string>;
 
         // Iterate by index, not by keys array values
