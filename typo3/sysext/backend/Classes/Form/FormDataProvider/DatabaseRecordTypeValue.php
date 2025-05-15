@@ -68,7 +68,9 @@ class DatabaseRecordTypeValue extends AbstractItemProvider implements FormDataPr
                 $validItems = $this->removeItemsByUserAuthMode($result, $tcaTypeField, $result['processedTca']['columns'][$tcaTypeField]['config']['items'] ?? []);
                 $validItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $tcaTypeField, $validItems);
                 $typeList = $this->getValidTypeValues($validItems);
-                if (empty($recordTypeValue) || ($typeList !== [] && !in_array($recordTypeValue, $typeList, false))) {
+                // allowing type-casts for `in_array` since the database value
+                // might be an integer value, but `items` be a string value
+                if ($typeList !== [] && !in_array($recordTypeValue, $typeList)) {
                     $recordTypeValue = array_shift($typeList);
                 }
             } else {
@@ -153,11 +155,19 @@ class DatabaseRecordTypeValue extends AbstractItemProvider implements FormDataPr
         return $row ?: [];
     }
 
+    /**
+     * @param list<array{label?: string, value?: string, icon?: string, group?: string}> $items
+     * @return list<string>
+     */
     protected function getValidTypeValues(array $items): array
     {
-        return array_filter(array_map(static function (array $item) {
-            $type = $item['value'] ?? '';
-            return $type !== '--div--' ? $type : '';
-        }, $items));
+        return array_values(
+            array_filter(
+                // resolve `value` key
+                array_map(static fn(array $item): ?string => $item['value'] ?? null, $items),
+                // filter undefined `value` keys and `--div--` items
+                static fn(?string $value): bool => $value !== null && $value !== '--div--'
+            )
+        );
     }
 }

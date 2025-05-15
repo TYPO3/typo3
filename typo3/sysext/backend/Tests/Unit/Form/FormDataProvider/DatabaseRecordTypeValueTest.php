@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Tests\Unit\Form\FormDataProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseRecordTypeValue;
@@ -144,7 +145,7 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
     {
         $input = [
             'tableName' => 'aTable',
-            'recordTypeValue' => '3',
+            'recordTypeValue' => '',
             'processedTca' => [
                 'ctrl' => [
                     'type' => 'aField',
@@ -210,6 +211,54 @@ final class DatabaseRecordTypeValueTest extends UnitTestCase
 
         $expected = $input;
         $expected['recordTypeValue'] = '0';
+
+        self::assertSame($expected, $this->subject->addData($input));
+    }
+
+    public static function addDataSetsRecordTypeValueToDatabaseValueIfEmptyDataProvider(): \Generator
+    {
+        yield 'empty string' => [''];
+        yield 'zero string' => ['0'];
+        yield 'one string' => ['1'];
+    }
+
+    #[Test]
+    #[DataProvider('addDataSetsRecordTypeValueToDatabaseValueIfEmptyDataProvider')]
+    public function addDataSetsRecordTypeValueToDatabaseValueIfEmpty(string $databaseValue): void
+    {
+        $input = [
+            'tableName' => 'aTable',
+            'recordTypeValue' => '',
+            'processedTca' => [
+                'ctrl' => [
+                    'type' => 'aField',
+                ],
+                'types' => [
+                    '' => 'blank',
+                    '0' => 'zero',
+                    '1' => 'one',
+                    '2' => 'two',
+                ],
+                'columns' => [
+                    'aField' => [
+                        'config' => [
+                            'items' => [
+                                ['label' => 'blank', 'value' => ''],
+                                ['label' => 'zero', 'value' => '0'],
+                                ['label' => 'one', 'value' => '1'],
+                                ['label' => 'two', 'value' => '2'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'databaseRow' => [
+                'aField' => is_numeric($databaseValue) ? (int)$databaseValue : $databaseValue,
+            ],
+        ];
+
+        $expected = $input;
+        $expected['recordTypeValue'] = $databaseValue;
 
         self::assertSame($expected, $this->subject->addData($input));
     }
