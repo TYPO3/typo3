@@ -40,7 +40,7 @@ class Blog extends AbstractEntity
     /**
      * The blog's subtitle
      */
-    protected ?string $subtitle = null;
+    private ?string $subtitle = null;
 
     /**
      * A short description of the blog

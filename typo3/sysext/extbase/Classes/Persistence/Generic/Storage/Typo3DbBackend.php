@@ -412,7 +412,7 @@ readonly class Typo3DbBackend implements BackendInterface
             $propertyName = $property->getName();
             // @todo We couple the Backend to the Entity implementation (uid, isClone); changes there breaks this method
             if ($dataMap->isPersistableProperty($propertyName) && $propertyName !== AbstractDomainObject::PROPERTY_UID && $propertyName !== AbstractDomainObject::PROPERTY_PID && $propertyName !== 'isClone') {
-                $propertyValue = $object->_getProperty($propertyName);
+                $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);
                 $columnMap = $dataMap->getColumnMap($propertyName);
                 $fieldName = $columnMap->columnName;
                 if ($propertyValue === null) {

@@ -7234,6 +7234,27 @@ return [
             'Deprecation-111336-LegacyLanguageModeAndOverlayTypeOfLanguageAspect.rst',
         ],
     ],
+    'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject->_setProperty' => [
+        'numberOfMandatoryArguments' => 2,
+        'maximumNumberOfArguments' => 2,
+        'restFiles' => [
+            'Breaking-95823-PropertyAccessMethodsOfAbstractDomainObjectRemoved.rst',
+        ],
+    ],
+    'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject->_getProperty' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-95823-PropertyAccessMethodsOfAbstractDomainObjectRemoved.rst',
+        ],
+    ],
+    'TYPO3\\CMS\\Extbase\\DomainObject\\AbstractDomainObject->_hasProperty' => [
+        'numberOfMandatoryArguments' => 1,
+        'maximumNumberOfArguments' => 1,
+        'restFiles' => [
+            'Breaking-95823-PropertyAccessMethodsOfAbstractDomainObjectRemoved.rst',
+        ],
+    ],
     /** Note (leave this at the bottom):
      *  The FQCN object definitions here are not actually checked, only
      *  the method name itself. That means, never list generic method names

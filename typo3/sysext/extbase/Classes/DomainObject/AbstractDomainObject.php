@@ -98,51 +98,20 @@ abstract class AbstractDomainObject implements DomainObjectInterface
     }
 
     /**
-     * @internal
-     */
-    public function _setProperty(string $propertyName, mixed $value): bool
-    {
-        if ($this->_hasProperty($propertyName)) {
-            $this->{$propertyName} = $value;
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @internal
-     */
-    public function _getProperty(string $propertyName): mixed
-    {
-        return $this->_hasProperty($propertyName) && isset($this->{$propertyName})
-            ? $this->{$propertyName}
-            : null;
-    }
-
-    /**
      * @return array<non-empty-string, mixed> a hash map of property names and property values.
      *
      * @internal
      */
     public function _getProperties(): array
     {
-        $properties = get_object_vars($this);
+        // Read in the scope of the entity class, so its own private properties are included
+        $properties = (fn(): array => get_object_vars($this))->call($this);
         foreach ($properties as $propertyName => $propertyValue) {
             if (str_starts_with($propertyName, '_')) {
                 unset($properties[$propertyName]);
             }
         }
         return $properties;
-    }
-
-    /**
-     * @param non-empty-string $propertyName
-     *
-     * @internal
-     */
-    public function _hasProperty(string $propertyName): bool
-    {
-        return property_exists($this, $propertyName);
     }
 
     /**

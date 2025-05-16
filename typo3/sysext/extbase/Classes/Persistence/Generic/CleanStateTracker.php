@@ -283,8 +283,8 @@ final class CleanStateTracker
     }
 
     /**
-     * Reads the persistable properties like the entity itself would: public and protected ones, not those starting
-     * with an underscore and not uninitialized ones. Properties of parent classes come first.
+     * Reads the persistable properties: public and protected ones, and the private ones of the entity class itself,
+     * not those starting with an underscore and not uninitialized ones. Properties of parent classes come first.
      *
      * @return array<non-empty-string, mixed>
      */
@@ -335,7 +335,12 @@ final class CleanStateTracker
         foreach ($classes as $class) {
             foreach ($class->getProperties() as $classProperty) {
                 $propertyName = $classProperty->getName();
-                if (isset($accessible[$propertyName]) || $classProperty->isStatic() || $classProperty->isVirtual() || $classProperty->isPrivate()) {
+                if (isset($accessible[$propertyName])
+                    || $classProperty->isStatic()
+                    || $classProperty->isVirtual()
+                    // Like the class schema, only private properties of the entity class itself are entity properties
+                    || ($classProperty->isPrivate() && $class !== $reflection)
+                ) {
                     continue;
                 }
                 $accessible[$propertyName] = $reflection->getProperty($propertyName);

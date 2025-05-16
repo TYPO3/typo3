@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Domain\Model\FileReference;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -374,7 +375,7 @@ final class TranslationInlineChildrenTest extends FunctionalTestCase
         // When: a new German blog with a new post is added and persisted
         // @phpstan-ignore deadCode.unreachable
         $blog = new Blog();
-        $blog->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
+        $this->get(ReflectionService::class)->setRawEntityPropertyValue($blog, AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
         $blog->setTitle('Mein Blog');
         $post = new Post();
         $post->setTitle('Beitrag');

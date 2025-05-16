@@ -32,6 +32,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
@@ -59,6 +60,7 @@ final class AddTest extends FunctionalTestCase
     private PersonRepository $personRepository;
     private PostRepository $postRepository;
     private ExampleRepository $exampleRepository;
+    private ReflectionService $reflectionService;
 
     protected function setUp(): void
     {
@@ -69,6 +71,7 @@ final class AddTest extends FunctionalTestCase
         $this->personRepository = $this->get(PersonRepository::class);
         $this->postRepository = $this->get(PostRepository::class);
         $this->exampleRepository = $this->get(ExampleRepository::class);
+        $this->reflectionService = $this->get(ReflectionService::class);
 
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -100,7 +103,8 @@ final class AddTest extends FunctionalTestCase
         $newBlogTitle = 'aDi1oogh';
         $newBlog = new Blog();
         $newBlog->setTitle($newBlogTitle);
-        $newBlog->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, -1);
+
+        $this->reflectionService->setRawEntityPropertyValue($newBlog, AbstractDomainObject::PROPERTY_LANGUAGE_UID, -1);
 
         $this->blogRepository->add($newBlog);
         $this->persistentManager->persistAll();

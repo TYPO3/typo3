@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Repository\AdministratorRepository;
@@ -33,9 +34,14 @@ final class IsDirtyTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
+    protected ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->reflectionService = $this->get(ReflectionService::class);
+
         $this->importCSVDataSet(__DIR__ . '/Fixtures/IsDirtyTestImport.csv');
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -82,7 +88,7 @@ final class IsDirtyTest extends FunctionalTestCase
         self::assertInstanceOf(Administrator::class, $admin); // precondition
         $blog->setAdministrator($admin);
         $cleanStateTracker->setOriginalEntityData($blog);
-        $blog->_setProperty('administrator', $lazyLoadingProxy);
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', $lazyLoadingProxy);
         self::assertFalse($cleanStateTracker->isEntityDirty($blog));
     }
 
@@ -95,7 +101,7 @@ final class IsDirtyTest extends FunctionalTestCase
         self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blogOne->getAdministrator())); //precondition
         $blogTwo = $blogRepository->findByUid(2);
         self::assertTrue(new \ReflectionClass(Administrator::class)->isUninitializedLazyObject($blogTwo->getAdministrator())); //precondition
-        $blogOne->_setProperty('administrator', $blogTwo->getAdministrator());
+        $this->reflectionService->setRawEntityPropertyValue($blogOne, 'administrator', $blogTwo->getAdministrator());
         self::assertTrue($cleanStateTracker->isEntityDirty($blogOne));
         $blogRepository->update($blogOne);
         $updatedBlogOne = $blogRepository->findByUid(3);

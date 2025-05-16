@@ -133,8 +133,8 @@ final class BehaviourConformanceTest extends FunctionalTestCase
             '%s|%d|%d|%d',
             $label,
             $object->getUid(),
-            $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
-            $object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID),
+            new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LOCALIZED_UID)->getValue($object),
+            new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($object),
         );
     }
 
@@ -147,7 +147,7 @@ final class BehaviourConformanceTest extends FunctionalTestCase
             '%s|%d|%d|%d',
             $object->getTitle(),
             $object->getUid(),
-            $object->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID),
+            new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_VERSIONED_UID)->getValue($object),
             $object->getPid(),
         );
     }

@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\Error\Error;
@@ -29,6 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Validation\Validator\BooleanValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
@@ -37,6 +39,8 @@ use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
 final class GenericObjectValidatorTest extends UnitTestCase
 {
+    protected bool $resetSingletonInstances = true;
+
     #[Test]
     public function validatorShouldReturnErrorsIfTheValueIsNoObjectAndNotNull(): void
     {
@@ -325,13 +329,15 @@ final class GenericObjectValidatorTest extends UnitTestCase
         $parentObject = new class extends AbstractEntity {
             protected AbstractEntity|LazyLoadingProxy|null $relation = null;
         };
+        $reflectionService = new ReflectionService(new NullFrontend('extbase'), 'ClassSchemata');
         $container = new Container();
         $container->set(CleanStateTracker::class, new CleanStateTracker());
+        $container->set(ReflectionService::class, $reflectionService);
         GeneralUtility::setContainer($container);
         $dataMapper = self::createStub(DataMapper::class);
         $dataMapper->method('mapResultToPropertyValue')->willReturn($lazilyLoadedObject);
         $proxy = new LazyLoadingProxy($parentObject, 'relation', 1, $dataMapper);
-        $parentObject->_setProperty('relation', $proxy);
+        $reflectionService->setRawEntityPropertyValue($parentObject, 'relation', $proxy);
 
         return $proxy;
     }

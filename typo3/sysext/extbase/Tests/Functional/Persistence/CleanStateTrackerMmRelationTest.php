@@ -25,6 +25,7 @@ use TYPO3\CMS\Extbase\Persistence\Exception\UnmanagedObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\Session;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
 use TYPO3Tests\BlogExample\Domain\Model\Tag;
@@ -36,9 +37,12 @@ final class CleanStateTrackerMmRelationTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
+    private ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->reflectionService = $this->get(ReflectionService::class);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/CleanStateTrackerMmTestImport.csv');
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -55,7 +59,7 @@ final class CleanStateTrackerMmRelationTest extends FunctionalTestCase
         $postRepository = $this->get(PostRepository::class);
         $persistenceManager = $this->get(PersistenceManager::class);
         $post = $postRepository->findByUid(1);
-        $post->_getProperty('tags')->count();
+        $this->reflectionService->getRawEntityPropertyValue($post, 'tags')->count();
         $serialized = serialize($post);
         $persistenceManager->clearState();
         $restored = unserialize($serialized, ['allowed_classes' => [Post::class, Tag::class, ObjectStorage::class, \DateTime::class]]);
@@ -93,7 +97,7 @@ final class CleanStateTrackerMmRelationTest extends FunctionalTestCase
         $persistenceManager = $this->get(PersistenceManager::class);
         $session = $this->get(Session::class);
         $post = $postRepository->findByUid(1);
-        $post->_getProperty('tags')->count();
+        $this->reflectionService->getRawEntityPropertyValue($post, 'tags')->count();
         $identifier = $session->getIdentifierByObject($post);
         $persistenceManager->clearState();
         $session->registerObject($post, $identifier);
@@ -118,7 +122,7 @@ final class CleanStateTrackerMmRelationTest extends FunctionalTestCase
         $postRepository = $this->get(PostRepository::class);
         $session = $this->get(Session::class);
         $post = $postRepository->findByUid(1);
-        $post->_getProperty('tags')->count();
+        $this->reflectionService->getRawEntityPropertyValue($post, 'tags')->count();
         $clone = clone $post;
         $session->registerObject($clone, $session->getIdentifierByObject($post));
 

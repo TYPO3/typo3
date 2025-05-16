@@ -42,27 +42,6 @@ interface DomainObjectInterface
     public function _isNew(): bool;
 
     /**
-     * @param non-empty-string $propertyName
-     *
-     * @internal
-     */
-    public function _hasProperty(string $propertyName): bool;
-
-    /**
-     * @param non-empty-string $propertyName
-     *
-     * @internal
-     */
-    public function _setProperty(string $propertyName, mixed $value);
-
-    /**
-     * @param non-empty-string $propertyName
-     *
-     * @internal
-     */
-    public function _getProperty(string $propertyName): mixed;
-
-    /**
      * @return array<non-empty-string, mixed>
      *
      * @internal

@@ -31,6 +31,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 use TYPO3\CMS\Extbase\Reflection\Exception\PropertyNotAccessibleException;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\BlogRepository;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
@@ -39,8 +40,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
 {
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
-    private PostRepository $postRepository;
     private PersistenceManager $persistenceManager;
+    private PostRepository $postRepository;
+    private ReflectionService $reflectionService;
 
     protected function setUp(): void
     {
@@ -55,8 +57,9 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         ];
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
-        $this->postRepository = $this->get(PostRepository::class);
         $this->persistenceManager = $this->get(PersistenceManager::class);
+        $this->postRepository = $this->get(PostRepository::class);
+        $this->reflectionService = $this->get(ReflectionService::class);
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
     }
@@ -81,13 +84,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -100,13 +103,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
-            $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getBlog()->getTitle(),
             $post2translated->getBlog()->getUid(),
-            $post2translated->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
     }
 
@@ -123,13 +126,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -142,13 +145,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
-            $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getBlog()->getTitle(),
             $post2translated->getBlog()->getUid(),
-            $post2translated->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
     }
 
@@ -165,13 +168,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -180,13 +183,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
-            $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getBlog()->getTitle(),
             $post2translated->getBlog()->getUid(),
-            $post2translated->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
     }
 
@@ -203,13 +206,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -219,13 +222,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2translated->getTitle(),
             $post2translated->getUid(),
-            $post2translated->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getBlog()->getTitle(),
             $post2translated->getBlog()->getUid(),
-            $post2translated->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2translated->getAuthor()->getFirstname(),
             $post2translated->getAuthor()->getUid(),
-            $post2translated->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2translated->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
     }
 
@@ -250,13 +253,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -294,13 +297,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
     }
 
@@ -323,13 +326,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2', 2, 2, 'Blog 1', 1, 1, 'John', 1, 1], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
 
         //this is needed because of https://forge.typo3.org/issues/59992
@@ -367,13 +370,13 @@ final class QueryLocalizedDataTest extends FunctionalTestCase
         self::assertEquals(['Post 2 - DA', 2, 11, 'Blog 1 DA', 1, 2, 'Translated John', 1, 2], [
             $post2->getTitle(),
             $post2->getUid(),
-            $post2->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2, AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getBlog()->getTitle(),
             $post2->getBlog()->getUid(),
-            $post2->getBlog()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getBlog(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
             $post2->getAuthor()->getFirstname(),
             $post2->getAuthor()->getUid(),
-            $post2->getAuthor()->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID),
+            $this->reflectionService->getRawEntityPropertyValue($post2->getAuthor(), AbstractDomainObject::PROPERTY_LOCALIZED_UID),
         ]);
     }
 

@@ -30,6 +30,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Comment;
 use TYPO3Tests\BlogExample\Domain\Model\Info;
@@ -408,7 +409,7 @@ final class ExcludedFromTranslationWriteDefaultRecordTest extends FunctionalTest
 
         // When: the info of the English post is removed and persisted
         $this->get(PersistenceManager::class)->remove($post->getAdditionalInfo());
-        $post->_setProperty('additionalInfo', null);
+        $this->get(ReflectionService::class)->setRawEntityPropertyValue($post, 'additionalInfo', null);
         $this->get(PostRepository::class)->update($post);
         $this->get(PersistenceManager::class)->persistAll();
 

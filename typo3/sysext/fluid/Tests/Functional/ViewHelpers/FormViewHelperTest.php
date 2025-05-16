@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Mvc\ExtbaseRequestParameters;
 use TYPO3\CMS\Extbase\Mvc\Request;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Fluid\Core\Rendering\RenderingContextFactory;
 use TYPO3\CMS\Fluid\Tests\Functional\Fixtures\ViewHelpers\ExtendsAbstractEntity;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
@@ -43,6 +44,15 @@ final class FormViewHelperTest extends FunctionalTestCase
     ];
 
     protected bool $initializeDatabase = false;
+
+    protected ReflectionService $reflectionService;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->reflectionService = $this->get(ReflectionService::class);
+    }
 
     public static function isRenderedDataProvider(): array
     {
@@ -92,7 +102,7 @@ final class FormViewHelperTest extends FunctionalTestCase
     public function renderHiddenIdentityFieldReturnsAHiddenInputFieldContainingTheObjectsUID(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
-        $extendsAbstractEntity->_setProperty('uid', 123);
+        $this->reflectionService->setRawEntityPropertyValue($extendsAbstractEntity, 'uid', 123);
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
@@ -140,7 +150,7 @@ final class FormViewHelperTest extends FunctionalTestCase
     public function nameArgumentIsUsedFormHiddenIdentityName(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
-        $extendsAbstractEntity->_setProperty('uid', 123);
+        $this->reflectionService->setRawEntityPropertyValue($extendsAbstractEntity, 'uid', 123);
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" object="{object}" />');
@@ -155,7 +165,7 @@ final class FormViewHelperTest extends FunctionalTestCase
     public function objectNameArgumentOverrulesNameArgument(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
-        $extendsAbstractEntity->_setProperty('uid', 123);
+        $this->reflectionService->setRawEntityPropertyValue($extendsAbstractEntity, 'uid', 123);
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:form name="formName" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
@@ -170,7 +180,7 @@ final class FormViewHelperTest extends FunctionalTestCase
     public function renderWrapsHiddenFieldsWithDivForXhtmlCompatibilityWithRewrittenPropertyMapper(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
-        $extendsAbstractEntity->_setProperty('uid', 123);
+        $this->reflectionService->setRawEntityPropertyValue($extendsAbstractEntity, 'uid', 123);
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
@@ -185,7 +195,7 @@ final class FormViewHelperTest extends FunctionalTestCase
     public function renderWrapsHiddenFieldsWithDivAndAnAdditionalClassForXhtmlCompatibilityWithRewrittenPropertyMapper(): void
     {
         $extendsAbstractEntity = new ExtendsAbstractEntity();
-        $extendsAbstractEntity->_setProperty('uid', 123);
+        $this->reflectionService->setRawEntityPropertyValue($extendsAbstractEntity, 'uid', 123);
         $request = $this->createRequest();
         $context = $this->get(RenderingContextFactory::class)->create([], $request);
         $context->getTemplatePaths()->setTemplateSource('<f:form hiddenFieldClassName="hidden" fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
@@ -207,7 +217,7 @@ final class FormViewHelperTest extends FunctionalTestCase
         $this->get(ConfigurationManagerInterface::class)->setRequest($psr7Request);
         $extbaseRequest = new Request($psr7Request);
         $extendsAbstractEntity = new ExtendsAbstractEntity();
-        $extendsAbstractEntity->_setProperty('uid', 123);
+        $this->reflectionService->setRawEntityPropertyValue($extendsAbstractEntity, 'uid', 123);
         $context = $this->get(RenderingContextFactory::class)->create([], $extbaseRequest);
         $context->getTemplatePaths()->setTemplateSource('<f:form fieldNamePrefix="prefix" objectName="myObjectName" object="{object}" />');
         $view = new TemplateView($context);

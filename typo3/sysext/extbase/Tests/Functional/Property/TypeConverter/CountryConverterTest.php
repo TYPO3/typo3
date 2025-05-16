@@ -22,6 +22,7 @@ use TYPO3\CMS\Core\Country\Country;
 use TYPO3\CMS\Extbase\DomainObject\AbstractEntity;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class CountryConverterTest extends FunctionalTestCase
@@ -32,6 +33,7 @@ final class CountryConverterTest extends FunctionalTestCase
     public function convertToObject(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
+        $reflectionService = $this->get(ReflectionService::class);
 
         $model = new class extends AbstractEntity {
             protected ?Country $country = null;
@@ -51,10 +53,10 @@ final class CountryConverterTest extends FunctionalTestCase
         $object = $propertyMapper->convert(['country' => 'AT'], get_class($model));
 
         self::assertInstanceOf(get_class($model), $object);
-        self::assertInstanceOf(Country::class, $object->_getProperty('country'));
+        self::assertInstanceOf(Country::class, $reflectionService->getRawEntityPropertyValue($object, 'country'));
         self::assertInstanceOf(Country::class, $object->getCountry());
 
-        self::assertSame('AT', $object->_getProperty('country')->getAlpha2IsoCode());
+        self::assertSame('AT', $reflectionService->getRawEntityPropertyValue($object, 'country')->getAlpha2IsoCode());
         self::assertSame('AT', $object->getCountry()->getAlpha2IsoCode());
     }
 }

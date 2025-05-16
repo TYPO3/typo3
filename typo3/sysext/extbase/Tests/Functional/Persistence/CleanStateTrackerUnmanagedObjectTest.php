@@ -23,6 +23,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Exception\UnmanagedObjectException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -35,9 +36,12 @@ final class CleanStateTrackerUnmanagedObjectTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
+    private ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->reflectionService = $this->get(ReflectionService::class);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/CleanStateTrackerUnmanagedObjectTestImport.csv');
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -54,7 +58,7 @@ final class CleanStateTrackerUnmanagedObjectTest extends FunctionalTestCase
         $persistenceManager = $this->get(PersistenceManager::class);
         $tag = $persistenceManager->getObjectByIdentifier('1', Tag::class);
         $clone = clone $tag;
-        $clone->_setProperty('name', 'Changed name');
+        $this->reflectionService->setRawEntityPropertyValue($clone, 'name', 'Changed name');
 
         // When: the clone is added
         $exception = null;
@@ -78,7 +82,7 @@ final class CleanStateTrackerUnmanagedObjectTest extends FunctionalTestCase
         // Given: a serialized tag with a changed name, restored after the persistence state was cleared
         $persistenceManager = $this->get(PersistenceManager::class);
         $tag = $persistenceManager->getObjectByIdentifier('1', Tag::class);
-        $tag->_setProperty('name', 'Changed name');
+        $this->reflectionService->setRawEntityPropertyValue($tag, 'name', 'Changed name');
         $serialized = serialize($tag);
         $persistenceManager->clearState();
         $restored = unserialize($serialized, ['allowed_classes' => [Tag::class]]);

@@ -221,18 +221,18 @@ class DataMapper
         $className = get_class($object);
         $classSchema = $this->reflectionService->getClassSchema($className);
         $dataMap = $this->getDataMap($className);
-        $object->_setProperty(AbstractDomainObject::PROPERTY_UID, (int)$row['uid']);
-        $object->_setProperty(AbstractDomainObject::PROPERTY_PID, (int)($row['pid'] ?? 0));
-        $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['uid']);
-        $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['uid']);
+        $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_UID, (int)$row['uid']);
+        $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_PID, (int)($row['pid'] ?? 0));
+        $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['uid']);
+        $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['uid']);
         if ($dataMap->languageIdColumnName !== null) {
-            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, (int)($row[$dataMap->languageIdColumnName] ?? LanguageMarker::DEFAULT_LANGUAGE));
+            $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LANGUAGE_UID, (int)($row[$dataMap->languageIdColumnName] ?? LanguageMarker::DEFAULT_LANGUAGE));
             if (isset($row['_LOCALIZED_UID'])) {
-                $object->_setProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['_LOCALIZED_UID']);
+                $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LOCALIZED_UID, (int)$row['_LOCALIZED_UID']);
             }
         }
         if (!empty($row['_ORIG_uid']) && $this->tcaSchemaFactory->get($dataMap->tableName)->isWorkspaceAware()) {
-            $object->_setProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['_ORIG_uid']);
+            $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_VERSIONED_UID, (int)$row['_ORIG_uid']);
         }
         foreach ($classSchema->getDomainObjectProperties() as $property) {
             $propertyName = $property->getName();
@@ -279,7 +279,7 @@ class DataMapper
             };
 
             if ($propertyValue !== null || $property->isNullable()) {
-                $object->_setProperty($propertyName, $propertyValue);
+                $this->reflectionService->setRawEntityPropertyValue($object, $propertyName, $propertyValue);
             }
         }
     }
@@ -451,8 +451,8 @@ class DataMapper
                     // and expose an empty instance to callers still holding the proxy.
                     $realInstance = $reflection->newInstanceWithoutConstructor();
                 }
-                if ($parentObject->_getProperty($propertyName) === $proxy) {
-                    $parentObject->_setProperty($propertyName, $realInstance instanceof DomainObjectInterface && $realInstance->getUid() !== null ? $realInstance : null);
+                if ($this->reflectionService->getRawEntityPropertyValue($parentObject, $propertyName) === $proxy) {
+                    $this->reflectionService->setRawEntityPropertyValue($parentObject, $propertyName, $realInstance instanceof DomainObjectInterface && $realInstance->getUid() !== null ? $realInstance : null);
                     $this->cleanStateTracker->setOriginalEntityProperty($parentObject, $propertyName);
                 }
                 return $realInstance;
@@ -526,7 +526,7 @@ class DataMapper
             if ($dataMap->languageIdColumnName !== null && !$this->query->getQuerySettings()->getRespectSysLanguage()) {
                 // A parent loaded by the uid of a translation outside the requested language and its fallback
                 // chain passes its own language on to its children; otherwise the requested language is kept.
-                $parentLanguageUid = (int)$parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
+                $parentLanguageUid = (int)$this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_LANGUAGE_UID);
                 $fallbackChainLanguageUids = array_map(intval(...), array_filter($languageAspect->getFallbackChain(), is_numeric(...)));
                 $parentIsForAllLanguages = $parentLanguageUid === LanguageMarker::ALL_LANGUAGES;
                 $parentIsInRequestedLanguage = $parentLanguageUid === $languageUid;
@@ -654,8 +654,8 @@ class DataMapper
             // versioned record, so this must be taken into account here and the versioned record's UID must be used.
             if ($columnMap->typeOfRelation === Relation::HAS_AND_BELONGS_TO_MANY) {
                 // The versioned UID is used ideally the version ID of a translated record, so this takes precedence over the localized UID
-                if ($value->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $value->getUid()) {
-                    $value = (int)$value->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);
+                if ($this->reflectionService->hasEntityProperty($value, AbstractDomainObject::PROPERTY_VERSIONED_UID) && $this->reflectionService->getRawEntityPropertyValue($value, AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $this->reflectionService->getRawEntityPropertyValue($value, AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $value->getUid()) {
+                    $value = (int)$this->reflectionService->getRawEntityPropertyValue($value, AbstractDomainObject::PROPERTY_VERSIONED_UID);
                 }
             }
             $constraint = $query->equals($columnMap->parentKeyFieldName, $value);
@@ -685,10 +685,10 @@ class DataMapper
         $parentId = $parentObject->getUid();
         if ($columnMap && $workspaceId > 0) {
             // versionedUid in a multi-language setup is the overlaid versioned AND translated ID
-            if ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $parentId) {
-                $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID);
-            } elseif ($parentObject->_hasProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) && $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) > LanguageMarker::DEFAULT_LANGUAGE) {
-                $parentId = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
+            if ($this->reflectionService->hasEntityProperty($parentObject, AbstractDomainObject::PROPERTY_VERSIONED_UID) && $this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_VERSIONED_UID) > 0 && $this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_VERSIONED_UID) !== $parentId) {
+                $parentId = $this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_VERSIONED_UID);
+            } elseif ($this->reflectionService->hasEntityProperty($parentObject, AbstractDomainObject::PROPERTY_LANGUAGE_UID) && $this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_LANGUAGE_UID) > LanguageMarker::DEFAULT_LANGUAGE) {
+                $parentId = $this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_LOCALIZED_UID);
             }
         }
         return $parentId;

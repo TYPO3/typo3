@@ -132,7 +132,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -189,7 +189,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -247,7 +247,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -302,7 +302,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -359,7 +359,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -532,7 +532,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query->getQuerySettings()->setStoragePageIds([3]);
         $query->setOrderings(['sorting' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -596,7 +596,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query->getQuerySettings()->setStoragePageIds([3]);
         $query->setOrderings(['sorting' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -654,7 +654,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query->getQuerySettings()->setRespectSysLanguage(false);
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -749,7 +749,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query->matching($query->in('uid', [2, 5]));
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $posts = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 
@@ -802,7 +802,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         // When: post 2 is read by its uid with German and overlays on
         $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $post = $this->get(PostRepository::class)->findByUid(2);
-        $output = sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID));
+        $output = sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post));
 
         // Then: the post has the title, the uid and the language of the expected row
         self::assertSame('Erster Beitrag (uid 2, language 1)', $output);
@@ -854,7 +854,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         // @phpstan-ignore deadCode.unreachable
         $this->get(Context::class)->setAspect('language', new LanguageAspect(0, 0, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $post = $this->get(PostRepository::class)->findByUid(3);
-        $output = sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID));
+        $output = sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post));
 
         // Then: the post has the title, the uid and the language of the expected row
         self::assertSame('Erster Beitrag (uid 3, language 1)', $output);
@@ -900,7 +900,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $german = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
         $this->get(PersistenceManager::class)->clearState();
@@ -908,7 +908,7 @@ final class ReadingTranslationsTest extends FunctionalTestCase
         $query = $this->get(PostRepository::class)->createQuery();
         $query->setOrderings(['uid' => QueryInterface::ORDER_ASCENDING]);
         $french = array_map(
-            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), $post->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID)),
+            static fn(Post $post): string => sprintf('%s (uid %d, language %d)', $post->getTitle(), $post->getUid(), new \ReflectionProperty(AbstractDomainObject::class, AbstractDomainObject::PROPERTY_LANGUAGE_UID)->getValue($post)),
             $query->execute()->toArray(),
         );
 

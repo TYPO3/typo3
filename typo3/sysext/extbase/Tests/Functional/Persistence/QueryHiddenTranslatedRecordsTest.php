@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\TypoScript\FrontendTypoScript;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Repository\PostRepository;
 
@@ -36,6 +37,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
     private PostRepository $postRepository;
+    private ReflectionService $reflectionService;
 
     protected function setUp(): void
     {
@@ -51,6 +53,7 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
         $configurationManager = $this->get(ConfigurationManager::class);
         $configurationManager->setConfiguration($configuration);
         $this->postRepository = $this->get(PostRepository::class);
+        $this->reflectionService = $this->get(ReflectionService::class);
 
         $frontendTypoScript = new FrontendTypoScript(new RootNode(), [], [], []);
         $frontendTypoScript->setSetupArray([]);
@@ -76,9 +79,9 @@ final class QueryHiddenTranslatedRecordsTest extends FunctionalTestCase
         // Test first post (uid 100 with workspace translation 201)
         self::assertEquals('Visible DA Translation Post in WS', $posts[0]->getTitle());
         self::assertEquals(100, $posts[0]->getUid());
-        self::assertEquals(101, $posts[0]->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID));
-        self::assertEquals(1, $posts[0]->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID));
-        self::assertEquals(201, $posts[0]->_getProperty(AbstractDomainObject::PROPERTY_VERSIONED_UID));
+        self::assertEquals(101, $this->reflectionService->getRawEntityPropertyValue($posts[0], AbstractDomainObject::PROPERTY_LOCALIZED_UID));
+        self::assertEquals(1, $this->reflectionService->getRawEntityPropertyValue($posts[0], AbstractDomainObject::PROPERTY_LANGUAGE_UID));
+        self::assertEquals(201, $this->reflectionService->getRawEntityPropertyValue($posts[0], AbstractDomainObject::PROPERTY_VERSIONED_UID));
     }
 
     #[Test]

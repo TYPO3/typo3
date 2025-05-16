@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Extbase\Persistence\Generic;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * A proxy that can replace any object and replaces itself in it's parent on
@@ -31,6 +32,8 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
 {
     protected ?DataMapper $dataMapper = null;
+
+    protected ReflectionService $reflectionService;
 
     /**
      * The object this property is contained in.
@@ -74,6 +77,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
             $dataMapper = GeneralUtility::makeInstance(DataMapper::class);
         }
         $this->dataMapper = $dataMapper;
+        $this->reflectionService = GeneralUtility::makeInstance(ReflectionService::class);
     }
 
     /**
@@ -86,14 +90,14 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         // this check safeguards against a proxy being activated multiple times
         // usually that does not happen, but if the proxy is held from outside
         // its parent ... the result would be weird.
-        if ($this->parentObject->_getProperty($this->propertyName) instanceof LazyLoadingProxy && $this->dataMapper) {
+        if ($this->reflectionService->getRawEntityPropertyValue($this->parentObject, $this->propertyName) instanceof LazyLoadingProxy && $this->dataMapper) {
             $objects = $this->dataMapper->fetchRelated($this->parentObject, $this->propertyName, $this->fieldValue, false);
             $propertyValue = $this->dataMapper->mapResultToPropertyValue($this->parentObject, $this->propertyName, $objects);
-            $this->parentObject->_setProperty($this->propertyName, $propertyValue);
+            $this->reflectionService->setRawEntityPropertyValue($this->parentObject, $this->propertyName, $propertyValue);
             GeneralUtility::makeInstance(CleanStateTracker::class)->setOriginalEntityProperty($this->parentObject, $this->propertyName);
             return $propertyValue;
         }
-        return $this->parentObject->_getProperty($this->propertyName);
+        return $this->reflectionService->getRawEntityPropertyValue($this->parentObject, $this->propertyName);
     }
 
     /**
@@ -139,7 +143,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         $realInstance = $this->_loadRealInstance();
 
         if ($realInstance instanceof DomainObjectInterface) {
-            return $realInstance->_getProperty($propertyName);
+            return $this->reflectionService->getRawEntityPropertyValue($realInstance, $propertyName);
         }
         return $realInstance?->{$propertyName};
     }
@@ -167,7 +171,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         $realInstance = $this->_loadRealInstance();
 
         if ($realInstance instanceof DomainObjectInterface) {
-            return $realInstance->_getProperty($propertyName) !== null;
+            return $this->reflectionService->getRawEntityPropertyValue($realInstance, $propertyName) !== null;
         }
         return isset($realInstance->{$propertyName});
     }
@@ -246,7 +250,7 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
     public function __serialize(): array
     {
         $properties = get_object_vars($this);
-        unset($properties['dataMapper']);
+        unset($properties['dataMapper'], $properties['reflectionService']);
         return $properties;
     }
 
@@ -257,5 +261,6 @@ class LazyLoadingProxy implements \Iterator, LoadingStrategyInterface
         }
 
         $this->dataMapper = GeneralUtility::getContainer()->get(DataMapper::class);
+        $this->reflectionService = GeneralUtility::getContainer()->get(ReflectionService::class);
     }
 }

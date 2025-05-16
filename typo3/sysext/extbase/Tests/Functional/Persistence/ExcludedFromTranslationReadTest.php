@@ -29,6 +29,7 @@ use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
+use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Comment;
@@ -581,14 +582,14 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $germanPosts = $this->get(PostRepository::class)->findBy(['author' => $anna])->toArray();
         $foundInGerman = array_map(
-            static fn(Post $post): array => [$post->_getProperty('_localizedUid') ?? $post->getUid(), (int)$post->_getProperty('_languageUid')],
+            static fn(Post $post): array => [new \ReflectionProperty(AbstractDomainObject::class, '_localizedUid')->getValue($post) ?? $post->getUid(), (int)new \ReflectionProperty(AbstractDomainObject::class, '_languageUid')->getValue($post)],
             $germanPosts
         );
         $this->get(PersistenceManager::class)->clearState();
         $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_ON_WITH_FLOATING));
         $frenchPosts = $this->get(PostRepository::class)->findBy(['author' => $anna])->toArray();
         $foundInFrench = array_map(
-            static fn(Post $post): array => [$post->_getProperty('_localizedUid') ?? $post->getUid(), (int)$post->_getProperty('_languageUid')],
+            static fn(Post $post): array => [new \ReflectionProperty(AbstractDomainObject::class, '_localizedUid')->getValue($post) ?? $post->getUid(), (int)new \ReflectionProperty(AbstractDomainObject::class, '_languageUid')->getValue($post)],
             $frenchPosts
         );
 
@@ -646,14 +647,14 @@ final class ExcludedFromTranslationReadTest extends FunctionalTestCase
         $this->get(Context::class)->setAspect('language', new LanguageAspect(1, 1, LanguageAspect::OVERLAYS_MIXED));
         $germanPosts = $this->get(PostRepository::class)->findBy(['author' => $anna])->toArray();
         $foundInGerman = array_map(
-            static fn(Post $post): array => [$post->_getProperty('_localizedUid') ?? $post->getUid(), (int)$post->_getProperty('_languageUid')],
+            static fn(Post $post): array => [new \ReflectionProperty(AbstractDomainObject::class, '_localizedUid')->getValue($post) ?? $post->getUid(), (int)new \ReflectionProperty(AbstractDomainObject::class, '_languageUid')->getValue($post)],
             $germanPosts
         );
         $this->get(PersistenceManager::class)->clearState();
         $this->get(Context::class)->setAspect('language', new LanguageAspect(2, 2, LanguageAspect::OVERLAYS_MIXED));
         $frenchPosts = $this->get(PostRepository::class)->findBy(['author' => $anna])->toArray();
         $foundInFrench = array_map(
-            static fn(Post $post): array => [$post->_getProperty('_localizedUid') ?? $post->getUid(), (int)$post->_getProperty('_languageUid')],
+            static fn(Post $post): array => [new \ReflectionProperty(AbstractDomainObject::class, '_localizedUid')->getValue($post) ?? $post->getUid(), (int)new \ReflectionProperty(AbstractDomainObject::class, '_languageUid')->getValue($post)],
             $frenchPosts
         );
 

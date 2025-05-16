@@ -317,7 +317,7 @@ class Backend implements BackendInterface
         $dataMap = $this->dataMapFactory->buildDataMap($object::class);
         foreach ($this->reflectionService->getClassSchema($object::class)->getDomainObjectProperties() as $property) {
             $propertyName = $property->getName();
-            $propertyValue = $dataMap->isPersistableProperty($propertyName) ? $object->_getProperty($propertyName) : null;
+            $propertyValue = $dataMap->isPersistableProperty($propertyName) ? $this->reflectionService->getRawEntityPropertyValue($object, $propertyName) : null;
             if ($propertyValue === null || $this->propertyValueIsLazyLoaded($propertyValue)) {
                 continue;
             }
@@ -347,7 +347,7 @@ class Backend implements BackendInterface
             if (!$dataMap->isPersistableProperty($propertyName)) {
                 continue;
             }
-            $propertyValue = $object->_getProperty($propertyName);
+            $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);
             if ($this->propertyValueIsLazyLoaded($propertyValue) && !$this->cleanStateTracker->isEntityPropertyDirty($object, $propertyName)) {
                 continue;
             }
@@ -491,7 +491,7 @@ class Backend implements BackendInterface
         $removedObjects = [];
         $cleanPropertyValue = $this->cleanStateTracker->getOriginalEntityData($object)[$propertyName] ?? null;
         if (is_array($cleanPropertyValue) || $cleanPropertyValue instanceof \Iterator) {
-            $propertyValue = $object->_getProperty($propertyName);
+            $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);
             foreach ($cleanPropertyValue as $containedObject) {
                 if (!$propertyValue->contains($containedObject)) {
                     $removedObjects[] = $containedObject;
@@ -559,7 +559,7 @@ class Backend implements BackendInterface
         }
         $row = [];
         if ($parentColumnMap->parentKeyFieldName !== null) {
-            $row[$parentColumnMap->parentKeyFieldName] = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) ?: $parentObject->getUid();
+            $row[$parentColumnMap->parentKeyFieldName] = $this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_LOCALIZED_UID) ?: $parentObject->getUid();
             if ($parentColumnMap->parentTableFieldName !== null) {
                 $row[$parentColumnMap->parentTableFieldName] = $parentDataMap->tableName;
             }
@@ -617,7 +617,7 @@ class Backend implements BackendInterface
         if ($object instanceof AbstractValueObject) {
             $result = $this->getUidOfAlreadyPersistedValueObject($object);
             if ($result !== null) {
-                $object->_setProperty(AbstractDomainObject::PROPERTY_UID, $result);
+                $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_UID, $result);
                 return;
             }
         }
@@ -630,7 +630,7 @@ class Backend implements BackendInterface
             if (!$dataMap->isPersistableProperty($propertyName)) {
                 continue;
             }
-            $propertyValue = $object->_getProperty($propertyName);
+            $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);
             if ($this->propertyValueIsLazyLoaded($propertyValue)) {
                 continue;
             }
@@ -650,9 +650,9 @@ class Backend implements BackendInterface
             }
         }
         $this->addCommonFieldsToRow($object, $row);
-        if ($dataMap->languageIdColumnName !== null && $object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID) === null) {
+        if ($dataMap->languageIdColumnName !== null && $this->reflectionService->getRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LANGUAGE_UID) === null) {
             $row[$dataMap->languageIdColumnName] = LanguageMarker::DEFAULT_LANGUAGE;
-            $object->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, LanguageMarker::DEFAULT_LANGUAGE);
+            $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LANGUAGE_UID, LanguageMarker::DEFAULT_LANGUAGE);
         }
         if ($dataMap->translationOriginColumnName !== null) {
             $row[$dataMap->translationOriginColumnName] = 0;
@@ -679,9 +679,9 @@ class Backend implements BackendInterface
         }
 
         $uid = $this->storageBackend->addRow($dataMap->tableName, $row);
-        $localizedUid = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
+        $localizedUid = $this->reflectionService->getRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         $identifier = $this->session->buildIdentifier(['uid' => $uid, '_LOCALIZED_UID' => $localizedUid]);
-        $object->_setProperty(AbstractDomainObject::PROPERTY_UID, $uid);
+        $this->reflectionService->setRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_UID, $uid);
         $object->setPid((int)$row['pid']);
         if ($uid >= 1) {
             $this->cacheFlushDemand = $this->cacheFlushDemand->withRecord($dataMap->tableName, $uid);
@@ -719,8 +719,8 @@ class Backend implements BackendInterface
         $dataMap = $this->dataMapFactory->buildDataMap(get_class($parentObject));
         $columnMap = $dataMap->getColumnMap($propertyName);
         $parentUid = $parentObject->getUid();
-        if ($parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
-            $parentUid = $parentObject->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
+        if ($this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
+            $parentUid = $this->reflectionService->getRawEntityPropertyValue($parentObject, AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         }
         $row = [];
         if ($columnMap->parentKeyFieldName !== null) {
@@ -822,9 +822,9 @@ class Backend implements BackendInterface
         $this->addCommonFieldsToRow($object, $row);
         $row['uid'] = $object->getUid();
         if ($dataMap->languageIdColumnName !== null) {
-            $row[$dataMap->languageIdColumnName] = (int)$object->_getProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID);
-            if ($object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
-                $row['uid'] = $object->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
+            $row[$dataMap->languageIdColumnName] = (int)$this->reflectionService->getRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LANGUAGE_UID);
+            if ($this->reflectionService->getRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LOCALIZED_UID) !== null) {
+                $row['uid'] = $this->reflectionService->getRawEntityPropertyValue($object, AbstractDomainObject::PROPERTY_LOCALIZED_UID);
             }
         }
         $this->storageBackend->updateRow($dataMap->tableName, $row);
@@ -922,7 +922,7 @@ class Backend implements BackendInterface
             if ($columnMap === null) {
                 continue;
             }
-            $propertyValue = $object->_getProperty($propertyName);
+            $propertyValue = $this->reflectionService->getRawEntityPropertyValue($object, $propertyName);
             if ($property->getCascadeValue() === 'remove') {
                 if ($columnMap->typeOfRelation === Relation::HAS_MANY) {
                     foreach ($propertyValue as $containedObject) {

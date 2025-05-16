@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\Exception\UnknownPropertyTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Tests\Functional\Persistence\Generic\Mapper\Fixtures\HydrationFixtureEntity;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
@@ -55,9 +56,14 @@ final class DataMapperTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/test_data_mapper',
     ];
 
+    protected ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->reflectionService = $this->get(ReflectionService::class);
+
         $GLOBALS['BE_USER'] = new BackendUserAuthentication();
 
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
@@ -568,7 +574,7 @@ final class DataMapperTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/DataMapperTestImport.csv');
         $post = new Post();
-        $post->_setProperty('uid', 1);
+        $this->reflectionService->setRawEntityPropertyValue($post, 'uid', 1);
         $subject = $this->get(DataMapper::class);
         $comments = $subject->fetchRelated($post, 'comments', '5', false)->toArray();
         self::assertSame(
@@ -687,5 +693,30 @@ final class DataMapperTest extends FunctionalTestCase
         self::assertEquals($endtime, $mappedObjectArray[0]->endtime->format('U'));
         self::assertEquals('-1', $mappedObjectArray[0]->feGroup);
         self::assertTrue($mappedObjectArray[0]->editlock);
+    }
+
+    #[Test]
+    public function mapColumnsToPropertiesRegardlessIfSetterIsAvailableOrNot(): void
+    {
+        $commentRows = [
+            [
+                'uid' => 1,
+                'pid' => 0,
+                'post' => 1,
+                'author' => 'TYPO3', // there is no setAuthor in the Comment class
+                'email' => 'typo3@example.com',
+                'content' => 'Comment 1', // there is no setContent in the Comment class
+                'date' => '2023-01-05 00:00:00',
+            ],
+        ];
+
+        $dataMapper = $this->get(DataMapper::class);
+
+        /** @var Comment[] $comments */
+        $comments = $dataMapper->map(Comment::class, $commentRows);
+
+        self::assertSame('TYPO3', $comments[0]->getAuthor());
+        self::assertSame('typo3@example.com', $comments[0]->getEmail());
+        self::assertSame('Comment 1', $comments[0]->getContent());
     }
 }

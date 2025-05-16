@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyObjectStorage;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -36,9 +37,14 @@ final class LazyObjectStorageTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
+    protected ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->reflectionService = $this->get(ReflectionService::class);
+
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LazyObjectStorageTestImport.csv');
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -48,8 +54,8 @@ final class LazyObjectStorageTest extends FunctionalTestCase
     public function lazyRelationIsANativeLazyGhostObjectStorage(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('uid', 1);
-        $blog->_setProperty('posts', $this->get(DataMapper::class)->fetchRelated($blog, 'posts', 10));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'uid', 1);
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'posts', $this->get(DataMapper::class)->fetchRelated($blog, 'posts', 10));
 
         $posts = $blog->getPosts();
         $reflection = new \ReflectionClass(ObjectStorage::class);
@@ -67,8 +73,8 @@ final class LazyObjectStorageTest extends FunctionalTestCase
     public function serializeAndUnserialize(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('uid', 1);
-        $blog->_setProperty('posts', $this->get(DataMapper::class)->fetchRelated($blog, 'posts', 10));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'uid', 1);
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'posts', $this->get(DataMapper::class)->fetchRelated($blog, 'posts', 10));
 
         // Serializing an uninitialized lazy storage initializes it and serializes the actual objects
         $serialized = serialize($blog->getPosts());

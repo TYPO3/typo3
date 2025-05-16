@@ -31,6 +31,7 @@ use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Info;
@@ -63,9 +64,12 @@ final class TranslationWriteTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
+    private ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->reflectionService = $this->get(ReflectionService::class);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/TranslationWrite/Given/Base.csv');
         $this->writeSiteConfiguration(
             'test',
@@ -140,7 +144,7 @@ final class TranslationWriteTest extends FunctionalTestCase
 
         // When: a new German blog with the values of blog 1 is added and persisted
         $translation = new Blog();
-        $translation->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
+        $this->reflectionService->setRawEntityPropertyValue($translation, AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
         $translation->setTitle($default->getTitle());
         $translation->setSubtitle($default->getSubtitle());
         $translation->setDescription($default->getDescription());
@@ -199,7 +203,7 @@ final class TranslationWriteTest extends FunctionalTestCase
 
         // When: a new German blog with the values of blog 1 is added and persisted
         $translation = new Blog();
-        $translation->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
+        $this->reflectionService->setRawEntityPropertyValue($translation, AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
         $translation->setTitle($default->getTitle());
         $translation->setSubtitle($default->getSubtitle());
         $translation->setDescription($default->getDescription());
@@ -253,7 +257,7 @@ final class TranslationWriteTest extends FunctionalTestCase
 
         // When: a new German blog with the values of blog 1 is added and persisted
         $translation = new Blog();
-        $translation->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
+        $this->reflectionService->setRawEntityPropertyValue($translation, AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
         $translation->setTitle($default->getTitle());
         $translation->setSubtitle($default->getSubtitle());
         $translation->setDescription($default->getDescription());
@@ -397,7 +401,7 @@ final class TranslationWriteTest extends FunctionalTestCase
     {
         // When: a blog for all languages is added and persisted
         $blog = new Blog();
-        $blog->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, -1);
+        $this->reflectionService->setRawEntityPropertyValue($blog, AbstractDomainObject::PROPERTY_LANGUAGE_UID, -1);
         $blog->setTitle('All languages');
         $this->get(BlogRepository::class)->add($blog);
         $this->get(PersistenceManager::class)->persistAll();
@@ -450,7 +454,7 @@ final class TranslationWriteTest extends FunctionalTestCase
 
         // When: a new German info with the name of info 1 is added and persisted
         $translation = new Info();
-        $translation->_setProperty(AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
+        $this->reflectionService->setRawEntityPropertyValue($translation, AbstractDomainObject::PROPERTY_LANGUAGE_UID, 1);
         $translation->setName($default->getName());
         $this->get(PersistenceManager::class)->add($translation);
         $this->get(PersistenceManager::class)->persistAll();

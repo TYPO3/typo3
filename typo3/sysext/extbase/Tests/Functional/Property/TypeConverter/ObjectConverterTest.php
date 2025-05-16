@@ -24,6 +24,7 @@ use TYPO3\CMS\Extbase\Property\Exception;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\ObjectConverter;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TypeConverterTest\Domain\Model\Animal;
 use TYPO3Tests\TypeConverterTest\Domain\Model\Animals;
@@ -37,6 +38,7 @@ final class ObjectConverterTest extends FunctionalTestCase
     public function convertToObject(): void
     {
         $propertyMapper = $this->get(PropertyMapper::class);
+        $reflectionService = $this->get(ReflectionService::class);
 
         $model = new class extends AbstractEntity {
             /**
@@ -54,7 +56,7 @@ final class ObjectConverterTest extends FunctionalTestCase
         $object = $propertyMapper->convert(['name' => 'John Doe'], get_class($model));
 
         self::assertInstanceOf(get_class($model), $object);
-        self::assertSame('John Doe', $object->_getProperty('name'));
+        self::assertSame('John Doe', $reflectionService->getRawEntityPropertyValue($object, 'name'));
     }
 
     #[Test]

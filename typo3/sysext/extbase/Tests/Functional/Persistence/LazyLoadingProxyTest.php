@@ -26,6 +26,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\CleanStateTracker;
 use TYPO3\CMS\Extbase\Persistence\Generic\LazyLoadingProxy;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
 use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Administrator;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
@@ -36,9 +37,14 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     protected array $coreExtensionsToLoad = ['extbase'];
     protected array $testExtensionsToLoad = ['typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example'];
 
+    protected ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->reflectionService = $this->get(ReflectionService::class);
+
         $this->importCSVDataSet(__DIR__ . '/Fixtures/LazyLoadingProxyTestImport.csv');
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -48,7 +54,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function lazyRelationIsANativeLazyProxyOfTheTargetEntityClass(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 1));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 1));
 
         $administrator = $blog->getAdministrator();
         $reflection = new \ReflectionClass(Administrator::class);
@@ -68,8 +74,8 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function foreignSideLazyRelationDoesNotExposeRelationCountAsUid(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('uid', 10);
-        $blog->_setProperty('featuredPost', $this->get(DataMapper::class)->fetchRelated($blog, 'featuredPost', 1));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'uid', 10);
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'featuredPost', $this->get(DataMapper::class)->fetchRelated($blog, 'featuredPost', 1));
 
         $featuredPost = $blog->getFeaturedPost();
         $reflection = new \ReflectionClass(Post::class);
@@ -83,7 +89,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function initializedProxyReplacesItselfInParentObject(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 1));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 1));
 
         $proxy = $blog->getAdministrator();
         $proxy->getUsername();
@@ -98,7 +104,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function serializeAndUnserialize(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 1));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 1));
 
         // Serializing an uninitialized proxy initializes it and serializes the actual entity state
         $serialized = serialize($blog->getAdministrator());
@@ -117,7 +123,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function danglingLazyRelationIsResolvedToNullInParentObject(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 88));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', $this->get(DataMapper::class)->fetchRelated($blog, 'administrator', 88));
 
         $administrator = $blog->getAdministrator();
         self::assertInstanceOf(Administrator::class, $administrator);
@@ -130,10 +136,27 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
 
     #[IgnoreDeprecations]
     #[Test]
+    public function serializedLazyLoadingProxyCarriesNoServicesAndLoadsAfterUnserialize(): void
+    {
+        $blog = new Blog();
+        $proxy = new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', $proxy);
+
+        $serialized = serialize($proxy);
+
+        self::assertStringNotContainsString('dataMapper', $serialized);
+        self::assertStringNotContainsString('reflectionService', $serialized);
+        /* @phpstan-ignore unserialize.allowedClasses.insecure (Serialization within testing context does no harm) */
+        $unserializedProxy = unserialize($serialized, ['allowed_classes' => true]);
+        self::assertSame('Blog Admin', $unserializedProxy->username);
+    }
+
+    #[IgnoreDeprecations]
+    #[Test]
     public function issetOnProtectedPropertyOfLazyLoadedObjectReturnsTrue(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
 
         self::assertTrue(isset($blog->getAdministrator()->username));
     }
@@ -143,7 +166,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function issetOnUnknownPropertyOfLazyLoadedObjectReturnsFalse(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
 
         self::assertFalse(isset($blog->getAdministrator()->nonExisting));
     }
@@ -153,7 +176,7 @@ final class LazyLoadingProxyTest extends FunctionalTestCase
     public function objectAccessReadsProtectedPropertyOfLazyLoadedObject(): void
     {
         $blog = new Blog();
-        $blog->_setProperty('administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
+        $this->reflectionService->setRawEntityPropertyValue($blog, 'administrator', new LazyLoadingProxy($blog, 'administrator', 1, $this->get(DataMapper::class)));
 
         self::assertSame('Blog Admin', ObjectAccess::getProperty($blog->getAdministrator(), 'username'));
     }

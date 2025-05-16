@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
+use TYPO3\CMS\Extbase\DomainObject\DomainObjectInterface;
 use TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException;
 
 /**
@@ -33,17 +34,20 @@ class ReflectionService
      *
      * This flag needs to be set as soon as new Reflection information was
      * created.
-     *
-     * @var bool
      */
-    protected $dataCacheNeedsUpdate = false;
+    protected bool $dataCacheNeedsUpdate = false;
 
     /**
      * Local cache for Class schemata
-     *
-     * @var array
      */
-    protected $classSchemata = [];
+    protected array $classSchemata = [];
+
+    /**
+     * Local cache for resolved entity properties, null for non-entity or virtual properties
+     *
+     * @var array<class-string, array<string, ?\ReflectionProperty>>
+     */
+    protected static array $reflectionProperties = [];
 
     public function __construct(
         #[Autowire(service: 'cache.extbase')]
@@ -77,7 +81,7 @@ class ReflectionService
      * @param mixed $classNameOrObject The class name or an object
      * @throws \TYPO3\CMS\Extbase\Reflection\Exception\UnknownClassException
      */
-    public function getClassSchema($classNameOrObject): ClassSchema
+    public function getClassSchema(mixed $classNameOrObject): ClassSchema
     {
         $className = is_object($classNameOrObject) ? get_class($classNameOrObject) : $classNameOrObject;
         if (isset($this->classSchemata[$className])) {
@@ -94,7 +98,7 @@ class ReflectionService
      * @throws Exception\UnknownClassException
      * @return ClassSchema The class schema
      */
-    protected function buildClassSchema($className): ClassSchema
+    protected function buildClassSchema(string $className): ClassSchema
     {
         try {
             $classSchema = new ClassSchema($className);
@@ -103,7 +107,80 @@ class ReflectionService
         }
         $this->classSchemata[$className] = $classSchema;
         $this->dataCacheNeedsUpdate = true;
+
         return $classSchema;
+    }
+
+    /**
+     * Virtual properties (property hooks without a backing value) hold no state and are not entity properties.
+     *
+     * @internal only to be used by the Extbase persistence layer, not part of TYPO3 Core API.
+     */
+    public function hasEntityProperty(DomainObjectInterface $object, string $propertyName): bool
+    {
+        return $this->getCachedReflectionProperty($object::class, $propertyName) !== null;
+    }
+
+    /**
+     * Reads the raw value: property hooks and getters of the entity are bypassed.
+     *
+     * @internal only to be used by the Extbase persistence layer, not part of TYPO3 Core API.
+     */
+    public function getRawEntityPropertyValue(DomainObjectInterface $object, string $propertyName): mixed
+    {
+        $reflectionProperty = $this->getCachedReflectionProperty($object::class, $propertyName);
+        if ($reflectionProperty === null) {
+            return null;
+        }
+        if (!$reflectionProperty->isInitialized($object)) {
+            // A cached \ReflectionProperty reports an already initialized native lazy proxy as uninitialized on
+            // repeated calls (PHP 8.5). The real instance behind the proxy gives the correct answer.
+            $object = new \ReflectionClass($object)->initializeLazyObject($object);
+            if (!$reflectionProperty->isInitialized($object)) {
+                return null;
+            }
+        }
+        return $reflectionProperty->getRawValue($object);
+    }
+
+    /**
+     * Writes the raw value: property hooks and setters of the entity are bypassed.
+     *
+     * @internal only to be used by the Extbase persistence layer, not part of TYPO3 Core API.
+     */
+    public function setRawEntityPropertyValue(DomainObjectInterface $object, string $propertyName, mixed $value): void
+    {
+        $reflectionProperty = $this->getCachedReflectionProperty($object::class, $propertyName);
+        $reflectionProperty?->setRawValue($object, $value);
+    }
+
+    /**
+     * Resolves once per class and property whether it is an entity property, and caches the
+     * \ReflectionProperty, or null if the property is not part of the class schema or is virtual
+     * (property hooks without a backing value hold no state).
+     *
+     * This is the hot path of the persistence layer: it runs for every property of every object
+     * that is reconstituted, memorized, checked for changes or persisted. ClassSchema is cached and
+     * cheap by itself, but asking it, and then the reflection, on every access adds several method
+     * calls to each property access, which adds up over thousands of objects. Caching the final
+     * answer reduces every further access to a single array lookup, and ClassSchema is only asked
+     * on the first access.
+     *
+     * The \ReflectionProperty instances cannot be kept in ClassSchema, as ClassSchema is serialized
+     * into the cache. The cache is static, as the answer depends on the class definition only,
+     * which cannot change at runtime, so it is valid for every instance of this service.
+     */
+    protected function getCachedReflectionProperty(string $className, string $propertyName): ?\ReflectionProperty
+    {
+        if (!array_key_exists($propertyName, self::$reflectionProperties[$className] ?? [])) {
+            $reflectionProperty = null;
+            if ($this->getClassSchema($className)->hasProperty($propertyName)) {
+                $reflectionProperty = new \ReflectionProperty($className, $propertyName);
+                $reflectionProperty = $reflectionProperty->isVirtual() ? null : $reflectionProperty;
+            }
+            self::$reflectionProperties[$className][$propertyName] = $reflectionProperty;
+        }
+        return self::$reflectionProperties[$className][$propertyName];
     }
 
     /**

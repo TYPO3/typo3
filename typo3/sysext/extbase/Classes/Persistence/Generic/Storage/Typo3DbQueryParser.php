@@ -67,6 +67,7 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Qom\UpperCaseInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\QuerySettingsInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Storage\Exception\BadConstraintException;
 use TYPO3\CMS\Extbase\Persistence\QueryInterface;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 
 /**
  * QueryParser, converting the qom to string representation
@@ -105,6 +106,7 @@ class Typo3DbQueryParser
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly ConnectionPool $connectionPool,
         protected readonly PageRepository $pageRepository,
+        protected readonly ReflectionService $reflectionService,
     ) {}
 
     /**
@@ -483,8 +485,8 @@ class Typo3DbQueryParser
         ParameterType|Type|ArrayParameterType|null $forceType = null,
         ?ColumnMap $columnMap = null,
     ): string {
-        if ($value instanceof DomainObjectInterface && $value->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID) > 0) {
-            $plainValue = (int)$value->_getProperty(AbstractDomainObject::PROPERTY_LOCALIZED_UID);
+        if ($value instanceof DomainObjectInterface && $this->reflectionService->getRawEntityPropertyValue($value, AbstractDomainObject::PROPERTY_LOCALIZED_UID) > 0) {
+            $plainValue = (int)$this->reflectionService->getRawEntityPropertyValue($value, AbstractDomainObject::PROPERTY_LOCALIZED_UID);
         } else {
             $plainValue = $this->dataMapper->getPlainValue($value, $columnMap);
         }

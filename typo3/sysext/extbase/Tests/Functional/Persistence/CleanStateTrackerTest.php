@@ -30,6 +30,7 @@ use TYPO3\CMS\Extbase\Persistence\ObjectStorage;
 use TYPO3\CMS\Extbase\Property\PropertyMapper;
 use TYPO3\CMS\Extbase\Property\PropertyMappingConfiguration;
 use TYPO3\CMS\Extbase\Property\TypeConverter\PersistentObjectConverter;
+use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\BlogExample\Domain\Model\Blog;
 use TYPO3Tests\BlogExample\Domain\Model\Post;
@@ -42,9 +43,12 @@ final class CleanStateTrackerTest extends FunctionalTestCase
         'typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/blog_example',
     ];
 
+    private ReflectionService $reflectionService;
+
     protected function setUp(): void
     {
         parent::setUp();
+        $this->reflectionService = $this->get(ReflectionService::class);
         $this->importCSVDataSet(__DIR__ . '/Fixtures/CleanStateTrackerTestImport.csv');
         $request = new ServerRequest()->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $this->get(ConfigurationManagerInterface::class)->setRequest($request);
@@ -91,6 +95,28 @@ final class CleanStateTrackerTest extends FunctionalTestCase
 
         // Then: the description in the database is not overwritten
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CleanStateTrackerTestResultScalarChange.csv');
+    }
+
+    /**
+     * A private property declared in the model class is tracked like a protected one, so its change is written.
+     */
+    #[Test]
+    public function changedPrivatePropertyIsDirtyAndWritten(): void
+    {
+        // Given: a loaded blog, whose subtitle is a private property
+        self::assertTrue(new \ReflectionProperty(Blog::class, 'subtitle')->isPrivate()); // precondition
+        $cleanStateTracker = $this->get(CleanStateTracker::class);
+        $blogRepository = $this->get(BlogRepository::class);
+        $blog = $blogRepository->findByUid(1);
+
+        // When: the subtitle is changed and persisted
+        $blog->setSubtitle('Changed subtitle');
+        self::assertTrue($cleanStateTracker->isEntityPropertyDirty($blog, 'subtitle'));
+        $blogRepository->update($blog);
+        $this->get(PersistenceManager::class)->persistAll();
+
+        // Then: the subtitle is written
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/CleanStateTrackerTestResultPrivatePropertyChange.csv');
     }
 
     /**
@@ -277,7 +303,7 @@ final class CleanStateTrackerTest extends FunctionalTestCase
         $new = new Blog();
         $new->setTitle('A new blog');
         $builtByHand = new Blog();
-        $builtByHand->_setProperty('uid', 2);
+        $this->reflectionService->setRawEntityPropertyValue($builtByHand, 'uid', 2);
 
         // When: the new blog is added and persisted
         $this->get(BlogRepository::class)->add($new);
@@ -517,7 +543,7 @@ final class CleanStateTrackerTest extends FunctionalTestCase
         // Given: a blog whose post storage is not accessed yet
         $tracker = $this->get(CleanStateTracker::class);
         $blog = $this->get(BlogRepository::class)->findByUid(1);
-        $posts = $blog->_getProperty('posts');
+        $posts = $this->reflectionService->getRawEntityPropertyValue($blog, 'posts');
         self::assertTrue(new \ReflectionClass(ObjectStorage::class)->isUninitializedLazyObject($posts)); // precondition
 
         // When: the tracker is asked and the original data is set
