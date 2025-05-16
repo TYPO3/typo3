@@ -155,3 +155,4 @@ editor:
       - { module: '@ckeditor/ckeditor5-language', exports: ['TextPartLanguage'] }
       - { module: '@ckeditor/ckeditor5-mention', exports: ['Mention'] }
       - { module: '@ckeditor/ckeditor5-highlight', exports: ['Highlight'] }
+      - { module: '@ckeditor/ckeditor5-list', 'exports': ['ListProperties'] }
