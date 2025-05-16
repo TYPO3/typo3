@@ -211,11 +211,7 @@ export class SudoModeForm extends SudoModeProperties {
       this.dispatchEvent(new Event('typo3:sudo-mode:verified'));
       this.closest('typo3-backend-modal').hideModal();
       if (!this.isAjax && responseData.redirect) {
-        Viewport.ContentContainer.setUrl(responseData.redirect.uri).catch(() => {
-          if (self === top) {
-            setTimeout(() => window.location.href = responseData.redirect.uri, 0);
-          }
-        });
+        Viewport.ContentContainer.setUrl(responseData.redirect.uri);
       }
     } catch (e: unknown) {
       if (e instanceof AjaxResponse) {

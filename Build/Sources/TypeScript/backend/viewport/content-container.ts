@@ -31,10 +31,11 @@ class ContentContainer extends AbstractContainer {
 
   public setUrl(urlToLoad: string, interactionRequest?: InteractionRequest, module?: string): Promise<void> {
     const router = this.resolveRouterElement();
-    // abort, if router can not be found
-    if (router === null) {
-      return Promise.reject();
+    if (router === null && self !== top) {
+      // abort, if router can not be found and this module is not used in a top frame (popup)
+      return Promise.reject(new Error('Content container used in unsupported frame context'));
     }
+
     if (!(interactionRequest instanceof InteractionRequest)) {
       interactionRequest = new ClientRequest('typo3.setUrl', null);
     }
@@ -42,10 +43,15 @@ class ContentContainer extends AbstractContainer {
       new TriggerRequest('typo3.setUrl', interactionRequest),
     );
     promise.then((): void => {
-      Loader.start();
-      router.setAttribute('endpoint', urlToLoad);
-      router.setAttribute('module', module ? module : null);
-      router.parentElement.addEventListener('typo3-module-loaded', (): void => Loader.finish(), { once: true });
+      if (router !== null) {
+        Loader.start();
+        router.setAttribute('endpoint', urlToLoad);
+        router.setAttribute('module', module ? module : null);
+        router.parentElement.addEventListener('typo3-module-loaded', (): void => Loader.finish(), { once: true });
+      } else {
+        // popup mode assume that we're in a standalone frame if the router cannot be found.
+        document.location.assign(urlToLoad);
+      }
     });
     return promise;
   }
@@ -84,7 +90,7 @@ class ContentContainer extends AbstractContainer {
     return document.querySelector(ScaffoldIdentifierEnum.contentModuleIframe);
   }
 
-  private resolveRouterElement(): HTMLElement {
+  private resolveRouterElement(): HTMLElement|null {
     return document.querySelector(ScaffoldIdentifierEnum.contentModuleRouter);
   }
 }
