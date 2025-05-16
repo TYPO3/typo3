@@ -9,11 +9,11 @@
     </FilesMatch>
     # matching requested *.svg files only (allows using inline styles when serving SVG files)
     <FilesMatch "\.svg">
-        Header set Content-Security-Policy "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; object-src 'none';"
+        Header set Content-Security-Policy "default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; object-src 'none'; sandbox;"
     </FilesMatch>
     # matching anything else, using negative lookbehind pattern
     <FilesMatch "(?<!\.(?:pdf|svg))$">
-        Header set Content-Security-Policy "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none';"
+        Header set Content-Security-Policy "default-src 'self'; script-src 'none'; style-src 'none'; object-src 'none'; sandbox;"
     </FilesMatch>
 
     # =================================================================
