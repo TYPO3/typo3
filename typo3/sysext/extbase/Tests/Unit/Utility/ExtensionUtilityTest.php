@@ -325,7 +325,7 @@ final class ExtensionUtilityTest extends UnitTestCase
      */
     #[Test]
     #[IgnoreDeprecations]
-    public function registerPluginSetsNoIconIfUsingUnderscoredExtensionNameAndIconPathNotGiven(): void
+    public function registerPluginSetsDefaultIconIfUsingUnderscoredExtensionNameAndIconPathNotGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
@@ -333,7 +333,8 @@ final class ExtensionUtilityTest extends UnitTestCase
             'Pi2',
             'Testing'
         );
-        self::assertNull(
+        self::assertSame(
+            'content-plugin',
             $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
         );
         self::assertSame(
@@ -361,7 +362,7 @@ final class ExtensionUtilityTest extends UnitTestCase
      */
     #[Test]
     #[IgnoreDeprecations]
-    public function registerPluginSetsNoIconIfUsingUpperCameCasedExtensionNameAndIconPathNotGiven(): void
+    public function registerPluginSetsDefaultIconIfUsingUpperCameCasedExtensionNameAndIconPathNotGiven(): void
     {
         $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'] = [];
         ExtensionUtility::registerPlugin(
@@ -369,7 +370,8 @@ final class ExtensionUtilityTest extends UnitTestCase
             'Pi2',
             'Testing'
         );
-        self::assertNull(
+        self::assertSame(
+            'content-plugin',
             $GLOBALS['TCA']['tt_content']['columns']['list_type']['config']['items'][0]['icon']
         );
         self::assertSame(

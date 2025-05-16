@@ -126,7 +126,7 @@ tt_content.' . $pluginSignature . ' {
      * @param string $extensionName The extension name (in UpperCamelCase) or the extension key (in lower_underscore)
      * @param string $pluginName must be a unique id for your plugin in UpperCamelCase (the string length of the extension key added to the length of the plugin name should be less than 32!)
      * @param string $pluginTitle is a speaking title of the plugin that will be displayed in the drop down menu in the backend
-     * @param string $pluginIcon is an icon identifier or file path prepended with "EXT:", that will be displayed in the drop down menu in the backend (optional)
+     * @param string|null $pluginIcon is an icon identifier or file path prepended with "EXT:", that will be displayed in the drop down menu in the backend (optional)
      * @param string $group add this plugin to a plugin group, should be something like "news" or the like, "plugins" as regular
      * @param string $pluginDescription additional description
      * @throws \InvalidArgumentException
@@ -151,7 +151,7 @@ tt_content.' . $pluginSignature . ' {
             // set pluginName as default pluginTitle
             $pluginTitle ?: $pluginName,
             $pluginSignature,
-            $pluginIcon,
+            $pluginIcon ?? 'content-plugin',
             $group,
             $pluginDescription,
         );
