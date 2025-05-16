@@ -373,7 +373,7 @@ BE:
         versionNumberInFilename:
             type: bool
             description: |
-              If enabled, included CSS and JS files loaded in the TYPO3 Backend will have the timestamp embedded in the filename, ie. <code>filename.1269312081.js</code>.
+              If enabled, included CSS, JS and SVG files loaded in the TYPO3 Backend will have the timestamp embedded in the filename, ie. <code>filename.1269312081.js</code>.
               This will make browsers and proxies reload the files if they change (thus avoiding caching issues).
               <strong>IMPORTANT:</strong> This feature requires extra <code>.htaccess</code> rules to work (please refer to the <code>typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess</code> file shipped with TYPO3).<br />
               If disabled the last modification date of the file will be appended as a query-string.
@@ -533,7 +533,7 @@ FE:
         versionNumberInFilename:
           type: bool
           description: |
-            If enabled, included CSS and JS files loaded in the TYPO3 Frontend will have the timestamp embedded in the filename, ie. <code>filename.1269312081.js</code>.
+            If enabled, included CSS, JS and SVG files loaded in the TYPO3 Frontend will have the timestamp embedded in the filename, ie. <code>filename.1269312081.js</code>.
             This will make browsers and proxies reload the files if they change (thus avoiding caching issues).
             <strong>IMPORTANT:</strong> This feature requires extra <code>.htaccess</code> rules to work (please refer to the <code>typo3/sysext/install/Resources/Private/FolderStructureTemplateFiles/root-htaccess</code> file shipped with TYPO3).<br />
             If disabled the last modification date of the file will be appended as a query-string.
