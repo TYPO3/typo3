@@ -1,68 +1,84 @@
-.. include:: /Includes.rst.txt
+:navigaton-title: Import
 
-.. _import:
+..  include:: /Includes.rst.txt
+..  _import:
 
-======
-Import
-======
+===========================================
+Importing `.t3d` files in the TYPO3 backend
+===========================================
 
 The import functionality is only available for admin users and Backend
 users for which the Page TSconfig option
-:ref:`options.impexp.enableImportForNonAdminUser <t3tsref:useroptions-impexp-enableImportForNonAdminUser>`
-has been enabled.
+:ref:`options.impexp.enableImportForNonAdminUser
+<t3tsref:useroptions-impexp-enableImportForNonAdminUser>` has been enabled.
 
-.. note::
+..  contents:: Table of contents
 
-   Make sure that any required extensions are installed and the database scheme
-   is up-to-date before starting the import. Otherwise the data related
-   to non-existing tables will not be imported.
+..  note::
 
-.. rst-class:: bignums
+    Make sure that any required extensions are installed and the database
+    schema is up-to-date before starting the import. Otherwise, the data
+    related to non-existing tables will not be imported.
 
-   1. Go to the import module
+..  _import-open-module:
 
-      In the page tree, right-click the page you want to import to (1)
-      and select :guilabel:`More options ... > Import` (2).
+Open the import module
+======================
 
-      .. include:: /Images/AutomaticScreenshots/ContextMenuImport.rst.txt
+In the page tree, right-click the page you want to import to (1) and
+select :guilabel:`More options ...  > Import` (2).
 
-   2. Upload the export file
+..  include:: /Images/AutomaticScreenshots/ContextMenuImport.rst.txt
 
-      On the second tab of the import module you can upload the export file
-      to your target TYPO3 instance.
+..  _import-upload-file:
 
-      Select the file to upload (1) and click the :guilabel:`Upload files`
-      button (2).
+Upload the export file
+======================
 
-      Then switch to the :guilabel:`Import` tab (3).
+On the second tab of the import module you can upload the export file
+to your target TYPO3 instance.
 
-      .. include:: /Images/AutomaticScreenshots/UploadImport.rst.txt
+Select the file to upload (1) and click the :guilabel:`Upload files`
+button (2).
 
-   3. Configure the import
+Then switch to the :guilabel:`Import` tab (3).
 
-      On the first tab of the import module you can configure the import.
+..  include:: /Images/AutomaticScreenshots/UploadImport.rst.txt
 
-      First select the uploaded export file (1). Then adjust the general
-      settings (2). Finally, press the :guilabel:`Preview` button (3).
+..  _import-configure-settings:
 
-      Checking :guilabel:`Update records` means that existing records with the
-      same UID will be updated instead of newly inserted.
+Configure the import settings
+=============================
 
-      Checking :guilabel:`Do not show differences in records` prevents
-      calculation of differences between existing and imported records.
-      Note: The compare function is currently broken and therefore disabled in
-      the screenshot.
+On the first tab of the import module you can configure the import.
 
-      .. include:: /Images/AutomaticScreenshots/ConfigureImport.rst.txt
+First select the uploaded export file (1). Then adjust the general
+settings (2). Finally, press the :guilabel:`Preview` button (3).
 
-   4. Check the data to be imported
+- Checking :guilabel:`Update records` means that existing records with
+  the same UID will be updated instead of newly inserted.
 
-      A tree with the records to be imported is displayed below the
-      configuration form (1). If you change any of the options (2), you can
-      reload this preview with the :guilabel:`Preview` button (3).
+- Checking :guilabel:`Do not show differences in records` prevents
+  calculation of differences between existing and imported records.
+  Note: The compare function is currently broken and therefore disabled
+  in the screenshot.
 
-      .. include:: /Images/AutomaticScreenshots/CheckAndPerformImport.rst.txt
+..  include:: /Images/AutomaticScreenshots/ConfigureImport.rst.txt
 
-   5. Perform the import
+..  _import-review-data:
 
-      Click the :guilabel:`Import` button.
+Review the data to be imported
+==============================
+
+A tree with the records to be imported is displayed below the
+configuration form (1). If you change any of the options (2), you can
+reload this preview with the :guilabel:`Preview` button (3).
+
+..  include:: /Images/AutomaticScreenshots/CheckAndPerformImport.rst.txt
+
+..  _import-execute:
+
+Execute the import
+==================
+
+Click the :guilabel:`Import` button to execute the import process.

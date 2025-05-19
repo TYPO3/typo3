@@ -1,30 +1,31 @@
-.. include:: /Includes.rst.txt
+..  include:: /Includes.rst.txt
+..  _start:
 
 =====================
 TYPO3 Import / Export
 =====================
 
 :Extension key:
-   impexp
+    impexp
 
 :Package name:
-   typo3/cms-impexp
+    typo3/cms-impexp
 
 :Version:
-   |release|
+    |release|
 
 :Language:
-   en
+    en
 
 :Author:
-   TYPO3 contributors
+    TYPO3 contributors
 
 :License:
-   This document is published under the
-   `Open Content License <https://www.openhub.net/licenses/opl>`__.
+    This document is published under the
+    `Open Content License <https://www.openhub.net/licenses/opl>`__.
 
 :Rendered:
-   |today|
+    |today|
 
 ----
 
@@ -35,19 +36,18 @@ format.
 
 **Table of Contents:**
 
-.. toctree::
-   :maxdepth: 2
-   :titlesonly:
+..  toctree::
+    :maxdepth: 2
+    :titlesonly:
 
-   Introduction/Index
-   Installation/Index
-   Usage/Index
-   Security/Index
-   KnownProblems/Index
+    Introduction/Index
+    Installation/Index
+    Usage/Index
+    Security/Index
 
-.. Meta Menu
+..  Meta Menu
 
-.. toctree::
-   :hidden:
+..  toctree::
+    :hidden:
 
-   Sitemap
+    Sitemap

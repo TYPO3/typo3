@@ -1,10 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Usage
 
-.. _usage:
+..  include:: /Includes.rst.txt
+..  _usage:
 
-=====
-Usage
-=====
+======================================
+How to use the Import/Export extension
+======================================
 
 The import/export tool can be accessed via the :ref:`TYPO3 backend<export>` or
 the :ref:`command line<command_line>`.
@@ -22,11 +23,11 @@ The export functionality can be used to export initial content for use in
 It is also possible to save and load export data :ref:`presets<presets>` for
 recurring export jobs.
 
-.. toctree::
-   :titlesonly:
+..  toctree::
+    :titlesonly:
 
-   Export
-   Import
-   Update
-   Presets
-   CommandLine
+    Export
+    Import
+    Update
+    Presets
+    CommandLine
