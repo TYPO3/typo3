@@ -229,4 +229,44 @@ final class GenericObjectValidatorTest extends UnitTestCase
             $aValidator->validate($A)->getFlattenedErrors()
         );
     }
+
+    #[Test]
+    public function getPropertyValidatorsReturnsAllConfiguredValidators(): void
+    {
+        $validatorForFoo = self::createStub(ValidatorInterface::class);
+        $validatorForBar = self::createStub(ValidatorInterface::class);
+
+        $validator = new GenericObjectValidator();
+        $validator->addPropertyValidator('foo', $validatorForFoo);
+        $validator->addPropertyValidator('bar', $validatorForBar);
+
+        $fooObjectStorage = new \SplObjectStorage();
+        $fooObjectStorage->attach($validatorForFoo);
+
+        $barObjectStorage = new \SplObjectStorage();
+        $barObjectStorage->attach($validatorForBar);
+
+        $expected = [
+            'foo' => $fooObjectStorage,
+            'bar' => $barObjectStorage,
+        ];
+
+        self::assertEquals($expected, $validator->getPropertyValidators());
+    }
+
+    #[Test]
+    public function getPropertyValidatorsReturnsConfiguredValidatorsForGivenProperty(): void
+    {
+        $validatorForFoo = self::createStub(ValidatorInterface::class);
+        $validatorForBar = self::createStub(ValidatorInterface::class);
+
+        $validator = new GenericObjectValidator();
+        $validator->addPropertyValidator('foo', $validatorForFoo);
+        $validator->addPropertyValidator('bar', $validatorForBar);
+
+        $fooObjectStorage = new \SplObjectStorage();
+        $fooObjectStorage->attach($validatorForFoo);
+
+        self::assertEquals($fooObjectStorage, $validator->getPropertyValidators('foo'));
+    }
 }

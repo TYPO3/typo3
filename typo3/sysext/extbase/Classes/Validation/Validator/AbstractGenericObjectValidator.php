@@ -25,6 +25,9 @@ use TYPO3\CMS\Extbase\Reflection\ObjectAccess;
  */
 abstract class AbstractGenericObjectValidator extends AbstractValidator implements ObjectValidatorInterface
 {
+    /**
+     * @var array<string, \SplObjectStorage<ValidatorInterface>>
+     */
     protected array $propertyValidators = [];
 
     /**
@@ -152,8 +155,10 @@ abstract class AbstractGenericObjectValidator extends AbstractValidator implemen
 
     /**
      * Returns all property validators - or only validators of the specified property
+     *
+     * @return ($propertyName is null ? array<string, \SplObjectStorage<ValidatorInterface>> : \SplObjectStorage<ValidatorInterface>)
      */
-    public function getPropertyValidators(?string $propertyName = null): array
+    public function getPropertyValidators(?string $propertyName = null): array|\SplObjectStorage
     {
         if ($propertyName !== null) {
             return $this->propertyValidators[$propertyName] ?? [];
