@@ -1,20 +1,22 @@
+:navigation-title: Introduction
+
 .. include:: /Includes.rst.txt
+.. _known-problems:
+..  _introduction:
 
-.. _introduction:
-
-============
-Introduction
-============
+======================================================
+Introduction into the system extension "Import/Export"
+======================================================
 
 The system extension "Import/Export" (EXT:impexp) allows content to be exported
 from one installation of TYPO3 and then imported into another. Exported data
 includes content from multiple tables including :sql:`tt_content` as well as
-images and other files stored in :file:`fileadmin/`.
+images and other files stored in :directory:`fileadmin/`.
 
-This extension is often used to manage content for :ref:`distributions<t3coreapi:distribution>`
+This extension is often used to manage content for :ref:`distributions <t3coreapi:distribution>`
 and also training and demonstration purposes.
 
-.. _merging_multiple_sets_of_data:
+..  _merging_multiple_sets_of_data:
 
 Merging multiple sets of data
 =============================
@@ -27,7 +29,7 @@ their pages and images to their content elements.
 It is also possible to keep the identifiers (`uids`) to allow the reproduction
 of the exact same page and content tree.
 
-.. _what-doesnt-it-do:
+..  _what-doesnt-it-do:
 
 What doesn't it do?
 ===================
@@ -37,7 +39,7 @@ What doesn't it do?
 *   This extension is not used for the :guilabel:`Download`
     feature in the :guilabel:`List` module.
 
-.. _backward_compatibility:
+..  _backward_compatibility:
 
 Backward compatibility
 ======================
@@ -63,6 +65,6 @@ legacy considerations are not the first priority. A "guaranteed" fully-working
 export and re-import is only given for T3D structures within the same
 major version.
 
-.. include:: /Images/AutomaticScreenshots/ImpExp.rst.txt
+..  include:: /Images/AutomaticScreenshots/ImpExp.rst.txt
 
-.. include:: /Images/ManualScreenshots/ImpExpV3.8.rst.txt
+..  include:: /Images/ManualScreenshots/ImpExpV3.8.rst.txt

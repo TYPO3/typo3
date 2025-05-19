@@ -1,114 +1,128 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Export
 
-.. _export:
+..  include:: /Includes.rst.txt
+..  _export:
 
-======
-Export
-======
+==========================================
+Exporting content from TYPO3 to XML or T3D
+==========================================
 
-The export functionality is only available for admin users and Backend
+The export functionality is only available for admin users and backend
 users for which the Page TSconfig option
-:ref:`options.impexp.enableExportForNonAdminUser <t3tsref:useroptions-impexp-enableExportForNonAdminUser>`
-has been enabled.
+:ref:`options.impexp.enableExportForNonAdminUser
+<t3tsref:useroptions-impexp-enableExportForNonAdminUser>` has been enabled.
 
-.. attention::
+..  attention::
 
-    The export functionality has the following security drawbacks:
+    Exporting content may expose sensitive data or allow unwanted file access.
+    Review the :ref:`security considerations regarding exports <security>`
+    before using this functionality.
 
-    *  Export for editors is not limited on field level
-    *  The "Save to filename" functionality saves to a shared folder, which
-       other editors with different access rights may have access to.
+..  _export-open-module:
 
-    Thus, permissions should be handed out restrictively.
+Open the export module
+======================
 
-.. rst-class:: bignums
+In the page tree, right-click the page from which you want to start the
+export (1) and select :guilabel:`More options ...  > Export` (2).
 
-   1. Go to the export module
+..  include:: /Images/AutomaticScreenshots/ContextMenuExport.rst.txt
 
-      In the page tree, right-click the page from which you want to start the
-      export (1) and select :guilabel:`More options ... > Export` (2).
+..  _export-configure-settings:
 
-      .. include:: /Images/AutomaticScreenshots/ContextMenuExport.rst.txt
+Configure the export settings
+=============================
 
-   2. Configure the export
+On the first tab of the export module you can fine-tune the export (1).
 
-      On the first tab of the export module you can fine-tune the export (1).
+-   If you want to export all data of the selected page including its
+    subpages, select the "Infinite" option in the :guilabel:`Levels`
+    selection box.
 
-      If you want to export all data of the selected page including its
-      subpages, select the "Infinite" option in the :guilabel:`Levels` selection
-      box. Under :guilabel:`Include tables` you can limit the types of records
-      to be exported.
+-   Under :guilabel:`Include tables` you can limit the types of records to
+    be exported.
 
-      Under :guilabel:`Include relations to tables` you specify which relations
-      of the records should be included in the export file. The related records
-      will be also included - even if they are outside the pages selected for
-      export.
+-   Under :guilabel:`Include relations to tables` you specify which
+    relations of the records should be included in the export file. The
+    related records will be included even if they are outside the pages
+    selected for export.
 
-      Under :guilabel:`Use static relations for tables` you select which
-      relations of the records should be included in the export file - without
-      including the related record. This is useful if the related record already
-      exists in the target TYPO3 instance.
+-   Under :guilabel:`Use static relations for tables` you select which
+    relations should be included without including the related record. This
+    is useful if the related record already exists in the target TYPO3
+    instance.
 
-      If the same table is selected in :guilabel:`Include relations to tables`
-      and :guilabel:`Use static relations for tables`, the relation is treated
-      as static.
+-   If the same table is selected in both :guilabel:`Include relations to
+    tables` and :guilabel:`Use static relations for tables`, the relation
+    is treated as static.
 
-      The :guilabel:`Exclude disabled elements` checkbox means, when checked,
-      that these records are excluded from export which are disabled according
-      to their TCA configuration, e.g. by the "disabled", "starttime" or
-      "endtime" fields. It is marked by default.
+-   The :guilabel:`Exclude disabled elements` checkbox excludes records
+    that are disabled according to their TCA configuration. This is checked
+    by default.
 
-      Apply your changes via the :guilabel:`Update` button and repeat this step
-      until the preview matches your expectations.
+Apply your changes via the :guilabel:`Update` button and repeat this step
+until the preview meets your expectations.
 
-      .. include:: /Images/AutomaticScreenshots/ConfigureExport.rst.txt
+..  include:: /Images/AutomaticScreenshots/ConfigureExport.rst.txt
 
-   3. Check the included records
+..  _export-review-records:
 
-      All pages selected for export are listed in the upper part of the dialog
-      (1).
+Review the records to be exported
+=================================
 
-      Below the dialog is a detailed list of all data to be exported (2). Here
-      it is possible to exclude individual records. For some data types it is
-      possible to make them editable manually.
+All pages selected for export are listed in the upper part of the dialog
+(1).
 
-      If the relation to records is lost, this is marked with an orange
-      exclamation mark. Reasons for lost relations include records stored
-      outside the page tree to be exported and excluded tables.
+Below this is a detailed list of all data to be exported (2). Here you
+can exclude individual records or manually make them editable, if
+supported.
 
-      Apply your changes by pressing the :guilabel:`Update` button and repeat
-      this step until the preview is as you want it (3).
+If the relation to records is lost, an orange exclamation mark will be
+shown. This happens if records are stored outside the export page tree
+or if excluded tables break relations.
 
-      Then switch to the :guilabel:`Advanced Options` tab (4).
+Apply your changes by pressing the :guilabel:`Update` button and repeat
+this step as needed until the preview matches your expectations (3).
 
-      .. include:: /Images/AutomaticScreenshots/CheckExport.rst.txt
+Then switch to the :guilabel:`Advanced Options` tab (4).
 
-   4. Optionally select advanced export options
+..  include:: /Images/AutomaticScreenshots/CheckExport.rst.txt
 
-      In the third tab of the export module you can specify further export
-      options (1).
+..  _export-advanced-options:
 
-      Checking :guilabel:`Save files in extra folder ..` means that files
-      linked in records will be saved in a separate folder instead of being
-      included directly in the export file. This is mandatory for use in
-      :ref:`distributions<t3coreapi:distribution>` or when there are a large number of
-      files that would otherwise bloat the export file and exhaust memory.
-      The folder name pattern is "{filename}.files".
+Optionally select advanced export options
+=========================================
 
-      Apply your changes by hitting the :guilabel:`Update` button (2) and switch
-      to tab :guilabel:`File & Preset` (3) to start the export process.
+In the third tab of the export module you can specify further export
+options (1).
 
-      .. include:: /Images/AutomaticScreenshots/SelectAdvancedExportOptions.rst.txt
+Checking :guilabel:`Save files in extra folder ..` saves linked files
+in a separate folder instead of embedding them in the export file. This
+is mandatory for :ref:`distributions <t3coreapi:distribution>` or
+useful when handling large file sets that would otherwise bloat the
+export file and potentially exhaust memory. The folder is named
+"{filename}.files".
 
-   5. Perform the export
+Apply your changes via the :guilabel:`Update` button (2) and then switch
+to the :guilabel:`File & Preset` tab (3) to proceed.
 
-      In the second tab of the export module you can specify the metadata of the
-      export (1) before starting the export process.
+..  include:: /Images/AutomaticScreenshots/SelectAdvancedExportOptions.rst.txt
 
-      You can download the export file (2.a) or save it on your server (2.b).
+..  _export-perform:
 
-      Currently it is necessary to choose saving on the server if the export is
-      configured to save related files in a separate folder
-      (see "Optionally select advanced export options" step).
+Perform the export
+==================
 
-      .. include:: /Images/AutomaticScreenshots/DownloadExport.rst.txt
+In the second tab of the export module you can specify the metadata for
+the export (1) before starting the export process.
+
+You can then either:
+
+-   Download the export file (2.a), or
+-   Save it on the server (2.b).
+
+Saving on the server is currently required if you have enabled saving
+related files in a separate folder (see
+:ref:`export-advanced-options`).
+
+..  include:: /Images/AutomaticScreenshots/DownloadExport.rst.txt

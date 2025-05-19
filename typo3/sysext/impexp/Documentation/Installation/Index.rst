@@ -1,17 +1,18 @@
+:navigation-title: Installation
+
 .. include:: /Includes.rst.txt
+..  _installation:
 
-.. _installation:
-
-============
-Installation
-============
+====================================
+Installation of the impexp extension
+====================================
 
 This extension is part of the TYPO3 Core, but not installed by default.
 
 ..  contents:: Table of contents
     :local:
 
-.. _installation_composer:
+..  _installation_composer:
 
 Installation with Composer
 ==========================
@@ -37,7 +38,7 @@ the extension:
 
 The given version depends on the version of the TYPO3 Core you are using.
 
-.. _installation_legacy:
+..  _installation_legacy:
 
 Installation without Composer
 =============================
