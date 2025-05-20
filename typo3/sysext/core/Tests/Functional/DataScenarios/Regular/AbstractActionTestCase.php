@@ -482,7 +482,26 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     {
         // Soft-delete a localized page
         $this->actionService->deleteRecord(self::TABLE_Page, 91);
-        // Now hard deleted that localized page. Recycler can trigger this.
+        // Now hard delete that localized page. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->disableDeleteClause();
+        $dataHandler->deleteAction(self::TABLE_Page, 91, true, true);
+    }
+
+    public function deleteThenRecreateThenHardDeleteLocalizedPage(): void
+    {
+        // Soft-delete the localized page. This sets attached localized content elements deleted=1, too.
+        $this->actionService->deleteRecord(self::TABLE_Page, 91);
+        // Localize the page again to have both a soft-deleted and an "active" localization in that language.
+        $copiedTableIds = $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
+        $newLocalizedPageId = $copiedTableIds['pages'][self::VALUE_PageId];
+        // Create a default language content element and localize it.
+        $newTableIds = $this->actionService->createNewRecord(self::TABLE_Content, self::VALUE_PageId, ['header' => 'Testing #1']);
+        $newContentElementId = $newTableIds['tt_content'][0];
+        $this->actionService->localizeRecord(self::TABLE_Content, $newContentElementId, self::VALUE_LanguageId);
+        // Now hard delete the previously soft-deleted localized page. Recycler can trigger this.
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], []);

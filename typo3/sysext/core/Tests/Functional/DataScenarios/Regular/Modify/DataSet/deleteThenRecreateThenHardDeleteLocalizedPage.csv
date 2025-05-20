@@ -1,0 +1,30 @@
+"pages"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug"
+,1,0,256,0,0,0,0,0,0,0,0,"FunctionalTest","/"
+,50,0,512,0,0,0,0,0,0,0,0,"Second Root Page","/"
+,51,50,128,0,0,0,0,0,0,0,0,"DataHandlerTest in second tree","/data-handler"
+,52,51,128,0,0,0,0,0,0,0,0,"Relations in second tree","/data-handler/relations"
+,88,1,256,0,0,0,0,0,0,0,0,"DataHandlerTest","/data-handler"
+,89,88,256,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations"
+,90,88,512,0,0,0,0,0,0,0,0,"Target","/data-handler/target"
+,92,88,256,0,2,89,89,0,0,0,0,"[Translate to Deutsch:] Relations","/data-handler/translate-to-deutsch-relations"
+,93,88,256,0,1,89,89,0,0,0,0,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations"
+"tt_content"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","CType","header","bodytext"
+,200,88,256,0,0,0,0,0,0,0,0,"text","Regular Element #0",""
+,201,88,512,0,-1,0,0,0,0,0,0,"text","Language all element",""
+,297,89,384,0,0,0,0,0,0,0,0,"text","Regular Element #1",""
+,298,89,512,0,0,0,0,0,0,0,0,"text","Regular Element #2","<p>Do androids dream of electric sheep?</p>"
+,299,89,768,0,0,0,0,0,0,0,0,"text","Regular Element #3",""
+# Next two are not hard deleted since a valid localization exists and the CEs do not "know" they were attached to the soft deleted localization that is hard deleted
+,300,89,1024,1,1,299,299,0,0,0,0,"text","[Translate to Dansk:] Regular Element #3",""
+,301,89,384,1,1,297,297,0,0,0,0,"text","[Translate to Dansk:] Regular Element #1",""
+,302,89,448,0,2,297,301,0,0,0,0,"text","[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",""
+,303,89,192,0,0,0,0,0,0,0,0,"text","Testing #1",""
+,304,89,288,0,1,303,303,0,0,0,0,"text","[Translate to Dansk:] Testing #1",""
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"14f90231b8565c61decd2aeaebea6034","pages",92,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"e1b41093233c159922ccdbcc57a5478c","pages",93,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"2b5621b6ac407f06a71e517bf98c9c94","tt_content",302,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"192520d49ab0594daafc1960081e9332","tt_content",304,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",303,,0,0,2147483647,0,0,
