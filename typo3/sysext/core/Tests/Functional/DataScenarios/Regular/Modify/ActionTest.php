@@ -882,9 +882,16 @@ final class ActionTest extends AbstractActionTestCase
     #[Test]
     public function deleteThenHardDeleteLocalizedPage(): void
     {
-        // This test is only done in live since this is a "recycler" scenario and "recycler"
-        // is disabled in workspaces.
+        // This test is only done in live since this is a "recycler" scenario and "recycler" is disabled in workspaces.
         parent::deleteThenHardDeleteLocalizedPage();
         $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteThenHardDeleteLocalizedPage.csv');
+    }
+
+    #[Test]
+    public function deleteThenRecreateThenHardDeleteLocalizedPage(): void
+    {
+        // This test is only done in live since this is a "recycler" scenario and "recycler" is disabled in workspaces.
+        parent::deleteThenRecreateThenHardDeleteLocalizedPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteThenRecreateThenHardDeleteLocalizedPage.csv');
     }
 }

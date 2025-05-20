@@ -5539,14 +5539,10 @@ class DataHandler
 
         // Delete either a default language page or a translated page
         $pageIdInDefaultLanguage = $uid;
-        $localizationParent = (int)($recordToDelete[$languageCapability->getTranslationOriginPointerField()->getName()] ?? 0);
-        if ($localizationParent > 0) {
-            $pageIdInDefaultLanguage = $localizationParent;
-        }
-
         $isPageTranslation = false;
+        $localizationParent = (int)($recordToDelete[$languageCapability->getTranslationOriginPointerField()->getName()] ?? 0);
         $pageLanguageId = 0;
-        if ($pageIdInDefaultLanguage !== $uid) {
+        if ($localizationParent > 0) {
             // For translated pages, translated records in other tables (eg. tt_content) for the
             // to-delete translated page have their pid field set to the uid of the default language record,
             // NOT the uid of the translated page record.
@@ -5554,63 +5550,92 @@ class DataHandler
             // should be deleted. The code checks if the to-delete page is a translated page and
             // adapts the query for other tables to use the uid of the default language page as pid together
             // with the language id of the translated page.
-            // Also, if a default language page is delete, the access checks below behave subtly different.
+            // If a default language page is deleted, the access checks below behave subtly different.
+            $pageIdInDefaultLanguage = $localizationParent;
             $isPageTranslation = true;
-            $pagesLanguageFieldName = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+            $pagesLanguageFieldName = $languageCapability->getLanguageField()->getName();
             $pageLanguageId = $recordToDelete[$pagesLanguageFieldName] ?? 0;
         }
-
-        foreach ($this->tcaSchemaFactory->all() as $subSchema) {
-            $table = $subSchema->getName();
-            if ($table === 'pages' || ($isPageTranslation && !$subSchema->isLanguageAware())) {
-                // Skip pages table. And skip table if not translatable, but a translated page is deleted
-                continue;
-            }
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-            $queryBuilder
-                ->select('uid')
-                ->from($table)
-                // order by uid is needed here to process possible live records first - overlays always
-                // have a higher uid. Otherwise dbms like postgres may return rows in arbitrary order,
-                // leading to hard to debug issues. This is especially relevant for the
-                // discardWorkspaceVersionsOfRecord() call below.
-                ->addOrderBy('uid');
-            if ($isPageTranslation) {
-                // Only delete records in the specified language
-                $queryBuilder->where(
+        $otherLocalizationExists = false;
+        if ($isPageTranslation && $forceHardDelete) {
+            // Restriction when hard deleting localized pages: Usually, localized records are hard deleted as well
+            // when hard deleting a localized page (via recycler). However, when a soft-deleted localized page is
+            // hard-deleted while another NOT soft-deleted localization of the page exists in the same
+            // sys_language_uid (created after the other translation has been soft-deleted), then records do not
+            // "know" if they belong to the soft-deleted, or the active localized page. In this case, we only
+            // hard delete the soft-deleted page, but no records, to keep existing records that belong to the
+            // active localization.
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll();
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $otherLocalizationExists = (bool)$queryBuilder->count('uid')->from('pages')
+                ->where(
                     $queryBuilder->expr()->eq(
-                        'pid',
+                        $languageCapability->getTranslationOriginPointerField()->getName(),
                         $queryBuilder->createNamedParameter($pageIdInDefaultLanguage, Connection::PARAM_INT)
                     ),
                     $queryBuilder->expr()->eq(
-                        $subSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
+                        $languageCapability->getLanguageField()->getName(),
                         $queryBuilder->createNamedParameter($pageLanguageId, Connection::PARAM_INT)
                     )
-                );
-            } else {
-                // Delete all records on this page
-                $queryBuilder->where(
-                    $queryBuilder->expr()->eq(
-                        'pid',
-                        $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
-                    )
-                );
-            }
-            if ($currentUserWorkspace !== 0 && $subSchema->isWorkspaceAware()) {
-                // If we are in a workspace, make sure only records of this workspace are deleted.
-                $queryBuilder->andWhere(
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($currentUserWorkspace, Connection::PARAM_INT)
-                    )
-                );
-            }
-            $statement = $queryBuilder->executeQuery();
-            while ($row = $statement->fetchAssociative()) {
-                // Delete any further workspace overlays of the record in question, then delete the record.
-                $this->discardWorkspaceVersionsOfRecord($table, (int)$row['uid']);
-                $this->deleteRecord($table, $row, true, $forceHardDelete);
+                )
+                ->executeQuery()
+                ->fetchOne();
+        }
+
+        if (!$otherLocalizationExists) {
+            foreach ($this->tcaSchemaFactory->all() as $subSchema) {
+                $table = $subSchema->getName();
+                if ($table === 'pages' || ($isPageTranslation && !$subSchema->isLanguageAware())) {
+                    // Skip pages table. And skip table if not translatable, but a translated page is deleted
+                    continue;
+                }
+                $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                $queryBuilder
+                    ->select('uid')
+                    ->from($table)
+                    // order by uid is needed here to process possible live records first - overlays always
+                    // have a higher uid. Otherwise dbms like postgres may return rows in arbitrary order,
+                    // leading to hard to debug issues. This is especially relevant for the
+                    // discardWorkspaceVersionsOfRecord() call below.
+                    ->addOrderBy('uid');
+                if ($isPageTranslation) {
+                    // Only delete records in the specified language
+                    $queryBuilder->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($pageIdInDefaultLanguage, Connection::PARAM_INT)
+                        ),
+                        $queryBuilder->expr()->eq(
+                            $subSchema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName(),
+                            $queryBuilder->createNamedParameter($pageLanguageId, Connection::PARAM_INT)
+                        )
+                    );
+                } else {
+                    // Delete all records on this page
+                    $queryBuilder->where(
+                        $queryBuilder->expr()->eq(
+                            'pid',
+                            $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                        )
+                    );
+                }
+                if ($currentUserWorkspace !== 0 && $subSchema->isWorkspaceAware()) {
+                    // If we are in a workspace, make sure only records of this workspace are deleted.
+                    $queryBuilder->andWhere(
+                        $queryBuilder->expr()->eq(
+                            't3ver_wsid',
+                            $queryBuilder->createNamedParameter($currentUserWorkspace, Connection::PARAM_INT)
+                        )
+                    );
+                }
+                $statement = $queryBuilder->executeQuery();
+                while ($row = $statement->fetchAssociative()) {
+                    // Delete any further workspace overlays of the record in question, then delete the record.
+                    $this->discardWorkspaceVersionsOfRecord($table, (int)$row['uid']);
+                    $this->deleteRecord($table, $row, true, $forceHardDelete);
+                }
             }
         }
 
