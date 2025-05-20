@@ -43,10 +43,10 @@ class AccessFactory
     {
         return GeneralUtility::makeInstance(
             AccessClaim::class,
-            $this->buildSubjectFromArray($data['subject']),
             ServerRequestInstruction::buildFromArray($data['instruction']),
             $data['expiration'] ?? 0,
-            $data['id'] ?? ''
+            $data['id'] ?? '',
+            ...array_map(fn(array $subject) => $this->buildSubjectFromArray($subject), $data['subjects']),
         );
     }
 
@@ -90,13 +90,25 @@ class AccessFactory
         );
     }
 
-    public function buildClaimForSubjectRequest(ServerRequestInterface $request, AccessSubjectInterface $subject): AccessClaim
+    public function buildTableAccessSubject(string $tableName, string $fieldName, array $settings): TableAccessSubject
+    {
+        return GeneralUtility::makeInstance(
+            TableAccessSubject::class,
+            $fieldName ? $tableName . '.' . $fieldName : $tableName,
+            $settings['lifetime'] ?? null,
+            $settings['group'] ?? null,
+            $settings['once'] ?? false,
+        );
+    }
+
+    public function buildClaimForSubjectRequest(ServerRequestInterface $request, AccessSubjectInterface ...$subjects): AccessClaim
     {
         return GeneralUtility::makeInstance(
             AccessClaim::class,
-            $subject,
             ServerRequestInstruction::createForServerRequest($request),
-            $this->currentTimestamp + self::DEFAULT_CLAIM_LIFETIME
+            $this->currentTimestamp + self::DEFAULT_CLAIM_LIFETIME,
+            null,
+            ...$subjects
         );
     }
 

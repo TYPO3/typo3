@@ -6,6 +6,6 @@
     <typo3-backend-security-sudo-mode
         verifyActionUri="{verifyActionUri}"
         labels="{labels -> f:format.json()}"
-        allow-install-tool-password
+        {f:if(condition: allowInstallToolPassword, then: 'allow-install-tool-password')}
     ></typo3-backend-security-sudo-mode>
 </html>

@@ -13,6 +13,7 @@
 
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import { InputTransformer, type GenericKeyValue } from './input-transformer';
+import type { RequestMiddleware, RequestHandler } from '@typo3/core/ajax/ajax-request-types';
 
 /**
  * @example send data as `Content-Type: multipart/form-data` (default)
@@ -36,10 +37,12 @@ class AjaxRequest {
 
   private readonly url: URL;
   private readonly abortController: AbortController;
+  private fetch: RequestHandler;
 
   constructor(url: URL|string) {
     this.url = url instanceof URL ? url : new URL(url, window.location.origin + window.location.pathname);
     this.abortController = new AbortController();
+    this.fetch = (request: Request) => fetch(request);
   }
 
   /**
@@ -142,6 +145,25 @@ class AjaxRequest {
   }
 
   /**
+   * Adds an outer middleware around the fetch invocation.
+   * Previous registered middlewares are handled after
+   * the one(s) that is/are added here.
+   *
+   * @param {RequestMiddleware | RequestMiddleware[]} middleware
+   * @return {AjaxRequest}
+   */
+  public addMiddleware(middleware: RequestMiddleware | RequestMiddleware[]): AjaxRequest {
+    if (Array.isArray(middleware)) {
+      middleware.forEach(middleware => this.addMiddleware(middleware));
+      return this;
+    }
+
+    const next = this.fetch;
+    this.fetch = (request: Request) => middleware(request, next);
+    return this;
+  }
+
+  /**
    * Clones the current AjaxRequest object
    *
    * @return {AjaxRequest}
@@ -157,7 +179,7 @@ class AjaxRequest {
    * @return {Promise<Response>}
    */
   private async send(init: RequestInit = {}): Promise<Response> {
-    const response = await fetch(this.url, this.getMergedOptions(init));
+    const response = await this.fetch(new Request(this.url, this.getMergedOptions(init)));
     if (!response.ok) {
       throw new AjaxResponse(response);
     }

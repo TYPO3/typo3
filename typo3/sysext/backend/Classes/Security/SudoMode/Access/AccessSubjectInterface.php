@@ -48,4 +48,9 @@ interface AccessSubjectInterface extends \JsonSerializable
      * Provides a distinct lifetime type, e.g. XS, S, M, L, XL.
      */
     public function getLifetime(): AccessLifetime;
+
+    /**
+     * If true, the subject may only be used once and requires a new grant for the same task.
+     */
+    public function isOnce(): bool;
 }

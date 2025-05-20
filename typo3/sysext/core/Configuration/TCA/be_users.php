@@ -39,6 +39,9 @@ return [
                 'eval' => 'nospace,trim,lower,unique',
                 'autocomplete' => false,
             ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
+            ],
         ],
         'password' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.password',
@@ -48,6 +51,10 @@ return [
                 'size' => 20,
                 'required' => true,
             ],
+            'authenticationContext' => [
+                //'group' => 'be.userManagement',
+                'once' => true,
+            ],
         ],
         'mfa' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.mfa',
@@ -55,6 +62,9 @@ return [
                 // @todo Use a new internal TCA type to prevent raw data being displayed in the backend
                 'type' => 'none',
                 'renderType' => 'mfaInfo',
+            ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
             ],
         ],
         'usergroup' => [
@@ -87,6 +97,9 @@ return [
                     ],
                 ],
             ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
+            ],
         ],
         'avatar' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
@@ -104,6 +117,9 @@ return [
                 'size' => 3,
                 'maxitems' => 100,
                 'autoSizeMax' => 10,
+            ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
             ],
         ],
         'file_mountpoints' => [
@@ -138,12 +154,18 @@ return [
                     ],
                 ],
             ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
+            ],
         ],
         'email' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.email',
             'config' => [
                 'type' => 'email',
                 'size' => 20,
+            ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
             ],
         ],
         'realName' => [
@@ -166,6 +188,9 @@ return [
                         'renderType' => 'adminIsSystemMaintainer',
                     ],
                 ],
+            ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
             ],
         ],
         'options' => [
@@ -208,6 +233,9 @@ return [
                 'maxitems' => 17,
                 'default' => 'readFolder,writeFolder,addFolder,renameFolder,moveFolder,deleteFolder,readFile,writeFile,addFile,renameFile,replaceFile,moveFile,copyFile,deleteFile',
             ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
+            ],
         ],
         'workspace_perms' => [
             'displayCond' => 'USER:TYPO3\CMS\Core\Hooks\TcaDisplayConditions->isExtensionInstalled:workspaces',
@@ -220,6 +248,9 @@ return [
                 'items' => [
                     ['label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:workspace_perms_live'],
                 ],
+            ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
             ],
         ],
         'lang' => [
@@ -247,6 +278,9 @@ return [
                 'autoSizeMax' => 50,
                 'maxitems' => 100,
             ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
+            ],
         ],
         'allowed_languages' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:allowed_languages',
@@ -256,6 +290,9 @@ return [
                 'renderType' => 'selectCheckBox',
                 'itemsProcFunc' => \TYPO3\CMS\Core\Localization\TcaSystemLanguageCollector::class . '->populateAvailableSiteLanguages',
                 'dbFieldLength' => 255,
+            ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
             ],
         ],
         'TSconfig' => [
@@ -287,6 +324,9 @@ return [
                         'showHeader' => false,
                     ],
                 ],
+            ],
+            'authenticationContext' => [
+                'group' => 'be.userManagement',
             ],
         ],
     ],
