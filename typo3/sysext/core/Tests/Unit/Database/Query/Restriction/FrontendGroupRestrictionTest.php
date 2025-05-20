@@ -30,9 +30,23 @@ final class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
                 'fe_group' => 'myGroupField',
             ],
         ];
+        $GLOBALS['TCA']['bTable']['ctrl'] = [
+            'enablecolumns' => [
+                'fe_group' => 'myOtherGroupField',
+            ],
+        ];
         $subject = new FrontendGroupRestriction([]);
-        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('(("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\'))', (string)$expression);
+        $expression = $subject->buildExpression(
+            [
+                'aTable' => 'aTable',
+                'bTable' => 'bTable',
+            ],
+            $this->expressionBuilder,
+        );
+        self::assertSame(
+            '(((("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\'))) AND ((("bTable"."myOtherGroupField" IS NULL) OR ("bTable"."myOtherGroupField" = \'\') OR ("bTable"."myOtherGroupField" = \'0\'))))',
+            (string)$expression,
+        );
     }
 
     #[Test]
@@ -43,8 +57,22 @@ final class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
                 'fe_group' => 'myGroupField',
             ],
         ];
+        $GLOBALS['TCA']['bTable']['ctrl'] = [
+            'enablecolumns' => [
+                'fe_group' => 'myOtherGroupField',
+            ],
+        ];
         $subject = new FrontendGroupRestriction([2, 3]);
-        $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
-        self::assertSame('(("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'2\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'3\', "aTable"."myGroupField")))', (string)$expression);
+        $expression = $subject->buildExpression(
+            [
+                'aTable' => 'aTable',
+                'bTable' => 'bTable',
+            ],
+            $this->expressionBuilder,
+        );
+        self::assertSame(
+            '(((("aTable"."myGroupField" IS NULL) OR ("aTable"."myGroupField" = \'\') OR ("aTable"."myGroupField" = \'0\') OR (FIND_IN_SET(\'2\', "aTable"."myGroupField")) OR (FIND_IN_SET(\'3\', "aTable"."myGroupField")))) AND ((("bTable"."myOtherGroupField" IS NULL) OR ("bTable"."myOtherGroupField" = \'\') OR ("bTable"."myOtherGroupField" = \'0\') OR (FIND_IN_SET(\'2\', "bTable"."myOtherGroupField")) OR (FIND_IN_SET(\'3\', "bTable"."myOtherGroupField")))))',
+            (string)$expression,
+        );
     }
 }
