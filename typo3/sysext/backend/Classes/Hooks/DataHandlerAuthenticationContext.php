@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Hooks;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Middleware\SudoModeInterceptor;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
+use TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeRequiredEvent;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 
@@ -37,6 +39,7 @@ final class DataHandlerAuthenticationContext
         private readonly AccessFactory $factory,
         private readonly AccessStorage $storage,
         private readonly SudoModeInterceptor $sudoModeInterceptor,
+        private EventDispatcherInterface $eventDispatcher,
     ) {}
 
     public function processDatamap_postProcessFieldArray(
@@ -61,7 +64,12 @@ final class DataHandlerAuthenticationContext
             if ($authenticationContextConfig === null) {
                 continue;
             }
-            $subject = $this->factory->buildTableAccessSubject($tableName, $columnName, $authenticationContextConfig);
+            $subject = $this->factory->buildTableAccessSubject(
+                $tableName,
+                $columnName,
+                (string)$id,
+                $authenticationContextConfig
+            );
             $grants = $this->storage->findGrantsBySubject($subject);
             $hasGrant = $grants !== [];
             $subjects[$columnName] = [
@@ -86,12 +94,16 @@ final class DataHandlerAuthenticationContext
         }
 
         if ($requiredSubjects !== []) {
-            $claim = $this->factory->buildClaimForSubjectRequest($request, ...array_values($requiredSubjects));
+            $claim = $this->factory->buildClaimForSubjectRequest($request, self::class, ...array_values($requiredSubjects));
 
-            throw (new VerificationRequiredException(
-                'Authentication Context Confirmation Required',
-                1743597646
-            ))->withClaim($claim);
+            $event = new SudoModeRequiredEvent($claim);
+            $this->eventDispatcher->dispatch($event);
+            if ($event->isVerificationRequired()) {
+                throw (new VerificationRequiredException(
+                    'Authentication Context Confirmation Required',
+                    1743597646
+                ))->withClaim($claim);
+            }
         }
 
         $this->consumeNonRepeatableGrants($subjects);
