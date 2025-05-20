@@ -23,10 +23,13 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\Index\FileIndexRepository;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
 {
+    use ResourceInstructionTrait;
+
     /**
      * Cached OnlineMediaIds [fileUid => id]
      *
@@ -113,6 +116,7 @@ abstract class AbstractOnlineMediaHelper implements OnlineMediaHelperInterface
     {
         $temporaryFile = GeneralUtility::tempnam('online_media');
         GeneralUtility::writeFileToTypo3tempDir($temporaryFile, $onlineMediaId);
+        $this->skipResourceConsistencyCheckForCommands($targetFolder->getStorage(), $temporaryFile, $fileName);
         $file = $targetFolder->addFile($temporaryFile, $fileName, DuplicationBehavior::RENAME);
         return $file;
     }

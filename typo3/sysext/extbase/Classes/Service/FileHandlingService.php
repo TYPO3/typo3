@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -50,6 +51,8 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
  */
 class FileHandlingService implements SingletonInterface
 {
+    use ResourceInstructionTrait;
+
     public const DELETE_IDENTIFIER = '@delete';
 
     public function __construct(
@@ -264,6 +267,7 @@ class FileHandlingService implements SingletonInterface
 
             foreach ($uploadedFiles as $uploadedFile) {
                 $targetFilename = $this->getTargetFilename($uploadedFile->getClientFilename(), $configuration);
+                $this->skipResourceConsistencyCheckForUploads($storage, $uploadedFile, $targetFilename);
                 $file = $storage->addUploadedFile($uploadedFile, $uploadFolder, $targetFilename, $configuration->getDuplicationBehavior());
                 $coreFileReference = $this->createCoreFileReference($file);
                 $fileReference = $this->createExtbaseFileReference($coreFileReference);
@@ -273,6 +277,7 @@ class FileHandlingService implements SingletonInterface
             /** @var UploadedFile $uploadedFile */
             $uploadedFile = $uploadedFiles[0];
             $targetFilename = $this->getTargetFilename($uploadedFile->getClientFilename(), $configuration);
+            $this->skipResourceConsistencyCheckForUploads($storage, $uploadedFile, $targetFilename);
             $file = $storage->addUploadedFile($uploadedFile, $uploadFolder, $targetFilename, $configuration->getDuplicationBehavior());
             $coreFileReference = $this->createCoreFileReference($file);
 

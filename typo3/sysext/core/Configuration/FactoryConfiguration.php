@@ -26,6 +26,8 @@ return [
         'UTF8filesystem' => true,
         'features' => [
             'frontend.cache.autoTagging' => true,
+            // only file extensions configured in 'textfile_ext', 'mediafile_ext', 'miscfile_ext' are accepted
+            'security.system.enforceAllowedFileExtensions' => true,
         ],
     ],
 ];

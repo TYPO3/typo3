@@ -91,6 +91,11 @@ return [
             'security.frontend.reportContentSecurityPolicy' => false,
             'security.frontend.allowInsecureSiteResolutionByQueryParameters' => false,
             'security.frontend.allowInsecureFrameOptionInShowImageController' => false,
+            // only file extensions configured in 'textfile_ext', 'mediafile_ext', 'miscfile_ext' are accepted
+            'security.system.enforceAllowedFileExtensions' => false,
+            // only files having file-extension to mime-type matches are allowed
+            // (adjustable by `$GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']`)
+            'security.system.enforceFileExtensionMimeTypeConsistency' => true,
         ],
         'createGroup' => '',
         'sitename' => 'TYPO3',
@@ -103,6 +108,7 @@ return [
         'loginCopyrightWarrantyURL' => '',
         'textfile_ext' => 'txt,ts,typoscript,html,htm,css,tmpl,js,sql,xml,csv,xlf,yaml,yml',
         'mediafile_ext' => 'gif,jpg,jpeg,bmp,png,webp,pdf,svg,ai,mp3,wav,mp4,ogg,flac,opus,webm,youtube,vimeo',
+        'miscfile_ext' => 'zip',
         'binPath' => '',
         'binSetup' => '',
         'setMemoryLimit' => 0,

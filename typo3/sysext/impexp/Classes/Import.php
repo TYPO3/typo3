@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Exception;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsException;
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\StorageRepository;
@@ -51,6 +52,8 @@ use TYPO3\CMS\Impexp\Exception\PrerequisitesNotMetException;
  */
 class Import extends ImportExport
 {
+    use ResourceInstructionTrait;
+
     public const IMPORT_MODE_FORCE_UID = 'force_uid';
     public const IMPORT_MODE_AS_NEW = 'as_new';
     public const IMPORT_MODE_EXCLUDE = 'exclude';
@@ -637,6 +640,7 @@ class Import extends ImportExport
                 ]);
 
                 try {
+                    $this->skipResourceConsistencyCheckForCommands($storage, $temporaryFile, $fileRecord['name']);
                     /** @var File $file */
                     $file = $storage->addFile($temporaryFile, $importFolder, $fileRecord['name']);
                 } catch (Exception $e) {
