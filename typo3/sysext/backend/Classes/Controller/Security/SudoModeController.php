@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Controller\Security;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -27,6 +28,7 @@ use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessClaim;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
+use TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeVerifyEvent;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\RequestGrantedException;
 use TYPO3\CMS\Backend\Security\SudoMode\PasswordVerification;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
@@ -63,6 +65,7 @@ final class SudoModeController implements LoggerAwareInterface
         private readonly PasswordVerification $passwordVerification,
         private readonly ModuleTemplateFactory $moduleTemplateFactory,
         private readonly BackendEntryPointResolver $backendEntryPointResolver,
+        private readonly EventDispatcherInterface $eventDispatcher,
         private readonly HashService $hashService,
     ) {}
 
@@ -163,6 +166,12 @@ final class SudoModeController implements LoggerAwareInterface
                 $this->buildUriParametersForClaim($claim, 'apply')
             ),
         ];
+        $event = $this->eventDispatcher->dispatch(new SudoModeVerifyEvent($claim, $password, $useInstallToolPassword));
+        if ($event->isVerified()) {
+            $this->logger->info('Passed by PSR-14 SudoModeVerifyEvent', $loggerContext);
+            $this->grantClaim($claim);
+            return new JsonResponse(['message' => 'accessGranted', 'redirect' => $redirect]);
+        }
         if ($useInstallToolPassword && $this->passwordVerification->verifyInstallToolPassword($password)) {
             $this->logger->info('Verified with install tool password', $loggerContext);
             $this->grantClaim($claim);
