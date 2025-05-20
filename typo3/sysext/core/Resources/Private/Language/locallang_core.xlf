@@ -1366,16 +1366,16 @@ Do you want to refresh it now?</source>
 				<source>"%s" is not a valid e-mail address.</source>
 			</trans-unit>
 			<trans-unit id="error.adminCanNotChangeSystemMaintainer">
-				<source>Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.</source>
+				<source>Non system maintainers cannot change details of system maintainers. The values have not been updated.</source>
+			</trans-unit>
+			<trans-unit id="formEngine.beUser.information.adminCanNotChangeSystemMaintainer">
+				<source>This user is a system maintainer. Changing details of system maintainers is not allowed.</source>
 			</trans-unit>
 			<trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer">
 				<source>This user is a system maintainer</source>
 			</trans-unit>
 			<trans-unit id="formEngine.beUser.admin.information.userWillBecomeSystemMaintainer">
 				<source>This user is in the list of allowed system maintainers and will gain system level access if enabling admin access.</source>
-			</trans-unit>
-			<trans-unit id="formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed">
-				<source>This user is a system maintainer. Changing the admin flag and changing password is denied.</source>
 			</trans-unit>
 			<trans-unit id="formEngine.pages.backendLayout.information.inheritFromParentPage">
 				<source>This page will most likely use backend layout "%s", inherited from a parent page.</source>
