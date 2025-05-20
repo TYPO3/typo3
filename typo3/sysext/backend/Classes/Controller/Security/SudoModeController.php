@@ -88,9 +88,12 @@ final class SudoModeController implements LoggerAwareInterface
             return $this->redirectToErrorAction();
         }
 
+        $labels = $GLOBALS['LANG']->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf');
+
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'verifyActionUri' => $this->buildVerifyActionUriForClaim($claim),
+            'allowInstallToolPassword' => $GLOBALS['BE_USER']->isSystemMaintainer(true),
             'labels' => $this->getLanguageService()->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf'),
         ]);
         return $view->renderResponse('SudoMode/Module');
@@ -138,6 +141,10 @@ final class SudoModeController implements LoggerAwareInterface
 
         $password = (string)($request->getParsedBody()['password'] ?? '');
         $useInstallToolPassword = (bool)($request->getParsedBody()['useInstallToolPassword'] ?? false);
+        // Only system maintainers are allowed to use the installtool password for sudo mode operations
+        if (!$GLOBALS['BE_USER']->isSystemMaintainer(true)) {
+            $useInstallToolPassword = false;
+        }
         $loggerContext = $this->buildLoggerContext($claim);
 
         $redirect = [
@@ -194,8 +201,10 @@ final class SudoModeController implements LoggerAwareInterface
 
     private function grantClaim(AccessClaim $claim): void
     {
-        $grant = $this->factory->buildGrantForSubject($claim->subject);
-        $this->storage->addGrant($grant);
+        foreach ($claim->subjects as $subject) {
+            $grant = $this->factory->buildGrantForSubject($subject);
+            $this->storage->addGrant($grant);
+        }
     }
 
     /**

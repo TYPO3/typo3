@@ -29,8 +29,6 @@ use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\Mfa\MfaProviderRegistry;
 use TYPO3\CMS\Core\Core\Environment;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\InvalidPasswordHashException;
-use TYPO3\CMS\Core\Crypto\PasswordHashing\PasswordHashFactory;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
@@ -151,7 +149,6 @@ class SetupModuleController
         // if password is disabled, disable repeat of password too (password2)
         if ($this->tsFieldConf['password.']['disabled'] ?? false) {
             $this->tsFieldConf['password2.']['disabled'] = 1;
-            $this->tsFieldConf['passwordCurrent.']['disabled'] = 1;
         }
         return $view;
     }
@@ -210,7 +207,7 @@ class SetupModuleController
                     if (!in_array($field, $fieldList, true)) {
                         continue;
                     }
-                    if (($config['table']  ?? '') === 'be_users' && !in_array($field, ['password', 'password2', 'passwordCurrent', 'email', 'realName', 'admin', 'avatar'], true)) {
+                    if (($config['table']  ?? '') === 'be_users' && !in_array($field, ['password', 'password2', 'email', 'realName', 'admin', 'avatar'], true)) {
                         if (!isset($config['access']) || $this->checkAccess($config) && ($backendUser->user[$field] !== $d['be_users'][$field])) {
                             if (($config['type'] ?? false) === 'check') {
                                 $fieldValue = isset($d['be_users'][$field]) ? 1 : 0;
@@ -272,26 +269,8 @@ class SetupModuleController
                 }
                 // Update the password:
                 if ($passwordIsConfirmed && $passwordValid) {
-                    if ($backendUser->isAdmin()) {
-                        $passwordOk = true;
-                    } else {
-                        $currentPasswordHashed = $backendUser->user['password'];
-                        $passwordOk = false;
-                        $saltFactory = GeneralUtility::makeInstance(PasswordHashFactory::class);
-                        try {
-                            $hashInstance = $saltFactory->get($currentPasswordHashed, 'BE');
-                            $passwordOk = $hashInstance->checkPassword($be_user_data['passwordCurrent'], $currentPasswordHashed);
-                        } catch (InvalidPasswordHashException $e) {
-                            // Could not find hash class responsible for existing password. This is a
-                            // misconfiguration and user can not change its password.
-                        }
-                    }
-                    if ($passwordOk) {
-                        $this->passwordIsUpdated = self::PASSWORD_UPDATED;
-                        $storeRec['be_users'][$beUserId]['password'] = $be_user_data['password'];
-                    } else {
-                        $this->passwordIsUpdated = self::PASSWORD_OLD_WRONG;
-                    }
+                    $this->passwordIsUpdated = self::PASSWORD_UPDATED;
+                    $storeRec['be_users'][$beUserId]['password'] = $be_user_data['password'];
                 } elseif ($passwordIsConfirmed) {
                     $this->passwordIsUpdated = self::PASSWORD_POLICY_FAILED;
                 } else {
@@ -767,14 +746,6 @@ class SetupModuleController
     protected function getFieldsFromShowItem()
     {
         $allowedFields = GeneralUtility::trimExplode(',', $GLOBALS['TYPO3_USER_SETTINGS']['showitem'], true);
-        if ($this->getBackendUser()->isAdmin()) {
-            // Do not ask for current password if admin (unknown for other users and no security gain)
-            $key = array_search('passwordCurrent', $allowedFields);
-            if ($key !== false) {
-                unset($allowedFields[$key]);
-            }
-        }
-
         $backendUser = $this->getBackendUser();
         if ($backendUser->getOriginalUserIdWhenInSwitchUserMode() && $backendUser->isSystemMaintainer(true)) {
             // DataHandler denies changing the password of system maintainer users in switch user mode.
@@ -921,9 +892,6 @@ class SetupModuleController
         }
         if ($this->passwordIsSubmitted) {
             switch ($this->passwordIsUpdated) {
-                case self::PASSWORD_OLD_WRONG:
-                    $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:oldPassword_failed'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword'), ContextualFeedbackSeverity::ERROR);
-                    break;
                 case self::PASSWORD_NOT_THE_SAME:
                     $view->addFlashMessage($languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword_failed'), $languageService->sL('LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPassword'), ContextualFeedbackSeverity::ERROR);
                     break;

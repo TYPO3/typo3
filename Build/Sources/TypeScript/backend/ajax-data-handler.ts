@@ -22,6 +22,7 @@ import Icons from './icons';
 import Modal from './modal';
 import Notification from './notification';
 import RegularEvent from '@typo3/core/event/regular-event';
+import { sudoModeInterceptor } from '@typo3/backend/security/sudo-mode-interceptor';
 
 enum Identifiers {
   hide = 'button[data-datahandler-action="visibility"]',
@@ -63,9 +64,13 @@ class AjaxDataHandler {
    * @returns {Promise<ResponseInterface>}
    */
   private static call(params: string | object): Promise<ResponseInterface> {
-    return (new AjaxRequest(TYPO3.settings.ajaxUrls.record_process)).withQueryArguments(params).get().then(async (response: AjaxResponse): Promise<ResponseInterface> => {
-      return await response.resolve();
-    });
+    return (new AjaxRequest(TYPO3.settings.ajaxUrls.record_process))
+      .addMiddleware(sudoModeInterceptor)
+      .withQueryArguments(params)
+      .get()
+      .then(async (response: AjaxResponse): Promise<ResponseInterface> => {
+        return await response.resolve();
+      });
   }
 
   /**

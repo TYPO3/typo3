@@ -18,15 +18,18 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Middleware;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestFactoryInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Controller\Security\SudoModeController;
+use TYPO3\CMS\Backend\Http\Application;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\RequestGrantedException;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
+use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 
 /**
@@ -40,45 +43,87 @@ final class SudoModeInterceptor implements MiddlewareInterface, LoggerAwareInter
 {
     use LoggerAwareTrait;
 
+    /**
+     * @internal
+     */
+    public ?ServerRequestInterface $currentRequest = null;
+
     public function __construct(
         private readonly AccessStorage $storage,
         private readonly SudoModeController $controller,
+        private readonly ServerRequestFactoryInterface $serverRequestFactory,
+        private readonly Application $application
     ) {}
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
+        $this->currentRequest = $request;
         try {
-            return $handler->handle($request);
+            $response = $handler->handle($request);
         } catch (VerificationRequiredException $exception) {
-            return $this->handleVerificationRequired($exception);
+            $response = $this->handleVerificationRequired($exception, $request);
         } catch (RequestGrantedException $exception) {
-            return $this->handleRequestGrantedException($exception);
+            $response = $this->handleRequestGrantedException($exception, $request);
         }
+        $this->currentRequest = null;
+        return $response;
     }
 
     /**
      * Redirects to the sudo mode controller, and renders the password verification dialog.
      */
-    private function handleVerificationRequired(VerificationRequiredException $exception): ResponseInterface
-    {
+    private function handleVerificationRequired(
+        VerificationRequiredException $exception,
+        ServerRequestInterface $request,
+    ): ResponseInterface {
         $claim = $exception->getClaim();
         $this->logger->info('Confirmation required', ['claim' => $claim->id]);
         $this->storage->addClaim($claim);
+        $isAjaxCall = (bool)($request->getAttribute('route')?->getOption('ajax') ?? false);
+        if ($isAjaxCall) {
+            return (new JsonResponse([
+                'sudoModeInitialization' => [
+                    'verifyActionUri' => (string)$this->controller->buildVerifyActionUriForClaim($claim),
+                    'allowInstallToolPassword' => $GLOBALS['BE_USER']->isSystemMaintainer(true),
+                    'isAjax' => true,
+                    'labels' => $GLOBALS['LANG']->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf'),
+                ],
+            ]))->withStatus(422, 'Step-Up required: A different authentication level is required');
+        }
         $uri = $this->controller->buildModuleActionUriForClaim($claim);
         return new RedirectResponse($uri, 401);
     }
 
     /**
-     * Redirects to the URI that was originally requested (prior to this sudo mode interception).
+     * Redirects (GET) or Subrequests (non GET HTTP methods) to the URI that
+     * was originally requested (prior to this sudo mode interception).
      */
-    private function handleRequestGrantedException(RequestGrantedException $exception): ?ResponseInterface
-    {
+    private function handleRequestGrantedException(
+        RequestGrantedException $exception,
+        ServerRequestInterface $request,
+    ): ResponseInterface {
         $instruction = $exception->getInstruction();
-        // other request methods than HTTP GET are currently not supported
-        // (there is much more to do, in terms of intercepting AJAX request etc.)
         if ($instruction->getMethod() === 'GET') {
             return new RedirectResponse($instruction->getUri(), 303);
         }
-        return null;
+
+        $request = $this->serverRequestFactory
+            ->createServerRequest(
+                $instruction->getMethod(),
+                $instruction->getUri(),
+                $instruction->getServerParams()
+            )
+            ->withBody($instruction->getBody())
+            ->withParsedBody($instruction->getParsedBody())
+            ->withQueryParams($instruction->getQueryParams())
+            ->withRequestTarget($instruction->getRequestTarget())
+            // Use cookie params from current request, as cookies might have been updated in the meantime
+            ->withCookieParams($request->getCookieParams());
+        foreach ($instruction->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                $request = $request->withAddedHeader($name, $value);
+            }
+        }
+        return $this->application->handle($request);
     }
 }

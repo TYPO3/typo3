@@ -19,6 +19,7 @@ import Notification from '@typo3/backend/notification';
 import Modal from '@typo3/backend/modal';
 import { SeverityEnum } from '@typo3/backend/enum/severity';
 import { selector } from '@typo3/core/literals';
+import { sudoModeInterceptor } from '@typo3/backend/security/sudo-mode-interceptor';
 
 interface FieldOptions {
   userId: number,
@@ -110,7 +111,7 @@ class MfaInfoElement {
     if (this.request instanceof AjaxRequest) {
       this.request.abort();
     }
-    this.request = (new AjaxRequest(TYPO3.settings.ajaxUrls.mfa));
+    this.request = (new AjaxRequest(TYPO3.settings.ajaxUrls.mfa)).addMiddleware(sudoModeInterceptor);
     this.request.post({
       action: 'deactivate',
       provider: provider,

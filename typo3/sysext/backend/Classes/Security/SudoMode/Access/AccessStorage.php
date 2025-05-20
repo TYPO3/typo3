@@ -65,6 +65,20 @@ class AccessStorage implements LoggerAwareInterface
         $this->commitItems(self::GRANT_KEY, $items);
     }
 
+    public function removeGrant(AccessGrant $grant): void
+    {
+        $items = $this->fetchGrants();
+        $identity = $grant->subject->getIdentity();
+        if (!isset($items[$identity])) {
+            $this->logger->warning(
+                sprintf('Grant %s does not exist', $identity),
+                $grant->jsonSerialize()
+            );
+        }
+        unset($items[$identity]);
+        $this->commitItems(self::GRANT_KEY, $items);
+    }
+
     public function findClaimById(string $id): ?AccessClaim
     {
         $item = $this->fetchClaims()[$id] ?? null;

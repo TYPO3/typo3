@@ -1,6 +1,7 @@
 <?php
 
 use TYPO3\CMS\Backend\Controller;
+use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessLifetime;
 
 /**
  * Definitions for routes provided by EXT:backend
@@ -101,12 +102,20 @@ return [
     'setup_mfa' => [
         'path' => '/setup/mfa',
         'target' => Controller\MfaSetupController::class . '::handleRequest',
+        'sudoMode' => [
+            'group' => 'mfa',
+            'lifetime' => AccessLifetime::medium,
+        ],
     ],
 
     // Multi-factor authentication configuration
     'mfa' => [
         'path' => '/mfa',
         'target' => Controller\MfaConfigurationController::class . '::handleRequest',
+        'sudoMode' => [
+            'group' => 'mfa',
+            'lifetime' => AccessLifetime::medium,
+        ],
     ],
 
     /** Wizards */

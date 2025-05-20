@@ -45,6 +45,8 @@ class ServerRequestInstruction implements \JsonSerializable
     protected ?array $parsedBody;
     protected array $queryParams;
     protected array $attributes;
+    protected array $serverParams;
+    protected array $headers;
 
     public static function createForServerRequest(ServerRequestInterface $request): self
     {
@@ -55,6 +57,8 @@ class ServerRequestInstruction implements \JsonSerializable
         $target->body = self::clone($request->getBody());
         $target->parsedBody = self::clone($request->getParsedBody());
         $target->queryParams = $request->getQueryParams();
+        $target->serverParams = $request->getServerParams();
+        $target->headers = $request->getHeaders();
         $target->attributes = array_filter(
             $request->getAttributes(),
             static fn(string $name) => in_array($name, self::KEEP_ATTRIBUTE_NAMES, true),
@@ -73,6 +77,8 @@ class ServerRequestInstruction implements \JsonSerializable
         $target->body->write($data['body']['contents']);
         $target->parsedBody = $data['parsedBody'];
         $target->queryParams = $data['queryParams'];
+        $target->serverParams = $data['serverParams'];
+        $target->headers = $data['headers'];
         $target->attributes = $data['attributes'] ?? [];
         return $target;
     }
@@ -108,6 +114,8 @@ class ServerRequestInstruction implements \JsonSerializable
             ],
             'parsedBody' => $this->parsedBody,
             'queryParams' => $this->queryParams,
+            'serverParams' => $this->serverParams,
+            'headers' => $this->headers,
             'attributes' => $this->attributes,
         ];
     }
@@ -158,6 +166,16 @@ class ServerRequestInstruction implements \JsonSerializable
     public function getQueryParams(): array
     {
         return $this->queryParams;
+    }
+
+    public function getServerParams(): array
+    {
+        return $this->serverParams;
+    }
+
+    public function getHeaders(): array
+    {
+        return $this->headers;
     }
 
     public function getAttributes(): array

@@ -45,6 +45,7 @@ interface Labels {
 abstract class SudoModeProperties extends LitElement {
   @property({ type: String }) verifyActionUri: string;
   @property({ type: String }) cancelUri: string;
+  @property({ type: Boolean }) isAjax: boolean;
   @property({ type: Boolean, attribute: 'has-fatal-error' }) hasFatalError: boolean;
   @property({ type: Boolean, attribute: 'allow-install-tool-password' }) allowInstallToolPassword: boolean;
   @property({ type: Object }) labels: Labels;
@@ -115,6 +116,7 @@ export class SudoMode extends SudoModeProperties {
           .labels=${this.labels}
           .verifyActionUri=${this.verifyActionUri}
           .cancelUri=${this.cancelUri}
+          .isAjax=${this.isAjax}
           .hasFatalError=${this.hasFatalError}
           .allowInstallToolPassword=${this.allowInstallToolPassword}
           @typo3:sudo-mode:verified=${() => this.dispatchEvent(new Event('typo3:sudo-mode:verified'))}
@@ -208,7 +210,7 @@ export class SudoModeForm extends SudoModeProperties {
       const responseData: SudoModeResponse = await response.resolve('application/json');
       this.dispatchEvent(new Event('typo3:sudo-mode:verified'));
       this.closest('typo3-backend-modal').hideModal();
-      if (responseData.redirect) {
+      if (!this.isAjax && responseData.redirect) {
         Viewport.ContentContainer.setUrl(responseData.redirect.uri);
       }
     } catch (e: unknown) {
