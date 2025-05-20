@@ -29,6 +29,7 @@ use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
 use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
+use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
 use TYPO3\CMS\Backend\Template\Components\ButtonBar;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownItemInterface;
 use TYPO3\CMS\Backend\Template\Components\Buttons\DropDown\DropDownToggle;
@@ -313,6 +314,9 @@ class RecordListController
                     $response['hasErrors'] = true;
                 }
             }
+        } catch (VerificationRequiredException $e) {
+            // Handled by Middleware/SudoModeInterceptor
+            throw $e;
         } catch (\Throwable $e) {
             // @todo: having this explicit handling here sucks
             $response = [

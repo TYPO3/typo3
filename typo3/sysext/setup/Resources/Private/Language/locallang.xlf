@@ -93,9 +93,6 @@
 			<trans-unit id="newPassword_ok">
 				<source>Password was updated.</source>
 			</trans-unit>
-			<trans-unit id="passwordCurrent">
-				<source>Current password</source>
-			</trans-unit>
 			<trans-unit id="passwordPolicyFailed">
 				<source>The password was NOT updated, since it does not meet the password policy requirements.</source>
 			</trans-unit>

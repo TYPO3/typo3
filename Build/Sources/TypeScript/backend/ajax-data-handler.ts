@@ -15,6 +15,7 @@ import { BroadcastMessage } from '@typo3/backend/broadcast-message';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import BroadcastService from '@typo3/backend/broadcast-service';
 import Notification from './notification';
+import { sudoModeInterceptor } from '@typo3/backend/security/sudo-mode-interceptor';
 import type { AjaxResponse } from '@typo3/core/ajax/ajax-response';
 import type ResponseInterface from './ajax-data-handler/response-interface';
 
@@ -39,9 +40,13 @@ class AjaxDataHandler {
    * @returns {Promise<ResponseInterface>}
    */
   private static call(params: string | object): Promise<ResponseInterface> {
-    return (new AjaxRequest(TYPO3.settings.ajaxUrls.record_process)).withQueryArguments(params).get().then(async (response: AjaxResponse): Promise<ResponseInterface> => {
-      return await response.resolve();
-    });
+    return (new AjaxRequest(TYPO3.settings.ajaxUrls.record_process))
+      .addMiddleware(sudoModeInterceptor)
+      .withQueryArguments(params)
+      .get()
+      .then(async (response: AjaxResponse): Promise<ResponseInterface> => {
+        return await response.resolve();
+      });
   }
 
   /**

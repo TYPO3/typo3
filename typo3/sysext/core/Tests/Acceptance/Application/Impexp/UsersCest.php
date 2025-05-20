@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Acceptance\Application\Impexp;
 
+use Codeception\Exception\MalformedLocatorException;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\ApplicationTester;
 use TYPO3\CMS\Core\Tests\Acceptance\Support\Helper\PageTree;
 
@@ -194,6 +195,20 @@ final class UsersCest extends AbstractCest
         $recursionLevelOption = $I->grabTextFrom('//select[@id="recursionLevel"]/option[' . $recursionLevel . ']');
         $I->selectOption('//select[@id="recursionLevel"]', ['value' => $recursionLevelOption]);
         $I->click($this->inModuleHeader . ' .btn[title="Save and close"]');
+        $I->wait(0.5);
+        $I->switchToMainFrame();
+        try {
+            $needsStepUp = count($I->grabMultiple('.modal-sudo-mode-verification')) > 0;
+        } catch (MalformedLocatorException) {
+            $needsStepUp = false;
+        }
+        if ($needsStepUp) {
+            $I->see('Verify with user password');
+            $I->fillField('//input[@name="password"]', 'password');
+            $I->click('//button[@name="verify"]');
+        }
+        $I->switchToContentFrame();
+        $I->wait(0.5);
     }
 
     private function setModAccess(ApplicationTester $I, int $userGroupId, array $modAccessByName): void
@@ -218,6 +233,19 @@ final class UsersCest extends AbstractCest
         }
 
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');
+        $I->wait(0.5);
+        $I->switchToMainFrame();
+        try {
+            $needsStepUp = count($I->grabMultiple('.modal-sudo-mode-verification')) > 0;
+        } catch (MalformedLocatorException) {
+            $needsStepUp = false;
+        }
+        if ($needsStepUp) {
+            $I->see('Verify with user password');
+            $I->fillField('//input[@name="password"]', 'password');
+            $I->click('//button[@name="verify"]');
+        }
+        $I->switchToContentFrame();
         $I->wait(0.5);
         $I->click($this->inModuleHeader . ' .btn[title="Close"]');
         $I->waitForText('Backend user groups');
@@ -244,6 +272,19 @@ final class UsersCest extends AbstractCest
         $I->waitForElementVisible($codeMirrorSelector);
         $I->executeJS("document.querySelector('" . $codeMirrorSelector . "').setContent('" . $userTsConfig . "')");
         $I->click($this->inModuleHeader . ' .btn[title="Save"]');
+        $I->wait(0.5);
+        $I->switchToMainFrame();
+        try {
+            $needsStepUp = count($I->grabMultiple('.modal-sudo-mode-verification')) > 0;
+        } catch (MalformedLocatorException) {
+            $needsStepUp = false;
+        }
+        if ($needsStepUp) {
+            $I->see('Verify with user password');
+            $I->fillField('//input[@name="password"]', 'password');
+            $I->click('//button[@name="verify"]');
+        }
+        $I->switchToContentFrame();
         $I->wait(0.5);
         $I->click($this->inModuleHeader . ' .btn[title="Close"]');
         $I->waitForElement('#typo3-backend-user-list');

@@ -42,12 +42,12 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
 
   it('sends GET request', (): void => {
     (new AjaxRequest('https://example.com')).get();
-    expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: 'GET' });
+    expect(fetchStub).calledWithMatch(new Request('https://example.com/', { method: 'GET' }));
   });
 
   it('sends POST request with empty object', (): void => {
     (new AjaxRequest('https://example.com')).post({});
-    expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: 'POST', body: '' });
+    expect(fetchStub).calledWithMatch(new Request('https://example.com/', { method: 'POST', body: '' }));
   });
 
   for (const requestMethod of ['POST', 'PUT', 'DELETE']) {
@@ -92,7 +92,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
         it(`with ${name}`, (done): void => {
           const request: any = (new AjaxRequest('https://example.com'));
           request[requestFn](payload, { headers: headers });
-          expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: requestMethod, body: expectedFn() });
+          expect(fetchStub).calledWithMatch(new Request('https://example.com/', { method: requestMethod, body: expectedFn() }));
           done();
         });
       }
@@ -138,7 +138,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
 
         (new AjaxRequest(new URL('https://example.com'))).get().then(async (response: AjaxResponse): Promise<void> => {
           const data = await response.resolve();
-          expect(fetchStub).calledWithMatch(new URL('https://example.com/'), { method: 'GET' });
+          expect(fetchStub).calledWithMatch(new Request('https://example.com/', { method: 'GET' }));
           onfulfill(data, responseText);
           done();
         });
@@ -196,7 +196,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       const [name, input, queryParameter, expected] = providedData;
       it('with ' + name, (): void => {
         (new AjaxRequest(input)).withQueryArguments(queryParameter).get();
-        expect(fetchStub).calledWithMatch(expected, { method: 'GET' });
+        expect(fetchStub).calledWithMatch(new Request(expected.toString(), { method: 'GET' }));
       });
     }
   });
@@ -265,7 +265,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       const [name, input, expected] = providedData;
       it('with ' + name, (): void => {
         (new AjaxRequest('https://example.com/')).withQueryArguments(input).get();
-        expect(fetchStub).calledWithMatch(expected, { method: 'GET' });
+        expect(fetchStub).calledWithMatch(new Request(expected.toString(), { method: 'GET' }));
       });
     }
   });
@@ -275,7 +275,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       const request = new AjaxRequest(new URL('https://example.com'));
       request.get();
       request.abort();
-      expect((fetchStub.firstCall.args[1].signal as AbortSignal).aborted).to.be.true;
+      expect((fetchStub.firstCall.args[0] as Request).signal.aborted).to.be.true;
     });
 
     it('via signal option', (): void => {
@@ -284,7 +284,7 @@ describe('@typo3/core/ajax/ajax-request', (): void => {
       request.get({ signal: abortController.signal });
       abortController.abort();
       expect(abortController.signal.aborted).to.be.true;
-      expect((fetchStub.firstCall.args[1].signal as AbortSignal).aborted).to.be.true;
+      expect((fetchStub.firstCall.args[0] as Request).signal.aborted).to.be.true;
     });
   });
 });

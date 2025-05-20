@@ -21,6 +21,7 @@ import type { ActionConfiguration, ActionEventDetails } from '@typo3/backend/mul
 import Notification from '@typo3/backend/notification';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import { AjaxResponse } from '@typo3/core/ajax/ajax-response';
+import { sudoModeInterceptor } from '@typo3/backend/security/sudo-mode-interceptor';
 
 interface IconIdentifier {
   collapse: string;
@@ -226,7 +227,7 @@ class Recordlist {
     const isVisible = target.dataset.datahandlerStatus === 'visible';
     const targetAction = isVisible ? 'hide' : 'show';
 
-    new AjaxRequest(TYPO3.settings.ajaxUrls.record_toggle_visibility).post({
+    new AjaxRequest(TYPO3.settings.ajaxUrls.record_toggle_visibility).addMiddleware(sudoModeInterceptor).post({
       table: table,
       uid: uid,
       action: targetAction,

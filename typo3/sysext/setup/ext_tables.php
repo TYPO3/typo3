@@ -35,11 +35,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:newPasswordAgain',
             'table' => 'be_users',
         ],
-        'passwordCurrent' => [
-            'type' => 'password',
-            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:passwordCurrent',
-            'table' => 'be_users',
-        ],
         'avatar' => [
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_users.avatar',
             'type' => 'avatar',
@@ -110,7 +105,7 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
         ],
     ],
     'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
-            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:accountSecurity,passwordCurrent,password,password2,mfaProviders,
+            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:accountSecurity,password,password2,mfaProviders,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,colorScheme,theme,startModule,backendTitleFormat,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,titleLen,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetTab,resetConfiguration',
