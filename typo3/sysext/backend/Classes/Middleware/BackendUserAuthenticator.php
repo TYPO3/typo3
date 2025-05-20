@@ -100,7 +100,7 @@ class BackendUserAuthenticator extends \TYPO3\CMS\Core\Middleware\BackendUserAut
         } catch (MfaRequiredException $mfaRequiredException) {
             // If MFA is required and we are not already on the "auth_mfa"
             // route, force the user to it for further authentication.
-            if (!$mfaRequested && !$this->isLoggedInBackendUserRequired($route)) {
+            if (!$mfaRequested && $this->isLoggedInBackendUserRequired($route)) {
                 return $this->redirectToMfaEndpoint(
                     'auth_mfa',
                     $GLOBALS['BE_USER'],
