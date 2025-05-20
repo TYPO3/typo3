@@ -111,6 +111,11 @@ services:
       - name: softreference.parser
         parserKey: url
 
+  # @todo use Autoconfigure attribute in v13/v14
+  TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService:
+    public: true
+    shared: true
+
   # Core caches, cache.core, cache.assets and cache.runtime are injected as
   # early entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:

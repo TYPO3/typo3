@@ -26,6 +26,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\FileReference as CoreFileReference;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -46,6 +47,8 @@ use TYPO3\CMS\Form\Slot\ResourcePublicationSlot;
  */
 class UploadedFileReferenceConverter extends AbstractTypeConverter
 {
+    use ResourceInstructionTrait;
+
     /**
      * Folder where the file upload should go to (including storage).
      */
@@ -220,8 +223,10 @@ class UploadedFileReferenceConverter extends AbstractTypeConverter
         $uploadFolder = $this->provideUploadFolder($uploadFolderId);
         // current folder name, derived from public random seed (`formSession`)
         $currentName = 'form_' . $this->hashService->hmac($seed, self::class);
-        $uploadFolder = $this->provideTargetFolder($uploadFolder, $currentName);
         // sub-folder in $uploadFolder with 160 bit of derived entropy (.../form_<40-chars-hash>/actual.file)
+        $uploadFolder = $this->provideTargetFolder($uploadFolder, $currentName);
+        // allow skipping the consistency check, since custom validators have already been executed
+        $this->skipResourceConsistencyCheckForUploads($uploadFolder->getStorage(), $uploadInfo);
         /** @var File $uploadedFile */
         $uploadedFile = $uploadFolder->addUploadedFile($uploadInfo, $conflictMode);
 

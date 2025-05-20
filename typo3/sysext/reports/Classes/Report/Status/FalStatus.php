@@ -18,9 +18,15 @@ namespace TYPO3\CMS\Reports\Report\Status;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\FolderInterface;
+use TYPO3\CMS\Core\Resource\ResourceStorage;
+use TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService;
 use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Validation\ResultException;
+use TYPO3\CMS\Core\Validation\ResultMessage;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -30,6 +36,8 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 class FalStatus implements StatusProviderInterface
 {
+    public function __construct(private readonly ResourceConsistencyService $resourceConsistencyService) {}
+
     /**
      * Determines the status of the FAL index.
      *
@@ -37,10 +45,17 @@ class FalStatus implements StatusProviderInterface
      */
     public function getStatus(): array
     {
-        $statuses = [
+        return [
             'MissingFiles' => $this->getMissingFilesStatus(),
+            'ConsistencyCheck' => $this->getConsistencyCheckStatus(),
         ];
-        return $statuses;
+    }
+
+    public function getDetailedStatus(): array
+    {
+        return [
+            'ConsistencyCheck' => $this->getConsistencyCheckStatus(),
+        ];
     }
 
     public function getLabel(): string
@@ -124,6 +139,105 @@ class FalStatus implements StatusProviderInterface
         }
 
         return GeneralUtility::makeInstance(ReportStatus::class, $this->getLanguageService()->sL('LLL:EXT:reports/Resources/Private/Language/locallang_reports.xlf:status_missingFiles'), $value, $message, $severity);
+    }
+
+    protected function getConsistencyCheckStatus(): ReportStatus
+    {
+        // @todo for performance reasons, consider using this only in CLI context as `ExtendedStatusProviderInterface`
+
+        $storages = array_filter(
+            GeneralUtility::makeInstance(StorageRepository::class)->findAll(),
+            static fn(ResourceStorage $storage): bool => $storage->isOnline()
+        );
+        $inconsistenciesMessage = '';
+        foreach ($storages as $storage) {
+            $inconsistencies = $this->checkFolderConsistency($storage->getRootLevelFolder());
+            if ($inconsistencies !== []) {
+                $inconsistenciesMessage .= sprintf(
+                    '<h5>%s</h5>%s',
+                    htmlspecialchars(sprintf(
+                        'Storage "%s" (id:%d)',
+                        $storage->getName(),
+                        $storage->getUid()
+                    )),
+                    $this->wrapInHtmlUnorderedList($inconsistencies)
+                );
+            }
+        }
+        if ($inconsistenciesMessage === '') {
+            return GeneralUtility::makeInstance(
+                ReportStatus::class,
+                'Consistency check',
+                'No inconsistencies found in these storages',
+                $this->wrapInHtmlUnorderedList(array_map(
+                    static fn(ResourceStorage $storage): string => sprintf(
+                        '%s (id: %d)',
+                        $storage->getName(),
+                        $storage->getUid()
+                    ),
+                    $storages,
+                )),
+                ContextualFeedbackSeverity::OK,
+            );
+        }
+        return GeneralUtility::makeInstance(
+            ReportStatus::class,
+            'Consistency Status',
+            'Inconsistent files have been found',
+            $inconsistenciesMessage,
+            ContextualFeedbackSeverity::ERROR,
+        );
+    }
+
+    private function checkFolderConsistency(FolderInterface $folder): array
+    {
+        $inconsistencies = [];
+        foreach ($folder->getFiles() as $file) {
+            if (!$file instanceof File) {
+                continue;
+            }
+            try {
+                $this->resourceConsistencyService->validate($file->getStorage(), $file);
+            } catch (ResultException $exception) {
+                $inconsistencies[$file->getCombinedIdentifier()] = array_map(
+                    fn(ResultMessage $hint): string
+                        => $hint->labelBag?->compile($this->getLanguageService()) ?? $hint->message,
+                    $exception->messages
+                );
+            }
+        }
+        foreach ($folder->getSubFolders() as $subFolder) {
+            $inconsistencies = [...$inconsistencies, ...$this->checkFolderConsistency($subFolder)];
+        }
+        return $inconsistencies;
+    }
+
+    /**
+     * @param list<string>|array<string, list<string>> $items
+     */
+    protected function wrapInHtmlUnorderedList(array $items): string
+    {
+        if (array_is_list($items)) {
+            return sprintf(
+                '<ul>%s</ul>',
+                implode('', array_map(
+                    static fn(string $item): string => '<li>' . htmlspecialchars($item) . '</li>',
+                    $items
+                ))
+            );
+        }
+        return sprintf(
+            '<ul>%s</ul>',
+            implode('', array_map(
+                fn(string $key, array $values): string => sprintf(
+                    '<li>%s%s</li>',
+                    htmlspecialchars($key),
+                    $this->wrapInHtmlUnorderedList($values)
+                ),
+                array_keys($items),
+                array_values($items)
+            ))
+        );
     }
 
     protected function getLanguageService(): LanguageService

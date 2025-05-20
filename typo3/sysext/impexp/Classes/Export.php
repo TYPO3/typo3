@@ -37,6 +37,7 @@ use TYPO3\CMS\Core\Localization\Locales;
 use TYPO3\CMS\Core\Resource\Enum\DuplicationBehavior;
 use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsException;
 use TYPO3\CMS\Core\Resource\File;
+use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Schema\Capability\LanguageAwareSchemaCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
@@ -54,6 +55,8 @@ use TYPO3\CMS\Impexp\View\ExportPageTreeView;
 #[Autoconfigure(public: true, shared: false)]
 class Export extends ImportExport
 {
+    use ResourceInstructionTrait;
+
     public const LEVELS_RECORDS_ON_THIS_PAGE = -2;
     public const LEVELS_INFINITE = 999;
 
@@ -1187,12 +1190,14 @@ class Export extends ImportExport
 
         $temporaryFileName = GeneralUtility::tempnam('export');
         GeneralUtility::writeFile($temporaryFileName, $fileContent, true);
+        $this->skipResourceConsistencyCheckForCommands($saveFolder->getStorage(), $temporaryFileName, $fileName);
         $file = $saveFolder->addFile($temporaryFileName, $fileName, DuplicationBehavior::REPLACE);
 
         if ($this->saveFilesOutsideExportFile) {
             $filesFolder = $saveFolder->createFolder($filesFolderName);
             $temporaryFilesForExport = GeneralUtility::getFilesInDir($this->getOrCreateTemporaryFolderName(), '', true);
             foreach ($temporaryFilesForExport as $temporaryFileForExport) {
+                $this->skipResourceConsistencyCheckForCommands($filesFolder->getStorage(), $temporaryFileForExport);
                 $filesFolder->addFile($temporaryFileForExport);
             }
             $this->removeTemporaryFolderName();
