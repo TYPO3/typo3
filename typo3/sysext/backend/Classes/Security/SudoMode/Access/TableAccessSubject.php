@@ -26,7 +26,7 @@ namespace TYPO3\CMS\Backend\Security\SudoMode\Access;
 class TableAccessSubject implements AccessSubjectInterface
 {
     /**
-     * The table column subject, e.g. `tx_foo` or `tx_foo.bar`
+     * The table column subject, e.g. `tx_foo`, `tx_foo.bar` or `tx_foo.bar.123`
      */
     protected string $subject;
 

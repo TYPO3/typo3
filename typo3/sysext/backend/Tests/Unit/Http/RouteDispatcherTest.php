@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Backend\Tests\Unit\Http;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Http\RouteDispatcher;
 use TYPO3\CMS\Backend\Routing\Route;
@@ -51,6 +52,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -65,6 +67,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),
@@ -81,6 +84,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -99,6 +103,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),
@@ -115,6 +120,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -132,6 +138,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),
@@ -148,6 +155,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -163,6 +171,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),
@@ -179,6 +188,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -195,6 +205,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),
@@ -211,6 +222,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -226,6 +238,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),
@@ -242,6 +255,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -257,6 +271,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),
@@ -273,6 +288,7 @@ final class RouteDispatcherTest extends UnitTestCase
         $formProtectionMock->method('validateToken')->with(self::anything())->willReturn(true);
         $formProtectionFactory = $this->createMock(FormProtectionFactory::class);
         $formProtectionFactory->method('createFromRequest')->willReturn($formProtectionMock);
+        $eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
         $accessFactoryMock = $this->createMock(AccessFactory::class);
         $accessStorageMock = $this->createMock(AccessStorage::class);
 
@@ -288,6 +304,7 @@ final class RouteDispatcherTest extends UnitTestCase
 
         $subject = new RouteDispatcher(
             $formProtectionFactory,
+            $eventDispatcherMock,
             $accessFactoryMock,
             $accessStorageMock,
             new Features(),

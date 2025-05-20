@@ -113,6 +113,7 @@ class ServiceProvider extends AbstractServiceProvider
     {
         return self::new($container, RouteDispatcher::class, [
             $container->get(FormProtectionFactory::class),
+            $container->get(EventDispatcherInterface::class),
             $container->get(AccessFactory::class),
             $container->get(AccessStorage::class),
             $container->get(Features::class),

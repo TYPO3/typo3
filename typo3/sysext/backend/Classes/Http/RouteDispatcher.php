@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Http;
 
 use Psr\Container\ContainerInterface;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Routing\Exception\InvalidRequestTokenException;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessFactory;
 use TYPO3\CMS\Backend\Security\SudoMode\Access\AccessStorage;
+use TYPO3\CMS\Backend\Security\SudoMode\Event\SudoModeRequiredEvent;
 use TYPO3\CMS\Backend\Security\SudoMode\Exception\VerificationRequiredException;
 use TYPO3\CMS\Core\Configuration\Features;
 use TYPO3\CMS\Core\Core\Environment;
@@ -42,6 +44,7 @@ class RouteDispatcher extends Dispatcher
 {
     public function __construct(
         protected readonly FormProtectionFactory $formProtectionFactory,
+        protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly AccessFactory $factory,
         protected readonly AccessStorage $storage,
         protected readonly Features $features,
@@ -161,10 +164,14 @@ class RouteDispatcher extends Dispatcher
         }
         // reuse existing matching claim, or create a new one
         $claim = $this->storage->findClaimBySubject($subject)
-            ?? $this->factory->buildClaimForSubjectRequest($request, $subject);
-        throw (new VerificationRequiredException(
-            'Sudo Mode Confirmation Required',
-            1605812020
-        ))->withClaim($claim);
+            ?? $this->factory->buildClaimForSubjectRequest($request, self::class, $subject);
+
+        $event = $this->eventDispatcher->dispatch(new SudoModeRequiredEvent($claim));
+        if ($event->isVerificationRequired()) {
+            throw (new VerificationRequiredException(
+                'Sudo Mode Confirmation Required',
+                1605812020
+            ))->withClaim($claim);
+        }
     }
 }
