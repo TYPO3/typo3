@@ -51,9 +51,10 @@ class RequestFactory implements RequestFactoryInterface
      * @param string $uri the URI to request
      * @param string $method the HTTP method (defaults to GET)
      * @param array $options custom options for this request
+     * @param ?string $context request context
      */
-    public function request(string $uri, string $method = 'GET', array $options = []): ResponseInterface
+    public function request(string $uri, string $method = 'GET', array $options = [], ?string $context = null): ResponseInterface
     {
-        return $this->guzzleFactory->getClient()->request($method, $uri, $options);
+        return $this->guzzleFactory->getClient($context)->request($method, $uri, $options);
     }
 }
