@@ -95,7 +95,7 @@ final class SudoModeController implements LoggerAwareInterface
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
             'verifyActionUri' => $this->buildVerifyActionUriForClaim($claim),
-            'allowInstallToolPassword' => $this->getBackendUser()->isSystemMaintainer(true),
+            'allowInstallToolPassword' => $this->getBackendUser()->isSystemMaintainer(),
             'labels' => $this->getLanguageService()->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf'),
         ]);
         return $view->renderResponse('SudoMode/Module');
@@ -144,7 +144,7 @@ final class SudoModeController implements LoggerAwareInterface
         $password = (string)($request->getParsedBody()['password'] ?? '');
         $useInstallToolPassword = (bool)($request->getParsedBody()['useInstallToolPassword'] ?? false);
         // Only system maintainers are allowed to use the installtool password for sudo mode operations
-        if (!$GLOBALS['BE_USER']->isSystemMaintainer(true)) {
+        if (!$this->getBackendUser()->isSystemMaintainer()) {
             $useInstallToolPassword = false;
         }
         $loggerContext = $this->buildLoggerContext($claim);

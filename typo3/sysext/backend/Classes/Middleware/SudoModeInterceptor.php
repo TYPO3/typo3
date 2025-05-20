@@ -84,7 +84,7 @@ final class SudoModeInterceptor implements MiddlewareInterface, LoggerAwareInter
             return (new JsonResponse([
                 'sudoModeInitialization' => [
                     'verifyActionUri' => (string)$this->controller->buildVerifyActionUriForClaim($claim),
-                    'allowInstallToolPassword' => $GLOBALS['BE_USER']->isSystemMaintainer(true),
+                    'allowInstallToolPassword' => $GLOBALS['BE_USER']->isSystemMaintainer(),
                     'isAjax' => true,
                     'labels' => $GLOBALS['LANG']->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf'),
                 ],
