@@ -726,6 +726,11 @@ return [
                             \TYPO3\CMS\Backend\Form\FormDataProvider\TcaRecordTitle::class,
                         ],
                     ],
+                    \TYPO3\CMS\Backend\Form\FormDataProvider\SystemMaintainerAsReadonly::class => [
+                        'depends' => [
+                            \TYPO3\CMS\Backend\Form\FormDataProvider\EvaluateDisplayConditions::class,
+                        ],
+                    ],
                 ],
                 'tcaSelectTreeAjaxFieldData' => [
                     \TYPO3\CMS\Backend\Form\FormDataProvider\DatabaseEditRow::class => [],
