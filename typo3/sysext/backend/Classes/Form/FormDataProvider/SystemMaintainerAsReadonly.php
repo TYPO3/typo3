@@ -26,8 +26,9 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
- * Special data provider for replacing a database field with the value of
- * the default record in case "l10n_display" is set to "defaultAsReadonly".
+ * Special data provider for setting all fields of the current
+ * record to "readOnly" in case a non system maintainer is editing
+ * a system maintainer record.
  */
 class SystemMaintainerAsReadonly implements FormDataProviderInterface
 {
@@ -35,11 +36,6 @@ class SystemMaintainerAsReadonly implements FormDataProviderInterface
         private readonly FlashMessageService $flashMessageService,
     ) {}
 
-    /**
-     * Check each field for being an overlay, having l10n_display set to defaultAsReadonly
-     * and whether the field exists in the default language row. If so, the current
-     * database value will be replaced by the one from the default language row.
-     */
     public function addData(array $result): array
     {
         if ($result['tableName'] !== 'be_users' || $result['command'] !== 'edit') {
