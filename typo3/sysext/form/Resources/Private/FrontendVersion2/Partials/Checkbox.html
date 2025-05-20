@@ -20,7 +20,7 @@
                     additionalAttributes="{formvh:translateElementProperty(element: element, property: 'fluidAdditionalAttributes')}"
                     aria="{aria}"
                 />
-                <span class="{element.properties.labelTextClassAttribute}">{formvh:translateElementProperty(element: element, property: 'label')}<f:if condition="{element.required}"><f:render partial="Field/Required"/></f:if></span>
+                <span class="{element.properties.labelTextClassAttribute}">{formvh:translateElementProperty(element: element, property: 'label')}<f:if condition="{element.required}"><f:render partial="Field/Required" arguments="{element: element}"/></f:if></span>
             </label>
         </f:render>
     </f:form.validationResults>
