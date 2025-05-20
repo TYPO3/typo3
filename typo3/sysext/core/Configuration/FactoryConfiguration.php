@@ -26,6 +26,8 @@ return [
         'features' => [
             'security.backend.enforceContentSecurityPolicy' => true,
             'security.usePasswordPolicyForFrontendUsers' => true,
+            // only file extensions configured in 'textfile_ext', 'mediafile_ext', 'miscfile_ext' are accepted
+            'security.system.enforceAllowedFileExtensions' => true,
         ],
     ],
 ];

@@ -380,8 +380,13 @@ services:
     arguments:
       $cache: '@cache.typoscript'
 
-  # Core caches, cache.core and cache.assets are injected as early
-  # entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
+  # @todo use Autoconfigure attribute in v13/v14
+  TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService:
+    public: true
+    shared: true
+
+  # Core caches, cache.core, cache.assets and cache.runtime are injected as
+  # early entries in TYPO3\CMS\Core\Core\Bootstrap and therefore omitted here
   cache.hash:
     class: TYPO3\CMS\Core\Cache\Frontend\FrontendInterface
     factory: ['@TYPO3\CMS\Core\Cache\CacheManager', 'getCache']

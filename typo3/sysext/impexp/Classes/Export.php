@@ -38,6 +38,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderWritePermissionsExceptio
 use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParserOptions;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializer;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -51,6 +52,8 @@ use TYPO3\CMS\Impexp\View\ExportPageTreeView;
  */
 class Export extends ImportExport
 {
+    use ResourceInstructionTrait;
+
     public const LEVELS_RECORDS_ON_THIS_PAGE = -2;
     public const LEVELS_EXPANDED_TREE = -1;
     public const LEVELS_INFINITE = 999;
@@ -1423,12 +1426,14 @@ class Export extends ImportExport
 
         $temporaryFileName = GeneralUtility::tempnam('export');
         GeneralUtility::writeFile($temporaryFileName, $fileContent);
+        $this->skipResourceConsistencyCheckForCommands($saveFolder->getStorage(), $temporaryFileName, $fileName);
         $file = $saveFolder->addFile($temporaryFileName, $fileName, 'replace');
 
         if ($this->saveFilesOutsideExportFile) {
             $filesFolder = $saveFolder->createFolder($filesFolderName);
             $temporaryFilesForExport = GeneralUtility::getFilesInDir($this->getOrCreateTemporaryFolderName(), '', true);
             foreach ($temporaryFilesForExport as $temporaryFileForExport) {
+                $this->skipResourceConsistencyCheckForCommands($filesFolder->getStorage(), $temporaryFileForExport);
                 $filesFolder->addFile($temporaryFileForExport);
             }
             $this->removeTemporaryFolderName();

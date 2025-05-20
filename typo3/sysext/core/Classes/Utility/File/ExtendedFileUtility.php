@@ -56,6 +56,7 @@ use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Type\Exception\InvalidEnumerationValueException;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Validation\ResultException;
 
 /**
  * Contains functions for performing file operations like copying, pasting, uploading, moving,
@@ -309,11 +310,29 @@ class ExtendedFileUtility extends BasicFileUtility
      */
     protected function addMessageToFlashMessageQueue($localizationKey, array $replaceMarkers = [], $severity = ContextualFeedbackSeverity::ERROR)
     {
-        if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
-            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()
-        ) {
+        if ($this->isBackendScope()) {
             $label = $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:' . $localizationKey);
             $message = vsprintf($label, $replaceMarkers);
+            $flashMessage = GeneralUtility::makeInstance(
+                FlashMessage::class,
+                $message,
+                '',
+                $severity,
+                true
+            );
+            $this->addFlashMessage($flashMessage);
+        }
+    }
+
+    protected function addEvaluationResultHintsToFlashMessageQueue(
+        ResultException $exception,
+        ContextualFeedbackSeverity $severity = ContextualFeedbackSeverity::ERROR,
+    ): void {
+        if (!$this->isBackendScope()) {
+            return;
+        }
+        foreach ($exception->messages as $messageItem) {
+            $message = $messageItem->labelBag?->compile($this->getLanguageService()) ?? $messageItem->message;
             $flashMessage = GeneralUtility::makeInstance(
                 FlashMessage::class,
                 $message,
@@ -826,6 +845,9 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (NotInMountPointException $e) {
                 $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'Destination path "{destination}" was not within your mountpoints', ['destination' => $targetFile]);
                 $this->addMessageToFlashMessageQueue('FileUtility.DestinationPathWasNotWithinYourMountpoints', [$targetFile]);
+            } catch (ResultException $e) {
+                $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'File {identifier} was not renamed to {destination}', ['identifier' => $sourceFileObject->getName(), 'destination' => $targetFile]);
+                $this->addEvaluationResultHintsToFlashMessageQueue($e);
             } catch (\RuntimeException $e) {
                 $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'File "{identifier}" was not renamed. Write-permission problem in "{destination}"?', ['identifier' => $sourceFileObject->getName(), 'destination' => $targetFile]);
                 $this->addMessageToFlashMessageQueue('FileUtility.FileWasNotRenamed', [$sourceFileObject->getName(), $targetFile]);
@@ -855,6 +877,9 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (NotInMountPointException $e) {
                 $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'Destination path "{destination}" was not within your mountpoints', ['destination' => $targetFile]);
                 $this->addMessageToFlashMessageQueue('FileUtility.DestinationPathWasNotWithinYourMountpoints', [$targetFile]);
+            } catch (ResultException $e) {
+                $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'File {identifier} was not renamed to {destination}', ['identifier' => $sourceFileObject->getName(), 'destination' => $targetFile]);
+                $this->addEvaluationResultHintsToFlashMessageQueue($e);
             } catch (\RuntimeException $e) {
                 $this->writeLog(SystemLogFileAction::RENAME, SystemLogErrorClassification::USER_ERROR, 'Directory "{identifier}" was not renamed. Write-permission problem in "{destination}"?', ['identifier' => $sourceFileObject->getName(), 'destination' => $targetFile]);
                 $this->addMessageToFlashMessageQueue('FileUtility.DirectoryWasNotRenamed', [$sourceFileObject->getName(), $targetFile]);
@@ -1094,6 +1119,9 @@ class ExtendedFileUtility extends BasicFileUtility
             } catch (ExistingTargetFileNameException $e) {
                 $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 'No unique filename available in "{destination}"', ['destination' => $targetFolderObject->getIdentifier()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.NoUniqueFilenameAvailableIn', [$targetFolderObject->getIdentifier()]);
+            } catch (ResultException $e) {
+                $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 'Uploading file "{identifier}" to "{destination}" failed', ['identifier' => $fileInfo['name'], 'destination' => $targetFolderObject->getIdentifier()]);
+                $this->addEvaluationResultHintsToFlashMessageQueue($e);
             } catch (\RuntimeException $e) {
                 $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 'Uploaded file could not be moved. Write-permission problem in "{destination}"? Error: {error}', ['destination' => $targetFolderObject->getIdentifier(), 'error' => $e->getMessage()]);
                 $this->addMessageToFlashMessageQueue('FileUtility.UploadedFileCouldNotBeMoved', [$targetFolderObject->getIdentifier()]);
@@ -1168,6 +1196,9 @@ class ExtendedFileUtility extends BasicFileUtility
         } catch (ExistingTargetFileNameException $e) {
             $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 'No unique filename available in "{destination}"', ['destination' => $fileObjectToReplace->getIdentifier()]);
             $this->addMessageToFlashMessageQueue('FileUtility.NoUniqueFilenameAvailableIn', [$fileObjectToReplace->getIdentifier()]);
+        } catch (ResultException $e) {
+            $this->writeLog(SystemLogFileAction::UPLOAD, SystemLogErrorClassification::USER_ERROR, 'Replacing file "{identifier}" to "{destination}" failed', ['identifier' => $fileInfo['name'], 'destination' => $fileObjectToReplace->getIdentifier()]);
+            $this->addEvaluationResultHintsToFlashMessageQueue($e);
         } catch (\RuntimeException $e) {
             throw $e;
         }
@@ -1183,6 +1214,12 @@ class ExtendedFileUtility extends BasicFileUtility
 
         $defaultFlashMessageQueue = $flashMessageService->getMessageQueueByIdentifier();
         $defaultFlashMessageQueue->enqueue($flashMessage);
+    }
+
+    protected function isBackendScope(): bool
+    {
+        return ($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+            && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend();
     }
 
     /**

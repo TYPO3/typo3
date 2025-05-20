@@ -85,11 +85,13 @@ use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResult;
 use TYPO3\CMS\Core\Resource\Search\Result\FileSearchResultInterface;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
 use TYPO3\CMS\Core\Resource\Service\FileProcessingService;
+use TYPO3\CMS\Core\Resource\Service\ResourceConsistencyService;
 use TYPO3\CMS\Core\Service\FlexFormService;
 use TYPO3\CMS\Core\Utility\Exception\NotImplementedMethodException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
+use TYPO3\CMS\Core\Validation\ResultException;
 
 /**
  * A "mount point" inside the TYPO3 file handling.
@@ -1142,6 +1144,14 @@ class ResourceStorage implements ResourceStorageInterface
     }
 
     /**
+     * @throws ResultException
+     */
+    protected function assureResourceConsistency(string|FileInterface $resource, string $fileName = ''): void
+    {
+        GeneralUtility::makeInstance(ResourceConsistencyService::class)->validate($this, $resource, $fileName);
+    }
+
+    /**
      * Check if a file has the permission to be copied on a File/Folder/Storage,
      * if not throw an exception
      *
@@ -1263,6 +1273,7 @@ class ResourceStorage implements ResourceStorageInterface
         )->getFileName();
 
         $this->assureFileAddPermissions($targetFolder, $targetFileName);
+        $this->assureResourceConsistency($localFilePath, $targetFileName);
 
         $replaceExisting = false;
         if ($conflictMode->equals(DuplicationBehavior::CANCEL) && $this->driver->fileExistsInFolder($targetFileName, $targetFolder->getIdentifier())) {
@@ -2051,6 +2062,8 @@ class ResourceStorage implements ResourceStorageInterface
             return $file;
         }
         $this->assureFileRenamePermissions($file, $sanitizedTargetFileName);
+        $this->assureResourceConsistency($file, $sanitizedTargetFileName);
+
         $this->eventDispatcher->dispatch(
             new BeforeFileRenamedEvent($file, $sanitizedTargetFileName)
         );
@@ -2098,6 +2111,8 @@ class ResourceStorage implements ResourceStorageInterface
     public function replaceFile(FileInterface $file, $localFilePath)
     {
         $this->assureFileReplacePermissions($file);
+        $this->assureResourceConsistency($localFilePath, $file->getName());
+
         if (!file_exists($localFilePath)) {
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
         }
@@ -2134,6 +2149,8 @@ class ResourceStorage implements ResourceStorageInterface
         $targetFolder ??= $this->getDefaultFolder();
 
         $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $size);
+        $this->assureResourceConsistency($localFilePath, $targetFileName);
+
         if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode->equals(DuplicationBehavior::REPLACE)) {
             $file = $this->getFileInFolder($targetFileName, $targetFolder);
             $resultObject = $this->replaceFile($file, $localFilePath);

@@ -109,6 +109,9 @@ SYS:
         mediafile_ext:
             type: text
             description: 'Commalist of file extensions perceived as media files by TYPO3. Lowercase and no spaces between!'
+        miscfile_ext:
+          type: list
+          description: "Commalist of file extensions that don't logically fit into `textfile_ext` or `mediafile_ext` (like `zip` or `xz`). Lowercase and no spaces between!"
         binPath:
             type: text
             description: 'List of absolute paths where external programs should be searched for. Eg. <code>/usr/local/webbin/,/home/xyz/bin/</code>. (ImageMagick path have to be configured separately)'
@@ -222,6 +225,12 @@ SYS:
                 description: 'If on, the configured password policy in `$GLOBALS[TYPO3_CONF_VARS][FE][passwordPolicy]`
                   will be used for frontend user password validation. This applies to the new password in the password
                   recovery function and the password field in `fe_users` table. It is recommended to enable this option.'
+              security.system.enforceAllowedFileExtensions:
+                type: bool
+                description: 'If on, only file extensions configured in `textfile_ext`, `mediafile_ext` and `miscfile_ext` are allowed to be processed in the File Abstraction Layer.'
+              security.system.enforceFileExtensionMimeTypeConsistency:
+                type: bool
+                description: 'If on, only file extensions that are consistent with their expected mime-type are allowed to be processed in the File Abstraction Layer.'
         availablePasswordHashAlgorithms:
             type: array
             description: 'A list of available password hash mechanisms. Extensions may register additional mechanisms here. This is usually not extended in system/settings.php.'
