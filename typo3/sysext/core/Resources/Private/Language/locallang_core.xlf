@@ -1480,7 +1480,10 @@ Do you want to refresh it now?</source>
 				<source>"%s" is not a valid e-mail address.</source>
 			</trans-unit>
 			<trans-unit id="error.adminCanNotChangeSystemMaintainer" resname="error.adminCanNotChangeSystemMaintainer">
-				<source>Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated.</source>
+				<source>Non system maintainers cannot change details of system maintainers. The values have not been updated.</source>
+			</trans-unit>
+			<trans-unit id="formEngine.beUser.information.adminCanNotChangeSystemMaintainer">
+				<source>This user is a system maintainer. Changing details of system maintainers is not allowed.</source>
 			</trans-unit>
 			<trans-unit id="formEngine.beUser.admin.information.userIsSystemMaintainer" resname="formEngine.beUser.admin.information.userIsSystemMaintainer">
 				<source>This user is a system maintainer</source>

@@ -1442,33 +1442,6 @@ class DataHandler implements LoggerAwareInterface
             }
         }
 
-        if ($table === 'be_users'
-            && ($field === 'admin' || $field === 'password')
-            && $status === 'update'
-        ) {
-            // Do not allow a non system maintainer admin to change admin flag and password of system maintainers
-            $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
-            // False if current user is not in system maintainer list or if switch to user mode is active
-            $isCurrentUserSystemMaintainer = $this->BE_USER->isSystemMaintainer();
-            $isTargetUserInSystemMaintainerList = in_array((int)$id, $systemMaintainers, true);
-            if ($field === 'admin') {
-                $isFieldChanged = (int)$curValueRec[$field] !== (int)$value;
-            } else {
-                $isFieldChanged = $curValueRec[$field] !== $value;
-            }
-            if (!$isCurrentUserSystemMaintainer && $isTargetUserInSystemMaintainerList && $isFieldChanged) {
-                $value = $curValueRec[$field];
-                $this->log(
-                    $table,
-                    (int)$id,
-                    SystemLogDatabaseAction::UPDATE,
-                    0,
-                    SystemLogErrorClassification::SECURITY_NOTICE,
-                    'Only system maintainers can change the admin flag and password of other system maintainers. The value has not been updated'
-                );
-            }
-        }
-
         // Getting config for the field
         $tcaFieldConf = $this->resolveFieldConfigurationAndRespectColumnsOverrides($table, $field);
 

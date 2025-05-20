@@ -302,6 +302,7 @@ class SetupModuleController
                 // This is to make sure that the users record can be updated even if in another workspace. This is tolerated.
                 $dataHandler->bypassWorkspaceRestrictions = true;
                 $dataHandler->process_datamap();
+                $dataHandler->printLogErrorMessages();
                 // reset the user record admin flag to previous value, just in case it gets used any further.
                 $backendUser->user['admin'] = $savedUserAdminState;
                 if ($this->passwordIsUpdated === self::PASSWORD_NOT_UPDATED || count($storeRec['be_users'][$beUserId]) > 1) {

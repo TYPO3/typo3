@@ -96,6 +96,9 @@ services:
   TYPO3\CMS\Backend\Form\FormDataProvider\SiteDatabaseEditRow:
     public: true
 
+  TYPO3\CMS\Backend\Form\FormDataProvider\SystemMaintainerAsReadonly:
+    public: true
+
   TYPO3\CMS\Backend\RecordList\DatabaseRecordList:
     shared: false
     public: true

@@ -49,31 +49,21 @@ class AdminIsSystemMaintainer extends AbstractNode
             return $resultArray;
         }
 
-        // False, if the current user is not in the list of system maintainers, or if the switch to user mode is active
-        $isCurrentUserSystemMaintainer = $this->getBackendUser()->isSystemMaintainer();
         $systemMaintainers = array_map('intval', $GLOBALS['TYPO3_CONF_VARS']['SYS']['systemMaintainers'] ?? []);
         $isTargetUserInSystemMaintainerList = in_array((int)$this->data['vanillaUid'], $systemMaintainers, true);
-
         if ($isTargetUserInSystemMaintainerList) {
             $languageService = $this->getLanguageService();
             $isTargetUserAdmin = (int)$this->data['databaseRow']['admin'] === 1;
-            if ($isCurrentUserSystemMaintainer) {
-                if ($isTargetUserAdmin) {
-                    // User is a system maintainer
-                    $fieldInformationText = '<strong>' . htmlspecialchars($languageService->sL(
-                        'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userIsSystemMaintainer'
-                    )) . '</strong>';
-                } else {
-                    // User is currently not an admin, but set as system maintainer (in-effective).
-                    // If admin field is set to 1, the user is therefore system maintainer again.
-                    $fieldInformationText = '<strong>' . htmlspecialchars($languageService->sL(
-                        'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userWillBecomeSystemMaintainer'
-                    )) . '</strong>';
-                }
-            } else {
-                // User is in system maintainer list, user can not change admin and password
+            if ($isTargetUserAdmin) {
+                // User is a system maintainer
                 $fieldInformationText = '<strong>' . htmlspecialchars($languageService->sL(
-                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userAdminAndPasswordChangeNotAllowed'
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userIsSystemMaintainer'
+                )) . '</strong>';
+            } else {
+                // User is currently not an admin, but set as system maintainer (in-effective).
+                // If admin field is set to 1, the user is therefore system maintainer again.
+                $fieldInformationText = '<strong>' . htmlspecialchars($languageService->sL(
+                    'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:formEngine.beUser.admin.information.userWillBecomeSystemMaintainer'
                 )) . '</strong>';
             }
             $resultArray['html'] = $fieldInformationText;
