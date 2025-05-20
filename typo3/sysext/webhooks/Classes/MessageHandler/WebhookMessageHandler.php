@@ -77,7 +77,8 @@ class WebhookMessageHandler
         return $this->requestFactory->request(
             $webhookInstruction->getTargetUrl(),
             $webhookInstruction->getHttpMethod(),
-            $options
+            $options,
+            'webhooks',
         );
     }
 
