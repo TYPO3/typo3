@@ -29,9 +29,11 @@ class FileInfo extends \SplFileInfo implements TypeInterface
      * TYPO3 specific settings in $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'] take
      * precedence over native resolving.
      *
+     * @param string $targetFileName supplied during uploads (where the concrete file is a temporary extension-less file)
+     *                               and may be used by mimeTypeGuessers to match based on desired file name
      * @return string|false Returns the mime type or FALSE if the mime type could not be discovered
      */
-    public function getMimeType()
+    public function getMimeType(string $targetFileName = '')
     {
         $mimeType = false;
         if ($this->isFile()) {
@@ -52,6 +54,7 @@ class FileInfo extends \SplFileInfo implements TypeInterface
         foreach ($GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][\TYPO3\CMS\Core\Type\File\FileInfo::class]['mimeTypeGuessers'] ?? [] as $mimeTypeGuesser) {
             $hookParameters = [
                 'mimeType' => &$mimeType,
+                'targetFileName' => $targetFileName === '' ? null : $targetFileName,
             ];
 
             GeneralUtility::callUserFunction(
