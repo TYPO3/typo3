@@ -219,20 +219,21 @@ readonly class LoginController
     }
 
     /**
-     * If a login provider was chosen in the previous request, which is not the default provider,
-     * it is stored in a Cookie and appended to the HTTP Response.
+     * A login provider, which is not the primary one, is remembered in a cookie. Once the primary
+     * provider is used again, an existing cookie is expired instead of being set to the default.
      */
     protected function appendLoginProviderCookie(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $normalizedParams = $request->getAttribute('normalizedParams');
         $loginProviderIdentifier = $this->loginProviderResolver->resolveLoginProviderIdentifierFromRequest($request, 'be_lastLoginProvider');
-        if ($loginProviderIdentifier === $this->loginProviderResolver->getPrimaryLoginProviderIdentifier()) {
+        $isPrimaryProvider = $loginProviderIdentifier === $this->loginProviderResolver->getPrimaryLoginProviderIdentifier();
+        if ($isPrimaryProvider && !isset($request->getCookieParams()['be_lastLoginProvider'])) {
             return $response;
         }
         $cookie = new Cookie(
             'be_lastLoginProvider',
-            $loginProviderIdentifier,
-            $GLOBALS['EXEC_TIME'] + 7776000, // 90 days
+            $isPrimaryProvider ? '' : $loginProviderIdentifier,
+            $isPrimaryProvider ? 1 : $GLOBALS['EXEC_TIME'] + 7776000, // expired, or 90 days
             $this->backendEntryPointResolver->getPathFromRequest($request),
             '',
             // Use the secure option when the current request is served by a secure connection
