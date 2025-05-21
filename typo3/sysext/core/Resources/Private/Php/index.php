@@ -13,9 +13,21 @@
  * The TYPO3 project - inspiring people to share!
  */
 
-// Set up the application for the frontend
 call_user_func(static function () {
     $classLoader = require __DIR__ . '/../../../../../../vendor/autoload.php';
     \TYPO3\CMS\Core\Core\SystemEnvironmentBuilder::run();
-    \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader)->get(\TYPO3\CMS\Core\Http\Application::class)->run();
+
+    $isInstallToolDirectAccess = false;
+    if (class_exists(\TYPO3\CMS\Install\Http\Application::class)) {
+        $isInstallToolDirectAccess = isset($_GET['__typo3_install']);
+    }
+
+    $container = \TYPO3\CMS\Core\Core\Bootstrap::init($classLoader, $isInstallToolDirectAccess);
+
+    if ($isInstallToolDirectAccess || $container->get('boot.state')->failsafe) {
+        $container->get(\TYPO3\CMS\Install\Http\Application::class)->run();
+        return;
+    }
+
+    $container->get(\TYPO3\CMS\Core\Http\Application::class)->run();
 });

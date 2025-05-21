@@ -50,16 +50,6 @@ class BackendEntryPointResolver
      */
     public function getUriFromRequest(ServerRequestInterface $request, string $additionalPathPart = ''): UriInterface
     {
-        if (str_starts_with(ltrim($additionalPathPart, '/'), 'install.php')) {
-            // install entrypoint not configurable yet, therefore it's essential to return the static `typo3/install.php`
-            // uri - otherwise wrong redirect would happen and leading to nested backend for admin area displayed.
-            if ($request->getAttribute('normalizedParams') instanceof NormalizedParams) {
-                $normalizedParams = $request->getAttribute('normalizedParams');
-            } else {
-                $normalizedParams = NormalizedParams::createFromRequest($request);
-            }
-            return new Uri($normalizedParams->getSiteUrl() . 'typo3/install.php');
-        }
         $entryPoint = $this->getEntryPointConfiguration();
         if (str_starts_with($entryPoint, 'https://') || str_starts_with($entryPoint, 'http://')) {
             // fqdn, early return as all required information are available.

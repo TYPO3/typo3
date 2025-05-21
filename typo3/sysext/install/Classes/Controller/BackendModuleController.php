@@ -22,8 +22,6 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
-use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -114,8 +112,8 @@ class BackendModuleController
         $this->sessionService->installSessionHandler();
         $this->sessionService->startSession();
         $this->sessionService->setAuthorizedBackendSession($userSession);
-        $entryPointResolver = GeneralUtility::makeInstance(BackendEntryPointResolver::class);
-        $redirectLocation = $entryPointResolver->getUriFromRequest($request, 'install.php')->withQuery('?' . http_build_query($redirectParameters, '', '&', PHP_QUERY_RFC3986));
+        $normalizedParams = $request->getAttribute('normalizedParams');
+        $redirectLocation = $normalizedParams->getSiteUrl() . '?__typo3_install&' . http_build_query($redirectParameters, '', '&', PHP_QUERY_RFC3986);
         return new RedirectResponse($redirectLocation, 303);
     }
 

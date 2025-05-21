@@ -29,7 +29,7 @@ class AbstractCest
 
     public function _before(ApplicationTester $I): void
     {
-        $I->amOnPage('typo3/install.php');
+        $I->amOnPage('?__typo3_install');
     }
 
     public function _after(ApplicationTester $I): void

@@ -247,6 +247,7 @@ export class ModuleRouter extends LitElement {
       // module in order to advertise a proper module URL on it's own
       if (params.has('install[controller]')) {
         const controller = params.get('install[controller]');
+        params.delete('__typo3_install');
         params.delete('install[controller]');
         params.delete('install[context]');
         params.delete('install[colorScheme]');

@@ -122,7 +122,7 @@ readonly class PasswordHashFactory
             throw new InvalidPasswordHashException(
                 'Configured default hash method ' . $defaultHashClassName . ' is not available. If'
                 . ' the instance has just been upgraded, please log in to the standalone install tool'
-                . ' at typo3/install.php to fix this. Follow the documentation link for more details.',
+                . ' at ?__typo3_install to fix this. Follow the documentation link for more details.',
                 1533822084
             );
         }

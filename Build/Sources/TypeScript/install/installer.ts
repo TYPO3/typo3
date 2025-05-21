@@ -97,12 +97,12 @@ class Installer {
   }
 
   private getUrl(action?: string): string {
-    let url: string = location.href;
-    url = url.replace(location.search, '');
+    const url = new URL(window.location.toString());
+    url.search = '?__typo3_install';
     if (action !== undefined) {
-      url = url + '?install[action]=' + action;
+      url.searchParams.set('install[action]', action);
     }
-    return url;
+    return url.toString();
   }
 
   private setProgress(done: number): void {

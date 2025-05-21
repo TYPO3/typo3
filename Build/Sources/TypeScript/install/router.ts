@@ -108,7 +108,7 @@ class Router {
     if (typeof TYPO3.settings === 'undefined') {
       TYPO3.settings = {
         ajaxUrls: {
-          icons: window.location.origin + window.location.pathname + '?install[controller]=icon&install[action]=getIcon',
+          icons: window.location.origin + window.location.pathname + '?__typo3_install&install[controller]=icon&install[action]=getIcon',
         },
       } as unknown as typeof TYPO3.settings;
     }
@@ -116,6 +116,7 @@ class Router {
 
   public getUrl(action?: string, controller?: string, additionalQueryParams?: Record<string, string>): string {
     const url = new URL(location.href, window.origin);
+    url.searchParams.set('__typo3_install', '');
     url.searchParams.set('install[controller]', controller ?? this.controller);
     url.searchParams.set('install[context]', this.context);
     if (action !== undefined) {

@@ -108,6 +108,7 @@ class LayoutController extends AbstractController
         $view = $this->initializeView($request);
         $view->assign('moduleName', 'tools_tools' . ($request->getQueryParams()['install']['module'] ?? 'layout'));
         $view->assign('backendUrl', (string)$this->backendEntryPointResolver->getUriFromRequest($request));
+        $view->assign('frontendUrl', $request->getAttribute('normalizedParams')->getSiteUrl());
         return new JsonResponse([
             'success' => true,
             'html' => $view->render('Layout/MainLayout'),

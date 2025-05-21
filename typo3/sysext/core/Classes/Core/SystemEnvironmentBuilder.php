@@ -312,9 +312,9 @@ class SystemEnvironmentBuilder
      * This is based on the amount of subdirectories "under" root path where $scriptPath is located.
      *
      * The following main scenarios for entry points exist by default in the TYPO3 core:
-     * - Directly called documentRoot/index.php (-> FE call or eiD include): index.php is located in the same directory
-     * as the main project. The document root is identical to the directory the script is located at.
-     * - The install tool, located under typo3/install.php.
+     * - Directly called documentRoot/index.php (-> FE, BE or install tool call):
+     *   index.php is located in the same directory as the main project.
+     *   The document root is identical to the directory the script is located at.
      * - The CLI script 'typo3/sysext/core/bin/typo3' which is located inside typo3/ directly.
      *
      * @param string $scriptPath Calculated path to the entry script

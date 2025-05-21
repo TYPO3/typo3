@@ -113,6 +113,7 @@ class Bootstrap
         $bootState = new \stdClass();
         $bootState->complete = false;
         $bootState->cacheDisabled = $disableCaching;
+        $bootState->failsafe = $failsafe;
 
         $builder = new ContainerBuilder([
             ClassLoader::class => $classLoader,
