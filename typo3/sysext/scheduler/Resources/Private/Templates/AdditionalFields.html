@@ -3,6 +3,172 @@
     data-namespace-typo3-fluid="true"
 >
 
-<f:render partial="AddEditAdditionalFields" arguments="{currentData: currentData, additionalFields: additionalFields}" />
+
+<f:for each="{additionalFields}" as="field">
+    <div
+        class="form-group extraFields extra_fields_{field.htmlClassName}"
+        {f:if(condition: '{currentData.taskType} != {field.taskType}', then:'hidden')}
+    id="{field.fieldID}_row"
+    >
+    <f:if condition="{field.renderType} == 'check'">
+        <f:then>
+            <label class="form-label">{field.langLabel}</label>
+        </f:then>
+        <f:else if="{field.renderType} == 'commandOption'">
+            <label class="form-label" for="{field.fieldID}_values">{field.langLabel}</label>
+        </f:else>
+        <f:else>
+            <label class="form-label" for="{field.fieldID}">{field.langLabel}</label>
+        </f:else>
+    </f:if>
+    <f:if condition="{field.browser} == 'page'">
+        <f:then>
+            <f:comment><!--  A page browser button. Used in ext:linkvalidator task. See issue #12211. --></f:comment>
+            <div class="formengine-field-item t3js-formengine-field-item">
+                <div class="form-wizards-wrap">
+                    <div class="form-wizards-item-element">
+                        {field.code -> f:format.raw()}
+                    </div>
+                    <div class="form-wizards-item-aside form-wizards-item-aside--field-control">
+                        <div class="btn-group-vertical">
+                            <f:be.link
+                                route="wizard_element_browser"
+                                class="t3js-element-browser btn btn-default"
+                                data="{trigger-for: field.fieldID, mode:'db', params: field.browserParams}"
+                                title="{f:translate(key:'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.browse_db')}"
+                                type="button"
+                            >
+                                <core:icon identifier="actions-insert-record" />
+                            </f:be.link>
+                        </div>
+                    </div>
+                    <f:if condition="{field.pageUid}">
+                        <div class="form-wizards-item-bottom">
+                            <div class="table-fit">
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <td class="col-icon">
+                                            <core:icon identifier="apps-pagetree-page-default" />
+                                        </td>
+                                        <td class="col-title">
+                                            <span class="text-body-secondary">{field.pageTitle} [{field.pageUid}]</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </f:if>
+                </div>
+            </div>
+        </f:then>
+        <f:else>
+            <f:if condition="{field.renderType} == 'select'">
+                <f:then>
+                    <div class="formengine-field-item t3js-formengine-field-item">
+                        <f:if condition="{field.description}">
+                            <div class="form-description">{field.description}</div>
+                        </f:if>
+                        <div class="form-control-wrap">
+                            <div class="form-wizards-wrap">
+                                <div class="form-wizards-item-element">
+                                    {field.code -> f:format.raw()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:then>
+                <f:else if="{field.renderType} == 'input'">
+                    <div class="formengine-field-item t3js-formengine-field-item">
+                        <f:if condition="{field.description}">
+                            <div class="form-description">{field.description}</div>
+                        </f:if>
+                        <div class="form-control-wrap">
+                            <div class="form-wizards-wrap">
+                                <div class="form-wizards-item-element">
+                                    {field.code -> f:format.raw()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:else>
+                <f:else if="{field.renderType} == 'textarea'">
+                    <typo3-formengine-element-text class="formengine-field-item t3js-formengine-field-item">
+                        <f:if condition="{field.description}">
+                            <div class="form-description">{field.description}</div>
+                        </f:if>
+                        <div class="form-control-wrap">
+                            <div class="form-wizards-wrap">
+                                <div class="form-wizards-item-element">
+                                    {field.code -> f:format.raw()}
+                                </div>
+                            </div>
+                        </div>
+                    </typo3-formengine-element-text>
+                </f:else>
+                <f:else if="{field.renderType} == 'check'">
+                    <div class="formengine-field-item t3js-formengine-field-item">
+                        <f:if condition="{field.description}">
+                            <div class="form-description">{field.description}</div>
+                        </f:if>
+                        <div class="form-wizards-wrap">
+                            <div class="form-wizards-item-element">
+                                <div class="form-check form-check-type-icon-toggle">
+                                    {field.code -> f:format.raw()}
+                                    <label class="form-check-label" for="{field.fieldID}">
+                                            <span class="form-check-label-icon">
+                                                <span class="form-check-label-icon-checked">
+                                                    <core:icon identifier="actions-check" size="small" alternativeMarkupIdentifier="inline" />
+                                                </span>
+                                                <span class="form-check-label-icon-unchecked">
+                                                    <core:icon identifier="miscellaneous-placeholder" size="small" alternativeMarkupIdentifier="inline" />
+                                                </span>
+                                            </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:else>
+                <f:else if="{field.renderType} == 'checkToggle'">
+                    <div class="formengine-field-item t3js-formengine-field-item">
+                        <f:if condition="{field.description}">
+                            <div class="form-description">{field.description}</div>
+                        </f:if>
+                        <div class="form-wizards-wrap">
+                            <div class="form-wizards-item-element">
+                                <div class="form-check form-switch">
+                                    {field.code -> f:format.raw()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:else>
+                <f:else if="{field.renderType} == 'commandOption'">
+                    <div class="formengine-field-item t3js-formengine-field-item">
+                        <f:if condition="{field.description}">
+                            <div class="form-description">{field.description}</div>
+                        </f:if>
+                        <div class="form-check t3-form-field-eval-null-checkbox">
+                            {field.code.html -> f:format.raw()}
+                        </div>
+                        <div class="form-control-wrap">
+                            <div class="form-wizards-wrap">
+                                <div class="form-wizards-item-element">
+                                    {field.code.optionValueField -> f:format.raw()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </f:else>
+                <f:else>
+                    {field.code -> f:format.raw()}
+                </f:else>
+            </f:if>
+        </f:else>
+    </f:if>
+    </div>
+</f:for>
 
 </html>

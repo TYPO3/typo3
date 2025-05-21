@@ -71,12 +71,12 @@ class Execution
     public static function createFromDetails(array $details): self
     {
         $obj = new self();
-        $obj->setStart((int)$details['start']);
-        $obj->setEnd((int)$details['end']);
-        $obj->setInterval((int)$details['interval']);
-        $obj->setMultiple((bool)$details['multiple']);
-        $obj->setCronCmd((string)$details['cronCmd']);
-        $obj->setIsNewSingleExecution((bool)$details['isNewSingleExecution']);
+        $obj->setStart((int)($details['start'] ?? 0));
+        $obj->setEnd((int)($details['end'] ?? 0));
+        $obj->setInterval((int)($details['interval'] ?? 0));
+        $obj->setMultiple((bool)($details['multiple'] ?? false));
+        $obj->setCronCmd((string)($details['cronCmd'] ?? ''));
+        $obj->setIsNewSingleExecution((bool)($details['isNewSingleExecution'] ?? false));
         return $obj;
     }
 
@@ -203,7 +203,7 @@ class Execution
      *
      * @return bool TRUE if concurrent executions are allowed, FALSE otherwise
      */
-    public function getMultiple()
+    public function isParallelExecutionAllowed(): bool
     {
         return (bool)$this->multiple;
     }

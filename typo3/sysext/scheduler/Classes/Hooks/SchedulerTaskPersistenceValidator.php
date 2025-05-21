@@ -30,7 +30,6 @@ use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\CronCommand\NormalizeCommand;
 use TYPO3\CMS\Scheduler\Domain\Repository\SchedulerTaskRepository;
 use TYPO3\CMS\Scheduler\Exception\InvalidDateException;
-use TYPO3\CMS\Scheduler\Execution;
 use TYPO3\CMS\Scheduler\SchedulerManagementAction;
 use TYPO3\CMS\Scheduler\Service\TaskService;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
@@ -181,7 +180,7 @@ final readonly class SchedulerTaskPersistenceValidator
         if ($runningType === AbstractTask::TYPE_RECURRING && !empty($endTime)) {
             try {
                 $endTime = $this->getTimestampFromDateString($endTime);
-            } catch (InvalidDateException $e) {
+            } catch (InvalidDateException) {
                 $result = false;
                 $this->addErrorMessage($dataHandler, $taskId, 'LLL:EXT:scheduler/Resources/Private/Language/locallang.xlf:msg.invalidStartDate');
             }

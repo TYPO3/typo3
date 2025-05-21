@@ -96,7 +96,7 @@ class TimingOptionsElement extends AbstractFormElement
         $multiple->data['parameterArray']['itemFormElName'] .= '[multiple]';
         $multiple->data['parameterArray']['fieldConf']['config']['items'] = [];
         $multiple->data['parameterArray']['fieldChangeFunc'] = [];
-        $multiple->data['parameterArray']['itemFormElValue'] = $executionDetails->getMultiple();
+        $multiple->data['parameterArray']['itemFormElValue'] = $executionDetails->isParallelExecutionAllowed();
         $subFieldResult = $multiple->render();
         $resultArray['javaScriptModules'] = array_merge($resultArray['javaScriptModules'], $subFieldResult['javaScriptModules']);
         $fieldsHtml .= '<div class="form-group col-sm-6 t3js-timing-options-parallel">' . $subFieldResult['html'] . '</div>';

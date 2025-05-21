@@ -144,7 +144,7 @@ class Scheduler implements SingletonInterface
         // Reserve an id for the upcoming execution
         $executionID = $this->schedulerTaskRepository->addExecutionToTask($task);
         // Make sure we're the only one executing a single-execution-only task
-        if (!$task->areMultipleExecutionsAllowed() && $executionID > 0) {
+        if (!$task->getExecution()?->isParallelExecutionAllowed() && $executionID > 0) {
             $this->schedulerTaskRepository->removeExecutionOfTask($task, $executionID);
             $this->logger->info('Task is already running and multiple executions are not allowed, skipping! Task Type: {taskType}, UID: {uid}', [
                 'taskType' => $task->getTaskType(),

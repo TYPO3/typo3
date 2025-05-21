@@ -57,7 +57,7 @@ final class TasksCest
     public function canRunTask(ApplicationTester $I): void
     {
         // run the task
-        $I->click('button[name="execute"]');
+        $I->click('button[name="action[execute]"]');
         $I->waitForText('Task "System Status Update [reports]" with uid');
         $I->seeElement('[data-module-name="scheduler_manage"] tr[data-task-disabled="true"]');
         $I->see('disabled');

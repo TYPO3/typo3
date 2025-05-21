@@ -3891,8 +3891,6 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .tx_recycler_recycler tr.collapse.show{display:table-row}
 .scheduler-sortable-handle{cursor:move!important}
 .scheduler-panel+.scheduler-panel{margin-top:calc(var(--typo3-spacing)*1.5)}
-.task-form .form-wizards-wrap{margin-bottom:.5rem!important}
-.task-form .row{max-width:800px}
 @media (min-width:1200px){
 .scheduler-info-text{width:90%}}
 .module-styleguide .module-body{container-type:inline-size;display:flex;flex-wrap:wrap;gap:2.5rem}

@@ -509,11 +509,9 @@ class DatabaseIntegrityController
         $this->init('queryConfig', $this->MOD_SETTINGS['queryTable'] ?? '', '', $this->MOD_SETTINGS);
 
         $output .=  '<h2>' . $lang->sL('LLL:EXT:lowlevel/Resources/Private/Language/locallang.xlf:fullSearch.section.querySettings') . '</h2>';
-        $output .= '<div class="task-form">';
         $output .=   '<fieldset class="form-section">';
         $output .=     $this->makeSelectorTable($this->MOD_SETTINGS, $request);
         $output .=   '</fieldset>';
-        $output .= '</div>';
         $mQ = $this->MOD_SETTINGS['search_query_makeQuery'] ?? '';
 
         // Make form elements:

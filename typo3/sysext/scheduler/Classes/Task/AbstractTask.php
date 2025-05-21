@@ -284,39 +284,6 @@ abstract class AbstractTask implements LoggerAwareInterface
     }
 
     /**
-     * Returns the timestamp for next due execution of the task
-     *
-     * @return int Date and time of the next execution as a timestamp
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function getNextDueExecution()
-    {
-        // NOTE: this call may throw an exception, but we let it bubble up
-        return $this->execution->getNextExecution();
-    }
-
-    /**
-     * Returns TRUE if several runs of the task are allowed concurrently
-     *
-     * @return bool TRUE if concurrent executions are allowed, FALSE otherwise
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function areMultipleExecutionsAllowed()
-    {
-        return $this->execution->getMultiple();
-    }
-
-    /**
-     * Stops the task, by replacing the execution object by an empty one
-     * NOTE: the task still needs to be saved after that
-     * @internal since TYPO3 v12.3, not part of TYPO3 Public API anymore.
-     */
-    public function stop()
-    {
-        $this->execution = new Execution();
-    }
-
-    /**
      * Guess recurring type from the existing information
      * If an interval or a cron command is defined, it's a recurring task
      */

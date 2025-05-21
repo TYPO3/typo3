@@ -3625,12 +3625,6 @@ parameters:
 			path: ../../typo3/sysext/reports/Classes/Task/SystemStatusUpdateTaskNotificationEmailField.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between ''save'' and ''save'' will always evaluate to true\.$#'
-			identifier: identical.alwaysTrue
-			count: 2
-			path: ../../typo3/sysext/scheduler/Classes/Controller/SchedulerModuleController.php
-
-		-
 			message: '#^Negated boolean expression is always true\.$#'
 			identifier: booleanNot.alwaysTrue
 			count: 1
@@ -3653,12 +3647,6 @@ parameters:
 			identifier: identical.alwaysFalse
 			count: 1
 			path: ../../typo3/sysext/scheduler/Classes/CronCommand/NormalizeCommand.php
-
-		-
-			message: '#^Method TYPO3\\CMS\\Scheduler\\Task\\AbstractTask@anonymous/scheduler/Tests/Unit/Validation/Validator/TaskValidatorTest\.php\:53\:\:getExecution\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: ../../typo3/sysext/scheduler/Tests/Unit/Validation/Validator/TaskValidatorTest.php
 
 		-
 			message: '#^Instanceof between DOMDocument and DOMDocument will always evaluate to true\.$#'

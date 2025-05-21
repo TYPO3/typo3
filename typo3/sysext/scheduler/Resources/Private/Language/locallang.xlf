@@ -18,9 +18,6 @@
 			<trans-unit id="function.info">
 				<source>Available scheduler commands &amp; tasks</source>
 			</trans-unit>
-			<trans-unit id="function.edit">
-				<source>Edit scheduled task "%s"</source>
-			</trans-unit>
 			<trans-unit id="function.add">
 				<source>New task</source>
 			</trans-unit>
@@ -65,9 +62,6 @@
 			</trans-unit>
 			<trans-unit id="label.class">
 				<source>Task</source>
-			</trans-unit>
-			<trans-unit id="label.taskType">
-				<source>Task Type</source>
 			</trans-unit>
 			<trans-unit id="label.cron">
 				<source>Cron</source>
@@ -237,9 +231,6 @@
 			<trans-unit id="label.addOptionToCommand">
 				<source>Add option</source>
 			</trans-unit>
-			<trans-unit id="msg.addSuccess">
-				<source>The task was added successfully.</source>
-			</trans-unit>
 			<trans-unit id="msg.cliScript">
 				<source>The script to execute the Scheduler from the command line is: &lt;strong&gt;"%s scheduler:run"&lt;/strong&gt;.</source>
 			</trans-unit>
@@ -300,9 +291,6 @@
 			<trans-unit id="msg.noTasksDefined">
 				<source>There are currently no task classes available at all. To be able to create new tasks, you must either enable the samples provided by the Scheduler or install some other extension that relies on the Scheduler.</source>
 			</trans-unit>
-			<trans-unit id="msg.noTaskClassFound">
-				<source>The selected task class could not be found. You should probably contact the task's developers.</source>
-			</trans-unit>
 			<trans-unit id="msg.invalidTaskType">
 				<source>The selected task type must be either "single execution" or "recurring execution".</source>
 			</trans-unit>
@@ -354,9 +342,6 @@
 			<trans-unit id="msg.errorMessage">
 				<source>Error message</source>
 			</trans-unit>
-			<trans-unit id="msg.invalidTaskClassEdit">
-				<source>The current class (%s) could not be found. Change it below or consider deleting this task altogether.</source>
-			</trans-unit>
 			<trans-unit id="msg.invalidTaskClass.infobox.title">
 				<source>%s registered scheduler tasks can not be executed</source>
 			</trans-unit>
@@ -383,9 +368,6 @@
 			</trans-unit>
 			<trans-unit id="msg.taskNotFound">
 				<source>The requested task (UID: %d) was not found.</source>
-			</trans-unit>
-			<trans-unit id="msg.updateSuccess">
-				<source>The task was updated successfully.</source>
 			</trans-unit>
 			<trans-unit id="msg.updateError">
 				<source>The task could not be updated.</source>
@@ -567,9 +549,6 @@
 			</trans-unit>
 			<trans-unit id="msg.group.notification.error.message">
 				<source>Could not create group</source>
-			</trans-unit>
-			<trans-unit id="scheduler.form.palettes.general">
-				<source>General</source>
 			</trans-unit>
 			<trans-unit id="scheduler.form.palettes.settings">
 				<source>Settings</source>

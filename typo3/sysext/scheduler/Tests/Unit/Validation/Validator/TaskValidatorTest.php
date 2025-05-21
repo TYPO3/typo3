@@ -56,7 +56,7 @@ final class TaskValidatorTest extends UnitTestCase
             {
                 return false;
             }
-            public function getExecution()
+            public function getExecution(): Execution
             {
                 return new Execution();
             }
