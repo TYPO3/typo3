@@ -85,11 +85,10 @@ final class ResourceConsistencyService
             $fileExtension ??= $resource->getExtension();
         } else {
             $fileInfo = new FileInfo($resource);
-            $mimeType = (string)$fileInfo->getMimeType();
+            $mimeType = (string)$fileInfo->getMimeType($targetFileName);
             $fileSize = $fileInfo->isReadable() ? $fileInfo->getSize() : 0;
             $fileExtension ??= $fileInfo->getExtension();
         }
-        $mimeType = $this->considerFileExtensionToMimeTypeMap($fileExtension) ?? $mimeType;
         $isEmptyFile = $fileSize === 0;
         $messages = [];
         // skip mime-type checks for empty files
@@ -149,23 +148,6 @@ final class ResourceConsistencyService
             true
         );
         return array_map(mb_strtolower(...), $allowedFileExtensions);
-    }
-
-    private function considerFileExtensionToMimeTypeMap(string $fileExtension): ?string
-    {
-        $fileExtensionMimeTypeMap = $GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType'] ?? null;
-        if (!is_array($fileExtensionMimeTypeMap)) {
-            return null;
-        }
-        $fileExtension = mb_strtolower($fileExtension);
-        $fileExtensionMimeTypeMap = array_filter(
-            $fileExtensionMimeTypeMap,
-            static fn(string $mimeType): bool => $mimeType !== ''
-        );
-        if (!is_string($fileExtensionMimeTypeMap[$fileExtension] ?? null)) {
-            return null;
-        }
-        return $fileExtensionMimeTypeMap[$fileExtension];
     }
 
     private function shallValidate(ResourceStorage $storage, string|FileInterface $resource, string $targetFileName): bool

@@ -95,7 +95,7 @@ return [
             // only file extensions configured in 'textfile_ext', 'mediafile_ext', 'miscfile_ext' are accepted
             'security.system.enforceAllowedFileExtensions' => false,
             // only files having file-extension to mime-type matches are allowed
-            // (adjustable by `$GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['fileExtensionToMimeType']`)
+            // (adjustable by `$GLOBALS['TYPO3_CONF_VARS']['SYS']['FileInfo']['mimeTypeCompatibility']`)
             'security.system.enforceFileExtensionMimeTypeConsistency' => true,
         ],
         'createGroup' => '',
@@ -362,17 +362,79 @@ return [
             ],
         ],
         'FileInfo' => [
-            // Static mapping for file extensions to mime types.
-            // In special cases the mime type is not detected correctly.
-            // Use this array only if the automatic detection does not work correct!
-            'fileExtensionToMimeType' => [
-                'avif' => 'image/avif',
-                'svg' => 'image/svg+xml',
-                'yml' => 'application/yaml',
-                'yaml' => 'application/yaml',
-                'youtube' => 'video/youtube',
-                'vimeo' => 'video/vimeo',
+            // List of extensions/mimetypes that are detected as a more generic mimetype
+            // by finfo_file()/mime_content_type(), but are allowed to be
+            // mapped to a concrete MIME type by their file extension
+            // (but only if the file was detected as the generalized mime type!)
+            'mimeTypeCompatibility' => [
+                // Word
+                // https://support.microsoft.com/en-us/office/open-xml-formats-and-file-name-extensions-5200d93c-3449-4380-8e11-31ef14555b18#ID0EDFBF
+                'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => [
+                    // Macro-enabled document
+                    'docm' => 'application/vnd.ms-word.document.macroenabled.12',
+                    // Template
+                    'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+                    // Macro-enabled template
+                    'dotm' => 'application/vnd.ms-word.template.macroenabled.12',
+                ],
+                // PowerPoint
+                // https://support.microsoft.com/en-us/office/open-xml-formats-and-file-name-extensions-5200d93c-3449-4380-8e11-31ef14555b18#ID0EDBBF
+                'application/vnd.openxmlformats-officedocument.presentationml.presentation' => [
+                    // Macro-enabled presentation
+                    'pptm' => 'application/vnd.ms-powerpoint.presentation.macroenabled.12',
+                    // Template
+                    'potx' => 'application/vnd.openxmlformats-officedocument.presentationml.template',
+                    // Macro-enabled template
+                    'potm' => 'application/vnd.ms-powerpoint.template.macroenabled.12',
+                    // Macro-enabled add-in
+                    'ppam' => 'application/vnd.ms-powerpoint.addin.macroenabled.12',
+                    // Show
+                    'ppsx' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+                    // Macro-enabled show
+                    'ppsm' => 'application/vnd.ms-powerpoint.slideshow.macroenabled.12',
+                    // Slide
+                    'sldx' => 'application/vnd.openxmlformats-officedocument.presentationml.slide',
+                    // Macro-enabled slide
+                    'sldm' => 'application/vnd.ms-powerpoint.slide.macroenabled.12',
+                    // Office theme
+                    'thmx' => 'application/vnd.ms-officetheme',
+                ],
+                // Excel
+                // https://support.microsoft.com/en-us/office/open-xml-formats-and-file-name-extensions-5200d93c-3449-4380-8e11-31ef14555b18#ID0EDDBF
+                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' => [
+                    // Macro-enabled workbook
+                    'xlsm' => 'application/vnd.ms-excel.sheet.macroenabled.12',
+                    // Template
+                    'xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
+                    // Macro-enabled template
+                    'xltm' => 'application/vnd.ms-excel.template.macroenabled.12',
+                    // Non-XML binary workbook
+                    'xlsb' => 'application/vnd.ms-excel.sheet.binary.macroenabled.12',
+                    // Macro-enabled add-in
+                    'xlam' => 'application/vnd.ms-excel.addin.macroenabled.12',
+                ],
+                'font/sfnt' => [
+                    'otf' => 'font/otf',
+                    'ttf' => 'font/ttf',
+                ],
+                'image/jpeg' => [
+                    'jfif' => 'image/pjpeg',
+                ],
+                'text/plain' => [
+                    'yaml' => 'application/yaml',
+                    'yml' => 'application/yaml',
+                    'youtube' => 'video/youtube',
+                    'vimeo' => 'video/vimeo',
+                ],
+                'text/xml' => [
+                    'opml' => 'text/x-opml',
+                ],
             ],
+            // Former static mapping for file extensions to mime types,
+            // for special cases the mime type is not detected correctly.
+            // This array was used if the automatic detection does not work correct!
+            // Please use 'mimeTypeCompatibility' instead.
+            'fileExtensionToMimeType' => [],
         ],
         'fluid' => [
             'interceptors' => [],

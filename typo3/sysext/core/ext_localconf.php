@@ -15,6 +15,7 @@ use TYPO3\CMS\Core\MetaTag\EdgeMetaTagManager;
 use TYPO3\CMS\Core\MetaTag\Html5MetaTagManager;
 use TYPO3\CMS\Core\MetaTag\MetaTagManagerRegistry;
 use TYPO3\CMS\Core\Resource\Index\ExtractorRegistry;
+use TYPO3\CMS\Core\Resource\MimeTypeCompatibilityTypeGuesser;
 use TYPO3\CMS\Core\Resource\OnlineMedia\Metadata\Extractor;
 use TYPO3\CMS\Core\Resource\Rendering\AudioTagRenderer;
 use TYPO3\CMS\Core\Resource\Rendering\RendererRegistry;
@@ -26,6 +27,7 @@ use TYPO3\CMS\Core\Resource\Security\FilePermissionAspect;
 use TYPO3\CMS\Core\Resource\Security\SvgHookHandler;
 use TYPO3\CMS\Core\Resource\TextExtraction\PlainTextExtractor;
 use TYPO3\CMS\Core\Resource\TextExtraction\TextExtractorRegistry;
+use TYPO3\CMS\Core\Type\File\FileInfo;
 use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -43,6 +45,7 @@ $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['proc
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][] = PagesTsConfigGuard::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][CreateSiteConfiguration::class] = CreateSiteConfiguration::class;
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['processDatamapClass'][UpdateFileIndexEntry::class] = UpdateFileIndexEntry::class;
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS'][FileInfo::class]['mimeTypeGuessers'][MimeTypeCompatibilityTypeGuesser::class] = MimeTypeCompatibilityTypeGuesser::class . '->guessMimeType';
 $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['dumpFile'] = FileDumpController::class . '::dumpAction';
 
 $rendererRegistry = GeneralUtility::makeInstance(RendererRegistry::class);
