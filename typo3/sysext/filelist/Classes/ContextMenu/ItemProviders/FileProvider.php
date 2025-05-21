@@ -178,9 +178,6 @@ class FileProvider extends AbstractProvider
             case 'updateOnlineMedia':
                 $canRender = $this->isOnlineMedia() && $this->canEditMetadata();
                 break;
-            case 'info':
-                $canRender = $this->canShowInfo();
-                break;
 
                 // just for folders
             case 'new':
@@ -196,6 +193,9 @@ class FileProvider extends AbstractProvider
                 break;
 
                 //for both files and folders
+            case 'info':
+                $canRender = $this->canShowInfo();
+                break;
             case 'rename':
                 $canRender = $this->canBeRenamed();
                 break;
@@ -253,7 +253,7 @@ class FileProvider extends AbstractProvider
 
     protected function canShowInfo(): bool
     {
-        return $this->isFile();
+        return $this->record !== null;
     }
 
     protected function canCreateNew(): bool
