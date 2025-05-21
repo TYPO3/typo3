@@ -123,6 +123,7 @@ final class ResourceConsistencyService
         if (!$this->features->isFeatureEnabled('security.system.enforceFileExtensionMimeTypeConsistency')) {
             return true;
         }
+        $fileExtension = mb_strtolower($fileExtension);
         $assumedMimesTypeOfFileExtension = $this->mimeTypeDetector->getMimeTypesForFileExtension($fileExtension);
         // pass, in case no assumed mime-type was found (e.g., for individual file extension)
         return $assumedMimesTypeOfFileExtension === []
@@ -134,6 +135,7 @@ final class ResourceConsistencyService
         if (!$this->features->isFeatureEnabled('security.system.enforceAllowedFileExtensions')) {
             return true;
         }
+        $fileExtension = mb_strtolower($fileExtension);
         return in_array($fileExtension, $this->getAllowedFileExtensions(), true);
     }
 
@@ -146,7 +148,7 @@ final class ResourceConsistencyService
             . $GLOBALS['TYPO3_CONF_VARS']['SYS']['miscfile_ext'],
             true
         );
-        return array_map(strtolower(...), $allowedFileExtensions);
+        return array_map(mb_strtolower(...), $allowedFileExtensions);
     }
 
     private function considerFileExtensionToMimeTypeMap(string $fileExtension): ?string
@@ -155,6 +157,7 @@ final class ResourceConsistencyService
         if (!is_array($fileExtensionMimeTypeMap)) {
             return null;
         }
+        $fileExtension = mb_strtolower($fileExtension);
         $fileExtensionMimeTypeMap = array_filter(
             $fileExtensionMimeTypeMap,
             static fn(string $mimeType): bool => $mimeType !== ''
