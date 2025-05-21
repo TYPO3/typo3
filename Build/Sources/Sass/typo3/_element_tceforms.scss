@@ -73,7 +73,10 @@ div.t3-form-field-container:first-child .t3-form-field-label-flex {
 //
 .t3-form-field-container-inline-hidden,
 .t3-form-field-container-inline-placeHolder {
-    opacity: .3;
+    .form-irre-header-button,
+    .form-file-header-button {
+        opacity: .3;
+    }
 }
 
 //
