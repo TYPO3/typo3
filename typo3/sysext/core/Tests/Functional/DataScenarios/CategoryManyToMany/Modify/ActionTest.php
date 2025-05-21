@@ -262,6 +262,21 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function deleteCategoryOfRelation(): void
+    {
+        parent::deleteCategoryOfRelation();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryOfRelation.csv');
+    }
+
+    #[Test]
+    public function deleteCategoryThenHardDeleteCategory(): void
+    {
+        // This test is only done in live since this is a "recycler" scenario and "recycler" is disabled in workspaces.
+        parent::deleteCategoryThenHardDeleteCategory();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteCategoryThenHardDeleteCategory.csv');
+    }
+
+    #[Test]
     public function deleteContentOfRelation(): void
     {
         parent::deleteContentOfRelation();
@@ -271,6 +286,14 @@ final class ActionTest extends AbstractActionTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new DoesNotHaveRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #1'));
+    }
+
+    #[Test]
+    public function deleteContentThenHardDeleteContent(): void
+    {
+        // This test is only done in live since this is a "recycler" scenario and "recycler" is disabled in workspaces.
+        parent::deleteContentThenHardDeleteContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentThenHardDeleteContent.csv');
     }
 
     #[Test]

@@ -478,6 +478,28 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
     }
 
+    public function deleteThenHardDeletePage(): void
+    {
+        // Soft-delete a default language page
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageId);
+        // Now hard delete that page. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Page, self::VALUE_PageId, true, true);
+    }
+
+    public function deleteThenHardDeletePageWithSubpages(): void
+    {
+        // Soft-delete a default language page
+        $this->actionService->deleteRecord(self::TABLE_Page, self::VALUE_PageIdParent);
+        // Now hard delete that page. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Page, self::VALUE_PageIdParent, true, true);
+    }
+
     public function deleteThenHardDeleteLocalizedPage(): void
     {
         // Soft-delete a localized page
@@ -486,10 +508,8 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], []);
-        $dataHandler->disableDeleteClause();
         $dataHandler->deleteAction(self::TABLE_Page, 91, true, true);
     }
-
     public function deleteThenRecreateThenHardDeleteLocalizedPage(): void
     {
         // Soft-delete the localized page. This sets attached localized content elements deleted=1, too.
@@ -505,7 +525,6 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         /** @var DataHandler $dataHandler */
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], []);
-        $dataHandler->disableDeleteClause();
         $dataHandler->deleteAction(self::TABLE_Page, 91, true, true);
     }
 

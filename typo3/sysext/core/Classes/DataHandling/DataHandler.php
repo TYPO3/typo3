@@ -42,7 +42,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
-use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\RelationHandler;
 use TYPO3\CMS\Core\DataHandling\History\RecordHistoryStore;
@@ -420,11 +419,6 @@ class DataHandler
      * @internal
      */
     public $checkValue_currentRecord = [];
-
-    /**
-     * Disable delete clause
-     */
-    protected bool $disableDeleteClause = false;
 
     /**
      * The outermost instance of \TYPO3\CMS\Core\DataHandling\DataHandler:
@@ -2687,7 +2681,7 @@ class DataHandler
         int $pid
     ): QueryBuilder {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder
             ->count('uid')
             ->from($table)
@@ -3730,8 +3724,9 @@ class DataHandler
                     $fields[] = 't3ver_wsid';
                 }
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-                $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $currentWorkspaceId));
+                $queryBuilder->getRestrictions()->removeAll()
+                    ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+                    ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $currentWorkspaceId));
                 $queryBuilder
                     ->select(...$fields)
                     ->from($table)
@@ -5185,7 +5180,7 @@ class DataHandler
     }
 
     /**
-     * Delete a single record
+     * Delete a single record.
      *
      * @internal should only be used from within DataHandler
      */
@@ -5318,7 +5313,7 @@ class DataHandler
             $subPages = [];
             if ($localizationParent === 0) {
                 // When deleting a default language page, subpages have to be deleted as well.
-                $subPages = $this->getSubPagesOfPage($uid);
+                $subPages = $this->getSubPagesOfPage($uid, !$forceHardDelete);
             }
             $defaultLanguagePageRecord = $recordToDelete;
             if ($localizationParent !== 0) {
@@ -5510,7 +5505,7 @@ class DataHandler
             $this->connectionPool->getConnectionForTable($table)->update($table, $updateFields, ['uid' => $uid]);
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
         } else {
-            // Delete the hard way...:
+            $this->deleteRecord_procFields($table, $recordToDelete, $forceHardDelete);
             $this->hardDeleteSingleRecord($table, $uid);
             $this->deleteL10nOverlayRecords($table, $uid);
             $this->log($table, $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted unrecoverable from pages:{pid}', null, ['table' => $table, 'uid' =>  $uid, 'pid' => (int)($recordToDelete['pid'] ?? 0)], (int)($recordToDelete['pid'] ?? 0));
@@ -5591,7 +5586,10 @@ class DataHandler
                     continue;
                 }
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+                $queryBuilder->getRestrictions()->removeAll();
+                if (!$forceHardDelete) {
+                    $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                }
                 $queryBuilder
                     ->select('uid')
                     ->from($table)
@@ -5677,8 +5675,8 @@ class DataHandler
             $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record pages:{uid} was deleted', null, ['uid' =>  $uid], (int)($recordToDelete['pid'] ?? 0));
         } else {
             // Delete the hard way...:
+            $this->deleteL10nOverlayRecords('pages', $uid, $forceHardDelete);
             $this->hardDeleteSingleRecord('pages', $uid);
-            $this->deleteL10nOverlayRecords('pages', $uid);
             $this->log('pages', $uid, SystemLogDatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record pages:{uid} was deleted unrecoverable', null, ['uid' =>  $uid], (int)($recordToDelete['pid'] ?? 0));
         }
 
@@ -5750,7 +5748,7 @@ class DataHandler
      * Before a record is deleted, check if it has references such as inline type or MM references.
      * If so, set these child records also to be deleted.
      */
-    protected function deleteRecord_procFields(string $table, array $recordToDelete): void
+    protected function deleteRecord_procFields(string $table, array $recordToDelete, bool $forceHardDelete = false): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $uid = (int)$recordToDelete['uid'];
@@ -5777,9 +5775,22 @@ class DataHandler
                 }
             } elseif ($this->isReferenceField($configuration)) {
                 $allowedTables = $configuration['type'] === 'group' ? $configuration['allowed'] : $configuration['foreign_table'];
-                $dbAnalysis = $this->createRelationHandlerInstance();
-                $dbAnalysis->start($value, $allowedTables, $configuration['MM'] ?? '', $uid, $table, $configuration);
-                foreach ($dbAnalysis->itemArray as $v) {
+                if ($forceHardDelete && ($configuration['MM'] ?? false)) {
+                    // When hard deleting an MM record, MM rows must be removed. Note they are kept when
+                    // soft-deleting a local or foreign side record to allow undeleting the record and getting
+                    // connected MM relations back.
+                    $dbAnalysis = $this->createRelationHandlerInstance();
+                    $dbAnalysis->start('', $allowedTables, $configuration['MM'], $uid, $table, $configuration);
+                    $previousItemArray = $dbAnalysis->itemArray;
+                    $dbAnalysis->itemArray = [];
+                    $dbAnalysis->writeMM($configuration['MM'], $uid);
+                } else {
+                    $allowedTables = $configuration['type'] === 'group' ? $configuration['allowed'] : $configuration['foreign_table'];
+                    $dbAnalysis = $this->createRelationHandlerInstance();
+                    $dbAnalysis->start($value, $allowedTables, $configuration['MM'] ?? '', $uid, $table, $configuration);
+                    $previousItemArray = $dbAnalysis->itemArray;
+                }
+                foreach ($previousItemArray as $v) {
                     $this->updateRefIndex($v['table'], $v['id']);
                 }
             } elseif ($configuration['type'] === 'flex' && (string)$value !== '') {
@@ -5837,7 +5848,7 @@ class DataHandler
      *
      * @internal should only be used from within DataHandler
      */
-    public function deleteL10nOverlayRecords(string $table, int $uid): void
+    public function deleteL10nOverlayRecords(string $table, int $uid, bool $forceHardDelete = false): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
         // Check whether table can be localized
@@ -5849,9 +5860,11 @@ class DataHandler
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
+        $restrictions = $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $this->BE_USER->workspace));
+        if (!$forceHardDelete) {
+            $restrictions->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
         $queryBuilder->select('*')
             ->from($table)
             ->where(
@@ -5871,7 +5884,7 @@ class DataHandler
                     continue;
                 }
             }
-            $this->deleteAction($table, (int)($record['t3ver_oid'] ?? 0) > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid']);
+            $this->deleteAction($table, (int)($record['t3ver_oid'] ?? 0) > 0 ? (int)$record['t3ver_oid'] : (int)$record['uid'], false, $forceHardDelete);
         }
     }
 
@@ -6188,7 +6201,7 @@ class DataHandler
                 continue;
             }
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $queryBuilder->getRestrictions()->removeAll();
             $queryBuilder->select('*')
                 ->from($table)
                 ->where(
@@ -6389,7 +6402,7 @@ class DataHandler
         $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
         $uid = (int)$record['uid'];
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder->getRestrictions()->removeAll();
         $statement = $queryBuilder->select('*')
             ->from($table)
             ->where(
@@ -7376,13 +7389,14 @@ class DataHandler
      * @param int $defaultLanguagePid uid of a default language page record
      * @return array<array<string,mixed>> List of subpage records in branch, empty array if there are none
      */
-    protected function getSubPagesOfPage(int $defaultLanguagePid): array
+    protected function getSubPagesOfPage(int $defaultLanguagePid, bool $useDeletedRestriction = true): array
     {
         $schema = $this->tcaSchemaFactory->get('pages');
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-        // Fetch deleted=1 pages as well, sorted out later if $forceDelete = false
-        // @todo: Finish this, probably needs a functional test?!
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder->getRestrictions()->removeAll();
+        if ($useDeletedRestriction) {
+            $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        }
         $result = $queryBuilder
             ->select('*')
             ->from('pages')
@@ -7408,7 +7422,7 @@ class DataHandler
         $pages = [];
         while ($row = $result->fetchAssociative()) {
             // Follow subpages recursive, add before self so deeper pages are handled first
-            $pages = array_merge($pages, $this->getSubPagesOfPage((int)$row['uid']), [$row]);
+            $pages = array_merge($pages, $this->getSubPagesOfPage((int)$row['uid'], $useDeletedRestriction), [$row]);
         }
         return $pages;
     }
@@ -7433,7 +7447,7 @@ class DataHandler
         while ($destinationId !== 0 && $loopCheck > 0) {
             $loopCheck--;
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $result = $queryBuilder
                 ->select('pid', 'uid', 't3ver_oid', 't3ver_wsid')
                 ->from('pages')
@@ -7793,7 +7807,7 @@ class DataHandler
 
         $considerWorkspaces = $schema->isWorkspaceAware();
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder
             ->select($sortColumn, 'pid', 'uid')
             ->from($table);
@@ -7868,8 +7882,7 @@ class DataHandler
                 $sortNumber = $row[$sortColumn];
             } else {
                 $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-                $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
-
+                $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
                 $queryBuilder
                         ->select($sortColumn, 'pid', 'uid')
                         ->from($table)
@@ -8021,7 +8034,7 @@ class DataHandler
 
         // Try to find a "before" record in source language
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-        $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $queryBuilder
             ->select(...$select)
             ->from($table)
@@ -8259,43 +8272,6 @@ class DataHandler
     }
 
     /**
-     * Disables the delete clause for fetching records.
-     * In general only undeleted records will be used. If the delete
-     * clause is disabled, also deleted records are taken into account.
-     */
-    public function disableDeleteClause(): void
-    {
-        $this->disableDeleteClause = true;
-    }
-
-    /**
-     * Returns delete-clause for the $table
-     *
-     * @param string $table Table name
-     * @return string Delete clause
-     * @internal should only be used from within DataHandler
-     */
-    public function deleteClause($table): string
-    {
-        // Returns the proper delete-clause if any for a table from TCA
-        $schema = $this->tcaSchemaFactory->get($table);
-        if (!$this->disableDeleteClause && $schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
-            return ' AND ' . $table . '.' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() . '=0';
-        }
-        return '';
-    }
-
-    /**
-     * Add delete restriction if not disabled
-     */
-    protected function addDeleteRestriction(QueryRestrictionContainerInterface $restrictions): void
-    {
-        if (!$this->disableDeleteClause) {
-            $restrictions->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        }
-    }
-
-    /**
      * Gets UID of parent record. If record is deleted it will be looked up in
      * an array built before the record was deleted
      *
@@ -8384,8 +8360,7 @@ class DataHandler
     {
         if ($counter) {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
-            $restrictions = $queryBuilder->getRestrictions()->removeAll();
-            $this->addDeleteRestriction($restrictions);
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $queryBuilder
                 ->select('uid')
                 ->from('pages')
@@ -8672,7 +8647,7 @@ class DataHandler
         // Do check:
         if ($prevTitle != $checkTitle || $count < 100) {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $rowCount = $queryBuilder
                 ->count('uid')
                 ->from($table)
@@ -8697,7 +8672,6 @@ class DataHandler
      *
      * @param string $table Table name
      * @return string Label to append, containing "%s" for the number
-     * @see getCopyHeader()
      */
     protected function prependLabel($table): string
     {
@@ -10154,7 +10128,7 @@ class DataHandler
             // Find record without checking page
             // @todo: This should probably check for editlock
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-            $this->addDeleteRestriction($queryBuilder->getRestrictions()->removeAll());
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $output = $queryBuilder
                 ->select('*')
                 ->from($table)
@@ -10174,6 +10148,28 @@ class DataHandler
             return false;
         }
         return false;
+    }
+
+    /**
+     * Unused. Removed in TYPO3 v14.
+     *
+     * @internal should only be used from within DataHandler
+     */
+    public function disableDeleteClause(): void {}
+
+    /**
+     * Unused. Removed in TYPO3 v14.
+     *
+     * @internal should only be used from within DataHandler
+     */
+    public function deleteClause($table): string
+    {
+        // Returns the proper delete-clause if any for a table from TCA
+        $schema = $this->tcaSchemaFactory->get($table);
+        if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            return ' AND ' . $table . '.' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() . '=0';
+        }
+        return '';
     }
 
     /**
