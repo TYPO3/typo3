@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Resource\Service;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
@@ -63,15 +64,22 @@ final class ResourceConsistencyServiceTest extends FunctionalTestCase
         ];
     }
 
+    public static function validationSucceedsDataProvider(): \Generator
+    {
+        yield 'same file extension' => ['/fileadmin/ProcessedFileTest.jpg', 'ProcessedFileTest.jpg'];
+        yield 'uppercase file extension' => ['/fileadmin/ProcessedFileTest.jpg', 'ProcessedFileTest.JPG'];
+    }
+
     #[Test]
-    public function validationSucceeds(): void
+    #[DataProvider('validationSucceedsDataProvider')]
+    public function validationSucceeds(string $localFilePath, string $targetFileName): void
     {
         $this->expectNotToPerformAssertions();
 
         $this->subject->validate(
             $this->storages[1],
-            $this->instancePath . '/fileadmin/ProcessedFileTest.jpg',
-            'ProcessedFileTest.jpg'
+            $this->instancePath . $localFilePath,
+            $targetFileName
         );
     }
 
