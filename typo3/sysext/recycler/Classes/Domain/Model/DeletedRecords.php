@@ -328,9 +328,9 @@ class DeletedRecords
     public function deleteData(?array $recordsArray): bool
     {
         if (is_array($recordsArray)) {
+            /** @var DataHandler $tce */
             $tce = GeneralUtility::makeInstance(DataHandler::class);
             $tce->start([], []);
-            $tce->disableDeleteClause();
             foreach ($recordsArray as $record) {
                 [$table, $uid] = explode(':', $record);
                 $tce->deleteAction($table, (int)$uid, true, true);

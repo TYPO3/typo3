@@ -17,9 +17,11 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\DataScenarios\CategoryManyToMany;
 
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\DataScenarios\AbstractDataHandlerActionTestCase;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 {
@@ -207,9 +209,36 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         );
     }
 
+    public function deleteCategoryOfRelation(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
+    }
+
+    public function deleteCategoryThenHardDeleteCategory(): void
+    {
+        // Soft-delete the category
+        $this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
+        // Now hard delete that category. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Category, self::VALUE_CategoryIdFirst, true, true);
+    }
+
     public function deleteContentOfRelation(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+    }
+
+    public function deleteContentThenHardDeleteContent(): void
+    {
+        // Soft-delete content
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
+        // Now hard delete content. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Content, self::VALUE_ContentIdLast, true, true);
     }
 
     public function copyContentOfRelation(): void
@@ -322,10 +351,5 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function modifyCategoryOfRelation(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst, ['title' => 'Testing #1']);
-    }
-
-    public function deleteCategoryOfRelation(): void
-    {
-        $this->actionService->deleteRecord(self::TABLE_Category, self::VALUE_CategoryIdFirst);
     }
 }
