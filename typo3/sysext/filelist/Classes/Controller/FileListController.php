@@ -142,8 +142,8 @@ class FileListController implements LoggerAwareInterface
                     }
                 }
             } else {
-                // Take the first object of the first storage
-                $fileStorages = $backendUser->getFileStorages();
+                // Take the first available storage
+                $fileStorages = array_filter($backendUser->getFileStorages(), static fn(ResourceStorage $storage) => $storage->isBrowsable());
                 $fileStorage = reset($fileStorages);
                 if ($fileStorage) {
                     $this->folderObject = $fileStorage->getRootLevelFolder();
