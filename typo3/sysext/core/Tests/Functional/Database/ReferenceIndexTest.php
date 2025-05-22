@@ -39,6 +39,26 @@ final class ReferenceIndexTest extends FunctionalTestCase
     }
 
     #[Test]
+    public function updateIndexRemovesRecordsOfManyToManyForeignSideDeletedRows(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexRemovesRecordsOfManyToManyForeignSideDeletedRowsImport.csv');
+        $result = $this->get(ReferenceIndex::class)->updateIndex(false);
+        self::assertSame('Record sys_category:29 had 0 added indexes and 1 deleted indexes', $result['errors'][0]);
+        self::assertSame('Record sys_category:30 had 0 added indexes and 1 deleted indexes', $result['errors'][1]);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexRemovesRecordsOfManyToManyForeignSideDeletedRowsResult.csv');
+    }
+
+    #[Test]
+    public function updateIndexHandlesManyToManyForeignSideStartEndHiddenRows(): void
+    {
+        $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesManyToManyForeignSideStartEndHiddenRowsImport.csv');
+        $result = $this->get(ReferenceIndex::class)->updateIndex(false);
+        self::assertSame('Record sys_category:29 had 1 added indexes and 1 deleted indexes', $result['errors'][0]);
+        self::assertSame('Record sys_category:30 had 4 added indexes and 4 deleted indexes', $result['errors'][1]);
+        $this->assertCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesManyToManyForeignSideStartEndHiddenRowsResult.csv');
+    }
+
+    #[Test]
     public function updateIndexHandlesSoftrefForDbField(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/ReferenceIndex/UpdateIndexHandlesSoftrefForDbFieldImport.csv');

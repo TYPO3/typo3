@@ -584,6 +584,39 @@ class ReferenceIndex
                     // @todo: Refactor RelationHandler / PlainDataResolver to (optionally?) return full child row record
                     $itemArray = $this->enrichInlineRelations(current($itemArray)['table'], $fieldRelations['itemArray']);
                 }
+                if ($field->isType(TableColumnType::INLINE, TableColumnType::GROUP, TableColumnType::SELECT)
+                    && $field instanceof RelationalFieldTypeInterface
+                    && $field->getRelationshipType() === RelationshipType::ManyToMany
+                ) {
+                    foreach ($itemArray as $itemKey => $item) {
+                        // Get rid of soft-deleted foreign records, those should not create refindex entries
+                        // @todo: It would be better if RelationHandler would not return soft-deleted MM rows. Unsure
+                        //        how to do that since RH only works on the MM table, but it could then also return
+                        //        the full foreign row along the way.
+                        // @todo: Expensive. This code could be optimized to fetch multiple records at once per foreign
+                        //        table, or make RH return full foreign rows in some hopefully efficient way.
+                        $foreignSideRecord = BackendUtility::getRecord($item['table'], (int)$item['id']);
+                        if ($foreignSideRecord === null) {
+                            // @todo: This mixes up ref_sorting when rows are removed here. Shouldn't be
+                            //        very problematic, though.
+                            unset($itemArray[$itemKey]);
+                            continue;
+                        }
+                        $itemTableSchema = $this->tcaSchemaFactory->get((string)$item['table']);
+                        if ($itemTableSchema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+                            $disabledFieldName = $itemTableSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
+                            $itemArray[$itemKey][$disabledFieldName] = $foreignSideRecord[$disabledFieldName];
+                        }
+                        if ($itemTableSchema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
+                            $starttimeFieldName = $itemTableSchema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
+                            $itemArray[$itemKey][$starttimeFieldName] = $foreignSideRecord[$starttimeFieldName];
+                        }
+                        if ($itemTableSchema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
+                            $endtimeFieldName = $itemTableSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
+                            $itemArray[$itemKey][$endtimeFieldName] = $foreignSideRecord[$endtimeFieldName];
+                        }
+                    }
+                }
                 $sorting = 0;
                 foreach ($itemArray as $refRecord) {
                     $refTable = (string)$refRecord['table'];
