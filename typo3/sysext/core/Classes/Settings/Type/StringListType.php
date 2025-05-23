@@ -31,6 +31,7 @@ readonly class StringListType implements SettingsTypeInterface
 
     public function validate(mixed $value, SettingDefinition $definition): bool
     {
+        $value = $this->decodeJsonAsFallback($value);
         if (!is_array($value)) {
             return false;
         }
@@ -40,15 +41,7 @@ readonly class StringListType implements SettingsTypeInterface
     public function transformValue(mixed $value, SettingDefinition $definition): array
     {
         $stringType = new StringType($this->logger);
-        if (is_string($value)) {
-            // A json-encoded stringlist only needs 2-levels
-            $depth = 2;
-            try {
-                $value = json_decode($value, false, 2, JSON_THROW_ON_ERROR);
-            } catch (\JsonException) {
-                // invalid json, ignore and handle below
-            }
-        }
+        $value = $this->decodeJsonAsFallback($value);
         if (!is_array($value) || !$this->doValidate($stringType, $value, $definition)) {
             $this->logger->warning('Setting validation field, reverting to default: {key}', ['key' => $definition->key]);
             return $definition->default;
@@ -73,5 +66,24 @@ readonly class StringListType implements SettingsTypeInterface
     public function getJavaScriptModule(): string
     {
         return '@typo3/backend/settings/type/stringlist.js';
+    }
+
+    private function decodeJsonAsFallback(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        // Otherwise, check if given string value is a json-encoded string
+        if (is_string($value)) {
+            try {
+                // A json-encoded stringlist only needs 2-levels
+                $value = json_decode($value, false, 2, JSON_THROW_ON_ERROR);
+            } catch (\JsonException) {
+                return null;
+            }
+        }
+
+        return $value;
     }
 }
