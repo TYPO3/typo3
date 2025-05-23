@@ -78,6 +78,25 @@ interface FilteredEditableSetting extends EditableSetting {
   __hidden: boolean,
 }
 
+export type SettingsEditorNormalizedFormData = Record<string, string> & {
+  settings: Record<string, string>;
+};
+
+export class SettingsEditorSubmitEvent extends Event {
+  static readonly eventName = 'typo3:settings-editor:submit';
+
+  constructor(
+    public readonly originalEvent: SubmitEvent,
+    public readonly formData: SettingsEditorNormalizedFormData,
+  ) {
+    super(SettingsEditorSubmitEvent.eventName, {
+      bubbles: true,
+      composed: true,
+      cancelable: false,
+    });
+  }
+}
+
 @customElement('typo3-backend-settings-editor')
 export class SettingsEditorElement extends LitElement {
 
@@ -242,6 +261,22 @@ export class SettingsEditorElement extends LitElement {
 
   protected async onSubmit(e: SubmitEvent): Promise<void> {
     const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const normalizedData = {
+      settings: {},
+    } as SettingsEditorNormalizedFormData;
+    formData.forEach((value, key) => {
+      const match = key.match(/^settings\[(.+?)\]$/);
+      if (match) {
+        normalizedData.settings[match[1]] = typeof value === 'string' ? value : (value as File).name;
+      } else {
+        normalizedData[key] = typeof value === 'string' ? value : (value as File).name;
+      }
+    });
+    this.dispatchEvent(new SettingsEditorSubmitEvent(e, normalizedData));
+    if (e.defaultPrevented) {
+      return;
+    }
 
     if ((e.submitter as HTMLButtonElement|null)?.value === 'export') {
       e.preventDefault();
@@ -388,5 +423,8 @@ export class SettingsEditorElement extends LitElement {
 declare global {
   interface HTMLElementTagNameMap {
     'typo3-backend-settings-editor': SettingsEditorElement;
+  }
+  interface HTMLElementEventMap {
+    [SettingsEditorSubmitEvent.eventName]: SettingsEditorSubmitEvent;
   }
 }
