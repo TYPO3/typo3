@@ -101,6 +101,7 @@ export class SettingsEditorSubmitEvent extends Event {
 export class SettingsEditorElement extends LitElement {
 
   @property({ type: Array }) categories: Category[];
+  @property({ type: String, attribute: 'form-name' }) formName: string = 'settings_form';
   @property({ type: String, attribute: 'action-url' }) actionUrl: string;
   @property({ type: String, attribute: 'dump-url' }) dumpUrl: string;
   @property({ type: Object, attribute: 'custom-form-data' }) customFormData: Record<string, string> = {};
@@ -303,8 +304,8 @@ export class SettingsEditorElement extends LitElement {
     const hasVisibleCategories = categories.filter(c => !c.__hidden).length > 0;
     return html`
       <form class="settings-container"
-            id="sitesettings_form"
-            name="sitesettings_form"
+            id=${this.formName}
+            name=${this.formName}
             action=${this.actionUrl}
             method="post"
             @submit=${(e: SubmitEvent) => this.onSubmit(e)}

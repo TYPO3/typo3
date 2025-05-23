@@ -28,6 +28,7 @@
             </f:then>
             <f:else>
                 <typo3-backend-settings-editor
+                    form-name="sitesettings_form"
                     action-url="{actionUrl}"
                     categories="{categories -> f:format.json()}"
                     custom-form-data="{f:format.json(value: {formToken: formToken, returnUrl: returnUrl})}"
