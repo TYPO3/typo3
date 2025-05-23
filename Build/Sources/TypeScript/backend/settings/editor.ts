@@ -23,6 +23,7 @@ import { copyToClipboard } from '@typo3/backend/copy-to-clipboard';
 import { lll } from '@typo3/core/lit-helper';
 import { markdown } from '@typo3/core/directive/markdown';
 import '@typo3/backend/settings/editor/editable-setting';
+import { SettingsMode, sanitizeSettingsMode } from '@typo3/backend/settings/enum/settings-mode.enum';
 import '@typo3/backend/element/icon-element';
 
 // preload known/common types
@@ -33,7 +34,6 @@ import '@typo3/backend/settings/type/string';
 import '@typo3/backend/settings/type/stringlist';
 
 type ValueType = string|number|boolean|string[]|null;
-
 
 export interface Category {
   key: string,
@@ -85,7 +85,7 @@ export class SettingsEditorElement extends LitElement {
   @property({ type: String, attribute: 'action-url' }) actionUrl: string;
   @property({ type: String, attribute: 'dump-url' }) dumpUrl: string;
   @property({ type: Object, attribute: 'custom-form-data' }) customFormData: Record<string, string> = {};
-  @property({ type: Boolean }) debug: boolean = false;
+  @property({ type: String, converter: sanitizeSettingsMode }) mode: SettingsMode = SettingsMode.basic;
 
   @state() searchTerm: string = '';
   @state() activeCategory: string = '';
@@ -197,7 +197,7 @@ export class SettingsEditorElement extends LitElement {
               ?hidden=${setting.__hidden}
               .setting=${setting}
               .dumpuri=${this.dumpUrl}
-              ?debug=${this.debug}
+              .mode=${this.mode}
           ></typo3-backend-editable-setting>
         `)}
       </div>

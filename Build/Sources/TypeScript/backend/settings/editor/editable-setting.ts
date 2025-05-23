@@ -22,6 +22,7 @@ import { lll } from '@typo3/core/lit-helper';
 import { markdown } from '@typo3/core/directive/markdown';
 import AjaxRequest from '@typo3/core/ajax/ajax-request';
 import type { BaseElement } from '@typo3/backend/settings/type/base';
+import { SettingsMode, sanitizeSettingsMode } from '@typo3/backend/settings/enum/settings-mode.enum';
 
 type ValueType = string|number|boolean|string[]|null;
 
@@ -54,10 +55,9 @@ export class EditableSettingElement extends LitElement {
 
   @property({ type: Object }) setting: EditableSetting;
   @property({ type: String }) dumpuri: string;
-  @property({ type: Boolean }) debug: boolean = false;
+  @property({ type: String, converter: sanitizeSettingsMode }) mode: SettingsMode = SettingsMode.basic;
 
-  @state()
-  hasChange: boolean = false;
+  @state() hasChange: boolean = false;
 
   typeElement: BaseElement<unknown> = null;
 
@@ -78,7 +78,7 @@ export class EditableSettingElement extends LitElement {
         <div class="settings-item-title">
           <label for=${`setting-${definition.key}`} class="settings-item-label">${definition.label}</label>
           <div class="settings-item-description">${markdown(definition.description ?? '', 'minimal')}</div>
-          ${this.debug ? html`<div class="settings-item-key">${definition.key}</div>` : nothing}
+          ${this.mode === SettingsMode.advanced ? html`<div class="settings-item-key">${definition.key}</div>` : nothing}
         </div>
         <div class="settings-item-control">
           ${until(this.renderField(), html`<typo3-backend-spinner></typo3-backend-spinner>`)}
@@ -116,7 +116,7 @@ export class EditableSettingElement extends LitElement {
       formid: `setting-${definition.key}`,
       name: `settings[${definition.key}]`,
       value: Array.isArray(value) ? JSON.stringify(value) : String(value),
-      debug: this.debug,
+      debug: this.mode === SettingsMode.advanced,
       readonly: definition.readonly,
       enum: enumEntries.length > 0 ? JSON.stringify(Object.fromEntries(enumEntries)) : false,
       default: Array.isArray(definition.default) ? JSON.stringify(definition.default) : String(definition.default),
@@ -156,24 +156,25 @@ export class EditableSettingElement extends LitElement {
               <typo3-backend-icon identifier="actions-undo" size="small"></typo3-backend-icon> ${lll('edit.resetSetting')}
             </button>
           </li>
-          <li><hr class="dropdown-divider"></li>
-          <li>
-            <typo3-copy-to-clipboard
-              text=${definition.key}
-              class="dropdown-item dropdown-item-spaced"
-            >
-              <typo3-backend-icon identifier="actions-clipboard" size="small"></typo3-backend-icon> ${lll('edit.copySettingsIdentifier')}
-            </typo3-copy-to-clipboard>
-          </li>
-          ${this.dumpuri ? html`
+          ${this.mode === SettingsMode.advanced ? html`
+            <li><hr class="dropdown-divider"></li>
             <li>
-              <button class="dropdown-item dropdown-item-spaced"
-                type="button"
-                @click="${() => this.copyAsYaml()}">
-                <typo3-backend-icon identifier="actions-clipboard-paste" size="small"></typo3-backend-icon> ${lll('edit.copyAsYaml')}
-
-              </a>
+              <typo3-copy-to-clipboard
+                text=${definition.key}
+                class="dropdown-item dropdown-item-spaced"
+              >
+                <typo3-backend-icon identifier="actions-clipboard" size="small"></typo3-backend-icon> ${lll('edit.copySettingsIdentifier')}
+              </typo3-copy-to-clipboard>
             </li>
+            ${this.dumpuri ? html`
+              <li>
+                <button class="dropdown-item dropdown-item-spaced"
+                  type="button"
+                  @click="${() => this.copyAsYaml()}">
+                  <typo3-backend-icon identifier="actions-clipboard-paste" size="small"></typo3-backend-icon> ${lll('edit.copyAsYaml')}
+                </a>
+              </li>
+            ` : nothing}
           ` : nothing}
         </ul>
       </div>
