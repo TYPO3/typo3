@@ -35,6 +35,7 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -54,6 +55,7 @@ final class SudoModeController implements LoggerAwareInterface
     private const ROUTE_PATH_VERIFY = '/ajax/sudo-mode/verify';
 
     public function __construct(
+        private readonly PageRenderer $pageRenderer,
         private readonly UriBuilder $uriBuilder,
         private readonly AccessFactory $factory,
         private readonly AccessStorage $storage,
@@ -83,12 +85,18 @@ final class SudoModeController implements LoggerAwareInterface
      */
     public function moduleAction(ServerRequestInterface $request): ResponseInterface
     {
+        $this->pageRenderer->getJavaScriptRenderer()->addGlobalAssignment([
+            'TYPO3' => [
+                'configuration' => [
+                    'username' => htmlspecialchars($this->getBackendUser()->user['username']),
+                ],
+            ],
+        ]);
+
         $claim = $this->resolveClaimFromRequest($request, 'module');
         if ($claim === null) {
             return $this->redirectToErrorAction();
         }
-
-        $labels = $GLOBALS['LANG']->getLabelsFromResource('EXT:backend/Resources/Private/Language/SudoMode.xlf');
 
         $view = $this->moduleTemplateFactory->create($request);
         $view->assignMultiple([
