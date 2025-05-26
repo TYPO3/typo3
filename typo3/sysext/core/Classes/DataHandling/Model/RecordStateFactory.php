@@ -79,8 +79,8 @@ class RecordStateFactory
         return [
             'workspace' => 't3ver_wsid',
             'versionParent' => 't3ver_oid',
-            'language' => $languageCapability?->getLanguageField()?->getName(),
-            'languageParent' => $languageCapability?->getTranslationOriginPointerField()?->getName(),
+            'language' => $languageCapability?->getLanguageField()->getName(),
+            'languageParent' => $languageCapability?->getTranslationOriginPointerField()->getName(),
             'languageSource' => $languageCapability?->getTranslationSourceField()?->getName(),
         ];
     }

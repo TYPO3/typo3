@@ -136,7 +136,7 @@ class PersistedPatternMapper implements PersistedMappableAspectInterface, Static
         $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get($this->tableName);
         if ($schema->isLanguageAware()) {
             $this->languageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
-            $this->languageParentFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationSourceField()->getName();
+            $this->languageParentFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
         } else {
             $this->languageFieldName = null;
             $this->languageParentFieldName = null;

@@ -215,7 +215,7 @@ readonly class RecordFactory
             $languageCapability = $schema->getCapability(TcaSchemaCapability::Language);
             $languageField = $languageCapability->getLanguageField()->getName();
             $transOrigPointerField = $languageCapability->getTranslationOriginPointerField()->getName();
-            $translationSourceField = $languageCapability->hasTranslationSourceField() ? $languageCapability->getTranslationSourceField()->getName() : '';
+            $translationSourceField = $languageCapability->getTranslationSourceField()?->getName() ?? '';
             try {
                 $systemProperties['language'] = new LanguageInfo(
                     (int)$rawRecord->get($languageField),

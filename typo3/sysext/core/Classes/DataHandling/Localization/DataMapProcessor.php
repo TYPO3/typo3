@@ -177,7 +177,7 @@ class DataMapProcessor
             'language' => $languageCapability->getLanguageField()->getName(),
             'parent' => $languageCapability->getTranslationOriginPointerField()->getName(),
         ];
-        if ($languageCapability->getTranslationSourceField() !== null) {
+        if ($languageCapability->hasTranslationSourceField()) {
             $fieldNames['source'] = $languageCapability->getTranslationSourceField()->getName();
         }
 
@@ -506,11 +506,8 @@ class DataMapProcessor
             $fieldNames = [
                 'language' => $languageCapability->getLanguageField()->getName(),
                 'parent' => $languageCapability->getTranslationOriginPointerField()->getName(),
-                'source' => null,
+                'source' =>  $languageCapability->getTranslationSourceField()?->getName(),
             ];
-            if ($languageCapability->getTranslationSourceField() !== null) {
-                $fieldNames['source'] = $languageCapability->getTranslationSourceField()->getName();
-            }
         }
 
         $suggestedAncestorIds = $this->resolveSuggestedInlineRelations(
@@ -907,7 +904,7 @@ class DataMapProcessor
             'language' => $languageCapability->getLanguageField()->getName(),
             'parent' => $languageCapability->getTranslationOriginPointerField()->getName(),
         ];
-        if ($languageCapability->getTranslationSourceField() !== null) {
+        if ($languageCapability->hasTranslationSourceField()) {
             $fieldNames['source'] = $languageCapability->getTranslationSourceField()->getName();
         }
 
@@ -992,7 +989,7 @@ class DataMapProcessor
                 'language' => $languageCapability->getLanguageField()->getName(),
                 'parent' => $languageCapability->getTranslationOriginPointerField()->getName(),
             ];
-            if ($languageCapability->getTranslationSourceField() !== null) {
+            if ($languageCapability->hasTranslationSourceField()) {
                 $fieldNames['source'] = $languageCapability->getTranslationSourceField()->getName();
             }
         } else {
