@@ -36,6 +36,7 @@ use TYPO3\CMS\Core\DataHandling\Model\RecordStateFactory;
 use TYPO3\CMS\Core\DataHandling\SlugHelper;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\HttpUtility;
@@ -72,6 +73,7 @@ class SlugService implements LoggerAwareInterface
         private readonly SlugRedirectChangeItemFactory $slugRedirectChangeItemFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly ConnectionPool $connectionPool,
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function rebuildSlugsForSlugChange(int $pageId, SlugRedirectChangeItem $changeItem, CorrelationId $correlationId): void
@@ -281,8 +283,9 @@ class SlugService implements LoggerAwareInterface
             . substr($subPageRecord['slug'], strlen(rtrim($oldSlugOfParentPage, '/') . '/'));
         $state = RecordStateFactory::forName('pages')
             ->fromArray($subPageRecord, $subPageRecord['pid'], $subPageRecord['uid']);
-        $fieldConfig = $GLOBALS['TCA']['pages']['columns']['slug']['config'] ?? [];
-        $slugHelper = GeneralUtility::makeInstance(SlugHelper::class, 'pages', 'slug', $fieldConfig);
+
+        $schema = $this->tcaSchemaFactory->get('pages');
+        $slugHelper = GeneralUtility::makeInstance(SlugHelper::class, 'pages', 'slug', $schema->getField('slug')->getConfiguration());
 
         if (!$slugHelper->isUniqueInSite($newSlug, $state)) {
             $newSlug = $slugHelper->buildSlugForUniqueInSite($newSlug, $state);
@@ -336,7 +339,6 @@ class SlugService implements LoggerAwareInterface
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
             ->getQueryBuilderForTable('pages');
-        /** @noinspection PhpStrictTypeCheckingInspection */
         $queryBuilder
             ->getRestrictions()
             ->removeAll()
@@ -371,11 +373,13 @@ class SlugService implements LoggerAwareInterface
     private function getTableDefaultValues(string $tableName): array
     {
         $defaults = [];
-        foreach ($GLOBALS['TCA'][$tableName]['columns'] ?? [] as $columnName => $columnConfig) {
-            if (!array_key_exists('default', $columnConfig['config'] ?? [])) {
-                continue;
+        if ($this->tcaSchemaFactory->has($tableName)) {
+            $tcaSchema = $this->tcaSchemaFactory->get($tableName);
+            foreach ($tcaSchema->getFields() as $columnName => $column) {
+                if ($column->hasDefaultValue()) {
+                    $defaults[$columnName] = $column->getDefaultValue();
+                }
             }
-            $defaults[$columnName] = $columnConfig['config']['default'];
         }
         $connection = $this->connectionPool->getConnectionForTable($tableName);
         $table = $connection->getSchemaInformation()->introspectTable($tableName);

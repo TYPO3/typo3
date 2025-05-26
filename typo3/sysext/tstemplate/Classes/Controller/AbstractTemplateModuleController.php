@@ -36,6 +36,8 @@ use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteInterface;
 use TYPO3\CMS\Core\Site\SiteFinder;
@@ -53,6 +55,7 @@ abstract class AbstractTemplateModuleController
     protected ConnectionPool $connectionPool;
     protected SiteFinder $siteFinder;
     private DataHandler $dataHandler;
+    private TcaSchemaFactory $tcaSchemaFactory;
 
     public function injectIconFactory(IconFactory $iconFactory): void
     {
@@ -77,6 +80,11 @@ abstract class AbstractTemplateModuleController
     public function injectSiteFinder(SiteFinder $siteFinder)
     {
         $this->siteFinder = $siteFinder;
+    }
+
+    public function injectTcaSchemaFactory(TcaSchemaFactory $tcaSchemaFactory)
+    {
+        $this->tcaSchemaFactory = $tcaSchemaFactory;
     }
 
     /**
@@ -261,12 +269,20 @@ abstract class AbstractTemplateModuleController
         $queryBuilder->getRestrictions()
             ->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-        return $queryBuilder->select('*')
+        $queryBuilder->select('*')
             ->from('sys_template')
             ->where(
                 $queryBuilder->expr()->eq('pid', $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT))
-            )
-            ->orderBy($GLOBALS['TCA']['sys_template']['ctrl']['sortby']);
+            );
+
+        $schema = $this->tcaSchemaFactory->has('sys_template')
+            ? $this->tcaSchemaFactory->get('sys_template')
+            : null;
+        if ($schema && $schema->hasCapability(TcaSchemaCapability::SortByField)) {
+            $queryBuilder
+                ->orderBy($schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName());
+        }
+        return $queryBuilder;
     }
 
     protected function getLanguageService(): LanguageService

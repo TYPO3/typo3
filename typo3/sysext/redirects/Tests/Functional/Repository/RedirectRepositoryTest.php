@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Redirects\Tests\Functional\Repository;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Redirects\Repository\Demand;
 use TYPO3\CMS\Redirects\Repository\RedirectRepository;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -98,7 +99,9 @@ final class RedirectRepositoryTest extends FunctionalTestCase
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectRepositoryTest_redirects.csv');
 
         self::assertSame($redirectBeforeCleanup, $this->getRedirectCount());
-        $repository = new RedirectRepository();
+        $repository = new RedirectRepository(
+            $this->get(TcaSchemaFactory::class)
+        );
         $repository->removeByDemand($demand);
         self::assertSame($redirectAfterCleanup, $this->getRedirectCount());
     }
@@ -160,7 +163,9 @@ final class RedirectRepositoryTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/RedirectRepositoryTest_redirects.csv');
 
-        $repository = new RedirectRepository();
+        $repository = new RedirectRepository(
+            $this->get(TcaSchemaFactory::class)
+        );
         $redirectsCount = $repository->countRedirectsByByDemand($demand);
 
         self::assertSame($expectedCount, $redirectsCount);

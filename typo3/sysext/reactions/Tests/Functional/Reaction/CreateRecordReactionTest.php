@@ -50,7 +50,7 @@ final class CreateRecordReactionTest extends FunctionalTestCase
     public function reactWorksForAValidRequest(): void
     {
         $reactionRecord = (new ReactionRepository())->getReactionRecordByIdentifier('visual-reaction-uuid');
-        $reaction = GeneralUtility::makeInstance(CreateRecordReaction::class);
+        $reaction = $this->get(CreateRecordReaction::class);
         $request = new ServerRequest('http://localhost/', 'POST');
         $payload = [
             'foo' => 'bar',

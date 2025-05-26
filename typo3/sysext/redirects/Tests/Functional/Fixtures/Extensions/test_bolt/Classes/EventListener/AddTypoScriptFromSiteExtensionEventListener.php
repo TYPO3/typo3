@@ -17,6 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3Tests\TestBolt\EventListener;
 
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\TypoScript\IncludeTree\Event\AfterTemplatesHaveBeenDeterminedEvent;
 
@@ -24,11 +27,20 @@ final class AddTypoScriptFromSiteExtensionEventListener
 {
     // 2024-04-07T13:58:03+00:00 (UTC/GMT)
     private const SIMULATED_TIME = 1712498283;
+    private ?TcaSchema $schema;
+
+    public function __construct(TcaSchemaFactory $tcaSchemaFactory)
+    {
+        $this->schema = $tcaSchemaFactory->has('sys_template') ? $tcaSchemaFactory->get('sys_template') : null;
+    }
 
     public function __invoke(AfterTemplatesHaveBeenDeterminedEvent $event): void
     {
         $site = $event->getSite();
         if (!$site instanceof Site) {
+            return;
+        }
+        if (!$this->schema) {
             return;
         }
 
@@ -62,37 +74,31 @@ final class AddTypoScriptFromSiteExtensionEventListener
         ];
         // Set various "db" fields conditionally to be as robust as possible in case
         // core or some other loaded extension fiddles with them.
-        $deleteField = $GLOBALS['TCA']['sys_template']['ctrl']['delete'] ?? null;
-        if ($deleteField) {
-            $fakeRow[$deleteField] = 0;
+        if ($this->schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
+            $fakeRow[$this->schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName()] = 0;
         }
-        $disableField = $GLOBALS['TCA']['sys_template']['ctrl']['enablecolumns']['disabled'] ?? null;
-        if ($disableField) {
-            $fakeRow[$disableField] = 0;
+        if ($this->schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
+            $fakeRow[$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName()] = 0;
         }
-        $endtimeField = $GLOBALS['TCA']['sys_template']['ctrl']['enablecolumns']['endtime'] ?? null;
-        if ($endtimeField) {
-            $fakeRow[$endtimeField] = 0;
+        if ($this->schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
+            $fakeRow[$this->schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName()] = 0;
         }
-        $starttimeField = $GLOBALS['TCA']['sys_template']['ctrl']['enablecolumns']['starttime'] ?? null;
-        if ($starttimeField) {
-            $fakeRow[$starttimeField] = 0;
+        if ($this->schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
+            $fakeRow[$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName()] = 0;
         }
-        $sortbyField = $GLOBALS['TCA']['sys_template']['ctrl']['sortby'] ?? null;
-        if ($sortbyField) {
-            $fakeRow[$sortbyField] = 0;
+        if ($this->schema->hasCapability(TcaSchemaCapability::SortByField)) {
+            $fakeRow[$this->schema->getCapability(TcaSchemaCapability::SortByField)->getFieldName()] = 0;
         }
-        $tstampField = $GLOBALS['TCA']['sys_template']['ctrl']['tstamp'] ?? null;
-        if ($tstampField) {
-            $fakeRow[$tstampField] = self::SIMULATED_TIME;
+        if ($this->schema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
+            $fakeRow[$this->schema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName()] = self::SIMULATED_TIME;
         }
-        if ($GLOBALS['TCA']['sys_template']['columns']['basedOn'] ?? false) {
+        if ($this->schema->hasField('basedOn')) {
             $fakeRow['basedOn'] = null;
         }
-        if ($GLOBALS['TCA']['sys_template']['columns']['includeStaticAfterBasedOn'] ?? false) {
+        if ($this->schema->hasField('includeStaticAfterBasedOn')) {
             $fakeRow['includeStaticAfterBasedOn'] = 0;
         }
-        if ($GLOBALS['TCA']['sys_template']['columns']['static_file_mode'] ?? false) {
+        if ($this->schema->hasField('static_file_mode')) {
             $fakeRow['static_file_mode'] = 0;
         }
 

@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Resource\ProcessedFile;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Install\Configuration\Image\GraphicsMagickPreset;
 use TYPO3\CMS\Seo\MetaTag\MetaTagGenerator;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -206,7 +207,10 @@ final class MetaTagGeneratorTest extends FunctionalTestCase
      */
     private function resolveCropVariantsConfiguration(): array
     {
-        $config = $GLOBALS['TCA']['pages']['columns']['og_image']['config']['overrideChildTca']['columns']['crop']['config'];
+        $config = $this->get(TcaSchemaFactory::class)
+            ->get('pages')
+            ->getField('og_image')
+            ->getConfiguration()['overrideChildTca']['columns']['crop']['config'];
         $cropVariants = [];
         foreach ($config['cropVariants'] as $id => $cropVariant) {
             // Filter allowed aspect ratios

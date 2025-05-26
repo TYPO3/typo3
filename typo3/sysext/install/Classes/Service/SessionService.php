@@ -164,7 +164,7 @@ class SessionService implements SingletonInterface
      */
     private function renewSession()
     {
-        // we do not have parallel ajax requests so we can safely remove the old session data
+        // we do not have parallel ajax requests, so we can safely remove the old session data
         session_regenerate_id(true);
         return session_id();
     }

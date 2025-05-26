@@ -27,6 +27,7 @@ use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\CMS\Core\TypoScript\PageTsConfig;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -134,6 +135,7 @@ final class BackendUtilityTest extends FunctionalTestCase
     {
         $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'uid';
         unset($GLOBALS['TCA']['tt_content']['ctrl']['label_alt']);
+        $this->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
 
         self::assertEquals(
             '1',
@@ -216,6 +218,7 @@ final class BackendUtilityTest extends FunctionalTestCase
         $platform = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->getDatabasePlatform();
         $tableName = uniqid('table');
         $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns'] = $enableColumns;
+        $this->get(TcaSchemaFactory::class)->load($GLOBALS['TCA'], true);
         $GLOBALS['SIM_ACCESS_TIME'] = 1234567890;
         $statement = BackendUtility::BEenableFields($tableName, $inverted);
         $replaces = [

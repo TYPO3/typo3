@@ -49,7 +49,6 @@ use TYPO3\CMS\Core\Type\Bitmask\BackendGroupMountOption;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\TypoScript\UserTsConfig;
 use TYPO3\CMS\Core\TypoScript\UserTsConfigFactory;
-use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -660,7 +659,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * The checks do not take page permissions and other "environmental" things into account.
      * It only deals with record internals; If any values in the record fields disallows it.
      * For instance languages settings, authMode selector boxes are evaluated (and maybe more in the future).
-     * It will check for workspace dependent access.
+     * It will check for workspace-dependent access.
      * The function takes an ID (int) or row (array) as second argument.
      *
      * @param string $table Table name
@@ -777,13 +776,13 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         // Workspace setting allows to "live edit" records of tables without versioning
         if (($this->workspaceRec['live_edit'] ?? false)
-            && !BackendUtility::isTableWorkspaceEnabled($table)
+            && !$this->getTcaSchema($table)?->isWorkspaceAware()
         ) {
             return true;
         }
-        // Always for Live workspace AND if live-edit is enabled
+        // Always for Live workspace, AND if live-edit is enabled
         // and tables are completely without versioning it is ok as well.
-        if ($GLOBALS['TCA'][$table]['ctrl']['versioningWS_alwaysAllowLiveEdit'] ?? false) {
+        if ($this->getTcaSchema($table)?->getRawConfiguration()['versioningWS_alwaysAllowLiveEdit'] ?? false) {
             return true;
         }
         // If the answer is FALSE it means the only valid way to create or edit records by creating records in the workspace
@@ -801,7 +800,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function workspaceCanCreateNewRecord(string $table): bool
     {
         // If LIVE records cannot be created due to workspace restrictions, prepare creation of placeholder-record
-        if (!$this->workspaceAllowsLiveEditingInTable($table) && !BackendUtility::isTableWorkspaceEnabled($table)) {
+        if (!$this->workspaceAllowsLiveEditingInTable($table) && !$this->getTcaSchema($table)?->isWorkspaceAware()) {
             return false;
         }
         return true;
@@ -824,7 +823,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             return true;
         }
         // Always OK for live workspace
-        if ($this->workspace === 0 || !ExtensionManagementUtility::isLoaded('workspaces')) {
+        if ($this->workspace === 0 || $this->getTcaSchema('sys_workspace') === null) {
             return true;
         }
         $stage = (int)$stage;
@@ -1263,8 +1262,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $fileMounts = array_intersect($fileMounts, $workspaceFileMounts);
         }
 
-        if (!empty($fileMounts)) {
-            $orderBy = $GLOBALS['TCA']['sys_filemounts']['ctrl']['default_sortby'] ?? 'sorting';
+        if ($fileMounts !== []) {
+            $schema = $this->getTcaSchema('sys_filemounts');
+            $orderBy = $schema->hasCapability(TcaSchemaCapability::DefaultSorting)
+                ? $schema->getCapability(TcaSchemaCapability::DefaultSorting)->getValue()
+                : 'sorting';
 
             $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
             $queryBuilder->getRestrictions()
@@ -1286,7 +1288,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $fileMountRecords = $queryBuilder->executeQuery()->fetchAllAssociative();
             if ($fileMountRecords !== false) {
                 foreach ($fileMountRecords as $fileMount) {
-                    $readOnlySuffix = (bool)$fileMount['read_only'] ? '-readonly' : '';
+                    $readOnlySuffix = $fileMount['read_only'] ? '-readonly' : '';
                     $fileMountRecordCache[$fileMount['identifier'] . $readOnlySuffix] = $fileMount;
                 }
             }
@@ -1409,7 +1411,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     /**
      * Adds filters based on what the user has set
      * this should be done in this place, and called whenever needed,
-     * but only when needed
+     * but only when needed.
      */
     public function evaluateUserSpecificFileFilterSettings()
     {
@@ -1584,7 +1586,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         if (!is_array($wsRec)) {
             if ($wsRec === 0) {
                 $wsRec = ['uid' => 0];
-            } elseif (ExtensionManagementUtility::isLoaded('workspaces')) {
+            } elseif ($this->getTcaSchema('sys_workspace')) {
                 $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_workspace');
                 $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
                 $wsRec = $queryBuilder
@@ -1723,7 +1725,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      */
     protected function getDefaultWorkspace(): int
     {
-        if (!ExtensionManagementUtility::isLoaded('workspaces')) {
+        if ($this->getTcaSchema('sys_workspace') === null) {
             return 0;
         }
         // Online is default
@@ -2110,5 +2112,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
     public function shallDisplayDebugInformation(): bool
     {
         return ($GLOBALS['TYPO3_CONF_VARS']['BE']['debug'] ?? false) && $this->isAdmin();
+    }
+
+    protected function getTcaSchema(string $table): ?TcaSchema
+    {
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        return $schemaFactory->has($table) ? $schemaFactory->get($table) : null;
     }
 }

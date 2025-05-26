@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchema;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,6 +31,12 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 class RedirectRepository
 {
+    private TcaSchema $schema;
+
+    public function __construct(TcaSchemaFactory $schemaFactory)
+    {
+        $this->schema = $schemaFactory->get('sys_redirect');
+    }
     /**
      * Used within the backend module, which also includes the hidden records, but never deleted records.
      */
@@ -175,7 +183,7 @@ class RedirectRepository
     public function findCreationTypes(): array
     {
         $types = [];
-        $availableTypes = $GLOBALS['TCA']['sys_redirect']['columns']['creation_type']['config']['items'];
+        $availableTypes = $this->schema->getField('creation_type')->getConfiguration()['items'];
         foreach ($this->getGroupedRows('creation_type', 'type') as $row) {
             foreach ($availableTypes as $availableType) {
                 if ($availableType['value'] === $row['type']) {
@@ -193,7 +201,7 @@ class RedirectRepository
     public function findIntegrityStatusCodes(): array
     {
         $statusCodes = [];
-        $availableStatusCodes = $GLOBALS['TCA']['sys_redirect']['columns']['integrity_status']['config']['items'];
+        $availableStatusCodes = $this->schema->getField('integrity_status')->getConfiguration()['items'];
         foreach ($this->getGroupedRows('integrity_status', 'status_code') as $row) {
             foreach ($availableStatusCodes as $availableStatusCode) {
                 if ($availableStatusCode['value'] === $row['status_code']) {

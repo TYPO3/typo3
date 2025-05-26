@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Routing\SiteMatcher;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\StringUtility;
@@ -168,6 +169,7 @@ final class SlugServiceTest extends FunctionalTestCase
             slugRedirectChangeItemFactory: $this->get(SlugRedirectChangeItemFactory::class),
             eventDispatcher: $this->get(EventDispatcherInterface::class),
             connectionPool: $this->getConnectionPool(),
+            tcaSchemaFactory: $this->get(TcaSchemaFactory::class),
         );
         $subject->setLogger(new NullLogger());
         return $subject;

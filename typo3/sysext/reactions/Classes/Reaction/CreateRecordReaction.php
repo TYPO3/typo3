@@ -60,7 +60,6 @@ class CreateRecordReaction implements ReactionInterface
     public function react(ServerRequestInterface $request, array $payload, ReactionInstruction $reaction): ResponseInterface
     {
         // @todo: Response needs to be based on given accept headers
-
         $table = (string)($reaction->toArray()['table_name'] ?? '');
         $fields = (array)($reaction->toArray()['fields'] ?? []);
 

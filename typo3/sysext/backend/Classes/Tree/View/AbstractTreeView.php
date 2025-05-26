@@ -139,17 +139,9 @@ abstract class AbstractTreeView
         }
     }
 
-    /**
-     * Adds a fieldname to the internal array ->fieldArray
-     *
-     * @param string $field Field name to
-     * @param bool $noCheck If set, the fieldname will be set no matter what. Otherwise the field name must be found as key in $GLOBALS['TCA'][$table]['columns']
-     */
-    public function addField(string $field, bool $noCheck = false): void
+    public function addField(string $field): void
     {
-        if ($noCheck || is_array($GLOBALS['TCA'][$this->table]['columns'][$field] ?? null)) {
-            $this->fieldArray[] = $field;
-        }
+        $this->fieldArray[] = $field;
     }
 
     /**

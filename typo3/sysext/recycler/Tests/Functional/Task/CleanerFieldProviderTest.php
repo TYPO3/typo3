@@ -88,7 +88,6 @@ final class CleanerFieldProviderTest extends FunctionalTestCase
             'RecyclerCleanerPeriod' => 14,
             'RecyclerCleanerTCA' => ['pages'],
         ];
-        $GLOBALS['TCA']['pages'] = ['foo' => 'bar'];
         $subject = GeneralUtility::makeInstance(CleanerFieldProvider::class);
         self::assertTrue($subject->validateAdditionalFields($submittedData, $this->get(SchedulerModuleController::class)));
     }

@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -30,7 +32,8 @@ readonly class DatabasePageLanguageOverlayRows implements FormDataProviderInterf
 {
     public function __construct(
         private Context $context,
-        private ConnectionPool $connectionPool
+        private ConnectionPool $connectionPool,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -62,10 +65,11 @@ readonly class DatabasePageLanguageOverlayRows implements FormDataProviderInterf
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class))
             ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, (int)$workspaceId));
 
-        $rows = $queryBuilder->select('*')
+        $rows = $queryBuilder
+            ->select('*')
             ->from('pages')
             ->where($queryBuilder->expr()->eq(
-                $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'],
+                $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName(),
                 $queryBuilder->createNamedParameter($pid, Connection::PARAM_INT)
             ))
             ->executeQuery()

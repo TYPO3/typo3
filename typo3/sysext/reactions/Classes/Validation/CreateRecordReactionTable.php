@@ -17,16 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Reactions\Validation;
 
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Struct\SelectItem;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Validation class for tables to be allowed for record creation in the "create record" reaction
  *
  * @internal
  */
-final class CreateRecordReactionTable
+final readonly class CreateRecordReactionTable
 {
-    public function __construct(private readonly string $table) {}
+    public function __construct(private string $table) {}
 
     public static function fromSelectItem(SelectItem $selectItem): CreateRecordReactionTable
     {
@@ -41,19 +44,28 @@ final class CreateRecordReactionTable
 
     public function isAllowedForItemsProcFunc(): bool
     {
-        return $this->table !== ''
-            && is_array($GLOBALS['TCA'][$this->table] ?? false)
-            && !($GLOBALS['TCA'][$this->table]['ctrl']['adminOnly'] ?? false);
+        if ($this->table === '') {
+            return false;
+        }
+        $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+        if (!$schemaFactory->has($this->table)) {
+            return false;
+        }
+        return !$schemaFactory->get($this->table)->hasCapability(TcaSchemaCapability::AccessAdminOnly);
     }
 
     private function isInSelectItems(): bool
     {
-        return is_array($GLOBALS['TCA']['sys_reaction']['columns']['table_name']['config']['items'] ?? false)
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('sys_reaction');
+        if (!$schema->hasField('table_name')) {
+            return false;
+        }
+        $fieldInformation = $schema->getField('table_name');
+
+        return is_array($fieldInformation->getConfiguration()['items'])
             && in_array(
                 $this->table,
-                array_filter(
-                    array_column($GLOBALS['TCA']['sys_reaction']['columns']['table_name']['config']['items'], 'value')
-                ),
+                array_filter(array_column($fieldInformation->getConfiguration()['items'], 'value')),
                 true
             );
     }
