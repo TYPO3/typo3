@@ -102,10 +102,6 @@ return [
     'setup_mfa' => [
         'path' => '/setup/mfa',
         'target' => Controller\MfaSetupController::class . '::handleRequest',
-        'sudoMode' => [
-            'group' => 'mfa',
-            'lifetime' => AccessLifetime::medium,
-        ],
     ],
 
     // Multi-factor authentication configuration
