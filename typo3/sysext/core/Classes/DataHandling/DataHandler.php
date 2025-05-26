@@ -8305,27 +8305,6 @@ class DataHandler
     }
 
     /**
-     * Returns the pid of a record from $table with $uid
-     *
-     * @param string $table Table name
-     * @param int $uid Record uid
-     * @return int|false PID value (unless the record did not exist in which case FALSE is returned)
-     * @internal should only be used from within DataHandler
-     */
-    public function getPID($table, $uid)
-    {
-        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()->removeAll();
-        $queryBuilder->select('pid')
-            ->from($table)
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
-        if ($row = $queryBuilder->executeQuery()->fetchAssociative()) {
-            return $row['pid'];
-        }
-        return false;
-    }
-
-    /**
      * Executing dbAnalysisStore
      * This will save MM relations for new records but is executed after records are created because we need to know the ID of them
      * @internal should only be used from within DataHandler
@@ -8805,7 +8784,7 @@ class DataHandler
      * @param int $pid Original pid of the page of the record which the cache needs to be cleared
      * @return array Array with tagsToClear and clearCacheCommands
      */
-    protected function prepareCacheFlush($table, $uid, $pid): array
+    protected function prepareCacheFlush(string $table, int $uid, $pid): array
     {
         $tagsToClear = [];
         $clearCacheCommands = [];
@@ -8907,24 +8886,15 @@ class DataHandler
                 }
             } else {
                 // For other tables than "pages", delete cache for the records "parent page".
-                $pageIdsThatNeedCacheFlush[] = $pageUid = (int)$this->getPID($table, $uid);
-                // Add the parent page as well
-                if ($TSConfig['clearCache_pageGrandParent'] ?? false) {
-                    $parentQuery = $this->connectionPool->getQueryBuilderForTable('pages');
-                    $parentQuery->getRestrictions()
-                        ->removeAll()
-                        ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-                    $parentPageRecord = $parentQuery
-                        ->select('pid')
-                        ->from('pages')
-                        ->where($parentQuery->expr()->eq(
-                            'uid',
-                            $parentQuery->createNamedParameter($pageUid, Connection::PARAM_INT)
-                        ))
-                        ->executeQuery()
-                        ->fetchAssociative();
-                    if (!empty($parentPageRecord)) {
-                        $pageIdsThatNeedCacheFlush[] = (int)$parentPageRecord['pid'];
+                $pageUid = (int)(BackendUtility::getRecord($table, $uid, 'pid', '', false)['pid'] ?? 0);
+                if ($pageUid > 0) {
+                    $pageIdsThatNeedCacheFlush[] = $pageUid;
+                    if ($TSConfig['clearCache_pageGrandParent'] ?? false) {
+                        // Add the parent page as well
+                        $grandPageUid = (int)(BackendUtility::getRecord('pages', $pageUid, 'pid')['pid'] ?? 0);
+                        if ($grandPageUid > 0) {
+                            $pageIdsThatNeedCacheFlush[] = $grandPageUid;
+                        }
                     }
                 }
             }
@@ -10165,6 +10135,24 @@ class DataHandler
             return ' AND ' . $table . '.' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() . '=0';
         }
         return '';
+    }
+
+    /**
+     * Unused. Removed in TYPO3 v14.
+     *
+     * @internal should only be used from within DataHandler
+     */
+    public function getPID($table, $uid)
+    {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll();
+        $queryBuilder->select('pid')
+            ->from($table)
+            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
+        if ($row = $queryBuilder->executeQuery()->fetchAssociative()) {
+            return $row['pid'];
+        }
+        return false;
     }
 
     /**
