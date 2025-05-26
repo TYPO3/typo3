@@ -8992,9 +8992,7 @@ class DataHandler
      */
     public function clear_cacheCmd($cacheCmd): void
     {
-        if (is_object($this->BE_USER)) {
-            $this->BE_USER->writeLog(SystemLogType::CACHE, SystemLogCacheAction::CLEAR, SystemLogErrorClassification::MESSAGE, null, 'User {username} has cleared the cache (cacheCmd={command})', ['username' => $this->BE_USER->user['username'], 'command' => $cacheCmd]);
-        }
+        $this->BE_USER->writeLog(SystemLogType::CACHE, SystemLogCacheAction::CLEAR, SystemLogErrorClassification::MESSAGE, null, 'User {username} has cleared the cache (cacheCmd={command})', ['username' => $this->BE_USER->user['username'], 'command' => $cacheCmd]);
         $userTsConfig = $this->BE_USER->getTSConfig();
         switch (strtolower($cacheCmd)) {
             case 'pages':
