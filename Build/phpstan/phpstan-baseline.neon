@@ -745,12 +745,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
 
 		-
-			message: '#^Call to function is_object\(\) with TYPO3\\CMS\\Core\\Authentication\\BackendUserAuthentication will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/core/Classes/DataHandling/DataHandler.php
-
-		-
 			message: '#^Method TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapProcessor\:\:fetchDependencies\(\) should return array\<array\<TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapItem\>\> but returns array\<int\|string, array\<string, list\<TYPO3\\CMS\\Core\\DataHandling\\Localization\\DataMapItem\>\>\>\.$#'
 			identifier: return.type
 			count: 1
