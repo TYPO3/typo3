@@ -8877,9 +8877,6 @@ class DataHandler
      * $cacheCmd='cacheTag:[string]'
      * Flush page cache by given tag
      *
-     * $cacheCmd='cacheId:[string]'
-     * Removes cache identifier from page and page section cache
-     *
      * Can call a list of post processing functions as defined in
      * $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['t3lib/class.t3lib_tcemain.php']['clearCachePostProc']
      * (numeric array with values being the function references, called by
