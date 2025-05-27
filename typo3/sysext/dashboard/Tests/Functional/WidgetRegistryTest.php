@@ -54,10 +54,6 @@ final class WidgetRegistryTest extends FunctionalTestCase
                 'iconIdentifier' => 'content-widget-rss',
                 'height' => 'small',
                 'width' => 'small',
-                'additionalCssClasses' => [
-                    'custom-widget',
-                    'rss-condensed',
-                ],
             ],
             [
                 'identifier' => 'test-widget2',
@@ -68,10 +64,6 @@ final class WidgetRegistryTest extends FunctionalTestCase
                 'iconIdentifier' => 'content-widget-rss',
                 'height' => 'small',
                 'width' => 'small',
-                'additionalCssClasses' => [
-                    'custom-widget',
-                    'rss-condensed',
-                ],
             ],
             [
                 'identifier' => 'test-widget3',
@@ -82,10 +74,6 @@ final class WidgetRegistryTest extends FunctionalTestCase
                 'iconIdentifier' => 'content-widget-rss',
                 'height' => 'small',
                 'width' => 'small',
-                'additionalCssClasses' => [
-                    'custom-widget',
-                    'rss-condensed',
-                ],
             ],
             [
                 'identifier' => 'test-widget4',
@@ -96,10 +84,6 @@ final class WidgetRegistryTest extends FunctionalTestCase
                 'iconIdentifier' => 'content-widget-rss',
                 'height' => 'small',
                 'width' => 'small',
-                'additionalCssClasses' => [
-                    'custom-widget',
-                    'rss-condensed',
-                ],
             ],
         ];
 

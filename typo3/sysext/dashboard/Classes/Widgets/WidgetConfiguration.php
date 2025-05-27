@@ -30,8 +30,7 @@ class WidgetConfiguration implements WidgetConfigurationInterface
         private readonly string $description,
         private readonly string $iconIdentifier,
         private readonly string $height,
-        private readonly string $width,
-        private readonly array $additionalCssClasses
+        private readonly string $width
     ) {
         $allowedSizes = ['small', 'medium', 'large'];
         if (!in_array($height, $allowedSizes, true)) {
@@ -80,10 +79,5 @@ class WidgetConfiguration implements WidgetConfigurationInterface
     public function getWidth(): string
     {
         return $this->width;
-    }
-
-    public function getAdditionalCssClasses(): string
-    {
-        return implode(' ', $this->additionalCssClasses);
     }
 }

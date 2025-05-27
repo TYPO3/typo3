@@ -83,11 +83,6 @@ For up to date information, please check the source code.
       :returntype: int
       :returns: Width of a widget in columns (1-4).
 
-   .. php:method:: getAdditionalCssClasses()
-
-      :returntype: array
-      :returns: Additional CSS classes which should be added to the rendered widget.
-
 .. php:class:: AdditionalJavaScriptInterface
 
    Widgets implementing this interface will add the provided JavaScript files.

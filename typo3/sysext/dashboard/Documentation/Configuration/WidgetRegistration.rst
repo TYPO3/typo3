@@ -197,13 +197,6 @@ The following options are optional and have default values which will be used if
 
     Has to be a string value: `large`, `medium`, or `small`.
 
-..  confval:: additionalCssClasses
-    :type: string
-    :name: widget-tag-additionalCssClasses
-
-    Will be added to the surrounding rendered markup.
-    Usually used when working with Graphs.
-
 ..  _register-new-widget-splitting:
 
 Splitting up Services.yaml
