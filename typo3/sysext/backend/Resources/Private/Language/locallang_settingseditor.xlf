@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_settingseditor.xlf" date="2024-09-10T12:13:00Z" product-name="backend">
 		<header/>
 		<body>
+			<trans-unit id="settingseditor.mode.minimal">
+				<source>Minimal</source>
+			</trans-unit>
 			<trans-unit id="settingseditor.mode.basic">
 				<source>Basic</source>
 			</trans-unit>

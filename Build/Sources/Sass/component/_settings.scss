@@ -14,6 +14,15 @@
     --settings-nav-height-correction: 100px;
     --settings-nav-item-padding-x: var(--typo3-list-item-padding-x);
     --settings-nav-item-padding-y: var(--typo3-list-item-padding-y);
+    --settings-parent-offset: 0;
+}
+
+.module-body typo3-backend-settings-editor {
+    --settings-parent-offset: var(--module-body-padding-y);
+}
+
+.modal-body typo3-backend-settings-editor {
+    --settings-parent-offset: var(--typo3-modal-padding);
 }
 
 .settings-container {
@@ -28,12 +37,11 @@
     border: var(--settings-border-width) solid var(--settings-border-color);
     background-color: var(--settings-bg);
     gap: var(--settings-border-width);
-    padding: var(--settings-border-width);
     border-radius: var(--settings-border-radius);
 
     &-search {
         position: sticky;
-        top: calc(var(--module-body-padding-y) * -1);
+        top: calc(var(--settings-parent-offset) * -1);
         z-index: 2;
         height: var(--settings-search-height);
         display: flex;
@@ -63,23 +71,29 @@
 }
 
 @container (min-width: 780px) {
-    .settings {
+    .settings:has(.settings-navigation) {
         grid-template-columns: 300px 1fr;
 
-        &-search {
+        .settings-search {
             grid-column: span 2;
         }
 
-        &-navigation {
+        .settings-navigation {
             display: flex;
             flex-direction: column;
 
             &-inner {
                 position: sticky;
-                top: calc(var(--settings-search-height) - var(--module-body-padding-y));
+                top: calc(var(--settings-parent-offset) * -1);
                 overflow-y: auto;
                 scrollbar-gutter: stable;
                 flex-grow: 1;
+            }
+        }
+
+        &:has(.settings-search) {
+            .settings-navigation-inner {
+                top: calc(var(--settings-search-height) - var(--settings-parent-offset));
             }
         }
     }
