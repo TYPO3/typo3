@@ -12,6 +12,7 @@
  */
 
 export enum SettingsMode {
+  minimal = 'minimal',
   basic = 'basic',
   advanced = 'advanced',
 }

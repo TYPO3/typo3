@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-var a;(function(n){n.basic="basic",n.advanced="advanced"})(a||(a={}));function c(n){return Object.values(a).includes(n)?n:a.basic}export{a as SettingsMode,c as sanitizeSettingsMode};
+var a;(function(i){i.minimal="minimal",i.basic="basic",i.advanced="advanced"})(a||(a={}));function n(i){return Object.values(a).includes(i)?i:a.basic}export{a as SettingsMode,n as sanitizeSettingsMode};

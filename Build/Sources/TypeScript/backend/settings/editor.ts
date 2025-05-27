@@ -113,49 +113,64 @@ export class SettingsEditorElement extends LitElement {
   visibleCategories: Record<string, boolean> = {};
   observer: IntersectionObserver = null;
 
+  public override disconnectedCallback() {
+    super.disconnectedCallback();
+    this.observer?.disconnect();
+  }
+
   protected override createRenderRoot(): HTMLElement | ShadowRoot {
     return this;
   }
 
-  protected adjustNavigationSize() {
+  protected adjustNavigationSize(): void {
     const scrollableParent = DomHelper.scrollableParent(this);
     const container = this.querySelector('.settings-navigation-inner') as HTMLElement;
+    const settingsSearchElement = this.querySelector('.settings-search') as HTMLElement | null;
+    const settingsNavigationElement = this.querySelector('.settings-navigation') as HTMLElement | null;
+    if (settingsNavigationElement === null) {
+      return;
+    }
+
     if (container) {
       const scrollableParentRect = scrollableParent.getBoundingClientRect();
-      const searchRect = this.querySelector('.settings-search').getBoundingClientRect();
-      const navigationRect = this.querySelector('.settings-navigation').getBoundingClientRect();
-      container.style.maxHeight = `${scrollableParentRect.bottom - Math.max(0, scrollableParentRect.bottom - navigationRect.bottom) - searchRect.bottom}px`;
+      const navigationRect = settingsNavigationElement.getBoundingClientRect();
+      const startPosition = settingsSearchElement?.getBoundingClientRect().bottom ?? Math.max(scrollableParentRect.top, container.getBoundingClientRect().top);
+      const maxHeight = scrollableParentRect.bottom - Math.max(0, scrollableParentRect.bottom - navigationRect.bottom) - startPosition;
+      container.style.maxHeight = `${maxHeight}px`;
     }
   }
 
   protected override firstUpdated(): void {
     const scrollableParent = DomHelper.scrollableParent(this);
-
     scrollableParent.addEventListener('scroll', () => {
       this.adjustNavigationSize();
     });
-
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          const key = (entry.target as HTMLElement).dataset.key;
-          this.visibleCategories[key] = entry.isIntersecting;
-        });
-        const flatten = (list: Category[]): string[] => list.reduce((acc, c) => [...acc, c.key, ...flatten(c.categories)], []);
-        const active = flatten(this.categories).filter(key => this.visibleCategories[key])[0] || '';
-        if (active) {
-          this.activeCategory = active;
-        }
-      },
-      {
-        root: document.querySelector('.module'),
-        threshold: 0.1,
-        rootMargin: `-${getComputedStyle(document.querySelector('.settings-navigation-inner')).getPropertyValue('top')} 0px 0px 0px`
-      }
-    );
   }
 
   protected override updated(changedProperties: PropertyValues<this>): void {
+    if (changedProperties.has('mode') && this.mode === SettingsMode.minimal) {
+      this.observer?.disconnect();
+      this.observer = null;
+    } else if (changedProperties.has('mode') && this.mode !== SettingsMode.minimal) {
+      this.observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach(entry => {
+            const key = (entry.target as HTMLElement).dataset.key;
+            this.visibleCategories[key] = entry.isIntersecting;
+          });
+          const flatten = (list: Category[]): string[] => list.reduce((acc, c) => [...acc, c.key, ...flatten(c.categories)], []);
+          const active = flatten(this.categories).filter(key => this.visibleCategories[key])[0] || '';
+          if (active) {
+            this.activeCategory = active;
+          }
+        },
+        {
+          root: DomHelper.scrollableParent(this),
+          threshold: 0.1,
+        }
+      );
+    }
+
     [...this.renderRoot.querySelectorAll('.settings-category')].map(entry => this.observer?.observe(entry));
     this.adjustNavigationSize();
 
@@ -315,28 +330,34 @@ export class SettingsEditorElement extends LitElement {
         `)}
 
         <div class="settings">
-          <div class="settings-search">
-            <label for="settings-search" class="visually-hidden">
-                ${lll('settingseditor.search.searchTermVisuallyHiddenLabel')}
-            </label>
-            <input
-              type="search"
-              id="settings-search"
-              class="form-control"
-                placeholder=${lll('settingseditor.search.searchTermPlaceholder')}
-              .value=${live(this.searchTerm)}
-              @change=${(e: Event) => this.onSearch(e)}
-              @input=${(e: Event) => this.onSearch(e)}>
-          </div>
 
-          <div class="settings-navigation" ?hidden=${!hasVisibleCategories}>
-            <div
-              class="settings-navigation-inner"
-              @transitionend="${() => this.adjustNavigationSize()}"
-            >
-              ${this.renderCategoryTree(categories ?? [], 1)}
+          ${this.mode !== SettingsMode.minimal ? html`
+            <div class="settings-search">
+              <label for="settings-search" class="visually-hidden">
+                ${lll('settingseditor.search.searchTermVisuallyHiddenLabel')}
+              </label>
+              <input
+                type="search"
+                id="settings-search"
+                class="form-control"
+                placeholder=${lll('settingseditor.search.searchTermPlaceholder')}
+                .value=${live(this.searchTerm)}
+                @change=${(e: Event) => this.onSearch(e)}
+                @input=${(e: Event) => this.onSearch(e)}>
             </div>
-          </div>
+            ` : nothing }
+
+          ${this.mode !== SettingsMode.minimal ? html`
+            <div class="settings-navigation" ?hidden=${!hasVisibleCategories}>
+              <div
+                class="settings-navigation-inner"
+                @transitionend="${() => this.adjustNavigationSize()}"
+              >
+                ${this.renderCategoryTree(categories ?? [], 1)}
+              </div>
+            </div>
+            ` : nothing }
+
           <div class="settings-body" ?hidden=${!hasVisibleCategories}>
             <div class="settings-body-inner">
               ${this.renderSettings(categories ?? [], 1)}
