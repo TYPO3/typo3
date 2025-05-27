@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Controller\Event\ModifyNewRecordCreationLinksEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -34,6 +35,7 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -90,6 +92,7 @@ class NewRecordController
         protected readonly IconFactory $iconFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
+        protected readonly RecordFactory $recordFactory,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
         protected readonly EventDispatcherInterface $eventDispatcher,
@@ -219,7 +222,11 @@ class NewRecordController
             if (($beUser->isAdmin() || !empty($this->pidInfo)) && $beUser->doesUserHaveAccess($this->pidInfo, Permission::PAGE_NEW)) {
                 $this->newPagesAfter = true;
             }
-            $this->view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
+            $breadcrumbContext = new BreadcrumbContext(
+                $this->recordFactory->createResolvedRecordFromDatabaseRow('pages', $this->pageinfo),
+                []
+            );
+            $this->view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
         } elseif ($beUser->isAdmin()) {
             // Admins can do it all
             $this->newPagesInto = true;

@@ -1,0 +1,109 @@
+typo3-breadcrumb {
+    display: block;
+    width: 100%;
+}
+
+//
+// Variables
+//
+.breadcrumb,
+.breadcrumb-measurement {
+    --typo3-breadcrumb-divider-content: "/";
+    --typo3-breadcrumb-divider-opacity: .25;
+    --typo3-breadcrumb-divider-space: .35rem;
+    --typo3-breadcrumb-element-color: var(--typo3-text-color-link);
+    --typo3-breadcrumb-element-spacing: .25rem;
+    --typo3-breadcrumb-element-padding-x: .5rem;
+    --typo3-breadcrumb-element-padding-y: .25rem;
+}
+
+//
+// Breadcrumb
+//
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    white-space: nowrap;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+
+    &-collapsible {
+        flex-wrap: nowrap;
+    }
+
+    &-right {
+        justify-content: end;
+    }
+}
+
+//
+// Item
+//
+.breadcrumb-item {
+    position: relative;
+    display: flex;
+
+    &:after {
+        content: var(--typo3-breadcrumb-divider-content) / "";
+        opacity: var(--typo3-breadcrumb-divider-opacity);
+        margin: 0 var(--typo3-breadcrumb-divider-space);
+    }
+
+    &-last:after {
+        display: none;
+    }
+
+    typo3-backend-icon {
+        width: var(--icon-size-small);
+    }
+}
+
+.breadcrumb:has(:not(.breadcrumb-item)) {
+    .breadcrumb-item:last-child:after {
+        display: none;
+    }
+}
+
+.breadcrumb-collapsible > .breadcrumb-item {
+    &:last-child {
+        overflow: hidden;
+    }
+
+    .breadcrumb-element {
+        overflow: hidden;
+    }
+
+    .breadcrumb-element-label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.breadcrumb-element {
+    display: flex;
+    gap: var(--typo3-breadcrumb-element-spacing);
+    color: var(--typo3-breadcrumb-element-color);
+    line-height: inherit;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.breadcrumb-item > a,
+a.breadcrumb-element,
+button.breadcrumb-element {
+    outline-offset: 1px;
+    border-radius: 1px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:focus-visible {
+        outline: var(--typo3-outline-width) var(--typo3-outline-style) color-mix(in srgb, currentColor, transparent 25%);
+    }
+}

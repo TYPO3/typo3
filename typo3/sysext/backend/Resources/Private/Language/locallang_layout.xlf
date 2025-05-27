@@ -3,6 +3,9 @@
 	<file source-language="en" datatype="plaintext" original="EXT:backend/Resources/Private/Language/locallang_layout.xlf" date="2011-10-17T20:22:32Z" product-name="cms">
 		<header/>
 		<body>
+			<trans-unit id="breadcrumb">
+				<source>Breadcrumb</source>
+			</trans-unit>
 			<trans-unit id="title">
 				<source>Page content</source>
 			</trans-unit>

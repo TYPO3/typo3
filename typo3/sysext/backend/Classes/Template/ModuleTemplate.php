@@ -144,7 +144,7 @@ final class ModuleTemplate implements ViewInterface, ResponsableViewInterface
         }
 
         $this->assignMultiple([
-            'docHeader' => $this->docHeaderComponent->docHeaderContent(),
+            'docHeader' => $this->docHeaderComponent->docHeaderContent($this->request),
             'moduleId' => $this->moduleId,
             'moduleName' => $this->moduleName,
             'moduleClass' => $this->moduleClass,

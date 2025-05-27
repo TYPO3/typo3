@@ -1,3 +1,8 @@
+<f:be.pageRenderer
+    includeJavaScriptModules="{
+        0: '@typo3/backend/element/breadcrumb.js',
+    }"
+/>
 <div class="module-loading-indicator"></div>
 <div class="module-docheader t3js-module-docheader">
     <div class="module-docheader-bar module-docheader-bar-navigation t3js-module-docheader-bar t3js-module-docheader-bar-navigation">
@@ -12,30 +17,18 @@
                 </div>
             </f:if>
         </div>
-        <div class="module-docheader-bar-column-right">
-            <f:if condition="{docHeader.metaInformation.recordInformation}">
-                <f:if condition="{docHeader.metaInformation.fileOrFolder}">
-                    <f:then>
-                        <f:format.raw>{docHeader.metaInformation.path}</f:format.raw>
-                    </f:then>
-                    <f:else>
-                        <span class="typo3-docheader-pagePath">
-                            <f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.path"/>: <f:format.raw>{docHeader.metaInformation.path}</f:format.raw>
-                        </span>
-                    </f:else>
-                </f:if>
-                <strong>
-                    <f:format.raw>
-                        {docHeader.metaInformation.recordInformationIcon} {docHeader.metaInformation.recordInformationTitle}
-                        <f:if condition="{docHeader.metaInformation.recordInformationUid}">[{docHeader.metaInformation.recordInformationUid}]</f:if>
-                    </f:format.raw>
-                </strong>
-                {docHeader.metaInformation.recordInformationAdditionalInfo}
+        <div class="module-docheader-bar-column-right module-docheader-bar-column-grow">
+            <f:if condition="{docHeader.breadcrumb}">
+                <typo3-breadcrumb
+                    label='{f:translate(key: "LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:breadcrumb")}'
+                    nodes='{docHeader.breadcrumb -> f:format.json()}'
+                    alignRight='true'
+                ></typo3-breadcrumb>
             </f:if>
         </div>
     </div>
     <div class="module-docheader-bar module-docheader-bar-buttons t3js-module-docheader-bar t3js-module-docheader-bar-buttons">
-        <div class="module-docheader-bar-column-left">
+        <div class="module-docheader-bar-column-left module-docheader-bar-column-grow">
             <f:render partial="ButtonBar" arguments="{buttons:docHeader.buttons.left}" />
         </div>
         <div class="module-docheader-bar-column-right">

@@ -52,6 +52,9 @@
 			<trans-unit id="action.badges">
 				<source>Badges</source>
 			</trans-unit>
+			<trans-unit id="action.breadcrumbs">
+				<source>Breadcrumbs</source>
+			</trans-unit>
 			<trans-unit id="action.buttons">
 				<source>Buttons</source>
 			</trans-unit>
@@ -264,6 +267,11 @@
 			</trans-unit>
 			<trans-unit id="component.badge.section.withinHeadlines.headline">
 				<source>Usage within headings</source>
+			</trans-unit>
+
+			<!-- Component: Button -->
+			<trans-unit id="component.breadcrumb.headline">
+				<source>Breadcrumb</source>
 			</trans-unit>
 
 			<!-- Component: Button -->

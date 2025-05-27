@@ -23,6 +23,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbContext;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
@@ -127,6 +128,8 @@ class FileListController implements LoggerAwareInterface
                 if ($storage !== null) {
                     $identifier = substr($this->id, strpos($this->id, ':') + 1);
                     if (!$storage->hasFolder($identifier)) {
+                        // @todo: should we redirect to form engine instead of implicitly showing the folder, when a file is requested?
+                        // (that way breadcrumb would not need to handle module-specific formegine routes)
                         $identifier = $storage->getFolderIdentifierFromFileIdentifier($identifier);
                     }
                     $this->folderObject = $storage->getFolder($identifier);
@@ -277,11 +280,7 @@ class FileListController implements LoggerAwareInterface
             $this->getModuleHeadline()
         );
 
-        // Additional doc header information: current path and folder info
-        $this->view->getDocHeaderComponent()->setMetaInformation([
-            '_additional_info' => $this->filelist->getFolderInfo(),
-        ]);
-        $this->view->getDocHeaderComponent()->setMetaInformationForResource($this->folderObject);
+        $this->view->getDocHeaderComponent()->setBreadcrumbContext(new BreadcrumbContext($this->folderObject));
 
         return $this->view->renderResponse('File/List');
     }

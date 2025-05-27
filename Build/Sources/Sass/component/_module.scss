@@ -82,6 +82,16 @@
         gap: var(--module-docheader-spacing);
         min-height: var(--module-docheader-bar-height);
         line-height: var(--module-docheader-bar-height);
+        contain: inline-size;
+
+        &-column-left,
+        &-column-right {
+            max-width: 100%;
+        }
+
+        &-column-grow {
+            flex-grow: 1;
+        }
 
         label {
             margin-top: 0;

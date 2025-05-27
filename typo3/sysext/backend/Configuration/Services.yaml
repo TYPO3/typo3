@@ -29,6 +29,16 @@ services:
   # Not a service, not injectable
   TYPO3\CMS\Backend\Module\ModuleInterface: ~
 
+  # Breadcrumb component with providers
+  TYPO3\CMS\Backend\Template\Components\Breadcrumb:
+    arguments:
+      $providers: !tagged_iterator backend.breadcrumb.provider
+
+  # Auto-tag breadcrumb providers
+  _instanceof:
+    TYPO3\CMS\Backend\Breadcrumb\BreadcrumbProviderInterface:
+      tags: ['backend.breadcrumb.provider']
+
   TYPO3\CMS\Backend\Search\LiveSearch\SearchProviderRegistry:
     arguments:
       - !tagged_iterator livesearch.provider

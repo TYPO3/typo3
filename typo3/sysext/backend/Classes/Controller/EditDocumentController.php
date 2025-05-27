@@ -21,6 +21,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Breadcrumb\BreadcrumbFactory;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
 use TYPO3\CMS\Backend\Controller\Event\AfterFormEnginePageInitializedEvent;
 use TYPO3\CMS\Backend\Controller\Event\BeforeFormEnginePageInitializedEvent;
@@ -51,6 +52,7 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
+use TYPO3\CMS\Core\Domain\RecordFactory;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -342,6 +344,8 @@ class EditDocumentController
     public function __construct(
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly IconFactory $iconFactory,
+        protected readonly RecordFactory $recordFactory,
+        protected readonly BreadcrumbFactory $breadcrumbFactory,
         protected readonly PageRenderer $pageRenderer,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
@@ -941,8 +945,9 @@ class EditDocumentController
         // Access check...
         // The page will show only if there is a valid page and if this page may be viewed by the user
         $this->pageinfo = BackendUtility::readPageAccess($this->viewId, $this->perms_clause) ?: [];
+        $this->setIsSavedRecord();
         // Setting up the buttons, markers for doc header and navigation component state
-        $this->resolveMetaInformation($view);
+        $this->resolveMetaInformation($view, $request);
         $this->getButtons($view, $request);
 
         // Create language switch options if the record is already persisted, and it is a single record to edit
@@ -958,8 +963,9 @@ class EditDocumentController
         return $body;
     }
 
-    protected function resolveMetaInformation(ModuleTemplate $view): void
+    protected function resolveMetaInformation(ModuleTemplate $view, ServerRequestInterface $request): void
     {
+        // Handle file metadata records
         $file = null;
         if (($this->firstEl['table'] ?? '') === 'sys_file_metadata' && (int)($this->firstEl['uid'] ?? 0) > 0) {
             $fileUid = (int)(BackendUtility::getRecord('sys_file_metadata', (int)$this->firstEl['uid'], 'file')['file'] ?? 0);
@@ -969,14 +975,41 @@ class EditDocumentController
                 // do nothing when file is not accessible
             }
         }
+
         if ($file instanceof FileInterface) {
-            $view->getDocHeaderComponent()->setMetaInformationForResource($file);
             $view->assign('moduleContextId', $file->getParentFolder()->getCombinedIdentifier());
+            $breadcrumbContext = $this->breadcrumbFactory->forFileResource($file);
+            $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
         } elseif ($this->pageinfo !== []) {
-            $view->getDocHeaderComponent()->setMetaInformation($this->pageinfo);
             $l10nParent = (int)($this->pageinfo['l10n_parent'] ?? 0);
             $pageUid =  $this->pageinfo['uid'] ?? '';
             $view->assign('moduleContextId', $l10nParent !== 0 ? $l10nParent : $pageUid);
+
+            // Determine breadcrumb based on action (edit existing vs. create new)
+            if ($this->isSavedRecord) {
+                if ($this->isSingleRecordView()) {
+                    // Edit single existing record
+                    $breadcrumbContext = $this->breadcrumbFactory->forEditAction(
+                        $this->firstEl['table'],
+                        (int)$this->firstEl['uid']
+                    );
+                } else {
+                    // Edit multiple records
+                    $breadcrumbContext = $this->breadcrumbFactory->forEditMultipleAction(
+                        $this->firstEl['table'],
+                        (int)($this->pageinfo['uid'] ?? 0)
+                    );
+                }
+                $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
+            } else {
+                // Create new record
+                $breadcrumbContext = $this->breadcrumbFactory->forNewAction(
+                    $this->firstEl['table'],
+                    (int)($this->pageinfo['uid'] ?? 0),
+                    $this->defVals[$this->firstEl['table']] ?? []
+                );
+                $view->getDocHeaderComponent()->setBreadcrumbContext($breadcrumbContext);
+            }
         }
     }
 
@@ -1170,9 +1203,6 @@ class EditDocumentController
             $record = BackendUtility::getRecord($this->firstEl['table'], $this->firstEl['uid']);
             $schema = $this->tcaSchemaFactory->get($this->firstEl['table']);
             $languageCapability = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language) : null;
-
-            $this->setIsSavedRecord();
-
             $sysLanguageUid = 0;
             if (
                 $this->isSavedRecord

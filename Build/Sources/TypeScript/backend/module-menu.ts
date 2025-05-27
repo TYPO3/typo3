@@ -312,11 +312,12 @@ class ModuleMenu {
   /**
    * Event handler called after clicking on the module menu item
    */
-  public showModule(name: string, params?: string, event: Event = null): Promise<void> {
+  public showModule(name: string, params?: string, event: Event|null = null, endpoint: string|null = null): Promise<void> {
     params = params || '';
     const moduleData = ModuleUtility.getFromName(name);
     return this.loadModuleComponents(
       moduleData,
+      endpoint,
       params,
       new ClientRequest('typo3.showModule', event),
     );
@@ -524,6 +525,7 @@ class ModuleMenu {
    */
   private loadModuleComponents(
     moduleData: Module,
+    endpoint: string | null,
     params: string,
     interactionRequest: InteractionRequest,
   ): Promise<void> {
@@ -544,7 +546,7 @@ class ModuleMenu {
       params = ModuleMenu.includeId(moduleData, params);
       this.openInContentContainer(
         moduleName,
-        moduleData.link,
+        endpoint ?? moduleData.link,
         params,
         new TriggerRequest(
           'typo3.loadModuleComponents',

@@ -1,0 +1,101 @@
+<html
+    xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers"
+    xmlns:sg="http://typo3.org/ns/TYPO3/CMS/Styleguide/ViewHelpers"
+    xmlns:core="http://typo3.org/ns/TYPO3/CMS/Core/ViewHelpers"
+    data-namespace-typo3-fluid="true"
+>
+
+<f:layout name="Module" />
+
+<f:section name="Before">
+    <f:be.pageRenderer
+        includeJavaScriptModules="{
+            0: '@typo3/backend/element/breadcrumb.js',
+        }"
+    />
+</f:section>
+
+<f:section name="Content">
+
+    <f:render
+        partial="Backend/Navigation"
+        arguments="{
+            currentAction: currentAction,
+            actions: actions,
+            route: routeIdentifier
+        }"
+    />
+
+    <div class="styleguide-content">
+
+        <h1><f:translate key="LLL:EXT:styleguide/Resources/Private/Language/locallang.xlf:component.breadcrumb.headline" /></h1>
+
+        <h2>Basic</h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Styleguide</a></li>
+                <li class="breadcrumb-item"><a href="#">Component Library: Components</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Breadcrumbs</li>
+            </ol>
+        </sg:example>
+
+        <h2>Align Right</h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <ol class="breadcrumb breadcrumb-right">
+                <li class="breadcrumb-item"><a href="#">Styleguide</a></li>
+                <li class="breadcrumb-item"><a href="#">Component Library: Components</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Breadcrumbs</li>
+            </ol>
+        </sg:example>
+
+        <h2>RTL</h2>
+        <sg:example codePreview="true" codeLanguage="html" rtlDirection="true">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Styleguide</a></li>
+                <li class="breadcrumb-item"><a href="#">Component Library: Components</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Breadcrumbs</li>
+            </ol>
+        </sg:example>
+
+        <h2>Basic Collapsible Webcomponent</h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <typo3-breadcrumb
+                label='Breadcrumb'
+                nodes='{breadcrumb -> f:format.json()}'
+                style='max-width: 600px;'
+            ></typo3-breadcrumb>
+        </sg:example>
+
+        <h2>Collapsible Webcomponent: Align Right</h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <typo3-breadcrumb
+                label='Breadcrumb'
+                nodes='{breadcrumb -> f:format.json()}'
+                alignRight='true'
+                style='max-width: 600px; margin-left: auto;'
+            ></typo3-breadcrumb>
+        </sg:example>
+
+        <h2>Collapsible Webcomponent: RTL</h2>
+        <sg:example codePreview="true" codeLanguage="html" rtlDirection="true">
+            <typo3-breadcrumb
+                label='Breadcrumb'
+                nodes='{breadcrumb -> f:format.json()}'
+                style='max-width: 600px;'
+            ></typo3-breadcrumb>
+        </sg:example>
+
+        <h2>Overflow</h2>
+        <sg:example codePreview="true" codeLanguage="html">
+            <typo3-breadcrumb
+                label='Breadcrumb'
+                nodes='{breadcrumb -> f:format.json()}'
+                style='max-width: 120px;'
+            ></typo3-breadcrumb>
+        </sg:example>
+
+    </div>
+
+</f:section>
+
+</html>

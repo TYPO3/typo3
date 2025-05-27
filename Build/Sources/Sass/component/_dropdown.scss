@@ -188,7 +188,10 @@
     overflow: hidden;
     outline-offset: -1px;
     white-space: unset;
+}
 
+a.dropdown-item,
+button.dropdown-item {
     &:hover {
         color: var(--typo3-dropdown-item-hover-color);
         background-color: var(--typo3-dropdown-item-hover-bg);
@@ -217,7 +220,9 @@
         outline: 1px solid var(--typo3-dropdown-item-disabled-border-color);
         pointer-events: none;
     }
+}
 
+.dropdown-item {
     // Workaround for fileList and recordList
     // @TODO: Should be dropped as soon as we have the events adding buttons under control
     &-spaced {

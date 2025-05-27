@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Styleguide\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNode;
+use TYPO3\CMS\Backend\Dto\Breadcrumb\BreadcrumbNodeRoute;
 use TYPO3\CMS\Backend\Template\ModuleTemplate;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -47,6 +49,7 @@ final class ComponentsController
         'componentsOverview',
         'avatar',
         'badges',
+        'breadcrumbs',
         'buttons',
         'cards',
         'checkboxes',
@@ -88,6 +91,7 @@ final class ComponentsController
         return match ($queryAction) {
             'avatar' => $this->renderAvatarView($request),
             'badges' => $this->renderBadgesView($request),
+            'breadcrumbs' => $this->renderBreadcrumbsView($request),
             'buttons' => $this->renderButtonsView($request),
             'cards' => $this->renderCardsView($request),
             'checkboxes' => $this->renderCheckboxesView($request),
@@ -148,6 +152,69 @@ final class ComponentsController
             'variants' => ['primary', 'secondary', 'info', 'success', 'warning', 'danger', 'notice', 'default'],
         ]);
         return $view->renderResponse('Backend/Components/Badges');
+    }
+
+    private function renderBreadcrumbsView(ServerRequestInterface $request): ResponseInterface
+    {
+        $breadcrumb = [];
+
+        $route = new BreadcrumbNodeRoute(
+            module: 'styleguide_components',
+            params: [
+                'action' => 'breadcrumbs',
+            ]
+        );
+
+        $breadcrumb[] = new BreadcrumbNode(
+            identifier: '0',
+            label: 'Root',
+            icon: 'apps-pagetree-root',
+            iconOverlay: null,
+            route: $route,
+        );
+        $breadcrumb[] = new BreadcrumbNode(
+            identifier: '1',
+            label: 'Menu Entry Level 1',
+            icon: 'apps-pagetree-page',
+            iconOverlay: null,
+            route: $route,
+        );
+        $breadcrumb[] = new BreadcrumbNode(
+            identifier: '2',
+            label: 'Menu Entry Level 2',
+            icon: 'apps-pagetree-page',
+            iconOverlay: null,
+            route: $route,
+        );
+        $breadcrumb[] = new BreadcrumbNode(
+            identifier: '3',
+            label: 'Menu Entry Level 3',
+            icon: 'apps-pagetree-page',
+            iconOverlay: null,
+            route: $route,
+        );
+        $breadcrumb[] = new BreadcrumbNode(
+            identifier: '4',
+            label: 'Menu Entry Level 4',
+            icon: 'apps-pagetree-page',
+            iconOverlay: null,
+            route: $route,
+        );
+        $breadcrumb[] = new BreadcrumbNode(
+            identifier: '5',
+            label: 'Menu Entry Level 5',
+            icon: 'apps-pagetree-page',
+            iconOverlay: null,
+        );
+
+        $view = $this->createModuleTemplate($request, 'breadcrumbs');
+        $view->assignMultiple([
+            'actions' => $this->allowedActions,
+            'currentAction' => 'breadcrumbs',
+            'routeIdentifier' => 'styleguide_components',
+            'breadcrumb' => $breadcrumb,
+        ]);
+        return $view->renderResponse('Backend/Components/Breadcrumbs');
     }
 
     private function renderButtonsView(ServerRequestInterface $request): ResponseInterface

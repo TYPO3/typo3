@@ -127,7 +127,34 @@ final class SubmoduleOverviewControllerTest extends FunctionalTestCase
 
         $content = (string)$response->getBody();
 
-        self::assertStringContainsString('Path: /', $content);
+        self::assertStringContainsString(htmlspecialchars(json_encode([
+            [
+                'identifier' => 'web_info',
+                'label' => 'Info',
+                'icon' => 'module-info',
+                'iconOverlay' => null,
+                'route' => [
+                    'module' => 'web_info',
+                    'params' => [
+                        'id' => '0',
+                    ],
+                ],
+                'forceShowIcon' => true,
+            ],
+            [
+                'identifier' => '1',
+                'label' => 'Root',
+                'icon' => 'apps-pagetree-page-default',
+                'iconOverlay' => null,
+                'route' => [
+                    'module' => 'web_info',
+                    'params' => [
+                        'id' => '1',
+                    ],
+                ],
+                'forceShowIcon' => false,
+            ],
+        ]), ENT_QUOTES), $content);
     }
 
     #[Test]
