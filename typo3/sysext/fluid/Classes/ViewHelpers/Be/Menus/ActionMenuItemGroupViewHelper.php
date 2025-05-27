@@ -57,7 +57,7 @@ final class ActionMenuItemGroupViewHelper extends AbstractTagBasedViewHelper
     {
         $this->tag->addAttribute('label', $this->arguments['label']);
         $options = '';
-        foreach ($this->childNodes as $childNode) {
+        foreach ($this->viewHelperNode->getChildNodes() as $childNode) {
             if ($childNode instanceof ViewHelperNode) {
                 $options .= $childNode->evaluate($this->renderingContext);
             }

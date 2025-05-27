@@ -58,7 +58,7 @@ final class ActionMenuViewHelper extends AbstractTagBasedViewHelper
     public function render(): string
     {
         $options = '';
-        foreach ($this->childNodes as $childNode) {
+        foreach ($this->viewHelperNode->getChildNodes() as $childNode) {
             if ($childNode instanceof ViewHelperNode) {
                 $options .= $childNode->evaluate($this->renderingContext);
             }
