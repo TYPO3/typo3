@@ -50,8 +50,10 @@
 }
 
 .extension-icon {
-    height: 16px;
-    width: 16px;
+    height: 32px;
+    width: 32px;
+    margin-inline-end: 1em;
+    border-radius: 4px;
 }
 
 // Loader

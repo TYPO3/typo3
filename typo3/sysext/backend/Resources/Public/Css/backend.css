@@ -3782,7 +3782,7 @@ td.permission-column-group{-webkit-padding-start:0;padding-inline-start:0;white-
 .extension-list th:nth-child(5),.extension-list th:nth-child(6),.extension-list th:nth-child(7){width:7%}
 .extension-list th:nth-child(8){width:11%}
 .extension-list-search{-webkit-padding-end:2.3em;padding-inline-end:2.3em}
-.extension-icon{height:16px;width:16px}
+.extension-icon{height:32px;width:32px;-webkit-margin-end:1em;border-radius:4px;margin-inline-end:1em}
 #terTableWrapper{margin-top:1em;position:relative}
 #terTableWrapper .splash-receivedata{display:none;left:0;position:absolute;right:0;text-align:center;top:50px}
 .distribution-official-badge{bottom:0;inset-inline-end:.75em;position:absolute;transform:translateY(25%)}
