@@ -686,11 +686,11 @@ class FileQueueItem {
       this.progressBar.value = 100;
       this.progressBar.severity = SeverityEnum.error;
 
-    } else if (!this.checkAllowedExtensions()) {
+    } else if (this.isProhibitedByAllowedExtensionsList()) {
       this.updateMessage(TYPO3.lang['file_upload.fileExtensionExpected'].replace(/\{0\}/g, this.dragUploader.filesExtensionsAllowed));
       this.progressBar.value = 100;
       this.progressBar.severity = SeverityEnum.error;
-    } else if (!this.checkDisallowedExtensions()) {
+    } else if (this.isProhibitedByDisallowedExtensionsList()) {
       this.updateMessage(TYPO3.lang['file_upload.fileExtensionDisallowed'].replace(/\{0\}/g, this.dragUploader.filesExtensionsDisallowed));
       this.progressBar.value = 100;
       this.progressBar.severity = SeverityEnum.error;
@@ -890,19 +890,19 @@ class FileQueueItem {
     }
   }
 
-  public checkAllowedExtensions(): boolean {
+  public isProhibitedByAllowedExtensionsList(): boolean {
     if (!this.dragUploader.filesExtensionsAllowed) {
-      return true;
+      return false;
     }
     const extension = this.file.name.split('.').pop();
     const allowed = this.dragUploader.filesExtensionsAllowed.split(',');
 
-    return allowed.includes(extension.toLowerCase());
+    return !allowed.includes(extension.toLowerCase());
   }
 
-  public checkDisallowedExtensions(): boolean {
+  public isProhibitedByDisallowedExtensionsList(): boolean {
     if (!this.dragUploader.filesExtensionsDisallowed) {
-      return true;
+      return false;
     }
     const extension = this.file.name.split('.').pop();
     const disallowed = this.dragUploader.filesExtensionsDisallowed.split(',');
