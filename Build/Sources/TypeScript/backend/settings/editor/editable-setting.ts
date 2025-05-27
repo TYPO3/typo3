@@ -153,7 +153,7 @@ export class EditableSettingElement extends LitElement {
               type="button"
               ?disabled=${definition.readonly}
               @click="${() => this.setToDefaultValue()}">
-              <typo3-backend-icon identifier="actions-undo" size="small"></typo3-backend-icon> ${lll('edit.resetSetting')}
+              <typo3-backend-icon identifier="actions-undo" size="small"></typo3-backend-icon> ${lll('settingseditor.edit.resetSetting')}
             </button>
           </li>
           ${this.mode === SettingsMode.advanced ? html`
@@ -163,7 +163,7 @@ export class EditableSettingElement extends LitElement {
                 text=${definition.key}
                 class="dropdown-item dropdown-item-spaced"
               >
-                <typo3-backend-icon identifier="actions-clipboard" size="small"></typo3-backend-icon> ${lll('edit.copySettingsIdentifier')}
+                <typo3-backend-icon identifier="actions-clipboard" size="small"></typo3-backend-icon> ${lll('settingseditor.edit.copySettingsIdentifier')}
               </typo3-copy-to-clipboard>
             </li>
             ${this.dumpuri ? html`
@@ -171,7 +171,7 @@ export class EditableSettingElement extends LitElement {
                 <button class="dropdown-item dropdown-item-spaced"
                   type="button"
                   @click="${() => this.copyAsYaml()}">
-                  <typo3-backend-icon identifier="actions-clipboard-paste" size="small"></typo3-backend-icon> ${lll('edit.copyAsYaml')}
+                  <typo3-backend-icon identifier="actions-clipboard-paste" size="small"></typo3-backend-icon> ${lll('settingseditor.edit.copyAsYaml')}
                 </a>
               </li>
             ` : nothing}

@@ -42,30 +42,6 @@
 			<trans-unit id="edit.editSiteConfiguration">
 				<source>Edit site configuration</source>
 			</trans-unit>
-			<trans-unit id="edit.resetSetting">
-				<source>Reset setting</source>
-			</trans-unit>
-			<trans-unit id="edit.copySettingsIdentifier">
-				<source>Copy identifier</source>
-			</trans-unit>
-			<trans-unit id="edit.copyAsYaml">
-				<source>Copy as YAML</source>
-			</trans-unit>
-			<trans-unit id="edit.searchTermVisuallyHiddenLabel">
-				<source>Search settings</source>
-			</trans-unit>
-			<trans-unit id="edit.searchTermPlaceholder">
-				<source>Search settings</source>
-			</trans-unit>
-			<trans-unit id="edit.search.noResultsTitle">
-				<source>No settings were found.</source>
-			</trans-unit>
-			<trans-unit id="edit.search.noResultsMessage">
-				<source>The search filters by setting value, label, description or identifier.</source>
-			</trans-unit>
-			<trans-unit id="edit.search.noResultsResetButtonLabel">
-				<source>Reset filter</source>
-			</trans-unit>
 			<trans-unit id="save.message.updated">
 				<source>Settings updated.</source>
 			</trans-unit>

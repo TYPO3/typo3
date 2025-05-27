@@ -9,6 +9,30 @@
 			<trans-unit id="settingseditor.mode.advanced">
 				<source>Advanced</source>
 			</trans-unit>
+			<trans-unit id="settingseditor.edit.resetSetting">
+				<source>Reset setting</source>
+			</trans-unit>
+			<trans-unit id="settingseditor.edit.copySettingsIdentifier">
+				<source>Copy identifier</source>
+			</trans-unit>
+			<trans-unit id="settingseditor.edit.copyAsYaml">
+				<source>Copy as YAML</source>
+			</trans-unit>
+			<trans-unit id="settingseditor.search.searchTermVisuallyHiddenLabel">
+				<source>Search settings</source>
+			</trans-unit>
+			<trans-unit id="settingseditor.search.searchTermPlaceholder">
+				<source>Search settings</source>
+			</trans-unit>
+			<trans-unit id="settingseditor.search.noResultsTitle">
+				<source>No settings were found.</source>
+			</trans-unit>
+			<trans-unit id="settingseditor.search.noResultsMessage">
+				<source>The search filters by setting value, label, description or identifier.</source>
+			</trans-unit>
+			<trans-unit id="settingseditor.search.noResultsResetButtonLabel">
+				<source>Reset filter</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

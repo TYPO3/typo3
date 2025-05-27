@@ -317,13 +317,13 @@ export class SettingsEditorElement extends LitElement {
         <div class="settings">
           <div class="settings-search">
             <label for="settings-search" class="visually-hidden">
-              ${lll('edit.searchTermVisuallyHiddenLabel')}
+                ${lll('settingseditor.search.searchTermVisuallyHiddenLabel')}
             </label>
             <input
               type="search"
               id="settings-search"
               class="form-control"
-              placeholder=${lll('edit.searchTermPlaceholder')}
+                placeholder=${lll('settingseditor.search.searchTermPlaceholder')}
               .value=${live(this.searchTerm)}
               @change=${(e: Event) => this.onSearch(e)}
               @input=${(e: Event) => this.onSearch(e)}>
@@ -352,14 +352,14 @@ export class SettingsEditorElement extends LitElement {
               </span>
             </div>
             <div class="callout-content">
-              <div class="callout-title">${lll('edit.search.noResultsTitle')}</div>
+              <div class="callout-title">${lll('settingseditor.search.noResultsTitle')}</div>
               <div class="callout-body">
-                <p>${lll('edit.search.noResultsMessage')}</p>
+                <p>${lll('settingseditor.search.noResultsMessage')}</p>
                 <button
                     type="button"
                     class="btn btn-default"
                     @click=${() => this.searchTerm = ''}
-                  >${lll('edit.search.noResultsResetButtonLabel')}</button>
+                  >${lll('settingseditor.search.noResultsResetButtonLabel')}</button>
               </div>
             </div>
           </div>
