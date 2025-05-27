@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'DataHandler Test',
     'description' => 'DataHandler Test',
     'category' => 'example',
-    'version' => '12.4.32',
+    'version' => '12.4.33',
     'state' => 'beta',
     'author' => 'Oliver Hader',
     'author_email' => 'oliver@typo3.org',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '12.4.32',
+            'typo3' => '12.4.33',
         ],
         'conflicts' => [],
         'suggests' => [],
