@@ -173,6 +173,7 @@ readonly class ContentFetcher
                 if ((int)$contentElement['l18n_parent'] > 0) {
                     $languageTranslationInfo['hasTranslations'] = true;
                     $languageTranslationInfo['mode'] = 'connected';
+                    unset($untranslatedRecordUids[(int)$contentElement['l18n_parent']]);
                 }
                 if ((int)$contentElement['l10n_source'] > 0) {
                     unset($untranslatedRecordUids[(int)$contentElement['l10n_source']]);
