@@ -362,6 +362,9 @@ return [
             // mapped to a concrete MIME type by their file extension
             // (but only if the file was detected as the generalized mime type!)
             'mimeTypeCompatibility' => [
+                'application/x-dosexec' => [
+                    'exe' => 'application/x-msdos-program',
+                ],
                 // Word
                 // https://support.microsoft.com/en-us/office/open-xml-formats-and-file-name-extensions-5200d93c-3449-4380-8e11-31ef14555b18#ID0EDFBF
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => [
