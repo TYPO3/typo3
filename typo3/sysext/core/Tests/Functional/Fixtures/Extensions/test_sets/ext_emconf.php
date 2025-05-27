@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'This extension contains set fixtures.',
     'description' => 'This extension contains set fixture.',
     'category' => 'example',
-    'version' => '13.4.13',
+    'version' => '13.4.14',
     'state' => 'beta',
     'author' => 'Benjamin Franzke',
     'author_email' => 'ben@bnf.dev',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.13',
+            'typo3' => '13.4.14',
         ],
         'conflicts' => [],
         'suggests' => [],

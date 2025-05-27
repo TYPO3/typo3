@@ -6,14 +6,14 @@ $EM_CONF[$_EXTKEY] = [
     'title' => 'Impexp test extension',
     'description' => '',
     'category' => '',
-    'version' => '13.4.13',
+    'version' => '13.4.14',
     'state' => 'beta',
     'author' => 'Marc Bastian Heinrichs',
     'author_email' => 'typo3@mbh-software.de',
     'author_company' => '',
     'constraints' => [
         'depends' => [
-            'typo3' => '13.4.13',
+            'typo3' => '13.4.14',
         ],
         'conflicts' => [],
         'suggests' => [],
