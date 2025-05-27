@@ -38,10 +38,14 @@
                         <f:for each="{extensions}" as="extension" key="extensionKey">
                             <tr role="row" id="{extensionKey}">
                                 <td>
-                                    <f:render section="Icon" arguments="{extension: extension}" />
-                                    <a href="{extension.detailLink}" title="{f:translate(key:'extensionList.showComposerProposal')}" class="btn btn-link">
-                                        <f:format.crop maxCharacters="50">{extension.title}</f:format.crop>
-                                    </a>
+                                    <div class="d-flex align-items-center">
+                                        <f:if condition="{extension.icon}">
+                                            <img class="extension-icon" src="{extension.icon}" alt="{extension.title}" />
+                                        </f:if>
+                                        <a href="{extension.detailLink}" title="{f:translate(key:'extensionList.showComposerProposal')}" class="btn btn-link">
+                                            <f:format.crop maxCharacters="50">{extension.title}</f:format.crop>
+                                        </a>
+                                    </div>
                                 </td>
                                 <td>
                                     {extensionKey}
@@ -75,17 +79,6 @@
             <f:be.infobox title="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.title')}"
                 message="{f:translate(key: 'extensionComposerStatus.nothingToUpdate.message.multiple')}"
                 state="{f:constant(name: 'TYPO3\CMS\Fluid\ViewHelpers\Be\InfoboxViewHelper::STATE_INFO')}" />
-        </f:else>
-    </f:if>
-</f:section>
-
-<f:section name="Icon">
-    <f:if condition="{extension.icon}">
-        <f:then>
-            <img class="extension-icon" src="{extension.icon}" alt="{extension.title}" />
-        </f:then>
-        <f:else>
-            <core:icon identifier="empty-empty" />
         </f:else>
     </f:if>
 </f:section>
