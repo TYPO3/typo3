@@ -63,9 +63,4 @@ interface WidgetConfigurationInterface
      * Returns the width of a widget (small, medium, large)
      */
     public function getWidth(): string;
-
-    /**
-     * This method returns additional CSS classes which should be added to the rendered widget
-     */
-    public function getAdditionalCssClasses(): string;
 }

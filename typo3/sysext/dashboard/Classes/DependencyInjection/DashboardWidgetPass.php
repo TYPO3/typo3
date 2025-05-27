@@ -75,12 +75,6 @@ final class DashboardWidgetPass implements CompilerPassInterface
             $attributes['groupNames'] = [];
         }
 
-        if (isset($attributes['additionalCssClasses'])) {
-            $attributes['additionalCssClasses'] = GeneralUtility::trimExplode(' ', $attributes['additionalCssClasses'], true);
-        } else {
-            $attributes['additionalCssClasses'] = [];
-        }
-
         return $attributes;
     }
 
