@@ -22,7 +22,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 /**
  * Determine the final TCA type value
  */
-class DatabaseRecordTypeValue extends AbstractItemProvider implements FormDataProviderInterface
+class DatabaseRecordTypeValue implements FormDataProviderInterface
 {
     /**
      * TCA type value depends on several parameters. The simple case is
@@ -65,14 +65,6 @@ class DatabaseRecordTypeValue extends AbstractItemProvider implements FormDataPr
                     );
                 }
                 $recordTypeValue = $result['databaseRow'][$tcaTypeField];
-                $validItems = $this->removeItemsByUserAuthMode($result, $tcaTypeField, $result['processedTca']['columns'][$tcaTypeField]['config']['items'] ?? []);
-                $validItems = $this->removeItemsByRemoveItemsPageTsConfig($result, $tcaTypeField, $validItems);
-                $typeList = $this->getValidTypeValues($validItems);
-                // allowing type-casts for `in_array` since the database value
-                // might be an integer value, but `items` be a string value
-                if ($typeList !== [] && !in_array($recordTypeValue, $typeList)) {
-                    $recordTypeValue = array_shift($typeList);
-                }
             } else {
                 // If type is configured as localField:foreignField, fetch the type value from
                 // a foreign table. localField then point to a group or select field in the own table,
@@ -153,21 +145,5 @@ class DatabaseRecordTypeValue extends AbstractItemProvider implements FormDataPr
         $row = BackendUtility::getRecord($tableName, $uid, $fieldName);
 
         return $row ?: [];
-    }
-
-    /**
-     * @param list<array{label?: string, value?: string, icon?: string, group?: string}> $items
-     * @return list<string>
-     */
-    protected function getValidTypeValues(array $items): array
-    {
-        return array_values(
-            array_filter(
-                // resolve `value` key
-                array_map(static fn(array $item): ?string => $item['value'] ?? null, $items),
-                // filter undefined `value` keys and `--div--` items
-                static fn(?string $value): bool => $value !== null && $value !== '--div--'
-            )
-        );
     }
 }
