@@ -60,7 +60,7 @@ class FileStorageTreeProvider
         }
 
         try {
-            $hasSubfolders = is_array($children) ? $children !== [] : !empty($folder->getSubfolders());
+            $hasSubfolders = $storage->isBrowsable() && (is_array($children) ? $children !== [] : !empty($folder->getSubfolders()));
         } catch (\InvalidArgumentException | InsufficientFolderReadPermissionsException $e) {
             $hasSubfolders = false;
         }
