@@ -736,18 +736,19 @@ class FileContentParser
                 CommandUtility::exec($cmd, $res);
                 $pdfInfo = $this->splitPdfInfo($res);
                 unset($res);
-                if ((int)$pdfInfo['pages']) {
+                $pages = (int)($pdfInfo['pages'] ?? 0);
+                if ($pages) {
                     $cParts = [];
                     // Calculate mode
                     if ($this->pdf_mode > 0) {
-                        $iter = ceil($pdfInfo['pages'] / $this->pdf_mode);
+                        $iter = ceil($pages / $this->pdf_mode);
                     } else {
-                        $iter = MathUtility::forceIntegerInRange(abs($this->pdf_mode), 1, $pdfInfo['pages']);
+                        $iter = MathUtility::forceIntegerInRange(abs($this->pdf_mode), 1, $pages);
                     }
                     // Traverse and create intervals.
                     for ($a = 0; $a < $iter; $a++) {
-                        $low = floor($a * ($pdfInfo['pages'] / $iter)) + 1;
-                        $high = floor(($a + 1) * ($pdfInfo['pages'] / $iter));
+                        $low = floor($a * ($pages / $iter)) + 1;
+                        $high = floor(($a + 1) * ($pages / $iter));
                         $cParts[] = $low . '-' . $high;
                     }
                 }
