@@ -656,15 +656,6 @@ class DataHandler
             $hookObjectsArr[] = $hookObject;
         }
 
-        foreach ($this->datamap as $tableName => $tableDataMap) {
-            foreach ($tableDataMap as $identifier => $fieldValues) {
-                if (!MathUtility::canBeInterpretedAsInteger($identifier)) {
-                    $this->datamap[$tableName][$identifier] = $this->initializeSlugFieldsToEmptyString($tableName, $fieldValues);
-                    $this->datamap[$tableName][$identifier] = $this->initializeUuidFieldsToEmptyString($tableName, $fieldValues);
-                }
-            }
-        }
-
         $this->datamap = DataMapProcessor::instance($this->datamap, $this->BE_USER, $this->referenceIndexUpdater)->process();
         $registerDBList = [];
         $orderOfTables = [];
@@ -988,38 +979,6 @@ class DataHandler
             $this->processClearCacheQueue();
             $this->resetElementsToBeDeleted();
         }
-    }
-
-    /**
-     *  New records capable of handling slugs (TCA type 'slug'), always
-     *  require the field value to be set, in order to run through the validation
-     *  process to create a new slug. Fields having `null` as value are ignored
-     *  and can be used to by-pass implicit slug initialization.
-     */
-    protected function initializeSlugFieldsToEmptyString(string $tableName, array $fieldValues): array
-    {
-        $schema = $this->tcaSchemaFactory->get($tableName);
-        foreach ($schema->getFields() as $fieldName => $field) {
-            if ($field->isType(TableColumnType::SLUG) && !isset($fieldValues[$fieldName])) {
-                $fieldValues[$fieldName] = '';
-            }
-        }
-        return $fieldValues;
-    }
-
-    /**
-     *  New records having uuid (TCA type 'uuid') fields defined as required need to
-     *  be set, in order to run through the validation process to create a new uuid.
-     */
-    protected function initializeUuidFieldsToEmptyString(string $tableName, array $fieldValues): array
-    {
-        $schema = $this->tcaSchemaFactory->get($tableName);
-        foreach ($schema->getFields() as $fieldName => $field) {
-            if ($field->isType(TableColumnType::UUID) && !isset($fieldValues[$fieldName]) && $field->isRequired()) {
-                $fieldValues[$fieldName] = '';
-            }
-        }
-        return $fieldValues;
     }
 
     /**
