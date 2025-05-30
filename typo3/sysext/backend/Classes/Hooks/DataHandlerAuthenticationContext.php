@@ -62,6 +62,7 @@ final readonly class DataHandlerAuthenticationContext
 
         $schema = $this->tcaSchemaFactory->get($tableName);
         $subjects = [];
+        $id = (string)$id;
         foreach ($schema->getFields() as $columnName => $fieldInformation) {
             $authenticationContextConfig = $fieldInformation->getConfiguration()['authenticationContext'] ?? null;
             if ($authenticationContextConfig === null) {
@@ -70,7 +71,7 @@ final readonly class DataHandlerAuthenticationContext
             $subject = $this->factory->buildTableAccessSubject(
                 $tableName,
                 $columnName,
-                (string)$id,
+                str_starts_with($id, 'NEW') ? 'NEW' : $id,
                 $authenticationContextConfig
             );
             $grants = $this->storage->findGrantsBySubject($subject);
