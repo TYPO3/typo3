@@ -3160,6 +3160,9 @@ final class TcaMigrationTest extends UnitTestCase
                                 'type' => 'file',
                                 'minitems' => 1,
                                 'maxitems' => 2,
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'aColumn',
+                                ],
                                 'appearance' => [
                                     'createNewRelationLinkTitle' => 'Add file',
                                     'enabledControls' => [

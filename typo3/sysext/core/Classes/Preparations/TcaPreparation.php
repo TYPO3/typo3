@@ -217,12 +217,14 @@ class TcaPreparation
                         'foreign_sortby' => 'sorting_foreign',
                         'foreign_table_field' => 'tablenames',
                         'foreign_match_fields' => [
-                            'fieldname' => $fieldName,
                             'tablenames' => $table,
                         ],
                         'foreign_label' => 'uid_local',
                         'foreign_selector' => 'uid_local',
                     ]);
+                    if (!isset($fieldConfig['config']['foreign_match_fields']['fieldname'])) {
+                        $fieldConfig['config']['foreign_match_fields']['fieldname'] = $fieldName;
+                    }
                     $fieldConfig['config'] = $prepareFileExtensionLambda($fieldConfig['config']);
                 }
                 if (is_array($fieldConfig['config']['overrideChildTca'] ?? null)) {
