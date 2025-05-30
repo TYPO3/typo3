@@ -1151,7 +1151,6 @@ class TcaMigration
                     $fieldConfig['config']['foreign_field'],
                     $fieldConfig['config']['foreign_sortby'],
                     $fieldConfig['config']['foreign_table_field'],
-                    $fieldConfig['config']['foreign_match_fields'],
                     $fieldConfig['config']['foreign_label'],
                     $fieldConfig['config']['foreign_selector'],
                     $fieldConfig['config']['foreign_unique'],

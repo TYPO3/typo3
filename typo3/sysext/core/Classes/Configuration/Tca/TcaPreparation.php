@@ -193,12 +193,12 @@ readonly class TcaPreparation
                         'foreign_field' => 'uid_foreign',
                         'foreign_sortby' => 'sorting_foreign',
                         'foreign_table_field' => 'tablenames',
-                        'foreign_match_fields' => [
-                            'fieldname' => $fieldName,
-                        ],
                         'foreign_label' => 'uid_local',
                         'foreign_selector' => 'uid_local',
                     ]);
+                    if (!isset($fieldConfig['config']['foreign_match_fields']['fieldname'])) {
+                        $fieldConfig['config']['foreign_match_fields']['fieldname'] = $fieldName;
+                    }
                     if (!$isFlexForm) {
                         $fieldConfig['config']['foreign_match_fields']['tablenames'] = $table;
                     }

@@ -653,6 +653,44 @@ final class TcaPreparationTest extends UnitTestCase
                 ],
             ],
         ];
+        yield 'foreign_match_fields is kept' => [
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'will-be-kept',
+                                    'tablenames' => 'wont-be-kept',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'aTable' => [
+                    'columns' => [
+                        'foo' => [
+                            'config' => [
+                                'type' => 'file',
+                                'foreign_table' => 'sys_file_reference',
+                                'foreign_field' => 'uid_foreign',
+                                'foreign_sortby' => 'sorting_foreign',
+                                'foreign_table_field' => 'tablenames',
+                                'foreign_match_fields' => [
+                                    'fieldname' => 'will-be-kept',
+                                    'tablenames' => 'aTable',
+                                ],
+                                'foreign_label' => 'uid_local',
+                                'foreign_selector' => 'uid_local',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ];
     }
 
     #[DataProvider('configureFileReferencesDataProvider')]
