@@ -59,6 +59,7 @@ final class DataHandlerAuthenticationContext
         }
 
         $subjects = [];
+        $id = (string)$id;
         foreach ($GLOBALS['TCA'][$tableName]['columns'] as $columnName => $fieldInformation) {
             $authenticationContextConfig = $fieldInformation['authenticationContext'] ?? null;
             if ($authenticationContextConfig === null) {
@@ -67,7 +68,7 @@ final class DataHandlerAuthenticationContext
             $subject = $this->factory->buildTableAccessSubject(
                 $tableName,
                 $columnName,
-                (string)$id,
+                str_starts_with($id, 'NEW') ? 'NEW' : $id,
                 $authenticationContextConfig
             );
             $grants = $this->storage->findGrantsBySubject($subject);
