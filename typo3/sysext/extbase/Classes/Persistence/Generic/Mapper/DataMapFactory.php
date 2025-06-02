@@ -95,7 +95,7 @@ readonly class DataMapFactory
             $classSettings = $this->classesConfiguration->getConfigurationFor($className);
             $subclasses = $this->classesConfiguration->getSubClasses($className);
             if (isset($classSettings['recordType']) && $classSettings['recordType'] !== '') {
-                $recordType = $classSettings['recordType'];
+                $recordType = (string)$classSettings['recordType'];
             }
             if (isset($classSettings['tableName']) && $classSettings['tableName'] !== '') {
                 $tableName = $classSettings['tableName'];
