@@ -77,6 +77,7 @@ final readonly class TcaFactory
     public function createNotMigrated(): array
     {
         $tca = $this->loadConfigurationTcaFiles();
+        $tca = $this->dispatchBeforeTcaOverridesEvent($tca);
         $tca = $this->enrichTca($tca);
         return $this->loadConfigurationTcaOverridesFiles($tca);
     }
