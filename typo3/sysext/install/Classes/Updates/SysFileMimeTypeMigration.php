@@ -106,9 +106,9 @@ class SysFileMimeTypeMigration implements UpgradeWizardInterface, RepeatableInte
 
         $info = [];
         while ($row = $result->fetchAssociative()) {
-            $newMimeType = $mimeTypeCompatibility[$row['mime_type']][$row['extension']] ?? null;
+            $newMimeType = $mimeTypeCompatibility[$row['mime_type']][mb_strtolower($row['extension'])] ?? null;
             if ($newMimeType === null) {
-                throw new \LogicException('Invalid query…', 1747912272);
+                throw new \LogicException('Invalid query result, misses matching mime_type', 1747912272);
             }
             $info[] = [
                 'count' => (int)$row['count'],
