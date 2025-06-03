@@ -121,6 +121,16 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $dataHandler->deleteAction(self::TABLE_Content, self::VALUE_ContentIdLast, true, true);
     }
 
+    public function deleteParentContentWithMultipleChildrenThenHardDeleteParentContent(): void
+    {
+        $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
+        // Now hard delete that default language record. Recycler can trigger this.
+        /** @var DataHandler $dataHandler */
+        $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
+        $dataHandler->start([], []);
+        $dataHandler->deleteAction(self::TABLE_Content, self::VALUE_ContentIdFirst, true, true);
+    }
+
     public function copyParentContent(): void
     {
         $newTableIds = $this->actionService->copyRecord(self::TABLE_Content, self::VALUE_ContentIdLast, self::VALUE_PageId);

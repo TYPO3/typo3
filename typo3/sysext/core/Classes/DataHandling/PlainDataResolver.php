@@ -276,11 +276,8 @@ class PlainDataResolver
         }
 
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
-        // @todo: This deleted restriction is broken with hard delete scenarios when more than one inline record is attached.
-        //        See Flex/Modify/ActionTest deleteRecordThenHardDeleteRecord() and modify
-        //        IrreForeignField/Modify/ActionTest deleteParentContentThenHardDeleteParentContent to check a
-        //        scenario where more than one hotel is attached to make the above "count($ids) < 2" not kick in.
-        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        // Never apply additional restrictions like 'deleted' to the incoming id list
+        $queryBuilder->getRestrictions()->removeAll();
         $queryBuilder
             ->select('uid')
             ->from($this->tableName)
