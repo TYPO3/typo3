@@ -32,34 +32,39 @@ class UrlSoftReferenceParser extends AbstractSoftReferenceParser
      * \p{Ll}: lower case letter
      * @see https://www.php.net/manual/en/regexp.reference.unicode.php
      */
-    protected const REGEXP = '/([^[:alnum:]"\']+)((https?|ftp):\\/\\/(?:[!#$&-;=?-\[\]_\\p{L}~]+|%[0-9\\p{L}]{2})+)([[:space:]])?/u';
+    protected const REGEXP = '/([^[:alnum:]\'"=]+|\\s+)((https?|ftp):\\/\\/[!#$&-;=?-\[\]_\\p{L}~](?:[!#$&-;=?-\[\]_\\p{L}~]+|%[0-9\\p{L}]{2})*)/u';
 
     public function parse(string $table, string $field, int $uid, string $content, string $structurePath = ''): SoftReferenceParserResult
     {
         $elements = [];
-        // URLs
-        $parts = preg_split(self::REGEXP, ' ' . $content . ' ', 10000, PREG_SPLIT_DELIM_CAPTURE);
-        foreach ($parts as $idx => $value) {
-            if ($idx % 5 === 3) {
-                unset($parts[$idx]);
-            }
-            if ($idx % 5 === 2) {
+        $modifiedContent = ' ' . $content . ' ';
+
+        // Find all URLs using preg_match_all
+        $matches = [];
+        if (preg_match_all(self::REGEXP, $modifiedContent, $matches, PREG_SET_ORDER)) {
+            // Process each match
+            foreach ($matches as $idx => $match) {
+                $prefix = $match[1];
+                $url = $match[2];
+
                 $tokenID = $this->makeTokenID((string)$idx);
                 $elements[$idx] = [];
-                $elements[$idx]['matchString'] = $value;
+                $elements[$idx]['matchString'] = $url;
+
                 if (in_array('subst', $this->parameters, true)) {
-                    $parts[$idx] = '{softref:' . $tokenID . '}';
+                    // Replace the URL with a token in the content
+                    $modifiedContent = str_replace($prefix . $url, $prefix . '{softref:' . $tokenID . '}', $modifiedContent);
                     $elements[$idx]['subst'] = [
                         'type' => 'string',
                         'tokenID' => $tokenID,
-                        'tokenValue' => $value,
+                        'tokenValue' => $url,
                     ];
                 }
             }
         }
 
         return SoftReferenceParserResult::create(
-            substr(implode('', $parts), 1, -1),
+            substr($modifiedContent, 1, -1),
             $elements
         );
     }

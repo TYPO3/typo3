@@ -29,7 +29,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'https://foo-bar.baz',
                 'expectedContent' => 'https://foo-bar.baz',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://foo-bar.baz',
                     ],
                 ],
@@ -38,7 +38,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
                 'expectedContent' => 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'http://ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~:/?#[]@!$&\'()*+,;=.foo',
                     ],
                 ],
@@ -47,7 +47,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'Lorem ipsum https://foo-bar.baz dolor sit',
                 'expectedContent' => 'Lorem ipsum https://foo-bar.baz dolor sit',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://foo-bar.baz',
                     ],
                 ],
@@ -56,7 +56,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'ftp://foo-bar.baz',
                 'expectedContent' => 'ftp://foo-bar.baz',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'ftp://foo-bar.baz',
                     ],
                 ],
@@ -65,7 +65,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
                 'expectedContent' => 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://foo-bar.baz?foo=bar&baz=fizz#anchor',
                     ],
                 ],
@@ -74,7 +74,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
                 'expectedContent' => 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://foo-bar.baz?foo%3Dbar%26baz%3Dfi%20zz%23anchor',
                     ],
                 ],
@@ -83,7 +83,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
                 'expectedContent' => '<p>Lorem Ipsum<br> https://foo.bar.baz/abc/def/ghi/.</p>',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://foo.bar.baz/abc/def/ghi/.',
                     ],
                 ],
@@ -103,7 +103,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'https://fö-bar.baz/blah',
                 'expectedContent' => 'https://fö-bar.baz/blah',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://fö-bar.baz/blah',
                     ],
                 ],
@@ -112,7 +112,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'https://fö-bÄr.baz/blah',
                 'expectedContent' => 'https://fö-bÄr.baz/blah',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://fö-bÄr.baz/blah',
                     ],
                 ],
@@ -121,7 +121,7 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'abc https://fö-bar.baz/blah hello',
                 'expectedContent' => 'abc https://fö-bar.baz/blah hello',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://fö-bar.baz/blah',
                     ],
                 ],
@@ -130,8 +130,54 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
                 'content' => 'https://xn--f-bar-jua.baz/blah',
                 'expectedContent' => 'https://xn--f-bar-jua.baz/blah',
                 'expectedElements' => [
-                    2 => [
+                    0 => [
                         'matchString' => 'https://xn--f-bar-jua.baz/blah',
+                    ],
+                ],
+            ],
+            'Text without domain but protocol' => [
+                'content' => 'http://',
+                'expectedContent' => '',
+                'expectedElements' => [],
+            ],
+            'Text without domain but protocol in quotes' => [
+                'content' => '"http://"',
+                'expectedContent' => '',
+                'expectedElements' => [],
+            ],
+            'Domain with multiple domains in a-tags' => [
+                'content' => '<a href="t3://page?uid=1">https://domain.tld/aaa/</a><a href="t3://page?uid=2">https://www.domain.tl/bbb/ccc/</a><ul><li>Foo <a href="t3://page?uid=3">ftp://domain.tld/</a></li></ul>Foo',
+                'expectedContent' => '<a href="t3://page?uid=1">https://domain.tld/aaa/</a><a href="t3://page?uid=2">https://www.domain.tl/bbb/ccc/</a><ul><li>Foo <a href="t3://page?uid=3">ftp://domain.tld/</a></li></ul>Foo',
+                'expectedElements' => [
+                    0 => [
+                        'matchString' => 'https://domain.tld/aaa/',
+                    ],
+                    1 => [
+                        'matchString' => 'https://www.domain.tl/bbb/ccc/',
+                    ],
+                    2 => [
+                        'matchString' => 'ftp://domain.tld/',
+                    ],
+                ],
+            ],
+            'Multiple domains in a line, seperated in different ways' => [
+                'content' => 'Domain list: https://domain.tld/aaa/ https://www.domain.tl/bbb/ccc/ aaa https://www.domain.tl/ddd/ <b>https://www.domain.tl/eee/</b>    https://www.domain.tl/fff/',
+                'expectedContent' => 'Domain list: https://domain.tld/aaa/ https://www.domain.tl/bbb/ccc/ aaa https://www.domain.tl/ddd/ <b>https://www.domain.tl/eee/</b>    https://www.domain.tl/fff/',
+                'expectedElements' => [
+                    0 => [
+                        'matchString' => 'https://domain.tld/aaa/',
+                    ],
+                    1 => [
+                        'matchString' => 'https://www.domain.tl/bbb/ccc/',
+                    ],
+                    2 => [
+                        'matchString' => 'https://www.domain.tl/ddd/',
+                    ],
+                    3 => [
+                        'matchString' => 'https://www.domain.tl/eee/',
+                    ],
+                    4 => [
+                        'matchString' => 'https://www.domain.tl/fff/',
                     ],
                 ],
             ],
@@ -156,12 +202,12 @@ final class UrlSoftReferenceParserTest extends AbstractSoftReferenceParserTestCa
         $subject->setParserKey('url', ['subst']);
         $result = $subject->parse('pages', 'url', 1, $content);
         $matchedElements = $result->getMatchedElements();
-        self::assertArrayHasKey('subst', $matchedElements[2]);
-        self::assertArrayHasKey('tokenID', $matchedElements[2]['subst']);
-        unset($matchedElements[2]['subst']['tokenID']);
+        self::assertArrayHasKey('subst', $matchedElements[0]);
+        self::assertArrayHasKey('tokenID', $matchedElements[0]['subst']);
+        unset($matchedElements[0]['subst']['tokenID']);
 
         $expected = [
-            2 => [
+            0 => [
                 'matchString' => 'https://www.foo-bar.baz',
                 'subst' => [
                     'type' => 'string',
