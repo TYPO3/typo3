@@ -92,6 +92,13 @@ final class ActionTest extends AbstractActionTestCase
     }
 
     #[Test]
+    public function deleteParentContentWithMultipleChildrenThenHardDeleteParentContent(): void
+    {
+        parent::deleteParentContentWithMultipleChildrenThenHardDeleteParentContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteParentContentWithMultipleChildrenThenHardDeleteParentContent.csv');
+    }
+
+    #[Test]
     public function deleteParentContentWithoutCascadingDelete(): void
     {
         parent::deleteParentContentWithoutCascadingDelete();
