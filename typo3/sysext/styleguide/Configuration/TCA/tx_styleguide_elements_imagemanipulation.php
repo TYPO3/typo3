@@ -310,6 +310,162 @@ return [
                 ],
             ],
         ],
+
+        'crop_10' => [
+            'label' => 'crop_10',
+            'description' => 'with multiple aspect, cover and focus areas',
+            'config' => [
+                'type' => 'imageManipulation',
+                'file_field' => 'group_db_3',
+
+                'cropVariants' => [
+                    'desktop_wide' => [
+                        'title' => 'Desktop wide',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 1920 / 680,
+                            ],
+                            'wide-landscape' => [
+                                'title' => 'Landscape (Wide)',
+                                'value' => 1920 / 400,
+                            ],
+                            'tall-portrait' => [
+                                'title' => 'Portrait (Tall)',
+                                'value' => 400 / 1920,
+                            ],
+                        ],
+                        'selectedRatio' => 'default',
+                        'coverAreas' => [
+                            [
+                                'x' => 0,
+                                'y' => 0,
+                                'width' => 1,
+                                'height' => 0.25,
+                            ],
+                            [
+                                'x' => 0.2,
+                                'y' => 0.35,
+                                'width' => 0.25,
+                                'height' => 0.5,
+                            ],
+                        ],
+                        // intentional overlap with cover area
+                        'focusArea' => [
+                            'x' => 1 / 4,
+                            'y' => 1 / 4,
+                            'width' => 1 / 4,
+                            'height' => 1 / 6,
+                        ],
+                    ],
+                    'desktop' => [
+                        'title' => 'Desktop',
+                        'allowedAspectRatios' => [
+                            'default' => [
+                                'title' => 'Default',
+                                'value' => 1370 / 680,
+                            ],
+                            'wide-landscape' => [
+                                'title' => 'Landscape (Wide)',
+                                'value' => 1370 / 300,
+                            ],
+                            'tall-portrait' => [
+                                'title' => 'Portrait (Tall)',
+                                'value' => 300 / 1370,
+                            ],
+                        ],
+                        'selectedRatio' => 'wide-landscape',
+                        'coverAreas' => [
+                            [
+                                'x' => 0,
+                                'y' => 0,
+                                'width' => 1,
+                                'height' => 0.25,
+                            ],
+                            [
+                                'x' => 0.08,
+                                'y' => 0.35,
+                                'width' => 0.45,
+                                'height' => 0.5,
+                            ],
+                        ],
+                        'focusArea' => [
+                            'x' => 3 / 4,
+                            'y' => 1 / 4,
+                            'width' => 1 / 6,
+                            'height' => 2 / 6,
+                        ],
+                    ],
+                    'small' => [
+                        'title' => 'Tablet / Smartphone',
+                        'allowedAspectRatios' => [
+                            'sixteen_by_nine' => [
+                                'title' => '16:9',
+                                'value' => 16 / 9,
+                            ],
+                            'four_by_three' => [
+                                'title' => '4:3',
+                                'value' => 4 / 3,
+                            ],
+                            'ultrawide' => [
+                                'title' => '21:9',
+                                'value' => 21 / 9,
+                            ],
+                            'NaN' => [
+                                'title' => 'free',
+                                'value' => 0.0,
+                            ],
+                        ],
+                        'selectedRatio' => 'sixteen_by_nine',
+                        // no cover area by intention
+                        'focusArea' => [
+                            'x' => 1 / 4,
+                            'y' => 1 / 4,
+                            'width' => 3 / 4,
+                            'height' => 3 / 4,
+                        ],
+                    ],
+                    'watch' => [
+                        'title' => 'Smartwatch',
+                        'allowedAspectRatios' => [
+                            'sixteen_by_nine' => [
+                                'title' => '16:9',
+                                'value' => 16 / 9,
+                            ],
+                            'four_by_three' => [
+                                'title' => '4:3',
+                                'value' => 4 / 3,
+                            ],
+                            'ultrawide' => [
+                                'title' => '21:9',
+                                'value' => 21 / 9,
+                            ],
+                            'NaN' => [
+                                'title' => 'free',
+                                'value' => 0.0,
+                            ],
+                        ],
+                        'selectedRatio' => 'sixteen_by_nine',
+                        // no focus area by intention
+                        'coverAreas' => [
+                            [
+                                'x' => 0,
+                                'y' => 0,
+                                'width' => 1,
+                                'height' => 0.25,
+                            ],
+                            [
+                                'x' => 0.08,
+                                'y' => 0.35,
+                                'width' => 0.45,
+                                'height' => 0.5,
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+
     ],
 
     'types' => [
@@ -317,7 +473,7 @@ return [
             'showitem' => '
                 --div--;crop,
                     group_db_1, crop_1, group_db_2, crop_2, crop_4, group_db_3,
-                    crop_3, crop_5, crop_6, crop_7, crop_8, crop_9,
+                    crop_3, crop_5, crop_6, crop_7, crop_8, crop_9, crop_10,
                 --div--;meta,
                     disable, sys_language_uid, l10n_parent, l10n_source,
             ',
