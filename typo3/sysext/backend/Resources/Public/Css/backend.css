@@ -3517,7 +3517,7 @@ typo3-backend-color-scheme-switch .dropdown-item-columns{align-items:center;gap:
 .ui-resizable-ne{cursor:ne-resize;height:9px;right:-5px;top:-5px;width:9px}
 typo3-backend-draggable-resizable{display:inline-block;position:absolute;transition:none}
 typo3-backend-draggable-resizable[reverting]{transition-duration:.25s;transition-property:left,top,width,height}
-typo3-backend-draggable-resizable #t3js-cropper-focus-area{height:100%;width:100%}
+.cropper typo3-backend-draggable-resizable .cropper-focus-area{height:100%;width:100%}
 typo3-backend-draggable-resizable .ui-resizable-handle{z-index:90}
 typo3-backend-editable-page-title{display:block;text-overflow:ellipsis;white-space:nowrap;--input-border-color:var(--typo3-state-default-border-color);--input-hover-border-color:var(--typo3-state-default-hover-border-color);--input-focus-border-color:var(--typo3-state-default-focus-border-color);--button-hover-color:var(--typo3-state-default-focus-color);--button-hover-bg:var(--typo3-state-default-hover-bg);--button-hover-border-color:var(--typo3-state-default-focus-border-color);--button-focus-color:var(--typo3-state-default-focus-color);--button-focus-bg:var(--typo3-state-default-focus-bg);--button-focus-border-color:var(--typo3-state-default-focus-border-color)}
 typo3-backend-formengine-char-counter{display:flex;inset-inline-start:0;position:absolute;top:100%;z-index:5}

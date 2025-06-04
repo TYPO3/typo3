@@ -99,7 +99,7 @@ typo3-backend-draggable-resizable {
         transition-duration: .25s;
     }
 
-    #t3js-cropper-focus-area {
+    .cropper & .cropper-focus-area {
         width: 100%;
         height: 100%;
     }

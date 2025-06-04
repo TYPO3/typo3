@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-class t{constructor(h,i,s,e){this.left=h,this.top=i,this.width=s,this.height=e}get right(){return this.left+this.width}get bottom(){return this.top+this.height}clone(){return new t(this.left,this.top,this.width,this.height)}}export{t as Offset};
+class t{constructor(h,i,e,s){this.left=h,this.top=i,this.width=e,this.height=s}get right(){return this.left+this.width}get bottom(){return this.top+this.height}static fromObject({left:h,top:i,width:e,height:s}){return new t(h,i,e,s)}clone(){return new t(this.left,this.top,this.width,this.height)}}export{t as Offset};

@@ -71,7 +71,8 @@ class ImageManipulation {
   private readonly cropImageSelector: string = '#t3js-crop-image';
   private readonly coverAreaSelector: string = '.t3js-cropper-cover-area';
   private readonly cropInfoSelector: string = '.t3js-cropper-info-crop';
-  private readonly focusAreaSelector: string = '#t3js-cropper-focus-area';
+  private readonly focusAreaSelector: string = 'typo3-backend-draggable-resizable';
+  private readonly focusAreaVisualElementSelector: string = 'typo3-backend-draggable-resizable .cropper-focus-area';
   private focusAreaEl: DraggableResizableElement;
   // Initialize an empty object to prevent undefined cropBox error on modal load.
   private cropBox: HTMLElement;
@@ -499,11 +500,7 @@ class ImageManipulation {
     this.setCropArea(temp.cropArea);
     this.currentCropVariant = Object.assign({}, temp, cropVariant);
     this.cropBox?.querySelectorAll(this.coverAreaSelector)?.forEach((el: HTMLElement) => el.remove());
-
-    // if the current container has a focus area element, deregister and cleanup prior to initialization
-    if (this.cropBox?.querySelectorAll(this.focusAreaSelector)?.length > 0) {
-      this.focusAreaEl.remove();
-    }
+    this.cropBox?.querySelectorAll(this.focusAreaSelector)?.forEach((el: HTMLElement) => el.remove());
 
     // check if new cropVariant has focusArea
     if (cropVariant.focusArea) {
@@ -511,8 +508,9 @@ class ImageManipulation {
       if (ImageManipulation.isEmptyObject(cropVariant.focusArea)) {
         this.currentCropVariant.focusArea = Object.assign({}, this.defaultFocusArea);
       }
-      this.focusAreaEl?.remove();
-      this.focusAreaEl = await this.initFocusArea(this.cropBox);
+      this.focusAreaEl = this.initFocusArea(this.cropBox);
+    } else {
+      this.focusAreaEl = null;
     }
 
     // check if new cropVariant has coverAreas
@@ -527,16 +525,14 @@ class ImageManipulation {
    * @desc Initializes the focus area inside a container and registers the resizable and draggable interfaces to it
    * @param {HTMLElement} container
    */
-  private async initFocusArea(container: HTMLElement): Promise<DraggableResizableElement> {
-    await topLevelModuleImport('@typo3/backend/element/draggable-resizable-element.js');
+  private initFocusArea(container: HTMLElement): DraggableResizableElement {
+    topLevelModuleImport('@typo3/backend/element/draggable-resizable-element.js');
 
     const focusAreaEl = top.document.createElement('typo3-backend-draggable-resizable');
     // assign area declaration (as persisted in the database)
-    focusAreaEl.offset = this.convertAreaToOffset(this.currentCropVariant.focusArea, container);
-    // assign outer container (basically the cropper)
-    focusAreaEl.container = container;
+    focusAreaEl.setAttribute('offset', JSON.stringify(this.convertAreaToOffset(this.currentCropVariant.focusArea, container)));
     // use the same events as cropper.js does
-    focusAreaEl.pointerEventNames = ImageManipulation.resolvePointerEventNames();
+    focusAreaEl.setAttribute('pointereventnames', JSON.stringify(ImageManipulation.resolvePointerEventNames()));
 
     focusAreaEl.addEventListener('draggable-resizable-started', () => {
       // disable outer cropper, when interacting with inner draggable-resizable-element
@@ -546,7 +542,7 @@ class ImageManipulation {
       const coverAreas = this.currentCropVariant.coverAreas;
       const focusArea = this.convertOffsetToArea(focusAreaEl.offset, container);
       // retrieve the inner visual element of the lit-element
-      const visualElement = focusAreaEl.querySelector(this.focusAreaSelector);
+      const visualElement = focusAreaEl.querySelector(this.focusAreaVisualElementSelector);
       if (this.checkFocusAndCoverAreasCollision(focusArea, coverAreas)) {
         visualElement.classList.add('has-nodrop');
       } else {
@@ -561,7 +557,7 @@ class ImageManipulation {
       } else {
         this.scaleAndMoveFocusArea(focusArea);
       }
-      const visualElement = focusAreaEl.querySelector(this.focusAreaSelector);
+      const visualElement = focusAreaEl.querySelector(this.focusAreaVisualElementSelector);
       visualElement.classList.remove('has-nodrop');
       // re-enable outer cropper again
       this.cropper.enable();
