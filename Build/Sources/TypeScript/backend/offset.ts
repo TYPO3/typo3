@@ -30,6 +30,10 @@ export class Offset {
     return this.top + this.height;
   }
 
+  public static fromObject({ left, top, width, height }: { left: number, top: number, width: number, height: number }): Offset {
+    return new Offset(left, top, width, height);
+  }
+
   public clone(): Offset {
     return new Offset(this.left, this.top, this.width, this.height);
   }
