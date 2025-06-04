@@ -35,6 +35,11 @@ final class ResultItemAction implements \JsonSerializable
      */
     public function __construct(private readonly string $identifier) {}
 
+    public function getIdentifier(): string
+    {
+        return $this->identifier;
+    }
+
     public function setLabel(string $label): self
     {
         $this->label = $label;

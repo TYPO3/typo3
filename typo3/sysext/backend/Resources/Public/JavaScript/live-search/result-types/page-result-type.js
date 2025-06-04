@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-import a from"@typo3/backend/live-search/live-search-configurator.js";import{html as o}from"lit";import t from"@typo3/backend/window-manager.js";function p(r){a.addRenderer(r,"@typo3/backend/live-search/element/provider/page-provider-result-item.js",e=>o`<typo3-backend-live-search-result-item-page-provider .icon=${e.icon} .itemTitle=${e.itemTitle} .typeLabel=${e.typeLabel} .extraData=${e.extraData}></typo3-backend-live-search-result-item-page-provider>`),a.addInvokeHandler(r,"preview_page",(e,i)=>{t.localOpen(i.url,!0)})}export{p as registerRenderer};
+import a from"@typo3/backend/live-search/live-search-configurator.js";import{html as o}from"lit";import t from"@typo3/backend/window-manager.js";function l(r){a.addRenderer(r,"@typo3/backend/live-search/element/provider/page-provider-result-item.js",e=>o`<typo3-backend-live-search-result-item-page-provider .icon=${e.icon} .itemTitle=${e.itemTitle} .typeLabel=${e.typeLabel} .extraData=${e.extraData}></typo3-backend-live-search-result-item-page-provider>`),a.addInvokeHandler(r,"preview",(e,i)=>{t.localOpen(i.url,!0)})}export{l as registerRenderer};

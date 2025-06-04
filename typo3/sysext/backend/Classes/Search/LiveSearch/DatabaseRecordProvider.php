@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Backend\Search\LiveSearch;
 use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Search\Event\BeforeSearchInDatabaseRecordProviderEvent;
 use TYPO3\CMS\Backend\Search\Event\ModifyConstraintsForLiveSearchEvent;
@@ -264,21 +265,42 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             }
 
             $actions = [];
-            $showLink = $this->getShowLink($row);
-            if ($showLink !== '') {
-                $actions[] = (new ResultItemAction('open_page_details'))
-                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList'))
-                    ->setIcon($this->iconFactory->getIcon('actions-list', IconSize::SMALL))
-                    ->setUrl($showLink);
+
+            $editActionLink = $this->getEditActionLink($tableName, $row);
+            if ($editActionLink !== '') {
+                $actions[DatabaseRecordActionType::EDIT->value] = (new ResultItemAction(DatabaseRecordActionType::EDIT->value))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit'))
+                    ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
+                    ->setUrl($editActionLink);
             }
 
-            $editLink = $this->getEditLink($tableName, $row);
-            if ($editLink !== '') {
-                $actions[] = (new ResultItemAction('edit_record'))
-                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_common.xlf:edit'))
-                    ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
-                    ->setUrl($editLink);
+            $layoutActionLink = $this->getLayoutActionLink($tableName, $row);
+            if ($layoutActionLink !== '') {
+                $actions[DatabaseRecordActionType::LAYOUT->value] = (new ResultItemAction(DatabaseRecordActionType::LAYOUT->value))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.layout'))
+                    ->setIcon($this->iconFactory->getIcon('actions-viewmode-layout', IconSize::SMALL))
+                    ->setUrl($layoutActionLink);
             }
+
+            $listActionLink = $this->getRecordsActionLink($tableName, $row);
+            if ($listActionLink !== '') {
+                $actions[DatabaseRecordActionType::LIST->value] = (new ResultItemAction(DatabaseRecordActionType::LIST->value))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList'))
+                    ->setIcon($this->iconFactory->getIcon('actions-list', IconSize::SMALL))
+                    ->setUrl($listActionLink);
+            }
+
+            $previewActionLink = $this->getPreviewActionLink($tableName, $row);
+            if ($previewActionLink !== '') {
+                $actions[DatabaseRecordActionType::PREVIEW->value] = (new ResultItemAction(DatabaseRecordActionType::PREVIEW->value))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
+                    ->setIcon($this->iconFactory->getIcon('actions-file-view', IconSize::SMALL))
+                    ->setUrl($previewActionLink);
+            }
+
+            // Find the default action
+            $defaultActionIdentifier = DatabaseRecordActionType::fromUserForTable($this->getBackendUser(), $tableName);
+            $defaultAction = $actions[$defaultActionIdentifier->value] ?? null;
 
             $extraData = [
                 'table' => $tableName,
@@ -294,7 +316,8 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                 ->setItemTitle(BackendUtility::getRecordTitle($tableName, $row))
                 ->setTypeLabel($schema->getTitle($this->languageService->sL(...)) ?: $tableName)
                 ->setIcon($icon)
-                ->setActions(...$actions)
+                ->setActions(...array_values($actions))
+                ->setDefaultAction($defaultAction)
                 ->setExtraData($extraData)
                 ->setInternalData([
                     'row' => $row,
@@ -448,31 +471,6 @@ final class DatabaseRecordProvider implements SearchProviderInterface
     }
 
     /**
-     * Build a link to the record list based on given record.
-     *
-     * @param array $row Current record row from database.
-     * @return string Link to open an edit window for record.
-     */
-    private function getShowLink(array $row): string
-    {
-        $backendUser = $this->getBackendUser();
-        $showLink = '';
-        $permissionSet = new Permission($this->getBackendUser()->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? []));
-        $pagesSchema = $this->tcaSchemaFactory->get('pages');
-        // "View" link - Only with proper permissions
-        if ($backendUser->isAdmin()
-            || (
-                $permissionSet->showPagePermissionIsGranted()
-                && !$pagesSchema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
-                && $backendUser->check('tables_select', 'pages')
-            )
-        ) {
-            $showLink = (string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $row['pid']]);
-        }
-        return $showLink;
-    }
-
-    /**
      * Build a backend edit link based on given record.
      *
      * @param string $tableName Record table name
@@ -480,12 +478,11 @@ final class DatabaseRecordProvider implements SearchProviderInterface
      * @return string Link to open an edit window for record.
      * @see \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess()
      */
-    private function getEditLink(string $tableName, array $row): string
+    private function getEditActionLink(string $tableName, array $row): string
     {
         $backendUser = $this->getBackendUser();
         $editLink = '';
         $permissionSet = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($row['pid'], $this->userPermissions) ?: []));
-        // "Edit" link - Only with proper edit permissions
         $schema = $this->tcaSchemaFactory->get($tableName);
         if (!$schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
             && (
@@ -506,6 +503,70 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             ]);
         }
         return $editLink;
+    }
+
+    /**
+     * Build a link to the page layout for the given record.
+     *
+     * @param array $row Current record row from database.
+     * @return string Link to open an edit window for record.
+     */
+    private function getLayoutActionLink(string $tableName, array $row): string
+    {
+        $showLink = '';
+        if ($tableName !== 'tt_content') {
+            return $showLink;
+        }
+        if ($this->hasPagesAccess($row)) {
+            $parameter = [
+                'id' => $row['pid'],
+                'languages' => [$row['sys_language_uid']],
+            ];
+            $showLink = ((string)$this->uriBuilder->buildUriFromRoute('web_layout', $parameter)) . '#element-' . $tableName . '-' . $row['uid'];
+        }
+        return $showLink;
+    }
+
+    /**
+     * Build a link to the record list based on given record.
+     *
+     * @param array $row Current record row from database.
+     * @return string Link to open an edit window for record.
+     */
+    private function getRecordsActionLink(string $table, array $row): string
+    {
+        return $this->hasPagesAccess($row) ? (((string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $row['pid']])) . '#t3-table-' . $table) : '';
+    }
+
+    /**
+     * Build a preview link to display the record in the frontend.
+     *
+     * @param array $row Current record row from database.
+     * @return string Link to open an edit window for record.
+     */
+    private function getPreviewActionLink(string $table, array $row): string
+    {
+        $previewLink = '';
+        if ($this->hasPagesAccess($row)) {
+            $previewUriBuilder = PreviewUriBuilder::createForRecordPreview($table, $row, (int)($row['pid'] ?? 0));
+            if ($previewUriBuilder->isPreviewable()) {
+                $previewLink = (string)$previewUriBuilder->buildUri();
+            }
+        }
+        return $previewLink;
+    }
+
+    private function hasPagesAccess(array $row): bool
+    {
+        $backendUser = $this->getBackendUser();
+        $permissionSet = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? []));
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
+        return $backendUser->isAdmin()
+            || (
+                $permissionSet->showPagePermissionIsGranted()
+                && !$pagesSchema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
+                && $backendUser->check('tables_select', 'pages')
+            );
     }
 
     private function getBackendUser(): BackendUserAuthentication

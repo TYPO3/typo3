@@ -97,7 +97,7 @@ export class ItemContainer extends LitElement {
 
     return html`<typo3-backend-live-search-result-item
       .resultItem="${resultItem}"
-      @click="${() => this.invokeAction(resultItem, resultItem.actions[0])}"
+      @click="${() => this.invokeAction(resultItem, resultItem.defaultAction)}"
       @focus="${() => this.requestActions(resultItem)}">
       ${innerResultItemComponent}
     </typo3-backend-live-search-result-item>`;

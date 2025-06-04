@@ -219,29 +219,51 @@ final class PageRecordProvider implements SearchProviderInterface
                 // intended fall-thru, perhaps broken data in database or pages without (=deleted) site config
             }
 
-            $actions = [
-                (new ResultItemAction('open_page_details'))
+            $actions = [];
+
+            $editActionLink = $this->getEditActionLink($row);
+            if ($editActionLink !== '') {
+                $actions[DatabaseRecordActionType::EDIT->value] = (new ResultItemAction(DatabaseRecordActionType::EDIT->value))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.edit'))
+                    ->setIcon($this->iconFactory->getIcon('actions-open', IconSize::SMALL))
+                    ->setUrl($editActionLink);
+            }
+
+            $layoutActionLink = $this->getLayoutActionLink($row);
+            if ($layoutActionLink !== '') {
+                $actions[DatabaseRecordActionType::LAYOUT->value] = (new ResultItemAction(DatabaseRecordActionType::LAYOUT->value))
+                    ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.layout'))
+                    ->setIcon($this->iconFactory->getIcon('actions-viewmode-layout', IconSize::SMALL))
+                    ->setUrl($layoutActionLink);
+            }
+
+            $listActionLink = $this->getRecordsActionLink($row);
+            if ($listActionLink !== '') {
+                $actions[DatabaseRecordActionType::LIST->value] = (new ResultItemAction(DatabaseRecordActionType::LIST->value))
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showList'))
                     ->setIcon($this->iconFactory->getIcon('actions-list', IconSize::SMALL))
-                    ->setUrl($this->getShowLink($row)),
-            ];
+                    ->setUrl($listActionLink);
+            }
 
-            $previewUrl = PreviewUriBuilder::create($row)
-                ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
-                ->buildUri();
-            if ($previewUrl !== null) {
-                $actions[] = (new ResultItemAction('preview_page'))
+            $previewActionLink = $this->getPreviewActionLink($row);
+            if ($previewActionLink !== '') {
+                $actions[DatabaseRecordActionType::PREVIEW->value] = (new ResultItemAction(DatabaseRecordActionType::PREVIEW->value))
                     ->setLabel($this->languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'))
                     ->setIcon($this->iconFactory->getIcon('actions-file-view', IconSize::SMALL))
-                    ->setUrl((string)$previewUrl);
+                    ->setUrl($previewActionLink);
             }
+
+            // Find the default action
+            $defaultActionIdentifier = DatabaseRecordActionType::fromUserForTable($this->getBackendUser(), 'pages');
+            $defaultAction = $actions[$defaultActionIdentifier->value] ?? null;
 
             $icon = $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle('pages', $row))
                 ->setTypeLabel($schema->getTitle($this->languageService->sL(...)))
                 ->setIcon($icon)
-                ->setActions(...$actions)
+                ->setActions(...array_values($actions))
+                ->setDefaultAction($defaultAction)
                 ->setExtraData([
                     'breadcrumb' => BackendUtility::getRecordPath($row['pid'], 'AND ' . $this->userPermissions, 0),
                     'flagIcon' => $flagIconData,
@@ -378,28 +400,106 @@ final class PageRecordProvider implements SearchProviderInterface
     }
 
     /**
+     * Build a backend edit link based on given page.
+     *
+     * @param array $row Current page row from database.
+     * @return string Link to open an edit window for page.
+     * @see \TYPO3\CMS\Backend\Utility\BackendUtility::readPageAccess()
+     */
+    private function getEditActionLink(array $row): string
+    {
+        $backendUser = $this->getBackendUser();
+        $editLink = '';
+        $permissionSet = new Permission($backendUser->calcPerms(BackendUtility::readPageAccess($row['uid'], $this->userPermissions) ?: []));
+        $schema = $this->tcaSchemaFactory->get('pages');
+        if (!$schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
+            && (
+                $backendUser->isAdmin()
+                || (
+                    $permissionSet->editContentPermissionIsGranted()
+                    && !$schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
+                    && $backendUser->check('tables_modify', 'pages')
+                    && $backendUser->recordEditAccessInternals('pages', $row)
+                )
+            )
+        ) {
+            $returnUrl = (string)$this->uriBuilder->buildUriFromRoute('web_layout', ['id' => $row['uid']]);
+            $editLink = (string)$this->uriBuilder->buildUriFromRoute('record_edit', [
+                'edit[pages][' . $row['uid'] . ']' => 'edit',
+                'returnUrl' => $returnUrl,
+            ]);
+        }
+        return $editLink;
+    }
+
+    /**
+     * Build a link to the page layout for the given record.
+     *
+     * @param array $row Current record row from database.
+     * @return string Link to open an edit window for record.
+     */
+    private function getLayoutActionLink(array $row): string
+    {
+        $showLink = '';
+        if ($this->hasPagesAccess($row)) {
+            $parameter = [
+                'id' => $row['sys_language_uid'] === 0 ? $row['uid'] : $row['l10n_parent'],
+                'languages' => [$row['sys_language_uid']],
+            ];
+            $showLink = (string)$this->uriBuilder->buildUriFromRoute('web_layout', $parameter);
+        }
+        return $showLink;
+    }
+
+    /**
      * Build a link to the record list based on given record.
      *
      * @param array $row Current record row from database.
      * @return string Link to open an edit window for record.
      */
-    private function getShowLink(array $row): string
+    private function getRecordsActionLink(array $row): string
     {
-        $backendUser = $this->getBackendUser();
         $showLink = '';
-        $permissionSet = new Permission($this->getBackendUser()->calcPerms(BackendUtility::getRecord('pages', $row['pid']) ?? []));
-        // "View" link - Only with proper permissions
-        $schema = $this->tcaSchemaFactory->get('pages');
-        if ($backendUser->isAdmin()
-            || (
-                $permissionSet->showPagePermissionIsGranted()
-                && !$schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
-                && $backendUser->check('tables_select', 'pages')
-            )
-        ) {
-            $showLink = (string)$this->uriBuilder->buildUriFromRoute('records', ['id' => $row['uid']]);
+        if ($this->hasPagesAccess($row)) {
+            $parameter = [
+                'id' => $row['sys_language_uid'] === 0 ? $row['uid'] : $row['l10n_parent'],
+                'languages' => [$row['sys_language_uid']],
+            ];
+            $showLink = ((string)$this->uriBuilder->buildUriFromRoute('records', $parameter)) . '#t3-table-pages';
         }
         return $showLink;
+    }
+
+    /**
+     * Build a preview link to display the record in the frontend.
+     *
+     * @param array $row Current record row from database.
+     * @return string Link to open an edit window for record.
+     */
+    private function getPreviewActionLink(array $row): string
+    {
+        $previewLink = '';
+        if ($this->hasPagesAccess($row)) {
+            $previewUriBuilder = PreviewUriBuilder::create($row);
+            if ($previewUriBuilder->isPreviewable()) {
+                $previewLink = (string)$previewUriBuilder->buildUri();
+            }
+        }
+
+        return $previewLink;
+    }
+
+    private function hasPagesAccess(array $row): bool
+    {
+        $backendUser = $this->getBackendUser();
+        $permissionSet = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $row['uid']) ?? []));
+        $pagesSchema = $this->tcaSchemaFactory->get('pages');
+        return $backendUser->isAdmin()
+            || (
+                $permissionSet->showPagePermissionIsGranted()
+                && !$pagesSchema->hasCapability(TcaSchemaCapability::AccessAdminOnly)
+                && $backendUser->check('tables_select', 'pages')
+            );
     }
 
     private function getBackendUser(): BackendUserAuthentication

@@ -18,6 +18,7 @@ import '@typo3/backend/element/icon-element';
 export interface ResultItemInterface {
   provider: string;
   actions: ResultItemActionInterface[];
+  defaultAction: ResultItemActionInterface;
   icon: Record<string, string>;
   itemTitle: string;
   typeLabel: string;

@@ -33,6 +33,7 @@ final class ResultItem implements \JsonSerializable
      * @var ResultItemAction[]
      */
     private array $actions = [];
+    private ?ResultItemAction $defaultAction = null;
     private array $extraData = [];
     private array $internalData = [];
 
@@ -81,6 +82,18 @@ final class ResultItem implements \JsonSerializable
         return $this;
     }
 
+    public function getDefaultAction(): ?ResultItemAction
+    {
+        return $this->defaultAction;
+    }
+
+    public function setDefaultAction(?ResultItemAction $defaultAction): ResultItem
+    {
+        $this->defaultAction = $defaultAction;
+
+        return $this;
+    }
+
     public function getExtraData(): array
     {
         return $this->extraData;
@@ -115,6 +128,7 @@ final class ResultItem implements \JsonSerializable
                 'overlay' => $this->icon?->getOverlayIcon()?->getIdentifier(),
             ],
             'actions' => $this->actions,
+            'defaultAction' => $this->defaultAction ?? $this->actions[0],
             'extraData' => $this->extraData,
         ];
     }
