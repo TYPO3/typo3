@@ -16,7 +16,7 @@
 ,297,89,384,0,0,0,0,0,0,0,0,"Regular Element #1",
 ,298,89,512,0,0,0,0,0,0,0,0,"Regular Element #2",
 ,299,89,768,0,0,0,0,0,0,0,0,"Regular Element #3",
-,300,89,1024,0,1,299,299,0,0,0,0,"Testing Translation #3","{""header"":""Regular Element #3"",""CType"":""text"",""colPos"":""0"",""starttime"":""0"",""endtime"":""0""}"
+,300,89,1024,0,1,299,299,0,0,0,0,"Testing Translation #3","{""CType"":""text"",""colPos"":""0"",""endtime"":""0"",""header"":""Regular Element #3"",""starttime"":""0""}"
 ,301,89,384,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1",
 ,302,89,448,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1",
 "sys_refindex"
