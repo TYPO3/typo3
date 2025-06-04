@@ -1025,18 +1025,15 @@ class DataHandler
      * Filling in the field array
      * $this->excludedTablesAndFields is used to filter fields if needed.
      *
-     * @param string $table Table name
      * @param int|string $id Record ID
      * @param array $fieldArray Default values, Preset $fieldArray with 'pid' maybe (pid and uid will be not be overridden anyway)
      * @param array $incomingFieldArray Is which fields/values you want to set. There are processed and put into $fieldArray if OK
      * @param int $realPid The real PID value of the record. For updates, this is just the pid of the record. For new records this is the PID of the page where it is inserted.
      * @param string $status Is 'new' or 'update'
      * @param int $tscPID TSconfig PID
-     * @internal should only be used from within DataHandler
      */
-    public function fillInFieldArray($table, $id, array $fieldArray, array $incomingFieldArray, $realPid, $status, $tscPID): array
+    protected function fillInFieldArray(string $table, $id, array $fieldArray, array $incomingFieldArray, $realPid, $status, $tscPID): array
     {
-        // Initialize:
         $schema = $this->tcaSchemaFactory->get($table);
         $originalLanguageRecord = null;
         $originalLanguage_diffStorage = null;
@@ -1170,6 +1167,7 @@ class DataHandler
         ) {
             // If the field is set it would probably be because of an undo-operation - in which case we should not
             // update the field of course. On the other hand, e.g. for record localization, we need to update the field.
+            ksort($originalLanguage_diffStorage);
             $fieldArray[$languageCapability->getDiffSourceField()->getName()] = json_encode($originalLanguage_diffStorage);
         }
         return $fieldArray;

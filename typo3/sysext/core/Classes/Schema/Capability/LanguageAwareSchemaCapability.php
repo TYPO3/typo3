@@ -62,6 +62,9 @@ final readonly class LanguageAwareSchemaCapability implements SchemaCapabilityIn
         return $this->translationSourceField;
     }
 
+    /**
+     * diffSourceField->getName() typically resolves to 'l10n_diffsource' or 'l18n_diffsource'
+     */
     public function getDiffSourceField(): ?FieldTypeInterface
     {
         return $this->diffSourceField;
