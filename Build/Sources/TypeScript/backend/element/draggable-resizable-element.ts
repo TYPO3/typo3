@@ -13,7 +13,7 @@
 
 import { html, LitElement, TemplateResult, PropertyValues } from 'lit';
 import { customElement, property, state } from 'lit/decorators';
-import type { Offset } from '@typo3/backend/offset';
+import { Offset } from '@typo3/backend/offset';
 
 interface Position {
   x: number;
@@ -73,14 +73,9 @@ export interface PointerEventNames {
  */
 @customElement('typo3-backend-draggable-resizable')
 export class DraggableResizableElement extends LitElement {
-  @property({ type: Object, reflect: true }) offset: Offset = null;
-  @property({ type: HTMLElement }) container: HTMLElement = null;
-  @property({ type: Object }) pointerEventNames: PointerEventNames = {
-    pointerDown: ['mousedown'],
-    pointerMove: ['mousemove'],
-    pointerUp: ['mouseup'],
-  };
-  @property({ type: Boolean, reflect: true }) private reverting = false;
+  @property({ type: Object, converter: data => Offset.fromObject(JSON.parse(data)), reflect: true }) offset: Offset;
+  @property({ type: Object }) pointerEventNames: PointerEventNames;
+  @property({ type: Boolean, reflect: true }) public reverting = false;
 
   @state() private action: Action = null;
 
@@ -99,9 +94,6 @@ export class DraggableResizableElement extends LitElement {
 
   public connectedCallback() {
     super.connectedCallback();
-    if (!(this.container instanceof HTMLElement)) {
-      this.container = this.parentElement;
-    }
     this.pointerEventNames.pointerDown.forEach((name: string): void =>
       document.addEventListener(name, this.handleStart, true));
     this.pointerEventNames.pointerMove.forEach((name: string): void =>
@@ -122,7 +114,7 @@ export class DraggableResizableElement extends LitElement {
 
   protected render(): TemplateResult {
     return html`
-      <div id="t3js-cropper-focus-area" class="cropper-focus-area ui-draggable ui-draggable-handle ui-resizable">
+      <div class="cropper-focus-area ui-draggable ui-draggable-handle ui-resizable">
         <div class="ui-resizable-handle ui-resizable-n" data-resize="n"></div>
         <div class="ui-resizable-handle ui-resizable-e" data-resize="e"></div>
         <div class="ui-resizable-handle ui-resizable-s" data-resize="s"></div>
@@ -198,7 +190,7 @@ export class DraggableResizableElement extends LitElement {
   private adjustOffset(originOffset: Offset, delta: Position): Offset {
     // width & height cannot be lower
     const dimensionMin = 2;
-    const containerBounds = this.container.getBoundingClientRect();
+    const containerBounds = this.parentElement.getBoundingClientRect();
     const offset = originOffset.clone();
 
     if (this.action === Action.move) {

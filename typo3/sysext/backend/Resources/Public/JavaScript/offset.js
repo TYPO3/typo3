@@ -10,4 +10,4 @@
  *
  * The TYPO3 project - inspiring people to share!
  */
-export class Offset{constructor(t,h,i,s){this.left=t,this.top=h,this.width=i,this.height=s}get right(){return this.left+this.width}get bottom(){return this.top+this.height}clone(){return new Offset(this.left,this.top,this.width,this.height)}}
+export class Offset{constructor(t,h,e,i){this.left=t,this.top=h,this.width=e,this.height=i}get right(){return this.left+this.width}get bottom(){return this.top+this.height}static fromObject({left:t,top:h,width:e,height:i}){return new Offset(t,h,e,i)}clone(){return new Offset(this.left,this.top,this.width,this.height)}}
