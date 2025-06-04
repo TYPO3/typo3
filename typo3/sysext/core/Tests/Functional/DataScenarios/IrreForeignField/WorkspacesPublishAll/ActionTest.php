@@ -117,6 +117,7 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
             ->setTable(self::TABLE_Hotel)->setField('title')->setValues('Hotel #1'));
     }
 
+    #[Test]
     public function copyParentContentToDifferentLanguageWAllChildren(): void
     {
         // Write SiteConfiguration without fallback

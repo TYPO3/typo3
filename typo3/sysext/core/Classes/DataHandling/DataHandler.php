@@ -1189,7 +1189,16 @@ class DataHandler
                             $fieldArray[$field] = $res['value'];
                         }
                         // Add the value of the original record to the diff-storage content:
-                        if ($languageCapability && $languageCapability->hasDiffSourceField()) {
+                        if ($languageCapability && $languageCapability->hasDiffSourceField()
+                            // not "sys_language_uid", this is 0 in default language record by definition
+                            && $languageCapability->getLanguageField()->getName() !== (string)$field
+                            // not the "diffsource" field itself
+                            && $languageCapability->getDiffSourceField()->getName() !== (string)$field
+                            // not "l10n_parent", this is 0 in default language record by definition
+                            && $languageCapability->getTranslationOriginPointerField()->getName() !== (string)$field
+                            // not "l10n_source", this is 0 in default language record by definition
+                            && !($languageCapability->hasTranslationSourceField() && $languageCapability->getTranslationOriginPointerField()->getName() === (string)$field)
+                        ) {
                             if (!is_array($originalLanguage_diffStorage)) {
                                 $originalLanguage_diffStorage = [];
                             }

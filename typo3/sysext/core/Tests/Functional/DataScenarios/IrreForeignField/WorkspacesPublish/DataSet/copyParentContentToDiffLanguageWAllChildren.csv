@@ -23,14 +23,14 @@
 ,3,89,1,0,0,0,,0,0,0,0,"Hotel #1",297,"tt_content","1nff.hotels",2
 ,4,89,2,0,0,0,,0,0,0,0,"Hotel #2",297,"tt_content","1nff.hotels",1
 ,5,89,1,0,0,0,,0,0,0,0,"Hotel #1",298,"tt_content","1nff.hotels",1
-,6,89,1,0,1,0,"{""sys_language_uid"":""""}",0,0,0,0,Hotel #1,299,"tt_content","1nff.hotels",1
+,6,89,1,0,1,0,"",0,0,0,0,Hotel #1,299,"tt_content","1nff.hotels",1
 "tx_testirreforeignfield_offer"
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier","prices"
 ,5,89,1,0,0,0,,0,0,0,0,"Offer #1.1",3,"tx_testirreforeignfield_hotel",,3
 ,6,89,2,0,0,0,,0,0,0,0,"Offer #1.2",3,"tx_testirreforeignfield_hotel",,2
 ,7,89,1,0,0,0,,0,0,0,0,"Offer #2.1",4,"tx_testirreforeignfield_hotel",,1
 ,8,89,1,0,0,0,,0,0,0,0,"Offer #1.1",5,"tx_testirreforeignfield_hotel",,1
-,9,89,1,0,1,0,"{""sys_language_uid"":""""}",0,0,0,0,"Offer #1.1",6,"tx_testirreforeignfield_hotel",,1
+,9,89,1,0,1,0,"",0,0,0,0,"Offer #1.1",6,"tx_testirreforeignfield_hotel",,1
 "tx_testirreforeignfield_price"
 ,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","l18n_diffsource","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parentid","parenttable","parentidentifier"
 ,7,89,1,0,0,0,,0,0,0,0,"Price #1.1.1",5,"tx_testirreforeignfield_offer",
@@ -40,7 +40,7 @@
 ,11,89,2,0,0,0,,0,0,0,0,"Price #1.2.2",6,"tx_testirreforeignfield_offer",
 ,12,89,1,0,0,0,,0,0,0,0,"Price #2.1.1",7,"tx_testirreforeignfield_offer",
 ,13,89,1,0,0,0,,0,0,0,0,"Price #1.1.1",8,"tx_testirreforeignfield_offer",
-,14,89,1,0,1,0,"{""sys_language_uid"":""""}",0,0,0,0,"Price #1.1.1",9,"tx_testirreforeignfield_offer",
+,14,89,1,0,1,0,"",0,0,0,0,"Price #1.1.1",9,"tx_testirreforeignfield_offer",
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 ,f6c496743ae6ceac1e6ef37f59ac6ce4,"pages",89,"tx_testirreforeignfield_hotels",0,0,2147483647,0,,,,0,0,"tx_testirreforeignfield_hotel",2,,0,0,2147483647,0,0,
