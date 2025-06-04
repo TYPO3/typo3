@@ -6268,12 +6268,12 @@ class DataHandler
     protected function discardRecordRelations(string $table, array $record): void
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        foreach ($record as $field => $value) {
-            if (!$schema->hasField($field)) {
+        foreach ($record as $fieldName => $value) {
+            if (!$schema->hasField($fieldName)) {
                 continue;
             }
             /** @var InlineFieldType|FileFieldType $fieldType */
-            $fieldType = $schema->getField($field);
+            $fieldType = $schema->getField($fieldName);
             $fieldConfig = $fieldType->getConfiguration();
 
             if ($fieldType->isType(TableColumnType::INLINE, TableColumnType::FILE)) {
@@ -6294,8 +6294,38 @@ class DataHandler
                 }
             } elseif ($this->isReferenceField($fieldConfig) && !empty($fieldConfig['MM'])) {
                 $this->discardMmRelations($table, $fieldConfig, $record);
+            } elseif ($fieldType->isType(TableColumnType::FLEX) && (string)$value !== '') {
+                try {
+                    $dataStructureIdentifier = $this->flexFormTools->getDataStructureIdentifier(['config' => $fieldConfig], $table, $fieldName, $record);
+                    $dataStructureArray = $this->flexFormTools->parseDataStructureByIdentifier($dataStructureIdentifier);
+                } catch (AbstractInvalidDataStructureException) {
+                    // Nothing to do if data structure could not be determined
+                    continue;
+                }
+                if ($dataStructureArray !== []) {
+                    $flexForm = GeneralUtility::xml2array($value);
+                    foreach (($dataStructureArray['sheets'] ?? []) as $sheetName => $sheet) {
+                        foreach ($sheet['ROOT']['el'] as $sheetFieldName => $flexField) {
+                            $flexFormValue = $flexForm['data'][$sheetName]['lDEF'][$sheetFieldName]['vDEF'] ?? null;
+                            $flexFieldConfig = $flexField['config'] ?? [];
+                            if (!isset($flexFieldConfig['type'])) {
+                                continue;
+                            }
+                            if ($flexFieldConfig['type'] === 'inline' || $flexFieldConfig['type'] === 'file') {
+                                if (in_array($this->getRelationFieldType($flexFieldConfig), ['list', 'field'], true)) {
+                                    $dbAnalysis = $this->createRelationHandlerInstance();
+                                    $dbAnalysis->start($flexFormValue, $flexFieldConfig['foreign_table'], '', (int)$record['uid'], $table, $flexFieldConfig);
+                                    foreach ($dbAnalysis->itemArray as $relationRecord) {
+                                        $this->discard($relationRecord['table'], (int)$relationRecord['id']);
+                                    }
+                                }
+                            } elseif ($this->isReferenceField($flexFieldConfig)) {
+                                $this->discardMmRelations($table, $flexFieldConfig, $record);
+                            }
+                        }
+                    }
+                }
             }
-            // @todo not inline and not mm - probably not handled correctly and has no proper test coverage yet
         }
     }
 
