@@ -21,8 +21,8 @@
 ,1,89,256,0,0,0,0,0,0,0,"Element #1",,,,,,
 ,2,89,512,0,0,0,0,0,0,0,"Element #2",,,,,,
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",,,,,,
-,4,89,640,0,1,2,1,1,0,0,"[Translate to Dansk:] Element #2","{""hidden"":""0"",""l10n_diffsource"":"""",""l10n_parent"":""0"",""sys_language_uid"":""0"",""title"":""Element #2""}",,,,,
-,5,89,704,0,1,3,1,1,0,0,"[Translate to Dansk:] Element #3","{""hidden"":""0"",""l10n_diffsource"":"""",""l10n_parent"":""0"",""sys_language_uid"":""0"",""title"":""Element #3""}",,,,,
+,4,89,640,0,1,2,1,1,0,0,"[Translate to Dansk:] Element #2","{""hidden"":""0"",""title"":""Element #2""}",,,,,
+,5,89,704,0,1,3,1,1,0,0,"[Translate to Dansk:] Element #3","{""hidden"":""0"",""title"":""Element #3""}",,,,,
 "sys_refindex"
 ,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
 ,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0,
