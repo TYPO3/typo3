@@ -57,6 +57,9 @@ class ConnectionPool
 
     /**
      * @var array<non-empty-string,class-string>
+     * @todo Needs to be refactored. Only MySQL and MariaDB support this type, using this to register the type AND
+     *       add mappings to all connections, even unsupported connections for SQLite or PostgreSQL is not correct,
+     *       and needs to be respected. Or the type needs to provide working fallbacks for unsupported platforms.
      */
     protected array $customDoctrineTypes = [
         SetType::TYPE => SetType::class,
@@ -64,6 +67,7 @@ class ConnectionPool
 
     /**
      * @var array<non-empty-string,class-string>
+     * @todo Needs to be refactored to differentiate between type registration and platform specific type mapping.
      */
     protected array $overrideDoctrineTypes = [
         Types::DATE_MUTABLE => DateType::class,

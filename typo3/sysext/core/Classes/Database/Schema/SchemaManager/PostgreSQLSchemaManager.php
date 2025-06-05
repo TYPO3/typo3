@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\PostgreSQLPlatform as DoctrinePostgreSQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\PostgreSQLSchemaManager as DoctrinePostgreSQLSchemaManager;
 use Doctrine\DBAL\Types\JsonType;
@@ -42,7 +41,7 @@ use Doctrine\DBAL\Types\Type;
  */
 class PostgreSQLSchemaManager extends DoctrinePostgreSQLSchemaManager
 {
-    use CustomDoctrineTypesColumnDefinitionTrait;
+    use ColumnTypeCommentMethodsTrait;
 
     /**
      * Gets Table Column Definition.
@@ -51,10 +50,7 @@ class PostgreSQLSchemaManager extends DoctrinePostgreSQLSchemaManager
      */
     protected function _getPortableTableColumnDefinition(array $tableColumn): Column
     {
-        /** @var DoctrinePostgreSQLPlatform $platform */
-        $platform = $this->platform;
-        return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
-            ?? $this->parentGetPortableTableColumnDefinition($tableColumn);
+        return $this->parentGetPortableTableColumnDefinition($tableColumn);
     }
 
     /**
@@ -71,150 +67,73 @@ class PostgreSQLSchemaManager extends DoctrinePostgreSQLSchemaManager
     {
         $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
 
-        $length = null;
-
-        if (
-            in_array(strtolower($tableColumn['type']), ['varchar', 'bpchar'], true)
-            && preg_match('/\((\d*)\)/', $tableColumn['complete_type'], $matches) === 1
-        ) {
-            $length = (int)$matches[1];
-        }
-
-        $autoincrement = $tableColumn['attidentity'] === 'd';
-
-        $matches = [];
-
-        assert(array_key_exists('default', $tableColumn));
-        assert(array_key_exists('complete_type', $tableColumn));
-
-        if ($tableColumn['default'] !== null) {
-            if (preg_match("/^['(](.*)[')]::/", $tableColumn['default'], $matches) === 1) {
-                $tableColumn['default'] = $matches[1];
-            } elseif (preg_match('/^NULL::/', $tableColumn['default']) === 1) {
-                $tableColumn['default'] = null;
-            }
-        }
-
-        if ($length === -1 && isset($tableColumn['atttypmod'])) {
-            $length = $tableColumn['atttypmod'] - 4;
-        }
-
-        if ((int)$length <= 0) {
-            $length = null;
-        }
-
-        $fixed = false;
-
-        if (! isset($tableColumn['name'])) {
-            $tableColumn['name'] = '';
-        }
-
+        $length    = null;
         $precision = null;
         $scale     = 0;
-        $jsonb     = null;
+        $fixed     = false;
+        $jsonb     = false;
 
-        $dbType = strtolower($tableColumn['type']);
+        $dbType = $tableColumn['type'];
+
         if (
             $tableColumn['domain_type'] !== null
-            && $tableColumn['domain_type'] !== ''
-            && ! $this->platform->hasDoctrineTypeMappingFor($tableColumn['type'])
+            && ! $this->platform->hasDoctrineTypeMappingFor($dbType)
         ) {
-            $dbType                       = strtolower($tableColumn['domain_type']);
-            $tableColumn['complete_type'] = $tableColumn['domain_complete_type'];
+            $dbType       = $tableColumn['domain_type'];
+            $completeType = $tableColumn['domain_complete_type'];
+        } else {
+            $completeType = $tableColumn['complete_type'];
         }
 
+        // This is the change required for TYPO3 - rest of method is kept (cloned) from original.
+        // Following line differs from \Doctrine\DBAL\Schema\MySQLSchemaManager::_getPortableTableColumnDefinition,
+        // taken from:
+        // - https://github.com/doctrine/dbal/blob/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba/src/Schema/PostgreSQLSchemaManager.php#L427-L429
         $type = $this->determineColumnType($dbType, $tableColumn);
 
         switch ($dbType) {
-            case 'smallint':
-            case 'int2':
-            case 'int':
-            case 'int4':
-            case 'integer':
-            case 'bigint':
-            case 'int8':
-                $length = null;
-                break;
-
-            case 'bool':
-            case 'boolean':
-                if ($tableColumn['default'] === 'true') {
-                    $tableColumn['default'] = true;
-                }
-
-                if ($tableColumn['default'] === 'false') {
-                    $tableColumn['default'] = false;
-                }
-
-                $length = null;
-                break;
-
-            case 'json':
-            case 'text':
-            case '_varchar':
-            case 'varchar':
-                $tableColumn['default'] = $this->parseDefaultExpression($tableColumn['default']);
-                break;
-
-            case 'char':
             case 'bpchar':
-                $fixed = true;
+            case 'varchar':
+                $parameters = $this->parseColumnTypeParameters($completeType);
+                if (count($parameters) > 0) {
+                    $length = $parameters[0];
+                }
+
                 break;
 
-            case 'float':
-            case 'float4':
-            case 'float8':
             case 'double':
-            case 'double precision':
-            case 'real':
             case 'decimal':
             case 'money':
             case 'numeric':
-                if (
-                    preg_match(
-                        '([A-Za-z]+\(([0-9]+),([0-9]+)\))',
-                        $tableColumn['complete_type'],
-                        $match,
-                    ) === 1
-                ) {
-                    $precision = (int)$match[1];
-                    $scale     = (int)$match[2];
-                    $length    = null;
+                $parameters = $this->parseColumnTypeParameters($completeType);
+                if (count($parameters) > 0) {
+                    $precision = $parameters[0];
+                }
+
+                if (count($parameters) > 1) {
+                    $scale = $parameters[1];
                 }
 
                 break;
-
-            case 'year':
-                $length = null;
-                break;
-
-                // PostgreSQL 9.4+ only
-            case 'jsonb':
-                $jsonb = true;
-                break;
         }
 
-        if (
-            is_string($tableColumn['default']) && preg_match(
-                "('([^']+)'::)",
-                $tableColumn['default'],
-                $match,
-            ) === 1
-        ) {
-            $tableColumn['default'] = $match[1];
+        if ($dbType === 'bpchar') {
+            $fixed = true;
+        } elseif ($dbType === 'jsonb') {
+            $jsonb = true;
         }
 
         $options = [
             'length'        => $length,
             'notnull'       => (bool)$tableColumn['isnotnull'],
-            'default'       => $tableColumn['default'],
+            'default'       => $this->parseDefaultExpression($tableColumn['default']),
             'precision'     => $precision,
             'scale'         => $scale,
             'fixed'         => $fixed,
-            'autoincrement' => $autoincrement,
+            'autoincrement' => $tableColumn['attidentity'] === 'd',
         ];
 
-        if (isset($tableColumn['comment'])) {
+        if ($tableColumn['comment'] !== null) {
             $options['comment'] = $tableColumn['comment'];
         }
 
@@ -234,14 +153,48 @@ class PostgreSQLSchemaManager extends DoctrinePostgreSQLSchemaManager
     /**
      * Parses a default value expression as given by PostgreSQL
      *
-     * Copy of {@see DoctrinePostgreSQLSchemaManager::parseDefaultExpression()}
+     * Copy of {@see DoctrinePostgreSQLSchemaManager::parseDefaultExpression()} (Doctrine DBAL 4.3.x)
      */
-    private function parseDefaultExpression(?string $default): ?string
+    private function parseDefaultExpression(?string $expression): mixed
     {
-        if ($default === null) {
-            return $default;
+        if ($expression === null || str_starts_with($expression, 'NULL::')) {
+            return null;
         }
 
-        return str_replace("''", "'", $default);
+        if ($expression === 'true') {
+            return true;
+        }
+
+        if ($expression === 'false') {
+            return false;
+        }
+
+        if (preg_match("/^'(.*)'::/s", $expression, $matches) === 1) {
+            return str_replace("''", "'", $matches[1]);
+        }
+
+        return $expression;
+    }
+
+    /**
+     * Parses the parameters between parenthesis in the data type.
+     *
+     * Copy of {@see DoctrinePostgreSQLSchemaManager::parseColumnTypeParameters()}
+     *
+     * @return list<int>
+     */
+    private function parseColumnTypeParameters(string $type): array
+    {
+        if (preg_match('/\((\d+)(?:,(\d+))?\)/', $type, $matches) !== 1) {
+            return [];
+        }
+
+        $parameters = [(int)$matches[1]];
+
+        if (isset($matches[2])) {
+            $parameters[] = (int)$matches[2];
+        }
+
+        return $parameters;
     }
 }

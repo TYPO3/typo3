@@ -18,10 +18,14 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Schema;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractMySQLPlatform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Types\BigIntType;
+use Doctrine\DBAL\Types\EnumType;
 use Doctrine\DBAL\Types\IntegerType;
 use Doctrine\DBAL\Types\JsonType;
 use Doctrine\DBAL\Types\StringType;
@@ -39,6 +43,10 @@ use TYPO3\CMS\Core\Database\Schema\SchemaDiff;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
+use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
+use TYPO3\CMS\Core\Database\Schema\Types\DateType;
+use TYPO3\CMS\Core\Database\Schema\Types\SetType;
+use TYPO3\CMS\Core\Database\Schema\Types\TimeType;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -1162,6 +1170,14 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($sqlCode);
+        $tableDetails = $this->getTableDetails();
+        self::assertTrue($tableDetails->hasColumn('test1'));
+        $column = $tableDetails->getColumn('test1');
+        self::assertInstanceOf(EnumType::class, $column->getType());
+        self::assertSame(['', 'v4', 'v6'], $column->getValues());
+        $defaultValue = $column->getDefault();
+        self::assertIsString($defaultValue);
+        self::assertSame('v4', $defaultValue);
     }
 
     #[Group('not-sqlite')]
@@ -1205,6 +1221,14 @@ final class SchemaMigratorTest extends FunctionalTestCase
         $result = $subject->install($this->createSqlReader()->getCreateTableStatementArray($sqlCode));
         $this->verifyMigrationResult($result);
         $this->verifyCleanDatabaseState($sqlCode);
+        $tableDetails = $this->getTableDetails();
+        self::assertTrue($tableDetails->hasColumn('test1'));
+        $column = $tableDetails->getColumn('test1');
+        self::assertInstanceOf(SetType::class, $column->getType());
+        self::assertSame(['a', 'b', 'c', 'd'], $column->getValues());
+        $defaultValue = $column->getDefault();
+        self::assertIsString($defaultValue);
+        self::assertSame('a', $defaultValue);
     }
 
     public static function introspectTableDoctrineTypeDataSets(): \Generator
@@ -1279,6 +1303,85 @@ final class SchemaMigratorTest extends FunctionalTestCase
         }
         if ($expectedLength !== null) {
             self::assertSame($expectedLength, $table->getColumn($fieldName)->getLength());
+        }
+    }
+
+    public static function verifyPlatformTypeSupportDataSets(): \Generator
+    {
+        yield 'enum' => [
+            'type' => 'enum',
+            'typeClassName' => EnumType::class,
+            'expectedSupportedPlatforms' => [
+                AbstractMySQLPlatform::class,
+            ],
+        ];
+        yield 'set' => [
+            'type' => 'set',
+            'typeClassName' => SetType::class,
+            'expectedSupportedPlatforms' => [
+                AbstractMySQLPlatform::class,
+                // @todo SQLite and PostgresSQL do not support the set type but are required to be expected here until
+                //       registration of the custom TYPO3 SetType is only mapped to supported MySQL/MariaDB platform
+                //       connections. That requires to move the type registration for connections into platform aware
+                //       doctrine driver middleware or a similar solution instead of registering custom types for all
+                //       connections unconditionally.
+                SQLitePlatform::class, // wrong, should not be expected
+                PostgreSQLPlatform::class, // wrong, should not be expected
+            ],
+        ];
+        yield 'date' => [
+            'type' => 'date',
+            // @todo TYPO3 knows a mutable and a immutable type, but only the mutable type matches the SQL keyword
+            //       with the registered type. Immutable variant is replaced using database column comments, which
+            //       is not tested in {@see self::verifyPlatformTypeSupportMatchesExpectation()},
+            // Note that TYPO3 replaces doctrine/dbal implementation here.
+            'typeClassName' => DateType::class,
+            'expectedSupportedPlatforms' => [
+                AbstractMySQLPlatform::class,
+                SQLitePlatform::class,
+                PostgreSQLPlatform::class,
+            ],
+        ];
+        yield 'datetime' => [
+            'type' => 'datetime',
+            // @todo TYPO3 knows a mutable and a immutable type, but only the mutable type matches the SQL keyword
+            //       with the registered type. Immutable variant is replaced using database column comments, which
+            //       is not tested in {@see self::verifyPlatformTypeSupportMatchesExpectation()},
+            // Note that TYPO3 replaces doctrine/dbal implementation here.
+            'typeClassName' => DateTimeType::class,
+            'expectedSupportedPlatforms' => [
+                AbstractMySQLPlatform::class,
+                SQLitePlatform::class,
+                PostgreSQLPlatform::class,
+            ],
+        ];
+        yield 'time' => [
+            'type' => 'time',
+            // Note that TYPO3 replaces doctrine/dbal implementation here.
+            'typeClassName' => TimeType::class,
+            'expectedSupportedPlatforms' => [
+                AbstractMySQLPlatform::class,
+                SQLitePlatform::class,
+                PostgreSQLPlatform::class,
+            ],
+        ];
+    }
+
+    #[DataProvider('verifyPlatformTypeSupportDataSets')]
+    #[Test]
+    public function verifyPlatformTypeSupportMatchesExpectation(string $type, string $typeClassName, array $expectedSupportedPlatforms): void
+    {
+        $platform = $this->get(ConnectionPool::class)->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME)->getDatabasePlatform();
+        $expectTypeRegisterered = false;
+        foreach ($expectedSupportedPlatforms as $expectedSupportedPlatform) {
+            if ($platform instanceof $expectedSupportedPlatform) {
+                $expectTypeRegisterered = true;
+                break;
+            }
+        }
+        self::assertSame($expectTypeRegisterered, $platform->hasDoctrineTypeMappingFor($type));
+        if ($expectTypeRegisterered) {
+            self::assertSame($typeClassName, Type::getType($platform->getDoctrineTypeMapping($type))::class);
         }
     }
 }
