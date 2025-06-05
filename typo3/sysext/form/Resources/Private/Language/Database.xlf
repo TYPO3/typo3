@@ -1360,6 +1360,18 @@ If you need higher values contact your administrator for help.
 			<trans-unit id="formEditor.inspector.editor.grid.remove" xml:space="preserve">
 				<source>Remove this row</source>
 			</trans-unit>
+			<trans-unit id="formEditor.inspector.editor.grid.move" xml:space="preserve">
+				<source>Move this row</source>
+			</trans-unit>
+			<trans-unit id="formEditor.inspector.editor.entry.label" xml:space="preserve">
+				<source>Label</source>
+			</trans-unit>
+			<trans-unit id="formEditor.inspector.editor.entry.value" xml:space="preserve">
+				<source>Value</source>
+			</trans-unit>
+			<trans-unit id="formEditor.inspector.editor.entry.selected" xml:space="preserve">
+				<source>Selected</source>
+			</trans-unit>
 
 			<trans-unit id="formEditor.modals.insertElements.filter.noResults">
 				<source>Unfortunately no element type matches your query, please try a different one.</source>
