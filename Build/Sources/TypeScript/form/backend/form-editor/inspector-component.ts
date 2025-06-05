@@ -22,6 +22,7 @@ import Modal from '@typo3/backend/modal';
 import { MessageUtility } from '@typo3/backend/utility/message-utility';
 import Sortable from 'sortablejs';
 import { selector } from '@typo3/core/literals';
+import { PropertyGridEditorUpdateEvent, type PropertyGridEditorEntry } from '@typo3/form/backend/form-editor/component/property-grid-editor';
 
 import type {
   FormEditor,
@@ -92,17 +93,6 @@ const defaultConfiguration: Configuration = {
 
     inspectorFinishers: 'inspectorFinishers',
     inspectorValidators: 'inspectorValidators',
-    propertyGridEditorHeaderRow: 'headerRow',
-    propertyGridEditorAddRow: 'addRow',
-    propertyGridEditorAddRowItem: 'addRowItem',
-    propertyGridEditorContainer: 'propertyGridContainer',
-    propertyGridEditorDeleteRow: 'deleteRow',
-    propertyGridEditorLabel: 'label',
-    propertyGridEditorRowItem: 'rowItem',
-    propertyGridEditorColumn: 'column',
-    propertyGridEditorSelectValue: 'selectValue',
-    propertyGridEditorSortRow: 'sortRow',
-    propertyGridEditorValue: 'value',
     viewportButton: 'viewportButton'
   },
   domElementIdNames: {
@@ -407,79 +397,6 @@ function addSortableCollectionElementsEvents(
       ]);
     }
   });
-}
-
-function setPropertyGridData(
-  editorHtml: HTMLElement | JQuery,
-  multiSelection: boolean,
-  propertyPath: string,
-  propertyPathPrefix: string
-): void {
-  let value;
-
-  if (multiSelection) {
-    const defaultValue: number[] = [];
-
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer') + ' ' +
-      getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue') + ':checked',
-    $(editorHtml)
-    ).each(function(this: HTMLElement) {
-      value = $(this)
-        .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-        .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-        .val();
-
-      if (getUtility().canBeInterpretedAsInteger(value)) {
-        value = parseInt(value, 10);
-      }
-
-      defaultValue.push(value);
-    });
-    getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', defaultValue);
-  } else {
-    value = $(
-      getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer') + ' ' +
-        getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue') + ':checked',
-      $(editorHtml)
-    ).first()
-      .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-      .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-      .val();
-
-    if (getUtility().canBeInterpretedAsInteger(value)) {
-      value = parseInt(value, 10);
-    }
-
-    getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', value, true);
-  }
-
-  const newPropertyData: Array<{_label: string, _value: string}> = [];
-  $(
-    getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer') + ' ' +
-    getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
-    $(editorHtml)
-  ).each(function(this: HTMLElement) {
-    let value = $(this)
-      .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-      .val();
-    const label = $(this)
-      .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel'))
-      .val();
-
-    if ('' === value) {
-      value = label;
-    }
-
-    const tmpObject: Record<string, string> = {};
-    tmpObject[value] = label;
-    newPropertyData.push({
-      _label: label,
-      _value: value
-    });
-  });
-
-  getCurrentlySelectedFormElement().set(propertyPathPrefix + propertyPath, newPropertyData);
-  validateCollectionElement(propertyPathPrefix + propertyPath, editorHtml);
 }
 
 function getEditorWrapperDomElement(editorDomElement: HTMLElement | JQuery): JQuery {
@@ -1714,267 +1631,120 @@ export function renderPropertyGridEditor(
       .remove();
   }
 
-  let propertyPathPrefix = getFormEditorApp().buildPropertyPath(
-    undefined,
-    collectionElementIdentifier,
-    collectionName,
-    undefined,
-    true
-  );
-  if (getUtility().isNonEmptyString(propertyPathPrefix)) {
-    propertyPathPrefix = propertyPathPrefix + '.';
-  }
+  const propertyPathPrefix = (() => {
+    const path = getFormEditorApp().buildPropertyPath(undefined, collectionElementIdentifier, collectionName, undefined, true);
+    return getUtility().isNonEmptyString(path) ? path + '.' : path;
+  })();
 
-  let useLabelAsFallbackValue: boolean;
-  if (getUtility().isUndefinedOrNull(editorConfiguration.useLabelAsFallbackValue)) {
-    useLabelAsFallbackValue = true;
-  } else {
-    useLabelAsFallbackValue = editorConfiguration.useLabelAsFallbackValue;
-  }
+  const multiSelection: boolean = getUtility().isUndefinedOrNull(editorConfiguration.multiSelection)
+    ? false
+    : !!editorConfiguration.multiSelection;
 
-  let gridColumns = [
-    { name: 'label', title: 'Label' },
-    { name: 'value', title: 'Value' },
-    { name: 'selected', title: 'Selected' },
-  ];
+  const enableSelection = getUtility().isNonEmptyArray(editorConfiguration.gridColumns)
+    ? editorConfiguration.gridColumns.some(item => item.name === 'selected')
+    : true;
+
+  const defaultValue: Record<string, string> = (() => {
+    const val = getCurrentlySelectedFormElement().get(propertyPathPrefix + 'defaultValue');
+    return !getUtility().isUndefinedOrNull(val)
+      ? multiSelection ? val : { '0': val }
+      : {};
+  })();
+
+  const propertyData = (() : PropertyGridEditorEntry[] => {
+    const formElement = getCurrentlySelectedFormElement();
+    const fullPropertyPath = propertyPathPrefix + editorConfiguration.propertyPath;
+    const rawData = formElement.get(fullPropertyPath) || {};
+    let propertyEntries: PropertyGridEditorEntry[];
+
+    if (Array.isArray(rawData)) {
+      // Handle array of objects: [{_label, _value}] or raw values
+      propertyEntries = rawData.map((item, index): PropertyGridEditorEntry => ({
+        id: 'fe' + Math.floor(Math.random() * 42) + Date.now(),
+        label: getUtility().isUndefinedOrNull(item._label) ? item : item._label,
+        value: getUtility().isUndefinedOrNull(item._label) ? index : item._value,
+        selected: false,
+      }));
+    } else if (typeof rawData === 'object') {
+      // Handle object case: { value: label }
+      propertyEntries = Object.entries(rawData).map(([value, label]: [string, string]): PropertyGridEditorEntry => ({
+        id: 'fe' + Math.floor(Math.random() * 42) + Date.now(),
+        label,
+        value,
+        selected: false,
+      }));
+    }
+
+    return propertyEntries.map(entry => {
+      for (const defaultValueKey of Object.keys(defaultValue)) {
+        if (defaultValue[defaultValueKey] === entry.value) {
+          entry.selected = true;
+          break;
+        }
+      }
+      return entry;
+    });
+  })();
+
+  const useLabelAsFallbackValue = getUtility().isUndefinedOrNull(editorConfiguration.useLabelAsFallbackValue)
+    ? true
+    : editorConfiguration.useLabelAsFallbackValue;
+
+  const propertyGridEditor = editorHtml instanceof HTMLElement ?
+    editorHtml.querySelector('typo3-form-property-grid-editor') :
+    editorHtml.get(0).querySelector('typo3-form-property-grid-editor');
+  propertyGridEditor.enableAddRow = editorConfiguration.enableAddRow;
+  propertyGridEditor.enableSelection = enableSelection;
+  propertyGridEditor.enableMultiSelection = multiSelection;
+  propertyGridEditor.enableSorting = editorConfiguration.isSortable ?? false;
+  propertyGridEditor.enableDeleteRow = editorConfiguration.enableDeleteRow ?? false;
+  propertyGridEditor.enableLabelAsFallbackValue = useLabelAsFallbackValue;
+  propertyGridEditor.entries = propertyData;
+
   if (getUtility().isNonEmptyArray(editorConfiguration.gridColumns)) {
-    gridColumns = editorConfiguration.gridColumns;
+    editorConfiguration.gridColumns.forEach(gridColumnConfig => {
+      if (gridColumnConfig.name === 'label') {
+        propertyGridEditor.labelLabel = gridColumnConfig.title;
+      }
+      if (gridColumnConfig.name === 'value') {
+        propertyGridEditor.labelValue = gridColumnConfig.title;
+      }
+      if (gridColumnConfig.name === 'selected') {
+        propertyGridEditor.labelSelected = gridColumnConfig.title;
+      }
+    });
   }
-  const orderedGridColumnNames = gridColumns.map(function(item) {
-    return item.name;
-  });
-  const orderedGridColumnTitles = gridColumns.map(function(item) {
-    return item.title || null;
-  });
 
-  $([
-    getHelper().getDomElementDataIdentifierSelector('propertyGridEditorHeaderRow'),
-    getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
-    getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'),
-  ].join(','), $(editorHtml)).each(function (i, row) {
-    const $columns = $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorColumn'), row);
-    const $columnsAfter = $columns.last().nextAll();
-    const columnsByName: Record<string, JQuery> = {};
+  propertyGridEditor.addEventListener(PropertyGridEditorUpdateEvent.eventName, (event: PropertyGridEditorUpdateEvent) => {
+    const entries = event.data;
+    const defaultValues: (string | number)[] = [];
+    const newData: Array<{_label: string, _value: string | number}> = [];
 
-    // Collect columns by names, skip undesired columns
-    $columns
-      .detach()
-      .each(function(i, element) {
-        const $column = $(element);
-        const columnName = $column.data('column');
-
-        if (!orderedGridColumnNames.includes(columnName)) {
-          return;
-        }
-
-        columnsByName[columnName] = $column;
+    for (const entry of entries) {
+      const entryLabel = entry.label;
+      const entryValue = entry.value === ''
+        ? entry.label
+        : getUtility().canBeInterpretedAsInteger(entry.value)
+          ? parseInt(entry.value, 10)
+          : entry.value;
+      if (entry.selected) {
+        defaultValues.push(entryValue);
+      }
+      newData.push({
+        _label: entryLabel,
+        _value: entryValue
       });
-
-    // Insert columns in desired order
-    orderedGridColumnNames.forEach(function(columnName, i) {
-      const $column = columnsByName[columnName];
-
-      if ($column.is('th')) {
-        $column.append(orderedGridColumnTitles[i]);
-      }
-
-      $column.appendTo(row);
-    });
-
-    // Insert remaining columns
-    $columnsAfter.appendTo(row);
-  });
-
-  let multiSelection: boolean;
-  if (getUtility().isUndefinedOrNull(editorConfiguration.multiSelection)) {
-    multiSelection = false;
-  } else {
-    multiSelection = !!editorConfiguration.multiSelection;
-  }
-
-  const rowItemTemplate = $(
-    getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
-    $(editorHtml)
-  ).clone();
-  $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'), $(editorHtml)).remove();
-
-  if (editorConfiguration.enableDeleteRow) {
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorDeleteRow'),
-      $(rowItemTemplate)
-    ).on('click', function(this: HTMLElement) {
-      $(this)
-        .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-        .off()
-        .empty()
-        .remove();
-
-      setPropertyGridData(
-        $(editorHtml),
-        multiSelection,
-        editorConfiguration.propertyPath,
-        propertyPathPrefix
-      );
-    });
-  } else {
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorDeleteRow'), $(rowItemTemplate))
-      .parent()
-      .off()
-      .empty();
-  }
-
-  if (editorConfiguration.isSortable) {
-    $(editorHtml).get(0).querySelectorAll(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer') + ' tbody').forEach(function (sortableList: HTMLElement) {
-      new Sortable(sortableList, {
-        group: getHelper().getDomElementDataAttributeValue('propertyGridEditorContainer'),
-        handle: getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSortRow'),
-        draggable: getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'),
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        pull: 'clone',
-        swapThreshold: 0.6,
-        dragClass: 'formeditor-sortable-drag',
-        ghostClass: 'formeditor-sortable-ghost',
-        onUpdate: function() {
-          setPropertyGridData(
-            $(editorHtml),
-            multiSelection,
-            editorConfiguration.propertyPath,
-            propertyPathPrefix
-          );
-        }
-      });
-    });
-  } else {
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSortRow'), $(rowItemTemplate))
-      .parent()
-      .off()
-      .empty();
-  }
-
-  $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue'),
-    $(rowItemTemplate)
-  ).on('change', function(this: HTMLElement) {
-    if (!multiSelection) {
-      $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue') + ':checked', $(editorHtml))
-        .not($(this))
-        .prop('checked', false);
-    }
-    setPropertyGridData(
-      $(editorHtml),
-      multiSelection,
-      editorConfiguration.propertyPath,
-      propertyPathPrefix
-    );
-  });
-
-  $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel') + ',' +
-    getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'),
-  $(rowItemTemplate)
-  ).on('keyup paste', function() {
-    setPropertyGridData(
-      $(editorHtml),
-      multiSelection,
-      editorConfiguration.propertyPath,
-      propertyPathPrefix
-    );
-  });
-
-  if (useLabelAsFallbackValue) {
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel'),
-      $(rowItemTemplate)
-    ).on('focusout', function(this: HTMLElement) {
-      if ('' === $(this)
-        .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-        .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-        .val()
-      ) {
-        $(this)
-          .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorRowItem'))
-          .find(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'))
-          .val($(this).val());
-      }
-    });
-  }
-
-  if (editorConfiguration.enableAddRow) {
-    const addRowTemplate = $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'), $(editorHtml)).clone();
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'), $(editorHtml)).remove();
-
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRow'), $(addRowTemplate)).on('click', function(this: HTMLElement) {
-      $(this)
-        .closest(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'))
-        .before($(rowItemTemplate).clone(true, true));
-
-      setPropertyGridData(
-        $(editorHtml),
-        multiSelection,
-        editorConfiguration.propertyPath,
-        propertyPathPrefix
-      );
-    });
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer'), $(editorHtml))
-      .prepend($(addRowTemplate).clone(true, true));
-  } else {
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'), $(editorHtml)).remove();
-  }
-
-  let defaultValue: Record<string, string> = {};
-  if (multiSelection) {
-    if (!getUtility().isUndefinedOrNull(getCurrentlySelectedFormElement().get(propertyPathPrefix + 'defaultValue'))) {
-      defaultValue = getCurrentlySelectedFormElement().get(propertyPathPrefix + 'defaultValue');
-    }
-  } else {
-    if (!getUtility().isUndefinedOrNull(getCurrentlySelectedFormElement().get(propertyPathPrefix + 'defaultValue'))) {
-      defaultValue = { 0: getCurrentlySelectedFormElement().get(propertyPathPrefix + 'defaultValue') };
-    }
-  }
-  const propertyData = getCurrentlySelectedFormElement().get(propertyPathPrefix + editorConfiguration.propertyPath) || {};
-
-  const setData = function(label: string, value: string) {
-    let isPreselected = false;
-    const newRowTemplate = $(rowItemTemplate).clone(true, true);
-
-    for (const defaultValueKey of Object.keys(defaultValue)) {
-      if (defaultValue[defaultValueKey] === value) {
-        isPreselected = true;
-        break;
-      }
     }
 
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorLabel'), $(newRowTemplate)).val(label);
-    $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorValue'), $(newRowTemplate)).val(value);
-
-    if (isPreselected) {
-      $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorSelectValue'), $(newRowTemplate))
-        .prop('checked', true);
-    }
-
-    if (editorConfiguration.enableAddRow) {
-      $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorAddRowItem'), $(editorHtml))
-        .before($(newRowTemplate));
+    if (multiSelection) {
+      getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', defaultValues);
     } else {
-      $(getHelper().getDomElementDataIdentifierSelector('propertyGridEditorContainer'), $(editorHtml))
-        .prepend($(newRowTemplate));
+      getCurrentlySelectedFormElement().set(propertyPathPrefix + 'defaultValue', defaultValues[0] ?? '', true);
     }
-  };
 
-  if ('object' === $.type(propertyData)) {
-    for (const propertyDataKey of Object.keys(propertyData)) {
-      setData(propertyData[propertyDataKey], propertyDataKey);
-    }
-  } else if ('array' === $.type(propertyData)) {
-    for (const propertyDataKey in propertyData) {
-      // eslint-disable-next-line no-prototype-builtins
-      if (!propertyData.hasOwnProperty(propertyDataKey)) {
-        continue;
-      }
-      if (getUtility().isUndefinedOrNull(propertyData[propertyDataKey]._label)) {
-        setData(propertyData[propertyDataKey], propertyDataKey);
-      } else {
-        setData(propertyData[propertyDataKey]._label, propertyData[propertyDataKey]._value);
-      }
-    }
-  }
+    getCurrentlySelectedFormElement().set(propertyPathPrefix + editorConfiguration.propertyPath, newData);
+    validateCollectionElement(propertyPathPrefix + editorConfiguration.propertyPath, editorHtml);
+  });
 
   validateCollectionElement(propertyPathPrefix + editorConfiguration.propertyPath, editorHtml);
 }

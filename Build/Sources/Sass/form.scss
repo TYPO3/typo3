@@ -15,7 +15,7 @@
 :root {
     --formeditor-module-sidebar-collapsed: 33px;
     --formeditor-module-navigation: 300px;
-    --formeditor-module-inspector: 350px;
+    --formeditor-module-inspector: 400px;
     --formeditor-tree-indention: 20px;
     --formeditor-tree-line-height: 32px;
     --formeditor-tree-item-color-state: initial;
@@ -899,4 +899,54 @@
     --formeditor-tree-item-color: var(--typo3-text-color-danger);
     --formeditor-tree-item-hover-color: var(--typo3-text-color-danger);
     --formeditor-tree-item-focus-color: var(--typo3-text-color-danger);
+}
+
+.property-grid-editor {
+    &__entries {
+        display: grid;
+        overflow: hidden;
+        border: var(--typo3-component-border-width) solid var(--typo3-component-border-color);
+        border-radius: var(--typo3-component-border-radius);
+        gap: 1px;
+        background-color: var(--typo3-component-border-color);
+    }
+
+    &__entries + &__actions {
+        margin-top: calc(var(--typo3-spacing) / 2);
+    }
+
+    &__entry {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        background-color: color-mix(in srgb, var(--typo3-component-bg), var(--typo3-component-color) 3%);
+        gap: var(--typo3-spacing);
+        padding: var(--typo3-spacing);
+
+        &:is(.dragging, .moving):after {
+            content: '';
+            display: block;
+            height: calc(100% - 2px);
+            width: calc(100% - 2px);
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            border-radius: calc(var(--typo3-component-border-radius) - var(--typo3-component-border-width));
+            border: 2px dashed var(--typo3-state-primary-border-color);
+        }
+
+        &-inputs {
+            flex: 1;
+
+            div:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        &-buttons {
+            display: flex;
+            gap: .25rem;
+            flex-direction: column;
+        }
+    }
 }
