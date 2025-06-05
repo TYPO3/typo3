@@ -20,7 +20,10 @@
 ,1,89,256,0,0,0,0,0,0,0,"Element #1",,,,,,
 ,2,89,512,0,0,0,0,0,0,0,"Element #2",,,,,,
 ,3,89,768,0,0,0,0,0,0,0,"Element #3",,,,,,
-# @todo: Note these two are *not* discarded when parent is discarded. Probably not intended since they are now orphan?!
+# These two language overlays are not discarded when discarding the group sibling tt_content:299.
+# This is intended since other actions may have created them or other siblings may reference these
+# records and we can not know the difference. They need a dedicated discard even if they have been
+# auto created via localizeReferencesAtParentLocalization by some sibling.
 ,4,89,640,0,1,2,1,1,0,0,"[Translate to Dansk:] Element #2","{""hidden"":""0"",""title"":""Element #2""}",,,,,
 ,5,89,704,0,1,3,1,1,0,0,"[Translate to Dansk:] Element #3","{""hidden"":""0"",""title"":""Element #3""}",,,,,
 "sys_refindex"
