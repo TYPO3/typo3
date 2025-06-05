@@ -88,4 +88,4 @@ Impact
 Labels are now added to the node and their children, significantly
 improving the clarity and accessibility of the tree component.
 
-.. index:: Backend, JavaScript, TSconfig, ext:backend
+.. index:: Backend, JavaScript, TSConfig, ext:backend

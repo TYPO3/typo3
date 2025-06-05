@@ -53,4 +53,4 @@ After:
         color = #ff8700
     }
 
-.. index:: Backend, JavaScript, TSconfig, NotScanned, ext:backend
+.. index:: Backend, JavaScript, TSConfig, NotScanned, ext:backend
