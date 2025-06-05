@@ -817,6 +817,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Database/Schema/ConnectionMigrator.php
 
 		-
+			message: '#^Class TYPO3\\CMS\\Core\\Database\\Schema\\SchemaDiff extends @final class Doctrine\\DBAL\\Schema\\SchemaDiff\.$#'
+			identifier: class.extendsFinalByPhpDoc
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Schema/SchemaDiff.php
+
+		-
 			message: '#^Parameter \#1 \$array \(list\<Doctrine\\DBAL\\Schema\\Column\>\) of array_values is already a list, call has no effect\.$#'
 			identifier: arrayValues.list
 			count: 2
@@ -827,6 +833,12 @@ parameters:
 			identifier: throws.unusedType
 			count: 1
 			path: ../../typo3/sysext/core/Classes/Database/Schema/SqlReader.php
+
+		-
+			message: '#^Class TYPO3\\CMS\\Core\\Database\\Schema\\TableDiff extends @final class Doctrine\\DBAL\\Schema\\TableDiff\.$#'
+			identifier: class.extendsFinalByPhpDoc
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Database/Schema/TableDiff.php
 
 		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Core\\Package\\PackageInterface\:\:getServiceProvider\(\)\.$#'

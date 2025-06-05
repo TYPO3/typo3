@@ -51,7 +51,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class MySQLSchemaManager extends DoctrineMySQLSchemaManager
 {
-    use CustomDoctrineTypesColumnDefinitionTrait;
     use ColumnTypeCommentMethodsTrait;
 
     /** @see https://mariadb.com/kb/en/library/string-literals/#escape-sequences */
@@ -104,8 +103,7 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         /** @var DoctrineMariaDBPlatform|DoctrineMySQLPlatform $platform */
         $platform = $this->platform;
         $tableColumn = $this->normalizeTableColumnData($tableColumn, $platform);
-        return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
-            ?? $this->parentGetPortableTableColumnDefinition($tableColumn);
+        return $this->parentGetPortableTableColumnDefinition($tableColumn);
     }
 
     /**
@@ -120,8 +118,6 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
 
         $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
         $dbType = strtolower($tableColumn['type']);
-        $dbType = strtok($dbType, '(), ');
-        assert(is_string($dbType));
 
         $columnDefault = $tableColumn['default'] ?? null;
         $type = Type::getType($platform->getDoctrineTypeMapping($dbType));
@@ -219,50 +215,28 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
     {
         $tableColumn = array_change_key_case($tableColumn, CASE_LOWER);
 
-        $dbType = strtolower($tableColumn['type']);
-        $dbType = strtok($dbType, '(), ');
-        assert(is_string($dbType));
-
-        $length = $tableColumn['length'] ?? strtok('(), ');
-
-        $fixed = false;
-
-        if (! isset($tableColumn['name'])) {
-            $tableColumn['name'] = '';
-        }
-
+        $dbType    = $tableColumn['type'];
+        $length    = null;
         $scale     = 0;
         $precision = null;
+        $fixed     = false;
+        $values    = [];
 
+        // This is the change required for TYPO3 - rest of method is kept (cloned) from original.
         // Following line differs from \Doctrine\DBAL\Schema\MySQLSchemaManager::_getPortableTableColumnDefinition,
         // taken from:
         // - https://github.com/doctrine/dbal/blob/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba/src/Schema/MySQLSchemaManager.php#L186-L192
-        // - https://github.com/doctrine/dbal/blob/61446f07fcb522414d6cfd8b1c3e5f9e18c579ba/src/Schema/PostgreSQLSchemaManager.php#L427-L429
         $type = $this->determineColumnType($dbType, $tableColumn);
 
         switch ($dbType) {
             case 'char':
-            case 'binary':
-                $fixed = true;
+            case 'varchar':
+                $length = $tableColumn['character_maximum_length'];
                 break;
 
-            case 'float':
-            case 'double':
-            case 'real':
-            case 'numeric':
-            case 'decimal':
-                if (
-                    preg_match(
-                        '([A-Za-z]+\(([0-9]+),([0-9]+)\))',
-                        $tableColumn['type'],
-                        $match,
-                    ) === 1
-                ) {
-                    $precision = (int)$match[1];
-                    $scale     = (int)$match[2];
-                    $length    = null;
-                }
-
+            case 'binary':
+            case 'varbinary':
+                $length = $tableColumn['character_octet_length'];
                 break;
 
             case 'tinytext':
@@ -289,15 +263,34 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
                 $length = AbstractMySQLPlatform::LENGTH_LIMIT_MEDIUMBLOB;
                 break;
 
-            case 'tinyint':
-            case 'smallint':
-            case 'mediumint':
-            case 'int':
-            case 'integer':
-            case 'bigint':
-            case 'year':
-                $length = null;
+            case 'float':
+            case 'double':
+            case 'real':
+            case 'numeric':
+            case 'decimal':
+                $precision = $tableColumn['numeric_precision'];
+                if (isset($tableColumn['numeric_scale'])) {
+                    $scale = $tableColumn['numeric_scale'];
+                }
                 break;
+        }
+
+        switch ($dbType) {
+            case 'char':
+            case 'binary':
+                $fixed = true;
+                break;
+
+            case 'enum':
+                $values = $this->parseEnumExpression($tableColumn['column_type']);
+                break;
+
+            case 'set':
+                // --------------------------------------------------------------
+                // `SET` handling and parsing is a custom TYPO3 implementation
+                // --------------------------------------------------------------
+                $values = $this->parseSetExpression($tableColumn['column_type']);
+                // --------------------------------------------------------------
         }
 
         if ($this->platform instanceof MariaDBPlatform) {
@@ -307,14 +300,15 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         }
 
         $options = [
-            'length'        => $length !== null ? (int)$length : null,
-            'unsigned'      => str_contains($tableColumn['type'], 'unsigned'),
+            'length'        => $length,
+            'unsigned'      => str_contains($tableColumn['column_type'], 'unsigned'),
             'fixed'         => $fixed,
             'default'       => $columnDefault,
             'notnull'       => $tableColumn['null'] !== 'YES',
             'scale'         => $scale,
             'precision'     => $precision,
             'autoincrement' => str_contains($tableColumn['extra'], 'auto_increment'),
+            'values'        => $values,
         ];
 
         if (isset($tableColumn['comment'])) {
@@ -322,14 +316,8 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
         }
 
         $column = new Column($tableColumn['field'], Type::getType($type), $options);
-
-        if (isset($tableColumn['characterset'])) {
-            $column->setPlatformOption('charset', $tableColumn['characterset']);
-        }
-
-        if (isset($tableColumn['collation'])) {
-            $column->setPlatformOption('collation', $tableColumn['collation']);
-        }
+        $column->setPlatformOption('charset', $tableColumn['characterset']);
+        $column->setPlatformOption('collation', $tableColumn['collation']);
 
         return $column;
     }
@@ -368,5 +356,37 @@ class MySQLSchemaManager extends DoctrineMySQLSchemaManager
             'curtime()' => $platform->getCurrentTimeSQL(),
             default => $columnDefault,
         };
+    }
+
+    /**
+     * Cloned from {@see DoctrineMySQLSchemaManager::parseEnumExpression()} (4.3.x).
+     *
+     * @return list<string>
+     */
+    private function parseEnumExpression(string $expression): array
+    {
+        $result = preg_match_all("/'([^']*(?:''[^']*)*)'/", $expression, $matches);
+        assert($result !== false);
+
+        return array_map(
+            static fn(string $match): string => strtr($match, ["''" => "'"]),
+            $matches[1],
+        );
+    }
+
+    /**
+     * Adopted from {@see DoctrineMySQLSchemaManager::parseEnumExpression()} (4.3.x).
+     *
+     * @return list<string>
+     */
+    private function parseSetExpression(string $expression): array
+    {
+        $result = preg_match_all("/'([^']*(?:''[^']*)*)'/", $expression, $matches);
+        assert($result !== false);
+
+        return array_map(
+            static fn(string $match): string => strtr($match, ["''" => "'"]),
+            $matches[1],
+        );
     }
 }

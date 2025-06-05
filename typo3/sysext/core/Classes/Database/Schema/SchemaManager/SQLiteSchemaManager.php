@@ -17,7 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database\Schema\SchemaManager;
 
-use Doctrine\DBAL\Platforms\SQLitePlatform as DoctrineSQLitePlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\SQLiteSchemaManager as DoctrineSQLiteSchemaManager;
 use Doctrine\DBAL\Types\Type;
@@ -40,7 +39,6 @@ use Doctrine\DBAL\Types\Type;
  */
 class SQLiteSchemaManager extends DoctrineSQLiteSchemaManager
 {
-    use CustomDoctrineTypesColumnDefinitionTrait;
     use ColumnTypeCommentMethodsTrait;
 
     /**
@@ -76,9 +74,6 @@ class SQLiteSchemaManager extends DoctrineSQLiteSchemaManager
      */
     protected function _getPortableTableColumnDefinition(array $tableColumn): Column
     {
-        /** @var DoctrineSQLitePlatform $platform */
-        $platform = $this->platform;
-        return $this->processCustomDoctrineTypesColumnDefinition($tableColumn, $platform)
-            ?? parent::_getPortableTableColumnDefinition($tableColumn);
+        return parent::_getPortableTableColumnDefinition($tableColumn);
     }
 }
