@@ -190,10 +190,10 @@
                 <field index="sha1">e873c1e2ffd0f191e183a1057de3eef4d62e782d</field>
                 <field index="creation_date">1393346082</field>
                 <field index="modification_date">1392907534</field>
+                <field index="size">5565</field>
                 <field index="storage">1</field>
                 <field index="type">2</field>
                 <field index="mime_type">image/jpeg</field>
-                <field index="size">5565</field>
                 <field index="metadata">0</field>
             </fieldlist>
             <related index="rels" type="array">
