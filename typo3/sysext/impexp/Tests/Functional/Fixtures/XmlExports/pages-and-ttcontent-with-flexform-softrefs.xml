@@ -195,10 +195,10 @@
                 <field index="sha1">4acd754cee5861bb543870fae76df5d35c0a0e5b</field>
                 <field index="creation_date">1628060459</field>
                 <field index="modification_date">1628060459</field>
+                <field index="size">501</field>
                 <field index="storage">1</field>
                 <field index="type">5</field>
                 <field index="mime_type">application/yaml</field>
-                <field index="size">501</field>
                 <field index="metadata">0</field>
             </fieldlist>
             <related index="rels" type="array">

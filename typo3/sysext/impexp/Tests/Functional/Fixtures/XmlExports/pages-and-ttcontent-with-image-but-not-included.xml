@@ -303,10 +303,10 @@
                 <field index="sha1">da9acdf1e105784a57bbffec9520969578287797</field>
                 <field index="creation_date">1389878273</field>
                 <field index="modification_date">1389878273</field>
+                <field index="size">7958</field>
                 <field index="storage">1</field>
                 <field index="type">2</field>
                 <field index="mime_type">image/jpeg</field>
-                <field index="size">7958</field>
                 <field index="metadata">0</field>
             </fieldlist>
             <related index="rels" type="array">
