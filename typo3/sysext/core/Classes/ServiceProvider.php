@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core;
 
 use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Command\DumpCompletionCommand as SymfonyDumpCompletionCommand;
 use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Yaml\Command\LintCommand as SymfonyLintCommand;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface as SymfonyEventDispatcherInterface;
@@ -60,6 +61,7 @@ class ServiceProvider extends AbstractServiceProvider
         return [
             SymfonyEventDispatcher::class => self::getSymfonyEventDispatcher(...),
             SymfonyLintCommand::class => self::getSymfonyLintCommand(...),
+            SymfonyDumpCompletionCommand::class => self::getSymfonyDumpCompletionCommand(...),
             Cache\CacheManager::class => self::getCacheManager(...),
             Database\ConnectionPool::class => self::getConnectionPool(...),
             Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
@@ -234,6 +236,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getSymfonyLintCommand(ContainerInterface $container): SymfonyLintCommand
     {
         return new SymfonyLintCommand();
+    }
+
+    public static function getSymfonyDumpCompletionCommand(ContainerInterface $container): SymfonyDumpCompletionCommand
+    {
+        return new SymfonyDumpCompletionCommand();
     }
 
     public static function getCacheFlushCommand(ContainerInterface $container): Command\CacheFlushCommand
@@ -690,6 +697,7 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand('extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');
 
         $commandRegistry->addLazyCommand('lint:yaml', SymfonyLintCommand::class, 'Lint yaml files.');
+        $commandRegistry->addLazyCommand('completion', SymfonyDumpCompletionCommand::class, 'Dump the shell completion script');
 
         return $commandRegistry;
     }
