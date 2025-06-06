@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Schema;
 
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\Exception\InvalidSchemaTypeException;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedFieldException;
 use TYPO3\CMS\Core\Schema\Exception\UndefinedSchemaException;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
@@ -253,6 +254,42 @@ readonly class TcaSchema implements SchemaInterface
     public function getSubSchemata(): SchemaCollection
     {
         return $this->subSchemata ?? new SchemaCollection([]);
+    }
+
+    public function supportsSubSchema(): bool
+    {
+        return isset($this->schemaConfiguration['type']);
+    }
+
+    public function getSubSchemaTypeInformation(): SchemaTypeInformation
+    {
+        $typeInformation = $this->schemaConfiguration['type'] ?? null;
+        if ($typeInformation === null) {
+            throw new InvalidSchemaTypeException('The schema "' . $this->name . '" has no type information.', 1749241443);
+        }
+        if (str_contains($typeInformation, ':')) {
+            [$localField, $foreignField] = explode(':', $typeInformation, 2);
+            if (!$this->fields->offsetExists($localField) || $this->fields[$localField] instanceof RelationalFieldTypeInterface === false) {
+                throw new InvalidSchemaTypeException('The schema "' . $this->name . '" defines a foreign field type "' . $typeInformation . '" but there is either no such local field "' . $localField . '" or the field is no relational field.', 1749241444);
+            }
+            $activeRelation = $this->fields[$localField]->getRelations()[0] ?? null;
+            if ($activeRelation instanceof ActiveRelation === false || $activeRelation->toTable() === '') {
+                throw new InvalidSchemaTypeException('The schema "' . $this->name . '" defines a foreign field type "' . $typeInformation . '" but the local field "' . $localField . '" does not provide a valid realtion.', 1749241445);
+            }
+            return new SchemaTypeInformation(
+                $this->getName(),
+                $localField,
+                $foreignField,
+                $activeRelation->toTable()
+            );
+        }
+        if (!$this->fields->offsetExists($typeInformation)) {
+            throw new InvalidSchemaTypeException('The schema "' . $this->name . '" defines a field type "' . $typeInformation . '" but there is no such field.', 1749241446);
+        }
+        return new SchemaTypeInformation(
+            $this->getName(),
+            $typeInformation,
+        );
     }
 
     public function getSubSchemaDivisorField(): ?FieldTypeInterface
