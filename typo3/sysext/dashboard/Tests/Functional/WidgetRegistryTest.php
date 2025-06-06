@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Dashboard\Tests\Functional;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfiguration;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
@@ -41,8 +42,7 @@ final class WidgetRegistryTest extends FunctionalTestCase
     {
         /** @var Container $container */
         $container = $this->get('service_container');
-
-        $this->subject = new WidgetRegistry($container);
+        $this->subject = new WidgetRegistry($container, $this->get(WidgetSettingsFactory::class));
 
         $widgetsToRegister = [
             [
@@ -97,7 +97,8 @@ final class WidgetRegistryTest extends FunctionalTestCase
     #[Test]
     public function initiallyZeroWidgetAreRegistered(): void
     {
-        $subject = new WidgetRegistry($this->getContainer());
+        $subject = new WidgetRegistry($this->getContainer(), $this->get(WidgetSettingsFactory::class));
+
         self::assertCount(0, $subject->getAllWidgets());
     }
 

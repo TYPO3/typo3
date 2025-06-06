@@ -6,6 +6,9 @@
 			<trans-unit id="sys_note">
 				<source>Internal note</source>
 			</trans-unit>
+			<trans-unit id="sys_note.category.I.0">
+				<source>Default</source>
+			</trans-unit>
 			<trans-unit id="sys_note.category.I.1">
 				<source>Instructions</source>
 			</trans-unit>

@@ -20,19 +20,21 @@ namespace TYPO3\CMS\Dashboard\Controller;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Attribute\AsController;
+use TYPO3\CMS\Backend\Dto\Settings\EditableSetting;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Settings\Category;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
+use TYPO3\CMS\Core\Settings\SettingsDiff;
+use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 use TYPO3\CMS\Dashboard\DashboardPreset;
 use TYPO3\CMS\Dashboard\DashboardPresetRegistry;
-use TYPO3\CMS\Dashboard\DashboardRepository;
-use TYPO3\CMS\Dashboard\Dto\Dashboard as TransferDashboard;
-use TYPO3\CMS\Dashboard\Dto\WidgetConfiguration as TransferWidgetConfiguration;
-use TYPO3\CMS\Dashboard\Dto\WidgetData as TransferWidgetData;
+use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
+use TYPO3\CMS\Dashboard\Repository\DashboardRepository;
 use TYPO3\CMS\Dashboard\WidgetGroupInitializationService;
 use TYPO3\CMS\Dashboard\WidgetRegistry;
-use TYPO3\CMS\Dashboard\Widgets\EventDataInterface;
 
 /**
  * @internal
@@ -45,6 +47,8 @@ class DashboardAjaxController
         protected readonly DashboardPresetRegistry $dashboardPresetRegistry,
         protected readonly WidgetRegistry $widgetRegistry,
         protected readonly WidgetGroupInitializationService $widgetGroupInitializationService,
+        protected readonly WidgetSettingsFactory $widgetSettingsFactory,
+        protected readonly SettingsTypeRegistry $settingsTypeRegistry,
         protected readonly UriBuilder $uriBuilder,
     ) {}
 
@@ -54,21 +58,7 @@ class DashboardAjaxController
         $dashboards = [];
         foreach ($availableDashboards as $dashboard) {
             $dashboard->initializeWidgets($request);
-            $widgets = [];
-            foreach ($dashboard->getWidgets() as $widgetKey => $widgetConfiguration) {
-                $widgets[] = new TransferWidgetConfiguration(
-                    identifier: $widgetKey,
-                    type: $widgetConfiguration->getIdentifier(),
-                    height: $widgetConfiguration->getHeight(),
-                    width: $widgetConfiguration->getWidth(),
-                );
-            }
-            $dashboards[] = new TransferDashboard(
-                identifier: $dashboard->getIdentifier(),
-                title: $dashboard->getTitle(),
-                widgets: $widgets,
-                widgetPositions: $dashboard->getWidgetPositions(),
-            );
+            $dashboards[] = $dashboard->getTransferData();
         }
 
         return new JsonResponse($dashboards);
@@ -92,25 +82,10 @@ class DashboardAjaxController
         );
 
         $dashboardEntity->initializeWidgets($request);
-        $widgets = [];
-        foreach ($dashboardEntity->getWidgets() as $widgetKey => $widgetConfiguration) {
-            $widgets[] = new TransferWidgetConfiguration(
-                identifier: $widgetKey,
-                type: $widgetConfiguration->getIdentifier(),
-                height: $widgetConfiguration->getHeight(),
-                width: $widgetConfiguration->getWidth(),
-            );
-        }
-        $dashboard = new TransferDashboard(
-            identifier: $dashboardEntity->getIdentifier(),
-            title: $dashboardEntity->getTitle(),
-            widgets: $widgets,
-            widgetPositions: $dashboardEntity->getWidgetPositions(),
-        );
 
         return new JsonResponse([
             'status' => 'ok',
-            'dashboard' => $dashboard,
+            'dashboard' => $dashboardEntity->getTransferData(),
         ]);
     }
 
@@ -137,25 +112,10 @@ class DashboardAjaxController
         // Fetch updated Dashboard
         $dashboardEntity = $this->dashboardRepository->getDashboardByIdentifier($dashboardIdentifier);
         $dashboardEntity->initializeWidgets($request);
-        $widgets = [];
-        foreach ($dashboardEntity->getWidgets() as $widgetKey => $widgetConfiguration) {
-            $widgets[] = new TransferWidgetConfiguration(
-                identifier: $widgetKey,
-                type: $widgetConfiguration->getIdentifier(),
-                height: $widgetConfiguration->getHeight(),
-                width: $widgetConfiguration->getWidth(),
-            );
-        }
-        $dashboard = new TransferDashboard(
-            identifier: $dashboardEntity->getIdentifier(),
-            title: $dashboardEntity->getTitle(),
-            widgets: $widgets,
-            widgetPositions: $dashboardEntity->getWidgetPositions(),
-        );
 
         return new JsonResponse([
             'status' => 'ok',
-            'dashboard' => $dashboard,
+            'dashboard' => $dashboardEntity->getTransferData(),
         ]);
     }
 
@@ -175,8 +135,12 @@ class DashboardAjaxController
         $widgets = $request->getParsedBody()['widgets'] ?? [];
         $data = [];
         foreach ($widgets as $widget) {
-            $data[$widget['identifier']] = ['identifier' => $widget['type']];
+            $data[$widget['identifier']] = [
+                'identifier' => $widget['type'],
+            ];
         }
+
+        // positions
         $widgetPositions = $request->getParsedBody()['widgetPositions'] ?? [];
         foreach ($widgetPositions as $columnCount => $widgets) {
             foreach ($widgets as $widget) {
@@ -191,30 +155,25 @@ class DashboardAjaxController
                 $data[$identifier]['positions'][$columnCount] = array_map('intval', $widget);
             }
         }
+
+        // settings
+        $dashboardEntity->initializeWidgets($request);
+        foreach ($widgets as $widget) {
+            $dashboardWidget = $dashboardEntity->getWidget($widget['identifier']);
+            if ($dashboardWidget) {
+                $data[$widget['identifier']]['settings'] = $dashboardWidget->getRawConfig()['settings'] ?? [];
+            }
+        }
+
         $this->dashboardRepository->updateWidgetConfig($dashboardEntity, $data);
 
         // Fetch updated Dashboard
         $dashboardEntity = $this->dashboardRepository->getDashboardByIdentifier($dashboardIdentifier);
         $dashboardEntity->initializeWidgets($request);
-        $widgets = [];
-        foreach ($dashboardEntity->getWidgets() as $widgetKey => $widgetConfiguration) {
-            $widgets[] = new TransferWidgetConfiguration(
-                identifier: $widgetKey,
-                type: $widgetConfiguration->getIdentifier(),
-                height: $widgetConfiguration->getHeight(),
-                width: $widgetConfiguration->getWidth(),
-            );
-        }
-        $dashboard = new TransferDashboard(
-            identifier: $dashboardEntity->getIdentifier(),
-            title: $dashboardEntity->getTitle(),
-            widgets: $widgets,
-            widgetPositions: $dashboardEntity->getWidgetPositions(),
-        );
 
         return new JsonResponse([
             'status' => 'ok',
-            'dashboard' => $dashboard,
+            'dashboard' => $dashboardEntity->getTransferData(),
         ]);
     }
 
@@ -257,41 +216,147 @@ class DashboardAjaxController
 
         foreach ($availableDashboards as $dashboard) {
             $dashboard->initializeWidgets($request);
-            foreach ($dashboard->getWidgets() as $key => $value) {
-                $widgets[$key] = $value;
+            foreach ($dashboard->getWidgets() as $dashboardEntry) {
+                $widgets[$dashboardEntry->getIdentifier()] = $dashboardEntry;
             }
         }
 
-        $widgetObject = $widgets[$widgetIdentifier] ?? null;
-        if ($widgetObject === null) {
+        $dashboardWidget = $widgets[$widgetIdentifier] ?? null;
+        if ($dashboardWidget === null) {
             return new JsonResponse([
                 'status' => 'error',
-                'message' => 'Widget is not available!',
+                'message' => 'Widget does not exist!',
             ]);
         }
-        try {
-            $renderWidget = $this->widgetRegistry->getAvailableWidget($request, $widgetObject->getIdentifier());
-        } catch (\InvalidArgumentException $e) {
-            return new JsonResponse([
-                'status' => 'error',
-                'message' => 'Widget is not available!',
-            ]);
-        }
-
-        $widget = new TransferWidgetData(
-            identifier: $widgetIdentifier,
-            type: $widgetObject->getIdentifier(),
-            height: $widgetObject->getHeight(),
-            width: $widgetObject->getWidth(),
-            label: $this->getLanguageService()->sL($widgetObject->getTitle()),
-            content: $renderWidget->renderWidgetContent(),
-            options: $renderWidget->getOptions(),
-            eventdata: ($renderWidget instanceof EventDataInterface) ? $renderWidget->getEventData() : [],
-        );
 
         return new JsonResponse([
             'status' => 'ok',
-            'widget' => $widget->jsonSerialize(),
+            'widget' => $dashboardWidget->getTransferWidgetData()->jsonSerialize(),
+        ]);
+    }
+
+    public function getWidgetSettings(ServerRequestInterface $request): ResponseInterface
+    {
+        $widgetIdentifier = (string)($request->getQueryParams()['widget'] ?? '');
+        $availableDashboards = $this->dashboardRepository->getDashboardsForUser($this->getBackendUser()->getUserId());
+        $widgets = [];
+
+        foreach ($availableDashboards as $dashboard) {
+            $dashboard->initializeWidgets($request);
+            foreach ($dashboard->getWidgets() as $dashboardEntry) {
+                $widgets[$dashboardEntry->getIdentifier()] = $dashboardEntry;
+            }
+        }
+
+        $dashboardWidget = $widgets[$widgetIdentifier] ?? null;
+        if ($dashboardWidget === null) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => 'Widget does not exist!',
+            ]);
+        }
+
+        $categories = [
+            new Category(
+                key: $dashboardWidget->getType(),
+                label: $this->getLanguageService()->sl($dashboardWidget->getTitle()),
+                description: $this->getLanguageService()->sl($dashboardWidget->getDescription()),
+                icon: $dashboardWidget->getIconIdentifier(),
+                settings: array_map(
+                    fn(SettingDefinition $definition): EditableSetting => new EditableSetting(
+                        definition: $this->resolveSettingLabels($definition),
+                        value: $dashboardWidget->getSettings()->get($definition->key),
+                        systemDefault: $definition->default,
+                        typeImplementation: $this->settingsTypeRegistry->get($definition->type)->getJavaScriptModule(),
+                    ),
+                    array_values(array_filter($dashboardWidget->getSettingsDefinitions(), fn(SettingDefinition $settingDefinition) => !$settingDefinition->readonly))
+                ),
+            ),
+        ];
+
+        return new JsonResponse([
+            'status' => 'ok',
+            'categories' => json_encode($categories),
+        ]);
+    }
+
+    public function updateWidgetSettings(ServerRequestInterface $request): ResponseInterface
+    {
+        // Check if identifier is available
+        $widgetIdentifier = trim((string)($request->getParsedBody()['widget'] ?? ''));
+        if ($widgetIdentifier === '') {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => 'Widget is not available!',
+            ]);
+        }
+
+        // Check for widget
+        $availableDashboards = $this->dashboardRepository->getDashboardsForUser($this->getBackendUser()->getUserId());
+        $targetDashboard = null;
+        $targetWidget = null;
+        foreach ($availableDashboards as $dashboard) {
+            $dashboard->initializeWidgets($request);
+            if ($dashboard->getWidget($widgetIdentifier)) {
+                $targetDashboard = $dashboard;
+                $targetWidget = $dashboard->getWidget($widgetIdentifier);
+                break;
+            }
+        }
+
+        if ($targetWidget === null) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => 'Widget does not exist!',
+            ]);
+        }
+        if ($targetDashboard === null) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => 'Dashboard does not exist!',
+            ]);
+        }
+
+        $rawSettings = $request->getParsedBody()['settings'] ?? [];
+        $widgetData = [];
+        foreach ($targetDashboard->getWidgets() as $widget) {
+            $widgetData[$widget->getIdentifier()] = $widget->getRawConfig();
+            if ($targetWidget->getIdentifier() === $widget->getIdentifier()) {
+
+                $currentSettings = $widget->getRawConfig()['settings'] ?? [];
+                $newSettings = $this->widgetSettingsFactory->createSettingsFromFormData($rawSettings, $widget->getSettingsDefinitions());
+                $defaultSettings = $this->widgetSettingsFactory->createSettings($widget->getType(), [], $widget->getSettingsDefinitions());
+                $diff = SettingsDiff::create(
+                    $currentSettings,
+                    $newSettings,
+                    $defaultSettings,
+                );
+                if ($diff->changes === [] && $diff->deletions === []) {
+                    return new JsonResponse([
+                        'status' => 'info',
+                        'message' => $this->getLanguageService()->sL('LLL:EXT:dashboard/Resources/Private/Language/locallang.xlf:widget.settings.unchanged'),
+                    ]);
+                }
+                $widgetData[$widget->getIdentifier()]['settings'] = $diff->settings;
+            }
+        }
+
+        $this->dashboardRepository->updateWidgetConfig($targetDashboard, $widgetData);
+
+        // Fetch updated Dashboard
+        $dashboardEntity = $this->dashboardRepository->getDashboardByIdentifier($targetDashboard->getIdentifier());
+        $dashboardEntity->initializeWidgets($request);
+
+        $returnWidget = $dashboardEntity->getWidget($targetWidget->getIdentifier());
+        if ($returnWidget === null) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => 'Widget does not exist!',
+            ]);
+        }
+
+        return new JsonResponse([
+            'status' => 'ok',
         ]);
     }
 
@@ -322,40 +387,21 @@ class DashboardAjaxController
         $dashboard->initializeWidgets($request);
 
         $widgets = [];
-        foreach ($dashboard->getWidgets() as $key => $value) {
-            $widgets[$key] = $value;
+        foreach ($dashboard->getWidgets() as $dashboardEntry) {
+            $widgets[$dashboardEntry->getIdentifier()] = $dashboardEntry;
         }
 
-        $widgetObject = $widgets[$widgetIdentifier] ?? null;
-        if ($widgetObject === null) {
+        $dashboardWidget = $widgets[$widgetIdentifier] ?? null;
+        if ($dashboardWidget === null) {
             return new JsonResponse([
                 'status' => 'error',
                 'message' => 'Widget is not available!',
             ]);
         }
-        try {
-            $renderWidget = $this->widgetRegistry->getAvailableWidget($request, $widgetObject->getIdentifier());
-        } catch (\InvalidArgumentException $e) {
-            return new JsonResponse([
-                'status' => 'error',
-                'message' => 'Widget is not available!',
-            ]);
-        }
-
-        $widget = new TransferWidgetData(
-            identifier: $widgetIdentifier,
-            type: $widgetObject->getIdentifier(),
-            height: $widgetObject->getHeight(),
-            width: $widgetObject->getWidth(),
-            label: $this->getLanguageService()->sL($widgetObject->getTitle()),
-            content: $renderWidget->renderWidgetContent(),
-            options: $renderWidget->getOptions(),
-            eventdata: ($renderWidget instanceof EventDataInterface) ? $renderWidget->getEventData() : [],
-        );
 
         return new JsonResponse([
             'status' => 'ok',
-            'widget' => $widget->jsonSerialize(),
+            'widget' => $dashboardWidget->getTransferWidgetData()->jsonSerialize(),
         ]);
     }
 
@@ -386,6 +432,17 @@ class DashboardAjaxController
 
         return new JsonResponse([
             'status' => 'ok',
+        ]);
+    }
+
+    private function resolveSettingLabels(SettingDefinition $definition): SettingDefinition
+    {
+        $languageService = $this->getLanguageService();
+        return new SettingDefinition(...[
+            ...get_object_vars($definition),
+            'label' => $languageService->sL($definition->label),
+            'description' => $definition->description !== null ? $languageService->sL($definition->description) : null,
+            'enum' => array_map(static fn(string $label): string => $languageService->sL($label), $definition->enum),
         ]);
     }
 

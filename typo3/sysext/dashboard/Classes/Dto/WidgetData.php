@@ -29,8 +29,9 @@ final readonly class WidgetData implements \JsonSerializable
         private string $width,
         private string $label,
         private string $content,
-        private array $options,
         private array $eventdata,
+        private bool $refreshable,
+        private bool $configurable,
     ) {}
 
     public function jsonSerialize(): array
@@ -42,8 +43,9 @@ final readonly class WidgetData implements \JsonSerializable
             'width' => $this->width,
             'label' => $this->label,
             'content' => $this->content,
-            'options' => $this->options,
             'eventdata' => $this->eventdata,
+            'refreshable' => $this->refreshable,
+            'configurable' => $this->configurable,
         ];
     }
 }

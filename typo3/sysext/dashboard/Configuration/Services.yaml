@@ -55,6 +55,18 @@ services:
       $link: 'https://docs.typo3.org/m/typo3/reference-tsconfig/main/en-us/Index.html'
       $target: '_blank'
 
+  dashboard.widget.rss:
+    class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
+    tags:
+      - name: dashboard.widget
+        identifier: 'rss'
+        groupNames: 'news'
+        title: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.title'
+        description: 'LLL:EXT:dashboard/Resources/Private/Language/locallang_widget_rss.xlf:widget.rss.description'
+        iconIdentifier: 'content-widget-rss'
+        height: 'large'
+        width: 'medium'
+
   dashboard.widget.t3news:
     class: 'TYPO3\CMS\Dashboard\Widgets\RssWidget'
     arguments:

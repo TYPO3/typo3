@@ -24,7 +24,7 @@ return [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
                 'items' => [
-                    ['label' => '', 'value' => '0', 'icon' => 'sysnote-type-0'],
+                    ['label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.0', 'value' => '0', 'icon' => 'sysnote-type-0'],
                     ['label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1', 'value' => '1', 'icon' => 'sysnote-type-1'],
                     ['label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.3', 'value' => '3', 'icon' => 'sysnote-type-3'],
                     ['label' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4', 'value' => '4', 'icon' => 'sysnote-type-4'],

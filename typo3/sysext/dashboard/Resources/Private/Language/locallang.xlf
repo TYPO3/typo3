@@ -27,16 +27,28 @@
 			<trans-unit id="widget.add.button.ok" xml:space="preserve">
 				<source>Add widget</source>
 			</trans-unit>
-			<trans-unit id="widget.refresh" resname="widget.refresh" xml:space="preserve">
+			<trans-unit id="widget.refresh" xml:space="preserve">
 				<source>Refresh Widget</source>
 			</trans-unit>
-			<trans-unit id="widget.move" resname="widget.move" xml:space="preserve">
+			<trans-unit id="widget.settings" xml:space="preserve">
+				<source>Widget Settings</source>
+			</trans-unit>
+			<trans-unit id="widget.settings.button.close" xml:space="preserve">
+				<source>Close</source>
+			</trans-unit>
+			<trans-unit id="widget.settings.button.save" xml:space="preserve">
+				<source>Save</source>
+			</trans-unit>
+			<trans-unit id="widget.settings.unchanged" xml:space="preserve">
+				<source>Settings unchanged</source>
+			</trans-unit>
+			<trans-unit id="widget.move" xml:space="preserve">
 				<source>Move Widget</source>
 			</trans-unit>
-			<trans-unit id="widget.remove" resname="widget.remove" xml:space="preserve">
+			<trans-unit id="widget.remove" xml:space="preserve">
 				<source>Remove Widget</source>
 			</trans-unit>
-			<trans-unit id="widget.remove.button.close" resname="widget.remove.button.close" xml:space="preserve">
+			<trans-unit id="widget.remove.button.close" xml:space="preserve">
 				<source>Close</source>
 			</trans-unit>
 			<trans-unit id="widget.remove.button.ok" xml:space="preserve">

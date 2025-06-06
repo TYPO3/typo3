@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+	<file source-language="en" datatype="plaintext" original="messages" date="2018-11-27T22:26:21Z" product-name="dashboard">
+		<header/>
+		<body>
+
+			<trans-unit id="widget.rss.title" xml:space="preserve">
+				<source>RSS Feed</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.description" xml:space="preserve">
+				<source>Displays the latest entries from a customizable RSS feed.</source>
+			</trans-unit>
+
+			<trans-unit id="widget.rss.setting.label.label" xml:space="preserve">
+				<source>Label</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.setting.label.description" xml:space="preserve">
+				<source>Defines the label of the widget.</source>
+			</trans-unit>
+
+			<trans-unit id="widget.rss.setting.fieldUrl.label" xml:space="preserve">
+				<source>RSS Feed</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.setting.fieldUrl.description" xml:space="preserve">
+				<source>Defines the URL or file providing the RSS Feed. This is read by the widget in order to fetch entries to show.</source>
+			</trans-unit>
+
+			<trans-unit id="widget.rss.setting.limit.label" xml:space="preserve">
+				<source>Limit</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.setting.limit.description" xml:space="preserve">
+				<source>Defines how many RSS items should be shown.</source>
+			</trans-unit>
+
+			<trans-unit id="widget.rss.setting.lifetime.label" xml:space="preserve">
+				<source>Lifetime</source>
+			</trans-unit>
+			<trans-unit id="widget.rss.setting.lifetime.description" xml:space="preserve">
+				<source>Defines how long to wait, in seconds, until fetching RSS Feed again.</source>
+			</trans-unit>
+
+		</body>
+	</file>
+</xliff>

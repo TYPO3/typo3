@@ -17,19 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\SysNote\Widgets;
 
-use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\View\BackendViewFactory;
-use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Dashboard\Widgets\AdditionalCssInterface;
-use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Settings\SettingDefinition;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
-use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetContext;
+use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetResult;
 use TYPO3\CMS\SysNote\Domain\Repository\SysNoteRepository;
 
-class PagesWithInternalNote implements WidgetInterface, AdditionalCssInterface, RequestAwareWidgetInterface
+class PagesWithInternalNote implements WidgetRendererInterface
 {
-    private ServerRequestInterface $request;
-
     public function __construct(
         private readonly WidgetConfigurationInterface $configuration,
         private readonly SysNoteRepository $sysNoteRepository,
@@ -37,16 +35,36 @@ class PagesWithInternalNote implements WidgetInterface, AdditionalCssInterface, 
         private readonly array $options = []
     ) {}
 
-    public function setRequest(ServerRequestInterface $request): void
+    /**
+     * @return SettingDefinition[]
+     */
+    public function getSettingsDefinitions(): array
     {
-        $this->request = $request;
+        return [
+            new SettingDefinition(
+                key: 'category',
+                type: 'string',
+                default: (string)($this->options['category'] ?? ''),
+                label: 'LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.setting.category.label',
+                description: 'LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.setting.category.description',
+                enum: [
+                    '' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.setting.category.label.all',
+                    '0' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.0',
+                    '1' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.1',
+                    '2' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.2',
+                    '3' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.3',
+                    '4' => 'LLL:EXT:sys_note/Resources/Private/Language/locallang_tca.xlf:sys_note.category.I.4',
+                ],
+                readonly: array_key_exists('category', $this->options),
+            ),
+        ];
     }
 
-    public function renderWidgetContent(): string
+    public function renderWidget(WidgetContext $context): WidgetResult
     {
-        $view = $this->backendViewFactory->create($this->request, ['typo3/cms-dashboard', 'typo3/cms-sys-note']);
+        $view = $this->backendViewFactory->create($context->request, ['typo3/cms-dashboard', 'typo3/cms-sys-note']);
 
-        $category = $this->options['category'] ?? null;
+        $category = $context->settings->get('category') !== '' ? (int)$context->settings->get('category') : null;
         $view->assignMultiple([
             'sysNotes' => $this->sysNoteRepository->findByCategoryRestricted($category),
             'category' => $category,
@@ -54,21 +72,37 @@ class PagesWithInternalNote implements WidgetInterface, AdditionalCssInterface, 
             'dateFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['ddmmyy'],
             'timeFormat' => $GLOBALS['TYPO3_CONF_VARS']['SYS']['hhmm'],
         ]);
-        return $view->render('Widget/PagesWithInternalNote.html');
+
+        return new WidgetResult(
+            label: $this->getWidgetLabel($category),
+            content: $view->render('Widget/PagesWithInternalNote.html'),
+            refreshable: true,
+        );
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    protected function getWidgetLabel(?int $category): string
     {
-        return $GLOBALS['BE_USER'];
+        if ($category === 0) {
+            return $this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.default.title');
+        }
+        if ($category === 1) {
+            return $this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.instructions.title');
+        }
+        if ($category === 2) {
+            return $this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.template.title');
+        }
+        if ($category === 3) {
+            return $this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.notes.title');
+        }
+        if ($category === 4) {
+            return $this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.todo.title');
+        }
+
+        return $this->getLanguageService()->sL('LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.all.title');
     }
 
-    public function getCssFiles(): array
+    protected function getLanguageService(): LanguageService
     {
-        return [];
-    }
-
-    public function getOptions(): array
-    {
-        return $this->options;
+        return $GLOBALS['LANG'];
     }
 }

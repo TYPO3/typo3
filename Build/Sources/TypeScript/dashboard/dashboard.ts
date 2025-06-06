@@ -30,6 +30,7 @@ import { topLevelModuleImport } from '@typo3/backend/utility/top-level-module-im
 import { selector } from '@typo3/core/literals';
 import DomHelper from '@typo3/backend/utility/dom-helper';
 import Notification from '@typo3/backend/notification';
+import { SettingsEditorSubmitEvent } from '@typo3/backend/settings/editor';
 
 enum DashboardWidgetMoveIntend {
   start = 'start',
@@ -89,6 +90,8 @@ interface DashboardWidgetInterface extends DashboardWidgetConfigurationInterface
   content: string,
   options: Record<string, unknown>,
   eventdata: Record<string, unknown>,
+  refreshable: boolean,
+  configurable: boolean,
 }
 
 const newRecordWizardEventName = 'typo3:dashboard:widget:add';
@@ -1283,6 +1286,18 @@ export class DashboardWidget extends LitElement {
       ? unsafeHTML(widget.content)
       : html`<div class="widget-content-main">${lll('widget.error')}</div>`;
 
+    const settingsButton = () => html`
+      <button
+        type="button"
+        title=${lll('widget.settings')}
+        class="widget-action widget-action-settings"
+        @click=${this.editSettings}
+      >
+        <typo3-backend-icon identifier="actions-cog" size="small"></typo3-backend-icon>
+        <span class="visually-hidden">${lll('widget.settings')}</span>
+      </button>
+    `;
+
     const refreshButton = (loading: boolean = false) => html`
       <button
         type="button"
@@ -1299,7 +1314,8 @@ export class DashboardWidget extends LitElement {
       <div class="widget-header">
         <div class="widget-title">${widgetLabel(widget)}</div>
         <div class="widget-actions">
-          ${widget?.options?.refreshAvailable ? refreshButton(loading) : nothing}
+          ${widget?.configurable ? settingsButton() : nothing}
+          ${widget?.refreshable ? refreshButton(loading) : nothing}
           <button
             type="button"
             title=${lll('widget.move')}
@@ -1425,6 +1441,84 @@ export class DashboardWidget extends LitElement {
       this.widget.identifier,
       intend
     ));
+  }
+
+  private async editSettings(): Promise<void> {
+    topLevelModuleImport('@typo3/backend/settings/editor.js');
+
+    const formName = `widget_settings_form_${this.identifier}`;
+    const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_widget_settings_get)
+      .withQueryArguments({ widget: this.widget.identifier })
+      .get({ cache: 'no-cache' });
+    const data = await response.resolve();
+    if (data.status !== 'ok') {
+      throw new Error(data.message);
+    }
+
+    const content = html`
+      <typo3-backend-settings-editor
+        form-name="${formName}"
+        categories="${data.categories}"
+        mode="minimal"
+      >
+      </typo3-backend-settings-editor>
+    `;
+
+    Modal.advanced({
+      type: Modal.types.default,
+      title: lll('widget.settings'),
+      size: Modal.sizes.default,
+      severity: SeverityEnum.notice,
+      content,
+      callback: (currentModal: ModalElement): void => {
+        const settingsEditor = currentModal.querySelector('typo3-backend-settings-editor');
+        settingsEditor.addEventListener(SettingsEditorSubmitEvent.eventName, async (event: SettingsEditorSubmitEvent): Promise<void> => {
+          const { originalEvent, formData } = event;
+          const { settings } = formData;
+          originalEvent.preventDefault();
+          try {
+            const response = await new AjaxRequest(TYPO3.settings.ajaxUrls.dashboard_widget_settings_update)
+              .post({
+                widget: this.widget.identifier,
+                settings,
+              });
+            const data = await response.resolve();
+            if (data.status === 'ok') {
+              this.handleRefresh();
+              currentModal.hideModal();
+            } else if (data.status === 'info') {
+              Notification.info('', data.message);
+            } else {
+              Notification.error('', data.message);
+            }
+          } catch (e: unknown) {
+            if (e instanceof AjaxResponse) {
+              Notification.error('', e.response.status + ' ' + e.response.statusText, 5);
+              console.error(e);
+            } else if (e instanceof Error) {
+              Notification.error('', e.message);
+              console.error(e);
+            } else {
+              throw e;
+            }
+          }
+        });
+      },
+      buttons: [
+        {
+          text: lll('widget.settings.button.close'),
+          btnClass: 'btn-default',
+          name: 'cancel',
+          trigger: (e, modal) => modal.hideModal(),
+        },
+        {
+          text: lll('widget.settings.button.save'),
+          btnClass: 'btn-primary',
+          name: 'save',
+          form: formName
+        },
+      ]
+    });
   }
 
   private handleRefresh(): void {

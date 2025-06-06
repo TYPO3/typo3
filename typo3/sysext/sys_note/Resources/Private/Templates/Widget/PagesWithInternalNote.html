@@ -9,9 +9,12 @@
             <thead>
             <tr>
                 <th>
-                    <f:if condition="{category}"><core:icon identifier="sysnote-type-{category}" /> </f:if><f:translate key="subjectmessage" extensionName="sys_note" />
+                    <f:if condition="{category}"><core:icon identifier="sysnote-type-{category}" /></f:if>
+                    <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.subjectmessage" />
                 </th>
-                <th colspan="2"><f:translate key="created" extensionName="sys_note" /></th>
+                <th colspan="2">
+                    <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.created" />
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -24,12 +27,16 @@
                     <f:defaultCase><f:variable name="rowClass" value="" /></f:defaultCase>
                 </f:switch>
                 <tr class="{rowClass}">
-                    <td><strong><f:format.crop maxCharacters="30">{sysNote.subject}</f:format.crop> ({sysNote.pid})</strong><br /><f:format.crop maxCharacters="50">{sysNote.message}</f:format.crop></td>
+                    <td>
+                        <strong><f:format.crop maxCharacters="30">{sysNote.subject}</f:format.crop> ({sysNote.pid})</strong><br>
+                        <f:format.crop maxCharacters="50">{sysNote.message}</f:format.crop>
+                    </td>
                     <td><f:format.date format="{dateFormat} {timeFormat}">{sysNote.crdate}</f:format.date></td>
                     <td class="text-end">
                         <f:variable name="returnUrl" value="{f:be.uri(route:'dashboard')}" />
                         <f:be.link class="btn btn-default" route="web_layout" parameters="{id: sysNote.pid, returnUrl: returnUrl}">
-                            <core:icon identifier="actions-document-view" size="small" /> <f:translate key="goto_page" extensionName="sys_note"/>
+                            <core:icon identifier="actions-document-view" size="small" />
+                            <f:translate key="LLL:EXT:sys_note/Resources/Private/Language/locallang_widget_pages_with_internal_note.xlf:widget.pagesWithInternalNote.goto_page" />
                         </f:be.link>
                     </td>
                 </tr>
@@ -38,10 +45,5 @@
         </table>
     </div>
 
-</f:section>
-<f:section name="footer">
-    <f:if condition="{button}">
-        <a href="{button.link}" target="{button.target}" class="widget-cta">{f:translate(id: button.title, default: button.title)}</a>
-    </f:if>
 </f:section>
 </html>

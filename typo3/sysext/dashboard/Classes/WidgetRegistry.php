@@ -22,9 +22,11 @@ use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Utility\ArrayUtility;
+use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
 use TYPO3\CMS\Dashboard\Widgets\RequestAwareWidgetInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetConfigurationInterface;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
 
 /**
  * @internal
@@ -41,7 +43,10 @@ class WidgetRegistry implements SingletonInterface
      */
     private $widgetsPerWidgetGroup = [];
 
-    public function __construct(protected readonly ContainerInterface $container) {}
+    public function __construct(
+        protected readonly ContainerInterface $container,
+        protected readonly WidgetSettingsFactory $widgetSettingsFactory,
+    ) {}
 
     /**
      * @return WidgetConfigurationInterface[]
@@ -62,7 +67,7 @@ class WidgetRegistry implements SingletonInterface
     /**
      * @throws \InvalidArgumentException If requested identifier does not exist.
      */
-    public function getAvailableWidget(ServerRequestInterface $request, string $identifier): WidgetInterface
+    public function getAvailableWidget(ServerRequestInterface $request, string $identifier): WidgetRendererInterface|WidgetInterface
     {
         if (array_key_exists($identifier, $this->getAvailableWidgets())) {
             $widget = $this->container->get($this->widgets[$identifier]->getServiceName());

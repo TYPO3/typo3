@@ -15,13 +15,18 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Dashboard;
+namespace TYPO3\CMS\Dashboard\Repository;
 
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Dashboard\Dashboard;
+use TYPO3\CMS\Dashboard\DashboardPreset;
+use TYPO3\CMS\Dashboard\Factory\WidgetSettingsFactory;
+use TYPO3\CMS\Dashboard\WidgetRegistry;
 use TYPO3\CMS\Dashboard\Widgets\WidgetInterface;
+use TYPO3\CMS\Dashboard\Widgets\WidgetRendererInterface;
 
 /**
  * @internal
@@ -36,13 +41,14 @@ class DashboardRepository
     protected array $allowedFields = ['title'];
 
     /**
-     * @var WidgetInterface[]
+     * @var list<WidgetRendererInterface|WidgetInterface>
      */
     protected array $widgets = [];
 
     public function __construct(
         protected readonly ConnectionPool $connectionPool,
         protected readonly WidgetRegistry $widgetRegistry,
+        protected readonly WidgetSettingsFactory $widgetSettingsFactory,
         protected readonly ContainerInterface $container
     ) {}
 
@@ -176,6 +182,7 @@ class DashboardRepository
             $row['title'] ?? '',
             json_decode((string)($row['widgets'] ?? ''), true) ?? [],
             $this->widgetRegistry,
+            $this->widgetSettingsFactory,
             $this->container
         );
     }

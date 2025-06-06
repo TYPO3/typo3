@@ -42,60 +42,6 @@
 			<trans-unit id="widget_group.sys_note_widget.title">
 				<source>System Notes</source>
 			</trans-unit>
-			<!-- All -->
-			<trans-unit id="widget.all.title">
-				<source>All System Notes</source>
-			</trans-unit>
-			<trans-unit id="widget.all.description">
-				<source>Shows a list of all pages with system notes</source>
-			</trans-unit>
-			<!-- Default -->
-			<trans-unit id="widget.pagesWithInternalNoteDefault.title">
-				<source>Notes in the category "Default"</source>
-			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteDefault.description">
-				<source>Shows a list of all pages with system notes in the category "Default"</source>
-			</trans-unit>
-			<!-- ToDos -->
-			<trans-unit id="widget.pagesWithInternalNoteToDos.title">
-				<source>Notes in the category "ToDo"</source>
-			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteToDos.description">
-				<source>Shows a list of all pages with system notes in the category "ToDo"</source>
-			</trans-unit>
-			<!-- Template -->
-			<trans-unit id="widget.pagesWithInternalNoteTemplate.title">
-				<source>Notes in the category "Template"</source>
-			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteTemplate.description">
-				<source>Shows a list of all pages with system notes in the category "Template"</source>
-			</trans-unit>
-			<!-- Notes -->
-			<trans-unit id="widget.pagesWithInternalNoteNotes.title">
-				<source>Notes in the category "Notes"</source>
-			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteNotes.description">
-				<source>Shows a list of all pages with system notes in the category "Notes"</source>
-			</trans-unit>
-			<!-- Instructions -->
-			<trans-unit id="widget.pagesWithInternalNoteInstructions.title">
-				<source>Notes in the category "Instructions"</source>
-			</trans-unit>
-			<trans-unit id="widget.pagesWithInternalNoteInstructions.description">
-				<source>Shows a list of all pages with system notes in the category "Instructions"</source>
-			</trans-unit>
-			<trans-unit id="created">
-				<source>Created</source>
-			</trans-unit>
-			<trans-unit id="subject">
-				<source>Subject</source>
-			</trans-unit>
-			<trans-unit id="subjectmessage">
-				<source>Subject and message</source>
-			</trans-unit>
-			<trans-unit id="goto_page">
-				<source>Go to page</source>
-			</trans-unit>
 		</body>
 	</file>
 </xliff>

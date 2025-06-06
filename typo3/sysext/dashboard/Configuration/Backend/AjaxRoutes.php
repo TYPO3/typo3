@@ -60,4 +60,14 @@ return [
         'target' => DashboardAjaxController::class . '::removeWidget',
         'methods' => ['POST'],
     ],
+    'dashboard_widget_settings_get' => [
+        'path' => '/dashboard/widget/settings/get',
+        'target' => DashboardAjaxController::class . '::getWidgetSettings',
+        'methods' => ['GET'],
+    ],
+    'dashboard_widget_settings_update' => [
+        'path' => '/dashboard/widget/settings/update',
+        'target' => DashboardAjaxController::class . '::updateWidgetSettings',
+        'methods' => ['POST'],
+    ],
 ];
