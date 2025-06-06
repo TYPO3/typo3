@@ -21,6 +21,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\Schema\Exception\InvalidSchemaTypeException;
 use TYPO3\CMS\Core\Schema\FieldTypeFactory;
 use TYPO3\CMS\Core\Schema\RelationMapBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -432,5 +433,204 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         self::assertSame('defaultRenderer', $schema->getRawConfiguration()['previewRenderer']);
         self::assertSame('typeSpecificRenderer', $subSchema->getRawConfiguration()['previewRenderer']);
 
+    }
+
+    #[Test]
+    public function recordTypesWithForeignField(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $subject = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $subject->load([
+            'myTypelessTable' => [],
+            'myDefaultTable' => [
+                'ctrl' => [
+                    'type' => 'type',
+                ],
+                'columns' => [
+                    'type' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                ['value' => 'A', 'label' => 'A'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'myLocalTable' => [
+                'ctrl' => [
+                    'type' => 'uid_local:CType',
+                ],
+                'columns' => [
+                    'uid_local' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'foreign_table' => 'myForeignTable',
+                        ],
+                    ],
+                ],
+            ],
+            'myForeignTable' => [
+                'ctrl' => [
+                    'type' => 'CType',
+                ],
+                'columns' => [
+                    'CType' => [
+                        'config' => [
+                            'type' => 'select',
+                            'renderType' => 'selectSingle',
+                            'items' => [
+                                ['value' => 'A', 'label' => 'A'],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $schema = $subject->get('myTypelessTable');
+        self::assertFalse($schema->supportsSubSchema());
+
+        $schema = $subject->get('myDefaultTable');
+        self::assertTrue($schema->supportsSubSchema());
+        $subSchemaTypeInformation = $schema->getSubSchemaTypeInformation();
+        self::assertFalse($subSchemaTypeInformation->isForeignTableType());
+        self::assertSame('myDefaultTable', $subSchemaTypeInformation->schemaName);
+        self::assertSame('type', $subSchemaTypeInformation->localFieldName);
+        self::assertNull($subSchemaTypeInformation->foreignFieldName);
+        self::assertNull($subSchemaTypeInformation->foreignSchemaName);
+
+        $schema = $subject->get('myLocalTable');
+        self::assertTrue($schema->supportsSubSchema());
+        $subSchemaTypeInformation = $schema->getSubSchemaTypeInformation();
+        self::assertTrue($subSchemaTypeInformation->isForeignTableType());
+        self::assertSame('myLocalTable', $subSchemaTypeInformation->schemaName);
+        self::assertSame('uid_local', $subSchemaTypeInformation->localFieldName);
+        self::assertSame('CType', $subSchemaTypeInformation->foreignFieldName);
+        self::assertSame('myForeignTable', $subSchemaTypeInformation->foreignSchemaName);
+        self::assertSame([['value' => 'A', 'label' => 'A']], $subject->get($subSchemaTypeInformation->foreignSchemaName)->getField($subSchemaTypeInformation->foreignFieldName)->getConfiguration()['items']);
+    }
+
+    #[Test]
+    public function throwsExceptionForTypelessSchema(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $subject = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $subject->load([
+            'myTypelessTable' => [],
+        ]);
+
+        $schema = $subject->get('myTypelessTable');
+        self::assertFalse($schema->supportsSubSchema());
+
+        $this->expectException(InvalidSchemaTypeException::class);
+        $this->expectExceptionCode(1749241443);
+
+        $schema->getSubSchemaTypeInformation();
+    }
+
+    #[Test]
+    public function throwsExceptionForNonExistingTypeFieldSchema(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $subject = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $subject->load([
+            'myTypelessTable' => [
+                'ctrl' => [
+                    'type' => 'type',
+                ],
+            ],
+        ]);
+
+        $schema = $subject->get('myTypelessTable');
+        self::assertTrue($schema->supportsSubSchema());
+
+        $this->expectException(InvalidSchemaTypeException::class);
+        $this->expectExceptionCode(1749241446);
+
+        $schema->getSubSchemaTypeInformation();
+    }
+
+    #[Test]
+    public function throwsExceptionForNonExistingTypeFieldForForeignTypeSchema(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $subject = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $subject->load([
+            'myTypelessTable' => [
+                'ctrl' => [
+                    'type' => 'foreign:type',
+                ],
+            ],
+        ]);
+
+        $schema = $subject->get('myTypelessTable');
+        self::assertTrue($schema->supportsSubSchema());
+
+        $this->expectException(InvalidSchemaTypeException::class);
+        $this->expectExceptionCode(1749241444);
+
+        $schema->getSubSchemaTypeInformation();
+    }
+
+    #[Test]
+    public function throwsExceptionForNonRelationalForeignTypeField(): void
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $subject = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        $subject->load([
+            'myTypelessTable' => [
+                'ctrl' => [
+                    'type' => 'foreign:type',
+                ],
+                'columns' => [
+                    'uid_local' => [
+                        'config' => [
+                            'type' => 'input',
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+
+        $schema = $subject->get('myTypelessTable');
+        self::assertTrue($schema->supportsSubSchema());
+
+        $this->expectException(InvalidSchemaTypeException::class);
+        $this->expectExceptionCode(1749241444);
+
+        $schema->getSubSchemaTypeInformation();
     }
 }
