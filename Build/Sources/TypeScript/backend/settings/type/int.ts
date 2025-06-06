@@ -31,13 +31,36 @@ export class IntTypeElement extends BaseElement<
   @property({ type: Number }) override value: number;
 
   protected handleChange(e: InputEvent): void {
-    const input = e.target as HTMLInputElement;
+    const input = e.target as HTMLInputElement|HTMLSelectElement;
     if (input.reportValidity()) {
-      this.value = input.valueAsNumber;
+      if (input instanceof HTMLInputElement) {
+        this.value = input.valueAsNumber;
+      } else {
+        this.value = parseInt(input.value, 10);
+      }
     }
   }
 
+  protected renderEnum(): TemplateResult {
+    return html`
+      <select
+        id=${this.formid}
+        class="form-select"
+        ?readonly=${this.readonly}
+        .value=${live(this.value)}
+        @change=${this.handleChange}
+      >
+        ${Object.entries(this.enum).map(([value, label]) => html`
+          <option ?selected=${this.value.toString() === value} value=${value}>${label}${this.debug ? html` [${value}]` : nothing}</option>
+        `)}
+      </select>
+    `;
+  }
+
   protected override render(): TemplateResult {
+    if (typeof this.enum === 'object') {
+      return this.renderEnum();
+    }
     return html`
       <input
         type="number"

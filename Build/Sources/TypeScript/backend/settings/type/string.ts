@@ -29,7 +29,7 @@ export class StringTypeElement extends BaseElement<
   @property({ type: String }) override value: string;
 
   protected handleChange(e: InputEvent): void {
-    const input = e.target as HTMLInputElement;
+    const input = e.target as HTMLInputElement|HTMLSelectElement;
     if (input.reportValidity()) {
       this.value = input.value;
     }
