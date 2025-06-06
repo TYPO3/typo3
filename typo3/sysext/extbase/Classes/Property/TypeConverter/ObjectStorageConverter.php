@@ -41,6 +41,9 @@ class ObjectStorageConverter extends AbstractTypeConverter
     ): ObjectStorage {
         $objectStorage = new ObjectStorage();
         foreach ($convertedChildProperties as $subProperty) {
+            if (!is_object($subProperty)) {
+                continue;
+            }
             $objectStorage->attach($subProperty);
         }
         return $objectStorage;
