@@ -65,4 +65,39 @@ readonly class SearchableSchemaFieldsCollector
         // @todo should existing fields also be validated?
         return array_unique(array_merge($existingFieldList, $this->getFieldNames($schemaName)));
     }
+
+    /**
+     * Returns table subschema divisor field name and a list of fields not included in all subSchemas along with
+     * the list of subSchemas they are included.
+     *
+     * @param string $tableName
+     * @return array{0: string, 1: array<string, list<string>>}
+     * @internal only to be used in TYPO3 Core
+     */
+    public function getSchemaFieldSubSchemaTypes(string $tableName): array
+    {
+        $result = [
+            0 => '',
+            1 => [],
+        ];
+        if (!$this->schemaFactory->has($tableName)) {
+            return $result;
+        }
+        $schema = $this->schemaFactory->get($tableName);
+        if ($schema->getSubSchemaDivisorField() === null) {
+            return $result;
+        }
+        $result[0] = $schema->getSubSchemaDivisorField()->getName();
+        foreach ($schema->getSubSchemata() as $recordType => $subSchemata) {
+            foreach ($subSchemata->getFields() as $fieldInSubschema => $fieldConfig) {
+                $result[1][$fieldInSubschema] ??= [];
+                $result[1][$fieldInSubschema][] = $recordType;
+            }
+        }
+        // Remove all fields which are contained in all sub-schemas, determined by
+        // comparing each field types count with table types count.
+        $subSchemaCount = count($schema->getSubSchemata());
+        $result[1] = array_filter($result[1], static fn($value) => count($value) < $subSchemaCount);
+        return $result;
+    }
 }

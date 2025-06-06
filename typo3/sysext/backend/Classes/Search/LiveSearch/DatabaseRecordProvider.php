@@ -353,7 +353,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         $platform = $queryBuilder->getConnection()->getDatabasePlatform();
         $isPostgres = $platform instanceof DoctrinePostgreSQLPlatform;
         $fieldsToSearchWithin = $this->searchableSchemaFieldsCollector->getFields($tableName);
-        [$subSchemaDivisorFieldName, $fieldsSubSchemaTypes] = $this->getSchemaFieldSubSchemaTypes($tableName);
+        [$subSchemaDivisorFieldName, $fieldsSubSchemaTypes] = $this->searchableSchemaFieldsCollector->getSchemaFieldSubSchemaTypes($tableName);
         $constraints = [];
         // If the search string is a simple integer, assemble an equality comparison
         if (MathUtility::canBeInterpretedAsInteger($queryString)) {
@@ -527,44 +527,6 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             ]);
         }
         return $editLink;
-    }
-
-    /**
-     * Returns table subschema divisor field name and a list of fields not included in all subSchemas along with
-     * the list of subSchemas they are included.
-     *
-     * @param string $tableName
-     * @return array{0: string, 1: array<string, list<string>>}
-     * @todo Consider to move this to {@see SearchableSchemaFieldsCollector}, a dedicated trait or a shared place to
-     *       mitigate code duplication (and maintenance in different places).
-     *       - {@see PageRecordProvider::getSchemaFieldSubSchemaTypes()}
-     *       - {@see DatabaseRecordList::getSchemaFieldSubSchemaTypes()}
-     */
-    protected function getSchemaFieldSubSchemaTypes(string $tableName): array
-    {
-        $result = [
-            0 => '',
-            1 => [],
-        ];
-        if (!$this->tcaSchemaFactory->has($tableName)) {
-            return $result;
-        }
-        $schema = $this->tcaSchemaFactory->get($tableName);
-        if ($schema->getSubSchemaDivisorField() === null) {
-            return $result;
-        }
-        $result[0] = $schema->getSubSchemaDivisorField()->getName();
-        foreach ($schema->getSubSchemata() as $recordType => $subSchemata) {
-            foreach ($subSchemata->getFields() as $fieldInSubschema => $fieldConfig) {
-                $result[1][$fieldInSubschema] ??= [];
-                $result[1][$fieldInSubschema][] = $recordType;
-            }
-        }
-        // Remove all fields which are contained in all sub-schemas, determined by
-        // comparing each field types count with table types count.
-        $subSchemaCount = count($schema->getSubSchemata());
-        $result[1] = array_filter($result[1], static fn($value) => count($value) < $subSchemaCount);
-        return $result;
     }
 
     protected function getBackendUser(): BackendUserAuthentication
