@@ -80,6 +80,9 @@ enum TcaSchemaCapability
     // TCA[ctrl][hideAtCopy]
     case HideRecordsAtCopy;
 
+    // TCA[ctrl][hideTable]
+    case HideInUi;
+
     // TCA[ctrl][prependAtCopy]
     case PrependLabelTextAtCopy;
 

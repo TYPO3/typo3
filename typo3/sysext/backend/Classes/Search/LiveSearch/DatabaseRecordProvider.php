@@ -306,7 +306,7 @@ final class DatabaseRecordProvider implements SearchProviderInterface
             return true;
         }
         $schema = $this->tcaSchemaFactory->get($tableName);
-        if ($schema->getRawConfiguration()['hideTable'] ?? false) {
+        if ($schema->hasCapability(TcaSchemaCapability::HideInUi)) {
             return false;
         }
         if (!$this->getBackendUser()->check('tables_select', $tableName)

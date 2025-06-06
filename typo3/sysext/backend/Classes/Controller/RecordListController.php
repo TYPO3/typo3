@@ -46,6 +46,8 @@ use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Page\PageRenderer;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\TypoScript\TypoScriptService;
@@ -81,6 +83,7 @@ class RecordListController
         protected readonly EventDispatcherInterface $eventDispatcher,
         protected readonly UriBuilder $uriBuilder,
         protected readonly ModuleTemplateFactory $moduleTemplateFactory,
+        protected readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     public function mainAction(ServerRequestInterface $request): ResponseInterface
@@ -586,8 +589,9 @@ class RecordListController
         if (isset($this->modTSconfig['table.']['pages.']['hideTable'])) {
             return !$this->modTSconfig['table.']['pages.']['hideTable'];
         }
+        $schema = $this->tcaSchemaFactory->get('pages');
         $hideTables = $this->modTSconfig['hideTables'] ?? '';
-        return !($GLOBALS['TCA']['pages']['ctrl']['hideTable'] ?? false)
+        return !$schema->hasCapability(TcaSchemaCapability::HideInUi)
             && $hideTables !== '*'
             && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }
@@ -625,14 +629,16 @@ class RecordListController
      */
     protected function isPageEditable(): bool
     {
-        if ($GLOBALS['TCA']['pages']['ctrl']['readOnly'] ?? false) {
+        $schema = $this->tcaSchemaFactory->get('pages');
+
+        if ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly)) {
             return false;
         }
         $backendUser = $this->getBackendUserAuthentication();
         if ($backendUser->isAdmin()) {
             return true;
         }
-        if ($GLOBALS['TCA']['pages']['ctrl']['adminOnly'] ?? false) {
+        if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)) {
             return false;
         }
 

@@ -127,6 +127,7 @@ readonly class TcaSchema implements SchemaInterface
             TcaSchemaCapability::AccessAdminOnly => (bool)($this->schemaConfiguration['adminOnly'] ?? false),
             TcaSchemaCapability::AccessReadOnly => (bool)($this->schemaConfiguration['readOnly'] ?? false),
             TcaSchemaCapability::HideRecordsAtCopy => (bool)($this->schemaConfiguration['hideAtCopy'] ?? false),
+            TcaSchemaCapability::HideInUi => (bool)($this->schemaConfiguration['hideTable'] ?? false),
             TcaSchemaCapability::PrependLabelTextAtCopy => (bool)((string)($this->schemaConfiguration['prependAtCopy'] ?? '')),
             TcaSchemaCapability::RestrictionDisabledField => isset($this->schemaConfiguration['enablecolumns']['disabled']),
             TcaSchemaCapability::RestrictionStartTime => isset($this->schemaConfiguration['enablecolumns']['starttime']),
@@ -147,11 +148,16 @@ readonly class TcaSchema implements SchemaInterface
      *          : ($capability is TcaSchemaCapability::RestrictionStartTime ? Capability\FieldCapability
      *          : ($capability is TcaSchemaCapability::RestrictionEndTime ? Capability\FieldCapability
      *          : ($capability is TcaSchemaCapability::RestrictionUserGroup ? Capability\FieldCapability
+     *          : ($capability is TcaSchemaCapability::AccessReadOnly ? Capability\ScalarCapability
+     *          : ($capability is TcaSchemaCapability::AccessAdminOnly ? Capability\ScalarCapability
+     *          : ($capability is TcaSchemaCapability::HideRecordsAtCopy ? Capability\ScalarCapability
+     *          : ($capability is TcaSchemaCapability::HideInUi ? Capability\ScalarCapability
      *          : ($capability is TcaSchemaCapability::PrependLabelTextAtCopy ? Capability\ScalarCapability
      *          : ($capability is TcaSchemaCapability::DefaultSorting ? Capability\ScalarCapability
      *          : ($capability is TcaSchemaCapability::Label ? Capability\LabelCapability
-     *          : Capability\SystemInternalFieldCapability)))))))))))
-     */
+     *          : ($capability is TcaSchemaCapability::AncestorReferenceField ? Capability\SystemInternalFieldCapability
+     *          : Capability\SystemInternalFieldCapability))))))))))))))))
+ */
     public function getCapability(TcaSchemaCapability $capability): Capability\SchemaCapabilityInterface
     {
         return match ($capability) {
@@ -173,6 +179,7 @@ readonly class TcaSchema implements SchemaInterface
             TcaSchemaCapability::AccessAdminOnly => new Capability\ScalarCapability((bool)($this->schemaConfiguration['adminOnly'] ?? false)),
             TcaSchemaCapability::AccessReadOnly => new Capability\ScalarCapability((bool)($this->schemaConfiguration['readOnly'] ?? false)),
             TcaSchemaCapability::HideRecordsAtCopy => new Capability\ScalarCapability((bool)($this->schemaConfiguration['hideAtCopy'] ?? false)),
+            TcaSchemaCapability::HideInUi => new Capability\ScalarCapability((bool)($this->schemaConfiguration['hideTable'] ?? false)),
             TcaSchemaCapability::PrependLabelTextAtCopy => new Capability\ScalarCapability((string)($this->schemaConfiguration['prependAtCopy'] ?? '')),
             TcaSchemaCapability::RestrictionDisabledField => new Capability\FieldCapability($this->getField($this->schemaConfiguration['enablecolumns']['disabled'])),
             TcaSchemaCapability::RestrictionStartTime => new Capability\FieldCapability($this->getField($this->schemaConfiguration['enablecolumns']['starttime'])),

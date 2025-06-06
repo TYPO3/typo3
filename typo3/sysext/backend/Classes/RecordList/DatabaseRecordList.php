@@ -53,6 +53,7 @@ use TYPO3\CMS\Core\LinkHandling\LinkService;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\DateTimeFieldType;
 use TYPO3\CMS\Core\Schema\Field\NumberFieldType;
 use TYPO3\CMS\Core\Schema\SearchableSchemaFieldsCollector;
@@ -2443,7 +2444,8 @@ class DatabaseRecordList
             if (!$hideTable) {
                 // Don't show table if hidden by TCA ctrl section
                 // Don't show table if hidden by page TSconfig mod.web_list.hideTables
-                $hideTable = !empty($GLOBALS['TCA'][$tableName]['ctrl']['hideTable'])
+                $schema = $this->tcaSchemaFactory->get($tableName);
+                $hideTable = $schema->hasCapability(TcaSchemaCapability::HideInUi)
                     || in_array($tableName, $hideTablesArray, true)
                     || in_array('*', $hideTablesArray, true);
                 // Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table

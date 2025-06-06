@@ -2874,7 +2874,7 @@ class DatabaseIntegrityController
         $countArr = $databaseIntegrityCheck->countRecords($id_list);
         /** @var TcaSchema $schema */
         foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
-            if ($schema->getRawConfiguration()['hideTable'] ?? false) {
+            if ($schema->hasCapability(TcaSchemaCapability::HideInUi)) {
                 continue;
             }
             if ($table === 'pages' && $databaseIntegrityCheck->getLostPagesList() !== '') {

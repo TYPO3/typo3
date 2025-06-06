@@ -274,7 +274,7 @@ class SuggestWizardController
                 // all tables are allowed, if the user can access them
                 /** @var TcaSchema $schema */
                 foreach ($this->tcaSchemaFactory->all() as $tableName => $schema) {
-                    if ($schema->getRawConfiguration()['hideTable'] ?? false) {
+                    if ($schema->hasCapability(TcaSchemaCapability::HideInUi)) {
                         continue;
                     }
                     if ($this->currentBackendUserMayAccessTable($schema)) {
