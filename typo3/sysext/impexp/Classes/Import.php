@@ -31,6 +31,7 @@ use TYPO3\CMS\Core\Resource\File;
 use TYPO3\CMS\Core\Resource\ResourceInstructionTrait;
 use TYPO3\CMS\Core\Resource\ResourceStorage;
 use TYPO3\CMS\Core\Resource\StorageRepository;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Serializer\Typo3XmlParser;
 use TYPO3\CMS\Core\Serializer\Typo3XmlSerializerOptions;
@@ -847,7 +848,7 @@ class Import extends ImportExport
                         $pid = isset($this->importMapId['pages'][$record['pid']])
                             ? (int)$this->importMapId['pages'][$record['pid']]
                             : $this->pid;
-                        if ($rootLevelCapability->getRootLevelType() === 1) {
+                        if ($rootLevelCapability->getRootLevelType() === RootLevelCapability::TYPE_ONLY_ON_ROOTLEVEL) {
                             $pid = 0;
                         } elseif (!$rootLevelCapability->canExistOnRootLevel() && $pid === 0) {
                             $this->addError('Error: Record type ' . $table . ' is not allowed on pid 0');

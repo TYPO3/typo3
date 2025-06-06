@@ -25,6 +25,7 @@ namespace TYPO3\CMS\Core\Schema\Capability;
  * - adminOnly
  * - readOnly
  * - hideAtCopy
+ * - hideTable
  * - prependAtCopy
  *
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS

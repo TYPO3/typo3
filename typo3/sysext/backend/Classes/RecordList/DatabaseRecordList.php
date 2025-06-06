@@ -2450,7 +2450,7 @@ class DatabaseRecordList
                 // Don't show table if hidden by TCA ctrl section
                 // Don't show table if hidden by page TSconfig mod.web_list.hideTables
                 $schema = $this->tcaSchemaFactory->get($tableName);
-                $hideTable = !empty($schema->getRawConfiguration()['hideTable'] ?? false)
+                $hideTable = $schema->hasCapability(TcaSchemaCapability::HideInUi)
                     || in_array($tableName, $hideTablesArray, true)
                     || in_array('*', $hideTablesArray, true);
                 // Override previous selection if table is enabled or hidden by TSconfig TCA override mod.web_list.table

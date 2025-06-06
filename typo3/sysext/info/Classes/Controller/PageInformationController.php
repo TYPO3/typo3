@@ -134,7 +134,7 @@ class PageInformationController extends InfoModuleController
             if (in_array($schemaName, $standardTables, true)) {
                 continue;
             }
-            if ($schema->getRawConfiguration()['hideTable'] ?? false) {
+            if ($schema->hasCapability(TcaSchemaCapability::HideInUi)) {
                 continue;
             }
             if (!$this->getBackendUser()->check('tables_select', $schemaName)) {

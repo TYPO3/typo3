@@ -19,6 +19,7 @@ namespace TYPO3\CMS\IndexedSearch\Hook;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
@@ -38,8 +39,8 @@ readonly class AvailableTcaTables
     public function populateTables(array &$fieldDefinition): void
     {
         foreach ($this->tcaSchemaFactory->all() as $name => $schema) {
-            if ($schema->getRawConfiguration()['adminOnly'] ?? false) {
-                // Hide "admin only" tables
+            // Hide "admin only" tables
+            if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)) {
                 continue;
             }
             $label = $schema->getRawConfiguration()['title'] ?? '';

@@ -710,7 +710,7 @@ class RecordListController
         }
         $schema = $this->tcaSchemaFactory->get('pages');
         $hideTables = $this->modTSconfig['hideTables'] ?? '';
-        return !($schema->getRawConfiguration()['hideTable'] ?? false)
+        return !$schema->hasCapability(TcaSchemaCapability::HideInUi)
             && $hideTables !== '*'
             && !in_array('pages', GeneralUtility::trimExplode(',', $hideTables), true);
     }

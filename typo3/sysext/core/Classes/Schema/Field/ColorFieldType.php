@@ -27,6 +27,11 @@ final readonly class ColorFieldType extends AbstractFieldType
         return 'color';
     }
 
+    public function supportsOpacity(): bool
+    {
+        return (bool)($this->configuration['opacity'] ?? false);
+    }
+
     public function isSearchable(): true
     {
         return true;

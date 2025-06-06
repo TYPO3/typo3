@@ -591,7 +591,7 @@ class NewRecordController
         $schema = $this->tcaSchemaFactory->get($table);
 
         if ($schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
-            || ($schema->getRawConfiguration()['hideTable'] ?? false)
+            || $schema->hasCapability(TcaSchemaCapability::HideInUi)
             || ($schema->getRawConfiguration()['is_static'] ?? false)
             || ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)  && !$this->getBackendUserAuthentication()->isAdmin())
         ) {

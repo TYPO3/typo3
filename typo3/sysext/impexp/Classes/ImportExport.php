@@ -32,6 +32,7 @@ use TYPO3\CMS\Core\Resource\Exception\InsufficientFolderAccessPermissionsExcepti
 use TYPO3\CMS\Core\Resource\Folder;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
+use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
@@ -477,7 +478,7 @@ abstract class ImportExport
                 if ($schema->getRawConfiguration()['is_static'] ?? false) {
                     $line['msg'] .= 'TABLE "' . $table . '" is a STATIC TABLE! ';
                 }
-                if ($rootLevelCapability->getRootLevelType() === 1) {
+                if ($rootLevelCapability->getRootLevelType() === RootLevelCapability::TYPE_ONLY_ON_ROOTLEVEL) {
                     $line['msg'] .= 'TABLE "' . $table . '" will be inserted on ROOT LEVEL! ';
                 }
                 $databaseRecord = null;
