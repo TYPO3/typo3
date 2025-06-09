@@ -209,7 +209,7 @@ class LinkFactory implements LoggerAwareInterface
         [$linkHandlerKeyword] = explode(':', $linkParameterParts['url'], 2);
         if (in_array(strtolower((string)preg_replace('#\s|[[:cntrl:]]#', '', (string)$linkHandlerKeyword)), ['javascript', 'data'], true)) {
             // Disallow insecure scheme's like javascript: or data:
-            throw new UnableToLinkException('Insuecure scheme for linking detected with "' . $mixedLinkParameter . "'", 1641986533);
+            throw new UnableToLinkException('Insecure scheme for linking detected with "' . $mixedLinkParameter . "'", 1641986533);
         }
 
         // additional parameters that need to be set
