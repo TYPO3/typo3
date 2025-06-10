@@ -1,13 +1,11 @@
-TYPO3 CMS
-=========
+# TYPO3 CMS
 
 TYPO3 is an open source PHP based web content management system released
 under the GNU GPL. TYPO3 is copyright © 1999-2025 by Kasper Skårhøj.
 
 This document provides a basic introduction to TYPO3.
 
-Getting Started
----------------
+## Getting Started
 
 TYPO3 requires a web server with PHP and a database.
 The backend is accessed via a supported browser.
@@ -15,8 +13,7 @@ The backend is accessed via a supported browser.
 Please see the [Installation Guide](https://docs.typo3.org/installation)
 in order to set up a basic TYPO3 installation on your web server.
 
-What is TYPO3?
---------------
+## What is TYPO3?
 
 TYPO3 is a free and open source Content Management Framework. It is
 released under the GNU General Public License. It can run on several web
@@ -30,8 +27,7 @@ Team](https://typo3.org/community/teams/typo3-development/).
 To get more info about the GPL license, visit
 https://opensource.org/licenses/gpl-license
 
-What is a Content Management Framework?
----------------------------------------
+## What is a Content Management Framework?
 
 A Content Management Framework is more than just a content management
 system, due to the separation of the streamlined core and optional
@@ -42,8 +38,7 @@ The concept of extensions makes TYPO3 capable of being developed and
 used in almost any way you can imagine, either by using any of the many
 extensions which are available for download, or by writing your own.
 
-TYPO3 System requirements
--------------------------
+## TYPO3 System requirements
 
 TYPO3 is based upon PHP and uses a database management system like
 MySQL.
@@ -51,8 +46,7 @@ MySQL.
 For more specific information regarding requirements see the file
 [INSTALL.md](INSTALL.md#server-system-requirements) in this folder.
 
-TYPO3 resources
----------------
+## TYPO3 resources
 
 Here is an overview of the most important TYPO3 resources to help you
 get started:
@@ -103,8 +97,7 @@ tags like `typo3-9.5.x`, `Fluid` or `Extbase`).
 
 Visit https://typo3.org/community/meet/
 
-Contributing
-------------
+## Contributing
 
 If you want to contribute to the TYPO3 source code, take a look at our
 Contributors Walkthrough and Review System:
@@ -126,8 +119,7 @@ If you want to file a bug report, take a look at:
 
 * [https://forge.typo3.org](https://forge.typo3.org/projects/typo3cms-core/issues)
 
-Security
---------
+## Security
 
 If you learn about a potential security issue in the TYPO3 core or in
 an extension, please always contact the TYPO3 Security Team via security@typo3.org.
@@ -141,8 +133,7 @@ may want to issue an advisory once it is fixed.
 
 For more details see [TYPO3 Security Team](https://typo3.org/community/teams/security/).
 
-Final notes
------------
+## Final notes
 
 TYPO3 is said to be one of the most sophisticated PHP / Internet related
 applications available, and the more you play with it, the more you will
@@ -170,7 +161,6 @@ other purposes as laid out in the bylaws.
 * [Become a member of the TYPO3 Association](
   https://typo3.org/membership)
 
-Copyleft
---------
+## Copyleft
 
 This document is a part of the TYPO3 project.
