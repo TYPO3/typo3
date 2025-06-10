@@ -2250,12 +2250,19 @@ class ResourceStorage implements ResourceStorageInterface
             new BeforeFolderDeletedEvent($folderObject)
         );
 
+        // Disable permission check to find nearest recycler and move folder without errors
+        $currentPermissions = $this->evaluatePermissions;
+        $this->evaluatePermissions = false;
+
         $recyclerFolder = $this->getNearestRecyclerFolder($folderObject);
 
         if ($recyclerFolder) {
             $folderObject->moveTo($recyclerFolder);
             $result = false;
+            $this->evaluatePermissions = $currentPermissions;
         } else {
+            $this->evaluatePermissions = $currentPermissions;
+
             foreach ($this->getFilesInFolder($folderObject, 0, 0, false, $deleteRecursively) as $file) {
                 $this->deleteFile($file);
             }
@@ -2766,6 +2773,11 @@ class ResourceStorage implements ResourceStorageInterface
             }
 
             foreach ($folder->getSubfolders() as $subFolder) {
+                // do not use a  _recycler_ as the trash bin for itself
+                if ($subFolder->getIdentifier() === $resource->getIdentifier()) {
+                    continue;
+                }
+
                 if ($subFolder->getRole() === FolderInterface::ROLE_RECYCLER) {
                     $recyclerFolder = $subFolder;
                     break;
