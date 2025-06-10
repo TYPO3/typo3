@@ -34,7 +34,7 @@
 		"bacon/bacon-qr-code": "^3.0",
 		"christian-riesen/base32": "^1.6",
 		"doctrine/annotations": "^2.0.2",
-		"doctrine/dbal": "^4.2.1",
+		"doctrine/dbal": "4.2.*",
 		"doctrine/event-manager": "^2.0.1",
 		"doctrine/lexer": "^3.0.1",
 		"egulias/email-validator": "^4.0",
