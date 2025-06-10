@@ -32,7 +32,6 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\TestWith;
 use Psr\Container\ContainerInterface;
-use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\DefaultTcaSchema;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
@@ -42,9 +41,6 @@ use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Database\Schema\TableDiff;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Package\PackageManager;
-use TYPO3\CMS\Core\Schema\FieldTypeFactory;
-use TYPO3\CMS\Core\Schema\RelationMapBuilder;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3\TestingFramework\Core\Testbase;
 
@@ -154,21 +150,18 @@ final class SchemaMigratorTest extends FunctionalTestCase
 
     private function createSchemaMigrator(): SchemaMigrator
     {
-        $tcaSchemaFactory = new TcaSchemaFactory(
-            $this->get(RelationMapBuilder::class),
-            $this->get(FieldTypeFactory::class),
-            $this->get('package-dependent-cache-identifier')->withPrefix('SchemaMigratorTest')->toString(),
-            new NullFrontend('test-core')
-        );
-        $tcaSchemaFactory->load([], true);
-        $defaultTcaSchemaMock = $this->createMock(DefaultTcaSchema::class);
-        $defaultTcaSchemaMock->method('enrich')->willReturnArgument(0);
-        return new SchemaMigrator(
-            $this->get(ConnectionPool::class),
-            $this->get(Parser::class),
-            $defaultTcaSchemaMock,
-            $tcaSchemaFactory,
-        );
+        return new class ($this->get(ConnectionPool::class), $this->get(Parser::class), new DefaultTcaSchema()) extends SchemaMigrator {
+            protected function ensureTableDefinitionForAllTCAManagedTables(array $tables): array
+            {
+                // Do not create tables for any TCA tables (should be empty anyways).
+                return $tables;
+            }
+
+            protected function enrichTablesFromDefaultTCASchema(array $tables): array
+            {
+                return $tables;
+            }
+        };
     }
 
     /**

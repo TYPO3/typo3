@@ -27,8 +27,6 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\Exception\StatementException;
 use TYPO3\CMS\Core\Database\Schema\Parser\Parser;
-use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 /**
  * Helper methods to handle SQL files and transform them into individual statements
@@ -42,7 +40,6 @@ class SchemaMigrator
         private readonly ConnectionPool $connectionPool,
         private readonly Parser $parser,
         private readonly DefaultTcaSchema $defaultTcaSchema,
-        private readonly TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     /**
@@ -231,7 +228,7 @@ class SchemaMigrator
      */
     protected function getPrioritizedFieldNames(string $tableName): array
     {
-        if (!$this->tcaSchemaFactory->has($tableName)) {
+        if (!isset($GLOBALS['TCA'][$tableName]['ctrl'])) {
             return [];
         }
 
@@ -239,61 +236,56 @@ class SchemaMigrator
             'uid',
             'pid',
         ];
-        $tableSchema = $this->tcaSchemaFactory->get($tableName);
 
-        if ($tableSchema->hasCapability(TcaSchemaCapability::CreatedAt)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::CreatedAt)->getFieldName();
+        $tableDefinition = $GLOBALS['TCA'][$tableName]['ctrl'];
+
+        if (!empty($tableDefinition['crdate'])) {
+            $prioritizedFieldNames[] = $tableDefinition['crdate'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::UpdatedAt)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::UpdatedAt)->getFieldName();
+        if (!empty($tableDefinition['tstamp'])) {
+            $prioritizedFieldNames[] = $tableDefinition['tstamp'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::SoftDelete)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName();
+        if (!empty($tableDefinition['delete'])) {
+            $prioritizedFieldNames[] = $tableDefinition['delete'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName();
+        if (!empty($tableDefinition['enablecolumns']['disabled'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['disabled'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName();
+        if (!empty($tableDefinition['enablecolumns']['starttime'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['starttime'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
+        if (!empty($tableDefinition['enablecolumns']['endtime'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['endtime'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::RestrictionUserGroup)->getFieldName();
+        if (!empty($tableDefinition['enablecolumns']['fe_group'])) {
+            $prioritizedFieldNames[] = $tableDefinition['enablecolumns']['fe_group'];
         }
-        if ($tableSchema->isLanguageAware()) {
-            $languageField = $tableSchema->getCapability(TcaSchemaCapability::Language);
-            $prioritizedFieldNames[] = $languageField->getLanguageField()->getName();
-            $prioritizedFieldNames[] = $languageField->getTranslationOriginPointerField()->getName();
-            // @todo `l10n_state` is automatically added in `DefaultTcaSchema->enrichSingleTableFieldsFromTcaCtrl()`
-            //       if `ctrl->languageField` and `ctrl->transOrigPointerField` are configured, and not provided
-            //       by extension `ext_tables.sql`. This field has no representation in TcaSchema language field
-            //       handling yet, nor is this covered within TcaEnrichment thus adding it here directly for now.
-            $prioritizedFieldNames[] = 'l10n_state';
-            if (!empty($languageField->hasTranslationSourceField())) {
-                $prioritizedFieldNames[] = $languageField->getTranslationSourceField()->getName();
+        if (!empty($tableDefinition['languageField'])) {
+            $prioritizedFieldNames[] = $tableDefinition['languageField'];
+            if (!empty($tableDefinition['transOrigPointerField'])) {
+                $prioritizedFieldNames[] = $tableDefinition['transOrigPointerField'];
+                $prioritizedFieldNames[] = 'l10n_state';
             }
-            if (!empty($languageField->hasDiffSourceField())) {
-                $prioritizedFieldNames[] = $languageField->getDiffSourceField()->getName();
+            if (!empty($tableDefinition['translationSource'])) {
+                $prioritizedFieldNames[] = $tableDefinition['translationSource'];
+            }
+            if (!empty($tableDefinition['transOrigDiffSourceField'])) {
+                $prioritizedFieldNames[] = $tableDefinition['transOrigDiffSourceField'];
             }
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::SortByField)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::SortByField)->getFieldName();
+        if (!empty($tableDefinition['sortby'])) {
+            $prioritizedFieldNames[] = $tableDefinition['sortby'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::InternalDescription)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName();
+        if (!empty($tableDefinition['descriptionColumn'])) {
+            $prioritizedFieldNames[] = $tableDefinition['descriptionColumn'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::EditLock)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::EditLock)->getFieldName();
+        if (!empty($tableDefinition['editlock'])) {
+            $prioritizedFieldNames[] = $tableDefinition['editlock'];
         }
-        if ($tableSchema->hasCapability(TcaSchemaCapability::AncestorReferenceField)) {
-            $prioritizedFieldNames[] = $tableSchema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName();
+        if (!empty($tableDefinition['origUid'])) {
+            $prioritizedFieldNames[] = $tableDefinition['origUid'];
         }
-        if ($tableSchema->isWorkspaceAware()) {
-            // @todo Adding hardcoded field names directly thus not having a representation within the TcaSchema. These
-            //       fields do not get proper TCA either within `TcaEnrichment` albeit ensured to be created within
-            //       `DefaultTcaSchema->enrichSingleTableFieldsFromTcaCtrl()` as soon as `ctr->versioningWS` is true.
+        if (!empty($tableDefinition['versioningWS'])) {
             $prioritizedFieldNames[] = 't3ver_wsid';
             $prioritizedFieldNames[] = 't3ver_oid';
             $prioritizedFieldNames[] = 't3ver_state';
@@ -418,7 +410,7 @@ class SchemaMigrator
      */
     protected function ensureTableDefinitionForAllTCAManagedTables(array $tables): array
     {
-        $tableNamesFromTca = $this->tcaSchemaFactory->all()->getNames();
+        $tableNamesFromTca = array_keys($GLOBALS['TCA']);
         $tableNamesFromExtTables = [];
         foreach ($tables as $table) {
             $tableNamesFromExtTables[] = $table->getName();
