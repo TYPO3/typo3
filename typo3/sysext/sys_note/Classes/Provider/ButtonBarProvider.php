@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -102,15 +104,15 @@ final class ButtonBarProvider
      */
     protected function canCreateNewRecord(int $id): bool
     {
-        $tableConfiguration = $GLOBALS['TCA'][self::TABLE_NAME]['ctrl'];
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get(self::TABLE_NAME);
         $pageRow = BackendUtility::getRecord('pages', $id);
         $backendUser = $this->getBackendUserAuthentication();
 
         return !($pageRow === null
-            || ($tableConfiguration['readOnly'] ?? false)
-            || ($tableConfiguration['hideTable'] ?? false)
-            || ($tableConfiguration['is_static'] ?? false)
-            || (($tableConfiguration['adminOnly'] ?? false) && !$backendUser->isAdmin())
+            || $schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
+            || $schema->hasCapability(TcaSchemaCapability::HideInUi)
+            || ($schema->getRawConfiguration()['is_static'] ?? false)
+            || ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly) && !$backendUser->isAdmin())
             || !$backendUser->doesUserHaveAccess($pageRow, Permission::CONTENT_EDIT)
             || !$backendUser->check('tables_modify', self::TABLE_NAME)
             || !$backendUser->workspaceCanCreateNewRecord(self::TABLE_NAME));
