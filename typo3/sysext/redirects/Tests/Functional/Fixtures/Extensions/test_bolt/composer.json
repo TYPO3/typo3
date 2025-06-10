@@ -4,8 +4,8 @@
 	"description": "This extension simulates b13/bolt.",
 	"license": "GPL-2.0-or-later",
 	"require": {
-		"typo3/cms-core": "13.4.14",
-		"typo3/cms-frontend": "13.4.14"
+		"typo3/cms-core": "13.4.*@dev",
+		"typo3/cms-frontend": "13.4.*@dev"
 	},
 	"extra": {
 		"typo3/cms": {
