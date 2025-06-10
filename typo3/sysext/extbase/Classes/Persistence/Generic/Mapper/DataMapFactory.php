@@ -212,8 +212,9 @@ class DataMapFactory implements SingletonInterface
                 $dataMap->setTranslationOriginDiffSourceName($languageCapability->getDiffSourceField()->getName());
             }
         }
-        if ($schema->getSubSchemaDivisorField() !== null) {
-            $dataMap->setRecordTypeColumnName($schema->getSubSchemaDivisorField()->getName());
+        // @todo Limitation to local SubSchemaDivisorField, because this is a static context
+        if ($schema->supportsSubSchema() && !$schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()) {
+            $dataMap->setRecordTypeColumnName($schema->getSubSchemaTypeInformation()->getFieldName());
         }
         $dataMap->setRootLevel((bool)$schema->getCapability(TcaSchemaCapability::RestrictionRootLevel)->getRootLevelType());
         if (isset($schema->getRawConfiguration()['is_static'])) {

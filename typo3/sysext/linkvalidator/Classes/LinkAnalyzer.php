@@ -150,8 +150,8 @@ class LinkAnalyzer
                 $selectFields[] = $languageCapability->getLanguageField()->getName();
             }
 
-            if ($schema->getSubSchemaDivisorField() !== null) {
-                $selectFields[] = $schema->getSubSchemaDivisorField()->getName();
+            if ($schema->supportsSubSchema()) {
+                $selectFields[] = $schema->getSubSchemaTypeInformation()->getFieldName();
             }
 
             $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
@@ -219,9 +219,11 @@ class LinkAnalyzer
                 $record['link_title'] = $entryValue['link_title'] ?? '';
                 $record['field'] = $entryValue['field'];
                 $record['last_check'] = time();
-                $typeField = $schema->getSubSchemaDivisorField()?->getName() ?? false;
-                if ($typeField && isset($entryValue['row'][$typeField])) {
-                    $record['element_type'] = (string)$entryValue['row'][$typeField];
+                $typeFieldName = $schema->supportsSubSchema() && !$schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()
+                    ? $schema->getSubSchemaTypeInformation()->getFieldName()
+                    : null;
+                if ($typeFieldName && isset($entryValue['row'][$typeFieldName])) {
+                    $record['element_type'] = (string)$entryValue['row'][$typeFieldName];
                 }
                 $languageFieldName = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : false;
                 if ($languageFieldName && isset($entryValue['row'][$languageFieldName])) {

@@ -64,15 +64,19 @@ class EditableRestriction implements QueryRestrictionInterface
                 continue;
             }
             $schema = $tcaSchemaFactory->get($table);
-            $typeField = $schema->getSubSchemaDivisorField();
-            if ($typeField === null) {
+            if (!$schema->supportsSubSchema()) {
                 continue;
+            }
+            $subSchemaTypeInformation = $schema->getSubSchemaTypeInformation();
+            if (!$subSchemaTypeInformation->isPointerToForeignFieldInForeignSchema()) {
+                $typeField = $schema->getField($subSchemaTypeInformation->getFieldName());
+            } else {
+                // Note: We override the schema here to work on the foreign schema from now on.
+                $table = $subSchemaTypeInformation->getForeignSchemaName();
+                $typeField = $tcaSchemaFactory->get($table)->getField($subSchemaTypeInformation->getForeignFieldName());
             }
             $fieldConfig = $typeField->getConfiguration();
             if ($fieldConfig === []) {
-                // @todo: Benni notes... this needs to be checked within the Schema API!!!
-                // $type might be "uid_local:type" for table "sys_file_reference" and then $fieldConfig will be empty
-                // in this case we skip because we do not join with the other table and will not have this value
                 continue;
             }
             // Check for items

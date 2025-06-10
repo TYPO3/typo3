@@ -84,10 +84,12 @@ readonly class SearchableSchemaFieldsCollector
             return $result;
         }
         $schema = $this->schemaFactory->get($tableName);
-        if ($schema->getSubSchemaDivisorField() === null) {
+        if (!$schema->supportsSubSchema() || $schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()) {
+            // In case sub schema is a foreign table type, we have to return here since calling code
+            // might not do any joins and therefore cannot resolve the foreign table field properly.
             return $result;
         }
-        $result[0] = $schema->getSubSchemaDivisorField()->getName();
+        $result[0] = $schema->getSubSchemaTypeInformation()->getFieldName();
         foreach ($schema->getSubSchemata() as $recordType => $subSchemata) {
             foreach ($subSchemata->getFields() as $fieldInSubschema => $fieldConfig) {
                 $result[1][$fieldInSubschema] ??= [];

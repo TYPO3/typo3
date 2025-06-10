@@ -204,9 +204,17 @@ class PageLayoutContext
     public function getContentTypeLabels(): array
     {
         if (empty($this->contentTypeLabels)) {
-            $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('tt_content');
-            foreach ($schema->getSubSchemaDivisorField()?->getConfiguration()['items'] ?? [] as $val) {
-                $this->contentTypeLabels[$val['value']] = $this->getLanguageService()->sL($val['label']);
+            $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+            $schema = $schemaFactory->get('tt_content');
+            if ($schema->supportsSubSchema()) {
+                if (($schemaTypeInformation = $schema->getSubSchemaTypeInformation())->isPointerToForeignFieldInForeignSchema()) {
+                    $typeField = $schemaFactory->get($schemaTypeInformation->getForeignSchemaName())->getField($schemaTypeInformation->getForeignFieldName());
+                } else {
+                    $typeField = $schema->getField($schemaTypeInformation->getFieldName());
+                }
+                foreach ($typeField->getConfiguration()['items'] ?? [] as $val) {
+                    $this->contentTypeLabels[$val['value']] = $this->getLanguageService()->sL($val['label']);
+                }
             }
         }
         return $this->contentTypeLabels;
