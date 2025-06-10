@@ -202,7 +202,8 @@ class NewMultiplePagesController
         $removeItems = isset($pagesTsConfig['doktype.']['removeItems']) ? GeneralUtility::intExplode(',', $pagesTsConfig['doktype.']['removeItems'], true) : [];
         $allowedPageTypes = array_diff($types, $removeItems);
 
-        $pageTypeConfig = $this->tcaSchemaFactory->get('pages')->getSubSchemaDivisorField()->getConfiguration();
+        $schema = $this->tcaSchemaFactory->get('pages');
+        $pageTypeConfig = $schema->getField($schema->getSubSchemaTypeInformation()->getFieldName())->getConfiguration();
         $availablePageTypes = $this->pageDoktypeRegistry->getAllDoktypes();
 
         // Filter out unavailable types.

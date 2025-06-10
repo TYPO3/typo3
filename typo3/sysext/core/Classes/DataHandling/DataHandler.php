@@ -4816,10 +4816,11 @@ class DataHandler
         if ($languageCapability->hasTranslationSourceField()) {
             $overrideValues[$languageCapability->getTranslationSourceField()->getName()] = $uid;
         }
-        // Copy the type (if defined in both tables) from the original record so that translation has same type as original record
-        if ($schema->getSubSchemaDivisorField() !== null) {
-            // @todo: Possible bug here? type can be something like 'table:field', which is then null in $row, writing null to $overrideValues
-            $overrideValues[$schema->getSubSchemaDivisorField()->getName()] = $row[$schema->getSubSchemaDivisorField()->getName()] ?? null;
+        // Copy the value of the type from the original record so that translation has same type as original record
+        if ($schema->supportsSubSchema()) {
+            // @todo: We always copy the local field name, even on foreign table types, such as "uid_local:type"
+            $subSchemaDivisorFieldName = $schema->getSubSchemaTypeInformation()->getFieldName();
+            $overrideValues[$subSchemaDivisorFieldName] = $row[$subSchemaDivisorFieldName] ?? null;
         }
         // Set exclude Fields:
         foreach ($schema->getFields() as $field) {

@@ -502,21 +502,21 @@ final class TcaSchemaFactoryTest extends UnitTestCase
         $schema = $subject->get('myDefaultTable');
         self::assertTrue($schema->supportsSubSchema());
         $subSchemaTypeInformation = $schema->getSubSchemaTypeInformation();
-        self::assertFalse($subSchemaTypeInformation->isForeignTableType());
-        self::assertSame('myDefaultTable', $subSchemaTypeInformation->schemaName);
-        self::assertSame('type', $subSchemaTypeInformation->localFieldName);
-        self::assertNull($subSchemaTypeInformation->foreignFieldName);
-        self::assertNull($subSchemaTypeInformation->foreignSchemaName);
+        self::assertFalse($subSchemaTypeInformation->isPointerToForeignFieldInForeignSchema());
+        self::assertSame('myDefaultTable', $subSchemaTypeInformation->getSchemaName());
+        self::assertSame('type', $subSchemaTypeInformation->getFieldName());
+        self::assertNull($subSchemaTypeInformation->getForeignFieldName());
+        self::assertNull($subSchemaTypeInformation->getForeignSchemaName());
 
         $schema = $subject->get('myLocalTable');
         self::assertTrue($schema->supportsSubSchema());
         $subSchemaTypeInformation = $schema->getSubSchemaTypeInformation();
-        self::assertTrue($subSchemaTypeInformation->isForeignTableType());
-        self::assertSame('myLocalTable', $subSchemaTypeInformation->schemaName);
-        self::assertSame('uid_local', $subSchemaTypeInformation->localFieldName);
-        self::assertSame('CType', $subSchemaTypeInformation->foreignFieldName);
-        self::assertSame('myForeignTable', $subSchemaTypeInformation->foreignSchemaName);
-        self::assertSame([['value' => 'A', 'label' => 'A']], $subject->get($subSchemaTypeInformation->foreignSchemaName)->getField($subSchemaTypeInformation->foreignFieldName)->getConfiguration()['items']);
+        self::assertTrue($subSchemaTypeInformation->isPointerToForeignFieldInForeignSchema());
+        self::assertSame('myLocalTable', $subSchemaTypeInformation->getSchemaName());
+        self::assertSame('uid_local', $subSchemaTypeInformation->getFieldName());
+        self::assertSame('CType', $subSchemaTypeInformation->getForeignFieldName());
+        self::assertSame('myForeignTable', $subSchemaTypeInformation->getForeignSchemaName());
+        self::assertSame([['value' => 'A', 'label' => 'A']], $subject->get($subSchemaTypeInformation->getForeignSchemaName())->getField($subSchemaTypeInformation->getForeignFieldName())->getConfiguration()['items']);
     }
 
     #[Test]

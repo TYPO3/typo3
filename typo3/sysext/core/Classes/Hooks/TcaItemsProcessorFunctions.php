@@ -21,13 +21,13 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Configuration\FlexForm\Exception\InvalidIdentifierException;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\Field\CategoryFieldType;
-use TYPO3\CMS\Core\Schema\Field\StaticSelectFieldType;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -46,6 +46,7 @@ readonly class TcaItemsProcessorFunctions
         private ModuleProvider $moduleProvider,
         private FlexFormTools $flexFormTools,
         private TcaSchemaFactory $tcaSchemaFactory,
+        private PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     public function populateAvailableTables(array &$fieldDefinition): void
@@ -64,20 +65,12 @@ readonly class TcaItemsProcessorFunctions
 
     public function populateAvailablePageTypes(array &$fieldDefinition): void
     {
-        if (!$this->tcaSchemaFactory->has('pages')) {
-            return;
-        }
-        $pageSchema = $this->tcaSchemaFactory->get('pages');
-        /** @var StaticSelectFieldType $pageTypeFieldInformation */
-        $pageTypeFieldInformation = $pageSchema->getSubSchemaDivisorField();
-        $pageTypes = $pageTypeFieldInformation->getConfiguration()['items'] ?? [];
-        foreach ($pageTypes as $pageType) {
-            if (!is_array($pageType) || !isset($pageType['value']) || $pageType['value'] === '--div--') {
-                // Skip non arrays and divider items
+        foreach ($this->pageDoktypeRegistry->getAllDoktypes() as $pageType) {
+            if (!$pageType->getValue()) {
                 continue;
             }
-            $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $pageType['value']]);
-            $fieldDefinition['items'][] = ['label' => $pageType['label'], 'value' => $pageType['value'], 'icon' => $icon];
+            $icon = $this->iconFactory->mapRecordTypeToIconIdentifier('pages', ['doktype' => $pageType->getValue()]);
+            $fieldDefinition['items'][] = ['label' => $pageType->getLabel(), 'value' => $pageType->getValue(), 'icon' => $icon];
         }
     }
 

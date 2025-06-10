@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Beuser\Service;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\Imaging\Icon;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -39,6 +40,7 @@ final readonly class UserInformationService
         protected IconFactory $iconFactory,
         protected ModuleProvider $moduleProvider,
         protected TcaSchemaFactory $tcaSchemaFactory,
+        protected PageDoktypeRegistry $pageDoktypeRegistry,
     ) {}
 
     /**
@@ -232,16 +234,13 @@ final readonly class UserInformationService
         $data['non_exclude_fields'] = $fieldList;
 
         // page types
-        /** @var StaticSelectFieldType $specialItemsField */
-        $specialItemsField = $this->tcaSchemaFactory->get('pages')->getSubSchemaDivisorField();
-        foreach ($specialItemsField->getConfiguration()['items'] ?? [] as $specialItem) {
-            $value = $specialItem['value'];
-            if (!GeneralUtility::inList($user->groupData['pagetypes_select'] ?? '', $value)) {
+        foreach ($this->pageDoktypeRegistry->getAllDoktypes() as $specialItem) {
+            if (!GeneralUtility::inList($user->groupData['pagetypes_select'] ?? '', $specialItem->getValue())) {
                 continue;
             }
-            $label = $specialItem['label'];
-            $icon = $specialItem['icon'] ?? 'apps-pagetree-page-default';
-            $data['pageTypes'][] = ['label' => $label, 'value' => $value, 'icon' => $icon];
+            $label = $specialItem->getLabel();
+            $icon = $specialItem->getIcon() ?? 'apps-pagetree-page-default';
+            $data['pageTypes'][] = ['label' => $label, 'value' => $specialItem->getValue(), 'icon' => $icon];
         }
 
         // page content types

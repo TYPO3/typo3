@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Backend\Preview;
 
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -48,8 +49,21 @@ class StandardPreviewRendererResolver
     {
         $schema = $this->tcaSchemaFactory->get($table);
         $previewRendererClassName = null;
-        if ($schema->getSubSchemaDivisorField()) {
-            $tcaTypeOfRow = $row[$schema->getSubSchemaDivisorField()->getName()];
+        if ($schema->supportsSubSchema()) {
+            $tcaTypeOfRow = '';
+            $subSchemaTypeInformation = $schema->getSubSchemaTypeInformation();
+            if ($subSchemaTypeInformation->isPointerToForeignFieldInForeignSchema()) {
+                if ($this->tcaSchemaFactory->has($subSchemaTypeInformation->getForeignSchemaName())) {
+                    // Note: We override the schema here to work on the foreign schema from now on.
+                    $schema = $this->tcaSchemaFactory->get($subSchemaTypeInformation->getForeignSchemaName());
+                    if (isset($row[$subSchemaTypeInformation->getFieldName()]) && $schema->hasField($subSchemaTypeInformation->getForeignFieldName())) {
+                        $foreignRecord = BackendUtility::getRecord($subSchemaTypeInformation->getForeignSchemaName(), $row[$subSchemaTypeInformation->getFieldName()], $subSchemaTypeInformation->getForeignFieldName());
+                        $tcaTypeOfRow = (string)($foreignRecord[$subSchemaTypeInformation->getForeignFieldName()] ?? '');
+                    }
+                }
+            } else {
+                $tcaTypeOfRow = (string)($row[$subSchemaTypeInformation->getFieldName()] ?? '');
+            }
             if ($schema->hasSubSchema($tcaTypeOfRow)) {
                 // Outdated subschemas may still be present in the database fields, this must not block backend rendering and utilize fallback.
                 $subSchema = $schema->getSubSchema($tcaTypeOfRow);

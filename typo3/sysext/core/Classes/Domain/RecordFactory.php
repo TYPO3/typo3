@@ -152,9 +152,9 @@ readonly class RecordFactory
         }
         $schema = $this->schemaFactory->get($table);
         $fullType = $table;
-        $subSchemaDivisorField = $schema->getSubSchemaDivisorField();
-        if ($subSchemaDivisorField !== null) {
-            $subSchemaDivisorFieldName = $subSchemaDivisorField->getName();
+        if ($schema->supportsSubSchema() && ($subSchemaTypeInformation = $schema->getSubSchemaTypeInformation())->isPointerToForeignFieldInForeignSchema() === false) {
+            // @todo Limitation to local SubSchemaDivisorField, because the actual record type is defined in foreign record.
+            $subSchemaDivisorFieldName = $subSchemaTypeInformation->getFieldName();
             if (!isset($record[$subSchemaDivisorFieldName])) {
                 throw new \InvalidArgumentException(
                     'Missing typeField "' . $subSchemaDivisorFieldName . '" in record of requested table "' . $table . '".',

@@ -564,8 +564,8 @@ class DatabaseRecordList
                 $selectFields[] = $schema->getCapability($capability)->getFieldName();
             }
         }
-        if ($schema->getSubSchemaDivisorField()) {
-            $selectFields[] = $schema->getSubSchemaDivisorField()->getName();
+        if ($schema->supportsSubSchema()) {
+            $selectFields[] = $schema->getSubSchemaTypeInformation()->getFieldName();
         }
         if ($schema->getRawConfiguration()['typeicon_column'] ?? false) {
             $selectFields[] = $schema->getRawConfiguration()['typeicon_column'];

@@ -144,8 +144,9 @@ class PageDoktypeRegistry
     public function getAllDoktypes(): array
     {
         $doktypeLabelMap = [];
-
-        foreach ($this->tcaSchemaFactory->get('pages')->getSubSchemaDivisorField()->getConfiguration()['items'] as $doktypeItemConfig) {
+        $schema = $this->tcaSchemaFactory->get('pages');
+        // @todo Does not work for dynamic items, in case SubSchemaDivisorField is no StaticSelectFieldType!
+        foreach ($schema->getField($schema->getSubSchemaTypeInformation()->getFieldName())->getConfiguration()['items'] ?? [] as $doktypeItemConfig) {
             $selectionItem = SelectItem::fromTcaItemArray($doktypeItemConfig);
             if ($selectionItem->isDivider()) {
                 continue;

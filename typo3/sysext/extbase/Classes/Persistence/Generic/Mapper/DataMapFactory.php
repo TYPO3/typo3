@@ -151,8 +151,9 @@ readonly class DataMapFactory
             frontendUserGroupColumnName: $schema?->hasCapability(TcaSchemaCapability::RestrictionUserGroup)
                 ? (string)$schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)
                 : null,
-            recordTypeColumnName: $schema?->getSubSchemaDivisorField()
-                ? $schema->getSubSchemaDivisorField()->getName()
+            // @todo Check how to resolve foreign table types properly - if possible at all in this scenario
+            recordTypeColumnName: $schema?->supportsSubSchema() && !$schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()
+                ? $schema->getSubSchemaTypeInformation()->getFieldName()
                 : null,
             isStatic: (bool)($schema?->getRawConfiguration()['is_static'] ?? false),
             // @todo We should remove DataMap in order to use TcaSchema directly

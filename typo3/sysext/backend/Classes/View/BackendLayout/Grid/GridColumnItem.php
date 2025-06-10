@@ -358,7 +358,10 @@ class GridColumnItem extends AbstractGridObject
 
     public function getTypeColumn(): string
     {
-        return $this->schema->getSubSchemaDivisorField()?->getName() ?? '';
+        // @todo This only supports local record types due to usages in this class
+        return $this->schema->supportsSubSchema() && !$this->schema->getSubSchemaTypeInformation()->isPointerToForeignFieldInForeignSchema()
+            ? $this->schema->getSubSchemaTypeInformation()->getFieldName()
+            : '';
     }
 
     public function getRecordType(): string

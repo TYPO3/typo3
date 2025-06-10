@@ -29,17 +29,37 @@ namespace TYPO3\CMS\Core\Schema;
  *
  * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
-class SchemaTypeInformation
+final readonly class SchemaTypeInformation
 {
     public function __construct(
-        public string $schemaName,
-        public string $localFieldName,
-        public ?string $foreignFieldName = null,
-        public ?string $foreignSchemaName = null
+        private string $schemaName,
+        private string $fieldName,
+        private ?string $foreignFieldName = null,
+        private ?string $foreignSchemaName = null
     ) {}
 
-    public function isForeignTableType(): bool
+    public function isPointerToForeignFieldInForeignSchema(): bool
     {
         return $this->foreignFieldName !== null && $this->foreignSchemaName !== null;
+    }
+
+    public function getSchemaName(): string
+    {
+        return $this->schemaName;
+    }
+
+    public function getFieldName(): string
+    {
+        return $this->fieldName;
+    }
+
+    public function getForeignSchemaName(): ?string
+    {
+        return $this->foreignSchemaName;
+    }
+
+    public function getForeignFieldName(): ?string
+    {
+        return $this->foreignFieldName;
     }
 }

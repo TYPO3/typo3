@@ -22,6 +22,7 @@ use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Module\ModuleFactory;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
+use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Hooks\TcaItemsProcessorFunctions;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -92,10 +93,6 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
     #[Test]
     public function populateAvailablePageTypesTest(): void
     {
-        $fieldDefinition = [
-            'items' => [],
-        ];
-        $this->get(TcaItemsProcessorFunctions::class)->populateAvailablePageTypes($fieldDefinition);
         $GLOBALS['TCA']['pages']['columns']['doktype']['config']['items'] = [
             0 => [
                 'label' => 'Divider',
@@ -174,6 +171,7 @@ final class TcaItemsProcessorFunctionsTest extends FunctionalTestCase
             $moduleProviderMock,
             $this->get(FlexFormTools::class),
             $this->get(TcaSchemaFactory::class),
+            $this->get(PageDoktypeRegistry::class),
         );
         $subject->populateAvailableUserModules($fieldDefinition);
         self::assertSame($expected, $fieldDefinition);
