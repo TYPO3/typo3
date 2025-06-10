@@ -85,6 +85,7 @@ Extension authors must implement the following changes:
     elements defined by third-party extensions like
     :composer:`ichhabrecht/content-defender`.
 
+
 Common example
 ^^^^^^^^^^^^^^
 

@@ -2689,4 +2689,59 @@ return [
             'Breaking-107945-ClassFlexFormServiceMergedIntoFlexFormTools.rst',
         ],
     ],
+    'TYPO3\CMS\Install\Attribute\UpgradeWizard' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\ChattyInterface' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\ConfirmableInterface' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\Confirmation' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\PrerequisiteInterface' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\RepeatableInterface' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\UpgradeWizardInterface' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\AbstractListTypeToCTypeUpdate' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
+    'TYPO3\CMS\Install\Updates\PrerequisiteCollection' => [
+        'restFiles' => [
+            'Deprecation-106947-MoveUpgradeWizardRelatedInterfacesAndAttributeToEXTcore.rst',
+        ],
+    ],
 ];

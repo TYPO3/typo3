@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
+use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\TypoScript\AST\CommentAwareAstBuilder;
 use TYPO3\CMS\Core\TypoScript\AST\Traverser\AstTraverser;
@@ -88,7 +89,6 @@ class ServiceProvider extends AbstractServiceProvider
             Service\SilentConfigurationUpgradeService::class => self::getSilentConfigurationUpgradeService(...),
             Service\SilentTemplateFileUpgradeService::class => self::getSilentTemplateFileUpgradeService(...),
             Service\WebServerConfigurationFileService::class => self::getWebServerConfigurationFileService(...),
-            Service\DatabaseUpgradeWizardsService::class => self::getDatabaseUpgradeWizardsService(...),
             Service\SessionService::class => self::getSessionService(...),
             Service\SetupService::class => self::getSetupService(...),
             Service\SetupDatabaseService::class => self::getSetupDatabaseService(...),
@@ -224,11 +224,6 @@ class ServiceProvider extends AbstractServiceProvider
         return self::new($container, Service\WebServerConfigurationFileService::class);
     }
 
-    public static function getDatabaseUpgradeWizardsService(ContainerInterface $container): Service\DatabaseUpgradeWizardsService
-    {
-        return self::new($container, Service\DatabaseUpgradeWizardsService::class);
-    }
-
     public static function getSessionService(ContainerInterface $container): Service\SessionService
     {
         return new Service\SessionService(
@@ -360,7 +355,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\UpgradeController(
             $container->get(PackageManager::class),
             $container->get(Service\LateBootService::class),
-            $container->get(Service\DatabaseUpgradeWizardsService::class),
+            $container->get(DatabaseUpgradeWizardsService::class),
             $container->get(FormProtectionFactory::class),
             $container->get(LoadTcaService::class)
         );
@@ -379,7 +374,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Command\UpgradeWizardRunCommand(
             'upgrade:run',
             $container->get(Service\LateBootService::class),
-            $container->get(Service\DatabaseUpgradeWizardsService::class),
+            $container->get(DatabaseUpgradeWizardsService::class),
             $container->get(Service\SilentConfigurationUpgradeService::class)
         );
     }

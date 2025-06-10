@@ -15,11 +15,16 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Core\Upgrades;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class PrerequisiteCollection implements \IteratorAggregate
+/**
+ * Collection of prerequisites used internally in upgrade wizard commands.
+ *
+ * @internal for use in upgrade wizard command only and not part of public API.
+ */
+final class PrerequisiteCollection implements \IteratorAggregate
 {
     /**
      * @var \ArrayObject

@@ -17,9 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite;
+use TYPO3\CMS\Core\Upgrades\RepeatableInterface;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
 /**
  * Update fields imagewidth & imageheight to NULL if their value is 0

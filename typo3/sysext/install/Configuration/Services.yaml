@@ -39,9 +39,6 @@ services:
     tags:
       - name: reports.status
 
-  TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite:
-    public: true
-
   TYPO3\CMS\Install\Service\UpgradeWizardsService:
     public: true
 
@@ -49,7 +46,3 @@ services:
     public: true
     arguments:
       $useMarkup: true
-
-  TYPO3\CMS\Install\Updates\UpgradeWizardRegistry:
-    arguments:
-      $upgradeWizards: !tagged_locator { tag: 'install.upgradewizard', index_by: 'identifier' }

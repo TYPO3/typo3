@@ -17,9 +17,13 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate as CoreImplementation;
+
 /**
- * Use if wizard may be run multiple times (and should not be disabled after one run)
+ * This class can be extended by 3rd party extensions to easily add a custom
+ * `list_type` to `CType` update for deprecated "plugin" content element usages.
  *
- * Semantic/Marker interface only
+ * @since 13.4
+ * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Upgrades\AbstractListTypeToCTypeUpdate instead.
  */
-interface RepeatableInterface {}
+abstract class AbstractListTypeToCTypeUpdate extends CoreImplementation {}

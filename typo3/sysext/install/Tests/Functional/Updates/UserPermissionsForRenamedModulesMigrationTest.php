@@ -32,7 +32,6 @@ final class UserPermissionsForRenamedModulesMigrationTest extends FunctionalTest
         $subject = new UserPermissionsForRenamedModulesMigration();
         $ref = new \ReflectionClass($subject);
         $moduleRenamingProp = $ref->getProperty('moduleRenaming');
-        $moduleRenamingProp->setAccessible(true);
         $moduleRenamingProp->setValue($subject, [
             'old_module_a' => 'new_module_a',
             'old_module_b' => 'new_module_b',

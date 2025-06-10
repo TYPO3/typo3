@@ -15,17 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
-
-use Symfony\Component\Console\Output\OutputInterface;
+namespace TYPO3\CMS\Core\Upgrades;
 
 /**
- * Is this upgradeWizard chatty aka does it need to output things?
+ * Use if wizard may be run multiple times (and should not be disabled after one run)
+ *
+ * Semantic/Marker interface only
  */
-interface ChattyInterface
-{
-    /**
-     * Setter injection for output into upgrade wizards
-     */
-    public function setOutput(OutputInterface $output): void;
-}
+interface RepeatableInterface {}

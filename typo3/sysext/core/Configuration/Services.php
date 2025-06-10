@@ -14,6 +14,7 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use TYPO3\CMS\Core\Attribute\AsAllowedCallable;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 
 return static function (ContainerConfigurator $container, ContainerBuilder $containerBuilder) {
     $containerBuilder->registerForAutoconfiguration(SingletonInterface::class)->addTag('typo3.singleton');
@@ -112,6 +113,13 @@ return static function (ContainerConfigurator $container, ContainerBuilder $cont
                 'method' => $reflector->getName(),
             ]);
         }
+    );
+
+    $containerBuilder->registerAttributeForAutoconfiguration(
+        UpgradeWizard::class,
+        static function (ChildDefinition $definition, UpgradeWizard $attribute): void {
+            $definition->addTag(UpgradeWizard::TAG_NAME, ['identifier' => $attribute->identifier]);
+        },
     );
 
     $containerBuilder->addCompilerPass(new DependencyInjection\SingletonPass('typo3.singleton'));

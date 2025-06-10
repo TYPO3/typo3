@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+
+namespace TYPO3\CMS\Install\Attribute;
+
+use TYPO3\CMS\Core\Attribute\UpgradeWizard as CoreAttributeUpgradeWizard;
+
+/**
+ * Service tag to autoconfigure upgrade wizards
+ * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Attribute\UpgradeWizard instead.
+ */
+#[\Attribute(\Attribute::TARGET_CLASS)]
+class UpgradeWizard extends CoreAttributeUpgradeWizard {}

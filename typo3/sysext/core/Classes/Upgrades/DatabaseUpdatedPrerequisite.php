@@ -15,17 +15,17 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Core\Upgrades;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
-use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
+use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 
 /**
  * Prerequisite for upgrade wizards to ensure the database is up-to-date
  *
- * @internal
+ * @final with TYPO3 v15 when {@see \TYPO3\CMS\Install\Updates\DatabaseUpdatedPrerequisite} is removed.
  */
 #[Autoconfigure(public: true)]
 class DatabaseUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface

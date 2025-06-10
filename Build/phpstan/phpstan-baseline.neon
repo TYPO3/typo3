@@ -1177,6 +1177,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/TypoScript/IncludeTree/Visitor/IncludeTreeConditionMatcherVisitor.php
 
 		-
+			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Upgrades/AbstractListTypeToCTypeUpdate.php
+
+		-
 			message: '#^Call to function is_array\(\) with non\-empty\-array will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
@@ -2621,12 +2627,6 @@ parameters:
 			identifier: throws.unusedType
 			count: 1
 			path: ../../typo3/sysext/install/Classes/Service/UpgradeWizardsService.php
-
-		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/install/Classes/Updates/AbstractListTypeToCTypeUpdate.php
 
 		-
 			message: '#^Negated boolean expression is always false\.$#'

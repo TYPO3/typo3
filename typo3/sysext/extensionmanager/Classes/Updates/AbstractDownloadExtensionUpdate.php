@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Extensionmanager\Updates;
 
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Upgrades\ChattyInterface;
+use TYPO3\CMS\Core\Upgrades\ConfirmableInterface;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 use TYPO3\CMS\Extensionmanager\Exception\ExtensionManagerException;
 use TYPO3\CMS\Extensionmanager\Remote\DownloadFailedException;
 use TYPO3\CMS\Extensionmanager\Remote\RemoteRegistry;
@@ -26,9 +29,6 @@ use TYPO3\CMS\Extensionmanager\Remote\VerificationFailedException;
 use TYPO3\CMS\Extensionmanager\Utility\FileHandlingUtility;
 use TYPO3\CMS\Extensionmanager\Utility\InstallUtility;
 use TYPO3\CMS\Extensionmanager\Utility\ListUtility;
-use TYPO3\CMS\Install\Updates\ChattyInterface;
-use TYPO3\CMS\Install\Updates\ConfirmableInterface;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Download extension from TER

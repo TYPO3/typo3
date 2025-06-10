@@ -68,6 +68,8 @@ final class AnnotationChecker extends AbstractPhpIntegrityChecker
                         [
                             // PHPStan
                             'phpstan-type', 'phpstan-import-type',
+                            // Planned to make final, but breaking or still current core usage
+                            'final',
                         ]
                     );
                 }

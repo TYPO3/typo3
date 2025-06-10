@@ -15,17 +15,11 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Attribute;
+namespace TYPO3\CMS\Install\Updates;
+
+use TYPO3\CMS\Core\Upgrades\ChattyInterface as CoreInterface;
 
 /**
- * Service tag to autoconfigure upgrade wizards
+ * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Upgrades\ChattyInterface instead.
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
-class UpgradeWizard
-{
-    public const TAG_NAME = 'install.upgradewizard';
-
-    public function __construct(
-        public string $identifier
-    ) {}
-}
+interface ChattyInterface extends CoreInterface {}

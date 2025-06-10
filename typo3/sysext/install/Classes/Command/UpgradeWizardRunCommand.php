@@ -27,21 +27,21 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Configuration\Exception\SettingsWriteException;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
+use TYPO3\CMS\Core\Upgrades\ChattyInterface;
+use TYPO3\CMS\Core\Upgrades\ConfirmableInterface;
+use TYPO3\CMS\Core\Upgrades\PrerequisiteCollection;
+use TYPO3\CMS\Core\Upgrades\RepeatableInterface;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Command\Exception\WizardDoesNotNeedToMakeChangesException;
 use TYPO3\CMS\Install\Command\Exception\WizardMarkedAsDoneException;
 use TYPO3\CMS\Install\Command\Exception\WizardNotFoundException;
-use TYPO3\CMS\Install\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Install\Service\Exception\ConfigurationChangedException;
 use TYPO3\CMS\Install\Service\Exception\SilentConfigurationUpgradeReadonlyException;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
-use TYPO3\CMS\Install\Updates\ChattyInterface;
-use TYPO3\CMS\Install\Updates\ConfirmableInterface;
-use TYPO3\CMS\Install\Updates\PrerequisiteCollection;
-use TYPO3\CMS\Install\Updates\RepeatableInterface;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Upgrade wizard command for running wizards

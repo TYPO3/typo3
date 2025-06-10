@@ -113,6 +113,7 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\ResourceFactory::class => self::getResourceFactory(...),
             Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
             Resource\StorageRepository::class => self::getStorageRepository(...),
+            Service\DatabaseUpgradeWizardsService::class => self::getDatabaseUpgradeWizardsService(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
             // @deprecated since TYPO3 v14, will be removed in TYPO3 v15
             Service\FlexFormService::class => self::getFlexFormService(...),
@@ -678,6 +679,11 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getHashService(): HashService
     {
         return new HashService();
+    }
+
+    public static function getDatabaseUpgradeWizardsService(ContainerInterface $container): Service\DatabaseUpgradeWizardsService
+    {
+        return self::new($container, Service\DatabaseUpgradeWizardsService::class);
     }
 
     public static function provideFallbackEventDispatcher(

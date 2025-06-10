@@ -21,13 +21,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use TYPO3\CMS\Core\Authentication\CommandLineUserAuthentication;
 use TYPO3\CMS\Core\Core\Bootstrap;
+use TYPO3\CMS\Core\Upgrades\ChattyInterface;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\UpgradeWizardsService;
-use TYPO3\CMS\Install\Updates\ChattyInterface;
-use TYPO3\CMS\Install\Updates\UpgradeWizardInterface;
 
 /**
  * Upgrade wizard command for listing wizards
@@ -39,7 +40,7 @@ class UpgradeWizardListCommand extends Command
     private UpgradeWizardsService $upgradeWizardsService;
 
     /**
-     * @var OutputInterface|\Symfony\Component\Console\Style\StyleInterface
+     * @var OutputInterface|StyleInterface
      */
     private $output;
 

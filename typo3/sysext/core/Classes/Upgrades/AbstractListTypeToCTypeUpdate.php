@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Core\Upgrades;
 
 use Doctrine\DBAL\Schema\Column;
 use TYPO3\CMS\Core\Database\Connection;

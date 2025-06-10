@@ -15,11 +15,12 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Core\Upgrades;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Command\ProgressListener\ReferenceIndexProgressListener;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -29,8 +30,9 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * Defines that the reference index needs to be up-to-date before an upgrade wizard may be run
  *
- * @internal
+ * @final with TYPO3 v15 when {@see \TYPO3\CMS\Install\Updates\ReferenceIndexUpdatedPrerequisite} is removed.
  */
+#[Autoconfigure(public: true)]
 class ReferenceIndexUpdatedPrerequisite implements PrerequisiteInterface, ChattyInterface
 {
     protected OutputInterface $output;

@@ -20,10 +20,12 @@ namespace TYPO3\CMS\Install\Updates;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Schema\Table;
 use Symfony\Component\Console\Output\OutputInterface;
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Domain\Repository\PageRepository;
+use TYPO3\CMS\Core\Upgrades\ChattyInterface as CoreChattyInterface;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface as CoreUpgradeWizardInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * Migrates `pages.url` field values for `pages.doktype = 3 (Link)` to
@@ -35,7 +37,7 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
  * @todo Remove in 16.0 as breaking change.
  */
 #[UpgradeWizard('pageDoktypeLinkMigration')]
-class PageDoktypeLinkMigration implements UpgradeWizardInterface, ChattyInterface
+class PageDoktypeLinkMigration implements CoreUpgradeWizardInterface, CoreChattyInterface
 {
     protected ?OutputInterface $output = null;
 

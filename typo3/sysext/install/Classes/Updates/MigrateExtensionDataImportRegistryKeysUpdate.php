@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Registry;
+use TYPO3\CMS\Core\Upgrades\DatabaseUpdatedPrerequisite as CoreDatabaseUpdatedPrerequisite;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface as CoreUpgradeWizardInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * Migrate extension data import registry keys from path-based to extension key-based format
@@ -31,7 +33,7 @@ use TYPO3\CMS\Install\Attribute\UpgradeWizard;
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('migrateExtensionDataImportRegistryKeys')]
-class MigrateExtensionDataImportRegistryKeysUpdate implements UpgradeWizardInterface
+class MigrateExtensionDataImportRegistryKeysUpdate implements CoreUpgradeWizardInterface
 {
     public function getTitle(): string
     {
@@ -114,7 +116,7 @@ class MigrateExtensionDataImportRegistryKeysUpdate implements UpgradeWizardInter
     public function getPrerequisites(): array
     {
         return [
-            DatabaseUpdatedPrerequisite::class,
+            CoreDatabaseUpdatedPrerequisite::class,
         ];
     }
 

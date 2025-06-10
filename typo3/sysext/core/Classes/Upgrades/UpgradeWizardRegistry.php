@@ -15,8 +15,9 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Install\Updates;
+namespace TYPO3\CMS\Core\Upgrades;
 
+use Symfony\Component\DependencyInjection\Attribute\AutowireLocator;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 /**
@@ -28,6 +29,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 class UpgradeWizardRegistry
 {
     public function __construct(
+        #[AutowireLocator(services: 'install.upgradewizard', indexAttribute: 'identifier')]
         private readonly ServiceLocator $upgradeWizards
     ) {}
 

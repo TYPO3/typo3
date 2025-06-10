@@ -17,16 +17,17 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface as CoreUpgradeWizardInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
 
 /**
  * @since 14.0
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
 #[UpgradeWizard('userPermissionsForRenamedModulesMigration')]
-class UserPermissionsForRenamedModulesMigration implements UpgradeWizardInterface
+class UserPermissionsForRenamedModulesMigration implements CoreUpgradeWizardInterface
 {
     protected array $tables = [
         'be_groups' => 'groupMods',

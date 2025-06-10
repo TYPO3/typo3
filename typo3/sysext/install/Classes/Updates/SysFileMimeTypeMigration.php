@@ -17,10 +17,12 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Attribute\UpgradeWizard;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Resource\MimeTypeCompatibilityTypeGuesser;
-use TYPO3\CMS\Install\Attribute\UpgradeWizard;
+use TYPO3\CMS\Core\Upgrades\RepeatableInterface;
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface;
 
 /**
  * @since 12.4

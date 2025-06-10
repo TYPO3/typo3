@@ -17,13 +17,9 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Updates;
 
+use TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface as CoreInterface;
+
 /**
- * Use if upgrade wizard needs confirmation
+ * @deprecated since v14.0, will be removed in TYPO34 v15.0. Use \TYPO3\CMS\Core\Upgrades\UpgradeWizardInterface instead.
  */
-interface ConfirmableInterface
-{
-    /**
-     * Return a confirmation message instance
-     */
-    public function getConfirmation(): Confirmation;
-}
+interface UpgradeWizardInterface extends CoreInterface {}
