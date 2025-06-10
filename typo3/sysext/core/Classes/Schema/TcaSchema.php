@@ -292,14 +292,6 @@ readonly class TcaSchema implements SchemaInterface
         );
     }
 
-    public function getSubSchemaDivisorField(): ?FieldTypeInterface
-    {
-        if (isset($this->schemaConfiguration['type']) && isset($this->fields[$this->schemaConfiguration['type']])) {
-            return $this->fields[$this->schemaConfiguration['type']];
-        }
-        return null;
-    }
-
     /**
      * @return PassiveRelation[]
      */
