@@ -365,6 +365,17 @@ return [
                 'application/x-dosexec' => [
                     'exe' => 'application/x-msdos-program',
                 ],
+                // Encrypted Office Open XML documents
+                'application/encrypted' => [
+                    'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                    'sldx' => 'application/vnd.openxmlformats-officedocument.presentationml.slide',
+                    'ppsx' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+                    'potx' => 'application/vnd.openxmlformats-officedocument.presentationml.template',
+                    'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'xltx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.template',
+                    'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'dotx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.template',
+                ],
                 // Word
                 // https://support.microsoft.com/en-us/office/open-xml-formats-and-file-name-extensions-5200d93c-3449-4380-8e11-31ef14555b18#ID0EDFBF
                 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' => [
