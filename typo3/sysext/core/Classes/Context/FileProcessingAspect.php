@@ -23,27 +23,20 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * The aspect contains the processed file representation that is requested to process locally.
  *
  * Allowed properties:
- * - file
+ * - deferProcessing
  */
-class FileProcessingAspect implements AspectInterface
+final readonly class FileProcessingAspect implements AspectInterface
 {
-    /**
-     * @var bool
-     */
-    private $deferProcessing;
-
-    public function __construct(bool $deferProcessing = true)
-    {
-        $this->deferProcessing = $deferProcessing;
-    }
+    public function __construct(
+        private bool $deferProcessing = true,
+    ) {}
 
     /**
      * Fetch the values
      *
-     * @return bool
      * @throws AspectPropertyNotFoundException
      */
-    public function get(string $name)
+    public function get(string $name): bool
     {
         if ($name === 'deferProcessing') {
             return $this->deferProcessing;

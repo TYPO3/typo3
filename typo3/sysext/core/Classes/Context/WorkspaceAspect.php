@@ -27,25 +27,18 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * - isLive
  * - isOffline
  */
-class WorkspaceAspect implements AspectInterface
+final readonly class WorkspaceAspect implements AspectInterface
 {
-    /**
-     * @var int
-     */
-    protected $workspaceId;
-
-    public function __construct(int $workspaceId = 0)
-    {
-        $this->workspaceId = $workspaceId;
-    }
+    public function __construct(
+        private int $workspaceId = 0,
+    ) {}
 
     /**
      * Fetch the workspace ID, or evaluated the state if it's 'online' or 'offline'
      *
-     * @return int|bool
      * @throws AspectPropertyNotFoundException
      */
-    public function get(string $name)
+    public function get(string $name): int|bool
     {
         switch ($name) {
             case 'id':

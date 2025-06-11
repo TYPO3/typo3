@@ -30,26 +30,20 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * - timezone - America/Los_Angeles
  * - iso - datetime as string in ISO 8601 format, e.g. `2004-02-12T15:19:21+00:00`
  * - full - the DateTimeImmutable object
+ * - accessTime - 60 seconds precision timestamp
  */
-class DateTimeAspect implements AspectInterface
+final readonly class DateTimeAspect implements AspectInterface
 {
-    /**
-     * @var \DateTimeImmutable
-     */
-    protected $dateTimeObject;
-
-    public function __construct(\DateTimeImmutable $dateTimeImmutable)
-    {
-        $this->dateTimeObject = $dateTimeImmutable;
-    }
+    public function __construct(
+        private \DateTimeImmutable $dateTimeObject,
+    ) {}
 
     /**
      * Fetch a property of the date time object or the object itself ("full").
      *
-     * @return \DateTimeImmutable|string|int
      * @throws AspectPropertyNotFoundException
      */
-    public function get(string $name)
+    public function get(string $name): \DateTimeImmutable|string|int
     {
         switch ($name) {
             case 'timestamp':

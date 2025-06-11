@@ -26,50 +26,29 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * - includeHiddenPages
  * - includeHiddenContent
  * - includeDeletedRecords
+ * - includeScheduledRecords
  */
-class VisibilityAspect implements AspectInterface
+final readonly class VisibilityAspect implements AspectInterface
 {
-    /**
-     * @var bool
-     */
-    protected $includeHiddenPages;
-
-    /**
-     * @var bool
-     */
-    protected $includeHiddenContent;
-
-    /**
-     * @var bool
-     */
-    protected $includeScheduledRecords;
-
-    /**
-     * @var bool
-     */
-    protected $includeDeletedRecords;
-
     /**
      * @param bool $includeHiddenPages whether to include hidden=1 in pages tables
      * @param bool $includeHiddenContent whether to include hidden=1 in tables except for pages
      * @param bool $includeScheduledRecords whether to ignore access time in tables
      * @param bool $includeDeletedRecords whether to include deleted=1 records (only for use in recycler)
      */
-    public function __construct(bool $includeHiddenPages = false, bool $includeHiddenContent = false, bool $includeDeletedRecords = false, bool $includeScheduledRecords = false)
-    {
-        $this->includeHiddenPages = $includeHiddenPages;
-        $this->includeHiddenContent = $includeHiddenContent;
-        $this->includeDeletedRecords = $includeDeletedRecords;
-        $this->includeScheduledRecords = $includeScheduledRecords;
-    }
+    public function __construct(
+        private bool $includeHiddenPages = false,
+        private bool $includeHiddenContent = false,
+        private bool $includeDeletedRecords = false,
+        private bool $includeScheduledRecords = false,
+    ) {}
 
     /**
      * Fetch the values
      *
-     * @return int|bool
      * @throws AspectPropertyNotFoundException
      */
-    public function get(string $name)
+    public function get(string $name): bool
     {
         switch ($name) {
             case 'includeHiddenPages':
