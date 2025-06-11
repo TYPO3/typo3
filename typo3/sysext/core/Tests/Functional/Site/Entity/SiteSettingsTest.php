@@ -43,6 +43,7 @@ final class SiteSettingsTest extends FunctionalTestCase
         self::assertSame('a', $settings->get('foo.bar.baz.0'));
         self::assertTrue($settings->has('foo.bar.baz.1'));
         self::assertSame('b', $settings->get('foo.bar.baz.1'));
+        self::assertSame(['foo.bar.baz'], $settings->getIdentifiers());
     }
 
     #[Test]
@@ -64,6 +65,7 @@ final class SiteSettingsTest extends FunctionalTestCase
 
         self::assertTrue($settings->isEmpty());
         self::assertFalse($settings->has('foo.bar.baz'));
+        self::assertSame([], $settings->getIdentifiers());
 
         $invalidSets = $this->get(SetRegistry::class)->getInvalidSets();
         self::assertSame(SetError::invalidSettingsDefinitions, $invalidSets['typo3tests/site-settings-set-with-invalid-settings-default']['error']);
@@ -71,16 +73,107 @@ final class SiteSettingsTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function excpetionIsThrownForInvalidSettingsType(): void
+    public function exceptionIsThrownForInvalidSettingsType(): void
     {
         $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
         $settings = $siteSettingsFactory->composeSettings([], ['typo3tests/site-settings-set-with-invalid-settings-type']);
 
         self::assertTrue($settings->isEmpty());
         self::assertFalse($settings->has('foo.bar.baz'));
+        self::assertSame([], $settings->getIdentifiers());
 
         $invalidSets = $this->get(SetRegistry::class)->getInvalidSets();
         self::assertSame(SetError::invalidSettingsDefinitions, $invalidSets['typo3tests/site-settings-set-with-invalid-settings-type']['error']);
         self::assertStringContainsString('Invalid settings type', $invalidSets['typo3tests/site-settings-set-with-invalid-settings-type']['context']);
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsMap(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings([], ['typo3tests/site-settings-map']);
+
+        // Available because of definition from settings.definitions.yaml
+        self::assertSame('baz', $settings->get('foo.bar'));
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsMapWithMapOverride(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(['foo.bar' => 'override'], ['typo3tests/site-settings-map']);
+
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame('override', $settings->get('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsMapWithTreeOverride(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(['foo' => ['bar' => 'override']], ['typo3tests/site-settings-map']);
+
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame('override', $settings->get('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsMapWithMapAndTreeOverride(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(['foo.bar' => 'override2', 'foo' => ['bar' => 'override']], ['typo3tests/site-settings-map']);
+
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame('override2', $settings->get('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsTree(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings([], ['typo3tests/site-settings-legacy-tree']);
+
+        // Available because of definition from settings.definitions.yaml
+        self::assertSame('baz', $settings->get('foo.bar'));
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsTreeWithMapOverride(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(['foo.bar' => 'override'], ['typo3tests/site-settings-legacy-tree']);
+
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame('override', $settings->get('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsTreeWithTreeOverride(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(['foo' => ['bar' => 'override']], ['typo3tests/site-settings-legacy-tree']);
+
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame('override', $settings->get('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
+    }
+
+    #[Test]
+    public function retrieveSettingsFromSettingsTreeWithMapAndTreeOverride(): void
+    {
+        $siteSettingsFactory = $this->get(SiteSettingsFactory::class);
+        $settings = $siteSettingsFactory->composeSettings(['foo.bar' => 'override2', 'foo' => ['bar' => 'override']], ['typo3tests/site-settings-legacy-tree']);
+
+        self::assertTrue($settings->has('foo.bar'));
+        self::assertSame('override2', $settings->get('foo.bar'));
+        self::assertSame(['foo.bar'], $settings->getIdentifiers());
     }
 }

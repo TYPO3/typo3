@@ -100,9 +100,7 @@ provided by `typo3/fluid-styled-content` — is configured via
 ..  code-block:: yaml
     :caption: EXT:my_extension/Configuration/Sets/MySet/settings.yaml
 
-    styles:
-      content:
-        defaultHeaderType: 1
+    styles.content.defaultHeaderType: 1
 
 
 This setting will be exposed as site setting whenever the set

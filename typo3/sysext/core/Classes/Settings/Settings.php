@@ -20,15 +20,15 @@ namespace TYPO3\CMS\Core\Settings;
 /**
  * @internal
  */
-readonly class Settings implements SettingsInterface
+final readonly class Settings implements SettingsInterface
 {
     public function __construct(
-        protected array $settings,
+        private array $settings,
     ) {}
 
     public function has(string $identifier): bool
     {
-        return isset($this->settings[$identifier]);
+        return array_key_exists($identifier, $this->settings);
     }
 
     public function get(string $identifier): mixed
@@ -46,7 +46,6 @@ readonly class Settings implements SettingsInterface
 
     public static function __set_state(array $state): static
     {
-        /** @phpstan-ignore-next-line Usage is safe because state is exported by PHP var_export() from the static instance */
         return new static(...$state);
     }
 }
