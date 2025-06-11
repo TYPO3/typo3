@@ -475,9 +475,6 @@ abstract class ImportExport
                 if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly) && !$this->getBackendUser()->isAdmin()) {
                     $line['msg'] .= 'TABLE "' . $table . '" is ADMIN ONLY! ';
                 }
-                if ($schema->getRawConfiguration()['is_static'] ?? false) {
-                    $line['msg'] .= 'TABLE "' . $table . '" is a STATIC TABLE! ';
-                }
                 if ($rootLevelCapability->getRootLevelType() === RootLevelCapability::TYPE_ONLY_ON_ROOTLEVEL) {
                     $line['msg'] .= 'TABLE "' . $table . '" will be inserted on ROOT LEVEL! ';
                 }
@@ -1163,9 +1160,7 @@ abstract class ImportExport
         if (!$this->tcaSchemaFactory->has($table)) {
             return false;
         }
-        $schema = $this->tcaSchemaFactory->get($table);
-        return ($schema->getRawConfiguration()['is_static'] ?? false)
-            || in_array($table, $this->relStaticTables, true)
+        return in_array($table, $this->relStaticTables, true)
             || in_array('_ALL', $this->relStaticTables, true);
     }
 

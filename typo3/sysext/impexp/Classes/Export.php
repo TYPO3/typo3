@@ -424,9 +424,6 @@ class Export extends ImportExport
             if (!in_array($table, $tables, true) && !in_array('_ALL', $tables, true)) {
                 continue;
             }
-            if ($schema->getRawConfiguration()['is_static'] ?? false) {
-                continue;
-            }
             $languageField = null;
             if ($schema->isLanguageAware()) {
                 $languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();

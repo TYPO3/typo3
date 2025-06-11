@@ -49,7 +49,7 @@ readonly class QueryFactory implements QueryFactoryInterface
         $querySettings = GeneralUtility::makeInstance(QuerySettingsInterface::class);
 
         $dataMap = $this->dataMapFactory->buildDataMap($className);
-        if ($dataMap->isStatic || $dataMap->rootLevel) {
+        if ($dataMap->rootLevel) {
             $querySettings->setRespectStoragePage(false);
         }
 

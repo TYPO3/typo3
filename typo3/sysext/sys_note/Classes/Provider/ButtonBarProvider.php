@@ -111,7 +111,6 @@ final class ButtonBarProvider
         return !($pageRow === null
             || $schema->hasCapability(TcaSchemaCapability::AccessReadOnly)
             || $schema->hasCapability(TcaSchemaCapability::HideInUi)
-            || ($schema->getRawConfiguration()['is_static'] ?? false)
             || ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly) && !$backendUser->isAdmin())
             || !$backendUser->doesUserHaveAccess($pageRow, Permission::CONTENT_EDIT)
             || !$backendUser->check('tables_modify', self::TABLE_NAME)

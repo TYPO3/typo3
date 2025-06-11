@@ -35,22 +35,19 @@ final class QueryFactoryTest extends UnitTestCase
     public static function getStaticAndRootLevelAndExpectedResult(): array
     {
         return [
-            'Respect storage page is set when entity is neither marked as static nor as rootLevel.' => [false, false, true],
-            'Respect storage page is set when entity is marked as static and rootLevel.' => [true, true, false],
-            'Respect storage page is set when entity is marked as static but not rootLevel.' => [true, false, false],
-            'Respect storage page is set when entity is not marked as static but as rootLevel.' => [false, true, false],
+            'Respect storage page is set when entity is not marked with rootLevel.' => [false, true],
+            'Respect storage page is set when entity is marked with rootLevel.' => [true, false],
         ];
     }
 
     #[DataProvider('getStaticAndRootLevelAndExpectedResult')]
     #[Test]
-    public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue(bool $static, bool $rootLevel, bool $expectedResult): void
+    public function createDoesNotRespectStoragePageIfStaticOrRootLevelIsTrue(bool $rootLevel, bool $expectedResult): void
     {
         $className = \TYPO3\CMS\Extbase\Domain\Model\Category::class;
         $dataMap = new DataMap(
             className: $className,
             tableName: 'sys_category',
-            isStatic: $static,
             rootLevel: $rootLevel,
         );
         $dataMapFactoryMock = $this->createMock(DataMapFactory::class);

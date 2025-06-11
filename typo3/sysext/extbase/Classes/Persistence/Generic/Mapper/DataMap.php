@@ -41,7 +41,6 @@ final readonly class DataMap
      * @param string|null $endTimeColumnName Name of a column holding the timestamp the record should not be displayed afterward, often "endtime"
      * @param string|null $frontendUserGroupColumnName Name of a column holding the uid of the front-end user group which is allowed to edit this record
      * @param string|null $recordTypeColumnName Name of a column holding the record type, example: "CType" in table "tt_content"
-     * @param bool $isStatic True if TCA[$tableName]['ctrl']['is_static'] is true
      * @param bool $rootLevel Bool cast of TCA[$tableName]['ctrl']['rootLevel']
      */
     public function __construct(
@@ -61,7 +60,6 @@ final readonly class DataMap
         public ?string $endTimeColumnName = null,
         public ?string $frontendUserGroupColumnName = null,
         public ?string $recordTypeColumnName = null,
-        public bool $isStatic = false,
         public bool $rootLevel = false,
     ) {}
 
@@ -150,11 +148,6 @@ final readonly class DataMap
     public function getRecordTypeColumnName(): ?string
     {
         return $this->recordTypeColumnName;
-    }
-
-    public function getIsStatic(): bool
-    {
-        return $this->isStatic;
     }
 
     public function getRootLevel(): bool

@@ -93,6 +93,7 @@ class TcaMigration
         $tca = $this->removeSubTypesConfiguration($tca);
         $tca = $this->addWorkspaceAwarenessToInlineChildren($tca);
         $tca = $this->removeEvalYearFlag($tca);
+        $tca = $this->removeIsStaticControlOption($tca);
 
         return $tca;
     }
@@ -1678,6 +1679,24 @@ class TcaMigration
                     . ' "year" in its "eval" list. This is not evaluated anymore and is therefore removed.'
                     . ' Please adjust your TCA accordingly.';
             }
+        }
+
+        return $tca;
+    }
+
+    /**
+     * Removes $TCA[$mytable]['ctrl']['is_static']
+     */
+    protected function removeIsStaticControlOption(array $tca): array
+    {
+        foreach ($tca as $table => &$configuration) {
+            if (!isset($configuration['ctrl']['is_static'])) {
+                continue;
+            }
+            $this->messages[] = 'The \'' . $table . '\' TCA configuration \'is_static\''
+                . ' inside the \'ctrl\' section is not evaluated anymore and is therefore removed.'
+                . ' Please adjust your TCA accordingly.';
+            unset($configuration['ctrl']['is_static']);
         }
 
         return $tca;

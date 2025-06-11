@@ -3924,4 +3924,26 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
     }
+
+    #[Test]
+    public function removeIsStaticControlOption(): void
+    {
+        $input = [
+            'aTable' => [
+                'ctrl' => [
+                    'title' => 'foobar',
+                    'is_static' => true,
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'ctrl' => [
+                    'title' => 'foobar',
+                ],
+            ],
+        ];
+
+        self::assertSame($expected, (new TcaMigration())->migrate($input));
+    }
 }

@@ -327,8 +327,6 @@ class SuggestWizardDefaultReceiver
             if (!BackendUtility::readPageAccess($uid, $backendUser->getPagePermsClause(Permission::PAGE_SHOW))) {
                 $retValue = false;
             }
-        } elseif ($this->tcaSchema->getRawConfiguration()['is_static'] ?? false) {
-            $retValue = true;
         } elseif (!is_array(BackendUtility::readPageAccess($row['pid'], $backendUser->getPagePermsClause(Permission::PAGE_SHOW)))) {
             $retValue = false;
         }
