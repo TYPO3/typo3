@@ -22,21 +22,21 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 /**
  * @internal
  */
-final readonly class SettingsTree
+final readonly class SettingsDiff
 {
     /**
      * @param string[] $changes
      * @param string[] $deletions
      */
     public function __construct(
-        public array $settingsTree,
+        public array $settings,
         public array $changes,
         public array $deletions,
     ) {}
 
     public function asArray(): array
     {
-        return $this->settingsTree;
+        return $this->settings;
     }
 
     /**
@@ -46,8 +46,8 @@ final readonly class SettingsTree
      * are removed (tree is minified) if the list of default settings
      * via $defaultSettings.
      *
-     * @param array $currentSettingsTree Current settings tree (recursive structure)
-     *                                   In case of site settings: config/sites/…/settings.yaml
+     * @param array $currentSettings Current settings
+     *                               In case of site settings: config/sites/…/settings.yaml
      * @param SettingsInterface $targetSettings Target settings
      *                                          (values as supplied via the settings editor)
      * @param SettingsInterface $defaultSettings Default settings, without local settings tree applied.
@@ -55,39 +55,50 @@ final readonly class SettingsTree
      *                                           defined in settings.definitions.yaml + setting.yaml
      *                                           from all selected sets combined
      */
-    public static function diff(
-        array $currentSettingsTree,
+    public static function create(
+        array $currentSettings,
         SettingsInterface $targetSettings,
         ?SettingsInterface $defaultSettings = null,
     ): self {
-        // Copy existing settings from current settings tree, to keep any settings
+        // Copy existing settings from current settings map/tree, to keep any settings
         // that have been present before (and are not defined in $defaultSettings)
         // Usecase for site settings:
         // Preserve "anonymous" v12-style site settings that have no definition in settings.definitions.yaml
-        $settingsTree = $currentSettingsTree;
+        // and are stored as a tree instead of a map
+        $settings = $currentSettings;
 
-        // Merge target settings into current settingsTree
+        // Merge target settings into current settings
         $changes = [];
         $deletions = [];
         foreach ($targetSettings->getIdentifiers() as $key) {
             $value = $targetSettings->get($key);
             if ($defaultSettings !== null && $value === $defaultSettings->get($key)) {
-                if (ArrayUtility::isValidPath($settingsTree, $key, '.')) {
-                    $settingsTree = self::removeByPathWithAncestors($settingsTree, $key, '.');
+                if (ArrayUtility::isValidPath($settings, $key, '.')) {
+                    $settings = self::removeByPathWithAncestors($settings, $key, '.');
+                    $deletions[] = $key;
+                }
+                if (array_key_exists($key, $settings)) {
+                    unset($settings[$key]);
                     $deletions[] = $key;
                 }
                 continue;
             }
-            if (!ArrayUtility::isValidPath($settingsTree, $key, '.') ||
-                $value !== ArrayUtility::getValueByPath($settingsTree, $key, '.')
+
+            // Remove key from legacy tree
+            if (str_contains($key, '.') && ArrayUtility::isValidPath($settings, $key, '.')) {
+                $settings = self::removeByPathWithAncestors($settings, $key, '.');
+            }
+
+            if (!array_key_exists($key, $settings) ||
+                $value !== $settings[$key]
             ) {
-                $settingsTree = ArrayUtility::setValueByPath($settingsTree, $key, $value, '.');
+                $settings[$key] = $value;
                 $changes[] = $key;
             }
         }
 
         return new self(
-            $settingsTree,
+            $settings,
             $changes,
             $deletions
         );

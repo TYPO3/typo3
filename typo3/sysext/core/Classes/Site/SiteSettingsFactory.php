@@ -22,13 +22,16 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
+use TYPO3\CMS\Core\Settings\Settings;
+use TYPO3\CMS\Core\Settings\SettingsFactory;
 use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
-use TYPO3\CMS\Core\Utility\ArrayUtility;
-use TYPO3\CMS\Core\Utility\Exception\MissingArrayPathException;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+/**
+ * @internal
+ */
 #[Autoconfigure(public: true)]
 readonly class SiteSettingsFactory
 {
@@ -37,6 +40,7 @@ readonly class SiteSettingsFactory
         protected string $configPath,
         protected SetRegistry $setRegistry,
         protected SettingsTypeRegistry $settingsTypeRegistry,
+        protected SettingsFactory $settingsFactory,
         protected YamlFileLoader $yamlFileLoader,
         #[Autowire(service: 'cache.core')]
         protected PhpFrontend $cache,
@@ -70,10 +74,8 @@ readonly class SiteSettingsFactory
 
     /**
      * Load settings from config/sites/{$siteIdentifier}/settings.yaml.
-     *
-     * @internal
      */
-    public function loadLocalSettingsTree(string $siteIdentifier): ?array
+    public function loadLocalSettings(string $siteIdentifier): ?array
     {
         $fileName = $this->configPath . '/' . $siteIdentifier . '/' . $this->settingsFileName;
         if (!file_exists($fileName)) {
@@ -91,132 +93,44 @@ readonly class SiteSettingsFactory
      *       implementing a GUI for the settings - which should either get a dedicated method or a flag to control if
      *       placeholder should be resolved during yaml file loading or not. The SiteConfiguration save action currently
      *       avoid calling this method.
-     * @internal
      */
     public function createSettings(array $sets = [], ?string $siteIdentifier = null, array $inlineSettings = []): SiteSettings
     {
-        $settingsTree = [];
+        $rawSettings = [];
         if ($siteIdentifier !== null) {
-            $settingsTree = $this->loadLocalSettingsTree($siteIdentifier) ?? $inlineSettings;
+            $rawSettings = $this->loadLocalSettings($siteIdentifier) ?? $inlineSettings;
         }
 
-        return $this->composeSettings($settingsTree, $sets);
+        return $this->composeSettings($rawSettings, $sets);
+    }
+
+    public function composeSettings(array $rawSettings, array $sets): SiteSettings
+    {
+        return SiteSettings::create(
+            $this->settingsFactory->resolveSettings(
+                ...$this->getSettingsProviders($rawSettings, $sets)
+            )
+        );
     }
 
     /**
-     * @internal
+     * @return SiteSettingsProvider[]
      */
-    public function composeSettings(array $settingsTree, array $sets): SiteSettings
+    protected function getSettingsProviders(array $settings, array $sets): array
     {
-        $settings = [];
-        $definitions = [];
         $activeSets = [];
         if (is_array($sets) && $sets !== []) {
             $activeSets = $this->setRegistry->getSets(...$sets);
         }
 
+        /** @var SiteSettingsProvider[] $providers */
+        $providers = [];
         foreach ($activeSets as $set) {
-            foreach ($set->settingsDefinitions as $settingDefinition) {
-                $definitions[] = $settingDefinition;
-            }
+            $providers[] = new SiteSettingsProvider($set->settings, $set->settingsDefinitions);
         }
 
-        foreach ($definitions as $settingDefinition) {
-            $settings = ArrayUtility::setValueByPath($settings, $settingDefinition->key, $settingDefinition->default, '.');
-        }
+        $providers[] = new SiteSettingsProvider($settings);
 
-        foreach ($activeSets as $set) {
-            ArrayUtility::mergeRecursiveWithOverrule($settings, $this->validateSettings($set->settings, $definitions));
-        }
-
-        if ($settingsTree !== []) {
-            ArrayUtility::mergeRecursiveWithOverrule($settings, $this->validateSettings($settingsTree, $definitions));
-        }
-
-        /** @var array<string, string|int|float|bool|array|null> $settingsMap */
-        $settingsMap = [];
-        foreach ($definitions as $settingDefinition) {
-            $settingsMap[$settingDefinition->key] = ArrayUtility::getValueByPath($settings, $settingDefinition->key, '.');
-        }
-
-        return SiteSettings::create(
-            settingsMap: $settingsMap,
-            settingsTree: $settings,
-        );
+        return $providers;
     }
-
-    /**
-     * @internal
-     */
-    public function createSettingsForKeys(array $settingKeys, string $siteIdentifier, array $inlineSettings = []): SiteSettings
-    {
-        $settingsTree = $this->loadLocalSettingsTree($siteIdentifier) ?? $inlineSettings;
-
-        /** @var array<string, string|int|float|bool|array|null> $settingsMap */
-        $settingsMap = [];
-        foreach ($settingKeys as $key) {
-            if (!ArrayUtility::isValidPath($settingsTree, $key, '.')) {
-                continue;
-            }
-            $settingsMap[$key] = ArrayUtility::getValueByPath($settingsTree, $key, '.');
-        }
-
-        return SiteSettings::create(
-            settingsMap: $settingsMap,
-            settingsTree: $settingsTree,
-        );
-    }
-
-    /**
-     * @internal
-     */
-    public function createSettingsFromFormData(array $settingsMap, array $definitions): SiteSettings
-    {
-        $settingsTree = [];
-        foreach ($settingsMap as $key => $value) {
-            $definition = $definitions[$key] ?? null;
-            if ($definition === null) {
-                throw new \RuntimeException('Unexpected setting ' . $key . ' is not defined', 1724067004);
-            }
-            $type = $this->settingsTypeRegistry->get($definition->type);
-            // @todo We should collect invalid values (readonly-violation/validation-error) and report in the UI instead of ignoring them
-            if ($definition->readonly || !$type->validate($value, $definition)) {
-                $value = $definition->default;
-            }
-            $value = $type->transformValue($value, $definition);
-            $settingsMap[$key] = $value;
-            $settingsTree = ArrayUtility::setValueByPath($settingsTree, $key, $value, '.');
-        }
-
-        return SiteSettings::create(
-            settingsMap: $settingsMap,
-            settingsTree: $settingsTree,
-        );
-    }
-
-    protected function validateSettings(array $settings, array $definitions): array
-    {
-        foreach ($definitions as $definition) {
-            try {
-                $value = ArrayUtility::getValueByPath($settings, $definition->key, '.');
-            } catch (MissingArrayPathException) {
-                continue;
-            }
-            if (!$this->settingsTypeRegistry->has($definition->type)) {
-                throw new \RuntimeException('Setting type ' . $definition->type . ' is not defined.', 1712437727);
-            }
-            $type = $this->settingsTypeRegistry->get($definition->type);
-            if (!$type->validate($value, $definition)) {
-                $settings = ArrayUtility::removeByPath($settings, $definition->key, '.');
-            }
-
-            $newValue = $type->transformValue($value, $definition);
-            if ($newValue !== $value) {
-                ArrayUtility::setValueByPath($settings, $definition->key, $newValue, '.');
-            }
-        }
-
-        return $settings;
-    }
-
 }

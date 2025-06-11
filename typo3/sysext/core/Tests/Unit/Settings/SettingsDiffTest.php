@@ -20,12 +20,33 @@ namespace TYPO3\CMS\Core\Tests\Unit\Settings;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Settings\Settings;
-use TYPO3\CMS\Core\Settings\SettingsTree;
+use TYPO3\CMS\Core\Settings\SettingsDiff;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
-final class SettingsTreeTest extends UnitTestCase
+final class SettingsDiffTest extends UnitTestCase
 {
     public static function diffResolvesSettingsDataProvider(): \Generator
+    {
+        $map = self::diffResolvesSettingsDataProviderForSettings([
+            'other.space.key3' => false,
+        ]);
+        $tree = self::diffResolvesSettingsDataProviderForSettings([
+            'other' => [
+                'space' => [
+                    'key3' => false,
+                ],
+            ],
+        ]);
+
+        foreach ($map as $test => $data) {
+            yield '[map] ' . $test => $data;
+        }
+        foreach ($tree as $test => $data) {
+            yield '[tree] ' . $test => $data;
+        }
+    }
+
+    public static function diffResolvesSettingsDataProviderForSettings(array $localSettings): \Generator
     {
         $defaults = [
             'defaultSettings' => [
@@ -33,13 +54,7 @@ final class SettingsTreeTest extends UnitTestCase
                 'name.space.key2' => 'key2defaultValueOverwriteBySystem',
                 'other.space.key3' => true,
             ],
-            'localSettingsTree' => [
-                'other' => [
-                    'space' => [
-                        'key3' => false,
-                    ],
-                ],
-            ],
+            'localSettings' => $localSettings,
         ];
 
         yield 'Set value to existing values' => [
@@ -49,7 +64,9 @@ final class SettingsTreeTest extends UnitTestCase
                 'name.space.key2' => 'key2defaultValueOverwriteBySystem',
                 'other.space.key3' => false,
             ],
-            'result' => $defaults['localSettingsTree'],
+            'result' => [
+                'other.space.key3' => false,
+            ],
         ];
 
         yield 'Remove values set to system default, omit equal values' => [
@@ -60,11 +77,7 @@ final class SettingsTreeTest extends UnitTestCase
                 'other.space.key3' => true,
             ],
             'result' => [
-                'name' => [
-                    'space' => [
-                        'key1' => 'foobar',
-                    ],
-                ],
+                'name.space.key1' => 'foobar',
             ],
         ];
 
@@ -72,18 +85,10 @@ final class SettingsTreeTest extends UnitTestCase
             ...$defaults,
             'incomingSettings' => [
                 'name.space.key2' => 'key2defaultValue',
+                'other.space.key3' => true,
             ],
             'result' => [
-                'name' => [
-                    'space' => [
-                        'key2' => 'key2defaultValue',
-                    ],
-                ],
-                'other' => [
-                    'space' => [
-                        'key3' => false,
-                    ],
-                ],
+                'name.space.key2' => 'key2defaultValue',
             ],
         ];
 
@@ -93,11 +98,7 @@ final class SettingsTreeTest extends UnitTestCase
                 'other.space.key3' => false,
             ],
             'result' => [
-                'other' => [
-                    'space' => [
-                        'key3' => false,
-                    ],
-                ],
+                'other.space.key3' => false,
             ],
         ];
 
@@ -115,15 +116,15 @@ final class SettingsTreeTest extends UnitTestCase
     #[Test]
     public function diffResolvesSettings(
         array $defaultSettings,
-        array $localSettingsTree,
+        array $localSettings,
         array $incomingSettings,
         array $result
     ): void {
-        $settingsTree = SettingsTree::diff(
-            $localSettingsTree,
+        $settings = SettingsDiff::create(
+            $localSettings,
             new Settings($incomingSettings),
             new Settings($defaultSettings),
         );
-        self::assertEquals($settingsTree->asArray(), $result);
+        self::assertEquals($settings->asArray(), $result);
     }
 }

@@ -28,6 +28,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\EventDispatcher\NoopEventDispatcher;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
+use TYPO3\CMS\Core\Settings\SettingsFactory;
 use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 use TYPO3\CMS\Core\Site\Set\SetRegistry;
 use TYPO3\CMS\Core\Site\SiteSettingsFactory;
@@ -58,9 +59,10 @@ final class SiteConfigurationTest extends UnitTestCase
         $setRegistry = $this->createMock(SetRegistry::class);
         $packageDependentCacheIdentifier = $this->createMock(PackageDependentCacheIdentifier::class);
         $settingsTypeRegistry = new SettingsTypeRegistry($this->createMock(ServiceLocator::class));
+        $settingsFactory = new SettingsFactory($settingsTypeRegistry);
         $this->siteConfiguration = new SiteConfiguration(
             $this->fixturePath,
-            new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, $this->createMock(YamlFileLoader::class), new NullFrontend('test'), $packageDependentCacheIdentifier),
+            new SiteSettingsFactory($this->fixturePath, $setRegistry, $settingsTypeRegistry, $settingsFactory, $this->createMock(YamlFileLoader::class), new NullFrontend('test'), $packageDependentCacheIdentifier),
             $setRegistry,
             new NoopEventDispatcher(),
             new NullFrontend('test'),

@@ -24,7 +24,10 @@ use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageService;
 use TYPO3\CMS\Core\Settings\SettingDefinition;
-use TYPO3\CMS\Core\Settings\SettingsTree;
+use TYPO3\CMS\Core\Settings\Settings;
+use TYPO3\CMS\Core\Settings\SettingsDiff;
+use TYPO3\CMS\Core\Settings\SettingsFactory;
+use TYPO3\CMS\Core\Settings\SettingsInterface;
 use TYPO3\CMS\Core\Settings\SettingsTypeRegistry;
 use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\Entity\SiteSettings;
@@ -43,6 +46,7 @@ readonly class SiteSettingsService
         protected PhpFrontend $codeCache,
         protected SetRegistry $setRegistry,
         protected SiteSettingsFactory $siteSettingsFactory,
+        protected SettingsFactory $settingsFactory,
         protected SettingsTypeRegistry $settingsTypeRegistry,
         protected FlashMessageService $flashMessageService,
     ) {}
@@ -63,31 +67,40 @@ readonly class SiteSettingsService
         );
     }
 
-    public function getSetSettings(Site $site): SiteSettings
+    public function getSetSettings(Site $site): SettingsInterface
     {
         return $this->siteSettingsFactory->createSettings($site->getSets());
     }
 
     public function getLocalSettings(Site $site): SiteSettings
     {
-        $definitions = $this->getDefinitions($site);
-        return $this->siteSettingsFactory->createSettingsForKeys(
-            array_map(static fn(SettingDefinition $d) => $d->key, $definitions),
+        $settings = $this->siteSettingsFactory->createSettings(
+            $site->getSets(),
             $site->getIdentifier(),
-            $site->getRawConfiguration()['settings'] ?? []
+            $site->getRawConfiguration()['settings'] ?? [],
         );
+        $setSettings = $this->getSetSettings($site);
+        $localSettings = [];
+        foreach ($settings->getIdentifiers() as $key) {
+            $value = $settings->get($key);
+            if ($setSettings->has($key) && $value === $setSettings->get($key)) {
+                continue;
+            }
+            $localSettings[$key] = $value;
+        }
+        return SiteSettings::create(new Settings($localSettings));
     }
 
-    public function computeSettingsDiff(Site $site, SiteSettings $newSettings, bool $minify = true): SettingsTree
+    public function computeSettingsDiff(Site $site, SettingsInterface $newSettings, bool $minify = true): SettingsDiff
     {
         // Settings from sets only – setting values without site-local config/sites/*/settings.yaml applied
         $defaultSettings = $minify ? $this->siteSettingsFactory->createSettings($site->getSets(), null) : null;
 
         // Settings from config/sites/*/settings.yaml only (our persistence target)
-        $localSettings = $this->siteSettingsFactory->loadLocalSettingsTree($site->getIdentifier()) ??
+        $localSettings = $this->siteSettingsFactory->loadLocalSettings($site->getIdentifier()) ??
             $site->getRawConfiguration()['settings'] ?? [];
 
-        return SettingsTree::diff(
+        return SettingsDiff::create(
             $localSettings,
             $newSettings,
             $defaultSettings,
@@ -122,8 +135,8 @@ readonly class SiteSettingsService
         return $definitions;
     }
 
-    public function createSettingsFromFormData(Site $site, array $settingsMap): SiteSettings
+    public function createSettingsFromFormData(Site $site, array $settingsMap): SettingsInterface
     {
-        return $this->siteSettingsFactory->createSettingsFromFormData($settingsMap, $this->getDefinitions($site));
+        return $this->settingsFactory->createSettingsFromFormData($settingsMap, $this->getDefinitions($site));
     }
 }
