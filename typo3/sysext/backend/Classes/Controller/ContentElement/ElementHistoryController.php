@@ -178,7 +178,7 @@ class ElementHistoryController
         $schema = $this->tcaSchemaFactory->get($table);
         $this->view->assignMultiple([
             'recordTable' => $table,
-            'recordTableReadable' => $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? ''),
+            'recordTableReadable' => $schema->getTitle($this->getLanguageService()->sL(...)),
             'recordUid' => $uid,
             'recordTitle' => $this->generateTitle($table, (string)$uid),
         ]);

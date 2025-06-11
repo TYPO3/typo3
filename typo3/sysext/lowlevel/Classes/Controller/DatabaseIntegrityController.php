@@ -1142,7 +1142,7 @@ class DatabaseIntegrityController
                 $labelFieldName = null;
                 $altLabelFieldName = null;
 
-                if ($labelCapability->getPrimaryField()) {
+                if ($labelCapability->hasPrimaryField()) {
                     $labelField = $labelCapability->getPrimaryField();
                     $labelFieldName = $labelField->getName();
                     $selectFields[] = $labelFieldName;
@@ -1919,7 +1919,7 @@ class DatabaseIntegrityController
                     $altLabelFieldName = null;
                     $selectFields = ['uid'];
 
-                    if ($labelCapability->getPrimaryField()) {
+                    if ($labelCapability->hasPrimaryField()) {
                         $labelField = $labelCapability->getPrimaryField();
                         $labelFieldName = $labelField->getName();
                         $selectFields[] = $labelFieldName;
@@ -2344,7 +2344,7 @@ class DatabaseIntegrityController
         $tables = [];
         /** @var TcaSchema $schema */
         foreach ($this->tcaSchemaFactory->all() as $tableName => $schema) {
-            $tableTitle = $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '');
+            $tableTitle = $schema->getTitle($this->getLanguageService()->sL(...));
             if (!$tableTitle || $this->showFieldAndTableNames) {
                 $tableTitle .= ' [' . $tableName . ']';
             }
@@ -2788,7 +2788,7 @@ class DatabaseIntegrityController
                 $markup = [];
                 $markup[] = '<div class="panel panel-default">';
                 $markup[] = '  <div class="panel-heading">';
-                $markup[] = htmlspecialchars($this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '')) . ' (' . $count . ')';
+                $markup[] = htmlspecialchars($schema->getTitle($this->getLanguageService()->sL(...))) . ' (' . $count . ')';
                 $markup[] = '  </div>';
                 $markup[] = '  <div class="table-fit">';
                 $markup[] = '    <table class="table table-striped table-hover">';
@@ -2900,7 +2900,7 @@ class DatabaseIntegrityController
             }
             $tableStatistic[$table] = [
                 'icon' => $this->iconFactory->getIconForRecord($table, [], IconSize::SMALL)->render(),
-                'title' => $languageService->sL($schema->getRawConfiguration()['title']),
+                'title' => $schema->getTitle($languageService->sL(...)),
                 'count' => $recordCount,
                 'lostRecords' => implode(LF, $lostRecordList),
             ];

@@ -146,8 +146,8 @@ final readonly class UserInformationService
         foreach (['tables_select', 'tables_modify'] as $tableField) {
             $temp = GeneralUtility::trimExplode(',', $user->groupData[$tableField] ?? '', true);
             foreach ($temp as $tableName) {
-                if ($this->tcaSchemaFactory->has($tableName) && isset($this->tcaSchemaFactory->get($tableName)->getRawConfiguration()['title'])) {
-                    $data['tables'][$tableField][$tableName] = $this->tcaSchemaFactory->get($tableName)->getRawConfiguration()['title'];
+                if ($this->tcaSchemaFactory->has($tableName)) {
+                    $data['tables'][$tableField][$tableName] = $this->tcaSchemaFactory->get($tableName)->getTitle() ?: $tableName;
                 }
             }
         }
@@ -223,11 +223,9 @@ final readonly class UserInformationService
             $itemField = $itemParts[1] ?? '';
             if (!empty($itemField) && $this->tcaSchemaFactory->has($itemTable)) {
                 $schema = $this->tcaSchemaFactory->get($itemTable);
-                if (isset($schema->getRawConfiguration()['title'])) {
-                    $fieldList[$itemTable]['label'] = $schema->getRawConfiguration()['title'];
-                    if ($schema->hasField($itemField)) {
-                        $fieldList[$itemTable]['fields'][$itemField] = $schema->getField($itemField)->getLabel();
-                    }
+                $fieldList[$itemTable]['label'] = $schema->getTitle();
+                if ($schema->hasField($itemField)) {
+                    $fieldList[$itemTable]['fields'][$itemField] = $schema->getField($itemField)->getLabel();
                 }
             }
         }

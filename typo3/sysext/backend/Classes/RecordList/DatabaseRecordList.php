@@ -427,14 +427,15 @@ class DatabaseRecordList
     }
 
     /**
-     * Returns a list of all fields / columns including meta columns such as
+     * Returns a list of all fields / columns including meta-columns such as
      * "_REF_" or "_PATH_" which should be rendered for the database table.
      */
     public function getColumnsToRender(string $table, bool $includeMetaColumns, string $selectedPreset = ''): array
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        $titleCol = $schema->getRawConfiguration()['label'];
-
+        // @todo: this is a small workaround, while using "label" with e.g. "uid". This means, LabelCapability needs to support non-primary-field values.
+        $titleCol = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName() ?? $schema->getRawConfiguration()['label'];
+        $columnsToSelect = [$titleCol];
         // Setting fields selected in columnSelectorBox (saved in uc)
         $rowListArray = [];
         if (is_array($this->setFields[$table] ?? null)) {
@@ -450,8 +451,6 @@ class DatabaseRecordList
             $rowListArray[] = $schema->getCapability(TcaSchemaCapability::InternalDescription)->getFieldName();
         }
 
-        // Initialize columns to select
-        $columnsToSelect = [$titleCol];
         if ($includeMetaColumns) {
             // If meta columns are enabled, add the record icon
             array_unshift($columnsToSelect, 'icon');
@@ -580,12 +579,14 @@ class DatabaseRecordList
             $selectFields[] = $languageCapability->getLanguageField()->getName();
             $selectFields[] = $languageCapability->getTranslationOriginPointerField()->getName();
         }
-        $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-        if ($labelCapability->getPrimaryField()) {
-            $selectFields[] = $labelCapability->getPrimaryField()->getName();
-        }
-        foreach ($labelCapability->getAdditionalFields() as $field) {
-            $selectFields[] = $field->getName();
+        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+            $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
+            if ($labelCapability->hasPrimaryField()) {
+                $selectFields[] = $labelCapability->getPrimaryField()->getName();
+            }
+            foreach ($labelCapability->getAdditionalFields() as $field) {
+                $selectFields[] = $field->getName();
+            }
         }
         // Unique list!
         $selectFields = array_unique($selectFields);
@@ -685,7 +686,7 @@ class DatabaseRecordList
             $tableTitle = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:pageTranslation'));
             $tableIdentifier = 'pages_translated';
         } else {
-            $tableTitle = htmlspecialchars($lang->sL($schema->getRawConfiguration()['title'] ?? ''));
+            $tableTitle = htmlspecialchars($schema->getTitle($lang->sL(...)));
             if ($tableTitle === '') {
                 $tableTitle = $table;
             }
@@ -1089,7 +1090,7 @@ class DatabaseRecordList
         $button = GeneralUtility::makeInstance(GenericButton::class);
         $button->setLabel(sprintf(
             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:collapseExpandTable'),
-            $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '')
+            $schema->getTitle($this->getLanguageService()->sL(...))
         ));
         $button->setClasses('t3js-toggle-recordlist');
         $button->setIcon($this->iconFactory->getIcon(($tableCollapsed ? 'actions-view-list-expand' : 'actions-view-list-collapse'), IconSize::SMALL));
@@ -1157,13 +1158,18 @@ class DatabaseRecordList
      */
     public function renderListRow($table, array $row, int $indent, array $translations, bool $translationEnabled)
     {
+        $titleCol = '';
         $schema = $this->tcaSchemaFactory->get($table);
-        $titleCol = $schema->getRawConfiguration()['label'];
+        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
+            $titleCol = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName();
+        }
+        // @todo: this is a small workaround, while using "label" with e.g. "uid". This means, LabelCapability needs to support non-primary-field values.
+        $titleCol = $titleCol ?: $schema->getRawConfiguration()['label'];
         $languageService = $this->getLanguageService();
         $rowOutput = '';
         $id_orig = $this->id;
         // If in search mode, make sure the preview will show the correct page
-        if ((string)$this->searchString !== '') {
+        if ($this->searchString !== '') {
             $this->id = $row['pid'];
         }
 
@@ -3320,7 +3326,7 @@ class DatabaseRecordList
                     'ok' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.delete'),
                     'cancel' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:button.cancel'),
                     'title' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_deleteMarked'),
-                    'content' => sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_deleteMarkedWarning'), $lang->sL($schema->getRawConfiguration()['title'] ?? '')),
+                    'content' => sprintf($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:clip_deleteMarkedWarning'), $schema->getTitle($lang->sL(...))),
                 ], true);
                 $actions['delete'] = '
                     <button

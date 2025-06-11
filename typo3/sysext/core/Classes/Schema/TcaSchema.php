@@ -85,6 +85,15 @@ readonly class TcaSchema implements SchemaInterface
         }
     }
 
+    public function getTitle(?callable $fn = null): string
+    {
+        // If a title is defined in the schema configuration, use it.
+        if (isset($this->schemaConfiguration['title']) && $fn) {
+            return $fn($this->schemaConfiguration['title']);
+        }
+        return $this->schemaConfiguration['title'] ?? '';
+    }
+
     public function getRawConfiguration(): array
     {
         return $this->schemaConfiguration;

@@ -62,7 +62,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
     {
         $icon = $this->iconFactory->getIcon('mimetypes-x-sys_workspace', IconSize::SMALL);
         $schema = $this->tcaSchemaFactory->get('sys_workspace');
-        $typeLabel = $this->languageService->sL($schema->getRawConfiguration()['title'] ?? '');
+        $typeLabel = $schema->getTitle($this->languageService->sL(...));
         $workspaces = $this->getFilteredWorkspaces($searchDemand);
         $items = [];
 
@@ -105,7 +105,7 @@ final readonly class WorkspaceProvider implements SearchProviderInterface
     public function getFilterLabel(): string
     {
         $schema = $this->tcaSchemaFactory->get('sys_workspace');
-        return $this->languageService->sL($schema->getRawConfiguration()['title'] ?? '');
+        return $schema->getTitle($this->languageService->sL(...));
     }
 
     private function getAvailableWorkspaces(): array

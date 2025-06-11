@@ -187,8 +187,7 @@ class DatabaseTreeDataProvider extends AbstractTableConfigurationTreeDataProvide
         $row = [];
         if ($basicNode->getId() == 0) {
             $node->setSelected(false);
-
-            $node->setLabel($this->getLanguageService()?->sL($this->schema?->getRawConfiguration()['title'] ?? ''));
+            $node->setLabel($this->schema?->getTitle($this->getLanguageService()->sL(...)));
         } else {
             if ($basicNode->getAdditionalData() === []) {
                 $row = BackendUtility::getRecordWSOL($this->tableName, (int)$basicNode->getId(), '*', '', false) ?? [];

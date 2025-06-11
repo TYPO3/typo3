@@ -16,6 +16,7 @@
 namespace TYPO3\CMS\Core\Tree\TableConfiguration;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -82,7 +83,8 @@ class TreeDataProviderFactory
             } else {
                 $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
                 if ($schemaFactory->has($tableName)) {
-                    $dataProvider->setLabelField($schemaFactory->get($tableName)->getRawConfiguration()['label'] ?? '');
+                    $labelField = $schemaFactory->get($tableName)->getCapability(TcaSchemaCapability::Label);
+                    $dataProvider->setLabelField($labelField->getPrimaryField()?->getName() ?? '');
                 }
             }
             $dataProvider->setTreeId(md5($table . '|' . $field));

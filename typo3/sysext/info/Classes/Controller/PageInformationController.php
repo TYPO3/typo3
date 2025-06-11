@@ -267,7 +267,7 @@ class PageInformationController extends InfoModuleController
                                 $schema = $this->tcaSchemaFactory->get($f2);
                                 $headerCells[$field] = '&nbsp;' .
                                     '<span title="' .
-                                    htmlspecialchars($lang->sL($schema->getRawConfiguration()['title'] ?? $f2)) .
+                                    htmlspecialchars($schema->getTitle($lang->sL(...)) ?: $f2) .
                                     '">' .
                                     $this->iconFactory->getIconForRecord($f2, [], IconSize::SMALL)->render() .
                                     '</span>';

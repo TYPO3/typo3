@@ -140,7 +140,7 @@ readonly class SynchronizeFolderRelations
         $message = sprintf(
             $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:synchronizeFolderRelations.' . $event),
             $updatedRelationsCount,
-            $languageService->sL($this->tcaSchemaFactory->get($table)->getRawConfiguration()['title'] ?? ''),
+            $this->tcaSchemaFactory->get($table)->getTitle($languageService->sL(...)),
         );
 
         $this->flashMessageService

@@ -171,10 +171,9 @@ class RecyclerAjaxController
 
         foreach ($deletedRowsArray as $table => $rows) {
             $schema = $this->tcaSchemaFactory->get($table);
-            $titleString = $schema->getRawConfiguration()['title'] ?? null;
             $groupedRecords[$table]['information'] = [
                 'table' => $table,
-                'title' => $titleString !== null ? $lang->sL($titleString) : BackendUtility::getNoRecordTitle(),
+                'title' => $schema->getTitle($lang->sL(...)) ?: BackendUtility::getNoRecordTitle(),
             ];
             foreach ($rows as $row) {
                 $pageTitle = $this->getPageTitle((int)$row['pid']);
@@ -373,7 +372,7 @@ class RecyclerAjaxController
                 $tables[] = [
                     $tableName,
                     $deletedRecordsInTable,
-                    $lang->sL($schema->getRawConfiguration()['title'] ?? $tableName),
+                    $schema->getTitle($lang->sL(...)) ?: $tableName,
                 ];
             }
         }

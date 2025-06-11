@@ -371,7 +371,7 @@ class LinkValidatorController
             'uid' => $row['uid'],
             'recordUid' => $row['record_uid'],
             'recordTable' => $table,
-            'recordTableTitle' => $languageService->sL($schema->getRawConfiguration()['title'] ?? ''),
+            'recordTableTitle' => $schema->getTitle($languageService->sL(...)),
             // @todo: Remove this assignment (and template use) when linkvalidator stops rendering broken
             //        links registered to records that are meanwhile deleted=1 or in a different workspace.
             'recordTableIconDefault' => $this->iconFactory->getIconForRecord($table, $row, IconSize::SMALL)->render(),

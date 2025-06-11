@@ -568,8 +568,11 @@ class RecordListController
     protected function addNoRecordsFlashMessage(ModuleTemplate $view, string $table)
     {
         $languageService = $this->getLanguageService();
-        if ($table && $this->tcaSchemaFactory->has($table) && isset($this->tcaSchemaFactory->get($table)->getRawConfiguration()['title'])) {
-            $message = sprintf($languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'), $languageService->sL($this->tcaSchemaFactory->get($table)->getRawConfiguration()['title']));
+        if ($table && $this->tcaSchemaFactory->has($table) && $this->tcaSchemaFactory->get($table)->getTitle() !== '') {
+            $message = sprintf(
+                $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOfTypeOnThisPage'),
+                $this->tcaSchemaFactory->get($table)->getTitle($languageService->sL(...))
+            );
         } else {
             $message = $languageService->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:noRecordsOnThisPage');
         }
@@ -684,7 +687,7 @@ class RecordListController
             $tableName = $arguments['table'];
             if ($this->tcaSchemaFactory->has($tableName)) {
                 $schema = $this->tcaSchemaFactory->get($tableName);
-                $tableTitle = $languageService->sL($schema->getRawConfiguration()['title']);
+                $tableTitle = $schema->getTitle($languageService->sL(...));
             }
             $tableTitle = ': ' . ($tableTitle ?: $tableName);
         }

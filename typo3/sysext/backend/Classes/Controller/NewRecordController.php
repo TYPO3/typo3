@@ -377,7 +377,7 @@ class NewRecordController
         $groupedLinksOnTop = [];
         foreach ($allowedTables as $table) {
             $schema = $this->tcaSchemaFactory->get($table);
-            $ctrlTitle = $schema->getRawConfiguration()['title'] ?? '';
+            $ctrlTitle = $schema->getTitle();
 
             if ($table === 'pages') {
                 // New pages INSIDE this pages

@@ -235,7 +235,7 @@ final class PageRecordProvider implements SearchProviderInterface
             $icon = $this->iconFactory->getIconForRecord('pages', $row, IconSize::SMALL);
             $items[] = (new ResultItem(self::class))
                 ->setItemTitle(BackendUtility::getRecordTitle('pages', $row))
-                ->setTypeLabel($this->languageService->sL($schema->getRawConfiguration()['title']))
+                ->setTypeLabel($schema->getTitle($this->languageService->sL(...)))
                 ->setIcon($icon)
                 ->setActions(...$actions)
                 ->setExtraData([

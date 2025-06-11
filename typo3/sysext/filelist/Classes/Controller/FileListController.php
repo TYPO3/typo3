@@ -546,7 +546,7 @@ class FileListController implements LoggerAwareInterface
                     'data-target' => $this->filelist->createModuleUri(),
                     'data-title' => sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
-                        $lang->sL($this->tcaSchemaFactory->get('sys_file')->getRawConfiguration()['title'] ?? ''),
+                        $this->tcaSchemaFactory->get('sys_file')->getTitle($lang->sL(...)),
                     ),
                     'data-button-ok' => $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:updateColumnView'),
                     'data-button-close' => $lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.cancel'),

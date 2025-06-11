@@ -283,7 +283,8 @@ class NewContentElementController
     protected function loadAvailableWizards(): array
     {
         $schema = $this->tcaSchemaFactory->get('tt_content');
-        $typeField = $schema->getRawConfiguration()['type'] ?? '';
+        // Foreign table support for TypeInformation is not supported in tt_content
+        $typeField = $schema->getSubSchemaTypeInformation()->getFieldName();
         $fieldConfig = $schema->hasField($typeField) ? $schema->getField($typeField)->getConfiguration() : [];
         $items = $fieldConfig['items'] ?? [];
         $itemGroups = $fieldConfig['itemGroups'] ?? [];

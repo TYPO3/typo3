@@ -57,9 +57,8 @@ readonly class TcaItemsProcessorFunctions
             if ($schema->getCapability(TcaSchemaCapability::AccessAdminOnly)->getValue()) {
                 continue;
             }
-            $label = ($schema->getRawConfiguration()['title'] ?? '') ?: '';
             $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($tableName, []);
-            $fieldDefinition['items'][] = ['label' => $label, 'value' => $tableName, 'icon' => $icon];
+            $fieldDefinition['items'][] = ['label' => $schema->getTitle(), 'value' => $tableName, 'icon' => $icon];
         }
     }
 
@@ -124,9 +123,8 @@ readonly class TcaItemsProcessorFunctions
                 }
             } elseif (!isset($fieldDefinition['items'][$table])) {
                 // Add header if not yet set for table
-                $sectionHeader = $schema->getRawConfiguration()['title'] ?? '';
                 $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($table, []);
-                $fieldDefinition['items'][$table] = ['label' => $sectionHeader, 'value' => '--div--', 'icon' => $icon];
+                $fieldDefinition['items'][$table] = ['label' => $schema->getTitle(), 'value' => '--div--', 'icon' => $icon];
             }
             $fullField = $excludeFieldGroup['fullField'] ?? '';
             $fieldName = $excludeFieldGroup['fieldName'] ?? '';
@@ -257,7 +255,7 @@ readonly class TcaItemsProcessorFunctions
         $tableToTranslation = [];
         // All TCA keys
         foreach ($this->tcaSchemaFactory->all() as $table => $schema) {
-            $tableToTranslation[$table] = $languageService->sL($schema->getRawConfiguration()['title'] ?? '');
+            $tableToTranslation[$table] = $schema->getTitle($languageService->sL(...));
         }
         // Sort by translations
         asort($tableToTranslation);
@@ -434,7 +432,7 @@ readonly class TcaItemsProcessorFunctions
                 }
                 // Get Human Readable names of fields and table:
                 $allowOptions[$table . ':' . $field]['tableFieldLabel'] =
-                    $languageService->sL($schema->getRawConfiguration()['title'] ?? '') . ': '
+                    $schema->getTitle($languageService->sL(...)) . ': '
                     . $languageService->sL($fieldDefinition->getLabel());
 
                 foreach ($fieldConfig['items'] as $item) {
