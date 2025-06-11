@@ -25,8 +25,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockSQLitePlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -38,6 +40,7 @@ final class ConnectionTest extends UnitTestCase
     #[DoesNotPerformAssertions]
     public function createQueryBuilderWorks(): void
     {
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $this->createConnectionMock()->createQueryBuilder();
     }
 
@@ -318,6 +321,7 @@ final class ConnectionTest extends UnitTestCase
     #[Test]
     public function selectQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $resultStatement = $this->createMock(Result::class);
         $connectionMock = $this->createConnectionMock();
         $connectionMock->expects(self::once())
@@ -361,6 +365,7 @@ final class ConnectionTest extends UnitTestCase
     #[Test]
     public function countQueries(array $args, string $expectedQuery, array $expectedParameters): void
     {
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $resultStatement = $this->createMock(Result::class);
         $resultStatement->expects(self::once())
             ->method('fetchOne')
@@ -432,5 +437,12 @@ final class ConnectionTest extends UnitTestCase
             ->method('getDatabasePlatform')
             ->willReturn($platform);
         return $connectionMock;
+    }
+
+    private function addGeneralUtilityTcaSchemaFactoryInstances(?TcaSchemaFactory $tcaSchemaFactory = null): void
+    {
+        $container = new Container();
+        $container->set(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        GeneralUtility::setContainer($container);
     }
 }

@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Restriction to filter records with an end time set that has passed
@@ -30,9 +33,12 @@ class EndTimeRestriction implements QueryRestrictionInterface
      */
     protected $accessTimeStamp;
 
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
     public function __construct(?int $accessTimeStamp = null)
     {
         $this->accessTimeStamp = $accessTimeStamp ?: ($GLOBALS['SIM_ACCESS_TIME'] ?? null);
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
@@ -48,15 +54,18 @@ class EndTimeRestriction implements QueryRestrictionInterface
     {
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            $endTimeFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['endtime'] ?? null;
-            if (!empty($endTimeFieldName)) {
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
                 if (empty($this->accessTimeStamp)) {
                     throw new \RuntimeException(
                         'accessTimeStamp needs to be set to an integer value, but is empty! Maybe $GLOBALS[\'SIM_ACCESS_TIME\'] has been overridden somewhere?',
                         1462821084
                     );
                 }
-                $fieldName = $tableAlias . '.' . $endTimeFieldName;
+                $fieldName = $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionEndTime)->getFieldName();
                 $constraints[] = $expressionBuilder->or(
                     $expressionBuilder->eq($fieldName, 0),
                     $expressionBuilder->gt($fieldName, (int)$this->accessTimeStamp)

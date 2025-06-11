@@ -15,21 +15,34 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class EndTimeRestrictionTest extends AbstractRestrictionTestCase
 {
     #[Test]
     public function buildRestrictionsThrowsExceptionInStartTimeIfGlobalsAccessTimeIsMissing(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'endtime' => 'myEndTimeField',
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'endtime' => 'myEndTimeField',
+                    ],
+                ],
+                'columns' => [
+                    'myEndTimeField' => [
+                        'config' => [
+                            'type' => 'datetime',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
+
         unset($GLOBALS['SIM_ACCESS_TIME']);
 
         $this->expectException(\RuntimeException::class);
@@ -42,11 +55,23 @@ final class EndTimeRestrictionTest extends AbstractRestrictionTestCase
     #[Test]
     public function buildRestrictionsAddsStartTimeWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'endtime' => 'myEndTimeField',
+
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'endtime' => 'myEndTimeField',
+                    ],
+                ],
+                'columns' => [
+                    'myEndTimeField' => [
+                        'config' => [
+                            'type' => 'datetime',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
 
         $subject = new EndTimeRestriction(42);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);

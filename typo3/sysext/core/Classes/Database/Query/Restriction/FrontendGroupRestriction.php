@@ -21,6 +21,8 @@ use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -29,6 +31,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FrontendGroupRestriction implements QueryRestrictionInterface
 {
     protected array $frontendGroupIds;
+    protected TcaSchemaFactory $tcaSchemaFactory;
 
     /**
      * @param array|null $frontendGroupIds Normalized array with user groups of currently logged in user (typically found in the Frontend Context)
@@ -42,6 +45,7 @@ class FrontendGroupRestriction implements QueryRestrictionInterface
             $frontendUserAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
             $this->frontendGroupIds = $frontendUserAspect->getGroupIds();
         }
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
@@ -56,9 +60,12 @@ class FrontendGroupRestriction implements QueryRestrictionInterface
     {
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            $groupFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['fe_group'] ?? null;
-            if (!empty($groupFieldName)) {
-                $fieldName = $tableAlias . '.' . $groupFieldName;
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
+                $fieldName = $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)->getFieldName();
                 // Allow records where no group access has been configured (field values NULL, 0 or empty string)
                 $tableConstraints = [
                     $expressionBuilder->isNull($fieldName),

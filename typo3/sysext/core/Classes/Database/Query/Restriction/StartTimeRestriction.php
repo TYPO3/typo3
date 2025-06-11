@@ -19,15 +19,21 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Restriction to filter records, that should not be shown until the start time has been reached
  */
 class StartTimeRestriction implements QueryRestrictionInterface
 {
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
     public function __construct(?int $accessTimeStamp = null)
     {
         $this->accessTimeStamp = $accessTimeStamp ?: ($GLOBALS['SIM_ACCESS_TIME'] ?? null);
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
@@ -48,8 +54,11 @@ class StartTimeRestriction implements QueryRestrictionInterface
     {
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            $startTimeFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['starttime'] ?? null;
-            if (!empty($startTimeFieldName)) {
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
                 if (empty($this->accessTimeStamp)) {
                     throw new \RuntimeException(
                         'accessTimeStamp needs to be set to an integer value, but is empty! Maybe $GLOBALS[\'SIM_ACCESS_TIME\'] has been overridden somewhere?',
@@ -57,7 +66,7 @@ class StartTimeRestriction implements QueryRestrictionInterface
                     );
                 }
                 $constraints[] = $expressionBuilder->lte(
-                    $tableAlias . '.' . $startTimeFieldName,
+                    $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionStartTime)->getFieldName(),
                     (int)$this->accessTimeStamp
                 );
             }

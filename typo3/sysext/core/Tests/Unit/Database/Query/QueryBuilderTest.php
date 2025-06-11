@@ -34,6 +34,9 @@ use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\DependencyInjection\Container;
+use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
+use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\ConcreteQueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -42,6 +45,9 @@ use TYPO3\CMS\Core\Database\Query\Restriction\AbstractRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
+use TYPO3\CMS\Core\Schema\FieldTypeFactory;
+use TYPO3\CMS\Core\Schema\RelationMapBuilder;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockPlatform;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
@@ -60,6 +66,9 @@ final class QueryBuilderTest extends UnitTestCase
         parent::setUp();
         $this->concreteQueryBuilder = $this->createMock(ConcreteQueryBuilder::class);
         $this->connection = $this->createMock(Connection::class);
+        $container = new Container();
+        $container->set(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
+        GeneralUtility::setContainer($container);
         $this->subject = new QueryBuilder(
             $this->connection,
             null,
@@ -645,14 +654,15 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function queryRestrictionsAreAddedForSelectOnExecuteQuery(): void
     {
-        $GLOBALS['TCA']['pages']['ctrl'] = [
-            'tstamp' => 'tstamp',
-            'versioningWS' => true,
-            'delete' => 'deleted',
-            'crdate' => 'crdate',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA']['pages'] = [
+            'ctrl' => [
+                'tstamp' => 'tstamp',
+                'versioningWS' => true,
+                'delete' => 'deleted',
+                'crdate' => 'crdate',
+                'enablecolumns' => ['disabled' => 'hidden'],
             ],
+            'columns' => ['hidden' => ['config' => ['type' => 'check']]],
         ];
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
@@ -664,7 +674,9 @@ final class QueryBuilderTest extends UnitTestCase
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        /** @var QueryBuilder $subject */
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = GeneralUtility::makeInstance(QueryBuilder::class, $this->connection, null, $connectionBuilder, null);
 
         $subject->select('*')
@@ -681,14 +693,15 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function queryRestrictionsAreAddedForCountOnExecuteQuery(): void
     {
-        $GLOBALS['TCA']['pages']['ctrl'] = [
-            'tstamp' => 'tstamp',
-            'versioningWS' => true,
-            'delete' => 'deleted',
-            'crdate' => 'crdate',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA']['pages'] = [
+            'ctrl' => [
+                'tstamp' => 'tstamp',
+                'versioningWS' => true,
+                'delete' => 'deleted',
+                'crdate' => 'crdate',
+                'enablecolumns' => ['disabled' => 'hidden'],
             ],
+            'columns' => ['hidden' => ['config' => ['type' => 'check']]],
         ];
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
@@ -700,6 +713,9 @@ final class QueryBuilderTest extends UnitTestCase
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = GeneralUtility::makeInstance(QueryBuilder::class, $this->connection, null, $connectionBuilder);
 
         $subject->count('uid')->from('pages')->where('uid=1');
@@ -714,15 +730,20 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function queryRestrictionsAreReevaluatedOnSettingsChangeForGetSQL(): void
     {
-        $GLOBALS['TCA']['pages']['ctrl'] = [
-            'tstamp' => 'tstamp',
-            'versioningWS' => true,
-            'delete' => 'deleted',
-            'crdate' => 'crdate',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA']['pages'] = [
+            'ctrl' => [
+                'tstamp' => 'tstamp',
+                'versioningWS' => true,
+                'delete' => 'deleted',
+                'crdate' => 'crdate',
+                'enablecolumns' => ['disabled' => 'hidden'],
             ],
+            'columns' => ['hidden' => ['config' => ['type' => 'check']]],
         ];
+
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
@@ -734,7 +755,6 @@ final class QueryBuilderTest extends UnitTestCase
             ConcreteQueryBuilder::class,
             $this->connection
         );
-
         $subject = GeneralUtility::makeInstance(
             QueryBuilder::class,
             $this->connection,
@@ -758,15 +778,20 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function queryRestrictionsAreReevaluatedOnSettingsChangeForExecuteQuery(): void
     {
-        $GLOBALS['TCA']['pages']['ctrl'] = [
-            'tstamp' => 'tstamp',
-            'versioningWS' => true,
-            'delete' => 'deleted',
-            'crdate' => 'crdate',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA']['pages'] = [
+            'ctrl' => [
+                'tstamp' => 'tstamp',
+                'versioningWS' => true,
+                'delete' => 'deleted',
+                'crdate' => 'crdate',
+                'enablecolumns' => ['disabled' => 'hidden'],
             ],
+            'columns' => ['hidden' => ['config' => ['type' => 'check']]],
         ];
+
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
@@ -790,6 +815,7 @@ final class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject->getRestrictions()->removeAll()->add(new DeletedRestriction());
 
         $expectedSQLForQuery = 'SELECT * FROM pages WHERE (uid=1) AND (pages.deleted = 0)';
@@ -912,6 +938,7 @@ final class QueryBuilderTest extends UnitTestCase
             return $quoteChar . str_replace($quoteChar, $quoteChar . $quoteChar, $str) . $quoteChar;
         });
         $connectionMock->method('getDatabasePlatform')->willReturn($databasePlatformMock);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $subject = $this->getAccessibleMock(QueryBuilder::class, null, [$connectionMock]);
         $result = $subject->_call('unquoteSingleIdentifier', $input);
         self::assertEquals($expected, $result);
@@ -927,22 +954,26 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function changingClonedQueryBuilderDoesNotInfluenceSourceOne(): void
     {
-        $GLOBALS['TCA']['pages']['ctrl'] = [
-            'tstamp' => 'tstamp',
-            'versioningWS' => true,
-            'delete' => 'deleted',
-            'crdate' => 'crdate',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA']['pages'] = [
+            'ctrl' => [
+                'tstamp' => 'tstamp',
+                'versioningWS' => true,
+                'delete' => 'deleted',
+                'crdate' => 'crdate',
+                'enablecolumns' => ['disabled' => 'hidden'],
             ],
+            'columns' => ['hidden' => ['config' => ['type' => 'check']]],
         ];
+
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('getExpressionBuilder')
             ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
-
         $concreteQueryBuilder = GeneralUtility::makeInstance(
             ConcreteQueryBuilder::class,
             $this->connection
@@ -986,6 +1017,7 @@ final class QueryBuilderTest extends UnitTestCase
     public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConstructor(): void
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1006,6 +1038,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = [];
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1023,6 +1056,8 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = ['disabled' => true];
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1038,6 +1073,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function resettingToDefaultRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
         $queryBuilder = new QueryBuilder(
             $this->connection,
@@ -1062,6 +1098,7 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, string|ParameterType|Type|ArrayParameterType $type): void
     {
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $this->connection->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
@@ -1119,6 +1156,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->expects(self::atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connection->method('getDatabasePlatform')->willReturn($platform);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
         $result = $subject->castFieldToTextType('aField');
@@ -1128,10 +1166,23 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function limitRestrictionsToTablesLimitsRestrictionsInTheContainerToTheGivenTables(): void
     {
-        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
-            'delete' => 'deleted',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
+            ],
+            'tt_content' => [
+                'ctrl' => [
+                    'tstamp' => 'tstamp',
+                    'versioningWS' => true,
+                    'delete' => 'deleted',
+                    'crdate' => 'crdate',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
             ],
         ];
 
@@ -1144,6 +1195,9 @@ final class QueryBuilderTest extends UnitTestCase
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->limitRestrictionsToTables(['pages']);
 
@@ -1168,10 +1222,23 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function restrictionsCanStillBeRemovedAfterTheyHaveBeenLimitedToTables(): void
     {
-        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
-            'delete' => 'deleted',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
+            ],
+            'tt_content' => [
+                'ctrl' => [
+                    'tstamp' => 'tstamp',
+                    'versioningWS' => true,
+                    'delete' => 'deleted',
+                    'crdate' => 'crdate',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
             ],
         ];
 
@@ -1184,6 +1251,9 @@ final class QueryBuilderTest extends UnitTestCase
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->limitRestrictionsToTables(['pages']);
         $subject->getRestrictions()->removeByType(DeletedRestriction::class);
@@ -1209,10 +1279,23 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function restrictionsAreAppliedInJoinConditionForLeftJoins(): void
     {
-        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
-            'delete' => 'deleted',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
+            ],
+            'tt_content' => [
+                'ctrl' => [
+                    'tstamp' => 'tstamp',
+                    'versioningWS' => true,
+                    'delete' => 'deleted',
+                    'crdate' => 'crdate',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
             ],
         ];
 
@@ -1225,6 +1308,9 @@ final class QueryBuilderTest extends UnitTestCase
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->select('*')
                 ->from('pages')
@@ -1247,10 +1333,23 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function restrictionsAreAppliedInJoinConditionForRightJoins(): void
     {
-        $GLOBALS['TCA']['tt_content']['ctrl'] = $GLOBALS['TCA']['pages']['ctrl'] = [
-            'delete' => 'deleted',
-            'enablecolumns' => [
-                'disabled' => 'hidden',
+        $GLOBALS['TCA'] = [
+            'pages' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
+            ],
+            'tt_content' => [
+                'ctrl' => [
+                    'tstamp' => 'tstamp',
+                    'versioningWS' => true,
+                    'delete' => 'deleted',
+                    'crdate' => 'crdate',
+                    'enablecolumns' => ['disabled' => 'hidden'],
+                ],
+                'columns' => ['hidden' => ['config' => ['type' => 'check']]],
             ],
         ];
 
@@ -1263,6 +1362,9 @@ final class QueryBuilderTest extends UnitTestCase
         $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->select('*')
                 ->from('tt_content')
@@ -1287,6 +1389,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder->union('SELECT 1 AS field_one');
 
@@ -1304,6 +1407,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1317,6 +1421,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1332,6 +1437,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $qb = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $qb
             ->union('SELECT 1 AS field_one')
@@ -1345,6 +1451,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1359,6 +1466,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1373,6 +1481,7 @@ final class QueryBuilderTest extends UnitTestCase
     {
         self::expectException(QueryException::class);
         self::expectExceptionCode(1734984009);
+        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->delete('tt_content')
@@ -1390,5 +1499,26 @@ final class QueryBuilderTest extends UnitTestCase
             ->update('tt_content')
             ->leftJoin('tt_content', 'sys_file_reference', 'sys_file_reference')
             ->executeStatement();
+    }
+
+    private function addGeneralUtilityTcaSchemaFactoryInstances(?TcaSchemaFactory $tcaSchemaFactory = null): void
+    {
+        $tcaSchemaFactoryMock = $tcaSchemaFactory ?? $this->createMock(TcaSchemaFactory::class);
+        $container = new Container();
+        $container->set(TcaSchemaFactory::class, $tcaSchemaFactoryMock);
+        GeneralUtility::setContainer($container);
+    }
+
+    private function getTcaSchemaFactory(): TcaSchemaFactory
+    {
+        $cacheMock = $this->createMock(PhpFrontend::class);
+        $cacheMock->method('has')->with(self::isString())->willReturn(false);
+        $tcaSchemaFactory = new TcaSchemaFactory(
+            new RelationMapBuilder($this->createMock(FlexFormTools::class)),
+            new FieldTypeFactory(),
+            '',
+            $cacheMock
+        );
+        return $tcaSchemaFactory;
     }
 }

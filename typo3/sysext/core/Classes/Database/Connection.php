@@ -34,6 +34,7 @@ use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Schema\SchemaInformation;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -78,6 +79,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
 
     private ExpressionBuilder $expressionBuilder;
     private array $prepareConnectionCommands = [];
+    public string $defaultRestrictionContainer = DefaultRestrictionContainer::class;
 
     /**
      * Initializes a new instance of the Connection class.
@@ -113,7 +115,7 @@ class Connection extends \Doctrine\DBAL\Connection implements LoggerAwareInterfa
      */
     public function createQueryBuilder(): QueryBuilder
     {
-        return GeneralUtility::makeInstance(QueryBuilder::class, $this);
+        return GeneralUtility::makeInstance(QueryBuilder::class, $this, GeneralUtility::makeInstance($this->defaultRestrictionContainer));
     }
 
     /**

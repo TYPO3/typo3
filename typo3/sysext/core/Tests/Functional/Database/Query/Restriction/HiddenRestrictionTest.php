@@ -15,21 +15,33 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class HiddenRestrictionTest extends AbstractRestrictionTestCase
 {
     #[Test]
     public function buildRestrictionsAddsHiddenWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'disabled' => 'myHiddenField',
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'disabled' => 'myHiddenField',
+                    ],
+                ],
+                'columns' => [
+                    'myHiddenField' => [
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
         $subject = new HiddenRestriction();
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         self::assertSame('"aTable"."myHiddenField" = 0', (string)$expression);

@@ -24,8 +24,10 @@ use Doctrine\DBAL\Exception\MalformedDsnException;
 use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\Middleware\UsableForConnectionInterface;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Schema\SchemaManager\CoreSchemaManagerFactory;
 use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
 use TYPO3\CMS\Core\Database\Schema\Types\DateType;
@@ -43,6 +45,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * getConnectionForTable() is the only supported way to get a connection that
  * honors the table mapping configuration.
  */
+#[Autoconfigure(public: true)]
 class ConnectionPool
 {
     /**
@@ -71,6 +74,10 @@ class ConnectionPool
         Types::DATETIME_IMMUTABLE => DateTimeType::class,
         Types::TIME_MUTABLE => TimeType::class,
     ];
+
+    public function __construct(
+        protected string $defaultRestrictionContainer = DefaultRestrictionContainer::class
+    ) {}
 
     /**
      * Creates a connection object based on the specified table name.
@@ -385,6 +392,7 @@ class ConnectionPool
 
         /** @var Connection $conn */
         $conn = DriverManager::getConnection($connectionParams, $configuration);
+        $conn->defaultRestrictionContainer = $this->defaultRestrictionContainer;
         $conn->prepareConnection($connectionParams['initCommands'] ?? '');
 
         // Register all custom data types in the type mapping

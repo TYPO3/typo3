@@ -15,26 +15,48 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
 {
     #[Test]
     public function buildExpressionAddsNoAccessGroupWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'fe_group' => 'myGroupField',
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'fe_group' => 'myGroupField',
+                    ],
+                ],
+                'columns' => [
+                    'myGroupField' => [
+                        'config' => [
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
-        ];
-        $GLOBALS['TCA']['bTable']['ctrl'] = [
-            'enablecolumns' => [
-                'fe_group' => 'myOtherGroupField',
+            'bTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'fe_group' => 'myOtherGroupField',
+                    ],
+                ],
+                'columns' => [
+                    'myOtherGroupField' => [
+                        'config' => [
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
+
         $subject = new FrontendGroupRestriction([]);
         $expression = $subject->buildExpression(
             [
@@ -52,16 +74,37 @@ final class FrontendGroupRestrictionTest extends AbstractRestrictionTestCase
     #[Test]
     public function buildExpressionAddsGroupWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'fe_group' => 'myGroupField',
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'fe_group' => 'myGroupField',
+                    ],
+                ],
+                'columns' => [
+                    'myGroupField' => [
+                        'config' => [
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
-        ];
-        $GLOBALS['TCA']['bTable']['ctrl'] = [
-            'enablecolumns' => [
-                'fe_group' => 'myOtherGroupField',
+            'bTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'fe_group' => 'myOtherGroupField',
+                    ],
+                ],
+                'columns' => [
+                    'myOtherGroupField' => [
+                        'config' => [
+                            'type' => 'select',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
+
         $subject = new FrontendGroupRestriction([2, 3]);
         $expression = $subject->buildExpression(
             [

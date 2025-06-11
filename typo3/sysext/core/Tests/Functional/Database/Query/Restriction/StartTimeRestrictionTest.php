@@ -15,21 +15,34 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class StartTimeRestrictionTest extends AbstractRestrictionTestCase
 {
     #[Test]
     public function buildRestrictionsThrowsExceptionInStartTimeIfGlobalsAccessTimeIsMissing(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'starttime' => 'myStartTimeField',
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'starttime' => 'myStartTimeField',
+                    ],
+                ],
+                'columns' => [
+                    'myStartTimeField' => [
+                        'config' => [
+                            'type' => 'datetime',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
+
         unset($GLOBALS['SIM_ACCESS_TIME']);
 
         $this->expectException(\RuntimeException::class);
@@ -42,11 +55,22 @@ final class StartTimeRestrictionTest extends AbstractRestrictionTestCase
     #[Test]
     public function buildRestrictionsAddsStartTimeWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'enablecolumns' => [
-                'starttime' => 'myStartTimeField',
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'starttime' => 'myStartTimeField',
+                    ],
+                ],
+                'columns' => [
+                    'myStartTimeField' => [
+                        'config' => [
+                            'type' => 'datetime',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
 
         $subject = new StartTimeRestriction(42);
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);

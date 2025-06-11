@@ -15,17 +15,20 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\InstantiatableAbstractRestrictionContainer;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockEnforceableQueryRestriction;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockQueryRestriction;
 
 final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
 {
+    protected bool $initializeDatabase = false;
+
     #[Test]
     public function enforceableRestrictionsAreKeptWhenRemoveAllIsCalled(): void
     {
@@ -60,13 +63,29 @@ final class AbstractRestrictionContainerTest extends AbstractRestrictionTestCase
     #[Test]
     public function crossClassWillBeRemovedWhenRemovedByType(): void
     {
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'disabled' => 'hidden',
+                    ],
+                ],
+                'columns' => [
+                    'hidden' => [
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                ],
+            ],
+        ]));
+
         $restriction = new class () extends HiddenRestriction {};
 
         $subject = new InstantiatableAbstractRestrictionContainer();
         $subject->add($restriction);
         $subject->removeByType(HiddenRestriction::class);
 
-        $GLOBALS['TCA']['aTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         self::assertSame('', (string)$expression);
     }

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class WorkspaceRestrictionTest extends FunctionalTestCase
@@ -27,9 +28,13 @@ final class WorkspaceRestrictionTest extends FunctionalTestCase
     #[Test]
     public function buildExpressionAddsLiveWorkspaceWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+            ],
+        ]));
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('aTable');
         $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(0));
         $queryBuilder->select('*')->from('aTable');
@@ -42,9 +47,13 @@ final class WorkspaceRestrictionTest extends FunctionalTestCase
     #[Test]
     public function buildExpressionAddsNonLiveWorkspaceWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+            ],
+        ]));
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('aTable');
         $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(42));
         $queryBuilder->select('*')->from('aTable');
@@ -56,9 +65,13 @@ final class WorkspaceRestrictionTest extends FunctionalTestCase
     #[Test]
     public function buildExpressionAddsLiveWorkspaceLimitedWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => false,
-        ];
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => false,
+                ],
+            ],
+        ]));
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('aTable');
         $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(0));
         $queryBuilder->select('*')->from('aTable');
@@ -70,9 +83,13 @@ final class WorkspaceRestrictionTest extends FunctionalTestCase
     #[Test]
     public function buildExpressionAddsNonLiveWorkspaceLimitedWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => false,
-        ];
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => false,
+                ],
+            ],
+        ]));
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('aTable');
         $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(42));
         $queryBuilder->select('*')->from('aTable');
@@ -84,9 +101,13 @@ final class WorkspaceRestrictionTest extends FunctionalTestCase
     #[Test]
     public function buildExpressionQueriesAllVersionedRecordsWithinAWorkspaceAsWell(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+            ],
+        ]));
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('aTable');
         $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(42, true));
         $queryBuilder->select('*')->from('aTable');
@@ -98,9 +119,13 @@ final class WorkspaceRestrictionTest extends FunctionalTestCase
     #[Test]
     public function buildExpressionQueriesAllVersionedRecordsWithinLiveStillRemovesDeletedState(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'versioningWS' => true,
-        ];
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'versioningWS' => true,
+                ],
+            ],
+        ]));
         $queryBuilder = $this->get(ConnectionPool::class)->getQueryBuilderForTable('aTable');
         $queryBuilder->getRestrictions()->removeAll()->add(new WorkspaceRestriction(0, true));
         $queryBuilder->select('*')->from('aTable');

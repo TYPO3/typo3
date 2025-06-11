@@ -19,12 +19,22 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Restriction to filter records that have been marked as hidden
  */
 class HiddenRestriction implements QueryRestrictionInterface
 {
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
+    public function __construct()
+    {
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+    }
+
     /**
      * Main method to build expressions for given tables
      * Evaluates the ctrl/enablecolumns/disabled flag of the table and adds the according restriction if set
@@ -37,10 +47,13 @@ class HiddenRestriction implements QueryRestrictionInterface
     {
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            $hiddenFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['enablecolumns']['disabled'] ?? null;
-            if (!empty($hiddenFieldName)) {
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
                 $constraints[] = $expressionBuilder->eq(
-                    $tableAlias . '.' . $hiddenFieldName,
+                    $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName(),
                     0
                 );
             }

@@ -15,24 +15,47 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class DefaultRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     #[Test]
     public function buildRestrictionsAddsAllDefaultRestrictions(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'delete' => 'deleted',
-            'enablecolumns' => [
-                'disabled' => 'myHiddenField',
-                'starttime' => 'myStartTimeField',
-                'endtime' => 'myEndTimeField',
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                    'enablecolumns' => [
+                        'disabled' => 'myHiddenField',
+                        'starttime' => 'myStartTimeField',
+                        'endtime' => 'myEndTimeField',
+                    ],
+                ],
+                'columns' => [
+                    'myHiddenField' => [
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                    'myStartTimeField' => [
+                        'config' => [
+                            'type' => 'datetime',
+                        ],
+                    ],
+                    'myEndTimeField' => [
+                        'config' => [
+                            'type' => 'datetime',
+                        ],
+                    ],
+                ],
             ],
-        ];
+        ]));
+
         $GLOBALS['SIM_ACCESS_TIME'] = 123;
         $subject = new DefaultRestrictionContainer();
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);

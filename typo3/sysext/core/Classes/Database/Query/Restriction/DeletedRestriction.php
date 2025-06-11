@@ -19,6 +19,9 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
 
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Restriction to respect the soft-delete functionality of TYPO3.
@@ -26,6 +29,13 @@ use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
  */
 class DeletedRestriction implements QueryRestrictionInterface
 {
+    protected TcaSchemaFactory $tcaSchemaFactory;
+
+    public function __construct()
+    {
+        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
+    }
+
     /**
      * Main method to build expressions for given tables
      * Evaluates the ctrl/delete flag of the table and adds the according restriction if set
@@ -38,10 +48,13 @@ class DeletedRestriction implements QueryRestrictionInterface
     {
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            $deletedFieldName = $GLOBALS['TCA'][$tableName]['ctrl']['delete'] ?? null;
-            if (!empty($deletedFieldName)) {
+            if (!$this->tcaSchemaFactory->has($tableName)) {
+                continue;
+            }
+            $schema = $this->tcaSchemaFactory->get($tableName);
+            if ($schema->hasCapability(TcaSchemaCapability::SoftDelete)) {
                 $constraints[] = $expressionBuilder->eq(
-                    $tableAlias . '.' . $deletedFieldName,
+                    $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName(),
                     0
                 );
             }

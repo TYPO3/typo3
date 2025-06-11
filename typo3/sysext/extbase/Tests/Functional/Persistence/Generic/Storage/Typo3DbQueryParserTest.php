@@ -55,7 +55,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
         parent::tearDown();
         // We need to re-set the TcaSchemaFactory state
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
-        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
     }
 
     #[Test]
@@ -261,7 +261,7 @@ final class Typo3DbQueryParserTest extends FunctionalTestCase
     {
         $GLOBALS['TCA']['tx_blogexample_domain_model_blog']['ctrl']['delete'] = null;
         $tcaSchemaFactory = $this->get(TcaSchemaFactory::class);
-        $tcaSchemaFactory->load($GLOBALS['TCA'], true);
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
         $GLOBALS['TYPO3_REQUEST'] = (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_BE);
         $typo3DbQueryParser = $this->get(Typo3DbQueryParser::class);
         $blogRepository = $this->get(BlogRepository::class);

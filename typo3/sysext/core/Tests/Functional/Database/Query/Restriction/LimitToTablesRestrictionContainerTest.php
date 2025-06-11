@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
@@ -23,13 +23,30 @@ use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\LimitToTablesRestrictionContainer;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionContainerInterface;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTestCase
 {
     #[Test]
     public function buildExpressionAddsRestrictionsOnlyToGivenAlias(): void
     {
-        $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'bTable' => [
+                'ctrl' => [
+                    'enablecolumns' => [
+                        'disabled' => 'hidden',
+                    ],
+                ],
+                'columns' => [
+                    'hidden' => [
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                ],
+            ],
+        ]));
+
         $subject = new LimitToTablesRestrictionContainer();
         $subject->addForTables(new HiddenRestriction(), ['bt']);
         $expression = $subject->buildExpression(['aTable' => 'aTable', 'bTable' => 'bTable', 'bt' => 'bTable'], $this->expressionBuilder);
@@ -40,8 +57,24 @@ final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTes
     #[Test]
     public function buildExpressionAddsRestrictionsOfDefaultRestrictionContainerOnlyToGivenAlias(): void
     {
-        $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
-        $GLOBALS['TCA']['bTable']['ctrl']['delete'] = 'deleted';
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'bTable' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                    'enablecolumns' => [
+                        'disabled' => 'hidden',
+                    ],
+                ],
+                'columns' => [
+                    'hidden' => [
+                        'config' => [
+                            'type' => 'check',
+                        ],
+                    ],
+                ],
+            ],
+        ]));
+
         $subject = new LimitToTablesRestrictionContainer();
         $subject->addForTables(new DefaultRestrictionContainer(), ['bt']);
         $expression = $subject->buildExpression(['aTable' => 'aTable', 'bTable' => 'bTable', 'bt' => 'bTable'], $this->expressionBuilder);
@@ -52,8 +85,24 @@ final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTes
     #[Test]
     public function removeByTypeRemovesRestrictionsByTypeAlsoFromDefaultRestrictionContainer(): void
     {
-        $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
-        $GLOBALS['TCA']['bTable']['ctrl']['delete'] = 'deleted';
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'bTable' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                    'enablecolumns' => [
+                        'disabled' => 'hidden',
+                    ],
+                ],
+                'columns' => [
+                    'hidden' => [
+                        'config' => [
+                            'type' => 'datetime',
+                        ],
+                    ],
+                ],
+            ],
+        ]));
+
         $subject = new LimitToTablesRestrictionContainer();
         $subject->addForTables(new DefaultRestrictionContainer(), ['bt']);
         $subject->removeByType(DeletedRestriction::class);
@@ -65,8 +114,6 @@ final class LimitToTablesRestrictionContainerTest extends AbstractRestrictionTes
     #[Test]
     public function removeByTypeRemovesRestrictionsByTypeAlsoFromAnyRestrictionContainer(): void
     {
-        $GLOBALS['TCA']['bTable']['ctrl']['enablecolumns']['disabled'] = 'hidden';
-        $GLOBALS['TCA']['bTable']['ctrl']['delete'] = 'deleted';
         $subject = new LimitToTablesRestrictionContainer();
         $containerMock = $this->createMock(QueryRestrictionContainerInterface::class);
         $containerMock->expects(self::atLeastOnce())->method('removeByType')->with(DeletedRestriction::class);

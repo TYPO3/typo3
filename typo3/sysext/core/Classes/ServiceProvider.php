@@ -63,7 +63,6 @@ class ServiceProvider extends AbstractServiceProvider
             SymfonyLintCommand::class => self::getSymfonyLintCommand(...),
             SymfonyDumpCompletionCommand::class => self::getSymfonyDumpCompletionCommand(...),
             Cache\CacheManager::class => self::getCacheManager(...),
-            Database\ConnectionPool::class => self::getConnectionPool(...),
             Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
             Charset\CharsetConverter::class => self::getCharsetConverter(...),
             Charset\CharsetProvider::class => self::getCharsetProvider(...),
@@ -135,6 +134,7 @@ class ServiceProvider extends AbstractServiceProvider
             Console\CommandRegistry::class => self::configureCommands(...),
             Imaging\IconRegistry::class => self::configureIconRegistry(...),
             EventDispatcherInterface::class => self::provideFallbackEventDispatcher(...),
+            Database\ConnectionPool::class => self::provideFallbackConnectionPool(...),
             EventDispatcher\ListenerProvider::class => self::extendEventListenerProvider(...),
         ] + parent::getExtensions();
     }
@@ -171,13 +171,15 @@ class ServiceProvider extends AbstractServiceProvider
         return $cacheManager;
     }
 
-    public static function getConnectionPool(ContainerInterface $container): Database\ConnectionPool
+    public static function provideFallbackConnectionPool(ContainerInterface $container, ?Database\ConnectionPool $connectionPool): Database\ConnectionPool
     {
         if (!$container->get('boot.state')->complete) {
             throw new \LogicException(Database\ConnectionPool::class . ' can not be injected/instantiated during ext_localconf.php or TCA loading. Use lazy loading instead.', 1638976490);
         }
 
-        return self::new($container, Database\ConnectionPool::class);
+        return $connectionPool ?? self::new($container, Database\ConnectionPool::class, [
+            Database\Query\Restriction\EmptyRestrictionContainer::class,
+        ]);
     }
 
     public static function getDriverMiddlewaresService(ContainerInterface $container): Database\DriverMiddlewareService

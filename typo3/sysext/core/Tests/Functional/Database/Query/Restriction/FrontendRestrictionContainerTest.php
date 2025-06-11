@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\VisibilityAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendRestrictionContainer;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
@@ -149,7 +150,7 @@ final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
         ?array $localContextFrontendUserGroups,
         string $expectedSQL
     ): void {
-        $GLOBALS['TCA'] = [
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
             'aTable' => [
                 'ctrl' => [
                     'versioningWS' => 2,
@@ -160,6 +161,12 @@ final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                         'endtime' => 'myEndTimeField',
                         'fe_group' => 'myGroupField',
                     ],
+                ],
+                'columns' => [
+                    'myHiddenField' => ['config' => ['type' => 'check']],
+                    'myStartTimeField' => ['config' => ['type' => 'datetime']],
+                    'myEndTimeField' => ['config' => ['type' => 'datetime']],
+                    'myGroupField' => ['config' => ['type' => 'select']],
                 ],
             ],
             'pages' => [
@@ -179,7 +186,8 @@ final class FrontendRestrictionContainerTest extends AbstractRestrictionTestCase
                 ],
                 'columns' => [],
             ],
-        ];
+        ]));
+
         $context = new Context();
         $context->setAspect('visibility', new VisibilityAspect($hiddenPagePreview, $hiddenRecordPreview));
         $context->setAspect('frontend.user', new UserAspect(new FrontendUserAuthentication(), $frontendUserGroups));

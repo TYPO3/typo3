@@ -15,19 +15,25 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Core\Tests\Unit\Database\Query\Restriction;
+namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 
 final class DeletedRestrictionTest extends AbstractRestrictionTestCase
 {
     #[Test]
     public function buildRestrictionsAddsDeletedWhereClause(): void
     {
-        $GLOBALS['TCA']['aTable']['ctrl'] = [
-            'delete' => 'deleted',
-        ];
+        $this->get(TcaSchemaFactory::class)->rebuild(array_replace_recursive($GLOBALS['TCA'], [
+            'aTable' => [
+                'ctrl' => [
+                    'delete' => 'deleted',
+                ],
+            ],
+        ]));
+
         $subject = new DeletedRestriction();
         $expression = $subject->buildExpression(['aTable' => 'aTable'], $this->expressionBuilder);
         self::assertSame('"aTable"."deleted" = 0', (string)$expression);
