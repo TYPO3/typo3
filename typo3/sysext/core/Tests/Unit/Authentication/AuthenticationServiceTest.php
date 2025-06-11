@@ -38,8 +38,7 @@ final class AuthenticationServiceTest extends UnitTestCase
     public static function processLoginDataProvider(): array
     {
         return [
-            'Backend login with securityLevel "normal"' => [
-                'normal',
+            'Backend login' => [
                 [
                     'status' => 'login',
                     'uname' => 'admin',
@@ -52,8 +51,7 @@ final class AuthenticationServiceTest extends UnitTestCase
                     'uident_text' => 'password',
                 ],
             ],
-            'Frontend login with securityLevel "normal"' => [
-                'normal',
+            'Frontend login' => [
                 [
                     'status' => 'login',
                     'uname' => 'admin',
@@ -66,8 +64,7 @@ final class AuthenticationServiceTest extends UnitTestCase
                     'uident_text' => 'password',
                 ],
             ],
-            'Frontend login with securityLevel "normal" and spaced passwords removes spaces' => [
-                'normal',
+            'Frontend login with spaced passwords removes spaces' => [
                 [
                     'status' => 'login',
                     'uname' => 'admin ',
@@ -85,11 +82,11 @@ final class AuthenticationServiceTest extends UnitTestCase
 
     #[DataProvider('processLoginDataProvider')]
     #[Test]
-    public function processLoginReturnsCorrectData(string $passwordSubmissionStrategy, array $loginData, array $expectedProcessedData): void
+    public function processLoginReturnsCorrectData(array $loginData, array $expectedProcessedData): void
     {
         $subject = new AuthenticationService();
         // Login data is modified by reference
-        $subject->processLoginData($loginData, $passwordSubmissionStrategy);
+        $subject->processLoginData($loginData);
         self::assertEquals($expectedProcessedData, $loginData);
     }
 

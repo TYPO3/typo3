@@ -1101,6 +1101,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
      * Processes Login data submitted by a form or params
      *
      * @param array $loginData Login data array
+     * @param ServerRequestInterface $request
      * @return array
      * @internal
      */
@@ -1112,7 +1113,7 @@ abstract class AbstractUserAuthentication implements LoggerAwareInterface
         $processedLoginData = $loginData;
         /** @var AuthenticationService $serviceObject */
         foreach ($this->getAuthServices($subType, $loginData, null, $request) as $serviceObject) {
-            $serviceResult = $serviceObject->processLoginData($processedLoginData, 'normal');
+            $serviceResult = $serviceObject->processLoginData($processedLoginData);
             if (!empty($serviceResult)) {
                 $isLoginDataProcessed = true;
                 // If the service returns >=200 then no more processing is needed

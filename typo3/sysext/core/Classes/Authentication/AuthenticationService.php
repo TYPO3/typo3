@@ -31,22 +31,18 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class AuthenticationService extends AbstractAuthenticationService implements MimicServiceInterface
 {
     /**
-     * Process the submitted credentials.
-     * In this case hash the clear text password if it has been submitted.
+     * Process the submitted credentials. Returns true, if loginData was processed successfully, else false.
+     * In addition, extensions overwriting this method or implement the context related methods `processLoginDataFE`
+     * or `processLoginDataBE` may also return an int (e.g. >= 200) in order to stop loginData processing of other
+     * services in the authentication service chain.
      *
      * @param array $loginData Credentials that are submitted and potentially modified by other services
-     * @param string $passwordTransmissionStrategy Keyword of how the password has been hashed or encrypted before submission
-     * @return bool
      */
-    public function processLoginData(array &$loginData, $passwordTransmissionStrategy)
+    public function processLoginData(array &$loginData): bool|int
     {
-        $isProcessed = false;
-        if ($passwordTransmissionStrategy === 'normal') {
-            $loginData = array_map(trim(...), $loginData);
-            $loginData['uident_text'] = $loginData['uident'];
-            $isProcessed = true;
-        }
-        return $isProcessed;
+        $loginData = array_map(trim(...), $loginData);
+        $loginData['uident_text'] = $loginData['uident'];
+        return true;
     }
 
     /**

@@ -475,12 +475,6 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Authentication/AbstractAuthenticationService.php
 
 		-
-			message: '#^Comparison operation "\>\=" between 1 and 200 is always false\.$#'
-			identifier: greaterOrEqual.alwaysFalse
-			count: 1
-			path: ../../typo3/sysext/core/Classes/Authentication/AbstractUserAuthentication.php
-
-		-
 			message: '#^Left side of && is always true\.$#'
 			identifier: booleanAnd.leftAlwaysTrue
 			count: 1
