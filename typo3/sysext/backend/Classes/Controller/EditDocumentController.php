@@ -2495,7 +2495,7 @@ class EditDocumentController
 
         $table = (string)key($queryParameters['edit']);
         $schema = $this->tcaSchemaFactory->has($table) ? $this->tcaSchemaFactory->get($table) : null;
-        $tableTitle = $languageService->sL($schema?->getRawConfiguration()['title'] ?? '') ?: $table;
+        $tableTitle = $schema?->getTitle($languageService->sL(...)) ?: $table;
         $identifier = (string)key($queryParameters['edit'][$table]);
         $action = (string)($queryParameters['edit'][$table][$identifier] ?? '');
 

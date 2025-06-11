@@ -222,7 +222,7 @@ class LinkAnalyzerResult
                 $brokenLink['page_record'] = $pageRecord;
             }
 
-            $brokenLink['record_type'] = $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '');
+            $brokenLink['record_type'] = $schema->getTitle($this->getLanguageService()->sL(...));
             $brokenLink['target'] = (((string)($brokenLink['link_type'] ?? '') === 'db') ? 'id:' : '') . $brokenLink['url'];
             $brokenLink['language_code'] = $languageCode;
         }

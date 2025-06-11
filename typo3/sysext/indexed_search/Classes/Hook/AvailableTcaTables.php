@@ -43,9 +43,8 @@ readonly class AvailableTcaTables
             if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)) {
                 continue;
             }
-            $label = $schema->getRawConfiguration()['title'] ?? '';
             $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($name, []);
-            $fieldDefinition['items'][] = ['label' => $label, 'value' => $name, 'icon' => $icon];
+            $fieldDefinition['items'][] = ['label' => $schema->getTitle(), 'value' => $name, 'icon' => $icon];
         }
     }
 }

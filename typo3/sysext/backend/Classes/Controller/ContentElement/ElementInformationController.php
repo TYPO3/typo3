@@ -167,11 +167,11 @@ class ElementInformationController
             $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->folderObject, IconSize::SMALL)->render();
         } elseif ($this->type === 'file') {
             $schema = $this->tcaSchemaFactory->get($this->table);
-            $pageTitle['table'] = $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '');
+            $pageTitle['table'] = $schema->getTitle($this->getLanguageService()->sL(...));
             $pageTitle['icon'] = $this->iconFactory->getIconForResource($this->fileObject, IconSize::SMALL)->render();
         } else {
             $schema = $this->tcaSchemaFactory->get($this->table);
-            $pageTitle['table'] = $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '');
+            $pageTitle['table'] = $schema->getTitle($this->getLanguageService()->sL(...));
             $pageTitle['icon'] = $this->iconFactory->getIconForRecord($this->table, $this->row, IconSize::SMALL);
         }
         return $pageTitle;
@@ -619,13 +619,13 @@ class ElementInformationController
                 $line['recordTitle'] = BackendUtility::getRecordTitle($row['tablename'], $record);
                 $line['parentRecord'] = $parentRecord;
                 $line['parentRecordTitle'] = $parentRecordTitle;
-                $line['title'] = $lang->sL($schema->getRawConfiguration()['title'] ?? '') ?: $row['tablename'];
+                $line['title'] = $schema->getTitle($lang->sL(...)) ?: $row['tablename'];
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($schema, $row['field']);
                 $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0, 0);
                 $line['actions'] = $this->getRecordActions($schema, $row['recuid'], $request);
             } else {
                 $line['row'] = $row;
-                $line['title'] = $lang->sL($schema->getRawConfiguration()['title'] ?? '') ?: $row['tablename'];
+                $line['title'] = $schema->getTitle($lang->sL(...)) ?: $row['tablename'];
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($schema, $row['field']);
             }
             $refLines[] = $line;
@@ -699,14 +699,14 @@ class ElementInformationController
                 $line['icon'] = $this->iconFactory->getIconForRecord($row['ref_table'], $record, IconSize::SMALL)->render();
                 $line['row'] = $row;
                 $line['record'] = $record;
-                $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record, false, true);
-                $line['title'] = $lang->sL($schema->getRawConfiguration()['title'] ?? '');
+                $line['recordTitle'] = BackendUtility::getRecordTitle($row['ref_table'], $record);
+                $line['title'] = $schema->getTitle($lang->sL(...));
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($schema, $row['field']);
                 $line['path'] = BackendUtility::getRecordPath($record['pid'], '', 0);
                 $line['actions'] = $this->getRecordActions($schema, $row['ref_uid'], $request);
             } else {
                 $line['row'] = $row;
-                $line['title'] = $lang->sL($schema->getRawConfiguration()['title'] ?? '');
+                $line['title'] = $schema->getTitle($lang->sL(...));
                 $line['labelForTableColumn'] = $this->getLabelForTableColumn($schema, $row['field']);
             }
             $refFromLines[] = $line;

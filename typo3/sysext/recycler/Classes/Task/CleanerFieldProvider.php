@@ -95,7 +95,7 @@ class CleanerFieldProvider extends AbstractAdditionalFieldProvider
                 continue;
             }
             $selected = in_array($table, $selectedTables, true) ? ' selected="selected"' : '';
-            $tableTitle = !empty($schema->getRawConfiguration()['title']) ? $this->getLanguageService()->sL($schema->getRawConfiguration()['title']) : '';
+            $tableTitle = $schema->getTitle($this->getLanguageService()->sL(...));
             $options[$tableTitle . ' ' . $table] = '<option' . $selected . ' value="' . $table . '">' . htmlspecialchars($tableTitle . ' (' . $table . ')') . '</option>';
         }
         ksort($options);
