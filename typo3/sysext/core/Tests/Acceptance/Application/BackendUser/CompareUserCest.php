@@ -63,6 +63,17 @@ final class CompareUserCest
         $I->waitForElementNotVisible('#t3js-ui-block');
         $I->waitForElementVisible('#EditDocumentController');
         $I->canSee('Edit Backend user "' . trim(explode('[', $usernameFirstCompare)[0]) . '" on root level');
+
+        // back to compare view
+        $I->click('.module-docheader a[title="Close"]');
+        $I->waitForElementVisible('table.table-striped-columns');
+        $I->canSee('Compare backend users', 'h1');
+
+        // Remove selected users for comparison
+        $I->amGoingTo('Switch to user group listing');
+        $I->selectOption('.t3-js-jumpMenuBox', 'Backend users');
+        $I->see('Backend users', 'h1');
+        $I->click('Clear compare list');
     }
 
     public function accessingBackendUserGroupCompareViewWorks(ApplicationTester $I): void
@@ -72,6 +83,7 @@ final class CompareUserCest
         $I->selectOption('.t3-js-jumpMenuBox', 'Backend user groups');
         $I->see('Backend user groups', 'h1');
 
+        // put three into compare list
         $I->amGoingTo('Add three groups to compare');
         $I->click('#typo3-backend-user-group-list > tbody > tr:nth-child(1) > td.col-control > div:nth-child(3) > button');
         $I->waitForElementVisible('table#typo3-backend-user-group-list');
@@ -87,5 +99,10 @@ final class CompareUserCest
         $I->amGoingTo('Check compare view is loaded with the correct number of groups');
         $I->see('Compare backend user groups', 'h1');
         $I->canSeeNumberOfElements('table.beuser-comparison-table > thead > tr > th', 3);
+
+        // Remove selected user groups for comparison
+        $I->selectOption('.t3-js-jumpMenuBox', 'Backend user groups');
+        $I->see('Backend user groups', 'h1');
+        $I->click('Clear compare list');
     }
 }
