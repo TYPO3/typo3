@@ -138,7 +138,7 @@ class ColumnSelectorController
             $schema = $this->tcaSchemaFactory->get($concreteTableName);
             $labelFieldName = false;
             if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-                $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName();
+                $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName();
             }
 
             // Determine if the column should be disabled (Meaning it is always selected and can not be turned off)

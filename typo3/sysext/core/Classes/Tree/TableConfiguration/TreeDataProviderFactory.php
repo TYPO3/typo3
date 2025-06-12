@@ -84,7 +84,7 @@ class TreeDataProviderFactory
                 $schemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
                 if ($schemaFactory->has($tableName)) {
                     $labelField = $schemaFactory->get($tableName)->getCapability(TcaSchemaCapability::Label);
-                    $dataProvider->setLabelField($labelField->getPrimaryField()?->getName() ?? '');
+                    $dataProvider->setLabelField($labelField->getPrimaryFieldName() ?? '');
                 }
             }
             $dataProvider->setTreeId(md5($table . '|' . $field));

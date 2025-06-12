@@ -120,7 +120,7 @@ class DownloadRecordList
     protected function prepareRow(string $table, array $row, array $columnsToRender, bool $rawValues): array
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName() ?? '';
+        $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName() ?? '';
         foreach ($columnsToRender as $columnName) {
             if (!$rawValues) {
                 if ($columnName === $labelFieldName) {

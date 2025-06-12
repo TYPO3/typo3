@@ -65,7 +65,6 @@ use TYPO3\CMS\Core\Resource\FileInterface;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
-use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -701,12 +700,7 @@ class EditDocumentController
                     // Template module > 'info/modify' > edit 'setup' field) or in case the field is
                     // not in "showitem" or is set to readonly (e.g. "file" in sys_file_metadata).
                     $labelCapability = $this->tcaSchemaFactory->get($table)->getCapability(TcaSchemaCapability::Label);
-                    $labelFields = array_unique(array_filter(
-                        array_merge(
-                            [$labelCapability->getPrimaryField()?->getName()],
-                            array_map(static fn(FieldTypeInterface $field): string => $field->getName(), $labelCapability->getAdditionalFields())
-                        )
-                    ));
+                    $labelFields = $labelCapability->getAllLabelFieldNames();
                     foreach ($labelFields as $labelField) {
                         if (!isset($row[$labelField])) {
                             $tmpRecord = BackendUtility::getRecord($table, $uid, implode(',', $labelFields));

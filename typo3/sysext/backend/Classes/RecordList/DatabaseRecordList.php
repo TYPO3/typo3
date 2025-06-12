@@ -433,9 +433,10 @@ class DatabaseRecordList
     public function getColumnsToRender(string $table, bool $includeMetaColumns, string $selectedPreset = ''): array
     {
         $schema = $this->tcaSchemaFactory->get($table);
-        // @todo: this is a small workaround, while using "label" with e.g. "uid". This means, LabelCapability needs to support non-primary-field values.
-        $titleCol = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName() ?? $schema->getRawConfiguration()['label'];
-        $columnsToSelect = [$titleCol];
+        $columnsToSelect = [];
+        if ($schema->getCapability(TcaSchemaCapability::Label)->hasPrimaryField()) {
+            $columnsToSelect[] = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName();
+        }
         // Setting fields selected in columnSelectorBox (saved in uc)
         $rowListArray = [];
         if (is_array($this->setFields[$table] ?? null)) {
@@ -579,17 +580,8 @@ class DatabaseRecordList
             $selectFields[] = $languageCapability->getLanguageField()->getName();
             $selectFields[] = $languageCapability->getTranslationOriginPointerField()->getName();
         }
-        if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-            $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-            if ($labelCapability->hasPrimaryField()) {
-                $selectFields[] = $labelCapability->getPrimaryField()->getName();
-            }
-            foreach ($labelCapability->getAdditionalFields() as $field) {
-                $selectFields[] = $field->getName();
-            }
-        }
-        // Unique list!
-        $selectFields = array_unique($selectFields);
+        $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
+        $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
         $fieldListFields = BackendUtility::getAllowedFieldsForTable($table, false);
         // Making sure that the fields in the field-list ARE in the field-list from TCA!
         return array_intersect($selectFields, $fieldListFields);
@@ -638,7 +630,7 @@ class DatabaseRecordList
 
         // Init
         $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-        $titleCol = $labelCapability->hasPrimaryField() ? $labelCapability->getPrimaryField()->getName() : '';
+        $titleCol = $labelCapability->getPrimaryFieldName() ?? '';
         $l10nEnabled = $schema->isLanguageAware();
 
         $this->fieldArray = $this->getColumnsToRender($table, true);
@@ -1161,10 +1153,8 @@ class DatabaseRecordList
         $titleCol = '';
         $schema = $this->tcaSchemaFactory->get($table);
         if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-            $titleCol = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName();
+            $titleCol = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName();
         }
-        // @todo: this is a small workaround, while using "label" with e.g. "uid". This means, LabelCapability needs to support non-primary-field values.
-        $titleCol = $titleCol ?: $schema->getRawConfiguration()['label'];
         $languageService = $this->getLanguageService();
         $rowOutput = '';
         $id_orig = $this->id;

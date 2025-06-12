@@ -114,7 +114,7 @@ class WorkspaceService implements SingletonInterface
                 $schema = $this->tcaSchemaFactory->get(self::TABLE_WORKSPACE);
                 /** @var LabelCapability $labelCapability */
                 $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-                $labelField = $labelCapability->getPrimaryField()->getName();
+                $labelField = $labelCapability->getPrimaryFieldName();
                 $wsRecord = BackendUtility::getRecord(self::TABLE_WORKSPACE, $wsId, 'uid,' . $labelField);
                 if (is_array($wsRecord)) {
                     $title = (string)$wsRecord[$labelField];

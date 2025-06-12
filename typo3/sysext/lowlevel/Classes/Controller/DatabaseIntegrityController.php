@@ -1143,10 +1143,10 @@ class DatabaseIntegrityController
                 $altLabelFieldName = null;
 
                 if ($labelCapability->hasPrimaryField()) {
-                    $labelField = $labelCapability->getPrimaryField();
-                    $labelFieldName = $labelField->getName();
+                    $labelFieldName = $labelCapability->getPrimaryFieldName();
                     $selectFields[] = $labelFieldName;
-                    if ($labelField->isType(TableColumnType::SELECT)) {
+                    $labelField = $schema->hasField($labelFieldName) ? $schema->getField($labelFieldName) : null;
+                    if ($labelField && $labelField->isType(TableColumnType::SELECT)) {
                         foreach ($labelField->getConfiguration()['items'] ?? [] as $item) {
                             $item = SelectItem::fromTcaItemArray($item);
                             if ($item->isDivider()) {
@@ -1158,17 +1158,18 @@ class DatabaseIntegrityController
                     }
                 }
                 $altLabelFieldSelect = [];
-                foreach ($labelCapability->getAdditionalFields() as $altLabelField) {
-                    $selectFields[] = $altLabelField->getName();
-                    if ($altLabelField->isType(TableColumnType::SELECT)) {
-                        foreach ($altLabelField->getConfiguration()['items'] ?? [] as $item) {
+                foreach ($labelCapability->getAdditionalFieldNames() as $additionalFieldName) {
+                    $selectFields[] = $additionalFieldName;
+                    $additionalField = $schema->hasField($additionalFieldName) ? $schema->getField($additionalFieldName) : null;
+                    if ($additionalField && $additionalField->isType(TableColumnType::SELECT)) {
+                        foreach ($additionalField->getConfiguration()['items'] ?? [] as $item) {
                             $item = SelectItem::fromTcaItemArray($item);
                             if ($item->isDivider()) {
                                 continue;
                             }
                             $altLabelFieldSelect[$item->getValue()] = $languageService->sL($item->getLabel());
                         }
-                        $altLabelFieldName = $altLabelField->getName();
+                        $altLabelFieldName = $additionalField->getName();
                         // We only take the first alt-label field
                         $useAltSelectLabels = true;
                         break;
@@ -1920,10 +1921,10 @@ class DatabaseIntegrityController
                     $selectFields = ['uid'];
 
                     if ($labelCapability->hasPrimaryField()) {
-                        $labelField = $labelCapability->getPrimaryField();
-                        $labelFieldName = $labelField->getName();
+                        $labelFieldName = $labelCapability->getPrimaryFieldName();
                         $selectFields[] = $labelFieldName;
-                        if ($labelField->isType(TableColumnType::SELECT)) {
+                        $labelField = $schema->hasField($labelFieldName) ? $schema->getField($labelFieldName) : null;
+                        if ($labelField && $labelField->isType(TableColumnType::SELECT)) {
                             foreach ($labelField->getConfiguration()['items'] ?? [] as $item) {
                                 $item = SelectItem::fromTcaItemArray($item);
                                 if ($item->isDivider()) {
@@ -1935,17 +1936,18 @@ class DatabaseIntegrityController
                         }
                     }
                     $altLabelFieldSelect = [];
-                    foreach ($labelCapability->getAdditionalFields() as $altLabelField) {
-                        $selectFields[] = $altLabelField->getName();
-                        if ($altLabelField->isType(TableColumnType::SELECT)) {
-                            foreach ($altLabelField->getConfiguration()['items'] ?? [] as $item) {
+                    foreach ($labelCapability->getAdditionalFieldNames() as $additionalFieldName) {
+                        $selectFields[] = $additionalFieldName;
+                        $additionalField = $schema->hasField($additionalFieldName) ? $schema->getField($additionalFieldName) : null;
+                        if ($additionalField && $additionalField->isType(TableColumnType::SELECT)) {
+                            foreach ($additionalField->getConfiguration()['items'] ?? [] as $item) {
                                 $item = SelectItem::fromTcaItemArray($item);
                                 if ($item->isDivider()) {
                                     continue;
                                 }
                                 $altLabelFieldSelect[$item->getValue()] = $languageService->sL($item->getLabel());
                             }
-                            $altLabelFieldName = $altLabelField->getName();
+                            $altLabelFieldName = $additionalField->getName();
                             // We only take the first alt-label field
                             $useAltSelectLabels = true;
                             break;
@@ -2063,10 +2065,10 @@ class DatabaseIntegrityController
         }
         // This case happens when NO relations exist. Iterate existing label_alt configuration and
         // take the first non-empty value.
-        foreach ($labelCapability->getAdditionalFields() as $altLabelField) {
-            if ($val[$altLabelField->getName()]) {
+        foreach ($labelCapability->getAdditionalFieldNames() as $additionalFieldName) {
+            if ($val[$additionalFieldName]) {
                 // First altLabelField that matches concludes the output.
-                return htmlspecialchars($val[$altLabelField->getName()]);
+                return htmlspecialchars($val[$additionalFieldName]);
             }
         }
         // This happens when NONE of the label_alt fields contained an entry. We still need to be able to
@@ -2298,7 +2300,7 @@ class DatabaseIntegrityController
     {
         $schema = $this->tcaSchemaFactory->get($this->table);
         if ($schema->hasCapability(TcaSchemaCapability::Label) && $schema->getCapability(TcaSchemaCapability::Label)->hasPrimaryField()) {
-            return $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()->getName();
+            return $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName();
         }
         return '';
     }
@@ -2755,7 +2757,7 @@ class DatabaseIntegrityController
                     ->from($table)
                     ->setMaxResults(200);
                 if ($schema->hasCapability(TcaSchemaCapability::Label) && $schema->getCapability(TcaSchemaCapability::Label)->hasPrimaryField()) {
-                    $queryBuilder->addSelect($schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()->getName());
+                    $queryBuilder->addSelect($schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName());
                 }
                 $likes = [];
                 foreach ($fields as $field) {

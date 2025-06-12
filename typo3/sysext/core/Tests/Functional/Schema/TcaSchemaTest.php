@@ -135,4 +135,29 @@ final class TcaSchemaTest extends FunctionalTestCase
         self::assertFalse($rootLevelRestriction->canExistOnPages());
         self::assertTrue($rootLevelRestriction->canExistOnRootLevel());
     }
+
+    #[Test]
+    public function labelsAreAddedToSchema(): void
+    {
+        $GLOBALS['TCA']['tt_content']['ctrl']['label'] = 'header';
+        $GLOBALS['TCA']['tt_content']['ctrl']['label_alt'] = 'subheader,bodytext,uid,subheader';
+        $GLOBALS['TCA']['tt_content']['ctrl']['label_alt_force'] = true;
+        $GLOBALS['TCA']['tt_content']['ctrl']['label_userFunc'] = '\Foo\Bar\Label\User->func';
+        $GLOBALS['TCA']['tt_content']['ctrl']['label_userFunc_options'] = ['foo' => 'bar'];
+        $GLOBALS['TCA']['tt_content']['ctrl']['formattedLabel_userFunc'] = '\Foo\Bar\Formatter\User->func';
+        $GLOBALS['TCA']['tt_content']['ctrl']['formattedLabel_userFunc_options'] = ['baz' => 'bar'];
+
+        $factory = $this->get(TcaSchemaFactory::class);
+        $factory->rebuild($GLOBALS['TCA']);
+        $schema = $factory->get('tt_content');
+        $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
+        self::assertTrue($labelCapability->hasPrimaryField());
+        self::assertEquals('header', $labelCapability->getPrimaryFieldName());
+        self::assertEquals(['subheader', 'bodytext', 'uid'], $labelCapability->getAdditionalFieldNames());
+        self::assertEquals(['header', 'subheader', 'bodytext', 'uid'], $labelCapability->getAllLabelFieldNames());
+        self::assertEquals('\Foo\Bar\Label\User->func', $labelCapability->getConfiguration()['generator']);
+        self::assertEquals(['foo' => 'bar'], $labelCapability->getConfiguration()['generatorOptions']);
+        self::assertEquals('\Foo\Bar\Formatter\User->func', $labelCapability->getConfiguration()['formatter']);
+        self::assertEquals(['baz' => 'bar'], $labelCapability->getConfiguration()['formatterOptions']);
+    }
 }
