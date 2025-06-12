@@ -25,7 +25,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\UserAspect;
 use TYPO3\CMS\Core\Context\WorkspaceAspect;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Boilerplate to authenticate a backend user in the current workflow, can be used
@@ -78,18 +77,10 @@ abstract class BackendUserAuthenticator implements MiddlewareInterface
 
     /**
      * Register the backend user as aspect
-     *
-     * @param int|null $alternativeWorkspaceId
      */
     protected function setBackendUserAspect(?BackendUserAuthentication $user, ?int $alternativeWorkspaceId = null): void
     {
-        $this->context->setAspect(
-            'backend.user',
-            GeneralUtility::makeInstance(UserAspect::class, $user)
-        );
-        $this->context->setAspect(
-            'workspace',
-            GeneralUtility::makeInstance(WorkspaceAspect::class, $alternativeWorkspaceId ?? $user->workspace ?? 0)
-        );
+        $this->context->setAspect('backend.user', new UserAspect($user));
+        $this->context->setAspect('workspace', new WorkspaceAspect($alternativeWorkspaceId ?? $user->workspace ?? 0));
     }
 }

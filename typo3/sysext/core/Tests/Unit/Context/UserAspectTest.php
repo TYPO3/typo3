@@ -39,6 +39,12 @@ final class UserAspectTest extends UnitTestCase
     }
 
     #[Test]
+    public function isAdminIsFalseWithNullUser(): void
+    {
+        self::assertFalse((new UserAspect())->isAdmin());
+    }
+
+    #[Test]
     public function alternativeGroupsAreAlwaysReturned(): void
     {
         $subject = new UserAspect(null, []);

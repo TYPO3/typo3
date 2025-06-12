@@ -18,12 +18,11 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Context;
 
 use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * A simple factory to create a language aspect.
  */
-class LanguageAspectFactory
+final readonly class LanguageAspectFactory
 {
     /**
      * Site Languages always run with overlays + floating records.
@@ -57,7 +56,6 @@ class LanguageAspectFactory
                 $fallbackOrder = [0];
                 $overlayType = LanguageAspect::OVERLAYS_OFF;
         }
-
-        return GeneralUtility::makeInstance(LanguageAspect::class, $languageId, $languageId, $overlayType, $fallbackOrder);
+        return new LanguageAspect($languageId, $languageId, $overlayType, $fallbackOrder);
     }
 }

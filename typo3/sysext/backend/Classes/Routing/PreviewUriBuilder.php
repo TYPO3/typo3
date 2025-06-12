@@ -75,10 +75,7 @@ class PreviewUriBuilder
     {
         $this->pageId = $pageId;
         $this->context = clone GeneralUtility::makeInstance(Context::class);
-        $this->context->setAspect(
-            'visibility',
-            GeneralUtility::makeInstance(VisibilityAspect::class, true, false, false, true)
-        );
+        $this->context->setAspect('visibility', new VisibilityAspect(true, false, false, true));
     }
 
     /**
@@ -440,20 +437,14 @@ class PreviewUriBuilder
         if ($access['starttime'] > $GLOBALS['EXEC_TIME']) {
             // simulate access time to ensure PageRepository will find the page and in turn PageRouter will generate
             // a URL for it
-            $dateAspect = GeneralUtility::makeInstance(
-                DateTimeAspect::class,
-                DateTimeFactory::createFromTimestamp($access['starttime'])
-            );
+            $dateAspect = new DateTimeAspect(DateTimeFactory::createFromTimestamp($access['starttime']));
             $context->setAspect('date', $dateAspect);
             $additionalQueryParameters['ADMCMD_simTime'] = $access['starttime'];
         }
         if ($access['endtime'] < $GLOBALS['EXEC_TIME'] && $access['endtime'] !== 0) {
             // Set access time to page's endtime subtracted one second to ensure PageRepository will find the page and
             // in turn PageRouter will generate a URL for it
-            $dateAspect = GeneralUtility::makeInstance(
-                DateTimeAspect::class,
-                DateTimeFactory::createFromTimestamp($access['endtime'] - 1)
-            );
+            $dateAspect = new DateTimeAspect(DateTimeFactory::createFromTimestamp($access['endtime'] - 1));
             $context->setAspect('date', $dateAspect);
             $additionalQueryParameters['ADMCMD_simTime'] = ($access['endtime'] - 1);
         }

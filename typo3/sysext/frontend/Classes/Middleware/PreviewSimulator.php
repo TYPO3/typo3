@@ -63,11 +63,7 @@ class PreviewSimulator implements MiddlewareInterface
                     ['code' => PageAccessFailureReasons::INVALID_PAGE_ARGUMENTS]
                 );
             }
-            if ($this->context->hasAspect('visibility')) {
-                $visibilityAspect = $this->context->getAspect('visibility');
-            } else {
-                $visibilityAspect = GeneralUtility::makeInstance(VisibilityAspect::class);
-            }
+            $visibilityAspect = $this->context->getAspect('visibility');
             // The preview flag is set if the current page turns out to be hidden
             $showHiddenPages = $this->checkIfPageIsHidden($pageArguments->getPageId(), $request);
             $rootlineRequiresPreviewFlag = $this->checkIfRootlineRequiresPreview($pageArguments->getPageId());
@@ -80,11 +76,10 @@ class PreviewSimulator implements MiddlewareInterface
                 $previewAspect = $this->context->getAspect('frontend.preview');
                 $isPreview = $previewAspect->isPreview() || $isPreview;
             }
-            $previewAspect = GeneralUtility::makeInstance(PreviewAspect::class, $isPreview);
-            $this->context->setAspect('frontend.preview', $previewAspect);
+            $this->context->setAspect('frontend.preview', new PreviewAspect($isPreview));
 
             if ($showHiddenPages || $rootlineRequiresPreviewFlag) {
-                $newAspect = GeneralUtility::makeInstance(VisibilityAspect::class, true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords());
+                $newAspect = new VisibilityAspect(true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords());
                 $this->context->setAspect('visibility', $newAspect);
             }
         }
@@ -166,13 +161,7 @@ class PreviewSimulator implements MiddlewareInterface
 
         $GLOBALS['SIM_EXEC_TIME'] = $queryTime;
         $GLOBALS['SIM_ACCESS_TIME'] = $queryTime - $queryTime % 60;
-        $this->context->setAspect(
-            'date',
-            GeneralUtility::makeInstance(
-                DateTimeAspect::class,
-                DateTimeFactory::createFromTimestamp($queryTime)
-            )
-        );
+        $this->context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($queryTime)));
         return true;
     }
 

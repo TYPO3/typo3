@@ -52,12 +52,7 @@ class Application extends AbstractApplication
      */
     protected function initializeContext(): void
     {
-        $this->context->setAspect(
-            'date',
-            new DateTimeAspect(
-                DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'])
-            )
-        );
+        $this->context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($GLOBALS['EXEC_TIME'])));
         $this->context->setAspect('visibility', new VisibilityAspect(true, true, false, true));
     }
 }
