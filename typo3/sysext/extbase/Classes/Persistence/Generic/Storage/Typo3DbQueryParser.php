@@ -48,7 +48,6 @@ use TYPO3\CMS\Extbase\Persistence\Generic\Exception\UnsupportedOrderException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\ColumnMap\Relation;
 use TYPO3\CMS\Extbase\Persistence\Generic\Mapper\DataMapper;
-use TYPO3\CMS\Extbase\Persistence\Generic\Qom;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\AndInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ComparisonInterface;
 use TYPO3\CMS\Extbase\Persistence\Generic\Qom\ConstraintInterface;
@@ -73,15 +72,7 @@ use TYPO3\CMS\Extbase\Persistence\QueryInterface;
 #[Autoconfigure(public: true, shared: false)]
 class Typo3DbQueryParser
 {
-    /**
-     * The TYPO3 page repository. Used for language and workspace overlay
-     */
-    protected ?PageRepository $pageRepository = null;
-
-    /**
-     * Instance of the Doctrine query builder
-     */
-    protected QueryBuilder $queryBuilder;
+    protected ?QueryBuilder $queryBuilder = null;
 
     /**
      * Maps domain model properties to their corresponding table aliases that are used in the query, e.g.:
@@ -103,12 +94,12 @@ class Typo3DbQueryParser
      * Stores all tables used in for SQL joins
      */
     protected array $unionTableAliasCache = [];
-    protected string $tableName = '';
     protected bool $suggestDistinctQuery = false;
 
     public function __construct(
         protected readonly DataMapper $dataMapper,
         protected readonly TcaSchemaFactory $tcaSchemaFactory,
+        protected readonly ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -126,11 +117,9 @@ class Typo3DbQueryParser
      */
     public function convertQueryToDoctrineQueryBuilder(QueryInterface $query): QueryBuilder
     {
-        // Reset all properties
-        $this->tablePropertyMap = [];
-        $this->tableAliasMap = [];
-        $this->unionTableAliasCache = [];
-        $this->tableName = '';
+        // Reset property from previous run which is available using isDistinctQuerySuggested()
+        // after this method has been called.
+        $this->suggestDistinctQuery = false;
 
         if ($query->getStatement() && $query->getStatement()->getStatement() instanceof QueryBuilder) {
             $this->queryBuilder = clone $query->getStatement()->getStatement();
@@ -151,7 +140,13 @@ class Typo3DbQueryParser
         $this->parseOrderings($query->getOrderings(), $source);
         $this->addTypo3Constraints($query);
 
-        return $this->queryBuilder;
+        $queryBuilder = $this->queryBuilder;
+        // Reset temporary properties
+        $this->tablePropertyMap = [];
+        $this->tableAliasMap = [];
+        $this->unionTableAliasCache = [];
+        $this->queryBuilder = null;
+        return $queryBuilder;
     }
 
     /**
@@ -162,27 +157,17 @@ class Typo3DbQueryParser
         if ($source instanceof SelectorInterface) {
             $className = $source->getNodeTypeName();
             $tableName = $this->dataMapper->getDataMap($className)->tableName;
-            $this->tableName = $tableName;
-            $this->queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($tableName);
-
-            $this->queryBuilder
-                ->getRestrictions()
-                ->removeAll();
-
+            $this->queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $this->queryBuilder->getRestrictions()->removeAll();
             $tableAlias = $this->getUniqueAlias($tableName);
-
             $this->queryBuilder
                 ->select($tableAlias . '.*')
                 ->from($tableName, $tableAlias);
-
             $this->addRecordTypeConstraint($className);
         } elseif ($source instanceof JoinInterface) {
             $leftSource = $source->getLeft();
             $leftTableName = $leftSource->getSelectorName();
-
-            $this->queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable($leftTableName);
+            $this->queryBuilder = $this->connectionPool->getQueryBuilderForTable($leftTableName);
             $leftTableAlias = $this->getUniqueAlias($leftTableName);
             $this->queryBuilder
                 ->select($leftTableAlias . '.*')
@@ -670,10 +655,11 @@ class Typo3DbQueryParser
      */
     protected function getFrontendConstraintStatement(string $tableName, string $tableAlias, bool $ignoreEnableFields, array $enableFieldsToBeIgnored, bool $includeDeleted): string
     {
+        $pageRepository = GeneralUtility::makeInstance(PageRepository::class);
         $statement = '';
         if ($ignoreEnableFields && !$includeDeleted) {
             if (!empty($enableFieldsToBeIgnored)) {
-                $constraints = $this->getPageRepository()->getDefaultConstraints($tableName, $enableFieldsToBeIgnored, $tableAlias);
+                $constraints = $pageRepository->getDefaultConstraints($tableName, $enableFieldsToBeIgnored, $tableAlias);
                 if ($constraints !== []) {
                     $statement = implode(' AND ', $constraints);
                 }
@@ -685,7 +671,7 @@ class Typo3DbQueryParser
                 }
             }
         } elseif (!$ignoreEnableFields && !$includeDeleted) {
-            $constraints = $this->getPageRepository()->getDefaultConstraints($tableName, [], $tableAlias);
+            $constraints = $pageRepository->getDefaultConstraints($tableName, [], $tableAlias);
             if ($constraints !== []) {
                 $statement = implode(' AND ', $constraints);
             }
@@ -1052,7 +1038,7 @@ class Typo3DbQueryParser
     protected function replaceTableNameWithAlias($statement, $tableName, $tableAlias)
     {
         if ($tableAlias !== $tableName) {
-            $connection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName);
+            $connection = $this->connectionPool->getConnectionForTable($tableName);
             $quotedTableName = $connection->quoteIdentifier($tableName);
             $quotedTableAlias = $connection->quoteIdentifier($tableAlias);
             $statement = str_replace(
@@ -1061,15 +1047,6 @@ class Typo3DbQueryParser
                 $statement
             );
         }
-
         return $statement;
-    }
-
-    protected function getPageRepository(): PageRepository
-    {
-        if (!$this->pageRepository instanceof PageRepository) {
-            $this->pageRepository = GeneralUtility::makeInstance(PageRepository::class);
-        }
-        return $this->pageRepository;
     }
 }
