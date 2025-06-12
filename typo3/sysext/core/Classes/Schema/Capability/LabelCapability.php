@@ -17,8 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema\Capability;
 
-use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
-
 /**
  * Contains all information of compiling the label information of a schema.
  *
@@ -27,29 +25,34 @@ use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 final readonly class LabelCapability implements SchemaCapabilityInterface
 {
     public function __construct(
-        protected ?FieldTypeInterface $primaryField,
-        /** @var FieldTypeInterface[] */
-        protected array $additionalFields,
+        protected ?string $primaryFieldName,
+        /** @var string[] */
+        protected array $additionalFieldNames,
         protected bool $alwaysRenderAdditionalFields,
         protected array $configuration,
     ) {}
 
-    public function getPrimaryField(): ?FieldTypeInterface
+    public function getPrimaryFieldName(): ?string
     {
-        return $this->primaryField;
+        return $this->primaryFieldName;
     }
 
     public function hasPrimaryField(): bool
     {
-        return $this->primaryField !== null;
+        return $this->primaryFieldName !== null;
     }
 
     /**
-     * @return array<FieldTypeInterface>
+     * @return string[]
      */
-    public function getAdditionalFields(): array
+    public function getAdditionalFieldNames(): array
     {
-        return $this->additionalFields;
+        return $this->additionalFieldNames;
+    }
+
+    public function getAllLabelFieldNames(): array
+    {
+        return array_unique(array_filter(array_merge([$this->primaryFieldName], $this->additionalFieldNames)));
     }
 
     public function alwaysRenderAdditionalFields(): bool

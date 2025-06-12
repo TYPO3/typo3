@@ -248,7 +248,7 @@ class DeletedRecords
             /** @var LabelCapability $labelCapability */
             $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
             $filterConstraint = $queryBuilder->expr()->comparison(
-                $queryBuilder->castFieldToTextType($labelCapability->getPrimaryField()->getName()),
+                $queryBuilder->castFieldToTextType($labelCapability->getPrimaryFieldName()),
                 'LIKE',
                 $queryBuilder->createNamedParameter(
                     '%' . $queryBuilder->escapeLikeWildcards($filter) . '%'

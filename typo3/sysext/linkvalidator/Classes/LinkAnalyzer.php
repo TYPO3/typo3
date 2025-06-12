@@ -27,7 +27,6 @@ use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserFactory;
 use TYPO3\CMS\Core\DataHandling\SoftReference\SoftReferenceParserResult;
 use TYPO3\CMS\Core\Html\HtmlParser;
 use TYPO3\CMS\Core\Localization\LanguageService;
-use TYPO3\CMS\Core\Schema\Capability\LabelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -135,14 +134,8 @@ class LinkAnalyzer
             }
 
             if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-                /** @var LabelCapability $labelCapability */
                 $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-                if ($labelCapability->hasPrimaryField()) {
-                    $selectFields[] = $labelCapability->getPrimaryField()->getName();
-                }
-                foreach ($labelCapability->getAdditionalFields() as $additionalField) {
-                    $selectFields[] = $additionalField->getName();
-                }
+                $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
             }
 
             if ($schema->isLanguageAware()) {
@@ -290,14 +283,8 @@ class LinkAnalyzer
 
         $selectFields = ['uid', 'pid', $field];
         if ($schema->hasCapability(TcaSchemaCapability::Label)) {
-            /** @var LabelCapability $labelCapability */
             $labelCapability = $schema->getCapability(TcaSchemaCapability::Label);
-            if ($labelCapability->hasPrimaryField()) {
-                $selectFields[] = $labelCapability->getPrimaryField()->getName();
-            }
-            foreach ($labelCapability->getAdditionalFields() as $additionalField) {
-                $selectFields[] = $additionalField->getName();
-            }
+            $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
         }
 
         $updatedFieldName = null;

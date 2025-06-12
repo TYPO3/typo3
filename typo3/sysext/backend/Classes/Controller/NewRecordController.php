@@ -219,7 +219,7 @@ class NewRecordController
         if ($this->pageinfo['uid'] ?? false) {
             $labelCapability = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Label);
             if ($labelCapability->hasPrimaryField()) {
-                $title = strip_tags($this->pageinfo[$labelCapability->getPrimaryField()->getName()]);
+                $title = strip_tags($this->pageinfo[$labelCapability->getPrimaryFieldName()]);
             }
         }
         $this->view->setTitle($title);

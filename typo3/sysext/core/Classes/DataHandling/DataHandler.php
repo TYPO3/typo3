@@ -3535,7 +3535,7 @@ class DataHandler
         $schema = $this->tcaSchemaFactory->get($table);
         $theNewID = StringUtility::getUniqueId('NEW');
         $disabledField = $schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) ? $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getField() : null;
-        $labelFieldName = $schema->hasCapability(TcaSchemaCapability::Label) ? $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryField()?->getName() : '';
+        $labelFieldName = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName() ?? '';
         // Getting "copy-after" fields if applicable:
         $copyAfterFields = $destPid < 0 ? $this->fixCopyAfterDuplFields((string)$table, (int)abs($destPid)) : [];
         // Page TSconfig related:

@@ -241,15 +241,8 @@ class SuggestWizardDefaultReceiver
         if (isset($this->config['additionalSearchFields'])) {
             $selectFields = GeneralUtility::trimExplode(',', $this->config['additionalSearchFields'], true);
         }
-        /** @var LabelCapability $labelCapability */
         $labelCapability = $this->tcaSchema->getCapability(TcaSchemaCapability::Label);
-        if ($labelCapability->hasPrimaryField()) {
-            $selectFields[] = $labelCapability->getPrimaryField()->getName();
-        }
-        foreach ($labelCapability->getAdditionalFields() as $field) {
-            $selectFields[] = $field->getName();
-        }
-        $selectFields = array_unique($selectFields);
+        $selectFields = array_unique(array_merge($selectFields, $labelCapability->getAllLabelFieldNames()));
         foreach ($selectFields as $field) {
             $selectParts = $selectParts->with($expressionBuilder->like($field, $this->queryBuilder->createPositionalParameter($likeCondition)));
         }
@@ -297,7 +290,7 @@ class SuggestWizardDefaultReceiver
             /** @var LabelCapability $labelCapability */
             $labelCapability = $this->tcaSchema->getCapability(TcaSchemaCapability::Label);
             if ($labelCapability->hasPrimaryField()) {
-                $queryBuilder->addOrderBy($labelCapability->getPrimaryField()->getName());
+                $queryBuilder->addOrderBy($labelCapability->getPrimaryFieldName());
             }
         } else {
             foreach (QueryHelper::parseOrderBy($this->config['orderBy']) as $orderPair) {
