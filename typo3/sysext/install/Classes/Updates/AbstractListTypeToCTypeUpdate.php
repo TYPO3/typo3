@@ -39,7 +39,10 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
     }
 
     /**
-     * This must return an array containing the "list_type" to "CType" mapping
+     * This must return an array containing the "list_type" to "CType" mapping.
+     * The array key is the exact value of corresponding "tt_content.list_type" DB records,
+     * the array value is the new "CType" value.
+     * not plugin
      *
      *  Example:
      *
@@ -48,7 +51,11 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
      *      'pi_plugin2' => 'new_content_element',
      *  ]
      *
-     * @return array<string, string>
+     * Note that string keys with integer values like '4' will be treated as INT by
+     * PHP internally, which is why string-casting is performed later on.
+     * @see https://3v4l.org/JNPfU
+     *
+     * @return array<string|int, string>
      */
     abstract protected function getListTypeToCTypeMapping(): array;
 
@@ -154,11 +161,11 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
         $queryBuilder->getRestrictions()->removeAll();
 
         $searchConstraints = [];
-        foreach ($this->getListTypeToCTypeMapping() as $listTyp) {
+        foreach (array_keys($this->getListTypeToCTypeMapping()) as $listType) {
             $searchConstraints[] = $queryBuilder->expr()->like(
                 'explicit_allowdeny',
                 $queryBuilder->createNamedParameter(
-                    '%' . $queryBuilder->escapeLikeWildcards('tt_content:list_type:' . $listTyp) . '%'
+                    '%' . $queryBuilder->escapeLikeWildcards('tt_content:list_type:' . $listType) . '%'
                 )
             );
         }
@@ -232,7 +239,7 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
         $connection = $this->connectionPool->getConnectionForTable(self::TABLE_CONTENT);
 
         foreach ($this->getListTypeToCTypeMapping() as $listType => $contentType) {
-            foreach ($this->getContentElementsToUpdate($listType) as $record) {
+            foreach ($this->getContentElementsToUpdate((string)$listType) as $record) {
                 $connection->update(
                     self::TABLE_CONTENT,
                     [
@@ -250,7 +257,7 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
         $connection = $this->connectionPool->getConnectionForTable(self::TABLE_BACKEND_USER_GROUPS);
 
         foreach ($this->getListTypeToCTypeMapping() as $listType => $contentType) {
-            foreach ($this->getBackendUserGroupsToUpdate($listType) as $record) {
+            foreach ($this->getBackendUserGroupsToUpdate((string)$listType) as $record) {
                 $fields = GeneralUtility::trimExplode(',', $record['explicit_allowdeny'], true);
                 foreach ($fields as $key => $field) {
                     if ($field === 'tt_content:list_type:' . $listType) {
@@ -273,21 +280,42 @@ abstract class AbstractListTypeToCTypeUpdate implements UpgradeWizardInterface
     private function validateRequirements(): void
     {
         if ($this->getTitle() === '') {
-            throw new \RuntimeException('The update class "' . static::class . '" must provide a title by extending "getTitle()"', 1727605675);
+            throw new \RuntimeException(sprintf(
+                'The update class "%s" must provide a title by extending "getTitle()"',
+                static::class,
+            ), 1727605675);
         }
         if ($this->getDescription() === '') {
-            throw new \RuntimeException('The update class "' . static::class . '" must provide a description by extending "getDescription()"', 1727605676);
+            throw new \RuntimeException(sprintf(
+                'The update class "%s" must provide a description by extending "getDescription()"',
+                static::class,
+            ), 1727605676);
         }
         if ($this->getListTypeToCTypeMapping() === []) {
-            throw new \RuntimeException('The update class "' . static::class . '" does not provide a "list_type" to "CType" migration mapping', 1727605677);
+            throw new \RuntimeException(sprintf(
+                'The update class "%s" (%s) does not provide a "list_type" to "CType" migration mapping via getListTypeToCTypeMapping()',
+                static::class,
+                $this->getTitle(),
+            ), 1727605677);
         }
 
         foreach ($this->getListTypeToCTypeMapping() as $listType => $contentElement) {
-            if (!is_string($listType) || $listType === '') {
-                throw new \RuntimeException('Invalid mapping item "' . $listType . '" in class "' . static::class, 1727605678);
+            // PHP array keys can only be INT or STRING, nothing else.
+            if ($listType === '') {
+                throw new \RuntimeException(sprintf(
+                    'Invalid mapping empty item in class "%s (%s)',
+                    static::class,
+                    $this->getTitle(),
+                ), 1727605678);
             }
             if (!is_string($contentElement) || $contentElement === '') {
-                throw new \RuntimeException('Invalid mapping item "' . $contentElement . '" in class "' . static::class, 1727605679);
+                throw new \RuntimeException(sprintf(
+                    'Invalid mapping item "%s" to "%s" in class "%s" (%s)',
+                    $listType,
+                    json_encode($contentElement),
+                    static::class,
+                    $this->getTitle(),
+                ), 1727605679);
             }
         }
     }
