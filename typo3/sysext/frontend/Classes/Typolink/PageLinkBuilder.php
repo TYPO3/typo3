@@ -857,14 +857,8 @@ class PageLinkBuilder extends AbstractTypolinkBuilder
     {
         // clone global context object (singleton)
         $context = clone GeneralUtility::makeInstance(Context::class);
-        $context->setAspect(
-            'language',
-            $languageAspect ?? GeneralUtility::makeInstance(LanguageAspect::class)
-        );
-        return GeneralUtility::makeInstance(
-            PageRepository::class,
-            $context
-        );
+        $context->setAspect('language', $languageAspect ?? new LanguageAspect());
+        return GeneralUtility::makeInstance(PageRepository::class, $context);
     }
 
     protected function sendCacheTagEvent(array $page): void

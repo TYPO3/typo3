@@ -25,18 +25,18 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  *
  *
  * "id" (languageId, int)
- * - formally known as $TSFE->sys_language_uid
+ * - formerly known as $TSFE->sys_language_uid
  * - the requested language of the current page (frontend)
  * - used in menus and links to generate "links in language with this ID"
  *
  * "contentId" (int)
- * - formally known as $TSFE->sys_language_content
+ * - formerly known as $TSFE->sys_language_content
  * - the language of records to be fetched
  * - if empty, "languageId" is used.
  *
  * "fallbackChain"
  *  - when "fallback" go with
- *  - depends what "contentId" value should be set
+ *  - depends on what "contentId" value should be set
  *  - defined in config.sys_language_mode (strict/content_fallback:4,5,stop/ignore?)
  *  - previously known as $TSFE->sys_language_mode
  *  - defines "contentId" based on "if the current page is available in this language"
@@ -53,28 +53,8 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  *          3. "off" - do not do overlay, only fetch records available in the current "contentId" (see above), and do not care about overlays or fallbacks - fallbacks could be an option here, actually that is placed on top
  *          4. "includeFloating" - on + includeRecordsWithoutDefaultTranslation
  */
-class LanguageAspect implements AspectInterface
+final readonly class LanguageAspect implements AspectInterface
 {
-    /**
-     * @var int
-     */
-    protected $id = 0;
-
-    /**
-     * @var int
-     */
-    protected $contentId = 0;
-
-    /**
-     * @var array
-     */
-    protected $fallbackChain = [];
-
-    /**
-     * @var string
-     */
-    protected $overlayType;
-
     public const OVERLAYS_OFF = 'off';  // config.sys_language_overlay = 0
     public const OVERLAYS_MIXED = 'mixed';  // config.sys_language_overlay = 1 (keep the ones that are only available in default language)
     public const OVERLAYS_ON = 'on';    // "hideNonTranslated"
@@ -82,16 +62,13 @@ class LanguageAspect implements AspectInterface
 
     /**
      * Create the default language
-     *
-     * @param int|null $contentId
      */
-    public function __construct(int $id = 0, ?int $contentId = null, string $overlayType = self::OVERLAYS_ON_WITH_FLOATING, array $fallbackChain = [])
-    {
-        $this->overlayType = $overlayType;
-        $this->id = $id;
-        $this->contentId = $contentId ?? $this->id;
-        $this->fallbackChain = $fallbackChain;
-    }
+    public function __construct(
+        private int $id = 0,
+        private ?int $contentId = null,
+        private string $overlayType = self::OVERLAYS_ON_WITH_FLOATING,
+        private array $fallbackChain = [],
+    ) {}
 
     /**
      * Used language overlay
@@ -117,7 +94,7 @@ class LanguageAspect implements AspectInterface
      */
     public function getContentId(): int
     {
-        return $this->contentId;
+        return $this->contentId ?? $this->id;
     }
 
     public function getFallbackChain(): array
@@ -130,7 +107,7 @@ class LanguageAspect implements AspectInterface
      */
     public function doOverlays(): bool
     {
-        return $this->contentId > 0 && $this->overlayType !== self::OVERLAYS_OFF;
+        return $this->getContentId() > 0 && $this->overlayType !== self::OVERLAYS_OFF;
     }
 
     /**
@@ -152,31 +129,25 @@ class LanguageAspect implements AspectInterface
      */
     public function getLegacyOverlayType(): string
     {
-        switch ($this->overlayType) {
-            case self::OVERLAYS_ON_WITH_FLOATING:
-            case self::OVERLAYS_ON:
-                return 'hideNonTranslated';
-            case self::OVERLAYS_MIXED:
-                return '1';
-            case self::OVERLAYS_OFF:
-            default:
-                return '0';
-        }
+        return match ($this->overlayType) {
+            self::OVERLAYS_ON_WITH_FLOATING, self::OVERLAYS_ON => 'hideNonTranslated',
+            self::OVERLAYS_MIXED => '1',
+            default => '0',
+        };
     }
 
     /**
      * Fetch a property.
      *
-     * @return int|string|array
      * @throws AspectPropertyNotFoundException
      */
-    public function get(string $name)
+    public function get(string $name): int|string|array
     {
         switch ($name) {
             case 'id':
                 return $this->id;
             case 'contentId':
-                return $this->contentId;
+                return $this->getContentId();
             case 'fallbackChain':
                 return $this->fallbackChain;
             case 'overlayType':

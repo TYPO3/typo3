@@ -180,10 +180,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
         $this->clearPreviewSettings($context);
 
         // Modify visibility settings (hidden pages + hidden content)
-        $context->setAspect(
-            'visibility',
-            GeneralUtility::makeInstance(VisibilityAspect::class, $showHiddenPages, $showHiddenRecords, false, $showScheduledRecords)
-        );
+        $context->setAspect('visibility', new VisibilityAspect($showHiddenPages, $showHiddenRecords, false, $showScheduledRecords));
 
         // Simulate date
         $simTime = null;
@@ -191,13 +188,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             $simTime = max($simulateDate, 60);
             $GLOBALS['SIM_EXEC_TIME'] = $simTime;
             $GLOBALS['SIM_ACCESS_TIME'] = $simTime - $simTime % 60;
-            $context->setAspect(
-                'date',
-                GeneralUtility::makeInstance(
-                    DateTimeAspect::class,
-                    DateTimeFactory::createFromTimestamp($simTime)
-                )
-            );
+            $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($simTime)));
         }
         // simulate usergroup
         if ($simulateUserGroup) {
@@ -210,14 +201,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             // let's fake having a user with that group, too
             // This can be removed once #90989 is fixed
             $frontendUser->user['uid'] = PHP_INT_MAX;
-            $context->setAspect(
-                'frontend.user',
-                GeneralUtility::makeInstance(
-                    UserAspect::class,
-                    $frontendUser,
-                    [$simulateUserGroup, -2]
-                )
-            );
+            $context->setAspect('frontend.user', new UserAspect($frontendUser, [$simulateUserGroup, -2]));
         }
         $isPreview = $simulateUserGroup || $simTime || $showHiddenPages || $showHiddenRecords || $showScheduledRecords;
         if ($context->hasAspect('frontend.preview')) {
@@ -225,8 +209,7 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
             $existingPreviewAspect = $context->getAspect('frontend.preview');
             $isPreview = $existingPreviewAspect->isPreview() || $isPreview;
         }
-        $previewAspect = GeneralUtility::makeInstance(PreviewAspect::class, $isPreview);
-        $context->setAspect('frontend.preview', $previewAspect);
+        $context->setAspect('frontend.preview', new PreviewAspect($isPreview));
     }
 
     public function getJavaScriptFiles(): array
@@ -238,14 +221,8 @@ class PreviewModule extends AbstractModule implements RequestEnricherInterface, 
     {
         $GLOBALS['SIM_EXEC_TIME'] = $GLOBALS['EXEC_TIME'];
         $GLOBALS['SIM_ACCESS_TIME'] = $GLOBALS['ACCESS_TIME'];
-        $context->setAspect(
-            'date',
-            GeneralUtility::makeInstance(
-                DateTimeAspect::class,
-                DateTimeFactory::createFromTimestamp($GLOBALS['SIM_EXEC_TIME'])
-            )
-        );
-        $context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
+        $context->setAspect('date', new DateTimeAspect(DateTimeFactory::createFromTimestamp($GLOBALS['SIM_EXEC_TIME'])));
+        $context->setAspect('visibility', new VisibilityAspect());
     }
 
     /**

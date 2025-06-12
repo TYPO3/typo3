@@ -30,53 +30,33 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
  * - id
  * - username
  * - isLoggedIn
+ * - isAdmin
  * - groupIds (Array of Ids)
  * - groupNames
  */
-class UserAspect implements AspectInterface
+final readonly class UserAspect implements AspectInterface
 {
     /**
-     * @var AbstractUserAuthentication|\stdClass
-     */
-    protected $user;
-
-    /**
-     * Alternative list of groups, usually useful for frontend logins with "magic" groups like "-1" and "-2"
-     *
-     * @var int[]|null
-     */
-    protected $groups;
-
-    /**
      * @param AbstractUserAuthentication|null $user
-     * @param array|null $alternativeGroups
+     * @param array|null $alternativeGroups Alternative list of groups, usually useful for frontend logins with "magic" groups like "-1" and "-2"
      */
-    public function __construct(?AbstractUserAuthentication $user = null, ?array $alternativeGroups = null)
-    {
-        $this->user = $user ?? $this->createPseudoUser();
-        $this->groups = $alternativeGroups;
-    }
-
-    private function createPseudoUser(): \stdClass
-    {
-        $user = new \stdClass();
-        $user->user = [];
-        return $user;
-    }
+    public function __construct(
+        private ?AbstractUserAuthentication $user = null,
+        private ?array $alternativeGroups = null
+    ) {}
 
     /**
      * Fetch common information about the user
      *
-     * @return int|bool|string|array
      * @throws AspectPropertyNotFoundException
      */
-    public function get(string $name)
+    public function get(string $name): int|bool|string|array
     {
         switch ($name) {
             case 'id':
-                return (int)($this->user->user[$this->user->userid_column ?? 'uid'] ?? 0);
+                return (int)($this->user?->user[$this->user->userid_column] ?? 0);
             case 'username':
-                return (string)($this->user->user[$this->user->username_column ?? 'username'] ?? '');
+                return (string)($this->user?->user[$this->user->username_column] ?? '');
             case 'isLoggedIn':
                 return $this->isLoggedIn();
             case 'isAdmin':
@@ -98,7 +78,7 @@ class UserAspect implements AspectInterface
      */
     public function isLoggedIn(): bool
     {
-        return ($this->user->user[$this->user->userid_column ?? 'uid'] ?? 0) > 0;
+        return ($this->user?->user[$this->user->userid_column] ?? 0) > 0;
     }
 
     /**
@@ -106,11 +86,11 @@ class UserAspect implements AspectInterface
      */
     public function isAdmin(): bool
     {
-        $isAdmin = false;
         if ($this->user instanceof BackendUserAuthentication) {
-            $isAdmin = $this->user->isAdmin();
+            // Only backend users have the admin flag at all.
+            return $this->user->isAdmin();
         }
-        return $isAdmin;
+        return false;
     }
 
     /**
@@ -123,8 +103,8 @@ class UserAspect implements AspectInterface
     public function getGroupIds(): array
     {
         // Alternative groups are set
-        if (is_array($this->groups)) {
-            return $this->groups;
+        if (is_array($this->alternativeGroups)) {
+            return $this->alternativeGroups;
         }
         if ($this->user instanceof BackendUserAuthentication) {
             return $this->user->userGroupsUID;

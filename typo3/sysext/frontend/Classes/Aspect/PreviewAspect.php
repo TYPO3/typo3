@@ -26,17 +26,11 @@ use TYPO3\CMS\Core\Context\Exception\AspectPropertyNotFoundException;
  * Allowed properties:
  * - isPreview
  */
-class PreviewAspect implements AspectInterface
+final readonly class PreviewAspect implements AspectInterface
 {
-    /**
-     * @var bool
-     */
-    private $isPreview;
-
-    public function __construct(bool $isPreview = false)
-    {
-        $this->isPreview = $isPreview;
-    }
+    public function __construct(
+        private bool $isPreview = false
+    ) {}
 
     public function isPreview(): bool
     {
@@ -46,14 +40,12 @@ class PreviewAspect implements AspectInterface
     /**
      * Get a property from aspect
      *
-     * @return mixed
      * @throws AspectPropertyNotFoundException
      */
-    public function get(string $name)
+    public function get(string $name): bool
     {
-        switch ($name) {
-            case 'isPreview':
-                return $this->isPreview;
+        if ($name == 'isPreview') {
+            return $this->isPreview;
         }
         throw new AspectPropertyNotFoundException('Property "' . $name . '" not found in Aspect "' . __CLASS__ . '".', 1563375558);
     }

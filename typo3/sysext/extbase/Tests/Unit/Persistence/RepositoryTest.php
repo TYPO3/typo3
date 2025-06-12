@@ -23,6 +23,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use TYPO3\CMS\Core\Cache\Event\AddCacheTagEvent;
 use TYPO3\CMS\Core\Configuration\Features;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
 use TYPO3\CMS\Extbase\Persistence\Exception\IllegalObjectTypeException;
 use TYPO3\CMS\Extbase\Persistence\Generic\Backend;
@@ -59,6 +60,7 @@ final class RepositoryTest extends UnitTestCase
         $mockQueryFactory = $this->createMock(QueryFactory::class);
         $this->mockQuery = $this->createMock(QueryInterface::class);
         $this->mockQuerySettings = $this->createMock(QuerySettingsInterface::class);
+        $this->mockQuerySettings->method('getLanguageAspect')->willReturn(new LanguageAspect());
         $this->mockQuery->method('getQuerySettings')->willReturn($this->mockQuerySettings);
         $mockQueryFactory->method('create')->willReturn($this->mockQuery);
         $this->mockSession = $this->createMock(Session::class);

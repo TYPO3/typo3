@@ -336,7 +336,7 @@ class FrontendUserAuthentication extends AbstractUserAuthentication
         }
 
         $this->logger->debug('Valid frontend usergroups: {groups}', ['groups' => implode(',', $userGroups)]);
-        return GeneralUtility::makeInstance(UserAspect::class, $this, $userGroups);
+        return new UserAspect($this, $userGroups);
     }
 
     /*****************************************

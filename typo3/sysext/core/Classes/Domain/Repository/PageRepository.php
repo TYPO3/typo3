@@ -2121,7 +2121,7 @@ class PageRepository implements LoggerAwareInterface
         if ((int)$this->context->getPropertyFromAspect('workspace', 'id') > 0) {
             // Fetch overlay of page if in workspace and check if it is hidden
             $backupContext = clone $this->context;
-            $this->context->setAspect('visibility', GeneralUtility::makeInstance(VisibilityAspect::class));
+            $this->context->setAspect('visibility', new VisibilityAspect());
             $targetPage = $this->getWorkspaceVersionOfRecord('pages', (int)$page['uid']);
             // Also checks if the workspace version is NOT hidden but the live version is in fact still hidden
             $result = $targetPage === -1 || $targetPage === -2 || (is_array($targetPage) && $targetPage['hidden'] == 0 && $page['hidden'] == 1);

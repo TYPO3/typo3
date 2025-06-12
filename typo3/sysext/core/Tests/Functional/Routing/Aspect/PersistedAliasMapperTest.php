@@ -227,10 +227,7 @@ final class PersistedAliasMapperTest extends FunctionalTestCase
             new UserAspect(null, [13])
         );
         $scheduledContext = new Context();
-        $scheduledContext->setAspect(
-            'date',
-            new DateTimeAspect(new \DateTimeImmutable('@20000'))
-        );
+        $scheduledContext->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@20000')));
 
         return [
             'hidden-visibility-slug, raw context' => [
