@@ -97,7 +97,6 @@ declare namespace TYPO3 {
     }
     export namespace Workspaces {
       export const id: string;
-      export const token: string;
     }
   }
 }

@@ -50,7 +50,7 @@ class AjaxDispatcher
             $className = $this->classMap[$call->action];
             $method = $call->method;
             $parameters = $call->data;
-            if ($parameters[1] === null) {
+            if (($parameters[1] ?? null) === null) {
                 // Hack to have $request as second argument.
                 unset($parameters[1]);
             }
@@ -73,8 +73,6 @@ class AjaxDispatcher
         $tmp->action = $call->action;
         $tmp->method = $call->method;
         $tmp->result = $responseFromMethod;
-        $tmp->tid = $call->tid;
-        $tmp->type = $call->type;
         return $tmp;
     }
 }
