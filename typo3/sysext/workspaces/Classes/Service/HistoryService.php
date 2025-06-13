@@ -119,6 +119,9 @@ readonly class HistoryService implements SingletonInterface
 
             /** @var array<int, string> $fields */
             foreach ($fields as $field) {
+                if (!$schema->hasField($field)) {
+                    continue;
+                }
                 $fieldInformation = $schema->getField($field);
                 if ($fieldInformation->isType(TableColumnType::PASSTHROUGH)) {
                     continue;
