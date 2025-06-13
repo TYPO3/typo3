@@ -18,8 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Workspaces\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -32,22 +30,20 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         parent::setUp();
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/sys_workspace.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $this->setUpBackendUser(1);
     }
 
     #[Test]
     public function emptyWorkspaceReturnsEmptyArray(): void
     {
-        self::assertEmpty((new WorkspaceService($this->get(TcaSchemaFactory::class)))->selectVersionsInWorkspace(90));
+        self::assertEmpty($this->get(WorkspaceService::class)->selectVersionsInWorkspace(90));
     }
 
     #[Test]
     public function versionsFromSpecificWorkspaceCanBeFound(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $service = new WorkspaceService($this->get(TcaSchemaFactory::class));
-        $result = $service->selectVersionsInWorkspace(91, -99, 2);
+        $result = $this->get(WorkspaceService::class)->selectVersionsInWorkspace(91, -99, 2);
         self::assertCount(
             1,
             $result['pages'],
@@ -61,8 +57,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     public function versionsCanBeFoundRecursive(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $service = new WorkspaceService($this->get(TcaSchemaFactory::class));
-        $result = $service->selectVersionsInWorkspace(91, -99, 1, 99);
+        $result = $this->get(WorkspaceService::class)->selectVersionsInWorkspace(91, -99, 1, 99);
         self::assertCount(
             4,
             $result['pages'],
@@ -74,9 +69,9 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     public function versionsCanBeFilteredToSpecificStage(): void
     {
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
-        $service = new WorkspaceService($this->get(TcaSchemaFactory::class));
+        $subject = $this->get(WorkspaceService::class);
         // testing stage 1
-        $result = $service->selectVersionsInWorkspace(91, 1, 1, 99);
+        $result = $subject->selectVersionsInWorkspace(91, 1, 1, 99);
         self::assertCount(
             2,
             $result['pages'],
@@ -85,7 +80,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertEquals(102, $result['pages'][0]['uid'], 'First records is supposed to have the uid 102');
         self::assertEquals(105, $result['pages'][1]['uid'], 'First records is supposed to have the uid 105');
         // testing stage 2
-        $result = $service->selectVersionsInWorkspace(91, 2, 1, 99);
+        $result = $subject->selectVersionsInWorkspace(91, 2, 1, 99);
         self::assertCount(
             2,
             $result['pages'],
@@ -100,8 +95,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         // Test if the placeholder can be found when we ask using recursion (same result)
-        $service = new WorkspaceService($this->get(TcaSchemaFactory::class));
-        $result = $service->selectVersionsInWorkspace(91, -99, 5, 99);
+        $result = $this->get(WorkspaceService::class)->selectVersionsInWorkspace(91, -99, 5, 99);
         self::assertCount(1, $result['pages'], 'Wrong amount of page versions found within workspace 91');
         self::assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
         self::assertEquals(5, $result['pages'][0]['wspid'], 'Wrong workspace-pointer found for page 3 in workspace 91');
@@ -117,8 +111,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
         // Test if the placeholder can be found when we ask using recursion (same result)
-        $service = new WorkspaceService($this->get(TcaSchemaFactory::class));
-        $result = $service->selectVersionsInWorkspace(91, -99, 3, 99);
+        $result = $this->get(WorkspaceService::class)->selectVersionsInWorkspace(91, -99, 3, 99);
         self::assertCount(1, $result, 'Wrong amount of versions found within workspace 91');
         self::assertCount(1, $result['pages'], 'Wrong amount of page versions found within workspace 91');
         self::assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
@@ -128,8 +121,7 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     public function getPagesWithVersionsInTableReturnsPagesWithVersionsInTable(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
-        $workspaceService = new WorkspaceService($this->get(TcaSchemaFactory::class));
-        $result = $workspaceService->getPagesWithVersionsInTable(91);
+        $result = $this->get(WorkspaceService::class)->getPagesWithVersionsInTable(91);
         $expected = [
             'sys_category' => [],
             'sys_file_collection' => [],
@@ -148,17 +140,13 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     public function hasPageRecordVersionsReturnsTrueForPageWithVersions(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
-        $workspaceService = new WorkspaceService($this->get(TcaSchemaFactory::class));
-        $result = $workspaceService->hasPageRecordVersions(91, 7);
-        self::assertTrue($result);
+        self::assertTrue($this->get(WorkspaceService::class)->hasPageRecordVersions(91, 7));
     }
 
     #[Test]
     public function hasPageRecordVersionsReturnsFalseForPageWithoutVersions(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
-        $workspaceService = new WorkspaceService($this->get(TcaSchemaFactory::class));
-        $result = $workspaceService->hasPageRecordVersions(91, 3);
-        self::assertFalse($result);
+        self::assertFalse($this->get(WorkspaceService::class)->hasPageRecordVersions(91, 3));
     }
 }

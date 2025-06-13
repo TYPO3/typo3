@@ -41,17 +41,17 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class ReviewController
+final readonly class ReviewController
 {
     public function __construct(
-        protected readonly WorkspaceService $workspaceService,
-        protected readonly StagesService $stagesService,
-        protected readonly IconFactory $iconFactory,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory,
-        protected readonly WorkspacePublishGate $workspacePublishGate,
-        protected readonly TranslationConfigurationProvider $translationConfigurationProvider
+        private WorkspaceService $workspaceService,
+        private StagesService $stagesService,
+        private IconFactory $iconFactory,
+        private PageRenderer $pageRenderer,
+        private UriBuilder $uriBuilder,
+        private ModuleTemplateFactory $moduleTemplateFactory,
+        private WorkspacePublishGate $workspacePublishGate,
+        private TranslationConfigurationProvider $translationConfigurationProvider
     ) {}
 
     /**
@@ -135,7 +135,7 @@ class ReviewController
     /**
      * Create the workspace selection drop-down menu.
      */
-    protected function addWorkspaceSelector(ModuleTemplate $view, array $availableWorkspaces, int $activeWorkspace, int $pageUid): void
+    private function addWorkspaceSelector(ModuleTemplate $view, array $availableWorkspaces, int $activeWorkspace, int $pageUid): void
     {
         $items = [];
         $items[] = [
@@ -173,7 +173,7 @@ class ReviewController
         $view->getDocHeaderComponent()->getMenuRegistry()->addMenu($actionMenu);
     }
 
-    protected function addShortcutButton(ModuleTemplate $view, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
+    private function addShortcutButton(ModuleTemplate $view, string $activeWorkspaceTitle, string $pageTitle, int $pageId): void
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
         $shortcutButton = $buttonBar->makeShortcutButton()
@@ -183,7 +183,7 @@ class ReviewController
         $buttonBar->addButton($shortcutButton);
     }
 
-    protected function addPreviewLink(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void
+    private function addPreviewLink(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void
     {
         $canCreatePreviewLink = false;
         if ($pageUid > 0 && $activeWorkspace > 0) {
@@ -205,7 +205,7 @@ class ReviewController
         }
     }
 
-    protected function addEditWorkspaceRecordButton(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void
+    private function addEditWorkspaceRecordButton(ModuleTemplate $view, int $pageUid, int $activeWorkspace): void
     {
         $backendUser = $this->getBackendUser();
         if ($backendUser->isAdmin() && $activeWorkspace > 0) {
@@ -231,7 +231,7 @@ class ReviewController
         }
     }
 
-    protected function getModuleUri(int $pageUid, ?int $workspaceId = null): string
+    private function getModuleUri(int $pageUid, ?int $workspaceId = null): string
     {
         $parameters = [
             'id' => $pageUid,
@@ -245,7 +245,7 @@ class ReviewController
     /**
      * Returns true if at least one custom workspace next to live workspace exists.
      */
-    protected function customWorkspaceExists(array $workspaceList): bool
+    private function customWorkspaceExists(array $workspaceList): bool
     {
         foreach (array_keys($workspaceList) as $workspaceId) {
             if ($workspaceId > 0) {
@@ -258,7 +258,7 @@ class ReviewController
     /**
      * Gets all available system languages.
      */
-    protected function getSystemLanguages(int $pageId, string $selectedLanguage): array
+    private function getSystemLanguages(int $pageId, string $selectedLanguage): array
     {
         $languages = $this->translationConfigurationProvider->getSystemLanguages($pageId);
         if (isset($languages[-1])) {
@@ -276,10 +276,10 @@ class ReviewController
     /**
      * Get list of available mass workspace actions.
      */
-    protected function getStageActions(): array
+    private function getStageActions(): array
     {
         $languageService = $this->getLanguageService();
-        $currentWorkspace = $this->workspaceService->getCurrentWorkspace();
+        $currentWorkspace = $this->getBackendUser()->workspace;
         $backendUser = $this->getBackendUser();
         $actions = [];
         $massActionsEnabled = (bool)($backendUser->getTSConfig()['options.']['workspaces.']['enableMassActions'] ?? true);
@@ -300,7 +300,7 @@ class ReviewController
      * Get stages to be used in the review filter. This basically
      * adds -99 (all stages) and removes the publishing stage (-20).
      */
-    protected function getAvailableSelectStages(): array
+    private function getAvailableSelectStages(): array
     {
         $languageService = $this->getLanguageService();
         $stages = $this->stagesService->getStagesForWSUser();
@@ -312,12 +312,12 @@ class ReviewController
         ], array_filter($stages, static fn(array $stage): bool => (int)($stage['uid'] ?? 0) !== StagesService::STAGE_PUBLISH_EXECUTE_ID));
     }
 
-    protected function getLanguageService(): LanguageService
+    private function getLanguageService(): LanguageService
     {
         return $GLOBALS['LANG'];
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }

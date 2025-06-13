@@ -56,7 +56,8 @@ class WorkspaceService implements SingletonInterface
     public const PUBLISH_ACCESS_HIDE_ENTIRE_WORKSPACE_ACTION_DROPDOWN = 4;
 
     public function __construct(
-        private readonly TcaSchemaFactory $tcaSchemaFactory
+        private readonly TcaSchemaFactory $tcaSchemaFactory,
+        private readonly ConnectionPool $connectionPool,
     ) {}
 
     /**
@@ -74,10 +75,8 @@ class WorkspaceService implements SingletonInterface
             $availableWorkspaces[self::LIVE_WORKSPACE_ID] = $this->getWorkspaceTitle(self::LIVE_WORKSPACE_ID);
         }
         // add custom workspaces (selecting all, filtering by BE_USER check):
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable(self::TABLE_WORKSPACE);
-        $queryBuilder->getRestrictions()
-            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
-
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable(self::TABLE_WORKSPACE);
+        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
         $result = $queryBuilder
             ->select('uid', 'title', 'adminusers', 'members')
             ->from(self::TABLE_WORKSPACE)
@@ -90,14 +89,6 @@ class WorkspaceService implements SingletonInterface
             }
         }
         return $availableWorkspaces;
-    }
-
-    /**
-     * Gets the current workspace ID.
-     */
-    public function getCurrentWorkspace(): int
-    {
-        return $this->getBackendUser()->workspace;
     }
 
     /**
@@ -207,7 +198,7 @@ class WorkspaceService implements SingletonInterface
      * @param int $pageId Page id: Live page for which to find versions in workspace!
      * @param int $recursionLevel Recursion Level - select versions recursive - parameter is only relevant if $pageId != -1
      * @param string $selectionType How to collect records for "listing" or "modify" these tables. Support the permissions of each type of record, see \TYPO3\CMS\Core\Authentication\BackendUserAuthentication::check.
-     * @param int $language Select specific language only
+     * @param int|null $language Select specific language only
      * @return array Array of all records uids etc. First key is table name, second key incremental integer. Records are associative arrays with uid and t3ver_oidfields. The pid of the online record is found as "livepid" the pid of the offline record is found in "wspid
      */
     public function selectVersionsInWorkspace(int $wsid, int $stage = -99, int $pageId = -1, int $recursionLevel = 0, string $selectionType = 'tables_select', ?int $language = null): array
@@ -279,9 +270,8 @@ class WorkspaceService implements SingletonInterface
             return [];
         }
         $table = $schema->getName();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $fields = ['A.uid', 'A.pid', 'A.t3ver_oid', 'A.t3ver_stage', 'B.pid', 'B.pid AS wspid', 'B.pid AS livepid'];
         if ($schema->isLanguageAware()) {
@@ -406,9 +396,8 @@ class WorkspaceService implements SingletonInterface
         $transOrigPointerField = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName() : '';
 
         $table = $schema->getName();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $fields = ['uid', 'pid', 't3ver_oid', 't3ver_state', 't3ver_stage', 'pid AS wspid', 'pid AS livepid'];
 
@@ -498,9 +487,8 @@ class WorkspaceService implements SingletonInterface
     protected function getMovedRecordsFromPages(TcaSchema $schema, string $pageList, int $wsid, int $stage): array
     {
         $table = $schema->getName();
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($table);
-        $queryBuilder->getRestrictions()->removeAll()
-            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable($table);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         // Aliases:
         // B - online record
@@ -627,10 +615,8 @@ class WorkspaceService implements SingletonInterface
         if ($this->tcaSchemaFactory->get('pages')->isWorkspaceAware() && !empty($pageList)) {
             // Remove the "subbranch" if a page was moved away
             $pageIds = $pageList;
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $result = $queryBuilder
                 ->select('uid', 'pid', 't3ver_oid')
                 ->from('pages')
@@ -672,10 +658,8 @@ class WorkspaceService implements SingletonInterface
             } while ($changed);
 
             // In case moving pages is enabled we need to replace all move-to pointer with their origin
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $result = $queryBuilder->select('uid', 't3ver_oid')
                 ->from('pages')
                 ->where(
@@ -721,7 +705,7 @@ class WorkspaceService implements SingletonInterface
     {
         $children = [];
         if ($pid && $depth > 0) {
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('pages');
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
             $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $statement = $queryBuilder->select('uid')
                 ->from('pages')
@@ -851,11 +835,8 @@ class WorkspaceService implements SingletonInterface
         // If the language is not default, check state of overlay
         if ($language > 0) {
             $schema = $this->tcaSchemaFactory->get('pages');
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)
-                ->getQueryBuilderForTable('pages');
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable('pages');
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
             $row = $queryBuilder->select('t3ver_state')
                 ->from('pages')
                 ->where(
@@ -869,7 +850,7 @@ class WorkspaceService implements SingletonInterface
                     ),
                     $queryBuilder->expr()->eq(
                         't3ver_wsid',
-                        $queryBuilder->createNamedParameter($this->getCurrentWorkspace(), Connection::PARAM_INT)
+                        $queryBuilder->createNamedParameter($this->getBackendUser()->workspace, Connection::PARAM_INT)
                     )
                 )
                 ->setMaxResults(1)
@@ -979,10 +960,8 @@ class WorkspaceService implements SingletonInterface
         if (!isset($this->pagesWithVersionsInTable[$workspaceId][$tableName])) {
             $this->pagesWithVersionsInTable[$workspaceId][$tableName] = [];
 
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
             // Fetch all versioned record within a workspace
             $result = $queryBuilder

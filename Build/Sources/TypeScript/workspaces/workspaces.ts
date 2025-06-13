@@ -81,54 +81,19 @@ export default class Workspaces {
   }
 
   /**
-   * Generates the payload for a remote call
-   *
-   * @param {String} method
-   * @param {Object} data
-   * @return {{action, data, method}}
-   */
-  protected generateRemotePayload(method: string, data: object = {}): object {
-    return this.generateRemotePayloadBody('RemoteServer', method, data);
-  }
-
-  /**
-   * Generates the payload for MassActions
-   *
-   * @param {String} method
-   * @param {Object} data
-   * @return {{action, data, method}}
-   */
-  protected generateRemoteMassActionsPayload(method: string, data: object = {}): object {
-    return this.generateRemotePayloadBody('MassActions', method, data);
-  }
-
-  /**
-   * Generates the payload for Actions
-   *
-   * @param {String} method
-   * @param {Object} data
-   * @return {{action, data, method}}
-   */
-  protected generateRemoteActionsPayload(method: string, data: object = {}): object {
-    return this.generateRemotePayloadBody('Actions', method, data);
-  }
-
-  /**
    * Generates the payload body
    *
-   * @param {String} action
    * @param {String} method
    * @param {Object} data
    * @return {{action: String, data: Object, method: String}}
    */
-  private generateRemotePayloadBody(action: string, method: string, data: object): object {
+  protected generateRemotePayloadBody(method: string, data: object): object {
     if (!(data instanceof Array)) {
       data = [
         data,
       ];
     }
     return {
-      action: action,
       data: data,
       method: method,
     };

@@ -43,15 +43,15 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class PreviewController
+final readonly class PreviewController
 {
     public function __construct(
-        protected readonly StagesService $stageService,
-        protected readonly WorkspaceService $workspaceService,
-        protected readonly PageRenderer $pageRenderer,
-        protected readonly UriBuilder $uriBuilder,
-        protected readonly SiteFinder $siteFinder,
-        protected readonly ModuleTemplateFactory $moduleTemplateFactory
+        private StagesService $stageService,
+        private WorkspaceService $workspaceService,
+        private PageRenderer $pageRenderer,
+        private UriBuilder $uriBuilder,
+        private SiteFinder $siteFinder,
+        private ModuleTemplateFactory $moduleTemplateFactory
     ) {}
 
     /**
@@ -184,17 +184,17 @@ class PreviewController
     /**
      * Evaluate the active state.
      */
-    protected function isValidStage($stageArray): bool
+    private function isValidStage($stageArray): bool
     {
         return is_array($stageArray) && !empty($stageArray);
     }
 
-    protected function getBackendUser(): BackendUserAuthentication
+    private function getBackendUser(): BackendUserAuthentication
     {
         return $GLOBALS['BE_USER'];
     }
 
-    protected function generateUrl(Site $site, int $pageUid, array $parameters): string
+    private function generateUrl(Site $site, int $pageUid, array $parameters): string
     {
         return (string)$site->getRouter()->generateUri($pageUid, $parameters);
     }

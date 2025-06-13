@@ -143,8 +143,8 @@ class Preview extends Workspaces {
     modal.addEventListener('button.clicked', (e: Event): void => {
       if ((e.target as HTMLButtonElement).name === 'ok') {
         this.sendRemoteRequest([
-          this.generateRemoteActionsPayload('discardStagesFromPage', [TYPO3.settings.Workspaces.id]),
-          this.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
+          this.generateRemotePayloadBody('discardStagesFromPage', [TYPO3.settings.Workspaces.id]),
+          this.generateRemotePayloadBody('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
         ], Identifiers.topbar).then(async (response: AjaxResponse): Promise<void> => {
           modal.hideModal();
           this.renderStageButtons((await response.resolve())[1].result);
@@ -171,7 +171,7 @@ class Preview extends Workspaces {
     }
 
     this.sendRemoteRequest(
-      this.generateRemoteActionsPayload(actionName, [TYPO3.settings.Workspaces.id]),
+      this.generateRemotePayloadBody(actionName, [TYPO3.settings.Workspaces.id]),
       Identifiers.topbar
     ).then(async (response: AjaxResponse): Promise<void> => {
       const resolvedResponse = await response.resolve();
@@ -182,13 +182,11 @@ class Preview extends Workspaces {
           const serializedForm = Utility.convertFormToObject(modal.querySelector('form'));
           serializedForm.affects = resolvedResponse[0].result.affects;
           serializedForm.stageId = parseInt(target.dataset.stageId, 10);
-
           this.sendRemoteRequest([
-            this.generateRemoteActionsPayload('sentCollectionToStage', [serializedForm]),
-            this.generateRemoteActionsPayload('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
+            this.generateRemotePayloadBody('sendCollectionToStage', [serializedForm]),
+            this.generateRemotePayloadBody('updateStageChangeButtons', [TYPO3.settings.Workspaces.id]),
           ], Identifiers.topbar).then(async (updateResponse: AjaxResponse): Promise<void> => {
             modal.hideModal();
-
             this.renderStageButtons((await updateResponse.resolve())[1].result);
           });
         }

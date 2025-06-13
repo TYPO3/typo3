@@ -33,11 +33,11 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
  * @internal This is a specific Backend Controller implementation and is not considered part of the Public TYPO3 API.
  */
 #[AsController]
-class AjaxController
+final readonly class WorkspacesToolbarController
 {
     public function __construct(
-        private readonly WorkspaceService $workspaceService,
-        private readonly ModuleProvider $moduleProvider,
+        private WorkspaceService $workspaceService,
+        private ModuleProvider $moduleProvider,
     ) {}
 
     /**
@@ -53,18 +53,12 @@ class AjaxController
         $pageId = (int)($parsedBody['pageId'] ?? $queryParams['pageId'] ?? 0);
         $finalPageUid = 0;
         $originalPageId = $pageId;
-
-        $this->getBackendUser()->setWorkspace($workspaceId);
-
+        $backendUser = $this->getBackendUser();
+        $backendUser->setWorkspace($workspaceId);
         while ($pageId) {
-            $page = BackendUtility::getRecordWSOL(
-                'pages',
-                $pageId,
-                '*',
-                ' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')'
-            );
+            $page = BackendUtility::getRecordWSOL('pages', $pageId, '*', ' AND pages.t3ver_wsid IN (0, ' . $workspaceId . ')');
             if ($page) {
-                if ($this->getBackendUser()->doesUserHaveAccess($page, Permission::PAGE_SHOW)) {
+                if ($backendUser->doesUserHaveAccess($page, Permission::PAGE_SHOW)) {
                     break;
                 }
             } else {
@@ -72,16 +66,14 @@ class AjaxController
             }
             $pageId = $page['pid'];
         }
-
         if (isset($page['uid'])) {
             $finalPageUid = (int)$page['uid'];
         }
-
         $ajaxResponse = [
-            'title'       => $this->workspaceService->getWorkspaceTitle($workspaceId),
+            'title' => $this->workspaceService->getWorkspaceTitle($workspaceId),
             'workspaceId' => $workspaceId,
-            'pageId'      => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
-            'pageModule'  => $this->moduleProvider->accessGranted('web_layout', $this->getBackendUser()) ? 'web_layout' : '',
+            'pageId' => ($finalPageUid && $originalPageId == $finalPageUid) ? null : $finalPageUid,
+            'pageModule' => $this->moduleProvider->accessGranted('web_layout', $backendUser) ? 'web_layout' : '',
         ];
         return new JsonResponse($ajaxResponse);
     }
