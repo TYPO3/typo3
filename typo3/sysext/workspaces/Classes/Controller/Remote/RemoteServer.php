@@ -481,37 +481,8 @@ readonly class RemoteServer
             foreach ((array)$parameters->selection as $element) {
                 $affectedElements[] = CombinedRecord::create($element->table, (int)$element->liveId, (int)$element->versionId);
             }
-        } elseif ($parameters->type === 'all') {
-            $versions = $this->workspaceService->selectVersionsInWorkspace(
-                $this->getCurrentWorkspace(),
-                -99,
-                -1,
-                0,
-                'tables_select',
-                $this->validateLanguageParameter($parameters)
-            );
-            foreach ($versions as $table => $tableElements) {
-                foreach ($tableElements as $element) {
-                    $affectedElement = CombinedRecord::create($table, (int)$element['t3ver_oid'], (int)$element['uid']);
-                    $affectedElement->getVersionRecord()->setRow($element);
-                    $affectedElements[] = $affectedElement;
-                }
-            }
         }
         return $affectedElements;
-    }
-
-    /**
-     * Validates whether the submitted language parameter can be
-     * interpreted as integer value.
-     */
-    protected function validateLanguageParameter(\stdClass $parameters): ?int
-    {
-        $language = null;
-        if (isset($parameters->language) && MathUtility::canBeInterpretedAsInteger($parameters->language)) {
-            $language = $parameters->language;
-        }
-        return $language;
     }
 
     /**
