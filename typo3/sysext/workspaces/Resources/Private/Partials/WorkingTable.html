@@ -52,7 +52,48 @@
                 </div>
             </div>
         </form>
-        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages, showEntireWorkspaceDropDown: showEntireWorkspaceDropDown, position: 'top'}" />
+        <div class="row workspace-actions multi-record-selection-actions-wrapper gx-0 hidden">
+            <f:if condition="{stageActions} && {showEntireWorkspaceDropDown}">
+                <div class="col-auto">
+                    <div class="row row-cols-auto align-items-center g-2 me-2">
+                        <label class="col" for="mass-action">
+                            <strong><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:entireWorkspace" /></strong>
+                        </label>
+                        <div class="col">
+                            <select name="mass-action" id="mass-action" class="form-select form-select-sm">
+                                <option value=""><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:chooseMassAction" /></option>
+                                <f:for each="{stageActions}" as="stageAction">
+                                    <option value="{stageAction.action}">{stageAction.title}</option>
+                                </f:for>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </f:if>
+            <div class="col-auto">
+                <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
+                    <div class="col">
+                        <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
+                    </div>
+                    <div class="col">
+                        <select name="stage-action" class="form-select form-select-sm">
+                            <option value=""><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:chooseAction" /></option>
+                            <f:for each="{availableStages}" as="availableStage">
+                                <option value="{availableStage.uid}">{availableStage.title}</option>
+                            </f:for>
+                        </select>
+                    </div>
+                    <div class="col">
+                        <select name="selection-action" class="form-select form-select-sm">
+                            <option value=""><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:chooseSelectionAction" /></option>
+                            <f:for each="{stageActions}" as="stageAction">
+                                <option value="{stageAction.action}">{stageAction.title}</option>
+                            </f:for>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div id="workspace-content-wrapper">
             <div id="workspace-contents" style="display: none">
                 <typo3-workspaces-record-table></typo3-workspaces-record-table>
@@ -64,52 +105,6 @@
                 />
             </div>
         </div>
-        <f:render section="multiRecordSelectionActions" arguments="{stageActions: stageActions, availableStages: availableStages, showEntireWorkspaceDropDown: showEntireWorkspaceDropDown, position: 'bottom'}" />
         <nav id="workspace-pagination" class="mt-3"></nav>
     </div>
 </html>
-
-<f:section name="multiRecordSelectionActions">
-    <div class="row workspace-actions multi-record-selection-actions-wrapper gx-0 hidden">
-        <f:if condition="{stageActions} && {showEntireWorkspaceDropDown}">
-            <div class="col-auto">
-                <div class="row row-cols-auto align-items-center g-2 me-2">
-                    <label class="col" for="mass-action-{position}">
-                        <strong><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:entireWorkspace" /></strong>
-                    </label>
-                    <div class="col">
-                        <select name="mass-action" id="mass-action-{position}" class="form-select form-select-sm">
-                            <option value=""><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:chooseMassAction" /></option>
-                            <f:for each="{stageActions}" as="stageAction">
-                                <option value="{stageAction.action}">{stageAction.title}</option>
-                            </f:for>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </f:if>
-        <div class="col-auto">
-            <div class="row row-cols-auto align-items-center g-2 t3js-multi-record-selection-actions hidden">
-                <div class="col">
-                    <strong><f:translate key="LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.selection"/></strong>
-                </div>
-                <div class="col">
-                    <select name="stage-action" class="form-select form-select-sm">
-                        <option value=""><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:chooseAction" /></option>
-                        <f:for each="{availableStages}" as="availableStage">
-                            <option value="{availableStage.uid}">{availableStage.title}</option>
-                        </f:for>
-                    </select>
-                </div>
-                <div class="col">
-                    <select name="selection-action" class="form-select form-select-sm">
-                        <option value=""><f:translate key="LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:chooseSelectionAction" /></option>
-                        <f:for each="{stageActions}" as="stageAction">
-                            <option value="{stageAction.action}">{stageAction.title}</option>
-                        </f:for>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-</f:section>
