@@ -64,15 +64,6 @@ class ReviewController
         $moduleData = $request->getAttribute('moduleData');
         $pageUid = (int)($queryParams['id'] ?? 0);
 
-        $icons = [
-            'language' => $this->iconFactory->getIcon('flags-multiple', IconSize::SMALL)->render(),
-            'integrity' => $this->iconFactory->getIcon('status-dialog-information', IconSize::SMALL)->render(),
-            'success' => $this->iconFactory->getIcon('status-dialog-ok', IconSize::SMALL)->render(),
-            'info' => $this->iconFactory->getIcon('status-dialog-information', IconSize::SMALL)->render(),
-            'warning' => $this->iconFactory->getIcon('status-dialog-warning', IconSize::SMALL)->render(),
-            'error' => $this->iconFactory->getIcon('status-dialog-error', IconSize::SMALL)->render(),
-        ];
-        $this->pageRenderer->addInlineSetting('Workspaces', 'icons', $icons);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $pageUid);

@@ -19,8 +19,6 @@ import { default as Modal, type ModalElement } from '@typo3/backend/modal';
 import { html } from 'lit';
 
 export default class Workspaces {
-  private tid: number = 0;
-
   /**
    * Renders the send to stage window
    * @param {Object} response
@@ -87,7 +85,7 @@ export default class Workspaces {
    *
    * @param {String} method
    * @param {Object} data
-   * @return {{action, data, method, type}}
+   * @return {{action, data, method}}
    */
   protected generateRemotePayload(method: string, data: object = {}): object {
     return this.generateRemotePayloadBody('RemoteServer', method, data);
@@ -98,7 +96,7 @@ export default class Workspaces {
    *
    * @param {String} method
    * @param {Object} data
-   * @return {{action, data, method, type}}
+   * @return {{action, data, method}}
    */
   protected generateRemoteMassActionsPayload(method: string, data: object = {}): object {
     return this.generateRemotePayloadBody('MassActions', method, data);
@@ -109,7 +107,7 @@ export default class Workspaces {
    *
    * @param {String} method
    * @param {Object} data
-   * @return {{action, data, method, type}}
+   * @return {{action, data, method}}
    */
   protected generateRemoteActionsPayload(method: string, data: object = {}): object {
     return this.generateRemotePayloadBody('Actions', method, data);
@@ -121,23 +119,18 @@ export default class Workspaces {
    * @param {String} action
    * @param {String} method
    * @param {Object} data
-   * @return {{action: String, data: Object, method: String, type: string}}
+   * @return {{action: String, data: Object, method: String}}
    */
   private generateRemotePayloadBody(action: string, method: string, data: object): object {
-    if (data instanceof Array) {
-      data.push(TYPO3.settings.Workspaces.token);
-    } else {
+    if (!(data instanceof Array)) {
       data = [
         data,
-        TYPO3.settings.Workspaces.token,
       ];
     }
     return {
       action: action,
       data: data,
       method: method,
-      type: 'rpc',
-      tid: this.tid++,
     };
   }
 }
