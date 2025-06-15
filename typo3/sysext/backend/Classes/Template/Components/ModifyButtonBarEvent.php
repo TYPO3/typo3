@@ -17,23 +17,29 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Backend\Template\Components;
 
-use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
-
 /**
  * Listeners can modify the buttons of the button bar in the backend module docheader
+ *
+ * @phpstan-import-type Buttons from ButtonBar
  */
 final class ModifyButtonBarEvent
 {
     /**
-     * @param array<ButtonInterface> $buttons
+     * @param Buttons $buttons
      */
     public function __construct(private array $buttons, private readonly ButtonBar $buttonBar) {}
 
+    /**
+     * @return Buttons
+     */
     public function getButtons(): array
     {
         return $this->buttons;
     }
 
+    /**
+     * @param Buttons $buttons
+     */
     public function setButtons(array $buttons): void
     {
         $this->buttons = $buttons;

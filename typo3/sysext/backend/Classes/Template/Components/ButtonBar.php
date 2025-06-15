@@ -28,6 +28,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Bar holding the buttons
+ *
+ * @phpstan-type Buttons array<self::BUTTON_POSITION_*, array<int, list<ButtonInterface>>>
  */
 class ButtonBar
 {
@@ -44,15 +46,15 @@ class ButtonBar
     /**
      * Internal array of all registered buttons
      *
-     * @var array
+     * @var Buttons
      */
-    protected $buttons = [];
+    protected array $buttons = [];
 
     /**
      * Add button
      *
      * @param ButtonInterface $button The Button Object to add
-     * @param string $buttonPosition Position of the button (left/right)
+     * @param self::BUTTON_POSITION_* $buttonPosition Position of the button (left/right)
      * @param int $buttonGroup Buttongroup of the button
      *
      * @throws \InvalidArgumentException In case a button is not valid
