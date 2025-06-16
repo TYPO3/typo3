@@ -79,7 +79,7 @@ class PreviewSimulator implements MiddlewareInterface
             $this->context->setAspect('frontend.preview', new PreviewAspect($isPreview));
 
             if ($showHiddenPages || $rootlineRequiresPreviewFlag) {
-                $newAspect = new VisibilityAspect(true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords());
+                $newAspect = new VisibilityAspect(true, $visibilityAspect->includeHiddenContent(), $visibilityAspect->includeDeletedRecords(), $visibilityAspect->includeScheduledRecords());
                 $this->context->setAspect('visibility', $newAspect);
             }
         }
