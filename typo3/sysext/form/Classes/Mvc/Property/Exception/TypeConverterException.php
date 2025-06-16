@@ -29,7 +29,7 @@ final class TypeConverterException extends \TYPO3\CMS\Extbase\Property\Exception
 
     public static function fromError(Error $error): TypeConverterException
     {
-        $exception = new self($error->getMessage(), $error->getCode());
+        $exception = new self($error->render(), $error->getCode());
         $exception->error = $error;
 
         return $exception;
