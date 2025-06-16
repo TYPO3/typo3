@@ -158,7 +158,7 @@ class TcaInline extends AbstractDatabaseRecordProvider implements FormDataProvid
                 $result['processedTca']['columns'][$fieldName]['config'],
                 $tableNameWithDefaultRecords,
                 $result['defaultLanguageRow'],
-                $result['defaultLanguageRow'][$fieldName]
+                (string)($result['defaultLanguageRow'][$fieldName] ?? '')
             );
             $connectedUidsOfDefaultLanguageRecord = $this->getSubstitutedWorkspacedUids($connectedUidsOfDefaultLanguageRecord, $childTableName);
 
