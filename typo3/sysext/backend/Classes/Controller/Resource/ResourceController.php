@@ -34,6 +34,8 @@ use TYPO3\CMS\Core\SysLog\Action\File as SystemLogFileAction;
 use TYPO3\CMS\Core\SysLog\Error as SystemLogErrorClassification;
 use TYPO3\CMS\Core\SysLog\Type as SystemLogType;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Validation\ResultException;
+use TYPO3\CMS\Core\Validation\ResultRenderingTrait;
 
 /**
  * @internal
@@ -41,6 +43,8 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 #[AsController]
 final class ResourceController
 {
+    use ResultRenderingTrait;
+
     public function __construct(
         private readonly ResourceFactory $resourceFactory,
     ) {}
@@ -70,6 +74,9 @@ final class ResourceController
             }
             $oldName = $origin->getName();
             $resource = $origin->rename($resourceName);
+        } catch (ResultException $exception) {
+            // Possible Exception thrown within the `->rename(...)` chain via ResourceConsistencyService
+            return new JsonResponse($this->getResponseData(false, $this->renderResultException($exception, $this->getLanguageService())));
         } catch (\Exception $exception) {
             $message = match ($exception->getCode()) {
                 1676979120 => $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_resource.xlf:ajax.error.message.resourceNotFileOrFolder'),

@@ -25,7 +25,7 @@ use TYPO3\CMS\Core\Resource\StorageRepository;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Validation\ResultException;
-use TYPO3\CMS\Core\Validation\ResultMessage;
+use TYPO3\CMS\Core\Validation\ResultRenderingTrait;
 use TYPO3\CMS\Reports\Status;
 use TYPO3\CMS\Reports\Status as ReportStatus;
 use TYPO3\CMS\Reports\StatusProviderInterface;
@@ -35,6 +35,8 @@ use TYPO3\CMS\Reports\StatusProviderInterface;
  */
 class FalStatus implements StatusProviderInterface
 {
+    use ResultRenderingTrait;
+
     public function __construct(private readonly ResourceConsistencyService $resourceConsistencyService) {}
 
     /**
@@ -195,10 +197,9 @@ class FalStatus implements StatusProviderInterface
             try {
                 $this->resourceConsistencyService->validate($file->getStorage(), $file);
             } catch (ResultException $exception) {
-                $inconsistencies[$file->getCombinedIdentifier()] = array_map(
-                    fn(ResultMessage $hint): string
-                        => $hint->labelBag?->compile($this->getLanguageService()) ?? $hint->message,
-                    $exception->messages
+                $inconsistencies[$file->getCombinedIdentifier()] = $this->compileResultMessages(
+                    $exception->messages,
+                    $this->getLanguageService()
                 );
             }
         }

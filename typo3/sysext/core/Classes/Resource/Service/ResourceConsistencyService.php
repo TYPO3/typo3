@@ -102,7 +102,7 @@ final class ResourceConsistencyService
             }
             $arguments = [$mimeType, $fileExtension, $listOfExpectedTypes];
             $messages[] = new ResultMessage(
-                sprintf('Mime-type "%s" not allowed for file extension "%s" (expected: %s)', ...$arguments),
+                sprintf('Mime-type "%s" not allowed for file extension "%s" (expected: %s).', ...$arguments),
                 new LabelBag(
                     'LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation',
                     ...$arguments
@@ -112,7 +112,7 @@ final class ResourceConsistencyService
         if (!$this->isFileExtensionAllowed($fileExtension)) {
             $arguments = [$fileExtension];
             $messages[] = new ResultMessage(
-                sprintf('File extension "%s" is not in the list of allowed values', ...$arguments),
+                sprintf('File extension "%s" is not in the list of allowed values.', ...$arguments),
                 new LabelBag(
                     'LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:FileUtility.FileExtensionIsNotAllowed',
                     ...$arguments
