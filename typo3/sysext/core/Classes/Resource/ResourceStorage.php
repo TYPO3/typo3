@@ -1917,45 +1917,51 @@ class ResourceStorage implements ResourceStorageInterface
         if ($file->getName() === $sanitizedTargetFileName) {
             return $file;
         }
-
         if (pathinfo($sanitizedTargetFileName, PATHINFO_EXTENSION) === '') {
             $sanitizedTargetFileName .= '.' . $file->getExtension();
         }
-
         $this->assureFileRenamePermissions($file, $sanitizedTargetFileName);
         $this->assureResourceConsistency($file, $sanitizedTargetFileName);
+        return $this->handleRenameFile($file, $sanitizedTargetFileName, $conflictMode);
+    }
 
+    protected function handleRenameFile(
+        FileInterface $file,
+        string $targetFileName,
+        DuplicationBehavior $conflictMode = DuplicationBehavior::RENAME,
+    ): FileInterface {
+        // The new name should be different from the current.
+        if ($file->getName() === $targetFileName) {
+            return $file;
+        }
         $this->eventDispatcher->dispatch(
-            new BeforeFileRenamedEvent($file, $sanitizedTargetFileName)
+            new BeforeFileRenamedEvent($file, $targetFileName)
         );
-
         // Call driver method to rename the file and update the index entry
         try {
-            $newIdentifier = $this->driver->renameFile($file->getIdentifier(), $sanitizedTargetFileName);
+            $newIdentifier = $this->driver->renameFile($file->getIdentifier(), $targetFileName);
             if ($file instanceof File) {
                 $file->updateProperties(['identifier' => $newIdentifier]);
                 $this->getIndexer()->updateIndexEntry($file);
             }
         } catch (ExistingTargetFileNameException $exception) {
             if ($conflictMode === DuplicationBehavior::RENAME) {
-                $newName = $this->getUniqueName($file->getParentFolder(), $sanitizedTargetFileName);
+                $newName = $this->getUniqueName($file->getParentFolder(), $targetFileName);
                 $file = $this->renameFile($file, $newName);
             } elseif ($conflictMode === DuplicationBehavior::CANCEL) {
                 throw $exception;
             } elseif ($conflictMode === DuplicationBehavior::REPLACE) {
                 if ($file instanceof AbstractFile) {
-                    $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $sanitizedTargetFileName;
+                    $sourceFileIdentifier = substr($file->getCombinedIdentifier(), 0, (int)strrpos($file->getCombinedIdentifier(), '/') + 1) . $targetFileName;
                     $sourceFile = $this->getResourceFactoryInstance()->getFileObjectFromCombinedIdentifier($sourceFileIdentifier);
                     $file = $this->replaceFile($sourceFile, Environment::getPublicPath() . '/' . $file->getPublicUrl());
                 }
             }
         } catch (\RuntimeException) {
         }
-
         $this->eventDispatcher->dispatch(
-            new AfterFileRenamedEvent($file, $sanitizedTargetFileName)
+            new AfterFileRenamedEvent($file, $targetFileName)
         );
-
         return $file;
     }
 
@@ -1968,7 +1974,11 @@ class ResourceStorage implements ResourceStorageInterface
     {
         $this->assureFileReplacePermissions($file);
         $this->assureResourceConsistency($localFilePath, $file->getName());
+        return $this->handleReplaceFile($file, $localFilePath);
+    }
 
+    protected function handleReplaceFile(FileInterface $file, string $localFilePath): FileInterface
+    {
         if (!file_exists($localFilePath)) {
             throw new \InvalidArgumentException('File "' . $localFilePath . '" does not exist.', 1325842622);
         }
@@ -2013,6 +2023,27 @@ class ResourceStorage implements ResourceStorageInterface
             $resultObject = $this->addFile($localFilePath, $targetFolder, $targetFileName, $conflictMode);
         }
         return $resultObject;
+    }
+
+    /**
+     * Replaces an existing file with new contents and renames the file identifier.
+     */
+    public function replaceAndRenameUploadedFile(array|UploadedFileInterface $sourceFile, FileInterface $targetFile, ?string $targetFileName = null): FileInterface
+    {
+        $this->assertUploadedFileType($sourceFile);
+        $localFilePath = $this->getUploadedLocalFilePath($sourceFile);
+        $localFileSize = $sourceFile instanceof UploadedFile ? $sourceFile->getSize() : $sourceFile['size'];
+        $targetFileName = $this->getUploadedTargetFileName($sourceFile, $targetFileName);
+        $targetFolder = $targetFile->getParentFolder();
+
+        $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $localFileSize);
+        $this->assureFileReplacePermissions($targetFile);
+        $this->assureFileRenamePermissions($targetFile, $targetFileName);
+        $this->assureResourceConsistency($localFilePath, $targetFileName);
+
+        $result = $this->handleReplaceFile($targetFile, $localFilePath);
+        $result = $this->handleRenameFile($result, $targetFileName);
+        return $result;
     }
 
     /**
