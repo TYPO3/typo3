@@ -401,7 +401,9 @@ class Backend extends Workspaces {
     }
 
     const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
-    chooseMassAction.disabled = this.markedRecordsForMassAction.length > 0;
+    if (chooseMassAction !== null) {
+      chooseMassAction.disabled = this.markedRecordsForMassAction.length > 0;
+    }
   };
 
   /**
@@ -762,7 +764,9 @@ class Backend extends Workspaces {
     });
     modal.addEventListener('typo3-modal-hidden', (): void => {
       const chooseSelectionAction = document.querySelector(Identifiers.chooseSelectionAction) as HTMLSelectElement;
-      chooseSelectionAction.value = '';
+      if (chooseSelectionAction !== null) {
+        chooseSelectionAction.value = '';
+      }
     });
   }
 
@@ -862,7 +866,9 @@ class Backend extends Workspaces {
     });
     modal.addEventListener('typo3-modal-hidden', (): void => {
       const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
-      chooseMassAction.value = '';
+      if (chooseMassAction !== null) {
+        chooseMassAction.value = '';
+      }
     });
   }
 
@@ -907,7 +913,9 @@ class Backend extends Workspaces {
       });
       modal.addEventListener('typo3-modal-hide', (): void => {
         const chooseStageAction = document.querySelector(Identifiers.chooseStageAction) as HTMLSelectElement;
-        chooseStageAction.value = '';
+        if (chooseStageAction !== null) {
+          chooseStageAction.value = '';
+        }
       });
     });
   }
