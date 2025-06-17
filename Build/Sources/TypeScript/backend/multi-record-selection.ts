@@ -258,6 +258,14 @@ class MultiRecordSelection {
       const actionContainers: NodeListOf<HTMLElement> = document.querySelectorAll(MultiRecordSelection.getCombinedSelector(MultiRecordSelectionSelectors.actionsSelector, identifier));
       actionContainers.forEach((container: HTMLElement): void => MultiRecordSelection.changeActionContainerVisibility(container, false));
     }).bindTo(document);
+    new RegularEvent('multiRecordSelection:checkboxes:check', (e: CustomEvent): void => {
+      const identifier: string = e.detail?.identifier || '';
+      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => MultiRecordSelection.changeCheckboxState(checkbox, true));
+    }).bindTo(document);
+    new RegularEvent('multiRecordSelection:checkboxes:uncheck', (e: CustomEvent): void => {
+      const identifier: string = e.detail?.identifier || '';
+      MultiRecordSelection.getCheckboxes(CheckboxState.any, identifier).forEach((checkbox: HTMLInputElement): void => MultiRecordSelection.changeCheckboxState(checkbox, false));
+    }).bindTo(document);
   }
 
   private registerCheckboxActions(): void {
