@@ -1134,16 +1134,17 @@ class ExtendedFileUtility extends BasicFileUtility
             $fileObjectToReplace = $this->getFileObject($cmdArr['uid']);
             $folder = $fileObjectToReplace->getParentFolder();
             $resourceStorage = $fileObjectToReplace->getStorage();
+            $uploadedFileExtension = pathinfo($fileInfo['name'], PATHINFO_EXTENSION);
 
-            $fileObject = $resourceStorage->addUploadedFile($fileInfo, $folder, $fileObjectToReplace->getName(), DuplicationBehavior::REPLACE);
-
-            // Check if there is a file that is going to be uploaded that has a different name as the replacing one
-            // but exists in that folder as well.
-            // rename to another name, but check if the name is already given
-            if ($keepFileName === false) {
-                // if a file with the same name already exists, we need to change it to _01 etc.
-                // if the file does not exist, we can do a simple rename
-                $resourceStorage->moveFile($fileObject, $folder, $fileInfo['name'], DuplicationBehavior::RENAME);
+            if (!$keepFileName) {
+                $fileObject = $resourceStorage->replaceAndRenameUploadedFile($fileInfo, $fileObjectToReplace);
+            } elseif ($uploadedFileExtension !== $fileObjectToReplace->getExtension()) {
+                // `keepFileName` would cause a failing consistency check, for instance, when adding `image/png` contents to an existing `file.pdf`.
+                // This step ensures the file is renamed from `file.pdf` to `file.png`.
+                $targetFileName = pathinfo($fileObjectToReplace->getName(), PATHINFO_FILENAME) . '.' . $uploadedFileExtension;
+                $fileObject = $resourceStorage->replaceAndRenameUploadedFile($fileInfo, $fileObjectToReplace, $targetFileName);
+            } else {
+                $fileObject = $resourceStorage->addUploadedFile($fileInfo, $folder, $fileObjectToReplace->getName(), DuplicationBehavior::REPLACE);
             }
 
             $resultObjects[] = $fileObject;

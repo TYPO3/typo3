@@ -1561,6 +1561,12 @@ parameters:
 			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
 
 		-
+			message: '#^Parameter \#2 \$targetFolder of method TYPO3\\CMS\\Core\\Resource\\ResourceStorage\:\:assureFileUploadPermissions\(\) expects TYPO3\\CMS\\Core\\Resource\\Folder, TYPO3\\CMS\\Core\\Resource\\FolderInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: ../../typo3/sysext/core/Classes/Resource/ResourceStorage.php
+
+		-
 			message: '#^Call to function is_callable\(\) with callable\(\)\: mixed will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 1
