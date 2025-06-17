@@ -971,10 +971,14 @@ class Backend extends Workspaces {
     this.markedRecordsForMassAction = [];
     if (hasRecords) {
       const workspaceActions = document.querySelector(Identifiers.workspaceActions) as HTMLElement;
-      workspaceActions.classList.remove('hidden');
+      if (workspaceActions !== null) {
+        workspaceActions.classList.remove('hidden');
+      }
 
       const chooseMassAction = document.querySelector(Identifiers.chooseMassAction) as HTMLSelectElement;
-      chooseMassAction.disabled = false;
+      if (chooseMassAction !== null) {
+        chooseMassAction.disabled = false;
+      }
     }
     document.dispatchEvent(new CustomEvent('multiRecordSelection:actions:hide'));
   }
