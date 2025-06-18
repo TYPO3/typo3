@@ -32,7 +32,6 @@ import type { Pagination, ResultPagination } from '@typo3/backend/live-search/el
 
 enum Identifiers {
   toolbarItem = '.t3js-topbar-button-search',
-  searchOptionDropdownToggle = '.t3js-search-provider-dropdown-toggle',
 }
 
 interface SearchOption {
@@ -64,6 +63,8 @@ export interface SelectPageEventData {
  * @exports @typo3/backend/toolbar/live-search
  */
 class LiveSearch {
+  private currentSearchRequest: AjaxRequest|null = null;
+
   constructor() {
     DocumentService.ready().then((): void => {
       this.registerEvents();
@@ -122,6 +123,7 @@ class LiveSearch {
 
         new RegularEvent('livesearch:demand-changed', (): void => {
           offsetField.value = '0';
+          searchForm.requestSubmit();
         }).bindTo(liveSearchContainer);
 
         new RegularEvent('livesearch:pagination-selected', (e: CustomEvent<SelectPageEventData>): void => {
@@ -159,23 +161,18 @@ class LiveSearch {
         }).bindTo(searchResultContainer);
 
         new RegularEvent('typo3:live-search:option-invoked', (e: CustomEvent<InvokeOptionEventData>): void => {
-          liveSearchContainer.dispatchEvent(new CustomEvent('livesearch:demand-changed'));
-
           const optionCounterElement = searchForm.querySelector('[data-active-options-counter]') as HTMLElement;
           let count = parseInt(optionCounterElement.dataset.activeOptionsCounter, 10);
           count = e.detail.active ? count + 1 : count - 1;
 
           // Update data attribute only, the visible text content is updated in the submit handler
           optionCounterElement.dataset.activeOptionsCounter = count.toString(10);
-        }).bindTo(liveSearchContainer);
 
-        new RegularEvent('hide.bs.dropdown', (): void => {
-          searchForm.requestSubmit();
-        }).bindTo(modal.querySelector(Identifiers.searchOptionDropdownToggle));
+          liveSearchContainer.dispatchEvent(new CustomEvent('livesearch:demand-changed'));
+        }).bindTo(liveSearchContainer);
 
         new DebounceEvent('input', (): void => {
           liveSearchContainer.dispatchEvent(new CustomEvent('livesearch:demand-changed'));
-          searchForm.requestSubmit();
         }).bindTo(searchField);
 
         new RegularEvent('keydown', this.handleKeyDown).bindTo(searchField);
@@ -231,8 +228,22 @@ class LiveSearch {
       const searchResultContainer = document.querySelector(resultContainerComponentName) as ResultContainer;
       searchResultContainer.loading = true;
 
-      const response: SearchResponse = await (await new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch).post(formData)).raw().json();
-      this.updateSearchResults(response);
+      this.currentSearchRequest?.abort();
+      try {
+        this.currentSearchRequest = new AjaxRequest(TYPO3.settings.ajaxUrls.livesearch);
+        const response = await this.currentSearchRequest.post(formData);
+        const json = await response.raw().json();
+        this.currentSearchRequest = null;
+        this.updateSearchResults(json);
+      } catch (err: unknown) {
+        if (err instanceof DOMException && err.name === 'AbortError') {
+          // Request has been aborted, do not flood the error console
+          return;
+        }
+
+        // Something else happened, throw again
+        throw err;
+      }
     }
   };
 
