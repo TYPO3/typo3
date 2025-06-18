@@ -404,12 +404,12 @@ All the classes you can see above extends from the ``TYPO3\CMS\Form\Domain\Model
        }
    }
 
-If you extend you custom implementation from ``AbstractFormElement`` (and you should do this),
+If you extend your custom implementation from ``AbstractFormElement`` (and you should do this),
 it enables you to override the 'initializeFormElement' method within your custom implementation class.
 If you do not call the parents 'initializeFormElement' then no hook will be thrown.
 
 If your use case for a custom form element implementation means that you only want to initialize you form element
-programmatically (e.g to get databasedata) and no other special things are to do, you might prefer the hook.
+programmatically (e.g to get database data) and no other special things are to do, you might prefer the hook.
 You only need a class which connects to this hook. Then detect the form element you wish to initialize.
 
 
@@ -1354,7 +1354,7 @@ initializeFormElement
 +++++++++++++++++++++
 
 You can connect to this hook and initialize a form element without defining a
-custom implementaion to access the element's ``initializeFormElement`` method.
+custom implementation to access the element's ``initializeFormElement`` method.
 You only need a class which connects to this hook. Then detect the form
 element you wish to initialize. For example, you can use this hook to prefill
 form element data from database tables. Note that this hook will be called
