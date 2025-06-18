@@ -3721,12 +3721,6 @@ parameters:
 			path: ../../typo3/sysext/form/Classes/Domain/Model/FormDefinition.php
 
 		-
-			message: '#^Call to function is_string\(\) with string will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/form/Classes/Domain/Model/FormElements/AbstractFormElement.php
-
-		-
 			message: '#^Call to an undefined method TYPO3\\CMS\\Form\\Domain\\Model\\FormElements\\FormElementInterface\:\:setOptions\(\)\.$#'
 			identifier: method.notFound
 			count: 1
