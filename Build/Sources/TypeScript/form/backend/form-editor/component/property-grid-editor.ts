@@ -69,8 +69,8 @@ export class PropertyGridEditor extends LitElement {
       this.activeElementRef = null;
     }
     if (changedProperties.has('entries')) {
-      const oldEntries = changedProperties.get('entries') as PropertyGridEditorEntry[] | null;
-      if (JSON.stringify(oldEntries) !== JSON.stringify(this.entries)) {
+      const oldEntries = changedProperties.get('entries') as PropertyGridEditorEntry[] | undefined;
+      if (oldEntries !== undefined && JSON.stringify(oldEntries) !== JSON.stringify(this.entries)) {
         this.dispatchEvent(new PropertyGridEditorUpdateEvent(this.entries));
       }
     }
