@@ -44,7 +44,7 @@ class DeferredBackendImageProcessor implements ProcessorInterface
             && $task->getSourceFile()->getProperty('width') > 0
             && $task->getSourceFile()->getProperty('height') > 0
             // Let the local image processor update the properties in case the target file exists already
-            && !$task->getSourceFile()->getStorage()->getProcessingFolder()->hasFile($task->getTargetFileName());
+            && !$task->getSourceFile()->getStorage()->getProcessingFolder($task->getSourceFile())->hasFile($task->getTargetFileName());
     }
 
     public function processTask(TaskInterface $task): void
