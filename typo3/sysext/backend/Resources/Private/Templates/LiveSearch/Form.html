@@ -34,7 +34,7 @@
             <input type="search" name="query" class="form-control" placeholder="{f:translate(key: 'LLL:EXT:core/Resources/Private/Language/locallang_misc.xlf:liveSearch_search')}" value="{searchDemand.query}" autocomplete="off">
         </div>
         <div class="form-text">
-            <core:icon identifier="actions-lightbulb-on" size="small" /> {f:translate(key: '{hint}')}
+            <typo3-backend-live-search-hint hint="{hint}"></typo3-backend-live-search-hint>
         </div>
         <input type="hidden" name="offset" value="{searchDemand.offset}">
         <input type="hidden" name="pageId" value="{searchDemand.pageId}">

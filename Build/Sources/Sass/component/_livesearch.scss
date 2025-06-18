@@ -24,6 +24,16 @@ typo3-backend-live-search {
     }
 }
 
+typo3-backend-live-search-hint {
+    display: flex;
+    gap: 1ch;
+
+    p {
+        // @todo: this can be removed once the markdown module can render inline texts (excluding the wrapping <p> tag)
+        margin-bottom: 0;
+    }
+}
+
 typo3-backend-live-search-result-pagination {
     nav {
         padding: var(--typo3-livesearch-padding);

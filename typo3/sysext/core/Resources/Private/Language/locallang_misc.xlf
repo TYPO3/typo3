@@ -427,13 +427,13 @@
 				<source>Search in certain tables</source>
 			</trans-unit>
 			<trans-unit id="liveSearch_helpDescriptionPages">
-				<source>#page:Home will search for all pages with the title "Home"</source>
+				<source>`#page:Home` will search for all pages with the title "Home"</source>
 			</trans-unit>
 			<trans-unit id="liveSearch_helpDescriptionContent">
-				<source>#content:Professional will search for all content elements containing the term "Professional"</source>
+				<source>`#content:Professional` will search for all content elements containing the term "Professional"</source>
 			</trans-unit>
 			<trans-unit id="liveSearch_help.shortcutOpen">
-				<source>You can open the live search by pressing the Ctrl+K or Cmd+K keystroke</source>
+				<source><![CDATA[You can open the live search by pressing the <kbd><kbd>Ctrl</kbd> + <kbd>K</kbd></kbd> or <kbd><kbd>Cmd</kbd> + <kbd>K</kbd></kbd> keystroke]]></source>
 			</trans-unit>
 			<trans-unit id="liveSearch_search">
 				<source>Search</source>

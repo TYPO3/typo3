@@ -41,7 +41,7 @@ const profiles: Record<ProfileType, ProfileConfig> = {
       pedantic: false,
     },
     dompurify: {
-      ALLOWED_TAGS: ['a', 'blockquote', 'br', 'code', 'li', 'p', 'pre', 'strong', 'ul', 'ol'],
+      ALLOWED_TAGS: ['a', 'blockquote', 'br', 'code', 'kbd', 'li', 'p', 'pre', 'strong', 'ul', 'ol'],
       ALLOWED_ATTR: ['href', 'target', 'title', 'role'],
     },
   },

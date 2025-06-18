@@ -3272,6 +3272,8 @@ typo3-backend-form-selecttree-toolbar{display:block}
 typo3-backend-live-search{--typo3-livesearch-padding:var(--typo3-modal-padding);--typo3-livesearch-border-width:var(--typo3-component-border-width);--typo3-livesearch-border-color:var(--typo3-component-border-color);display:flex;flex-direction:column;inset:0;position:absolute}
 typo3-backend-live-search .search-option-badge{inset-inline-start:100%;isolation:isolate;position:absolute;top:0!important;transform:translate(calc(-50%*var(--typo3-position-modifier)),-50%)}
 typo3-backend-live-search form{border-bottom:var(--typo3-livesearch-border-width) solid var(--typo3-livesearch-border-color);padding:var(--typo3-livesearch-padding)}
+typo3-backend-live-search-hint{display:flex;gap:1ch}
+typo3-backend-live-search-hint p{margin-bottom:0}
 typo3-backend-live-search-result-pagination nav{border-top:var(--typo3-livesearch-border-width) solid var(--typo3-livesearch-border-color);padding:var(--typo3-livesearch-padding)}
 typo3-backend-live-search-result-pagination nav>:first-child{margin-top:0}
 typo3-backend-live-search-result-pagination nav>:last-child{margin-bottom:0}
