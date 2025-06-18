@@ -62,8 +62,8 @@ abstract class AbstractFormElement extends AbstractRenderable implements FormEle
      */
     public function __construct(string $identifier, string $type)
     {
-        if (!is_string($identifier) || strlen($identifier) === 0) {
-            throw new IdentifierNotValidException('The given identifier was not a string or the string was empty.', 1477082502);
+        if (strlen($identifier) === 0) {
+            throw new IdentifierNotValidException('The given identifier string is empty.', 1477082502);
         }
         $this->identifier = $identifier;
         $this->type = $type;
