@@ -26,6 +26,7 @@ use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Information\Typo3Information;
 use TYPO3\CMS\Core\Page\PageRenderer;
@@ -49,6 +50,7 @@ readonly class PreviewController
         protected PageRenderer $pageRenderer,
         protected UriBuilder $uriBuilder,
         protected SiteFinder $siteFinder,
+        protected Context $context,
         protected ModuleTemplateFactory $moduleTemplateFactory
     ) {}
 
@@ -102,7 +104,7 @@ readonly class PreviewController
             $rootline = BackendUtility::BEgetRootLine($pageUid);
             $queryParametersLive = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages(
                 $page,
-                clone GeneralUtility::makeInstance(Context::class),
+                clone $this->context,
                 $rootline
             );
             if (!$this->workspaceService->isNewPage($pageUid)) {
@@ -111,7 +113,10 @@ readonly class PreviewController
                     $queryParametersLive,
                     ['ADMCMD_prev' => 'LIVE']
                 );
-                $liveUrl = $this->generateUrl($site, $pageUid, $parameters);
+                // temporarily set workspace aspect to live (0) to generate the live URL
+                $liveWorkspaceContext = clone $this->context;
+                $liveWorkspaceContext->setAspect('workspace', new WorkspaceAspect(0));
+                $liveUrl = $this->generateUrl($site, $pageUid, $parameters, $liveWorkspaceContext);
             }
 
             // Build URL for draft version of page
@@ -119,7 +124,7 @@ readonly class PreviewController
             $rootline = BackendUtility::BEgetRootLine($pageUid, '', true);
             $queryParametersDraft = PreviewUriBuilder::getAdditionalQueryParametersForAccessRestrictedPages(
                 $page,
-                clone GeneralUtility::makeInstance(Context::class),
+                clone $this->context,
                 $rootline
             );
             // Edge case 1: live version is protected, draft version isn't
@@ -158,8 +163,8 @@ readonly class PreviewController
         return $GLOBALS['BE_USER'];
     }
 
-    protected function generateUrl(Site $site, int $pageUid, array $parameters): string
+    protected function generateUrl(Site $site, int $pageUid, array $parameters, ?Context $context = null): string
     {
-        return (string)$site->getRouter()->generateUri($pageUid, $parameters);
+        return (string)$site->getRouter($context ?? $this->context)->generateUri($pageUid, $parameters);
     }
 }
