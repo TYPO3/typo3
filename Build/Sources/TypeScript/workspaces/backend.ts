@@ -30,7 +30,6 @@ import { selector } from '@typo3/core/literals';
 import IconHelper from '@typo3/workspaces/utility/icon-helper';
 import DeferredAction from '@typo3/backend/action-button/deferred-action';
 import type { PaginationElement } from '@typo3/backend/element/pagination';
-import { RecordTableElement } from '@typo3/workspaces/renderable/record-table';
 
 enum Identifiers {
   searchForm = '#workspace-settings-form',
@@ -487,7 +486,7 @@ class Backend extends Workspaces {
       noContentsContainer.style.display = 'none';
     }
 
-    const workspacesRecordTable: RecordTableElement = document.querySelector('typo3-workspaces-record-table');
+    const workspacesRecordTable = document.querySelector('typo3-workspaces-record-table');
     workspacesRecordTable.results = result.data;
   }
 
