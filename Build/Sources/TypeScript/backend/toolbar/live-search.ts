@@ -15,6 +15,7 @@ import { lll } from '@typo3/core/lit-helper';
 import Modal from '../modal';
 import '@typo3/backend/element/icon-element';
 import '@typo3/backend/input/clearable';
+import '../live-search/element/hint';
 import '../live-search/element/result/result-pagination';
 import '../live-search/element/search-option-item';
 import '../live-search/live-search-shortcut';
