@@ -96,6 +96,42 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     #[Test]
+    public function messagesAreResetOnEachMigrateExecution(): void
+    {
+        $input1 = [
+            'aTable' => [
+                'types' => [
+                    'aType' => [
+                        'subtype_value_field' => 'subtype_value_field',
+                    ],
+                ],
+            ],
+        ];
+        $input2 = [
+            'bTable' => [
+                'types' => [
+                    'bType' => [
+                        'subtype_value_field' => 'subtype_value_field',
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $subject->migrate($input1);
+        $messages = $subject->getMessages();
+        // First run: Only $input1 output message contained.
+        self::assertCount(1, $messages);
+        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[0]);
+
+        // Second run: Messages from $input1 should be reset.
+        $subject->migrate($input2);
+        $messages = $subject->getMessages();
+        self::assertCount(1, $messages);
+        self::assertStringContainsString('The TCA record type \'bType\' of table \'bTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[0]);
+    }
+
+    #[Test]
     public function migrateReturnsGivenArrayUnchangedIfNoMigrationNeeded(): void
     {
         $input = $expected = [

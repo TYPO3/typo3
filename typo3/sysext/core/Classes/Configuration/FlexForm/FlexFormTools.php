@@ -633,6 +633,7 @@ readonly class FlexFormTools
             ],
         ];
         $migratedTca = $this->tcaMigration->migrate($dummyTca);
+        // Messages are reset on each `migrate()` execution
         $messages = $this->tcaMigration->getMessages();
         if (!empty($messages)) {
             $context = 'FlexFormTools did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'

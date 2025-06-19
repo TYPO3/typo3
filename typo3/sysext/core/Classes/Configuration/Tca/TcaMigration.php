@@ -33,7 +33,10 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  */
 class TcaMigration
 {
-    /** Accumulate migration messages */
+    /**
+     * Accumulate migration messages; reset on each migration() call so
+     * that this service can be used in DI despite carrying state.
+     */
     protected array $messages = [];
 
     /**
@@ -48,6 +51,7 @@ class TcaMigration
      */
     public function migrate(array $tca): array
     {
+        $this->messages = [];
         $this->validateTcaType($tca);
 
         $tca = $this->migrateColumnsConfig($tca);
@@ -100,6 +104,7 @@ class TcaMigration
 
     /**
      * Get messages of migrated fields. Can be used for deprecation messages after migrate() was called.
+     * Messages will be reset on each `migrate()` execution.
      *
      * @return array Migration messages
      */
