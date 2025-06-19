@@ -36,14 +36,6 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
     protected array $options = [];
     protected \SplObjectStorage $validators;
     protected ?ServerRequestInterface $request = null;
-
-    /**
-     * @todo: Properties {@see self::$validators} and {@see self::$validatedInstancesContainer} are not properly
-     *        initialized in this class because introducing a constructor is considered possibly breaking.
-     *        However, it is unlikely that anyone extends this validator. Hence, it should be marked @internal in
-     *        v13 and get a constructor. Both framework validators that extend this class, {@see ConjunctionValidator}
-     *        and {@see DisjunctionValidator} do have a constructor. Their constructors need to be removed again then.
-     */
     protected \SplObjectStorage $validatedInstancesContainer;
 
     public function setOptions(array $options): void
