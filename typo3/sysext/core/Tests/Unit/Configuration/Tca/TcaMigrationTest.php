@@ -80,6 +80,42 @@ final class TcaMigrationTest extends UnitTestCase
     }
 
     #[Test]
+    public function messagesAreResetOnEachMigrateExecution(): void
+    {
+        $input1 = [
+            'aTable' => [
+                'types' => [
+                    'aType' => [
+                        'subtype_value_field' => 'subtype_value_field',
+                    ],
+                ],
+            ],
+        ];
+        $input2 = [
+            'bTable' => [
+                'types' => [
+                    'bType' => [
+                        'subtype_value_field' => 'subtype_value_field',
+                    ],
+                ],
+            ],
+        ];
+
+        $subject = new TcaMigration();
+        $subject->migrate($input1);
+        $messages = $subject->getMessages();
+        // First run: Only $input1 output message contained.
+        self::assertCount(1, $messages);
+        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' defines the field \'subtype_value_field\' as \'subtype_value_field\', which is deprecated since TYPO3 v13 and will stop working in TYPO3 v14', $messages[0]);
+
+        // Second run: Messages from $input1 should be reset.
+        $subject->migrate($input2);
+        $messages = $subject->getMessages();
+        self::assertCount(1, $messages);
+        self::assertStringContainsString('The TCA record type \'bType\' of table \'bTable\' defines the field \'subtype_value_field\' as \'subtype_value_field\', which is deprecated since TYPO3 v13 and will stop working in TYPO3 v14', $messages[0]);
+    }
+
+    #[Test]
     public function migrateReturnsGivenArrayUnchangedIfNoMigrationNeeded(): void
     {
         $input = $expected = [
