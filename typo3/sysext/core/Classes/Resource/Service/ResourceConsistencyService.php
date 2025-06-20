@@ -93,9 +93,15 @@ final class ResourceConsistencyService
         $messages = [];
         // skip mime-type checks for empty files
         if (!$isEmptyFile && !$this->areFileExtensionAndMimeTypeConsistent($fileExtension, $mimeType)) {
-            $arguments = [$mimeType, $fileExtension];
+            $expectedTypes = $this->mimeTypeDetector->getMimeTypesForFileExtension($fileExtension);
+            if ($expectedTypes === []) {
+                $listOfExpectedTypes = 'N/A';
+            } else {
+                $listOfExpectedTypes = implode(', ', $expectedTypes);
+            }
+            $arguments = [$mimeType, $fileExtension, $listOfExpectedTypes];
             $messages[] = new ResultMessage(
-                sprintf('Mime-type "%s" not allowed for file extension "%s"', ...$arguments),
+                sprintf('Mime-type "%s" not allowed for file extension "%s" (expected: %s)', ...$arguments),
                 new LabelBag(
                     'LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:FileUtility.MimeTypeNotAllowedForFileExtension',
                     ...$arguments
