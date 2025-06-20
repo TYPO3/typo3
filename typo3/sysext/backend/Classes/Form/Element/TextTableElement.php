@@ -230,8 +230,8 @@ class TextTableElement extends AbstractFormElement
     protected function getTableWizard(string $dataId): string
     {
         $row = $this->data['databaseRow'];
-        $delimiter = ($row['table_delimiter'][0] ?? false) ? chr((int)$row['table_delimiter'][0]) : '|';
-        $enclosure = ($row['table_enclosure'][0] ?? false) ? chr((int)$row['table_enclosure'][0]) : '';
+        $delimiter = (is_array($row['table_delimiter'] ?? '') && ($row['table_delimiter'][0] ?? false)) ? chr((int)$row['table_delimiter'][0]) : '|';
+        $enclosure = (is_array($row['table_enclosure'] ?? '') && ($row['table_enclosure'][0] ?? false)) ? chr((int)$row['table_enclosure'][0]) : '';
 
         return sprintf(
             '<typo3-formengine-table-wizard %s></typo3-formengine-table-wizard>',
