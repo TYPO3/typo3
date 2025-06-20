@@ -958,7 +958,7 @@ final class MimeTypeCollection
         'text/troff' => ['t', 'tr', 'roff', 'man', 'me', 'ms'],
         'text/turtle' => ['ttl'],
         'text/uri-list' => ['uri', 'uris', 'urls'],
-        'text/vcard' => ['vcard'],
+        'text/vcard' => ['vcard', 'vcf'],
         'text/vnd.curl' => ['curl'],
         'text/vnd.curl.dcurl' => ['dcurl'],
         'text/vnd.curl.mcurl' => ['mcurl'],

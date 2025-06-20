@@ -34,6 +34,15 @@ if (!isset($mimeTypeMapping['application/yaml'])) {
     $mimeTypeMapping['application/yaml'] = ['yaml', 'yml'];
 }
 
+// Hotfix(es) for remapping cases. "mime-db" package might sometimes prefer "Apache" sources instead of
+// "IANA" (RFC). PHP's MIME functionality usually operates on the latter. This should only be added
+// for temporary messages; upstream fixes are preferred.
+
+// @todo Remove when/if https://github.com/jshttp/mime-db/issues/388 gets resolved
+// Note, we now have "text/vcard" AND "text/x-vcard" in our structure, this is intentional to not need
+// migration wizards for compatibility (for now)
+$mimeTypeMapping['text/vcard'] = ['vcard', 'vcf'];
+
 ksort($mimeTypeMapping);
 
 foreach ($mimeTypeMapping as $mimeType => $extensionInfo) {
