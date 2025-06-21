@@ -14,13 +14,13 @@ These two references can be found in this table stored against this
 unique data record (`tt_content` uid).
 
 When you want to perform a TYPO3 update it is recommended to update these relations.
-See :ref:`Update Reference Index <t3upgrade:update_reference_index>`.
+See `Update Reference Index <https://docs.typo3.org/permalink/t3coreapi:update-reference-index>`_.
 
-To perform an update you can use the TYPO3 Console command shown here
-:doc:`With command line (recommended) <t3upgrade:Major/PreupgradeTasks/Index#with-command-line-recommended>`.
+To perform an update you can use the TYPO3 Console command shown in that section.
 
-TYPO3 installations with a small number of records this module can be used
-to :ref:`check or update the reference index <t3upgrade:update_reference_index>`.
+TYPO3 installations with a small number of records can use the module
+:guilabel:`System > DB check` and use the :guilabel:`Manage Reference Index`
+function.
 
 On TYPO3 installations with a large number of records and many relations between
 those the maximum run time of PHP will be reached and the scripts therefore
