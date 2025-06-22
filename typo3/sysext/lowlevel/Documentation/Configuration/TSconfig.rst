@@ -1,13 +1,9 @@
-.. include:: /Includes.rst.txt
+:navigation-title: TSconfig
+..  include:: /Includes.rst.txt
+..  _configuration-tsconfig:
+..  _configuration-full-search:
 
-.. _configuration-tsconfig:
-
-========
-TSconfig
-========
-
-.. _configuration-full-search:
-
+=========================================
 User TSconfig of the module "Full Search"
 =========================================
 
@@ -18,11 +14,10 @@ can be configured with the following
 See also the chapter of :ref:`Setting user TSconfig
 <t3tsref:setting-page-tsconfig>`.
 
-.. include:: /Images/AutomaticScreenshots/Modules/DB_Check_Advanced_query_tt_content.rst.txt
+..  include:: /Images/AutomaticScreenshots/Modules/DB_Check_Advanced_query_tt_content.rst.txt
 
-.. confval:: disableStoreControl
-
-    :Path: mod.dbint
+..  confval:: disableStoreControl
+    :Path: mod.dbint.disableStoreControl
     :type: bool
     :Default: false
 
@@ -30,7 +25,7 @@ See also the chapter of :ref:`Setting user TSconfig
 
     Disable the display of the load and save configuration controls:
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {
@@ -38,9 +33,8 @@ See also the chapter of :ref:`Setting user TSconfig
             disableSelectATable = 0
         }
 
-.. confval:: disableShowSQLQuery
-
-    :Path: mod.dbint
+..  confval:: disableShowSQLQuery
+    :Path: mod.dbint.disableShowSQLQuery
     :type: bool
     :Default: false
 
@@ -50,16 +44,15 @@ See also the chapter of :ref:`Setting user TSconfig
     If this option is set to true the raw SQL query of the search is
     not displayed in either case:
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {
             disableShowSQLQuery = 1
         }
 
-.. confval:: disableSelectATable
-
-    :Path: mod.dbint
+..  confval:: disableSelectATable
+    :Path: mod.dbint.disableSelectATable
     :type: bool
     :Default: false
 
@@ -71,7 +64,7 @@ See also the chapter of :ref:`Setting user TSconfig
     :guilabel:`System > DB Check > Full Search > Advanced query` cannot be used
     at all by the affected administrator.
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {
@@ -79,9 +72,8 @@ See also the chapter of :ref:`Setting user TSconfig
             disableSelectATable = 1
         }
 
-.. confval:: disableSelectFields
-
-    :Path: mod.dbint
+..  confval:: disableSelectFields
+    :Path: mod.dbint.disableSelectFields
     :type: bool
     :Default: false
 
@@ -93,69 +85,65 @@ See also the chapter of :ref:`Setting user TSconfig
     default fields or the fields specified by a saved query and cannot change
     them.
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {
             disableSelectFields = 1
         }
 
-.. confval:: disableMakeQuery
-
-    :Path: mod.dbint
+..  confval:: disableMakeQuery
+    :Path: mod.dbint.disableMakeQuery
     :type: bool
     :Default: false
 
     Disables the :guilabel:`Make Query` section. Results cannot be filtered
     by fields then, unless saved queries are provided.
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {
             disableMakeQuery = 1
         }
 
-.. confval:: disableGroupBy
-
-    :Path: mod.dbint
+..  confval:: disableGroupBy
+    :Path: mod.dbint.disableGroupBy
     :type: bool
     :Default: false
 
     Disables the group by functionality.
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {
             disableGroupBy = 1
         }
 
-.. confval:: disableOrderBy
-
-    :Path: mod.dbint
+..  confval:: disableOrderBy
+    :Path: mod.dbint.disableOrderBy
     :type: bool
     :Default: false
 
     Disables the order by functionality.
 
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {
             disableOrderBy = 1
         }
 
-.. confval:: disableLimit
-
-    :Path: mod.dbint
+..  confval:: disableLimit
+    :Path: mod.dbint.disableLimit
     :type: bool
     :Default: false
 
     Disables changing the limit. The default limit is 100 records.
 
-    .. code-block:: typoscript
+    ..  code-block:: typoscript
         :caption: User TSconfig
 
         mod.dbint {

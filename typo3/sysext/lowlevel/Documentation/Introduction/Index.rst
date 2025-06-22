@@ -1,10 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Introduction
 
-.. _introduction:
+..  include:: /Includes.rst.txt
+..  _introduction:
 
-============
-Introduction
-============
+================================================================
+EXT:lowlevel: Modules and tools to handle internal lowlevel data
+================================================================
 
 For various reasons your TYPO3 installation may over time accumulate data with
 integrity problems or data you wish to delete completely. For instance, why keep
