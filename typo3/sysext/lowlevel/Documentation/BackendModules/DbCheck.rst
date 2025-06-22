@@ -1,14 +1,15 @@
-.. include:: /Includes.rst.txt
+:navigation-title: DB Check
 
-.. _module-db-check:
+..  include:: /Includes.rst.txt
+..  _module-db-check:
 
-=========================
-DB Check
-=========================
+========================
+Module System > DB Check
+========================
 
 Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
 
-.. include:: /Images/AutomaticScreenshots/Modules/DB_Check.rst.txt
+..  include:: /Images/AutomaticScreenshots/Modules/DB_Check.rst.txt
 
 ..  card-grid::
     :columns: 1
@@ -39,7 +40,7 @@ Access this module in the TYPO3 backend under :guilabel:`System > DB Check`.
         Can be used on smaller installations to check or update the
         reference index.
 
-.. toctree::
+..  toctree::
     :hidden:
     :titlesonly:
 

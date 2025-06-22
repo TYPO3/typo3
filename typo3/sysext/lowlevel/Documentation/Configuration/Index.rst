@@ -1,10 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Configuration
 
-.. _configuration:
+..  include:: /Includes.rst.txt
+..  _configuration:
 
-=============
-Configuration
-=============
+=========================================
+Configuration of the EXT:lowlevel modules
+=========================================
 
 ..  card-grid::
     :columns: 1
@@ -17,7 +18,7 @@ Configuration
 
         Configures display and function of the backend modules.
 
-.. toctree::
+..  toctree::
     :hidden:
     :titlesonly:
 
