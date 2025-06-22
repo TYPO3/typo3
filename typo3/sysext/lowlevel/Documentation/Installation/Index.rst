@@ -1,15 +1,19 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Installation
 
-.. _installation:
+..  include:: /Includes.rst.txt
+..  _installation:
 
-============
-Installation
-============
+=========================================
+Installation of system extension lowlevel
+=========================================
 
-This extension is part of the TYPO3 Core, but not installed by default.
+The extension :composer:`typo3/cms-lowlevel` is part of the TYPO3 Core,
+but not installed by default.
 
 ..  contents:: Table of contents
     :local:
+
+..  _installation-composer:
 
 Installation with Composer
 ==========================
@@ -35,11 +39,13 @@ the extension:
 
 The given version depends on the version of the TYPO3 Core you are using.
 
-Installation without Composer
+..  _installation-classic:
+
+Installation in classic mode
 =============================
 
-In an installation without Composer, the extension is already shipped but might
-not be activated yet. Activate it as follows:
+In a classic-mode installation (without Composer), the extension is already
+shipped but might not be activated yet. Activate it as follows:
 
 #.  In the backend, navigate to the :guilabel:`Admin Tools > Extensions`
     module.

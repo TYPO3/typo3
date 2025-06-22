@@ -1,10 +1,11 @@
-.. include:: /Includes.rst.txt
+:navigation-title: Backend Modules
 
-.. _backend-modules:
+..  include:: /Includes.rst.txt
+..  _backend-modules:
 
-===============
-Backend modules
-===============
+========================================
+Backend modules provided by EXT:lowlevel
+========================================
 
 The Lowlevel system extension provides two backend modules:
 
@@ -26,7 +27,7 @@ The Lowlevel system extension provides two backend modules:
         module can be used to debug the final output. Configuration values
         cannot be changed in this module.
 
-.. toctree::
+..  toctree::
     :hidden:
     :titlesonly:
 
