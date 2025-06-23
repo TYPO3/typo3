@@ -242,6 +242,19 @@ runPlaywright() {
     fi
 }
 
+executeRstRendering() {
+    local systemExtensionName="$1"
+    systemExtensionFolder="typo3/sysext/${systemExtensionName}"
+    if [[ ! -d "${systemExtensionFolder}/Documentation" ]]; then
+        return 1
+    fi
+    echo "Processing RST directory: ${systemExtensionFolder}/Documentation"
+    ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-rst-rendering-${systemExtensionName}-${SUFFIX} -v "${CORE_ROOT}/${systemExtensionFolder}:/project" ${IMAGE_RSTRENDERING} -w /project --fail-on-log --fail-on-error --no-progress --minimal-test Documentation
+    local exitCode=$?
+    echo "Render result for ${systemExtensionFolder}: ${exitCode}"
+    return ${exitCode}
+}
+
 loadHelp() {
     # Load help text into $HELP
     read -r -d '' HELP <<EOF
@@ -275,6 +288,8 @@ Options:
             - checkIsoDatabase: Verify "updateIsoDatabase.php" does not change anything
             - checkPermissions: test some core files for correct executable bits
             - checkRst: test .rst files for integrity
+            - checkRstRenderingAll: Test all system extension .rst files for rendering errors
+            - checkRstRenderingSingle: Test specified system extension .rst files for rendering errors
             - clean: clean up build, cache and testing related files and folders
             - cleanBuild: clean up build related files and folders
             - cleanCache: clean up cache related files and folders
@@ -609,6 +624,8 @@ IMAGE_MEMCACHED="docker.io/memcached:1.5-alpine"
 IMAGE_MARIADB="docker.io/mariadb:${DBMS_VERSION}"
 IMAGE_MYSQL="docker.io/mysql:${DBMS_VERSION}"
 IMAGE_POSTGRES="docker.io/postgres:${DBMS_VERSION}-alpine"
+# Not a bug; render-guides has no "1.x" release yet.
+IMAGE_RSTRENDERING="ghcr.io/typo3-documentation/render-guides:0"
 
 # Remove handled options and leaving the rest in the line, so it can be passed raw to commands
 shift $((OPTIND - 1))
@@ -966,6 +983,37 @@ case ${TEST_SUITE} in
         ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-rst-${SUFFIX} ${IMAGE_PHP} php -dxdebug.mode=off Build/Scripts/validateRstFiles.php
         SUITE_EXIT_CODE=$?
         ;;
+    checkRstRenderingAll)
+        SUITE_EXIT_CODE=0
+        echo "Scanning typo3/sysext for directories with Documentation..."
+        for systemExtensionFolder in typo3/sysext/*/Documentation; do
+            systemExtensionName="${systemExtensionFolder%/Documentation}"
+            systemExtensionName=$(basename "${systemExtensionName}")
+            executeRstRendering "${systemExtensionName}"
+            TMP_SUITE_EXIT_CODE=$?
+            if [ ${TMP_SUITE_EXIT_CODE} -ne 0 ]; then
+                SUITE_EXIT_CODE=${TMP_SUITE_EXIT_CODE}
+            fi
+        done
+        ;;
+    checkRstRenderingSingle)
+        systemExtensionKey="${1}"
+        if [ -n "${systemExtensionKey}" ]; then
+            if [[ ! -d "typo3/sysext/${systemExtensionKey}" ]]; then
+                echo "Error: Invalid system extension key provided: \"${systemExtensionKey}\""
+                SUITE_EXIT_CODE=1
+            elif [[ ! -d "typo3/sysext/${systemExtensionKey}/Documentation" ]]; then
+                echo "Error: Valid system extension \"${systemExtensionKey}\" does not contain a \"Documentation\" folder"
+                SUITE_EXIT_CODE=1
+            else
+                executeRstRendering "${systemExtensionKey}"
+                SUITE_EXIT_CODE=$?
+            fi
+        else
+            echo "Error: No system extension key provided as first argument"
+            SUITE_EXIT_CODE=1
+        fi
+        ;;
     clean)
         cleanBuildFiles
         cleanCacheFiles
@@ -1129,6 +1177,14 @@ case ${TEST_SUITE} in
         # remove "dangling" typo3/core-testing-* images (those tagged as <none>)
         echo "> remove \"dangling\" ghcr.io/typo3/core-testing-* images (those tagged as <none>)"
         ${CONTAINER_BIN} images --filter "reference=ghcr.io/typo3/core-testing-*" --filter "dangling=true" --format "{{.ID}}" | xargs -I {} ${CONTAINER_BIN} rmi -f {}
+        echo ""
+        # pull ghcr.io/typo3-documentation/render-guides versions of those ones that exist locally
+        echo "> pull ghcr.io/typo3-documentation/render-guides versions of those ones that exist locally"
+        ${CONTAINER_BIN} images "ghcr.io/typo3-documentation/render-guides" --format "{{.Repository}}:{{.Tag}}" | xargs -I {} ${CONTAINER_BIN} pull {}
+        echo ""
+        # remove "dangling" ghcr.io/typo3-documentation/render-guides* images (those tagged as <none>)
+        echo "> remove \"dangling\" ghcr.io/typo3-documentation/render-guides images (those tagged as <none>)"
+        ${CONTAINER_BIN} images --filter "reference=ghcr.io/typo3-documentation/render-guides" --filter "dangling=true" --format "{{.ID}}" | xargs -I {} ${CONTAINER_BIN} rmi -f {}
         echo ""
         ;;
     *)
