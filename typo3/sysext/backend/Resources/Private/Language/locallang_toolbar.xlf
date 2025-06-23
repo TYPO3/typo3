@@ -76,7 +76,13 @@ Have a nice day.</source>
 			<trans-unit id="toolbarItems.sysinfo.applicationcontext">
 				<source>Application Context</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.composerMode">
+			<trans-unit id="toolbarItems.sysinfo.installationMethod">
+				<source>Installation Method</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.installationMethod.classic">
+				<source>Classic mode</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.installationMethod.composer">
 				<source>Composer mode</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.sysinfo.database">
