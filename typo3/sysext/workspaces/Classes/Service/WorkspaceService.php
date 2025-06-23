@@ -892,10 +892,6 @@ class WorkspaceService implements SingletonInterface
 
     /**
      * Determines whether a page has workspace versions.
-     *
-     * @param int $workspaceId
-     * @param int $pageId
-     * @return bool
      */
     public function hasPageRecordVersions(int $workspaceId, int $pageId): bool
     {
@@ -926,38 +922,6 @@ class WorkspaceService implements SingletonInterface
     }
 
     /**
-     * Gets all pages that have workspace versions per table.
-     *
-     * Result:
-     * [
-     *   'sys_template' => [],
-     *   'tt_content' => [
-     *     1 => true,
-     *     11 => true,
-     *     13 => true,
-     *     15 => true
-     *   ],
-     *   'tx_something => [
-     *     15 => true,
-     *     11 => true,
-     *     21 => true
-     *   ],
-     * ]
-     */
-    public function getPagesWithVersionsInTable(int $workspaceId): array
-    {
-        foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
-            if ($tableName === 'pages' || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                continue;
-            }
-
-            $this->fetchPagesWithVersionsInTable($workspaceId, $tableName);
-        }
-
-        return $this->pagesWithVersionsInTable[$workspaceId];
-    }
-
-    /**
      * Gets all pages that have workspace versions in a particular table.
      *
      * Result:
@@ -970,7 +934,7 @@ class WorkspaceService implements SingletonInterface
      */
     protected function fetchPagesWithVersionsInTable(int $workspaceId, string $tableName): array
     {
-        if ((int)$workspaceId === 0) {
+        if ($workspaceId === 0) {
             return [];
         }
 
