@@ -986,29 +986,11 @@ class WorkspaceService implements SingletonInterface
                 ->removeAll()
                 ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-            // Fetch all versioned record within a workspace
+            // Fetch pids of all versioned record within given workspace of given table
             $result = $queryBuilder
                 ->select('pid')
                 ->from($tableName)
-                ->where(
-                    $queryBuilder->expr()->or(
-                        $queryBuilder->expr()->eq(
-                            't3ver_state',
-                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->gt(
-                            't3ver_oid',
-                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                        ),
-                    ),
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter(
-                            $workspaceId,
-                            Connection::PARAM_INT
-                        )
-                    )
-                )
+                ->where($queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)))
                 ->groupBy('pid')
                 ->executeQuery();
 
