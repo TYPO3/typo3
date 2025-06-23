@@ -175,9 +175,7 @@ final readonly class WorkspacesAjaxController
 
     private function discardSingleRecord(string $table, int $uid): array
     {
-        $cmd[$table][$uid]['version'] = [
-            'action' => 'clearWSID',
-        ];
+        $cmd[$table][$uid]['discard'] = true;
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
         $dataHandler->start([], $cmd);
         $dataHandler->process_cmdmap();
@@ -218,9 +216,7 @@ final readonly class WorkspacesAjaxController
             }
         } elseif ($parameter->action === 'discard') {
             foreach ($parameter->selection as $record) {
-                $commands[$record->table][$record->versionId]['version'] = [
-                    'action' => 'clearWSID',
-                ];
+                $commands[$record->table][$record->versionId]['discard'] = true;
             }
         }
         if (empty($commands)) {
@@ -442,7 +438,7 @@ final readonly class WorkspacesAjaxController
         $workspaceItemsArray = $this->workspaceService->selectVersionsInWorkspace($currentWorkspace, -99, $pageId, 0, 'tables_modify');
         foreach ($workspaceItemsArray as $tableName => $items) {
             foreach ($items as $item) {
-                $cmdMapArray[$tableName][$item['uid']]['version']['action'] = 'clearWSID';
+                $cmdMapArray[$tableName][$item['uid']]['discard'] = true;
             }
         }
         $dataHandler = GeneralUtility::makeInstance(DataHandler::class);

@@ -3360,11 +3360,15 @@ class DataHandler
                             case 'undelete':
                                 $this->undeleteRecord($table, $id);
                                 break;
+                            case 'discard':
+                                $this->discard((string)$table, (int)$id);
+                                break;
                             case 'version':
                                 $action = $value['action'] ?? null;
                                 if ($action === 'new') {
                                     $this->versionizeRecord($table, $id, $value['label'] ?? null);
                                 } elseif ($value['action'] === 'clearWSID' || $value['action'] === 'flush') {
+                                    // @todo: This can be removed once testing framework is not using 'clearWSID' and 'flush' anymore
                                     $this->discard($table, $id);
                                 }
                                 break;

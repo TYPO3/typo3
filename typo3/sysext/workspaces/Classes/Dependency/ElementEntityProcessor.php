@@ -136,7 +136,7 @@ readonly class ElementEntityProcessor
 
         $deleteFieldName = $schema->hasCapability(TcaSchemaCapability::SoftDelete) ? $schema->getCapability(TcaSchemaCapability::SoftDelete)->getFieldName() : null;
         // If version is on live workspace, but an "offline" ID is set, mark the record as invalid.
-        // This happens if a change has been discarded (clearWSID) - it will be removed from the command map.
+        // This happens if a change has been discarded (previously known as "flush" or "clearWSID") - it will be removed from the command map.
         if (
             (int)$versionRecord['t3ver_oid'] > 0 && (
                 (int)$versionRecord['t3ver_wsid'] === 0 // behavior prior to v10.1 (backward compatibility)

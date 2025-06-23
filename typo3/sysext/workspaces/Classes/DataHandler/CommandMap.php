@@ -201,6 +201,10 @@ readonly class CommandMap
         foreach ($commandMap as $table => $versionIdCollection) {
             foreach ($versionIdCollection as $versionId => $commandCollection) {
                 foreach ($commandCollection as $command => $properties) {
+                    if ($command === 'discard') {
+                        $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
+                    }
+                    // @todo: this cane be removed once testing framework is not using 'cleaWSID' and 'flush' anymore
                     if ($command === 'version' && isset($properties['action']) && ($properties['action'] === 'clearWSID' || $properties['action'] === 'flush')) {
                         $dependency->addElement($table, $versionId, ['versionId' => $versionId, 'properties' => $properties]);
                     }
