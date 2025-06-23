@@ -220,10 +220,8 @@ final class PageRecordProvider implements SearchProviderInterface
                     ->setUrl($this->getShowLink($row)),
             ];
 
-            $pageLanguage = (int)($row['sys_language_uid'] ?? 0);
-            $previewUrl = PreviewUriBuilder::create($pageLanguage === 0 ? (int)$row['uid'] : (int)$row['l10n_parent'])
+            $previewUrl = PreviewUriBuilder::create($row)
                 ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
-                ->withLanguage($pageLanguage)
                 ->buildUri();
             if ($previewUrl !== null) {
                 $actions[] = (new ResultItemAction('preview_page'))

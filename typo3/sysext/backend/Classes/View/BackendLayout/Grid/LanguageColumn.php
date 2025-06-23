@@ -26,7 +26,6 @@ use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Language Column
@@ -112,14 +111,14 @@ class LanguageColumn extends AbstractGridObject
 
     public function getAllowViewPage(): bool
     {
-        return VersionState::tryFrom($this->context->getPageRecord()['t3ver_state'] ?? 0) !== VersionState::DELETE_PLACEHOLDER;
+        return PreviewUriBuilder::create($this->context->getLocalizedPageRecord() ?? $this->context->getPageRecord())->isPreviewable();
     }
 
     public function getPreviewUrlAttributes(): string
     {
         $pageId = $this->context->getPageId();
         $languageId = $this->context->getSiteLanguage()->getLanguageId();
-        return (string)PreviewUriBuilder::create($pageId)
+        return (string)PreviewUriBuilder::create($this->context->getLocalizedPageRecord() ?? $this->context->getPageRecord())
             ->withRootLine(BackendUtility::BEgetRootLine($pageId))
             ->withLanguage($languageId)
             ->serializeDispatcherAttributes();

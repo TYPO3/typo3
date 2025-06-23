@@ -30,7 +30,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -132,27 +131,14 @@ abstract class AbstractTemplateModuleController
         return new RedirectResponse($this->uriBuilder->buildUriFromRoute($redirectTarget, ['id' => $pageUid]));
     }
 
-    protected function addPreviewButtonToDocHeader(ModuleTemplate $view, int $pageId, int $dokType): void
+    protected function addPreviewButtonToDocHeader(ModuleTemplate $view, array $pageRecord): void
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
 
-        // Don't add preview button for sysfolders and spacers by default, and look up TS config options
-        $excludedDokTypes = [
-            PageRepository::DOKTYPE_SYSFOLDER,
-            PageRepository::DOKTYPE_SPACER,
-        ];
-        $pagesTsConfig = BackendUtility::getPagesTSconfig($pageId);
-        if (isset($pagesTsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-            $excludedDokTypes = GeneralUtility::intExplode(
-                ',',
-                $pagesTsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
-                true
-            );
-        }
-
-        if ($pageId && !in_array($dokType, $excludedDokTypes, true)) {
-            $previewDataAttributes = PreviewUriBuilder::create($pageId)
-                ->withRootLine(BackendUtility::BEgetRootLine($pageId))
+        $previewUriBuilder = PreviewUriBuilder::create($pageRecord);
+        if ($previewUriBuilder->isPreviewable()) {
+            $previewDataAttributes = $previewUriBuilder
+                ->withRootLine(BackendUtility::BEgetRootLine($pageRecord['uid']))
                 ->buildDispatcherDataAttributes();
             $viewButton = $buttonBar->makeLinkButton()
                 ->setHref('#')

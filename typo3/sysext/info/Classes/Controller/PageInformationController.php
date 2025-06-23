@@ -485,10 +485,8 @@ class PageInformationController extends InfoModuleController
                             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ];
                         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                        $pageLanguage = (int)($row[$languageFieldName] ?? 0);
-                        $previewDataAttributes = PreviewUriBuilder::create($pageLanguage === 0 ? (int)$row['uid'] : (int)$row[$translationOriginFieldName])
+                        $previewDataAttributes = PreviewUriBuilder::create($row)
                             ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
-                            ->withLanguage($pageLanguage)
                             ->serializeDispatcherAttributes();
                         $viewButton =
                             '<button ' . ($previewDataAttributes ?? 'disabled="true"') . ' class="btn btn-default" title="' .

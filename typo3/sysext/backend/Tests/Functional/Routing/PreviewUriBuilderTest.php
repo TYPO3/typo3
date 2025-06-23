@@ -15,7 +15,7 @@ declare(strict_types=1);
  * The TYPO3 project - inspiring people to share!
  */
 
-namespace TYPO3\CMS\Backend\Tests\Unit\Routing;
+namespace TYPO3\CMS\Backend\Tests\Functional\Routing;
 
 use PHPUnit\Framework\Attributes\Test;
 use Psr\EventDispatcher\EventDispatcherInterface;
@@ -23,12 +23,10 @@ use TYPO3\CMS\Backend\Routing\Event\BeforePagePreviewUriGeneratedEvent;
 use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Core\Http\Uri;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
+use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
-final class PreviewUriBuilderTest extends UnitTestCase
+final class PreviewUriBuilderTest extends FunctionalTestCase
 {
-    protected bool $resetSingletonInstances = true;
-
     #[Test]
     public function attributesContainAlternativeUri(): void
     {

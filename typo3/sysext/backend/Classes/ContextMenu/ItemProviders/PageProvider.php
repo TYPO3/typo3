@@ -527,9 +527,7 @@ class PageProvider extends RecordProvider
      */
     protected function getViewLink(): string
     {
-        return (string)PreviewUriBuilder::create($this->getPreviewPid())
-            ->withLanguage((int)($this->record[$this->getLanguageField()] ?? 0))
-            ->buildUri();
+        return (string)PreviewUriBuilder::create($this->record)->buildUri();
     }
 
     /**

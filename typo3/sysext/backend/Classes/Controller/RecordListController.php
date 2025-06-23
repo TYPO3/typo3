@@ -418,8 +418,9 @@ class RecordListController
         }
 
         if ($this->id !== 0) {
-            if ($this->canCreatePreviewLink()) {
-                $previewDataAttributes = PreviewUriBuilder::create((int)$this->id)
+            $uriBuilder = PreviewUriBuilder::create($this->pageInfo);
+            if ($uriBuilder->isPreviewable() && $this->canCreatePreviewLink()) {
+                $previewDataAttributes = PreviewUriBuilder::create($this->pageInfo)
                     ->withRootLine(BackendUtility::BEgetRootLine($this->id))
                     ->buildDispatcherDataAttributes();
                 $viewButton = $buttonBar->makeLinkButton()
@@ -654,6 +655,7 @@ class RecordListController
     /**
      * Returns the configuration of mod.web_list.noViewWithDokTypes or the
      * default value 254 (Sys Folders), if not set.
+     * @todo: this should vanish in favor of TCEMAIN.preview.disableButtonForDokType
      */
     protected function canCreatePreviewLink(): bool
     {

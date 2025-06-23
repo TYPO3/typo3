@@ -515,13 +515,7 @@ class ElementInformationController
 
             // retrieve record to get page language
             $record = BackendUtility::getRecord($schema->getName(), $uid);
-            $languageId = 0;
-            if ($schema->isLanguageAware()) {
-                $languageId = (int)($record[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0);
-            }
-
-            $previewUriBuilder = PreviewUriBuilder::create((int)$uid)
-                ->withLanguage($languageId)
+            $previewUriBuilder = PreviewUriBuilder::create($record)
                 ->withRootLine(BackendUtility::BEgetRootLine($uid));
 
             // View page button

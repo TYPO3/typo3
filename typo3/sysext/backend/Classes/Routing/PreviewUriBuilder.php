@@ -29,14 +29,18 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Domain\DateTimeFactory;
+use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Exception\SiteNotFoundException;
 use TYPO3\CMS\Core\Page\PageRenderer;
 use TYPO3\CMS\Core\Routing\InvalidRouteArgumentsException;
 use TYPO3\CMS\Core\Routing\RouterInterface;
 use TYPO3\CMS\Core\Routing\UnableToLinkToPageException;
+use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * Generate links to Frontend URLs with a modified scope.
@@ -51,6 +55,7 @@ class PreviewUriBuilder
     public const OPTION_WINDOW_SCOPE_LOCAL = 'local';
     public const OPTION_WINDOW_SCOPE_GLOBAL = 'global';
 
+    protected array $record = [];
     protected int $pageId;
     protected int $languageId = 0;
     protected array $rootLine = [];
@@ -60,12 +65,38 @@ class PreviewUriBuilder
     protected Context $context;
 
     /**
-     * @param int $pageId Page ID to be previewed
-     * @return static
+     * @param int|array $page Page ID to be previewed
      */
-    public static function create(int $pageId): self
+    public static function create(int|array $page): self
     {
-        return GeneralUtility::makeInstance(static::class, $pageId);
+        $pageId = 0;
+        $schema = GeneralUtility::makeInstance(TcaSchemaFactory::class)->get('pages');
+        $laguageFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName();
+        $transOrigPointerFieldName = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
+        if (!is_array($page)) {
+            $pageId = $page;
+            if ($pageId > 0) {
+                // If a page ID is given, we fetch the record from the database
+                $page = BackendUtility::getRecord('pages', $pageId);
+            } else {
+                // If no valid page ID is given, we use an empty array
+                $page = [];
+            }
+        }
+        if ($page !== []) {
+            if (($page[$transOrigPointerFieldName] ?? 0) > 0) {
+                // If the page is a translation, we need to use the parent page's ID
+                $pageId = (int)$page[$transOrigPointerFieldName];
+            } else {
+                // Otherwise, use the current page's ID
+                $pageId = (int)($page['uid'] ?? 0);
+            }
+        }
+        $obj = new self($pageId);
+        $obj->pageId = $pageId;
+        $obj->record = $page;
+        $obj->languageId = (int)($page[$laguageFieldName] ?? 0);
+        return $obj;
     }
 
     /**
@@ -162,6 +193,28 @@ class PreviewUriBuilder
         return $target;
     }
 
+    public function isPreviewable(): bool
+    {
+        if ($this->pageId === 0 || $this->record === []) {
+            return false;
+        }
+        $isDeletePlaceholder = VersionState::tryFrom($this->record['t3ver_state'] ?? 0) === VersionState::DELETE_PLACEHOLDER;
+        if ($isDeletePlaceholder) {
+            return false;
+        }
+        $TSconfig = BackendUtility::getPagesTSconfig($this->pageId)['TCEMAIN.']['preview.'] ?? [];
+        if (isset($TSconfig['disableButtonForDokType'])) {
+            $excludeDokTypes = GeneralUtility::intExplode(',', (string)$TSconfig['disableButtonForDokType'], true);
+        } else {
+            // Exclude sysfolders and spacers by default
+            $excludeDokTypes = [
+                PageRepository::DOKTYPE_SYSFOLDER,
+                PageRepository::DOKTYPE_SPACER,
+            ];
+        }
+        return !in_array((int)$this->record['doktype'], $excludeDokTypes, true);
+    }
+
     /**
      * Builds preview URI.
      */
@@ -182,6 +235,9 @@ class PreviewUriBuilder
 
             // If there hasn't been a custom preview URI set by an event listener, generate it.
             if ($event->getPreviewUri() === null) {
+                if (!$this->isPreviewable()) {
+                    return null;
+                }
                 $permissionClause = $GLOBALS['BE_USER']->getPagePermsClause(Permission::PAGE_SHOW);
                 $pageInfo = BackendUtility::readPageAccess($event->getPageId(), $permissionClause) ?: [];
                 // Check if the page (= its rootline) has a site attached, otherwise just keep the URI as is

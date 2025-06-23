@@ -125,16 +125,16 @@ class ImportController
         $view->setModuleName('');
         $view->getDocHeaderComponent()->setMetaInformation($pageInfo);
         if ((int)($pageInfo['uid'] ?? 0) > 0) {
-            $this->addDocHeaderPreviewButton($view, (int)$pageInfo['uid']);
+            $this->addDocHeaderPreviewButton($view, $pageInfo);
         }
         return $view->renderResponse('Import');
     }
 
-    protected function addDocHeaderPreviewButton(ModuleTemplate $view, int $pageUid): void
+    protected function addDocHeaderPreviewButton(ModuleTemplate $view, array $pageInfo): void
     {
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $previewDataAttributes = PreviewUriBuilder::create($pageUid)
-            ->withRootLine(BackendUtility::BEgetRootLine($pageUid))
+        $previewDataAttributes = PreviewUriBuilder::create($pageInfo)
+            ->withRootLine(BackendUtility::BEgetRootLine($pageInfo['uid']))
             ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()
             ->setHref('#')

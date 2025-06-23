@@ -1107,17 +1107,11 @@ class DatabaseRecordList
         if ($table === 'tt_content') {
             // Link to a content element, possibly translated and with anchor
             $languageField = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : null;
-            $previewUriBuilder = PreviewUriBuilder::create($this->id)
+            $previewUriBuilder = PreviewUriBuilder::create($this->pageRow)
                 ->withSection('#c' . $row['uid'])
                 ->withLanguage((int)($row[$languageField] ?? 0));
-        } elseif ($table === 'pages' && $schema->isLanguageAware() && ($row[$schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName()] ?? 0) > 0) {
-            // Link to a page translation needs uid of default language page as id
-            $previewUriBuilder = PreviewUriBuilder::create((int)$row[$schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName()])
-                ->withSection('#c' . $row['uid'])
-                ->withLanguage((int)($row[$schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName()] ?? 0));
         } else {
-            // Link to a page in the default language
-            $previewUriBuilder = PreviewUriBuilder::create((int)($row['uid'] ?? 0));
+            $previewUriBuilder = PreviewUriBuilder::create($row);
         }
         return $previewUriBuilder;
     }
