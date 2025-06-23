@@ -99,6 +99,13 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyContentWithTranslations(): void
+    {
+        parent::modifyContentWithTranslations();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWithTranslations.csv');
+    }
+
+    #[Test]
     public function modifySoftDeletedContent(): void
     {
         parent::modifySoftDeletedContent();
@@ -118,6 +125,38 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing Translation #3'));
+    }
+
+    #[Test]
+    public function modifyTranslatedContentThenModifyDefaultLanguageContent(): void
+    {
+        parent::modifyTranslatedContentThenModifyDefaultLanguageContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContentThenModifyDefaultLanguageContent.csv');
+
+        // Verify changed default language CE is shown when rendering workspace preview in default language
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing #3'));
+
+        // Verify changed localized CE is shown when rendering workspace preview in localized language
+        $response = $this->executeFrontendSubRequest(
+            (new InternalRequest())->withPageId(self::VALUE_PageId)->withLanguageId(self::VALUE_LanguageId),
+            (new InternalRequestContext())->withBackendUserId(self::VALUE_BackendUserId)->withWorkspaceId(self::VALUE_WorkspaceId)
+        );
+        $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
+        self::assertThat($responseSections, (new HasRecordConstraint())
+            ->setTable(self::TABLE_Content)->setField('header')->setValues('Testing Translation #3'));
+    }
+
+    #[Test]
+    public function modifyTranslatedContentThenMoveDefaultLanguageContent(): void
+    {
+        parent::modifyTranslatedContentThenMoveDefaultLanguageContent();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContentThenMoveDefaultLanguageContent.csv');
     }
 
     #[Test]
@@ -797,6 +836,20 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+    }
+
+    #[Test]
+    public function modifyTranslatedPage(): void
+    {
+        parent::modifyTranslatedPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedPage.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedPageThenModifyPage(): void
+    {
+        parent::modifyTranslatedPageThenModifyPage();
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedPageThenModifyPage.csv');
     }
 
     #[Test]

@@ -1,0 +1,35 @@
+"sys_workspace"
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage"
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","notification_defaults","allow_notificaton_settings"
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0
+"pages"
+,"uid","pid","sorting","hidden","deleted","sys_language_uid","l10n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","slug"
+,1,0,256,0,0,0,0,0,0,0,0,0,"FunctionalTest","/"
+,88,1,256,0,0,0,0,0,0,0,0,0,"DataHandlerTest","/data-handler"
+,89,88,256,0,0,0,0,0,0,0,0,0,"Relations","/data-handler/relations"
+,90,88,512,0,0,0,0,0,0,0,0,0,"Target","/data-handler/target"
+,91,88,256,0,0,1,89,89,0,0,0,0,"[Translate to Dansk:] Relations","/data-handler/translate-to-dansk-relations"
+,92,88,256,0,0,2,89,89,0,0,0,0,"[Translate to Deutsch:] Relations","/data-handler/translate-to-deutsch-relations"
+"tt_content"
+,"uid","pid","sorting","hidden","deleted","sys_language_uid","l18n_parent","l10n_source","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header"
+,200,88,256,0,0,0,0,0,0,0,0,0,"Regular Element #0"
+,201,88,512,0,0,-1,0,0,0,0,0,0,"Language all element"
+,297,89,384,0,0,0,0,0,0,0,0,0,"Regular Element #1"
+,298,89,1536,0,0,0,0,0,0,0,0,0,"Regular Element #2"
+,299,89,640,0,0,0,0,0,0,0,0,0,"Regular Element #3"
+,300,89,640,0,0,1,299,299,0,0,0,0,"Testing Translation #3"
+,301,89,384,0,0,1,297,297,0,0,0,0,"[Translate to Dansk:] Regular Element #1"
+,302,89,1472,0,0,2,297,301,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #1"
+,320,89,512,0,0,0,0,0,2,2,0,298,"Regular Element #2"
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting","ref_string"
+,"02aa95a647ed365ffeeac881bd1af449","pages",91,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"14f90231b8565c61decd2aeaebea6034","pages",92,"l10n_parent",0,0,2147483647,0,,,,0,0,"pages",89,,0,0,2147483647,0,0,
+,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0,
+,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0,
+,"ca4f164be617724388f00923729e8558","tt_content",300,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",299,,0,0,2147483647,0,0,
+,"3676712de719382fe386617c1942c940","tt_content",301,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
+,"2b5621b6ac407f06a71e517bf98c9c94","tt_content",302,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",297,,0,0,2147483647,0,0,
