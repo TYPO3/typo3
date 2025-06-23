@@ -50,7 +50,7 @@ final class TcaMigrationTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1482394401);
         $subject = new TcaMigration();
-        $subject->migrate($input);
+        $tcaProcessingResult = $subject->migrate($input);
     }
 
     #[Test]
@@ -87,12 +87,11 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        $subject->migrate($input);
-        $messages = $subject->getMessages();
-        self::assertCount(3, $messages);
-        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[0]);
-        self::assertStringContainsString('The TCA record type \'bType\' of table \'bTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[1]);
-        self::assertStringContainsString('The TCA record type \'cType\' of table \'cTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[2]);
+        $tcaProcessingResult = $subject->migrate($input);
+        self::assertCount(3, $tcaProcessingResult->getMessages());
+        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $tcaProcessingResult->getMessages()[0]);
+        self::assertStringContainsString('The TCA record type \'bType\' of table \'bTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $tcaProcessingResult->getMessages()[1]);
+        self::assertStringContainsString('The TCA record type \'cType\' of table \'cTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $tcaProcessingResult->getMessages()[2]);
     }
 
     #[Test]
@@ -118,17 +117,15 @@ final class TcaMigrationTest extends UnitTestCase
         ];
 
         $subject = new TcaMigration();
-        $subject->migrate($input1);
-        $messages = $subject->getMessages();
+        $tcaProcessingResult = $subject->migrate($input1);
         // First run: Only $input1 output message contained.
-        self::assertCount(1, $messages);
-        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[0]);
+        self::assertCount(1, $tcaProcessingResult->getMessages());
+        self::assertStringContainsString('The TCA record type \'aType\' of table \'aTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $tcaProcessingResult->getMessages()[0]);
 
         // Second run: Messages from $input1 should be reset.
-        $subject->migrate($input2);
-        $messages = $subject->getMessages();
-        self::assertCount(1, $messages);
-        self::assertStringContainsString('The TCA record type \'bType\' of table \'bTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $messages[0]);
+        $tcaProcessingResult = $subject->migrate($input2);
+        self::assertCount(1, $tcaProcessingResult->getMessages());
+        self::assertStringContainsString('The TCA record type \'bType\' of table \'bTable\' makes use of the removed "sub types" functionality. The options \'subtype_value_field\', \'subtypes_addlist\' and \'subtypes_excludelist\' are not evaluated anymore. Please adjust your TCA accordingly by migrating those sub types to dedicated record types.', $tcaProcessingResult->getMessages()[0]);
     }
 
     #[Test]
@@ -156,7 +153,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -209,7 +206,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -245,7 +242,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -281,7 +278,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -332,7 +329,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -412,7 +409,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -439,7 +436,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -464,7 +461,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -497,7 +494,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -531,7 +528,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -690,7 +687,7 @@ final class TcaMigrationTest extends UnitTestCase
         ];
 
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -771,7 +768,7 @@ final class TcaMigrationTest extends UnitTestCase
         ];
 
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -920,7 +917,7 @@ final class TcaMigrationTest extends UnitTestCase
         ];
 
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -1031,7 +1028,7 @@ final class TcaMigrationTest extends UnitTestCase
         ];
 
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -1139,7 +1136,7 @@ final class TcaMigrationTest extends UnitTestCase
         ];
 
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($input));
+        self::assertEquals($expected, $subject->migrate($input)->getTca());
     }
 
     public static function internalTypeFolderMigratedToTypeDataProvider(): iterable
@@ -1191,7 +1188,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function internalTypeFolderMigratedToType(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     public static function requiredFlagIsMigratedDataProvider(): iterable
@@ -1309,7 +1306,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function requiredFlagIsMigrated(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($tca));
+        self::assertEquals($expected, $subject->migrate($tca)->getTca());
     }
 
     public static function evalNullMigratedToNullableOptionDataProvider(): iterable
@@ -1431,7 +1428,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function evalNullMigratedToNullableOption(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($tca));
+        self::assertSame($expected, $subject->migrate($tca)->getTca());
     }
 
     public static function evalEmailMigratedToTypeDataProvider(): iterable
@@ -1532,7 +1529,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function evalEmailMigratedToType(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     public static function typeNoneColsMigratedToSizeDataProvider(): iterable
@@ -1600,7 +1597,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function typeNoneColsMigratedToSize(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($tca));
+        self::assertSame($expected, $subject->migrate($tca)->getTca());
     }
 
     public static function renderTypeInputLinkMigratedToTypeLinkDataProvider(): iterable
@@ -1838,7 +1835,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function renderTypeInputLinkMigratedToTypeLink(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     public static function evalPasswordSaltedPasswordMigratedToTypePasswordDataProvider(): iterable
@@ -1957,7 +1954,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function evalPasswordSaltedPasswordMigratedToTypePassword(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     public static function renderTypeInputDateTimeMigratedToTypeDatetimeDataProvider(): iterable
@@ -2241,7 +2238,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function renderTypeInputDateTimeMigratedToTypeDatetime(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -2290,7 +2287,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -2368,7 +2365,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     public static function selectIndividualAllowDenyMigratedToNewPositionDataProvider(): iterable
@@ -2645,7 +2642,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function selectIndividualAllowDenyMigratedToNewPosition(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($tca));
+        self::assertEquals($expected, $subject->migrate($tca)->getTca());
     }
 
     public static function renderTypeColorpickerToTypeColorDataProvider(): iterable
@@ -2726,7 +2723,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function renderTypeColorpickerToTypeColor(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     public static function typeTextWithEvalIntOrDouble2MigratedToTypeNumberDataProvider(): iterable
@@ -2898,7 +2895,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function typeTextWithEvalIntOrDouble2MigratedToTypeNumber(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     public static function propertyAlwaysDescriptionIsRemovedDataProvider(): iterable
@@ -2949,7 +2946,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function propertyAlwaysDescriptionIsRemoved(array $input, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -2969,7 +2966,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     public static function falHandlingInTypeInlineIsMigratedToTypeFileDataProvider(): iterable
@@ -3237,10 +3234,11 @@ final class TcaMigrationTest extends UnitTestCase
     public function falHandlingInTypeInlineIsMigratedToTypeFile(array $input, array $expected, $expectedMessagePart = ''): void
     {
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        $tcaProcessingResult = $subject->migrate($input);
+        self::assertSame($expected, $tcaProcessingResult->getTca());
         if ($expectedMessagePart !== '') {
             $messageFound = false;
-            foreach ($subject->getMessages() as $message) {
+            foreach ($tcaProcessingResult->getMessages() as $message) {
                 if (str_contains($message, $expectedMessagePart)) {
                     $messageFound = true;
                     break;
@@ -3280,7 +3278,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3316,7 +3314,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
         $subject = new TcaMigration();
-        self::assertSame($expected, $subject->migrate($input));
+        self::assertSame($expected, $subject->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3357,7 +3355,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3472,7 +3470,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3525,7 +3523,7 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3556,7 +3554,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3585,7 +3583,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3614,7 +3612,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3676,7 +3674,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3751,7 +3749,7 @@ final class TcaMigrationTest extends UnitTestCase
                 ],
             ],
         ];
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[Test]
@@ -3894,7 +3892,7 @@ final class TcaMigrationTest extends UnitTestCase
 
         $expected = $input;
         $expected['child1NotWorkspaceAware']['ctrl']['versioningWS'] = true;
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 
     #[DataProvider('requiredYearFlagIsRemovedDataProvider')]
@@ -3902,7 +3900,7 @@ final class TcaMigrationTest extends UnitTestCase
     public function requiredYearFlagIsRemoved(array $tca, array $expected): void
     {
         $subject = new TcaMigration();
-        self::assertEquals($expected, $subject->migrate($tca));
+        self::assertEquals($expected, $subject->migrate($tca)->getTca());
     }
 
     public static function requiredYearFlagIsRemovedDataProvider(): iterable
@@ -3980,6 +3978,6 @@ final class TcaMigrationTest extends UnitTestCase
             ],
         ];
 
-        self::assertSame($expected, (new TcaMigration())->migrate($input));
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
 }

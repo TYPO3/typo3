@@ -81,8 +81,8 @@ class SiteTcaConfiguration
         $result = $GLOBALS['SiteConfiguration'];
         unset($GLOBALS['SiteConfiguration']);
         $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
-        $result = $tcaMigration->migrate($result);
-        $messages = $tcaMigration->getMessages();
+        $tcaProcessingResult = $tcaMigration->migrate($result);
+        $messages = $tcaProcessingResult->getMessages();
         if (!empty($messages)) {
             $context = 'Automatic TCA migration done during bootstrap of Site TCA Configuration.'
                 . ' Please adapt TCA accordingly, these migrations will be removed.'
@@ -90,6 +90,6 @@ class SiteTcaConfiguration
             array_unshift($messages, $context);
             trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
         }
-        return $result;
+        return $tcaProcessingResult->getTca();
     }
 }

@@ -166,8 +166,8 @@ final readonly class TcaFactory
     {
         // Call the TcaMigration and log any deprecations.
         $tcaMigration = new TcaMigration();
-        $tca = $tcaMigration->migrate($tca);
-        $messages = $tcaMigration->getMessages();
+        $tcaProcessingResult = $tcaMigration->migrate($tca);
+        $messages = $tcaProcessingResult->getMessages();
         if (!empty($messages)) {
             $context = 'Automatic TCA migration done during bootstrap. Please adapt TCA accordingly, these migrations'
                 . ' will be removed. The backend module "Configuration -> TCA" shows the modified values.'
@@ -175,7 +175,7 @@ final readonly class TcaFactory
             array_unshift($messages, $context);
             trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
         }
-        return $tca;
+        return $tcaProcessingResult->getTca();
     }
 
     private function prepareTca(array $tca): array

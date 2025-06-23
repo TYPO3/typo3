@@ -632,16 +632,16 @@ readonly class FlexFormTools
                 ],
             ],
         ];
-        $migratedTca = $this->tcaMigration->migrate($dummyTca);
+        $tcaProcessingResult = $this->tcaMigration->migrate($dummyTca);
         // Messages are reset on each `migrate()` execution
-        $messages = $this->tcaMigration->getMessages();
+        $messages = $tcaProcessingResult->getMessages();
         if (!empty($messages)) {
             $context = 'FlexFormTools did an on-the-fly migration of a flex form data structure. This is deprecated and will be removed.'
                 . ' Merge the following changes into the flex form definition "' . $fieldName . '":';
             array_unshift($messages, $context);
             trigger_error(implode(LF, $messages), E_USER_DEPRECATED);
         }
-        return $migratedTca['dummyTable']['columns'][$fieldName];
+        return $tcaProcessingResult->getTca()['dummyTable']['columns'][$fieldName];
     }
 
     private function prepareFlexField(string $fieldName, array $fieldConfig): array

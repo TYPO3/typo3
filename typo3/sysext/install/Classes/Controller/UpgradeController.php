@@ -897,9 +897,9 @@ class UpgradeController extends AbstractController
         $messageQueue = new FlashMessageQueue('install');
         $this->loadTcaService->loadExtensionTablesWithoutMigration();
         $tcaMigration = GeneralUtility::makeInstance(TcaMigration::class);
-        $GLOBALS['TCA'] = $tcaMigration->migrate($GLOBALS['TCA']);
-        $tcaMessages = $tcaMigration->getMessages();
-        foreach ($tcaMessages as $tcaMessage) {
+        $tcaProcessingResult = $tcaMigration->migrate($GLOBALS['TCA']);
+        $GLOBALS['TCA'] = $tcaProcessingResult->getTca();
+        foreach ($tcaProcessingResult->getMessages() as $tcaMessage) {
             $messageQueue->enqueue(new FlashMessage(
                 '',
                 $tcaMessage,
