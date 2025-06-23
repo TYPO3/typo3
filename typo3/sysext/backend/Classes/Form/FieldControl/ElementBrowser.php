@@ -78,7 +78,7 @@ class ElementBrowser extends AbstractNode
         }
 
         if ($type === 'group') {
-            if (($this->data['inlineParentConfig']['type'] ?? '') === 'file') {
+            if (($this->data['inlineParentConfig']['type'] ?? '') === 'file' || ($config['allowed'] ?? '') === 'sys_file') {
                 $elementBrowserType = 'file';
                 // Remove any white-spaces from the allowed extension lists
                 $allowed = implode(',', GeneralUtility::trimExplode(',', (string)($this->data['inlineParentConfig']['allowed'] ?? ''), true));
