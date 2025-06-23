@@ -24,6 +24,7 @@ use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\Mode;
+use TYPO3\CMS\Filelist\Type\SortDirection;
 
 /**
  * Browser to create one or more folders. This is used with type=folder to select folders.
@@ -60,22 +61,24 @@ class CreateFolderBrowser extends AbstractResourceBrowser
             $folderUtilityRenderer = GeneralUtility::makeInstance(FolderUtilityRenderer::class, $this);
             $markup[] = $folderUtilityRenderer->createFolder($this->getRequest(), $this->selectedFolder);
 
-            // Create the filelist header bar
-            $markup[] = '<div class="row justify-content-between mb-2">';
-            $markup[] = '    <div class="col-auto"></div>';
-            $markup[] = '    <div class="col-auto">';
-            $markup[] = '        ' . $this->getViewModeButton();
-            $markup[] = '    </div>';
-            $markup[] = '</div>';
-
             // Create the filelist
             $this->filelist->start(
                 $this->selectedFolder,
                 MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
-                $this->getRequest()->getQueryParams()['sort'] ?? '',
-                ($this->getRequest()->getQueryParams()['reverse'] ?? '') === '1',
+                $this->sortField,
+                $this->sortDirection === SortDirection::DESCENDING,
                 Mode::BROWSE
             );
+
+            // Create the filelist header bar
+            $markup[] = '<div class="row justify-content-between mb-2">';
+            $markup[] = '    <div class="col-auto"></div>';
+            $markup[] = '    <div class="col-auto">';
+            $markup[] = '        ' . $this->getSortingModeButtons($this->filelist->mode);
+            $markup[] = '        ' . $this->getViewModeButton();
+            $markup[] = '    </div>';
+            $markup[] = '</div>';
+
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
             $markup[] = $this->filelist->render(null, $this->view);

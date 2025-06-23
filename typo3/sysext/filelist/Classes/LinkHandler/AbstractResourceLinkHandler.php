@@ -45,6 +45,8 @@ use TYPO3\CMS\Core\View\ViewInterface;
 use TYPO3\CMS\Filelist\FileList;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Type\LinkType;
+use TYPO3\CMS\Filelist\Type\Mode;
+use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
@@ -57,6 +59,8 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
     protected string $moduleStorageIdentifier = 'media_management';
 
     protected ?FileList $filelist = null;
+    protected string $sortField = 'name';
+    protected ?SortDirection $sortDirection = null;
     protected ?ViewMode $viewMode = null;
     protected bool $displayThumbs = true;
 
@@ -138,6 +142,8 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         $this->pageRenderer->loadJavaScriptModule('@typo3/filelist/file-list-actions.js');
 
         $this->currentPage = (int)($request->getParsedBody()['currentPage'] ?? $request->getQueryParams()['currentPage'] ?? 1);
+        $this->sortField = ($request->getParsedBody()['sortField'] ?? $request->getQueryParams()['sortField'] ?? 'name');
+        $this->sortDirection = SortDirection::tryFrom($request->getParsedBody()['sortDirection'] ?? $request->getQueryParams()['sortDirection'] ?? '') ?? SortDirection::ASCENDING;
 
         $this->viewMode = ViewMode::tryFrom($request->getParsedBody()['viewMode'] ?? $request->getQueryParams()['viewMode'] ?? '');
         if ($this->viewMode !== null) {
@@ -245,6 +251,47 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
         return (string)$this->uriBuilder->buildUriFromRequest($request, $this->getUrlParameters($parameters));
     }
 
+    protected function getSortingModeButtons(ServerRequestInterface $request, Mode $mode): ButtonInterface
+    {
+        $sortingButton = GeneralUtility::makeInstance(DropDownButton::class)
+            ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))
+            ->setIcon($this->iconFactory->getIcon($this->sortDirection->getIconIdentifier()));
+
+        $sortingModeButtons = [];
+        $sortableFields = $this->filelist->getSortableFields();
+        if (count($sortableFields) > 1) {
+            foreach ($sortableFields as $field) {
+                $label = $this->filelist->getFieldLabel($field);
+
+                $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                    ->setActive($this->sortField === $field)
+                    ->setHref($this->createUri($request, [
+                        'sortField' => $field,
+                        'sortDirection' => SortDirection::ASCENDING->value,
+                        'currentPage' => 1,
+                    ]))
+                    ->setLabel($label);
+            }
+
+            $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownDivider::class);
+        }
+        $defaultSortingDirectionParams = ['sortField' => $this->sortField, 'currentPage' => 1];
+        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->sortDirection === SortDirection::ASCENDING)
+            ->setHref($this->createUri($request, array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::ASCENDING->value])))
+            ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc'));
+        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->sortDirection === SortDirection::DESCENDING)
+            ->setHref($this->createUri($request, array_merge($defaultSortingDirectionParams, ['sortDirection' => SortDirection::DESCENDING->value])))
+            ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc'));
+
+        foreach ($sortingModeButtons as $sortingModeButton) {
+            $sortingButton->addItem($sortingModeButton);
+        }
+
+        return $sortingButton;
+    }
+
     protected function getViewModeButton(ServerRequestInterface $request): ButtonInterface
     {
         $viewModeItems = [];
@@ -259,7 +306,7 @@ abstract class AbstractResourceLinkHandler implements LinkHandlerInterface, Link
             ->setLabel($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.list'))
             ->setIcon($this->iconFactory->getIcon('actions-viewmode-list'));
         if (!($this->getBackendUser()->getTSConfig()['options.']['noThumbsInEB'] ?? false)) {
-            $viewModeItems[] = GeneralUtility::makeInstance(DropdownDivider::class);
+            $viewModeItems[] = GeneralUtility::makeInstance(DropDownDivider::class);
             $viewModeItems[] = GeneralUtility::makeInstance(DropDownToggle::class)
                 ->setActive($this->displayThumbs)
                 ->setHref($this->createUri($request, ['displayThumbs' => $this->displayThumbs ? 0 : 1]))

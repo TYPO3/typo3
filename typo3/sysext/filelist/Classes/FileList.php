@@ -66,6 +66,7 @@ use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Pagination\ResourceCollectionPaginator;
 use TYPO3\CMS\Filelist\Type\Mode;
 use TYPO3\CMS\Filelist\Type\NavigationDirection;
+use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
@@ -103,10 +104,7 @@ class FileList
      */
     public string $sort = '';
 
-    /**
-     * Reverse sorting flag
-     */
-    public bool $sortRev = true;
+    public SortDirection $sortDirection = SortDirection::DESCENDING;
 
     /**
      * Thumbnails on records containing files (pictures)
@@ -242,7 +240,7 @@ class FileList
         $this->folderObject = $folderObject;
         $this->currentPage = MathUtility::forceIntegerInRange($currentPage, 1, 100000);
         $this->sort = $sort;
-        $this->sortRev = $sortRev;
+        $this->sortDirection = $sortRev ? SortDirection::DESCENDING : SortDirection::ASCENDING;
         $this->totalbytes = 0;
         $this->resourceDownloadMatcher = null;
         $this->resourceDisplayMatcher = null;
@@ -428,30 +426,37 @@ class FileList
         );
     }
 
+    /**
+     * @return array<string>
+     */
+    public function getSortableFields(): array
+    {
+        return array_filter($this->fieldArray, $this->isFieldSortable(...));
+    }
+
     protected function renderListTableHeader(): string
     {
         $data = [];
         foreach ($this->fieldArray as $field) {
-            switch ($field) {
-                case 'icon':
-                    $data[$field] = '';
-                    break;
-                case '_SELECTOR_':
-                    $data[$field] = $this->renderCheckboxActions();
-                    break;
-                default:
-                    $data[$field] = $this->renderListTableFieldHeader($field);
-                    break;
-            }
+            $data[$field] = match ($field) {
+                'icon' => '',
+                '_SELECTOR_' => $this->renderCheckboxActions(),
+                default => $this->renderListTableFieldHeader($field),
+            };
         }
 
         return $this->addElement($data, [], true);
     }
 
+    protected function isFieldSortable(string $field): bool
+    {
+        return !in_array($field, ['icon', 'rw', '_SELECTOR_', '_CONTROL_', '_PATH_'], true);
+    }
+
     protected function renderListTableFieldHeader(string $field): string
     {
         $label = $this->getFieldLabel($field);
-        if (in_array($field, ['_SELECTOR_', '_CONTROL_', '_PATH_'])) {
+        if (!$this->isFieldSortable($field)) {
             return $label;
         }
 
@@ -462,7 +467,7 @@ class FileList
         $paramsDesc['reverse'] = 1;
 
         $icon = $this->sort === $field
-            ? $this->iconFactory->getIcon('actions-sort-amount-' . ($this->sortRev ? 'down' : 'up'), IconSize::SMALL)->render()
+            ? $this->iconFactory->getIcon($this->sortDirection->getIconIdentifier(), IconSize::SMALL)->render()
             : $this->iconFactory->getIcon('empty-empty', IconSize::SMALL)->render();
 
         return '
@@ -475,7 +480,7 @@ class FileList
                         <a href="' . $this->createModuleUri($paramsAsc) . '" class="dropdown-item">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon text-primary">
-                                    ' . ($this->sort === $field && !$this->sortRev ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                                    ' . ($this->sort === $field && $this->sortDirection === SortDirection::ASCENDING ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
                                 </span>
                                 <span class="dropdown-item-column dropdown-item-column-title">
                                     ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc') . '
@@ -487,7 +492,7 @@ class FileList
                         <a href="' . $this->createModuleUri($paramsDesc) . '" class="dropdown-item">
                             <span class="dropdown-item-columns">
                                 <span class="dropdown-item-column dropdown-item-column-icon text-primary">
-                                    ' . ($this->sort === $field && $this->sortRev ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
+                                    ' . ($this->sort === $field && $this->sortDirection === SortDirection::DESCENDING ? $this->iconFactory->getIcon('actions-dot', IconSize::SMALL)->render() : '') . '
                                 </span>
                                 <span class="dropdown-item-column dropdown-item-column-title">
                                     ' . $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc') . '
@@ -1663,7 +1668,7 @@ class FileList
         $collator = new \Collator((string)($this->getLanguageService()->getLocale() ?? 'en'));
         $collator->setAttribute(\Collator::NUMERIC_COLLATION, \Collator::ON);
 
-        $sortMultiplier = $this->sortRev ? -1 : 1;
+        $sortMultiplier = $this->sortDirection === SortDirection::DESCENDING ? -1 : 1;
         uksort($resources, function (int $index1, int $index2) use ($sortField, $sortMultiplier, $resources, $collator) {
             $resource1 = $resources[$index1];
             $resource2 = $resources[$index2];
@@ -1744,7 +1749,7 @@ class FileList
         }
     }
 
-    protected function getFieldLabel(string $field): string
+    public function getFieldLabel(string $field): string
     {
         $lang = $this->getLanguageService();
 

@@ -30,6 +30,7 @@ use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\Mode;
+use TYPO3\CMS\Filelist\Type\SortDirection;
 
 /**
  * Browser for files. This is used when adding a FAL inline image with the 'add image' button in FormEngine.
@@ -102,6 +103,15 @@ class FileBrowser extends AbstractResourceBrowser
                 ->render($this->getRequest(), $this->createUri());
             $markup[] = '</div>';
 
+            // Create the filelist
+            $this->filelist->start(
+                $this->selectedFolder,
+                MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
+                $this->sortField,
+                $this->sortDirection === SortDirection::DESCENDING,
+                Mode::BROWSE
+            );
+
             // Create the filelist header bar
             $markup[] = '<div class="row justify-content-between mb-2">';
             $markup[] = '    <div class="col-auto">';
@@ -114,18 +124,11 @@ class FileBrowser extends AbstractResourceBrowser
             $markup[] = '        </div>';
             $markup[] = '    </div>';
             $markup[] = '    <div class="col-auto">';
+            $markup[] = '        ' . $this->getSortingModeButtons($this->filelist->mode);
             $markup[] = '        ' . $this->getViewModeButton();
             $markup[] = '    </div>';
             $markup[] = '</div>';
 
-            // Create the filelist
-            $this->filelist->start(
-                $this->selectedFolder,
-                MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
-                $this->getRequest()->getQueryParams()['sort'] ?? '',
-                ($this->getRequest()->getQueryParams()['reverse'] ?? '') === '1',
-                Mode::BROWSE
-            );
             $this->filelist->setResourceDisplayMatcher($this->resourceDisplayMatcher);
             $this->filelist->setResourceSelectableMatcher($this->resourceSelectableMatcher);
             $searchDemand = $this->searchWord !== ''

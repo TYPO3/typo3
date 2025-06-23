@@ -63,6 +63,7 @@ use TYPO3\CMS\Filelist\FileList;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFileTypeMatcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
+use TYPO3\CMS\Filelist\Type\SortDirection;
 use TYPO3\CMS\Filelist\Type\ViewMode;
 
 /**
@@ -363,7 +364,7 @@ class FileListController implements LoggerAwareInterface
         $this->filelist->start(
             $this->folderObject,
             MathUtility::forceIntegerInRange($this->currentPage, 1, 100000),
-            (string)$this->moduleData->get('sort'),
+            (string)($this->moduleData->get('sort') ?: 'name'),
             (bool)$this->moduleData->get('reverse')
         );
         $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
@@ -554,13 +555,53 @@ class FileListController implements LoggerAwareInterface
                 ])
                 ->setIcon($this->iconFactory->getIcon('actions-options'));
         }
+
+        $sortingButton = $buttonBar->makeDropDownButton()
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting'))
+            ->setIcon($this->iconFactory->getIcon($this->filelist->sortDirection->getIconIdentifier()))
+            ->setShowLabelText(true);
+
+        $sortingModeButtons = [];
+        $sortableFields = $this->filelist->getSortableFields();
+        if (count($sortableFields) > 1) {
+            foreach ($sortableFields as $field) {
+                $label = $this->filelist->getFieldLabel($field);
+
+                $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+                    ->setActive($this->filelist->sort === $field)
+                    ->setHref($this->filelist->createModuleUri([
+                        'sort' => $field,
+                        'currentPage' => 0,
+                        'reverse' => (int)($this->filelist->sortDirection === SortDirection::DESCENDING),
+                    ]))
+                    ->setLabel($label);
+            }
+
+            $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownDivider::class);
+        }
+        $defaultSortingDirectionParams = ['sort' => $this->filelist->sort, 'currentPage' => 0];
+        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->filelist->sortDirection === SortDirection::ASCENDING)
+            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['reverse' => 0])))
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.asc'));
+        $sortingModeButtons[] = GeneralUtility::makeInstance(DropDownRadio::class)
+            ->setActive($this->filelist->sortDirection === SortDirection::DESCENDING)
+            ->setHref($this->filelist->createModuleUri(array_merge($defaultSortingDirectionParams, ['reverse' => 1])))
+            ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.sorting.desc'));
+
+        foreach ($sortingModeButtons as $sortingModeButton) {
+            $sortingButton->addItem($sortingModeButton);
+        }
+
+        $buttonBar->addButton($sortingButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+
         $viewModeButton = $buttonBar->makeDropDownButton()
             ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view'))
             ->setShowLabelText(true);
         foreach ($viewModeItems as $viewModeItem) {
             $viewModeButton->addItem($viewModeItem);
         }
-        $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 2);
+        $buttonBar->addButton($viewModeButton, ButtonBar::BUTTON_POSITION_RIGHT, 3);
 
         // Level up
         try {
