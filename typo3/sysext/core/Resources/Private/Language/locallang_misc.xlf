@@ -81,6 +81,9 @@
 			<trans-unit id="newRecordWizard.filter.noResults">
 				<source>Unfortunately no record type matches your query, please try a different one.</source>
 			</trans-unit>
+			<trans-unit id="newRecordWizard.recentlyUsed">
+				<source>Recently used</source>
+			</trans-unit>
 			<trans-unit id="newContentElement.filter.placeholder">
 				<source>Search for any content type</source>
 			</trans-unit>

@@ -19,7 +19,7 @@ export default abstract class AbstractClientStorage {
   protected keyPrefix: string = 't3-';
   protected storage: Storage = null;
 
-  public get(key: string): string {
+  public get(key: string): string|null {
     if (this.storage === null) {
       return null;
     }

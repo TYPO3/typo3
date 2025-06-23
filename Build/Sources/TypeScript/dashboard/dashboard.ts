@@ -700,6 +700,7 @@ export class Dashboard extends LitElement {
     topLevelModuleImport('@typo3/backend/new-record-wizard.js');
 
     const wizard = top.document.createElement('typo3-backend-new-record-wizard');
+    wizard.storeName = 'dashboard-widgets';
     wizard.searchPlaceholder = lll('widget.addToDashboard.searchLabel');
     wizard.searchNothingFoundLabel = lll('widget.addToDashboard.searchNotFound');
     wizard.categories = await this.fetchCategories();
