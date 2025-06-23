@@ -3645,7 +3645,9 @@ img.t3-tceforms-sysfile-imagepreview{float:var(--typo3-position-start);-webkit-m
 div.t3-form-field-container:first-child .t3-form-field-label-flex{border-top:0}
 .form-irre-object,.t3-flex-section{opacity:1;transition:opacity .5s}
 .form-irre-object--deleted,.t3-flex-section--deleted{opacity:0!important}
-.t3-form-field-container-inline-hidden .form-file-header-button,.t3-form-field-container-inline-hidden .form-irre-header-button,.t3-form-field-container-inline-placeHolder .form-file-header-button,.t3-form-field-container-inline-placeHolder .form-irre-header-button{opacity:.3}
+.t3-form-field-container-files-hidden,.t3-form-field-container-files-placeHolder,.t3-form-field-container-inline-hidden,.t3-form-field-container-inline-placeHolder{border-style:dashed;opacity:.5}
+.t3-form-field-container-files-hidden>.panel-heading,.t3-form-field-container-files-placeHolder>.panel-heading,.t3-form-field-container-inline-hidden>.panel-heading,.t3-form-field-container-inline-placeHolder>.panel-heading{background-color:transparent}
+.t3-form-field-container-files-hidden:focus-within,.t3-form-field-container-files-hidden:hover,.t3-form-field-container-files-placeHolder:focus-within,.t3-form-field-container-files-placeHolder:hover,.t3-form-field-container-inline-hidden:focus-within,.t3-form-field-container-inline-hidden:hover,.t3-form-field-container-inline-placeHolder:focus-within,.t3-form-field-container-inline-placeHolder:hover{opacity:1}
 .t3-form-field-disable{display:none}
 .formengine-field-item.disabled .t3-form-field-disable{background:var(--typo3-form-section-bg);display:block;height:100%;left:0;opacity:.5;position:absolute;top:0;width:100%;z-index:10}
 .formengine-field-item.disabled .form-description,.formengine-field-item.disabled .t3-form-field-eval-null-checkbox{position:relative;z-index:20}
