@@ -196,7 +196,7 @@
 				<source>Location</source>
 			</trans-unit>
 			<trans-unit id="formManager.references" xml:space="preserve">
-				<source>Ref</source>
+				<source>References</source>
 			</trans-unit>
 			<trans-unit id="formManager.options" xml:space="preserve">
 				<source>Options</source>
