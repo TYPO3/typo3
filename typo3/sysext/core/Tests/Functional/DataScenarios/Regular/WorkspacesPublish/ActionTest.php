@@ -91,6 +91,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyTranslatedContent(): void
+    {
+        parent::modifyTranslatedContent();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContent.csv');
+    }
+
+    #[Test]
     public function hideContent(): void
     {
         parent::hideContent();
