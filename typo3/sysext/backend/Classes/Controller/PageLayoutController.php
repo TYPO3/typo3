@@ -607,22 +607,12 @@ class PageLayoutController
             return null;
         }
 
-        if (isset($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-            // Exclude doktypes, set via tsConfig
-            $excludeDokTypes = GeneralUtility::intExplode(',', (string)($tsConfig['TCEMAIN.']['preview.']['disableButtonForDokType'] ?? ''), true);
-        } else {
-            // Exclude default doktypes: sysfolders and spacers
-            $excludeDokTypes = [
-                PageRepository::DOKTYPE_SYSFOLDER,
-                PageRepository::DOKTYPE_SPACER,
-            ];
-        }
-
-        if (in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
+        $previewUriBuilder = PreviewUriBuilder::create($this->pageinfo);
+        if (!$previewUriBuilder->isPreviewable()) {
             return null;
         }
 
-        $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
+        $previewDataAttributes = $previewUriBuilder
             ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
             ->withLanguage($this->currentSelectedLanguage)
             ->buildDispatcherDataAttributes();

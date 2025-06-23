@@ -173,7 +173,7 @@ class TranslationStatusController extends InfoModuleController
                 . ((string)$data['row']['nav_title'] !== '' ? ' <span>[Nav: <em>' . htmlspecialchars(GeneralUtility::fixed_lgd_cs($data['row']['nav_title'], $titleLen)) . '</em>]</span>' : '')
                 . '</div>'
                 . '</td>';
-            $previewUriBuilder = PreviewUriBuilder::create((int)$data['row']['uid']);
+            $previewUriBuilder = PreviewUriBuilder::create($data['row']);
             // DEFAULT language:
             $pageTranslationVisibility = new PageTranslationVisibility((int)($data['row']['l18n_cfg'] ?? 0));
             $status = $pageTranslationVisibility->shouldBeHiddenInDefaultLanguage() ? 'danger' : 'success';

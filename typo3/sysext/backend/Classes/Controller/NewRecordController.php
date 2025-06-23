@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\DataHandling\PageDoktypeRegistry;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -270,22 +269,9 @@ class NewRecordController
 
         if ($this->pageinfo['uid'] ?? false) {
             // View
-            $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid']);
-            if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-                $excludeDokTypes = GeneralUtility::intExplode(
-                    ',',
-                    (string)$pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'],
-                    true
-                );
-            } else {
-                // exclude sysfolders and spacers by default
-                $excludeDokTypes = [
-                    PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_SPACER,
-                ];
-            }
-            if (!in_array((int)$this->pageinfo['doktype'], $excludeDokTypes, true)) {
-                $previewDataAttributes = PreviewUriBuilder::create((int)$this->pageinfo['uid'])
+            $previewUriBuilder = PreviewUriBuilder::create($this->pageinfo);
+            if ($previewUriBuilder->isPreviewable()) {
+                $previewDataAttributes = $previewUriBuilder
                     ->withRootLine(BackendUtility::BEgetRootLine($this->pageinfo['uid']))
                     ->buildDispatcherDataAttributes();
                 $viewButton = $buttonBar->makeLinkButton()

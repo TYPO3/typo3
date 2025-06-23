@@ -153,9 +153,8 @@ class LatestChangedPagesWidget implements WidgetInterface, RequestAwareWidgetInt
             $page['rootline'] = $this->getRootLine($pageId);
 
             $uriPageId = $page['pageRecord']['sys_language_uid'] > 0 ? $page['pageRecord']['l10n_parent'] : $page['pageRecord']['uid'];
-            $page['viewLink'] = (string)PreviewUriBuilder::create($uriPageId)
+            $page['viewLink'] = (string)PreviewUriBuilder::create($page['pageRecord'])
                 ->withRootLine(BackendUtility::BEgetRootLine($uriPageId))
-                ->withLanguage((int)$page['pageRecord']['sys_language_uid'])
                 ->buildUri();
             $page['userName'] = $userNames[$page['history']['userid']]['username'] ?? '';
             $page['realName'] = $userNames[$page['history']['userid']]['realName'] ?? '';

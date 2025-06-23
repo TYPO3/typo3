@@ -65,7 +65,7 @@ class SortSubPagesController
         // Doc header handling
         $view->getDocHeaderComponent()->setMetaInformation($pageInformation);
         $buttonBar = $view->getDocHeaderComponent()->getButtonBar();
-        $previewDataAttributes = PreviewUriBuilder::create($parentPageUid)
+        $previewDataAttributes = PreviewUriBuilder::create($pageInformation)
             ->withRootLine(BackendUtility::BEgetRootLine($parentPageUid))
             ->buildDispatcherDataAttributes();
         $viewButton = $buttonBar->makeLinkButton()

@@ -391,7 +391,7 @@ class PageInformationController extends InfoModuleController
                             'returnUrl' => $request->getAttribute('normalizedParams')->getRequestUri(),
                         ];
                         $url = (string)$this->uriBuilder->buildUriFromRoute('record_edit', $urlParameters);
-                        $attributes = PreviewUriBuilder::create((int)$row['uid'])
+                        $attributes = PreviewUriBuilder::create($row)
                             ->withRootLine(BackendUtility::BEgetRootLine($row['uid']))
                             ->serializeDispatcherAttributes();
                         $editButton =

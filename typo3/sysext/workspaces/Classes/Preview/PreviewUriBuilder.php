@@ -160,14 +160,14 @@ class PreviewUriBuilder
 
     protected function createPreviewUriForElement(string $table, int $uid, ?array $liveRecord = null, ?array $versionRecord = null): ?UriInterface
     {
-        if ($table === 'pages') {
-            return BackendPreviewUriBuilder::create((int)BackendUtility::getLiveVersionIdOfRecord('pages', $uid))
-                ->buildUri();
-        }
-
         if ($liveRecord === null) {
             $liveRecord = BackendUtility::getLiveVersionOfRecord($table, $uid);
         }
+
+        if ($table === 'pages') {
+            return BackendPreviewUriBuilder::create($liveRecord)->buildUri();
+        }
+
         if ($versionRecord === null) {
             $versionRecord = BackendUtility::getRecord($table, $uid);
         }
