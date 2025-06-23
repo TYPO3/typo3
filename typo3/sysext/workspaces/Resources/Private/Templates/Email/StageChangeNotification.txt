@@ -5,7 +5,7 @@
 At the TYPO3 site "{typo3.sitename}" in workspace "{workspace.title}" ({workspace.uid}) the stage has changed to "{nextStage}" for the element(s):
 
 <f:for each="{affectedElements}" as="element">
- *{element.0}:{element.1}
+ *{element.table}:{element.uid}
 </f:for>
 
 The first entry was "{recordTitle}" at location "{rootLine}" in the page tree.

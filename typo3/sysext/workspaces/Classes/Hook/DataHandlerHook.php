@@ -46,7 +46,8 @@ use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
  * Contains some parts for staging, versioning and workspaces
- * to interact with the TYPO3 Core Engine
+ * to interact with the TYPO3 Core Engine.
+ *
  * @internal This is a specific hook implementation and is not considered part of the Public TYPO3 API.
  */
 #[Autoconfigure(public: true)]
@@ -54,9 +55,9 @@ class DataHandlerHook
 {
     /**
      * For accumulating information about workspace stages raised
-     * on elements so a single mail is sent as notification.
+     * on elements so a single email is sent as notification.
      */
-    protected array $notificationEmailInfo = [];
+    protected array $notificationInfo = [];
 
     /**
      * Contains remapped IDs.
@@ -79,7 +80,7 @@ class DataHandlerHook
     public function processCmdmap_beforeStart(DataHandler $dataHandler)
     {
         // Reset notification array
-        $this->notificationEmailInfo = [];
+        $this->notificationInfo = [];
         // Resolve dependencies of version/workspaces actions:
         $dataHandler->cmdmap = GeneralUtility::makeInstance(CommandMap::class, $dataHandler->cmdmap, $dataHandler->BE_USER->workspace)->process()->get();
     }
@@ -142,37 +143,56 @@ class DataHandlerHook
      */
     public function processCmdmap_afterFinish(DataHandler $dataHandler): void
     {
-        foreach ($this->notificationEmailInfo as $groupedNotificationInformation) {
+        foreach ($this->notificationInfo as $groupedNotificationInformation) {
             $emails = (array)$groupedNotificationInformation['recipients'];
-            if (empty($emails)) {
-                continue;
+            $affectedElements = [];
+            foreach ($groupedNotificationInformation['elements'] as $elementInfo) {
+                $elementTable = $elementInfo['table'];
+                $elementUid = (int)$elementInfo['uid'];
+                $record = BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
+                $affectedElements[] = [
+                    // 0 and 1 are kept for legacy reasons (could be used in email templates)
+                    0 => $elementTable,
+                    1 => $elementUid,
+                    'table' => $elementTable,
+                    'uid' => $elementUid,
+                    'record' => $record,
+                ];
             }
-            $workspaceRec = $groupedNotificationInformation['shared'][0];
-            if (!is_array($workspaceRec)) {
-                continue;
-            }
+
             $message = new StageChangeMessage(
-                workspaceRecord: $workspaceRec,
-                stageId: (int)$groupedNotificationInformation['shared'][1],
-                affectedElements: $groupedNotificationInformation['elements'],
-                comment: $groupedNotificationInformation['shared'][2],
+                workspaceRecord: $groupedNotificationInformation['workspaceInfo'],
+                stageId: (int)$groupedNotificationInformation['stageId'],
+                affectedElements: $affectedElements,
+                comment: $groupedNotificationInformation['comment'],
                 recipients: $emails,
                 currentUserRecord: $dataHandler->BE_USER->user,
             );
             $this->messageBus->dispatch($message);
             if ($dataHandler->enableLogging) {
-                [$elementTable, $elementUid] = reset($groupedNotificationInformation['elements']);
                 // @todo: Clean up $this->notificationEmailInfo to create a better data object from it, maybe
                 //        instances of StageChangeMessage() directly. Since this is "after finish", we can
                 //        probably not add the record within $this->notificationEmailInfo since DH may have
-                //        changed it again. But we want to get the record at least only once here  and submit
+                //        changed it again. But we want to get the record at least only once here and submit
                 //        it within StageChangeMessage(), so it does not have to fetch it again.
-                $record = BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
-                $dataHandler->log($elementTable, $elementUid, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Notification email for stage change was sent to "{recipients}"', null, ['recipients' => implode('", "', array_column($emails, 'email'))], (int)$record['pid']);
+                // @todo: Consider if we should actually log this at all?
+                foreach ($affectedElements as $elementInfo) {
+                    $dataHandler->log(
+                        $elementInfo['table'],
+                        $elementInfo['uid'],
+                        DatabaseAction::VERSIONIZE,
+                        null,
+                        SystemLogErrorClassification::MESSAGE,
+                        'Notification email for stage change was sent to "{recipients}"',
+                        null,
+                        ['recipients' => implode('", "', array_column($emails, 'email'))],
+                        (int)($elementInfo['record']['pid'] ?? -1)
+                    );
+                }
             }
         }
         // Reset notification array
-        $this->notificationEmailInfo = [];
+        $this->notificationInfo = [];
         // Reset remapped IDs
         $this->remappedIds = [];
     }
@@ -258,11 +278,9 @@ class DataHandlerHook
         $workspaceId = (int)$workspaceInfo['uid'];
         // Write the stage change to history
         $historyStore = $this->getRecordHistoryStore($workspaceId, $dataHandler->BE_USER);
-        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => $stageId, 'comment' => $comment]);
+        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => $stageId, 'comment' => $comment, 'recipients' => $notificationAlternativeRecipients]);
         if ((int)$workspaceInfo['stagechg_notification'] > 0) {
-            $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['shared'] = [$workspaceInfo, $stageId, $comment];
-            $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['elements'][] = [$table, $id];
-            $this->notificationEmailInfo[$workspaceInfo['uid'] . ':' . $stageId . ':' . $comment]['recipients'] = $notificationAlternativeRecipients;
+            $this->notificationInfo = $this->createNotificationInformation($this->notificationInfo, $workspaceInfo, $table, $id, $stageId, $comment, $notificationAlternativeRecipients);
         }
     }
 
@@ -434,14 +452,18 @@ class DataHandlerHook
         $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was updated. (Online version)', null, ['table' => $table, 'uid' => $id], (int)$swapVersion['pid']);
         $dataHandler->setHistory($table, $id);
 
-        $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
-        $notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
-        $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
-        $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
-        $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
+        $this->notificationInfo = $this->createNotificationInformation(
+            $this->notificationInfo,
+            $wsAccess,
+            $table,
+            $id,
+            StagesService::STAGE_PUBLISH_EXECUTE_ID,
+            $comment,
+            $notificationAlternativeRecipients
+        );
         // Write the stage change to the history
         $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
-        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
+        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment, 'recipients' => $notificationAlternativeRecipients]);
 
         // Clear cache:
         $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
@@ -552,7 +574,7 @@ class DataHandlerHook
      * @param array $versionData Version record data
      * @param DataHandler $dataHandler Calling data-handler object
      */
-    protected function version_swap_processFields($tableName, array $configuration, array $liveData, array $versionData, DataHandler $dataHandler)
+    protected function version_swap_processFields(string $tableName, array $configuration, array $liveData, array $versionData, DataHandler $dataHandler)
     {
         if (RelationshipType::fromTcaConfiguration($configuration) !== RelationshipType::OneToMany) {
             return;
@@ -627,15 +649,19 @@ class DataHandlerHook
         $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was published.', null, ['table' => $table, 'uid' => $id], (int)$newRecordInWorkspace['pid']);
         $dataHandler->setHistory($table, $id);
 
-        $stageId = StagesService::STAGE_PUBLISH_EXECUTE_ID;
-        $notificationEmailInfoKey = $wsAccess['uid'] . ':' . $stageId . ':' . $comment;
-        $this->notificationEmailInfo[$notificationEmailInfoKey]['shared'] = [$wsAccess, $stageId, $comment];
-        $this->notificationEmailInfo[$notificationEmailInfoKey]['elements'][] = [$table, $id];
-        $this->notificationEmailInfo[$notificationEmailInfoKey]['recipients'] = $notificationAlternativeRecipients;
-        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', null, ['stage' => $stageId, 'comment' => substr($comment, 0, 100)], $newRecordInWorkspace['pid']);
+        $this->notificationInfo = $this->createNotificationInformation(
+            $this->notificationInfo,
+            $wsAccess,
+            $table,
+            $id,
+            StagesService::STAGE_PUBLISH_EXECUTE_ID,
+            $comment,
+            $notificationAlternativeRecipients
+        );
+        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', null, ['stage' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => substr($comment, 0, 100)], $newRecordInWorkspace['pid']);
         // Write the stage change to the history (usually this is done in updateDB in DataHandler, but we do a manual SQL change)
         $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
-        $historyStore->changeStageForRecord($table, $id, ['current' => (int)$newRecordInWorkspace['t3ver_stage'], 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment]);
+        $historyStore->changeStageForRecord($table, $id, ['current' => (int)$newRecordInWorkspace['t3ver_stage'], 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment, 'recipients' => $notificationAlternativeRecipients]);
 
         // Clear cache
         $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
@@ -870,6 +896,19 @@ class DataHandlerHook
             $GLOBALS['EXEC_TIME'],
             $workspaceId
         );
+    }
+
+    protected function createNotificationInformation(array $notificationBatch, array $workspaceInfo, string $table, int $id, int $stageId, string $comment, array $recipients): array
+    {
+        $identifier = $workspaceInfo['uid'] . ':' . $stageId . ':' . $comment;
+        if (!isset($notificationBatch[$identifier])) {
+            $notificationBatch[$identifier]['workspaceInfo'] = $workspaceInfo;
+            $notificationBatch[$identifier]['stageId'] = $stageId;
+            $notificationBatch[$identifier]['comment'] = $comment;
+            $notificationBatch[$identifier]['recipients'] = $recipients;
+        }
+        $notificationBatch[$identifier]['elements'][] = ['table' => $table, 'uid' => $id];
+        return $notificationBatch;
     }
 
     protected function createRelationHandlerInstance(): RelationHandler
