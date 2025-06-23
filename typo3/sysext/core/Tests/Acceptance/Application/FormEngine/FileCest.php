@@ -64,7 +64,7 @@ final class FileCest
 
         $I->click($hideButtonSelector);
         $I->click(self::$saveButtonLink);
-        $I->seeElement('.tab-content .t3-form-field-container-inline-hidden');
+        $I->seeElement('.tab-content .t3-form-field-container-files-hidden');
     }
 
     public function deleteFalRelation(ApplicationTester $I, ModalDialog $modalDialog): void
