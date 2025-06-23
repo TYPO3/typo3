@@ -1,0 +1,11 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  TYPO3Tests\ResolverdelegateTest\:
+    resource: '../Classes/*'
+
+  TYPO3Tests\ResolverdelegateTest\Fluid\TestViewHelperResolverDelegate:
+    public: true

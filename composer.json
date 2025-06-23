@@ -104,7 +104,7 @@
 		"typo3/cms-cli": "^3.1.1",
 		"typo3/cms-composer-installers": "^5.0.1",
 		"typo3/html-sanitizer": "^2.2.0",
-		"typo3fluid/fluid": "^4.2.0"
+		"typo3fluid/fluid": "^4.3.0"
 	},
 	"require-dev": {
 		"bnf/phpstan-psr-container": "^1.1.0",
@@ -306,6 +306,7 @@
 			"TYPO3Tests\\ParentChildTranslation\\": "typo3/sysext/extbase/Tests/Functional/Fixtures/Extensions/parent_child_translation/Classes/",
 			"TYPO3Tests\\TestEid\\": "typo3/sysext/core/Tests/Functional/Fixtures/Extensions/test_eid/Classes/",
 			"TYPO3Tests\\FluidTest\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/fluid_test/Classes/",
+			"TYPO3Tests\\ResolverdelegateTest\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/resolverdelegate_test/Classes/",
 			"TYPO3Tests\\TestTranslate\\": "typo3/sysext/fluid/Tests/Functional/Fixtures/Extensions/test_translate/Classes/",
 			"TYPO3Tests\\FormCachingTests\\": "typo3/sysext/form/Tests/Functional/Fixtures/Extensions/form_caching_tests/Classes/",
 			"TYPO3Tests\\RequestMirror\\": "typo3/sysext/frontend/Tests/Functional/Fixtures/Extensions/test_request_mirror/Classes/",
