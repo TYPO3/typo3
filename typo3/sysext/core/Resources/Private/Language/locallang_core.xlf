@@ -1446,7 +1446,13 @@ Do you want to refresh it now?</source>
 			<trans-unit id="toolbarItems.sysinfo.applicationcontext" resname="toolbarItems.sysinfo.applicationcontext">
 				<source>Application Context</source>
 			</trans-unit>
-			<trans-unit id="toolbarItems.sysinfo.composerMode" resname="toolbarItems.sysinfo.composerMode">
+			<trans-unit id="toolbarItems.sysinfo.installationMethod" resname="toolbarItems.sysinfo.installationMethod">
+				<source>Installation Method</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.installationMethod.classic" resname="toolbarItems.sysinfo.installationMethod.classic">
+				<source>Classic mode</source>
+			</trans-unit>
+			<trans-unit id="toolbarItems.sysinfo.installationMethod.composer" resname="toolbarItems.sysinfo.installationMethod.composer">
 				<source>Composer mode</source>
 			</trans-unit>
 			<trans-unit id="toolbarItems.sysinfo.gitrevision" resname="toolbarItems.sysinfo.gitrevision">

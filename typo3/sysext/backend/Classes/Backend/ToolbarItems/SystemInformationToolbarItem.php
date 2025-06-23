@@ -170,12 +170,12 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
     protected function collectInformation(): void
     {
         $this->addTypo3Version();
+        $this->addInstallationMode();
         $this->addWebServer();
         $this->addPhpVersion();
         $this->addDebugger();
         $this->addDatabase();
         $this->addApplicationContext();
-        $this->addComposerMode();
         $this->addGitRevision();
         $this->addOperatingSystem();
         $this->eventDispatcher->dispatch(new SystemInformationToolbarCollectorEvent($this));
@@ -188,6 +188,17 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.typo3-version',
             'value' => $this->typo3Version->getVersion(),
             'iconIdentifier' => 'information-typo3-version',
+        ];
+    }
+
+    protected function addInstallationMode(): void
+    {
+        $this->systemInformation[] = [
+            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.installationMethod',
+            'value' => Environment::isComposerMode() ?
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.installationMethod.composer') :
+                $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.installationMethod.classic'),
+            'iconIdentifier' => 'actions-package',
         ];
     }
 
@@ -254,21 +265,6 @@ class SystemInformationToolbarItem implements ToolbarItemInterface, RequestAware
             'value'  => (string)$applicationContext,
             'status' => $applicationContext->isProduction() ? InformationStatus::STATUS_OK : InformationStatus::STATUS_WARNING,
             'iconIdentifier' => 'information-application-context',
-        ];
-    }
-
-    /**
-     * Adds the information if the Composer mode is enabled or disabled to the displayed system information
-     */
-    protected function addComposerMode(): void
-    {
-        if (!Environment::isComposerMode()) {
-            return;
-        }
-        $this->systemInformation[] = [
-            'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:toolbarItems.sysinfo.composerMode',
-            'value' => $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.enabled'),
-            'iconIdentifier' => 'information-composer-mode',
         ];
     }
 
