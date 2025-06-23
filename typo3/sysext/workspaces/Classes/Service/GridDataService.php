@@ -70,11 +70,6 @@ class GridDataService
     public const GridColumn_CollectionChildren = 'Workspaces_CollectionChildren';
 
     /**
-     * Id of the current active workspace.
-     */
-    protected int $currentWorkspace = 0;
-
-    /**
      * Version record information (filtered, sorted and limited)
      */
     protected array $dataArray = [];
@@ -128,7 +123,6 @@ class GridDataService
         $limit = isset($parameter->limit) ? (int)$parameter->limit : 30;
         $this->sort = $parameter->sort ?? 't3ver_oid';
         $this->sortDir = $parameter->dir ?? 'ASC';
-        $this->currentWorkspace = $currentWorkspace;
         $this->generateDataArray($versions, $filterTxt);
         return [
             // Only count parent records for pagination
