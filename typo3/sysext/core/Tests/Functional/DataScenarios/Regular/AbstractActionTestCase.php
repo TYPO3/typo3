@@ -89,6 +89,11 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdSecond, ['header' => 'Testing #1']);
     }
 
+    public function modifyContentWithTranslations(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThird, ['header' => 'Testing #1']);
+    }
+
     public function modifySoftDeletedContent(): void
     {
         $this->actionService->deleteRecord(self::TABLE_Content, self::VALUE_ContentIdSecond);
@@ -98,6 +103,18 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
     public function modifyTranslatedContent(): void
     {
         $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['header' => 'Testing Translation #3']);
+    }
+
+    public function modifyTranslatedContentThenModifyDefaultLanguageContent(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['header' => 'Testing Translation #3']);
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThird, ['header' => 'Testing #3']);
+    }
+
+    public function modifyTranslatedContentThenMoveDefaultLanguageContent(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized, ['header' => 'Testing Translation #3']);
+        $this->actionService->moveRecord(self::TABLE_Content, self::VALUE_ContentIdThird, -self::VALUE_ContentIdFirst);
     }
 
     public function modifyDefaultContentToLanguageAll(): void
@@ -417,6 +434,17 @@ abstract class AbstractActionTestCase extends AbstractDataHandlerActionTestCase
 
     public function modifyPage(): void
     {
+        $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
+    }
+
+    public function modifyTranslatedPage(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Page, 91, ['title' => 'Testing Translated #1']);
+    }
+
+    public function modifyTranslatedPageThenModifyPage(): void
+    {
+        $this->actionService->modifyRecord(self::TABLE_Page, 91, ['title' => 'Testing Translated #1']);
         $this->actionService->modifyRecord(self::TABLE_Page, self::VALUE_PageId, ['title' => 'Testing #1']);
     }
 

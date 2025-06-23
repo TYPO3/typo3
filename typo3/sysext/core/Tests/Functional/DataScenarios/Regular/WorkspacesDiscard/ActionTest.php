@@ -76,6 +76,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyContentWithTranslations(): void
+    {
+        parent::modifyContentWithTranslations();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWithTranslations.csv');
+    }
+
+    #[Test]
     public function modifySoftDeletedContent(): void
     {
         parent::modifySoftDeletedContent();
@@ -89,6 +97,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::modifyTranslatedContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContent.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedContentThenModifyDefaultLanguageContent(): void
+    {
+        parent::modifyTranslatedContentThenModifyDefaultLanguageContent();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContentThenModifyDefaultLanguageContent.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedContentThenMoveDefaultLanguageContent(): void
+    {
+        parent::modifyTranslatedContentThenMoveDefaultLanguageContent();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContentThenMoveDefaultLanguageContent.csv');
     }
 
     #[Test]
@@ -396,6 +420,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::modifyPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Page, self::VALUE_PageId);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyPage.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedPage(): void
+    {
+        parent::modifyTranslatedPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, 91);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedPage.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedPageThenModifyPage(): void
+    {
+        parent::modifyTranslatedPageThenModifyPage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Page, 91);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedPageThenModifyPage.csv');
     }
 
     #[Test]

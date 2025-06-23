@@ -83,6 +83,14 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
+    public function modifyContentWithTranslations(): void
+    {
+        parent::modifyContentWithTranslations();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdThird);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentWithTranslations.csv');
+    }
+
+    #[Test]
     public function modifySoftDeletedContent(): void
     {
         parent::modifySoftDeletedContent();
@@ -96,6 +104,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         parent::modifyTranslatedContent();
         $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
         $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContent.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedContentThenModifyDefaultLanguageContent(): void
+    {
+        parent::modifyTranslatedContentThenModifyDefaultLanguageContent();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContentThenModifyDefaultLanguageContent.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedContentThenMoveDefaultLanguageContent(): void
+    {
+        parent::modifyTranslatedContentThenMoveDefaultLanguageContent();
+        $this->actionService->publishRecord(self::TABLE_Content, self::VALUE_ContentIdThirdLocalized);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedContentThenMoveDefaultLanguageContent.csv');
     }
 
     #[Test]
@@ -635,6 +659,22 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
         $responseSections = ResponseContent::fromString((string)$response->getBody())->getSections();
         self::assertThat($responseSections, (new HasRecordConstraint())
             ->setTable(self::TABLE_Page)->setField('title')->setValues('Testing #1'));
+    }
+
+    #[Test]
+    public function modifyTranslatedPage(): void
+    {
+        parent::modifyTranslatedPage();
+        $this->actionService->publishRecord(self::TABLE_Page, 91);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedPage.csv');
+    }
+
+    #[Test]
+    public function modifyTranslatedPageThenModifyPage(): void
+    {
+        parent::modifyTranslatedPageThenModifyPage();
+        $this->actionService->publishRecord(self::TABLE_Page, 91);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTranslatedPageThenModifyPage.csv');
     }
 
     #[Test]
