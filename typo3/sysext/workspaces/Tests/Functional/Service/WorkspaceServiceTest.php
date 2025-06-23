@@ -118,25 +118,6 @@ final class WorkspaceServiceTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function getPagesWithVersionsInTableReturnsPagesWithVersionsInTable(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
-        $result = $this->get(WorkspaceService::class)->getPagesWithVersionsInTable(91);
-        $expected = [
-            'sys_category' => [],
-            'sys_file_collection' => [],
-            'sys_file_metadata' => [],
-            'sys_file_reference' => [],
-            'backend_layout' => [],
-            'tt_content' => [
-                1 => true,
-                7 => true,
-            ],
-        ];
-        self::assertSame($expected, $result);
-    }
-
-    #[Test]
     public function hasPageRecordVersionsReturnsTrueForPageWithVersions(): void
     {
         $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
