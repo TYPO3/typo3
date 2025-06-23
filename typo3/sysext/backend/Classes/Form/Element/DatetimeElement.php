@@ -107,6 +107,10 @@ class DatetimeElement extends AbstractFormElement
             // Ensure dbType values (see DatabaseRowDateTimeFields) are converted to a UNIX timestamp before rendering read-only
             if (!empty($itemValue) && !MathUtility::canBeInterpretedAsInteger($itemValue)) {
                 $itemValue = (new \DateTime((string)$itemValue))->getTimestamp();
+                if ($format === 'date' || $format === 'datetime') {
+                    // Apply same fake UTC-0 normalization as in DataHandler
+                    $itemValue -= (int)date('Z', $itemValue);
+                }
             }
             // Format the unix-timestamp to the defined format (date/year etc)
             $itemValue = $this->formatValue($format, $itemValue);
