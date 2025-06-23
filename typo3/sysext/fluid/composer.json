@@ -22,7 +22,7 @@
 		"symfony/dependency-injection": "^7.2",
 		"typo3/cms-core": "13.4.*@dev",
 		"typo3/cms-extbase": "13.4.*@dev",
-		"typo3fluid/fluid": "^4.2.0"
+		"typo3fluid/fluid": "^4.3.0"
 	},
 	"conflict": {
 		"typo3/cms": "*"
