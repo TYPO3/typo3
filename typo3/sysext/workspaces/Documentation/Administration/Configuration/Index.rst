@@ -15,11 +15,9 @@ There are a number of User TSconfig and Page TSconfig properties related to work
    but apply to workspaces.
 
 
-.. only:: html
-
-   .. contents::
-      :local:
-      :depth: 3
+.. contents::
+  :local:
+  :depth: 3
 
 
 .. _pagetsconfig:
