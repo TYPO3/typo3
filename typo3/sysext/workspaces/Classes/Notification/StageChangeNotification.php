@@ -53,10 +53,15 @@ readonly class StageChangeNotification
      */
     public function notifyStageChange(StageChangeMessage $message): void
     {
+        if ($message->recipients === []) {
+            // No email recipients, nothing to do
+            return;
+        }
         $affectedElements = $message->affectedElements;
-        [$elementTable, $elementUid] = reset($affectedElements);
-        $elementUid = (int)$elementUid;
-        $elementRecord = (array)BackendUtility::getRecord($elementTable, $elementUid, '*', '', false);
+        $firstElement = reset($affectedElements);
+        $elementTable = $firstElement['table'];
+        $elementUid = (int)$firstElement['uid'];
+        $elementRecord = $firstElement['record'];
         $recordTitle = BackendUtility::getRecordTitle($elementTable, $elementRecord);
         $pageUid = $this->findFirstPageId($elementTable, $elementUid, $elementRecord);
         $emailConfig = BackendUtility::getPagesTSconfig($pageUid)['tx_workspaces.']['emails.'] ?? [];
@@ -85,6 +90,9 @@ readonly class StageChangeNotification
 
         $sentEmails = [];
         foreach ($message->recipients as $recipientData) {
+            if (!isset($recipientData['email'])) {
+                continue;
+            }
             // don't send an email twice
             if (in_array($recipientData['email'], $sentEmails, true)) {
                 continue;
