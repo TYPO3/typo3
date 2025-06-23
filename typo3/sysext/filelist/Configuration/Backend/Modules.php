@@ -21,7 +21,7 @@ return [
         'moduleData' => [
             'displayThumbs' => true,
             'clipBoard' => true,
-            'sort' => 'file',
+            'sort' => 'name',
             'reverse' => false,
             'viewMode' => null,
         ],
