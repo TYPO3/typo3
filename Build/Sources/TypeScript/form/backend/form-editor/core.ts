@@ -1677,6 +1677,7 @@ export class Factory {
     };
 
     const formElement: FormElement = createModel(concreteConfiguration);
+
     formElement.set('__parentRenderable', parentFormElement || null, disablePublishersOnSet);
 
     for (const [collectionName, collectionElementConfigurations] of Object.entries(collections)) {
@@ -1699,6 +1700,16 @@ export class Factory {
           true
         );
         ++i;
+      }
+    }
+
+    // Register property change publishers for properties that have not
+    // been configured yet, but may be added by inspector components.
+    if (Array.isArray(formElementTypeDefinition.editors)) {
+      for (const editorConfig of formElementTypeDefinition.editors) {
+        if (editorConfig.propertyPath) {
+          formElement.on(editorConfig.propertyPath, 'core/formElement/somePropertyChanged');
+        }
       }
     }
 
