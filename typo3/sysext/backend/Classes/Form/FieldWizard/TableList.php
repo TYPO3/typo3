@@ -72,7 +72,7 @@ class TableList extends AbstractNode
                     // Initialize attributes
                     $attributes = [
                         'class' => 'btn btn-default t3js-element-browser',
-                        'data-mode' => 'db',
+                        'data-mode' => $tableName === 'sys_file' ? 'file' : 'db',
                         'data-params' => $itemName . '|||' . $tableName,
                     ];
 
