@@ -21,44 +21,41 @@ use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
 use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Versioning\VersionState;
-use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 
 /**
- * Listener to add classes to page tree items, which contain workspace versions, to highlight them
+ * Page tree controller listener to add StatusInformation badges for pages having workspace changes.
  *
  * @internal
  */
-final class PageTreeItemsHighlighter
+final readonly class PageTreeItemsHighlighter
 {
     public function __construct(
-        private readonly WorkspaceService $workspaceService
+        private ConnectionPool $connectionPool,
+        private TcaSchemaFactory $tcaSchemaFactory,
     ) {}
 
     #[AsEventListener('typo3-workspaces/page-tree-items-highlighter')]
     public function __invoke(AfterPageTreeItemsPreparedEvent $event): void
     {
         $items = $event->getItems();
-        $workspaceId = $this->getBackendUser()->workspace;
-
-        if ($workspaceId <= 0 || $items === []) {
+        $workspaceUid = $this->getBackendUser()->workspace;
+        if ($workspaceUid <= 0 || $items === []) {
             return;
         }
-
+        $pageIdsWithVersionedRecords = $this->getPageUidsWithVersionedRecords($workspaceUid);
         foreach ($items as &$item) {
             $page = $item['_page'] ?? [];
-            if (!is_array($page) || $page === []) {
+            if (!is_array($page) || !isset($page['uid']) || (int)$page['uid'] <= 0) {
                 continue;
             }
-
-            if ((int)($page['t3ver_wsid'] ?? 0) === $workspaceId
-                && (
-                    (int)($page['t3ver_oid'] ?? 0) > 0
-                    || VersionState::tryFrom($page['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER
-                )
-            ) {
+            if ((int)($page['t3ver_wsid'] ?? 0) === $workspaceUid) {
+                // The page is an overlay in this workspace. Add info about this.
                 $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.has_changes');
                 if (VersionState::tryFrom($page['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                     $label = $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.is_new');
@@ -67,12 +64,8 @@ final class PageTreeItemsHighlighter
                     label: $label,
                     severity: ContextualFeedbackSeverity::WARNING,
                 );
-            } elseif (
-                $this->workspaceService->hasPageRecordVersions(
-                    $workspaceId,
-                    (int)(($page['t3ver_oid'] ?? 0) ?: ($page['uid'] ?? 0))
-                )
-            ) {
+            } elseif (isset($pageIdsWithVersionedRecords[$page['uid']])) {
+                // The page contains workspace records in current BE user selected workspace. Add info about this.
                 $item['statusInformation'][] = new StatusInformation(
                     label: $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.contains_changes'),
                     severity: ContextualFeedbackSeverity::WARNING,
@@ -80,8 +73,35 @@ final class PageTreeItemsHighlighter
             }
         }
         unset($item);
-
         $event->setItems($items);
+    }
+
+    /**
+     * Iterate all workspace aware TCA tables to create a list of page uids
+     * that have versioned records on it.
+     */
+    private function getPageUidsWithVersionedRecords(int $workspaceUid): array
+    {
+        $pageUidsWithVersionedRecords = [];
+        foreach ($this->tcaSchemaFactory->all() as $tableName => $schema) {
+            if ($tableName === 'pages' || !$schema->isWorkspaceAware()) {
+                continue;
+            }
+            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
+            // Not adding DeletedRestriction since workspace records are not soft-delete aware.
+            $queryBuilder->getRestrictions()->removeAll();
+            // Fetch distinct pids of all versioned records within given workspace of given table
+            $result = $queryBuilder
+                ->select('pid')
+                ->from($tableName)
+                ->where($queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceUid, Connection::PARAM_INT)))
+                ->groupBy('pid')
+                ->executeQuery();
+            while ($row = $result->fetchAssociative()) {
+                $pageUidsWithVersionedRecords[(int)$row['pid']] = true;
+            }
+        }
+        return $pageUidsWithVersionedRecords;
     }
 
     protected function getLanguageService(): LanguageService

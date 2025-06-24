@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Schema\Capability\RootLevelCapability;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -41,13 +40,12 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * @internal
+ *
+ * @todo: This is public:true only because testing-framework uses GU::makeInstance() on it. Get rid of this.
  */
 #[Autoconfigure(public: true)]
-class WorkspaceService implements SingletonInterface
+readonly class WorkspaceService
 {
-    protected array $versionsOnPageCache = [];
-    protected array $pagesWithVersionsInTable = [];
-
     public const TABLE_WORKSPACE = 'sys_workspace';
     public const LIVE_WORKSPACE_ID = 0;
 
@@ -56,8 +54,9 @@ class WorkspaceService implements SingletonInterface
     public const PUBLISH_ACCESS_HIDE_ENTIRE_WORKSPACE_ACTION_DROPDOWN = 4;
 
     public function __construct(
-        private readonly TcaSchemaFactory $tcaSchemaFactory,
-        private readonly ConnectionPool $connectionPool,
+        private TcaSchemaFactory $tcaSchemaFactory,
+        private ConnectionPool $connectionPool,
+        private ResourceFactory $resourceFactory,
     ) {}
 
     /**
@@ -770,11 +769,9 @@ class WorkspaceService implements SingletonInterface
             return true;
         }
 
-        $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
-
         try {
-            $fileObject = $resourceFactory->getFileObject($fileId);
-        } catch (FileDoesNotExistException $e) {
+            $fileObject = $this->resourceFactory->getFileObject($fileId);
+        } catch (FileDoesNotExistException) {
             return false;
         }
 
@@ -867,83 +864,6 @@ class WorkspaceService implements SingletonInterface
             }
         }
         return $isNewPage;
-    }
-
-    /**
-     * Determines whether a page has workspace versions.
-     */
-    public function hasPageRecordVersions(int $workspaceId, int $pageId): bool
-    {
-        if ($workspaceId === 0 || $pageId === 0) {
-            return false;
-        }
-
-        if (isset($this->versionsOnPageCache[$workspaceId][$pageId])) {
-            return $this->versionsOnPageCache[$workspaceId][$pageId];
-        }
-
-        $this->versionsOnPageCache[$workspaceId][$pageId] = false;
-
-        foreach ($this->tcaSchemaFactory->all() as $tableName => $schema) {
-            if ($tableName === 'pages' || !$schema->isWorkspaceAware()) {
-                continue;
-            }
-
-            $pages = $this->fetchPagesWithVersionsInTable($workspaceId, $tableName);
-            // Early break on first match
-            if (!empty($pages[(string)$pageId])) {
-                $this->versionsOnPageCache[$workspaceId][$pageId] = true;
-                break;
-            }
-        }
-
-        return $this->versionsOnPageCache[$workspaceId][$pageId];
-    }
-
-    /**
-     * Gets all pages that have workspace versions in a particular table.
-     *
-     * Result:
-     * [
-     *   1 => true,
-     *   11 => true,
-     *   13 => true,
-     *   15 => true
-     * ],
-     */
-    protected function fetchPagesWithVersionsInTable(int $workspaceId, string $tableName): array
-    {
-        if ($workspaceId === 0) {
-            return [];
-        }
-
-        if (!isset($this->pagesWithVersionsInTable[$workspaceId])) {
-            $this->pagesWithVersionsInTable[$workspaceId] = [];
-        }
-
-        if (!isset($this->pagesWithVersionsInTable[$workspaceId][$tableName])) {
-            $this->pagesWithVersionsInTable[$workspaceId][$tableName] = [];
-
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            // Fetch pids of all versioned record within given workspace of given table
-            $result = $queryBuilder
-                ->select('pid')
-                ->from($tableName)
-                ->where($queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)))
-                ->groupBy('pid')
-                ->executeQuery();
-
-            $pageIds = [];
-            while ($row = $result->fetchAssociative()) {
-                $pageIds[$row['pid']] = true;
-            }
-
-            $this->pagesWithVersionsInTable[$workspaceId][$tableName] = $pageIds;
-        }
-
-        return $this->pagesWithVersionsInTable[$workspaceId][$tableName];
     }
 
     protected function getLanguageService(): LanguageService

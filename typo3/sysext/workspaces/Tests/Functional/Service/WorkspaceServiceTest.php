@@ -116,18 +116,4 @@ final class WorkspaceServiceTest extends FunctionalTestCase
         self::assertCount(1, $result['pages'], 'Wrong amount of page versions found within workspace 91');
         self::assertEquals(103, $result['pages'][0]['uid'], 'Wrong move-to pointer found for page 3 in workspace 91');
     }
-
-    #[Test]
-    public function hasPageRecordVersionsReturnsTrueForPageWithVersions(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
-        self::assertTrue($this->get(WorkspaceService::class)->hasPageRecordVersions(91, 7));
-    }
-
-    #[Test]
-    public function hasPageRecordVersionsReturnsFalseForPageWithoutVersions(): void
-    {
-        $this->importCSVDataSet(__DIR__ . '/Fixtures/WorkspaceServiceTestMovedContent.csv');
-        self::assertFalse($this->get(WorkspaceService::class)->hasPageRecordVersions(91, 3));
-    }
 }

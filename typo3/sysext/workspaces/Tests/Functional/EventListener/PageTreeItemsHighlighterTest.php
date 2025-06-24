@@ -20,35 +20,27 @@ namespace TYPO3\CMS\Workspaces\Tests\Functional\EventListener;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Controller\Event\AfterPageTreeItemsPreparedEvent;
 use TYPO3\CMS\Backend\Dto\Tree\Status\StatusInformation;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Http\Uri;
-use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Workspaces\EventListener\PageTreeItemsHighlighter;
-use TYPO3\CMS\Workspaces\Service\WorkspaceService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
 final class PageTreeItemsHighlighterTest extends FunctionalTestCase
 {
     protected array $coreExtensionsToLoad = ['workspaces'];
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
-        $backendUser = $this->setUpBackendUser(1);
-        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
-    }
-
     #[Test]
     public function statusInformationAddedToPageItems(): void
     {
-        $this->setWorkspaceId(91);
+        $this->importCSVDataSet(__DIR__ . '/../Fixtures/be_users.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/pages.csv');
         $this->importCSVDataSet(__DIR__ . '/../Fixtures/tt_content.csv');
+        $backendUser = $this->setUpBackendUser(1);
+        $languageService = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+        $GLOBALS['LANG'] = $languageService;
+        $GLOBALS['BE_USER']->workspace = 91;
 
         $input = [
             // root
@@ -123,44 +115,31 @@ final class PageTreeItemsHighlighterTest extends FunctionalTestCase
             ],
         ];
 
-        $afterPageTreeItemsPreparedEvent = new AfterPageTreeItemsPreparedEvent(
-            new ServerRequest(new Uri('https://example.com')),
-            $input
-        );
-
-        (new PageTreeItemsHighlighter($this->get(WorkspaceService::class)))($afterPageTreeItemsPreparedEvent);
-
         $expected = $input;
         $expected[1]['statusInformation'] = [
             new StatusInformation(
-                label: $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.contains_changes'),
+                label: $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.contains_changes'),
                 severity: ContextualFeedbackSeverity::WARNING
             ),
         ];
         $expected[4]['statusInformation'] = [
             new StatusInformation(
-                label: $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.has_changes'),
+                label: $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.has_changes'),
                 severity: ContextualFeedbackSeverity::WARNING
             ),
         ];
         $expected[6]['statusInformation'] = [
             new StatusInformation(
-                label: $this->getLanguageService()->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.is_new'),
+                label: $languageService->sL('LLL:EXT:workspaces/Resources/Private/Language/locallang.xlf:status.is_new'),
                 severity: ContextualFeedbackSeverity::WARNING
             ),
         ];
 
+        $afterPageTreeItemsPreparedEvent = new AfterPageTreeItemsPreparedEvent(
+            new ServerRequest(new Uri('https://example.com')),
+            $input
+        );
+        $this->get(PageTreeItemsHighlighter::class)($afterPageTreeItemsPreparedEvent);
         self::assertEquals($expected, $afterPageTreeItemsPreparedEvent->getItems());
-    }
-
-    protected function getLanguageService(): LanguageService
-    {
-        return $GLOBALS['LANG'];
-    }
-
-    protected function setWorkspaceId(int $workspaceId): void
-    {
-        $GLOBALS['BE_USER']->workspace = $workspaceId;
-        $this->get(Context::class)->setAspect('workspace', new WorkspaceAspect($workspaceId));
     }
 }
