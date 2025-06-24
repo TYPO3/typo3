@@ -21,7 +21,6 @@ use TYPO3\CMS\Backend\Routing\PreviewUriBuilder;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchema;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
@@ -423,17 +422,11 @@ class RecordProvider extends AbstractProvider
      */
     protected function getViewLink(): string
     {
-        $anchorSection = '';
-        $language = 0;
-        if ($this->table === 'tt_content') {
-            $anchorSection = '#c' . $this->record['uid'];
-            $language = (int)($this->record[$this->getLanguageField()] ?? 0);
-        }
-
-        return (string)PreviewUriBuilder::create($this->getPreviewPid())
-            ->withSection($anchorSection)
-            ->withLanguage($language)
-            ->buildUri();
+        return (string)PreviewUriBuilder::createForRecordPreview(
+            $this->table,
+            $this->record,
+            $this->pageRecord['uid'] ?? 0
+        )->buildUri();
     }
 
     /**
@@ -458,9 +451,7 @@ class RecordProvider extends AbstractProvider
      */
     protected function canBeViewed(): bool
     {
-        return $this->table === 'tt_content'
-            && $this->parentPageCanBeViewed()
-            && $this->previewLinkCanBeBuild();
+        return $this->previewLinkCanBeBuild();
     }
 
     /**
@@ -635,23 +626,6 @@ class RecordProvider extends AbstractProvider
     protected function isRecordCurrentBackendUser(): bool
     {
         return $this->table === 'be_users' && (int)($this->record['uid'] ?? 0) === $this->backendUser->getUserId();
-    }
-
-    /**
-     * Check whether the elements' parent page can be viewed
-     */
-    protected function parentPageCanBeViewed(): bool
-    {
-        if (!isset($this->pageRecord['uid']) || !($this->pageRecord['doktype'] ?? false)) {
-            // In case parent page record is invalid, the element can not be viewed
-            return false;
-        }
-
-        // Finally, we check whether the parent page has a "no view doktype" assigned
-        return !in_array((int)$this->pageRecord['doktype'], [
-            PageRepository::DOKTYPE_SPACER,
-            PageRepository::DOKTYPE_SYSFOLDER,
-        ], true);
     }
 
     protected function getIdentifier(): string
