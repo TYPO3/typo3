@@ -19,15 +19,17 @@ namespace TYPO3\CMS\Workspaces\Domain\Record;
 
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
- * Combined record class
+ * Represents a workspace record in the TYPO3 Workspaces extension.
  *
  * @internal
  */
-class WorkspaceRecord extends AbstractRecord
+class WorkspaceRecord
 {
     protected array $internalStages = [
         StagesService::STAGE_EDIT_ID => [
@@ -66,7 +68,27 @@ class WorkspaceRecord extends AbstractRecord
             $record = static::fetch('sys_workspace', $uid);
         }
 
-        return GeneralUtility::makeInstance(self::class, $record);
+        return new self($record);
+    }
+
+    public function __construct(array $record)
+    {
+        $this->record = $record;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getUid();
+    }
+
+    public function getUid(): int
+    {
+        return (int)$this->record['uid'];
+    }
+
+    public function getTitle(): string
+    {
+        return (string)$this->record['title'];
     }
 
     public function getOwners(): array
@@ -110,7 +132,7 @@ class WorkspaceRecord extends AbstractRecord
                 ->executeQuery();
 
             while ($record = $result->fetchAssociative()) {
-                $this->addStage(StageRecord::build($this, $record['uid'], $record));
+                $this->addStage(new StageRecord($this, $record));
             }
 
             $this->addStage($this->createInternalStage(StagesService::STAGE_PUBLISH_ID));
@@ -169,7 +191,7 @@ class WorkspaceRecord extends AbstractRecord
 
         $record = [
             'uid' => $stageId,
-            'title' => static::getLanguageService()->sL($this->internalStages[$stageId]['label']),
+            'title' => $this->getLanguageService()->sL($this->internalStages[$stageId]['label']),
         ];
 
         $fieldNamePrefix = $this->internalStages[$stageId]['name'] . '_';
@@ -177,8 +199,39 @@ class WorkspaceRecord extends AbstractRecord
             $record[$fieldName] = $this->record[$fieldNamePrefix . $fieldName] ?? null;
         }
 
-        $stage = StageRecord::build($this, $stageId, $record);
+        $stage = new StageRecord($this, $record);
         $stage->setInternal(true);
         return $stage;
+    }
+    protected array $record;
+
+    protected static function fetch(string $tableName, int $uid): array
+    {
+        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+        $record = $queryBuilder->select('*')
+            ->from($tableName)
+            ->where(
+                $queryBuilder->expr()->eq(
+                    'uid',
+                    $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)
+                )
+            )
+            ->executeQuery()
+            ->fetchAssociative();
+        if (empty($record)) {
+            throw new \RuntimeException('Record "' . $tableName . ': ' . $uid . '" not found', 1476122008);
+        }
+        return $record;
+    }
+
+    protected function getLanguageService(): LanguageService
+    {
+        return $GLOBALS['LANG'];
+    }
+
+    protected function getStagesService(): StagesService
+    {
+        return GeneralUtility::makeInstance(StagesService::class);
     }
 }
