@@ -34,6 +34,10 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
     protected $supportedOptions = [];
 
     protected array $options = [];
+
+    /**
+     * @var \SplObjectStorage<ValidatorInterface>
+     */
     protected \SplObjectStorage $validators;
     protected ?ServerRequestInterface $request = null;
     protected \SplObjectStorage $validatedInstancesContainer;
@@ -84,6 +88,8 @@ abstract class AbstractCompositeValidator implements ObjectValidatorInterface, \
 
     /**
      * Returns the child validators of this Composite Validator
+     *
+     * @return \SplObjectStorage<ValidatorInterface>
      */
     public function getValidators(): \SplObjectStorage
     {

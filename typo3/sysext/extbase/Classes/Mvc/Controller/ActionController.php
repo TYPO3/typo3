@@ -294,11 +294,15 @@ abstract class ActionController implements ControllerInterface
             /** @var ConjunctionValidator $validator */
             $validator = $this->validatorResolver->createValidator(ConjunctionValidator::class);
             foreach ($classSchemaMethodParameter->getValidators() as $validatorDefinition) {
-                $validatorInstance = $this->validatorResolver->createValidator(
-                    $validatorDefinition['className'],
-                    $validatorDefinition['options'],
-                    $this->request
-                );
+                if (isset($validatorDefinition['constraint'])) {
+                    $validatorInstance = $validatorDefinition['constraint'];
+                } else {
+                    $validatorInstance = $this->validatorResolver->createValidator(
+                        $validatorDefinition['className'],
+                        $validatorDefinition['options'],
+                        $this->request,
+                    );
+                }
                 if ($validatorInstance !== null) {
                     $validator->addValidator($validatorInstance);
                 }

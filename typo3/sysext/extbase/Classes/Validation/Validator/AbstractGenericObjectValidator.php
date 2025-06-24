@@ -83,6 +83,8 @@ abstract class AbstractGenericObjectValidator extends AbstractValidator implemen
     /**
      * Checks if the specified property of the given object is valid, and adds
      * found errors to the $messages object.
+     *
+     * @param \Traversable<ValidatorInterface> $validators
      */
     protected function checkProperty(mixed $value, \Traversable $validators, string $propertyName): void
     {

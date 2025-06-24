@@ -27,6 +27,7 @@ use TYPO3\CMS\Extbase\Utility\TypeHandlingUtility;
 use TYPO3\CMS\Extbase\Validation\Exception\NoSuchValidatorException;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ConstraintDecoratingValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ValidatorInterface;
 
@@ -177,11 +178,15 @@ class ValidatorResolver implements SingletonInterface
                 //        \TYPO3\CMS\Extbase\Validation\ValidatorResolver::createValidator once again. However, to
                 //        keep things simple for now, we still use the method createValidator here. In the future,
                 //        createValidator must only accept FQCN's.
-                $newValidator = $this->createValidator(
-                    $validatorDefinition['className'],
-                    $validatorDefinition['options'],
-                    $request
-                );
+                if (isset($validatorDefinition['constraint'])) {
+                    $newValidator = new ConstraintDecoratingValidator($validatorDefinition['constraint']);
+                } else {
+                    $newValidator = $this->createValidator(
+                        $validatorDefinition['className'],
+                        $validatorDefinition['options'],
+                        $request,
+                    );
+                }
                 if ($newValidator === null) {
                     throw new NoSuchValidatorException(
                         'Invalid validate annotation in ' . $targetClassName . '::' . $property->getName() . ': ' .

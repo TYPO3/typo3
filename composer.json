@@ -99,6 +99,7 @@
 		"symfony/routing": "^7.2",
 		"symfony/translation": "^7.2",
 		"symfony/uid": "^7.2",
+		"symfony/validator": "^7.2",
 		"symfony/yaml": "^7.2",
 		"typo3/class-alias-loader": "^1.2",
 		"typo3/cms-cli": "^3.1.1",

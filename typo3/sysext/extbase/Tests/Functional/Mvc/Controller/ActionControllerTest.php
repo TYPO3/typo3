@@ -169,7 +169,6 @@ final class ActionControllerTest extends FunctionalTestCase
         $conjunctionValidator = $argument->getValidator();
         self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
         $validators = $conjunctionValidator->getValidators();
-        self::assertInstanceOf(\SplObjectStorage::class, $validators);
         $validators->rewind();
         self::assertInstanceOf(CustomValidator::class, $validators->current());
         self::assertInstanceOf(ServerRequestInterface::class, $validators->current()->getRequest());
@@ -198,7 +197,6 @@ final class ActionControllerTest extends FunctionalTestCase
         $conjunctionValidator = $argument->getValidator();
         self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
         $validators = $conjunctionValidator->getValidators();
-        self::assertInstanceOf(\SplObjectStorage::class, $validators);
         self::assertCount(1, $validators);
         $validators->rewind();
         self::assertInstanceOf(NotEmptyValidator::class, $validators->current());

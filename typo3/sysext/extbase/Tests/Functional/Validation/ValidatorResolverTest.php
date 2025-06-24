@@ -17,11 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Functional\Validation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Imaging\IconFactory;
+use TYPO3\CMS\Extbase\Error\Error;
+use TYPO3\CMS\Extbase\Error\Result;
 use TYPO3\CMS\Extbase\Reflection\ReflectionService;
 use TYPO3\CMS\Extbase\Validation\Validator\CollectionValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\ConjunctionValidator;
+use TYPO3\CMS\Extbase\Validation\Validator\ConstraintDecoratingValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\GenericObjectValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator;
 use TYPO3\CMS\Extbase\Validation\Validator\StringLengthValidator;
@@ -29,7 +33,9 @@ use TYPO3\CMS\Extbase\Validation\ValidatorResolver;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 use TYPO3Tests\TestValidators\Domain\Model\AliasedModel;
 use TYPO3Tests\TestValidators\Domain\Model\AnotherModel;
+use TYPO3Tests\TestValidators\Domain\Model\MixedSymfonyModel;
 use TYPO3Tests\TestValidators\Domain\Model\Model;
+use TYPO3Tests\TestValidators\Domain\Model\SymfonyModel;
 use TYPO3Tests\TestValidators\Validation\Validator\CustomValidator;
 
 final class ValidatorResolverTest extends FunctionalTestCase
@@ -45,8 +51,8 @@ final class ValidatorResolverTest extends FunctionalTestCase
     {
         $subject = $this->get(ValidatorResolver::class);
         $options = ['foo' => 'bar'];
-        /** @var CustomValidator $validator */
         $validator = $subject->createValidator(CustomValidator::class, $options);
+        self::assertInstanceOf(CustomValidator::class, $validator);
         self::assertSame($options, $validator->getOptions());
         self::assertInstanceOf(IconFactory::class, $validator->iconFactory);
     }
@@ -127,23 +133,19 @@ final class ValidatorResolverTest extends FunctionalTestCase
 
         $subject->getBaseValidatorConjunction(Model::class);
 
-        /** @var array $baseValidatorConjunctions */
         $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');
         self::assertIsArray($baseValidatorConjunctions);
         self::assertCount(2, $baseValidatorConjunctions);
         self::assertArrayHasKey(Model::class, $baseValidatorConjunctions);
         self::assertArrayHasKey(AnotherModel::class, $baseValidatorConjunctions);
 
-        /** @var ConjunctionValidator $conjunctionValidator */
         $conjunctionValidator = $baseValidatorConjunctions[Model::class];
         self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
 
         $baseValidators = $conjunctionValidator->getValidators();
-        self::assertInstanceOf(\SplObjectStorage::class, $baseValidators);
         $baseValidators->rewind();
         self::assertTrue($baseValidators->valid());
 
-        /** @var GenericObjectValidator $validator */
         $validator = $baseValidators->current();
         self::assertInstanceOf(GenericObjectValidator::class, $validator);
 
@@ -154,13 +156,11 @@ final class ValidatorResolverTest extends FunctionalTestCase
         self::assertArrayHasKey('baz', $propertyValidators);
         self::assertArrayHasKey('qux', $propertyValidators);
 
-        /** @var \SplObjectStorage $fooPropertyValidators */
         $fooPropertyValidators = $propertyValidators['foo'];
         self::assertInstanceOf(\SplObjectStorage::class, $fooPropertyValidators);
         self::assertCount(3, $fooPropertyValidators);
 
         $fooPropertyValidators->rewind();
-        /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
         self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
         self::assertSame(
@@ -175,7 +175,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         );
 
         $fooPropertyValidators->next();
-        /** @var StringLengthValidator $propertyValidator */
         $propertyValidator = $fooPropertyValidators->current();
         self::assertInstanceOf(StringLengthValidator::class, $propertyValidator);
         self::assertSame(
@@ -193,7 +192,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         $propertyValidator = $fooPropertyValidators->current();
         self::assertInstanceOf(NotEmptyValidator::class, $propertyValidator);
 
-        /** @var \SplObjectStorage $barPropertyValidators */
         $barPropertyValidators = $propertyValidators['bar'];
         self::assertInstanceOf(\SplObjectStorage::class, $barPropertyValidators);
         self::assertCount(1, $barPropertyValidators);
@@ -202,7 +200,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         $propertyValidator = $barPropertyValidators->current();
         self::assertInstanceOf(CustomValidator::class, $propertyValidator);
 
-        /** @var \SplObjectStorage $bazPropertyValidators */
         $bazPropertyValidators = $propertyValidators['baz'];
         self::assertInstanceOf(\SplObjectStorage::class, $bazPropertyValidators);
         self::assertCount(1, $bazPropertyValidators);
@@ -211,7 +208,6 @@ final class ValidatorResolverTest extends FunctionalTestCase
         $propertyValidator = $bazPropertyValidators->current();
         self::assertInstanceOf(CollectionValidator::class, $propertyValidator);
 
-        /** @var \SplObjectStorage $quxPropertyValidators */
         $quxPropertyValidators = $propertyValidators['qux'];
         self::assertInstanceOf(\SplObjectStorage::class, $quxPropertyValidators);
         self::assertCount(1, $quxPropertyValidators);
@@ -223,5 +219,149 @@ final class ValidatorResolverTest extends FunctionalTestCase
             $baseValidatorConjunctions[AnotherModel::class],
             $propertyValidator
         );
+    }
+
+    #[Test]
+    public function SymfonyValidatorsCanBeApplied(): void
+    {
+        $subject = $this->getAccessibleMock(
+            ValidatorResolver::class,
+            null,
+            [$this->get(ReflectionService::class)]
+        );
+
+        $subject->getBaseValidatorConjunction(SymfonyModel::class);
+
+        $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');
+        self::assertIsArray($baseValidatorConjunctions);
+        self::assertCount(1, $baseValidatorConjunctions);
+        self::assertArrayHasKey(SymfonyModel::class, $baseValidatorConjunctions);
+
+        $conjunctionValidator = $baseValidatorConjunctions[SymfonyModel::class];
+        self::assertInstanceOf(ConjunctionValidator::class, $conjunctionValidator);
+
+        $baseValidators = $conjunctionValidator->getValidators();
+        $baseValidators->rewind();
+
+        $validator = $baseValidators->current();
+        self::assertInstanceOf(GenericObjectValidator::class, $validator);
+
+        $propertyValidators = $validator->getPropertyValidators();
+        self::assertCount(1, $propertyValidators);
+        self::assertArrayHasKey('foo', $propertyValidators);
+
+        $fooPropertyValidators = $propertyValidators['foo'];
+        self::assertInstanceOf(\SplObjectStorage::class, $fooPropertyValidators);
+        self::assertCount(1, $fooPropertyValidators);
+
+        $fooPropertyValidators->rewind();
+        $propertyValidator = $fooPropertyValidators->current();
+        self::assertInstanceOf(ConstraintDecoratingValidator::class, $propertyValidator);
+        self::assertSame(
+            [],
+            $propertyValidator->getOptions()
+        );
+    }
+
+    #[Test]
+    public function SymfonyValidatorsCanBeValidated(): void
+    {
+        $subject = $this->getAccessibleMock(
+            ValidatorResolver::class,
+            null,
+            [$this->get(ReflectionService::class)]
+        );
+
+        $subject->getBaseValidatorConjunction(SymfonyModel::class);
+        $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');
+        $conjunctionValidator = $baseValidatorConjunctions[SymfonyModel::class];
+        $baseValidators = $conjunctionValidator->getValidators();
+        $baseValidators->rewind();
+        $validator = $baseValidators->current();
+        $propertyValidators = $validator->getPropertyValidators();
+        $fooPropertyValidators = $propertyValidators['foo'];
+        $fooPropertyValidators->rewind();
+        $propertyValidator = $fooPropertyValidators->current();
+
+        $expectation = new Result();
+        $expectation->addError(new Error('Your foo must be at least %2$s characters long', 286244044, ['""', 1, 0]));
+        self::assertEquals(
+            $propertyValidator->validate(''),
+            $expectation,
+        );
+
+        $expectation = new Result();
+        self::assertEquals(
+            $propertyValidator->validate('success'),
+            $expectation,
+        );
+
+        $expectation = new Result();
+        $expectation->addError(new Error('Your foo cannot be longer than %2$s characters', 1497521431, ['"failure because too long"', 10, 24]));
+        self::assertEquals(
+            $propertyValidator->validate('failure because too long'),
+            $expectation,
+        );
+    }
+
+    public static function SymfonyAndExtbaseValidatorsDataProvider(): \Generator
+    {
+        yield 'property validates properly' => [
+            'input' => 'is valid',
+            'expectedErrorResults' => [
+                new Result(),
+                new Result(),
+                new Result(),
+            ],
+        ];
+
+        $errorResult = new Result();
+        $errorResult->addError(new \TYPO3\CMS\Extbase\Validation\Error('The length of the given string exceeded 10 characters.', 1238108069, [10]));
+        yield 'property does not validate, is too long (Extbase validator fail)' => [
+            'input' => 'is invalid because it is too long',
+            'expectedErrorResults' => [
+                new Result(),
+                new Result(),
+                $errorResult,
+            ],
+        ];
+
+        $errorResult = new Result();
+        $errorResult->addError(new Error('Your foo must be at least %2$s characters long', 286244044, ['"i"', 2, 1]));
+        yield 'property does not validate, is too short (Symfony validator fail)' => [
+            'input' => 'i',
+            'expectedErrorResults' => [
+                $errorResult,
+                new Result(),
+                new Result(),
+            ],
+        ];
+    }
+
+    #[DataProvider('SymfonyAndExtbaseValidatorsDataProvider')]
+    #[Test]
+    public function SymfonyValidatorsCanBeMixedWithExtbaseValidators(string $input, array $expectedErrorResults): void
+    {
+        $subject = $this->getAccessibleMock(
+            ValidatorResolver::class,
+            null,
+            [$this->get(ReflectionService::class)]
+        );
+
+        $subject->getBaseValidatorConjunction(MixedSymfonyModel::class);
+        $baseValidatorConjunctions = $subject->_get('baseValidatorConjunctions');
+        $conjunctionValidator = $baseValidatorConjunctions[MixedSymfonyModel::class];
+        $baseValidators = $conjunctionValidator->getValidators();
+        $baseValidators->rewind();
+        $validator = $baseValidators->current();
+        $propertyValidators = $validator->getPropertyValidators();
+        $fooPropertyValidators = $propertyValidators['foo'];
+        self::assertCount(3, $fooPropertyValidators);
+
+        $results = [];
+        foreach ($fooPropertyValidators as $fooPropertyValidator) {
+            $results[] = $fooPropertyValidator->validate($input);
+        }
+        self::assertEquals($results, $expectedErrorResults);
     }
 }

@@ -2059,12 +2059,6 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerArgumentTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplObjectStorage'' and SplObjectStorage will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Mvc/Controller/ActionControllerTest.php
-
-		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Http\\\\ForwardResponse'' and TYPO3\\CMS\\Extbase\\Http\\ForwardResponse will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
@@ -2155,37 +2149,13 @@ parameters:
 			path: ../../typo3/sysext/extbase/Tests/Functional/Property/TypeConverter/ObjectConverterTest.php
 
 		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplObjectStorage'' and SplObjectStorage will always evaluate to true\.$#'
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''SplObjectStorage'' and iterable\<TYPO3\\CMS\\Extbase\\Validation\\Validator\\ValidatorInterface\>&SplObjectStorage will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 5
 			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
 
 		-
 			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Core\\\\Imaging\\\\IconFactory'' and TYPO3\\CMS\\Core\\Imaging\\IconFactory will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\ConjunctionValidator'' and TYPO3\\CMS\\Extbase\\Validation\\Validator\\ConjunctionValidator will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\GenericObjectValidator'' and TYPO3\\CMS\\Extbase\\Validation\\Validator\\GenericObjectValidator will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Extbase\\\\Validation\\\\Validator\\\\StringLengthValidator'' and TYPO3\\CMS\\Extbase\\Validation\\Validator\\StringLengthValidator will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 2
-			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertIsArray\(\) with array will always evaluate to true\.$#'
 			identifier: staticMethod.alreadyNarrowedType
 			count: 1
 			path: ../../typo3/sysext/extbase/Tests/Functional/Validation/ValidatorResolverTest.php

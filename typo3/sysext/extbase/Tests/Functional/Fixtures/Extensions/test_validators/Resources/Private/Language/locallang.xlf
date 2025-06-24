@@ -12,6 +12,9 @@
 			<trans-unit id="validator.translateerrormessagewithoutextensionname.custom_message">
 				<source>Expected custom translated error message.</source>
 			</trans-unit>
+			<trans-unit id="validator.regex.message">
+				<source>The value %1$s does not match the expected pattern %2$s.</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

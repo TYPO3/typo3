@@ -24,6 +24,7 @@ use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\PropertyInfo\Type;
+use Symfony\Component\Validator\Constraint;
 use TYPO3\CMS\Core\Type\BitSet;
 use TYPO3\CMS\Extbase\Annotation;
 use TYPO3\CMS\Extbase\Attribute;
@@ -145,16 +146,28 @@ class ClassSchema
                     Attribute\ORM\Cascade::class, Annotation\ORM\Cascade::class => $this->properties[$propertyName]['c'] = $attribute->newInstance()->value,
                     default => '' // non-extbase attributes
                 };
+
+                if (is_a($attribute->getName(), Constraint::class, true)) {
+                    $validateAttributes[] = $attribute;
+                }
             }
             foreach ($validateAttributes as $attribute) {
                 $validator = $attribute->newInstance();
-                $validatorObjectName = ValidatorClassNameResolver::resolve($validator->validator);
 
-                $this->properties[$propertyName]['v'][] = [
-                    'name' => $validator->validator,
-                    'options' => $validator->options,
-                    'className' => $validatorObjectName,
-                ];
+                if ($validator instanceof Constraint) {
+                    $property = [
+                        'constraint' => $validator,
+                        'className' => $validator::class,
+                    ];
+                } else {
+                    $property = [
+                        'name' => $validator->validator,
+                        'options' => $validator->options,
+                        'className' => ValidatorClassNameResolver::resolve($validator->validator),
+                    ];
+                }
+
+                $this->properties[$propertyName]['v'][] = $property;
             }
 
             foreach ($fileUploadAttributes as $attribute) {

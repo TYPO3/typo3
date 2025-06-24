@@ -39,7 +39,6 @@ final class ConjunctionValidator extends AbstractCompositeValidator
     public function validate(mixed $value): Result
     {
         $result = new Result();
-        /** @var AbstractValidator $validator */
         foreach ($this->getValidators() as $validator) {
             $result->merge($validator->validate($value));
         }
