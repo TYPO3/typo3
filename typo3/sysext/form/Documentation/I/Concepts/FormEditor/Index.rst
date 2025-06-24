@@ -107,7 +107,7 @@ Beside the frontend templates, there are also templates for the abstract
 view, i.e. you can customize the rendering of the abstract view for each
 form element. If you have created your own form elements, in most cases you
 will fall back to the already existing Fluid templates. But remember, you
-are always able to create you own Fluid templated and adapt the abstract view
+are always able to create your own Fluid templates and adapt the abstract view
 till it suits your needs.
 
 For more information, read the following chapter: ':ref:`Common abstract view form element templates<apireference-formeditor-stage-commonabstractformelementtemplates>`'.
@@ -218,7 +218,7 @@ this has to be done via YAML configuration. Please keep in mind, it is not possi
 to configure the form editor depending on the user's group / access rights.
 
 Quite often, integrators tend to unset whole form elements as shown below.
-In this example, the :yaml:`AdvancedPassword` form element is removed form
+In this example, the :yaml:`AdvancedPassword` form element is removed from
 the form framework completely. This way, integrators and developers won't be able
 to use this element in their manually created YAML definitions or via API anymore.
 
@@ -235,7 +235,7 @@ to use this element in their manually created YAML definitions or via API anymor
 The correct way is to unset the :ref:`group property <prototypes.prototypeIdentifier.formelementsdefinition.formelementtypeidentifier.formeditor.group>`.
 This property defines within which group within the ``form editor`` "new Element"
 modal the form element should be shown. Unsetting this property will remove the
-form element safely form the form editor. Check out the following example. The
+form element safely from the form editor. Check out the following example. The
 configuration removes the :yaml:`AdvancedPassword` form element from.
 
 .. code-block:: yaml
@@ -434,7 +434,7 @@ Events
 
 The event handling of EXT:form is based on the ``Publish/Subscribe Pattern``.
 To learn more about this terrific pattern, check out this website: https://addyosmani.com/resources/essentialjsdesignpatterns/book/.
-Please not that the processing sequence of the subscribers cannot be
+Please note that the processing sequence of the subscribers cannot be
 influenced. Furthermore, there is no information flow between the
 subscribers. All events have to be arranged asynchronously.
 
