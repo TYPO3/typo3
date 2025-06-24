@@ -4848,14 +4848,3 @@ parameters:
 			count: 1
 			path: ../../typo3/sysext/workspaces/Tests/Functional/Service/WorkspaceServiceTest.php
 
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\AbstractRecord'' and TYPO3\\CMS\\Workspaces\\Domain\\Record\\WorkspaceRecord will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Unit/Domain/Model/WorkspaceRecordTest.php
-
-		-
-			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertInstanceOf\(\) with ''TYPO3\\\\CMS\\\\Workspaces\\\\Domain\\\\Record\\\\WorkspaceRecord'' and TYPO3\\CMS\\Workspaces\\Domain\\Record\\WorkspaceRecord will always evaluate to true\.$#'
-			identifier: staticMethod.alreadyNarrowedType
-			count: 1
-			path: ../../typo3/sysext/workspaces/Tests/Unit/Domain/Model/WorkspaceRecordTest.php

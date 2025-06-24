@@ -17,15 +17,19 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Workspaces\Domain\Record;
 
+use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Workspaces\Authorization\WorkspacePublishGate;
 use TYPO3\CMS\Workspaces\Service\StagesService;
 
 /**
+ * Represents a stage of a workspace record in the TYPO3 Workspaces extension.
+ *
  * @internal
  */
-class StageRecord extends AbstractRecord
+class StageRecord
 {
+    protected array $record;
     protected WorkspaceRecord $workspace;
     protected bool $internal = false;
     protected ?array $responsiblePersons;
@@ -33,26 +37,25 @@ class StageRecord extends AbstractRecord
     protected ?array $preselectedRecipients;
     protected ?array $allRecipients;
 
-    public static function get(int $uid, ?array $record = null): ?StageRecord
-    {
-        if (empty($record)) {
-            $record = static::fetch('sys_workspace_stage', $uid);
-        }
-        return WorkspaceRecord::get($record['parentid'])->getStage($uid);
-    }
-
-    public static function build(WorkspaceRecord $workspace, int $uid, ?array $record = null): StageRecord
-    {
-        if (empty($record)) {
-            $record = static::fetch('sys_workspace_stage', $uid);
-        }
-        return new self($workspace, $record);
-    }
-
     public function __construct(WorkspaceRecord $workspace, array $record)
     {
-        parent::__construct($record);
         $this->workspace = $workspace;
+        $this->record = $record;
+    }
+
+    public function __toString(): string
+    {
+        return (string)$this->getUid();
+    }
+
+    public function getUid(): int
+    {
+        return (int)$this->record['uid'];
+    }
+
+    public function getTitle(): string
+    {
+        return (string)$this->record['title'];
     }
 
     public function getWorkspace(): WorkspaceRecord
@@ -190,8 +193,7 @@ class StageRecord extends AbstractRecord
             || $this->areMembersPreselected()
             || $this->areEditorsPreselected()
             || $this->areResponsiblePersonsPreselected()
-            || $this->hasDefaultRecipients()
-        ;
+            || $this->hasDefaultRecipients();
     }
 
     public function getResponsiblePersons(): array
@@ -265,10 +267,20 @@ class StageRecord extends AbstractRecord
     {
         return
             $this->isEditStage()
-            || static::getBackendUser()->workspaceCheckStageForCurrent($this->getUid())
+            || $this->getBackendUser()->workspaceCheckStageForCurrent($this->getUid())
             || (
                 $this->isExecuteStage()
-                && GeneralUtility::makeInstance(WorkspacePublishGate::class)->isGranted(static::getBackendUser(), $this->workspace->getUid())
+                && GeneralUtility::makeInstance(WorkspacePublishGate::class)->isGranted($this->getBackendUser(), $this->workspace->getUid())
             );
+    }
+
+    protected function getBackendUser(): BackendUserAuthentication
+    {
+        return $GLOBALS['BE_USER'];
+    }
+
+    protected function getStagesService(): StagesService
+    {
+        return GeneralUtility::makeInstance(StagesService::class);
     }
 }
