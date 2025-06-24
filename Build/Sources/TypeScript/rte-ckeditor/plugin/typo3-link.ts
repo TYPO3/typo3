@@ -5,13 +5,12 @@ import * as Typing from '@ckeditor/ckeditor5-typing';
 import * as Widget from '@ckeditor/ckeditor5-widget';
 import * as Utils from '@ckeditor/ckeditor5-utils';
 import * as Link from '@ckeditor/ckeditor5-link';
-import { LinkUtils, LinkActionsView } from '@ckeditor/ckeditor5-link';
+import { LinkUtils } from '@ckeditor/ckeditor5-link';
 import { default as modalObject, type ModalElement } from '@typo3/backend/modal';
 import type { ViewAttributeElement, ViewElement, Schema, Writer } from '@ckeditor/ckeditor5-engine';
 import type { GeneralHtmlSupport, DataFilter } from '@ckeditor/ckeditor5-html-support';
 import type { GHSViewAttributes } from '@ckeditor/ckeditor5-html-support/src/utils';
-
-const linkIcon = '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="m11.077 15 .991-1.416a.75.75 0 1 1 1.229.86l-1.148 1.64a.748.748 0 0 1-.217.206 5.251 5.251 0 0 1-8.503-5.955.741.741 0 0 1 .12-.274l1.147-1.639a.75.75 0 1 1 1.228.86L4.933 10.7l.006.003a3.75 3.75 0 0 0 6.132 4.294l.006.004zm5.494-5.335a.748.748 0 0 1-.12.274l-1.147 1.639a.75.75 0 1 1-1.228-.86l.86-1.23a3.75 3.75 0 0 0-6.144-4.301l-.86 1.229a.75.75 0 0 1-1.229-.86l1.148-1.64a.748.748 0 0 1 .217-.206 5.251 5.251 0 0 1 8.503 5.955zm-4.563-2.532a.75.75 0 0 1 .184 1.045l-3.155 4.505a.75.75 0 1 1-1.229-.86l3.155-4.506a.75.75 0 0 1 1.045-.184z"/></svg>';
+import { IconLink, IconPencil, IconUnlink } from '@ckeditor/ckeditor5-icons';
 
 export const LINK_ALLOWED_ATTRIBUTES = ['href', 'title', 'class', 'target', 'rel'];
 
@@ -41,23 +40,6 @@ export interface Typo3LinkDict {
   linkText?: string;
 }
 
-export class Typo3TextView extends UI.View {
-  declare public text: string | undefined;
-  constructor(locale?: Utils.Locale) {
-    super(locale);
-    this.set('text', undefined);
-    const bind = this.bindTemplate;
-    this.setTemplate({
-      tag: 'span',
-      attributes: {
-        class: ['ck', 'ck-linktext'],
-        title: bind.to('text'),
-      },
-      children: [{ text: bind.to('text') }]
-    });
-  }
-}
-
 /**
  * Inspired by @ckeditor/ckeditor5-link/src/linkcommand.js
  */
@@ -71,7 +53,7 @@ export class Typo3LinkCommand extends Core.Command {
     const selectedElement = selection.getSelectedElement() || Utils.first(selection.getSelectedBlocks());
 
     // A check for any integration that allows linking elements (e.g. `LinkImage`).
-    // Currently the selection reads attributes from text nodes only. See #7429 and #7465.
+    // Currently, the selection reads attributes from text nodes only. See #7429 and #7465.
     const sourceSelection = LinkUtils.isLinkableElement(selectedElement, model.schema) ? selectedElement : selection;
     if (sourceSelection === selectedElement) {
       this.value = selectedElement.getAttribute('linkHref') as string;
@@ -295,7 +277,7 @@ export class Typo3LinkEditing extends Core.Plugin {
     // Broken links are styled differently. This will not get persisted to the database.
     editor.conversion.for('downcast').attributeToElement({
       model: 'linkDataRteError',
-      view: (value: string|null, { writer }) => {
+      view: (value: string | null, { writer }) => {
         const linkElement = writer.createAttributeElement('a', { 'data-rte-error': value }, { priority: 5 });
         writer.setCustomProperty('linkDataRteError', true, linkElement);
         return linkElement;
@@ -303,13 +285,16 @@ export class Typo3LinkEditing extends Core.Plugin {
     });
     editor.conversion.for('upcast').elementToAttribute({
       view: { name: 'a', attributes: { 'data-rte-error': true } },
-      model: { key: 'linkDataRteError', value: (viewElement: ViewElement) => viewElement.getAttribute('data-rte-error') }
+      model: {
+        key: 'linkDataRteError',
+        value: (viewElement: ViewElement) => viewElement.getAttribute('data-rte-error')
+      }
     });
 
     // linkTitle <=> title
     editor.conversion.for('downcast').attributeToElement({
       model: 'linkTitle',
-      view: (value: string|null, { writer }) => {
+      view: (value: string | null, { writer }) => {
         const linkElement = writer.createAttributeElement('a', { title: value }, { priority: 5 });
         writer.setCustomProperty('linkTitle', true, linkElement);
         return linkElement;
@@ -354,35 +339,47 @@ export class Typo3LinkEditing extends Core.Plugin {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-export class Typo3LinkActionsView extends LinkActionsView {
-  override _createPreviewButton(): Typo3TextView {
-    const textView = new Typo3TextView(this.locale);
-    const t = this.t;
+export class Typo3LinkPreviewButtonView extends UI.ButtonView {
+  declare public href: string | undefined;
 
-    textView.bind('text').to(this, 'href', href => {
-      return href || t('This link has no URL');
+  constructor(locale?: Utils.Locale) {
+    super(locale);
+
+    const bind = this.bindTemplate;
+    this.set({
+      href: undefined,
+      withText: true
     });
 
-    return textView;
+    this.setTemplate({
+      tag: 'span',
+      attributes: {
+        class: ['ck-link-toolbar__preview'],
+        title: bind.to('href'),
+      },
+      children: [{ text: bind.to('href') }]
+    });
   }
 }
 
 const VISUAL_SELECTION_MARKER_NAME = 'link-ui';
 
 export class Typo3LinkUI extends Core.Plugin {
-  static readonly pluginName = 'Typo3LinkUI';
-  static readonly requires = [UI.ContextualBalloon];
-
+  toolbarView: UI.ToolbarView;
   balloon: UI.ContextualBalloon;
-  actionsView: Typo3LinkActionsView;
+
+  static get requires(): typeof Core.Plugin[] {
+    return [UI.ContextualBalloon, Link.LinkEditing] as const;
+  }
+
+  static get pluginName(): string {
+    return 'Typo3LinkUI';
+  }
 
   init() {
     const editor = this.editor;
     editor.editing.view.addObserver(Engine.ClickObserver);
 
-    this.actionsView = this.createActionsView();
     this.balloon = editor.plugins.get(UI.ContextualBalloon);
 
     this.createToolbarLinkButtons();
@@ -406,34 +403,31 @@ export class Typo3LinkUI extends Core.Plugin {
     });
   }
 
-  private createActionsView(): Typo3LinkActionsView {
+  private createToolbarView(): UI.ToolbarView {
     const editor = this.editor;
-    const actionsView = new Typo3LinkActionsView(editor.locale);
-    const linkCommand = editor.commands.get('link');
-    const unlinkCommand = editor.commands.get('unlink');
-
-    actionsView.bind('href').to(linkCommand, 'value');
-    actionsView.editButtonView.bind('isEnabled').to(linkCommand);
-    actionsView.unlinkButtonView.bind('isEnabled').to(unlinkCommand);
-
-    // Open LinkBrowser after clicking on the "Edit" button.
-    this.listenTo(actionsView, 'edit', () => {
-      this.openLinkBrowser(editor);
-    });
-
-    // Execute unlink command after clicking on the "Unlink" button.
-    this.listenTo(actionsView, 'unlink', () => {
-      editor.execute('unlink');
-      this.hideUI();
-    });
-
-    // Close the panel on esc key press when the **actions have focus**.
-    actionsView.keystrokes.set('Esc', (data, cancel) => {
+    const toolbarView = new UI.ToolbarView(editor.locale);
+    const toolbarItems = editor.config.get('link.toolbar');
+    toolbarView.fillFromConfig(toolbarItems, editor.ui.componentFactory);
+    // Close the panel on esc key press when the **link toolbar have focus**.
+    toolbarView.keystrokes.set('Esc', (data, cancel) => {
       this.hideUI();
       cancel();
     });
 
-    return actionsView;
+    // Register the toolbar, so it becomes available for Alt+F10 and Esc navigation.
+    // TODO this should be registered earlier to be able to open this toolbar without previously opening it by click or Ctrl+K
+    editor.ui.addToolbar(toolbarView, {
+      isContextual: true,
+      beforeFocus: () => {
+        if (this.getSelectedLinkElement() && !this.isToolbarVisible()) {
+          this.showUI();
+        }
+      },
+      afterBlur: () => {
+        this.hideUI();
+      }
+    });
+    return toolbarView;
   }
 
   private createToolbarLinkButtons() {
@@ -455,7 +449,7 @@ export class Typo3LinkUI extends Core.Plugin {
       const linkButton = new UI.ButtonView(locale);
       linkButton.isEnabled = true;
       linkButton.label = t('Link');
-      linkButton.icon = linkIcon;
+      linkButton.icon = IconLink;
       linkButton.keystroke = LinkUtils.LINK_KEYSTROKE;
       linkButton.tooltip = true;
       linkButton.isToggleable = true;
@@ -463,6 +457,67 @@ export class Typo3LinkUI extends Core.Plugin {
       linkButton.bind('isOn').to(linkCommand, 'value', value => !!value);
       this.listenTo(linkButton, 'execute', () => this.showUI());
       return linkButton;
+    });
+
+    editor.ui.componentFactory.add('linkPreview', locale => {
+      const button = new Typo3LinkPreviewButtonView(locale);
+      const allowedProtocols = editor.config.get('link.allowedProtocols');
+      const linkCommand = editor.commands.get('link');
+      button.bind('isEnabled').to(linkCommand, 'value', href => !!href);
+      button.bind('href').to(linkCommand, 'value', href => {
+        return href && LinkUtils.ensureSafeUrl(href, allowedProtocols);
+      });
+
+      button.icon = undefined;
+
+      const setHref = (href: string) => {
+        if (!href) {
+          button.label = undefined;
+          return;
+        }
+
+        button.label = href;
+      };
+
+      setHref(linkCommand.value);
+      this.listenTo(linkCommand, 'change:value', (evt, name, href) => {
+        setHref(href);
+      });
+      return button;
+    });
+
+    editor.ui.componentFactory.add('unlink', locale => {
+      const unlinkCommand = editor.commands.get('unlink');
+      const button = new UI.ButtonView(locale);
+      const t = locale.t;
+      button.set({
+        label: t('Unlink'),
+        icon: IconUnlink,
+        tooltip: true
+      });
+      button.bind('isEnabled').to(unlinkCommand);
+      this.listenTo(button, 'execute', () => {
+        editor.execute('unlink');
+        this.hideUI();
+      });
+
+      return button;
+    });
+
+    editor.ui.componentFactory.add('editLink', locale => {
+      const linkCommand = editor.commands.get('link');
+      const button = new UI.ButtonView(locale);
+      const t = locale.t;
+      button.set({
+        label: t('Edit link'),
+        icon: IconPencil,
+        tooltip: true
+      });
+      button.bind('isEnabled').to(linkCommand);
+      this.listenTo(button, 'execute', () => {
+        this.openLinkBrowser(editor);
+      });
+      return button;
     });
   }
 
@@ -484,27 +539,33 @@ export class Typo3LinkUI extends Core.Plugin {
     });
   }
 
-  private addActionsView(): void {
-    if (this.areActionsInPanel()) {
+  private addToolbarView(): void {
+    if (!this.toolbarView) {
+      this.toolbarView = this.createToolbarView();
+    }
+    if (this.isToolbarInPanel()) {
       return;
     }
 
     this.balloon.add({
-      view: this.actionsView,
-      position: this.getBalloonPositionData()
+      view: this.toolbarView,
+      position: this.getBalloonPositionData(),
+      balloonClassName: 'ck-toolbar-container',
     });
   }
 
-  private hideUI(): void {
-    if (!this.isUIInPanel()) {
-      return;
-    }
-
+  private hideUI(updateFocus: boolean = true): void {
     const editor = this.editor;
     this.stopListening(editor.ui, 'update');
     this.stopListening(this.balloon, 'change:visibleView');
-    editor.editing.view.focus();
-    this.balloon.remove(this.actionsView);
+
+    if (updateFocus) {
+      editor.editing.view.focus();
+    }
+
+    if (this.isToolbarInPanel()) {
+      this.balloon.remove(this.toolbarView);
+    }
     this.hideFakeVisualSelection();
   }
 
@@ -513,7 +574,7 @@ export class Typo3LinkUI extends Core.Plugin {
       this.showFakeVisualSelection();
       this.openLinkBrowser(this.editor);
     } else {
-      this.addActionsView();
+      this.addToolbarView();
       this.balloon.showStack('main');
     }
 
@@ -553,20 +614,16 @@ export class Typo3LinkUI extends Core.Plugin {
     this.listenTo(this.balloon, 'change:visibleView', update);
   }
 
-  private areActionsInPanel(): boolean {
-    return this.balloon.hasView(this.actionsView);
+  private isToolbarInPanel(): boolean {
+    return !!this.toolbarView && this.balloon.hasView(this.toolbarView);
   }
 
-  private areActionsVisible(): boolean {
-    return this.balloon.visibleView === this.actionsView;
-  }
-
-  private isUIInPanel(): boolean {
-    return this.areActionsInPanel();
+  private isToolbarVisible(): boolean {
+    return !!this.toolbarView && this.balloon.visibleView === this.toolbarView;
   }
 
   private isUIVisible(): boolean {
-    return this.areActionsVisible();
+    return this.isToolbarVisible();
   }
 
   private getBalloonPositionData(): any {
@@ -707,7 +764,7 @@ export class Typo3LinkUI extends Core.Plugin {
   }
 
   private openElementBrowser(editor: Core.Editor, title: string, url: string) {
-    modalObject.advanced({
+    const modal = modalObject.advanced({
       type: modalObject.types.iframe,
       title: title,
       content: url,
@@ -723,13 +780,24 @@ export class Typo3LinkUI extends Core.Plugin {
         currentModal.querySelector('.t3js-modal-body')?.setAttribute('id', '123' /*editor.id*/);
       }
     });
+    modal.addEventListener('typo3-modal-hide', (): void => {
+      this.hideUI(false);
+    });
   }
 }
 
 export class Typo3Link extends Core.Plugin {
-  static readonly pluginName = 'Typo3Link';
-  static readonly requires = ['GeneralHtmlSupport', Link.LinkEditing, Link.AutoLink, Typo3LinkEditing, Typo3LinkUI];
   static readonly overrides?: Array<typeof Core.Plugin> = [Link.Link];
+
+  static get requires(): Array<typeof Core.Plugin|string> {
+    return ['GeneralHtmlSupport', Link.LinkEditing, Link.AutoLink, Typo3LinkEditing, Typo3LinkUI] as const;
+  }
+
+  static get pluginName(): string {
+    return 'Typo3Link';
+  }
+
+
 }
 
 declare module '@ckeditor/ckeditor5-core' {

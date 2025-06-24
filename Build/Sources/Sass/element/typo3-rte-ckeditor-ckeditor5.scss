@@ -50,6 +50,11 @@
     &.ck-dialog {
         --ck-color-text: var(--typo3-rte-base-text);
     }
+
+    &.ck-toolbar > .ck-toolbar__items > .ck-link-toolbar__preview {
+        // @todo: this styling becomes obsolete once the link preview can render <a> tags
+        padding: 0 var(--ck-spacing-medium);
+    }
 }
 
 typo3-rte-ckeditor-ckeditor5 {
