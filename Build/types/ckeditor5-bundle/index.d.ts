@@ -1,7 +1,6 @@
 declare module '@ckeditor/ckeditor5-link' {
   export * from '@ckeditor/ckeditor5-link/src/index.js';
   export * as LinkUtils from '@ckeditor/ckeditor5-link/src/utils.js';
-  export { default as LinkActionsView } from '@ckeditor/ckeditor5-link/src/ui/linkactionsview.js';
 }
 
 // Upstream TypeScript typings are missing, see https://github.com/ckeditor/ckeditor5-inspector/issues/173
