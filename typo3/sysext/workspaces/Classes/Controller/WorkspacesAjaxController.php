@@ -581,6 +581,11 @@ final readonly class WorkspacesAjaxController
         return $result;
     }
 
+    /**
+     * @todo: This solution is quite expensive and similar to the "discard entire workspace when
+     *        sys_workspace row is deleted" code of DataHandlerInternalWorkspaceTablesHook.
+     *        It *may* be better to establish a dedicated DataHandler command for this.
+     */
     private function discardEntireWorkspace(\stdClass $parameters): array
     {
         $backendUser = $this->getBackendUser();

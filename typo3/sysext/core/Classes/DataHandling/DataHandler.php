@@ -3189,6 +3189,7 @@ class DataHandler
         $pasteDatamap = [];
         // Traverse command map:
         foreach ($this->cmdmap as $table => $idCommandArray) {
+            $table = (string)$table;
             if (!$this->checkModifyAccessList($table)) {
                 // Check if the table may be modified!
                 $this->log($table, 0, SystemLogDatabaseAction::UPDATE, null, SystemLogErrorClassification::USER_ERROR, 'Attempt to modify table "{table}" without permission', null, ['table' => $table]);
@@ -3201,6 +3202,7 @@ class DataHandler
 
             // Traverse the command map:
             foreach ($idCommandArray as $id => $incomingCmdArray) {
+                $id = (int)$id;
                 if (!is_array($incomingCmdArray)) {
                     continue;
                 }
@@ -3211,6 +3213,7 @@ class DataHandler
                 }
 
                 foreach ($incomingCmdArray as $command => $value) {
+                    $command = (string)$command;
                     $pasteUpdate = false;
                     $schema = $this->tcaSchemaFactory->get($table);
                     $languageField = $schema->isLanguageAware() ? $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName() : null;
@@ -3257,7 +3260,7 @@ class DataHandler
                         // Branch, based on command
                         switch ($command) {
                             case 'move':
-                                $this->moveRecord($table, (int)$id, (int)$value);
+                                $this->moveRecord($table, $id, (int)$value);
                                 if (is_array($pasteUpdate) && $procId > 0) {
                                     // Update after copy/move operation
                                     $pasteDatamap[$table][$procId] = $pasteUpdate;
@@ -3267,9 +3270,9 @@ class DataHandler
                                 $target = $value['target'] ?? $value;
                                 $ignoreLocalization = (bool)($value['ignoreLocalization'] ?? false);
                                 if ($table === 'pages') {
-                                    $this->copyPages((int)$id, $target);
+                                    $this->copyPages($id, $target);
                                 } else {
-                                    $this->copyRecord($table, (int)$id, $target, true, [], '', 0, $ignoreLocalization);
+                                    $this->copyRecord($table, $id, $target, true, [], '', 0, $ignoreLocalization);
                                 }
                                 $procId = $this->copyMappingArray[$table][$id] ?? null;
                                 if (is_array($pasteUpdate) && $procId > 0) {
@@ -3299,30 +3302,30 @@ class DataHandler
                                 // @todo: Hand this state change around as method argument to localize() instead.
                                 $backupUseTransOrigPointerField = $this->useTransOrigPointerField;
                                 $this->useTransOrigPointerField = true;
-                                $this->localize($table, (int)$id, $value);
+                                $this->localize($table, $id, $value);
                                 $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
                                 break;
                             case 'copyToLanguage':
                                 $backupUseTransOrigPointerField = $this->useTransOrigPointerField;
                                 $this->useTransOrigPointerField = false;
-                                $this->localize($table, (int)$id, $value);
+                                $this->localize($table, $id, $value);
                                 $this->useTransOrigPointerField = $backupUseTransOrigPointerField;
                                 break;
                             case 'inlineLocalizeSynchronize':
-                                $this->inlineLocalizeSynchronize($table, (int)$id, $value);
+                                $this->inlineLocalizeSynchronize($table, $id, $value);
                                 break;
                             case 'delete':
-                                $this->deleteAction((string)$table, (int)$id);
+                                $this->deleteAction($table, $id);
                                 break;
                             case 'undelete':
-                                $this->undeleteRecord((string)$table, (int)$id);
+                                $this->undeleteRecord($table, $id);
                                 break;
                             case 'version':
                                 $action = $value['action'] ?? null;
                                 if ($action === 'new') {
                                     $this->versionizeRecord($table, $id, $value['label'] ?? null);
                                 } elseif ($value['action'] === 'clearWSID' || $value['action'] === 'flush') {
-                                    $this->discard((string)$table, (int)$id);
+                                    $this->discard($table, $id);
                                 }
                                 break;
                         }
