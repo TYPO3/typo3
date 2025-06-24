@@ -23,8 +23,6 @@ namespace TYPO3\CMS\Core\Schema;
  * An example:
  * - A field "authors" in table "books" has an active relation to the field "written_books" in table "tx_myextension_author"
  * - A field "assets" in table "tt_content" has an active relation TO "sys_file_reference.uid".
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class ActiveRelation
 {

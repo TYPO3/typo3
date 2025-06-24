@@ -20,7 +20,7 @@ namespace TYPO3\CMS\Core\Schema\Field;
 /**
  * This is used for system-internal fields that haven't been defined in the "columns"
  * but need a representation in some areas such as "label_alt".
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
+ * @internal This is an experimental implementation.
  */
 final readonly class SystemInternalFieldType extends AbstractFieldType
 {

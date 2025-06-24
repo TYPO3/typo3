@@ -916,7 +916,7 @@ class DatabaseRecordList
         $iconIdentifier = 'actions-plus';
         $label = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_mod_web_list.xlf:newRecordOfType'),
-            $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '')
+            $schema->getTitle($this->getLanguageService()->sL(...)),
         );
         $attributes = [
             'data-recordlist-action' => 'new',
@@ -992,7 +992,7 @@ class DatabaseRecordList
         );
         $downloadSettingsTitle = sprintf(
             $this->getLanguageService()->sL('LLL:EXT:backend/Resources/Private/Language/locallang_download.xlf:' . ($totalItems === 1 ? 'downloadRecordSettings' : 'downloadRecordsSettings')),
-            $this->getLanguageService()->sL($schema->getRawConfiguration()['title'] ?? '') ?: $table,
+            $schema->getTitle($this->getLanguageService()->sL(...)) ?: $table,
             $totalItems
         );
 
@@ -1046,7 +1046,7 @@ class DatabaseRecordList
         );
         $columnSelectorTitle = sprintf(
             $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
-            $lang->sL($schema->getRawConfiguration()['title'] ?? '') ?: $table,
+            $schema->getTitle($lang->sL(...)) ?: $table,
         );
 
         $button = GeneralUtility::makeInstance(GenericButton::class);

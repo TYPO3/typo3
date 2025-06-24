@@ -17,12 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema;
 
+use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
 use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
 
-/**
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
- */
 final readonly class FlexFormSchema implements SchemaInterface
 {
     public function __construct(
@@ -34,6 +32,19 @@ final readonly class FlexFormSchema implements SchemaInterface
     public function getSheets(): array
     {
         return $this->sheets;
+    }
+
+    public function getFields(?callable $filterFunction = null): FieldCollection
+    {
+        $allFields = [];
+        foreach ($this->sheets as $sheet) {
+            $allFields = array_merge($allFields, iterator_to_array($sheet->getFields()));
+        }
+        if ($filterFunction === null) {
+            return new FieldCollection($allFields);
+        }
+
+        return new FieldCollection(array_filter(iterator_to_array($allFields), $filterFunction));
     }
 
     public function getName(): string

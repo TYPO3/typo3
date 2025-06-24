@@ -22,8 +22,6 @@ namespace TYPO3\CMS\Core\Schema\Field;
  * - 'l10n_mode' = exclude
  * - 'l10n_mode' = prefixLangTitle
  * - none = field is translatable
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 enum FieldTranslationBehaviour
 {

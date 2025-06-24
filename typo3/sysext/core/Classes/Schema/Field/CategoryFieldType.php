@@ -19,9 +19,6 @@ namespace TYPO3\CMS\Core\Schema\Field;
 
 use TYPO3\CMS\Core\Schema\RelationshipType;
 
-/**
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
- */
 final readonly class CategoryFieldType extends AbstractFieldType implements RelationalFieldTypeInterface
 {
     public function __construct(

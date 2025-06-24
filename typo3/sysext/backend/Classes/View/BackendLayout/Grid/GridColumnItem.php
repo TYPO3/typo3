@@ -237,12 +237,11 @@ class GridColumnItem extends AbstractGridObject
     public function isDisabled(): bool
     {
         $row = $this->getRecord();
-        return $this->schema->hasFieldRestrictions()
-            && (
+        return
                 ($this->schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField) && $row[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)])
                 || ($this->schema->hasCapability(TcaSchemaCapability::RestrictionStartTime) && ($row[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionStartTime)] ?? 0) > $GLOBALS['EXEC_TIME'])
                 || ($this->schema->hasCapability(TcaSchemaCapability::RestrictionEndTime) && ($row[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)] ?? false) && $row[(string)$this->schema->getCapability(TcaSchemaCapability::RestrictionEndTime)] < $GLOBALS['EXEC_TIME'])
-            );
+        ;
     }
 
     public function isEditable(): bool

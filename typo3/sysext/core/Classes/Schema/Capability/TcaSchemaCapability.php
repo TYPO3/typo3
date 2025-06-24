@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Core\Schema\Capability;
 /**
  * Contains all capabilities that can be defined in TCA
  * and are understandable by the Schema API.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 enum TcaSchemaCapability
 {

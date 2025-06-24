@@ -28,8 +28,6 @@ use TYPO3\CMS\Core\Schema\Struct\FlexSheet;
 
 /**
  * Parses all possibles schemas of all sheets of a field.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 #[Autoconfigure(public: true, shared: true)]
 final readonly class FlexFormSchemaFactory

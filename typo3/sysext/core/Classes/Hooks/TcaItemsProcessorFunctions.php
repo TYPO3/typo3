@@ -54,7 +54,7 @@ readonly class TcaItemsProcessorFunctions
         /** @var TcaSchema $schema */
         foreach ($this->tcaSchemaFactory->all() as $tableName => $schema) {
             // Hide "admin only" tables
-            if ($schema->getCapability(TcaSchemaCapability::AccessAdminOnly)->getValue()) {
+            if ($schema->hasCapability(TcaSchemaCapability::AccessAdminOnly)) {
                 continue;
             }
             $icon = $this->iconFactory->mapRecordTypeToIconIdentifier($tableName, []);

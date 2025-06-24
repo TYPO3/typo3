@@ -23,8 +23,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 /**
  * This is a field to a "file" (which is very similar to "inline") but with a hard-coded
  * selection to sys_file_reference.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class FileFieldType extends AbstractFieldType implements RelationalFieldTypeInterface
 {

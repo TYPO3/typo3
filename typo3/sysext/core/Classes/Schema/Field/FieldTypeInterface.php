@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\DataHandling\TableColumnType;
 
 /**
  * Interface for a Schema Field.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 interface FieldTypeInterface
 {

@@ -974,7 +974,7 @@ class DataMapProcessor
         $ids = $this->filterNumericIds($ids);
         $schema = $this->getSchema($tableName);
         $isTranslatable = $schema?->isLanguageAware() ?? false;
-        $originFieldName = $schema?->getRawConfiguration()['origUid'] ?? null;
+        $originFieldName = $schema?->hasCapability(TcaSchemaCapability::AncestorReferenceField) ? $schema->getCapability(TcaSchemaCapability::AncestorReferenceField)->getFieldName() : null;
 
         if (!$isTranslatable && $originFieldName === null) {
             // @todo Possibly throw an error, since pointing to original entity is not possible (via origin/parent)

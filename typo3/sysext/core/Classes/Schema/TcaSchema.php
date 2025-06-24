@@ -30,8 +30,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Main implementation class for TCA-based schema.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 readonly class TcaSchema implements SchemaInterface
 {
@@ -73,6 +71,7 @@ readonly class TcaSchema implements SchemaInterface
 
     /**
      * @return FieldTypeInterface[]
+     * @internal not part of TYPO3 Core API.
      */
     public function getFieldsOfType(TableColumnType $type): iterable
     {
@@ -106,13 +105,6 @@ readonly class TcaSchema implements SchemaInterface
     public function isWorkspaceAware(): bool
     {
         return (bool)($this->schemaConfiguration['versioningWS'] ?? false);
-    }
-
-    public function hasFieldRestrictions(): bool
-    {
-        return is_array($this->schemaConfiguration['enablecolumns'] ?? false)
-            && $this->schemaConfiguration['enablecolumns'] !== [];
-
     }
 
     public function hasCapability(TcaSchemaCapability $capability): bool

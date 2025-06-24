@@ -49,8 +49,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * This is done that way to ensure that all objects can not be modified anymore, and we have a complete
  * representation of the data structures available.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 #[Autoconfigure(public: true, shared: true)]
 class TcaSchemaFactory

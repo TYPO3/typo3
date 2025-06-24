@@ -19,8 +19,6 @@ namespace TYPO3\CMS\Core\Schema\Capability;
 
 /**
  * Contains all information of compiling the label information of a schema.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class LabelCapability implements SchemaCapabilityInterface
 {

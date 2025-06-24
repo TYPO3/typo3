@@ -26,8 +26,6 @@ namespace TYPO3\CMS\Core\Schema;
  * for example - the "sys_file_reference" table has type "uid_foreign:title". The uid_foreign DB field
  * of "sys_file_reference" references the "uid" field of the "sys_file" table (as defined in the "uid_foreign" field
  * of "sys_file_reference", and the "title" field is then pointing to the related references' schema
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class SchemaTypeInformation
 {

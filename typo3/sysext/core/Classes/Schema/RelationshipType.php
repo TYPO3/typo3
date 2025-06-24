@@ -17,9 +17,6 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Schema;
 
-/**
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
- */
 enum RelationshipType: string
 {
     // A direct relation, e.g. sys_file.metadata => sys_file_metadata

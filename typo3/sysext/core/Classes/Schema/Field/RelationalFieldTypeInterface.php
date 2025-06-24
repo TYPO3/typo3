@@ -22,8 +22,6 @@ use TYPO3\CMS\Core\Schema\RelationshipType;
 
 /**
  * Interface for a schema field that has a relation to somewhere else.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 interface RelationalFieldTypeInterface
 {

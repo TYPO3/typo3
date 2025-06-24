@@ -24,8 +24,6 @@ use TYPO3\CMS\Core\Schema\Field\LanguageFieldType;
  * Contains all information if a schema is language-aware, meaning
  * it has a "languageField", a "translationOrigPointerField", maybe a "translationSourceField"
  * and maybe a "diffSourceField".
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class LanguageAwareSchemaCapability implements SchemaCapabilityInterface
 {

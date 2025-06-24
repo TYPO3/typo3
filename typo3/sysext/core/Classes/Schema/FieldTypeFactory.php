@@ -62,8 +62,6 @@ use TYPO3\CMS\Core\Schema\Field\UuidFieldType;
  *
  * Some interesting points:
  * - the special type "select" is separated into two different classes - one with relations, and one without.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 class FieldTypeFactory
 {

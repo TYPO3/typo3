@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Core\Schema\Capability;
 /**
  * Capability to understand the flag within
  * - security.ignoreRootLevelRestriction
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class RootLevelCapability implements SchemaCapabilityInterface
 {

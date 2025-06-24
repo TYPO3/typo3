@@ -25,8 +25,6 @@ use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
  * if no sheets are defined.
  * Each sheet contains fields OR Section Containers (defined by <section>1</section>) which then could also
  * contain fields.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class FlexSheet
 {

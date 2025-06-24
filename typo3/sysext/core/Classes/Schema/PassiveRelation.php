@@ -24,8 +24,6 @@ namespace TYPO3\CMS\Core\Schema;
  * - A table "tx_myextension_author" has a passive relation FROM the table "tx_books" and its field "authors".
  * - A TCA table of type inline has a passthrough field in the child table, and that's a PASSIVE relation FROM the
  *   parent table.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 final readonly class PassiveRelation
 {

@@ -19,7 +19,5 @@ namespace TYPO3\CMS\Core\Schema\Capability;
 
 /**
  * A semantic interface for any kind of capability.
- *
- * @internal This is an experimental implementation and might change until TYPO3 v13 LTS
  */
 interface SchemaCapabilityInterface {}
