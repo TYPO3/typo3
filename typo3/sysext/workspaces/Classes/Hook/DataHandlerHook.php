@@ -20,8 +20,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Messenger\MessageBusInterface;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Context\WorkspaceAspect;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\RelationHandler;
@@ -195,35 +193,6 @@ class DataHandlerHook
         $this->notificationInfo = [];
         // Reset remapped IDs
         $this->remappedIds = [];
-    }
-
-    /**
-     * In case a sys_workspace_stage record is deleted we do a hard reset
-     * for all existing records in that stage to avoid that any of these end up
-     * as orphan records.
-     *
-     * @param string $command
-     * @param string $table
-     * @param string $id
-     * @param string $value
-     */
-    public function processCmdmap_postProcess($command, $table, $id, $value, DataHandler $dataHandler)
-    {
-        if ($command === 'delete') {
-            if ($table === StagesService::TABLE_STAGE) {
-                $this->resetStageOfElements((int)$id);
-            } elseif ($table === WorkspaceService::TABLE_WORKSPACE) {
-                $this->flushWorkspaceElements((int)$id);
-                BackendUtility::setUpdateSignal('updateTopbar');
-            }
-        }
-    }
-
-    public function processDatamap_afterAllOperations(DataHandler $dataHandler): void
-    {
-        if (isset($dataHandler->datamap[WorkspaceService::TABLE_WORKSPACE])) {
-            BackendUtility::setUpdateSignal('updateTopbar');
-        }
     }
 
     /**
@@ -762,99 +731,6 @@ class DataHandlerHook
         $relationHandler->start(implode(',', $remappedIds), $foreignTableName);
         $relationHandler->processDeletePlaceholder();
         $relationHandler->writeForeignField($configuration, $parentId);
-    }
-
-    /**
-     * In case a sys_workspace_stage record is deleted we do a hard reset
-     * for all existing records in that stage to avoid that any of these end up
-     * as orphan records.
-     *
-     * @param int $stageId Elements with this stage are reset
-     */
-    protected function resetStageOfElements(int $stageId): void
-    {
-        foreach ($this->tcaSchemaFactory->all() as $tcaTable => $schema) {
-            if (!$schema->isWorkspaceAware()) {
-                continue;
-            }
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tcaTable);
-            $queryBuilder
-                ->update($tcaTable)
-                ->set('t3ver_stage', StagesService::STAGE_EDIT_ID)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        't3ver_stage',
-                        $queryBuilder->createNamedParameter($stageId, Connection::PARAM_INT)
-                    ),
-                    $queryBuilder->expr()->gt(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                    )
-                )
-                ->executeStatement();
-        }
-    }
-
-    /**
-     * Flushes (remove, no soft delete!) elements of a particular workspace to avoid orphan records.
-     * This is used if an admin deletes a sys_workspace record.
-     *
-     * @param int $workspaceId The workspace to be flushed
-     */
-    protected function flushWorkspaceElements(int $workspaceId): void
-    {
-        $command = [];
-        foreach ($this->tcaSchemaFactory->all() as $tcaTable => $schema) {
-            if (!$schema->isWorkspaceAware()) {
-                continue;
-            }
-            $queryBuilder = $this->connectionPool->getQueryBuilderForTable($tcaTable);
-            $queryBuilder->getRestrictions()->removeAll();
-            $result = $queryBuilder
-                ->select('uid')
-                ->from($tcaTable)
-                ->where(
-                    $queryBuilder->expr()->eq(
-                        't3ver_wsid',
-                        $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)
-                    ),
-                    // t3ver_oid >= 0 basically omits placeholder records here, those would otherwise
-                    // fail to delete later in DH->discard() and would create "can't do that" log entries.
-                    $queryBuilder->expr()->or(
-                        $queryBuilder->expr()->gt(
-                            't3ver_oid',
-                            $queryBuilder->createNamedParameter(0, Connection::PARAM_INT)
-                        ),
-                        $queryBuilder->expr()->eq(
-                            't3ver_state',
-                            $queryBuilder->createNamedParameter(VersionState::NEW_PLACEHOLDER->value, Connection::PARAM_INT)
-                        )
-                    )
-                )
-                ->orderBy('uid')
-                ->executeQuery();
-            while (($recordId = $result->fetchOne()) !== false) {
-                $command[$tcaTable][$recordId]['version']['action'] = 'flush';
-            }
-        }
-        if (!empty($command)) {
-            // Execute the command array via DataHandler to flush all records from this workspace.
-            // Switch to target workspace temporarily, otherwise DH->discard() do not
-            // operate on correct workspace if fetching additional records.
-            $backendUser = $GLOBALS['BE_USER'];
-            $savedWorkspace = $backendUser->workspace;
-            $backendUser->workspace = $workspaceId;
-            $context = GeneralUtility::makeInstance(Context::class);
-            $savedWorkspaceContext = $context->getAspect('workspace');
-            $context->setAspect('workspace', new WorkspaceAspect($workspaceId));
-
-            $dataHandler = GeneralUtility::makeInstance(DataHandler::class);
-            $dataHandler->start([], $command, $backendUser);
-            $dataHandler->process_cmdmap();
-
-            $backendUser->workspace = $savedWorkspace;
-            $context->setAspect('workspace', $savedWorkspaceContext);
-        }
     }
 
     /**
