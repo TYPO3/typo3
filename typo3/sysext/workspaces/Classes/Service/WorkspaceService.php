@@ -28,7 +28,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Resource\Exception\FileDoesNotExistException;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
-use TYPO3\CMS\Core\SingletonInterface;
 use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
@@ -36,13 +35,12 @@ use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
  * @internal
+ *
+ * @todo: This is public:true only because testing-framework uses GU::makeInstance() on it. Get rid of this.
  */
 #[Autoconfigure(public: true)]
-class WorkspaceService implements SingletonInterface
+class WorkspaceService
 {
-    protected array $versionsOnPageCache = [];
-    protected array $pagesWithVersionsInTable = [];
-
     public const TABLE_WORKSPACE = 'sys_workspace';
     public const LIVE_WORKSPACE_ID = 0;
 
@@ -798,7 +796,7 @@ class WorkspaceService implements SingletonInterface
 
         try {
             $fileObject = $resourceFactory->getFileObject($fileId);
-        } catch (FileDoesNotExistException $e) {
+        } catch (FileDoesNotExistException) {
             return false;
         }
 
@@ -888,85 +886,6 @@ class WorkspaceService implements SingletonInterface
             }
         }
         return $isNewPage;
-    }
-
-    /**
-     * Determines whether a page has workspace versions.
-     */
-    public function hasPageRecordVersions(int $workspaceId, int $pageId): bool
-    {
-        if ($workspaceId === 0 || $pageId === 0) {
-            return false;
-        }
-
-        if (isset($this->versionsOnPageCache[$workspaceId][$pageId])) {
-            return $this->versionsOnPageCache[$workspaceId][$pageId];
-        }
-
-        $this->versionsOnPageCache[$workspaceId][$pageId] = false;
-
-        foreach ($GLOBALS['TCA'] as $tableName => $tableConfiguration) {
-            if ($tableName === 'pages' || !BackendUtility::isTableWorkspaceEnabled($tableName)) {
-                continue;
-            }
-
-            $pages = $this->fetchPagesWithVersionsInTable($workspaceId, $tableName);
-            // Early break on first match
-            if (!empty($pages[(string)$pageId])) {
-                $this->versionsOnPageCache[$workspaceId][$pageId] = true;
-                break;
-            }
-        }
-
-        return $this->versionsOnPageCache[$workspaceId][$pageId];
-    }
-
-    /**
-     * Gets all pages that have workspace versions in a particular table.
-     *
-     * Result:
-     * [
-     *   1 => true,
-     *   11 => true,
-     *   13 => true,
-     *   15 => true
-     * ],
-     */
-    protected function fetchPagesWithVersionsInTable(int $workspaceId, string $tableName): array
-    {
-        if ($workspaceId === 0) {
-            return [];
-        }
-
-        if (!isset($this->pagesWithVersionsInTable[$workspaceId])) {
-            $this->pagesWithVersionsInTable[$workspaceId] = [];
-        }
-
-        if (!isset($this->pagesWithVersionsInTable[$workspaceId][$tableName])) {
-            $this->pagesWithVersionsInTable[$workspaceId][$tableName] = [];
-
-            $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($tableName);
-            $queryBuilder->getRestrictions()
-                ->removeAll()
-                ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
-            // Fetch pids of all versioned record within given workspace of given table
-            $result = $queryBuilder
-                ->select('pid')
-                ->from($tableName)
-                ->where($queryBuilder->expr()->eq('t3ver_wsid', $queryBuilder->createNamedParameter($workspaceId, Connection::PARAM_INT)))
-                ->groupBy('pid')
-                ->executeQuery();
-
-            $pageIds = [];
-            while ($row = $result->fetchAssociative()) {
-                $pageIds[$row['pid']] = true;
-            }
-
-            $this->pagesWithVersionsInTable[$workspaceId][$tableName] = $pageIds;
-        }
-
-        return $this->pagesWithVersionsInTable[$workspaceId][$tableName];
     }
 
     protected function getLanguageService(): LanguageService
