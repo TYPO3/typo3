@@ -144,6 +144,22 @@ final class RecoveryConfigurationTest extends UnitTestCase
     }
 
     #[Test]
+    public function getLifeTimeTimestampReturnsTimestampForMisingForgotLinkHashValidTime(): void
+    {
+        $timestamp = time();
+        $expected = $timestamp + 3600 * 12;
+
+        $context = new Context();
+        $context->setAspect('date', new DateTimeAspect(new \DateTimeImmutable('@' . $timestamp)));
+        unset($this->settings['forgotLinkHashValidTime']);
+        $this->setupSubject($context);
+
+        $actual = $this->subject->getLifeTimeTimestamp();
+
+        self::assertSame($expected, $actual);
+    }
+
+    #[Test]
     public function getForgotHashShouldReturnHashWithLifeTimeTimestamp(): void
     {
         $timestamp = time();
