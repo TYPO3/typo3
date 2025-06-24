@@ -122,6 +122,9 @@ class BackendController
             JavaScriptModuleInstruction::create('@typo3/backend/storage/persistent.js')
                 ->invoke('load', $backendUser->uc)
         );
+        $javaScriptRenderer->addJavaScriptModuleInstruction(
+            JavaScriptModuleInstruction::create('@typo3/backend/key-bindings.js')
+        );
         $javaScriptRenderer->addGlobalAssignment([
             'TYPO3' => [
                 'configuration' => [

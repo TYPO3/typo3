@@ -66,7 +66,6 @@ final class SearchCest
 
         $I->pressKey(self::$searchField, WebDriverKeys::ESCAPE);
 
-        $I->waitForElementNotVisible(self::$searchResultContainer);
-        $I->cantSee(self::$searchField);
+        $I->seeInField(self::$searchField, '');
     }
 }
