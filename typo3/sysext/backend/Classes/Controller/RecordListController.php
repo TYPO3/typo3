@@ -43,7 +43,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Error\Http\BadRequestException;
 use TYPO3\CMS\Core\Http\JsonResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
@@ -419,7 +418,7 @@ class RecordListController
 
         if ($this->id !== 0) {
             $uriBuilder = PreviewUriBuilder::create($this->pageInfo);
-            if ($uriBuilder->isPreviewable() && $this->canCreatePreviewLink()) {
+            if ($uriBuilder->isPreviewable()) {
                 $previewDataAttributes = PreviewUriBuilder::create($this->pageInfo)
                     ->withRootLine(BackendUtility::BEgetRootLine($this->id))
                     ->buildDispatcherDataAttributes();
@@ -650,23 +649,6 @@ class RecordListController
                 . '</div>';
         }
         return '';
-    }
-
-    /**
-     * Returns the configuration of mod.web_list.noViewWithDokTypes or the
-     * default value 254 (Sys Folders), if not set.
-     * @todo: this should vanish in favor of TCEMAIN.preview.disableButtonForDokType
-     */
-    protected function canCreatePreviewLink(): bool
-    {
-        if (isset($this->modTSconfig['noViewWithDokTypes'])) {
-            $noViewDokTypes = GeneralUtility::trimExplode(',', $this->modTSconfig['noViewWithDokTypes'], true);
-        } else {
-            $noViewDokTypes = [
-                PageRepository::DOKTYPE_SYSFOLDER,
-            ];
-        }
-        return !in_array($this->pageInfo['doktype'] ?? 0, $noViewDokTypes);
     }
 
     /**
