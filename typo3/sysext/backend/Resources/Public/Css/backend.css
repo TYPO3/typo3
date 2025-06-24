@@ -2522,12 +2522,13 @@ typo3-backend-formengine-suggest-result-item .formengine-suggest-result-item-lab
 .form-control-clearable-wrapper .close .icon{vertical-align:0}
 .form-control-clearable-wrapper:focus{border-color:inherit;box-shadow:none}
 .form-control-clearable-wrapper:focus-within{z-index:3}
-.input-group{align-items:stretch;border-radius:var(--typo3-input-border-radius);display:flex;flex-wrap:wrap;position:relative;width:100%}
-.input-group>.form-control,.input-group>.form-control-clearable-wrapper,.input-group>.form-select,.input-group>typo3-backend-color-picker{flex:1 1 auto;min-width:0;position:relative;width:1%}
-.input-group>.form-control:focus,.input-group>.form-select:focus{z-index:5}
-.input-group>.input-group-text>.form-check-type-toggle{margin-bottom:0}
-.input-group .btn{position:relative;z-index:2}
-.input-group .btn:focus{z-index:5}
+.input-group,.input-grouped{align-items:stretch;border-radius:var(--typo3-input-border-radius);display:flex;flex-wrap:wrap;position:relative;width:100%}
+.input-group>.form-control,.input-group>.form-control-clearable-wrapper,.input-group>.form-select,.input-group>typo3-backend-color-picker,.input-grouped>.form-control,.input-grouped>.form-control-clearable-wrapper,.input-grouped>.form-select,.input-grouped>typo3-backend-color-picker{flex:1 1 auto;min-width:0;position:relative;width:1%}
+.input-group>.form-control:focus,.input-group>.form-select:focus,.input-grouped>.form-control:focus,.input-grouped>.form-select:focus{z-index:5}
+.input-group>.input-group-text>.form-check-type-toggle,.input-grouped>.input-group-text>.form-check-type-toggle{margin-bottom:0}
+.input-group .btn,.input-grouped .btn{position:relative;z-index:2}
+.input-group .btn:focus,.input-grouped .btn:focus{z-index:5}
+.input-grouped{gap:calc(var(--typo3-spacing)/2)}
 .input-group-text{align-items:center;background-color:var(--typo3-input-group-addon-bg);border:var(--typo3-input-border-width) solid var(--typo3-input-border-color);border-radius:var(--typo3-input-border-radius);color:var(--typo3-input-color);display:flex;font-size:var(--typo3-input-font-size);font-weight:400;line-height:var(--typo3-input-line-height);min-width:2.5rem;padding:var(--typo3-input-padding-y) var(--typo3-input-padding-x);text-align:center;white-space:nowrap}
 .input-group-icon{vertical-align:middle}
 .input-group-icon img{max-height:16px}
@@ -3389,7 +3390,7 @@ typo3-backend-live-search-result-item-action>:first-child .livesearch-result-ite
 .modal-body typo3-backend-settings-editor{--settings-parent-offset:var(--typo3-modal-padding)}
 .settings-container{container-type:inline-size}
 .settings{background-color:var(--settings-bg);border:var(--settings-border-width) solid var(--settings-border-color);border-radius:var(--settings-border-radius);box-shadow:var(--settings-box-shadow);color:var(--settings-color);display:grid;gap:var(--settings-border-width);grid-template-columns:1fr}
-.settings-search{align-items:center;background-color:color-mix(in srgb,var(--settings-bg),currentColor 1%);border-start-end-radius:calc(var(--settings-border-radius) - var(--settings-border-width));border-start-start-radius:calc(var(--settings-border-radius) - var(--settings-border-width));display:flex;height:var(--settings-search-height);padding-inline:calc(var(--settings-padding) - .3rem);position:-webkit-sticky;position:sticky;top:calc(var(--settings-parent-offset)*-1);z-index:2}
+.settings-search{align-items:center;background-color:color-mix(in srgb,var(--settings-bg),currentColor 1%);border-start-end-radius:calc(var(--settings-border-radius) - var(--settings-border-width));border-start-start-radius:calc(var(--settings-border-radius) - var(--settings-border-width));display:flex;height:var(--settings-search-height);padding-inline:calc(var(--settings-padding) - .3rem);position:-webkit-sticky;position:sticky;top:calc(var(--settings-parent-offset)*-1);z-index:5}
 .settings-search:has(+:not([hidden])){border-bottom:var(--settings-border-width) solid var(--settings-border-color)}
 .settings-navigation{display:none;position:relative}
 .settings-navigation-inner{padding:calc(var(--settings-padding) - .3rem)}

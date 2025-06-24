@@ -95,6 +95,9 @@ declare namespace TYPO3 {
     export namespace ShowItem {
       export const moduleUrl: string;
     }
+    export namespace Wizards {
+      export const elementBrowserUrl: string;
+    }
     export namespace Workspaces {
       export const id: string;
     }

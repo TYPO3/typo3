@@ -42,7 +42,7 @@
     &-search {
         position: sticky;
         top: calc(var(--settings-parent-offset) * -1);
-        z-index: 2;
+        z-index: 5;
         height: var(--settings-search-height);
         display: flex;
         align-items: center;

@@ -1,0 +1,13 @@
+/*
+ * This file is part of the TYPO3 CMS project.
+ *
+ * It is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License, either version 2
+ * of the License, or any later version.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE.txt file that was distributed with this source code.
+ *
+ * The TYPO3 project - inspiring people to share!
+ */
+import{html as p,nothing as c}from"lit";import{property as u,customElement as g}from"lit/decorators.js";import{lll as y}from"@typo3/core/lit-helper.js";import{MessageUtility as v}from"@typo3/backend/utility/message-utility.js";import{BaseElement as h}from"@typo3/backend/settings/type/base.js";import m from"@typo3/backend/modal.js";import"@typo3/backend/element/icon-element.js";var d=function(o,e,n,r){var i=arguments.length,t=i<3?e:r===null?r=Object.getOwnPropertyDescriptor(e,n):r,s;if(typeof Reflect=="object"&&typeof Reflect.decorate=="function")t=Reflect.decorate(o,e,n,r);else for(var l=o.length-1;l>=0;l--)(s=o[l])&&(t=(i<3?s(t):i>3?s(e,n,t):s(e,n))||t);return i>3&&t&&Object.defineProperty(e,n,t),t};const f="typo3-backend-settings-type-page";let a=class extends h{constructor(){super(...arguments),this.elementBrowserListener=e=>{if(!v.verifyOrigin(e.origin))throw"Denied message sent by "+e.origin;if(e.data.actionName==="typo3:elementBrowser:elementAdded"){if(typeof e.data.fieldName>"u")throw"fieldName not defined in message";if(typeof e.data.value>"u")throw"value not defined in message";this.value=e.data.value.split("_").pop()}}}render(){return p`<div class=input-grouped><input type=number id=${this.formid} class=form-control ?readonly=${this.readonly} .value=${this.value} @change=${e=>this.value=parseInt(e.target.value,10)}> ${this.canUseElementBrowser()?p`<button type=button class="btn btn-default" @click=${()=>this.openElementBrowser()}><typo3-backend-icon identifier=apps-pagetree-page size=small></typo3-backend-icon>${y("settingseditor.type.page.button")||"Select page"}</button>`:c}</div>`}canUseElementBrowser(){return top.TYPO3.settings?.Wizards?.elementBrowserUrl!==void 0}openElementBrowser(){const e="db",n=this.formid+"|||pages",r=m.advanced({type:m.types.iframe,content:top.TYPO3.settings.Wizards.elementBrowserUrl+"&mode="+e+"&bparams="+n,size:m.sizes.large});window.addEventListener("message",this.elementBrowserListener),r.addEventListener("typo3-modal-hide",()=>{window.removeEventListener("message",this.elementBrowserListener)})}};d([u({type:Number})],a.prototype,"value",void 0),a=d([g(f)],a);export{a as PageTypeElement,f as componentName};

@@ -1,7 +1,8 @@
 //
 // Input Group
 //
-.input-group {
+.input-group,
+.input-grouped {
     position: relative;
     display: flex;
     flex-wrap: wrap; // For form validation feedback
@@ -40,6 +41,10 @@
             z-index: 5;
         }
     }
+}
+
+.input-grouped {
+    gap: calc(var(--typo3-spacing) / 2);
 }
 
 //
