@@ -50,7 +50,6 @@ use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\DataHandling\TableColumnType;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Http\RedirectResponse;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
@@ -331,13 +330,6 @@ class EditDocumentController
     protected $dontStoreDocumentRef = 0;
 
     /**
-     * Stores information needed to preview the currently saved record
-     *
-     * @var array
-     */
-    protected $previewData = [];
-
-    /**
      * True if a record has been saved
      */
     protected bool $isSavedRecord = false;
@@ -397,7 +389,11 @@ class EditDocumentController
                 $this->R_URI = rtrim($this->R_URI, '&') .
                     HttpUtility::buildQueryString([
                         'showPreview' => true,
-                        'popViewId' => $parsedBody['popViewId'] ?? $this->getPreviewPageId(),
+                        'popViewId' => $parsedBody['popViewId'] ?? PreviewUriBuilder::getPreviewPageId(
+                            ($this->firstEl['table'] ?? ''),
+                            ($this->firstEl['uid'] ?? ''),
+                            ($this->popViewId ?: $this->viewId),
+                        ),
                     ], (empty($this->R_URL_getvars) ? '?' : '&'));
             }
             return new RedirectResponse($this->R_URI, 302);
@@ -831,7 +827,6 @@ class EditDocumentController
     {
         $parsedBody = $request->getParsedBody();
         $queryParams = $request->getQueryParams();
-
         $beUser = $this->getBackendUser();
 
         $this->popViewId = (int)($parsedBody['popViewId'] ?? $queryParams['popViewId'] ?? 0);
@@ -843,7 +838,7 @@ class EditDocumentController
         // parameters "popViewId" (the preview page id) and "showPreview" set.
         if ($this->popViewId && ($queryParams['showPreview'] ?? false)) {
             // Generate the preview code (markup), which is added to the module body later
-            $this->previewCode = $this->generatePreviewCode();
+            $this->previewCode = $this->getPreviewUriBuilderForRecordPreview()->buildImmediateActionElement([PreviewUriBuilder::OPTION_SWITCH_FOCUS => null]);
             // After generating the preview code, those params should not longer be applied to the form
             // action, as this would otherwise always refresh the preview window on saving the record.
             unset($this->R_URL_getvars['showPreview'], $this->R_URL_getvars['popViewId']);
@@ -861,193 +856,18 @@ class EditDocumentController
         $this->eventDispatcher->dispatch($event);
     }
 
-    /**
-     * Generates markup for immediate action dispatching.
-     */
-    protected function generatePreviewCode(): ?string
+    protected function getPreviewUriBuilderForRecordPreview(): PreviewUriBuilder
     {
         $array_keys = array_keys($this->editconf);
-        $this->previewData['table'] = reset($array_keys) ?: null;
-        $array_keys = array_keys($this->editconf[$this->previewData['table']]);
-        $this->previewData['id'] = reset($array_keys) ?: null;
-
-        $previewPageId = $this->getPreviewPageId();
-        $anchorSection = $this->getPreviewUrlAnchorSection();
-        $previewPageRootLine = BackendUtility::BEgetRootLine($previewPageId);
-        $previewUrlParameters = $this->getPreviewUrlParameters($previewPageId);
-
-        return PreviewUriBuilder::create($previewPageId)
-            ->withRootLine($previewPageRootLine)
-            ->withSection($anchorSection)
-            ->withAdditionalQueryParameters($previewUrlParameters)
-            ->buildImmediateActionElement([PreviewUriBuilder::OPTION_SWITCH_FOCUS => null]);
-    }
-
-    /**
-     * Returns the parameters for the preview URL
-     */
-    protected function getPreviewUrlParameters(int $previewPageId): string
-    {
-        $linkParameters = [];
-        $table = ($this->previewData['table'] ?? '') ?: ($this->firstEl['table'] ?? '');
-        $recordId = ($this->previewData['id'] ?? '') ?: ($this->firstEl['uid'] ?? '');
-        $previewConfiguration = BackendUtility::getPagesTSconfig($previewPageId)['TCEMAIN.']['preview.'][$table . '.'] ?? [];
-        $recordArray = BackendUtility::getRecord($table, $recordId);
-
-        // language handling
-        $schema = $this->tcaSchemaFactory->get($table);
-        if ($schema->isLanguageAware()
-            && ($languageField = $schema->getCapability(TcaSchemaCapability::Language)->getLanguageField()->getName())
-            && !empty($recordArray[$languageField])
-        ) {
-            $recordId = $this->resolvePreviewRecordId($table, $recordArray, $previewConfiguration);
-            $language = $recordArray[$languageField];
-            if ($language > 0) {
-                $linkParameters['_language'] = $language;
-            }
-        }
-
-        // Always use live workspace record uid for the preview
-        if ($schema->isWorkspaceAware() && ($recordArray['t3ver_oid'] ?? 0) > 0) {
-            $recordId = $recordArray['t3ver_oid'];
-        }
-
-        // map record data to GET parameters
-        if (isset($previewConfiguration['fieldToParameterMap.'])) {
-            foreach ($previewConfiguration['fieldToParameterMap.'] as $field => $parameterName) {
-                $value = $recordArray[$field] ?? '';
-                if ($field === 'uid') {
-                    $value = $recordId;
-                }
-                $linkParameters[$parameterName] = $value;
-            }
-        }
-
-        // add/override parameters by configuration
-        if (isset($previewConfiguration['additionalGetParameters.'])) {
-            $linkParameters = array_replace(
-                $linkParameters,
-                GeneralUtility::removeDotsFromTS($previewConfiguration['additionalGetParameters.'])
-            );
-        }
-
-        return HttpUtility::buildQueryString($linkParameters, '&');
-    }
-
-    protected function resolvePreviewRecordId(string $table, array $recordArray, array $previewConfiguration): int
-    {
-        if (($schema = $this->tcaSchemaFactory->get($table))->hasCapability(TcaSchemaCapability::Language)
-            && ($l10nPointer = $schema->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName())
-            && !empty($recordArray[$l10nPointer])
-            && (
-                // not set -> default to true
-                !isset($previewConfiguration['useDefaultLanguageRecord'])
-                // or set -> use value
-                || $previewConfiguration['useDefaultLanguageRecord']
-            )
-        ) {
-            return (int)$recordArray[$l10nPointer];
-        }
-        return (int)$recordArray['uid'];
-    }
-
-    /**
-     * Translated site root pages must use their translation parent as
-     * the preview target, otherwise the site configuration cannot be
-     * found correctly.
-     *
-     * @param int $pageUid
-     * @return int
-     */
-    protected function resolvePreviewPageId(int $pageUid): int
-    {
-        if (!$pageUid) {
-            return $pageUid;
-        }
-
-        $l10nPointer = $this->tcaSchemaFactory->get('pages')->getCapability(TcaSchemaCapability::Language)->getTranslationOriginPointerField()->getName();
-        $page = BackendUtility::getRecord('pages', $pageUid, 'is_siteroot,' . $l10nPointer);
-
-        if ($page['is_siteroot'] && $page[$l10nPointer]) {
-            return $page[$l10nPointer];
-        }
-
-        return $pageUid;
-    }
-
-    /**
-     * Returns the anchor section for the preview url
-     */
-    protected function getPreviewUrlAnchorSection(): string
-    {
-        $table = ($this->previewData['table'] ?? '') ?: ($this->firstEl['table'] ?? '');
-        $recordId = ($this->previewData['id'] ?? '') ?: ($this->firstEl['uid'] ?? '');
-
-        return $table === 'tt_content' ? '#c' . (int)$recordId : '';
-    }
-
-    /**
-     * Returns the preview page id
-     */
-    protected function getPreviewPageId(): int
-    {
-        $previewPageId = 0;
-        $table = ($this->previewData['table'] ?? '') ?: ($this->firstEl['table'] ?? '');
-        $recordId = ($this->previewData['id'] ?? '') ?: ($this->firstEl['uid'] ?? '');
-        $pageId = (int)($this->popViewId ?: $this->viewId);
-
-        if ($table === 'pages') {
-            $currentPageId = $this->resolvePreviewPageId((int)$recordId);
+        $table = (string)(reset($array_keys) ?: null);
+        if ($table) {
+            $array_keys = array_keys($this->editconf[$table]);
         } else {
-            $currentPageId = max(0, $pageId);
+            $table = (string)($this->firstEl['table'] ?? '');
         }
-
-        $previewConfiguration = BackendUtility::getPagesTSconfig($currentPageId)['TCEMAIN.']['preview.'][$table . '.'] ?? [];
-
-        if (isset($previewConfiguration['previewPageId'])) {
-            $previewPageId = (int)$previewConfiguration['previewPageId'];
-        }
-        // if no preview page was configured
-        if (!$previewPageId) {
-            $rootPageData = null;
-            $rootLine = BackendUtility::BEgetRootLine($currentPageId);
-            $currentPage = (array)(reset($rootLine) ?: []);
-            if ($this->canViewDoktype($currentPage)) {
-                // try the current page
-                $previewPageId = $currentPageId;
-            } else {
-                // or search for the root page
-                foreach ($rootLine as $page) {
-                    if ($page['is_siteroot']) {
-                        $rootPageData = $page;
-                        break;
-                    }
-                }
-                $previewPageId = isset($rootPageData)
-                    ? (int)$rootPageData['uid']
-                    : $currentPageId;
-            }
-        }
-
-        $this->popViewId = $previewPageId;
-
-        return $previewPageId;
-    }
-
-    /**
-     * Check whether the current page has a "no view doktype" assigned
-     */
-    protected function canViewDoktype(array $currentPage): bool
-    {
-        if (!isset($currentPage['uid']) || !($currentPage['doktype'] ?? false)) {
-            // In case the current page record is invalid, the element can not be viewed
-            return false;
-        }
-
-        return !in_array((int)$currentPage['doktype'], [
-            PageRepository::DOKTYPE_SPACER,
-            PageRepository::DOKTYPE_SYSFOLDER,
-        ], true);
+        $recordId = (int)((reset($array_keys) ?: null) ?? ($this->firstEl['uid'] ?? ''));
+        $pageId = $this->popViewId ?: $this->viewId;
+        return PreviewUriBuilder::createForRecordPreview($table, $recordId, $pageId);
     }
 
     /**
@@ -1199,7 +1019,10 @@ class EditDocumentController
                             $this->viewId = $formData['parentPageRow']['uid'];
                         } else {
                             if ($table === 'pages') {
-                                $this->viewId = $formData['databaseRow']['uid'];
+                                // Only set viewId in case it's not a new page - as this can not be viewed before being saved
+                                if ($command !== 'new' && MathUtility::canBeInterpretedAsInteger($formData['databaseRow']['uid'])) {
+                                    $this->viewId = (int)$formData['databaseRow']['uid'];
+                                }
                             } elseif (!empty($formData['parentPageRow']['uid'])) {
                                 $this->viewId = $formData['parentPageRow']['uid'];
                             }
@@ -1475,28 +1298,13 @@ class EditDocumentController
             // @TODO: TsConfig option should change to viewDoc
             && $this->getTsConfigOption($this->firstEl['table'], 'saveDocView')
         ) {
-            $pagesTSconfig = BackendUtility::getPagesTSconfig($this->pageinfo['uid'] ?? 0);
-            if (isset($pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'])) {
-                $excludeDokTypes = GeneralUtility::intExplode(',', (string)$pagesTSconfig['TCEMAIN.']['preview.']['disableButtonForDokType'], true);
-            } else {
-                // exclude sys-folders and spacers by default
-                $excludeDokTypes = [
-                    PageRepository::DOKTYPE_SYSFOLDER,
-                    PageRepository::DOKTYPE_SPACER,
-                ];
-            }
-            if (
-                !in_array((int)($this->pageinfo['doktype'] ?? 0), $excludeDokTypes, true)
-                || isset($pagesTSconfig['TCEMAIN.']['preview.'][$this->firstEl['table'] . '.']['previewPageId'])
-            ) {
-                $previewPageId = $this->getPreviewPageId();
-                $previewUrl = (string)PreviewUriBuilder::create($previewPageId)
-                    ->withSection($this->getPreviewUrlAnchorSection())
-                    ->withAdditionalQueryParameters($this->getPreviewUrlParameters($previewPageId))
-                    ->buildUri();
-                if ($previewUrl !== '') {
+            $previewUriBuilderForCurrentPage = PreviewUriBuilder::create($this->pageinfo)->isPreviewable();
+            $previewUriBuilder = $this->getPreviewUriBuilderForRecordPreview();
+            if ($previewUriBuilderForCurrentPage || $previewUriBuilder->isPreviewable()) {
+                $previewUrl = $previewUriBuilder->buildUri();
+                if ($previewUrl) {
                     $viewButton = $buttonBar->makeLinkButton()
-                        ->setHref($previewUrl)
+                        ->setHref((string)$previewUrl)
                         ->setIcon($this->iconFactory->getIcon('actions-view', IconSize::SMALL))
                         ->setShowLabelText(true)
                         ->setTitle($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:rm.viewDoc'))

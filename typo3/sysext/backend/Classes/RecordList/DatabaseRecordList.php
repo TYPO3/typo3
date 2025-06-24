@@ -45,7 +45,6 @@ use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Database\ReferenceIndex;
-use TYPO3\CMS\Core\Domain\Repository\PageRepository;
 use TYPO3\CMS\Core\Imaging\IconFactory;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\LinkHandling\Exception\UnknownLinkHandlerException;
@@ -1093,20 +1092,13 @@ class DatabaseRecordList
         return $button;
     }
 
-    /**
-     * Get preview link for pages or tt_content records
-     */
     protected function getPreviewUriBuilder(string $table, array $row): PreviewUriBuilder
     {
-        if ($table === 'tt_content') {
-            // Link to a content element, possibly translated and with anchor
-            $previewUriBuilder = PreviewUriBuilder::create($this->pageRow)
-                ->withSection('#c' . $row['uid'])
-                ->withLanguage((int)($row[$GLOBALS['TCA']['tt_content']['ctrl']['languageField'] ?? null] ?? 0));
-        } else {
-            $previewUriBuilder = PreviewUriBuilder::create($row);
-        }
-        return $previewUriBuilder;
+        return PreviewUriBuilder::createForRecordPreview(
+            $table,
+            (int)($row['uid'] ?? 0),
+            (int)($table === 'pages' ? $row['uid'] : ($this->pageRow['uid'] ?? 0))
+        );
     }
 
     /**
@@ -1565,36 +1557,19 @@ class DatabaseRecordList
         }
         $permsEdit = $this->overlayEditLockPermissions($table, $row, $permsEdit);
 
-        // "Show" link (only pages and tt_content elements)
-        $tsConfig = BackendUtility::getPagesTSconfig($this->id)['mod.']['web_list.'] ?? [];
-        if ((
-            $table === 'pages'
-                && isset($row['doktype'])
-                && !in_array((int)$row['doktype'], $this->getNoViewWithDokTypes($tsConfig), true)
-        )
-            || (
-                $table === 'tt_content'
-                && isset($this->pageRow['doktype'])
-                && !in_array((int)$this->pageRow['doktype'], $this->getNoViewWithDokTypes($tsConfig), true)
-            )
-        ) {
-            if (!$isDeletePlaceHolder
-                && ($attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes()) !== null
-            ) {
-                $viewAction = '<button'
-                    . ' type="button"'
-                    . ' class="btn btn-default" ' . $attributes
-                    . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
-                if ($table === 'pages') {
-                    $viewAction .= $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render();
-                } else {
-                    $viewAction .= $this->iconFactory->getIcon('actions-view', IconSize::SMALL)->render();
-                }
-                $viewAction .= '</button>';
-                $this->addActionToCellGroup($cells, $viewAction, 'view');
+        // "Show" link
+        if (($attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes()) !== null) {
+            $viewAction = '<button'
+                . ' type="button"'
+                . ' class="btn btn-default" ' . $attributes
+                . ' title="' . htmlspecialchars($this->getLanguageService()->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage')) . '">';
+            if ($table === 'pages') {
+                $viewAction .= $this->iconFactory->getIcon('actions-view-page', IconSize::SMALL)->render();
             } else {
-                $this->addActionToCellGroup($cells, $this->spaceIcon, 'view');
+                $viewAction .= $this->iconFactory->getIcon('actions-view', IconSize::SMALL)->render();
             }
+            $viewAction .= '</button>';
+            $this->addActionToCellGroup($cells, $viewAction, 'view');
         } else {
             $this->addActionToCellGroup($cells, $this->spaceIcon, 'view');
         }
@@ -2782,10 +2757,8 @@ class DatabaseRecordList
                 }
                 break;
             case 'show':
-                // "Show" link (only pages and tt_content elements)
-                if (($table === 'pages' || $table === 'tt_content')
-                    && ($attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes()) !== null
-                ) {
+                // "Show" link
+                if (($attributes = $this->getPreviewUriBuilder($table, $row)->serializeDispatcherAttributes()) !== null) {
                     $title = htmlspecialchars($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.showPage'));
                     $code = '<button ' . $attributes
                         . ' title="' . $title . '"'
@@ -3430,24 +3403,6 @@ class DatabaseRecordList
         $transOrigPointerField = $GLOBALS['TCA'][$table]['ctrl']['transOrigPointerField'] ?? '';
 
         return ($row[$languageField] ?? false) && ($row[$transOrigPointerField] ?? false);
-    }
-
-    /**
-     * Returns the configuration of mod.web_list.noViewWithDokTypes or the
-     * default value 254 (Sys Folders) and 199 (Spacer), if not set.
-     */
-    protected function getNoViewWithDokTypes(array $tsConfig): array
-    {
-        if (isset($tsConfig['noViewWithDokTypes'])) {
-            $noViewDokTypes = GeneralUtility::intExplode(',', (string)$tsConfig['noViewWithDokTypes'], true);
-        } else {
-            $noViewDokTypes = [
-                PageRepository::DOKTYPE_SPACER,
-                PageRepository::DOKTYPE_SYSFOLDER,
-            ];
-        }
-
-        return $noViewDokTypes;
     }
 
     /**
