@@ -36,6 +36,10 @@
 			<trans-unit id="settingseditor.search.noResultsResetButtonLabel">
 				<source>Reset filter</source>
 			</trans-unit>
+
+			<trans-unit id="settingseditor.type.page.button">
+				<source>Select page</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

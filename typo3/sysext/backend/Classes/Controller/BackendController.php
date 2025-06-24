@@ -153,6 +153,7 @@ class BackendController
         $pageRenderer->addInlineSetting('RecordCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_db'));
         $pageRenderer->addInlineSetting('FileCommit', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('tce_file'));
         $pageRenderer->addInlineSetting('Clipboard', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('clipboard_process'));
+        $pageRenderer->addInlineSetting('Wizards', 'elementBrowserUrl', (string)$this->uriBuilder->buildUriFromRoute('wizard_element_browser'));
 
         // Needed for FormEngine manipulation (date picker)
         $formatter = new DateFormatter();

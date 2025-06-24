@@ -134,7 +134,9 @@ class ElementBrowser {
       }
 
       if (close) {
-        this.focusOpenerAndClose();
+        // // > After postMessage() is called, the MessageEvent will be dispatched only after all pending execution contexts have finished.
+        // // See: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#notes
+        setTimeout(() => this.focusOpenerAndClose(), 0);
       }
 
       return true;
@@ -166,7 +168,9 @@ class ElementBrowser {
       MessageUtility.send(message, this.getParent());
 
       if (close) {
-        this.focusOpenerAndClose();
+        // > After postMessage() is called, the MessageEvent will be dispatched only after all pending execution contexts have finished.
+        // See: https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage#notes
+        setTimeout(() => this.focusOpenerAndClose(), 0);
       }
     } else {
       alert('Error - reference to main window is not set properly!');
