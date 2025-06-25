@@ -48,27 +48,6 @@ class GridDataService implements LoggerAwareInterface
 {
     use LoggerAwareTrait;
 
-    public const GridColumn_Collection = 'Workspaces_Collection';
-    public const GridColumn_CollectionLevel = 'Workspaces_CollectionLevel';
-    public const GridColumn_CollectionParent = 'Workspaces_CollectionParent';
-    public const GridColumn_CollectionCurrent = 'Workspaces_CollectionCurrent';
-    public const GridColumn_CollectionChildren = 'Workspaces_CollectionChildren';
-
-    /**
-     * Version record information (filtered, sorted and limited)
-     */
-    protected array $dataArray = [];
-
-    /**
-     * Name of the field used for sorting.
-     */
-    protected string $sort = '';
-
-    /**
-     * Direction used for sorting (ASC, DESC).
-     */
-    protected string $sortDir = '';
-
     protected ?IntegrityService $integrityService;
 
     public function __construct(
@@ -88,21 +67,19 @@ class GridDataService implements LoggerAwareInterface
      * @param \stdClass $parameter Parameters as submitted by JavaScript component
      * @return array Version record information (filtered, sorted and limited)
      */
-    public function generateGridListFromVersions(array $versions, \stdClass $parameter, int $currentWorkspace): array
+    public function generateGridListFromVersions(array $versions, \stdClass $parameter): array
     {
         // Read the given parameters from grid. If the parameter is not set use default values.
         $filterTxt = $parameter->filterTxt ?? '';
         $start = isset($parameter->start) ? (int)$parameter->start : 0;
         $limit = isset($parameter->limit) ? (int)$parameter->limit : 30;
-        $this->sort = $parameter->sort ?? 't3ver_oid';
-        $this->sortDir = $parameter->dir ?? 'ASC';
-        $this->generateDataArray($versions, $filterTxt);
+        $dataArray = $this->generateDataArray($versions, $filterTxt);
         return [
             // Only count parent records for pagination
-            'total' => count(array_filter($this->dataArray, static function ($element) {
-                return (int)($element[self::GridColumn_CollectionLevel] ?? 0) === 0;
+            'total' => count(array_filter($dataArray, static function ($element) {
+                return (int)($element['Workspaces_CollectionLevel'] ?? 0) === 0;
             })),
-            'data' =>  $this->getDataArray($start, $limit),
+            'data' => $this->getDataArray($dataArray, $start, $limit),
         ];
     }
 
@@ -112,7 +89,7 @@ class GridDataService implements LoggerAwareInterface
      * @param array $versions All available version records
      * @param string $filterTxt Text to be used to filter record result
      */
-    protected function generateDataArray(array $versions, string $filterTxt): void
+    protected function generateDataArray(array $versions, string $filterTxt): array
     {
         $backendUser = $this->getBackendUser();
         $workspaceAccess = $backendUser->checkWorkspace($backendUser->workspace);
@@ -122,12 +99,13 @@ class GridDataService implements LoggerAwareInterface
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
         $stagesObj = GeneralUtility::makeInstance(StagesService::class);
         $defaultGridColumns = [
-            self::GridColumn_Collection => 0,
-            self::GridColumn_CollectionLevel => 0,
-            self::GridColumn_CollectionParent => '',
-            self::GridColumn_CollectionCurrent => '',
-            self::GridColumn_CollectionChildren => 0,
+            'Workspaces_Collection' => 0,
+            'Workspaces_CollectionLevel' => 0,
+            'Workspaces_CollectionParent' => '',
+            'Workspaces_CollectionCurrent' => '',
+            'Workspaces_CollectionChildren' => 0,
         ];
+        $dataArray = [];
         foreach ($versions as $table => $records) {
             $table = (string)$table;
             $hiddenField = $this->getTcaEnableColumnsFieldName($table, 'disabled');
@@ -226,17 +204,16 @@ class GridDataService implements LoggerAwareInterface
                 $versionArray['expanded'] = false;
 
                 if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
-                    $this->dataArray[(string)$versionArray['id']] = $versionArray;
+                    $dataArray[(string)$versionArray['id']] = $versionArray;
                 }
             }
 
-            // Trigger a PSR-14 event
-            $event = new AfterCompiledCacheableDataForWorkspaceEvent($this, $this->dataArray, $versions);
+            $event = new AfterCompiledCacheableDataForWorkspaceEvent($this, $dataArray, $versions);
             $this->eventDispatcher->dispatch($event);
-            $this->dataArray = $event->getData();
+            $dataArray = $event->getData();
             $versions = $event->getVersions();
             // Enrich elements after everything has been processed:
-            foreach ($this->dataArray as &$element) {
+            foreach ($dataArray as &$element) {
                 $identifier = $element['table'] . ':' . $element['t3ver_oid'];
                 $messages = $this->getIntegrityService()->getIssueMessages($identifier);
                 $element['integrity'] = [
@@ -246,12 +223,11 @@ class GridDataService implements LoggerAwareInterface
             }
         }
 
-        // Trigger a PSR-14 event
-        $event = new AfterDataGeneratedForWorkspaceEvent($this, $this->dataArray, $versions);
+        $event = new AfterDataGeneratedForWorkspaceEvent($this, $dataArray, $versions);
         $this->eventDispatcher->dispatch($event);
-        $this->dataArray = $event->getData();
-        $this->sortDataArray();
-        $this->resolveDataArrayDependencies();
+        $dataArray = $event->getData();
+        $dataArray = $this->sortDataArray($dataArray);
+        return $this->resolveDataArrayDependencies($dataArray);
     }
 
     protected function versionIsModified(CombinedRecord $combinedRecord): bool
@@ -272,142 +248,57 @@ class GridDataService implements LoggerAwareInterface
      * Resolves dependencies of nested structures
      * and sort data elements considering these dependencies.
      */
-    protected function resolveDataArrayDependencies(): void
+    protected function resolveDataArrayDependencies(array $dataArray): array
     {
         $collectionService = $this->getDependencyCollectionService();
         $dependencyResolver = $collectionService->getDependencyResolver();
-
-        foreach ($this->dataArray as $dataElement) {
+        foreach ($dataArray as $dataElement) {
             $dependencyResolver->addElement($dataElement['table'], $dataElement['uid']);
         }
-
-        $this->dataArray = $collectionService->process($this->dataArray);
+        return $collectionService->process($dataArray);
     }
 
     /**
      * Gets the data array by considering the page to be shown in the grid view.
      */
-    protected function getDataArray(int $start, int $limit): array
+    protected function getDataArray(array $dataArray, int $start, int $limit): array
     {
         // Ensure that there are numerical indexes
-        $this->dataArray = array_values($this->dataArray);
-
-        $dataArrayCount = count($this->dataArray);
-        $start = $this->calculateStartWithCollections($start);
+        $dataArray = array_values($dataArray);
+        $dataArrayCount = count($dataArray);
+        $start = $this->calculateStartWithCollections($dataArray, $start);
         $end = min($start + $limit, $dataArrayCount);
-
         // Fill the data array part
-        $dataArrayPart = $this->fillDataArrayPart($start, $end);
-
-        // Trigger a PSR-14 event
-        $event = new GetVersionedDataEvent($this, $this->dataArray, $start, $limit, $dataArrayPart);
+        $dataArrayPart = $this->fillDataArrayPart($dataArray, $start, $end);
+        $event = new GetVersionedDataEvent($this, $dataArray, $start, $limit, $dataArrayPart);
         $this->eventDispatcher->dispatch($event);
-        $this->dataArray = $event->getData();
         return $event->getDataArrayPart();
     }
 
-    /**
-     * Performs sorting on the data array accordant to the
-     * selected column in the grid view to be used for sorting.
-     */
-    protected function sortDataArray(): void
+    protected function sortDataArray(array $dataArray): array
     {
-        switch ($this->sort) {
-            case 'uid':
-            case 'change':
-            case 'workspace_Tstamp':
-            case 't3ver_oid':
-            case 'liveid':
-            case 'livepid':
-            case 'languageValue':
-                uasort($this->dataArray, [$this, 'intSort']);
-                break;
-            case 'label_Workspace':
-            case 'label_Stage':
-            case 'workspace_Title':
-            case 'path_Live':
-                // case 'path_Workspace': This is the first sorting attribute
-                uasort($this->dataArray, [$this, 'stringSort']);
-                break;
-            default:
-                // Do nothing
-        }
-
+        uasort($dataArray, function ($a, $b) {
+            if ($a['Workspaces_CollectionLevel'] === 0 && $b['Workspaces_CollectionLevel'] === 0
+                || $a['Workspaces_CollectionParent'] === $b['Workspaces_CollectionParent']
+            ) {
+                // Early returns when elements are not sortable: Only elements on the first level (0) or
+                // below the same parent element are directly sortable.
+                return 0;
+            }
+            // First sort by using the page-path in current workspace
+            $pathSortingResult = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
+            if ($pathSortingResult !== 0) {
+                return $pathSortingResult;
+            }
+            if ($a['label_Workspace'] === $b['label_Workspace']) {
+                return 0;
+            }
+            return strcasecmp($a['label_Workspace'], $b['label_Workspace']);
+        });
         // Trigger an event for extensibility
-        $event = new SortVersionedDataEvent($this, $this->dataArray, $this->sort, $this->sortDir);
+        $event = new SortVersionedDataEvent($this, $dataArray, 'label_Workspace', 'ASC');
         $this->eventDispatcher->dispatch($event);
-        $this->dataArray = $event->getData();
-        $this->sort = $event->getSortColumn();
-        $this->sortDir = $event->getSortDirection();
-    }
-
-    /**
-     * Implements individual sorting for columns based on integer comparison.
-     */
-    protected function intSort(array $a, array $b): int
-    {
-        if (!$this->isSortable($a, $b)) {
-            return 0;
-        }
-
-        // First sort by using the page-path in current workspace
-        $pathSortingResult = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
-        if ($pathSortingResult !== 0) {
-            return $pathSortingResult;
-        }
-
-        if ($a[$this->sort] == $b[$this->sort]) {
-            $sortingResult = 0;
-        } elseif ($this->sortDir === 'ASC') {
-            $sortingResult = $a[$this->sort] < $b[$this->sort] ? -1 : 1;
-        } elseif ($this->sortDir === 'DESC') {
-            $sortingResult = $a[$this->sort] > $b[$this->sort] ? -1 : 1;
-        } else {
-            $sortingResult = 0;
-        }
-
-        return $sortingResult;
-    }
-
-    /**
-     * Implements individual sorting for columns based on string comparison.
-     */
-    protected function stringSort(array $a, array $b): int
-    {
-        if (!$this->isSortable($a, $b)) {
-            return 0;
-        }
-
-        // First sort by using the page-path in current workspace
-        $pathSortingResult = strcasecmp($a['path_Workspace'], $b['path_Workspace']);
-        if ($pathSortingResult !== 0) {
-            return $pathSortingResult;
-        }
-
-        if ($a[$this->sort] == $b[$this->sort]) {
-            $sortingResult = 0;
-        } elseif ($this->sortDir === 'ASC') {
-            $sortingResult = strcasecmp($a[$this->sort], $b[$this->sort]);
-        } elseif ($this->sortDir === 'DESC') {
-            $sortingResult = strcasecmp($a[$this->sort], $b[$this->sort]) * -1;
-        } else {
-            $sortingResult = 0;
-        }
-
-        return $sortingResult;
-    }
-
-    /**
-     * Determines whether dataArray elements are sortable.
-     * Only elements on the first level (0) or below the same
-     * parent element are directly sortable.
-     */
-    protected function isSortable(array $a, array $b): bool
-    {
-        return
-            $a[self::GridColumn_CollectionLevel] === 0 && $b[self::GridColumn_CollectionLevel] === 0
-            || $a[self::GridColumn_CollectionParent] === $b[self::GridColumn_CollectionParent]
-        ;
+        return $event->getData();
     }
 
     /**
@@ -559,7 +450,7 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Calculate the "real" start value by also taking collection children into account
      */
-    protected function calculateStartWithCollections(int $start): int
+    protected function calculateStartWithCollections(array $dataArray, int $start): int
     {
         // The recordsCount is the real record items count, while the
         // parentRecordsCount only takes the parent records into account
@@ -571,17 +462,17 @@ class GridDataService implements LoggerAwareInterface
             // exists => As they were responsible for increasing the start value. However to
             // prevent errors in case multiple different users manipulate the records count
             // somehow simultaneously, we apply this check to be save.
-            if (!isset($this->dataArray[$recordsCount])) {
+            if (!isset($dataArray[$recordsCount])) {
                 break;
             }
             // Loop over the dataArray until we found enough parent records
-            $item = $this->dataArray[$recordsCount];
-            if (($item[self::GridColumn_CollectionLevel] ?? 0) === 0) {
+            $item = $dataArray[$recordsCount];
+            if (($item['Workspaces_CollectionLevel'] ?? 0) === 0) {
                 // In case the current parent record is the last one ($start is reached),
                 // ensure its collection children are counted as well.
-                if (($parentRecordsCount + 1) === $start && (int)($item[self::GridColumn_Collection] ?? 0) !== 0) {
+                if (($parentRecordsCount + 1) === $start && (int)($item['Workspaces_Collection'] ?? 0) !== 0) {
                     // By not providing the third parameter, we only count the collection children recursively
-                    $this->addCollectionChildrenRecursive($item, $recordsCount);
+                    $this->addCollectionChildrenRecursive($dataArray, $item, $recordsCount);
                 }
                 // Only increase the parent records count in case $item is a parent record
                 $parentRecordsCount++;
@@ -589,7 +480,6 @@ class GridDataService implements LoggerAwareInterface
             // Always increase the record items count
             $recordsCount++;
         }
-
         return $recordsCount;
     }
 
@@ -598,7 +488,7 @@ class GridDataService implements LoggerAwareInterface
      * Also adds the related collection children, but without increasing the corresponding
      * parent records count.
      */
-    private function fillDataArrayPart(int $start, int $end): array
+    private function fillDataArrayPart(array $dataArray, int $start, int $end): array
     {
         // Initialize empty data array part
         $dataArrayPart = [];
@@ -608,19 +498,19 @@ class GridDataService implements LoggerAwareInterface
         while ($parentRecordsCount < $end) {
             // As soon as no more item exists in the dataArray, the loop needs to end
             // prematurely to prevent invalid items which would trigger JavaScript errors.
-            if (!isset($this->dataArray[$itemsCount])) {
+            if (!isset($dataArray[$itemsCount])) {
                 break;
             }
             // Loop over the dataArray until we found enough parent records
-            $item = $this->dataArray[$itemsCount];
+            $item = $dataArray[$itemsCount];
             // Add the item to the $dataArrayPart
             $dataArrayPart[] = $item;
-            if (($item[self::GridColumn_CollectionLevel] ?? 0) === 0) {
+            if (($item['Workspaces_CollectionLevel'] ?? 0) === 0) {
                 // In case the current parent record is the last one ($end is reached),
                 // ensure its collection children are added as well.
-                if (($parentRecordsCount + 1) === $end && (int)($item[self::GridColumn_Collection] ?? 0) !== 0) {
+                if (($parentRecordsCount + 1) === $end && (int)($item['Workspaces_Collection'] ?? 0) !== 0) {
                     // Add collection children recursively
-                    $this->addCollectionChildrenRecursive($item, $itemsCount, $dataArrayPart);
+                    $this->addCollectionChildrenRecursive($dataArray, $item, $itemsCount, $dataArrayPart);
                 }
                 // Only increase the parent records count in case $item is a parent record
                 $parentRecordsCount++;
@@ -634,24 +524,24 @@ class GridDataService implements LoggerAwareInterface
     /**
      * Add collection children to the data array part recursively
      */
-    protected function addCollectionChildrenRecursive(array $item, int &$recordsCount, array &$dataArrayPart = []): void
+    protected function addCollectionChildrenRecursive(array $dataArray, array $item, int &$recordsCount, array &$dataArrayPart = []): void
     {
-        $collectionParent = (string)$item[self::GridColumn_CollectionCurrent];
-        foreach ($this->dataArray as $element) {
-            if ((string)($element[self::GridColumn_CollectionParent] ?? '') === $collectionParent) {
+        $collectionParent = (string)$item['Workspaces_CollectionCurrent'];
+        foreach ($dataArray as $element) {
+            if ((string)($element['Workspaces_CollectionParent'] ?? '') === $collectionParent) {
                 // Increase the "real" record items count
                 $recordsCount++;
                 // Fetch the children from the dataArray using the current record items
                 // count. This is possible since the dataArray is already sorted.
-                $child = $this->dataArray[$recordsCount];
+                $child = $dataArray[$recordsCount];
                 // In case $dataArrayPart is not given, just count the item
                 if ($dataArrayPart !== []) {
                     // Add the children
                     $dataArrayPart[] = $child;
                 }
-                // In case the $child is also a collection, add it's children as well (recursively)
-                if ((int)($child[self::GridColumn_Collection] ?? 0) !== 0) {
-                    $this->addCollectionChildrenRecursive($child, $recordsCount, $dataArrayPart);
+                // In case the $child is also a collection, add its children as well (recursively)
+                if ((int)($child['Workspaces_Collection'] ?? 0) !== 0) {
+                    $this->addCollectionChildrenRecursive($dataArray, $child, $recordsCount, $dataArrayPart);
                 }
             }
         }

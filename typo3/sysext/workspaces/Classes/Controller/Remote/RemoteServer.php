@@ -111,7 +111,7 @@ readonly class RemoteServer
             'tables_select',
             $parameter->language !== null ? (int)$parameter->language : null
         );
-        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter, $this->getCurrentWorkspace());
+        $data = $this->gridDataService->generateGridListFromVersions($versions, $parameter);
         return $data;
     }
 

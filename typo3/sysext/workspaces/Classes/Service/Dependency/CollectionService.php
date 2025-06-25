@@ -25,7 +25,6 @@ use TYPO3\CMS\Workspaces\Dependency\ElementEntity;
 use TYPO3\CMS\Workspaces\Dependency\ElementEntityProcessor;
 use TYPO3\CMS\Workspaces\Dependency\EventCallback;
 use TYPO3\CMS\Workspaces\Dependency\ReferenceEntity;
-use TYPO3\CMS\Workspaces\Service\GridDataService;
 
 /**
  * Service to collect dependent elements.
@@ -153,10 +152,10 @@ class CollectionService implements SingletonInterface
         $parentIsSet = isset($this->dataArray[$parentIdentifier]);
 
         if ($parentIsSet) {
-            $this->dataArray[$parentIdentifier][GridDataService::GridColumn_Collection] = $collection;
-            $this->dataArray[$parentIdentifier][GridDataService::GridColumn_CollectionLevel] = $collectionLevel;
-            $this->dataArray[$parentIdentifier][GridDataService::GridColumn_CollectionCurrent] = md5($parentIdentifier);
-            $this->dataArray[$parentIdentifier][GridDataService::GridColumn_CollectionChildren] = $this->getCollectionChildrenCount($parent->getChildren());
+            $this->dataArray[$parentIdentifier]['Workspaces_Collection'] = $collection;
+            $this->dataArray[$parentIdentifier]['Workspaces_CollectionLevel'] = $collectionLevel;
+            $this->dataArray[$parentIdentifier]['Workspaces_CollectionCurrent'] = md5($parentIdentifier);
+            $this->dataArray[$parentIdentifier]['Workspaces_CollectionChildren'] = $this->getCollectionChildrenCount($parent->getChildren());
             $nextParentIdentifier = $parentIdentifier;
             $collectionLevel++;
         }
@@ -173,7 +172,7 @@ class CollectionService implements SingletonInterface
             if (!empty($nextParentIdentifier) && isset($this->dataArray[$childIdentifier])) {
                 // Remove from dataArray, but collect to process later
                 // and add it just next to the accordant parent element
-                $this->dataArray[$childIdentifier][GridDataService::GridColumn_CollectionParent] = md5($nextParentIdentifier);
+                $this->dataArray[$childIdentifier]['Workspaces_CollectionParent'] = md5($nextParentIdentifier);
                 $this->nestedDataArray[$nextParentIdentifier][] = $this->dataArray[$childIdentifier];
                 unset($this->dataArray[$childIdentifier]);
             }
