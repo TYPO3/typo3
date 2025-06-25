@@ -166,14 +166,8 @@ readonly class PreviewUriBuilder
         }
 
         $pageTsConfig = BackendUtility::getPagesTSconfig($previewPageId);
-        // Directly use determined direct page id
-        if ($table === 'tt_content') {
-            return BackendPreviewUriBuilder::create($previewPageId)
-                ->withAdditionalQueryParameters(
-                    HttpUtility::buildQueryString($linkParameters, '&')
-                )
-                ->buildUri();
-        }
+        $backendPreviewConfiguration = $pageTsConfig['TCEMAIN.']['preview.'][$table . '.'] ?? [];
+
         if (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table]) || !empty($pageTsConfig['options.']['workspaces.']['previewPageId'])) {
             // Analyze Page TSconfig options.workspaces.previewPageId
             if (!empty($pageTsConfig['options.']['workspaces.']['previewPageId.'][$table])) {
@@ -188,32 +182,32 @@ readonly class PreviewUriBuilder
             } else {
                 $previewPageId = (int)$previewConfiguration;
             }
-
-            // Add preview parameters from standard backend preview mechanism
-            // map record data to GET parameters
-            $backendPreviewConfiguration = $pageTsConfig['TCEMAIN.']['preview.'][$table . '.'] ?? [];
-            if (isset($backendPreviewConfiguration['fieldToParameterMap.'])) {
-                foreach ($backendPreviewConfiguration['fieldToParameterMap.'] as $field => $parameterName) {
-                    $value = $versionRecord[$field] ?? '';
-                    if ($field === 'uid') {
-                        $value = $versionRecord['t3ver_oid'] === 0 ? $versionRecord['uid'] : $versionRecord['t3ver_oid'];
-                    }
-                    $linkParameters[$parameterName] = $value;
-                }
-            }
-            // add/override parameters by configuration
-            if (isset($backendPreviewConfiguration['additionalGetParameters.'])) {
-                $additionalGetParameters = GeneralUtility::removeDotsFromTS($backendPreviewConfiguration['additionalGetParameters.']);
-                $linkParameters = array_replace($linkParameters, $additionalGetParameters);
-            }
-
-            return BackendPreviewUriBuilder::create($previewPageId)
-                ->withAdditionalQueryParameters(
-                    HttpUtility::buildQueryString($linkParameters, '&')
-                )
-                ->buildUri();
+        } elseif (isset($backendPreviewConfiguration['previewPageId'])) {
+            $previewPageId = (int)$backendPreviewConfiguration['previewPageId'];
         }
-        return null;
+
+        // Add preview parameters from standard backend preview mechanism
+        // map record data to GET parameters
+        if (isset($backendPreviewConfiguration['fieldToParameterMap.'])) {
+            foreach ($backendPreviewConfiguration['fieldToParameterMap.'] as $field => $parameterName) {
+                $value = $versionRecord[$field] ?? '';
+                if ($field === 'uid') {
+                    $value = $versionRecord['t3ver_oid'] === 0 ? $versionRecord['uid'] : $versionRecord['t3ver_oid'];
+                }
+                $linkParameters[$parameterName] = $value;
+            }
+        }
+        // add/override parameters by configuration
+        if (isset($backendPreviewConfiguration['additionalGetParameters.'])) {
+            $additionalGetParameters = GeneralUtility::removeDotsFromTS($backendPreviewConfiguration['additionalGetParameters.']);
+            $linkParameters = array_replace($linkParameters, $additionalGetParameters);
+        }
+
+        return BackendPreviewUriBuilder::create($previewPageId)
+            ->withAdditionalQueryParameters(
+                HttpUtility::buildQueryString($linkParameters, '&')
+            )
+            ->buildUri();
     }
 
     /**
