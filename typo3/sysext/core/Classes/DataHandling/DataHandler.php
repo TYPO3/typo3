@@ -6320,7 +6320,7 @@ class DataHandler
                                         $this->discard($relationRecord['table'], (int)$relationRecord['id']);
                                     }
                                 }
-                            } elseif ($this->isReferenceField($flexFieldConfig)) {
+                            } elseif ($this->isReferenceField($flexFieldConfig) && !empty($flexFieldConfig['MM'])) {
                                 $this->discardMmRelations($table, $flexFieldConfig, $record);
                             }
                         }
