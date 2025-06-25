@@ -3577,12 +3577,6 @@ parameters:
 			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
 
 		-
-			message: '#^Parameter \#1 \$attributes of method TYPO3\\CMS\\Backend\\Template\\Components\\Buttons\\DropDown\\AbstractDropDownItem\:\:setAttributes\(\) expects array\<string, string\>, array\<string, Psr\\Http\\Message\\UriInterface\|string\|null\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: ../../typo3/sysext/filelist/Classes/Controller/FileListController.php
-
-		-
 			message: '#^Strict comparison using \!\=\= between TYPO3\\CMS\\Core\\Resource\\ResourceStorage and null will always evaluate to true\.$#'
 			identifier: notIdentical.alwaysTrue
 			count: 1

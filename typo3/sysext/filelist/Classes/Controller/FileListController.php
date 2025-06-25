@@ -367,7 +367,11 @@ class FileListController implements LoggerAwareInterface
             (string)($this->moduleData->get('sort') ?: 'name'),
             (bool)$this->moduleData->get('reverse')
         );
-        $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
+
+        // Only add selected columns if the feature is enabled
+        if ($this->getBackendUser()->getTSConfig()['options.']['file_list.']['displayColumnSelector'] ?? true) {
+            $this->filelist->setColumnsToRender($this->getBackendUser()->getModuleData('list/displayFields')['_FILE'] ?? []);
+        }
 
         $resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);
         $resourceSelectableMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFileTypeMatcher::class));
@@ -540,11 +544,11 @@ class FileListController implements LoggerAwareInterface
                 ->setTag('typo3-backend-column-selector-button')
                 ->setLabel($lang->sL('LLL:EXT:core/Resources/Private/Language/locallang_core.xlf:labels.view.selectColumns'))
                 ->setAttributes([
-                    'data-url' => $this->uriBuilder->buildUriFromRoute(
+                    'data-url' => (string)$this->uriBuilder->buildUriFromRoute(
                         'ajax_show_columns_selector',
-                        ['id' => $this->id, 'table' => '_FILE']
+                        ['table' => '_FILE']
                     ),
-                    'data-target' => $this->filelist->createModuleUri(),
+                    'data-target' => (string)$this->filelist->createModuleUri(),
                     'data-title' => sprintf(
                         $lang->sL('LLL:EXT:backend/Resources/Private/Language/locallang_column_selector.xlf:showColumnsSelection'),
                         $this->tcaSchemaFactory->get('sys_file')->getTitle($lang->sL(...)),
