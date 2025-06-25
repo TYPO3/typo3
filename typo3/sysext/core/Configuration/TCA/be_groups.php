@@ -21,7 +21,6 @@ return [
         'title' => 'LLL:EXT:core/Resources/Private/Language/locallang_tca.xlf:be_groups',
         'useColumnsForDefaultValues' => 'file_permissions',
         'versioningWS_alwaysAllowLiveEdit' => true,
-        'searchFields' => 'title',
     ],
     'columns' => [
         'title' => [

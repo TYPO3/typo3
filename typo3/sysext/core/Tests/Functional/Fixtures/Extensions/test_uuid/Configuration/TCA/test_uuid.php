@@ -19,7 +19,6 @@ return [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
-        'searchFields' => 'uid,title',
         'versioningWS' => true,
     ],
     'types' => [

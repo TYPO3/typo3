@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Schema;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Schema\Field\FieldCollection;
 use TYPO3\CMS\Core\Schema\Field\FieldTypeInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Class that accesses the TCA[table][searchFields] via TcaSchema factory
@@ -36,7 +35,6 @@ readonly class SearchableSchemaFieldsCollector
             return new FieldCollection();
         }
         $schema = $this->schemaFactory->get($schemaName);
-        $searchFields = $searchFields !== [] ? $searchFields : GeneralUtility::trimExplode(',', (string)($schema->getRawConfiguration()['searchFields'] ?? ''), true);
         return $searchFields === []
             // No searchFields defined, return all searchable fields
             ? $schema->getFields(static fn(FieldTypeInterface $field): bool => $field->isSearchable())

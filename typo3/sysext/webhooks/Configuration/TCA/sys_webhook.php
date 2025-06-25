@@ -23,7 +23,6 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'name, secret',
         'versioningWS_alwaysAllowLiveEdit' => true,
     ],
     'types' => [

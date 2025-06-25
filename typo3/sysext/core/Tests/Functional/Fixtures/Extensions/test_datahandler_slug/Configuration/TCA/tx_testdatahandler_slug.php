@@ -15,7 +15,6 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'searchFields' => 'uid,title',
     ],
     'types' => [
         '0' => [

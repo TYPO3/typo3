@@ -27,9 +27,9 @@ final readonly class JsonFieldType extends AbstractFieldType
         return 'json';
     }
 
-    public function isSearchable(): true
+    public function isSearchable(): bool
     {
-        return true;
+        return (bool)($this->configuration['searchable'] ?? true);
     }
 
     public function isNullable(): false

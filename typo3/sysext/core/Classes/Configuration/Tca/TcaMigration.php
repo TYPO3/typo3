@@ -94,6 +94,7 @@ class TcaMigration
         $tcaProcessingResult = $this->removeEvalYearFlag($tcaProcessingResult);
         $tcaProcessingResult = $this->removeIsStaticControlOption($tcaProcessingResult);
         $tcaProcessingResult = $this->removeFieldSearchConfigOptions($tcaProcessingResult);
+        $tcaProcessingResult = $this->removeSearchFieldsControlOption($tcaProcessingResult);
 
         return $tcaProcessingResult;
     }
@@ -1721,6 +1722,52 @@ class TcaMigration
                     . ' "search" config options. Those are not evaluated anymore and are therefore removed.'
                     . ' Please adjust your TCA accordingly.'
                 );
+            }
+        }
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Removes $TCA[$mytable]['ctrl']['searchFields']
+     */
+    protected function removeSearchFieldsControlOption(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => &$configuration) {
+            if (!isset($configuration['ctrl']['searchFields'])) {
+                continue;
+            }
+            $searchFields = GeneralUtility::trimExplode(',', (string)$configuration['ctrl']['searchFields'], true);
+            $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages(
+                'The \'' . $table . '\' TCA configuration \'searchFields\''
+                . ' inside the \'ctrl\' section is not evaluated anymore and is therefore removed.'
+                . ' Suitable field types, e.g. \'input\' are now automatically considered, while using the'
+                . ' \'searchable\' field config for specific exclusion can be used. Please adjust your TCA accordingly.'
+            );
+            unset($configuration['ctrl']['searchFields']);
+
+            if (!isset($configuration['columns']) || !is_array($configuration['columns'])) {
+                continue;
+            }
+            foreach ($configuration['columns'] as $fieldName => &$fieldConfig) {
+                $type = (string)($fieldConfig['config']['type'] ?? '');
+                if ($type !== ''
+                    && !isset($fieldConfig['config']['searchable'])
+                    && !in_array($fieldName, $searchFields, true)
+                    && (
+                        in_array($type, ['color', 'email', 'flex', 'input', 'json', 'link', 'slug', 'text', 'uuid'], true)
+                        || ($type === 'datetime' && !in_array($fieldConfig['config']['dbType'] ?? null, QueryHelper::getDateTimeTypes(), true))
+                    )
+                ) {
+                    $fieldConfig['config']['searchable'] = false;
+                    $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages(
+                        'Because the field \'' . $fieldName . '\' of \'' . $table . '\' is considered'
+                        . ' searchable based on it\'s TCA type \'' . $type . '\' but is not included in still existing'
+                        . ' but no longer evaluated \'searchFields\' TCA \'ctrl\' option, it was automatically set to'
+                        . ' searchable => false, to be excluded in searches. Please consider this when adjusting your'
+                        . ' TCA towards proper usage of searchable fields.'
+                    );
+                }
             }
         }
         return $tcaProcessingResult->withTca($tca);

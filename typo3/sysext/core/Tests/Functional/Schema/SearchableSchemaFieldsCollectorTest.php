@@ -41,13 +41,7 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
     {
         $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
-            [
-                'aTable' => [
-                    'ctrl' => [
-                        'searchFields' => '',
-                    ],
-                ],
-            ]
+            ['aTable' => ['ctrl' => []]]
         );
 
         $fieldsCollector = $this->getContainer()->get(SearchableSchemaFieldsCollector::class);
@@ -55,18 +49,17 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function searchFieldsAreReturned(): void
+    public function searchableFieldsAreReturned(): void
     {
         $schemaFactory = $this->getContainer()->get(TcaSchemaFactory::class);
         $schemaFactory->rebuild(
             [
                 'aTable' => [
-                    'ctrl' => [
-                        'searchFields' => 'foo,bar,baz',
-                    ],
                     'columns' => [
                         'foo' => ['config' => ['type' => 'input']],
-                        'bar' => ['config' => ['type' => 'none']],
+                        'bar' => ['config' => ['type' => 'input', 'searchable' => false]],
+                        'baz' => ['config' => ['type' => 'none']],
+                        'foobar' => ['config' => ['type' => 'none', 'searchable' => true]],
                     ],
                 ],
             ]
@@ -91,9 +84,6 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
         $schemaFactory->rebuild(
             [
                 'aTable' => [
-                    'ctrl' => [
-                        'searchFields' => 'numberInteger,numberDecimal,datetimeWithoutDbType,datetimeWithDbType',
-                    ],
                     'columns' => [
                         'numberInteger' => ['config' => ['type' => 'number', 'format' => 'integer']],
                         'numberFloat' => ['config' => ['type' => 'number', 'format' => 'decimal']],
@@ -131,9 +121,6 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
         $schemaFactory->rebuild(
             [
                 'aTable' => [
-                    'ctrl' => [
-                        'searchFields' => 'foo,bar,baz',
-                    ],
                     'columns' => [
                         'foo' => ['config' => ['type' => 'input']],
                         'bar' => ['config' => ['type' => 'input']],
@@ -194,9 +181,6 @@ final class SearchableSchemaFieldsCollectorTest extends FunctionalTestCase
         $schemaFactory->rebuild(
             [
                 'aTable' => [
-                    'ctrl' => [
-                        'searchFields' => 'foo,bar',
-                    ],
                     'columns' => [
                         'foo' => ['config' => ['type' => 'input']],
                         'bar' => ['config' => ['type' => 'uuid']],

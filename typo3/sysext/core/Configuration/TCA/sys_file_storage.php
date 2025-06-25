@@ -16,7 +16,6 @@ return [
             'default' => 'mimetypes-x-sys_file_storage',
         ],
         'type' => 'driver',
-        'searchFields' => 'name,description',
     ],
     'columns' => [
         'name' => [

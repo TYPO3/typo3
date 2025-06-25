@@ -27,7 +27,6 @@ return [
         'typeicon_classes' => [
             'default' => 'collection_inner-1-116cf86',
         ],
-        'searchFields' => 'fieldB',
     ],
     'palettes' => [
         'language' => [

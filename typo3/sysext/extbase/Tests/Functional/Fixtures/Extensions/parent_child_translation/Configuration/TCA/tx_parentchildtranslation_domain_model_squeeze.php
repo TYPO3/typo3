@@ -14,7 +14,6 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'searchFields' => 'title',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],

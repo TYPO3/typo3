@@ -18,7 +18,6 @@ return [
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],
-        'searchFields' => 'uid,title',
     ],
     'types' => [
         '0' => [

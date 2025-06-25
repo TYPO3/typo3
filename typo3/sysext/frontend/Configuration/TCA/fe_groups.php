@@ -17,7 +17,6 @@ return [
         'typeicon_classes' => [
             'default' => 'status-user-group-frontend',
         ],
-        'searchFields' => 'title,description',
     ],
     'columns' => [
         'title' => [

@@ -28,7 +28,6 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_redirect',
         ],
-        'searchFields' => 'source_host,source_path,target,target_statuscode',
     ],
     'types' => [
         '1' => [

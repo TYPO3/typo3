@@ -64,7 +64,7 @@ final readonly class DateTimeFieldType extends AbstractFieldType
 
     public function isSearchable(): bool
     {
-        return $this->getPersistenceType() === null;
+        return $this->getPersistenceType() === null && ($this->configuration['searchable'] ?? true);
     }
 
     public function getPersistenceType(): ?string

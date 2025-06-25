@@ -27,9 +27,9 @@ final readonly class LinkFieldType extends AbstractFieldType
         return 'link';
     }
 
-    public function isSearchable(): true
+    public function isSearchable(): bool
     {
-        return true;
+        return (bool)($this->configuration['searchable'] ?? true);
     }
 
     public function getAllowedLinkTypes(): array

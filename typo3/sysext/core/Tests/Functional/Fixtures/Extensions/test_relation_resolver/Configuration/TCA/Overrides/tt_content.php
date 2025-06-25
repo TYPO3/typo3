@@ -651,7 +651,6 @@ $overrides = [
         'typeicon_classes' => [
             'typo3tests_contentelementb' => 'tt_content-typo3tests_contentelementb-175ef6f',
         ],
-        'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform,typo3tests_contentelementb_flexfield,typo3tests_contentelementb_json',
     ],
 ];
 

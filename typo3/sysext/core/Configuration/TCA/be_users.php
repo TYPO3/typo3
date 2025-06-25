@@ -26,7 +26,6 @@ return [
         ],
         'useColumnsForDefaultValues' => 'usergroup,options,db_mountpoints,file_mountpoints,file_permissions,userMods',
         'versioningWS_alwaysAllowLiveEdit' => true,
-        'searchFields' => 'username,email,realName',
     ],
     'columns' => [
         'username' => [

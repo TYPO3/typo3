@@ -22,7 +22,6 @@ return [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
         ],
-        'searchFields' => 'name, type, mime_type',
     ],
     'columns' => [
         'fileinfo' => [

@@ -24,7 +24,6 @@ return [
         'typeicon_classes' => [
             'default' => 'record_collection-1-cc2849f',
         ],
-        'searchFields' => 'text',
     ],
     'palettes' => [
         'language' => [

@@ -23,7 +23,6 @@ return [
             'default' => 'mimetypes-x-content-template-extension',
             '1' => 'mimetypes-x-content-template',
         ],
-        'searchFields' => 'title,constants,config',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],

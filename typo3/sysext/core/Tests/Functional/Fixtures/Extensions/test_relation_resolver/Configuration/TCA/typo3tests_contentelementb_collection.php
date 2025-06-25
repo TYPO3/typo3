@@ -27,7 +27,6 @@ return [
         'typeicon_classes' => [
             'default' => 'typo3tests_contentelementb_collection-1-116cf86',
         ],
-        'searchFields' => 'fieldA',
     ],
     'palettes' => [
         'language' => [

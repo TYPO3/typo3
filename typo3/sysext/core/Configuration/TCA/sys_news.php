@@ -19,7 +19,6 @@ return [
         'typeicon_classes' => [
             'default' => 'mimetypes-x-sys_news',
         ],
-        'searchFields' => 'title,content',
     ],
     'columns' => [
         'title' => [

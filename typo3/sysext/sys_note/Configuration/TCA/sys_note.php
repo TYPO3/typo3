@@ -13,7 +13,6 @@ return [
             'default' => 'mimetypes-x-sys_note',
         ],
         'sortby' => 'sorting',
-        'searchFields' => 'subject,message',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],

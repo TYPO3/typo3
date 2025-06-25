@@ -24,7 +24,6 @@ return [
             'ignoreWebMountRestriction' => true,
             'ignoreRootLevelRestriction' => true,
         ],
-        'searchFields' => 'title,description,alternative',
     ],
     'columns' => [
         'uid_local' => [

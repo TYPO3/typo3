@@ -19,7 +19,6 @@ return [
             'default' => 'status-user-frontend',
         ],
         'useColumnsForDefaultValues' => 'usergroup,disable,starttime,endtime',
-        'searchFields' => 'username,name,first_name,last_name,middle_name,address,telephone,fax,email,title,zip,city,country,company,description',
     ],
     'columns' => [
         'username' => [

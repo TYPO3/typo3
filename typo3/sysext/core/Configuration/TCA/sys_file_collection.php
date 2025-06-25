@@ -26,7 +26,6 @@ return [
             'starttime' => 'starttime',
             'endtime' => 'endtime',
         ],
-        'searchFields' => 'files,title',
     ],
     'columns' => [
         'type' => [

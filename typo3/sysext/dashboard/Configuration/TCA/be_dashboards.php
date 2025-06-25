@@ -18,7 +18,6 @@ return [
         'typeicon_classes' => [
             'default' => 'content-dashboard',
         ],
-        'searchFields' => 'identifier,title',
     ],
     'columns' => [
         // The owner of the dashboard

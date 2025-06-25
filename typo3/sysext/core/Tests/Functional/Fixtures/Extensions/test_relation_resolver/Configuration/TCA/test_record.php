@@ -24,7 +24,6 @@ return [
         'typeicon_classes' => [
             'default' => 'test_record-typo3tests_testrecord-cc2849f',
         ],
-        'searchFields' => 'title',
     ],
     'palettes' => [
         'hidden' => [

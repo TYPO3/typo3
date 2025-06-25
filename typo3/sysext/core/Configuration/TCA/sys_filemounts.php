@@ -19,7 +19,6 @@ return [
             'default' => 'mimetypes-x-sys_filemounts',
         ],
         'versioningWS_alwaysAllowLiveEdit' => true,
-        'searchFields' => 'title,path',
     ],
     'columns' => [
         'title' => [

@@ -17,7 +17,6 @@ return [
         'enablecolumns' => [
             'disabled' => 'hidden',
         ],
-        'searchFields' => 'groupName',
     ],
     'columns' => [
         'groupName' => [

@@ -35,7 +35,6 @@ return [
             'text' => 'mimetypes-x-content-text',
             'default' => 'mimetypes-x-content-text',
         ],
-        'searchFields' => 'header,header_link,subheader,bodytext,pi_flexform',
         'security' => [
             'ignorePageTypeRestriction' => true,
         ],

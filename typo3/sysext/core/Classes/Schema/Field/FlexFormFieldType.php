@@ -27,9 +27,9 @@ final readonly class FlexFormFieldType extends AbstractFieldType
         return 'flex';
     }
 
-    public function isSearchable(): true
+    public function isSearchable(): bool
     {
-        return true;
+        return (bool)($this->configuration['searchable'] ?? true);
     }
 
     public function getDataStructure(): array

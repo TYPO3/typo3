@@ -27,8 +27,8 @@ final readonly class InputFieldType extends AbstractFieldType
         return 'input';
     }
 
-    public function isSearchable(): true
+    public function isSearchable(): bool
     {
-        return true;
+        return (bool)($this->configuration['searchable'] ?? true);
     }
 }
