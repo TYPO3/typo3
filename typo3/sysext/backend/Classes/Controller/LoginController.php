@@ -164,7 +164,6 @@ class LoginController
             'requestTokenName' => RequestToken::PARAM_NAME,
             'requestTokenValue' => $this->provideRequestTokenJwt(),
             'forgetPasswordUrl' => $forgotPasswordUrl,
-            'redirectUrl' => GeneralUtility::sanitizeLocalUrl($request->getParsedBody()['redirect_url'] ?? $request->getQueryParams()['redirect_url'] ?? ''),
             'loginRefresh' => $loginRefresh,
             'loginProviders' => $this->loginProviderResolver->getLoginProviders(),
             'loginNewsItems' => $this->getSystemNews(),
