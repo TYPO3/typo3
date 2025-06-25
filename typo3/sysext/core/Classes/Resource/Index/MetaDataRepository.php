@@ -16,9 +16,11 @@
 namespace TYPO3\CMS\Core\Resource\Index;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
+use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\WorkspaceRestriction;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataCreatedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataDeletedEvent;
 use TYPO3\CMS\Core\Resource\Event\AfterFileMetaDataUpdatedEvent;
@@ -102,9 +104,11 @@ class MetaDataRepository implements SingletonInterface
             throw new InvalidUidException('Metadata can only be retrieved for indexed files. UID: "' . $uid . '"', 1381590731);
         }
 
+        $context = GeneralUtility::makeInstance(Context::class);
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable($this->tableName);
-
-        $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(RootLevelRestriction::class));
+        $queryBuilder->getRestrictions()
+            ->add(GeneralUtility::makeInstance(RootLevelRestriction::class))
+            ->add(GeneralUtility::makeInstance(WorkspaceRestriction::class, $context->getAspect('workspace')->getId()));
 
         $record = $queryBuilder
             ->select('*')
@@ -113,6 +117,9 @@ class MetaDataRepository implements SingletonInterface
                 $queryBuilder->expr()->eq('file', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
                 $queryBuilder->expr()->in('sys_language_uid', $queryBuilder->createNamedParameter([0, -1], Connection::PARAM_INT_ARRAY))
             )
+            // assure deterministic sorting across all databases
+            ->orderBy('uid', 'ASC')
+            ->setMaxResults(1)
             ->executeQuery()
             ->fetchAssociative();
 
