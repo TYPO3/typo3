@@ -139,6 +139,7 @@ class TreeController
                     $this->treeProvider->prepareFolderInformation($nextFolder),
                     [
                         'expanded' => $isParent,
+                        'loaded' => true,
                     ]
                 );
                 $isParent = true;
