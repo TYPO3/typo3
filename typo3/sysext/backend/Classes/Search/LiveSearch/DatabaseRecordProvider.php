@@ -33,7 +33,6 @@ use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\QueryHelper;
 use TYPO3\CMS\Core\Database\Query\Restriction\EndTimeRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\HiddenRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\StartTimeRestriction;
@@ -406,8 +405,6 @@ final class DatabaseRecordProvider implements SearchProviderInterface
         } else {
             $like = '%' . $queryBuilder->escapeLikeWildcards($queryString) . '%';
             foreach ($fieldsToSearchWithin as $fieldName => $field) {
-                $fieldConfig = $field->getConfiguration();
-
                 // Enforce case-insensitive comparison by lower-casing field and value, unrelated to charset/collation
                 // on MySQL/MariaDB, for example if column collation is `utf8mb4_bin` - which would be case-sensitive.
                 $preparedFieldName = $isPostgres
@@ -418,31 +415,6 @@ final class DatabaseRecordProvider implements SearchProviderInterface
                     'LIKE',
                     $queryBuilder->createNamedParameter(mb_strtolower($like))
                 );
-
-                if (is_array($fieldConfig['search'] ?? false)) {
-                    if (in_array('case', $fieldConfig['search'], true)) {
-                        // Replace case-insensitive default constraint with semi case-sensitive constraint.
-                        // @todo This is not really ensured, without a suiting collation on the field (`*_bin`) AND also
-                        //       converting the like-value to the same binary collation, MySQL/MariaDB is not searching
-                        //       case-sensitive. ExpressionBuilder->like() and notLike() has been adjusted to use same
-                        //       case-insensitive search for PostgreSQL to adopt the same behaviour for the most cases.
-                        //       Making this here obsolete and interchangeable with the general enforcement above.
-                        // @todo TCA Field search option `case` cannot be enforced easily, which needs deeper analysis
-                        //       to find a possible way to do so - or deprecate the option at all.
-                        // https://docs.typo3.org/m/typo3/reference-tca/11.5/en-us/ColumnsConfig/CommonProperties/Search.html#confval-case
-                        $searchConstraint = $queryBuilder->expr()->like(
-                            $fieldName,
-                            $queryBuilder->createNamedParameter($like)
-                        );
-                    }
-                    // Apply additional condition, if any
-                    if ($fieldConfig['search']['andWhere'] ?? false) {
-                        $searchConstraint = $queryBuilder->expr()->and(
-                            $searchConstraint,
-                            QueryHelper::stripLogicalOperatorPrefix(QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), $fieldConfig['search']['andWhere']))
-                        );
-                    }
-                }
 
                 // If this table has subtypes (e.g. tt_content.CType), we want to ensure that only CType that contain
                 // e.g. "bodytext" in their list of fields, to search through them. This is important when a field

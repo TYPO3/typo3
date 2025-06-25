@@ -93,6 +93,7 @@ class TcaMigration
         $tcaProcessingResult = $this->addWorkspaceAwarenessToInlineChildren($tcaProcessingResult);
         $tcaProcessingResult = $this->removeEvalYearFlag($tcaProcessingResult);
         $tcaProcessingResult = $this->removeIsStaticControlOption($tcaProcessingResult);
+        $tcaProcessingResult = $this->removeFieldSearchConfigOptions($tcaProcessingResult);
 
         return $tcaProcessingResult;
     }
@@ -1695,6 +1696,32 @@ class TcaMigration
                 . ' inside the \'ctrl\' section is not evaluated anymore and is therefore removed.'
                 . ' Please adjust your TCA accordingly.');
             unset($configuration['ctrl']['is_static']);
+        }
+        return $tcaProcessingResult->withTca($tca);
+    }
+
+    /**
+     * Removes $[config][search]
+     */
+    protected function removeFieldSearchConfigOptions(TcaProcessingResult $tcaProcessingResult): TcaProcessingResult
+    {
+        $tca = $tcaProcessingResult->getTca();
+        foreach ($tca as $table => &$tableDefinition) {
+            if (!isset($tableDefinition['columns']) || !is_array($tableDefinition['columns'])) {
+                continue;
+            }
+
+            foreach ($tableDefinition['columns'] as $fieldName => &$fieldConfig) {
+                if (!isset($fieldConfig['config']['search'])) {
+                    continue;
+                }
+                unset($fieldConfig['config']['search']);
+                $tcaProcessingResult = $tcaProcessingResult->withAdditionalMessages(
+                    'The TCA field \'' . $fieldName . '\' of table \'' . $table . '\' defines'
+                    . ' "search" config options. Those are not evaluated anymore and are therefore removed.'
+                    . ' Please adjust your TCA accordingly.'
+                );
+            }
         }
         return $tcaProcessingResult->withTca($tca);
     }

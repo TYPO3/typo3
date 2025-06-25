@@ -2622,19 +2622,12 @@ class DatabaseRecordList
         if (MathUtility::canBeInterpretedAsInteger($this->searchString)) {
             $constraints[] = $expressionBuilder->eq('uid', (int)$this->searchString);
             foreach ($searchableFields as $field) {
-                $fieldConfig = $field->getConfiguration();
                 $searchConstraint = null;
                 if ($field instanceof NumberFieldType || $field instanceof DateTimeFieldType) {
-                    if (!isset($fieldConfig['search']['pidonly'])
-                        || ($fieldConfig['search']['pidonly'] && $currentPid > 0)
-                    ) {
-                        $searchConstraint = $expressionBuilder->and(
-                            $expressionBuilder->eq($field->getName(), (int)$this->searchString),
-                            $expressionBuilder->eq($tablePidField, $currentPid)
-                        );
-                    } else {
-                        continue;
-                    }
+                    $searchConstraint = $expressionBuilder->and(
+                        $expressionBuilder->eq($field->getName(), (int)$this->searchString),
+                        $expressionBuilder->eq($tablePidField, $currentPid)
+                    );
                 } else {
                     $searchConstraint = $expressionBuilder->like(
                         $field->getName(),
@@ -2665,32 +2658,11 @@ class DatabaseRecordList
         } elseif ($searchableFields->count() > 0) {
             $like = $queryBuilder->quote('%' . $queryBuilder->escapeLikeWildcards($this->searchString) . '%');
             foreach ($searchableFields as $field) {
-                $fieldConfig = $field->getConfiguration();
                 $searchConstraint = $expressionBuilder->comparison(
                     'LOWER(' . $queryBuilder->castFieldToTextType($field->getName()) . ')',
                     'LIKE',
                     'LOWER(' . $like . ')'
                 );
-                if (is_array($fieldConfig['search'] ?? null)) {
-                    $searchConfig = $fieldConfig['search'];
-                    if ($searchConfig['case'] ?? false) {
-                        // Replace case insensitive default constraint
-                        $searchConstraint = $expressionBuilder->and($expressionBuilder->like($field->getName(), $like));
-                    }
-                    if (($searchConfig['pidonly'] ?? false) && $currentPid > 0) {
-                        $searchConstraint = $expressionBuilder->and(
-                            $searchConstraint,
-                            $expressionBuilder->eq($tablePidField, (int)$currentPid),
-                        );
-                    }
-                    if ($searchConfig['andWhere'] ?? false) {
-                        $searchConstraint = $expressionBuilder->and(
-                            $searchConstraint,
-                            QueryHelper::quoteDatabaseIdentifiers($queryBuilder->getConnection(), QueryHelper::stripLogicalOperatorPrefix($fieldConfig['search']['andWhere']))
-                        );
-                    }
-                }
-
                 // If this table has subtypes (e.g. tt_content.CType), we want to ensure that only CType that contain
                 // e.g. "bodytext" in their list of fields, to search through them. This is important when a field
                 // is filled but its type has been changed.

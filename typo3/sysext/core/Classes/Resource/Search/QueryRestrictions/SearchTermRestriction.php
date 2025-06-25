@@ -71,27 +71,13 @@ class SearchTermRestriction implements QueryRestrictionInterface
                 $constraintsForParts = [];
                 $like = '%' . $this->queryBuilder->escapeLikeWildcards($searchTermPart) . '%';
                 foreach ($fieldsToSearchWithin as $fieldName => $field) {
-                    // Assemble the search condition only if the field makes sense to be searched
-                    // Check whether search should be case-sensitive or not
-                    if (in_array('case', (array)($field->getConfiguration()['search'] ?? []), true)) {
-                        // case sensitive
-                        $searchConstraint = $this->queryBuilder->expr()->and(
-                            $this->queryBuilder->expr()->like(
-                                $tableAlias . '.' . $fieldName,
-                                $this->queryBuilder->createNamedParameter($like)
-                            )
-                        );
-                    } else {
-                        $searchConstraint = $this->queryBuilder->expr()->and(
-                            // case insensitive
-                            $this->queryBuilder->expr()->comparison(
-                                'LOWER(' . $this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName) . ')',
-                                'LIKE',
-                                $this->queryBuilder->createNamedParameter(mb_strtolower($like))
-                            )
-                        );
-                    }
-                    $constraintsForParts[] = $searchConstraint;
+                    $constraintsForParts[] = $this->queryBuilder->expr()->and(
+                        $this->queryBuilder->expr()->comparison(
+                            'LOWER(' . $this->queryBuilder->quoteIdentifier($tableAlias . '.' . $fieldName) . ')',
+                            'LIKE',
+                            $this->queryBuilder->createNamedParameter(mb_strtolower($like))
+                        )
+                    );
                 }
                 $constraints[] = $this->queryBuilder->expr()->or(...$constraintsForParts);
             }

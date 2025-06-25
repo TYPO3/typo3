@@ -3980,4 +3980,43 @@ final class TcaMigrationTest extends UnitTestCase
 
         self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
     }
+
+    #[Test]
+    public function removeFieldSearchConfigOptions(): void
+    {
+        $input = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                            'search' => ['case' => true],
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        $expected = [
+            'aTable' => [
+                'columns' => [
+                    'aColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                    'bColumn' => [
+                        'config' => [
+                            'type' => 'text',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+        self::assertSame($expected, (new TcaMigration())->migrate($input)->getTca());
+    }
 }
