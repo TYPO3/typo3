@@ -1,10 +1,9 @@
 body {
-    color-scheme: only light;
     font-family: var(--typo3-font-family);
-    font-size: 12px;
-    color: #000;
-    background-color: #fff;
-    padding: 1.5em;
+    color: var(--typo3-text-color-base);
+    background-color: var(--typo3-surface-container-lowest);
+    font-size: var(--typo3-font-size);
+    padding: var(--typo3-spacing);
 }
 
 body > :first-child {
@@ -17,40 +16,41 @@ body > :last-child {
 
 blockquote {
     font-style: italic;
-    font-family: var(--typo3-font-family-serif);
     padding: 0;
+    padding-inline-start: var(--typo3-spacing);
     border-style: solid;
-    border-color: #dedede;
     border-width: 0;
+    border-color: color-mix(in srgb, var(--typo3-text-color-base), transparent 75%);
+    border-inline-start-width: .25em;
 }
 
 blockquote > :last-child {
     margin-bottom: 0;
 }
 
-html[dir="ltr"] blockquote {
-    padding-left: 1.5em;
-    border-left-width: .25em;
-}
-
-html[dir="rtl"] blockquote {
-    padding-right: 1.5em;
-    border-right-width: .25em;
-}
-
 a {
-    color: #0782C1;
+    color: var(--typo3-text-color-primary);
     text-decoration: underline;
 }
 
 /**
- * Show broken links with red border and yellow background
+ * Show broken links
  */
-a[data-rte-error]
-{
-    background-color: yellow!important;
-    border: 2px red solid!important;
-    color: black!important;
+a[data-rte-error] {
+    background: var(--typo3-state-danger-bg) !important;
+    outline: 3px solid var(--typo3-state-danger-border-color) !important;
+    color: var(--typo3-state-danger-color) !important;
+}
+a[data-rte-error]:hover {
+    background: var(--typo3-state-danger-hover-bg) !important;
+    outline: 3px solid var(--typo3-state-danger-hover-border-color) !important;
+    color: var(--typo3-state-danger-hover-color) !important;
+}
+a[data-rte-error]:focus,
+a[data-rte-error]:focus-visible {
+    background: var(--typo3-state-danger-focus-bg) !important;
+    outline: 3px solid var(--typo3-state-danger-focus-border-color) !important;
+    color: var(--typo3-state-danger-focus-color) !important;
 }
 
 strong {
@@ -61,14 +61,7 @@ ol,
 ul,
 dl {
     padding: 0;
-    padding-left: 3em;
-}
-
-html[dir="rtl"] ol,
-html[dir="rtl"] ul,
-html[dir="rtl"] dl {
-    padding-left: 0;
-    padding-right: 3em;
+    padding-inline-start: calc(var(--typo3-spacing) * 2);
 }
 
 hr {
