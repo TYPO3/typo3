@@ -1,0 +1,8 @@
+"sys_registry",,,,,
+,"uid","entry_namespace","entry_key","entry_value"
+,5,"extensionDataImport","already_migrated:ext_tables_static+adt.sql","s:7:""newhash"";"
+,7,"extensionDataImport","my_extension:ext_tables_static+adt.sql","s:7:""hash123"";"
+,8,"extensionDataImport","core:ext_tables_static+adt.sql","s:7:""hash456"";"
+,9,"extensionDataImport","another_ext:Initialisation/Files","i:1;"
+,10,"extensionDataImport","test_ext:Initialisation/dataImported","i:1;"
+,11,"extensionDataImport","lowlevel:Initialisation/dataImported","i:1;"

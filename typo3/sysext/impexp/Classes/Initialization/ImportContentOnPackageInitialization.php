@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Package\Initialization\CheckForImportRequirements;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Impexp\Utility\ImportExportUtility;
 
 /**
@@ -42,10 +41,10 @@ final class ImportContentOnPackageInitialization implements LoggerAwareInterface
     public function __invoke(PackageInitializationEvent $event): void
     {
         $packagePath = $event->getPackage()->getPackagePath();
-        $extensionSiteRelPath = PathUtility::stripPathSitePrefix($packagePath);
+        $registryKeyPrefix = $event->getExtensionKey();
         $registryKeysToCheck = [
-            $extensionSiteRelPath . 'Initialisation/data.t3d',
-            $extensionSiteRelPath . 'Initialisation/dataImported',
+            $registryKeyPrefix . ':Initialisation/data.t3d',
+            $registryKeyPrefix . ':Initialisation/dataImported',
         ];
         foreach ($registryKeysToCheck as $registryKeyToCheck) {
             if ($this->registry->get('extensionDataImport', $registryKeyToCheck)) {
@@ -69,7 +68,7 @@ final class ImportContentOnPackageInitialization implements LoggerAwareInterface
         }
         try {
             $importResult = $this->importExportUtility->importT3DFile($importFileToUse, 0);
-            $this->registry->set('extensionDataImport', $extensionSiteRelPath . 'Initialisation/dataImported', 1);
+            $this->registry->set('extensionDataImport', $registryKeyPrefix . ':Initialisation/dataImported', 1);
             $event->addStorageEntry(__CLASS__, [
                 'importResult' => $importResult,
                 'importFileToUse' => $importFileToUse,

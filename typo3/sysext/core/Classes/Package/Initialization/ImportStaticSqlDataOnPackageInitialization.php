@@ -22,7 +22,6 @@ use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Registry;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Listener to import static sql data ("ext_tables_static+adt.sql") after package activation
@@ -39,8 +38,8 @@ final readonly class ImportStaticSqlDataOnPackageInitialization
     public function __invoke(PackageInitializationEvent $event): void
     {
         $extTablesStaticSqlFile = $event->getPackage()->getPackagePath() . 'ext_tables_static+adt.sql';
-        $extTablesStaticSqlRelFile = PathUtility::stripPathSitePrefix($extTablesStaticSqlFile);
-        $oldFileHash = $this->registry->get('extensionDataImport', $extTablesStaticSqlRelFile);
+        $registryKey = $event->getExtensionKey() . ':ext_tables_static+adt.sql';
+        $oldFileHash = $this->registry->get('extensionDataImport', $registryKey);
         $currentFileHash = '';
         // We used to only store "1" in the database when data was imported
         $needsUpdate = !$oldFileHash || $oldFileHash === 1;
@@ -54,7 +53,7 @@ final readonly class ImportStaticSqlDataOnPackageInitialization
             }
         }
         if ($needsUpdate) {
-            $this->registry->set('extensionDataImport', $extTablesStaticSqlRelFile, $currentFileHash);
+            $this->registry->set('extensionDataImport', $registryKey, $currentFileHash);
             $event->addStorageEntry(__CLASS__, $extTablesStaticSqlFile);
         }
     }

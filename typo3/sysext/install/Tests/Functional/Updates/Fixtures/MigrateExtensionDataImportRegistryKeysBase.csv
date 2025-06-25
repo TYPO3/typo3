@@ -1,0 +1,8 @@
+"sys_registry",,,,,
+,"uid","entry_namespace","entry_key","entry_value"
+,1,"extensionDataImport","typo3conf/ext/my_extension/ext_tables_static+adt.sql","s:7:""hash123"";"
+,2,"extensionDataImport","typo3/sysext/core/ext_tables_static+adt.sql","s:7:""hash456"";"
+,3,"extensionDataImport","EXT:another_ext/Initialisation/Files","i:1;"
+,4,"extensionDataImport","typo3conf/ext/test_ext/Initialisation/dataImported","i:1;"
+,5,"extensionDataImport","already_migrated:ext_tables_static+adt.sql","s:7:""newhash"";"
+,6,"extensionDataImport","or/typo3/cms-lowlevel/Initialisation/dataImported","i:1;"

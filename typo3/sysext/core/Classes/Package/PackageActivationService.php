@@ -32,7 +32,6 @@ use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Service\OpcodeCacheService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Service for activating packages, enabling further initialization
@@ -88,10 +87,8 @@ class PackageActivationService
         foreach ($extensionKeys as $extensionKey) {
             try {
                 $package = $this->packageManager->getPackage($extensionKey);
-                $this->registry->remove(
-                    'extensionDataImport',
-                    PathUtility::stripPathSitePrefix($package->getPackagePath() . 'ext_tables_static+adt.sql')
-                );
+                $registryKey = $extensionKey . ':ext_tables_static+adt.sql';
+                $this->registry->remove('extensionDataImport', $registryKey);
                 $this->eventDispatcher->dispatch(
                     new PackageInitializationEvent(extensionKey: $extensionKey, package: $package, emitter: $emitter)
                 );

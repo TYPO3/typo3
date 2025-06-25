@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractTagBasedViewHelper;
@@ -45,7 +44,7 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
     public function initializeArguments(): void
     {
         parent::initializeArguments();
-        $this->registerArgument('extension', 'array', 'Extension key', true);
+        $this->registerArgument('extension', 'array', 'Extension details', true);
     }
 
     public function render(): string
@@ -54,12 +53,13 @@ final class ReloadSqlDataViewHelper extends AbstractTagBasedViewHelper
         $iconFactory = GeneralUtility::makeInstance(IconFactory::class);
 
         $staticSqlDataFile = $extension['packagePath'] . 'ext_tables_static+adt.sql';
+        $registryKey = $extension['key'] . ':ext_tables_static+adt.sql';
         if (!file_exists($staticSqlDataFile)) {
             return '<span class="btn btn-default disabled">' . $iconFactory->getIcon('empty-empty', IconSize::SMALL)->render() . '</span>';
         }
 
         $registry = GeneralUtility::makeInstance(Registry::class);
-        $oldFileHash = $registry->get(self::$registryNamespace, PathUtility::stripPathSitePrefix($staticSqlDataFile));
+        $oldFileHash = $registry->get(self::$registryNamespace, $registryKey);
 
         $fileHashIsEqual = true;
         // We used to only store "1" in the database when data was imported

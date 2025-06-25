@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Attribute\AsEventListener;
 use TYPO3\CMS\Core\Package\Event\PackageInitializationEvent;
 use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\PathUtility;
 
 /**
  * Listener to import extension data after package activation
@@ -38,8 +37,8 @@ final readonly class ImportExtensionDataOnPackageInitialization
         $package = $event->getPackage();
         $extensionKey = $event->getExtensionKey();
         $importFolder = $package->getPackagePath() . 'Initialisation/Files';
-        $importRelFolder = PathUtility::stripPathSitePrefix($importFolder);
-        if ($this->registry->get('extensionDataImport', $importRelFolder) || !file_exists($importFolder)) {
+        $registryKey = $extensionKey . ':Initialisation/Files';
+        if ($this->registry->get('extensionDataImport', $registryKey) || !file_exists($importFolder)) {
             return;
         }
         $destinationAbsolutePath = GeneralUtility::getFileAbsFileName($GLOBALS['TYPO3_CONF_VARS']['BE']['fileadminDir'] . $extensionKey);
@@ -47,7 +46,7 @@ final readonly class ImportExtensionDataOnPackageInitialization
             GeneralUtility::mkdir($destinationAbsolutePath);
         }
         GeneralUtility::copyDirectory($importFolder, $destinationAbsolutePath);
-        $this->registry->set('extensionDataImport', $importRelFolder, 1);
+        $this->registry->set('extensionDataImport', $registryKey, 1);
         $event->addStorageEntry(__CLASS__, $destinationAbsolutePath);
     }
 }
