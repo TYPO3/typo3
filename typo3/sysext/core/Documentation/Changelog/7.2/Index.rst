@@ -1,5 +1,6 @@
 :template: changelogOverview.html
 .. include:: /Includes.rst.txt
+..  _changelog-7-2:
 
 7.2 Changes
 ===========

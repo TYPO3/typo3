@@ -1,5 +1,6 @@
 :template: changelogOverview.html
 ..  include:: /Includes.rst.txt
+..  _changelog-10-4-x:
 
 ==============
 10.4.x Changes

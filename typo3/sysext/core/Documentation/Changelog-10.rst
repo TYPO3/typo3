@@ -1,5 +1,7 @@
 .. include:: /Includes.rst.txt
 
+..  _changelog-v10:
+
 =============
 ChangeLog v10
 =============
