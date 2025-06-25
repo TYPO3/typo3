@@ -213,8 +213,16 @@ readonly class LoginController
         } else {
             $formProtection->storeSessionTokenInRegistry();
             // @todo: Consolidate RouteDispatcher::evaluateReferrer() when changing 'main' to something different
-            $redirectToURL = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '')
-                ?: (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
+            $tsConfigRedirectToURL = (string)($backendUser->getTSConfig()['auth.']['BE.']['redirectToURL'] ?? '');
+            if ($tsConfigRedirectToURL !== '') {
+                trigger_error(
+                    'User TSConfig auth.BE.redirectToURL has been deprecated in TYPO3 v14.0 and will be removed in v15.0.',
+                    E_USER_DEPRECATED
+                );
+            }
+
+            $redirectToURL = $tsConfigRedirectToURL ?:
+                (string)$this->uriBuilder->buildUriWithRedirect('main', [], RouteRedirect::createFromRequest($request));
             throw new PropagateResponseException(new RedirectResponse($redirectToURL, 303), 1724705833);
         }
     }
