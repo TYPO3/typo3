@@ -100,7 +100,7 @@ class WorkspaceRestriction implements QueryRestrictionInterface
                 $constraints[] = $expressionBuilder->and(
                     $workspaceIdExpression,
                     $expressionBuilder->neq(
-                        't3ver_state',
+                        $tableAlias . '.t3ver_state',
                         VersionState::DELETE_PLACEHOLDER->value
                     )
                 );
