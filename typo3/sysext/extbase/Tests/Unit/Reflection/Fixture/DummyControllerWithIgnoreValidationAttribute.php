@@ -24,17 +24,12 @@ use TYPO3\CMS\Extbase\Mvc\Controller\ControllerInterface;
 use TYPO3\CMS\Extbase\Mvc\RequestInterface;
 
 /**
- * Dummy controller with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation annotation
- * Note: This class is excluded from phpstan analysing, because of errors which are test-purpose related.
+ * Dummy controller with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation attribute
  */
-class DummyControllerWithIgnoreValidationDoctrineAnnotation implements ControllerInterface
+class DummyControllerWithIgnoreValidationAttribute implements ControllerInterface
 {
-    /**
-     * @param $foo
-     * @param $bar
-     * @IgnoreValidation("foo")
-     * @IgnoreValidation("bar")
-     */
+    #[IgnoreValidation(['argumentName' => 'foo'])]
+    #[IgnoreValidation(['argumentName' => 'bar'])]
     public function someAction($foo, $bar): void {}
 
     public function processRequest(RequestInterface $request): ResponseInterface

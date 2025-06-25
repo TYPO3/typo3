@@ -310,17 +310,21 @@ class ClassSchema
 
             foreach ($reflectionMethod->getParameters() as $parameterPosition => $reflectionParameter) {
                 $parameterName = $reflectionParameter->getName();
+                $ignoreValidationParameters = [];
+                $ignoreValidationParametersFromAttribute = [];
 
-                $ignoreValidationParameters = array_filter(
-                    $annotations,
-                    static fn(object $annotation): bool => $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName
-                );
+                if ($isAction) {
+                    $ignoreValidationParameters = array_filter(
+                        $annotations,
+                        static fn(object $annotation): bool => $annotation instanceof IgnoreValidation && $annotation->argumentName === $parameterName
+                    );
 
-                $ignoreValidationParametersFromAttribute = array_filter(
-                    $reflectionAttributes,
-                    static fn(\ReflectionAttribute $attribute): bool
-                        => $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName
-                );
+                    $ignoreValidationParametersFromAttribute = array_filter(
+                        $reflectionAttributes,
+                        static fn(\ReflectionAttribute $attribute): bool
+                            => $attribute->getName() === IgnoreValidation::class && $attribute->newInstance()->argumentName === $parameterName
+                    );
+                }
 
                 $reflectionType = $reflectionParameter->getType();
 

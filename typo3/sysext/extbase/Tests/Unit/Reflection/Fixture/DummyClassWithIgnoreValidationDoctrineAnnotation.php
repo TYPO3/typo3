@@ -20,11 +20,16 @@ namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 use TYPO3\CMS\Extbase\Annotation\IgnoreValidation;
 
 /**
- * Dummy controller with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation annotation
+ * Dummy class with @TYPO3\CMS\Extbase\Annotation\IgnoreValidation annotation
+ * Note: This class is excluded from phpstan analysing, because of errors which are test-purpose related.
  */
-class DummyControllerWithIgnoreValidationDoctrineAttribute
+class DummyClassWithIgnoreValidationDoctrineAnnotation
 {
-    #[IgnoreValidation(['argumentName' => 'foo'])]
-    #[IgnoreValidation(['argumentName' => 'bar'])]
+    /**
+     * @param $foo
+     * @param $bar
+     * @IgnoreValidation("foo")
+     * @IgnoreValidation("bar")
+     */
     public function someAction($foo, $bar): void {}
 }
