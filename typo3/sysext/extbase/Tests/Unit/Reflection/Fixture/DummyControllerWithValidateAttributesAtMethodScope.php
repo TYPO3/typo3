@@ -17,17 +17,15 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture;
 
-use TYPO3\CMS\Extbase\Attribute\IgnoreValidation;
+use TYPO3\CMS\Extbase\Attribute\Validate;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 /**
- * Dummy class with @TYPO3\CMS\Extbase\Attribute\IgnoreValidation attribute
+ * Dummy controller with #[Validate] attributes at method scope
  */
-class DummyClassWithIgnoreValidationAttribute
+class DummyControllerWithValidateAttributesAtMethodScope extends ActionController
 {
-    public function someAction(
-        #[IgnoreValidation]
-        $foo,
-        #[IgnoreValidation]
-        $bar,
-    ): void {}
+    #[Validate(validator: 'NotEmpty', param: 'foo')]
+    #[Validate(validator: 'NotEmpty', param: 'bar')]
+    public function someAction(string $foo, string $bar): void {}
 }

@@ -86,18 +86,20 @@ class ArgumentTestController extends ActionController
         return $this->htmlResponse($this->view->render());
     }
 
-    #[Extbase\Validate(validator: FailingValidator::class, param: 'model')]
-    public function validateModelAction(Model $model): ResponseInterface
-    {
+    public function validateModelAction(
+        #[Extbase\Validate(validator: FailingValidator::class)]
+        Model $model,
+    ): ResponseInterface {
         $this->view->assignMultiple([
             'model' => $model,
         ]);
         return $this->htmlResponse($this->view->render());
     }
 
-    #[Extbase\Validate(validator: FailingValidator::class, param: 'dto')]
-    public function validateDtoAction(ModelDto $dto): ResponseInterface
-    {
+    public function validateDtoAction(
+        #[Extbase\Validate(validator: FailingValidator::class)]
+        ModelDto $dto,
+    ): ResponseInterface {
         $this->view->assignMultiple([
             'dto' => $dto,
         ]);

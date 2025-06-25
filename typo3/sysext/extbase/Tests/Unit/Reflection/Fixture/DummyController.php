@@ -32,9 +32,11 @@ class DummyController extends ActionController
      */
     public function methodWithoutValidateAttributesAction($fooParam): void {}
 
-    #[Extbase\Validate(validator: 'StringLength', options: ['minimum' => 1, 'maximum' => 10], param: 'fooParam')]
-    #[Extbase\Validate(validator: 'NotEmpty', param: 'fooParam')]
-    #[Extbase\Validate(validator: '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator', param: 'fooParam')]
-    #[Extbase\Validate(validator: NotEmptyValidator::class, param: 'fooParam')]
-    public function methodWithValidateAttributesAction(string $fooParam): void {}
+    public function methodWithValidateAttributesAction(
+        #[Extbase\Validate(validator: 'StringLength', options: ['minimum' => 1, 'maximum' => 10])]
+        #[Extbase\Validate(validator: 'NotEmpty')]
+        #[Extbase\Validate(validator: '\TYPO3\CMS\Extbase\Validation\Validator\NotEmptyValidator')]
+        #[Extbase\Validate(validator: NotEmptyValidator::class)]
+        string $fooParam,
+    ): void {}
 }

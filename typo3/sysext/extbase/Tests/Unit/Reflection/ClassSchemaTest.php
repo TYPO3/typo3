@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Tests\Unit\Reflection;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Extbase\DomainObject\AbstractDomainObject;
 use TYPO3\CMS\Extbase\Reflection\ClassSchema;
@@ -93,7 +94,7 @@ final class ClassSchemaTest extends UnitTestCase
     }
 
     #[Test]
-    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForParamWithoutTypeHint(): void
+    public function classSchemaGenerationThrowsExceptionWithValidateAttributesForParamWithoutTypeHint(): void
     {
         $this->expectException(InvalidTypeHintException::class);
         $this->expectExceptionMessage('Missing type information for parameter "$fooParam" in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParamTypeHint->methodWithValidateAttributesAction(): Use a type hint.');
@@ -103,7 +104,8 @@ final class ClassSchemaTest extends UnitTestCase
     }
 
     #[Test]
-    public function classSchemaGenerationThrowsExceptionWithValidateDoctrineAttributesForMissingParam(): void
+    #[IgnoreDeprecations]
+    public function classSchemaGenerationThrowsExceptionWithValidateAttributesForMissingParam(): void
     {
         $this->expectException(InvalidValidationConfigurationException::class);
         $this->expectExceptionMessage('Invalid #[Validate] attribute in TYPO3\CMS\Extbase\Tests\Unit\Reflection\Fixture\DummyControllerWithValidateAttributeWithoutParam->methodWithValidateAttributesAction(): The following validators have been defined for missing param "$fooParam": NotEmpty, StringLength');

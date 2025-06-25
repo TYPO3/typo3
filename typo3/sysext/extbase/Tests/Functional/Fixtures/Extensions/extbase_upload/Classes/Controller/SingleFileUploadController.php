@@ -63,8 +63,7 @@ class SingleFileUploadController extends ActionController
         return $this->htmlResponse();
     }
 
-    #[IgnoreValidation(argumentName: 'item')]
-    public function editAction(Singlefile $item): ResponseInterface
+    public function editAction(#[IgnoreValidation] Singlefile $item): ResponseInterface
     {
         $this->view->assignMultiple([
             'item' => $item,

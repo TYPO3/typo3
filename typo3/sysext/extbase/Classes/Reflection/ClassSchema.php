@@ -215,28 +215,21 @@ class ClassSchema
             $this->methods[$methodName]['params']       = [];
             $isAction = $this->bitSet->get(self::BIT_CLASS_IS_CONTROLLER) && str_ends_with($methodName, 'Action');
 
-            $argumentValidators = [];
-
+            /** @var array<string, list<Attribute\Validate>> $validateAttributes */
             $validateAttributes = [];
-            $reflectionAttributes = $reflectionMethod->getAttributes();
-            foreach ($reflectionAttributes as $attribute) {
-                match ($attribute->getName()) {
-                    // @todo Remove Annotation fallback with v15
-                    Attribute\Validate::class, Annotation\Validate::class => $validateAttributes[] = $attribute,
-                    default => '' // non-extbase attributes
-                };
-            }
+            /** @var array<string, list<Attribute\IgnoreValidation>> $validateAttributes */
+            $ignoreValidationAttributes = [];
 
-            if ($isAction && $validateAttributes !== []) {
-                foreach ($validateAttributes as $attribute) {
-                    $validator = $attribute->newInstance();
-                    $validatorObjectName = ValidatorClassNameResolver::resolve($validator->validator);
+            // @todo Remove with v15
+            if ($isAction) {
+                foreach ($reflectionMethod->getAttributes() as $attribute) {
+                    $attributeInstance = $attribute->newInstance();
 
-                    $argumentValidators[$validator->param][] = [
-                        'name' => $validator->validator,
-                        'options' => $validator->options,
-                        'className' => $validatorObjectName,
-                    ];
+                    match ($attribute->getName()) {
+                        Attribute\Validate::class, Annotation\Validate::class => $validateAttributes[$attributeInstance->param ?? ''][] = $attributeInstance,
+                        Attribute\IgnoreValidation::class, Annotation\IgnoreValidation::class => $ignoreValidationAttributes[$attributeInstance->argumentName ?? ''][] = $attributeInstance,
+                        default => '' // non-extbase attributes
+                    };
                 }
             }
 
@@ -245,16 +238,20 @@ class ClassSchema
 
             foreach ($reflectionMethod->getParameters() as $parameterPosition => $reflectionParameter) {
                 $parameterName = $reflectionParameter->getName();
-                $ignoreValidationParameters = [];
+                $parameterAttributes = $reflectionParameter->getAttributes();
+
+                $validateAttributes[$parameterName] ??= [];
+                $ignoreValidationAttributes[$parameterName] ??= [];
 
                 if ($isAction) {
-                    $ignoreValidationParameters = array_filter(
-                        $reflectionAttributes,
-                        static fn(\ReflectionAttribute $attribute): bool
-                            // @todo Remove Annotation fallback with v15
-                            => in_array($attribute->getName(), [Attribute\IgnoreValidation::class, Annotation\IgnoreValidation::class], true)
-                            && $attribute->newInstance()->argumentName === $parameterName
-                    );
+                    foreach ($parameterAttributes as $parameterAttribute) {
+                        match ($parameterAttribute->getName()) {
+                            // @todo Remove Annotation fallbacks with v15
+                            Attribute\Validate::class, Annotation\Validate::class => $validateAttributes[$parameterName][] = $parameterAttribute->newInstance(),
+                            Attribute\IgnoreValidation::class, Annotation\IgnoreValidation::class => $ignoreValidationAttributes[$parameterName][] = $parameterAttribute->newInstance(),
+                            default => '' // non-extbase attributes
+                        };
+                    }
                 }
 
                 $reflectionType = $reflectionParameter->getType();
@@ -266,7 +263,7 @@ class ClassSchema
                 $this->methods[$methodName]['params'][$parameterName]['type'] = null;
                 $this->methods[$methodName]['params'][$parameterName]['hasDefaultValue'] = $reflectionParameter->isDefaultValueAvailable();
                 $this->methods[$methodName]['params'][$parameterName]['defaultValue'] = null;
-                $this->methods[$methodName]['params'][$parameterName]['ignoreValidation'] = $ignoreValidationParameters !== [];
+                $this->methods[$methodName]['params'][$parameterName]['ignoreValidation'] = $ignoreValidationAttributes[$parameterName] !== [];
                 $this->methods[$methodName]['params'][$parameterName]['validators'] = [];
 
                 if ($reflectionParameter->isDefaultValueAvailable()) {
@@ -326,7 +323,7 @@ class ClassSchema
                 }
 
                 // Extbase Validation
-                if (isset($argumentValidators[$parameterName])) {
+                if ($validateAttributes[$parameterName] !== []) {
                     if ($this->methods[$methodName]['params'][$parameterName]['type'] === null) {
                         throw new InvalidTypeHintException(
                             'Missing type information for parameter "$' . $parameterName . '" in ' . $this->className . '->' . $methodName . '(): Use a type hint.',
@@ -342,19 +339,31 @@ MESSAGE;
                         throw new \RuntimeException($errorMessage, 1639224354);
                     }
 
-                    $this->methods[$methodName]['params'][$parameterName]['validators'] = $argumentValidators[$parameterName];
-                    unset($argumentValidators[$parameterName]);
+                    $this->methods[$methodName]['params'][$parameterName]['validators'] = array_map(
+                        static fn(Attribute\Validate $validator) => [
+                            'name' => $validator->validator,
+                            'options' => $validator->options,
+                            'className' => ValidatorClassNameResolver::resolve($validator->validator),
+                        ],
+                        $validateAttributes[$parameterName],
+                    );
+                    unset($validateAttributes[$parameterName]);
                 }
             }
 
             // Extbase Validation
-            foreach ($argumentValidators as $parameterName => $validators) {
-                $validatorNames = array_column($validators, 'name');
+            foreach ($validateAttributes as $parameterName => $validators) {
+                if ($validators !== []) {
+                    $validatorNames = array_map(
+                        static fn(Attribute\Validate $validate) => $validate->validator,
+                        $validators,
+                    );
 
-                throw new InvalidValidationConfigurationException(
-                    'Invalid #[Validate] attribute in ' . $this->className . '->' . $methodName . '(): The following validators have been defined for missing param "$' . $parameterName . '": ' . implode(', ', $validatorNames),
-                    1515073585
-                );
+                    throw new InvalidValidationConfigurationException(
+                        'Invalid #[Validate] attribute in ' . $this->className . '->' . $methodName . '(): The following validators have been defined for missing param "$' . $parameterName . '": ' . implode(', ', $validatorNames),
+                        1515073585
+                    );
+                }
             }
         }
     }

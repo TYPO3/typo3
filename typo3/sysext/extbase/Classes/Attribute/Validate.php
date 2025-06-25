@@ -17,7 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Extbase\Attribute;
 
-#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::IS_REPEATABLE)]
+#[\Attribute(\Attribute::TARGET_PROPERTY | \Attribute::TARGET_METHOD | \Attribute::TARGET_PARAMETER | \Attribute::IS_REPEATABLE)]
 class Validate
 {
     public readonly string $validator;
@@ -27,7 +27,10 @@ class Validate
      */
     public readonly array $options;
 
-    public readonly string $param;
+    /**
+     * @deprecated since TYPO3 v14, will be removed in TYPO3 v15
+     */
+    public readonly ?string $param;
 
     /**
      * @param string|array{value?: non-empty-string, validator?: non-empty-string, options?: array<string, mixed>, param?: string} $validator
@@ -37,7 +40,7 @@ class Validate
         // @todo Convert to string and use CPP in TYPO3 v15.0
         string|array $validator,
         array $options = [],
-        string $param = '',
+        ?string $param = null,
     ) {
         // @todo Remove with TYPO3 v15.0
         if (\is_array($validator)) {
@@ -57,13 +60,21 @@ class Validate
             $this->options = $options;
             $this->param = $param;
         }
+
+        if ($this->param !== null) {
+            trigger_error(
+                'Passing a parameter name to a #[Validate] attribute is deprecated and will be removed in TYPO3 v15.0. ' .
+                'Place the attribute on the method parameter instead.',
+                E_USER_DEPRECATED,
+            );
+        }
     }
 
     public function __toString(): string
     {
         $strings = [];
 
-        if ($this->param !== '') {
+        if ($this->param !== null) {
             $strings[] = $this->param;
         }
 

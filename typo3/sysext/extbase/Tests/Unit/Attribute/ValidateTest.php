@@ -45,4 +45,16 @@ final class ValidateTest extends UnitTestCase
         self::assertSame(['nullMessage' => 'No value given.'], $actual->options);
         self::assertSame('foo', $actual->param);
     }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function constructorTriggersDeprecationErrorWhenParameterNameIsPassed(): void
+    {
+        $this->expectUserDeprecationMessage(
+            'Passing a parameter name to a #[Validate] attribute is deprecated and will be removed in TYPO3 v15.0. ' .
+            'Place the attribute on the method parameter instead.',
+        );
+
+        new Validate(validator: 'NotEmpty', param: 'foo');
+    }
 }

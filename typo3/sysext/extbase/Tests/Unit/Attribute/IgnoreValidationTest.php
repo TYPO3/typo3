@@ -39,4 +39,16 @@ final class IgnoreValidationTest extends UnitTestCase
 
         self::assertSame('foo', $actual->argumentName);
     }
+
+    #[Test]
+    #[IgnoreDeprecations]
+    public function constructorTriggersDeprecationErrorWhenArgumentNameIsPassed(): void
+    {
+        $this->expectUserDeprecationMessage(
+            'Passing an argument name to an #[IgnoreValidation] attribute is deprecated and will be removed in ' .
+            'TYPO3 v15.0. Place the attribute on the method parameter instead.',
+        );
+
+        new IgnoreValidation(argumentName: 'foo');
+    }
 }

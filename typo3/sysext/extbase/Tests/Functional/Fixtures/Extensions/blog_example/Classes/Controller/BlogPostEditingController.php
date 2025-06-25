@@ -51,8 +51,7 @@ final class BlogPostEditingController extends ActionController
      * the action can take in a not-validated blog to be able to report
      * errors after the errorAction() redirection!
      */
-    #[IgnoreValidation(argumentName: 'blog')]
-    public function editAction(Blog $blog): ResponseInterface
+    public function editAction(#[IgnoreValidation] Blog $blog): ResponseInterface
     {
         $categories = $this->categoryRepository->findAll();
         $categoriesSelect = [];

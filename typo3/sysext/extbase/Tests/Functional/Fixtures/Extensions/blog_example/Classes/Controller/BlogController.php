@@ -63,11 +63,7 @@ class BlogController extends ActionController
         return $this->htmlResponse('testFormAction');
     }
 
-    /**
-     * // needs to be imported entirely, else the annotationChecker test script complains
-     */
-    #[IgnoreValidation(argumentName: 'blogPost')]
-    public function testForwardAction(Post $blogPost): ForwardResponse
+    public function testForwardAction(#[IgnoreValidation] Post $blogPost): ForwardResponse
     {
         return (new ForwardResponse('testForwardTarget'))->withArguments(['blogPost' => $blogPost]);
     }

@@ -79,15 +79,17 @@ class TestController extends ActionController
         return $this->htmlResponse('');
     }
 
-    #[Extbase\Validate(validator: CustomValidator::class, param: 'barParam')]
-    public function barAction(string $barParam): ResponseInterface
-    {
+    public function barAction(
+        #[Extbase\Validate(validator: CustomValidator::class)]
+        string $barParam,
+    ): ResponseInterface {
         return $this->htmlResponse('');
     }
 
-    #[Extbase\Validate(validator: 'NotEmpty', param: 'bazParam')]
-    public function bazAction(array $bazParam): ResponseInterface
-    {
+    public function bazAction(
+        #[Extbase\Validate(validator: 'NotEmpty')]
+        array $bazParam,
+    ): ResponseInterface {
         return $this->htmlResponse('');
     }
 
