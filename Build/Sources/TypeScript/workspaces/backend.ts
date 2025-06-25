@@ -66,13 +66,11 @@ enum Identifiers {
  */
 class Backend extends Workspaces {
   private readonly settings: { [key: string]: string | number } = {
-    dir: 'ASC',
     id: TYPO3.settings.Workspaces.id,
     depth: 1,
     language: 'all',
     limit: 30,
     query: '',
-    sort: 'label_Workspace',
     start: 0,
     filterTxt: '',
   };

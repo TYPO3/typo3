@@ -119,7 +119,7 @@ final readonly class WorkspacesAjaxController
             'tables_select',
             $parameter->language !== null ? (int)$parameter->language : null
         );
-        return $this->gridDataService->generateGridListFromVersions($versions, $parameter, $currentWorkspace);
+        return $this->gridDataService->generateGridListFromVersions($versions, $parameter);
     }
 
     /**
