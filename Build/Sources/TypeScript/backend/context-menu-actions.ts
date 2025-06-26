@@ -21,6 +21,7 @@ import ModuleMenu from './module-menu';
 import Notification from '@typo3/backend/notification';
 import Viewport from './viewport';
 import '@typo3/backend/new-record-wizard';
+import Utility from '@typo3/backend/utility';
 
 /**
  * @exports @typo3/backend/context-menu-actions
@@ -55,6 +56,10 @@ class ContextMenuActions {
     if (viewUrl) {
       const previewWin = window.open(viewUrl, 'newTYPO3frontendWindow');
       previewWin.focus();
+
+      if (Utility.urlsPointToSameServerSideResource(previewWin.location.href, viewUrl)) {
+        previewWin.location.reload();
+      }
     }
   }
 
