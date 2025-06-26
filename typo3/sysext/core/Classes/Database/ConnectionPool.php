@@ -20,6 +20,8 @@ namespace TYPO3\CMS\Core\Database;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\Middleware as DriverMiddleware;
 use Doctrine\DBAL\DriverManager;
+use Doctrine\DBAL\Exception\MalformedDsnException;
+use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use TYPO3\CMS\Core\Database\Middleware\UsableForConnectionInterface;
@@ -133,6 +135,16 @@ class ConnectionPool
                 'The requested database connection named "' . $connectionName . '" has not been configured.',
                 1459422492
             );
+        }
+        if (!empty($connectionParams['url'])) {
+            $dsnUrl = $connectionParams['url'];
+            unset($connectionParams['url']);
+            try {
+                $parsedParams = (new DsnParser())->parse($dsnUrl);
+            } catch (MalformedDsnException $e) {
+                throw new \UnexpectedValueException('Malformed connection parameter "url".', 1750964898, $e);
+            }
+            $connectionParams = [...$connectionParams, ...$parsedParams];
         }
         if (empty($connectionParams['wrapperClass'])) {
             $connectionParams['wrapperClass'] = Connection::class;

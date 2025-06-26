@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Database;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -36,4 +37,61 @@ final class ConnectionPoolTest extends UnitTestCase
         ];
         self::assertSame(['Default', 'klaus'], (new ConnectionPool())->getConnectionNames());
     }
+
+    #[Test]
+    public function getConnectionParamsParsesUrlDSN(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'] = [
+            'Default' => [
+                'url' => 'mysqli://user:password@host:3306/database',
+            ],
+        ];
+        $connectionPool = new ConnectionPool();
+        $subjectMethodReflection = new \ReflectionMethod($connectionPool, 'getConnectionParams');
+        self::assertEquals(
+            [
+                'driver' => 'mysqli',
+                'host' => 'host',
+                'port' => 3306,
+                'user' => 'user',
+                'password' => 'password',
+                'dbname' => 'database',
+                'wrapperClass' => Connection::class,
+                'charset' => 'utf8',
+            ],
+            $subjectMethodReflection->invoke($connectionPool, 'Default')
+        );
+    }
+
+    #[Test]
+    public function getConnectionParamsParsesUrlDSNAndOverridesParams(): void
+    {
+        $GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'] = [
+            'Default' => [
+                'url' => 'mysqli://user:password@host:3306/database',
+                'driver' => 'pdo_pgsql',
+                'host' => 'foo',
+                'port' => 1234,
+                'user' => 'bar',
+                'password' => 'PAZZW0RD!',
+                'dbname' => 'to-be-overriden',
+            ],
+        ];
+        $connectionPool = new ConnectionPool();
+        $subjectMethodReflection = new \ReflectionMethod($connectionPool, 'getConnectionParams');
+        self::assertEquals(
+            [
+                'driver' => 'mysqli',
+                'host' => 'host',
+                'port' => 3306,
+                'user' => 'user',
+                'password' => 'password',
+                'dbname' => 'database',
+                'wrapperClass' => Connection::class,
+                'charset' => 'utf8',
+            ],
+            $subjectMethodReflection->invoke($connectionPool, 'Default')
+        );
+    }
+
 }
