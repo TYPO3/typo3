@@ -122,12 +122,11 @@ class PageContentErrorHandler implements PageErrorHandlerInterface
     {
         $parkedTsfe = $GLOBALS['TSFE'] ?? null;
         $GLOBALS['TSFE'] = null;
-
-        $result = $fetcher();
-
-        $GLOBALS['TSFE'] = $parkedTsfe;
-
-        return $result;
+        try {
+            return $fetcher();
+        } finally {
+            $GLOBALS['TSFE'] = $parkedTsfe;
+        }
     }
 
     /**
