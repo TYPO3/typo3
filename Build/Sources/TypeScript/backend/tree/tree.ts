@@ -92,6 +92,8 @@ export class Tree extends LitElement {
   protected allowNodeDrag: boolean = false;
   protected allowNodeSorting: boolean = false;
 
+  protected currentFilterRequest: AjaxRequest|null = null;
+
   private __loadFinished: () => void;
   private __loadPromise: Promise<void> = new Promise(res => this.__loadFinished = res);
 
@@ -372,7 +374,9 @@ export class Tree extends LitElement {
     }
     if (this.searchTerm && this.settings.filterUrl) {
       this.loading = true;
-      (new AjaxRequest(this.getFilterUrl()))
+      this.currentFilterRequest?.abort();
+      this.currentFilterRequest = new AjaxRequest(this.getFilterUrl());
+      this.currentFilterRequest
         .get({ cache: 'no-cache' })
         .then((response: AjaxResponse) => response.resolve())
         .then((json) => {
@@ -385,10 +389,16 @@ export class Tree extends LitElement {
           }
         })
         .catch((error: any) => {
+          if (error instanceof DOMException && error.name === 'AbortError') {
+            // Request has been aborted, do not flood the error console
+            return;
+          }
+
           this.errorNotification(error);
           throw error;
         }).then(() => {
           this.loading = false;
+          this.currentFilterRequest = null;
         });
     } else {
       // restore original state without filters
