@@ -23,6 +23,7 @@ import Viewport from '@typo3/backend/viewport';
 import RegularEvent from '@typo3/core/event/regular-event';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import { RecordUsageStore } from '@typo3/backend/record-usage/record-usage-store';
+import ClientStorage from '@typo3/backend/storage/client';
 
 type RequestType = 'location' | 'ajax' | 'event' | undefined;
 
@@ -153,6 +154,8 @@ interface Message {
   message: string;
   severity: string;
 }
+
+const LAST_USED_CATEGORY_IDENTIFIER = 'wizard-last-category/';
 
 /**
  * Module: @typo3/backend/new-record-wizard
@@ -465,11 +468,22 @@ export class NewRecordWizard extends LitElement {
   }
 
   protected selectAvailableCategory(): void {
+    let savedCategoryIdentifier: string | null = null;
+
+    if (this.storeName) {
+      savedCategoryIdentifier = ClientStorage.get(this.getCategoryLocalStorageKey());
+    }
 
     const needsCategoryChange: boolean = this.categories.categoriesWithItems()
       .filter((item: Category): boolean => item === this.selectedCategory).length === 0;
     if (needsCategoryChange) {
-      this.selectedCategory = this.categories.categoriesWithItems()[0] ?? null;
+      if (savedCategoryIdentifier) {
+        this.selectedCategory = this.categories.categoriesWithItems().find(
+          (category: Category): boolean => category.identifier === savedCategoryIdentifier
+        ) ?? this.categories.categoriesWithItems()[0] ?? null;
+      } else {
+        this.selectedCategory = this.categories.categoriesWithItems()[0] ?? null;
+      }
     }
 
     this.messages = [];
@@ -565,7 +579,7 @@ export class NewRecordWizard extends LitElement {
           data-identifier="${category.identifier}"
           class="navigation-item${(category.featured) ? ' navigation-item-featured' : ''}${(this.selectedCategory === category) ? ' active' : ''}"
           ?disabled="${category.disabled}"
-          @click="${() => { this.selectedCategory = category; this.toggleMenu = false; }}"
+          @click="${() => { this.handleNavigationClick(category); }}"
         >
           ${category.icon ? html`<span class="navigation-item-icon"><typo3-backend-icon identifier="${category.icon}" size="small"></typo3-backend-icon></div>` : nothing}
           <span class="navigation-item-label">${category.label}</span>
@@ -574,6 +588,15 @@ export class NewRecordWizard extends LitElement {
     `;
   })}
       </div>`;
+  }
+
+  protected handleNavigationClick(category: Category): void {
+    this.selectedCategory = category;
+    this.toggleMenu = false;
+
+    if (this.storeName) {
+      ClientStorage.set(this.getCategoryLocalStorageKey(), category.identifier);
+    }
   }
 
   protected renderCategories(): TemplateResult {
@@ -677,6 +700,10 @@ export class NewRecordWizard extends LitElement {
         Notification.error('Could not load module data');
       });
     }
+  }
+
+  protected getCategoryLocalStorageKey(): string {
+    return LAST_USED_CATEGORY_IDENTIFIER + this.storeName;
   }
 }
 
