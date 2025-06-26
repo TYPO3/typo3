@@ -14,7 +14,7 @@ Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.validatorsdefinition.*:
+.. _prototypes.prototypeIdentifier.validatorsdefinition.array:
 
 [validatorsDefinition]
 ----------------------

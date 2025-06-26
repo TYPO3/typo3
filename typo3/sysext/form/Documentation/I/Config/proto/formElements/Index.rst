@@ -13,7 +13,7 @@
 Properties
 ==========
 
-.. _prototypes.prototypeIdentifier.formelementsdefinition.*:
+.. _prototypes.prototypeIdentifier.formelementsdefinition.array:
 
 [formElementsDefinition]
 ------------------------

@@ -14,7 +14,7 @@ Properties
 ==========
 
 
-.. _prototypes.prototypeIdentifier.finishersdefinition.*:
+.. _prototypes.prototypeIdentifier.finishersdefinition.array:
 
 [finishersDefinition]
 ---------------------

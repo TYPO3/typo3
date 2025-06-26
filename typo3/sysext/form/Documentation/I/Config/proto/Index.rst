@@ -13,7 +13,7 @@
 Properties
 ==========
 
-.. _prototypes.*:
+.. _prototypes.array:
 
 prototypes
 ----------
