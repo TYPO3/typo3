@@ -50,33 +50,33 @@ To register an addon, the following code may be used:
     ];
 
 .. confval:: <identifier>
-
+    :name: addon-identifier
     :type: string
     :Required: true
 
     Represents the unique identifier of the module (`my/addon` in this example).
 
 .. confval:: module
-
+    :name: addon-module
     :type: string
     :Required: true
 
     Holds the JavaScriptModuleInstruction of the CodeMirror module.
 
 .. confval:: cssFiles
-
+    :name: addon-cssFiles
     :type: array
 
     Holds all CSS files that must be loaded for the module.
 
 .. confval:: options
-
+    :name: addon-options
     :type: array
 
     Options that are used by the addon.
 
 .. confval:: modes
-
+    :name: addon-modes
     :type: array
 
     If set the addon is only loaded if any of the modes supplied here is used.

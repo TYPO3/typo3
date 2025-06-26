@@ -51,4 +51,3 @@ code completion, based on the `CodeMirror`_ editor.
    :hidden:
 
    Sitemap
-   genindex
