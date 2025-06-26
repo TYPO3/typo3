@@ -37,6 +37,79 @@ final class DataHandlerContentElementRestrictionHookTest extends FunctionalTestC
         $this->importCSVDataSet(__DIR__ . '/Fixtures/pages.csv');
     }
 
+    public static function newRecordsAreCheckedAgainstContentElementRestrictionsDataProvider(): \Generator
+    {
+        yield 'allowed CType is created' => [
+            'backendUserId' => 1,
+            'pageId' => 1,
+            'fields' => ['CType' => 'text', 'colPos' => 0],
+            'isCreated' => true,
+        ];
+        yield 'disallowed CType is rejected' => [
+            'backendUserId' => 1,
+            'pageId' => 1,
+            'fields' => ['CType' => 'html', 'colPos' => 0],
+            'isCreated' => false,
+        ];
+        yield 'CType not in allowed CTypes is rejected' => [
+            'backendUserId' => 1,
+            'pageId' => 1,
+            'fields' => ['CType' => 'text', 'colPos' => 1],
+            'isCreated' => false,
+        ];
+        yield 'disallowed CType from user TSconfig default is rejected' => [
+            'backendUserId' => 2,
+            'pageId' => 1,
+            'fields' => ['colPos' => 0],
+            'isCreated' => false,
+        ];
+        yield 'disallowed CType from page TSconfig default is rejected' => [
+            'backendUserId' => 1,
+            'pageId' => 3,
+            'fields' => ['colPos' => 0],
+            'isCreated' => false,
+        ];
+        yield 'CType from TCA default not in allowed CTypes is rejected' => [
+            'backendUserId' => 1,
+            'pageId' => 1,
+            'fields' => ['colPos' => 1],
+            'isCreated' => false,
+        ];
+        yield 'colPos from TCA default allowing the CType is created' => [
+            'backendUserId' => 1,
+            'pageId' => 1,
+            'fields' => ['CType' => 'text'],
+            'isCreated' => true,
+        ];
+        yield 'colPos from page TSconfig default of the record type not allowing the CType is rejected' => [
+            'backendUserId' => 1,
+            'pageId' => 3,
+            'fields' => ['CType' => 'text'],
+            'isCreated' => false,
+        ];
+    }
+
+    #[DataProvider('newRecordsAreCheckedAgainstContentElementRestrictionsDataProvider')]
+    #[Test]
+    public function newRecordsAreCheckedAgainstContentElementRestrictions(int $backendUserId, int $pageId, array $fields, bool $isCreated): void
+    {
+        $backendUser = $this->setUpBackendUser($backendUserId);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['tt_content' => ['NEW1' => array_merge(['pid' => $pageId, 'header' => 'Content element'], $fields)]], []);
+        $dataHandler->process_datamap();
+
+        $numberOfContentElements = $this->get(ConnectionPool::class)->getConnectionForTable('tt_content')->count('*', 'tt_content', []);
+        if ($isCreated) {
+            self::assertSame(1, $numberOfContentElements);
+            self::assertSame([], $dataHandler->errorLog);
+        } else {
+            self::assertSame(0, $numberOfContentElements);
+            self::assertStringContainsString('due to disallowed value(s)', implode(chr(10), $dataHandler->errorLog));
+        }
+    }
+
     public static function newRecordsAreCheckedAgainstContentElementRestrictionsOfTheirPageDataProvider(): \Generator
     {
         yield 'allowed CType on existing page is created' => [
@@ -67,6 +140,16 @@ final class DataHandlerContentElementRestrictionHookTest extends FunctionalTestC
         yield 'disallowed CType on new page inheriting the backend layout is rejected' => [
             'pages' => ['NEW1' => ['pid' => 2, 'title' => 'New page']],
             'contentElements' => ['NEW10' => ['pid' => 'NEW1', 'CType' => 'html', 'colPos' => 0]],
+            'expectedNumberOfContentElements' => 0,
+        ];
+        yield 'disallowed CType from page TSconfig default of the parent page is rejected' => [
+            'pages' => ['NEW1' => ['pid' => 3, 'title' => 'New page', 'backend_layout' => 'pagets__restricted']],
+            'contentElements' => ['NEW10' => ['pid' => 'NEW1', 'colPos' => 0]],
+            'expectedNumberOfContentElements' => 0,
+        ];
+        yield 'disallowed CType from page TSconfig default of the new page is rejected' => [
+            'pages' => ['NEW1' => ['pid' => 1, 'title' => 'New page', 'backend_layout' => 'pagets__restricted', 'TSconfig' => 'TCAdefaults.tt_content.CType = html']],
+            'contentElements' => ['NEW10' => ['pid' => 'NEW1', 'colPos' => 0]],
             'expectedNumberOfContentElements' => 0,
         ];
         yield 'disallowed CType placed after a new content element is rejected' => [

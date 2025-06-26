@@ -20,3 +20,5 @@
   }
 }"
 ,2,1,256,0,"Restricted for sub pages",1,0,"","pagets__restricted",""
+,3,1,512,0,"Restricted with TCAdefaults",1,0,"pagets__restricted","","TCAdefaults.tt_content.CType = html
+TCAdefaults.tt_content.colPos.types.text = 1"

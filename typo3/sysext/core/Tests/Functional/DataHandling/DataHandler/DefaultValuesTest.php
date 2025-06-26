@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Core\Tests\Functional\DataHandling\DataHandler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\DataHandling\DataHandler;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
@@ -184,6 +185,129 @@ final class DefaultValuesTest extends FunctionalTestCase
         self::assertEquals(3, $recordOnPageWithDefaults['header_layout']);
         $recordOnPageWithoutDefaults = BackendUtility::getRecord('tt_content', $substNEWwithIDs['NEW2']);
         self::assertEquals(0, $recordOnPageWithoutDefaults['header_layout']);
+    }
+
+    #[Test]
+    public function defaultValuesFromPageTSconfigAreAppliedToSubPagesOnly(): void
+    {
+        // Pages are processed in this order, the page with TSconfig (NEW_1) between its siblings
+        $dataMap = [
+            'pages' => [
+                'NEW_1' => [
+                    'title' => 'Page with TCAdefaults',
+                    'pid' => 88,
+                    'TSconfig' => 'TCAdefaults.pages.description = I am specific, not generic',
+                ],
+                'NEW_2' => [
+                    'title' => 'Sibling page processed before the sub page',
+                    'pid' => 88,
+                ],
+                'NEW_3' => [
+                    'title' => 'Sub page',
+                    'pid' => 'NEW_1',
+                ],
+                'NEW_4' => [
+                    'title' => 'Sibling page processed after the sub page',
+                    'pid' => 88,
+                ],
+            ],
+        ];
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start($dataMap, []);
+        $dataHandler->process_datamap();
+
+        $subPage = BackendUtility::getRecord('pages', $dataHandler->substNEWwithIDs['NEW_3']);
+        self::assertEquals('I am specific, not generic', $subPage['description']);
+        $siblingPageBefore = BackendUtility::getRecord('pages', $dataHandler->substNEWwithIDs['NEW_2']);
+        self::assertNull($siblingPageBefore['description']);
+        $siblingPageAfter = BackendUtility::getRecord('pages', $dataHandler->substNEWwithIDs['NEW_4']);
+        self::assertNull($siblingPageAfter['description']);
+    }
+
+    public static function defaultValuesAreTakenFromSourceWithHighestPrecedenceDataProvider(): \Generator
+    {
+        $pageTsConfig = 'TCAdefaults.pages.description = Page TSconfig default';
+        $pageTsConfigWithRecordType = $pageTsConfig . chr(10) . 'TCAdefaults.pages.description.types.1 = Page TSconfig default for type 1';
+        yield 'no default value' => [
+            'tcaDefault' => false,
+            'tcaDefaultOfRecordType' => false,
+            'backendUserId' => 1,
+            'pageTsConfig' => '',
+            'expected' => null,
+        ];
+        yield 'TCA default' => [
+            'tcaDefault' => true,
+            'tcaDefaultOfRecordType' => false,
+            'backendUserId' => 1,
+            'pageTsConfig' => '',
+            'expected' => 'TCA default',
+        ];
+        yield 'TCA default of record type overrides TCA default' => [
+            'tcaDefault' => true,
+            'tcaDefaultOfRecordType' => true,
+            'backendUserId' => 1,
+            'pageTsConfig' => '',
+            'expected' => 'TCA default for type 1',
+        ];
+        yield 'user TSconfig overrides TCA defaults' => [
+            'tcaDefault' => true,
+            'tcaDefaultOfRecordType' => true,
+            'backendUserId' => 10,
+            'pageTsConfig' => '',
+            'expected' => 'User TSconfig default',
+        ];
+        yield 'user TSconfig of record type overrides user TSconfig' => [
+            'tcaDefault' => true,
+            'tcaDefaultOfRecordType' => true,
+            'backendUserId' => 11,
+            'pageTsConfig' => '',
+            'expected' => 'User TSconfig default for type 1',
+        ];
+        yield 'page TSconfig overrides user TSconfig of record type' => [
+            'tcaDefault' => true,
+            'tcaDefaultOfRecordType' => true,
+            'backendUserId' => 11,
+            'pageTsConfig' => $pageTsConfig,
+            'expected' => 'Page TSconfig default',
+        ];
+        yield 'page TSconfig of record type overrides page TSconfig' => [
+            'tcaDefault' => true,
+            'tcaDefaultOfRecordType' => true,
+            'backendUserId' => 11,
+            'pageTsConfig' => $pageTsConfigWithRecordType,
+            'expected' => 'Page TSconfig default for type 1',
+        ];
+    }
+
+    #[DataProvider('defaultValuesAreTakenFromSourceWithHighestPrecedenceDataProvider')]
+    #[Test]
+    public function defaultValuesAreTakenFromSourceWithHighestPrecedence(
+        bool $tcaDefault,
+        bool $tcaDefaultOfRecordType,
+        int $backendUserId,
+        string $pageTsConfig,
+        ?string $expected
+    ): void {
+        if ($tcaDefault) {
+            $GLOBALS['TCA']['pages']['columns']['description']['config']['default'] = 'TCA default';
+        }
+        if ($tcaDefaultOfRecordType) {
+            $GLOBALS['TCA']['pages']['types']['1']['columnsOverrides']['description']['config']['default'] = 'TCA default for type 1';
+        }
+        $this->get(TcaSchemaFactory::class)->rebuild($GLOBALS['TCA']);
+        if ($pageTsConfig !== '') {
+            $this->actionService->modifyRecord('pages', 88, ['TSconfig' => $pageTsConfig]);
+        }
+        $this->importCSVDataSet(__DIR__ . '/DataSet/BackendUsersWithTcaDefaults.csv');
+        $backendUser = $this->setUpBackendUser($backendUserId);
+        $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);
+
+        $dataHandler = $this->get(DataHandler::class);
+        $dataHandler->start(['pages' => ['NEW_1' => ['title' => 'New page', 'pid' => 88, 'doktype' => 1]]], []);
+        $dataHandler->process_datamap();
+
+        $page = BackendUtility::getRecord('pages', $dataHandler->substNEWwithIDs['NEW_1']);
+        self::assertSame($expected, $page['description']);
     }
 
     #[Test]
@@ -438,5 +562,37 @@ final class DefaultValuesTest extends FunctionalTestCase
         $newContentRecord = BackendUtility::getRecord('tt_content', reset($map['tt_content']));
 
         self::assertSame(1, (int)$newContentRecord['imageborder']);
+    }
+
+    #[Test]
+    public function defaultValuesFromGlobalPageTsConfigAreAppliedForRecordsOnRootLevel(): void
+    {
+        // TCAdefaults from ext:test_defaulttsconfig/Configuration/page.tsconfig are global and apply to pid 0, too
+        $map = $this->actionService->createNewRecord('pages', 0, [
+            'title' => 'A new root page',
+        ]);
+        $newPageId = reset($map['pages']);
+        $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
+        self::assertSame(0, (int)$newPageRecord['pid']);
+        self::assertEquals('from pagets, with love', $newPageRecord['keywords']);
+    }
+
+    #[Test]
+    public function typeSpecificDefaultsUseRecordTypeDefinedByTsConfigDefault(): void
+    {
+        $this->actionService->modifyRecord('pages', 88, [
+            'TSconfig' => chr(10)
+                . 'TCAdefaults.pages.doktype = 254' . chr(10)
+                . 'TCAdefaults.pages.description = generic' . chr(10)
+                . 'TCAdefaults.pages.description.types.1 = standard' . chr(10)
+                . 'TCAdefaults.pages.description.types.254 = folder',
+        ]);
+        $map = $this->actionService->createNewRecord('pages', 88, [
+            'title' => 'Record type from TCAdefaults',
+        ]);
+        $newPageId = reset($map['pages']);
+        $newPageRecord = BackendUtility::getRecord('pages', $newPageId);
+        self::assertSame(254, (int)$newPageRecord['doktype']);
+        self::assertEquals('folder', $newPageRecord['description']);
     }
 }

@@ -169,7 +169,7 @@ final class ColumnsOverridesTest extends FunctionalTestCase
     }
 
     #[Test]
-    public function newFieldArrayRespectsColumnsOverridesDefaults(): void
+    public function defaultValuesRespectColumnsOverrides(): void
     {
         $backendUser = $this->setUpBackendUser(1);
         $GLOBALS['LANG'] = $this->get(LanguageServiceFactory::class)->createFromUserPreferences($backendUser);

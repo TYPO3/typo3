@@ -21,6 +21,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Backend\View\BackendLayoutView;
 use TYPO3\CMS\Core\DataHandling\DataHandler;
+use TYPO3\CMS\Core\DataHandling\DefaultValuesResolver;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 
@@ -34,6 +35,7 @@ readonly class DataHandlerContentElementRestrictionHook
 {
     public function __construct(
         private BackendLayoutView $backendLayoutView,
+        private DefaultValuesResolver $defaultValuesResolver,
     ) {}
 
     public function processCmdmap_beforeStart(DataHandler $dataHandler): void
@@ -82,7 +84,7 @@ readonly class DataHandlerContentElementRestrictionHook
     /**
      * Records are checked one by one when they are processed, not before DataHandler starts: records of
      * table "pages" are processed first, so a "NEW..." pid of a content element on a new page can be
-     * resolved to the real page here, together with the backend layout of that page.
+     * resolved to the real page here, together with the backend layout and TSconfig of that page.
      *
      * @param-out array|null $incomingFieldArray
      */
@@ -101,7 +103,7 @@ readonly class DataHandlerContentElementRestrictionHook
             $pageId = $this->resolvePageId($dataHandler, $recordData['pid'] ?? 0);
         } else {
             $pageId = $this->resolvePageId($dataHandler, $incomingFieldArray['pid'] ?? 0);
-            $recordData = array_merge($dataHandler->defaultValues['tt_content'] ?? [], $incomingFieldArray);
+            $recordData = $pageId === null ? [] : $this->addDefaultValuesForNewRecord($dataHandler, $pageId, $incomingFieldArray);
         }
         if ($pageId === null) {
             // Broken or unresolvable target. Stop here and let DH handle this mess.
@@ -146,5 +148,20 @@ readonly class DataHandlerContentElementRestrictionHook
             return $previousRecord === null ? null : (int)$previousRecord['pid'];
         }
         return $pageId;
+    }
+
+    /**
+     * Fields of a new record which are not given are set by DataHandler from their default values.
+     * Resolve them the same way here, so the restriction cannot be bypassed by leaving out CType or colPos.
+     */
+    private function addDefaultValuesForNewRecord(DataHandler $dataHandler, int $pageId, array $incomingFieldArray): array
+    {
+        $defaultValues = $this->defaultValuesResolver->resolve(
+            'tt_content',
+            $incomingFieldArray,
+            BackendUtility::getPagesTSconfig($pageId)['TCAdefaults.'] ?? [],
+            $dataHandler->BE_USER->getTSConfig()['TCAdefaults.'] ?? []
+        );
+        return array_replace($defaultValues, $incomingFieldArray);
     }
 }
