@@ -15,7 +15,7 @@ A new ViewHelper for the backend to render thumbnails deferred was introduced.
 
 The :php:`\TYPO3\CMS\Backend\ViewHelpers\ThumbnailViewHelper` extends the :php:`ImageViewHelper` and generates the image tag with the special URI.
 
-.. code-block:: HTML
+.. code-block:: html
 
     <be:thumbnail image="{file.resource}" width="{thumbnail.width}" height="{thumbnail.height}" />
 

@@ -16,11 +16,11 @@ resource regarding its file size. This validator has 2 options:
 
 - minimum
 
-The minimum file size to accept. Use the format <size>B|K|M|G. For example: 10M means 10 megabytes.
+The minimum file size to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 megabytes.
 
 - maximum
 
-The maximum file size to accept. Use the format <size>B|K|M|G. For example: 10M means 10 megabytes.
+The maximum file size to accept. Use the format `<size>B|K|M|G`. For example: `10M` means 10 megabytes.
 
 Please keep in mind that the maximum file size also depends on php.ini settings.
 

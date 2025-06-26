@@ -34,7 +34,7 @@ Port the plugin to an AMD module. The event callbacks are now part of the module
 
 Example code:
 
-.. code-block:: JavaScript
+.. code-block:: javascript
 
 	CoolPlugin.afterKeyDown = function(currWordObj, compResult) {
 		CoolPlugin.somethingFunky(currWordObj, compResult);

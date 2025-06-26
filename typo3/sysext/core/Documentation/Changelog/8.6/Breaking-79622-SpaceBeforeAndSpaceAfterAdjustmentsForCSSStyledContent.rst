@@ -75,7 +75,7 @@ values set to generate more space between their content elements.
 Check if your site is affected
 ------------------------------
 
-.. code-block:: mysql
+.. code-block:: sql
 
    SELECT
       uid,
@@ -100,7 +100,7 @@ a preset of your choice.
 Example
 -------
 
-.. code-block:: mysql
+.. code-block:: sql
 
    UPDATE
       tt_content

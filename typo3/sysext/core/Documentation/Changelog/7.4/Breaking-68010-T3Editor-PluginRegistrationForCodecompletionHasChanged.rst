@@ -34,7 +34,7 @@ Port the plugin to an AMD module. The plugin must have an `init` method with a c
 
 Example code:
 
-.. code-block:: JavaScript
+.. code-block:: javascript
 
 	define('Awesome/Extension/Plugins/CodeCompletion/CoolPlugin', [
 		'jquery',
