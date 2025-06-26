@@ -149,7 +149,7 @@ class LocalPreviewHelper
     {
         // Create the temporary file
         $imageService = GeneralUtility::makeInstance(GraphicalFunctions::class);
-        $result = $imageService->resize($originalFileName, 'WEB', $configuration['width'], $configuration['height'], '', ['sample' => true]);
+        $result = $imageService->resize($originalFileName, 'WEB', $configuration['width'] . 'm', $configuration['height'] . 'm', '', ['sample' => true]);
         if ($result) {
             $targetFilePath = $result->getRealPath();
         }

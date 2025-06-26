@@ -39,7 +39,7 @@ final class ThumbnailViewHelperTest extends FunctionalTestCase
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:thumbnail image="{imageObject}" />');
         $context->getVariableProvider()->add('imageObject', $file);
-        $expected = '<img src="fileadmin/_processed_/3/7/preview_ImageViewHelperFalTest_252565634e.jpg" width="64" height="64" alt="alt text from metadata" />';
+        $expected = '<img src="fileadmin/_processed_/3/7/preview_ImageViewHelperFalTest_252565634e.jpg" width="64" height="48" alt="alt text from metadata" />';
 
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
@@ -54,7 +54,7 @@ final class ThumbnailViewHelperTest extends FunctionalTestCase
         $context->getViewHelperResolver()->addNamespace('be', 'TYPO3\\CMS\\Backend\\ViewHelpers');
         $context->getTemplatePaths()->setTemplateSource('<be:thumbnail image="{imageObject}" />');
         $context->getVariableProvider()->add('imageObject', $file);
-        $expected = '<img src="fileadmin/_processed_/3/7/preview_ImageViewHelperFalTest_252565634e.jpg" width="64" height="64" alt="alt text from metadata" />';
+        $expected = '<img src="fileadmin/_processed_/3/7/preview_ImageViewHelperFalTest_252565634e.jpg" width="64" height="48" alt="alt text from metadata" />';
 
         self::assertEquals($expected, (new TemplateView($context))->render());
     }
