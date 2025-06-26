@@ -17,10 +17,10 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Database;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
-use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Configuration\Exception;
 
 /**
@@ -115,15 +115,12 @@ class PermissionsCheck
 
     public function checkSelect(): self
     {
-        $this->checkCreateTable($this->testTableName);
         $connection = $this->getConnection();
         try {
-            $connection->insert($this->testTableName, ['id' => 1]);
-            $connection->select(['id'], $this->testTableName);
+            $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
         } catch (\Exception) {
             $this->messages[] = 'The database user needs SELECT permission';
         }
-        $this->checkDropTable($this->testTableName);
         return $this;
     }
 
@@ -213,8 +210,8 @@ class PermissionsCheck
 
     private function getConnection(): Connection
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        // Use plain Doctrine connection to avoid early TYPO3 context dependencies
+        return DriverManager::getConnection($GLOBALS['TYPO3_CONF_VARS']['DB']['Connections'][ConnectionPool::DEFAULT_CONNECTION_NAME]);
     }
 
     private function createSchemaManager(): AbstractSchemaManager
