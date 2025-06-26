@@ -249,7 +249,7 @@ executeRstRendering() {
         return 1
     fi
     echo "Processing RST directory: ${systemExtensionFolder}/Documentation"
-    ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-rst-rendering-${systemExtensionName}-${SUFFIX} -v "${CORE_ROOT}/${systemExtensionFolder}:/project" ${IMAGE_RSTRENDERING} -w /project --fail-on-log --fail-on-error --no-progress --minimal-test Documentation
+    ${CONTAINER_BIN} run ${CONTAINER_COMMON_PARAMS} --name check-rst-rendering-${systemExtensionName}-${SUFFIX}  -w /project -v "${CORE_ROOT}/${systemExtensionFolder}:/project" ${IMAGE_RSTRENDERING} --fail-on-log --fail-on-error --no-progress --config=Documentation Documentation
     local exitCode=$?
     echo "Render result for ${systemExtensionFolder}: ${exitCode}"
     return ${exitCode}
