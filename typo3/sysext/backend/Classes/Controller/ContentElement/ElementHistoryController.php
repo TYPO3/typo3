@@ -323,7 +323,7 @@ class ElementHistoryController
 
             $singleLine['elementUrl'] = $this->buildUrl(['element' => $entry['tablename'] . ':' . $entry['recuid']]);
             $singleLine['actiontype'] = $entry['actiontype'];
-            if ((int)$entry['actiontype'] === RecordHistoryStore::ACTION_MODIFY) {
+            if ((int)$entry['actiontype'] === RecordHistoryStore::ACTION_MODIFY || (int)$entry['actiontype'] === RecordHistoryStore::ACTION_PUBLISH) {
                 // show changes
                 if (!$this->showDiff) {
                     // Display field names instead of full diff
