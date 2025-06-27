@@ -404,6 +404,9 @@ class RecordHistory
             if ($actionType === RecordHistoryStore::ACTION_DELETE) {
                 $row['action'] = 'delete';
             }
+            if ($actionType === RecordHistoryStore::ACTION_PUBLISH) {
+                $row['action'] = 'publish';
+            }
             if ($row['history_data'] === null) {
                 $events[$identifier] = $row;
                 continue;

@@ -35,6 +35,7 @@ class RecordHistoryStore
     public const ACTION_DELETE = 4;
     public const ACTION_UNDELETE = 5;
     public const ACTION_STAGECHANGE = 6;
+    public const ACTION_PUBLISH = 7;
 
     public const USER_BACKEND = 'BE';
     public const USER_FRONTEND = 'FE';
@@ -65,11 +66,6 @@ class RecordHistoryStore
      */
     protected $workspaceId;
 
-    /**
-     * @param int|null $userId
-     * @param int|null $originalUserId
-     * @param int|null $tstamp
-     */
     public function __construct(string $userType = self::USER_BACKEND, ?int $userId = null, ?int $originalUserId = null, ?int $tstamp = null, int $workspaceId = 0)
     {
         $this->userType = $userType;
@@ -79,11 +75,11 @@ class RecordHistoryStore
         $this->workspaceId = $workspaceId;
     }
 
-    /**
-     * @param CorrelationId|null $correlationId
-     */
     public function addRecord(string $table, int $uid, array $payload, ?CorrelationId $correlationId = null): string
     {
+        if ($this->workspaceId) {
+            $payload['workspace'] = $this->workspaceId; // Ensure workspace is included in payload when we publish, we might not know this anymore
+        }
         $data = [
             'actiontype' => self::ACTION_ADD,
             'usertype' => $this->userType,
@@ -100,11 +96,11 @@ class RecordHistoryStore
         return $this->getDatabaseConnection()->lastInsertId();
     }
 
-    /**
-     * @param CorrelationId|null $correlationId
-     */
     public function modifyRecord(string $table, int $uid, array $payload, ?CorrelationId $correlationId = null): string
     {
+        if ($this->workspaceId) {
+            $payload['workspace'] = $this->workspaceId; // Ensure workspace is included in payload when we publish, we might not know this anymore
+        }
         $data = [
             'actiontype' => self::ACTION_MODIFY,
             'usertype' => $this->userType,
@@ -166,6 +162,9 @@ class RecordHistoryStore
      */
     public function moveRecord(string $table, int $uid, array $payload, ?CorrelationId $correlationId = null): string
     {
+        if ($this->workspaceId) {
+            $payload['workspace'] = $this->workspaceId; // Ensure workspace is included in payload when we publish, we might not know this anymore
+        }
         $data = [
             'actiontype' => self::ACTION_MOVE,
             'usertype' => $this->userType,
@@ -198,6 +197,39 @@ class RecordHistoryStore
         ];
         $this->getDatabaseConnection()->insert('sys_history', $data);
         return $this->getDatabaseConnection()->lastInsertId();
+    }
+
+    public function publishRecord(string $table, int $uid, int $versionedId, array $payload, ?CorrelationId $correlationId = null): string
+    {
+        $this->migrateWorkspaceHistory($table, $versionedId, $uid);
+        $data = [
+            'actiontype' => self::ACTION_PUBLISH,
+            'usertype' => $this->userType,
+            'userid' => $this->userId,
+            'originaluserid' => $this->originalUserId,
+            'tablename' => $table,
+            'recuid' => $uid,
+            'tstamp' => $this->tstamp,
+            'history_data' => json_encode($payload),
+            'workspace' => 0, // Published to live workspace
+            'correlation_id' => (string)$this->createCorrelationId($table, $uid, $correlationId),
+        ];
+        $this->getDatabaseConnection()->insert('sys_history', $data);
+        return $this->getDatabaseConnection()->lastInsertId();
+    }
+
+    protected function migrateWorkspaceHistory(string $table, int $versionedId, int $liveUid): void
+    {
+        $connection = $this->getDatabaseConnection();
+
+        // Update all history entries from workspace record to point to live record
+        $connection->update(
+            'sys_history',
+            [
+                'recuid' => $liveUid,
+            ],
+            ['tablename' => $table, 'recuid' => $versionedId]
+        );
     }
 
     protected function createCorrelationId(string $tableName, int $uid, ?CorrelationId $correlationId): CorrelationId

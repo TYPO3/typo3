@@ -96,6 +96,9 @@
 			<trans-unit id="historyRow.actiontype.6">
 				<source>stage changed</source>
 			</trans-unit>
+			<trans-unit id="historyRow.actiontype.7">
+				<source>published</source>
+			</trans-unit>
 			<trans-unit id="rollback.plannedAction.insert">
 				<source>The record has been deleted and will be restored again with the rollback.</source>
 			</trans-unit>

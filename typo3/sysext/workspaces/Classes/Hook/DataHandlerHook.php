@@ -273,6 +273,8 @@ class DataHandlerHook
         if ($curVersion === null) {
             return;
         }
+        // Store original live version for publish history
+        $originalLiveVersion = $curVersion;
         $pageRecord = [];
         if ($table === 'pages') {
             $pageRecord = $curVersion;
@@ -417,10 +419,17 @@ class DataHandlerHook
             $dataHandler->BE_USER->workspace = $currentUserWorkspace;
         }
         $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
-        // @todo: Do we really need two logs here? One for DatabaseAction::PUBLISH and one for DatabaseAction::UPDATE?
-        $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Publishing successful for table "{table}" uid {liveId}=>{versionId}', null, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], (int)$swapVersion['pid']);
-        $dataHandler->log($table, $id, DatabaseAction::UPDATE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was updated. (Online version)', null, ['table' => $table, 'uid' => $id], (int)$swapVersion['pid']);
-        $dataHandler->setHistory($table, $id);
+        $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Record "{table}" uid {liveId}=>{versionId} was published.', null, ['table' => $table, 'versionId' => $swapWith, 'liveId' => $id], (int)$swapVersion['pid']);
+        // Create publish entry with complete diff showing what changed
+        $publishPayload = [
+            'oldRecord' => $originalLiveVersion,
+            'newRecord' => array_diff_assoc($swapVersion, $originalLiveVersion), // This contains the new live data after swap
+            'workspaceId' => $workspaceId,
+            'comment' => $comment,
+            'recipients' => $notificationAlternativeRecipients,
+        ];
+        $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
+        $historyStore->publishRecord($table, $id, $swapWith, $publishPayload);
 
         $this->notificationInfo = $this->createNotificationInformation(
             $this->notificationInfo,
@@ -431,9 +440,6 @@ class DataHandlerHook
             $comment,
             $notificationAlternativeRecipients
         );
-        // Write the stage change to the history
-        $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
-        $historyStore->changeStageForRecord($table, $id, ['current' => $currentStage, 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment, 'recipients' => $notificationAlternativeRecipients]);
 
         // Clear cache:
         $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
@@ -445,7 +451,6 @@ class DataHandlerHook
             //        dependencies at this point is not a great idea, this should be more explicit.
             $dataHandler->deleteL10nOverlayRecords($table, $swapWith);
             $dataHandler->log($table, $swapWith, DatabaseAction::DELETE, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was deleted unrecoverable from pages:{pid}', null, ['table' => $table, 'uid' =>  $swapWith, 'pid' => (int)$swapVersion['pid']], (int)($swapVersion['pid']));
-            $historyStore->deleteRecord($table, $swapWith);
             // Update reference index with table/uid on left side (recuid)
             $dataHandler->updateRefIndex($table, $swapWith, $currentUserWorkspace);
             // Update reference index with table/uid on right side (ref_uid). Important if children of a relation are deleted.
@@ -617,8 +622,18 @@ class DataHandlerHook
         $this->eventDispatcher->dispatch(new AfterRecordPublishedEvent($table, $id, $workspaceId));
 
         $dataHandler->log($table, $id, DatabaseAction::PUBLISH, null, SystemLogErrorClassification::MESSAGE, 'Record {table}:{uid} was published.', null, ['table' => $table, 'uid' => $id], (int)$newRecordInWorkspace['pid']);
-        $dataHandler->setHistory($table, $id);
-
+        // Write the publish action to the history (usually this is done in updateDB in DataHandler, but we do a manual SQL change)
+        $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
+        $historyStore->publishRecord(
+            $table,
+            $id,
+            0,
+            [
+                'workspaceId' => $workspaceId,
+                'comment' => $comment,
+                'recipients' => $notificationAlternativeRecipients,
+            ]
+        );
         $this->notificationInfo = $this->createNotificationInformation(
             $this->notificationInfo,
             $wsAccess,
@@ -628,10 +643,6 @@ class DataHandlerHook
             $comment,
             $notificationAlternativeRecipients
         );
-        $dataHandler->log($table, $id, DatabaseAction::VERSIONIZE, null, SystemLogErrorClassification::MESSAGE, 'Stage for record was changed to {stage}. Comment was: "{comment}"', null, ['stage' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => substr($comment, 0, 100)], $newRecordInWorkspace['pid']);
-        // Write the stage change to the history (usually this is done in updateDB in DataHandler, but we do a manual SQL change)
-        $historyStore = $this->getRecordHistoryStore((int)$wsAccess['uid'], $dataHandler->BE_USER);
-        $historyStore->changeStageForRecord($table, $id, ['current' => (int)$newRecordInWorkspace['t3ver_stage'], 'next' => StagesService::STAGE_PUBLISH_EXECUTE_ID, 'comment' => $comment, 'recipients' => $notificationAlternativeRecipients]);
 
         // Clear cache
         $dataHandler->registerRecordIdForPageCacheClearing($table, $id);
