@@ -5,7 +5,8 @@ prototypes:
         formEditor:
           editors:
             600:
-              # Choose an index that is not in use yet
-              12345:
-                value: 'cc-name'
-                label: 'cc-name - Full name as given on the payment instrument'
+              selectOptions:
+                # Choose an index that is not in use yet
+                12345:
+                  value: 'cc-name'
+                  label: 'cc-name - Full name as given on the payment instrument'
