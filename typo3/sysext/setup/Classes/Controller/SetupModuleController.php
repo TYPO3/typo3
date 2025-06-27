@@ -426,8 +426,8 @@ class SetupModuleController
                 $more .= ' disabled="disabled"';
             }
             $isBeUsersTable = ($config['table'] ?? false) === 'be_users';
-            $value = $isBeUsersTable ? ($backendUser->user[$fieldName] ?? false) : ($backendUser->uc[$fieldName] ?? false);
-            if (!$value && isset($config['default'])) {
+            $value = $isBeUsersTable ? ($backendUser->user[$fieldName] ?? null) : ($backendUser->uc[$fieldName] ?? null);
+            if ($value === null && isset($config['default'])) {
                 $value = $config['default'];
             }
             $dataAdd = $isBeUsersTable ? '[be_users]' : '';
