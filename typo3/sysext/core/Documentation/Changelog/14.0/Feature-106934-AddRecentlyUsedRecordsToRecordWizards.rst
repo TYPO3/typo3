@@ -28,7 +28,8 @@ Impact
 ======
 
 All record wizards now feature a "Recently used" section. This feature is
-available by default and does not require additional configuration.
+available by default and does not require additional configuration. However,
+via the user settings, it is possible to manage the display of this category.
 
 It enhances user experience for editors and integrators by streamlining access
 to frequently used records.

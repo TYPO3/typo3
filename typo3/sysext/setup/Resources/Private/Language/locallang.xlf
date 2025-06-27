@@ -45,8 +45,14 @@
 			<trans-unit id="showHiddenFilesAndFolders">
 				<source>Show hidden files and folders in the filelist</source>
 			</trans-unit>
+			<trans-unit id="displayRecentlyUsed">
+				<source>Enable dynamic "recently used" category in wizards</source>
+			</trans-unit>
 			<trans-unit id="editFunctionsTab">
 				<source>Edit and advanced functions</source>
+			</trans-unit>
+			<trans-unit id="personalization">
+				<source>Personalization</source>
 			</trans-unit>
 			<trans-unit id="setToStandard">
 				<source>Reset all values to default</source>

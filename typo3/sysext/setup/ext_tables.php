@@ -63,6 +63,11 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
             'type' => 'check',
             'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:showHiddenFilesAndFolders',
         ],
+        'displayRecentlyUsed' => [
+            'type' => 'check',
+            'label' => 'LLL:EXT:setup/Resources/Private/Language/locallang.xlf:displayRecentlyUsed',
+            'default' => 1,
+        ],
         'copyLevels' => [
             'type' => 'number',
             'class' => 'form-control-adapt',
@@ -107,6 +112,6 @@ $GLOBALS['TYPO3_USER_SETTINGS'] = [
     'showitem' => '--div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personal_data,realName,email,emailMeAtLogin,avatar,lang,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:accountSecurity,password,password2,mfaProviders,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:opening,colorScheme,theme,startModule,backendTitleFormat,
-            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:editFunctionsTab,titleLen,edit_docModuleUpload,showHiddenFilesAndFolders,copyLevels,
+            --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:personalization,titleLen,edit_docModuleUpload,showHiddenFilesAndFolders,displayRecentlyUsed,copyLevels,
             --div--;LLL:EXT:setup/Resources/Private/Language/locallang.xlf:resetTab,resetConfiguration',
 ];

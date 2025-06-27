@@ -13,6 +13,7 @@
 
 import { BroadcastMessage, type BroadcastEvent } from '@typo3/backend/broadcast-message';
 import BroadcastService from '@typo3/backend/broadcast-service';
+import Persistent from '@typo3/backend/storage/persistent';
 
 enum Identifier {
   colorSchemeSwitch = 'typo3-backend-color-scheme-switch',
@@ -44,6 +45,12 @@ export interface BackendLanguageUpdateEventData {
   direction: Direction;
 }
 
+// Event for typo3:persistent:update and typo3:persistent:broadcast
+export interface PersistentUpdateEventData {
+  fieldName: string;
+  value: string;
+}
+
 class UserSettingsManager {
   constructor() {
     // triggered by
@@ -56,12 +63,15 @@ class UserSettingsManager {
     document.addEventListener('typo3:title-format:update', e => this.onTitleFormatUpdate(e.detail));
     //  triggered by user setup module (via BackendUtility::setUpdateSignal('updateBackendLanguage', …))
     document.addEventListener('typo3:backend-language:update', e => this.onBackendLanguageFormatUpdate(e.detail));
+    //  triggered by user setup module (via BackendUtility::setUpdateSignal('updatePersistent', …))
+    document.addEventListener('typo3:persistent:update', e => this.onPersistentUpdate(e.detail));
 
     // broadcast message by other instances
     document.addEventListener('typo3:color-scheme:broadcast', e => this.activateColorScheme(e.detail.payload.colorScheme));
     document.addEventListener('typo3:theme:broadcast', e => this.activateTheme(e.detail.payload.theme));
     document.addEventListener('typo3:title-format:broadcast', e => this.activateTitleFormat(e.detail.payload.format));
     document.addEventListener('typo3:backend-language:broadcast', e => this.updateBackendLanguage(e.detail.payload.language, e.detail.payload.direction));
+    document.addEventListener('typo3:persistent:broadcast', e => this.updatePersistent(e.detail.payload.fieldName, e.detail.payload.value));
   }
 
   private onColorSchemeUpdate(data: ColorSchemeUpdateEventData) {
@@ -94,6 +104,14 @@ class UserSettingsManager {
 
     // broadcast to other instances
     BroadcastService.post(new BroadcastMessage<BackendLanguageUpdateEventData>('language-update', 'broadcast', { language, direction }));
+  }
+
+  private onPersistentUpdate(data: PersistentUpdateEventData) {
+    const { fieldName, value } = data;
+    this.updatePersistent(fieldName, value);
+
+    // broadcast to other instances
+    BroadcastService.post(new BroadcastMessage<PersistentUpdateEventData>('personalization', 'broadcast', { fieldName: fieldName, value }));
   }
 
   private activateColorScheme(colorScheme: ColorScheme) {
@@ -129,6 +147,10 @@ class UserSettingsManager {
       rootEl.removeAttribute('dir');
       frame?.removeAttribute('dir');
     }
+  }
+
+  private updatePersistent(fieldName: string, value: string) {
+    Persistent.set(fieldName, value);
   }
 
   private async setStyleChangingDocumentAttribute(attributeName: string, attributeValue: string) {
@@ -185,5 +207,7 @@ declare global {
     'typo3:title-format:broadcast': BroadcastEvent<TitleFormatUpdateEventData>;
     'typo3:backend-language:update': CustomEvent<BackendLanguageUpdateEventData>;
     'typo3:backend-language:broadcast': BroadcastEvent<BackendLanguageUpdateEventData>;
+    'typo3:persistent:update': CustomEvent<PersistentUpdateEventData>;
+    'typo3:persistent:broadcast': BroadcastEvent<PersistentUpdateEventData>;
   }
 }

@@ -24,6 +24,7 @@ import RegularEvent from '@typo3/core/event/regular-event';
 import { KeyTypesEnum } from '@typo3/backend/enum/key-types';
 import { RecordUsageStore } from '@typo3/backend/record-usage/record-usage-store';
 import ClientStorage from '@typo3/backend/storage/client';
+import PersistentStorage from '@typo3/backend/storage/persistent';
 
 type RequestType = 'location' | 'ajax' | 'event' | undefined;
 
@@ -429,9 +430,15 @@ export class NewRecordWizard extends LitElement {
       filterField.focus();
     }
 
+    const displayRecentlyUsed = PersistentStorage.isset('displayRecentlyUsed')
+      ? Boolean(JSON.parse(PersistentStorage.get('displayRecentlyUsed')))
+      : true;
+
     if (this.storeName) {
       this.recordUsageStore = new RecordUsageStore(this.storeName);
-      this.addRecentlyUsedCategory();
+      if (displayRecentlyUsed) {
+        this.addRecentlyUsedCategory();
+      }
     }
     this.selectAvailableCategory();
   }

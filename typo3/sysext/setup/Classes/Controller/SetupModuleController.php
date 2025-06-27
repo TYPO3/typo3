@@ -70,6 +70,7 @@ class SetupModuleController
 
     protected array $overrideConf = [];
     protected bool $languageUpdate = false;
+    protected array $persistentUpdate = [];
     protected bool $pagetreeNeedsRefresh = false;
     protected bool $colorSchemeChanged = false;
     protected bool $themeChanged = false;
@@ -137,6 +138,11 @@ class SetupModuleController
                     'direction' => $locale->isRightToLeftLanguageDirection() ? 'rtl' : null,
                 ];
                 BackendUtility::setUpdateSignal('updateBackendLanguage', $parameters);
+            }
+        }
+        if ($this->persistentUpdate !== []) {
+            foreach ($this->persistentUpdate as $params) {
+                BackendUtility::setUpdateSignal('updatePersistent', $params);
             }
         }
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
@@ -227,6 +233,18 @@ class SetupModuleController
             }
             if (isset($d['backendTitleFormat']) && $d['backendTitleFormat'] !== ($backendUser->uc['backendTitleFormat'] ?? null)) {
                 $this->backendTitleFormatChanged = true;
+            }
+
+            // Options which should trigger direct JS persistent update, because
+            // there new state needs to be available in JS components right away.
+            foreach (['displayRecentlyUsed'] as $fieldName) {
+                $fieldValue = (isset($d[$fieldName]) ? 'on' : 0);
+                if ($fieldValue !== ($backendUser->uc[$fieldName] ?? null)) {
+                    $this->persistentUpdate[] = [
+                        'fieldName' => $fieldName,
+                        'value' => $fieldValue ? '1' : '0',
+                    ];
+                }
             }
 
             if ($d['setValuesToDefault']) {

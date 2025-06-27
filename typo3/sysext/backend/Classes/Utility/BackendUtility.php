@@ -2057,6 +2057,16 @@ class BackendUtility
                             true
                         );
                         break;
+                    case 'updatePersistent':
+                        $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
+                            'typo3:persistent:update',
+                            [
+                                'fieldName' => $val['parameter']['fieldName'] ?? '',
+                                'value' => $val['parameter']['value'] ?? '',
+                            ],
+                            true
+                        );
+                        // no break
                     case 'updateSystemInformationMenu':
                         $details['html'][] = ImmediateActionElement::dispatchCustomEvent(
                             'typo3:system-information-menu:update',
