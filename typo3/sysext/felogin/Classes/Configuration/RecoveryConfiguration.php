@@ -155,10 +155,10 @@ class RecoveryConfiguration implements LoggerAwareInterface
                 );
             }
         }
-        $this->mailTemplateName = (string)$this->settings['email']['templateName'];
+        $this->mailTemplateName = (string)($this->settings['email']['templateName'] ?? '');
         if (empty($this->mailTemplateName)) {
             throw new IncompleteConfigurationException(
-                'Key "plugin.tx_felogin_login.settings.email.templateName" cannot be empty!',
+                'Key "plugin.tx_felogin_login.settings.email.templateName" cannot be empty! Ensure that TypoScript is properly included.',
                 1584998393
             );
         }

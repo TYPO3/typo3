@@ -101,7 +101,7 @@ class RecoveryService
             'receiverName' => $receiver->getName(),
             'userData' => $userData,
             'url' => $url,
-            'validUntil' => date($this->settings['dateFormat'], $this->recoveryConfiguration->getLifeTimeTimestamp()),
+            'validUntil' => date($this->settings['dateFormat'] ?? 'Y-m-d H:i', $this->recoveryConfiguration->getLifeTimeTimestamp()),
         ];
 
         $mailTemplatePaths = $this->recoveryConfiguration->getMailTemplatePaths();
