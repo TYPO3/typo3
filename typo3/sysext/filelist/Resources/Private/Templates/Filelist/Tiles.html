@@ -60,7 +60,7 @@
         {f:if(condition: defaultLanguageAccess, then: 'data-default-language-access="true"')}
         draggable="{resource.canMove ? 'true' : 'false'}"
     >
-        <button type="button" title="{resource.name}" {f:if(condition: '{resource.isSelectable}', then: 'data-filelist-action="primary"', else: 'disabled')}>
+        <button type="button" title="{resource.name}" data-filelist-action="primary">
             <span class="resource-tile-label" id="resource-tile-label-{resource.uid}">{resource.name}</span>
             <span class="resource-tile-preview" role="presentation">
                 <span class="resource-tile-preview-content">

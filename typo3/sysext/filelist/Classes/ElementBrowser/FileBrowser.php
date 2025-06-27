@@ -17,16 +17,21 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Filelist\ElementBrowser;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
 use TYPO3\CMS\Backend\View\FolderUtilityRenderer;
 use TYPO3\CMS\Backend\View\RecordSearchBoxComponent;
 use TYPO3\CMS\Core\Imaging\IconSize;
 use TYPO3\CMS\Core\Resource\Filter\FileExtensionFilter;
 use TYPO3\CMS\Core\Resource\Folder;
+use TYPO3\CMS\Core\Resource\ResourceInterface;
 use TYPO3\CMS\Core\Resource\Search\FileSearchDemand;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
+use TYPO3\CMS\Filelist\Matcher\AndMatcher;
 use TYPO3\CMS\Filelist\Matcher\Matcher;
+use TYPO3\CMS\Filelist\Matcher\MatcherInterface;
 use TYPO3\CMS\Filelist\Matcher\ResourceFileExtensionMatcher;
 use TYPO3\CMS\Filelist\Matcher\ResourceFolderTypeMatcher;
 use TYPO3\CMS\Filelist\Type\Mode;
@@ -76,10 +81,25 @@ class FileBrowser extends AbstractResourceBrowser
         $this->resourceDisplayMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceDisplayMatcher->addMatcher(GeneralUtility::makeInstance(ResourceFolderTypeMatcher::class));
         $this->resourceDisplayMatcher->addMatcher(
-            GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)
-                ->setExtensions($this->fileExtensionFilter->getAllowedFileExtensions() ?? ['*'])
-                ->setIgnoredExtensions($this->fileExtensionFilter->getDisallowedFileExtensions() ?? [])
+            GeneralUtility::makeInstance(
+                AndMatcher::class,
+                GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)
+                    ->setExtensions($this->fileExtensionFilter->getAllowedFileExtensions() ?? ['*'])
+                    ->setIgnoredExtensions($this->fileExtensionFilter->getDisallowedFileExtensions() ?? []),
+                new class (GeneralUtility::makeInstance(EventDispatcherInterface::class)) implements MatcherInterface {
+                    public function __construct(private readonly EventDispatcherInterface $eventDispatcher) {}
+                    public function supports(mixed $item): bool
+                    {
+                        return $item instanceof ResourceInterface;
+                    }
+                    public function match(mixed $item): bool
+                    {
+                        return $this->eventDispatcher->dispatch(new IsFileSelectableEvent($item))->isFileSelectable();
+                    }
+                }
+            )
         );
+
         $this->resourceSelectableMatcher = GeneralUtility::makeInstance(Matcher::class);
         $this->resourceSelectableMatcher->addMatcher(
             GeneralUtility::makeInstance(ResourceFileExtensionMatcher::class)
