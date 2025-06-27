@@ -19,7 +19,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Backend\Clipboard\Clipboard;
 use TYPO3\CMS\Backend\Configuration\TranslationConfigurationProvider;
-use TYPO3\CMS\Backend\ElementBrowser\Event\IsFileSelectableEvent;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Template\Components\Buttons\ButtonInterface;
@@ -366,9 +365,6 @@ class FileList
 
             $resourceView->isDownloadable = $this->resourceDownloadMatcher !== null && $this->resourceDownloadMatcher->match($resource);
             $resourceView->isSelectable = $this->resourceSelectableMatcher !== null && $this->resourceSelectableMatcher->match($resource);
-            if ($this->mode === Mode::BROWSE && $resource instanceof File) {
-                $resourceView->isSelectable = $this->eventDispatcher->dispatch(new IsFileSelectableEvent($resource))->isFileSelectable();
-            }
             $resourceView->isSelected = $this->resourceSelectedMatcher !== null && $this->resourceSelectedMatcher->match($resource);
 
             $resourceViews[] = $resourceView;
@@ -678,11 +674,7 @@ class FileList
         $attributes['title'] = $resourceView->getName();
         $attributes['type'] = 'button';
         $attributes['class'] = 'btn btn-link';
-        if ($resourceView->isSelectable) {
-            $attributes['data-filelist-action'] = 'primary';
-        } else {
-            $attributes['disabled'] = true;
-        }
+        $attributes['data-filelist-action'] = 'primary';
 
         $output = '<button ' . GeneralUtility::implodeAttributes($attributes, true) . '>' . $resourceName . '</button>';
         if ($resourceView->isMissing()) {
