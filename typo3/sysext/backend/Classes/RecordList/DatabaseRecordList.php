@@ -27,6 +27,7 @@ use TYPO3\CMS\Backend\Context\PageContext;
 use TYPO3\CMS\Backend\Domain\Repository\Localization\LocalizationRepository;
 use TYPO3\CMS\Backend\Module\ModuleData;
 use TYPO3\CMS\Backend\Module\ModuleProvider;
+use TYPO3\CMS\Backend\RecordList\Event\AfterRecordListRowPreparedEvent;
 use TYPO3\CMS\Backend\RecordList\Event\BeforeRecordDownloadPresetsAreDisplayedEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListHeaderColumnsEvent;
 use TYPO3\CMS\Backend\RecordList\Event\ModifyRecordListRecordActionsEvent;
@@ -1209,7 +1210,7 @@ class DatabaseRecordList
      * @internal
      * @see getTable()
      */
-    public function renderListRow($table, RecordInterface $record, int $indent, array $translations, bool $translationEnabled)
+    public function renderListRow($table, RecordInterface $record, int $indent, array $translations, bool $translationEnabled): string
     {
         $titleCol = '';
         $schema = $this->tcaSchemaFactory->get($table);
@@ -1217,7 +1218,6 @@ class DatabaseRecordList
             $titleCol = $schema->getCapability(TcaSchemaCapability::Label)->getPrimaryFieldName();
         }
         $languageService = $this->getLanguageService();
-        $rowOutput = '';
         $id_orig = $this->id;
         // If in search mode, make sure the preview will show the correct page
         if ($this->searchString !== '') {
@@ -1243,6 +1243,8 @@ class DatabaseRecordList
         // Preparing and getting the data-array
         $theData = [];
         $deletePlaceholderClass = '';
+        $recTitle = null;
+        $lockInfo = false;
         foreach ($this->fieldArray as $fCol) {
             if ($fCol === $titleCol) {
                 $recTitle = BackendUtility::getRecordTitle($table, $record);
@@ -1340,9 +1342,14 @@ class DatabaseRecordList
             $tagAttributes
         );
 
-        $rowOutput .= $this->addElement($theData, GeneralUtility::implodeAttributes($tagAttributes, true));
-        // Finally, return table row element:
-        return $rowOutput;
+        $event = $this->eventDispatcher->dispatch(
+            new AfterRecordListRowPreparedEvent($table, $record, $theData, $this, $recTitle, $lockInfo, $tagAttributes)
+        );
+
+        return $this->addElement(
+            $event->getData(),
+            GeneralUtility::implodeAttributes($event->getTagAttributes(), true)
+        );
     }
 
     /**

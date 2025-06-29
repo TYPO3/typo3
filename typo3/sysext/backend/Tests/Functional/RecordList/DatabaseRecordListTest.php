@@ -19,13 +19,19 @@ namespace TYPO3\CMS\Backend\Tests\Functional\RecordList;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Backend\Context\PageContextFactory;
 use TYPO3\CMS\Backend\RecordList\DatabaseRecordList;
+use TYPO3\CMS\Backend\RecordList\Event\AfterRecordListRowPreparedEvent;
 use TYPO3\CMS\Backend\Routing\Route;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
+use TYPO3\CMS\Core\Domain\RawRecord;
+use TYPO3\CMS\Core\Domain\Record\ComputedProperties;
+use TYPO3\CMS\Core\EventDispatcher\EventDispatcher;
+use TYPO3\CMS\Core\EventDispatcher\ListenerProvider;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
-use TYPO3\CMS\Core\Site\Entity\Site;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Tests\Functional\SiteHandling\SiteBasedTestTrait;
 use TYPO3\TestingFramework\Core\Functional\Framework\DataHandling\Scenario\DataHandlerFactory;
@@ -281,4 +287,47 @@ final class DatabaseRecordListTest extends FunctionalTestCase
         self::assertStringNotContainsString('t3js-action-localize', $listHtml);
     }
 
+    #[Test]
+    public function afterRecordListRowPreparedEventIsTriggered(): void
+    {
+        $request = (new ServerRequest('http://localhost/'))
+            ->withAttribute('route', (new Route('/typo3/module/content/records', ['_identifier' => 'records'])))
+            ->withAttribute('site', $this->get(SiteFinder::class)->getSiteByIdentifier('test'));
+
+        $pageContextFactory = $this->get(PageContextFactory::class);
+        $pageContext = $pageContextFactory->createWithLanguages($request, 1100, [0], $this->backendUser);
+        $request = $request->withAttribute('pageContext', $pageContext);
+
+        /** @var Container $container */
+        $container = $this->getContainer();
+        $container->set(
+            'after-record-list-row-prepared-event-listener',
+            static function (AfterRecordListRowPreparedEvent $event) {
+                $data = $event->getData();
+                $data['__label'] = 'NEW LABEL';
+                $data['header'] = 'NEW HEADER'; // This field is ignored since __label is set.
+                $data['rowDescription'] = 'NEW rowDescription';
+                $event->setData($data);
+            }
+        );
+
+        $listenerProvider = $this->get(ListenerProvider::class);
+        $listenerProvider->addListener(AfterRecordListRowPreparedEvent::class, 'after-record-list-row-prepared-event-listener');
+
+        $container->set(EventDispatcherInterface::class, new EventDispatcher($listenerProvider));
+
+        $table = 'tt_content';
+        $record = new RawRecord(1, 1, [
+            'CType' => 'my_plugin_pi1',
+        ], new ComputedProperties(), $table . '.my_plugin_pi1');
+
+        $recordList = $this->get(DatabaseRecordList::class);
+        $recordList->setRequest($request);
+        $recordList->fieldArray = $recordList->getColumnsToRender($table, true);
+
+        $listRow = $recordList->renderListRow($table, $record, 0, [], false);
+
+        self::assertStringContainsString('NEW LABEL', $listRow);
+        self::assertStringContainsString('NEW rowDescription', $listRow);
+    }
 }
