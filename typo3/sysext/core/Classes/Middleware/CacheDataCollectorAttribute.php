@@ -62,7 +62,7 @@ class CacheDataCollectorAttribute implements MiddlewareInterface
         if ($this->isDebugModeEnabled()) {
             $cacheTags = array_map(fn(CacheTag $cacheTag) => $cacheTag->name, $this->cacheDataCollector->getCacheTags());
             sort($cacheTags);
-            foreach (explode(PHP_EOL, wordwrap(implode(' ', $cacheTags), self::MAX_CACHE_TAGS_HEADER_LENGTH)) as $delta => $tags) {
+            foreach (explode("\n", wordwrap(implode(' ', $cacheTags), self::MAX_CACHE_TAGS_HEADER_LENGTH, "\n")) as $delta => $tags) {
                 $response = $response->withHeader('X-TYPO3-Cache-Tags' . ($delta > 0 ? '-' . $delta : ''), $tags);
             }
             $response = $response->withHeader('X-TYPO3-Cache-Lifetime', (string)$this->cacheDataCollector->resolveLifetime());
