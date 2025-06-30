@@ -228,6 +228,7 @@ export class RecordTableElement extends LitElement {
           </span>
         </td>
         <td class="col-min t3js-title-workspace">
+          ${ data.Workspaces_CollectionLevel > 0 ? this.renderIndent(data.Workspaces_CollectionLevel) : nothing}
           <span class="icon icon-size-small">
             <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.icon_Workspace)} overlay=${IconHelper.getIconIdentifier(data.icon_Workspace_Overlay)} size="small"></typo3-backend-icon>
           </span>
@@ -259,6 +260,10 @@ export class RecordTableElement extends LitElement {
         </td>
       </tr>
     `;
+  }
+
+  protected renderIndent(level: number) {
+    return html`<span class="indent indent-inline-block" style="--indent-level: ${level}"></span>`;
   }
 
   private renderElementActions(data: RecordData): TemplateResult[] {
