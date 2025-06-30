@@ -373,6 +373,7 @@ export default class FormEngineValidation {
 
     const isValid = !markParent;
     field.classList.toggle(FormEngineValidation.errorClass, !isValid);
+    field.setAttribute('aria-invalid', markParent.toString());
     field.closest(FormEngineValidation.markerSelector)?.querySelector(FormEngineValidation.labelSelector)?.classList.toggle(FormEngineValidation.errorClass, !isValid);
 
     FormEngineValidation.markParentTab(field, isValid);
