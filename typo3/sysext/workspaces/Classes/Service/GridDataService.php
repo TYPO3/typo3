@@ -104,6 +104,12 @@ class GridDataService implements LoggerAwareInterface
             'Workspaces_CollectionCurrent' => '',
             'Workspaces_CollectionChildren' => 0,
         ];
+        $searchDataKeys = [
+            'path_Workspace',
+            'path_Live',
+            'label_Stage',
+            'label_Workspace',
+        ];
         $dataArray = [];
         foreach ($versions as $table => $records) {
             $table = (string)$table;
@@ -194,8 +200,17 @@ class GridDataService implements LoggerAwareInterface
                 // Allows to be overridden by PSR-14 event to dynamically modify the expand / collapse state
                 $versionArray['expanded'] = false;
 
-                if ($filterTxt == '' || $this->isFilterTextInVisibleColumns($filterTxt, $versionArray)) {
+                if ($filterTxt === '') {
+                    // Add row if there is no additional 'filter text'
                     $dataArray[(string)$versionArray['id']] = $versionArray;
+                    continue;
+                }
+                // If there is a 'filter text', add row only if there is a match in a static list of keys.
+                foreach ($searchDataKeys as $dataKey) {
+                    if (stripos((string)$versionArray[$dataKey], $filterTxt) !== false) {
+                        $dataArray[(string)$versionArray['id']] = $versionArray;
+                        break;
+                    }
                 }
             }
 
@@ -299,50 +314,6 @@ class GridDataService implements LoggerAwareInterface
     protected function isPageModuleAllowed(): bool
     {
         return $this->moduleProvider->accessGranted('web_layout', $this->getBackendUser());
-    }
-
-    /**
-     * Determines whether the text used to filter the results is part of
-     * a column that is visible in the grid view.
-     */
-    protected function isFilterTextInVisibleColumns(string $filterText, array $versionArray): bool
-    {
-        $backendUser = $this->getBackendUser();
-        if (is_array($backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['columns'] ?? false)) {
-            $visibleColumns = $backendUser->uc['moduleData']['Workspaces'][$backendUser->workspace]['columns'];
-        } else {
-            $visibleColumns = [
-                'workspace_Formated_Tstamp' => ['hidden' => 0],
-                'change' => ['hidden' => 0],
-                'path_Workspace' => ['hidden' => 0],
-                'path_Live' => ['hidden' => 0],
-                'label_Stage' => ['hidden' => 0],
-                'label_Workspace' => ['hidden' => 0],
-            ];
-        }
-        foreach ($visibleColumns as $column => $value) {
-            if (isset($value['hidden']) && isset($versionArray[$column])) {
-                if ($value['hidden'] == 0) {
-                    switch ($column) {
-                        case 'workspace_Tstamp':
-                            if (stripos($versionArray['workspace_Formated_Tstamp'], $filterText) !== false) {
-                                return true;
-                            }
-                            break;
-                        case 'change':
-                            if (stripos((string)$versionArray[$column], str_replace('%', '', $filterText)) !== false) {
-                                return true;
-                            }
-                            break;
-                        default:
-                            if (stripos((string)$versionArray[$column], $filterText) !== false) {
-                                return true;
-                            }
-                    }
-                }
-            }
-        }
-        return false;
     }
 
     /**

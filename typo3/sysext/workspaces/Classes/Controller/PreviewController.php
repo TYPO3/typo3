@@ -71,7 +71,6 @@ class PreviewController
         $view->getDocHeaderComponent()->disable();
 
         $this->pageRenderer->loadJavaScriptModule('@typo3/workspaces/preview.js');
-        $this->pageRenderer->addInlineSetting('Workspaces', 'States', $backendUser->uc['moduleData']['Workspaces']['States'] ?? []);
         $this->pageRenderer->addInlineSetting('FormEngine', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_edit'));
         $this->pageRenderer->addInlineSetting('RecordHistory', 'moduleUrl', (string)$this->uriBuilder->buildUriFromRoute('record_history'));
         $this->pageRenderer->addCssFile('EXT:workspaces/Resources/Public/Css/preview.css');
@@ -87,7 +86,6 @@ class PreviewController
         if (!array_intersect($splitPreviewModes, $allPreviewModes)) {
             $splitPreviewModes = $allPreviewModes;
         }
-        $this->pageRenderer->addInlineSetting('Workspaces', 'SplitPreviewModes', $splitPreviewModes);
         $this->pageRenderer->addInlineSetting('Workspaces', 'id', $pageUid);
 
         // Fetch next and previous stage
