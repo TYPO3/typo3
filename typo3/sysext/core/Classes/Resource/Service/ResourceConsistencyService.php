@@ -103,7 +103,7 @@ final class ResourceConsistencyService
             $messages[] = new ResultMessage(
                 sprintf('Mime-type "%s" not allowed for file extension "%s" (expected: %s)', ...$arguments),
                 new LabelBag(
-                    'LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:FileUtility.MimeTypeNotAllowedForFileExtension',
+                    'LLL:EXT:core/Resources/Private/Language/fileMessages.xlf:FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation',
                     ...$arguments
                 )
             );
