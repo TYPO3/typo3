@@ -18,7 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Database;
 
 use Doctrine\DBAL\ArrayParameterType;
-use Doctrine\DBAL\Configuration;
+use Doctrine\DBAL\Configuration as DoctrineConfiguration;
 use Doctrine\DBAL\Connection as DoctrineConnection;
 use Doctrine\DBAL\Connection\StaticServerVersionProvider;
 use Doctrine\DBAL\Driver;
@@ -36,7 +36,6 @@ use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Query\BulkInsertQuery;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Schema\SchemaInformation;
 use TYPO3\CMS\Core\Package\Cache\PackageDependentCacheIdentifier;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -91,19 +90,21 @@ class Connection extends DoctrineConnection
 
     private ExpressionBuilder $expressionBuilder;
     private array $prepareConnectionCommands = [];
-    public string $defaultRestrictionContainer = DefaultRestrictionContainer::class;
 
     /**
      * Initializes a new instance of the Connection class.
      *
      * @param array $params The connection parameters.
      * @param Driver $driver The driver to use.
-     * @param Configuration|null $config The configuration, optional.
+     * @param DoctrineConfiguration|null $config The configuration, optional.
      */
-    public function __construct(#[\SensitiveParameter] array $params, Driver $driver, ?Configuration $config = null)
+    public function __construct(#[\SensitiveParameter] array $params, Driver $driver, ?DoctrineConfiguration $config = null)
     {
         parent::__construct($params, $driver, $config);
-        $this->expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this);
+        if (!$config instanceof Configuration) {
+            throw new \InvalidArgumentException('TYPO3 Connection expects the custom TYPO3 Configuration object to be given', 1782369775);
+        }
+        $this->expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this, $config->getContainer());
     }
 
     /**
@@ -127,7 +128,7 @@ class Connection extends DoctrineConnection
      */
     public function createQueryBuilder(): QueryBuilder
     {
-        return GeneralUtility::makeInstance(QueryBuilder::class, $this, GeneralUtility::makeInstance($this->defaultRestrictionContainer));
+        return GeneralUtility::makeInstance(QueryBuilder::class, $this);
     }
 
     /**

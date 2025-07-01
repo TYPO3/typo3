@@ -44,7 +44,7 @@ final class DatabaseSessionBackendTest extends FunctionalTestCase
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
-        $this->subject = new DatabaseSessionBackend();
+        $this->subject = $this->get(DatabaseSessionBackend::class);
         $this->subject->initialize('default', [
             'table' => 'fe_sessions',
             'has_anonymous' => true,

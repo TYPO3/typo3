@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Tests\Functional\Database\Query\Restriction;
 
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Tests\Unit\Database\Mocks\MockPlatform\MockMySQLPlatform;
@@ -41,6 +42,6 @@ class AbstractRestrictionTestCase extends FunctionalTestCase
         });
         $connection->method('getDatabasePlatform')->willReturn(new MockMySQLPlatform());
 
-        $this->expressionBuilder = new ExpressionBuilder($connection);
+        $this->expressionBuilder = new ExpressionBuilder($connection, $this->get(ContainerInterface::class));
     }
 }

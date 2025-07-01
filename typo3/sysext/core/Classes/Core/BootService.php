@@ -155,4 +155,9 @@ class BootService
     {
         return $this->failsafeContainer;
     }
+
+    public function unsetInternalContainerInstance(): void
+    {
+        $this->container = null;
+    }
 }

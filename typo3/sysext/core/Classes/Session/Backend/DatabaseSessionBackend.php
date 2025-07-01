@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Session\Backend;
 
 use Doctrine\DBAL\Exception as DBALException;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Crypto\HashAlgo;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
@@ -32,6 +33,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * This session backend requires the 'table' configuration option. If the backend is used to holds non-authenticated
  * sessions (default in frontend application), the 'ses_userid' configuration option must be set to `0`.
  */
+#[Autoconfigure(public: true, shared: false)]
 class DatabaseSessionBackend implements SessionBackendInterface, HashableSessionBackendInterface
 {
     /**
@@ -43,6 +45,10 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
      * @var bool Indicates whether the ses_userid is set to `0` in the sessions table
      */
     protected $hasAnonymousSessions = false;
+
+    public function __construct(
+        private readonly ConnectionPool $connectionPool,
+    ) {}
 
     /**
      * Initializes the session backend
@@ -227,6 +233,6 @@ class DatabaseSessionBackend implements SessionBackendInterface, HashableSession
 
     protected function getConnection(): Connection
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($this->configuration['table']);
+        return $this->connectionPool->getConnectionForTable($this->configuration['table']);
     }
 }

@@ -17,17 +17,16 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Database;
 
-use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Driver\Middleware as DriverMiddleware;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception\MalformedDsnException;
 use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\Middleware\UsableForConnectionInterface;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
-use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
 use TYPO3\CMS\Core\Database\Schema\SchemaManager\CoreSchemaManagerFactory;
 use TYPO3\CMS\Core\Database\Schema\Types\DateTimeType;
 use TYPO3\CMS\Core\Database\Schema\Types\DateType;
@@ -56,7 +55,7 @@ class ConnectionPool
     /**
      * @var Connection[]
      */
-    protected static $connections = [];
+    protected array $connections = [];
 
     /**
      * @var array<non-empty-string,class-string>
@@ -64,7 +63,7 @@ class ConnectionPool
      *       add mappings to all connections, even unsupported connections for SQLite or PostgreSQL is not correct,
      *       and needs to be respected. Or the type needs to provide working fallbacks for unsupported platforms.
      */
-    protected array $customDoctrineTypes = [
+    protected static array $customDoctrineTypes = [
         SetType::TYPE => SetType::class,
     ];
 
@@ -72,7 +71,7 @@ class ConnectionPool
      * @var array<non-empty-string,class-string>
      * @todo Needs to be refactored to differentiate between type registration and platform specific type mapping.
      */
-    protected array $overrideDoctrineTypes = [
+    protected static array $overrideDoctrineTypes = [
         Types::DATE_MUTABLE => DateType::class,
         Types::DATETIME_MUTABLE => DateTimeType::class,
         Types::DATETIME_IMMUTABLE => DateTimeType::class,
@@ -80,7 +79,9 @@ class ConnectionPool
     ];
 
     public function __construct(
-        protected string $defaultRestrictionContainer = DefaultRestrictionContainer::class
+        protected readonly ContainerInterface $container,
+        protected readonly CoreSchemaManagerFactory $coreSchemaManagerFactory,
+        protected readonly DriverMiddlewareService $driverMiddlewareService,
     ) {}
 
     /**
@@ -126,16 +127,16 @@ class ConnectionPool
             );
         }
 
-        if (isset(static::$connections[$connectionName])) {
-            return static::$connections[$connectionName];
+        if (isset($this->connections[$connectionName])) {
+            return $this->connections[$connectionName];
         }
 
-        static::$connections[$connectionName] = $this->getDatabaseConnection(
+        $this->connections[$connectionName] = $this->getDatabaseConnection(
             $connectionName,
             $this->getConnectionParams($connectionName),
         );
 
-        return static::$connections[$connectionName];
+        return $this->connections[$connectionName];
     }
 
     protected function getConnectionParams(string $connectionName): array
@@ -274,20 +275,18 @@ class ConnectionPool
      */
     protected function getOrderedConnectionDriverMiddlewareConfiguration(string $connectionName, #[\SensitiveParameter] array $connectionParams): array
     {
-        /** @var DriverMiddlewareService $driverMiddlewareService */
-        $driverMiddlewareService = GeneralUtility::makeInstance(DriverMiddlewareService::class);
         /** @var array<non-empty-string, array{target: class-string, disabled: bool, after: string[], before: string[], type: string}> $driverMiddlewares */
         $driverMiddlewares = [];
         foreach ($GLOBALS['TYPO3_CONF_VARS']['DB']['globalDriverMiddlewares'] ?? [] as $identifier => $middleware) {
             $identifier = (string)$identifier;
-            $driverMiddlewares[$identifier] = $driverMiddlewareService->ensureCompleteMiddlewareConfiguration($middleware);
+            $driverMiddlewares[$identifier] = $this->driverMiddlewareService->ensureCompleteMiddlewareConfiguration($middleware);
             $driverMiddlewares[$identifier]['type'] = 'global';
         }
         foreach ($connectionParams['driverMiddlewares'] ?? [] as $identifier => $middleware) {
             $identifier = (string)$identifier;
             // Merge driverMiddlewares over globalDriverMiddlewares
             $middleware = array_replace($driverMiddlewares[$identifier] ?? [], $middleware);
-            $middleware = $driverMiddlewareService->ensureCompleteMiddlewareConfiguration($middleware);
+            $middleware = $this->driverMiddlewareService->ensureCompleteMiddlewareConfiguration($middleware);
             $driverMiddlewares[$identifier] = $middleware;
             $driverMiddlewares[$identifier]['type'] = $driverMiddlewares[$identifier]['type']
                 ? 'global-with-connection-override'
@@ -312,7 +311,7 @@ class ConnectionPool
             return true;
         });
 
-        return $driverMiddlewareService->order($driverMiddlewares);
+        return $this->driverMiddlewareService->order($driverMiddlewares);
     }
 
     /**
@@ -320,26 +319,26 @@ class ConnectionPool
      */
     protected function getDatabaseConnection(string $connectionName, #[\SensitiveParameter] array $connectionParams): Connection
     {
-        $this->registerDoctrineTypes();
+        self::registerDoctrineTypes();
 
         $middlewares = $this->getDriverMiddlewares($connectionName, $connectionParams);
         $configuration = (new Configuration())
+            ->setContainer($this->container)
             ->setMiddlewares($middlewares)
             // @link https://github.com/doctrine/dbal/blob/3.7.x/UPGRADE.md#deprecated-not-setting-a-schema-manager-factory
-            ->setSchemaManagerFactory(GeneralUtility::makeInstance(CoreSchemaManagerFactory::class));
+            ->setSchemaManagerFactory($this->coreSchemaManagerFactory);
 
         /** @var Connection $conn */
         $conn = DriverManager::getConnection($connectionParams, $configuration);
-        $conn->defaultRestrictionContainer = $this->defaultRestrictionContainer;
         $conn->prepareConnection($connectionParams['initCommands'] ?? '');
 
         // Register all custom data types in the type mapping
-        foreach ($this->customDoctrineTypes as $type => $className) {
+        foreach (self::$customDoctrineTypes as $type => $className) {
             $conn->getDatabasePlatform()->registerDoctrineTypeMapping($type, $type);
         }
 
         // Register all override data types in the type mapping
-        foreach ($this->overrideDoctrineTypes as $type => $className) {
+        foreach (self::$overrideDoctrineTypes as $type => $className) {
             $conn->getDatabasePlatform()->registerDoctrineTypeMapping($type, $type);
         }
 
@@ -383,16 +382,16 @@ class ConnectionPool
      *
      * @internal
      */
-    public function registerDoctrineTypes(): void
+    public static function registerDoctrineTypes(): void
     {
         // Register custom data types
-        foreach ($this->customDoctrineTypes as $type => $className) {
+        foreach (self::$customDoctrineTypes as $type => $className) {
             if (!Type::hasType($type)) {
                 Type::addType($type, $className);
             }
         }
         // Override data types
-        foreach ($this->overrideDoctrineTypes as $type => $className) {
+        foreach (self::$overrideDoctrineTypes as $type => $className) {
             if (!Type::hasType($type)) {
                 Type::addType($type, $className);
                 continue;
@@ -402,12 +401,13 @@ class ConnectionPool
     }
 
     /**
-     * Reset internal list of connections.
-     * Currently, primarily used in functional tests to close connections and start
-     * new ones in between single tests.
+     * Used to be used by functional tests
+     * to close statically stored connections, in order
+     * to use new connection in between single tests.
+     *
+     * This is a no-op nowadays since `$this->connections`
+     * is no longer static and can be removed without replacement,
+     * once testing framework is adapted to avoid calling this method.
      */
-    public function resetConnections(): void
-    {
-        static::$connections = [];
-    }
+    public function resetConnections(): void {}
 }

@@ -24,6 +24,7 @@ use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Platform\PlatformInformation;
 use TYPO3\CMS\Core\Database\Schema\ConnectionMigrator;
 use TYPO3\CMS\Core\Database\Schema\SchemaDiff;
@@ -47,9 +48,11 @@ final class ConnectionMigratorTest extends UnitTestCase
         $connectionMock->method('getDatabasePlatform')->willReturn($platformMock);
         $connectionMock->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
 
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
+
         $this->maxIdentifierLength = PlatformInformation::getMaxIdentifierLength($platformMock);
 
-        $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, ['Default', $connectionMock, []]);
+        $this->subject = $this->getAccessibleMock(ConnectionMigrator::class, null, ['Default', $connectionMock, $connectionPoolMock, []]);
     }
 
     #[Test]

@@ -31,7 +31,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class FrontendGroupRestriction implements QueryRestrictionInterface
 {
     protected array $frontendGroupIds;
-    protected TcaSchemaFactory $tcaSchemaFactory;
 
     /**
      * @param array|null $frontendGroupIds Normalized array with user groups of currently logged in user (typically found in the Frontend Context)
@@ -45,7 +44,6 @@ class FrontendGroupRestriction implements QueryRestrictionInterface
             $frontendUserAspect = GeneralUtility::makeInstance(Context::class)->getAspect('frontend.user');
             $this->frontendGroupIds = $frontendUserAspect->getGroupIds();
         }
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
@@ -58,12 +56,13 @@ class FrontendGroupRestriction implements QueryRestrictionInterface
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
+        $tcaSchemaFactory = $expressionBuilder->getContainer()->get(TcaSchemaFactory::class);
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            if (!$this->tcaSchemaFactory->has($tableName)) {
+            if (!$tcaSchemaFactory->has($tableName)) {
                 continue;
             }
-            $schema = $this->tcaSchemaFactory->get($tableName);
+            $schema = $tcaSchemaFactory->get($tableName);
             if ($schema->hasCapability(TcaSchemaCapability::RestrictionUserGroup)) {
                 $fieldName = $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionUserGroup)->getFieldName();
                 // Allow records where no group access has been configured (field values NULL, 0 or empty string)

@@ -23,6 +23,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform\MySql;
@@ -92,7 +93,7 @@ final class MySqlTest extends UnitTestCase
         $connectionMock = $this->getMockBuilder(Connection::class)->disableOriginalConstructor()->getMock();
         $connectionMock->method('getPlatformServerVersion')->willReturn($serverVersionString);
         $connectionMock->method('getDatabasePlatform')->willReturn($platform);
-        $subject = new class extends MySql {
+        $subject = new class ($this->createMock(ConnectionPool::class)) extends MySql {
             public function callCheckMySQLOrMariaDBVersion(Connection $connection): void
             {
                 $this->checkMySQLOrMariaDBVersion($connection);

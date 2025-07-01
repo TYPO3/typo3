@@ -17,6 +17,8 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Session;
 
+use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 use TYPO3\CMS\Core\Authentication\AbstractUserAuthentication;
 use TYPO3\CMS\Core\Session\Backend\HashableSessionBackendInterface;
 use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
@@ -35,12 +37,17 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * ];
  * ```
  */
+#[AsAlias('session-manager', public: true)]
 class SessionManager implements SingletonInterface
 {
     /**
      * @var SessionBackendInterface[]
      */
     protected $sessionBackends = [];
+
+    public function __construct(
+        private readonly ContainerInterface $container,
+    ) {}
 
     /**
      * Gets the currently running session backend for the given context
@@ -112,7 +119,7 @@ class SessionManager implements SingletonInterface
         $options = $configuration['options'] ?? [];
 
         /** @var SessionBackendInterface $backend */
-        $backend = GeneralUtility::makeInstance($className);
+        $backend = $this->container->has($className) ? $this->container->get($className) : GeneralUtility::makeInstance($className);
         $backend->initialize($identifier, $options);
         return $backend;
     }

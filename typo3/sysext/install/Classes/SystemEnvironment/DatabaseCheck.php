@@ -24,6 +24,7 @@ use Doctrine\DBAL\Driver\PDO\MySQL\Driver as DoctrinePDOMySqlDriver;
 use Doctrine\DBAL\Driver\PDO\OCI\Driver as DoctrinePDOOCIDriver;
 use Doctrine\DBAL\Driver\PDO\PgSQL\Driver as DoctrinePDOPgSqlDriver;
 use Doctrine\DBAL\Driver\PDO\SQLite\Driver as DoctrinePDOSqliteDriver;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -113,8 +114,9 @@ class DatabaseCheck implements CheckInterface
         DoctrinePDOSqliteDriver::class => DatabaseCheckDriverPDOSqlite::class,
     ];
 
-    public function __construct()
-    {
+    public function __construct(
+        private ?ConnectionPool $connectionPool = null,
+    ) {
         $this->messageQueue = new FlashMessageQueue('install-database-check');
     }
 
@@ -194,8 +196,13 @@ class DatabaseCheck implements CheckInterface
             return $this->messageQueue;
         }
 
+        if ($this->connectionPool === null) {
+            // Skip checks as we can not check as long as connections are not established yet.
+            return $this->messageQueue;
+        }
+
         if (!empty(self::$databaseDriverToPlatformMapping[$databaseDriver])) {
-            $platformMessageQueue = (new $databasePlatformClass())->getStatus();
+            $platformMessageQueue = (new $databasePlatformClass($this->connectionPool))->getStatus();
             foreach ($platformMessageQueue as $message) {
                 $this->messageQueue->enqueue($message);
             }

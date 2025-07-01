@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Service;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
 use TYPO3\CMS\Core\Configuration\Exception\SiteConfigurationWriteException;
@@ -36,6 +37,7 @@ use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Package\FailsafePackageManager;
 use TYPO3\CMS\Core\Package\PackageInterface;
+use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Package\PackageSetup;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -63,13 +65,16 @@ use TYPO3\CMS\Install\WebserverType;
  *      active: array<string, Distribution>
  *  }
  */
+#[Autoconfigure(public: true)]
 readonly class SetupService
 {
     public function __construct(
         private ConfigurationManager $configurationManager,
         private SiteWriter $siteWriter,
         private YamlFileLoader $yamlFileLoader,
-        private FailsafePackageManager $packageManager,
+        private PackageManager $packageManager,
+        private ConnectionPool $connectionPool,
+        private ClearCacheService $clearCacheService,
     ) {}
 
     /**
@@ -179,7 +184,7 @@ readonly class SetupService
             'crdate' => $GLOBALS['EXEC_TIME'],
         ];
 
-        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable('be_users');
+        $databaseConnection = $this->connectionPool->getConnectionForTable('be_users');
         $databaseConnection->insert('be_users', $adminUserFields);
         $adminUserUid = (int)$databaseConnection->lastInsertId();
 
@@ -231,6 +236,10 @@ readonly class SetupService
         $configurationValues = $featureManager->getBestMatchingConfigurationForAllFeatures();
         $this->configurationManager->setLocalConfigurationValuesByPathValuePairs($configurationValues);
 
+        if ($this->packageManager instanceof FailsafePackageManager) {
+            // Disable failsafe mode to allow persistence of PackageStates changes
+            $this->packageManager->disableFailsafeMode();
+        }
         // In non Composer mode, create a PackageStates.php with all packages activated marked as "part of factory default"
         $this->packageManager->recreatePackageStatesFileIfMissing(true);
     }
@@ -240,8 +249,7 @@ readonly class SetupService
      */
     public function createSite(string $siteIdentifier, string $siteUrl): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $databaseConnectionForPages = $connectionPool->getConnectionForTable('pages');
+        $databaseConnectionForPages = $this->connectionPool->getConnectionForTable('pages');
         $databaseConnectionForPages->insert(
             'pages',
             [
@@ -261,7 +269,7 @@ readonly class SetupService
         );
         $pageId = (int)$databaseConnectionForPages->lastInsertId();
 
-        $databaseConnectionForContent = $connectionPool->getConnectionForTable('tt_content');
+        $databaseConnectionForContent = $this->connectionPool->getConnectionForTable('tt_content');
         $databaseConnectionForContent->insert(
             'tt_content',
             [
@@ -300,7 +308,7 @@ readonly class SetupService
         // because a Composer installed packages are always active
         $this->packageManager->activatePackage($packageKey);
         // Make sure DI cache is flushed to get the TCA Schema including the new extension
-        GeneralUtility::makeInstance(ClearCacheService::class)->clearAll();
+        $this->clearCacheService->clearAll();
         // Make sure class loading information is present in case
         // a third party distribution with classes is activated
         $this->dumpClassLoadingInformationForAllPackages();
@@ -351,13 +359,12 @@ TYPOSCRIPT;
     public function createBackendUserGroups(bool $createEditor = true, bool $createAdvancedEditor = true, bool $force = false): array
     {
         $messages = [];
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
         $this->createFileMount('1:/user_upload/', 'User Upload');
         if ($createEditor) {
-            if (!$force && $this->countBackendGroupsByTitle($connectionPool, BackendUserGroupType::EDITOR->value) > 0) {
+            if (!$force && $this->countBackendGroupsByTitle($this->connectionPool, BackendUserGroupType::EDITOR->value) > 0) {
                 $messages[] = sprintf('Group "%s" could not be created. A backend user group of that name already exists and option --force was not set. ', BackendUserGroupType::EDITOR->value);
             } else {
-                $connectionPool->getConnectionForTable('be_groups')->insert(
+                $this->connectionPool->getConnectionForTable('be_groups')->insert(
                     'be_groups',
                     [
                         'title' => BackendUserGroupType::EDITOR->value,
@@ -366,16 +373,16 @@ TYPOSCRIPT;
                         'crdate' => time(),
                     ]
                 );
-                $editorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
+                $editorGroupUid = (int)$this->connectionPool->getConnectionForTable('be_groups')->lastInsertId();
                 $editorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_editor.yaml');
                 $this->applyPermissionPreset($editorPermissionPreset, 'be_groups', $editorGroupUid);
             }
         }
         if ($createAdvancedEditor) {
-            if (!$force && $this->countBackendGroupsByTitle($connectionPool, BackendUserGroupType::ADVANCED_EDITOR->value) > 0) {
+            if (!$force && $this->countBackendGroupsByTitle($this->connectionPool, BackendUserGroupType::ADVANCED_EDITOR->value) > 0) {
                 $messages[] = sprintf('Group "%s" could not be created. A backend user group of that name already exists and option --force was not set. ', BackendUserGroupType::ADVANCED_EDITOR->value);
             } else {
-                $connectionPool->getConnectionForTable('be_groups')->insert(
+                $this->connectionPool->getConnectionForTable('be_groups')->insert(
                     'be_groups',
                     [
                         'title' => BackendUserGroupType::ADVANCED_EDITOR->value,
@@ -384,7 +391,7 @@ TYPOSCRIPT;
                         'crdate' => time(),
                     ]
                 );
-                $advancedEditorGroupUid = (int)$connectionPool->getConnectionForTable('be_groups')->lastInsertId();
+                $advancedEditorGroupUid = (int)$this->connectionPool->getConnectionForTable('be_groups')->lastInsertId();
                 $advancedEditorPermissionPreset = $this->yamlFileLoader->load('EXT:install/Configuration/PermissionPreset/be_groups_advanced_editor.yaml');
                 $this->applyPermissionPreset($advancedEditorPermissionPreset, 'be_groups', $advancedEditorGroupUid);
             }
@@ -415,8 +422,8 @@ TYPOSCRIPT;
     {
         $previousBackendUser = $GLOBALS['BE_USER'] ?? null;
         $previousLanguageService = $GLOBALS['LANG'] ?? null;
-
-        $GLOBALS['BE_USER'] = $previousBackendUser ?? $this->createBackendUser();
+        $connectionPool = $container->get(ConnectionPool::class);
+        $GLOBALS['BE_USER'] = $previousBackendUser ?? $this->createBackendUser($connectionPool);
         $GLOBALS['LANG'] = $previousLanguageService ?? $container->get(LanguageServiceFactory::class)->create('en');
         try {
             return $executor($container);
@@ -426,10 +433,10 @@ TYPOSCRIPT;
         }
     }
 
-    private function createBackendUser(): BackendUserAuthentication
+    private function createBackendUser(ConnectionPool $connectionPool): BackendUserAuthentication
     {
         $backendUser = new BackendUserAuthentication();
-        $backendUser->user = $this->getFirstAdminUser();
+        $backendUser->user = $this->getFirstAdminUser($connectionPool);
         $backendUser->workspace = 0;
         return $backendUser;
     }
@@ -487,7 +494,7 @@ TYPOSCRIPT;
             }
         }
 
-        $databaseConnection = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($table);
+        $databaseConnection = $this->connectionPool->getConnectionForTable($table);
         if (
             // availableWidgets is only available if typo3/cms-dashboard is installed
             $databaseConnection->getSchemaInformation()->getTableInfo($table)->hasColumnInfo('availableWidgets')
@@ -505,9 +512,9 @@ TYPOSCRIPT;
         }
     }
 
-    private function getFirstAdminUser(): array
+    private function getFirstAdminUser(ConnectionPool $connectionPool): array
     {
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('be_users');
         $row = $queryBuilder->select('*')
             ->from('be_users')
             ->where(
@@ -529,7 +536,7 @@ TYPOSCRIPT;
 
     private function countBackendGroupsByTitle(ConnectionPool $connectionPool, string $title): int
     {
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('be_groups');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('be_groups');
         return (int)$queryBuilder->count('*')
             ->from('be_groups')
             ->where(
@@ -539,8 +546,7 @@ TYPOSCRIPT;
 
     private function createFileMount(string $identifier, string $title): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_filemounts');
         $row = $queryBuilder->select('uid')
             ->from('sys_filemounts')
             ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier)))
@@ -549,7 +555,7 @@ TYPOSCRIPT;
         if (is_array($row)) {
             return (int)$row['uid'];
         }
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_filemounts');
         $queryBuilder->insert('sys_filemounts')->values(
             [
                 'pid' => 0,
@@ -558,13 +564,12 @@ TYPOSCRIPT;
                 'identifier' => $identifier,
             ]
         )->executeStatement();
-        return (int)$connectionPool->getConnectionForTable('sys_filemounts')->lastInsertId();
+        return (int)$this->connectionPool->getConnectionForTable('sys_filemounts')->lastInsertId();
     }
 
     private function getFileMount(string $identifier): int
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_filemounts');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('sys_filemounts');
         $row = $queryBuilder->select('uid')
             ->from('sys_filemounts')
             ->where($queryBuilder->expr()->eq('identifier', $queryBuilder->createNamedParameter($identifier)))

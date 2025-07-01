@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Core\Tests\Unit\Authentication;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Container\ContainerInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\EventDispatcher\ListenerProviderInterface;
 use Psr\Log\NullLogger;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Authentication\IpLocker;
 use TYPO3\CMS\Core\Authentication\JsConfirmation;
@@ -63,12 +65,17 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         $formProtectionMock = $this->createMock(BackendFormProtection::class);
         $formProtectionMock->expects($this->once())->method('clean');
 
+        $registryMock = $this->createMock(Registry::class);
+
+        $container = new Container();
+        $container->set(Registry::class, $registryMock);
+
         $runtimeCache = new VariableFrontend('null', new TransientMemoryBackend(['logger' => new NullLogger()]));
         $formProtectionFactory = new FormProtectionFactory(
             $this->createMock(FlashMessageService::class),
             $this->createMock(LanguageServiceFactory::class),
-            $this->createMock(Registry::class),
-            $runtimeCache
+            $runtimeCache,
+            $container
         );
         GeneralUtility::addInstance(FormProtectionFactory::class, $formProtectionFactory);
         GeneralUtility::addInstance(BackendFormProtection::class, $formProtectionMock);
@@ -486,9 +493,11 @@ final class BackendUserAuthenticationTest extends UnitTestCase
         $connectionMock->method('quoteIdentifier')
             ->willReturnCallback(fn(string $identifier): string => '`' . str_replace('.', '`.`', $identifier) . '`');
 
+        $containerMock = $this->createMock(ContainerInterface::class);
+
         $queryBuilderMock = $this->createMock(QueryBuilder::class);
         $queryBuilderMock->method('expr')->willReturn(
-            new ExpressionBuilder($connectionMock)
+            new ExpressionBuilder($connectionMock, $containerMock)
         );
 
         $connectionPoolMock = $this->createMock(ConnectionPool::class);

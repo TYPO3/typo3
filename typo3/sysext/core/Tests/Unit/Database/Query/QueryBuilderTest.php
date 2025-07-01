@@ -34,6 +34,7 @@ use Doctrine\DBAL\Types\Type;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Configuration\FlexForm\FlexFormTools;
@@ -58,6 +59,7 @@ final class QueryBuilderTest extends UnitTestCase
     private Connection&MockObject $connection;
     private QueryBuilder $subject;
     private ConcreteQueryBuilder&MockObject $concreteQueryBuilder;
+    private ContainerInterface $container;
 
     /**
      * Create a new database connection mock object for every test.
@@ -67,9 +69,8 @@ final class QueryBuilderTest extends UnitTestCase
         parent::setUp();
         $this->concreteQueryBuilder = $this->createMock(ConcreteQueryBuilder::class);
         $this->connection = $this->createMock(Connection::class);
-        $container = new Container();
-        $container->set(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
-        GeneralUtility::setContainer($container);
+        $this->container = new Container();
+        $this->container->set(TcaSchemaFactory::class, $this->createMock(TcaSchemaFactory::class));
         $this->subject = new QueryBuilder(
             $this->connection,
             null,
@@ -91,7 +92,7 @@ final class QueryBuilderTest extends UnitTestCase
     public function exprReturnsExpressionBuilderForConnection(): void
     {
         $this->connection->expects($this->atLeastOnce())->method('getExpressionBuilder')
-            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
+            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $this->container));
         $this->subject->expr();
     }
 
@@ -442,7 +443,7 @@ final class QueryBuilderTest extends UnitTestCase
             });
         $this->concreteQueryBuilder->expects($this->atLeastOnce())->method('leftJoin')
             ->with('fromAlias', 'join', 'alias', self::anything())->willReturn($this->subject);
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $this->container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
         $this->subject->leftJoin('fromAlias', 'join', 'alias');
     }
@@ -468,7 +469,7 @@ final class QueryBuilderTest extends UnitTestCase
             $this->{$property} = $value;
         }, $this->concreteQueryBuilder, ConcreteQueryBuilder::class);
         $setParts->call($this->concreteQueryBuilder, 'from', []);
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $this->container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
         $this->subject->rightJoin('fromAlias', 'join', 'alias');
     }
@@ -666,18 +667,19 @@ final class QueryBuilderTest extends UnitTestCase
             'columns' => ['hidden' => ['config' => ['type' => 'check']]],
         ];
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
+
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $tcaSchemaFactory = $this->getTcaSchemaFactory();
-        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = GeneralUtility::makeInstance(QueryBuilder::class, $this->connection, null, $connectionBuilder, null);
 
         $subject->select('*')
@@ -705,18 +707,19 @@ final class QueryBuilderTest extends UnitTestCase
             'columns' => ['hidden' => ['config' => ['type' => 'check']]],
         ];
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
+
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $tcaSchemaFactory = $this->getTcaSchemaFactory();
-        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = GeneralUtility::makeInstance(QueryBuilder::class, $this->connection, null, $connectionBuilder);
 
         $subject->count('uid')->from('pages')->where('uid=1');
@@ -744,13 +747,13 @@ final class QueryBuilderTest extends UnitTestCase
 
         $tcaSchemaFactory = $this->getTcaSchemaFactory();
         $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('getExpressionBuilder')
-            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
+            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container));
 
         $concreteQueryBuilder = GeneralUtility::makeInstance(
             ConcreteQueryBuilder::class,
@@ -792,13 +795,13 @@ final class QueryBuilderTest extends UnitTestCase
 
         $tcaSchemaFactory = $this->getTcaSchemaFactory();
         $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('getExpressionBuilder')
-            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
+            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container));
 
         $concreteQueryBuilder = GeneralUtility::makeInstance(
             ConcreteQueryBuilder::class,
@@ -816,7 +819,8 @@ final class QueryBuilderTest extends UnitTestCase
             ->from('pages')
             ->where('uid=1');
 
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
+
         $subject->getRestrictions()->removeAll()->add(new DeletedRestriction());
 
         $expectedSQLForQuery = 'SELECT * FROM pages WHERE (uid=1) AND (pages.deleted = 0)';
@@ -939,7 +943,6 @@ final class QueryBuilderTest extends UnitTestCase
             return $quoteChar . str_replace($quoteChar, $quoteChar . $quoteChar, $str) . $quoteChar;
         });
         $connectionMock->method('getDatabasePlatform')->willReturn($databasePlatformMock);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $subject = $this->getAccessibleMock(QueryBuilder::class, null, [$connectionMock]);
         $result = $subject->_call('unquoteSingleIdentifier', $input);
         self::assertEquals($expected, $result);
@@ -968,13 +971,13 @@ final class QueryBuilderTest extends UnitTestCase
 
         $tcaSchemaFactory = $this->getTcaSchemaFactory();
         $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
 
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('getExpressionBuilder')
-            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection));
+            ->willReturn(GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container));
         $concreteQueryBuilder = GeneralUtility::makeInstance(
             ConcreteQueryBuilder::class,
             $this->connection
@@ -1020,7 +1023,6 @@ final class QueryBuilderTest extends UnitTestCase
     public function settingRestrictionContainerWillAddAdditionalRestrictionsFromConstructor(): void
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1041,7 +1043,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = [];
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1059,7 +1060,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
         $GLOBALS['TYPO3_CONF_VARS']['DB']['additionalQueryRestrictions'][$restrictionClass] = ['disabled' => true];
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder(
             $this->connection,
             null,
@@ -1075,7 +1075,6 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function resettingToDefaultRestrictionContainerWillAddAdditionalRestrictionsFromConfiguration(): void
     {
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $restrictionClass = get_class($this->createMock(QueryRestrictionInterface::class));
         $queryBuilder = new QueryBuilder(
             $this->connection,
@@ -1100,7 +1099,6 @@ final class QueryBuilderTest extends UnitTestCase
     #[Test]
     public function setWithNamedParameterPassesGivenTypeToCreateNamedParameter($input, string|ParameterType|Type|ArrayParameterType $type): void
     {
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $this->connection->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
@@ -1158,7 +1156,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->expects($this->atLeastOnce())->method('quoteIdentifier')->with('aField')->willReturnArgument(0);
         $this->connection->method('getDatabasePlatform')->willReturn($platform);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $concreteQueryBuilder = new ConcreteQueryBuilder($this->connection);
         $subject = new QueryBuilder($this->connection, null, $concreteQueryBuilder);
         $result = $subject->castFieldToTextType('aField');
@@ -1188,18 +1185,19 @@ final class QueryBuilderTest extends UnitTestCase
             ],
         ];
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
+
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $tcaSchemaFactory = $this->getTcaSchemaFactory();
-        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->limitRestrictionsToTables(['pages']);
 
@@ -1244,18 +1242,19 @@ final class QueryBuilderTest extends UnitTestCase
             ],
         ];
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
+
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $tcaSchemaFactory = $this->getTcaSchemaFactory();
-        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->limitRestrictionsToTables(['pages']);
         $subject->getRestrictions()->removeByType(DeletedRestriction::class);
@@ -1301,18 +1300,19 @@ final class QueryBuilderTest extends UnitTestCase
             ],
         ];
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
+
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $tcaSchemaFactory = $this->getTcaSchemaFactory();
-        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->select('*')
                 ->from('pages')
@@ -1355,18 +1355,19 @@ final class QueryBuilderTest extends UnitTestCase
             ],
         ];
 
+        $tcaSchemaFactory = $this->getTcaSchemaFactory();
+        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance($tcaSchemaFactory);
+
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->with(self::anything())->willReturnArgument(0);
         $this->connection->method('quoteIdentifiers')->with(self::anything())->willReturnArgument(0);
 
         $connectionBuilder = GeneralUtility::makeInstance(ConcreteQueryBuilder::class, $this->connection);
 
-        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection);
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
         $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $tcaSchemaFactory = $this->getTcaSchemaFactory();
-        $tcaSchemaFactory->rebuild($GLOBALS['TCA']);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances($tcaSchemaFactory);
         $subject = new QueryBuilder($this->connection, null, $connectionBuilder);
         $subject->select('*')
                 ->from('tt_content')
@@ -1391,7 +1392,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder->union('SELECT 1 AS field_one');
 
@@ -1409,7 +1409,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1423,7 +1422,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1439,7 +1437,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $qb = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $qb
             ->union('SELECT 1 AS field_one')
@@ -1453,7 +1450,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1468,7 +1464,6 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->connection->method('getDatabasePlatform')->willReturn(new MockPlatform());
         $this->connection->method('quoteIdentifier')->willReturnCallback(fn($value) => '`' . $value . '`');
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->union('SELECT 1 AS field_one')
@@ -1483,7 +1478,9 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->expectException(QueryException::class);
         $this->expectExceptionCode(1734984009);
-        $this->addGeneralUtilityTcaSchemaFactoryInstances();
+        $container = $this->createContainerWithTcaSchemaFactoryInstance();
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
+        $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->delete('tt_content')
@@ -1496,6 +1493,9 @@ final class QueryBuilderTest extends UnitTestCase
     {
         $this->expectException(QueryException::class);
         $this->expectExceptionCode(1734984009);
+        $container = $this->createContainerWithTcaSchemaFactoryInstance();
+        $expressionBuilder = GeneralUtility::makeInstance(ExpressionBuilder::class, $this->connection, $container);
+        $this->connection->method('getExpressionBuilder')->willReturn($expressionBuilder);
         $queryBuilder = new QueryBuilder($this->connection, null, new ConcreteQueryBuilder($this->connection));
         $queryBuilder
             ->update('tt_content')
@@ -1503,12 +1503,12 @@ final class QueryBuilderTest extends UnitTestCase
             ->executeStatement();
     }
 
-    private function addGeneralUtilityTcaSchemaFactoryInstances(?TcaSchemaFactory $tcaSchemaFactory = null): void
+    private function createContainerWithTcaSchemaFactoryInstance(?TcaSchemaFactory $tcaSchemaFactory = null): ContainerInterface
     {
         $tcaSchemaFactoryMock = $tcaSchemaFactory ?? $this->createMock(TcaSchemaFactory::class);
         $container = new Container();
         $container->set(TcaSchemaFactory::class, $tcaSchemaFactoryMock);
-        GeneralUtility::setContainer($container);
+        return $container;
     }
 
     private function getTcaSchemaFactory(): TcaSchemaFactory

@@ -20,6 +20,7 @@ namespace TYPO3\CMS\Frontend\Tests\Unit\ContentObject\Menu;
 use Doctrine\DBAL\Result;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Database\Connection;
@@ -47,7 +48,8 @@ final class AbstractMenuContentObjectTest extends UnitTestCase
     private function prepareSectionIndexTest(): void
     {
         $connectionMock = $this->createMock(Connection::class);
-        $connectionMock->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connectionMock));
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $connectionMock->method('getExpressionBuilder')->willReturn(new ExpressionBuilder($connectionMock, $containerMock));
         $connectionMock->method('quoteIdentifier')->willReturnArgument(0)->withAnyParameters();
         $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $connectionPoolMock->method('getConnectionForTable')->with('tt_content')->willReturn($connectionMock);

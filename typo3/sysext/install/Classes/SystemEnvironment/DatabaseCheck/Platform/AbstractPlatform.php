@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\SystemEnvironment\DatabaseCheck\Platform;
 
 use TYPO3\CMS\Core\Database\Connection;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
@@ -36,8 +37,9 @@ abstract class AbstractPlatform implements PlatformCheckInterface
      */
     protected $messageQueue;
 
-    public function __construct()
-    {
+    public function __construct(
+        protected readonly ConnectionPool $connectionPool
+    ) {
         $this->messageQueue = new FlashMessageQueue('install-database-check-platform');
     }
 

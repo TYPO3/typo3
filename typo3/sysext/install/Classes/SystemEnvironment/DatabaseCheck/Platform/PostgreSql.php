@@ -23,7 +23,6 @@ use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Messaging\FlashMessageQueue;
 use TYPO3\CMS\Core\Type\ContextualFeedbackSeverity;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Check database configuration status for PostgreSQL
@@ -75,7 +74,7 @@ class PostgreSql extends AbstractPlatform
      */
     public function getStatus(): FlashMessageQueue
     {
-        $defaultConnection = GeneralUtility::makeInstance(ConnectionPool::class)
+        $defaultConnection = $this->connectionPool
             ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $platform = $defaultConnection->getDatabasePlatform();
         if (!($platform instanceof DoctrinePostgreSQLPlatform)) {

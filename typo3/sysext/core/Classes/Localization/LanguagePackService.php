@@ -19,6 +19,7 @@ namespace TYPO3\CMS\Core\Localization;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use Symfony\Component\Finder\Finder;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Http\RequestFactory;
@@ -39,29 +40,20 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal This class is only meant to be used within EXT:core and is not part of the TYPO3 Core API.
  */
-class LanguagePackService
+#[Autoconfigure(public: true)]
+readonly class LanguagePackService
 {
     private const LANGUAGE_PACK_URL = 'https://localize.typo3.org/xliff/';
-    /**
-     * @var Locales
-     */
-    protected $locales;
-
-    /**
-     * @var Registry
-     */
-    protected $registry;
 
     public function __construct(
-        protected readonly EventDispatcherInterface $eventDispatcher,
-        protected readonly RequestFactory $requestFactory,
-        protected readonly LoggerInterface $logger,
-        protected readonly SystemResourceFactory $resourceFactory,
-        protected readonly SystemResourcePublisherInterface $resourcePublisher,
-    ) {
-        $this->locales = GeneralUtility::makeInstance(Locales::class);
-        $this->registry = GeneralUtility::makeInstance(Registry::class);
-    }
+        private EventDispatcherInterface $eventDispatcher,
+        private RequestFactory $requestFactory,
+        private LoggerInterface $logger,
+        private SystemResourceFactory $resourceFactory,
+        private SystemResourcePublisherInterface $resourcePublisher,
+        private Locales $locales,
+        private Registry $registry,
+    ) {}
 
     /**
      * Get list of available languages
@@ -267,7 +259,7 @@ class LanguagePackService
     /**
      * Format a timestamp to a formatted date string
      */
-    protected function getFormattedDate(?int $timestamp): ?string
+    private function getFormattedDate(?int $timestamp): ?string
     {
         if (is_int($timestamp)) {
             $date = (new \DateTime())->setTimestamp($timestamp);
@@ -283,7 +275,7 @@ class LanguagePackService
      * @param string $file path to zip file
      * @param string $path path to extract to
      */
-    protected function unzipTranslationFile(string $file, string $path): void
+    private function unzipTranslationFile(string $file, string $path): void
     {
         if (!is_dir($path)) {
             GeneralUtility::mkdir_deep($path);

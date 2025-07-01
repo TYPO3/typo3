@@ -51,6 +51,7 @@ class UpgradeWizardRunCommand extends Command
 {
     private const MAX_SILENT_UPGRADE_TRIES = 100;
     private UpgradeWizardsService $upgradeWizardsService;
+    private DatabaseUpgradeWizardsService $databaseUpgradeWizardsService;
 
     /**
      * @var OutputInterface|\Symfony\Component\Console\Style\StyleInterface
@@ -65,7 +66,6 @@ class UpgradeWizardRunCommand extends Command
     public function __construct(
         string $name,
         private readonly BootService $bootService,
-        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
         private readonly SilentConfigurationUpgradeService $configurationUpgradeService,
     ) {
         parent::__construct($name);
@@ -77,9 +77,10 @@ class UpgradeWizardRunCommand extends Command
      */
     protected function bootstrap(): void
     {
-        $this->upgradeWizardsService = $this->bootService
-            ->loadExtLocalconfDatabase(false, false)
-            ->get(UpgradeWizardsService::class);
+        $container = $this->bootService
+            ->loadExtLocalconfDatabase(false, false);
+        $this->upgradeWizardsService = $container->get(UpgradeWizardsService::class);
+        $this->databaseUpgradeWizardsService = $container->get(DatabaseUpgradeWizardsService::class);
         Bootstrap::initializeBackendAuthentication();
         $this->databaseUpgradeWizardsService->isDatabaseCharsetUtf8()
             ?: $this->databaseUpgradeWizardsService->setDatabaseCharsetUtf8();

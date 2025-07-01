@@ -45,6 +45,7 @@ use TYPO3\CMS\Core\Utility\ArrayUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\MathUtility;
 use TYPO3\CMS\Install\Configuration\FeatureManager;
+use TYPO3\CMS\Install\Service\LateBootService;
 use TYPO3\CMS\Install\Service\LocalConfigurationValueService;
 
 /**
@@ -54,6 +55,7 @@ use TYPO3\CMS\Install\Service\LocalConfigurationValueService;
 class SettingsController extends AbstractController
 {
     public function __construct(
+        private readonly LateBootService $lateBootService,
         private readonly PackageManager $packageManager,
         private readonly LanguageServiceFactory $languageServiceFactory,
         private readonly CommentAwareAstBuilder $astBuilder,
@@ -155,7 +157,8 @@ class SettingsController extends AbstractController
      */
     public function systemMaintainerGetListAction(ServerRequestInterface $request): ResponseInterface
     {
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $container = $this->lateBootService->getContainer(true);
+        $connectionPool = $container->get(ConnectionPool::class);
 
         // We have to respect the enable fields here by our own because no TCA is loaded
         $queryBuilder = $connectionPool->getQueryBuilderForTable('be_users');
@@ -233,7 +236,9 @@ class SettingsController extends AbstractController
             }
         }
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $container = $this->lateBootService->getContainer(true);
+        $connectionPool = $container->get(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('be_users');
         $queryBuilder->getRestrictions()->removeAll();
 
         $validatedUserList = $queryBuilder

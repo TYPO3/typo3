@@ -70,7 +70,7 @@ readonly class SchemaMigrator
         $updateSuggestions = [];
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connection = $this->connectionPool->getConnectionByName($connectionName);
-            $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
+            $connectionMigrator = new ConnectionMigrator($connectionName, $connection, $this->connectionPool, $tables);
             $updateSuggestions[$connectionName] = $connectionMigrator->getUpdateSuggestions($remove);
         }
         return $updateSuggestions;
@@ -93,7 +93,7 @@ readonly class SchemaMigrator
         $schemaDiffs = [];
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connection = $this->connectionPool->getConnectionByName($connectionName);
-            $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
+            $connectionMigrator = new ConnectionMigrator($connectionName, $connection, $this->connectionPool, $tables);
             $schemaDiffs[$connectionName] = $connectionMigrator->getSchemaDiff();
         }
         return $schemaDiffs;
@@ -159,7 +159,7 @@ readonly class SchemaMigrator
         $result = [];
         foreach ($this->connectionPool->getConnectionNames() as $connectionName) {
             $connection = $this->connectionPool->getConnectionByName($connectionName);
-            $connectionMigrator = ConnectionMigrator::create($connectionName, $connection, $tables);
+            $connectionMigrator = new ConnectionMigrator($connectionName, $connection, $this->connectionPool, $tables);
             $lastResult = $connectionMigrator->install($createOnly);
             $result = array_merge($result, $lastResult);
         }

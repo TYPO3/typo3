@@ -20,7 +20,6 @@ namespace TYPO3\CMS\Core\Database\Query\Restriction;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Versioning\VersionState;
 
 /**
@@ -50,13 +49,10 @@ class WorkspaceRestriction implements QueryRestrictionInterface
      */
     protected bool $includeAllVersionedRecords;
 
-    protected TcaSchemaFactory $tcaSchemaFactory;
-
     public function __construct(int $workspaceId = 0, bool $includeAllVersionedRecords = false)
     {
         $this->workspaceId = $workspaceId;
         $this->includeAllVersionedRecords = $includeAllVersionedRecords;
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
@@ -68,9 +64,10 @@ class WorkspaceRestriction implements QueryRestrictionInterface
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
+        $tcaSchemaFactory = $expressionBuilder->getContainer()->get(TcaSchemaFactory::class);
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            if (!$this->tcaSchemaFactory->has($tableName) || !$this->tcaSchemaFactory->get($tableName)->isWorkspaceAware()) {
+            if (!$tcaSchemaFactory->has($tableName) || !$tcaSchemaFactory->get($tableName)->isWorkspaceAware()) {
                 continue;
             }
             if ($this->workspaceId === 0) {

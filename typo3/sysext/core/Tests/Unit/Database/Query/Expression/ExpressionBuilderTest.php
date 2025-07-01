@@ -26,6 +26,7 @@ use Doctrine\DBAL\Platforms\TrimMode;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
@@ -47,7 +48,8 @@ final class ExpressionBuilderTest extends UnitTestCase
     {
         parent::setUp();
         $this->connectionMock = $this->createMock(Connection::class);
-        $this->subject = new ExpressionBuilder($this->connectionMock);
+        $containerMock = $this->createMock(ContainerInterface::class);
+        $this->subject = new ExpressionBuilder($this->connectionMock, $containerMock);
     }
 
     #[Test]
@@ -738,7 +740,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     public function castText(AbstractPlatform $platform, string $expectation): void
     {
         $this->connectionMock->method('getDatabasePlatform')->willReturn($platform);
-        $result = (new ExpressionBuilder($this->connectionMock))->castText('1 * 10');
+        $result = $this->subject->castText('1 * 10');
         self::assertSame($expectation, $result);
     }
 
@@ -748,7 +750,7 @@ final class ExpressionBuilderTest extends UnitTestCase
     {
         $this->connectionMock->method('getDatabasePlatform')->willReturn($platform);
         $this->connectionMock->method('quoteIdentifier')->willReturnArgument(0);
-        $result = (new ExpressionBuilder($this->connectionMock))->castText('1 * 10', 'virtual_identifier');
+        $result = $this->subject->castText('1 * 10', 'virtual_identifier');
         self::assertSame($expectation . ' AS virtual_identifier', $result);
     }
 
@@ -760,6 +762,6 @@ final class ExpressionBuilderTest extends UnitTestCase
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionCode(1722105672);
 
-        (new ExpressionBuilder($this->connectionMock))->castText('1 * 10', 'virtual_identifier');
+        $this->subject->castText('1 * 10', 'virtual_identifier');
     }
 }

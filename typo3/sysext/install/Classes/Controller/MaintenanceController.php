@@ -59,7 +59,6 @@ class MaintenanceController extends AbstractController
     public function __construct(
         private readonly LateBootService $lateBootService,
         private readonly ClearCacheService $clearCacheService,
-        private readonly ClearTableService $clearTableService,
         private readonly ConfigurationManager $configurationManager,
         private readonly PasswordHashFactory $passwordHashFactory,
         private readonly Locales $locales,
@@ -423,9 +422,11 @@ class MaintenanceController extends AbstractController
         $view->assignMultiple([
             'clearTablesClearToken' => $formProtection->generateToken('installTool', 'clearTablesClear'),
         ]);
+        $container = $this->lateBootService->getContainer(true);
+        $clearTableService = $container->get(ClearTableService::class);
         return new JsonResponse([
             'success' => true,
-            'stats' => $this->clearTableService->getTableStatistics(),
+            'stats' => $clearTableService->getTableStatistics(),
             'html' => $view->render('Maintenance/ClearTables'),
             'buttons' => [
                 [
@@ -450,7 +451,9 @@ class MaintenanceController extends AbstractController
                 1501944076
             );
         }
-        $this->clearTableService->clearSelectedTable($table);
+        $container = $this->lateBootService->getContainer(true);
+        $clearTableService = $container->get(ClearTableService::class);
+        $clearTableService->clearSelectedTable($table);
         $messageQueue = new FlashMessageQueue('install');
         $messageQueue->enqueue(
             new FlashMessage('The table ' . $table . ' has been cleared.', 'Table cleared')
@@ -518,7 +521,8 @@ class MaintenanceController extends AbstractController
                 ContextualFeedbackSeverity::ERROR
             ));
         } else {
-            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            $container = $this->lateBootService->getContainer(true);
+            $connectionPool = $container->get(ConnectionPool::class);
             $userExists = $connectionPool->getConnectionForTable('be_users')
                 ->count(
                     'uid',
@@ -619,7 +623,8 @@ class MaintenanceController extends AbstractController
     public function languagePacksActivateLanguageAction(ServerRequestInterface $request): ResponseInterface
     {
         $messageQueue = new FlashMessageQueue('install');
-        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $container = $this->lateBootService->getContainer(true);
+        $languagePackService = $container->get(LanguagePackService::class);
         $availableLanguages = $languagePackService->getAvailableLanguages();
         $activeLanguages = $languagePackService->getActiveLanguages();
         $iso = $request->getParsedBody()['install']['iso'];
@@ -681,7 +686,8 @@ class MaintenanceController extends AbstractController
     public function languagePacksDeactivateLanguageAction(ServerRequestInterface $request): ResponseInterface
     {
         $messageQueue = new FlashMessageQueue('install');
-        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $container = $this->lateBootService->getContainer(true);
+        $languagePackService = $container->get(LanguagePackService::class);
         $availableLanguages = $languagePackService->getAvailableLanguages();
         $activeLanguages = $languagePackService->getActiveLanguages();
         $iso = $request->getParsedBody()['install']['iso'];
@@ -785,7 +791,8 @@ class MaintenanceController extends AbstractController
     public function languagePacksUpdateIsoTimesAction(ServerRequestInterface $request): ResponseInterface
     {
         $isos = $request->getParsedBody()['install']['isos'];
-        $languagePackService = GeneralUtility::makeInstance(LanguagePackService::class);
+        $container = $this->lateBootService->getContainer(true);
+        $languagePackService = $container->get(LanguagePackService::class);
         $languagePackService->setLastUpdatedIsoCode($isos);
 
         // The cache manager is already instantiated in the install tool
@@ -805,7 +812,9 @@ class MaintenanceController extends AbstractController
      */
     public function resetBackendUserUcAction(): ResponseInterface
     {
-        GeneralUtility::makeInstance(ConnectionPool::class)
+        $container = $this->lateBootService->getContainer(true);
+        $connectionPool = $container->get(ConnectionPool::class);
+        $connectionPool
             ->getQueryBuilderForTable('be_users')
             ->update('be_users')
             ->set('uc', '')

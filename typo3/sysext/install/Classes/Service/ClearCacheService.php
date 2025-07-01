@@ -47,15 +47,25 @@ readonly class ClearCacheService
     {
         // Flush all caches defined in TYPO3_CONF_VARS, but not the ones defined by extensions in ext_localconf.php
         $baseCaches = $GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations'] ?? [];
-        $this->flushCaches($baseCaches);
 
-        // Remove DI container cache (this might be removed in preference of functionality to rebuild this cache)
+        // Remove DI container cache (will be renewed in next step)
         if ($this->dependencyInjectionCache->getBackend() instanceof ContainerBackend) {
             /** @var ContainerBackend $diCacheBackend */
             $diCacheBackend = $this->dependencyInjectionCache->getBackend();
             // We need to remove using the forceFlush method because the DI cache backend disables the flush method
             $diCacheBackend->forceFlush();
         }
+
+        // The cache manager is already instantiated in the install tool
+        // * (both in the failsafe and the late boot container), but
+        // * with settings to disable caching (all caches using NullBackend).
+        // Obtain a real instance
+        $this->lateBootService->unsetInternalContainerInstance();
+        $container = $this->lateBootService->getContainer(true);
+        $this->lateBootService->makeCurrent($container);
+        $cacheManager = $container->get(CacheManager::class);
+
+        $cacheManager->flushCaches();
 
         // From this point on, the code may fatal, if some broken extension is loaded.
         $this->lateBootService->loadExtLocalconfDatabase();
@@ -64,22 +74,8 @@ readonly class ClearCacheService
         // Loose comparison on purpose to allow changed ordering of the array
         if ($baseCaches != $extensionCaches) {
             // When configuration has changed during loading of extensions (due to ext_localconf.php), flush all caches again
-            $this->flushCaches($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+            $cacheManager->setCacheConfigurations($GLOBALS['TYPO3_CONF_VARS']['SYS']['caching']['cacheConfigurations']);
+            $cacheManager->flushCaches();
         }
-    }
-
-    /**
-     * The cache manager is already instantiated in the install tool
-     * (both in the failsafe and the late boot container), but
-     * with settings to disable caching (all caches using NullBackend).
-     * We want a "fresh" object here to operate with the really configured cache backends.
-     * CacheManager implements SingletonInterface, so the only way to get a "fresh"
-     * instance is by circumventing makeInstance and using new directly!
-     */
-    private function flushCaches(array $cacheConfiguration): void
-    {
-        $cacheManager = new CacheManager();
-        $cacheManager->setCacheConfigurations($cacheConfiguration);
-        $cacheManager->flushCaches();
     }
 }

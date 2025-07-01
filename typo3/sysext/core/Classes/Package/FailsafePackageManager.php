@@ -15,7 +15,6 @@
 
 namespace TYPO3\CMS\Core\Package;
 
-use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Package\Exception\PackageStatesUnavailableException;
 
 /**
@@ -77,24 +76,16 @@ class FailsafePackageManager extends PackageManager
     }
 
     /**
-     * Create PackageStates.php if missing and LocalConfiguration exists, used to have an Install Tool session running
+     * This method is a workaround for SetupService to make sure that this PackageManager
+     * can be used to mutate PackageStates to apply changes for distribution package
+     * activation.
      *
-     * It is fired if PackageStates.php is deleted on a running instance,
-     * all packages marked as "part of minimal system" are activated in this case.
-     * @param bool $useFactoryDefault if true, use the "isPartOfFactoryDefault" otherwise use "isPartOfMinimalUsableSystem"
+     * @todo Consider creating a non-failsafe PackageManager in BootService, to avoid
+     *       the need to disable failsafe mode, where it should not be enabled
      * @internal
      */
-    public function recreatePackageStatesFileIfMissing(bool $useFactoryDefault = false): void
+    public function disableFailsafeMode(): void
     {
-        if (!Environment::isComposerMode() && !file_exists($this->packageStatesPathAndFilename)) {
-            $packages = $this->getAvailablePackages();
-            foreach ($packages as $package) {
-                if ($useFactoryDefault ? $package->isPartOfFactoryDefault() : $package->isPartOfMinimalUsableSystem()) {
-                    $this->activatePackage($package->getPackageKey());
-                }
-            }
-            $this->forceSortAndSavePackageStates();
-            $this->inFailsafeMode = false;
-        }
+        $this->inFailsafeMode = false;
     }
 }

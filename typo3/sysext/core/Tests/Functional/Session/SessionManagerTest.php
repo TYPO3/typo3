@@ -54,7 +54,7 @@ final class SessionManagerTest extends FunctionalTestCase
         parent::setUp();
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['encryptionKey'] = '12345';
 
-        $this->subject = new SessionManager();
+        $this->subject = $this->get(SessionManager::class);
         $frontendSessionBackend = $this->subject->getSessionBackend('FE');
         foreach ($this->testSessionRecords as $sessionId => $testSessionRecord) {
             $frontendSessionBackend->set($sessionId, $testSessionRecord);

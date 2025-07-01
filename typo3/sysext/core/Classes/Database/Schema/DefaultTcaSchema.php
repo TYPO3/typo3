@@ -67,13 +67,12 @@ use TYPO3\CMS\Core\Utility\MathUtility;
  *
  * @internal
  */
-class DefaultTcaSchema
+readonly class DefaultTcaSchema
 {
     public function __construct(
-        private ?TcaSchemaFactory $tcaSchemaFactory = null,
-    ) {
-        $this->tcaSchemaFactory = $tcaSchemaFactory ?? GeneralUtility::makeInstance(TcaSchemaFactory::class);
-    }
+        private ConnectionPool $connectionPool,
+        private TcaSchemaFactory $tcaSchemaFactory,
+    ) {}
 
     /**
      * Add fields to $tables array that has been created from ext_tables.sql files.
@@ -494,7 +493,7 @@ class DefaultTcaSchema
             if ($schema->getFields()->count() === 0) {
                 continue;
             }
-            $tableConnectionPlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
+            $tableConnectionPlatform = $this->connectionPool->getConnectionForTable($tableName)->getDatabasePlatform();
 
             foreach ($schema->getFields() as $fieldName => $fieldType) {
                 if ($this->isColumnDefinedForTable($tables, $tableName, $fieldName)) {

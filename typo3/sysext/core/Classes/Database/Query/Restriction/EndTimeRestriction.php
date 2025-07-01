@@ -21,7 +21,6 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Restriction to filter records with an end time set that has passed
@@ -33,12 +32,9 @@ class EndTimeRestriction implements QueryRestrictionInterface
      */
     protected $accessTimeStamp;
 
-    protected TcaSchemaFactory $tcaSchemaFactory;
-
     public function __construct(?int $accessTimeStamp = null)
     {
         $this->accessTimeStamp = $accessTimeStamp ?: ($GLOBALS['SIM_ACCESS_TIME'] ?? null);
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
@@ -52,12 +48,13 @@ class EndTimeRestriction implements QueryRestrictionInterface
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
+        $tcaSchemaFactory = $expressionBuilder->getContainer()->get(TcaSchemaFactory::class);
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            if (!$this->tcaSchemaFactory->has($tableName)) {
+            if (!$tcaSchemaFactory->has($tableName)) {
                 continue;
             }
-            $schema = $this->tcaSchemaFactory->get($tableName);
+            $schema = $tcaSchemaFactory->get($tableName);
             if ($schema->hasCapability(TcaSchemaCapability::RestrictionEndTime)) {
                 if (empty($this->accessTimeStamp)) {
                     throw new \RuntimeException(

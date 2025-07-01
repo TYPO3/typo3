@@ -21,15 +21,12 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Restriction to filter records, that should not be shown until the start time has been reached
  */
 class StartTimeRestriction implements QueryRestrictionInterface
 {
-    protected TcaSchemaFactory $tcaSchemaFactory;
-
     /**
      * @var int
      */
@@ -38,7 +35,6 @@ class StartTimeRestriction implements QueryRestrictionInterface
     public function __construct(?int $accessTimeStamp = null)
     {
         $this->accessTimeStamp = $accessTimeStamp ?: ($GLOBALS['SIM_ACCESS_TIME'] ?? null);
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
     }
 
     /**
@@ -52,12 +48,13 @@ class StartTimeRestriction implements QueryRestrictionInterface
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
+        $tcaSchemaFactory = $expressionBuilder->getContainer()->get(TcaSchemaFactory::class);
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            if (!$this->tcaSchemaFactory->has($tableName)) {
+            if (!$tcaSchemaFactory->has($tableName)) {
                 continue;
             }
-            $schema = $this->tcaSchemaFactory->get($tableName);
+            $schema = $tcaSchemaFactory->get($tableName);
             if ($schema->hasCapability(TcaSchemaCapability::RestrictionStartTime)) {
                 if (empty($this->accessTimeStamp)) {
                     throw new \RuntimeException(

@@ -112,6 +112,8 @@ class EnvironmentController extends AbstractController
      */
     public function environmentCheckGetStatusAction(ServerRequestInterface $request): ResponseInterface
     {
+        $container = $this->lateBootService->getContainer(true);
+        $connectionPool = $container->get(ConnectionPool::class);
         $view = $this->initializeView($request);
         $messageQueue = new FlashMessageQueue('install');
         $checkMessages = (new Check())->getStatus();
@@ -122,11 +124,10 @@ class EnvironmentController extends AbstractController
         foreach ($setupMessages as $message) {
             $messageQueue->enqueue($message);
         }
-        $databaseMessages = (new DatabaseCheck())->getStatus();
+        $databaseMessages = (new DatabaseCheck($connectionPool))->getStatus();
         foreach ($databaseMessages as $message) {
             $messageQueue->enqueue($message);
         }
-        $container = $this->lateBootService->getContainer();
         $uriBuilder = $container->get(UriBuilder::class);
         $serverResponseMessages = (new ServerResponseCheck($uriBuilder, false))->getStatus($request);
         foreach ($serverResponseMessages as $message) {
@@ -1265,7 +1266,8 @@ class EnvironmentController extends AbstractController
     protected function getDatabaseConnectionInformation(): array
     {
         $connectionInfos = [];
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+        $container = $this->lateBootService->getContainer(true);
+        $connectionPool = $container->get(ConnectionPool::class);
         foreach ($connectionPool->getConnectionNames() as $connectionName) {
             $connection = $connectionPool->getConnectionByName($connectionName);
             $connectionParameters = $connection->getParams();

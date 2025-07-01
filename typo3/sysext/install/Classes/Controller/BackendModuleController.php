@@ -19,9 +19,11 @@ namespace TYPO3\CMS\Install\Controller;
 
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use TYPO3\CMS\Backend\Template\ModuleTemplateFactory;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Http\RedirectResponse;
+use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Install\Service\SessionService;
 
 /**
@@ -39,7 +41,9 @@ readonly class BackendModuleController
 {
     public function __construct(
         protected ModuleTemplateFactory $moduleTemplateFactory,
-        protected SessionService $sessionService
+        protected SessionService $sessionService,
+        #[Autowire(expression: 'service("session-manager").getSessionBackend("BE")')]
+        protected SessionBackendInterface $sessionBackend,
     ) {}
 
     /**
@@ -111,7 +115,7 @@ readonly class BackendModuleController
         $userSession = $this->getBackendUser()->getSession();
         $this->sessionService->installSessionHandler($request);
         $this->sessionService->startSession();
-        $this->sessionService->setAuthorizedBackendSession($userSession);
+        $this->sessionService->setAuthorizedBackendSession($userSession, $this->sessionBackend);
         $normalizedParams = $request->getAttribute('normalizedParams');
         $redirectLocation = $normalizedParams->getSiteUrl() . '?__typo3_install&' . http_build_query($redirectParameters, '', '&', PHP_QUERY_RFC3986);
         return new RedirectResponse($redirectLocation, 303);

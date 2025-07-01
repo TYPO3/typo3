@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Session\Backend;
 
 use PHPUnit\Framework\Attributes\Test;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Session\Backend\DatabaseSessionBackend;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -26,7 +27,7 @@ final class DatabaseSessionBackendTest extends UnitTestCase
     #[Test]
     public function validateConfigurationThrowsExceptionIfTableNameIsMissingInConfiguration(): void
     {
-        $subject = new DatabaseSessionBackend();
+        $subject = new DatabaseSessionBackend($this->createMock(ConnectionPool::class));
         $subject->initialize('default', []);
 
         $this->expectException(\InvalidArgumentException::class);

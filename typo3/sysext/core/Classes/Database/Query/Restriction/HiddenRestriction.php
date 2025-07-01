@@ -21,20 +21,12 @@ use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
 use TYPO3\CMS\Core\Database\Query\Expression\ExpressionBuilder;
 use TYPO3\CMS\Core\Schema\Capability\TcaSchemaCapability;
 use TYPO3\CMS\Core\Schema\TcaSchemaFactory;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Restriction to filter records that have been marked as hidden
  */
 class HiddenRestriction implements QueryRestrictionInterface
 {
-    protected TcaSchemaFactory $tcaSchemaFactory;
-
-    public function __construct()
-    {
-        $this->tcaSchemaFactory = GeneralUtility::makeInstance(TcaSchemaFactory::class);
-    }
-
     /**
      * Main method to build expressions for given tables
      * Evaluates the ctrl/enablecolumns/disabled flag of the table and adds the according restriction if set
@@ -45,12 +37,13 @@ class HiddenRestriction implements QueryRestrictionInterface
      */
     public function buildExpression(array $queriedTables, ExpressionBuilder $expressionBuilder): CompositeExpression
     {
+        $tcaSchemaFactory = $expressionBuilder->getContainer()->get(TcaSchemaFactory::class);
         $constraints = [];
         foreach ($queriedTables as $tableAlias => $tableName) {
-            if (!$this->tcaSchemaFactory->has($tableName)) {
+            if (!$tcaSchemaFactory->has($tableName)) {
                 continue;
             }
-            $schema = $this->tcaSchemaFactory->get($tableName);
+            $schema = $tcaSchemaFactory->get($tableName);
             if ($schema->hasCapability(TcaSchemaCapability::RestrictionDisabledField)) {
                 $constraints[] = $expressionBuilder->eq(
                     $tableAlias . '.' . $schema->getCapability(TcaSchemaCapability::RestrictionDisabledField)->getFieldName(),

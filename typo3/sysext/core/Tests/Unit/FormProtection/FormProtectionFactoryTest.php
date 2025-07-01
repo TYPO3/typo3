@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\FormProtection;
 
 use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DependencyInjection\Container;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Backend\TransientMemoryBackend;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -25,6 +26,7 @@ use TYPO3\CMS\Core\Cache\Frontend\NullFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\PhpFrontend;
 use TYPO3\CMS\Core\Cache\Frontend\VariableFrontend;
 use TYPO3\CMS\Core\Crypto\HashService;
+use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\FormProtection\BackendFormProtection;
 use TYPO3\CMS\Core\FormProtection\DisabledFormProtection;
 use TYPO3\CMS\Core\FormProtection\FormProtectionFactory;
@@ -50,7 +52,11 @@ final class FormProtectionFactoryTest extends UnitTestCase
         $this->runtimeCacheMock = new VariableFrontend('null', new TransientMemoryBackend());
         $cacheMock = $this->createMock(PhpFrontend::class);
         $cacheMock->method('has')->willReturn(false);
+        $connectionPoolMock = $this->createMock(ConnectionPool::class);
         $deserializer = new DenyListDeserializer($cacheMock, new HashService(), new DeserializationService());
+        $registry = new Registry($connectionPoolMock, $deserializer);
+        $container = new Container();
+        $container->set(Registry::class, $registry);
         $this->subject = new FormProtectionFactory(
             new FlashMessageService(),
             new LanguageServiceFactory(
@@ -58,8 +64,8 @@ final class FormProtectionFactoryTest extends UnitTestCase
                 $this->createMock(LocalizationFactory::class),
                 new NullFrontend('null')
             ),
-            new Registry($deserializer),
-            $this->runtimeCacheMock
+            $this->runtimeCacheMock,
+            $container,
         );
         parent::setUp();
     }

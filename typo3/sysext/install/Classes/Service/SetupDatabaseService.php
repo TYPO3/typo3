@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Install\Service;
 
+use Doctrine\DBAL\Connection as DoctrineConnection;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception as DBALException;
 use Doctrine\DBAL\Exception\ConnectionException;
@@ -175,7 +176,7 @@ class SetupDatabaseService
             // Test connection settings and write to config if connect is successful
             try {
                 $connectionParams = $defaultConnectionSettings;
-                $connectionParams['wrapperClass'] = Connection::class;
+                $connectionParams['wrapperClass'] = DoctrineConnection::class;
                 $connection = DriverManager::getConnection($connectionParams);
                 if ($connection->getNativeConnection() !== null) {
                     $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());

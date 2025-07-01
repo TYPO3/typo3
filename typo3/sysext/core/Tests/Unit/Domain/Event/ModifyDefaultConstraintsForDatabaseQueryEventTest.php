@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Domain\Event;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\Query\Expression\CompositeExpression;
@@ -32,7 +33,7 @@ final class ModifyDefaultConstraintsForDatabaseQueryEventTest extends UnitTestCa
     {
         $table = 'a_table';
         $tableAlias = 'table_alias';
-        $expressionBuilder = new ExpressionBuilder($this->createMock(Connection::class));
+        $expressionBuilder = new ExpressionBuilder($this->createMock(Connection::class), $this->createMock(ContainerInterface::class));
         $constraints = ['foo' => new CompositeExpression('foo')];
         $enableFieldsToIgnore = ['a_field' => true];
         $context = new Context();
@@ -60,7 +61,7 @@ final class ModifyDefaultConstraintsForDatabaseQueryEventTest extends UnitTestCa
         $event = new ModifyDefaultConstraintsForDatabaseQueryEvent(
             '',
             '',
-            new ExpressionBuilder($this->createMock(Connection::class)),
+            new ExpressionBuilder($this->createMock(Connection::class), $this->createMock(ContainerInterface::class)),
             [],
             [],
             new Context()

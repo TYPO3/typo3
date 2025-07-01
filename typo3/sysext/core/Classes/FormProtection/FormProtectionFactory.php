@@ -17,6 +17,7 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\FormProtection;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Authentication\BackendUserAuthentication;
 use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
@@ -44,8 +45,8 @@ readonly class FormProtectionFactory
     public function __construct(
         protected FlashMessageService $flashMessageService,
         protected LanguageServiceFactory $languageServiceFactory,
-        protected Registry $registry,
-        protected FrontendInterface $runtimeCache
+        protected FrontendInterface $runtimeCache,
+        protected ContainerInterface $container,
     ) {}
 
     /**
@@ -130,7 +131,7 @@ readonly class FormProtectionFactory
                 return [
                     BackendFormProtection::class,
                     $user,
-                    $this->registry,
+                    $this->container->get(Registry::class),
                     $this->getMessageClosure(
                         $this->languageServiceFactory->createFromUserPreferences($user),
                         $this->flashMessageService->getMessageQueueByIdentifier(),

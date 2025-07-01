@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Core\Tests\Unit\Session;
 
 use PHPUnit\Framework\Attributes\Test;
+use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\TestingFramework\Core\Unit\UnitTestCase;
 
@@ -29,7 +30,7 @@ final class SessionManagerTest extends UnitTestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionCode(1482234750);
         $GLOBALS['TYPO3_CONF_VARS']['SYS']['session']['myNewIdentifier'] = 'I am not an array';
-        $subject = new SessionManager();
+        $subject = new SessionManager($this->createMock(ContainerInterface::class));
         $subject->getSessionBackend('myNewidentifier');
     }
 
@@ -42,6 +43,6 @@ final class SessionManagerTest extends UnitTestCase
             'backend'  => \stdClass::class,
             'options' => [],
         ];
-        (new SessionManager())->getSessionBackend('myidentifier');
+        (new SessionManager($this->createMock(ContainerInterface::class)))->getSessionBackend('myidentifier');
     }
 }

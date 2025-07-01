@@ -17,21 +17,22 @@ declare(strict_types=1);
 
 namespace TYPO3\CMS\Core\Command;
 
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
-use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
+#[AsCommand('cache:flushtags', 'Cache clearing caches with tags.')]
 class CacheFlushTagsCommand extends Command
 {
     public function __construct(
-        protected readonly BootService $bootService,
+        protected readonly CacheManager $cacheManager,
     ) {
-        parent::__construct('cache:flushtags');
+        parent::__construct();
     }
 
     /**
@@ -62,18 +63,16 @@ class CacheFlushTagsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $container = $this->bootService->getContainer(true);
-        $cacheManager = $container->get(CacheManager::class);
         $groups = GeneralUtility::trimExplode(',', $input->getOption('groups') ?? '', true);
         $tags = GeneralUtility::trimExplode(',', $input->getArgument('tags') ?? '', true);
 
         foreach ($groups as $group) {
             if ($group === 'all') {
-                $cacheManager->flushCachesByTags($tags);
+                $this->cacheManager->flushCachesByTags($tags);
                 continue;
             }
 
-            $cacheManager->flushCachesInGroupByTags($group, $tags);
+            $this->cacheManager->flushCachesInGroupByTags($group, $tags);
         }
 
         return Command::SUCCESS;

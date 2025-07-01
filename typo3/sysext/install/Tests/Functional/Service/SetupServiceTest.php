@@ -18,11 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Tests\Functional\Service;
 
 use PHPUnit\Framework\Attributes\Test;
-use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Configuration\SiteWriter;
-use TYPO3\CMS\Core\Package\FailsafePackageManager;
-use TYPO3\CMS\Core\Service\DependencyOrderingService;
 use TYPO3\CMS\Install\Service\SetupService;
 use TYPO3\TestingFramework\Core\Functional\FunctionalTestCase;
 
@@ -33,12 +28,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function multipleCreateBackendUserGroupsCreatesGroupsOnce(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandTwice.csv');
@@ -47,12 +37,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function multipleCreateBackendUserGroupsWithForceCreatesGroupsMultipleTimes(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $subject->createBackendUserGroups(true, true, true);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/ForcedCreateUserGroupsCommand.csv');
@@ -61,12 +46,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createEditorOnlyCreatesEditor(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups(true, false);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsOnlyEditorCommand.csv');
     }
@@ -74,12 +54,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createAdvancedEditorOnlyCreatesAdvancedEditor(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups(false);
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsOnlyAdvancedEditorCommand.csv');
     }
@@ -87,12 +62,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createBackendUserGroupsCreatesGroupsWithCasualFields(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommand.csv');
     }
@@ -100,12 +70,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createBackendUserGroupsCreatesGroupsWithTablePermissions(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandTablePermissions.csv');
     }
@@ -113,12 +78,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createBackendUserGroupsCreatesGroupsWithModules(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandModules.csv');
     }
@@ -126,12 +86,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createBackendUserGroupsCreatesGroupsWithAllowedContentElements(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandAllowedContentElements.csv');
     }
@@ -139,12 +94,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createBackendUserGroupsCreatesGroupsWithNonExcludeFields(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandNonExcludeFields.csv');
     }
@@ -152,12 +102,7 @@ final class SetupServiceTest extends FunctionalTestCase
     #[Test]
     public function createBackendUserGroupsCreatesFileMount(): void
     {
-        $subject = new SetupService(
-            $this->get(ConfigurationManager::class),
-            $this->get(SiteWriter::class),
-            $this->get(YamlFileLoader::class),
-            new FailsafePackageManager(new DependencyOrderingService())
-        );
+        $subject = $this->get(SetupService::class);
         $subject->createBackendUserGroups();
         $this->assertCSVDataSet(__DIR__ . '/Fixtures/CreateUserGroupsCommandFileMount.csv');
     }

@@ -21,18 +21,24 @@ use Doctrine\DBAL\Platforms\MariaDBPlatform as DoctrineMariaDBPlatform;
 use Doctrine\DBAL\Platforms\MySQLPlatform as DoctrineMySQLPlatform;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Schema\Table;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Schema\SchemaMigrator;
 use TYPO3\CMS\Core\Database\Schema\SqlReader;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * Service class executing database tasks for upgrade wizards
  * @internal This class is only meant to be used within EXT:install and is not part of the TYPO3 Core API.
  */
+#[Autoconfigure(public: true)]
 readonly class DatabaseUpgradeWizardsService
 {
+    public function __construct(
+        private ConnectionPool $connectionPool,
+        private SqlReader $sqlReader,
+        private SchemaMigrator $schemaMigrator,
+    ) {}
+
     /**
      * Get a list of tables, single columns and indexes to add.
      *
@@ -42,12 +48,10 @@ readonly class DatabaseUpgradeWizardsService
      *           indexes?: list<array{table: string, index: string}>
      *         }
      */
-    public function getBlockingDatabaseAdds(ContainerInterface $container): array
+    public function getBlockingDatabaseAdds(): array
     {
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        $databaseDefinitions = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-        $schemaMigrator = $container->get(SchemaMigrator::class);
-        $databaseDifferences = $schemaMigrator->getSchemaDiffs($databaseDefinitions);
+        $databaseDefinitions = $this->sqlReader->getCreateTableStatementArray($this->sqlReader->getTablesDefinitionString());
+        $databaseDifferences = $this->schemaMigrator->getSchemaDiffs($databaseDefinitions);
         $adds = [];
         foreach ($databaseDifferences as $schemaDiff) {
             foreach ($schemaDiff->getCreatedTables() as $newTable) {
@@ -91,12 +95,10 @@ readonly class DatabaseUpgradeWizardsService
      *
      * @return array<string, string> Every sql statement as key with empty string or error message as value
      */
-    public function addMissingTablesAndFields(ContainerInterface $container): array
+    public function addMissingTablesAndFields(): array
     {
-        $sqlReader = GeneralUtility::makeInstance(SqlReader::class);
-        $databaseDefinitions = $sqlReader->getCreateTableStatementArray($sqlReader->getTablesDefinitionString());
-        $schemaMigrator = $container->get(SchemaMigrator::class);
-        return $schemaMigrator->install($databaseDefinitions, true);
+        $databaseDefinitions = $this->sqlReader->getCreateTableStatementArray($this->sqlReader->getTablesDefinitionString());
+        return $this->schemaMigrator->install($databaseDefinitions, true);
     }
 
     /**
@@ -106,8 +108,7 @@ readonly class DatabaseUpgradeWizardsService
      */
     public function isDatabaseCharsetUtf8(): bool
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
 
         $platform = $connection->getDatabasePlatform();
         $isDefaultConnectionMysql = $platform instanceof DoctrineMariaDBPlatform || $platform instanceof DoctrineMySQLPlatform;
@@ -139,8 +140,7 @@ readonly class DatabaseUpgradeWizardsService
      */
     public function setDatabaseCharsetUtf8()
     {
-        $connection = GeneralUtility::makeInstance(ConnectionPool::class)
-            ->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
+        $connection = $this->connectionPool->getConnectionByName(ConnectionPool::DEFAULT_CONNECTION_NAME);
         $sql = 'ALTER DATABASE ' . $connection->quoteIdentifier($connection->getDatabase()) . ' CHARACTER SET utf8';
         $connection->executeStatement($sql);
     }

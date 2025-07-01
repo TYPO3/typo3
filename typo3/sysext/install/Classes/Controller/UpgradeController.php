@@ -200,9 +200,7 @@ class UpgradeController extends AbstractController
     public function __construct(
         protected readonly PackageManager $packageManager,
         private readonly LateBootService $lateBootService,
-        private readonly DatabaseUpgradeWizardsService $databaseUpgradeWizardsService,
         private readonly FormProtectionFactory $formProtectionFactory,
-        private readonly Registry $registry,
     ) {}
 
     /**
@@ -649,9 +647,10 @@ class UpgradeController extends AbstractController
      */
     public function extensionScannerMarkFullyScannedRestFilesAction(ServerRequestInterface $request): ResponseInterface
     {
+        $registry = $this->lateBootService->getContainer(true)->get(Registry::class);
         $foundRestFileHashes = (array)($request->getParsedBody()['install']['hashes'] ?? []);
         // First un-mark files marked as scanned-ok
-        $this->registry->removeAllByNamespace('extensionScannerNotAffected');
+        $registry->removeAllByNamespace('extensionScannerNotAffected');
         // Find all .rst files (except those from v8), see if they are tagged with "FullyScanned"
         // and if their content is not in incoming "hashes" array, mark as "not affected"
         $documentationFile = new DocumentationFile();
@@ -680,7 +679,7 @@ class UpgradeController extends AbstractController
             }
         }
         foreach ($fullyScannedRestFilesNotAffected as $fileHash) {
-            $this->registry->set('extensionScannerNotAffected', $fileHash, $fileHash);
+            $registry->set('extensionScannerNotAffected', $fileHash, $fileHash);
         }
         return new JsonResponse([
             'success' => true,
@@ -887,7 +886,8 @@ class UpgradeController extends AbstractController
     {
         $filePath = $request->getParsedBody()['install']['ignoreFile'];
         $fileHash = md5_file($filePath);
-        $this->registry->set('upgradeAnalysisIgnoredFiles', $fileHash, $filePath);
+        $registry = $this->lateBootService->getContainer(true)->get(Registry::class);
+        $registry->set('upgradeAnalysisIgnoredFiles', $fileHash, $filePath);
         return new JsonResponse([
             'success' => true,
         ]);
@@ -900,7 +900,8 @@ class UpgradeController extends AbstractController
     {
         $filePath = $request->getParsedBody()['install']['ignoreFile'];
         $fileHash = md5_file($filePath);
-        $this->registry->remove('upgradeAnalysisIgnoredFiles', $fileHash);
+        $registry = $this->lateBootService->getContainer(true)->get(Registry::class);
+        $registry->remove('upgradeAnalysisIgnoredFiles', $fileHash);
         return new JsonResponse([
             'success' => true,
         ]);
@@ -913,10 +914,11 @@ class UpgradeController extends AbstractController
     {
         // ext_localconf and db must be loaded for the updates :(
         $container = $this->lateBootService->loadExtLocalconfDatabase(false);
+        $databaseUpgradeWizardsService = $container->get(DatabaseUpgradeWizardsService::class);
         $adds = [];
         $needsUpdate = false;
         try {
-            $adds = $this->databaseUpgradeWizardsService->getBlockingDatabaseAdds($container);
+            $adds = $databaseUpgradeWizardsService->getBlockingDatabaseAdds();
             $this->lateBootService->resetGlobalContainer();
             if (!empty($adds)) {
                 $needsUpdate = true;
@@ -938,7 +940,8 @@ class UpgradeController extends AbstractController
     {
         // ext_localconf and db must be loaded for the updates :(
         $container = $this->lateBootService->loadExtLocalconfDatabase(false);
-        $errors = $this->databaseUpgradeWizardsService->addMissingTablesAndFields($container);
+        $databaseUpgradeWizardsService = $container->get(DatabaseUpgradeWizardsService::class);
+        $errors = $databaseUpgradeWizardsService->addMissingTablesAndFields();
         $this->lateBootService->resetGlobalContainer();
         $messages = new FlashMessageQueue('install');
         // Discard empty values which indicate success
@@ -972,7 +975,9 @@ class UpgradeController extends AbstractController
      */
     public function upgradeWizardsBlockingDatabaseCharsetFixAction(): ResponseInterface
     {
-        $this->databaseUpgradeWizardsService->setDatabaseCharsetUtf8();
+        $container = $this->lateBootService->getContainer(true);
+        $databaseUpgradeWizardsService = $container->get(DatabaseUpgradeWizardsService::class);
+        $databaseUpgradeWizardsService->setDatabaseCharsetUtf8();
         $messages = new FlashMessageQueue('install');
         $messages->enqueue(new FlashMessage(
             '',
@@ -992,7 +997,9 @@ class UpgradeController extends AbstractController
      */
     public function upgradeWizardsBlockingDatabaseCharsetTestAction(): ResponseInterface
     {
-        $result = !$this->databaseUpgradeWizardsService->isDatabaseCharsetUtf8();
+        $container = $this->lateBootService->getContainer(true);
+        $databaseUpgradeWizardsService = $container->get(DatabaseUpgradeWizardsService::class);
+        $result = !$databaseUpgradeWizardsService->isDatabaseCharsetUtf8();
         return new JsonResponse([
             'success' => true,
             'needsUpdate' => $result,
@@ -1194,7 +1201,9 @@ class UpgradeController extends AbstractController
             str_replace('\\', '/', (string)realpath(ExtensionManagementUtility::extPath('core') . 'Documentation/Changelog/' . $version))
         );
 
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('sys_registry');
+        $container = $this->lateBootService->getContainer(true);
+        $connectionPool = $container->get(ConnectionPool::class);
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('sys_registry');
         $filesMarkedAsRead = $queryBuilder
             ->select('*')
             ->from('sys_registry')

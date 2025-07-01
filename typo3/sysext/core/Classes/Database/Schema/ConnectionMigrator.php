@@ -68,28 +68,15 @@ class ConnectionMigrator
     protected string $deletedPrefix = 'zzz_deleted_';
 
     /**
+     * @param non-empty-string $connectionName
      * @param Table[] $tables
      */
     public function __construct(
         private readonly string $connectionName,
         private readonly Typo3Connection $connection,
+        private readonly ConnectionPool $connectionPool,
         private readonly array $tables,
     ) {}
-
-    /**
-     * @param non-empty-string $connectionName
-     * @param Typo3Connection $connection
-     * @param Table[] $tables
-     */
-    public static function create(string $connectionName, Typo3Connection $connection, array $tables): self
-    {
-        return GeneralUtility::makeInstance(
-            static::class,
-            $connectionName,
-            $connection,
-            $tables,
-        );
-    }
 
     /**
      * Return the raw Doctrine SchemaDiff object for the current connection.
@@ -1325,7 +1312,7 @@ class ConnectionMigrator
      */
     protected function getTableRecordCount(string $tableName): int
     {
-        return GeneralUtility::makeInstance(ConnectionPool::class)
+        return $this->connectionPool
             ->getConnectionForTable($tableName)
             ->count('*', $tableName, []);
     }
@@ -1337,7 +1324,7 @@ class ConnectionMigrator
      */
     protected function getConnectionNameForTable(string $tableName): string
     {
-        $connectionNames = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionNames();
+        $connectionNames = $this->connectionPool->getConnectionNames();
 
         if (isset($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName])) {
             return in_array($GLOBALS['TYPO3_CONF_VARS']['DB']['TableMapping'][$tableName], $connectionNames, true)
@@ -1551,7 +1538,7 @@ class ConnectionMigrator
 
     protected function getDatabasePlatformForTable(string $tableName): AbstractPlatform
     {
-        $databasePlatform = GeneralUtility::makeInstance(ConnectionPool::class)->getConnectionForTable($tableName)->getDatabasePlatform();
+        $databasePlatform = $this->connectionPool->getConnectionForTable($tableName)->getDatabasePlatform();
         return match (true) {
             $databasePlatform instanceof DoctrinePostgreSQLPlatform,
             $databasePlatform instanceof DoctrineSQLitePlatform,

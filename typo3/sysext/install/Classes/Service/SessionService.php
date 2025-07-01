@@ -15,6 +15,7 @@
 
 namespace TYPO3\CMS\Install\Service;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Cookie;
@@ -30,7 +31,6 @@ use TYPO3\CMS\Core\Session\Backend\SessionBackendInterface;
 use TYPO3\CMS\Core\Session\SessionManager;
 use TYPO3\CMS\Core\Session\UserSession;
 use TYPO3\CMS\Core\SingletonInterface;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Install\Exception;
 use TYPO3\CMS\Install\Service\Session\FileSessionHandler;
 
@@ -58,7 +58,10 @@ class SessionService implements SingletonInterface
      */
     private int $regenerateSessionIdTime = 5;
 
-    public function __construct(protected readonly LoggerInterface $logger) {}
+    public function __construct(
+        protected readonly LateBootService $lateBootService,
+        protected readonly LoggerInterface $logger,
+    ) {}
 
     public function installSessionHandler(?ServerRequestInterface $request): void
     {
@@ -206,10 +209,9 @@ class SessionService implements SingletonInterface
      *
      * @param UserSession $userSession session of the current backend user
      */
-    public function setAuthorizedBackendSession(UserSession $userSession)
+    public function setAuthorizedBackendSession(UserSession $userSession, SessionBackendInterface $sessionBackend)
     {
         $nonce = bin2hex(random_bytes(20));
-        $sessionBackend = $this->getBackendUserSessionBackend();
         // use hash mechanism of session backend, or pass plain value through generic hmac
         $sessionHmac = $sessionBackend instanceof HashableSessionBackendInterface
             ? $sessionBackend->hash($userSession->getIdentifier())
@@ -271,9 +273,17 @@ class SessionService implements SingletonInterface
      */
     public function hasActiveBackendUserRoleAndSession(): bool
     {
+        $container = $this->lateBootService->getContainer(
+            // Allow DI caching because this request was forwarded from a backend session,
+            // and therefore failsafe requirements do not apply
+            true
+        );
+        // Unset internal container instance in order for later services
+        // to be able to bootstrap a fresh container
+        $this->lateBootService->unsetInternalContainerInstance();
         // @see \TYPO3\CMS\Install\Controller\BackendModuleController::setAuthorizedAndRedirect()
         $backendUserSession = $this->getBackendUserSession();
-        $backendUserRecord = $this->getBackendUserRecord($backendUserSession['userId']);
+        $backendUserRecord = $this->getBackendUserRecord($container, $backendUserSession['userId']);
         if ($backendUserRecord === null || empty($backendUserRecord['uid'])) {
             return false;
         }
@@ -288,7 +298,7 @@ class SessionService implements SingletonInterface
             return false;
         }
 
-        $sessionBackend = $this->getBackendUserSessionBackend();
+        $sessionBackend = $container->get(SessionManager::class)->getSessionBackend('BE');
         foreach ($sessionBackend->getAll() as $sessionRecord) {
             $sessionUserId = (int)($sessionRecord['ses_userid'] ?? 0);
             // skip, in case backend user id does not match
@@ -421,10 +431,10 @@ class SessionService implements SingletonInterface
      * @param int $uid The UID of the backend user
      * @return array<string, int>|null The backend user record or NULL
      */
-    protected function getBackendUserRecord(int $uid): ?array
+    protected function getBackendUserRecord(ContainerInterface $container, int $uid): ?array
     {
         $accessTimeStamp = (int)$GLOBALS['SIM_ACCESS_TIME'];
-        $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
+        $queryBuilder = $container->get(ConnectionPool::class)->getQueryBuilderForTable('be_users');
         $queryBuilder->select('uid', 'admin')
             ->from('be_users')
             ->where(
@@ -446,10 +456,5 @@ class SessionService implements SingletonInterface
         $result = $queryBuilder->executeQuery()->fetchAssociative();
 
         return is_array($result) ? $result : null;
-    }
-
-    protected function getBackendUserSessionBackend(): SessionBackendInterface
-    {
-        return GeneralUtility::makeInstance(SessionManager::class)->getSessionBackend('BE');
     }
 }

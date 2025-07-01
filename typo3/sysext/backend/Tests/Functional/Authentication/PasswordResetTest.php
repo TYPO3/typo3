@@ -131,7 +131,7 @@ final class PasswordResetTest extends FunctionalTestCase
             new NoopEventDispatcher(),
             new PasswordHashFactory(),
             $this->get(UriBuilder::class),
-            new SessionManager(),
+            $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
         $request = new ServerRequest();
@@ -169,7 +169,7 @@ final class PasswordResetTest extends FunctionalTestCase
             new NoopEventDispatcher(),
             new PasswordHashFactory(),
             $this->get(UriBuilder::class),
-            new SessionManager(),
+            $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
         $normalizedParams = $this->createMock(NormalizedParams::class);
@@ -213,7 +213,7 @@ final class PasswordResetTest extends FunctionalTestCase
             new NoopEventDispatcher(),
             new PasswordHashFactory(),
             $this->get(UriBuilder::class),
-            new SessionManager(),
+            $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
         $normalizedParams = $this->createMock(NormalizedParams::class);
@@ -246,7 +246,7 @@ final class PasswordResetTest extends FunctionalTestCase
             new NoopEventDispatcher(),
             new PasswordHashFactory(),
             $this->get(UriBuilder::class),
-            new SessionManager(),
+            $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
         $request = new ServerRequest();
@@ -297,7 +297,7 @@ final class PasswordResetTest extends FunctionalTestCase
             new NoopEventDispatcher(),
             new PasswordHashFactory(),
             $this->get(UriBuilder::class),
-            new SessionManager(),
+            $this->get(SessionManager::class),
             $this->createRateLimiterFactory(),
         );
         $normalizedParams = $this->createMock(NormalizedParams::class);

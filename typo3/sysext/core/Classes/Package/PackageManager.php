@@ -1228,4 +1228,27 @@ class PackageManager implements SingletonInterface
             $this->saveToPackageCache();
         }
     }
+
+    /**
+     * Create PackageStates.php if missing and LocalConfiguration exists, used to have an Install Tool session running
+     *
+     * It is fired if PackageStates.php is deleted on a running instance,
+     * all packages marked as "part of minimal system" are activated in this case.
+     * @param bool $useFactoryDefault if true, use the "isPartOfFactoryDefault" otherwise use "isPartOfMinimalUsableSystem"
+     * @internal
+     */
+    public function recreatePackageStatesFileIfMissing(bool $useFactoryDefault = false): void
+    {
+        if (!Environment::isComposerMode() && !file_exists($this->packageStatesPathAndFilename)) {
+            $packages = $this->getAvailablePackages();
+            foreach ($packages as $package) {
+                if ($useFactoryDefault ? $package->isPartOfFactoryDefault() : $package->isPartOfMinimalUsableSystem()) {
+                    $this->activatePackage($package->getPackageKey());
+                }
+            }
+
+            $this->sortActivePackagesByDependencies();
+            $this->savePackageStates();
+        }
+    }
 }

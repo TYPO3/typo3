@@ -20,8 +20,6 @@ namespace TYPO3\CMS\Install;
 use Psr\Container\ContainerInterface;
 use TYPO3\CMS\Core\Cache\CacheManager;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
-use TYPO3\CMS\Core\Configuration\Loader\YamlFileLoader;
-use TYPO3\CMS\Core\Configuration\SiteWriter;
 use TYPO3\CMS\Core\Console\CommandRegistry;
 use TYPO3\CMS\Core\Context\Context;
 use TYPO3\CMS\Core\Crypto\HashService;
@@ -47,10 +45,8 @@ use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Page\ResourceHashCollection;
 use TYPO3\CMS\Core\PasswordPolicy\Generator\PasswordGenerator;
 use TYPO3\CMS\Core\PasswordPolicy\PasswordService;
-use TYPO3\CMS\Core\Registry;
 use TYPO3\CMS\Core\Routing\BackendEntryPointResolver;
 use TYPO3\CMS\Core\Security\ContentSecurityPolicy\DirectiveHashCollection;
-use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
 use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
 use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
@@ -88,14 +84,12 @@ class ServiceProvider extends AbstractServiceProvider
             Http\NotFoundRequestHandler::class => self::getNotFoundRequestHandler(...),
             Factory\ImportMapFactory::class => self::getImportMapFactory(...),
             Service\ClearCacheService::class => self::getClearCacheService(...),
-            Service\ClearTableService::class => self::getClearTableService(...),
             Service\CoreUpdateService::class => self::getCoreUpdateService(...),
             Service\CoreVersionService::class => self::getCoreVersionService(...),
             Service\LateBootService::class => self::getLateBootService(...),
             Service\SilentTemplateFileUpgradeService::class => self::getSilentTemplateFileUpgradeService(...),
             Service\WebServerConfigurationFileService::class => self::getWebServerConfigurationFileService(...),
             Service\SessionService::class => self::getSessionService(...),
-            Service\SetupService::class => self::getSetupService(...),
             Middleware\Installer::class => self::getInstallerMiddleware(...),
             Middleware\Maintenance::class => self::getMaintenanceMiddleware(...),
             Middleware\AssetPublishing::class => self::getAssetPublishing(...),
@@ -127,6 +121,7 @@ class ServiceProvider extends AbstractServiceProvider
             'icons' => [ static::class, 'configureIcons' ],
             CommandRegistry::class => self::configureCommands(...),
             DirectiveHashCollection::class => self::provideFallbackDirectiveHashCollection(...),
+            Service\SetupService::class => self::provideSetupService(...),
         ];
     }
 
@@ -178,13 +173,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getClearTableService(ContainerInterface $container): Service\ClearTableService
-    {
-        return new Service\ClearTableService(
-            $container->get(FailsafePackageManager::class),
-        );
-    }
-
     public static function getCoreUpdateService(ContainerInterface $container): Service\CoreUpdateService
     {
         return new Service\CoreUpdateService(
@@ -220,18 +208,19 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getSessionService(ContainerInterface $container): Service\SessionService
     {
         return new Service\SessionService(
+            $container->get(Service\LateBootService::class),
             $container->get(LogManager::class)->getLogger(Service\SessionService::class)
         );
     }
 
-    public static function getSetupService(ContainerInterface $container): Service\SetupService
+    public static function provideSetupService(ContainerInterface $container, ?Service\SetupService $setupService): Service\SetupService
     {
-        return new Service\SetupService(
-            $container->get(ConfigurationManager::class),
-            $container->get(SiteWriter::class),
-            $container->get(YamlFileLoader::class),
-            $container->get(FailsafePackageManager::class),
-        );
+        if ($setupService === null) {
+            $lateBootService = $container->get(Service\LateBootService::class);
+            $setupService = $lateBootService->getContainer(true)->get(Service\SetupService::class);
+            $lateBootService->unsetInternalContainerInstance();
+        }
+        return $setupService;
     }
 
     public static function getInstallerMiddleware(ContainerInterface $container): Middleware\Installer
@@ -314,7 +303,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\MaintenanceController(
             $container->get(Service\LateBootService::class),
             $container->get(Service\ClearCacheService::class),
-            $container->get(Service\ClearTableService::class),
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
             $container->get(Locales::class),
@@ -326,6 +314,7 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getSettingsController(ContainerInterface $container): Controller\SettingsController
     {
         return new Controller\SettingsController(
+            $container->get(Service\LateBootService::class),
             $container->get(PackageManager::class),
             $container->get(LanguageServiceFactory::class),
             $container->get(CommentAwareAstBuilder::class),
@@ -342,9 +331,7 @@ class ServiceProvider extends AbstractServiceProvider
         return new Controller\UpgradeController(
             $container->get(PackageManager::class),
             $container->get(Service\LateBootService::class),
-            $container->get(DatabaseUpgradeWizardsService::class),
             $container->get(FormProtectionFactory::class),
-            $container->get(Registry::class),
         );
     }
 

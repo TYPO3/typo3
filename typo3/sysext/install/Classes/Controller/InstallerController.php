@@ -18,7 +18,6 @@ declare(strict_types=1);
 namespace TYPO3\CMS\Install\Controller;
 
 use Doctrine\DBAL\DriverManager;
-use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
@@ -26,6 +25,7 @@ use TYPO3\CMS\Backend\Routing\RouteRedirect;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Core\Authentication\CommandLineUserCreation;
 use TYPO3\CMS\Core\Configuration\ConfigurationManager;
+use TYPO3\CMS\Core\Core\BootService;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -72,6 +72,7 @@ final readonly class InstallerController
     use ControllerTrait;
 
     public function __construct(
+        private BootService $bootService,
         private ConfigurationManager $configurationManager,
         private PackageManager $packageManager,
         private VerifyHostHeader $verifyHostHeader,
@@ -86,8 +87,6 @@ final readonly class InstallerController
         private UriBuilder $uriBuilder,
         private RenderingContextFactory $renderingContextFactory,
         private ConnectionPool $connectionPool,
-        // @todo remove once SetupDatabaseService is adapted to avoid this argument
-        private ContainerInterface $container,
     ) {}
 
     /**
@@ -605,12 +604,15 @@ final readonly class InstallerController
             $this->setupService->createBackendUserGroups();
         }
 
+        $this->bootService->unsetInternalContainerInstance();
+        $container = $this->bootService->loadExtLocalconfDatabase(true);
+
         // Mark upgrade wizards as done
-        $this->setupDatabaseService->markWizardsDone($this->container);
+        $this->setupDatabaseService->markWizardsDone($container);
 
         // Set up all installed extensions
         // (includes e.g. publishing of assets, importing distribution data)
-        $this->setupService->setupExtensions($this->container);
+        $this->setupService->setupExtensions($container);
 
         $formProtection = $this->formProtectionFactory->createFromRequest($request);
         $formProtection->clean();

@@ -35,17 +35,12 @@ use TYPO3\CMS\Core\Core\Bootstrap;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\DependencyInjection\ContainerBuilder;
-use TYPO3\CMS\Core\Http\RequestFactory;
 use TYPO3\CMS\Core\Imaging\IconRegistry;
-use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Package\AbstractServiceProvider;
 use TYPO3\CMS\Core\Package\PackageManager;
 use TYPO3\CMS\Core\Resource\ResourceFactory;
 use TYPO3\CMS\Core\Resource\Security\FileNameValidator;
-use TYPO3\CMS\Core\Service\DatabaseUpgradeWizardsService;
 use TYPO3\CMS\Core\Service\SilentConfigurationUpgradeService;
-use TYPO3\CMS\Core\SystemResource\Publishing\SystemResourcePublisherInterface;
-use TYPO3\CMS\Core\SystemResource\SystemResourceFactory;
 use TYPO3\CMS\Core\Type\Map;
 use TYPO3\CMS\Core\TypoScript\Tokenizer\LossyTokenizer;
 use TYPO3\CMS\Core\Utility\File\FileSystem;
@@ -73,7 +68,6 @@ class ServiceProvider extends AbstractServiceProvider
             SymfonyDumpCompletionCommand::class => self::getSymfonyDumpCompletionCommand(...),
             SymfonyTranslator::class => self::getSymfonyTranslator(...),
             Cache\CacheManager::class => self::getCacheManager(...),
-            Database\DriverMiddlewareService::class => self::getDriverMiddlewaresService(...),
             Charset\CharsetConverter::class => self::getCharsetConverter(...),
             Charset\CharsetProvider::class => self::getCharsetProvider(...),
             Configuration\Features::class => self::getFeatures(...),
@@ -83,7 +77,6 @@ class ServiceProvider extends AbstractServiceProvider
             HelpCommand::class => self::getHelpCommand(...),
             Command\AssetPublishCommand::class => self::getAssetPublishCommand(...),
             Command\CacheFlushCommand::class => self::getCacheFlushCommand(...),
-            Command\CacheFlushTagsCommand::class => self::getCacheFlushTagsCommand(...),
             Command\CacheWarmupCommand::class => self::getCacheWarmupCommand(...),
             Command\DumpAutoloadCommand::class => self::getDumpAutoloadCommand(...),
             Command\UpdateLanguagePackCommand::class => self::getUpdateLanguagePackCommand(...),
@@ -120,7 +113,6 @@ class ServiceProvider extends AbstractServiceProvider
             PasswordPolicy\PasswordService::class => self::getPasswordService(...),
             Routing\BackendEntryPointResolver::class => self::getBackendEntryPointResolver(...),
             Routing\RequestContextFactory::class => self::getRequestContextFactory(...),
-            Registry::class => self::getRegistry(...),
             Resource\Index\FileIndexRepository::class => self::getFileIndexRepository(...),
             Resource\Index\MetaDataRepository::class => self::getMetaDataRepository(...),
             Resource\Driver\DriverRegistry::class => self::getDriverRegistry(...),
@@ -128,9 +120,7 @@ class ServiceProvider extends AbstractServiceProvider
             Resource\ResourceFactory::class => self::getResourceFactory(...),
             Resource\Security\FileNameValidator::class => self::getFileNameValidator(...),
             Resource\StorageRepository::class => self::getStorageRepository(...),
-            Service\DatabaseUpgradeWizardsService::class => self::getDatabaseUpgradeWizardsService(...),
             Service\DependencyOrderingService::class => self::getDependencyOrderingService(...),
-            Localization\LanguagePackService::class => self::getLanguagePackService(...),
             Service\OpcodeCacheService::class => self::getOpcodeCacheService(...),
             Service\SilentConfigurationUpgradeService::class => self::getSilentConfigurationUpgradeService(...),
             TypoScript\TypoScriptStringFactory::class => self::getTypoScriptStringFactory(...),
@@ -154,8 +144,8 @@ class ServiceProvider extends AbstractServiceProvider
             Console\CommandRegistry::class => self::configureCommands(...),
             Imaging\IconRegistry::class => self::configureIconRegistry(...),
             EventDispatcherInterface::class => self::provideFallbackEventDispatcher(...),
-            Database\ConnectionPool::class => self::provideFallbackConnectionPool(...),
             EventDispatcher\ListenerProvider::class => self::extendEventListenerProvider(...),
+            Database\ConnectionPool::class => self::ensureConnectionPoolBootState(...),
             SystemResource\SystemResourceFactory::class => self::provideFallbackSystemResourceFactory(...),
             SystemResource\Publishing\SystemResourcePublisherInterface::class => self::provideFallbackSystemResourcePublisher(...),
             SystemResource\Identifier\SystemResourceIdentifierFactory::class => self::provideFallbackSystemResourceIdentifierFactory(...),
@@ -194,22 +184,15 @@ class ServiceProvider extends AbstractServiceProvider
         return $cacheManager;
     }
 
-    public static function provideFallbackConnectionPool(ContainerInterface $container, ?Database\ConnectionPool $connectionPool): Database\ConnectionPool
+    public static function ensureConnectionPoolBootState(ContainerInterface $container, ?Database\ConnectionPool $connectionPool): Database\ConnectionPool
     {
+        if ($connectionPool === null) {
+            throw new \LogicException(Database\ConnectionPool::class . ' can not be used from failsafe container. Please use LateBootService to obtain a container instance.', 1751358504);
+        }
         if (!$container->get('boot.state')->complete) {
             throw new \LogicException(Database\ConnectionPool::class . ' can not be injected/instantiated during ext_localconf.php or TCA loading. Use lazy loading instead.', 1638976490);
         }
-
-        return $connectionPool ?? self::new($container, Database\ConnectionPool::class, [
-            Database\Query\Restriction\EmptyRestrictionContainer::class,
-        ]);
-    }
-
-    public static function getDriverMiddlewaresService(ContainerInterface $container): Database\DriverMiddlewareService
-    {
-        return self::new($container, Database\DriverMiddlewareService::class, [
-            $container->get(Service\DependencyOrderingService::class),
-        ]);
+        return $connectionPool;
     }
 
     public static function getCharsetConverter(ContainerInterface $container): Charset\CharsetConverter
@@ -285,13 +268,6 @@ class ServiceProvider extends AbstractServiceProvider
         );
     }
 
-    public static function getCacheFlushTagsCommand(ContainerInterface $container): Command\CacheFlushTagsCommand
-    {
-        return new Command\CacheFlushTagsCommand(
-            $container->get(Core\BootService::class),
-        );
-    }
-
     public static function getCacheWarmupCommand(ContainerInterface $container): Command\CacheWarmupCommand
     {
         return new Command\CacheWarmupCommand(
@@ -320,7 +296,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Command\UpgradeWizardRunCommand(
             'upgrade:run',
             $container->get(Core\BootService::class),
-            $container->get(DatabaseUpgradeWizardsService::class),
             $container->get(SilentConfigurationUpgradeService::class)
         );
     }
@@ -576,20 +551,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Package\Cache\PackageDependentCacheIdentifier($container->get(Package\PackageManager::class));
     }
 
-    public static function getRegistry(ContainerInterface $container): Registry
-    {
-        $denyListDeserializer = $container->has(Serializer\DenyListDeserializer::class)
-            ? $container->get(Serializer\DenyListDeserializer::class)
-            : new Serializer\DenyListDeserializer(
-                $container->get('cache.core'),
-                $container->get(HashService::class),
-                new Serializer\DeserializationService(),
-            );
-        return self::new($container, Registry::class, [
-            $denyListDeserializer,
-        ]);
-    }
-
     public static function getFileIndexRepository(ContainerInterface $container): Resource\Index\FileIndexRepository
     {
         return self::new($container, Resource\Index\FileIndexRepository::class, [
@@ -653,17 +614,6 @@ class ServiceProvider extends AbstractServiceProvider
         return new Service\DependencyOrderingService();
     }
 
-    public static function getLanguagePackService(ContainerInterface $container): Localization\LanguagePackService
-    {
-        return new Localization\LanguagePackService(
-            $container->get(EventDispatcherInterface::class),
-            $container->get(RequestFactory::class),
-            $container->get(LogManager::class)->getLogger(Localization\LanguagePackService::class),
-            $container->get(SystemResourceFactory::class),
-            $container->get(SystemResourcePublisherInterface::class),
-        );
-    }
-
     public static function getOpcodeCacheService(ContainerInterface $container): Service\OpcodeCacheService
     {
         return self::new($container, Service\OpcodeCacheService::class);
@@ -716,8 +666,8 @@ class ServiceProvider extends AbstractServiceProvider
             [
                 $container->get(Messaging\FlashMessageService::class),
                 $container->get(Localization\LanguageServiceFactory::class),
-                $container->get(Registry::class),
                 $container->get(CacheManager::class)->getCache('runtime'),
+                $container,
             ]
         );
     }
@@ -772,11 +722,6 @@ class ServiceProvider extends AbstractServiceProvider
     public static function getHashService(): HashService
     {
         return new HashService();
-    }
-
-    public static function getDatabaseUpgradeWizardsService(ContainerInterface $container): Service\DatabaseUpgradeWizardsService
-    {
-        return self::new($container, Service\DatabaseUpgradeWizardsService::class);
     }
 
     public static function getSilentConfigurationUpgradeService(ContainerInterface $container): Service\SilentConfigurationUpgradeService
@@ -847,8 +792,6 @@ class ServiceProvider extends AbstractServiceProvider
         $commandRegistry->addLazyCommand('cache:warmup', Command\CacheWarmupCommand::class, 'Cache warmup for all, system or, if implemented, frontend caches.');
 
         $commandRegistry->addLazyCommand('cache:flush', Command\CacheFlushCommand::class, 'Cache clearing for all, system or frontend caches.');
-
-        $commandRegistry->addLazyCommand('cache:flushtags', Command\CacheFlushTagsCommand::class, 'Cache clearing caches with tags.');
 
         $commandRegistry->addLazyCommand('dumpautoload', Command\DumpAutoloadCommand::class, 'Updates class loading information in non-composer mode.', Environment::isComposerMode());
         $commandRegistry->addLazyCommand('extensionmanager:extension:dumpclassloadinginformation', Command\DumpAutoloadCommand::class, null, Environment::isComposerMode(), false, 'dumpautoload');

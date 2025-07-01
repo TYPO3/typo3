@@ -92,8 +92,7 @@ class TableBuilder
         // Register custom data types as no connection might have
         // been established yet so the types would not be available
         // when building tables/columns.
-        $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
-        $connectionPool->registerDoctrineTypes();
+        ConnectionPool::registerDoctrineTypes();
         $this->platform = $platform ?: GeneralUtility::makeInstance(MySQLPlatform::class);
     }
 
