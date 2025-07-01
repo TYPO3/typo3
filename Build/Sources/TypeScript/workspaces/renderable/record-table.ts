@@ -29,7 +29,6 @@ export type RecordData = {
   Workspaces_CollectionCurrent: string,
   Workspaces_CollectionChildren: number,
   label_Workspace: string,
-  label_Workspace_crop: string,
   label_Stage: string,
   label_nextStage: string,
   value_nextStage: number,
@@ -229,9 +228,7 @@ export class RecordTableElement extends LitElement {
             <typo3-backend-icon identifier=${IconHelper.getIconIdentifier(data.icon_Workspace)} overlay=${IconHelper.getIconIdentifier(data.icon_Workspace_Overlay)} size="small"></typo3-backend-icon>
           </span>
           <a href="#" data-action="changes">
-            <span title=${data.label_Workspace}>
-              ${data.label_Workspace_crop}
-            </span>
+            ${data.label_Workspace}
           </a>
         </td>
         <td class="col-language">
