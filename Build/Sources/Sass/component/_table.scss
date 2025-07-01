@@ -193,6 +193,10 @@
         }
     }
 
+    .col-white-space-normal {
+        white-space: normal;
+    }
+
     .col-progress {
         padding-top: calc(var(--typo3-table-padding-y) * .75);
         padding-bottom: calc(var(--typo3-table-padding-y) * .75);
