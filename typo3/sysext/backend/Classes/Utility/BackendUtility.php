@@ -332,9 +332,10 @@ class BackendUtility
      * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is
      *          usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
      * @param string[] $additionalFields Additional Fields to select for rootline records
+     * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return array Root line array, all the way to the page tree root uid=0 (or as far as $clause allows!), including the page given as $uid
      */
-    public static function BEgetRootLine($uid, $clause = '', $workspaceOL = false, array $additionalFields = [])
+    public static function BEgetRootLine($uid, $clause = '', $workspaceOL = false, array $additionalFields = [], bool $useDeleteClause = true)
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $beGetRootLineCache = $runtimeCache->get('backendUtilityBeGetRootLine') ?: [];
@@ -348,7 +349,7 @@ class BackendUtility
             $theRowArray = [];
             while ($uid != 0 && $loopCheck) {
                 $loopCheck--;
-                $row = self::getPageForRootline($uid, $clause, $workspaceOL, $additionalFields);
+                $row = self::getPageForRootline($uid, $clause, $workspaceOL, $additionalFields, $useDeleteClause);
                 if (is_array($row)) {
                     $uid = $row['pid'];
                     $theRowArray[] = $row;
@@ -407,14 +408,15 @@ class BackendUtility
      * @param string $clause Clause can be used to select other criteria. It would typically be where-clauses that stops the process if we meet a page, the user has no reading access to.
      * @param bool $workspaceOL If TRUE, version overlay is applied. This must be requested specifically because it is usually only wanted when the rootline is used for visual output while for permission checking you want the raw thing!
      * @param string[] $additionalFields AdditionalFields to fetch from the root line
+     * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return array Cached page record for the rootline
      * @see BEgetRootLine
      */
-    protected static function getPageForRootline($uid, $clause, $workspaceOL, array $additionalFields = [])
+    protected static function getPageForRootline($uid, $clause, $workspaceOL, array $additionalFields = [], bool $useDeleteClause = true)
     {
         $runtimeCache = GeneralUtility::makeInstance(CacheManager::class)->getCache('runtime');
         $pageForRootlineCache = $runtimeCache->get('backendUtilityPageForRootLine') ?: [];
-        $statementCacheIdent = md5($clause . ($additionalFields ? '-' . implode(',', $additionalFields) : ''));
+        $statementCacheIdent = md5($clause . ($additionalFields ? '-' . implode(',', $additionalFields) : '') . ($useDeleteClause ? '-delete' : ''));
         $ident = $uid . '-' . $workspaceOL . '-' . $statementCacheIdent;
         if (is_array($pageForRootlineCache[$ident] ?? false)) {
             $row = $pageForRootlineCache[$ident];
@@ -423,10 +425,10 @@ class BackendUtility
             $statement = $runtimeCache->get('getPageForRootlineStatement-' . $statementCacheIdent);
             if (!$statement) {
                 $queryBuilder = self::getQueryBuilderForTable('pages');
-                $queryBuilder->getRestrictions()
-                             ->removeAll()
-                             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
-
+                $queryBuilder->getRestrictions()->removeAll();
+                if ($useDeleteClause) {
+                    $queryBuilder->getRestrictions()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+                }
                 $queryBuilder
                     ->select(
                         'pid',

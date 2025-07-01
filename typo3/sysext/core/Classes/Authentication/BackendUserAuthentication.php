@@ -313,10 +313,11 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      *
      * @param int|array $idOrRow Page ID or full page record to check
      * @param string $readPerms Content of "->getPagePermsClause(1)" (read-permissions). If not set, they will be internally calculated (but if you have the correct value right away you can save that database lookup!)
+     * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @throws \RuntimeException
      * @return int|null The page UID of a page in the rootline that matched a mount point
      */
-    public function isInWebMount($idOrRow, $readPerms = '')
+    public function isInWebMount($idOrRow, $readPerms = '', bool $useDeleteClause = true)
     {
         if ($this->isAdmin()) {
             return 1;
@@ -341,7 +342,9 @@ class BackendUserAuthentication extends AbstractUserAuthentication
             $checkRec = BackendUtility::getRecord(
                 'pages',
                 $id,
-                't3ver_oid,' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ',' . $GLOBALS['TCA']['pages']['ctrl']['languageField']
+                't3ver_oid,' . $GLOBALS['TCA']['pages']['ctrl']['transOrigPointerField'] . ',' . $GLOBALS['TCA']['pages']['ctrl']['languageField'],
+                '',
+                $useDeleteClause,
             );
         }
         if ((int)($checkRec['t3ver_oid'] ?? 0) > 0) {
@@ -359,7 +362,7 @@ class BackendUserAuthentication extends AbstractUserAuthentication
         }
         if ($id > 0) {
             $wM = $this->getWebmounts();
-            $rL = BackendUtility::BEgetRootLine($id, ' AND ' . $readPerms, true);
+            $rL = BackendUtility::BEgetRootLine($id, ' AND ' . $readPerms, true, [], $useDeleteClause);
             foreach ($rL as $v) {
                 if ($v['uid'] && in_array($v['uid'], $wM)) {
                     return $v['uid'];
@@ -485,16 +488,17 @@ class BackendUserAuthentication extends AbstractUserAuthentication
      * If the user is admin, 31 is returned	(full permissions for all five flags)
      *
      * @param array $row Input page row with all perms_* fields available.
+     * @param bool $useDeleteClause Use the deleteClause to check if a record is deleted (default TRUE)
      * @return int Bitwise representation of the users permissions in relation to input page row, $row
      */
-    public function calcPerms($row)
+    public function calcPerms($row, bool $useDeleteClause = true)
     {
         // Return 31 for admin users.
         if ($this->isAdmin()) {
             return Permission::ALL;
         }
         // Return 0 if page is not within the allowed web mount
-        if (!$this->isInWebMount($row)) {
+        if (!$this->isInWebMount($row, '', $useDeleteClause)) {
             return Permission::NOTHING;
         }
         $out = Permission::NOTHING;

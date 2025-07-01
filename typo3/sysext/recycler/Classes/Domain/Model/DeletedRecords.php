@@ -295,25 +295,10 @@ class DeletedRecords
      */
     protected function checkRecordAccess(string $table, array $rows): void
     {
-        $deleteField = '';
-        if ($table === 'pages') {
-            // The "checkAccess" method validates access to the passed table/rows. When access to
-            // a page record gets validated it is necessary to disable the "delete" field temporarily
-            // for the recycler.
-            // Else it wouldn't be possible to perform the check as many methods of BackendUtility
-            // like "BEgetRootLine", etc. will only work on non-deleted records.
-            $deleteField = $GLOBALS['TCA'][$table]['ctrl']['delete'];
-            unset($GLOBALS['TCA'][$table]['ctrl']['delete']);
-        }
-
         foreach ($rows as $row) {
             if ($this->checkAccess($table, $row)) {
                 $this->setDeletedRows($table, $row);
             }
-        }
-
-        if ($table === 'pages') {
-            $GLOBALS['TCA'][$table]['ctrl']['delete'] = $deleteField;
         }
     }
 
@@ -524,10 +509,11 @@ class DeletedRecords
         BackendUtility::workspaceOL($table, $calcPRec, $backendUser->workspace);
         if (is_array($calcPRec)) {
             if ($table === 'pages') {
-                $calculatedPermissions = new Permission($backendUser->calcPerms($calcPRec));
+                $calculatedPermissions = new Permission($backendUser->calcPerms($calcPRec, false));
                 $hasAccess = $calculatedPermissions->editPagePermissionIsGranted();
             } else {
-                $calculatedPermissions = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid'])));
+                $rec = BackendUtility::getRecord('pages', $calcPRec['pid'], '*', '', false);
+                $calculatedPermissions = new Permission($backendUser->calcPerms(BackendUtility::getRecord('pages', $calcPRec['pid'], '*', '', false), false));
                 // Fetching pid-record first.
                 $hasAccess = $calculatedPermissions->editContentPermissionIsGranted();
             }
