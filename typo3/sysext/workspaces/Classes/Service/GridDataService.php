@@ -342,7 +342,6 @@ readonly class GridDataService
                 $versionArray['uid'] = $record['uid'];
                 $versionArray = array_merge($versionArray, $defaultGridColumns);
                 $versionArray['label_Workspace'] = htmlspecialchars($workspaceRecordLabel);
-                $versionArray['label_Workspace_crop'] = htmlspecialchars(GeneralUtility::fixed_lgd_cs($workspaceRecordLabel, (int)$backendUser->uc['titleLen']));
                 $versionArray['label_Stage'] = htmlspecialchars($stagesObj->getStageTitle((int)$versionRecord['t3ver_stage']));
                 $tempStage = $stagesObj->getNextStage($versionRecord['t3ver_stage']);
                 $versionArray['label_nextStage'] = htmlspecialchars($stagesObj->getStageTitle((int)$tempStage['uid']));
