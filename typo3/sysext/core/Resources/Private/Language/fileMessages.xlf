@@ -228,7 +228,7 @@
 			<trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory">
 				<source>You don't have full access to the destination directory "%s"!</source>
 			</trans-unit>
-			<trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtension">
+			<trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation">
 				<source>Mime-type "%s" not allowed for file extension "%s" (expected: %s).</source>
 			</trans-unit>
 			<trans-unit id="FileUtility.FileExtensionIsNotAllowed">
