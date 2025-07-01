@@ -37,21 +37,6 @@ readonly class ElementEntityProcessor
     ) {}
 
     /**
-     * Transforms dependent elements to use the liveId as array key.
-     *
-     * @param ElementEntity[] $elements
-     */
-    public function transformDependentElementsToUseLiveId(array $elements): array
-    {
-        $transformedElements = [];
-        foreach ($elements as $element) {
-            $elementName = $element->getTable() . ':' . $element->getDataValue('liveId');
-            $transformedElements[$elementName] = $element;
-        }
-        return $transformedElements;
-    }
-
-    /**
      * Callback to determine whether a new child reference shall be considered in the dependency resolver utility.
      *
      * @return string|null Skip response (if required)

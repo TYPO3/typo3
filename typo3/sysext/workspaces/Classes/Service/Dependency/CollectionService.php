@@ -37,51 +37,29 @@ class CollectionService implements SingletonInterface
     protected array $dataArray;
     protected array $nestedDataArray;
 
+    public function __construct(
+        protected readonly ElementEntityProcessor $elementEntityProcessor,
+    ) {}
+
     public function getDependencyResolver(): DependencyResolver
     {
         if (!isset($this->dependencyResolver)) {
             $this->dependencyResolver = GeneralUtility::makeInstance(DependencyResolver::class);
-            $this->dependencyResolver->setOuterMostParentsRequireReferences(true);
             $this->dependencyResolver->setWorkspace($this->getBackendUser()->workspace);
-
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_Construct,
-                $this->getDependencyCallback('createNewDependentElementCallback', ['workspace' => $this->getBackendUser()->workspace])
+                GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementCallback', ['workspace' => $this->getBackendUser()->workspace])
             );
-
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_CreateChildReference,
-                $this->getDependencyCallback('createNewDependentElementChildReferenceCallback')
+                GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementChildReferenceCallback')
             );
-
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_CreateParentReference,
-                $this->getDependencyCallback('createNewDependentElementParentReferenceCallback')
+                GeneralUtility::makeInstance(EventCallback::class, $this->elementEntityProcessor, 'createNewDependentElementParentReferenceCallback')
             );
         }
-
         return $this->dependencyResolver;
-    }
-
-    /**
-     * Gets a new callback to be used in the dependency resolver utility.
-     */
-    protected function getDependencyCallback(string $method, array $targetArguments = []): EventCallback
-    {
-        return GeneralUtility::makeInstance(
-            EventCallback::class,
-            $this->getElementEntityProcessor(),
-            $method,
-            $targetArguments
-        );
-    }
-
-    /**
-     * Gets the element entity processor.
-     */
-    protected function getElementEntityProcessor(): ElementEntityProcessor
-    {
-        return GeneralUtility::makeInstance(ElementEntityProcessor::class);
     }
 
     /**

@@ -68,6 +68,7 @@ class DataHandlerHook
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly TcaSchemaFactory $tcaSchemaFactory,
         private readonly ConnectionPool $connectionPool,
+        private readonly CommandMap $commandMap,
     ) {}
 
     /**
@@ -80,7 +81,7 @@ class DataHandlerHook
         // Reset notification array
         $this->notificationInfo = [];
         // Resolve dependencies of version/workspaces actions:
-        $dataHandler->cmdmap = GeneralUtility::makeInstance(CommandMap::class, $dataHandler->cmdmap, $dataHandler->BE_USER->workspace)->process()->get();
+        $dataHandler->cmdmap = $this->commandMap->process($dataHandler->cmdmap, $dataHandler->BE_USER->workspace);
     }
 
     /**
