@@ -36,7 +36,6 @@ export type RecordData = {
   value_prevStage: number,
   path_Live: string,
   path_Workspace: string,
-  path_Workspace_crop: string,
   lastChangedFormatted: string,
   t3ver_wsid: number,
   t3ver_oid: number,
@@ -195,11 +194,8 @@ export class RecordTableElement extends LitElement {
     return html`
       ${latestPathChanged ? html`
         <tr>
-          <th></th>
-          <th colspan="7">
-            <span title=${data.path_Workspace}>
-              <a href=${data.urlToPage}>${data.path_Workspace_crop}</a>
-            </span>
+          <th colspan="8" class="col-white-space-normal">
+            <a href=${data.urlToPage}>${data.path_Workspace}</a>
           </th>
         </tr>
       ` : nothing}

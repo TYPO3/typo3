@@ -2745,6 +2745,7 @@ body>.module{height:100dvh}
 .table td.col-responsive{max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 @media (min-width:768px){
 .table .col-word-break{word-wrap:break-word;word-break:break-all}}
+.table .col-white-space-normal{white-space:normal}
 .table .col-progress{padding-bottom:calc(var(--typo3-table-padding-y)*.75);padding-top:calc(var(--typo3-table-padding-y)*.75)}
 .table-sm{--typo3-table-font-size:var(--typo3-table-sm-font-size);--typo3-table-padding-x:var(--typo3-table-sm-padding-x)}
 .caption-top{caption-side:top}

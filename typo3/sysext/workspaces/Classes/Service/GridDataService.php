@@ -327,7 +327,6 @@ readonly class GridDataService
                 $viewUrl = $this->previewUriBuilder->buildUriForElement($table, (int)$record['uid'], $origRecord, $versionRecord);
                 $workspaceRecordLabel = BackendUtility::getRecordTitle($table, $versionRecord);
                 $iconWorkspace = $iconFactory->getIconForRecord($table, $versionRecord, IconSize::SMALL);
-                [$pathWorkspaceCropped, $pathWorkspace] = BackendUtility::getRecordPath((int)$record['wspid'], '', 15, 1000);
                 $calculatedT3verOid = $record['t3ver_oid'];
                 if (VersionState::tryFrom($record['t3ver_state'] ?? 0) === VersionState::NEW_PLACEHOLDER) {
                     // If we're dealing with a 'new' record, this one has no t3ver_oid. On publish, there is no
@@ -350,8 +349,7 @@ readonly class GridDataService
                 $versionArray['label_prevStage'] = htmlspecialchars($stagesObj->getStageTitle((int)($tempStage['uid'] ?? 0)));
                 $versionArray['value_prevStage'] = (int)($tempStage['uid'] ?? 0);
                 $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
-                $versionArray['path_Workspace'] = htmlspecialchars($pathWorkspace);
-                $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
+                $versionArray['path_Workspace'] = htmlspecialchars(BackendUtility::getRecordPath((int)$record['wspid'], '', 0));
                 $versionArray['lastChangedFormatted'] = '';
                 if (array_key_exists('tstamp', $versionRecord)) {
                     // @todo: Avoid hard coded access to 'tstamp' and use table TCA 'ctrl' 'tstamp' value instead, if set.
