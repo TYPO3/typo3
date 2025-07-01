@@ -30,7 +30,6 @@ class DependencyResolver
     protected ?DependencyEntityFactory $factory;
     protected array $elements = [];
     protected array $eventCallbacks = [];
-    protected bool $outerMostParentsRequireReferences = false;
     protected ?array $outerMostParents;
 
     /**
@@ -72,15 +71,6 @@ class DependencyResolver
     }
 
     /**
-     * Sets the condition that outermost parents required at least one child or parent reference.
-     */
-    public function setOuterMostParentsRequireReferences(bool $outerMostParentsRequireReferences): self
-    {
-        $this->outerMostParentsRequireReferences = (bool)$outerMostParentsRequireReferences;
-        return $this;
-    }
-
-    /**
      * Adds an element to be checked for dependent references.
      */
     public function addElement(string $table, int $id, array $data = []): ElementEntity
@@ -113,7 +103,7 @@ class DependencyResolver
      */
     protected function processOuterMostParent(ElementEntity $element): void
     {
-        if ($this->outerMostParentsRequireReferences === false || $element->hasReferences()) {
+        if ($element->hasReferences()) {
             $outerMostParent = $element->getOuterMostParent();
             if ($outerMostParent !== false) {
                 $outerMostParentName = $outerMostParent->__toString();

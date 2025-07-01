@@ -80,7 +80,7 @@ class DataHandlerHook
         // Reset notification array
         $this->notificationInfo = [];
         // Resolve dependencies of version/workspaces actions:
-        $dataHandler->cmdmap = GeneralUtility::makeInstance(CommandMap::class, $dataHandler->cmdmap, $dataHandler->BE_USER->workspace)->process()->get();
+        $dataHandler->cmdmap = GeneralUtility::makeInstance(CommandMap::class)->process($dataHandler->cmdmap, $dataHandler->BE_USER->workspace);
     }
 
     /**

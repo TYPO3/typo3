@@ -42,39 +42,21 @@ class CollectionService implements SingletonInterface
     {
         if (!isset($this->dependencyResolver)) {
             $this->dependencyResolver = GeneralUtility::makeInstance(DependencyResolver::class);
-            $this->dependencyResolver->setOuterMostParentsRequireReferences(true);
             $this->dependencyResolver->setWorkspace($this->getBackendUser()->workspace);
-
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_Construct,
-                $this->getDependencyCallback('createNewDependentElementCallback')
+                GeneralUtility::makeInstance(EventCallback::class, $this->getElementEntityProcessor(), 'createNewDependentElementCallback', ['workspace' => $this->getBackendUser()->workspace])
             );
-
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_CreateChildReference,
-                $this->getDependencyCallback('createNewDependentElementChildReferenceCallback')
+                GeneralUtility::makeInstance(EventCallback::class, $this->getElementEntityProcessor(), 'createNewDependentElementChildReferenceCallback')
             );
-
             $this->dependencyResolver->setEventCallback(
                 ElementEntity::EVENT_CreateParentReference,
-                $this->getDependencyCallback('createNewDependentElementParentReferenceCallback')
+                GeneralUtility::makeInstance(EventCallback::class, $this->getElementEntityProcessor(), 'createNewDependentElementParentReferenceCallback')
             );
         }
-
         return $this->dependencyResolver;
-    }
-
-    /**
-     * Gets a new callback to be used in the dependency resolver utility.
-     */
-    protected function getDependencyCallback(string $method, array $targetArguments = []): EventCallback
-    {
-        return GeneralUtility::makeInstance(
-            EventCallback::class,
-            $this->getElementEntityProcessor(),
-            $method,
-            $targetArguments
-        );
     }
 
     /**
