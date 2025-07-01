@@ -65,7 +65,6 @@ readonly class GridDataService
 {
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
-        private WorkspaceService $workspaceService,
         private ModuleProvider $moduleProvider,
         private WorkspacePublishGate $workspacePublishGate,
         private IntegrityService $integrityService,
@@ -354,12 +353,9 @@ readonly class GridDataService
                 $versionArray['path_Live'] = htmlspecialchars(BackendUtility::getRecordPath($record['livepid'], '', 999));
                 $versionArray['path_Workspace'] = htmlspecialchars($pathWorkspace);
                 $versionArray['path_Workspace_crop'] = htmlspecialchars($pathWorkspaceCropped);
-                $versionArray['workspace_Title'] = htmlspecialchars($this->workspaceService->getWorkspaceTitle((int)$versionRecord['t3ver_wsid']));
-                $versionArray['workspace_Tstamp'] = 0;
                 $versionArray['lastChangedFormatted'] = '';
                 if (array_key_exists('tstamp', $versionRecord)) {
                     // @todo: Avoid hard coded access to 'tstamp' and use table TCA 'ctrl' 'tstamp' value instead, if set.
-                    $versionArray['workspace_Tstamp'] = (int)$versionRecord['tstamp'];
                     $versionArray['lastChangedFormatted'] = BackendUtility::datetime((int)$versionRecord['tstamp']);
                 }
                 $versionArray['t3ver_wsid'] = $versionRecord['t3ver_wsid'];
@@ -375,8 +371,6 @@ readonly class GridDataService
                     'title' => $this->getSystemLanguageValue($languageValue, $pageId, 'title'),
                     'title_crop' => htmlspecialchars(GeneralUtility::fixed_lgd_cs($this->getSystemLanguageValue($languageValue, $pageId, 'title'), (int)$backendUser->uc['titleLen'])),
                 ];
-                $versionArray['allowedAction_nextStage'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($versionRecord['t3ver_stage']);
-                $versionArray['allowedAction_prevStage'] = $isRecordTypeAllowedToModify && $stagesObj->isPrevStageAllowedForUser($versionRecord['t3ver_stage']);
                 if ($isAllowedToPublish && $swapStage !== StagesService::STAGE_EDIT_ID && (int)$versionRecord['t3ver_stage'] === $swapStage) {
                     $versionArray['allowedAction_publish'] = $isRecordTypeAllowedToModify && $stagesObj->isNextStageAllowedForUser($swapStage);
                 } elseif ($isAllowedToPublish && $swapStage === StagesService::STAGE_EDIT_ID) {
