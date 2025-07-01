@@ -38,8 +38,6 @@ export type RecordData = {
   path_Live: string,
   path_Workspace: string,
   path_Workspace_crop: string,
-  workspace_Title: string,
-  workspace_Tstamp: number,
   lastChangedFormatted: string,
   t3ver_wsid: number,
   t3ver_oid: number,
@@ -53,8 +51,6 @@ export type RecordData = {
     title: string,
     title_crop: string
   },
-  allowedAction_nextStage: boolean,
-  allowedAction_prevStage: boolean,
   allowedAction_publish: boolean,
   allowedAction_delete: boolean,
   allowedAction_view: boolean,
