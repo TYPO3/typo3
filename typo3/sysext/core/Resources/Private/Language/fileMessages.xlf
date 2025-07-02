@@ -228,6 +228,10 @@
 			<trans-unit id="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory" resname="FileUtility.YouDontHaveFullAccessToTheDestinationDirectory">
 				<source>You don't have full access to the destination directory "%s"!</source>
 			</trans-unit>
+			<!-- label removed in v14, contained here for previous TYPO3 localization bundles. Do not remove in v13 branch. -->
+			<trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtension">
+				<source>Mime-type "%s" not allowed for file extension "%s".</source>
+			</trans-unit>
 			<trans-unit id="FileUtility.MimeTypeNotAllowedForFileExtensionWithExpectation">
 				<source>Mime-type "%s" not allowed for file extension "%s" (expected: %s).</source>
 			</trans-unit>
