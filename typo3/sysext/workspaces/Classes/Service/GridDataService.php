@@ -225,12 +225,12 @@ readonly class GridDataService
         foreach ($stageChanges as $entry) {
             $preparedEntry = [];
             $beUserRecord = BackendUtility::getRecord('be_users', $entry['userid']);
-            $preparedEntry['stage_title'] = htmlspecialchars($this->stagesService->getStageTitle((int)$entry['history_data']['next']));
-            $preparedEntry['previous_stage_title'] = htmlspecialchars($this->stagesService->getStageTitle((int)$entry['history_data']['current']));
+            $preparedEntry['stage_title'] = $this->stagesService->getStageTitle((int)$entry['history_data']['next']);
+            $preparedEntry['previous_stage_title'] = $this->stagesService->getStageTitle((int)$entry['history_data']['current']);
             $preparedEntry['user_uid'] = (int)$entry['userid'];
-            $preparedEntry['user_username'] = is_array($beUserRecord) ? htmlspecialchars($beUserRecord['username']) : '';
-            $preparedEntry['tstamp'] = htmlspecialchars(BackendUtility::datetime($entry['tstamp']));
-            $preparedEntry['user_comment'] = nl2br(htmlspecialchars($entry['history_data']['comment']));
+            $preparedEntry['user_username'] = is_array($beUserRecord) ? $beUserRecord['username'] : '';
+            $preparedEntry['tstamp'] = BackendUtility::datetime($entry['tstamp']);
+            $preparedEntry['user_comment'] = $entry['history_data']['comment'];
             $preparedEntry['user_avatar'] = $beUserRecord ? $this->avatar->render($beUserRecord) : '';
             $commentsForRecord[] = $preparedEntry;
         }
