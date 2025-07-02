@@ -21,8 +21,6 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Crypto\HashService;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
-use TYPO3\CMS\Core\Database\Query\Restriction\DefaultRestrictionContainer;
-use TYPO3\CMS\Core\Database\Query\Restriction\RootLevelRestriction;
 use TYPO3\CMS\Core\Http\ServerRequestFactory;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Core\Security\BlockSerializationTrait;
@@ -416,36 +414,27 @@ class SessionService implements SingletonInterface
      */
     protected function getBackendUserRecord(int $uid): ?array
     {
-        $restrictionContainer = GeneralUtility::makeInstance(DefaultRestrictionContainer::class);
-        $restrictionContainer->add(GeneralUtility::makeInstance(RootLevelRestriction::class, ['be_users']));
-
+        $accessTimeStamp = (int)$GLOBALS['SIM_ACCESS_TIME'];
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_users');
-        $queryBuilder->setRestrictions($restrictionContainer);
         $queryBuilder->select('uid', 'admin')
             ->from('be_users')
-            ->where($queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)));
+            ->where(
+                $queryBuilder->expr()->and(
+                    $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($uid, Connection::PARAM_INT)),
+                    // The admin tool intentionally does not load TCA schema at this time,
+                    // therefore database restrictions applied manually
+                    $queryBuilder->expr()->eq('pid', 0),
+                    $queryBuilder->expr()->eq('deleted', 0),
+                    $queryBuilder->expr()->eq('disable', 0),
+                    $queryBuilder->expr()->lte('starttime', $accessTimeStamp),
+                    $queryBuilder->expr()->or(
+                        $queryBuilder->expr()->eq('endtime', 0),
+                        $queryBuilder->expr()->gt('endtime', $accessTimeStamp),
+                    )
+                )
+            );
 
-        $resetBeUsersTca = false;
-        if (!isset($GLOBALS['TCA']['be_users'])) {
-            // The admin tool intentionally does not load any TCA information at this time.
-            // The database restictions, needs the enablecolumns TCA information
-            // for 'be_users' to load the user correctly.
-            // That is why this part of the TCA ($GLOBALS['TCA']['be_users']['ctrl']['enablecolumns'])
-            // is simulated.
-            // The simulation state will be removed later to avoid unexpected side effects.
-            $GLOBALS['TCA']['be_users']['ctrl']['enablecolumns'] = [
-                'rootLevel' => 1,
-                'deleted' => 'deleted',
-                'disabled' => 'disable',
-                'starttime' => 'starttime',
-                'endtime' => 'endtime',
-            ];
-            $resetBeUsersTca = true;
-        }
         $result = $queryBuilder->executeQuery()->fetchAssociative();
-        if ($resetBeUsersTca) {
-            unset($GLOBALS['TCA']['be_users']);
-        }
 
         return is_array($result) ? $result : null;
     }
