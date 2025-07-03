@@ -153,7 +153,7 @@ class ImportController
         $conflictMode = empty($parsedBody['overwriteExistingFiles']) ? DuplicationBehavior::CANCEL : DuplicationBehavior::REPLACE;
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode($conflictMode);
-        $this->fileProcessor->start($file);
+        $this->fileProcessor->start($file, $request->getUploadedFiles());
         $result = $this->fileProcessor->processData();
         if (isset($result['upload'][0][0])) {
             // If upload went well, set the new file as the import file.

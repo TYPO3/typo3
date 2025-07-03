@@ -100,7 +100,7 @@ class FileController
     public function mainAction(ServerRequestInterface $request): ResponseInterface
     {
         $this->init($request);
-        $this->main();
+        $this->main($request);
 
         BackendUtility::setUpdateSignal('updateFolderTree');
 
@@ -129,7 +129,7 @@ class FileController
     public function processAjaxRequest(ServerRequestInterface $request): ResponseInterface
     {
         $this->init($request);
-        $this->main();
+        $this->main($request);
         $flatResult = [
             'hasErrors' => false,
         ];
@@ -238,11 +238,11 @@ class FileController
      * Performing the file admin action:
      * Initializes the objects, setting permissions, sending data to object.
      */
-    protected function main(): void
+    protected function main(ServerRequestInterface $request): void
     {
         $this->fileProcessor->setActionPermissions();
         $this->fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
-        $this->fileProcessor->start($this->file);
+        $this->fileProcessor->start($this->file, $request->getUploadedFiles());
         $this->fileData = $this->fileProcessor->processData();
     }
 

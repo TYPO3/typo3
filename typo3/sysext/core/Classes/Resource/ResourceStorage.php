@@ -963,7 +963,6 @@ class ResourceStorage implements ResourceStorageInterface
      * Checks if a file has the permission to be uploaded to a Folder/Storage.
      * If not, throws an exception.
      *
-     * @param string $localFilePath the temporary file name from $_FILES['file1']['tmp_name']
      * @param FolderInterface $targetFolder The target folder where the file should be uploaded
      * @param string $targetFileName the destination file name $_FILES['file1']['name']
      *
@@ -973,12 +972,22 @@ class ResourceStorage implements ResourceStorageInterface
      * @throws Exception\UploadSizeException
      * @throws Exception\InsufficientUserPermissionsException
      */
-    protected function assureFileUploadPermissions(string $localFilePath, FolderInterface $targetFolder, string $targetFileName, int $uploadedFileSize): void
+    protected function assureFileUploadPermissions(string|array|UploadedFileInterface $uploadedFileData, FolderInterface $targetFolder, string $targetFileName, int $uploadedFileSize): void
     {
-        // Makes sure this is an uploaded file
-        if (!is_uploaded_file($localFilePath)) {
-            throw new UploadException('The upload has failed, no uploaded file found!', 1322110455);
+        // the temporary file name from $_FILES['file1']['tmp_name']
+        // @todo deprecate using local file path parameter here
+        if (is_string($uploadedFileData)) {
+            $localFilePath = $uploadedFileData;
+            // Makes sure this is an uploaded file via HTTP
+            if (!is_uploaded_file($localFilePath)) {
+                throw new UploadException('The upload has failed, no uploaded file found!', 1322110455);
+            }
+            // otherwise, resolve the local file path from the `UploadedFile`-like structure
+            // (no additional `is_uploaded_file` check on purpose)
+        } else {
+            $localFilePath = $this->getUploadedLocalFilePath($uploadedFileData);
         }
+
         // Max upload size (kb) for files.
         $maxUploadFileSize = GeneralUtility::getMaxUploadFileSize() * 1024;
         if ($maxUploadFileSize > 0 && $uploadedFileSize >= $maxUploadFileSize) {
@@ -2013,7 +2022,7 @@ class ResourceStorage implements ResourceStorageInterface
         $targetFileName = $this->getUploadedTargetFileName($uploadedFileData, $targetFileName);
         $targetFolder ??= $this->getDefaultFolder();
 
-        $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $size);
+        $this->assureFileUploadPermissions($uploadedFileData, $targetFolder, $targetFileName, $size);
         $this->assureResourceConsistency($localFilePath, $targetFileName);
 
         if ($this->hasFileInFolder($targetFileName, $targetFolder) && $conflictMode === DuplicationBehavior::REPLACE) {
@@ -2036,7 +2045,7 @@ class ResourceStorage implements ResourceStorageInterface
         $targetFileName = $this->getUploadedTargetFileName($sourceFile, $targetFileName);
         $targetFolder = $targetFile->getParentFolder();
 
-        $this->assureFileUploadPermissions($localFilePath, $targetFolder, $targetFileName, $localFileSize);
+        $this->assureFileUploadPermissions($sourceFile, $targetFolder, $targetFileName, $localFileSize);
         $this->assureFileReplacePermissions($targetFile);
         $this->assureFileRenamePermissions($targetFile, $targetFileName);
         $this->assureResourceConsistency($localFilePath, $targetFileName);

@@ -352,7 +352,7 @@ class FileListController implements LoggerAwareInterface
                 $fileProcessor = GeneralUtility::makeInstance(ExtendedFileUtility::class);
                 $fileProcessor->setActionPermissions();
                 $fileProcessor->setExistingFilesConflictMode($this->overwriteExistingFiles);
-                $fileProcessor->start($FILE);
+                $fileProcessor->start($FILE, []);
                 $fileProcessor->processData();
                 // Clean & Save clipboard state
                 $this->filelist->clipObj->cleanCurrent();
