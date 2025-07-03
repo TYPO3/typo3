@@ -93,14 +93,14 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         foreach ($dashboardPresetsFromPackages as $identifier => $options) {
-            $preset = new DashboardPreset(
+            $preset = self::new($container, DashboardPreset::class, [
                 $identifier,
                 $options['title'],
                 $options['description'],
                 $options['iconIdentifier'],
                 $options['defaultWidgets'],
-                $options['showInWizard']
-            );
+                $options['showInWizard'],
+            ]);
             $dashboardPresetRegistry->registerDashboardPreset($preset);
         }
 
@@ -121,10 +121,10 @@ class ServiceProvider extends AbstractServiceProvider
         }
 
         foreach ($widgetGroupsFromPackages as $identifier => $options) {
-            $group = new WidgetGroup(
+            $group = self::new($container, WidgetGroup::class, [
                 $identifier,
-                $options['title']
-            );
+                $options['title'],
+            ]);
             $widgetGroupRegistry->registerWidgetGroup($group);
         }
 

@@ -123,15 +123,19 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getAuthenticationService(ContainerInterface $container): Authentication\AuthenticationService
     {
-        return new Authentication\AuthenticationService(
-            $container->get(Mailer::class)
-        );
+        return self::new($container, Authentication\AuthenticationService::class, [
+            $container->get(Mailer::class),
+        ]);
     }
 
     public static function getApplication(ContainerInterface $container): Http\Application
     {
         $requestHandler = $container->get(Http\NotFoundRequestHandler::class);
-        $dispatcher = new MiddlewareDispatcher($requestHandler, [], $container);
+        $dispatcher = self::new($container, MiddlewareDispatcher::class, [
+            $requestHandler,
+            [],
+            $container,
+        ]);
 
         // Stack of middlewares, executed LIFO
         $dispatcher->lazy(ResponsePropagationMiddleware::class);
@@ -147,72 +151,72 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getNotFoundRequestHandler(ContainerInterface $container): Http\NotFoundRequestHandler
     {
-        return new Http\NotFoundRequestHandler();
+        return self::new($container, Http\NotFoundRequestHandler::class);
     }
 
     public static function getClearCacheService(ContainerInterface $container): Service\ClearCacheService
     {
-        return new Service\ClearCacheService(
+        return self::new($container, Service\ClearCacheService::class, [
             $container->get(Service\LateBootService::class),
-            $container->get('cache.di')
-        );
+            $container->get('cache.di'),
+        ]);
     }
 
     public static function getClearTableService(ContainerInterface $container): Service\ClearTableService
     {
-        return new Service\ClearTableService(
+        return self::new($container, Service\ClearTableService::class, [
             $container->get(FailsafePackageManager::class),
-        );
+        ]);
     }
 
     public static function getCoreUpdateService(ContainerInterface $container): Service\CoreUpdateService
     {
-        return new Service\CoreUpdateService(
-            $container->get(Service\CoreVersionService::class)
-        );
+        return self::new($container, Service\CoreUpdateService::class, [
+            $container->get(Service\CoreVersionService::class),
+        ]);
     }
 
     public static function getCoreVersionService(ContainerInterface $container): Service\CoreVersionService
     {
-        return new Service\CoreVersionService();
+        return self::new($container, Service\CoreVersionService::class);
     }
 
     public static function getLanguagePackService(ContainerInterface $container): Service\LanguagePackService
     {
-        return new Service\LanguagePackService(
+        return self::new($container, Service\LanguagePackService::class, [
             $container->get(EventDispatcherInterface::class),
             $container->get(RequestFactory::class),
-            $container->get(LogManager::class)->getLogger(Service\LanguagePackService::class)
-        );
+            $container->get(LogManager::class)->getLogger(Service\LanguagePackService::class),
+        ]);
     }
 
     public static function getLateBootService(ContainerInterface $container): Service\LateBootService
     {
-        return new Service\LateBootService(
+        return self::new($container, Service\LateBootService::class, [
             $container->get(ContainerBuilder::class),
-            $container
-        );
+            $container,
+        ]);
     }
 
     public static function getLoadTcaService(ContainerInterface $container): Service\LoadTcaService
     {
-        return new Service\LoadTcaService(
-            $container->get(Service\LateBootService::class)
-        );
+        return self::new($container, Service\LoadTcaService::class, [
+            $container->get(Service\LateBootService::class),
+        ]);
     }
 
     public static function getSilentConfigurationUpgradeService(ContainerInterface $container): Service\SilentConfigurationUpgradeService
     {
-        return new Service\SilentConfigurationUpgradeService(
-            $container->get(ConfigurationManager::class)
-        );
+        return self::new($container, Service\SilentConfigurationUpgradeService::class, [
+            $container->get(ConfigurationManager::class),
+        ]);
     }
 
     public static function getSilentTemplateFileUpgradeService(ContainerInterface $container): Service\SilentTemplateFileUpgradeService
     {
-        return new Service\SilentTemplateFileUpgradeService(
-            $container->get(WebServerConfigurationFileService::class)
-        );
+        return self::new($container, Service\SilentTemplateFileUpgradeService::class, [
+            $container->get(WebServerConfigurationFileService::class),
+        ]);
     }
 
     public static function getWebServerConfigurationFileService(ContainerInterface $container): Service\WebServerConfigurationFileService
@@ -227,71 +231,71 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getSessionService(ContainerInterface $container): Service\SessionService
     {
-        return new Service\SessionService(
+        return self::new($container, Service\SessionService::class, [
             $container->get(HashService::class),
-        );
+        ]);
     }
 
     public static function getSetupService(ContainerInterface $container): Service\SetupService
     {
-        return new Service\SetupService(
+        return self::new($container, Service\SetupService::class, [
             $container->get(ConfigurationManager::class),
             $container->get(SiteWriter::class),
             $container->get(YamlFileLoader::class),
             $container->get(FailsafePackageManager::class),
-        );
+        ]);
     }
 
     public static function getSetupDatabaseService(ContainerInterface $container): Service\SetupDatabaseService
     {
-        return new Service\SetupDatabaseService(
+        return self::new($container, Service\SetupDatabaseService::class, [
             $container->get(Service\LateBootService::class),
             $container->get(ConfigurationManager::class),
             $container->get(PermissionsCheck::class),
             $container->get(Registry::class),
-        );
+        ]);
     }
 
     public static function getInstallerMiddleware(ContainerInterface $container): Middleware\Installer
     {
-        return new Middleware\Installer(
+        return self::new($container, Middleware\Installer::class, [
             $container,
             $container->get(FormProtectionFactory::class),
             $container->get(SessionService::class),
-        );
+        ]);
     }
 
     public static function getMaintenanceMiddleware(ContainerInterface $container): Middleware\Maintenance
     {
-        return new Middleware\Maintenance(
+        return self::new($container, Middleware\Maintenance::class, [
             $container->get(FailsafePackageManager::class),
             $container->get(ConfigurationManager::class),
             $container->get(PasswordHashFactory::class),
             $container,
             $container->get(FormProtectionFactory::class),
             $container->get(SessionService::class),
-        );
+        ]);
     }
 
     public static function getEnvironmentController(ContainerInterface $container): Controller\EnvironmentController
     {
-        return new Controller\EnvironmentController(
+        return self::new($container, Controller\EnvironmentController::class, [
             $container->get(Service\LateBootService::class),
             $container->get(FormProtectionFactory::class),
-            $container->get(Mailer::class)
-        );
+            $container->get(Mailer::class),
+        ]);
     }
 
     public static function getIconController(ContainerInterface $container): Controller\IconController
     {
-        return new Controller\IconController(
-            $container->get(IconFactory::class)
-        );
+        return self::new($container, Controller\IconController::class, [
+            $container->get(IconFactory::class),
+        ]);
     }
 
     public static function getInstallerController(ContainerInterface $container): Controller\InstallerController
     {
-        return new Controller\InstallerController(
+        return self::new($container, Controller\InstallerController::class, [
             $container->get(Service\LateBootService::class),
             $container->get(ConfigurationManager::class),
             $container->get(FailsafePackageManager::class),
@@ -301,32 +305,32 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(SetupDatabaseService::class),
             $container->get(HashService::class),
             $container->get(IconRegistry::class),
-        );
+        ]);
     }
 
     public static function getLayoutController(ContainerInterface $container): Controller\LayoutController
     {
-        return new Controller\LayoutController(
+        return self::new($container, Controller\LayoutController::class, [
             $container->get(FailsafePackageManager::class),
             $container->get(Service\SilentConfigurationUpgradeService::class),
             $container->get(Service\SilentTemplateFileUpgradeService::class),
             $container->get(BackendEntryPointResolver::class),
             $container->get(HashService::class),
             $container->get(IconRegistry::class),
-        );
+        ]);
     }
 
     public static function getLoginController(ContainerInterface $container): Controller\LoginController
     {
-        return new Controller\LoginController(
+        return self::new($container, Controller\LoginController::class, [
             $container->get(FormProtectionFactory::class),
             $container->get(ConfigurationManager::class),
-        );
+        ]);
     }
 
     public static function getMaintenanceController(ContainerInterface $container): Controller\MaintenanceController
     {
-        return new Controller\MaintenanceController(
+        return self::new($container, Controller\MaintenanceController::class, [
             $container->get(Service\LateBootService::class),
             $container->get(Service\ClearCacheService::class),
             $container->get(Service\ClearTableService::class),
@@ -335,12 +339,12 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Locales::class),
             $container->get(LanguageServiceFactory::class),
             $container->get(FormProtectionFactory::class),
-        );
+        ]);
     }
 
     public static function getSettingsController(ContainerInterface $container): Controller\SettingsController
     {
-        return new Controller\SettingsController(
+        return self::new($container, Controller\SettingsController::class, [
             $container->get(PackageManager::class),
             $container->get(LanguageServiceFactory::class),
             $container->get(CommentAwareAstBuilder::class),
@@ -348,83 +352,83 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(AstTraverser::class),
             $container->get(FormProtectionFactory::class),
             $container->get(ConfigurationManager::class),
-        );
+        ]);
     }
 
     public static function getServerResponseCheckController(ContainerInterface $container): Controller\ServerResponseCheckController
     {
-        return new Controller\ServerResponseCheckController(
+        return self::new($container, Controller\ServerResponseCheckController::class, [
             $container->get(HashService::class),
-        );
+        ]);
     }
 
     public static function getUpgradeController(ContainerInterface $container): Controller\UpgradeController
     {
-        return new Controller\UpgradeController(
+        return self::new($container, Controller\UpgradeController::class, [
             $container->get(PackageManager::class),
             $container->get(Service\LateBootService::class),
             $container->get(Service\DatabaseUpgradeWizardsService::class),
             $container->get(FormProtectionFactory::class),
-            $container->get(LoadTcaService::class)
-        );
+            $container->get(LoadTcaService::class),
+        ]);
     }
 
     public static function getLanguagePackCommand(ContainerInterface $container): Command\LanguagePackCommand
     {
-        return new Command\LanguagePackCommand(
+        return self::new($container, Command\LanguagePackCommand::class, [
             'language:update',
-            $container->get(Service\LateBootService::class)
-        );
+            $container->get(Service\LateBootService::class),
+        ]);
     }
 
     public static function getUpgradeWizardRunCommand(ContainerInterface $container): Command\UpgradeWizardRunCommand
     {
-        return new Command\UpgradeWizardRunCommand(
+        return self::new($container, Command\UpgradeWizardRunCommand::class, [
             'upgrade:run',
             $container->get(Service\LateBootService::class),
             $container->get(Service\DatabaseUpgradeWizardsService::class),
-            $container->get(Service\SilentConfigurationUpgradeService::class)
-        );
+            $container->get(Service\SilentConfigurationUpgradeService::class),
+        ]);
     }
 
     public static function getUpgradeWizardListCommand(ContainerInterface $container): Command\UpgradeWizardListCommand
     {
-        return new Command\UpgradeWizardListCommand(
+        return self::new($container, Command\UpgradeWizardListCommand::class, [
             'upgrade:list',
             $container->get(Service\LateBootService::class),
-        );
+        ]);
     }
 
     public static function getUpgradeWizardMarkUndoneCommand(ContainerInterface $container): Command\UpgradeWizardMarkUndoneCommand
     {
-        return new Command\UpgradeWizardMarkUndoneCommand(
+        return self::new($container, Command\UpgradeWizardMarkUndoneCommand::class, [
             'upgrade:mark:undone',
             $container->get(Service\LateBootService::class),
-        );
+        ]);
     }
 
     public static function getSetupCommand(ContainerInterface $container): Command\SetupCommand
     {
-        return new Command\SetupCommand(
+        return self::new($container, Command\SetupCommand::class, [
             'setup',
             $container->get(Service\SetupDatabaseService::class),
             $container->get(Service\SetupService::class),
             $container->get(ConfigurationManager::class),
             $container->get(LateBootService::class),
-        );
+        ]);
     }
 
     public function getSetupDefaultBackendUserGroupsCommand(ContainerInterface $container): Command\SetupDefaultBackendUserGroupsCommand
     {
-        return new Command\SetupDefaultBackendUserGroupsCommand(
+        return self::new($container, Command\SetupDefaultBackendUserGroupsCommand::class, [
             'setup:begroups:default',
             $container->get(Service\SetupService::class),
-        );
+        ]);
     }
 
     public static function getPermissionsCheck(ContainerInterface $container): Database\PermissionsCheck
     {
-        return new Database\PermissionsCheck();
+        return self::new($container, Database\PermissionsCheck::class);
     }
 
     public static function configureCommands(ContainerInterface $container, CommandRegistry $commandRegistry): CommandRegistry

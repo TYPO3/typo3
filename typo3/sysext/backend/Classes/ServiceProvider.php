@@ -89,11 +89,12 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getApplication(ContainerInterface $container): Application
     {
-        $requestHandler = new MiddlewareDispatcher(
+        $requestHandler = self::new($container, MiddlewareDispatcher::class, [
             $container->get(RequestHandler::class),
             $container->get('backend.middlewares'),
-            $container
-        );
+            $container,
+        ]);
+
         return self::new($container, Application::class, [
             $requestHandler,
             $container->get(Context::class),
@@ -102,11 +103,11 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getRequestHandler(ContainerInterface $container): RequestHandler
     {
-        return new RequestHandler(
+        return self::new($container, RequestHandler::class, [
             $container->get(RouteDispatcher::class),
             $container->get(UriBuilder::class),
-            $container->get(ListenerProvider::class)
-        );
+            $container->get(ListenerProvider::class),
+        ]);
     }
 
     public static function getRouteDispatcher(ContainerInterface $container): RouteDispatcher
@@ -194,7 +195,7 @@ class ServiceProvider extends AbstractServiceProvider
             $methods = $options['methods'] ?? [];
             $aliases = $options['aliases'] ?? [];
             unset($options['path'], $options['methods'], $options['aliases']);
-            $route = new Route($path, $options);
+            $route = self::new($container, Route::class, [$path, $options]);
             if (count($methods) > 0) {
                 $route->setMethods($methods);
             }

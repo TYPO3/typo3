@@ -222,77 +222,79 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getListCommand(ContainerInterface $container): Command\ListCommand
     {
-        return new Command\ListCommand(
+        return self::new($container, Command\ListCommand::class, [
             $container,
-            $container->get(Core\BootService::class)
-        );
+            $container->get(Core\BootService::class),
+        ]);
     }
 
     public static function getHelpCommand(ContainerInterface $container): HelpCommand
     {
-        return new HelpCommand();
+        return self::new($container, HelpCommand::class);
     }
 
     public static function getSymfonyLintCommand(ContainerInterface $container): SymfonyLintCommand
     {
-        return new SymfonyLintCommand();
+        return self::new($container, SymfonyLintCommand::class);
     }
 
     public static function getSymfonyDumpCompletionCommand(ContainerInterface $container): SymfonyDumpCompletionCommand
     {
-        return new SymfonyDumpCompletionCommand();
+        return self::new($container, SymfonyDumpCompletionCommand::class);
     }
 
     public static function getCacheFlushCommand(ContainerInterface $container): Command\CacheFlushCommand
     {
-        return new Command\CacheFlushCommand(
+        return self::new($container, Command\CacheFlushCommand::class, [
             $container->get(Core\BootService::class),
-            $container->get('cache.di')
-        );
+            $container->get('cache.di'),
+        ]);
     }
 
     public static function getCacheWarmupCommand(ContainerInterface $container): Command\CacheWarmupCommand
     {
-        return new Command\CacheWarmupCommand(
+        return self::new($container, Command\CacheWarmupCommand::class, [
             $container->get(ContainerBuilder::class),
             $container->get(Package\PackageManager::class),
             $container->get(Core\BootService::class),
-            $container->get('cache.di')
-        );
+            $container->get('cache.di'),
+        ]);
     }
 
     public static function getDumpAutoloadCommand(ContainerInterface $container): Command\DumpAutoloadCommand
     {
-        return new Command\DumpAutoloadCommand();
+        return self::new($container, Command\DumpAutoloadCommand::class);
     }
 
     public static function getConsoleCommandApplication(ContainerInterface $container): Console\CommandApplication
     {
-        return new Console\CommandApplication(
+        return self::new($container, Console\CommandApplication::class, [
             $container->get(Context\Context::class),
             $container->get(Console\CommandRegistry::class),
             $container->get(SymfonyEventDispatcher::class),
             $container->get(Configuration\ConfigurationManager::class),
             $container->get(Core\BootService::class),
-            $container->get(Localization\LanguageServiceFactory::class)
-        );
+            $container->get(Localization\LanguageServiceFactory::class),
+        ]);
     }
 
     public static function getConsoleCommandRegistry(ContainerInterface $container): Console\CommandRegistry
     {
-        return new Console\CommandRegistry($container);
+        return self::new($container, Console\CommandRegistry::class, [$container]);
     }
 
     public static function getEventDispatcher(ContainerInterface $container): EventDispatcher\EventDispatcher
     {
-        return new EventDispatcher\EventDispatcher(
-            $container->get(EventDispatcher\ListenerProvider::class)
-        );
+        return self::new($container, EventDispatcher\EventDispatcher::class, [
+            $container->get(EventDispatcher\ListenerProvider::class),
+        ]);
     }
 
     public static function getEventListenerProvider(ContainerInterface $container): EventDispatcher\ListenerProvider
     {
-        return new EventDispatcher\ListenerProvider($container);
+        return self::new($container, EventDispatcher\ListenerProvider::class, [
+            $container,
+        ]);
     }
 
     public static function extendEventListenerProvider(
@@ -321,7 +323,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getContext(ContainerInterface $container): Context\Context
     {
-        return new Context\Context();
+        return self::new($container, Context\Context::class);
     }
 
     public static function getBootService(ContainerInterface $container): Core\BootService
@@ -329,15 +331,15 @@ class ServiceProvider extends AbstractServiceProvider
         if ($container->has('_early.boot-service')) {
             return $container->get('_early.boot-service');
         }
-        return new Core\BootService(
+        return self::new($container, Core\BootService::class, [
             $container->get(ContainerBuilder::class),
-            $container
-        );
+            $container,
+        ]);
     }
 
     public static function getPasswordHashFactory(ContainerInterface $container): Crypto\PasswordHashing\PasswordHashFactory
     {
-        return new Crypto\PasswordHashing\PasswordHashFactory();
+        return self::new($container, Crypto\PasswordHashing\PasswordHashFactory::class);
     }
 
     public static function getIconFactory(ContainerInterface $container): Imaging\IconFactory
@@ -466,7 +468,9 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getPackageDependentCacheIdentifier(ContainerInterface $container): Package\Cache\PackageDependentCacheIdentifier
     {
-        return new Package\Cache\PackageDependentCacheIdentifier($container->get(Package\PackageManager::class));
+        return self::new($container, Package\Cache\PackageDependentCacheIdentifier::class, [
+            $container->get(Package\PackageManager::class),
+        ]);
     }
 
     public static function getRegistry(ContainerInterface $container): Registry
@@ -511,7 +515,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getFileNameValidator(ContainerInterface $container): Resource\Security\FileNameValidator
     {
-        return new FileNameValidator();
+        return self::new($container, FileNameValidator::class);
     }
 
     public static function getStorageRepository(ContainerInterface $container): Resource\StorageRepository
@@ -521,14 +525,14 @@ class ServiceProvider extends AbstractServiceProvider
             $container->get(Database\ConnectionPool::class),
             $container->get(Resource\Driver\DriverRegistry::class),
             $container->get(FlexFormTools::class),
-            new FlexFormService(),
+            self::new($container, FlexFormService::class),
             $container->get(Log\LogManager::class)->getLogger(Resource\StorageRepository::class),
         ]);
     }
 
     public static function getDependencyOrderingService(ContainerInterface $container): Service\DependencyOrderingService
     {
-        return new Service\DependencyOrderingService();
+        return self::new($container, Service\DependencyOrderingService::class);
     }
 
     public static function getOpcodeCacheService(ContainerInterface $container): Service\OpcodeCacheService
@@ -538,7 +542,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getTypoScriptStringFactory(ContainerInterface $container): TypoScript\TypoScriptStringFactory
     {
-        return new TypoScript\TypoScriptStringFactory($container, new LossyTokenizer());
+        return self::new($container, TypoScript\TypoScriptStringFactory::class, [
+            $container,
+            self::new($container, LossyTokenizer::class),
+        ]);
     }
 
     public static function getTypoScriptService(ContainerInterface $container): TypoScript\TypoScriptService
@@ -570,10 +577,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getHttpApplication(ContainerInterface $container): Http\Application
     {
-        $requestHandler = new Http\MiddlewareDispatcher(
+        $requestHandler = self::new($container, Http\MiddlewareDispatcher::class, [
             $container->get(Http\RequestHandler::class),
             $container->get('core.middlewares'),
-        );
+        ]);
 
         return self::new($container, Http\Application::class, [
             $requestHandler,
@@ -583,10 +590,10 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getHttpRequestHandler(ContainerInterface $container): Http\RequestHandler
     {
-        return new Http\RequestHandler(
+        return self::new($container, Http\RequestHandler::class, [
             $container,
             $container->get(Routing\BackendEntryPointResolver::class),
-        );
+        ]);
     }
 
     public static function getRequestContextFactory(ContainerInterface $container): Routing\RequestContextFactory
@@ -612,14 +619,14 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getGuzzleClientFactory(ContainerInterface $container): Http\Client\GuzzleClientFactory
     {
-        return new Http\Client\GuzzleClientFactory();
+        return self::new($container, Http\Client\GuzzleClientFactory::class);
     }
 
     public static function getRequestFactory(ContainerInterface $container): Http\RequestFactory
     {
-        return new Http\RequestFactory(
-            $container->get(Http\Client\GuzzleClientFactory::class)
-        );
+        return self::new($container, Http\RequestFactory::class, [
+            $container->get(Http\Client\GuzzleClientFactory::class),
+        ]);
     }
 
     public static function getReferrerEnforcer(ContainerInterface $container): Http\Security\ReferrerEnforcer
@@ -629,12 +636,12 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getMiddlewareStackResolver(ContainerInterface $container): Http\MiddlewareStackResolver
     {
-        return new Http\MiddlewareStackResolver(
+        return self::new($container, Http\MiddlewareStackResolver::class, [
             $container,
             $container->get(Service\DependencyOrderingService::class),
             $container->get('cache.core'),
             $container->get(Package\Cache\PackageDependentCacheIdentifier::class)->toString(),
-        );
+        ]);
     }
 
     public static function getMiddlewares(ContainerInterface $container): \ArrayObject
@@ -644,7 +651,7 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getContentSecurityPolicies(ContainerInterface $container): Map
     {
-        return new Map();
+        return self::new($container, Map::class);
     }
 
     public static function getAssetsCache(ContainerInterface $container): FrontendInterface
@@ -667,9 +674,9 @@ class ServiceProvider extends AbstractServiceProvider
         return new \ArrayObject($container->get(Http\MiddlewareStackResolver::class)->resolve('core'));
     }
 
-    public static function getHashService(): HashService
+    public static function getHashService(ContainerInterface $container): HashService
     {
-        return new HashService();
+        return self::new($container, HashService::class);
     }
 
     public static function provideFallbackEventDispatcher(
@@ -677,9 +684,9 @@ class ServiceProvider extends AbstractServiceProvider
         ?EventDispatcherInterface $eventDispatcher = null
     ): EventDispatcherInterface {
         // Provide a dummy / empty event dispatcher for the install tool when $eventDispatcher is null (that means when we run without symfony DI)
-        return $eventDispatcher ?? new EventDispatcher\EventDispatcher(
-            new EventDispatcher\ListenerProvider($container)
-        );
+        return $eventDispatcher ?? self::new($container, EventDispatcher\EventDispatcher::class, [
+            self::new($container, EventDispatcher\ListenerProvider::class, [$container]),
+        ]);
     }
 
     public static function configureCommands(ContainerInterface $container, Console\CommandRegistry $commandRegistry): Console\CommandRegistry

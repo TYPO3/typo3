@@ -60,11 +60,11 @@ class ServiceProvider extends AbstractServiceProvider
 
     public static function getApplication(ContainerInterface $container): Http\Application
     {
-        $requestHandler = new MiddlewareDispatcher(
+        $requestHandler = self::new($container, MiddlewareDispatcher::class, [
             $container->get(Http\RequestHandler::class),
             $container->get('frontend.middlewares'),
-            $container
-        );
+            $container,
+        ]);
 
         return self::new($container, Http\Application::class, [
             $requestHandler,

@@ -160,9 +160,9 @@ abstract class AbstractServiceProvider implements ServiceProviderInterface
             $mutationsInPackage = self::requireFile($fileName);
             foreach ($mutationsInPackage as $scope => $mutation) {
                 if (!isset($mutations[$scope])) {
-                    $mutations[$scope] = new Map();
+                    $mutations[$scope] = self::new($container, Map::class);
                 }
-                $origin = new MutationOrigin(MutationOriginType::package, $packageName);
+                $origin = self::new($container, MutationOrigin::class, [MutationOriginType::package, $packageName]);
                 $mutations[$scope][$origin] = $mutation;
             }
         }

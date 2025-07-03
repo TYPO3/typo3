@@ -79,8 +79,8 @@ class ServiceProvider extends AbstractServiceProvider
         ?ViewFactoryInterface $viewFactory = null
     ): ViewFactoryInterface {
         // Provide the default FluidViewFactory for the install tool when $viewFactory is null (that means when we run without symfony DI)
-        return $viewFactory ?? new View\FluidViewFactory(
+        return $viewFactory ?? self::new($container, View\FluidViewFactory::class, [
             $container->get(Core\Rendering\RenderingContextFactory::class),
-        );
+        ]);
     }
 }
