@@ -1850,6 +1850,10 @@
         <source>Wakashan languages</source>
         <target>wakashkielet</target>
       </trans-unit>
+      <trans-unit id="wal" approved="yes">
+        <source>Walamo</source>
+        <target>wolaitta</target>
+      </trans-unit>
       <trans-unit id="war" approved="yes">
         <source>Waray</source>
         <target>waray</target>

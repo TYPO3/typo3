@@ -324,7 +324,7 @@
       </trans-unit>
       <trans-unit id="chr" approved="yes">
         <source>Cherokee</source>
-        <target>cheroqui</target>
+        <target>Cheroqui</target>
       </trans-unit>
       <trans-unit id="chy" approved="yes">
         <source>Cheyenne</source>
@@ -656,7 +656,7 @@
       </trans-unit>
       <trans-unit id="gu" approved="yes">
         <source>Gujarati</source>
-        <target>guyaratí</target>
+        <target>Guyaratí</target>
       </trans-unit>
       <trans-unit id="gv" approved="yes">
         <source>Manx</source>
@@ -1124,7 +1124,7 @@
       </trans-unit>
       <trans-unit id="ml" approved="yes">
         <source>Malayalam</source>
-        <target>malabar</target>
+        <target>Malabar</target>
       </trans-unit>
       <trans-unit id="mn" approved="yes">
         <source>Mongolian</source>
@@ -1852,7 +1852,7 @@
       </trans-unit>
       <trans-unit id="wa" approved="yes">
         <source>Walloon</source>
-        <target>valón</target>
+        <target>Valonia</target>
       </trans-unit>
       <trans-unit id="wak" approved="yes">
         <source>Wakashan languages</source>
@@ -1948,7 +1948,7 @@
       </trans-unit>
       <trans-unit id="zza" approved="yes">
         <source>Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki</source>
-        <target>Zaza; dimili; dimli; kirdki; kirmanjki; zazaki</target>
+        <target>Zaza; Dimili; Dimli; Kirdki; Kirmanjki; Zazaki</target>
       </trans-unit>
     </body>
   </file>
