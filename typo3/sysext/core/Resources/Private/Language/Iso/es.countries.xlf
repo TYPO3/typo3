@@ -628,7 +628,7 @@
       </trans-unit>
       <trans-unit id="HM.name" resname="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
-        <target>Islas Heard y McDonald</target>
+        <target>Isla Heard e Islas McDonald</target>
       </trans-unit>
       <trans-unit id="HN.name" resname="HN.name" approved="yes">
         <source>Honduras</source>
@@ -1620,7 +1620,7 @@
       </trans-unit>
       <trans-unit id="VI.name" resname="VI.name" approved="yes">
         <source>Virgin Islands, U.S.</source>
-        <target>Islas Vírgenes, de EEUU</target>
+        <target>Islas Vírgenes, de EEUU.</target>
       </trans-unit>
       <trans-unit id="VI.official_name" resname="VI.official_name" approved="yes">
         <source>Virgin Islands of the United States</source>

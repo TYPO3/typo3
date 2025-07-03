@@ -12,11 +12,11 @@
       </trans-unit>
       <trans-unit id="ace" resname="ace" approved="yes">
         <source>Achinese</source>
-        <target>acsehnéz</target>
+        <target>acehi</target>
       </trans-unit>
       <trans-unit id="ach" resname="ach" approved="yes">
         <source>Acoli</source>
-        <target>acsoli</target>
+        <target>acoli</target>
       </trans-unit>
       <trans-unit id="ada" resname="ada" approved="yes">
         <source>Adangme</source>

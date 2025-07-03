@@ -20,7 +20,7 @@
       </trans-unit>
       <trans-unit id="AF.official_name" resname="AF.official_name" approved="yes">
         <source>Islamic Republic of Afghanistan</source>
-        <target>Afgán Iszlám Köztársaság</target>
+        <target>Afganisztáni Iszlám Köztársaság</target>
       </trans-unit>
       <trans-unit id="AG.name" resname="AG.name" approved="yes">
         <source>Antigua and Barbuda</source>
@@ -96,7 +96,7 @@
       </trans-unit>
       <trans-unit id="AZ.official_name" resname="AZ.official_name" approved="yes">
         <source>Republic of Azerbaijan</source>
-        <target>Azeri Köztársaság</target>
+        <target>Azerbajdzsáni Köztársaság</target>
       </trans-unit>
       <trans-unit id="BA.name" resname="BA.name" approved="yes">
         <source>Bosnia and Herzegovina</source>
@@ -104,7 +104,7 @@
       </trans-unit>
       <trans-unit id="BA.official_name" resname="BA.official_name" approved="yes">
         <source>Republic of Bosnia and Herzegovina</source>
-        <target>Bosznia-hercegovinai Köztársaság</target>
+        <target>Bosznia-Hercegovina Köztársaság</target>
       </trans-unit>
       <trans-unit id="BB.name" resname="BB.name" approved="yes">
         <source>Barbados</source>
@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="BH.official_name" resname="BH.official_name" approved="yes">
         <source>Kingdom of Bahrain</source>
-        <target>Bahrein Királyság</target>
+        <target>Bahreini Királyság</target>
       </trans-unit>
       <trans-unit id="BI.name" resname="BI.name" approved="yes">
         <source>Burundi</source>
@@ -164,7 +164,7 @@
       </trans-unit>
       <trans-unit id="BL.name" resname="BL.name" approved="yes">
         <source>Saint Barthélemy</source>
-        <target>Saint Barthélemy</target>
+        <target>Saint-Barthélemy</target>
       </trans-unit>
       <trans-unit id="BM.name" resname="BM.name" approved="yes">
         <source>Bermuda</source>
@@ -176,7 +176,7 @@
       </trans-unit>
       <trans-unit id="BO.name" resname="BO.name" approved="yes">
         <source>Bolivia, Plurinational State of</source>
-        <target>Bolíviai Többnemzetiségű Állam</target>
+        <target>Bolívia, Többnemzetiségű Állam</target>
       </trans-unit>
       <trans-unit id="BO.official_name" resname="BO.official_name" approved="yes">
         <source>Plurinational State of Bolivia</source>
@@ -184,11 +184,11 @@
       </trans-unit>
       <trans-unit id="BQ.name" resname="BQ.name" approved="yes">
         <source>Bonaire, Sint Eustatius and Saba</source>
-        <target>Bonaire, Saint Eustatius és Saba</target>
+        <target>Bonaire, Sint Eustatius és Saba</target>
       </trans-unit>
       <trans-unit id="BQ.official_name" resname="BQ.official_name" approved="yes">
         <source>Bonaire, Sint Eustatius and Saba</source>
-        <target>Bonaire, Saint Eustatius és Saba</target>
+        <target>Bonaire, Sint Eustatius és Saba</target>
       </trans-unit>
       <trans-unit id="BR.name" resname="BR.name" approved="yes">
         <source>Brazil</source>
@@ -332,7 +332,7 @@
       </trans-unit>
       <trans-unit id="CV.name" resname="CV.name" approved="yes">
         <source>Cabo Verde</source>
-        <target>Zöld-foki-szigetek</target>
+        <target>Zöld-foki Köztársaság</target>
       </trans-unit>
       <trans-unit id="CV.official_name" resname="CV.official_name" approved="yes">
         <source>Republic of Cabo Verde</source>
@@ -392,7 +392,7 @@
       </trans-unit>
       <trans-unit id="DM.name" resname="DM.name" approved="yes">
         <source>Dominica</source>
-        <target>Dominika</target>
+        <target>Dominikai Közösség</target>
       </trans-unit>
       <trans-unit id="DM.official_name" resname="DM.official_name" approved="yes">
         <source>Commonwealth of Dominica</source>
@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="ER.official_name" resname="ER.official_name" approved="yes">
         <source>the State of Eritrea</source>
-        <target>Eritrea Állam</target>
+        <target>Eritreai Állam</target>
       </trans-unit>
       <trans-unit id="ES.name" resname="ES.name" approved="yes">
         <source>Spain</source>
@@ -484,7 +484,7 @@
       </trans-unit>
       <trans-unit id="FM.name" resname="FM.name" approved="yes">
         <source>Micronesia, Federated States of</source>
-        <target>Mikronézia, Államszövetség</target>
+        <target>Mikronéziai Szövetségi Államok</target>
       </trans-unit>
       <trans-unit id="FM.official_name" resname="FM.official_name" approved="yes">
         <source>Federated States of Micronesia</source>
@@ -624,7 +624,7 @@
       </trans-unit>
       <trans-unit id="HK.official_name" resname="HK.official_name" approved="yes">
         <source>Hong Kong Special Administrative Region of China</source>
-        <target>Hongkong, a Kínai Népköztársaság különleges közigazgatási területe</target>
+        <target>Hongkong Különleges Közigazgatási Terület, Kína</target>
       </trans-unit>
       <trans-unit id="HM.name" resname="HM.name" approved="yes">
         <source>Heard Island and McDonald Islands</source>
@@ -856,7 +856,7 @@
       </trans-unit>
       <trans-unit id="LK.official_name" resname="LK.official_name" approved="yes">
         <source>Democratic Socialist Republic of Sri Lanka</source>
-        <target>Srí Lanka-i Demokratikus Szocialista Köztársaság</target>
+        <target>Srí Lanka Demokratikus Szocialista Köztársaság</target>
       </trans-unit>
       <trans-unit id="LR.name" resname="LR.name" approved="yes">
         <source>Liberia</source>
@@ -940,7 +940,7 @@
       </trans-unit>
       <trans-unit id="MF.name" resname="MF.name" approved="yes">
         <source>Saint Martin (French part)</source>
-        <target>Saint Martin (francia oldal)</target>
+        <target>Saint-Martin (francia rész)</target>
       </trans-unit>
       <trans-unit id="MG.name" resname="MG.name" approved="yes">
         <source>Madagascar</source>
@@ -964,7 +964,7 @@
       </trans-unit>
       <trans-unit id="MK.official_name" resname="MK.official_name" approved="yes">
         <source>Republic of North Macedonia</source>
-        <target>Észak-Macedóniai Köztársaság</target>
+        <target>Észak-macedóniai Köztársaság</target>
       </trans-unit>
       <trans-unit id="ML.name" resname="ML.name" approved="yes">
         <source>Mali</source>
@@ -992,7 +992,7 @@
       </trans-unit>
       <trans-unit id="MO.official_name" resname="MO.official_name" approved="yes">
         <source>Macao Special Administrative Region of China</source>
-        <target>Makaó, a Kínai Népköztársaság különleges közigazgatási területe</target>
+        <target>Makaó Különleges Közigazgatási Terület, Kína</target>
       </trans-unit>
       <trans-unit id="MP.name" resname="MP.name" approved="yes">
         <source>Northern Mariana Islands</source>
@@ -1000,7 +1000,7 @@
       </trans-unit>
       <trans-unit id="MP.official_name" resname="MP.official_name" approved="yes">
         <source>Commonwealth of the Northern Mariana Islands</source>
-        <target>Északi Mariana-szigeteki Közösség</target>
+        <target>Északi-Mariana-szigetek</target>
       </trans-unit>
       <trans-unit id="MQ.name" resname="MQ.name" approved="yes">
         <source>Martinique</source>
@@ -1228,11 +1228,11 @@
       </trans-unit>
       <trans-unit id="PS.name" resname="PS.name" approved="yes">
         <source>Palestine, State of</source>
-        <target>Palesztina</target>
+        <target>Palesztina, Nemzeti Hatóság</target>
       </trans-unit>
       <trans-unit id="PS.official_name" resname="PS.official_name" approved="yes">
         <source>the State of Palestine</source>
-        <target>Palesztina</target>
+        <target>Palesztin Nemzeti Hatóság</target>
       </trans-unit>
       <trans-unit id="PT.name" resname="PT.name" approved="yes">
         <source>Portugal</source>
@@ -1264,7 +1264,7 @@
       </trans-unit>
       <trans-unit id="QA.official_name" resname="QA.official_name" approved="yes">
         <source>State of Qatar</source>
-        <target>Katari Állam</target>
+        <target>Katar Állam</target>
       </trans-unit>
       <trans-unit id="RE.name" resname="RE.name" approved="yes">
         <source>Réunion</source>
@@ -1352,7 +1352,7 @@
       </trans-unit>
       <trans-unit id="SJ.name" resname="SJ.name" approved="yes">
         <source>Svalbard and Jan Mayen</source>
-        <target>Svalbard-szigetek és Jan Mayen-sziget</target>
+        <target>Svalbard és Jan Mayen</target>
       </trans-unit>
       <trans-unit id="SK.name" resname="SK.name" approved="yes">
         <source>Slovakia</source>
@@ -1428,11 +1428,11 @@
       </trans-unit>
       <trans-unit id="SX.name" resname="SX.name" approved="yes">
         <source>Sint Maarten (Dutch part)</source>
-        <target>Szent Martin (holland oldal)</target>
+        <target>Sint Maarten (holland rész)</target>
       </trans-unit>
       <trans-unit id="SX.official_name" resname="SX.official_name" approved="yes">
         <source>Sint Maarten (Dutch part)</source>
-        <target>Szent Martin (holland oldal)</target>
+        <target>Sint Maarten (holland rész)</target>
       </trans-unit>
       <trans-unit id="SY.name" resname="SY.name" approved="yes">
         <source>Syrian Arab Republic</source>
@@ -1540,11 +1540,11 @@
       </trans-unit>
       <trans-unit id="TW.name" resname="TW.name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>Tajvan, kínai tartomány</target>
+        <target>Tajvan, Kína tartománya</target>
       </trans-unit>
       <trans-unit id="TW.official_name" resname="TW.official_name" approved="yes">
         <source>Taiwan, Province of China</source>
-        <target>Tajvan, kínai tartomány</target>
+        <target>Tajvan, Kína tartománya</target>
       </trans-unit>
       <trans-unit id="TZ.name" resname="TZ.name" approved="yes">
         <source>Tanzania, United Republic of</source>
@@ -1668,7 +1668,7 @@
       </trans-unit>
       <trans-unit id="ZA.name" resname="ZA.name" approved="yes">
         <source>South Africa</source>
-        <target>Dél-Afrika</target>
+        <target>Dél-afrikai Köztársaság</target>
       </trans-unit>
       <trans-unit id="ZA.official_name" resname="ZA.official_name" approved="yes">
         <source>Republic of South Africa</source>
