@@ -1,0 +1,83 @@
+"pages"
+,"uid","pid","sorting","deleted","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title"
+,1,0,256,0,0,0,0,0,"FunctionalTest"
+,88,1,256,0,0,0,0,0,"DataHandlerTest"
+,89,88,256,0,0,0,0,0,"Relations"
+,90,88,512,0,0,0,0,0,"Target"
+"sys_workspace"
+,"uid","pid","deleted","title","adminusers","members","db_mountpoints","file_mountpoints","freeze","live_edit","publish_access","custom_stages","stagechg_notification","edit_notification_defaults","edit_allow_notificaton_settings","publish_notification_defaults","publish_allow_notificaton_settings"
+,1,0,0,"Workspace #1",,,,,0,0,0,0,0,0,0,0,0
+,2,0,0,"Workspace #2",,,,,0,0,0,0,0,0,0,0,0
+"sys_workspace_stage"
+,"uid","pid","tstamp","deleted","sorting","title","responsible_persons","default_mailcomment","parentid","notification_defaults","allow_notificaton_settings"
+,1,0,1290048921,0,1,"Stage 1","be_users_3",,1,0,0
+"tx_test_mm"
+,"uid","pid","sorting","deleted","sys_language_uid","l10n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","title","parent","group_mm_1_local","select_mm_1_local"
+,28,0,256,0,0,0,0,0,0,0,"Surf A",0,0,0
+,29,0,512,0,0,0,0,0,0,0,"Surf B",0,0,0
+,30,0,768,0,0,0,0,0,0,0,"Surf C",0,0,1
+,31,0,1024,0,0,0,0,0,0,0,"Surf A.A",28,0,0
+"group_mm_1_relations_mm"
+,"uid_local","uid_foreign","tablenames","sorting","sorting_foreign","fieldname"
+,28,297,"tt_content",0,1,"group_mm_1_foreign"
+,29,297,"tt_content",0,2,"group_mm_1_foreign"
+,29,298,"tt_content",0,1,"group_mm_1_foreign"
+,30,298,"tt_content",0,2,"group_mm_1_foreign"
+# @todo: These records have been added in Workspace but are not discarded (as it's a loose connection) - does this make sense?
+,29,299,"tt_content",0,1,"group_mm_1_foreign"
+,30,299,"tt_content",0,2,"group_mm_1_foreign"
+,31,299,"tt_content",0,3,"group_mm_1_foreign"
+,29,300,"tt_content",0,1,"group_mm_1_foreign"
+,30,300,"tt_content",0,2,"group_mm_1_foreign"
+,31,300,"tt_content",0,3,"group_mm_1_foreign"
+,29,301,"tt_content",0,1,"group_mm_1_foreign"
+,30,301,"tt_content",0,2,"group_mm_1_foreign"
+,31,301,"tt_content",0,3,"group_mm_1_foreign"
+"select_mm_1_relations_mm"
+,"uid_local","uid_foreign","sorting","sorting_foreign"
+,30,298,0,1
+,30,299,0,1
+,30,300,0,1
+,30,301,0,1
+"tt_content"
+,"uid","pid","sorting","deleted","sys_language_uid","l18n_parent","t3ver_wsid","t3ver_state","t3ver_stage","t3ver_oid","header","image","group_mm_1_foreign","select_mm_1_foreign","l10n_state"
+,297,89,256,0,0,0,0,0,0,0,"Regular Element #1",0,2,0,
+,298,89,512,0,0,0,0,0,0,0,"Regular Element #2",0,2,1,
+,299,89,768,0,1,298,0,0,0,0,"[Translate to Dansk:] Regular Element #2",0,3,1,"{""group_mm_1_foreign"":""parent""}"
+,300,89,1024,0,2,298,0,0,0,0,"[Translate to Deutsch:] [Translate to Dansk:] Regular Element #2",0,3,1,"{""group_mm_1_foreign"":""source""}"
+# @todo: this should never be there. And: Why doesn't this have a sys_language_uid record?
+,301,89,512,0,0,0,1,0,0,298,"Regular Element #2",0,3,1,
+"sys_refindex"
+,"hash","tablename","recuid","field","hidden","starttime","endtime","t3ver_state","flexpointer","softref_key","softref_id","sorting","workspace","ref_table","ref_uid","ref_field","ref_hidden","ref_starttime","ref_endtime","ref_t3ver_state","ref_sorting"
+,"39da406998127a9cc83f7668f10d5b33","tx_test_mm",28,"group_mm_1_local",0,0,2147483647,0,,,,0,0,"tt_content",297,"group_mm_1_foreign",0,0,2147483647,0,1
+,"7f7256cdf348487c8b4960f7335609ff","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,0,0,"tt_content",297,"group_mm_1_foreign",0,0,2147483647,0,2
+,"b3e3a1344402d5938d607f56bab79ca5","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,1,0,"tt_content",298,"group_mm_1_foreign",0,0,2147483647,0,1
+,"2fcacc5f5d4f3800f48f040b221c3dc3","tx_test_mm",30,"group_mm_1_local",0,0,2147483647,0,,,,0,0,"tt_content",298,"group_mm_1_foreign",0,0,2147483647,0,2
+,"65cd585588a6e7e6f3c03ecf84ca010c","tx_test_mm",30,"select_mm_1_local",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,1
+,"aab8a4603b35763aef487c715405b807","tx_test_mm",31,"parent",0,0,2147483647,0,,,,0,0,"tx_test_mm",28,,0,0,2147483647,0,0
+,"6f85cfacfff942817392efe26ff1ade0","sys_workspace",1,"custom_stages",0,0,2147483647,0,,,,0,0,"sys_workspace_stage",1,,0,0,2147483647,0,0
+,"96a6b7ec63daee0e0ce5d4908b6eda6f","sys_workspace_stage",1,"responsible_persons",0,0,2147483647,0,,,,0,0,"be_users",3,,0,0,2147483647,0,0
+,"6b4976b4e88ae7faa3b52ce5cefe295c","tx_test_mm",30,"select_mm_1_local",0,0,2147483647,0,,,,2,0,"tt_content",300,,0,0,2147483647,0,1
+,"99b525889dd279c4f123b74c4ab88c7c","tx_test_mm",30,"group_mm_1_local",0,0,2147483647,0,,,,1,0,"tt_content",299,"group_mm_1_foreign",0,0,2147483647,0,2
+,"dd606c2fde4226c6684be8560fe241fc","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,2,0,"tt_content",299,"group_mm_1_foreign",0,0,2147483647,0,1
+,"f465f83110d7c3f552d6420ee2105e05","tx_test_mm",31,"group_mm_1_local",0,0,2147483647,0,,,,1,0,"tt_content",300,"group_mm_1_foreign",0,0,2147483647,0,3
+,"435b8d365b44f3acb9e86abca3509530","tx_test_mm",30,"select_mm_1_local",0,0,2147483647,0,,,,1,0,"tt_content",299,,0,0,2147483647,0,1
+,"1aa80deeb6135a1f8d89756ff73c00a8","tx_test_mm",31,"group_mm_1_local",0,0,2147483647,0,,,,0,0,"tt_content",299,"group_mm_1_foreign",0,0,2147483647,0,3
+,"dec9bd8ccaf966d6cd001ea5e92234c2","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,3,0,"tt_content",300,"group_mm_1_foreign",0,0,2147483647,0,1
+,"d95019aeeb280e9639a75a3185b7cc24","tx_test_mm",30,"group_mm_1_local",0,0,2147483647,0,,,,2,0,"tt_content",300,"group_mm_1_foreign",0,0,2147483647,0,2
+,"926002522f5d6aef95eca10810a3b88b","tt_content",299,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,0
+,"dcb8962c43bfb5afbac965cefc71325a","tt_content",300,"l18n_parent",0,0,2147483647,0,,,,0,0,"tt_content",298,,0,0,2147483647,0,0
+# @todo why those records?
+,"29a74929cdc8bcae72e224fa29ba314c","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,0,1,"tt_content",297,"group_mm_1_foreign",0,0,2147483647,0,2
+,"c5f27f7c3c28dfe6a61fffb47f36ef63","tx_test_mm",31,"group_mm_1_local",0,0,2147483647,0,,,,2,1,"tt_content",301,"group_mm_1_foreign",0,0,2147483647,0,3
+,"add8aaa9e20ee49b82412cc4445d864c","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,3,1,"tt_content",301,"group_mm_1_foreign",0,0,2147483647,0,1
+,"97196f22ac61cb5e9869f67835b1ca88","tx_test_mm",30,"group_mm_1_local",0,0,2147483647,0,,,,2,1,"tt_content",301,"group_mm_1_foreign",0,0,2147483647,0,2
+,"7293c6e72273a0912d2b47d9e8d5a3b9","tx_test_mm",30,"select_mm_1_local",0,0,2147483647,0,,,,2,1,"tt_content",301,,0,0,2147483647,0,1
+,"884cf3c5deb9da93cd89ab65219a822d","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,1,1,"tt_content",299,"group_mm_1_foreign",0,0,2147483647,0,1
+,"6c937a62b8ece83dd8349962d2346492","tx_test_mm",30,"group_mm_1_local",0,0,2147483647,0,,,,0,1,"tt_content",299,"group_mm_1_foreign",0,0,2147483647,0,2
+,"2d7d63ac810df3bb0e32326809c96247","tx_test_mm",31,"group_mm_1_local",0,0,2147483647,0,,,,0,1,"tt_content",299,"group_mm_1_foreign",0,0,2147483647,0,3
+,"283046752ef2ee4449cbc9153c05fa4a","tx_test_mm",29,"group_mm_1_local",0,0,2147483647,0,,,,2,1,"tt_content",300,"group_mm_1_foreign",0,0,2147483647,0,1
+,"57162df21188c9f0d5e7116223ea4b00","tx_test_mm",30,"group_mm_1_local",0,0,2147483647,0,,,,1,1,"tt_content",300,"group_mm_1_foreign",0,0,2147483647,0,2
+,"5782109e5951821a991d166993619b4a","tx_test_mm",31,"group_mm_1_local",0,0,2147483647,0,,,,1,1,"tt_content",300,"group_mm_1_foreign",0,0,2147483647,0,3
+,"bcf05962a109b65aca62081b20a1faea","tx_test_mm",30,"select_mm_1_local",0,0,2147483647,0,,,,1,1,"tt_content",300,,0,0,2147483647,0,1
+,"08c34ef56b850ddbfcd64384101bca64","tx_test_mm",30,"select_mm_1_local",0,0,2147483647,0,,,,0,1,"tt_content",299,,0,0,2147483647,0,1

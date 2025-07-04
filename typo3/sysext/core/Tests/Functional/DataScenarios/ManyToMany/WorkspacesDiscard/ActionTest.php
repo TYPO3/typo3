@@ -33,236 +33,236 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function addSurfRelation(): void
+    public function addGroupMM1RelationOnForeignSide(): void
     {
-        parent::addSurfRelation();
+        parent::addGroupMM1RelationOnForeignSide();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/addSurfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/addGroupMM1RelationOnForeignSide.csv');
     }
 
     #[Test]
-    public function deleteSurfRelation(): void
+    public function deleteGroupMM1RelationOnForeignSide(): void
     {
-        parent::deleteSurfRelation();
+        parent::deleteGroupMM1RelationOnForeignSide();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteSurfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteGroupMM1RelationOnForeignSide.csv');
     }
 
     #[Test]
-    public function changeSurfRelationSorting(): void
+    public function changeGroupMM1SortingOnForeignSide(): void
     {
-        parent::changeSurfRelationSorting();
+        parent::changeGroupMM1SortingOnForeignSide();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeSurfRelationSorting.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/changeGroupMM1SortingOnForeignSide.csv');
     }
 
     #[Test]
-    public function createContentAndAddRelation(): void
+    public function createContentAndAddGroupMM1Relation(): void
     {
-        parent::createContentAndAddRelation();
+        parent::createContentAndAddGroupMM1Relation();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNAddRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndAddGroupMM1Relation.csv');
     }
 
     #[Test]
-    public function createSurfAndAddRelation(): void
+    public function createTestMMAndAddGroupMM1Relation(): void
     {
-        parent::createSurfAndAddRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['newSurfId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfNAddRelation.csv');
+        parent::createTestMMAndAddGroupMM1Relation();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, $this->recordIds['newGroupMM1Id']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createTestMMAndAddGroupMM1Relation.csv');
     }
 
     #[Test]
-    public function createContentAndCreateRelation(): void
+    public function createTestMMAndContentWithGroupMM1Relation(): void
     {
-        parent::createContentAndCreateRelation();
+        parent::createTestMMAndContentWithGroupMM1Relation();
         $this->actionService->clearWorkspaceRecords([
-            self::TABLE_Surf => [$this->recordIds['newSurfId']],
+            self::TABLE_TEST_MM => [$this->recordIds['newGroupMM1Id']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentNCreateRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createTestMMAndContentWithGroupMM1Relation.csv');
     }
 
     #[Test]
-    public function createSurfAndCreateRelation(): void
+    public function createContentAndTestMMWithGroupMM1Relation(): void
     {
-        parent::createSurfAndCreateRelation();
+        parent::createContentAndTestMMWithGroupMM1Relation();
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Surf => [$this->recordIds['newSurfId']],
+            self::TABLE_TEST_MM => [$this->recordIds['newGroupMM1Id']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfNCreateRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndTestMMWithGroupMM1Relation.csv');
     }
 
     #[Test]
-    public function createContentWithSurfAndAddRelation(): void
+    public function createTestMMAndContentWithAddedGroupMM1Relation(): void
     {
-        parent::createContentWithSurfAndAddRelation();
+        parent::createTestMMAndContentWithAddedGroupMM1Relation();
         $this->actionService->clearWorkspaceRecords([
-            self::TABLE_Surf => [$this->recordIds['newSurfId']],
+            self::TABLE_TEST_MM => [$this->recordIds['newGroupMM1Id']],
             self::TABLE_Content => [$this->recordIds['newContentId']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentWSurfNAddRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createTestMMAndContentWithAddedGroupMM1Relation.csv');
     }
 
     #[Test]
-    public function createSurfWithContentAndAddRelation(): void
+    public function createContentAndTestMMWithAddedGroupMM1Relation(): void
     {
-        parent::createSurfWithContentAndAddRelation();
+        parent::createContentAndTestMMWithAddedGroupMM1Relation();
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [$this->recordIds['newContentId']],
-            self::TABLE_Surf => [$this->recordIds['newSurfId']],
+            self::TABLE_TEST_MM => [$this->recordIds['newGroupMM1Id']],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/createSurfWContentNAddRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/createContentAndTestMMWithAddedGroupMM1Relation.csv');
     }
 
     #[Test]
-    public function modifySurfOfRelation(): void
+    public function modifyTestMM(): void
     {
-        parent::modifySurfOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifySurfOfRelation.csv');
+        parent::modifyTestMM();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTestMM.csv');
     }
 
     #[Test]
-    public function modifyContentOfRelation(): void
+    public function modifyContent(): void
     {
-        parent::modifyContentOfRelation();
+        parent::modifyContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContentOfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyContent.csv');
     }
 
     #[Test]
-    public function modifyBothsOfRelation(): void
+    public function modifyTestMMAndContent(): void
     {
-        parent::modifyBothsOfRelation();
+        parent::modifyTestMMAndContent();
         $this->actionService->clearWorkspaceRecords([
             self::TABLE_Content => [self::VALUE_ContentIdFirst],
-            self::TABLE_Surf => [self::VALUE_SurfIdFirst],
+            self::TABLE_TEST_MM => [self::VALUE_TestMMIdFirst],
         ]);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyBothsOfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/modifyTestMMAndContent.csv');
     }
 
     #[Test]
-    public function deleteContentOfRelation(): void
+    public function deleteContentWithMultipleRelations(): void
     {
-        parent::deleteContentOfRelation();
+        parent::deleteContentWithMultipleRelations();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentWithMultipleRelations.csv');
     }
 
     #[Test]
-    public function deleteContentOfRelationWithoutSoftDelete(): void
+    public function deleteContentWithMultipleRelationsAndWithoutSoftDelete(): void
     {
-        parent::deleteContentOfRelationWithoutSoftDelete();
+        parent::deleteContentWithMultipleRelationsAndWithoutSoftDelete();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['deletedRecordId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentOfRelationWithoutSoftDelete.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteContentWithMultipleRelationsAndWithoutSoftDelete.csv');
     }
 
     #[Test]
-    public function deleteSurfOfRelation(): void
+    public function deleteTestMM(): void
     {
-        parent::deleteSurfOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, self::VALUE_SurfIdFirst);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteSurfOfRelation.csv');
+        parent::deleteTestMM();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, self::VALUE_TestMMIdFirst);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/deleteTestMM.csv');
     }
 
     #[Test]
-    public function copyContentOfRelation(): void
+    public function copyContentWithRelations(): void
     {
-        parent::copyContentOfRelation();
+        parent::copyContentWithRelations();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentOfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentWithRelations.csv');
     }
 
     #[Test]
-    public function copyContentToLanguageOfRelation(): void
+    public function copyContentToLanguage(): void
     {
-        parent::copyContentToLanguageOfRelation();
+        parent::copyContentToLanguage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguageOfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyContentToLanguage.csv');
     }
 
     #[Test]
-    public function copySurfOfRelation(): void
+    public function copyTestMM(): void
     {
-        parent::copySurfOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['newSurfId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copySurfOfRelation.csv');
+        parent::copyTestMM();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, $this->recordIds['newGroupMM1Id']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyTestMM.csv');
     }
 
     /**
      * @todo: this is a faulty test, because the Surf should be discarded
      */
     #[Test]
-    public function copySurfToLanguageOfRelation(): void
+    public function copyTestMMToLanguage(): void
     {
-        parent::copySurfToLanguageOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newSurfId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/copySurfToLanguageOfRelation.csv');
+        parent::copyTestMMToLanguage();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['newGroupMM1Id']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/copyTestMMToLanguage.csv');
     }
 
     #[Test]
-    public function localizeContentOfRelation(): void
+    public function localizeContent(): void
     {
-        parent::localizeContentOfRelation();
+        parent::localizeContent();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelation.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContent.csv');
     }
 
     #[Test]
-    public function localizeContentOfRelationWithLanguageSynchronization(): void
+    public function localizeContentWithLanguageSynchronization(): void
     {
-        parent::localizeContentOfRelationWithLanguageSynchronization();
+        parent::localizeContentWithLanguageSynchronization();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWSynchronization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWithLanguageSynchronization.csv');
     }
 
     #[Test]
-    public function localizeContentOfRelationWithLanguageExclude(): void
+    public function localizeContentWithLanguageExclude(): void
     {
-        parent::localizeContentOfRelationWithLanguageExclude();
+        parent::localizeContentWithLanguageExclude();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationWExclude.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentWithLanguageExclude.csv');
     }
 
     #[Test]
-    public function localizeContentOfRelationAndAddSurfWithLanguageSynchronization(): void
+    public function localizeContentAndAddTestMMWithLanguageSynchronization(): void
     {
-        parent::localizeContentOfRelationAndAddSurfWithLanguageSynchronization();
+        parent::localizeContentAndAddTestMMWithLanguageSynchronization();
         // @todo: even if we discard this record, it is still showing up in the result
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         // @todo: do we need to discard the references manually?
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentOfRelationNAddSurfWSynchronization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentAndAddTestMMWithLanguageSynchronization.csv');
     }
 
     #[Test]
-    public function localizeContentChainOfRelationAndAddSurfWithLanguageSynchronization(): void
+    public function localizeContentChainAndAddTestMMWithLanguageSynchronization(): void
     {
-        parent::localizeContentChainOfRelationAndAddSurfWithLanguageSynchronization();
+        parent::localizeContentChainAndAddTestMMWithLanguageSynchronization();
         // @todo: even if we discard this record, it is still showing up in the result
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentIdSecond']);
         // @todo: do we need to discard the references manually?
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainOfRelationNAddSurfWSynchronization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentChainAndAddTestMMWithLanguageSynchronization.csv');
     }
 
     #[Test]
-    public function localizeSurfOfRelation(): void
+    public function localizeTestMM(): void
     {
         // Create translated page first
         $this->actionService->copyRecordToLanguage(self::TABLE_Page, self::VALUE_PageId, self::VALUE_LanguageId);
-        parent::localizeSurfOfRelation();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeSurfOfRelation.csv');
+        parent::localizeTestMM();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeTestMM.csv');
     }
 
     #[Test]
-    public function moveContentOfRelationToDifferentPage(): void
+    public function moveContentToDifferentPage(): void
     {
-        parent::moveContentOfRelationToDifferentPage();
+        parent::moveContentToDifferentPage();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, self::VALUE_ContentIdLast);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentOfRelationToDifferentPage.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/moveContentToDifferentPage.csv');
     }
 
     #[Test]
@@ -276,50 +276,50 @@ final class ActionTest extends AbstractActionWorkspacesTestCase
     }
 
     #[Test]
-    public function localizeLocalDefaultSurfer(): void
+    public function localizeTestMMSelect1MMLocal(): void
     {
-        parent::localizeLocalDefaultSurfer();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurfer.csv');
+        parent::localizeTestMMSelect1MMLocal();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeTestMMSelect1MMLocal.csv');
     }
 
     #[Test]
-    public function localizeLocalDefaultSurferWithExclude(): void
+    public function localizeTestMMSelect1MMLocalWithExclude(): void
     {
-        parent::localizeLocalDefaultSurferWithExclude();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurferWExclude.csv');
+        parent::localizeTestMMSelect1MMLocalWithExclude();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeTestMMSelect1MMLocalWithExclude.csv');
     }
 
     #[Test]
-    public function localizeLocalDefaultSurferWithLanguageSynchronization(): void
+    public function localizeTestMMSelect1MMLocalWithLanguageSynchronization(): void
     {
-        parent::localizeLocalDefaultSurferWithLanguageSynchronization();
-        $this->actionService->clearWorkspaceRecord(self::TABLE_Surf, $this->recordIds['localizedSurfId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeLocalDefaultSurferWSynchronization.csv');
+        parent::localizeTestMMSelect1MMLocalWithLanguageSynchronization();
+        $this->actionService->clearWorkspaceRecord(self::TABLE_TEST_MM, $this->recordIds['localizedSurfId']);
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeTestMMSelect1MMLocalWithLanguageSynchronization.csv');
     }
 
     #[Test]
-    public function localizeForeignDefaultPost(): void
+    public function localizeContentSelect1MMForeign(): void
     {
-        parent::localizeForeignDefaultPost();
+        parent::localizeContentSelect1MMForeign();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPost.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentSelect1MMForeign.csv');
     }
 
     #[Test]
-    public function localizeForeignDefaultPostWithExclude(): void
+    public function localizeContentSelect1MMForeignWithExclude(): void
     {
-        parent::localizeForeignDefaultPostWithExclude();
+        parent::localizeContentSelect1MMForeignWithExclude();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPostWExclude.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentSelect1MMForeignWithExclude.csv');
     }
 
     #[Test]
-    public function localizeForeignDefaultPostWithLanguageSynchronization(): void
+    public function localizeContentSelect1MMForeignWithLanguageSynchronization(): void
     {
-        parent::localizeForeignDefaultPostWithLanguageSynchronization();
+        parent::localizeContentSelect1MMForeignWithLanguageSynchronization();
         $this->actionService->clearWorkspaceRecord(self::TABLE_Content, $this->recordIds['localizedContentId']);
-        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeForeignDefaultPostWSyncrhonization.csv');
+        $this->assertCSVDataSet(__DIR__ . '/DataSet/localizeContentSelect1MMForeignWithLanguageSynchronization.csv');
     }
 }

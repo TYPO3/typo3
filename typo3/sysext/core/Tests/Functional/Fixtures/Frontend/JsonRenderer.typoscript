@@ -12,9 +12,9 @@ config {
 			sys_category = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,items,sys_language_uid
 			sys_file = uid,_ORIG_uid,_LOCALIZED_UID,pid,title,sys_language_uid
 			sys_file_reference = uid,_ORIG_uid,_LOCALIZED_UID,title,description,alternative,link,missing,identifier,file,pid,sys_language_uid,title,parent,items,sys_language_uid,uid_local,uid_foreign,tablenames,fieldname
-			tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_testdatahandler_categories,tx_testdatahandler_category,surfing
+			tt_content = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,header,categories,tx_testdatahandler_categories,tx_testdatahandler_category,group_mm_1_foreign
 			tx_testdatahandler_element = uid,_ORIG_uid,_LOCALIZED_UID,pid,sorting,sys_language_uid,title
-			tx_test_mm_surf = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,base,relations
+			tx_test_mm = uid,_ORIG_uid,_LOCALIZED_UID,pid,sys_language_uid,title,parent,group_mm_1_local
 		}
 	}
 }
@@ -152,20 +152,20 @@ page {
 				}
 				90 = CONTENT
 				90 {
-					if.isTrue.field = surfing
-					table = tx_test_mm_surf
+					if.isTrue.field = group_mm_1_foreign
+					table = tx_test_mm
 					select {
 						pidInList = this,root,-1
-						selectFields = {#tx_test_mm_surf}.*
-						join = {#surf_content_mm} ON {#surf_content_mm}.{#uid_local} = {#tx_test_mm_surf}.{#uid}
+						selectFields = {#tx_test_mm}.*
+						join = {#group_mm_1_relations_mm} ON {#group_mm_1_relations_mm}.{#uid_local} = {#tx_test_mm}.{#uid}
 						where.data = field:_ORIG_uid // field:_LOCALIZED_UID // field:uid
 						where.intval = 1
-						where.wrap = {#surf_content_mm}.{#uid_foreign}=|
-						orderBy = surf_content_mm.sorting_foreign
-						languageField = {#tx_test_mm_surf}.{#sys_language_uid}
+						where.wrap = {#group_mm_1_relations_mm}.{#uid_foreign}=|
+						orderBy = group_mm_1_relations_mm.sorting_foreign
+						languageField = {#tx_test_mm}.{#sys_language_uid}
 					}
 					renderObj < lib.watcherDataObject
-					renderObj.1.watcher.dataWrap = {register:watcher}|.surfing/tx_test_mm_surf:{field:uid}
+					renderObj.1.watcher.dataWrap = {register:watcher}|.group_mm_1_foreign/tx_test_mm:{field:uid}
 				}
 			}
 		}
